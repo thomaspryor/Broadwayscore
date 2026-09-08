@@ -663,16 +663,26 @@ async function main(argv = process.argv.slice(2)) {
     writeNightState(key, {
       ...nightState, attempts: attemptNum, consecutiveFailures, usdTonight, noProgressPasses,
       shows: windowShows, lastReviewCount: countAfter === null ? nightState.lastReviewCount : countAfter,
-      lastLaunchAt: now.toISOString(), lastFailure: { stage: result.stage, at: now.toISOString() },
+      lastLaunchAt: now.toISOString(),
+      // BRO-3056: exitSignal rides lastFailure too, same reasoning as the
+      // ledger entry below — undefined (dropped by JSON.stringify) on a
+      // normal failure so the shape is unchanged except for a signalled death.
+      lastFailure: { stage: result.stage, at: now.toISOString(), exitSignal: result.exitSignal || undefined },
     });
     // A failed pass still spent money and is exactly what the escalation
     // email points the owner at this ledger to investigate — a failure that
     // never lands here would be invisible in the one place meant to explain it.
+    // BRO-3053/BRO-3056: exitSignal rides the launch-failed row too — this
+    // is the same allowlist-projection class that stranded it in
+    // bsc-runner.js's FAILED ledger row; without it here, an OS-killed
+    // opening-night pass is indistinguishable from any other abrupt exit in
+    // the one place (this ledger) the escalation email points the owner at.
     dispatchLedger.appendEntry({
       event: 'launch-failed', taskId: key,
       shows: windows.map(w => w.showId),
       attempt: attemptNum, model: MODEL, rehearsal, kind: 'on-monitor',
       stage: result.stage, wallMin: Math.round(result.wallMin * 10) / 10, usd: result.usd,
+      exitSignal: result.exitSignal || undefined,
     });
     // Alert severity is about the OWNER's inbox, not about the exit code.
     //
