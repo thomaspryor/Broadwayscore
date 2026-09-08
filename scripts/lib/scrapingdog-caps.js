@@ -39,14 +39,17 @@ const { utcDay, isExemptCaller, DEFAULT_EXEMPT_SCRIPTS } = require('./brightdata
 const { isNextUtcDay } = require('./provider-spend-core');
 
 /**
- * Daily credit ceiling default — matches scripts/config/provider-spend-thresholds.json's
- * scrapingdogDailyCredits (owner-approved 2026-07-30 alarm line). Kept as its
- * OWN constant rather than reading that JSON file at call time: scraper.js is
- * a hot path, and thresholds.json is documented as digest-only config. Same
- * pattern brightdata-caps.js uses (its own DEFAULT_DAILY_REQ_CEILING is a
- * separate constant from thresholds.json's brightdataDailyUsd). If the two
- * numbers drift, that is a known, accepted cost of the split — update both
- * when changing the intended daily budget.
+ * LEGACY daily credit ceiling — since BRO-2943 (2026-09-07) this is only the
+ * fallback used when the Scrapingdog /account response is unreachable or is
+ * missing the plan limit / days-to-renewal; the enforced ceiling is otherwise
+ * plan-derived (see planFairShareCeiling / resolveCeilingForDay below). It
+ * historically matched scripts/config/provider-spend-thresholds.json's
+ * scrapingdogDailyCredits alarm line (owner-approved 2026-07-30); that digest
+ * line is owner-owned and deliberately NOT changed here, so the digest may
+ * flag "overspend" on days the breaker intentionally allows. Kept as its OWN
+ * constant rather than reading that JSON at call time: scraper.js is a hot
+ * path and thresholds.json is digest-only config (same split as
+ * brightdata-caps.js's DEFAULT_DAILY_REQ_CEILING vs brightdataDailyUsd).
  */
 const DEFAULT_DAILY_CREDIT_CEILING = 45000;
 
@@ -71,17 +74,91 @@ const DEFAULT_DAILY_CREDIT_CEILING = 45000;
  */
 const DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS = 3000;
 
+/**
+ * Burst multiplier on the plan-derived fair share (BRO-2943). The prepaid
+ * pack's per-day fair share is (credits left at day start) / (days to
+ * renewal); a routine day sits well under it and a burst day (bulk backfill,
+ * several opening nights) can run ~2x. 1.5x lets bursts through while still
+ * shrinking toward the fair share when the pack is genuinely running low —
+ * the ONLY case where withholding prepaid SD credits is cheaper than paying
+ * Bright Data (17x) / ScrapingBee SERP (5x) for the rest of the day.
+ */
+const DEFAULT_FAIR_SHARE_BURST_FACTOR = 1.5;
+
 const DEFAULT_STATE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'sd-circuit-breaker.json');
 const STATE_CACHE_MS = 60_000;
 
 function _posInt(raw, fallback) {
-  const n = parseInt(raw, 10);
-  return Number.isFinite(n) && n > 0 ? n : fallback;
+  // Number() + isInteger, not parseInt: parseInt('1e5') is 1, which turned
+  // an operator's "100,000" pin into a ceiling of ONE credit (ship-check
+  // finding). Non-integer, negative, empty or garbage → fallback.
+  if (raw == null || String(raw).trim() === '') return fallback;
+  const n = Number(raw);
+  return Number.isInteger(n) && n > 0 ? n : fallback;
 }
 
 /** Daily credit ceiling: SD_BREAKER_CEILING, else the shared default. */
 function resolveDailyCreditCeiling(env = process.env) {
   return _posInt(env.SD_BREAKER_CEILING, DEFAULT_DAILY_CREDIT_CEILING);
+}
+
+/**
+ * Plan-derived daily ceiling (BRO-2943): the prepaid pack's fair share for
+ * today, times a burst factor, clamped to what is actually left.
+ *
+ *   remaining = limit - dayBaseline          (credits unspent at day start)
+ *   ceiling   = min(round(remaining / max(daysToRenewal, 1) * burst), remaining)
+ *
+ * Why this replaces the hardcoded 45,000: the pack silently went 4M -> 3M
+ * and demand is ~50K/day, so a fixed number is either wrong on day one or
+ * wrong after the next plan change. Measured 2026-09-07: the 45K line (minus
+ * the opening-window reserve) tripped by mid-morning most days and rerouted
+ * routine SERP/page traffic to Bright Data + ScrapingBee — ~900K+ ScrapingBee
+ * credits per cycle attributed to nothing else. Returns null when any input
+ * is unusable so the caller can fall back (env override, then the legacy
+ * default) — never a NaN/0 that shouldTripBreaker would read as "no ceiling".
+ */
+function planFairShareCeiling({ limit, dayBaseline, daysToRenewal, burstFactor = DEFAULT_FAIR_SHARE_BURST_FACTOR } = {}) {
+  if (!Number.isFinite(limit) || limit <= 0) return null;
+  if (!Number.isFinite(dayBaseline) || dayBaseline < 0) return null;
+  // A negative validity is an expired/grace-period pack, not "renews today":
+  // treating it as 1 day would license the whole remainder in one day
+  // (Codex ship-check finding; scrapingdog-ack.js rejects negatives too).
+  if (!Number.isFinite(daysToRenewal) || daysToRenewal < 0) return null;
+  if (!Number.isFinite(burstFactor) || burstFactor <= 0) return null;
+  const remaining = Math.max(0, limit - dayBaseline);
+  // Pack spent (or downgraded below what is already used): a ceiling of 1
+  // trips on the first credit. shouldTripBreaker() reads 0 as "no ceiling"
+  // and would fail OPEN — the wrong direction for an exhausted pack.
+  if (remaining <= 0) return 1;
+  const fairShare = remaining / Math.max(daysToRenewal, 1);
+  return Math.max(1, Math.min(Math.round(fairShare * burstFactor), remaining));
+}
+
+/**
+ * The ceiling check-sd-breaker.js should enforce today, with its provenance.
+ * Precedence: SD_BREAKER_CEILING env override (operator pin) > plan fair
+ * share (needs the /account limit + days-to-renewal AND today's baseline) >
+ * legacy DEFAULT_DAILY_CREDIT_CEILING. `account` is parseSdAccount()'s shape
+ * ({cycleUsed, limit, daysToRenewal}) or null when billing was unreachable.
+ * @returns {{ceiling: number, source: 'env'|'plan'|'default'}}
+ */
+function resolveCeilingForDay({ env = process.env, account = null, dayBaseline = null } = {}) {
+  const envCeiling = _posInt(env.SD_BREAKER_CEILING, null);
+  if (envCeiling !== null) return { ceiling: envCeiling, source: 'env' };
+  const baseline = Number.isFinite(dayBaseline) ? dayBaseline : (account && Number.isFinite(account.cycleUsed) ? account.cycleUsed : null);
+  // SD_BREAKER_BURST_FACTOR: rollback/tuning knob for the 1.5x default
+  // without a code change (garbage/non-positive → default).
+  const burstRaw = parseFloat(env.SD_BREAKER_BURST_FACTOR);
+  const burstFactor = Number.isFinite(burstRaw) && burstRaw > 0 ? burstRaw : DEFAULT_FAIR_SHARE_BURST_FACTOR;
+  const plan = account ? planFairShareCeiling({
+    limit: account.limit,
+    dayBaseline: baseline,
+    daysToRenewal: account.daysToRenewal,
+    burstFactor,
+  }) : null;
+  if (plan !== null) return { ceiling: plan, source: 'plan' };
+  return { ceiling: DEFAULT_DAILY_CREDIT_CEILING, source: 'default' };
 }
 
 /**
@@ -299,8 +376,11 @@ function _resetForTests() {
 module.exports = {
   DEFAULT_DAILY_CREDIT_CEILING,
   DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS,
+  DEFAULT_FAIR_SHARE_BURST_FACTOR,
   DEFAULT_STATE_PATH,
   resolveDailyCreditCeiling,
+  planFairShareCeiling,
+  resolveCeilingForDay,
   resolveExemptScripts,
   resolveOpeningWindowReservePerShowCredits,
   shouldTripBreaker,
