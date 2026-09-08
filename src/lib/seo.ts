@@ -540,8 +540,15 @@ export function generateItemListSchema(items: {
 // with an unconfirmed date.
 function formatFAQDate(dateStr?: string | null): string | null {
   if (!dateStr) return null;
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime()) || date.getFullYear() < 1950) return null;
+  // Mirrors formatShowDate's own UTC-midnight parse (slice to the date part,
+  // force UTC) so this guard can't disagree with the value it's guarding.
+  // The prior `new Date(dateStr).getFullYear()` read the LOCAL year, so on a
+  // non-UTC machine a date of exactly 1950-01-01 parsed as UTC midnight would
+  // read back as Dec 31 1949 local and get wrongly suppressed by this guard —
+  // the same class of bug this whole fix (BRO-3047) exists to close, just
+  // hiding inside the validity check instead of the render call.
+  const date = new Date(`${dateStr.slice(0, 10)}T00:00:00Z`);
+  if (isNaN(date.getTime()) || date.getUTCFullYear() < 1950) return null;
   return formatShowDate(dateStr, { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
