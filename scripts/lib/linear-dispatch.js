@@ -353,7 +353,63 @@ function hasLiveLedgerEntry(taskId, entries) {
   if (!latest) return false;
   if (dispatchLedger.isLatestDispatchDead(taskId, list)) return false;
   if (latest.event === dispatchLedger.JOB_EVENTS.DONE) return false;
+  // BRO-3045: a 'launch' whose own terminal breadcrumb the ledger has already
+  // written is over. isAttemptEvent excludes vanished/prune-closed/remapped
+  // (correctly — they describe a workspace, not an attempt), so
+  // latestAttemptForTask walks straight past that breadcrumb back to the stale
+  // launch, and without this check every such task reads as live forever.
+  // Measured: 127 of 133 "already dispatched" BRO cards, oldest 630h.
+  // No clock is involved — this is the ledger's own recorded fact, not a guess
+  // about how long a job "should" take. See terminalForLaunch's header for why
+  // it is keyed on taskId as well as workspaceRef.
+  if (dispatchLedger.terminalForLaunch(latest, list)) return false;
   return true;
+}
+
+// The exact terminal breadcrumb hasLiveLedgerEntry demoted a task on, or null.
+// Split out so linear-next.js can NAME the event and its timestamp when it
+// explains a decision, rather than silently not-refusing.
+function terminalBreadcrumbForTask(taskId, entries) {
+  const list = entries || [];
+  const latest = dispatchLedger.latestAttemptForTask(taskId, list);
+  if (!latest) return null;
+  return dispatchLedger.terminalForLaunch(latest, list);
+}
+
+// "Dispatched <correlationId> to <ref> at <ts>" — buildDispatchComment's own
+// shape. Same literal as reconcile-landed-but-open.js's; both read comments
+// this file writes.
+const DISPATCH_COMMENT_CORRELATION_RE = /^Dispatched\s+([0-9a-f]+)\s+to\b/;
+
+// True when a "Dispatched ..." comment provably describes a dispatch THIS host
+// launched and has since journaled terminal — i.e. our own finished work, not
+// someone else's live job.
+//
+// BRO-3045. The comment signal is the only CROSS-MACHINE idempotency signal in
+// the system (the ledger is host-local), so it must not be demoted on a clock:
+// "old" is not the same as "finished", and reconcile-landed-but-open.js's
+// header records that a timestamp test there produced 82/82 false positives.
+// Identity is the safe test instead — this mirrors that file's
+// checkCrossMachineDispatch exactly. A comment with no parseable correlationId,
+// or one whose correlationId this ledger has never recorded, is precisely the
+// "something we don't know about dispatched this" case and stays live.
+//
+// Deliberately NOT folded into findUnresolvedDispatchComment: that function is
+// also called with one argument by reconcile-landed-but-open.js:198, and
+// dispatchFloor/reportedOutcomeGuard reach newestDispatchComment directly.
+// Widening any of those signatures would put a second, differently-scoped copy
+// of this rule inside a reconciler that already implements it.
+function dispatchCommentIsOurFinishedLaunch(comment, taskId, entries) {
+  if (!comment) return false;
+  const m = DISPATCH_COMMENT_CORRELATION_RE.exec(String(comment.body || '').trim());
+  if (!m) return false; // unparseable — fail toward "possibly live"
+  const correlationId = m[1];
+  const list = entries || [];
+  const launch = list.find(
+    (e) => e && String(e.taskId) === String(taskId) && e.correlationId === correlationId
+  );
+  if (!launch) return false; // not a dispatch this host recorded — cross-machine, stay live
+  return Boolean(dispatchLedger.terminalForLaunch(launch, list));
 }
 
 // Terminal-state guard (task #1517, BRO-247 incident root cause): a
@@ -908,4 +964,6 @@ module.exports = {
   generateCorrelationId,
   findUnresolvedDispatchComment,
   hasLiveLedgerEntry,
+  terminalBreadcrumbForTask,
+  dispatchCommentIsOurFinishedLaunch,
 };

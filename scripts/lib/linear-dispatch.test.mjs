@@ -25,6 +25,9 @@ import {
   REPORTED_WORK_BYPASS_FLAG,
   REPORTED_WORK_BYPASS_MIN_REASON,
   findUnresolvedDispatchComment,
+  hasLiveLedgerEntry,
+  terminalBreadcrumbForTask,
+  dispatchCommentIsOurFinishedLaunch,
 } from './linear-dispatch.js';
 import { buildOutcomeCommentBody, VALID_STATUSES, SESSION_REPORT_PREFIX, parseSessionReportStatus } from './linear-session-reporting.js';
 import { TERMINAL_STATE_TYPES, isTerminalStateType } from './linear-state-types.js';
@@ -744,4 +747,123 @@ test('parseSessionReportStatus regex is derived from SESSION_REPORT_PREFIX, not 
   assert.ok(SESSION_REPORT_PREFIX.length > 0);
   assert.ok(buildOutcomeCommentBody({ summary: 's', status: 'done' }).startsWith(SESSION_REPORT_PREFIX));
   assert.equal(parseSessionReportStatus(buildOutcomeCommentBody({ summary: 's', status: 'done' })), 'done');
+});
+
+// ── BRO-3045: the dedup guard must read the death breadcrumb it already writes ─
+//
+// Measured on the live ledger 2026-09-08: 133 linear:BRO-* tasks were held
+// "already dispatched", 127 of them already carried a terminal breadcrumb
+// (117 prune-closed, 8 vanished, 2 remapped) and the oldest was 630 hours old.
+// isAttemptEvent excludes those events (correctly — they describe a workspace,
+// not a fresh attempt), so latestAttemptForTask walked straight past them back
+// to the stale 'launch'. The ledger recorded the death; the reader threw it
+// away, and every one of those cards needed --force to dispatch.
+
+const launch = (taskId, ref, ts, extra = {}) => ({ event: 'launch', taskId, workspaceRef: ref, ts, ...extra });
+
+test('BRO-3045: a launch closed by prune-closed is not live', () => {
+  const entries = [
+    launch('linear:BRO-1', 'workspace:9', '2026-08-12T10:00:00.000Z'),
+    { event: 'prune-closed', taskId: 'linear:BRO-1', workspaceRef: 'workspace:9', ts: '2026-08-12T11:00:00.000Z' },
+  ];
+  assert.equal(hasLiveLedgerEntry('linear:BRO-1', entries), false);
+  assert.equal(terminalBreadcrumbForTask('linear:BRO-1', entries).event, 'prune-closed');
+});
+
+test('BRO-3045: vanished, remapped and dead close a launch too', () => {
+  for (const event of ['vanished', 'remapped', 'dead']) {
+    const entries = [
+      launch('linear:BRO-2', 'workspace:9', '2026-08-12T10:00:00.000Z'),
+      { event, taskId: 'linear:BRO-2', workspaceRef: 'workspace:9', ts: '2026-08-12T11:00:00.000Z' },
+    ];
+    assert.equal(hasLiveLedgerEntry('linear:BRO-2', entries), false, `should not be live after ${event}`);
+  }
+});
+
+test('BRO-3045: a launch with NO terminal breadcrumb stays live', () => {
+  const entries = [launch('linear:BRO-3', 'workspace:9', '2026-09-08T03:30:00.000Z')];
+  assert.equal(hasLiveLedgerEntry('linear:BRO-3', entries), true);
+  assert.equal(terminalBreadcrumbForTask('linear:BRO-3', entries), null);
+});
+
+// The stranger case. cmux recycles workspace:N across restarts; review measured
+// 8 of the 133 whose launch ref was later re-launched by a DIFFERENT taskId.
+// A ref-only rule would read a stranger's prune-closed as this task's death and
+// declare a running job dead — which is why terminalForLaunch keys on taskId
+// as well as workspaceRef.
+test('BRO-3045: a terminal breadcrumb belonging to ANOTHER task on the same recycled ref does not close this launch', () => {
+  const entries = [
+    launch('linear:BRO-4', 'workspace:59', '2026-09-08T03:30:00.000Z'),
+    { event: 'prune-closed', taskId: 'linear:BRO-999', workspaceRef: 'workspace:59', ts: '2026-09-08T03:45:00.000Z' },
+    { event: 'remapped', taskId: '75', workspaceRef: 'workspace:59', ts: '2026-09-08T03:50:00.000Z' },
+  ];
+  assert.equal(hasLiveLedgerEntry('linear:BRO-4', entries), true);
+  assert.equal(terminalBreadcrumbForTask('linear:BRO-4', entries), null);
+});
+
+test('BRO-3045: a terminal breadcrumb for a DIFFERENT ref does not close this launch', () => {
+  const entries = [
+    launch('linear:BRO-5', 'workspace:9', '2026-09-08T03:30:00.000Z'),
+    { event: 'prune-closed', taskId: 'linear:BRO-5', workspaceRef: 'workspace:10', ts: '2026-09-08T03:45:00.000Z' },
+  ];
+  assert.equal(hasLiveLedgerEntry('linear:BRO-5', entries), true);
+});
+
+// A recycled-then-relaunched task: the old terminal row predates the CURRENT
+// launch, so it says nothing about it.
+test('BRO-3045: a terminal breadcrumb dated BEFORE the launch does not close it', () => {
+  const entries = [
+    { event: 'prune-closed', taskId: 'linear:BRO-6', workspaceRef: 'workspace:9', ts: '2026-08-01T10:00:00.000Z' },
+    launch('linear:BRO-6', 'workspace:9', '2026-09-08T03:30:00.000Z'),
+  ];
+  assert.equal(hasLiveLedgerEntry('linear:BRO-6', entries), true);
+});
+
+test('BRO-3045: a headless job-spawned latest attempt is unaffected', () => {
+  const entries = [
+    { event: 'job-spawned', taskId: 'linear:BRO-7', jobId: 'linear:BRO-7-abc', ts: '2026-09-08T03:31:00.000Z' },
+  ];
+  assert.equal(hasLiveLedgerEntry('linear:BRO-7', entries), true);
+});
+
+// ── the comment half, which is load-bearing ──────────────────────────────────
+//
+// reportDispatchOnIssue posts a "Dispatched ..." comment on EVERY dispatch and
+// findUnresolvedDispatchComment returns it for any non-terminal issue, so the
+// ledger fix alone would have unblocked exactly zero cards. The comment is also
+// the only CROSS-MACHINE signal in the system, so it is demoted on IDENTITY
+// (a correlationId this host launched and has since journaled terminal), never
+// on a clock — reconcile-landed-but-open.js records that a timestamp test there
+// produced 82/82 false positives.
+
+test('BRO-3045: a dispatch comment matching a finished local launch is our own finished work', () => {
+  const entries = [
+    launch('linear:BRO-8', 'workspace:9', '2026-08-12T10:00:00.000Z', { correlationId: 'deadbeef' }),
+    { event: 'prune-closed', taskId: 'linear:BRO-8', workspaceRef: 'workspace:9', ts: '2026-08-12T11:00:00.000Z' },
+  ];
+  const comment = { body: 'Dispatched deadbeef to workspace:9 at 2026-08-12T10:00:00.000Z (tab)', createdAt: '2026-08-12T10:00:01.000Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, 'linear:BRO-8', entries), true);
+});
+
+test('BRO-3045: a dispatch comment whose correlationId this host never recorded stays live (cross-machine)', () => {
+  const entries = [
+    launch('linear:BRO-9', 'workspace:9', '2026-08-12T10:00:00.000Z', { correlationId: 'deadbeef' }),
+    { event: 'prune-closed', taskId: 'linear:BRO-9', workspaceRef: 'workspace:9', ts: '2026-08-12T11:00:00.000Z' },
+  ];
+  const comment = { body: 'Dispatched cafebabe to workspace:44 at 2026-09-08T03:00:00.000Z (tab)', createdAt: '2026-09-08T03:00:00.000Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, 'linear:BRO-9', entries), false);
+});
+
+test('BRO-3045: an unparseable dispatch comment fails toward possibly-live', () => {
+  const entries = [launch('linear:BRO-10', 'workspace:9', '2026-08-12T10:00:00.000Z', { correlationId: 'deadbeef' })];
+  for (const body of ['Dispatched to workspace:9 at 2026-08-12T10:00:00.000Z', 'some other comment', '']) {
+    assert.equal(dispatchCommentIsOurFinishedLaunch({ body, createdAt: '2026-08-12T10:00:01.000Z' }, 'linear:BRO-10', entries), false, `should stay live: "${body}"`);
+  }
+  assert.equal(dispatchCommentIsOurFinishedLaunch(null, 'linear:BRO-10', entries), false);
+});
+
+test('BRO-3045: a matching correlationId whose launch is NOT yet finished stays live', () => {
+  const entries = [launch('linear:BRO-11', 'workspace:9', '2026-09-08T03:30:00.000Z', { correlationId: 'deadbeef' })];
+  const comment = { body: 'Dispatched deadbeef to workspace:9 at 2026-09-08T03:30:00.000Z (tab)', createdAt: '2026-09-08T03:30:01.000Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, 'linear:BRO-11', entries), false);
 });
