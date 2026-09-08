@@ -1205,11 +1205,15 @@ on:
       - 'scripts/pre-send-check.test.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
+      # BRO-3092: regression guard for the-addams-family-2010's WSJ same-URL
+      # duplicate. The deleted paywall-boilerplate record was resurrected by a
+      # stale-checkout race 29 minutes after the delete; this asserts it stays
+      # deleted. Same corpus-presence gating as the frankie guard below.
+      - 'scripts/verify-addams-wsj-dedup-held.test.mjs'
       # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
       # wrong-production cleanup. Corpus-presence-gated like review-guards.explain.test.mjs
       # (skips in unit-tests, which never checks out data/review-texts; enforced for
       # real by the data-validation job's re-run below, after checkout-review-texts).
-      - 'scripts/verify-addams-wsj-dedup-held.test.mjs'
       - 'scripts/verify-frankie-2002-cleanup.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
       # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
@@ -4314,19 +4318,30 @@ jobs:
     # network op (~4 min budget), so the normal validation pass (~15 min) has ample
     # headroom; 30 min guarantees a conclusion even if a step wedges.
     #
-    # 37 -> 25 (BRO-2984, 2026-09-08). BRO-2706 had raised this 30 -> 37 for the
-    # "Persist venue/date audit rotation state (BRO-2695)" step, and the 30 itself
-    # covered the "Validate provisional show venue+dates against Playbill" sweep
-    # that dominated the job at 881s (14.7min, run 33410708893). BOTH steps are
-    # gone: the sweep spent real ScrapingBee/Bright Data credits on every push
-    # (222 scraper-spend-ledger rows attributed to "Test Suite" in a ~2-day
-    # window) and now lives in the daily .github/workflows/audit-provisional-venues.yml;
-    # the persist step existed only to commit that sweep's output. Removing ~15min
-    # of Playbill fetching plus a 240s-deadline push step leaves the remaining ~40
-    # fast structural/contamination audits, whose measured non-Playbill cost was
-    # ~366s on that same run, plus Checkout at 569s. 25 min keeps well over the
-    # 15% headroom that tests/unit/data-validation-job-budget.test.mjs ratchets.
-    timeout-minutes: 25
+    # BRO-2984 (2026-09-08) removed this job's dominant step (the
+    # "Validate provisional show venue+dates against Playbill" sweep, 881s /
+    # 14.7min on run 33410708893) plus its push-bound "Persist venue/date audit
+    # rotation state" companion, so the obvious move was to lower this number
+    # too. It was briefly cut to 25 and that was WRONG — recorded here so the
+    # next reader does not redo it. The asymmetry: a ceiling that is too HIGH
+    # costs nothing (Actions bills the run's real duration, and a wedged step is
+    # already bounded by per-step timeouts and push-with-retry.sh's own
+    # deadline), while one that is too LOW reports CANCELLED, not FAILED — the
+    # conclusion this repo has repeatedly misread as success (BRO-2611 wasted a
+    # whole analysis on it, and Test Summary treats cancelled as non-failure).
+    #
+    # Worst case, from real numbers rather than feel: fixed cost 935s (Checkout
+    # 569s + every non-Playbill audit 366s, both measured on run 33410708893)
+    # plus ONE fully-contended push step. Two remain — "Record pipeline success"
+    # (inline push-with-retry.sh) and "Commit scraper-spend ledger" (the same
+    # script inside its composite action) — and a single contended push can burn
+    # 900s in push_mutex_acquire BEFORE the deadline clock resets
+    # (push-with-retry.sh:436-450, reproduced live in card #669) + 240s
+    # PUSH_DEADLINE_SEC + 90s GIT_NET_TIMEOUT_SEC overshoot = 1230s. That totals
+    # 2165s = 36.1min, which 37 covers and 25 does not. So 37 STAYS: it is not
+    # leftover slack from the deleted sweep, it is the number that keeps a
+    # mutex-contended push from silently cancelling this job.
+    timeout-minutes: 37
     steps:
       - name: Checkout
         uses: actions/checkout@v5
