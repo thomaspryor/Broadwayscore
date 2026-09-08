@@ -1,0 +1,303 @@
+/**
+ * cmux-triage.test.mjs — BRO-2623.
+ *
+ * Requires the real module (CLAUDE.md rule 15: never restate the logic here).
+ * Every case is a workspace shape that actually occurred on this machine, or
+ * one of the misclassifications the module's header says it exists to stop.
+ */
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const triage = require('./cmux-triage.js');
+const { triageDeadTabs, formatTriageReport, extractLinearKey, linearKeyFor, workKeyForTitle } = triage;
+
+// Default collaborators: know nothing. Each test overrides only what it needs,
+// so a case can never pass because some unrelated stub happened to answer.
+const NOTHING = {
+  launchByRef: () => null,
+  taskStatusById: () => null,
+  linearStateByKey: () => null,
+};
+
+function run(deadTabs, over = {}) {
+  return triageDeadTabs({ deadTabs, liveWorkspaces: [], ...NOTHING, ...over });
+}
+
+function only(buckets) {
+  const names = Object.keys(buckets).filter(k => buckets[k].length);
+  assert.equal(names.length, 1, `expected exactly one non-empty bucket, got ${JSON.stringify(names)}`);
+  return { bucket: names[0], entry: buckets[names[0]][0] };
+}
+
+// ── key extraction ──────────────────────────────────────────────────────────
+
+test('extractLinearKey finds a BRO key and ignores a bare card number', () => {
+  assert.equal(extractLinearKey('🤖🔮 Data·BRO-2623 Triage dead tabs'), 'BRO-2623');
+  assert.equal(extractLinearKey('🧭 👑 OWNER — land card #1889 Express retry merge'), null);
+});
+
+test('linearKeyFor falls back to the ledger taskId and subject when the title has no key', () => {
+  // The live 2026-09-07 shape: owner-renamed crown tab, key only in the ledger.
+  assert.equal(linearKeyFor('🧭 👑 OWNER — land card #1889 Express retry merge', 'linear:BRO-2620', null), 'BRO-2620');
+  assert.equal(linearKeyFor('👑 OWNER watchdog — 5 in flight', null, 'BRO-989 P1: outlet-registry lost-update'), 'BRO-989');
+  assert.equal(linearKeyFor('👑 OWNER watchdog — 5 in flight', null, null), null);
+});
+
+test('workKeyForTitle collapses crown succession versions but keeps distinct non-crown titles apart', () => {
+  assert.equal(
+    workKeyForTitle('👑 OWNER-crown v20 — BRO-343 backlog triage'),
+    workKeyForTitle('👑 OWNER-crown v46 — BRO-343 backlog triage'),
+  );
+  assert.notEqual(
+    workKeyForTitle('🤖 Data·BRO-1 Fix the scraper'),
+    workKeyForTitle('🤖 Data·BRO-2 Fix the scraper timeout'),
+  );
+});
+
+// ── bucket precedence ───────────────────────────────────────────────────────
+
+test('a dead tab whose Linear issue is Done is safe to close', () => {
+  const { bucket, entry } = only(run(
+    [{ ref: 'workspace:9', title: '🤖🔮 Data·BRO-77 Ship it' }],
+    { linearStateByKey: () => ({ type: 'completed', name: 'Done' }) },
+  ));
+  assert.equal(bucket, 'safeToClose');
+  assert.equal(entry.reason, 'linear-completed');
+});
+
+test('Duplicate and Canceled count as finished, not as open work', () => {
+  for (const type of ['canceled', 'duplicate']) {
+    const { bucket, entry } = only(run(
+      [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+      { linearStateByKey: () => ({ type, name: type }) },
+    ));
+    assert.equal(bucket, 'safeToClose', `${type} should be terminal`);
+    assert.equal(entry.reason, `linear-${type}`);
+  }
+});
+
+test('a dead tab whose Linear issue is still open needs resuming', () => {
+  const { bucket, entry } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    { linearStateByKey: () => ({ type: 'started', name: 'In Progress' }) },
+  ));
+  assert.equal(bucket, 'needsResuming');
+  assert.equal(entry.reason, 'linear-open');
+  assert.equal(entry.linearState, 'In Progress');
+});
+
+test('a LIVE tab on the same issue outranks "Linear says In Progress" — never re-dispatch onto a live session', () => {
+  const { bucket, entry } = only(triageDeadTabs({
+    deadTabs: [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    liveWorkspaces: [{ ref: 'workspace:12', title: '🤖 Data·BRO-77 Ship it' }],
+    ...NOTHING,
+    linearStateByKey: () => ({ type: 'started', name: 'In Progress' }),
+  }));
+  assert.equal(bucket, 'safeToClose');
+  assert.equal(entry.reason, 'live-duplicate');
+});
+
+test('a failed status lookup is an owner call, never silently "no open work"', () => {
+  const { bucket, entry } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    { linearStateByKey: () => ({ error: 'api.github.com 503' }) },
+  ));
+  assert.equal(bucket, 'needsOwnerCall');
+  assert.equal(entry.reason, 'unverifiable-lookup');
+});
+
+test('two dead instances of the same crown loop are an owner call, not a re-dispatch', () => {
+  const buckets = run([
+    { ref: 'workspace:20', title: '👑 OWNER-crown v20 — BRO-343 backlog triage' },
+    { ref: 'workspace:46', title: '👑 OWNER-crown v46 — BRO-343 backlog triage' },
+  ], { linearStateByKey: () => ({ type: 'started', name: 'In Progress' }) });
+  assert.equal(buckets.needsOwnerCall.length, 2);
+  assert.equal(buckets.needsResuming.length, 0);
+  assert.ok(buckets.needsOwnerCall.every(e => e.reason === 'duplicate-crown-loop'));
+});
+
+test('a single dead crown whose loop has a LIVE successor is safe to close, not an owner call', () => {
+  const { bucket, entry } = only(triageDeadTabs({
+    deadTabs: [{ ref: 'workspace:20', title: '👑 OWNER-crown v20 — backlog triage' }],
+    liveWorkspaces: [{ ref: 'workspace:46', title: '👑 OWNER-crown v46 — backlog triage' }],
+    ...NOTHING,
+  }));
+  assert.equal(bucket, 'safeToClose');
+  assert.equal(entry.reason, 'live-duplicate');
+});
+
+test('a dead tab mapping to nothing at all is reported, never acted on', () => {
+  const { bucket, entry } = only(run([{ ref: 'workspace:9', title: 'Domain Authority (recovered)' }]));
+  assert.equal(bucket, 'needsOwnerCall');
+  assert.equal(entry.reason, 'unmapped');
+  assert.equal(entry.autoActionAllowed, false);
+});
+
+test('the task store answers when the title carries no Linear key', () => {
+  const withStatus = (status) => run(
+    [{ ref: 'workspace:9', title: '🤖 Data·some legacy task' }],
+    { launchByRef: () => ({ taskId: 42, subject: 'legacy' }), taskStatusById: () => status },
+  );
+  assert.equal(only(withStatus('completed')).bucket, 'safeToClose');
+  assert.equal(only(withStatus('pending')).entry.reason, 'task-pending');
+  assert.equal(only(withStatus('in_progress')).entry.reason, 'task-in_progress');
+});
+
+test('Linear outranks a stale task-store status (Linear is the board of record)', () => {
+  const { bucket } = only(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    { launchByRef: () => ({ taskId: 42 }), taskStatusById: () => 'pending', linearStateByKey: () => ({ type: 'completed', name: 'Done' }) },
+  ));
+  assert.equal(bucket, 'safeToClose');
+});
+
+// ── the ownership vetoes stay owned by prune-dead-autodispatch-tabs ─────────
+
+test('autoActionAllowed is true only for a non-selected, non-crown, 🤖-dispatched tab', () => {
+  const done = { linearStateByKey: () => ({ type: 'completed', name: 'Done' }) };
+  const flag = (tab) => run([tab], done).safeToClose[0].autoActionAllowed;
+
+  assert.equal(flag({ ref: 'w:1', title: '🤖 Data·BRO-77 Ship it' }), true);
+  assert.equal(flag({ ref: 'w:2', title: 'Data·BRO-77 Ship it' }), false, 'owner-opened tab');
+  assert.equal(flag({ ref: 'w:3', title: '👑 🤖 Data·BRO-77 Ship it' }), false, 'crown tab');
+  assert.equal(flag({ ref: 'w:4', title: '🤖 Data·BRO-77 Ship it', selected: true }), false, 'selected tab');
+});
+
+test('a completed OWNER-opened tab is still surfaced as safe to close, just not auto-closable', () => {
+  // The whole point of BRO-2623: the existing sweeps drop this tab entirely.
+  const { bucket, entry } = only(run(
+    [{ ref: 'workspace:100', title: '🧭 👑 OWNER — land card #1889 Express retry merge' }],
+    { launchByRef: () => ({ taskId: 'linear:BRO-2620', subject: 'BRO-2620 P2: nothing runs audit-stale-announced-shows.js' }),
+      linearStateByKey: () => ({ type: 'completed', name: 'Done' }) },
+  ));
+  assert.equal(bucket, 'safeToClose');
+  assert.equal(entry.linearKey, 'BRO-2620');
+  assert.equal(entry.autoActionAllowed, false);
+});
+
+// ── robustness + report ─────────────────────────────────────────────────────
+
+test('a throwing collaborator degrades one fact to unknown, it does not abort the sweep', () => {
+  const buckets = run([
+    { ref: 'workspace:1', title: '🤖 Data·BRO-77 A' },
+    { ref: 'workspace:2', title: '🤖 Data·BRO-78 B' },
+  ], {
+    launchByRef: () => { throw new Error('ledger unreadable'); },
+    linearStateByKey: (k) => (k === 'BRO-77' ? { type: 'completed', name: 'Done' } : null),
+  });
+  assert.equal(buckets.safeToClose.length, 1);
+  assert.equal(buckets.needsOwnerCall.length, 1);
+});
+
+test('empty input is a clean empty triage', () => {
+  const buckets = run([]);
+  assert.deepEqual(buckets, { safeToClose: [], needsResuming: [], needsOwnerCall: [] });
+  assert.match(formatTriageReport(buckets)[0], /0 dead workspace/);
+});
+
+test('the report names the re-dispatch command for a resumable tab and flags owner-only closes', () => {
+  const lines = formatTriageReport(run(
+    [{ ref: 'workspace:9', title: '🤖 Data·BRO-77 Ship it' }],
+    { linearStateByKey: () => ({ type: 'started', name: 'In Progress' }) },
+  )).join('\n');
+  assert.match(lines, /linear-next\.js --id BRO-77/);
+
+  const ownerLines = formatTriageReport(run(
+    [{ ref: 'workspace:100', title: '👑 OWNER — done thing' }],
+    { launchByRef: () => ({ taskId: 'linear:BRO-2620' }), linearStateByKey: () => ({ type: 'completed', name: 'Done' }) },
+  )).join('\n');
+  assert.match(ownerLines, /OWNER-ONLY/);
+});
+
+
+// ── the fleet-watchdog dashboard is not a corpse ────────────────────────────
+
+test('the watchdog dashboard tab is never reported as closeable or resumable', () => {
+  // Live 2026-09-07 title. Runs as a plain node --dashboard process, so every
+  // liveness signal in this repo reads it as dead, permanently and by design.
+  const { bucket, entry } = only(run([{
+    ref: 'workspace:140',
+    title: '👑 OWNER watchdog — 5 in flight · 18 need you · 202 P0/P1 queued · upd 23:52',
+  }]));
+  assert.equal(bucket, 'needsOwnerCall');
+  assert.equal(entry.reason, 'watchdog-dashboard');
+  assert.equal(entry.autoActionAllowed, false);
+  assert.match(formatTriageReport(run([{ ref: 'workspace:140', title: '👑 OWNER watchdog — upd 23:52' }])).join('\n'), /leave it open/);
+});
+
+test('a crowned owner SESSION that merely mentions the watchdog is NOT the dashboard', () => {
+  // dispatch-watchdog.js shipped this exact bug as a P0: a substring match
+  // closed live owner sessions. Exact-prefix only.
+  assert.equal(triage.isWatchdogDashboardTitle('👑 OWNER — repair dispatch-watchdog alerts'), false);
+  assert.equal(triage.isWatchdogDashboardTitle('👑 OWNER watchdog — 5 in flight'), true);
+  assert.equal(triage.isWatchdogDashboardTitle('⠙ 👑 OWNER watchdog — 5 in flight'), true, 'cmux activity-glyph prefix');
+});
+
+test('the watchdog predicate is built from dispatch-watchdog-core constants, not copied literals', () => {
+  const core = require('./dispatch-watchdog-core.js');
+  assert.equal(triage.isWatchdogDashboardTitle(`${core.WATCHDOG_TAB_PREFIX} ${core.WATCHDOG_TAB_MARKER} — anything`), true);
+});
+
+// ── ref recycling: the wiring regression this module shipped once ───────────
+
+test('the CLI resolves ledger provenance with unreconciledLaunchForRef, never a bare launchByRef', () => {
+  // Caught live 2026-09-07 pre-ship: cmux recycles workspace refs, so the last
+  // `launch` row for a ref routinely belongs to a long-gone occupant. A bare
+  // dispatchLedger.launchByRef attributed the owner's live fleet dashboard
+  // (workspace:140, created 01:59 that morning) to task 989 — prune-closed a
+  // month earlier, status "completed" — and classified it SAFE TO CLOSE.
+  // Injected collaborators cannot catch a wiring regression, so this asserts
+  // the real source, comments stripped (a scan a comment can fool proves
+  // nothing) — the same shape ux-walkthrough-filing.test.mjs uses.
+  const fs = require('fs');
+  const src = fs.readFileSync(new URL('./cmux-triage.js', import.meta.url), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/(^|[^:])\/\/.*$/gm, '$1');
+  assert.match(src, /dispatchLedger\.unreconciledLaunchForRef\(/);
+  assert.doesNotMatch(src, /dispatchLedger\.launchByRef\(/);
+});
+
+// ── a live non-Claude agent is not a corpse ─────────────────────────────────
+
+// Verbatim rows from `cmux top --workspace workspace:100 --processes --format
+// tsv` on 2026-09-07 (a live, idle Codex session) and workspace:129 (Claude).
+const CODEX_TSV = [
+  '0.0\t306618144\t6\tworkspace\tworkspace:100\twindow:1\t🧭 👑 OWNER — land card #1889',
+  '0.0\t0\t0\ttag\tworkspace:AC086338-365E-49C4-AD65-64C906EB7781:tag:codex\tworkspace:100\tIdle',
+  '0.0\t17270752\t1\tprocess\t85714\tworkspace:AC086338-365E-49C4-AD65-64C906EB7781:tag:codex.01a055e0-8ac3-7c33-b4fa-6c12c2cf89ce\tnode',
+  '0.0\t3310000\t1\tprocess\t57099\tsurface:103\tzsh',
+].join('\n');
+
+const CLAUDE_TSV = '0.7\t202753248\t1\tprocess\t24430\tworkspace:B270C269-600D-4DA6-B20A-ADA295D52BD7:tag:claude_code\t2.1.263';
+
+// workspace:140, the watchdog dashboard: a surface-parented node process, with
+// no agent tag anywhere.
+const DASHBOARD_TSV = [
+  '0.0\t126618368\t1\tsurface\tsurface:144\tpane:141\tbsc-watchdog-dashboard.sh',
+  '0.0\t126618368\t1\tprocess\t1889\tsurface:144\tnode',
+].join('\n');
+
+test('liveAgentIn sees a live Codex session that hasLiveClaude misses', () => {
+  const cmuxws = require('./cmux-workspaces.js');
+  // The premise, asserted against the REAL predicate rather than described:
+  // this is precisely why the third signal has to exist.
+  assert.equal(cmuxws.hasLiveClaude(CODEX_TSV), false, 'hasLiveClaude is blind to codex');
+  assert.equal(triage.liveAgentIn(CODEX_TSV), 'codex');
+});
+
+test('liveAgentIn still recognises Claude, and reports nothing for the dashboard', () => {
+  assert.equal(triage.liveAgentIn(CLAUDE_TSV), 'claude_code');
+  assert.equal(triage.liveAgentIn(DASHBOARD_TSV), null);
+  assert.equal(triage.liveAgentIn(''), null);
+  assert.equal(triage.liveAgentIn(undefined), null);
+});
+
+test('liveAgentIn requires a PROCESS row, not a bare tag row left by a crash', () => {
+  // Same rule cmux-workspaces.hasLiveClaude states: a stale tag row with no
+  // process behind it is a crashed agent, and must stay prunable.
+  const tagOnly = '0.0\t0\t0\ttag\tworkspace:AC08:tag:codex\tworkspace:100\tIdle';
+  assert.equal(triage.liveAgentIn(tagOnly), null);
+});
