@@ -136,6 +136,54 @@ test('fetchViaScrapingDog rejects on 401 with actionable message', async () => {
   );
 });
 
+test('fetchViaScrapingDog bills the ledger on a 401 (full tier cost — mirrors scraper.js, unlike SB\'s zero-on-auth-failure)', async () => {
+  const ledgerPath = path.join(os.tmpdir(), `reddit-sd-ledger-test-401-${process.pid}.jsonl`);
+  try { fs.unlinkSync(ledgerPath); } catch { /* fine if absent */ }
+  const savedLedgerPath = process.env.SCRAPER_SPEND_LEDGER_PATH;
+  process.env.SCRAPER_SPEND_LEDGER_PATH = ledgerPath;
+  try {
+    const { fetchViaScrapingDog, resetFallbackState } = load();
+    resetFallbackState();
+    await assert.rejects(() => fetchViaScrapingDog('https://old.reddit.com/unauthorized.json'));
+    const rows = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].success, false);
+    assert.equal(rows[0].status, 401);
+    assert.equal(rows[0].credits, 1, 'plain-tier 401 still bills 1 credit — SD served a response, unlike SB which zero-rates 401/402');
+  } finally {
+    if (savedLedgerPath) process.env.SCRAPER_SPEND_LEDGER_PATH = savedLedgerPath;
+    else delete process.env.SCRAPER_SPEND_LEDGER_PATH;
+    try { fs.unlinkSync(ledgerPath); } catch { /* cleanup */ }
+  }
+});
+
+test('fetchViaScrapingDog bills 0 credits on a connection-level error', async () => {
+  const ledgerPath = path.join(os.tmpdir(), `reddit-sd-ledger-test-conn-err-${process.pid}.jsonl`);
+  try { fs.unlinkSync(ledgerPath); } catch { /* fine if absent */ }
+  const savedLedgerPath = process.env.SCRAPER_SPEND_LEDGER_PATH;
+  const savedBaseUrl = process.env.SCRAPINGDOG_BASE_URL;
+  process.env.SCRAPER_SPEND_LEDGER_PATH = ledgerPath;
+  // Port 1 is reserved and nothing listens there — client.get() fails at the
+  // connection level (ECONNREFUSED), never reaching the 'end' handler.
+  process.env.SCRAPINGDOG_BASE_URL = 'http://127.0.0.1:1/scrape';
+  try {
+    const { fetchViaScrapingDog, resetFallbackState } = load();
+    resetFallbackState();
+    await assert.rejects(() => fetchViaScrapingDog('https://old.reddit.com/r/broadway/search.json?q=good'));
+    const rows = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].success, false);
+    assert.equal(rows[0].status, 'error');
+    assert.equal(rows[0].credits, 0, 'a connection that never reached SD must not bill');
+  } finally {
+    if (savedLedgerPath) process.env.SCRAPER_SPEND_LEDGER_PATH = savedLedgerPath;
+    else delete process.env.SCRAPER_SPEND_LEDGER_PATH;
+    if (savedBaseUrl) process.env.SCRAPINGDOG_BASE_URL = savedBaseUrl;
+    else delete process.env.SCRAPINGDOG_BASE_URL;
+    try { fs.unlinkSync(ledgerPath); } catch { /* cleanup */ }
+  }
+});
+
 test('fetchViaScrapingDog escalates plain -> premium -> stealth on 400 stealth hint, then latches', async () => {
   const { fetchViaScrapingDog, getStats, resetFallbackState } = load();
   resetFallbackState();

@@ -242,7 +242,12 @@ function scrapingDogRequest(apiKey, url, tier) {
   };
 
   return new Promise((resolve, reject) => {
-    client.get(apiUrl, (res) => {
+    // Explicit timeout (ship-check finding, BRO-364): without one, a hung SD
+    // connection left this promise pending indefinitely — worse now that it
+    // also blocks the ledger row that would have made the hang visible.
+    // Mirrors scraper.js's fetchWithScrapingdog (45s, its longest observed
+    // render/premium latency).
+    const req = client.get(apiUrl, { timeout: 45000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -295,12 +300,18 @@ function scrapingDogRequest(apiKey, url, tier) {
           reject(err);
         }
       });
-    }).on('error', (e) => {
+    });
+    req.on('error', (e) => {
       // Connection-level failure — the request never reached SD's proxy, so
       // (unlike every branch above, which got a real HTTP response) nothing
       // was billed.
       rec(false, 'error', 0);
       reject(e);
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      rec(false, 'timeout', 0);
+      reject(new Error('Scrapingdog request timeout'));
     });
   });
 }
