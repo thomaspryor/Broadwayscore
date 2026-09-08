@@ -5,7 +5,8 @@
      same 15-minute cadence as com.broadwayscore.dispatch-watchdog-health, so
      a real outage (like the 2h BRO-2959 auth-migration blackout, where
      bsc-reconcile's tab self-heal, bsc-prune, and dispatch-watchdog all went
-     silently blind at once) pages within 30-45 minutes instead of staying
+     silently blind at once) is DETECTED within 30-45 minutes (3 consecutive
+     failed checks) and queued into the next daily digest, instead of staying
      invisible until an owner happens to notice. Decision logic:
      scripts/lib/cmux-reachability-check.js. Manual check:
      node scripts/check-cmux-reachability.js -->

@@ -46,12 +46,17 @@ const { summarizeFailureStreak } = require('./alert-dispatch-streak.js');
 const CHECK_NAME = 'cmux socket: reachability';
 const CONDITION_KEY = 'cmux-reachability:unreachable';
 
-// 3 consecutive failed checks before paging. At the sentinel's 15-minute
-// launchd cadence (scripts/launchd/com.broadwayscore.cmux-reachability.plist)
-// that is a 30-45 minute detection window — comfortably inside the 2h BRO-2959
-// outage this exists to catch next time — while still absorbing a single
-// transient daemon hiccup (the "unavailable" case that made up 2241 of the
-// 2600 historical rows in reconcile-report.jsonl) without paging on it alone.
+// 3 consecutive failed checks before queuing an alert. At the sentinel's
+// 15-minute launchd cadence (scripts/launchd/com.broadwayscore.cmux-
+// reachability.plist) that is a 30-45 minute DETECTION window — comfortably
+// inside the 2h BRO-2959 outage this exists to catch next time — while still
+// absorbing a single transient daemon hiccup (the "unavailable" case that
+// made up 2241 of the 2600 historical rows in reconcile-report.jsonl)
+// without alerting on it alone. Detection is not notification: this queues
+// via routeAlert's disposition:'digest' (page-worthy-alerts.js's owner-
+// approved allowlist doesn't cover this condition, so disposition:'human'
+// would be silently downgraded to 'digest' anyway) — the owner sees it in
+// the next digest send, not an immediate page.
 const CONSECUTIVE_FAILURE_THRESHOLD = 3;
 
 const ATTEMPTS_RETENTION_DAYS = 7;
@@ -95,7 +100,15 @@ function logReachabilityAttempt({ ok, error }, { logPath = ATTEMPTS_LOG_PATH, no
       error: error ? String(error).slice(0, 500) : null,
     }));
     fs.mkdirSync(path.dirname(logPath), { recursive: true });
-    fs.writeFileSync(logPath, kept.join('\n') + '\n');
+    // Atomic write (same pattern as owner-alert-router.js's saveLedger) — a
+    // kill mid-write must not truncate the streak history (ship-check
+    // finding). Two overlapping writers (a launchd tick and an interactive
+    // run landing at once) can still each read-modify-write and lose one
+    // entry — same accepted race class owner-alert-router.js's own header
+    // documents for its ledger; not solved here either.
+    const tmp = `${logPath}.tmp.${process.pid}`;
+    fs.writeFileSync(tmp, kept.join('\n') + '\n');
+    fs.renameSync(tmp, logPath);
   } catch (err) {
     console.error(`[cmux-reachability] failed to write attempts log (non-fatal): ${err.message}`);
   }
@@ -136,7 +149,22 @@ function probeCmuxReachability({ cmuxAvailableFn, listWorkspacesFn } = {}) {
     // An empty result is treated the SAME as cmux being unavailable — the
     // existing convention health-check.js's checkDispatchOutcomes documents
     // (cmux-workspaces.js's listWorkspaces() returns [] on a daemon hiccup or
-    // malformed output, not a throw). Re-applied here, not re-derived.
+    // malformed output, not a throw). Re-applied here deliberately, not
+    // re-derived: this card's own motivation explicitly names "a capability
+    // loss that returns a clean non-error empty result" as a failure mode
+    // classifyCmuxError can't catch (it only classifies thrown errors) and
+    // this check must — narrowing "unreachable" to thrown errors only (an
+    // earlier draft did this) would silently drop exactly that case.
+    //
+    // Known limitation (ship-check finding, two independent reviewers):
+    // a GENUINE zero-open-workspaces state parses to the same empty array
+    // and would false-page after CONSECUTIVE_FAILURE_THRESHOLD checks (45
+    // min straight with nothing open). Accepted for now — this fleet
+    // normally runs dozens of concurrent dispatched workspaces (25 observed
+    // live during this card's own implementation), so a real 45-minute
+    // all-idle window is rare, and disposition:'digest' means a false
+    // positive costs a line in the next digest, not a 2am page. Revisit if
+    // it fires with no real outage behind it.
     const reachable = Array.isArray(list) && list.length > 0;
     return {
       measurable: true,
