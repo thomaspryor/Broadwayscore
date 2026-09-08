@@ -46,6 +46,7 @@ const { spawn, spawnSync } = require('child_process');
 const core = require('./lib/dispatch-watchdog-core.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
 const flowHealth = require('./lib/dispatch-flow-health.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -378,9 +379,33 @@ function renameTab(ref, title) {
 function createTab() {
   const cmdFile = path.join(os.tmpdir(), `bsc-watchdog-dashboard-${Date.now()}.sh`);
   fs.writeFileSync(cmdFile, `#!/bin/bash\nexec node ${REPO}/scripts/dispatch-watchdog.js --dashboard\n`);
-  const r = spawnSync(cmuxws.CMUX, ['new-workspace', '--name', `${WATCHDOG_TITLE_START} — starting…`,
-    '--cwd', REPO, '--command', ` bash ${cmdFile}`, '--focus', 'false'], { encoding: 'utf8', timeout: 15000 });
-  const m = /workspace:\d+/.exec(String(r.stdout || ''));
+  // Through cmuxws.run(), NOT a raw spawnSync (BRO-3001). This is a
+  // launchd→cmux call: health() below reaches it every 900s whenever the
+  // heartbeat is stale, which is precisely when nothing else is going to
+  // resurrect the crowned tab. A raw spawnSync inherits process.env, so it
+  // carried the socket credential only because three LaunchAgent plists still
+  // set CMUX_SOCKET_PASSWORD by hand — the band-aid BRO-2959's own fix
+  // describes as "REDUNDANT with the code fix", i.e. removable. Removing it
+  // would have re-broken this path silently, which is the "per-plist
+  // under-fixes BY CONSTRUCTION" failure cmux-socket-auth.js's header warns
+  // about, reproduced inside the fix that warned about it.
+  //
+  // run() also buys the 3-rung auth-denied retry ladder — a ROTATED password
+  // still killed this tab with a hand-rolled `env:`, because that gets
+  // attempt 1 only. Its header names "creating a workspace" as safe to retry:
+  // an auth rejection happens at the handshake, before the daemon sees the
+  // command, so nothing was applied and re-sending cannot double-create.
+  // Failure is a throw here, not a status code — the catch keeps the old
+  // "return null → 'tab creation failed'" contract that ensureTab expects.
+  let out = '';
+  try {
+    out = cmuxws.run(['new-workspace', '--name', `${WATCHDOG_TITLE_START} — starting…`,
+      '--cwd', REPO, '--command', ` bash ${cmdFile}`, '--focus', 'false']);
+  } catch (e) {
+    console.error(`watchdog: new-workspace failed (${classifyCmuxError(e)}): ${e.message}`);
+    return null;
+  }
+  const m = /workspace:\d+/.exec(String(out || ''));
   const ref = m ? m[0] : null;
   if (ref) {
     // 'starting' heartbeat only AFTER new-workspace succeeded (ship-check
