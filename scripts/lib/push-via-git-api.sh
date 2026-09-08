@@ -90,6 +90,53 @@ REMOTE="${PUSH_API_REMOTE:-origin}"
 # so a caller tuning one tunes both consistently.
 GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}
+
+# BRO-2951: escalating backoff for a TIMEOUT-classified push failure only
+# (the ref-race branch below keeps its short flat jitter — a lost
+# compare-and-swap means the remote genuinely just moved, and retrying fast
+# against the new tip is correct; a timeout is a different failure mode).
+#
+# WHY THIS EXISTS — two failure signatures were confirmed distinct by a live
+# local repro (a server that accepts the push body then never responds):
+# that genuine dead-hang case is caught CLEANLY by the http.lowSpeedLimit/
+# lowSpeedTime guard above at ~46s, with `curl 28 Operation too slow` on
+# stderr. Real production failures (data-health-check run 34145757217,
+# 2026-09-07) instead hit the FULL ${GIT_NET_TIMEOUT_SEC}s cap via a bare
+# SIGTERM (rc=124, EMPTY stderr) on 4/4 attempts, 0 lost races — a
+# categorically different signature. Since a truly dead connection is
+# already proven to abort in ~45s, something must be trickling enough bytes
+# to keep the low-speed average above threshold for the full 90s — i.e. the
+# connection is alive, not hung. That, plus the same job's LOCAL (non-API)
+# push-with-retry.sh push independently hitting the identical ~91s wall in
+# the same window, and dozens of other jobs landing commits to main every
+# 5-10s during that window, points at GitHub-side serialization/throttling
+# of receive-pack traffic under sustained concurrent push volume from the
+# same actor — not a client-side hang this script can fix directly. The
+# retry loop was hammering straight back into that state with only a 1-3s
+# gap (near-zero backoff), which is the one part of this that IS a bug:
+# GitHub's own guidance for secondary rate limits is to back off, not retry
+# immediately. Bounds are kept small and NOISE relative to
+# GIT_NET_TIMEOUT_SEC by design — push-with-retry.sh sizes this script's
+# MAX_RETRIES off a "~3 * GIT_NET_TIMEOUT_SEC per attempt" cost model (see
+# its own comment above the push-via-git-api.sh invocation); a large backoff
+# here would silently blow that budget instead of just adding noise to it.
+PUSH_API_TIMEOUT_BACKOFF_BASE_SEC=${PUSH_API_TIMEOUT_BACKOFF_BASE_SEC:-5}
+PUSH_API_TIMEOUT_BACKOFF_MAX_SEC=${PUSH_API_TIMEOUT_BACKOFF_MAX_SEC:-15}
+# escalating_backoff_sec <consecutive-timeout-count> -> prints a sleep
+# duration to stdout. Floor-clamped to 1: a misconfigured
+# PUSH_API_TIMEOUT_BACKOFF_MAX_SEC of 0 or negative must never reach `sleep`
+# with a non-positive argument — `sleep` errors on a negative arg, which
+# under this file's `set -euo pipefail` would abort the whole retry loop
+# mid-flight instead of just skipping a backoff.
+escalating_backoff_sec() {
+  local count="$1" backoff
+  backoff=$((PUSH_API_TIMEOUT_BACKOFF_BASE_SEC * count))
+  if [ "$backoff" -gt "$PUSH_API_TIMEOUT_BACKOFF_MAX_SEC" ]; then
+    backoff="$PUSH_API_TIMEOUT_BACKOFF_MAX_SEC"
+  fi
+  [ "$backoff" -lt 1 ] && backoff=1
+  echo "$((backoff + RANDOM % 5))"
+}
 _TIMEOUT_BIN="$(command -v timeout 2>/dev/null || command -v gtimeout 2>/dev/null || true)"
 _timeout() {  # fail-open (run directly) if no timeout binary on this box
   local secs="$1"; shift
@@ -461,10 +508,11 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # lost race. Bounded by MAX_RETRIES, which push-with-retry.sh already scales
   # to 2/4/6 by remaining PUSH_DEADLINE_SEC.
   if [ "$push_rc" -eq 124 ] || [ "$push_rc" -eq 137 ]; then
-    echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — retrying rather than treating a timeout as fatal" >&2
     FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1))
+    _backoff="$(escalating_backoff_sec "$FAIL_TIMEOUT")"
+    echo "  push-via-git-api: push TIMED OUT after $((SECONDS - push_start))s (rc=$push_rc, cap ${GIT_NET_TIMEOUT_SEC}s) on attempt $i/$MAX_RETRIES — backing off ${_backoff}s before retrying (BRO-2951: a timeout that hits the full cap with empty stderr means the connection was alive but throttled, not dead — see the comment above GIT_NET_TIMEOUT_SEC)" >&2
     rm -f "$PUSH_ERR"
-    sleep $((1 + RANDOM % 3))
+    sleep "$_backoff"
     continue
   fi
 
