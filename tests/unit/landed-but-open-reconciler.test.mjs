@@ -75,6 +75,44 @@ test('merge commit present but a live job/worktree lease is held -> still open, 
   assert.ok(r.reasons.some((s) => /live job\/worktree lease/.test(s)));
 });
 
+// ---- BRO-3052: gate 3 accepts a CONFIRMED job-orphaned, not only job-done ----
+// The widening shipped in 07534f6a61b with no test of its own — the only
+// coverage it had was the reason-string assertion below, which merely proved
+// the message changed. These two lock the actual behaviour: an orphan row on
+// top of genuinely-merged work is accepted, and the terminal-but-unsuccessful
+// events next to it are still refused (BRO-516's counterexample).
+
+test('BRO-3052: last ledger event is a confirmed job-orphaned on merged work -> closable', () => {
+  // Live case linear:BRO-2817: the work merged, then the process was killed in
+  // the gap between finishing and appending its own job-done row, so the
+  // ledger's last word was job-orphaned. Gates 1/2/4 independently prove it is
+  // safe to report, and dispatch-ledger.js's orphanConfirmed debounce is what
+  // makes the orphan row itself trustworthy.
+  const r = classifyLandedButOpen({
+    hasMergeCommit: true,
+    mergeCommit: 'cafef00d',
+    liveDispatch: false,
+    liveLease: false,
+    lastLedgerEvent: 'job-orphaned',
+    acceptanceStatus: 'pass',
+  });
+  assert.equal(r.closable, true, `expected closable, reasons: ${JSON.stringify(r.reasons)}`);
+});
+
+test('BRO-3052: widening stops at job-orphaned — job-abandoned and dead are still refused', () => {
+  for (const ev of ['job-abandoned', 'dead']) {
+    const r = classifyLandedButOpen({
+      hasMergeCommit: true,
+      mergeCommit: 'cafef00d',
+      liveDispatch: false,
+      liveLease: false,
+      lastLedgerEvent: ev,
+      acceptanceStatus: 'pass',
+    });
+    assert.equal(r.closable, false, `${ev} must not satisfy gate 3`);
+  }
+});
+
 // ---- BRO-516 shape: looks landed by title similarity, but its OWN evidence says otherwise ----
 
 test('BRO-516 shape: last ledger event is job-failed, no live dispatch -> still open, not closable', () => {
@@ -100,7 +138,22 @@ test('no dispatch-ledger entry at all for this taskId -> still open, not closabl
     acceptanceStatus: null,
   });
   assert.equal(r.closable, false);
-  assert.ok(r.reasons.some((s) => /"none", not "job-done"/.test(s)));
+  // BRO-3052 widened gate 3's accepted set from {job-done} to
+  // {job-done, job-orphaned} (a confirmed orphan can sit on top of work that
+  // really merged — linear:BRO-2817), which rewrote this reason's prose from
+  // `not "job-done"` to `not one of [job-done, job-orphaned]`. That commit
+  // changed scripts/lib/landed-but-open-reconciler.js without touching this
+  // file and reddened main's Unit Tests job (run 34194959494, the single
+  // `not ok 4506`).
+  //
+  // Asserting on the accepted-set BRACKET rather than on the literal member
+  // list keeps the test meaningful — it still proves the reason names the
+  // absent event as "none" and reports it against gate 3's accepted set —
+  // without re-breaking the next time that set legitimately changes.
+  assert.ok(
+    r.reasons.some((s) => /"none", not one of \[.*job-done.*\]/.test(s)),
+    `expected a gate-3 reason naming "none" against the accepted set, got: ${JSON.stringify(r.reasons)}`,
+  );
 });
 
 // ---- acceptance re-check must independently pass, even once the ledger looks clean ----
