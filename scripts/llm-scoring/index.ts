@@ -1548,12 +1548,17 @@ async function main(): Promise<void> {
         // How many rejecting models actually named `rejection` — see
         // rejectionAgreeCount doc comment (types.ts). Only ensembleResult
         // carries it (finalizeScoredFile's rejection branch); other writers
-        // of rejectedBy='ensemble-scoreability-check' leave it undefined and
+        // of rejectedBy='ensemble-scoreability-check' leave it null and
         // hasEnsembleConsensus() falls back to its pre-existing heuristic.
+        // Overwritten UNCONDITIONALLY (never left stale from a prior
+        // rejection) — same pattern as rejectedAt/rejectionReason above;
+        // ship-check finding (Codex): a conditional write here would let a
+        // stale count from an earlier rejection survive onto a later,
+        // differently-typed one that this code path didn't recompute it for.
         const ensembleRejectionAgreeCount = (result as any).ensembleResult?.rejectionAgreeCount;
-        if (typeof ensembleRejectionAgreeCount === 'number') {
-          fileData.rejectionAgreeCount = ensembleRejectionAgreeCount;
-        }
+        fileData.rejectionAgreeCount = typeof ensembleRejectionAgreeCount === 'number'
+          ? ensembleRejectionAgreeCount
+          : null;
         fileData.promptVersion = PROMPT_VERSION;
         saveReviewFile(filePath, fileData, { skipRejectionReasonClear: true });
       }
