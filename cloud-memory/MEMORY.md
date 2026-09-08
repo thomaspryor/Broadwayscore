@@ -8,16 +8,16 @@
 - [Google Search Console API](feedback_gsc_api_auth.md) — ADC + webmasters scope + X-Goog-User-Project
 
 ## 👤 User profile & session discipline
-- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — Stop-hook auto-prune (owner 8/2); unmarked/selected never close
+- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — auto-prune (owner 8/2); unmarked never close
 - [Terse output default](feedback_terse_output_default.md) — no recap, keep proof ([[feedback_no_human_day_estimates.md]])
 - [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
 - [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — design asks: confirm venue first; 2 rejections = stop & ask; verify before pointing owner
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/approvals myself, report outcomes not process; bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
 - [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs; flag-gated features verify on demo URL
-- [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — 5-20 file probe first; save findings to memory ([[feedback_save_research_findings.md]])
+- [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — 5-20 file probe first ([[feedback_save_research_findings.md]])
 - [/ship-check catches real P1s](feedback_ship_check_finds_real_bugs.md) — never skip; gate is per-edit ([[feedback_shipcheck_gate_per_last_edit.md]])
-- [Systematic fix: threat model + parity test](feedback_systematic_fix_threat_model_first.md) — check trigger frequency; parity-test bad URLs
+- [Systematic fix: threat model first](feedback_systematic_fix_threat_model_first.md) — check trigger frequency; parity-test bad URLs
 - [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini on screenshots
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
@@ -87,13 +87,14 @@
 ## 📊 Data pipeline & scraping
 - [NEVER ask user to create a Reddit app](feedback_reddit_app_creation_broken.md) — prefs/apps broken for months; Reddit via SB post-reset + null-counter degradation
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
-- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]], [[feedback_sb_quota_ride_out.md]] ride it out, never re-ask billing)
+- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — logs nothing; 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]], [[feedback_sb_quota_ride_out.md]] ride out, never re-ask billing)
+- [Guard throws need a caller check](feedback_guard_throw_needs_caller_check.md) — caller catches ⇒ throw = silent reroute, validate at startup; no per-call attribution from shared counters
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
-- [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor show's reviews attach via venue corroboration; check rv URL slugs; flag needs wrongShowReason + delete WET cache
-- [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url before assuming discovery failed; run isScoreable() directly for hidden blockers
+- [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor's reviews attach via venue corroboration; check rv URL slugs; needs wrongShowReason + delete WET cache
+- [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url first; run isScoreable() for hidden blockers
 - [SEO site-avg position brand-skewed](feedback_seo_site_avg_position_is_brand_skewed.md) — never cite GSC avg as ranking quality; use de-branded review-intent
 - [Cloudflare/DataDome blocks](feedback_cloudflare_bypass_hierarchy.md) — managed challenge + WSJ/NewYorker CI IP block defeat all; Browserbase only ([[feedback_wsj_newyorker_ci_ip_block.md]])
-- [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies, cookie-only; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry, re-login needs user ([[feedback_cookie_health_body_length_not_expiry.md]])
+- [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry, re-login needs user ([[feedback_cookie_health_body_length_not_expiry.md]])
 - [Audience scrapers share normalize](feedback_audience_scrapers_share_normalize.md) — import normalizeTitle from title-match.js; commit audience-buzz before CI rebuild ([[feedback_audience_buzz_commit_before_rebuild.md]])
 - [Table scrapers need structural assertions](feedback_scraper_table_assertions.md) — hardcoded cells[N] breaks on column change
 - [Orphan cast invisible by design](feedback_orphan_cast_invisible_by_design.md) — rows w/o ibdbPersonId skipped at manifest build
@@ -106,7 +107,7 @@
 - [Anchored-v6 leaks](feedback_anchored_v6_stamp_and_rescore_starvation.md) — numeric relay ≠ star; llmScore.band = anchored proof; drain rescore queue ([[feedback_star_score_cap.md]])
 - [Reviews.json dual repo push](feedback_reviews_json_dual_repo_push.md) — flag + rebuild + push data repo
 - [Returning production → priorRuns](feedback_returning_production_priorRuns.md) — declare priorRuns {dates/venue} to re-include earlier run's reviews ([[feedback_stale_flag_collision_drops_current_production.md]])
-- [Review recovery pipeline gaps](feedback_review_recovery_pipeline_gaps.md) — run verify-review-recovery.js; 5 steps fail independently ([[feedback_validateshownmentioned_generic_idwords.md]] common-word titles rubber-stamp wrong-show content, spot-check fullText not just contentTier)
+- [Review recovery pipeline gaps](feedback_review_recovery_pipeline_gaps.md) — run verify-review-recovery.js; 5 steps fail independently ([[feedback_validateshownmentioned_generic_idwords.md]] spot-check fullText, not contentTier)
 - [Pseudonymous bylines ≠ multi-author](feedback_pseudonymous_bylines.md) — pen names w/ scraper-invented drift; URL-date guards gate on Unknown byline ([[feedback_url_date_guards_critic_gate.md]])
 - [Curated historical 4-review threshold](feedback_curated_historical_4review_threshold.md) — isCuratedHistorical → 4-review min when ≥1 T1/T2
 - [Regex bare-keyword/fragment FPs](feedback_content_quality_regex_fps.md) — audit patterns against real corpus before edit; anchor + URL filter ([[feedback_regex_url_fragment_fps.md]])
@@ -119,7 +120,7 @@
 ## 🤖 LLM / evals
 - [LLM prompts must be market/type-aware](feedback_llm_prompts_market_aware.md) — inject opera-prompt-context.js for opera/special shows
 - [Eval patterns](feedback_eval_patterns.md) — lib layout, 3-point validator, real-iteration loop, golden fixtures
-- [LLM verifier hallucinates](feedback_llm_verifier_hallucinates.md) — Gemini isValid:true at 48% on garbage, use Opus for classification ([[feedback_opus_for_classification.md]]); wrongprod ~15% FP, temporal override is safety net ([[feedback_llm_wrongprod_false_positives.md]])
+- [LLM verifier hallucinates](feedback_llm_verifier_hallucinates.md) — Gemini isValid:true 48% on garbage, use Opus ([[feedback_opus_for_classification.md]]); wrongprod ~15% FP, temporal override = net ([[feedback_llm_wrongprod_false_positives.md]])
 - [Editorial drift guard](feedback_editorial_drift.md) — discards LLM content on show count change
 
 ## 🎨 UI / design system
