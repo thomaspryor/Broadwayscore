@@ -266,6 +266,35 @@ describe('PARKED sentinel — the repo\'s own do-not-dispatch marker', () => {
     assert.deepStrictEqual(r.blockers, []);
   });
 
+  // BRO-3060: 143 of the sentinel's live cards were parked by automation
+  // (owner-alert-router.js or digest-autofix.js filing their own tracker),
+  // not an owner — but every one printed "an owner parked this deliberately",
+  // which is why 126 of them sat untouched for weeks. The blocker CODE stays
+  // PARKED_SENTINEL in all three cases (nothing downstream branches on it);
+  // only the operator-facing .detail text should tell the two apart.
+  describe('detail text distinguishes automation parks from owner parks', () => {
+    test('digest-autofix-filed card names its own drain, not "an owner"', () => {
+      const r = parked('PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately\n\nrest of body');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /digest-autofix/);
+      assert.doesNotMatch(b.detail, /an owner parked this deliberately/);
+    });
+
+    test('owner-alert-router-filed card names linear-drain-parked.js, not "an owner"', () => {
+      const r = parked('PARKED: Auto-filed by owner-alert-router (condition: x); parked for triage. The Linear-side drain will dispatch machine-verifiable parked issues.\n\nrest of body');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /owner-alert-router/);
+      assert.match(b.detail, /linear-drain-parked\.js/);
+      assert.doesNotMatch(b.detail, /an owner parked this deliberately/);
+    });
+
+    test('a hand-written park still reads as an owner decision', () => {
+      const r = parked('PARKED: card owns this file and is In Progress in a live parallel session');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /an owner parked this deliberately/);
+    });
+  });
+
   test('the exported regex and the classifier agree, and keep the /m flag', () => {
     assert.ok(PARKED_SENTINEL_RE.multiline, 'the /m flag is load-bearing — 40 live cards depend on it');
     assert.ok(PARKED_SENTINEL_RE.ignoreCase, 'sentinel matching must be case-insensitive');

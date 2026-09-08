@@ -45,6 +45,8 @@
 
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
+const { hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
+const { AUTO_FILED_MARKER: ALERT_ROUTER_FILED_MARKER } = require('./linear-drain-parked.js');
 
 const BLOCKERS = Object.freeze({
   PARKED_SENTINEL: 'PARKED_SENTINEL',
@@ -201,10 +203,21 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
   // `text` would still work under /m but would also let a subject line that
   // merely starts "PARKED:" refuse a card nobody parked.
   if (PARKED_SENTINEL_RE.test(notes)) {
-    blockers.push({
-      code: BLOCKERS.PARKED_SENTINEL,
-      detail: 'description carries the repo\'s PARKED: do-not-dispatch sentinel — an owner parked this deliberately; override with --force (the documented unpark) or --allow-human-gated',
-    });
+    // BRO-3060: the sentinel doesn't only mean "an owner parked this
+    // deliberately" — owner-alert-router.js and digest-autofix.js both park
+    // issues THEY file, pending their own drain (scripts/linear-drain-parked.js,
+    // digest-autofix.js's own dispatchDetached call). Telling an operator "an
+    // owner parked this deliberately" for one of those is false and is why
+    // 126 automation-parked issues sat untouched — nobody read past that
+    // sentence to check who actually wrote the sentinel.
+    const filedByAutofix = hasAutofixFiledMarker(notes);
+    const filedByAlertRouter = !filedByAutofix && notes.includes(ALERT_ROUTER_FILED_MARKER);
+    const detail = filedByAutofix
+      ? 'description carries the repo\'s PARKED: do-not-dispatch sentinel — parked by digest-autofix, awaiting its own drain (not an owner decision); override with --force or --allow-human-gated'
+      : filedByAlertRouter
+      ? 'description carries the repo\'s PARKED: do-not-dispatch sentinel — parked by owner-alert-router, awaiting linear-drain-parked.js (not an owner decision); override with --force or --allow-human-gated'
+      : 'description carries the repo\'s PARKED: do-not-dispatch sentinel — an owner parked this deliberately; override with --force (the documented unpark) or --allow-human-gated';
+    blockers.push({ code: BLOCKERS.PARKED_SENTINEL, detail });
   }
 
   const uiPaths = uiPathsIn(text);
