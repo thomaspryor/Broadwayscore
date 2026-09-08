@@ -132,7 +132,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -142,7 +142,8 @@
       "notifyCount": 61,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-09-08T16:00:13.236Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -777,16 +778,16 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-08T15:26:26.620Z",
+      "lastSeen": "2026-09-08T16:02:26.026Z",
       "lastNotifiedAt": "2026-09-08T10:16:42.627Z",
       "notifyCount": 46,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1316,17 +1317,16 @@
       "silentRefires": 6
     },
     "cron-health:Daily Data Health Check (digest snapshot carrier)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-19T12:31:28.109Z",
-      "lastSeen": "2026-09-03T15:35:38.271Z",
-      "lastNotifiedAt": "2026-09-03T15:35:38.271Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-09-08T15:48:29.058Z",
+      "lastNotifiedAt": "2026-09-08T15:48:29.058Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-06T14:44:21.181Z"
+      "linearIdentifier": null
     },
     "cron-health-chronic:Refresh Show Score (opening-night)": {
       "status": "resolved",
@@ -1460,12 +1460,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-07T17:00:27.918Z",
+      "lastSeen": "2026-09-08T15:48:29.150Z",
       "lastNotifiedAt": "2026-09-06T14:44:20.136Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1580,12 +1580,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-07T17:00:27.912Z",
+      "lastSeen": "2026-09-08T15:48:29.145Z",
       "lastNotifiedAt": "2026-09-01T15:53:22.219Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2303",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1710,12 +1710,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial RSS Poll",
       "firstSeen": "2026-08-27T21:33:20.912Z",
-      "lastSeen": "2026-09-07T17:00:27.916Z",
+      "lastSeen": "2026-09-08T15:48:29.148Z",
       "lastNotifiedAt": "2026-09-03T15:35:38.346Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2524",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "cron-health:Opening Night Express Retry Check": {
       "status": "resolved",
@@ -2050,12 +2050,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Update Social Pulse",
       "firstSeen": "2026-09-03T15:35:38.916Z",
-      "lastSeen": "2026-09-07T17:00:32.102Z",
+      "lastSeen": "2026-09-08T15:48:32.729Z",
       "lastNotifiedAt": "2026-09-03T15:35:38.916Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2756",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-cv-wrongproduction-unhandled-a-month-in-the-country-west-end-2026": {
       "status": "open",
@@ -2202,12 +2202,12 @@
       "disposition": "auto",
       "title": "The Lonely Few still has no image after 6 self-heal attempts",
       "firstSeen": "2026-09-04T18:41:02.359Z",
-      "lastSeen": "2026-09-08T01:51:05.876Z",
+      "lastSeen": "2026-09-08T15:35:01.412Z",
       "lastNotifiedAt": "2026-09-07T22:23:42.141Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2765",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-the-story-west-end-2026": {
       "status": "open",
@@ -2354,23 +2354,24 @@
       "disposition": "auto",
       "title": "Orlando still has no image after 5 self-heal attempts",
       "firstSeen": "2026-09-05T17:48:04.136Z",
-      "lastSeen": "2026-09-08T01:51:05.877Z",
+      "lastSeen": "2026-09-08T15:35:01.414Z",
       "lastNotifiedAt": "2026-09-07T22:23:43.725Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2837",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "cron-health-chronic:Scrape WestEndTheatre": {
       "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Scrape WestEndTheatre",
       "firstSeen": "2026-09-07T17:00:27.922Z",
-      "lastSeen": "2026-09-07T17:00:27.922Z",
+      "lastSeen": "2026-09-08T15:48:32.727Z",
       "lastNotifiedAt": "2026-09-07T17:00:27.922Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2931"
+      "linearIdentifier": "BRO-2931",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026": {
       "status": "open",
@@ -2401,12 +2402,12 @@
       "disposition": "auto",
       "title": "Madama Butterfly still has no image after 3 self-heal attempts",
       "firstSeen": "2026-09-07T22:23:44.860Z",
-      "lastSeen": "2026-09-08T01:51:05.879Z",
+      "lastSeen": "2026-09-08T15:35:01.415Z",
       "lastNotifiedAt": "2026-09-07T22:23:44.860Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2927",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "feedback-outcomes:2026-09-08T12:26:05.880168+00:00": {
       "status": "open",
@@ -2463,6 +2464,51 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "imageless-scored-show:still-imageless:beetlejuice-2022": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Beetlejuice still has no image after 3 self-heal attempts",
+      "firstSeen": "2026-09-08T15:35:01.416Z",
+      "lastSeen": "2026-09-08T15:35:01.416Z",
+      "lastNotifiedAt": "2026-09-08T15:35:01.416Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3103"
+    },
+    "imageless-scored-show:still-imageless:assassins-off-west-end-2014": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Assassins still has no image after 3 self-heal attempts",
+      "firstSeen": "2026-09-08T15:35:04.931Z",
+      "lastSeen": "2026-09-08T15:35:04.931Z",
+      "lastNotifiedAt": "2026-09-08T15:35:04.931Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3104"
+    },
+    "cron-health:Check Opening Night Drift": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Check Opening Night Drift",
+      "firstSeen": "2026-09-08T15:48:29.053Z",
+      "lastSeen": "2026-09-08T15:48:29.053Z",
+      "lastNotifiedAt": "2026-09-08T15:48:29.053Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-chronic:Enrich Off-Broadway Dates": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Enrich Off-Broadway Dates",
+      "firstSeen": "2026-09-08T15:48:29.152Z",
+      "lastSeen": "2026-09-08T15:48:29.152Z",
+      "lastNotifiedAt": "2026-09-08T15:48:29.152Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3107"
     }
   }
 }

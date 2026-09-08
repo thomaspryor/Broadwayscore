@@ -24,6 +24,11 @@
 
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
 const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt } = require('./review-guards');
+// BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
+// would skip cannot be self-healed by dispatching llm-ensemble-score.yml, so
+// the sweep must not keep dispatching for it (4x/day/show forever at
+// DISPATCH_RETRY_HOURS=6). Same predicate verify-all-scored.js uses.
+const { unscoredSkipReason } = require('./scoring-queue-counts');
 
 // Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
 // 2 = TheaterMania/Standard/Telegraph class.
@@ -133,7 +138,20 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
         && now.getTime() - fetchedAt < UNSCORED_GRACE_HOURS * 3600000) {
       return null; // fresh text — scoring cron hasn't had its window yet
     }
-    return { type: 'unscored', recoverable: false };
+    // BRO-2985: still REPORT the gap (a T1 review with text and no score is a
+    // real problem the operator must see), but tell the caller whether a
+    // scoring dispatch can do anything about it. Fail OPEN on a throw — a
+    // missed opening-night score costs far more than a wasted dispatch.
+    let dispatchable = true;
+    try {
+      dispatchable = unscoredSkipReason(file, {
+        show,
+        showTitle: show && show.title ? show.title : undefined,
+      }) === null;
+    } catch {
+      dispatchable = true;
+    }
+    return { type: 'unscored', recoverable: false, dispatchable };
   }
 
   // Flag-excluded by the canonical predicate; only fetch-quality states

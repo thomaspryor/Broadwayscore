@@ -47,7 +47,41 @@ test('content present, never scored, past the grace window → unscored', () => 
     url: 'https://www.thetimes.com/culture/theatre/article/show-review-abc123', fullText: 'y'.repeat(1000), contentTier: 'complete',
     textFetchedAt: '2026-07-17T00:00:00Z',
   }, { tier: 2 });
-  assert.deepEqual(gap, { type: 'unscored', recoverable: false });
+  // dispatchable (BRO-2985): 'y'.repeat(1000) is substantive text the scorer's
+  // selector would accept, so dispatching llm-ensemble-score.yml for it is
+  // legitimate self-heal. Contrast the blocked case below.
+  assert.deepEqual(gap, { type: 'unscored', recoverable: false, dispatchable: true });
+});
+
+test('unscored gap the scorer would refuse is reported but NOT dispatchable (BRO-2985)', () => {
+  // the-story-west-end-2026's the-spectator-uk--unknown.json: a
+  // spectator.co.uk/submit contact page from a 2020 archive.org snapshot,
+  // already stamped terminal by the ensemble. The sweep used to dispatch
+  // scoring for it 4x/day/show forever (DISPATCH_RETRY_HOURS=6) and the
+  // scorer skipped it identically every time.
+  const submitPageText =
+    'Have a story to share with us? Contact the right member of the editorial team below. '.repeat(6);
+  const gap = classify({
+    url: 'https://www.spectator.co.uk/submit/',
+    fullText: submitPageText,
+    contentTier: 'truncated',
+    textFetchedAt: '2026-07-17T00:00:00Z',
+    rescoreAttempts: 1,
+    rescoreBlockedReason: 'input_validation_failed:body_too_short',
+    rescoreBlockedAt: '2026-09-06T15:11:26.316Z',
+    // Derived, not hardcoded: isBlockedFromRescore fingerprints on fullText
+    // LENGTH, so a stale literal here silently voids the block and the test
+    // would pass for the wrong reason.
+    rescoreBlockedTextLength: submitPageText.length,
+    rescoreBlockedHadExcerpt: false,
+  }, { tier: 2 });
+  // Still a reported gap — the operator must see it.
+  assert.equal(gap && gap.type, 'unscored');
+  assert.equal(
+    gap.dispatchable,
+    false,
+    'a file carrying a terminal rescue block must not keep dispatching scoring',
+  );
 });
 
 test('content fetched within the 12h grace window is NOT yet a gap', () => {

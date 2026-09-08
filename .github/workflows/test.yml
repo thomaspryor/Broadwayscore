@@ -629,6 +629,12 @@ on:
       # (aborts the whole script under set -euo pipefail, skipping every
       # remaining retry AND the Git Data API fallback).
       - 'scripts/lib/push-with-retry.push-rc-diagnosis.test.sh'
+      # BRO-2951: bash unit test for the github.com remote-slug and
+      # checkout-extraheader parsers. Covered by the scripts/lib/** push glob
+      # above for TRIGGERING, but .test.sh files are each run by their own
+      # explicit step (unlike *.test.mjs, which the unit-tests job globs at
+      # execution time), so it needs the step added below or it never runs.
+      - 'scripts/lib/github-remote-parse.test.sh'
       # BRO-142: stale-MERGE_HEAD detection shared by push-with-retry.sh,
       # merge-worktree-to-main.sh, and the session-start.sh hook (advisory,
       # untested in CI — no dedicated harness for hook scripts in this repo).
@@ -1199,6 +1205,11 @@ on:
       - 'scripts/pre-send-check.test.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
+      # BRO-3092: regression guard for the-addams-family-2010's WSJ same-URL
+      # duplicate. The deleted paywall-boilerplate record was resurrected by a
+      # stale-checkout race 29 minutes after the delete; this asserts it stays
+      # deleted. Same corpus-presence gating as the frankie guard below.
+      - 'scripts/verify-addams-wsj-dedup-held.test.mjs'
       # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
       # wrong-production cleanup. Corpus-presence-gated like review-guards.explain.test.mjs
       # (skips in unit-tests, which never checks out data/review-texts; enforced for
@@ -3969,6 +3980,19 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.push-rc-diagnosis.test.sh
 
+      - name: Run github-remote-parse test (bash unit)
+        # BRO-2951: the two parsers push-via-git-api.sh uses to decide whether a
+        # remote is really GitHub and to recover the credential actions/checkout
+        # persists into git config. Both fail SILENTLY when wrong — a bad slug
+        # sends a REST call to the wrong repo path, and a bad extraheader decode
+        # yields a truncated secret whose only symptom is an unexplained 401.
+        # The rejection cases are load-bearing: they are what guarantees no
+        # network/credential path can fire inside the push-via-git-api.sh
+        # fixture suite, which drives the script against local filesystem
+        # remotes.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/github-remote-parse.test.sh
+
       - name: Run detect-stale-merge-head test (bash integration)
         # BRO-142 (recurrence of #916/#1279/#1445): pure classifier shared by
         # push-with-retry.sh, merge-worktree-to-main.sh, and the session-start.sh
@@ -4603,6 +4627,20 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/verify-frankie-2002-cleanup.test.mjs
+
+      - name: Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)
+        # Same corpus-missing trap as the frankie step above: registered in
+        # tests/unit-test-manifest.txt, but that batch runs in the unit-tests
+        # job which never checks out data/review-texts, so it would only ever
+        # exercise its own skip branch there. Re-run HERE with
+        # REQUIRE_REVIEW_CORPUS=1 so a re-resurrection of
+        # the-addams-family-2010/wsj--unknown.json — the stale-checkout race
+        # that survived the first two BRO-3092 fixes — actually fails CI
+        # instead of waiting for a rebuild to promote it into 4 red errors.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/verify-addams-wsj-dedup-held.test.mjs
 
       - name: Run data validation
         if: always()

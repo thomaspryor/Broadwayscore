@@ -1,67 +1,61 @@
 {
   "stale": [
+    "Audit Aggregator Review Gap",
     "Check Opening Night Drift",
     "Commercial Friday Refresh",
     "Commercial RSS Poll",
     "Commercial Weekly Orchestrator",
     "Daily Data Health Check (digest snapshot carrier)",
     "Enrich Off-Broadway Dates",
-    "Opening Night Checklist",
-    "Process Feedback Submissions",
-    "Refresh Show Score (opening-night)",
     "Scrape WestEndTheatre",
-    "Update Social Pulse"
+    "Update Social Pulse",
+    "Weekly Video Reviews"
   ],
   "redispatched": [
-    "Check Opening Night Drift",
-    "Daily Data Health Check (digest snapshot carrier)",
-    "Refresh Show Score (opening-night)"
+    "Audit Aggregator Review Gap",
+    "Weekly Video Reviews"
   ],
   "staleStreak": {
-    "Check Opening Night Drift": {
+    "Audit Aggregator Review Gap": {
       "days": 1,
-      "lastCounted": "2026-09-07"
+      "lastCounted": "2026-09-08"
+    },
+    "Check Opening Night Drift": {
+      "days": 2,
+      "lastCounted": "2026-09-08"
     },
     "Commercial Friday Refresh": {
-      "days": 15,
-      "lastCounted": "2026-09-07"
+      "days": 16,
+      "lastCounted": "2026-09-08"
     },
     "Commercial RSS Poll": {
-      "days": 6,
-      "lastCounted": "2026-09-07"
+      "days": 7,
+      "lastCounted": "2026-09-08"
     },
     "Commercial Weekly Orchestrator": {
-      "days": 19,
-      "lastCounted": "2026-09-07"
+      "days": 20,
+      "lastCounted": "2026-09-08"
     },
     "Daily Data Health Check (digest snapshot carrier)": {
-      "days": 1,
-      "lastCounted": "2026-09-07"
+      "days": 2,
+      "lastCounted": "2026-09-08"
     },
     "Enrich Off-Broadway Dates": {
-      "days": 2,
-      "lastCounted": "2026-09-07"
-    },
-    "Opening Night Checklist": {
-      "days": 12,
-      "lastCounted": "2026-09-07"
-    },
-    "Process Feedback Submissions": {
-      "days": 4,
-      "lastCounted": "2026-09-07"
-    },
-    "Refresh Show Score (opening-night)": {
-      "days": 1,
-      "lastCounted": "2026-09-07"
+      "days": 3,
+      "lastCounted": "2026-09-08"
     },
     "Scrape WestEndTheatre": {
-      "days": 3,
-      "lastCounted": "2026-09-07"
+      "days": 4,
+      "lastCounted": "2026-09-08"
     },
     "Update Social Pulse": {
-      "days": 6,
-      "lastCounted": "2026-09-07"
+      "days": 7,
+      "lastCounted": "2026-09-08"
+    },
+    "Weekly Video Reviews": {
+      "days": 1,
+      "lastCounted": "2026-09-08"
     }
   },
-  "updatedAt": "2026-09-07T17:00:26.466Z"
+  "updatedAt": "2026-09-08T15:48:28.402Z"
 }
