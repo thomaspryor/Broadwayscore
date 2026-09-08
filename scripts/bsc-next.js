@@ -1091,6 +1091,53 @@ function main(argv = process.argv.slice(2), deps = {}) {
   const args = parseArgs(argv);
   const idErr = validateIdArg(args);
   if (idErr) { console.error(`[bsc-next] ${idErr}`); process.exit(1); }
+
+  // BRO-3053: --detach re-execs this CLI in its OWN session and returns, so no
+  // signal on the caller's side can reach the job. The plain --headless path
+  // awaits the job for its whole run, which makes THIS process the job tree's
+  // parent — a `timeout` wrapper, a closing shell or a Ctrl-C then kills the
+  // job with no exit marker and no terminal ledger row. Six linear-next jobs
+  // were lost that way on 2026-09-08. Kept identical to linear-next.js's own
+  // --detach so the guard hook can honestly tell an operator to use it on
+  // EITHER dispatcher. Runs after --id validation (so a bad id still refuses
+  // loudly here) and before the task list is loaded, so this process takes no
+  // side effect the child would repeat.
+  if (args.detach) {
+    if (!args.headless) {
+      console.error('[bsc-next] --detach applies only to --headless (a cmux-tab launch already returns immediately and has no supervisor to protect).');
+      process.exit(1);
+    }
+    // Sync twin: this main() is not async and changing that would alter its
+    // contract for every caller and its own require.main handler.
+    const { spawnDetachedDispatch, stripFlag, waitForSettleSync } = require('./lib/spawn-detached-dispatch.js');
+    const idForLog = String(args.id).replace(/[^A-Za-z0-9_-]/g, '');
+    const logFile = path.join(os.homedir(), 'Library', 'Logs', 'bsc-jobs', `detached-bsc-next-${idForLog}-${Date.now()}.log`);
+    const { pid } = spawnDetachedDispatch({
+      scriptPath: path.join(REPO, 'scripts', 'bsc-next.js'),
+      argv: stripFlag(argv, 'detach'),
+      logFile,
+      cwd: REPO,
+      label: 'bsc-next',
+    });
+    // 30s — see linear-next.js's twin for the measurement (a real refusal
+    // there took 10.285s; the refusal path fetches and scans before it can
+    // say no). Set BSC_NEXT_DETACH_SETTLE_MS=0 to skip the watch.
+    const settleMs = Number(process.env.BSC_NEXT_DETACH_SETTLE_MS ?? 30000);
+    const settled = waitForSettleSync(pid, settleMs);
+    if (!settled.alive) {
+      console.error(`[bsc-next] the detached dispatcher for #${idForLog} EXITED after ${settled.waitedMs}ms — it refused or failed. Its output:`);
+      try {
+        const txt = fs.readFileSync(logFile, 'utf8').trimEnd();
+        console.error(txt ? txt.split('\n').slice(-40).map(l => `  ${l}`).join('\n') : '  (the child wrote nothing before exiting)');
+      } catch (e) { console.error(`  (could not read ${logFile}: ${e.message})`); }
+      console.error(`[bsc-next] full log: ${logFile}`);
+      process.exit(1);
+    }
+    console.log(`[bsc-next] detached dispatcher running (pid ${pid}) — this process is NOT the job's parent.`);
+    console.log(`[bsc-next] dispatcher output: ${logFile}`);
+    return;
+  }
+
   const tasks = loadTasksFn(TASKS_DIR);
   if (!tasks.length) {
     console.error(`[bsc-next] shared task list '${LIST_ID}' is empty (${TASKS_DIR}).`);
