@@ -36,7 +36,8 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
-const { findCardsWithMissingTestFiles } = require('./lib/card-premises-auditor.js');
+const { findCardsWithMissingTestFiles, isNodeTestCommand, auditCardTestPaths, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
+const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
 // graphql() call, so a Notion-only sweep never needs LINEAR_API_KEY set.
@@ -197,12 +198,56 @@ function attachMissingTestFiles(report, evaluated, opts) {
   return report;
 }
 
+// BRO-2977 round 2: the bulk fetch above (buildOpenIssuesWithDescriptionsQuery)
+// deliberately carries no comments, to keep a ~1000-issue sweep cheap — but
+// BRO-2796 established that a Linear issue's description can never be edited
+// after filing, so a comment naming a corrected `VERIFY: <cmd>` is the ONLY
+// way a wrong verifyCmd is ever fixed. Without this reconciliation pass, a
+// card corrected exactly the way this audit's own report asks for would stay
+// listed forever, because the bulk gate never saw the correction. Scoped to
+// just the already-flagged subset — the same one-round-trip-per-card cost
+// runNotionAudit's fetchCard() loop already pays for its ENTIRE sweep, not
+// just a flagged subset — so this is comparatively cheap.
+async function reconcileMissingTestFilesWithComments(flagged, opts = {}) {
+  // Injectable (opts.getIssue) so tests never make a live Linear API call —
+  // same DI convention linear-next.js's tests rely on (noopLinearDeps()).
+  const getIssue = opts.getIssue || require('./lib/linear-client.js').getIssue;
+  const existsOnOriginMain = opts.pathExistsOnOriginMain || pathExistsOnOriginMain;
+  const log = opts.log || (() => {});
+  const cache = new Map();
+  const existsFn = (p) => {
+    if (!cache.has(p)) cache.set(p, existsOnOriginMain(p, opts));
+    return cache.get(p);
+  };
+  const stillMissing = [];
+  for (const card of flagged) {
+    let issue;
+    try {
+      issue = await getIssue(card.id);
+    } catch (err) {
+      log(`[audit-card-verifiability] WARN could not re-fetch ${card.id} with comments: ${String(err.message).slice(0, 120)}`);
+      stillMissing.push(card); // fail toward reporting, never toward silently clearing
+      continue;
+    }
+    if (!issue) { stillMissing.push(card); continue; }
+    const gate = evaluateVerifiability(issue.description || '', sortedCommentBodies(issue));
+    if (!gate.armed || !isNodeTestCommand(gate.cmd)) continue; // corrected away from a node --test claim entirely
+    const recheck = auditCardTestPaths([{ id: card.id, name: card.name, url: card.url, cmd: gate.cmd }], existsFn);
+    if (recheck.length) stillMissing.push(recheck[0]);
+  }
+  return stillMissing;
+}
+
 async function runLinearAudit(limit) {
   const issues = await fetchLinearOpenIssuesWithDescriptions();
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
   const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
   const report = buildReport(evaluated);
-  attachMissingTestFiles(report, evaluated, { log: console.error });
+  const initialFlagged = findCardsWithMissingTestFiles(evaluated, { log: console.error });
+  if (initialFlagged.length) {
+    console.error(`[audit-card-verifiability] linear: re-checking ${initialFlagged.length} flagged card(s) against their own comments (BRO-2796 correction path)`);
+  }
+  report.missingTestFiles = await reconcileMissingTestFilesWithComments(initialFlagged, { log: console.error });
   writeReport(report, LINEAR_REPORT_PATH);
   return report;
 }
@@ -299,5 +344,5 @@ module.exports = {
   // task #1830: Linear audit path — exported for unit coverage.
   evaluateLinearIssue, fetchLinearOpenIssuesWithDescriptions, runLinearAudit, LINEAR_REPORT_PATH,
   // BRO-2977: exported for unit coverage.
-  attachMissingTestFiles,
+  attachMissingTestFiles, reconcileMissingTestFilesWithComments,
 };
