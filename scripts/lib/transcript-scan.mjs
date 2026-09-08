@@ -48,7 +48,38 @@ const UI_PATH_PATTERNS = [
 //  - `git -C <path> push` / `git --git-dir=… push` / `git -c k=v push` — agent
 //    sessions use -C habitually because cwd resets between Bash calls.
 const GIT_GLOBAL_OPTS = String.raw`(?:-C\s+[^\s;&|]+\s+|-c\s+[^\s;&|]+\s+|--git-dir=[^\s;&|]+\s+|--work-tree=[^\s;&|]+\s+|--no-pager\s+)*`;
-const PUSH_INGRESS_RE = new RegExp(String.raw`(^|[\s;&|(])(?:[^\s]*\/)?(?:git\s+${GIT_GLOBAL_OPTS}push|gh\s+pr\s+merge|gh\s+pr\s+create\s+[^\n]*--auto|(?:bash|sh|zsh|env|python3?|ruby)\s+\.?\/?scripts\/[^\s]*push[^\s]*|node\s+\.?\/?scripts\/[^\s]*push[^\s]*|\.?\/scripts\/[^\s]*push[^\s]*|gh\s+workflow\s+run\s+["']?(?:[^\s"']*deploy|[Dd]eploy)|(?:npm|pnpm|yarn)\s+(?:run\s+)?(?:deploy|push|publish))`, 'i');
+// BRO-3046: the script alternatives below match any path under scripts/ whose
+// filename merely CONTAINS "push", which swept in read-only callers that can
+// never reach a remote — `node scripts/audit-push-retry-budgets.js` (a CI
+// advisory audit) was hard-blocked by pre-push-review-gate.sh with "push to
+// main of 1335 unreviewed code lines" while attempting no push at all. 39
+// files under scripts/ classified isPush; 17 of them are test harnesses.
+//
+// The exclusion is applied by SUBTRACTING these tokens from the command before
+// matching, NOT as a negative lookahead inside PUSH_INGRESS_RE. A lookahead
+// would silently un-gate a compound command — `node scripts/audit-push-foo.js
+// && git push origin main` must still gate, and it does, because only the
+// audit token is scrubbed and the `git push` remains.
+//
+// Safety of the *.test.* arm: every push-with-retry / push-mutex /
+// merge-worktree-to-main test harness under scripts/lib/ builds its remote
+// with `mktemp -d` + `git init --bare` (verified 2026-09-08 across
+// stranded-commit-cascade, content-drop, race-test and test-sync-check) —
+// none touches a real remote, so a test file is never a push ingress.
+//
+// Deliberately NOT attempted here: basename-anchoring the "push" match. Review
+// measured that 16 of ~19 scripts that really can push to origin have no
+// "push" in their basename at all (merge-worktree-to-main.sh,
+// sync-review-texts.sh, autonomous-merge.js, …). They are ungated today too
+// (review-gate.mjs:841 documents that for merge-worktree-to-main.sh); anchoring
+// would not add coverage, it would only encode a false claim of it. A real
+// "mutates the remote" registry is the follow-up, filed separately.
+const READONLY_SCRIPT_TOKEN_RE = /(?:^|(?<=[\s;&|(]))\S*scripts\/(?:\S*\/)?(?:(?:audit|check)-\S*|\S*\.(?:test|race-test)\.[a-z0-9]+)(?=$|[\s;&|)])/gi;
+// `(?:[^\s]*\/)?` on each script alternative (not just the git one) closes a
+// pre-existing FALSE NEGATIVE found by the same review: an absolute path
+// escaped every script arm, so `node /Users/…/scripts/lib/push-with-retry.js`
+// returned isPush:false and pushed past the gate entirely.
+const PUSH_INGRESS_RE = new RegExp(String.raw`(^|[\s;&|(])(?:[^\s]*\/)?(?:git\s+${GIT_GLOBAL_OPTS}push|gh\s+pr\s+merge|gh\s+pr\s+create\s+[^\n]*--auto|(?:bash|sh|zsh|env|python3?|ruby|node)\s+\S*scripts\/\S*push\S*|\.?\/\S*scripts\/\S*push\S*|gh\s+workflow\s+run\s+["']?(?:[^\s"']*deploy|[Dd]eploy)|(?:npm|pnpm|yarn)\s+(?:run\s+)?(?:deploy|push|publish))`, 'i');
 
 // Visual-claim-language: phrases the agent uses when claiming UI work is done
 // without actually proving it. Each was observed in real failure transcripts.
@@ -238,7 +269,11 @@ export function queryApprovalOf(events, hash) {
 
 export function queryPushIngress(command) {
   if (!command) return { isPush: false, reason: 'no command' };
-  const matched = PUSH_INGRESS_RE.test(command);
+  // Scrub provably read-only script tokens first (see READONLY_SCRIPT_TOKEN_RE),
+  // then match. Order matters: scrubbing removes only the audit/test token, so
+  // any real push elsewhere in a compound command still matches.
+  const scrubbed = command.replace(READONLY_SCRIPT_TOKEN_RE, ' ');
+  const matched = PUSH_INGRESS_RE.test(scrubbed);
   return { isPush: matched, command: command.slice(0, 200), matched };
 }
 

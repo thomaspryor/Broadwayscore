@@ -296,6 +296,65 @@ test('push-ingress: rejects non-push commands', () => {
   }
 });
 
+// BRO-3046. `node scripts/audit-push-retry-budgets.js` — a read-only CI
+// advisory audit — was hard-blocked by pre-push-review-gate.sh as "push to
+// main of 1335 unreviewed code lines" purely because its FILENAME contains
+// "push". 39 files under scripts/ classified isPush; 17 were test harnesses.
+// Training sessions to burn a NO-SHIP-CHECK bypass on read-only commands is
+// how a gate stops being obeyed for real pushes.
+test('push-ingress: read-only audit/check scripts are not a push ingress (BRO-3046)', () => {
+  for (const cmd of [
+    'node scripts/audit-push-retry-budgets.js',
+    'node scripts/audit-push-core-data-audit-gap.js',
+    'node scripts/check-push-ledger.js',
+    'node scripts/lib/audit-push-retry-budgets.js',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, false, `should not match: ${cmd}`);
+  }
+});
+
+// Every push-with-retry / push-mutex / merge-worktree-to-main harness under
+// scripts/lib/ builds its remote with `mktemp -d` + `git init --bare`
+// (verified 2026-09-08) — a test file can never reach a real remote.
+test('push-ingress: test harnesses are not a push ingress (BRO-3046)', () => {
+  for (const cmd of [
+    'node --test scripts/lib/push-content-survival.test.mjs',
+    'node scripts/lib/push-retry-deadman.test.mjs',
+    'bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh',
+    'bash scripts/lib/push-mutex.race-test.sh',
+    'node --test scripts/lib/audit-push-retry-budgets.test.mjs | tail -8',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, false, `should not match: ${cmd}`);
+  }
+});
+
+// The read-only exclusion SUBTRACTS tokens before matching rather than adding a
+// negative lookahead, precisely so a compound command still gates on its real
+// push. A lookahead inside the alternation would have un-gated all three.
+test('push-ingress: a read-only token does not un-gate a compound real push (BRO-3046)', () => {
+  for (const cmd of [
+    'node scripts/audit-push-retry-budgets.js && git push origin main',
+    'node --test scripts/lib/push-content-survival.test.mjs; git push',
+    'node scripts/audit-push-retry-budgets.js && bash scripts/lib/push-with-retry.sh',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, true, `should still gate: ${cmd}`);
+  }
+});
+
+// Pre-existing FALSE NEGATIVE closed in the same change: the script
+// alternatives required `\.?\/?scripts\/`, so an absolute path escaped every
+// one of them and pushed straight past the gate. Only the `git` alternative
+// had absolute-path handling.
+test('push-ingress: absolute-path push wrappers gate (BRO-3046 false negative)', () => {
+  for (const cmd of [
+    'node /Users/tompryor/Broadwayscore/scripts/lib/push-with-retry.js',
+    'bash /Users/tompryor/Broadwayscore/scripts/lib/push-via-git-api.sh',
+    'bash /Users/tompryor/Broadwayscore/scripts/lib/push-with-retry.sh',
+  ]) {
+    assert.equal(queryPushIngress(cmd).isPush, true, `should gate: ${cmd}`);
+  }
+});
+
 // ── reference-attached ──────────────────────────────────────────────────────
 
 test('reference-attached: detects [Image #N] marker in user text', () => {
