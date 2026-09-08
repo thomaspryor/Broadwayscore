@@ -26,9 +26,9 @@
  *   1. scraper.js fetchWithScrapingdog() — the page-fetch tier.
  *   2. url-discovery.js _serpViaScrapingdog() — a separate direct API call,
  *      exactly parallel to BD's _serpViaBrightData.
- * Known gap (documented, not fixed here — out of scope for this card):
- * scripts/lib/reddit-api.js's fetchViaScrapingDog() is a third, independent
- * SD caller with its own tier/retry logic; not gated.
+ *   3. reddit-api.js fetchViaScrapingDog() — a third, independent SD caller
+ *      with its own tier/retry logic; wired in BRO-364 (2026-09-08), having
+ *      sat as a known, documented gap until then.
  */
 'use strict';
 
