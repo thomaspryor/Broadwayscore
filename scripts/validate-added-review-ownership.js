@@ -46,7 +46,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { findSiblingUrlOwner } = require('./lib/review-url-collision.js');
+const { sameUrlKey } = require('./lib/review-url-collision.js');
 const { normalizeCritic } = require('./lib/review-normalization');
 
 const USAGE = `validate-added-review-ownership.js — post-rebase cross-show ownership gate.
@@ -59,6 +59,8 @@ const {
   findCrossShowOwners,
   shouldBlockCrossShowCreate,
   _resetUrlOwnershipIndex,
+  _isBlockingOwnerCopy,
+  _isOwnableUrl,
 } = require('./lib/url-ownership');
 
 function isReviewFilePath(rel) {
@@ -121,6 +123,7 @@ function listNewReviewFiles(cwd) {
  */
 function decideOwnershipDrops(newFiles, reviewTextsDir) {
   const drops = [];
+  const showIndexCache = new Map();
   for (const rel of newFiles) {
     let data;
     try {
@@ -158,45 +161,88 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
     // set at push time and already git-rm's violators. The incumbent sibling is
     // by definition not in `newFiles`, so the survivor is the file that was
     // already on origin — never the re-creation.
-    const showDir = path.join(reviewTextsDir, showId);
+    // SAME-SHOW sibling (BRO-3092), a second question asked only after the
+    // cross-show verdict came back clean.
+    //
+    // Ownable-url gate FIRST, mirroring the cross-show branch. url-ownership.js
+    // warns that indexing junk urls "would make Guard I skip entire reviews
+    // over junk"; here the penalty is DELETION, so a critic-profile href or an
+    // outlet homepage shared by two records must never read as a collision.
+    if (!_isOwnableUrl(data.url)) continue;
+
     const selfFile = rel.split('/').slice(1).join('/');
-    const sibling = findSiblingUrlOwner({ showDir, url: data.url, selfFilename: selfFile });
-    if (!sibling) continue;
+    const siblings = sameShowUrlSiblings(reviewTextsDir, showId, data.url, selfFile, showIndexCache);
+    if (siblings.length === 0) continue;
 
-    // DELIBERATELY NARROW: only the UNKNOWN-BYLINE loser is dropped.
+    // DELIBERATELY NARROW: only the UNKNOWN-BYLINE loser is dropped, and only
+    // when a LIVE, NAMED sibling holds the same url.
     //
-    // This gate deletes files, so a blanket "any added same-url file loses"
-    // rule would destroy a real review whose URL is merely wrong — precisely
-    // the non-cohesive group dedupe-same-url-bylines.js refuses to collapse
-    // ("two genuinely different reviews sharing one URL ... collapsing would
-    // DROP a real review"). Two NAMED critics at one URL is that ambiguous
-    // case and is left alone for adjudication; validate-data.js still reports
-    // it, which is the correct outcome for something a human must decide.
+    // This gate deletes files, so three separate conditions all have to hold:
     //
-    // An unnamed byline colliding with a named sibling is not ambiguous — it
-    // is the byline-explosion signature the corpus already treats as one
-    // review (findExistingReviewFile's pass-0 dedup, gather-reviews'
-    // "Unknown→named" merge). That is exactly the-addams-family-2010's
-    // wsj--unknown.json against wsj--terry-teachout.json.
-    let siblingData = null;
-    try {
-      siblingData = JSON.parse(fs.readFileSync(path.join(showDir, sibling.filename), 'utf8'));
-    } catch { /* unreadable incumbent — cannot establish it is the better record */ }
-    if (!siblingData) continue;
-
-    const addedIsUnknown = normalizeCritic(data.criticName) === 'unknown';
-    const siblingIsNamed = normalizeCritic(siblingData.criticName) !== 'unknown';
-    if (!(addedIsUnknown && siblingIsNamed)) continue;
+    //  1. The added file's byline is unnamed. Two NAMED critics at one url is
+    //     the ambiguous class dedupe-same-url-bylines.js refuses to collapse
+    //     ("collapsing would DROP a real review") — left for adjudication.
+    //  2. Some sibling is NAMED. Scanning ALL siblings matters: the first
+    //     readdir hit may itself be unknown-byline, and accepting only that one
+    //     made a three-file cluster silently drop nothing (readdir order also
+    //     is not guaranteed, so the gate was nondeterministic).
+    //  3. That named sibling is LIVE — same _isBlockingOwnerCopy predicate the
+    //     cross-show branch uses. Without it, deleting the added file when the
+    //     only other copy is wrongProduction-flagged leaves the show with no
+    //     includable record for that url, and every later re-collection is
+    //     deleted again: a self-perpetuating black hole. wrongProduction runs
+    //     ~15% false-positive (memory/feedback_llm_wrongprod_false_positives),
+    //     so that is not hypothetical.
+    if (normalizeCritic(data.criticName) !== 'unknown') continue;
+    const liveNamed = siblings.find(
+      (sib) => normalizeCritic(sib.data.criticName) !== 'unknown' && _isBlockingOwnerCopy(sib.data),
+    );
+    if (!liveNamed) continue;
 
     drops.push({
       file: rel,
       showId,
       url: data.url,
-      owner: { showId, file: sibling.filename },
+      owner: { showId, file: liveNamed.file },
       kind: 'same-show',
     });
   }
   return drops;
+}
+
+/**
+ * Every OTHER file in `showId` whose url matches `url`, via a per-show index
+ * built once per decideOwnershipDrops call.
+ *
+ * The cross-show branch gets a corpus-wide cached index (buildUrlOwnershipIndex);
+ * this had been a fresh readdir + JSON.parse of the whole show dir per candidate,
+ * which on the bulk-import case listAddedReviewFiles' own comment calls out
+ * ("thousands of files") is N x M parses inside the push retry loop.
+ */
+function sameShowUrlSiblings(reviewTextsDir, showId, url, selfFile, cache) {
+  const key = sameUrlKey(url);
+  if (!key) return [];
+  let byUrl = cache.get(showId);
+  if (!byUrl) {
+    byUrl = new Map();
+    const showDir = path.join(reviewTextsDir, showId);
+    let files = [];
+    try {
+      files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+    } catch { /* no dir — nothing to collide with */ }
+    for (const f of files) {
+      let d;
+      try {
+        d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      } catch { continue; }
+      const k = sameUrlKey(d && d.url);
+      if (!k) continue;
+      if (!byUrl.has(k)) byUrl.set(k, []);
+      byUrl.get(k).push({ file: f, data: d });
+    }
+    cache.set(showId, byUrl);
+  }
+  return (byUrl.get(key) || []).filter((e) => e.file !== selfFile);
 }
 
 // Mirrors scripts/lib/detect-stale-merge-head.sh's STALE_MERGE_HEAD_WARN_SEC

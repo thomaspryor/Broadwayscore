@@ -364,3 +364,74 @@ describe('decideOwnershipDrops — same-show resurrection race (BRO-3092)', () =
     assert.equal(drops[0].owner.showId, OWNER_SHOW);
   });
 });
+
+describe('decideOwnershipDrops — same-show hardening (BRO-3092 code review)', () => {
+  const U = 'http://online.wsj.com/article/SB10001424052702303411604575168152141751426.html';
+  const SHOW2 = 'the-addams-family-2010';
+
+  test('scans ALL siblings — a third unknown-byline file must not defeat the gate', () => {
+    // findSiblingUrlOwner returns its FIRST readdir match. When that first hit
+    // was itself unknown-byline, the named-sibling test failed and nothing was
+    // dropped — and readdir order is not guaranteed, so the gate was
+    // nondeterministic. 'aaa--unknown.json' sorts before both wsj files.
+    writeFile(SHOW2, 'aaa--unknown.json', { url: U, outletId: 'aaa', criticName: 'Unknown' });
+    writeFile(SHOW2, 'wsj--terry-teachout.json', { url: U, outletId: 'wsj', criticName: 'Terry Teachout' });
+    const added = writeFile(SHOW2, 'wsj--unknown.json', { url: U, outletId: 'wsj', criticName: 'Unknown' });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1, 'the resurrection must still be dropped past a non-named first hit');
+    assert.equal(drops[0].owner.file, 'wsj--terry-teachout.json', 'owner must be the NAMED sibling');
+  });
+
+  test('requires a LIVE named sibling — never leaves a URL with no includable record', () => {
+    // If the only named sibling is flagged, dropping the added file leaves the
+    // show with nothing includable for that URL, and every later re-collection
+    // is deleted again at push time: a self-perpetuating black hole.
+    // wrongProduction runs ~15% false-positive, so this is not hypothetical.
+    writeFile(SHOW2, 'wsj--terry-teachout.json', {
+      url: U, outletId: 'wsj', criticName: 'Terry Teachout', wrongProduction: true,
+    });
+    const added = writeFile(SHOW2, 'wsj--unknown.json', {
+      url: U, outletId: 'wsj', criticName: 'Unknown', contentTier: 'complete', fullText: 'a real body',
+    });
+    assert.equal(decideOwnershipDrops([added], tmpDir).length, 0);
+  });
+
+  test('a roundup/combined sibling is not a blocking owner either', () => {
+    writeFile(SHOW2, 'wsj--terry-teachout.json', {
+      url: U, outletId: 'wsj', criticName: 'Terry Teachout', isRoundupArticle: true,
+    });
+    const added = writeFile(SHOW2, 'wsj--unknown.json', { url: U, outletId: 'wsj', criticName: 'Unknown' });
+    assert.equal(decideOwnershipDrops([added], tmpDir).length, 0);
+  });
+
+  test('junk / non-ownable urls never read as a collision', () => {
+    // The corpus holds 139+ files whose "url" is a critic-profile href.
+    // url-ownership.js gates the cross-show branch on _isOwnableUrl precisely
+    // so those do not swallow reviews — and here the penalty is DELETION.
+    for (const junk of ['/people/ben-brantley/', 'https://www.nytimes.com/undefined', 'N/A']) {
+      _resetUrlOwnershipIndex();
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'junk-url-'));
+      fs.mkdirSync(path.join(dir, SHOW2));
+      fs.writeFileSync(path.join(dir, SHOW2, 'nytimes--ben-brantley.json'),
+        JSON.stringify({ url: junk, outletId: 'nytimes', criticName: 'Ben Brantley' }));
+      fs.writeFileSync(path.join(dir, SHOW2, 'variety--unknown.json'),
+        JSON.stringify({ url: junk, outletId: 'variety', criticName: 'Unknown', fullText: 'a real review body' }));
+      const drops = decideOwnershipDrops([`${SHOW2}/variety--unknown.json`], dir);
+      assert.equal(drops.length, 0, `junk url ${junk} must not trigger a deletion`);
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('still drops the real incident shape', () => {
+    writeFile(SHOW2, 'wsj--terry-teachout.json', {
+      url: U, outletId: 'wsj', criticName: 'Terry Teachout', assignedScore: 63,
+    });
+    const added = writeFile(SHOW2, 'wsj--unknown.json', {
+      url: U, outletId: 'wsj', criticName: 'Unknown', contentTier: 'complete',
+      fullText: 'WSJ.com is available in the following editions and languages',
+    });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1);
+    assert.equal(drops[0].kind, 'same-show');
+  });
+});
