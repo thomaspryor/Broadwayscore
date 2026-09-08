@@ -12,6 +12,7 @@ const {
   updateTodayTixMissingState,
   decideTodayTixCandidates,
   shouldSuppressCandidate,
+  findTitleOffsets,
 } = require('./ob-closing-detector.js');
 
 // --- extractClosingDateMentions: date-pattern extraction ---
@@ -212,4 +213,62 @@ test('suppress: recent past and future proposals on date-less shows are actionab
   const show = { id: 'my-joy-2025', closingDate: null, status: 'open' };
   assert.equal(shouldSuppressCandidate(show, '2026-04-05', '2026-07-12'), null);
   assert.equal(shouldSuppressCandidate(show, '2026-09-11', '2026-07-12'), null);
+});
+
+// --- title-proximity disambiguation (multi-show roundup columns) ---
+//
+// Regression for the 2026-09-08 Spellbound miss: the show's only text-bearing
+// review was a Times Square Chronicles roundup covering three productions, so
+// the sweep saw "Sept 6" (correct), "Sept 13" and "Sept 19" (other shows),
+// treated that as disagreement, and dropped the show entirely.
+
+const ROUNDUP_TEXT = [
+  'Spellbound at SoHo Playhouse runs through September 6, a limited engagement.',
+  'x'.repeat(4000),
+  'Another Opening plays at the Lortel through September 13 before touring.',
+  'y'.repeat(4000),
+  'A Third Show continues at the Cherry Lane through September 19.',
+].join(' ');
+
+test('proximity: roundup column resolves to the date nearest this show title', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20', { title: 'Spellbound' });
+  assert.deepEqual([...new Set(candidates.map((c) => c.isoDate))], ['2026-09-06']);
+  assert.ok(candidates[0].titleDistance < 300);
+});
+
+test('proximity: the roundup is unusable without a title (old behaviour preserved)', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20');
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 3);
+  assert.equal(aggregateClosingDateCandidates('s', '2026-08-19', candidates.map((c) => ({ reviewId: 'r', ...c }))), null);
+});
+
+test('proximity: a title that never appears leaves every mention in place', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20', { title: 'Some Other Play' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 3);
+});
+
+test('proximity: titles too short to anchor on are ignored', () => {
+  // "Job" would match "job" anywhere in ordinary prose.
+  const text = 'The job runs through September 6. Elsewhere, a revival plays through September 13.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Job' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 2);
+});
+
+test('proximity: two dates equally close to the title stay ambiguous', () => {
+  const text = 'Spellbound runs through September 6 and, after a transfer, through September 13.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Spellbound' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 2);
+});
+
+test('proximity: a single distinct date is returned untouched', () => {
+  const text = 'Spellbound runs through September 6. It closes September 6 at SoHo Playhouse.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Spellbound' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 1);
+});
+
+test('findTitleOffsets matches across punctuation and diacritics without shifting offsets', () => {
+  const text = 'A review of Pied \u00e0 Terre, which plays on.';
+  const offsets = findTitleOffsets(text, 'Pied a Terre');
+  assert.equal(offsets.length, 1);
+  assert.equal(text.slice(offsets[0], offsets[0] + 12), 'Pied \u00e0 Terre');
 });

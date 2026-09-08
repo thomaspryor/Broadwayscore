@@ -103,7 +103,9 @@ function runReviewTextSweep(obShows) {
       }
       if (!data.fullText) continue;
       const reviewId = `${show.id}/${file}`;
-      const candidatesForReview = extractClosingDateCandidates(data.fullText, data.publishDate);
+      const candidatesForReview = extractClosingDateCandidates(data.fullText, data.publishDate, {
+        title: show.title,
+      });
       for (const c of candidatesForReview) {
         reviewMentions.push({ reviewId, isoDate: c.isoDate, quote: c.quote });
       }

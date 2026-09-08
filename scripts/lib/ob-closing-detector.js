@@ -14,6 +14,8 @@
  * both call the same functions (CLAUDE.md §15 — never copy logic into tests).
  */
 
+const { foldDiacritics } = require('./title-match');
+
 const MONTH_NAMES = {
   jan: 1, january: 1,
   feb: 2, february: 2,
@@ -117,18 +119,115 @@ function resolveMentionDate(mention, publishDateISO) {
   return `${year}-${String(mention.month).padStart(2, '0')}-${String(mention.day).padStart(2, '0')}`;
 }
 
+// Proximity thresholds for disambiguating a review that mentions several shows'
+// closing dates (roundup columns). Tuned against the real Times Square
+// Chronicles column that covers Spellbound alongside two other shows: the
+// Spellbound dates sit 22 and 43 chars from a title mention, the neighbours
+// 7220 and 38143 chars away.
+const TITLE_PROXIMITY_MAX_CHARS = 300;
+const TITLE_PROXIMITY_MARGIN_CHARS = 200;
+// Below this length a title matches too much ordinary prose to anchor on
+// ("Job", "SIX"). Those reviews keep the old all-mentions behaviour.
+const TITLE_PROXIMITY_MIN_TITLE_CHARS = 5;
+
+/**
+ * Character offsets of every occurrence of `title` in `fullText`, matched
+ * punctuation- and diacritic-insensitively ("Pied a Terre" finds "Pied à
+ * Terre"; "Marys Seacole" finds "Mary's Seacole").
+ *
+ * Diacritics are folded on a per-character basis so offsets stay aligned with
+ * the ORIGINAL string — normalizing the whole text first would shift every
+ * index after a multi-char fold and silently corrupt the distances.
+ */
+function findTitleOffsets(fullText, title) {
+  const tokens = foldDiacritics(String(title || ''))
+    .split(/[^A-Za-z0-9]+/)
+    .filter(Boolean);
+  if (tokens.length === 0) return [];
+  const pattern = tokens.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^A-Za-z0-9]+');
+  const folded = Array.from(fullText, (ch) => {
+    const f = foldDiacritics(ch);
+    // Keep a 1:1 char mapping; a fold that changes length would desync offsets.
+    return f.length === 1 ? f : ch;
+  }).join('');
+  const re = new RegExp(pattern, 'gi');
+  const offsets = [];
+  let m;
+  while ((m = re.exec(folded)) !== null) {
+    offsets.push(m.index);
+    if (m.index === re.lastIndex) re.lastIndex++;
+  }
+  return offsets;
+}
+
+/** Smallest distance from `index` to any offset, or null when there are none. */
+function nearestTitleDistance(index, titleOffsets) {
+  if (!titleOffsets || titleOffsets.length === 0) return null;
+  return titleOffsets.reduce(
+    (best, off) => Math.min(best, Math.abs(index - off)),
+    Infinity
+  );
+}
+
+/**
+ * Picks the one date a multi-show review is stating about THIS show.
+ *
+ * A roundup column ("Suzanna Bowling's Times Square Chronicles") lists several
+ * productions with their own "through <date>" boilerplate. Aggregation across
+ * reviews cannot untangle that — by the time mentions from different shows are
+ * pooled they look like disagreement, and the show is dropped entirely. So the
+ * choice is made HERE, while the surrounding fullText is still available.
+ *
+ * Returns the winning mentions, or all of them unchanged when the title never
+ * appears, is too short to anchor on, or no date wins clearly enough.
+ */
+function disambiguateByTitleProximity(mentions, fullText, title) {
+  const distinctDates = new Set(mentions.map((m) => m.isoDate));
+  if (distinctDates.size < 2) return mentions;
+  if (!title || foldDiacritics(title).replace(/[^A-Za-z0-9]/g, '').length < TITLE_PROXIMITY_MIN_TITLE_CHARS) {
+    return mentions;
+  }
+
+  const titleOffsets = findTitleOffsets(fullText, title);
+  if (titleOffsets.length === 0) return mentions;
+
+  const byDate = new Map();
+  for (const mention of mentions) {
+    const distance = nearestTitleDistance(mention.index, titleOffsets);
+    if (distance === null) return mentions;
+    const prev = byDate.get(mention.isoDate);
+    if (prev === undefined || distance < prev) byDate.set(mention.isoDate, distance);
+  }
+
+  const ranked = [...byDate.entries()].sort((a, b) => a[1] - b[1]);
+  const [winnerDate, winnerDistance] = ranked[0];
+  const runnerUpDistance = ranked[1][1];
+  if (winnerDistance > TITLE_PROXIMITY_MAX_CHARS) return mentions;
+  if (runnerUpDistance - winnerDistance < TITLE_PROXIMITY_MARGIN_CHARS) return mentions;
+
+  return mentions
+    .filter((m) => m.isoDate === winnerDate)
+    .map((m) => ({ ...m, titleDistance: nearestTitleDistance(m.index, titleOffsets) }));
+}
+
 /**
  * Convenience wrapper: extract + resolve in one call. Returns
- * [{ isoDate, quote, anchor }] — mentions with an unresolvable year are dropped.
+ * [{ isoDate, quote, anchor, index }] — mentions with an unresolvable year are
+ * dropped.
+ *
+ * Pass `{ title }` to enable title-proximity disambiguation for reviews that
+ * cover more than one show (see disambiguateByTitleProximity).
  */
-function extractClosingDateCandidates(fullText, publishDateISO) {
-  return extractClosingDateMentions(fullText)
+function extractClosingDateCandidates(fullText, publishDateISO, options = {}) {
+  const mentions = extractClosingDateMentions(fullText)
     .map((mention) => {
       const isoDate = resolveMentionDate(mention, publishDateISO);
       if (!isoDate) return null;
-      return { isoDate, quote: mention.quote, anchor: mention.anchor };
+      return { isoDate, quote: mention.quote, anchor: mention.anchor, index: mention.index };
     })
     .filter(Boolean);
+
+  return disambiguateByTitleProximity(mentions, fullText, options.title);
 }
 
 /**
@@ -279,6 +378,8 @@ module.exports = {
   extractClosingDateMentions,
   resolveMentionDate,
   extractClosingDateCandidates,
+  findTitleOffsets,
+  disambiguateByTitleProximity,
   runLengthWeeks,
   aggregateClosingDateCandidates,
   shouldSuppressCandidate,
