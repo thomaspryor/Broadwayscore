@@ -1595,6 +1595,13 @@ on:
       # above (pre-merge/pre-push-review-gate.sh, pre-push-visual-gate.sh,
       # verify-edits.sh) so a solo edit to any of them triggers CI too.
       - '.claude/settings.json'
+      # cmux socket reachability sentinel (BRO-2992) — decision logic lives in
+      # scripts/lib/cmux-reachability-check.js (covered by the scripts/lib/**
+      # glob above); the launchd-run script and its scripts/tests/ test are
+      # both outside that glob and need their own entries (same
+      # "scripts/tests/ is not scripts/lib/" gap as hook-liveness below).
+      - 'scripts/check-cmux-reachability.js'
+      - 'scripts/tests/cmux-reachability-check.test.mjs'
       - '.claude/hooks/notion-create-block.sh'
       - '.claude/hooks/worktree-enforce.sh'
       - '.claude/hooks/check-skill-redaction.sh'
@@ -1869,6 +1876,11 @@ on:
       # is NOT globbed). Path-listed so a solo edit to any of the three
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-orphan-inprogress.js'
+      # BRO-2999: fail-closed unit test for a thrown listWorkspacesFn() —
+      # registered in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs is NOT globbed). Path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-orphan-inprogress.test.mjs'
       - 'scripts/tests/orphan-task-reconciliation.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
@@ -2656,6 +2668,7 @@ jobs:
         run: node scripts/audit-review-texts-test-yml-coverage.js
 
       - name: Audit — top-level scripts/*.test files missing from test.yml push-path allowlist (advisory, BRO-172)
+        if: always() && steps.deps.outcome == 'success'
         # General version of the two guards directly above, for scripts/
         # (not scripts/lib/, not the review-texts migration list): a
         # manifest-registered scripts/*.test.mjs proves a test exists and is

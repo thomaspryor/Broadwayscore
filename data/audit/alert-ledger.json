@@ -132,17 +132,17 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-06T10:47:05.782Z",
-      "lastNotifiedAt": "2026-09-06T10:47:05.782Z",
-      "notifyCount": 57,
+      "lastSeen": "2026-09-08T02:13:48.666Z",
+      "lastNotifiedAt": "2026-09-08T01:46:20.838Z",
+      "notifyCount": 58,
       "cardId": null,
       "linearIdentifier": null,
-      "resolvedAt": "2026-09-06T11:15:42.179Z"
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -768,11 +768,11 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2126/1500 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (2140/500 reqs)",
       "firstSeen": "2026-08-12T18:43:27.740Z",
-      "lastSeen": "2026-09-06T09:46:22.208Z",
-      "lastNotifiedAt": "2026-09-06T09:46:22.208Z",
-      "notifyCount": 16,
+      "lastSeen": "2026-09-08T01:36:10.966Z",
+      "lastNotifiedAt": "2026-09-08T01:36:10.966Z",
+      "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -781,11 +781,12 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-08T01:34:36.543Z",
-      "lastNotifiedAt": "2026-09-08T01:34:36.543Z",
+      "lastSeen": "2026-09-08T02:13:48.665Z",
+      "lastNotifiedAt": "2026-09-08T01:46:20.560Z",
       "notifyCount": 42,
       "cardId": null,
-      "linearIdentifier": "BRO-2867"
+      "linearIdentifier": "BRO-2867",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -2201,11 +2202,12 @@
       "disposition": "auto",
       "title": "The Lonely Few still has no image after 6 self-heal attempts",
       "firstSeen": "2026-09-04T18:41:02.359Z",
-      "lastSeen": "2026-09-07T22:23:42.141Z",
+      "lastSeen": "2026-09-08T01:51:05.876Z",
       "lastNotifiedAt": "2026-09-07T22:23:42.141Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2765"
+      "linearIdentifier": "BRO-2765",
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-the-story-west-end-2026": {
       "status": "open",
@@ -2352,11 +2354,12 @@
       "disposition": "auto",
       "title": "Orlando still has no image after 5 self-heal attempts",
       "firstSeen": "2026-09-05T17:48:04.136Z",
-      "lastSeen": "2026-09-07T22:23:43.725Z",
+      "lastSeen": "2026-09-08T01:51:05.877Z",
       "lastNotifiedAt": "2026-09-07T22:23:43.725Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2837"
+      "linearIdentifier": "BRO-2837",
+      "silentRefires": 1
     },
     "cron-health-chronic:Scrape WestEndTheatre": {
       "status": "open",
@@ -2398,11 +2401,12 @@
       "disposition": "auto",
       "title": "Madama Butterfly still has no image after 3 self-heal attempts",
       "firstSeen": "2026-09-07T22:23:44.860Z",
-      "lastSeen": "2026-09-07T22:23:44.860Z",
+      "lastSeen": "2026-09-08T01:51:05.879Z",
       "lastNotifiedAt": "2026-09-07T22:23:44.860Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2927"
+      "linearIdentifier": "BRO-2927",
+      "silentRefires": 1
     }
   }
 }

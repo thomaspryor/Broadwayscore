@@ -330,6 +330,73 @@ test('#1697: Archived/Cancelled never become re-dispatchable — close to comple
   }
 });
 
+// ── BRO-2998: resolveLiveWorkspace — reconcileStaleMirrors's cmux-outage
+// fail-closed logic (same bug class BRO-2993 fixed in bsc-reconcile.js's
+// sweepUntrackedInProgress, but here it runs on every `pull`). A failed
+// cmux listing must not read as "cmux confirmed zero workspaces" — that
+// empty array otherwise feeds straight into planLivenessDowngrade's
+// liveWorkspaceOf() as if it were real evidence no live tab exists.
+
+test('BRO-2998: resolveLiveWorkspace synthesizes a live marker when cmux is unavailable, regardless of wsList', () => {
+  const { resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', subject: 'Some task' };
+  const result = resolveLiveWorkspace(task, [], 'unavailable', () => false);
+  assert.deepEqual(result, { ref: 'cmux-unavailable:unavailable' });
+});
+
+test('BRO-2998: resolveLiveWorkspace synthesizes a live marker even when wsList would otherwise genuinely match', () => {
+  const { resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', subject: 'Some task' };
+  const wsList = [{ ref: 'workspace:1', title: 'Some task' }];
+  const result = resolveLiveWorkspace(task, wsList, 'timeout', () => false);
+  assert.deepEqual(result, { ref: 'cmux-unavailable:timeout' }, 'unavailable always wins — never trust wsList once the listing itself is suspect');
+});
+
+test('BRO-2998: resolveLiveWorkspace with no unavailable flag delegates to the real lookup — a genuinely empty list returns null, not a synthetic marker', () => {
+  const { resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', subject: 'Some long task subject for #42' };
+  assert.equal(resolveLiveWorkspace(task, [], null, () => false), null, 'a REAL empty listing must still mean no live workspace');
+});
+
+test('BRO-2998: resolveLiveWorkspace with no unavailable flag finds a real match in wsList', () => {
+  const { resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', subject: 'Some long task subject for #42' };
+  const wsList = [{ ref: 'workspace:1', title: 'Some long task subject for #42' }];
+  const result = resolveLiveWorkspace(task, wsList, null, () => false);
+  assert.equal(result && result.ref, 'workspace:1');
+});
+
+test('BRO-2998: planLivenessDowngrade skip-live fires off a synthesized cmux-unavailable marker, same as a real live workspace', () => {
+  const { planLivenessDowngrade, resolveLiveWorkspace } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Paused', lastEditedAt: new Date(0).toISOString() }; // ancient — idle alone would pass
+  const result = planLivenessDowngrade(task, card, {
+    liveWorkspaceOf: (t) => resolveLiveWorkspace(t, [], 'unavailable', () => false),
+    now: Date.now(),
+  });
+  assert.equal(result.newStatus, null);
+  assert.match(result.reason, /skip-live/);
+});
+
+// reconcileStaleMirrors's own wiring: listWorkspacesFn is injectable so a
+// cmux-down run is exercisable without a live cmux process. With zero
+// candidates in the map, this only proves the throw is caught and reported
+// rather than propagating out of reconcileStaleMirrors — the full
+// downgrade-skipping path is covered by the resolveLiveWorkspace/
+// planLivenessDowngrade tests above (reconcileStaleMirrors's own
+// downgrade path additionally shells out to notion-brain.js per candidate,
+// which isn't mockable from this test file — see cmdPush/cmdPull's own
+// "never exercised end-to-end" note above).
+test('BRO-2998: reconcileStaleMirrors does not throw when listWorkspacesFn throws (empty map)', () => {
+  const { reconcileStaleMirrors } = require('./notion-tasks-sync.js');
+  const dir = tmpDir();
+  fs.writeFileSync(path.join(dir, '.notion-map.json'), '{}');
+  const result = reconcileStaleMirrors(dir, {
+    listWorkspacesFn: () => { throw new Error('cmux socket closed'); },
+  });
+  assert.equal(result.fixed.length, 0);
+});
+
 // #1697 ship-check catch: sync-drift's liveness-checked terminal closure
 // writes local status:'completed' for a card whose Notion status is ALREADY
 // Archived/Cancelled — that must never be read as "newly-finished local
