@@ -640,3 +640,25 @@ trusting the flag. Do NOT merely clear flags — the cached body is garbage. Ove
 ingest so `fullText` is the real review, set ALL 8 protection fields, then rebuild -> score -> rebuild,
 then `node scripts/verify-review-recovery.js --show=<id> --production`. Corroborate venue/date first
 (wrongProduction runs ~44% false-positive on opening nights). Systemic fix tracked as BRO-3116.
+
+## Gate: url-change invariant clears AUTO flags but keeps `manualContentTier` (2026-09-08, jane-eyre-off-west-end-2026)
+
+An automated `urlDiscoveryMethod: google-serp-reason-recovery` job repointed a
+review-texts file from a wrong-production slug onto the **correct future review
+slug** for the show. `applyUrlChangeInvariant` cleared the 10 auto fields
+(`wrongProduction`, `aggregatorStars`, `originalScoreNormalized`, `contentTier`, …)
+but left `manualContentTier: invalid` — a manual override that survives refetch.
+Result: an empty `url_dead` placeholder sitting on the URL where the genuine
+review will publish, guaranteed to suppress it (`contentTierReason: "Manual
+override"`), with a `serpRetryAfter` scheduled for the next morning.
+
+- **Detect:** any review-texts file whose `_urlChangedClear` block is present AND
+  that still has `manualContentTier`. Also: `url` now looks like a *future*
+  correct slug while `fullText` length is 0.
+- **Fix tonight:** delete the placeholder — the normal gather path then creates a
+  clean file (same remedy as the cached soft-404 body gate above).
+- **Systemic:** BRO-3122. A url change should either clear manual overrides too
+  (the adjudication was scoped to the old url/content) or fork a new file and
+  leave the adjudicated one as a tombstone on its original url.
+- **Corollary:** the pipeline's own SERP recovery falls for stale/soft-404 SERP
+  slugs exactly like a human would. Verify every SERP-derived url by direct fetch.
