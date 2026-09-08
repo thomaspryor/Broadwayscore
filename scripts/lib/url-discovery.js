@@ -25,6 +25,7 @@ const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
 const { consultScrapingdog } = require('./scrapingdog-caps');
+const { creditsFor } = require('./provider-credits');
 
 // Scrapingdog SERP — cheap primary ahead of BD/SB SERP. Google Light Search =
 // 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default ON (see scraper.js for
@@ -285,7 +286,7 @@ const MAX_CONSECUTIVE_FAILURES = 5;
 // cap is PER PROCESS: matrix-sharded workflows (parallel_jobs=N) get N× this.
 // SERP_NO_SB=1 skips SB SERP entirely (bulk/backfill runs — an empty SD+BD
 // result there is almost always the true answer, not worth 25cr to re-ask).
-const SB_SERP_CREDITS_PER_CALL = 25;
+const SB_SERP_CREDITS_PER_CALL = creditsFor('sb', 'serp');
 const _sbSerpCapRaw = parseInt(process.env.SERP_SB_MAX_CALLS_PER_RUN || '40', 10);
 // NaN guard: a malformed env value would make `count >= NaN` never trip,
 // silently disabling the cap — default to 40 instead.

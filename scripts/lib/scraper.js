@@ -37,6 +37,7 @@ const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');
+const { creditsFor } = require('./provider-credits');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -508,7 +509,10 @@ async function fetchWithScrapingdog(url, options = {}) {
   const premium = options.premium === true;
   const stealthMode = options.stealthMode === true;
   // premium and stealth_mode both imply a heavier anti-bot bypass (10cr); dynamic/JS is 5cr; plain is 1cr.
-  const creditCost = (premium || stealthMode) ? 10 : (renderJs ? 5 : 1);
+  // sdMode also feeds recordSdCall's telemetry `fn` field below (BRO-3057:
+  // computed once and reused, instead of 3 independent copies of this ternary).
+  const sdMode = stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page'));
+  const creditCost = creditsFor('sd', sdMode);
 
   // Per-run budget guard (0 = unlimited).
   if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
@@ -572,7 +576,7 @@ async function fetchWithScrapingdog(url, options = {}) {
         req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
       });
 
-      recordSdCall({ url, fn: stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page')), success: true, status: 200, credits: creditCost * attemptsMade });
+      recordSdCall({ url, fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade });
       return {
         content: response,
         format: 'html',
@@ -587,7 +591,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  recordSdCall({ host: hostname, fn: stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page')), success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
+  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
 
   // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400
@@ -671,7 +675,10 @@ async function fetchWithScrapingBee(url, options = {}) {
   // REAL premium request when it gets there, not a silent non-premium
   // downgrade that could return a blocked/garbage page unflagged.
   const premium = options.premium === true;
-  const creditCost = premium ? 10 : (renderJs ? 5 : 1);
+  // sbMode also feeds recordSbCall's telemetry `fn` field below (BRO-3057:
+  // computed once and reused, instead of 3 independent copies of this ternary).
+  const sbMode = premium ? 'premium' : (renderJs ? 'render' : 'page');
+  const creditCost = creditsFor('sb', sbMode);
 
   // Per-run budget guard — skip SB if budget would be exceeded
   if (_scraperStats.sbCredits + creditCost > SB_CREDIT_BUDGET) {
@@ -718,7 +725,7 @@ async function fetchWithScrapingBee(url, options = {}) {
       req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
     });
 
-    recordSbCall({ url, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: true, status: 200, credits: creditCost });
+    recordSbCall({ url, fn: sbMode, success: true, status: 200, credits: creditCost });
     return {
       content: response,
       format: 'html',
@@ -726,7 +733,7 @@ async function fetchWithScrapingBee(url, options = {}) {
     };
   } catch (error) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-    recordSbCall({ host: hostname, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
+    recordSbCall({ host: hostname, fn: sbMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
     console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${error.message}`);
     // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
     // 401 (auth/limit), 403 (forbidden/plan), 429 (rate limit) all mean "stop

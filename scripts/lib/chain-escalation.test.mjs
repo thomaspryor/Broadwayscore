@@ -28,24 +28,35 @@ const BILLING = {
   brightdata: pricing.brightdata.billing,
 };
 
+// The only tiers pageChainOrder/serpChainOrder can emit with zero provider
+// credit spend — everything else must be priced below or this file throws.
+// A new PAID tier added to either chain order that isn't priced here would
+// otherwise silently fall through the old `return null` default and be
+// treated as free, exempting it from the pairwise cost-escalation check.
+const FREE_TIERS = new Set(['cookies-plain', 'playwright-first', 'playwright-last']);
+
 // Baseline USD cost for one request at each tier name pageChainOrder /
 // serpChainOrder can emit, in the given chain's context — SD/SB bill by
-// credits and the credit MODE differs between a page fetch (sd 'plain', sb
+// credits and the credit MODE differs between a page fetch (sd 'page', sb
 // 'standard') and a SERP query (sb 'serp', 25cr — SD SERP isn't part of
 // serpChainOrder, it's gated separately). Bright Data bills a flat per-request
-// rate regardless of context. 'cookies-plain', 'playwright-first', and
-// 'playwright-last' are free (no provider credit spend) — returning null
-// excludes them from the pairwise comparison below. Any transition INTO a
-// paid tier from a free one is not a cost escalation by definition.
+// rate regardless of context. FREE_TIERS entries return null, excluding them
+// from the pairwise comparison below — any transition INTO a paid tier from a
+// free one is not a cost escalation by definition. Anything else is neither
+// priced nor declared free: throw instead of defaulting to free.
 function baselineUsd(chainName, tierName) {
   if (tierName === 'brightdata') return usdFor('brightdata', 1, pricing);
   if (tierName === 'scrapingdog') {
-    return usdFor('scrapingdog', creditsFor('sd', chainName === 'serp' ? 'serp' : 'plain'), pricing);
+    return usdFor('scrapingdog', creditsFor('sd', chainName === 'serp' ? 'serp' : 'page'), pricing);
   }
   if (tierName === 'scrapingbee') {
     return usdFor('scrapingbee', creditsFor('sb', chainName === 'serp' ? 'serp' : 'standard'), pricing);
   }
-  return null;
+  if (FREE_TIERS.has(tierName)) return null;
+  throw new Error(
+    `baselineUsd: unrecognized tier "${tierName}" in ${chainName} chain — ` +
+      `add it to FREE_TIERS above if it spends no provider credits, or price it explicitly.`
+  );
 }
 
 // A PAYG tier following a prepaid tier is structurally normal — PAYG is the

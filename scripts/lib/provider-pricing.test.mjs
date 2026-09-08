@@ -33,3 +33,27 @@ test('usdFor defaults to the real committed pricing when no table is passed', ()
   const real = loadProviderPricing();
   assert.equal(usdFor('brightdata', 2), 2 * real.brightdata.usdPerUnit);
 });
+
+test('usdFor throws instead of returning NaN when units is missing/non-finite (BRO-3057)', () => {
+  assert.throws(() => usdFor('scrapingdog', undefined, FIXTURE));
+  assert.throws(() => usdFor('scrapingdog', NaN, FIXTURE));
+  assert.throws(() => usdFor('scrapingdog', Infinity, FIXTURE));
+});
+
+test('usdFor({billing: "payg"}) uses paygUsdPerUnit instead of usdPerUnit', () => {
+  const real = loadProviderPricing();
+  assert.equal(
+    usdFor('scrapingdog', 10, real, { billing: 'payg' }),
+    10 * real.scrapingdog.paygUsdPerUnit
+  );
+});
+
+test('usdFor({billing: "payg"}) throws for a provider with no paygUsdPerUnit configured', () => {
+  assert.throws(() => usdFor('brightdata', 1, undefined, { billing: 'payg' }));
+});
+
+test('usdFor rejects an unrecognized billing value instead of silently falling back to prepaid', () => {
+  const real = loadProviderPricing();
+  assert.throws(() => usdFor('scrapingdog', 1, real, { billing: 'PAYG' }));
+  assert.throws(() => usdFor('scrapingdog', 1, real, { billing: 'prepaid' }));
+});
