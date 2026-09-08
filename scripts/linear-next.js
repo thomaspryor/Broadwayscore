@@ -45,7 +45,11 @@
  *
  * Usage:
  *   node scripts/linear-next.js --id BRO-123                 launch a cmux tab (default)
- *   node scripts/linear-next.js --id BRO-123 --headless      run as a supervised background job (bsc-runner)
+ *   node scripts/linear-next.js --id BRO-123 --headless      run as a supervised background job (bsc-runner);
+ *                                                            THIS process stays the job's parent for its whole run
+ *   node scripts/linear-next.js --id BRO-123 --headless --detach
+ *                                                            same, but re-exec in its own session and return at once —
+ *                                                            no caller-side signal can reach the job (BRO-3053)
  *   node scripts/linear-next.js --id BRO-123 --tab           force a cmux tab (overrides --headless)
  *   node scripts/linear-next.js --list                       open BRO issues, priority-sorted
  *   node scripts/linear-next.js --id BRO-123 --model opus    override the resolved model
@@ -163,7 +167,12 @@ const USAGE = `linear-next — fetch a Linear issue and dispatch a Claude Code w
 
 Usage:
   node scripts/linear-next.js --id BRO-123                 launch a cmux tab (default)
-  node scripts/linear-next.js --id BRO-123 --headless       run as a supervised background job (bsc-runner)
+  node scripts/linear-next.js --id BRO-123 --headless       run as a supervised background job (bsc-runner);
+                                                            THIS process is the job's parent for its whole run, so
+                                                            do NOT wrap it in \`timeout\` and do not close the shell
+  node scripts/linear-next.js --id BRO-123 --headless --detach
+                                                            same, but re-exec in its own session and return at once —
+                                                            no caller-side signal can reach the job (BRO-3053)
   node scripts/linear-next.js --id BRO-123 --tab            force a cmux tab (overrides --headless)
   node scripts/linear-next.js --list                        list open BRO issues, priority-sorted
   node scripts/linear-next.js --id BRO-123 --model opus     override the resolved model
@@ -403,6 +412,37 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const args = parseArgs(argv);
 
   if (args.list) { await runList(); return; }
+
+  // BRO-3053: --detach re-execs this CLI in its OWN session and returns
+  // immediately, so no signal on the caller's side can ever reach the job.
+  //
+  // The plain `--headless` path awaits runJob() for the job's whole life
+  // (see :885), which makes THIS process the parent of the entire job tree.
+  // On 2026-09-08 an operator wrapped six dispatches in `timeout 110 … | tail`;
+  // `timeout` SIGTERMed this process, node's default disposition exited
+  // instantly, claude-cli.js's close handler never ran, and six jobs died
+  // mid-thought with no exit marker and no terminal ledger row — while the
+  // `| tail` reported exit 0. Detaching makes that class impossible rather
+  // than merely observable. Full write-up in scripts/lib/spawn-detached-dispatch.js.
+  //
+  // Placed BEFORE the Linear fetch on purpose: this process must take no
+  // side effect the child will repeat (no lease, no dispatch claim, no
+  // ledger row, not even an API call).
+  if (args.detach) {
+    const { spawnDetachedDispatch, stripFlag } = require('./lib/spawn-detached-dispatch.js');
+    const idForLog = String(args.id || 'unknown').trim().toUpperCase().replace(/[^A-Z0-9-]/g, '');
+    const logFile = path.join(__dirname, '..', 'data', 'audit', 'headless-logs', `detached-linear-next-${idForLog}-${Date.now()}.log`);
+    const { pid } = spawnDetachedDispatch({
+      scriptPath: path.join(__dirname, 'linear-next.js'),
+      argv: stripFlag(argv, 'detach'),
+      logFile,
+      label: 'linear-next',
+    });
+    console.log(`[linear-next] detached dispatcher started (pid ${pid}) — this process is NOT the job's parent.`);
+    console.log(`[linear-next] dispatcher output: ${logFile}`);
+    console.log('[linear-next] the job survives this shell; watch the ledger, not this process.');
+    return;
+  }
 
   if (!args.id || typeof args.id !== 'string') {
     console.error('[linear-next] --id <identifier> or --list is required (e.g. --id BRO-123).');
@@ -856,6 +896,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   if (routing.mode === 'headless') {
     const { runJob } = runJobFn ? { runJob: runJobFn } : require('./lib/bsc-runner.js');
     console.log(`[linear-next] headless job starting on ${identifier}: ${issue.title} (model ${model}, correlation ${correlationId})`);
+    // BRO-3053: say it out loud. This process stays alive as the job's parent
+    // for the whole run; anything that signals it (a `timeout` wrapper, a
+    // closing shell, Ctrl-C) kills the job with no exit marker and no
+    // terminal ledger row. Six jobs were lost that way on 2026-09-08.
+    console.log('[linear-next] NOTE: this process is the job\'s PARENT for its entire run — do NOT wrap it in `timeout`, and do not close the shell. Use --detach to hand the job its own session.');
     // Ledger write happens BEFORE the job even starts (matches bsc-next.js's
     // own --headless ordering) — the leftmost half of the crash-safety
     // ordering this file's header describes: the ledger is the durable
