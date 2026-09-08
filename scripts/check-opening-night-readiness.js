@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { imagePresent } = require('./lib/show-image-presence');
+const { parseSbUsage } = require('./lib/provider-billing');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -355,16 +356,28 @@ async function runChecks() {
     const sbRes = await httpsGet(`https://app.scrapingbee.com/api/v1/usage?api_key=${sbKey}`);
     if (sbRes.status === 200) {
       try {
-        const usage = JSON.parse(sbRes.body);
-        const used = usage.used || 0;
-        const limit = usage.max_api_credit || usage.limit || 1;
-        const pct = Math.round((used / limit) * 100);
-        if (pct > 75) {
-          report(FAIL, 'ScrapingBee credits', `${pct}% used (${used}/${limit}). Opening nights at risk.`);
-        } else if (pct > 50) {
-          report(WARN, 'ScrapingBee credits', `${pct}% used (${used}/${limit}). Monitor.`);
+        // BRO-3032: this read `usage.used`, a field the /usage endpoint has
+        // never returned (it returns used_api_credit), so `used` was always
+        // undefined, `pct` always 0, and this check reported PASS "0% used"
+        // no matter how close to the cap the account actually was — a dead
+        // alarm inside a MANDATORY readiness checklist (CLAUDE.md rule 14).
+        // Parse through provider-billing.js's canonical parseSbUsage instead
+        // of hand-reading field names here: it is the one place that knows
+        // the payload shape, and it returns null on an unrecognized shape so
+        // a future rename fails loudly rather than silently scoring 0%.
+        const usage = parseSbUsage(JSON.parse(sbRes.body));
+        if (!usage || usage.cap == null) {
+          report(WARN, 'ScrapingBee credits', 'Usage response missing used_api_credit/max_api_credit');
         } else {
-          report(PASS, 'ScrapingBee credits', `${pct}% used (${used}/${limit})`);
+          const { cycleUsed: used, cap: limit } = usage;
+          const pct = limit > 0 ? Math.round((used / limit) * 100) : 100;
+          if (pct > 75) {
+            report(FAIL, 'ScrapingBee credits', `${pct}% used (${used}/${limit}). Opening nights at risk.`);
+          } else if (pct > 50) {
+            report(WARN, 'ScrapingBee credits', `${pct}% used (${used}/${limit}). Monitor.`);
+          } else {
+            report(PASS, 'ScrapingBee credits', `${pct}% used (${used}/${limit})`);
+          }
         }
       } catch {
         report(WARN, 'ScrapingBee credits', 'Could not parse usage response');
