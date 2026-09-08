@@ -354,4 +354,16 @@ function main() {
 // also execute the CLI against the real repo and process.exit() the test run.
 if (require.main === module) main();
 
-module.exports = { extractRunBlocks, REFERENCE_REGEX };
+module.exports = {
+  extractRunBlocks,
+  REFERENCE_REGEX,
+  // Exported for tests/unit/test-manifest-integrity.test.mjs (BRO-3061), which
+  // needs the same "is this file referenced anywhere CI actually runs it"
+  // answer this module already computes correctly — a second hand-rolled
+  // copy (e.g. a raw substring scan over workflow YAML, or a re-typed
+  // exemption list) is exactly the kind of drift-prone duplicate this file's
+  // own MANIFESTS comment (scripts/lib/test-manifest.js) warns against.
+  collectReferencedTests,
+  EXEMPT_KNOWN_BROKEN,
+  EXEMPT_NEVER_CI,
+};
