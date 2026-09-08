@@ -18,10 +18,13 @@
  *   - PRIMARY guardrail: combined modal captures/week < 1 for 2 CONSECUTIVE
  *     meaningful weeks (baseline ~4/wk pre-experiment) → grounds to consider
  *     reverting the cold-start gate.
- *   - Guardrail: impression split control:cold-start should be roughly 10:1
- *     (the 2-page minimum suppresses treatment impressions by selection) —
- *     drift toward parity means the treatment filter silently stopped
- *     applying, not that the experiment is "working".
+ *   - Guardrail: impression split control:cold-start should stay roughly in
+ *     the 2.5:1 band measured since real data became available (BRO-2952,
+ *     2026-09-07 — see docs/experiments/gate-cold-start.md "Amendments";
+ *     the original "roughly 10:1" was an untested pre-launch projection,
+ *     never confirmed against real numbers) — a further collapse toward
+ *     parity (1:1) means the treatment filter silently stopped applying,
+ *     not that the experiment is "working".
  *   - Primary judgment: minimum 4 weeks (28 days) of experiment runtime
  *     before reading the ITT primary metric — this fires once as a "time to
  *     look" nudge; it never judges the primary itself.
@@ -40,8 +43,19 @@ const BASELINE_CAPTURES_PER_WEEK = 4;
 const ALERT_CAPTURES_PER_WEEK = 1;
 const CAPTURE_COLLAPSE_STREAK_WEEKS = 2;
 const MIN_SHOWN_FOR_ALERT = 10; // combined control+cold-start gate impressions this window
-const IMPRESSION_SPLIT_EXPECTED_RATIO = 10; // control:cold-start, per pre-registration
-const IMPRESSION_SPLIT_MIN_RATIO = 5; // roughly half the expected 10:1 — below this with meaningful traffic = filter probably broken
+// BRO-2952 (2026-09-07): recalibrated from the original 10/5 (control:cold-start).
+// Those values were an untested pre-launch projection ("~85-90% impression
+// cut") written before any real measurement existed. The HogQL row-cap bug
+// (fixed 2026-08-26, b6d48ce42f5) meant every "recent" 7d reading before that
+// was near-zero noise, not a valid baseline. Every real measurement since
+// (2026-08-31: 230:86, 2026-09-01: 226:86, 2026-09-07: 208:75 — all ~2.6-2.8:1)
+// has landed in the same stable band, with flag health confirmed (~50/50
+// exposed both weeks) and the client-side filter verified intact
+// (tests/unit/gate-logic.test.mjs, all 13 pass) — this is the real selection
+// effect of the 2-page minimum, not a regression. See
+// docs/experiments/gate-cold-start.md "Amendments" for the full investigation.
+const IMPRESSION_SPLIT_EXPECTED_RATIO = 2.5; // control:cold-start, measured steady-state
+const IMPRESSION_SPLIT_MIN_RATIO = 1.5; // below this with meaningful traffic = filter probably broken
 const IMPRESSION_SPLIT_MIN_SHOWN = 30; // combined shown before judging the split
 const PRIMARY_MIN_DAYS = 28; // 4 weeks
 const COOLDOWN_MS = 6 * 24 * 60 * 60 * 1000;
