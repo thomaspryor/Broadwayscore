@@ -261,7 +261,19 @@ function summarizeCmuxFailures(failures) {
     counts[kind] = (counts[kind] || 0) + 1;
   }
   const authDenied = counts['auth-denied'] || 0;
-  return { escalate: authDenied > 0, authDenied, counts };
+  // 'unknown' escalates too, and that is the whole point of including it:
+  // classifyCmuxError recognises auth rejections by their English PROSE, so
+  // the day cmux rewords "Access denied" to something else, every rejection
+  // silently becomes 'unknown' — it would not retry and would not page, and
+  // the fleet would lose its self-heal exactly as it did on 2026-09-07 with
+  // nobody told (ship-check finding). Treating an unclassifiable cmux failure
+  // as page-worthy makes the taxonomy fail LOUD instead of silent.
+  //
+  // Safe against noise by measurement, not hope: over all 2600 cmux sweep
+  // failures recorded in reconcile-report.jsonl, exactly ONE classified as
+  // 'unknown' (0.04%) — the rest are unavailable/timeout, which stay quiet.
+  const unknown = counts.unknown || 0;
+  return { escalate: authDenied > 0 || unknown > 0, authDenied, unknown, counts };
 }
 
 module.exports = {

@@ -178,6 +178,16 @@ test('summarizeCmuxFailures escalates on the FIRST auth denial, not after N', ()
   assert.equal(one.authDenied, 1);
 });
 
+test('summarizeCmuxFailures escalates an UNCLASSIFIABLE cmux failure', () => {
+  // The taxonomy recognises auth rejections by their English prose, so the day
+  // cmux rewords them every rejection becomes 'unknown'. If that stayed quiet
+  // the fleet would lose its self-heal silently — the exact 2026-09-07 outage.
+  const reworded = auth.summarizeCmuxFailures(['Error: connection prohibited by policy']);
+  assert.equal(auth.classifyCmuxError('Error: connection prohibited by policy'), 'unknown');
+  assert.equal(reworded.escalate, true, 'an unrecognised cmux failure must fail loud');
+  assert.equal(reworded.unknown, 1);
+});
+
 test('summarizeCmuxFailures stays quiet for transient failures', () => {
   const transient = auth.summarizeCmuxFailures([
     'Error: Failed to connect to socket (Connection refused)',
