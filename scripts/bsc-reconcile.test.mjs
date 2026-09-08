@@ -850,6 +850,27 @@ test('sweepOrphanedJobs: an alive job with a stale prior suspicion CLEARS it —
   assert.equal(h.appended[0].jobId, 'j9');
 });
 
+// Codex adversarial ship-check catch (2nd pass): ORPHAN_CLEARED is
+// non-terminal, so the SAME TOCTOU hazard that threatens the ORPHANED write
+// also threatens this one — a real job-done landing between the alive glance
+// and this write would otherwise get "reopened" by a later, non-terminal
+// clear row (last-wins fold).
+test('sweepOrphanedJobs: a job-done that landed AFTER this tick\'s snapshot but BEFORE the clear write is never reopened by ORPHAN_CLEARED', () => {
+  const oldSuspectTs = new Date(ORPHAN_NOW - 60 * 1000).toISOString();
+  const staleSnapshot = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '9', jobId: 'j9', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: oldSuspectTs },
+  ];
+  const freshOnDisk = [
+    ...staleSnapshot,
+    { event: JOB_EVENTS.DONE, taskId: '9', jobId: 'j9', ts: new Date(ORPHAN_NOW - 500).toISOString(), sessionId: 's1' },
+  ];
+  const h = orphanHarness({ lease: { jobId: 'j9', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true, freshEntries: freshOnDisk });
+  const { orphans } = sweepOrphanedJobs(staleSnapshot, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, [], 'must not write ORPHAN_CLEARED over a real completion — that would reopen a finished job');
+});
+
 test('sweepOrphanedJobs: an alive job with NO prior suspicion writes nothing (the overwhelming common case must not spam the ledger)', () => {
   const h = orphanHarness({ lease: { jobId: 'j1', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
   const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];

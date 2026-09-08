@@ -358,6 +358,30 @@ function computeHeadlessDispatchDigest({
   // sit outside minResolved forever with no sign anything is wrong.
   const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.orphaned} orphaned (supervisor lost track, not counted as failure), ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
 
+  // Orphan-rate gate FIRST, before the vacuous-gate (resolved===0) check
+  // (Codex adversarial ship-check catch, 2nd pass): the vacuous-gate branch
+  // used to run first and unconditionally, so a window that is ENTIRELY
+  // orphaned (resolved===0, orphaned large) hit it instead of this gate —
+  // reporting "cannot be measured... all in-flight or unspawned", which is
+  // both wrong (they're orphaned, not in-flight) and silent on the exact
+  // mass-orphaning failure this gate exists to catch. Neither branch below
+  // needs `stats.successRate` (null when resolved===0), so ordering this
+  // first is safe regardless of which population is empty.
+  const orphanPool = stats.resolved + stats.orphaned;
+  const orphanRate = orphanPool > 0 ? stats.orphaned / orphanPool : 0;
+  if (orphanPool >= minResolved && orphanRate >= orphanRateCeiling) {
+    const successNote = stats.resolved > 0
+      ? `Success rate ${(stats.successRate * 100).toFixed(0)}% looks clean because orphaned launches are excluded from it. `
+      : '';
+    return {
+      name: HEADLESS_CHECK_NAME,
+      status: 'warn',
+      message: `${(orphanRate * 100).toFixed(0)}% of headless launches (${stats.orphaned}/${orphanPool}) are landing as orphaned rather than done/failed — the supervisor may be losing track of live processes (BRO-3052). ${successNote}${detail}.`,
+      hint: HEADLESS_HINT,
+      ...stats,
+    };
+  }
+
   // Vacuous-gate class (#1063/#1069/#1075): no resolved launches is not a
   // pass, it's "nothing to measure yet". Guard BEFORE any .toFixed() call —
   // successRate/failureRate are null (not 0) at this point.
@@ -365,28 +389,13 @@ function computeHeadlessDispatchDigest({
     return {
       name: HEADLESS_CHECK_NAME,
       status: 'warn',
-      message: `No resolved ${lane} launches in the ${span} — the success rate cannot be measured (${stats.launches} launch(es), all in-flight or unspawned).`,
+      message: `No resolved ${lane} launches in the ${span} — the success rate cannot be measured (${stats.launches} launch(es), all in-flight, orphaned, or unspawned).`,
       hint: 'data/audit/dispatch-ledger.jsonl is per-machine and gitignored; run this where headless dispatches actually launch.',
       ...stats,
     };
   }
 
   const pct = (stats.successRate * 100).toFixed(0);
-
-  // Orphan-rate gate BEFORE the successRate pass check (Codex adversarial
-  // ship-check catch): a high orphan rate must never hide behind a clean
-  // resolved-only successRate. See HEADLESS_DEFAULTS.orphanRateCeiling.
-  const orphanPool = stats.resolved + stats.orphaned;
-  const orphanRate = orphanPool > 0 ? stats.orphaned / orphanPool : 0;
-  if (orphanPool >= minResolved && orphanRate >= orphanRateCeiling) {
-    return {
-      name: HEADLESS_CHECK_NAME,
-      status: 'warn',
-      message: `${(orphanRate * 100).toFixed(0)}% of headless launches (${stats.orphaned}/${orphanPool}) are landing as orphaned rather than done/failed — the supervisor may be losing track of live processes (BRO-3052). Success rate ${pct}% looks clean because orphaned launches are excluded from it. ${detail}.`,
-      hint: HEADLESS_HINT,
-      ...stats,
-    };
-  }
 
   if (stats.successRate >= successRateFloor) {
     return {
