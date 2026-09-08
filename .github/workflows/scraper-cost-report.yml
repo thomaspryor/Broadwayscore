@@ -86,8 +86,32 @@ jobs:
               done < <(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' || true)
             done
           done
-          # Real BD Web Unlocker pricing: $0.0015/req (was 0.001 — 50% under-report)
-          BD_COST=$(echo "scale=2; $BD_TOTAL * 0.0015" | bc)
+          # BD Web Unlocker rate comes from scripts/config/provider-pricing.json,
+          # never a literal here (BRO-3009 S1-T6). This value was wrong once
+          # already — 0.001 vs the real 0.0015, a 50% under-report that stood
+          # because four files each held their own copy of the rate. `bc` still
+          # does the arithmetic so the printed figure is unchanged; only the
+          # rate's source moved. Empty/zero rate fails the step loudly rather
+          # than reporting $0.00 BD spend, which reads as "nothing to see".
+          # Read through provider-pricing.js's usdFor() rather than reaching into
+          # the JSON shape from YAML — usdFor already validates the provider
+          # exists and the rate is finite and non-negative, so this step gets the
+          # same guarantee every JS caller gets instead of a second, weaker copy
+          # of it. `|| true` keeps `bash -e` from killing the step before the
+          # ::error:: annotation below can explain what went wrong.
+          BD_RATE=$(node -e "const {usdFor}=require('./scripts/lib/provider-pricing');process.stdout.write(String(usdFor('brightdata',1)))" 2>/dev/null || true)
+          if echo "$BD_RATE" | grep -qE '^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'; then
+            BD_COST=$(echo "scale=2; $BD_TOTAL * $BD_RATE" | bc)
+          else
+            # Report an unknown rate as unknown. Do NOT exit: this step's whole
+            # design (see `set +e` below) is that a partial report still sends,
+            # and killing it here would blank the Browserbase and ScrapingBee
+            # billing sections too. A visible "rate unavailable" is honest; a
+            # silent $0.00 BD line would read as "nothing to see", which is the
+            # exact under-report this rate move exists to prevent.
+            echo "::error::scraper-cost-report: could not read a usable brightdata rate via provider-pricing.js (got '$BD_RATE') — BD cost shown as unavailable"
+            BD_COST="rate unavailable"
+          fi
 
           # Disable `bash -e` for the rest of this step. Everything from here on is
           # observability — partial data is acceptable, but a failed report email is

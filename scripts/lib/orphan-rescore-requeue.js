@@ -59,8 +59,31 @@ function decideRequeueAction(attempts, now, opts = {}) {
   return { action: 'dispatch', recentAttempts };
 }
 
+/**
+ * BRO-2985: is every remaining orphan on this marker one that a rescore
+ * dispatch cannot move?
+ *
+ * `orphanCount` answers "should a broadcast keep waiting?"; it deliberately
+ * still counts self-clearing backoffs. `dispatchableOrphanCount` answers the
+ * narrower "would dispatching llm-ensemble-score.yml accomplish anything?" —
+ * verify-all-scored.js computes it from the scorer's own selector. When it is
+ * 0, a dispatch produces a ~32-minute no-op runner that re-triggers the whole
+ * rebuild -> verify-all-scored -> dispatch chain (the 49-runs-in-2-days loop).
+ *
+ * Markers written before this field existed omit it entirely. `undefined` MUST
+ * fall through to the old behaviour — reading it as 0 would silently disable
+ * the #356 self-heal for every show until the next marker rewrite.
+ *
+ * @param {object|null} marker parsed orphan-unscored-{showId}.json
+ * @returns {boolean} true when the dispatch should be skipped
+ */
+function hasNoDispatchableOrphans(marker) {
+  return !!marker && marker.dispatchableOrphanCount === 0;
+}
+
 module.exports = {
   decideRequeueAction,
+  hasNoDispatchableOrphans,
   DEFAULT_COOLDOWN_MS,
   DEFAULT_MAX_ATTEMPTS,
   DEFAULT_WINDOW_MS,
