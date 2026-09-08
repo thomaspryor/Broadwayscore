@@ -396,6 +396,25 @@ test('headless digest: orphan-rate gate requires a real sample — a single earl
   assert.match(row.message, /cannot be measured/);
 });
 
+// Codex adversarial ship-check catch (2nd pass): the orphan-rate gate used to
+// run AFTER the vacuous-gate (resolved===0) early return, so a window that is
+// ENTIRELY orphaned — the gate's most direct failure mode — hit the vacuous
+// branch instead and falsely reported "all in-flight or unspawned" with no
+// mention of the mass-orphaning at all.
+test('headless digest: an ENTIRELY orphaned window (resolved=0, large orphaned sample) still trips the orphan-rate gate, not the vacuous one', () => {
+  const entries = [];
+  for (let i = 0; i < 15; i++) {
+    const day = String((i % 9) + 1).padStart(2, '0');
+    const hour = String(i % 24).padStart(2, '0');
+    entries.push(...headlessRun(`h-allorphan-${i}`, `2026-08-${day}T${hour}:00:00.000Z`, 'orphaned'));
+  }
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.resolved, 0, 'fixture sanity check — every launch is orphaned, none resolved');
+  assert.equal(row.status, 'warn');
+  assert.match(row.message, /orphan/i);
+  assert.doesNotMatch(row.message, /cannot be measured/, 'must name the orphan storm, not fall back to the generic vacuous-gate message');
+});
+
 // ── Task #1904: a recycled ref must not resurrect a finished attempt ───────
 
 test('a dead row arriving AFTER the launch was reconciled belongs to the ref\'s next occupant, not to it', () => {
