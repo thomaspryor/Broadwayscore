@@ -76,7 +76,9 @@
     "a-month-in-the-country-west-end-2026/independent--unknown.json",
     "a-month-in-the-country-west-end-2026/londonlivinglarge--unknown.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
-    "electra-persona-west-end-2026/whatsonstage--sarah-crompton.json"
+    "electra-persona-west-end-2026/whatsonstage--sarah-crompton.json",
+    "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json",
+    "the-story-west-end-2026/the-spectator-uk--unknown.json"
   ],
   "failed": [
     "jane-eyre-off-west-end-2026/broadwayworld--stephi-wild.json",
@@ -778,7 +780,31 @@
     "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
     "electra-persona-west-end-2026/thestage--unknown.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
-    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json"
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "jane-eyre-off-west-end-2026/broadwayworld--stephi-wild.json",
+    "jane-eyre-off-west-end-2026/whatsonstage--alex-wood.json",
+    "holy-fool-off-west-end-2026/thestage--holly-omahony.json",
+    "the-story-west-end-2026/nytimes--jesse-green.json",
+    "the-story-west-end-2026/nytimes--mj-franklin.json",
+    "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
+    "the-story-west-end-2026/observer--david-cote.json",
+    "the-story-west-end-2026/huffpost--ron-dicker.json",
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/north-west-end--unknown.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "the-story-west-end-2026/theupcoming--unknown.json",
+    "the-story-west-end-2026/times-uk--clive-davis.json",
+    "the-story-west-end-2026/times-uk--unknown.json",
+    "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
+    "electra-persona-west-end-2026/thestage--unknown.json",
+    "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
+    "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+    "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
+    "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
+    "as-you-like-it-globe-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -825,7 +851,8 @@
       "pride-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
       "a-month-in-the-country-west-end-2026/independent--unknown.json",
       "a-month-in-the-country-west-end-2026/londonlivinglarge--unknown.json",
-      "electra-persona-west-end-2026/whatsonstage--sarah-crompton.json"
+      "electra-persona-west-end-2026/whatsonstage--sarah-crompton.json",
+      "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -849,6 +876,8 @@
     ],
     "directCookies": [
       "abigails-party-west-end-2026/times-uk--nancy-durrant.json",
+      "the-story-west-end-2026/times-uk--clive-davis.json",
+      "the-story-west-end-2026/times-uk--unknown.json",
       "the-story-west-end-2026/times-uk--clive-davis.json",
       "the-story-west-end-2026/times-uk--unknown.json"
     ],
@@ -893,11 +922,12 @@
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "the-story-west-end-2026/the-spectator-uk--unknown.json"
     ]
   },
   "startTime": "2026-09-08T14:04:09.625Z",
-  "lastProcessed": "as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-09-08T14:16:38.047Z",
@@ -1086,6 +1116,18 @@
       "t": "2026-09-08T20:32:41.825Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-08T22:22:00.467Z",
+      "event": "bb-session",
+      "session": "10fad197",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-09-08T22:22:19.303Z",
+      "event": "bb-session",
+      "session": "f8349b21",
+      "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
     }
   ]
 }
