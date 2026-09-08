@@ -370,13 +370,16 @@ if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1' && hardFailures.length === 0
 // human ever opens Resend's editor.
 if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1' && hardFailures.length === 0) {
   const linkUrls = extractSiteLinkUrls(html).slice(0, 60);
-  const badLinks = [];
-  for (const url of linkUrls) {
+  // Parallel, not sequential (unlike the image loop above) — up to 60 links at
+  // an 8s timeout each would otherwise add up to ~8 minutes to every pre-send
+  // run whenever prod is slow, on top of the 40-image loop it runs after.
+  const results = await Promise.all(linkUrls.map(async (url) => {
     try {
       const res = await fetch(url, { method: 'HEAD', redirect: 'follow', signal: AbortSignal.timeout(8000) });
-      if (!res.ok) badLinks.push(`${url} → ${res.status}`);
-    } catch { /* network error/timeout: unverifiable, stay silent rather than cry wolf */ }
-  }
+      return res.ok ? null : `${url} → ${res.status}`;
+    } catch { return null; /* network error/timeout: unverifiable, stay silent rather than cry wolf */ }
+  }));
+  const badLinks = results.filter(Boolean);
   if (badLinks.length > 0) {
     softIssues.push(`${badLinks.length} page link(s) not resolving on prod (deploy lag or 404): ${badLinks.slice(0, 5).join('; ')}`);
   }
