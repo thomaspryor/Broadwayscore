@@ -155,6 +155,8 @@ async function runProbe(args) {
   process.exit(probe.EXIT_CODES[verdict]);
 }
 
+const { armingWarning } = require('./lib/card-arming-warning.js');
+
 async function main(argv = process.argv.slice(2), deps = {}) {
   // Injectable I/O seams — real Linear client by default, same convention
   // scripts/linear-next.js's main() uses (deps default to the live module,
@@ -510,6 +512,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     } else {
       console.error(`PARKED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}`);
     }
+    // Un-closable-by-construction check (BRO-3060). notion-brain.js has warned
+    // about this at create time since 2026-07-26; this chokepoint, which
+    // REPLACES it, never did — so 17 of the board's open issues carry an
+    // acceptance command the Done gate refuses outright, and nobody learns
+    // that until they try to close one. Warn-only and AFTER the create, on
+    // purpose: automated filers (owner-alert-router.js, digest-autofix.js)
+    // generate prose criteria, and a reject here would break the alert->card
+    // chain. The hard stops stay downstream at dispatch and at the Done gate.
+    const warning = armingWarning(args.notes || '');
+    if (warning) console.error(`\n${warning}\n`);
   } catch (err) {
     console.error(`\n❌ ${err.message}\n`);
     process.exit(2);

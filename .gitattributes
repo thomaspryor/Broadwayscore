@@ -226,6 +226,24 @@ data/audit/owner-email-log.jsonl merge=union
 # concatenates both sides on conflict instead of picking one.
 data/audit/dmarc-report-ledger.jsonl merge=union
 
+# linear-drain-parked-ledger.jsonl (scripts/linear-drain-parked.js's
+# appendLedger): arrived untracked and became tracked on 2026-09-08, when the
+# drain's launchd agent was bootstrapped for the first time (BRO-3060) and it
+# finally wrote a row. It landed with no merge attribute, which is exactly what
+# this gate exists to catch — and it did, on main, within the hour.
+# Both disqualifiers were checked against the real writer and readers:
+#   (a) not load-bearing on deletion: appendLedger is appendFileSync only and
+#       nothing ever prunes or rewrites the file (its own comment: "the ledger
+#       is append-only, same convention as dispatch-ledger.js"), so union has
+#       no pruned row it could resurrect in the first place;
+#   (b) no reader depends on raw file order: recentlyAttempted() filters each
+#       row by its own ts against the 6h cooldown, and attempt-memory.js's
+#       checkPark() reaches it through attemptOutcomesForCard(), which sorts
+#       by ts (scripts/lib/attempt-memory.js:70) BEFORE walking the failure
+#       streak newest-to-oldest. That explicit re-sort is what makes the
+#       post-recovery append order harmless here.
+data/audit/linear-drain-parked-ledger.jsonl merge=union
+
 # Accumulate-state (read-modify-write of a live counter/keyed-object/array) —
 # `ours` would silently discard the other side's accrued state (open alert
 # conditions, processed-feedback ids, per-outlet/per-zone circuit-breaker trip
