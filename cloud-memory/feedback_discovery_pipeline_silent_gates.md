@@ -617,3 +617,26 @@ Diagnostic rule: if a hand-cleared flag reverts with `textFetchedAt` UNCHANGED a
 manual fields intact, stop looking at the restore/guard layer — it is a targeted recompute.
 Fix tracked as BRO-2890. Distinct from BRO-2858 (clear-failure-flags.js can never clear it in the
 first place); this one is that the clear cannot STAY cleared.
+
+## Soft-404 page bodies get banked as review-texts on the real future review URL (2026-09-08, Jane Eyre / London Box Office)
+A site can serve its "document not found" page with HTTP **200**. `collect-review-texts.js` writes that
+chrome as `fullText`, so a review-texts file now EXISTS at the outlet's genuine future review slug
+carrying blocking flags (`isNonReview`, `wrongProduction`, `contentTier: invalid/stub`). Signature:
+two or more files under one outlet share a **byte-identical body length** (870 chars observed across
+`london-box-office--phil-willmott.json` and `--stacey-tyler.json`) whose text is the site's nav list
+plus "Document not found". A genuine HTTP 404 on the same URL fetched live confirms it.
+
+Why it is load-bearing: the slug (`/news/post/review-jane-eyre-southwark-playhouse-elephant`) is where
+that outlet WILL publish. Once it does, the pre-existing flagged file can make the gather path skip a
+refetch, and the real review never lands — the `feedback_aggregator_soft_404.md` class crossed with
+`feedback_inplace_url_update_preserves_stale_state.md`.
+
+Where the hole is: generic soft-404 detection exists only in per-site DISCOVERY helpers
+(`bww-rr-discover`, `bww-opera-discover`, `playbill-*-schedule`, `tb-direct-url`) — never at the
+review-text WRITE boundary. Any outlet without a bespoke guard silently banks a placeholder.
+
+How to apply: when an outlet looks "already covered" but its file is flagged, check the body before
+trusting the flag. Do NOT merely clear flags — the cached body is garbage. Overwrite via direct-URL
+ingest so `fullText` is the real review, set ALL 8 protection fields, then rebuild -> score -> rebuild,
+then `node scripts/verify-review-recovery.js --show=<id> --production`. Corroborate venue/date first
+(wrongProduction runs ~44% false-positive on opening nights). Systemic fix tracked as BRO-3116.
