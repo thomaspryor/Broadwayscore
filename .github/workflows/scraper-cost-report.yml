@@ -301,20 +301,15 @@ jobs:
           </div>
           HTMLEOF
 
-          cat /tmp/report.html
-
-      # BRO-2957: the weekly public GitHub issue used to be, accidentally, the
-      # only durable copy of this report. Now that it is gone, the artifact is
-      # that copy — private to the repo, retention-bounded, and written with
-      # if: always() so it survives a failed email send.
-      - name: Upload report artifact (private durable copy)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: scraper-cost-report-${{ github.run_id }}
-          path: /tmp/report.html
-          if-no-files-found: warn
-          retention-days: 90
+          # BRO-2957 follow-up: this used to be `cat /tmp/report.html`, which
+          # printed the entire report — provider spend, credit balances,
+          # top-consumer breakdown, failure counts — into the workflow log.
+          # This repository is PUBLIC (`gh repo view --json isPrivate` => false),
+          # and workflow logs on a public repo are readable by anyone. Removing
+          # the weekly public ISSUE while still printing the same numbers to a
+          # public LOG would have left the owner's stated goal unmet. Print only
+          # a size confirmation; the report travels by email.
+          echo "Report built: $(wc -c < /tmp/report.html) bytes of HTML"
 
       - name: Email report
         if: success()
@@ -345,15 +340,28 @@ jobs:
             -H "Content-Type: application/json" \
             -d @/tmp/resend-payload.json)
 
+          HTTP_CODE="${HTTP_CODE:-000}"
           if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
             echo "::error::Resend rejected the cost report email (HTTP $HTTP_CODE)"
             head -c 500 /tmp/resend-response.json || true
             echo
-            echo "The report itself is still available as this run's uploaded artifact."
+            echo "Re-run this workflow to regenerate and resend; the report is derived, not stored."
             exit 1
           fi
           echo "Cost report emailed (HTTP $HTTP_CODE)"
 
+      # BRO-2957 follow-up: notify-failure defaults to severity 'low'
+      # (.github/actions/notify-failure/action.yml:15) and BOTH of its steps are
+      # gated `if: inputs.severity == 'critical'` (:59, :164), so with no
+      # severity passed this step runs and does nothing. That is the intended
+      # channel here, not an oversight: a weekly cost report that failed to send
+      # is not worth a real-time page (memory/email-broadcast-rules.md — alerts
+      # are for ACTION only). The failure still reaches the owner through
+      # health-check.js's daily digest, which reads workflow run status
+      # independently of this action. Stated explicitly because the first pass
+      # of BRO-2957 claimed in its commit message that exit 1 made this step
+      # "actually fire" — it fails the job, which is what the digest reads, but
+      # this action itself sends nothing.
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
