@@ -208,7 +208,7 @@ test('buildCmuxEnv under force replaces a rejected credential with the disk one'
   assert.equal(out.CMUX_SOCKET_PASSWORD, 'fresh-from-disk');
 });
 
-test('an unreadable config is reported ONCE per path, not once per read', () => {
+test('an unreadable config is reported ONCE per path, not once per read', (t) => {
   // Every auth rejection re-reads with refresh:true, and a tick makes dozens
   // of cmux calls — unguarded, a persistently unreadable config would flood
   // every 5-minute launchd tick with identical lines.
@@ -222,9 +222,13 @@ test('an unreadable config is reported ONCE per path, not once per read', () => 
     for (let i = 0; i < 5; i++) {
       auth.readSocketPasswordFromDisk({ configPath: cfg, refresh: true, logFn: (m) => logged.push(m) });
     }
-    // Running as root can still read a 0o000 file, so only assert the guard
-    // when the read genuinely failed.
-    if (logged.length > 0) assert.equal(logged.length, 1);
+    // Running as root can still read a 0o000 file (Docker, act), in which
+    // case there is nothing to assert — skip rather than pass vacuously.
+    if (logged.length === 0) {
+      t.skip('running as root — the unreadable-config path never triggered');
+      return;
+    }
+    assert.equal(logged.length, 1);
   } finally {
     fs.chmodSync(cfg, 0o600);
     fs.rmSync(dir, { recursive: true, force: true });

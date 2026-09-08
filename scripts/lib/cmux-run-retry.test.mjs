@@ -94,6 +94,28 @@ test('a succeeding third attempt is announced, never silent', () => {
   assert.match(logged[0], /password/i);
 });
 
+test('a succeeding SECOND attempt is announced too', () => {
+  // Regression guard: once a rejected credential is dropped under force, the
+  // common "no password on disk" case recovers on attempt 2 and never reaches
+  // attempt 3. Warning only from attempt 3 made a permanently wrong
+  // LaunchAgent password invisible.
+  const logged = [];
+  const { calls, execFn } = recorder([authErr(), 'ok']);
+  run(['list-workspaces'], { execFn, logFn: (m) => logged.push(m) });
+  assert.equal(calls.length, 2, 'must have recovered on attempt 2');
+  assert.equal(logged.length, 1, 'recovering on attempt 2 must not be silent');
+  assert.match(logged[0], /password/i);
+});
+
+test('a first-attempt success stays quiet', () => {
+  // The warning must fire only after an actual rejection — otherwise every
+  // healthy call in a 5-minute tick logs.
+  const logged = [];
+  const { execFn } = recorder(['ok']);
+  run(['list-workspaces'], { execFn, logFn: (m) => logged.push(m) });
+  assert.equal(logged.length, 0);
+});
+
 test('the ORIGINAL auth rejection survives when the last attempt fails differently', () => {
   // If the ladder threw attempt 3's 'unavailable' error, summarizeCmuxFailures
   // would classify it 'unknown' and nothing would page — the exact

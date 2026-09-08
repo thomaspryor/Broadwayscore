@@ -71,10 +71,17 @@ function run(args, { execFn = execFileSync, logFn = console.error } = {}) {
     // force: the caller's own CMUX_SOCKET_PASSWORD has now been PROVEN wrong
     // by a rejection, so disk wins. Without force this attempt would be
     // byte-identical to the one that just failed.
-    return execFn(CMUX, args, {
-      ...base,
-      env: cmuxSpawnEnv(process.env, { refresh: true, force: true }),
-    });
+    const retryEnv = cmuxSpawnEnv(process.env, { refresh: true, force: true });
+    const out = execFn(CMUX, args, { ...base, env: retryEnv });
+    // Announce here too, not only on attempt 3. Once a rejected credential is
+    // DROPPED under force, the common "no password on disk" case succeeds
+    // right here — and reporting only from attempt 3 made a permanently wrong
+    // LaunchAgent password completely invisible, which is the masking this
+    // warning exists to prevent (review finding).
+    logFn(retryEnv.CMUX_SOCKET_PASSWORD
+      ? '[cmux] socket password was rejected; a refreshed one from ~/.config/cmux/cmux.json worked. The stale value is still in this process’s environment.'
+      : '[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');
+    return out;
   } catch (e2) {
     if (classifyCmuxError(e2) !== 'auth-denied') throw e2;
   }
