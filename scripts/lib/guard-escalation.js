@@ -27,7 +27,12 @@ const DEFAULT_REMINDER_EVERY = 4;
 // and a bound on how long it may keep self-recovering — a guard that can
 // never clear otherwise reports green indefinitely.
 const DEFAULT_MIN_HOURS_BLOCKED = 24;
-const DEFAULT_MAX_RECOVERIES = 14; // ~2 weeks of daily reminders before the guard blocks loud again
+// Counted in REMINDER intervals, not days — how much wall time that buys
+// depends entirely on the caller's cron (on vercel-build-guard.yml's */30 it
+// is ~29h; on rebuild-reviews.yml's ~4 runs/day it is weeks). The 24h floor
+// above is what guarantees the minimum; this is the ceiling on how many times
+// a guard may keep waving itself through before it must block loud again.
+const DEFAULT_MAX_RECOVERIES = 14;
 
 /**
  * Guards already configured to log + write an audit trail and let the run
@@ -91,6 +96,7 @@ function shouldAutoRecover(guardId, consecutiveBlocks, {
   now = null,
   minHoursBlocked = DEFAULT_MIN_HOURS_BLOCKED,
   maxRecoveries = DEFAULT_MAX_RECOVERIES,
+  reminderEvery = DEFAULT_REMINDER_EVERY,
 } = {}) {
   if (isSoftWarnGuard(guardId)) return true;
   if (!Number.isInteger(consecutiveBlocks) || consecutiveBlocks < threshold) return false;
@@ -115,7 +121,7 @@ function shouldAutoRecover(guardId, consecutiveBlocks, {
   // again, which is the correct end state for something no longer
   // self-healing.
   const overshoot = consecutiveBlocks - threshold;
-  return Math.floor(overshoot / Math.max(1, DEFAULT_REMINDER_EVERY)) < maxRecoveries;
+  return Math.floor(overshoot / Math.max(1, reminderEvery)) < maxRecoveries;
 }
 
 /**

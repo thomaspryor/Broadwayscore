@@ -184,6 +184,34 @@ function readRemote(ref, file, format) {
   }
 }
 
+/**
+ * The common-ancestor content of `file`, for the three-argument mergers.
+ *
+ * BRO-2955 ship-check. Three registry mergers (alert-ledger.json,
+ * alert-digest-queue.json, alert-router-attempts.jsonl) take (local, remote,
+ * base) and NEED the base to tell "the other side added a row" apart from "WE
+ * DELETED a row the other side still has". This pass was calling every merger
+ * with two arguments, which is exactly the shape merge-alert-digest-queue.js's
+ * own header calls the Codex adversarial ship-check P0: health-check.js drains
+ * the queue to [] after emailing it, and a two-way union against a remote that
+ * still holds the pre-drain rows puts every already-delivered row straight
+ * back — the owner re-receives the same digest. Verified: two-way [] vs [row]
+ * yields 1 row, three-way with base [row] yields 0.
+ *
+ * Returns undefined when no base is obtainable, which the mergers treat as
+ * "fall back to the conservative two-way behavior" — same as before this fix.
+ */
+function readBase(ref, file, format) {
+  try {
+    const base = execFileSync('git', ['merge-base', 'HEAD', ref], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    if (!base) return undefined;
+    const text = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    return format === 'jsonl' ? parseJsonlLines(text) : JSON.parse(text);
+  } catch {
+    return undefined; // no common ancestor, file absent there, or unparsable
+  }
+}
+
 function main() {
   const [ref, ...only] = process.argv.slice(2);
   if (!ref) { console.error('reconcile-merged-json: missing <remote-ref>'); process.exit(0); }
@@ -213,7 +241,12 @@ function main() {
       const remote = readRemote(ref, t.file, t.format);
       if (remote === null) continue;
 
-      const result = t.merge(ours, remote);
+      // Three-argument mergers get the common ancestor; two-argument ones are
+      // called exactly as before (arity is the dispatch, so a future merger
+      // cannot silently receive a third argument it defines differently).
+      const result = t.merge.length >= 3
+        ? t.merge(ours, remote, readBase(ref, t.file, t.format))
+        : t.merge(ours, remote);
       const after = t.format === 'jsonl'
         ? result.merged.map((e) => JSON.stringify(e)).join('\n') + (result.merged.length ? '\n' : '')
         : JSON.stringify(result.merged, null, 2) + (t.newline ? '\n' : '');

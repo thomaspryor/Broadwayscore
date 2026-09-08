@@ -141,41 +141,6 @@ const CORE_DATA_MERGE_REGISTRY = [
     // an actual conflict, which two near-simultaneous appends reliably cause.
     optInReconcile: false,
   },
-  {
-    file: 'audit/alert-digest-queue.json',
-    surface: 'public-repo',
-    status: 'active',
-    merge: mergeAlertDigestQueue,
-    format: 'json',
-    newline: true,
-    // BRO-257: 12+ independent workflows call queueDigestLine() and push
-    // through this surface — the generic `data/collection-state/*|data/audit/*`
-    // whole-file keep-local arm silently dropped whichever writer lost the
-    // rebase/push race. Same multi-writer-ledger shape and same fix as
-    // feedback-request-ledger.json / express-retry-queue.json above.
-    // Reconciled via TWO mechanisms (unlike those two siblings, which rely
-    // on the case-arm alone): (1) resolve_conflicts()'s case arm, for the
-    // conflicts git DOES report (e.g. modify/delete); (2) push-with-retry.sh's
-    // reconcile_merged_json(), which makes an UNCONDITIONAL single-file call
-    // for this path regardless of PUSH_RECONCILE_MERGED_JSON. (2) exists
-    // because two independent writers appending a new entry at the same
-    // array position (the common case — queueDigestLine() always appends at
-    // the end) is an add/add hunk that `git rebase -X theirs` auto-resolves
-    // WITHOUT ever reporting a conflict — confirmed live: the case arm alone
-    // did not pass tests/unit/alert-digest-queue.test.mjs's real end-to-end
-    // reproduction. `optInReconcile: false` below still correctly means "not
-    // part of the opt-in whole-MANAGED-sweep" — mechanism (2) is a separate,
-    // deliberately single-file-scoped call, not that sweep.
-    // NOT apiFallbackSafe: genuinely multi-writer, so the Git Data API
-    // fallback's fail-closed "ours wins outright" bypass would be wrong here
-    // (see the "NOT added, deliberately" note below) — this file's protection
-    // is the real per-key merge above, not that bypass. Confirmed the Git
-    // Data API fallback disqualifier (push-with-retry.sh's isManaged/
-    // isApiFallbackSafe check) correctly SKIPS the fallback for this file
-    // rather than using it unsafely, since it is data/audit/*, not MANAGED,
-    // and not apiFallbackSafe.
-    optInReconcile: false,
-  },
 
   // ── public-repo, apiFallbackSafe entries (task: data-health-check.yml
   // push-race hardening, session 2026-08-22, incident run 32559247279) ──────
