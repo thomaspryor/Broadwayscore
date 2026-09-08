@@ -26,6 +26,7 @@ const CLI = path.join(REPO, 'scripts', 'audit-cv-flag-contradiction.js');
 // `undefined` and vacuously pass.
 test('setup: the function under test is exported and the CLI exists', () => {
   assert.equal(typeof summarizeWindowCoverage, 'function');
+  assert.equal(typeof shouldRefuseRedirectedGate, 'function');
   assert.ok(fs.existsSync(CLI), `expected the audit CLI at ${CLI}`);
 });
 
@@ -337,7 +338,7 @@ test('the corpus-empty FAIL-LOUD gate is actually armed under --strict', () => {
 test('a --window token that parseInt would silently truncate is refused', () => {
   // Round 4 finding 3: parseInt('1e9') === 1 and parseInt('30d') === 30, so
   // validating parseInt's RESULT let nonsense through as a plausible window.
-  for (const w of ['1e9', '30d', '3O', '1.5', '1=e9', '30=d']) {
+  for (const w of ['1e9', '30d', '3O', '1.5', '1=e9', '30=d', '']) {
     let code = 0, stderr = '';
     try {
       execFileSync(process.execPath, [CLI, `--window=${w}`, '--strict'], {
@@ -369,4 +370,26 @@ test('a redirected gate is refused only when a redirect is actually in effect', 
   // Redirect + report-only: always allowed.
   assert.equal(R({ rootOverride: '/tmp/x', corpusEntries: 99 }), false);
   assert.equal(R(), false);
+});
+
+test('a --window flag without the "=<digits>" form is refused, not silently defaulted', () => {
+  // A bare `--window 7` used to match nothing, get dropped, and let the sweep
+  // scan the DEFAULT 30 days while printing "--window=30d" and exiting 0.
+  // Passing the flag separately from its value must fail loudly instead.
+  // '--windowX30' is the input that distinguishes requiring the '=' from
+  // blindly slicing 9 characters: the latter yields '30' and accepts it as a
+  // thirty-day window. Without this case that mutation survives green.
+  for (const argv of [['--window', '7'], ['--window'], ['--window7'], ['--windowX30']]) {
+    let code = 0, stderr = '';
+    try {
+      execFileSync(process.execPath, [CLI, ...argv, '--strict'], {
+        encoding: 'utf8', stdio: 'pipe',
+      });
+    } catch (e) {
+      code = e.status;
+      stderr = String(e.stderr || '');
+    }
+    assert.equal(code, 2, `${argv.join(' ')} must exit 2, got ${code}`);
+    assert.match(stderr, /--window must be a positive number of days/, stderr);
+  }
 });
