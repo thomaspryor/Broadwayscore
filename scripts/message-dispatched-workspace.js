@@ -16,6 +16,7 @@ const { readEntries } = require('./lib/dispatch-ledger.js');
 const { parseWorkspaceListing, resolveWorkspaceForTask } = require('./lib/dispatched-workspace-lookup.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
+const { cmuxSpawnEnv } = require('./lib/cmux-socket-auth.js');
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
 function usage() {
@@ -29,7 +30,7 @@ function usage() {
 // a crash dump.
 function cmux(args) {
   try {
-    return execFileSync(CMUX, args, { encoding: 'utf8' });
+    return execFileSync(CMUX, args, { encoding: 'utf8', env: cmuxSpawnEnv(process.env) });
   } catch (err) {
     console.error(`cmux ${args.join(' ')} failed: ${err.message}`);
     process.exit(1);

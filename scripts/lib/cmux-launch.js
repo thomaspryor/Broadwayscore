@@ -37,6 +37,7 @@ const { preflightAuth } = require('./claude-cli.js');
 const { ensureAutoTitle } = require('./workspace-naming.js');
 const terminalCapacity = require('./cmux-terminal-capacity.js');
 
+const { cmuxSpawnEnv } = require('./cmux-socket-auth.js');
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 const CMUX_APP = '/Applications/cmux.app';
 
@@ -286,7 +287,7 @@ function pollUntil(fn, timeoutSec) {
 // opened themselves at a glance. Never blocks or fails the dispatch — a
 // verified-running claude session matters more than its tab color.
 function setAutoColor(ref) {
-  try { spawnSync(CMUX, ['workspace-action', '--action', 'set-color', '--color', 'Blue', '--workspace', ref], { encoding: 'utf8', timeout: 3000 }); } catch { /* cosmetic only */ }
+  try { spawnSync(CMUX, ['workspace-action', '--action', 'set-color', '--color', 'Blue', '--workspace', ref], { encoding: 'utf8', timeout: 3000, env: cmuxSpawnEnv(process.env) }); } catch { /* cosmetic only */ }
 }
 
 // Force cmux out of its deferred-render state (diagnosed live 2026-08-02):
@@ -305,7 +306,7 @@ function setAutoColor(ref) {
 // a finally, otherwise cmux would be blinded to the app's real focus state
 // indefinitely.
 function setAppFocus(state) {
-  try { return spawnSync(CMUX, ['set-app-focus', state], { encoding: 'utf8', timeout: 3000 }).status === 0; } catch { return false; }
+  try { return spawnSync(CMUX, ['set-app-focus', state], { encoding: 'utf8', timeout: 3000, env: cmuxSpawnEnv(process.env) }).status === 0; } catch { return false; }
 }
 
 // OS-level companion to setAppFocus (card #900, 2026-08-03): `set-app-focus`
@@ -1206,7 +1207,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       wakeState.woke = true;
       (probes.wake || (() => setAppFocus('active')))(true);
     }
-    const r = (probes.newWorkspace || (args => spawnSync(CMUX, args, { encoding: 'utf8' })))(
+    const r = (probes.newWorkspace || (args => spawnSync(CMUX, args, { encoding: 'utf8', env: cmuxSpawnEnv(process.env) })))(
       ['new-workspace', '--name', title, '--cwd', cwd, '--command', typed, '--focus', String(focus)]);
     if (r.stdout) process.stdout.write(r.stdout);
     if (r.status !== 0) {

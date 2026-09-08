@@ -19,6 +19,7 @@ const fs = require('fs');
 const { execFileSync } = require('child_process');
 const { isCloseable, hasAutoDispatchMarker } = require('./prune-closeable.js');
 const dispatchLedger = require('./dispatch-ledger.js');
+const { cmuxSpawnEnv, classifyCmuxError, withoutCmuxPassword } = require('./cmux-socket-auth.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -26,8 +27,73 @@ function cmuxAvailable() {
   return fs.existsSync(CMUX);
 }
 
-function run(args) {
-  return execFileSync(CMUX, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+// Every socket call funnels through here (see this file's header: only the
+// run/close/list wrappers touch the cmux socket), which makes it the one
+// place that has to carry the socket credential — see cmux-socket-auth.js
+// for why per-LaunchAgent injection under-fixes (BRO-2959).
+//
+// The retry is the safety valve: if the password on disk is stale, a caller
+// that would otherwise have been admitted by cmux-ancestry alone would now
+// fail on a credential it never needed. So on an auth rejection we re-read
+// the config once (picking up a rotation) and, failing that, try again with
+// no credential at all.
+//
+// Retrying ONLY on auth-denied is what makes this safe for the mutating
+// commands that also come through here (closing a workspace, respawn-pane,
+// workspace-action, creating a workspace). An auth rejection happens at the
+// connection handshake, BEFORE the daemon ever sees the command, so nothing
+// was applied and re-sending cannot double-apply it. A timeout is the
+// opposite — the command may well have landed and only the reply was lost —
+// which is exactly why timeouts (and refused connections) are re-thrown to
+// the caller's existing degraded path instead of being retried here.
+//
+// The timeout is new too: this call sits inside a 5-min launchd tick, and a
+// wedged socket previously blocked it indefinitely, silently disabling the
+// orphan detection that runs after it.
+const RUN_TIMEOUT_MS = 30_000;
+
+// `execFn` is a test-only seam (same idiom as this file's listWorkspaces/
+// closeWorkspace injection points). The ladder below is the riskiest logic in
+// the module and execFileSync is otherwise impossible to drive from a test
+// without spawning real processes against a live socket.
+function run(args, { execFn = execFileSync, logFn = console.error } = {}) {
+  const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: RUN_TIMEOUT_MS };
+  let firstAuthError = null;
+
+  try {
+    return execFn(CMUX, args, { ...base, env: cmuxSpawnEnv(process.env) });
+  } catch (e) {
+    if (classifyCmuxError(e) !== 'auth-denied') throw e;
+    firstAuthError = e;
+  }
+
+  try {
+    // force: the caller's own CMUX_SOCKET_PASSWORD has now been PROVEN wrong
+    // by a rejection, so disk wins. Without force this attempt would be
+    // byte-identical to the one that just failed.
+    return execFn(CMUX, args, {
+      ...base,
+      env: cmuxSpawnEnv(process.env, { refresh: true, force: true }),
+    });
+  } catch (e2) {
+    if (classifyCmuxError(e2) !== 'auth-denied') throw e2;
+  }
+
+  try {
+    // Last resort: no credential, so an in-cmux caller falls back to the
+    // ancestry check that admitted it before any of this existed.
+    const out = execFn(CMUX, args, { ...base, env: withoutCmuxPassword(process.env) });
+    // Saying nothing here would mask a permanently wrong password forever:
+    // every call would quietly cost three spawns and still look healthy.
+    logFn('[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');
+    return out;
+  } catch (e3) {
+    // Surface the ORIGINAL auth rejection, not this last attempt's error.
+    // If attempt 3 happens to fail as 'unavailable', throwing it would hide
+    // the auth diagnosis from summarizeCmuxFailures and nothing would page —
+    // precisely the under-alerting this whole change exists to end.
+    throw classifyCmuxError(e3) === 'auth-denied' ? e3 : (firstAuthError || e3);
+  }
 }
 
 // ── pure logic (exported for tests) ────────────────────────────────────────
