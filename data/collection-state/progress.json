@@ -123,7 +123,9 @@
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json",
     "age-is-a-feeling-off-broadway-2024/broadwayworld--team-bww.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
-    "girls-off-west-end-2026/london-box-office--emmie-newitt.json"
+    "girls-off-west-end-2026/london-box-office--emmie-newitt.json",
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--mrs-claudia-gil.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -1941,7 +1943,15 @@
     "the-winters-tale-off-broadway-2026/daily-mail--veronica-lee.json",
     "the-winters-tale-off-broadway-2026/independent--alice-saville.json",
     "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
-    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json"
+    "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+    "the-winters-tale-off-broadway-2026/thestage--dave-fargnoli.json",
+    "the-winters-tale-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "game-of-thrones-the-mad-king-regional-2026/hampstead-highgate-express--unknown.json",
+    "game-of-thrones-the-mad-king-regional-2026/thestage--unknown.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/timeout-london--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
+    "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2002,7 +2012,9 @@
       "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "masticate-off-broadway-2026/nyu--unknown.json",
       "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json",
-      "girls-off-west-end-2026/london-box-office--emmie-newitt.json"
+      "girls-off-west-end-2026/london-box-office--emmie-newitt.json",
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--mrs-claudia-gil.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2104,7 +2116,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "the-winters-tale-off-broadway-2026/telegraph--dzifa-benson.json",
+  "lastProcessed": "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -2441,6 +2453,18 @@
       "t": "2026-09-08T03:03:13.160Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-08T03:12:36.378Z",
+      "event": "bb-session",
+      "session": "c1926544",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-08T03:12:56.714Z",
+      "event": "bb-session",
+      "session": "456bf87c",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
     }
   ]
 }
