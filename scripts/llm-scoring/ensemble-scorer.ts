@@ -411,6 +411,16 @@ export class EnsembleReviewScorer {
       // possible resolution: no better fetch of this URL can ever produce a
       // review that was never published).
       const primaryRejection = pickConsensusRejection(rejections);
+      // How many rejecting models actually named THIS type — distinct from
+      // rejections.length (models that rejected AT ALL, regardless of type).
+      // wrong-production-autoclear.js's hasEnsembleConsensus() needs this
+      // exact count (ship-check finding on this same fix): it previously
+      // inferred "N models agreed" by counting model-name tags in
+      // rejectionReasoning, which lists every rejecting model regardless of
+      // which type each one picked — a 1-vs-1 split (e.g. wrong_show vs
+      // garbage_text) would over-count as 2-model agreement on whichever type
+      // won pickConsensusRejection's priority fallback.
+      const agreeCount = rejections.filter(r => r.rejection === primaryRejection.rejection).length;
       const rejectionResult: EnsembleResultType = {
         score: 0,
         bucket: 'Pan',
@@ -419,6 +429,7 @@ export class EnsembleReviewScorer {
         rejected: true,
         rejection: primaryRejection.rejection,
         rejectionReasoning: rejections.map(r => `${r.model}: ${r.rejectionReasoning}`).join('; '),
+        rejectionAgreeCount: agreeCount,
         modelResults: {},
         needsReview: false,
         note: `${rejections.length}/${totalModels} models rejected as ${primaryRejection.rejection}`

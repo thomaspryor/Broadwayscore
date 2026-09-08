@@ -74,6 +74,11 @@ describe('BRO-372: ensemble rejection-type consensus', () => {
     assert.strictEqual(combined.rejection, 'not_a_review');
     assert.match(combined.rejectionReasoning, /openai:/);
     assert.match(combined.rejectionReasoning, /gemini:/);
+    // Ship-check finding: only ONE of the two rejecting models (gemini)
+    // actually named not_a_review — wrong-production-autoclear.js's
+    // hasEnsembleConsensus() must see rejectionAgreeCount=1, not 2, or it
+    // will over-count this as real 2-model agreement.
+    assert.strictEqual(combined.rejectionAgreeCount, 1);
   });
 
   it('naively taking rejections[0] (the pre-fix behavior) would have picked garbage_text — confirms the bug this test guards against', () => {

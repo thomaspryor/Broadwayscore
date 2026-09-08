@@ -427,6 +427,20 @@ function hasEnsembleConsensus(data, reason) {
   if (!data) return false;
   if (data.rejectionReason !== reason) return false;
   if (data.rejectedBy !== 'ensemble-scoreability-check') return false;
+  // Precise path (BRO-372 ship-check finding): rejectionAgreeCount is the
+  // number of rejecting models whose OWN `rejection` type actually matched
+  // data.rejectionReason. rejectionReasoning below joins EVERY rejecting
+  // model's free text regardless of which type each one picked — combineOutcomes()
+  // now resolves 1-vs-1 type disagreements via a priority order (favoring
+  // wrong_show/wrong_production/not_a_review over the generic garbage_text
+  // catch-all), so an editorial rejectionReason can win even when only ONE
+  // model actually named it. Counting model-name tags in rejectionReasoning
+  // (the fallback below) can't tell that case apart from real 2-model
+  // agreement; rejectionAgreeCount can.
+  if (typeof data.rejectionAgreeCount === 'number') {
+    return data.rejectionAgreeCount >= 2;
+  }
+  // Fallback for files written before rejectionAgreeCount existed.
   const reasoning = data.rejectionReasoning;
   if (!reasoning || typeof reasoning !== 'string') return false;
   const models = new Set();
