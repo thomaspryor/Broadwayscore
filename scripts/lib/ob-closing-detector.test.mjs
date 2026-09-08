@@ -276,9 +276,9 @@ test('findTitleOffsets matches across punctuation and diacritics without shiftin
 
 // --- selectAutoApplyClosures: two independent signals required ---
 
-const HIGH = { showId: 's1', proposedClosingDate: '2026-04-05', confidence: 'high', reason: '4 reviews agree', evidence: [] };
+const HIGH = { showId: 's1', proposedClosingDate: '2026-04-05', latestMentionedDate: '2026-04-05', confidence: 'high', reason: '4 reviews agree', evidence: [] };
 const OPEN_NO_DATE = { s1: { id: 's1', status: 'open' } };
-const MISSING_8 = { s1: { consecutiveMissingChecks: 8 } };
+const MISSING_8 = { s1: { consecutiveMissingChecks: 8, firstMissingDate: '2026-07-13' } };
 
 test('auto-apply: high confidence + TodayTix-absent + past date + open/no-date is applied', () => {
   const picked = selectAutoApplyClosures([HIGH], OPEN_NO_DATE, MISSING_8, '2026-09-08');
@@ -315,4 +315,36 @@ test('auto-apply: never overwrites an existing closingDate or a closed show', ()
 
 test('auto-apply: unknown show id is skipped rather than throwing', () => {
   assert.deepEqual(selectAutoApplyClosures([HIGH], {}, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: refuses when a later date is mentioned (extension guard)', () => {
+  // Shifters (2026): nine reviews agree on 2026-08-30 while later reviews say
+  // 09-13 and the run actually went to 09-20. Closing on the majority date
+  // would have marked a running show closed three weeks early.
+  const extended = { ...HIGH, proposedClosingDate: '2026-08-30', latestMentionedDate: '2026-09-13' };
+  assert.deepEqual(selectAutoApplyClosures([extended], OPEN_NO_DATE, MISSING_8, '2026-09-22'), []);
+});
+
+test('auto-apply: TodayTix absence must span real time, not just repeat runs', () => {
+  // Two workflow_dispatch runs an hour apart reach 2 checks the same day.
+  const sameDay = { s1: { consecutiveMissingChecks: 2, firstMissingDate: '2026-09-08' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, sameDay, '2026-09-08'), []);
+  const spanned = { s1: { consecutiveMissingChecks: 2, firstMissingDate: '2026-08-20' } };
+  assert.equal(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, spanned, '2026-09-08').length, 1);
+});
+
+test('auto-apply: missing firstMissingDate is treated as unproven, not as zero', () => {
+  const noDate = { s1: { consecutiveMissingChecks: 99 } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, noDate, '2026-09-08'), []);
+});
+
+test('aggregate: carries the latest mentioned date, not just the most-cited', () => {
+  const mentions = [
+    { reviewId: 'a', isoDate: '2026-08-30' },
+    { reviewId: 'b', isoDate: '2026-08-30' },
+    { reviewId: 'c', isoDate: '2026-09-13' },
+  ];
+  const proposal = aggregateClosingDateCandidates('s1', '2026-07-01', mentions);
+  assert.equal(proposal.proposedClosingDate, '2026-08-30');
+  assert.equal(proposal.latestMentionedDate, '2026-09-13');
 });

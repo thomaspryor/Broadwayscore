@@ -68,6 +68,10 @@ jobs:
 
       - name: Validate shows.json before push (rollback on failure)
         run: |
+          # pipefail is load-bearing: GitHub's default shell is `bash -e {0}`,
+          # so `node validate-data.js | tail -30` reports TAIL's exit status and
+          # a failed validation would sail through as success.
+          set -o pipefail
           # The detector can now write shows.json. If it produced something
           # invalid, restore the pristine core-data copy and fail before the
           # push steps run.

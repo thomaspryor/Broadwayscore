@@ -275,10 +275,17 @@ function aggregateClosingDateCandidates(showId, openingDateISO, reviewMentions) 
     }
   }
 
+  // The latest date ANY review mentions, which is not always the most-cited
+  // one: a run that gets extended keeps accumulating reviews quoting the
+  // original date, so the majority bucket can be the stale one. Carried here
+  // so the auto-apply gate can refuse exactly that shape.
+  const latestMentionedDate = [...byDate.keys()].sort().pop();
+
   if (best.distinctReviews >= 2) {
     return {
       showId,
       proposedClosingDate: best.isoDate,
+      latestMentionedDate,
       confidence: 'high',
       reason: `${best.distinctReviews} reviews agree`,
       evidence: best.mentions,
@@ -291,6 +298,7 @@ function aggregateClosingDateCandidates(showId, openingDateISO, reviewMentions) 
       return {
         showId,
         proposedClosingDate: best.isoDate,
+        latestMentionedDate,
         confidence: 'medium',
         reason: `single review, ${weeks.toFixed(1)}wk implied run length`,
         evidence: best.mentions,
@@ -397,6 +405,18 @@ function shouldSuppressCandidate(show, proposedClosingDateISO, todayISO) {
  * Medium/low-confidence proposals stay alert-only.
  */
 const AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS = 2;
+// A "check" is one invocation, so two workflow_dispatch runs an hour apart can
+// reach the count above without a day passing. Require the absence to span two
+// real weekly cycles as well (13d, not 14d, so a cron that drifts a few hours
+// earlier still qualifies).
+const AUTO_APPLY_MIN_TODAYTIX_MISSING_DAYS = 13;
+
+function daysBetween(fromISO, toISO) {
+  const from = new Date(`${fromISO}T00:00:00Z`);
+  const to = new Date(`${toISO}T00:00:00Z`);
+  if (isNaN(from.getTime()) || isNaN(to.getTime())) return null;
+  return (to.getTime() - from.getTime()) / 86400000;
+}
 
 function selectAutoApplyClosures(candidates, showsById, todaytixMissingState, todayISO) {
   const applied = [];
@@ -409,14 +429,26 @@ function selectAutoApplyClosures(candidates, showsById, todaytixMissingState, to
     // Never close a show on a date that has not happened yet.
     if (!(candidate.proposedClosingDate < todayISO)) continue;
 
+    // Extension guard. Reviews keep quoting the originally announced date long
+    // after a run is extended, so the most-cited date is not the latest one.
+    // Verified against Shifters (2026): nine reviews agree on 2026-08-30 while
+    // the run actually went to 2026-09-20, with later reviews saying 09-13 —
+    // without this the show would have been closed three weeks early.
+    if (candidate.latestMentionedDate && candidate.latestMentionedDate > candidate.proposedClosingDate) {
+      continue;
+    }
+
     const missing = todaytixMissingState && todaytixMissingState[candidate.showId];
     const missingChecks = (missing && missing.consecutiveMissingChecks) || 0;
     if (missingChecks < AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS) continue;
 
+    const missingDays = missing && missing.firstMissingDate ? daysBetween(missing.firstMissingDate, todayISO) : null;
+    if (missingDays === null || missingDays < AUTO_APPLY_MIN_TODAYTIX_MISSING_DAYS) continue;
+
     applied.push({
       showId: candidate.showId,
       closingDate: candidate.proposedClosingDate,
-      reason: `${candidate.reason}; absent from TodayTix for ${missingChecks} consecutive checks`,
+      reason: `${candidate.reason}; absent from TodayTix for ${missingChecks} consecutive checks over ${Math.round(missingDays)}d`,
       evidence: candidate.evidence,
     });
   }
@@ -426,6 +458,7 @@ function selectAutoApplyClosures(candidates, showsById, todaytixMissingState, to
 module.exports = {
   MONTH_NAMES,
   AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS,
+  AUTO_APPLY_MIN_TODAYTIX_MISSING_DAYS,
   selectAutoApplyClosures,
   extractClosingDateMentions,
   resolveMentionDate,

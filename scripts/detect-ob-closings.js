@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Off-Broadway closing-date detector — ALERT ONLY.
+ * Off-Broadway closing-date detector.
  *
  * Off-Broadway shows have no closing-date automation (Broadway-only via
  * update-show-status.js / audit-closing-dates.js). OB runs are typically
@@ -37,6 +37,7 @@ const {
   selectAutoApplyClosures,
 } = require('./lib/ob-closing-detector');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { writeClosingDate } = require('./lib/closing-date-guard');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -158,7 +159,12 @@ function runTodayTixStalenessDiff(obShows) {
  * Writes the two-signal-confirmed closures to shows.json. Anything short of
  * both signals is left for the alert path.
  */
-function applyConfirmedClosures(showsData, candidates, dryRun) {
+function applyConfirmedClosures(showsData, candidates, dryRun, todaytixSkipped) {
+  // Without a fresh TodayTix feed the staleness counters are whatever the last
+  // successful run committed, which is not a second signal — it is the same
+  // signal replayed. Fall back to alert-only.
+  if (todaytixSkipped) return [];
+
   const showsById = Object.fromEntries((showsData.shows || []).map((s) => [s.id, s]));
   const missingState = loadJson(STATE_PATH, {});
   const selected = selectAutoApplyClosures(candidates, showsById, missingState, todayISO());
@@ -167,16 +173,23 @@ function applyConfirmedClosures(showsData, candidates, dryRun) {
   const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
   const snapshot = loadShows();
   const byId = Object.fromEntries(snapshot.shows.map((s) => [s.id, s]));
+  const written = [];
   for (const closure of selected) {
     const show = byId[closure.showId];
     // Re-check under the write lock: a concurrent writer may have set a date
     // between our read and this save.
     if (!show || show.status !== 'open' || show.closingDate) continue;
+    // writeClosingDate honours humanCorrectedClosingDate and stamps
+    // closingDateSource/closingDateUpdatedAt — the same guard every other
+    // automated closing-date writer goes through.
+    if (!writeClosingDate(show, closure.closingDate, 'ob-closing-detector', { todayStr: todayISO() })) continue;
     show.status = 'closed';
-    show.closingDate = closure.closingDate;
+    written.push(closure);
   }
-  saveShows(snapshot);
-  return selected;
+  if (written.length > 0) saveShows(snapshot);
+  // Report only what actually landed: a report claiming a closure the write
+  // lock rejected would read as fixed while the site still says open.
+  return written;
 }
 
 function main() {
@@ -192,7 +205,12 @@ function main() {
 
   const reviewTextSweep = runReviewTextSweep(obShows);
   const todaytixStaleness = runTodayTixStalenessDiff(obShows);
-  const autoApplied = applyConfirmedClosures(showsData, reviewTextSweep.candidates, dryRun);
+  const autoApplied = applyConfirmedClosures(
+    showsData,
+    reviewTextSweep.candidates,
+    dryRun,
+    todaytixStaleness.skipped
+  );
 
   const report = {
     generatedAt: new Date().toISOString(),
