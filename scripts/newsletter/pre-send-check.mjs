@@ -45,6 +45,7 @@ const {
   phantomImageViolations,
   countEmptyImgSrc,
   extractSiteImageUrls,
+  extractSiteLinkUrls,
   completenessFindings,
   gapDisclosureDecisions,
   openingsPreserved,
@@ -356,6 +357,28 @@ if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1' && hardFailures.length === 0
   }
   if (badImgs.length > 0) {
     softIssues.push(`${badImgs.length} image URL(s) not serving as images on prod (deploy lag or 404): ${badImgs.slice(0, 3).join('; ')}`);
+  }
+}
+
+// ── SOFT: do the referenced site PAGE links actually resolve? (best-effort) ──
+// Same deploy-lag/bot-challenge caveat as the image check above, so SOFT not
+// HARD. Added after task #804 (footer About link 404 on the WE edition,
+// fixed twice) and the hollywood-reporter outlet-slug 404 shipped alongside
+// it — neither was catchable by the image-only check that predated this.
+// Resend's own pre-send link checker caught both live, after send-test had
+// already generated the draft; this closes that gap earlier, before the
+// human ever opens Resend's editor.
+if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1' && hardFailures.length === 0) {
+  const linkUrls = extractSiteLinkUrls(html).slice(0, 60);
+  const badLinks = [];
+  for (const url of linkUrls) {
+    try {
+      const res = await fetch(url, { method: 'HEAD', redirect: 'follow', signal: AbortSignal.timeout(8000) });
+      if (!res.ok) badLinks.push(`${url} → ${res.status}`);
+    } catch { /* network error/timeout: unverifiable, stay silent rather than cry wolf */ }
+  }
+  if (badLinks.length > 0) {
+    softIssues.push(`${badLinks.length} page link(s) not resolving on prod (deploy lag or 404): ${badLinks.slice(0, 5).join('; ')}`);
   }
 }
 
