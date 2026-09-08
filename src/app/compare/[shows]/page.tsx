@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getShowBySlug, getTheaterBySlug, slugify } from '@/lib/data-core';
+import { formatShowDate } from '@/lib/date-utils';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getCriticConsensus } from '@/lib/data-guides';
 import { getAudienceBuzz } from '@/lib/data-audience';
@@ -112,8 +113,7 @@ function getRunningDuration(openingDate: string): string {
 
 // Helper: format opening date
 function formatDate(dateStr: string): string {
-  const d = new Date(dateStr + 'T12:00:00');
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return formatShowDate(dateStr);
 }
 
 // Helper: get the cheapest ticket price

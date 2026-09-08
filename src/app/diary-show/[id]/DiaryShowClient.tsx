@@ -14,6 +14,7 @@ import StarRating from '@/components/user/StarRating';
 import ShowImage from '@/components/ShowImage';
 import type { UserReview } from '@/types/user';
 import { marketLabel, type DiaryShowDetail } from '@/lib/diary-show-types';
+import { formatShowDate } from '@/lib/date-utils';
 
 const ShowPageWatchlistButton = dynamic(() => import('@/components/user/ShowPageWatchlistButton'), { ssr: false });
 
@@ -167,7 +168,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
           {marketDetail && <p className="text-sm text-gray-500 mt-0.5">{marketDetail}</p>}
           <p className="text-xs text-gray-600 mt-1">
             {show.openingDate
-              ? `Opened ${new Date(show.openingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+              ? `Opened ${formatShowDate(show.openingDate)}`
               : 'Opening date unknown'}
           </p>
         </div>

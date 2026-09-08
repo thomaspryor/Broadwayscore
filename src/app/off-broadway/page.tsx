@@ -15,6 +15,7 @@ import type { OffBroadwayShow } from '@/components/OffBroadwayPageClient';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
 import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import { featureFlags } from '@/config/feature-flags';
+import { formatShowDate } from '@/lib/date-utils';
 
 const currentYear = new Date().getFullYear();
 
@@ -95,7 +96,7 @@ export default function OffBroadwayPage() {
     const t = raw ? new Date(`${raw}T12:00:00`).getTime() : NaN;
     return Number.isNaN(t) ? Infinity : t;
   };
-  const shortDate = (d: string) => new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const shortDate = (d: string) => formatShowDate(d, { month: 'short', day: 'numeric' });
   const startingSoonShows = shows
     .filter(s => s.status === 'upcoming' && s.type !== 'opera' && Number.isFinite(startMs(s)))
     .sort((a, b) => startMs(a) - startMs(b))
