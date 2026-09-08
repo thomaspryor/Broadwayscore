@@ -61,6 +61,9 @@
 
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
 const {
@@ -133,6 +136,41 @@ function selectAuditableCards(issues, { filter = null, limit = null } = {}) {
   return { selected, skipped };
 }
 
+// The corpora a fresh checkout does NOT get. prepareCheckWorkdir copies only
+// top-level *.json out of data/ and public/data/; the private review-texts repo
+// and the per-show/per-audit trees are simply absent.
+const REQUIRED_CORPORA = ['data/review-texts', 'public/data/shows', 'data/audit'];
+
+/**
+ * Is this checkout carrying the corpora a scanning command needs?
+ *
+ * THIS IS THE GUARD THAT MAKES THE PASS SIDE HONEST. Two independent reviewers
+ * landed on the same failure mode: a command that SCANS a corpus ("audit every
+ * review file, fail if any violates X") exits 0 when the corpus is empty. On a
+ * data-less checkout that reads as "the card's problem is fixed" when nothing
+ * was examined at all. Some scripts defend themselves — BRO-2356's
+ * audit-cv-flag-contradiction.js refuses with "The gate cannot pass vacuously"
+ * — but that is per-script courtesy, not a property this audit can rely on.
+ *
+ * So a pass from an incomplete checkout is reported in its own, weaker bucket
+ * rather than being laundered into a stale nomination. Wording alone would not
+ * do it: the whole point is that the output looks identical either way.
+ */
+function assessCheckoutData(wt) {
+  const missing = [];
+  for (const rel of REQUIRED_CORPORA) {
+    const full = path.join(wt, rel);
+    let ok = false;
+    try {
+      ok = fs.statSync(full).isDirectory() && fs.readdirSync(full).length > 0;
+    } catch {
+      ok = false;
+    }
+    if (!ok) missing.push(rel);
+  }
+  return { complete: missing.length === 0, missing };
+}
+
 /**
  * Turn one runVerify() result into this audit's verdict.
  *
@@ -147,12 +185,19 @@ function selectAuditableCards(issues, { filter = null, limit = null } = {}) {
  * something this tool cannot determine.
  *
  * @param {{status:'pass'|'fail'|'unverifiable', detail:string|null}} runResult
- * @returns {{verdict:'premise-stale-candidate'|'still-failing'|'unverifiable', detail:string|null}}
+ * @param {{dataComplete?:boolean}} [ctx] - whether the checkout carried the
+ *   corpora. A pass from an incomplete checkout is NOT a stale nomination; it
+ *   is `premise-stale-unconfirmed`, because a corpus scan of an empty corpus
+ *   exits 0 without examining anything.
+ * @returns {{verdict:'premise-stale-candidate'|'premise-stale-unconfirmed'|'still-failing'|'unverifiable', detail:string|null}}
  */
-function classifyPremiseOutcome(runResult) {
+function classifyPremiseOutcome(runResult, ctx = {}) {
   const status = runResult && runResult.status;
   const detail = (runResult && runResult.detail) || null;
   if (status === 'pass') {
+    if (ctx.dataComplete === false) {
+      return { verdict: 'premise-stale-unconfirmed', detail };
+    }
     return { verdict: 'premise-stale-candidate', detail };
   }
   if (status === 'fail') {
@@ -172,28 +217,56 @@ function parseArgs(argv) {
       opts.limit = n;
     } else if (arg.startsWith('--filter=')) {
       opts.filter = new RegExp(arg.slice('--filter='.length), 'i');
+    } else {
+      // Refuse rather than ignore. A silently-dropped `--dryrun` or `--limit 10`
+      // (space instead of `=`) would run the FULL audit — every armed open card,
+      // each in a subprocess — when the caller asked for a cheap preview.
+      throw new Error(`unknown argument: ${arg}\n\n${USAGE}`);
     }
   }
   return opts;
 }
 
-function report(results, skipped, opts) {
+function report(results, skipped, opts, checkout = {}) {
   if (opts.json) {
-    console.log(JSON.stringify({ results, skippedCount: skipped.length }, null, 2));
+    // stdout carries the JSON document and NOTHING else — every progress line
+    // above goes to stderr — so `... --json | jq` works.
+    console.log(JSON.stringify({
+      results,
+      skippedCount: skipped.length,
+      checkoutSha: checkout.sha || null,
+      dataComplete: checkout.dataComplete === true,
+      missingCorpora: checkout.missing || [],
+    }, null, 2));
     return;
   }
   const stale = results.filter((r) => r.verdict === 'premise-stale-candidate');
+  const unconfirmed = results.filter((r) => r.verdict === 'premise-stale-unconfirmed');
   const live = results.filter((r) => r.verdict === 'still-failing');
   const unver = results.filter((r) => r.verdict === 'unverifiable');
 
-  console.log(`\nChecked ${results.length} open card(s); skipped ${skipped.length}.\n`);
+  console.log(`\nChecked ${results.length} open card(s) against origin/main ${checkout.sha || '(unknown sha)'}; skipped ${skipped.length}.\n`);
+
+  const line = (r) => {
+    console.log(`  ${r.identifier} [${r.state}] ${r.title}`);
+    console.log(`      cmd: ${r.cmd}`);
+    // Print detail here too. runVerify sets "passed on retry (first run flaked)"
+    // on a retry-pass — the weakest evidence there is — and hiding it laundered
+    // a flake into "already PASSES".
+    if (r.detail) console.log(`      note: ${String(r.detail).trim().slice(0, 160)}`);
+  };
+
   if (stale.length) {
     console.log(`PREMISE-STALE CANDIDATES (${stale.length}) — their own acceptance command already PASSES on origin/main.`);
     console.log('A pass is evidence, not proof: read the command against the title before closing anything.\n');
-    for (const r of stale) {
-      console.log(`  ${r.identifier} [${r.state}] ${r.title}`);
-      console.log(`      cmd: ${r.cmd}`);
-    }
+    for (const r of stale) line(r);
+    console.log('');
+  }
+  if (unconfirmed.length) {
+    console.log(`PASSED, BUT NOT CORROBORATED (${unconfirmed.length}) — this checkout was missing: ${(checkout.missing || []).join(', ')}.`);
+    console.log('A command that SCANS one of those corpora exits 0 on an empty corpus without examining');
+    console.log('anything, which is indistinguishable from a real pass. Corroborate by hand before closing.\n');
+    for (const r of unconfirmed) line(r);
     console.log('');
   }
   console.log(`Still failing: ${live.length}   No verdict: ${unver.length}\n`);
@@ -219,32 +292,54 @@ async function main() {
   const issues = await listOpenIssuesWithDescriptions();
   const { selected, skipped } = selectAuditableCards(issues, { filter: opts.filter, limit: opts.limit });
 
-  console.log(`${issues.length} open issue(s); ${selected.length} carry a runnable acceptance command and are unstarted.`);
+  // Progress goes to stderr so `--json` leaves stdout a clean JSON document.
+  const progress = (msg) => console.error(msg);
+  progress(`${issues.length} open issue(s); ${selected.length} carry a runnable acceptance command and are unstarted.`);
 
   if (opts.dryRun) {
-    for (const c of selected) console.log(`  would check ${c.identifier} [${c.state}] :: ${c.cmd}`);
-    console.log(`\n--dry-run: nothing was executed.`);
+    for (const c of selected) progress(`  would check ${c.identifier} [${c.state}] :: ${c.cmd}`);
+    progress(`\n--dry-run: nothing was executed.`);
     return 0;
   }
   if (!selected.length) {
-    console.log('Nothing to check.');
+    progress('Nothing to check.');
     return 0;
   }
 
   const checkout = makeFreshCheckout();
+  const data = assessCheckoutData(checkout.wt);
+  if (!data.complete) {
+    progress(`checkout is missing ${data.missing.join(', ')} — passes will be reported as UNCORROBORATED.`);
+  }
   const results = [];
   try {
     for (const card of selected) {
-      const run = runVerify(checkout.wt, card.cmd, { timeoutMs: CHECK_TIMEOUT_MS, prepared: checkout.prepared });
-      const { verdict, detail } = classifyPremiseOutcome(run);
+      let run;
+      try {
+        // attempts:1 deliberately. runVerify's retry exists to stop a flake
+        // manufacturing "your finished work is broken" on the Done side. Here a
+        // failure is explicitly non-actionable ("leave the card alone"), so the
+        // retry buys nothing and doubles the wall clock over hundreds of cards.
+        run = runVerify(checkout.wt, card.cmd, {
+          attempts: 1,
+          timeoutMs: CHECK_TIMEOUT_MS,
+          prepared: checkout.prepared,
+        });
+      } catch (err) {
+        // runVerify can throw (safe-form revalidation, mkdtemp for the fake
+        // HOME). Without this, one throw discards every result gathered so far,
+        // because report() sits after the finally and is never reached.
+        run = { status: 'unverifiable', detail: `runner threw: ${err && err.message ? err.message : err}` };
+      }
+      const { verdict, detail } = classifyPremiseOutcome(run, { dataComplete: data.complete });
       results.push({ ...card, verdict, detail });
-      console.log(`  ${verdict.padEnd(24)} ${card.identifier}`);
+      progress(`  ${verdict.padEnd(28)} ${card.identifier}`);
     }
   } finally {
     removeCheckout(checkout);
   }
 
-  report(results, skipped, opts);
+  report(results, skipped, opts, { sha: checkout.sha, dataComplete: data.complete, missing: data.missing });
   return 0;
 }
 
@@ -257,4 +352,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { selectAuditableCards, classifyPremiseOutcome, parseArgs, UNSTARTED_STATES };
+module.exports = { selectAuditableCards, classifyPremiseOutcome, assessCheckoutData, parseArgs, UNSTARTED_STATES, REQUIRED_CORPORA };

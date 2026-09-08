@@ -14,7 +14,11 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { selectAuditableCards, classifyPremiseOutcome, parseArgs } =
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+const { selectAuditableCards, classifyPremiseOutcome, assessCheckoutData, parseArgs, REQUIRED_CORPORA } =
   require('./audit-stale-open-premises.js');
 
 const ARMED = '## Acceptance criteria\n\nRun:\n`node scripts/validate-data.js`\n';
@@ -102,11 +106,28 @@ describe('selectAuditableCards', () => {
 });
 
 describe('classifyPremiseOutcome', () => {
-  it('a pass means the state the card was filed to reach is already reached', () => {
+  it('a pass on a data-complete checkout means the filed-for state is already reached', () => {
     assert.equal(
-      classifyPremiseOutcome({ status: 'pass', detail: null }).verdict,
+      classifyPremiseOutcome({ status: 'pass', detail: null }, { dataComplete: true }).verdict,
       'premise-stale-candidate'
     );
+  });
+
+  // THE SECOND LOAD-BEARING ASSERTION, and the one two independent reviewers
+  // converged on. A command that SCANS a corpus exits 0 when the corpus is
+  // absent, without examining anything — indistinguishable in the exit code
+  // from a real pass. A fresh checkout never has data/review-texts. Nominating
+  // that as stale is how a REAL, unfixed bug gets closed, so a pass from an
+  // incomplete checkout must land in the weaker bucket, not the actionable one.
+  it('a pass on an INCOMPLETE checkout is never nominated as a stale candidate', () => {
+    const out = classifyPremiseOutcome({ status: 'pass', detail: null }, { dataComplete: false });
+    assert.equal(out.verdict, 'premise-stale-unconfirmed');
+    assert.notEqual(out.verdict, 'premise-stale-candidate');
+  });
+
+  it('an unknown dataComplete does not silently downgrade a pass', () => {
+    assert.equal(classifyPremiseOutcome({ status: 'pass' }).verdict, 'premise-stale-candidate');
+    assert.equal(classifyPremiseOutcome({ status: 'pass' }, {}).verdict, 'premise-stale-candidate');
   });
 
   // Deliberately NOT called 'premise-live'. Measured on BRO-2356: its command
@@ -146,6 +167,53 @@ describe('classifyPremiseOutcome', () => {
   });
 });
 
+describe('assessCheckoutData', () => {
+  it('an empty directory is incomplete, and names every missing corpus', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'premise-empty-'));
+    try {
+      const out = assessCheckoutData(dir);
+      assert.equal(out.complete, false);
+      assert.deepEqual(out.missing, REQUIRED_CORPORA);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('a corpus directory that EXISTS but is EMPTY still counts as missing', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'premise-hollow-'));
+    try {
+      for (const rel of REQUIRED_CORPORA) fs.mkdirSync(path.join(dir, rel), { recursive: true });
+      const out = assessCheckoutData(dir);
+      // This is the whole point: `git checkout` can leave an empty directory,
+      // and "the path exists" would report a hollow checkout as complete.
+      assert.equal(out.complete, false);
+      assert.deepEqual(out.missing, REQUIRED_CORPORA);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('a checkout carrying all corpora with content is complete', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'premise-full-'));
+    try {
+      for (const rel of REQUIRED_CORPORA) {
+        fs.mkdirSync(path.join(dir, rel), { recursive: true });
+        fs.writeFileSync(path.join(dir, rel, 'x.json'), '{}');
+      }
+      const out = assessCheckoutData(dir);
+      assert.equal(out.complete, true);
+      assert.deepEqual(out.missing, []);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('a nonexistent path is incomplete rather than throwing mid-audit', () => {
+    const out = assessCheckoutData('/definitely/not/a/real/path/xyz');
+    assert.equal(out.complete, false);
+  });
+});
+
 describe('parseArgs', () => {
   it('parses the documented flags', () => {
     const o = parseArgs(['--dry-run', '--limit=5', '--filter=main red', '--json']);
@@ -165,5 +233,13 @@ describe('parseArgs', () => {
     assert.equal(o.limit, null);
     assert.equal(o.filter, null);
     assert.equal(o.dryRun, false);
+  });
+
+  // A silently-ignored flag is the expensive kind of typo here: `--dryrun` or
+  // `--limit 10` (space, not `=`) would run the FULL audit — a subprocess per
+  // armed open card — when the caller asked for a cheap preview.
+  it('refuses an unknown flag instead of silently running the full audit', () => {
+    assert.throws(() => parseArgs(['--dryrun']), /unknown argument/);
+    assert.throws(() => parseArgs(['--limit', '10']), /unknown argument/);
   });
 });
