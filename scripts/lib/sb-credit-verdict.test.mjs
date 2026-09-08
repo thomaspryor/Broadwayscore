@@ -90,10 +90,83 @@ test('thresholds ladder: 50 pass, 51 warn, 76 warn, 100 fail', () => {
   assert.equal(mk(100).level, 'fail');
 });
 
-test('thresholds are overridable without editing the module', () => {
+// ---------- exhaustion is raw credits, never the rounded percentage ----------
+
+test('995,000 of 1,000,000 rounds to pctUsed 100 but still has 5,000 credits — must NOT report exhausted', () => {
+  // fetchSBCreditStatus Math.rounds pctUsed (check-sb-credits.js), so this
+  // account presents as "100%" with a working balance. A percentage-based
+  // exhaustion test fails an opening-night gate here. Both pre-ship reviewers
+  // found this independently.
+  const v = sbCreditVerdict({
+    ok: true, maxCredits: 1000000, usedCredits: 995000, remaining: 5000, pctUsed: 100,
+  });
+  assert.equal(v.level, 'warn');
+  assert.doesNotMatch(v.detail, /exhausted/i);
+});
+
+test('remaining exactly 0 is exhausted; remaining 1 is not', () => {
+  const at0 = sbCreditVerdict({ ok: true, maxCredits: 1000, usedCredits: 1000, remaining: 0, pctUsed: 100 });
+  assert.equal(at0.level, 'fail');
+  const at1 = sbCreditVerdict({ ok: true, maxCredits: 1000, usedCredits: 999, remaining: 1, pctUsed: 100 });
+  assert.equal(at1.level, 'warn');
+});
+
+test('an over-drawn cycle (negative remaining) is exhausted', () => {
+  const v = sbCreditVerdict({ ok: true, maxCredits: 1000000, usedCredits: 1000012, remaining: -12, pctUsed: 100 });
+  assert.equal(v.level, 'fail');
+});
+
+// ---------- rollback without a deploy ----------
+
+test('an explicit failPctUsed below 100 restores a hard headroom line', () => {
   const v = sbCreditVerdict(
     { ok: true, maxCredits: 100, usedCredits: 80, remaining: 20, pctUsed: 80 },
     { failPctUsed: 75 },
   );
   assert.equal(v.level, 'fail');
+  assert.match(v.detail, /hard line/);
+});
+
+test('SB_READINESS_FAIL_PCT_USED restores the 75% hard line without a code edit', () => {
+  const prev = process.env.SB_READINESS_FAIL_PCT_USED;
+  process.env.SB_READINESS_FAIL_PCT_USED = '75';
+  try {
+    const v = sbCreditVerdict({ ok: true, maxCredits: 100, usedCredits: 80, remaining: 20, pctUsed: 80 });
+    assert.equal(v.level, 'fail');
+  } finally {
+    if (prev === undefined) delete process.env.SB_READINESS_FAIL_PCT_USED;
+    else process.env.SB_READINESS_FAIL_PCT_USED = prev;
+  }
+});
+
+test('a non-numeric env override is ignored rather than disabling the ladder', () => {
+  const prev = process.env.SB_READINESS_FAIL_PCT_USED;
+  process.env.SB_READINESS_FAIL_PCT_USED = 'not-a-number';
+  try {
+    const v = sbCreditVerdict({ ok: true, maxCredits: 100, usedCredits: 80, remaining: 20, pctUsed: 80 });
+    assert.equal(v.level, 'warn', 'falls back to the default 100, so 80% is still only a warn');
+  } finally {
+    if (prev === undefined) delete process.env.SB_READINESS_FAIL_PCT_USED;
+    else process.env.SB_READINESS_FAIL_PCT_USED = prev;
+  }
+});
+
+// ---------- every level the module can return is mapped by the caller ----------
+
+test('sbCreditVerdict only ever returns levels the readiness script can render', () => {
+  const allowed = new Set(['pass', 'warn', 'fail', 'skip']);
+  const cases = [
+    null, undefined, {},
+    { ok: false, reason: 'no-key' },
+    { ok: false, reason: 'api-error' },
+    { ok: false, reason: 'no-max' },
+    { ok: true, pctUsed: NaN },
+    { ok: true, maxCredits: 100, usedCredits: 0, remaining: 100, pctUsed: 0 },
+    { ok: true, maxCredits: 100, usedCredits: 60, remaining: 40, pctUsed: 60 },
+    { ok: true, maxCredits: 100, usedCredits: 90, remaining: 10, pctUsed: 90 },
+    { ok: true, maxCredits: 100, usedCredits: 100, remaining: 0, pctUsed: 100 },
+  ];
+  for (const c of cases) {
+    assert.ok(allowed.has(sbCreditVerdict(c).level), `unmapped level for ${JSON.stringify(c)}`);
+  }
 });

@@ -25,17 +25,36 @@ const DEFAULT_ATTENTION_PCT_USED = 75;
 /**
  * Fail the gate only at genuine exhaustion, not at the attention line.
  *
- * The attention line (75% used / 25% remaining) is the house number and stays
- * a WARN here on purpose. ScrapingBee is a FALLBACK link in the page chain,
- * and the owner's standing decision on a burnt SB cycle is to ride it out
- * rather than act (memory/feedback_sb_quota_ride_out.md). Last cycle reached
- * 922K of 1M, so a gate that exits non-zero above 75% would have reported
- * "NOT READY" for a large part of a normal month, drowning the other twenty
- * checks in the same summary and reddening every auto-triggered run — a check
+ * The strongest reason is not policy, it is that the hard gate already exists
+ * somewhere better: check 11b of the same readiness script runs a DEMAND-aware
+ * budget check (lib/opening-night-budget.js checkBudget, ~50,000 SB credits
+ * estimated per show) and blocks when projected demand exceeds what is
+ * actually left. That is the check that should stop an opening night, because
+ * it knows how many shows are opening; a flat percentage does not. Duplicating
+ * a hard stop here would only add a second, dumber gate that fires first.
+ *
+ * The attention line (75% used / 25% remaining) is the house number
+ * (credit-preflight.js minPct=25, opening-night-readiness.js:81) and stays a
+ * WARN. ScrapingBee is a FALLBACK link in the page chain and the owner's
+ * standing decision on a burnt cycle is to ride it out
+ * (memory/feedback_sb_quota_ride_out.md). Last cycle reached 922K of 1M, so a
+ * gate that exited non-zero above 75% would have reported "NOT READY" for a
+ * large part of a normal month, drowning the other twenty checks — a check
  * that cries wolf for weeks is the same dead alarm as one that never fires,
  * which is the bug this module was written to fix.
+ *
+ * Overridable without a deploy via SB_READINESS_FAIL_PCT_USED (and the two
+ * siblings below), so restoring a 75% hard failure at 2am is an env change,
+ * not an edit-and-redeploy.
  */
 const DEFAULT_FAIL_PCT_USED = 100;
+
+function envPct(name, fallback) {
+  const raw = process.env[name];
+  if (raw === undefined || raw === '') return fallback;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : fallback;
+}
 
 /**
  * @param {Object} status - the object returned by lib/check-sb-credits.js
@@ -45,9 +64,9 @@ const DEFAULT_FAIL_PCT_USED = 100;
  * @returns {{level: 'pass'|'warn'|'fail'|'skip', detail: string}}
  */
 function sbCreditVerdict(status, thresholds = {}) {
-  const warnAt = thresholds.warnPctUsed ?? DEFAULT_WARN_PCT_USED;
-  const attentionAt = thresholds.attentionPctUsed ?? DEFAULT_ATTENTION_PCT_USED;
-  const failAt = thresholds.failPctUsed ?? DEFAULT_FAIL_PCT_USED;
+  const warnAt = thresholds.warnPctUsed ?? envPct('SB_READINESS_WARN_PCT_USED', DEFAULT_WARN_PCT_USED);
+  const attentionAt = thresholds.attentionPctUsed ?? envPct('SB_READINESS_ATTENTION_PCT_USED', DEFAULT_ATTENTION_PCT_USED);
+  const failAt = thresholds.failPctUsed ?? envPct('SB_READINESS_FAIL_PCT_USED', DEFAULT_FAIL_PCT_USED);
 
   if (!status || typeof status !== 'object') {
     return { level: 'warn', detail: 'No usage status returned' };
@@ -74,8 +93,22 @@ function sbCreditVerdict(status, thresholds = {}) {
   }
 
   const where = `${pctUsed}% used (${usedCredits}/${maxCredits}, ${remaining} left)`;
-  if (pctUsed >= failAt) {
+
+  // Exhaustion is decided on RAW credits remaining, never on the rounded
+  // percentage. fetchSBCreditStatus rounds pctUsed, so 995,000 of 1,000,000
+  // presents as "100%" with 5,000 credits still spendable; a percentage-based
+  // exhaustion test would report "Cycle exhausted" and fail an opening-night
+  // gate with a working account (BRO-3032 review). Only when the caller has
+  // deliberately lowered failAt below 100 does the percentage govern — that is
+  // an operator asking for a headroom gate, not an exhaustion test.
+  const exhausted = Number.isFinite(remaining)
+    ? remaining <= 0
+    : pctUsed >= 100;
+  if (exhausted) {
     return { level: 'fail', detail: `${where}. Cycle exhausted — ScrapingBee fallbacks will not serve.` };
+  }
+  if (failAt < 100 && pctUsed >= failAt) {
+    return { level: 'fail', detail: `${where}. Past the ${failAt}% hard line configured for this run.` };
   }
   if (pctUsed > attentionAt) {
     return { level: 'warn', detail: `${where}. Past the ${attentionAt}% attention line — riding it out per policy, but SB fallbacks are thin.` };

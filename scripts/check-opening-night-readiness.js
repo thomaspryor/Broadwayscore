@@ -364,11 +364,12 @@ async function runChecks() {
   // no-key / api-error / max_api_credit<=0, and lib/sb-credit-verdict.js owns
   // the thresholds. Nothing here hand-reads a provider field name any more.
   const sbVerdict = sbCreditVerdict(await fetchSBCreditStatus());
-  report(
-    { pass: PASS, warn: WARN, fail: FAIL, skip: SKIP }[sbVerdict.level],
-    'ScrapingBee credits',
-    sbVerdict.detail,
-  );
+  // `?? WARN`: an unmapped level would make report() push {status: undefined},
+  // which printSummary counts in none of its four buckets — the check would
+  // silently vanish from the summary, which is the exact failure mode this
+  // whole fix exists to remove. Degrade loudly instead.
+  const sbSymbol = { pass: PASS, warn: WARN, fail: FAIL, skip: SKIP }[sbVerdict.level] ?? WARN;
+  report(sbSymbol, 'ScrapingBee credits', sbVerdict.detail);
 
   // 11. Subscriber sync (Formspree vs Resend)
   const resendKey = process.env.RESEND_API_KEY;
