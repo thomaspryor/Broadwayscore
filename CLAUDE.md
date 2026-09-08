@@ -66,7 +66,8 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 1. `npx tsc --noEmit` — zero errors in changed files. **`scripts/llm-scoring/` edits: also `npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json`** — CI's gate uses it and it sets `strictNullChecks: true`, unlike the parent config (#516).
 2. `npx next lint` — no new warnings
 3. Auth-aware build with feature flags
-4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test.
+4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test (it cannot see an undefined identifier; that is a runtime ReferenceError).
+   **Run unit tests with `npm run test:one <file>` (tsx), never `node --test`.** CI routes src-importing tests through tsx; `node --test` fails them with `Cannot find package '@/...'`, which reads like a broken environment and is really the wrong runner. BRO-2955: a session dismissed exactly that error, skipped the test, and shipped a ReferenceError to CI that the test catches in seconds.
 5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
 7. **Scoring-logic edits** — two watchlists (unit tests NOT sufficient). Inclusion: `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/{scoring,engine,data-core}.ts`. Score-source: `scripts/lib/{rebuild-helpers,score-extractors,score-parsers,review-normalization,score-routing}.js`. **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary (Stop hook enforces). See `memory/feedback_scoring_delta_required.md`.
