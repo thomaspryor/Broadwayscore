@@ -76,30 +76,48 @@ concurrency:
 jobs:
   checklist:
     runs-on: ubuntu-latest
-    # BRO-369: raised from 10 (2026-09-08) — the "Commit opening night state"
-    # step below now overrides PUSH_DEADLINE_SEC=360 + PUSH_API_MAX_RETRIES=2
-    # to fix 3 real conclusion=failure runs in 24h (33925219166, 33934756338,
-    # 33992585696), all the same shape: local push exhausted the shared 240s
-    # default after ~2 real fetch-rebase-merge cycles, then the Git Data API
-    # fallback ALSO timed out on both of its auto-scaled 2 attempts (90s cap
-    # each). Worst case with the new step budget, using the corrected cost
-    # model from opening-night-completeness-check.yml's same-day sizing
-    # (single network op can chain up to ~4x GIT_NET_TIMEOUT_SEC=360s, not
-    # the ~270s push-with-retry.sh's own older comment implies): baseline
-    # ~5min (checkouts + npm ci + checklist run + latency + SLA dispatch,
-    # measured from these same 3 failing runs) + up to ~360s local-loop
-    # overshoot past the 360s deadline + 2 x 360s bounded fallback attempts
-    # = ~25min worst case. Sized to that ceiling rather than the tighter
-    # number a naive PUSH_DEADLINE_SEC-only read would suggest, specifically
-    # so a genuine worst case exits the push step cleanly (failure + retry
-    # next hour) instead of being hard-killed by the job timeout — a
-    # job-timeout kill reports conclusion=cancelled, which
-    # repeatFailureResults() in scripts/health-check.js does NOT count,
-    # would starve the if:always() telemetry/notify-failure steps of time,
-    # and is the failure mode this fix must not silently trade into. 25min
-    # is negligible against this workflow's 3h CRITICAL_CRONS staleness band
-    # in check-cron-health.yml.
-    timeout-minutes: 25
+    # BRO-369: raised from 10 (2026-09-08) to fix 3 real conclusion=failure
+    # runs in 24h (33925219166, 33934756338, 33992585696), all the same
+    # shape: the "Commit opening night state" step's local push exhausted
+    # the shared 240s PUSH_DEADLINE_SEC default after ~2 real
+    # fetch-rebase-merge cycles, then the Git Data API fallback ALSO timed
+    # out on both of its auto-scaled attempts (90s cap each).
+    #
+    # Codex adversarial review (same session) flagged that PUSH_DEADLINE_SEC
+    # alone doesn't bound a step's total wall time — the Git Data API
+    # fallback's own retries run OUTSIDE that budget (push-with-retry.sh's
+    # own comment above its push-via-git-api.sh call) — so an estimate built
+    # only from PUSH_DEADLINE_SEC + assumed fallback cost isn't a real
+    # ceiling. Both commit steps below now wrap their push-with-retry.sh
+    # call in an explicit `timeout -k 10 N` (the same hang-guard pattern
+    # push-with-retry.sh's own _timeout() uses internally), which IS a real,
+    # OS-enforced ceiling regardless of how the script's internal budget
+    # math composes: 480s for the apiFallbackSafe state commit (the ledger
+    # that must not be lost — see that step's own comment), 180s for the
+    # best-effort/recoverable telemetry commit.
+    #
+    # Worst case is now provable, not estimated: ~5min baseline (checkouts +
+    # npm ci + checklist run + latency + SLA dispatch, measured from these
+    # same 3 failing runs) + 480s (8min) + 180s (3min) = ~16min. 20min gives
+    # real margin over that without the earlier estimate's unverified
+    # padding. A genuine worst case now exits each push step cleanly
+    # (failure + retry next hour) well inside the job timeout, instead of
+    # being hard-killed by it — a job-timeout kill reports
+    # conclusion=cancelled, which repeatFailureResults() in
+    # scripts/health-check.js does NOT count, would starve the if:always()
+    # telemetry/notify-failure steps of time, and is the failure mode this
+    # fix must not silently trade into. 20min is negligible against this
+    # workflow's 3h CRITICAL_CRONS staleness band in check-cron-health.yml,
+    # and keeps this workflow's typical (uncontended) runtime — and thus its
+    # exposure to the documented 3-deep concurrency-queue cancellation
+    # tradeoff above — close to what it was before this fix: these are hard
+    # ceilings on the RARE contended case, not the normal-case runtime.
+    #
+    # Rollback: revert this commit as a whole, including
+    # tests/unit/opening-night-checklist-failure.test.mjs — the test pins
+    # this exact operational contract (deadline/retries/timeout values) on
+    # purpose, so it and the workflow change are meant to move together.
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -253,7 +271,10 @@ jobs:
           # exactly that: local push bailed after ~2 attempts, then the Git
           # Data API fallback ALSO timed out on both of its auto-scaled 2
           # attempts. 360s (vs 240s) buys a meaningfully better shot at
-          # succeeding locally without ever reaching that flaky fallback.
+          # succeeding locally without ever reaching that flaky fallback
+          # (which is real git push/fetch plumbing against the same remote,
+          # not an independent transport — a genuine remote-side outage
+          # defeats both paths, this only helps with ordinary contention).
           # Do NOT raise the shared push-with-retry.sh default instead — its
           # own comment explicitly says not to, since ~15 other callers with
           # 5-10min job timeouts rely on the tight default to fail fast.
@@ -286,7 +307,22 @@ jobs:
             echo "No opening night state changes to commit"
           else
             git commit -m "audit: opening-night checklist state [skip ci]"
-            bash scripts/lib/push-with-retry.sh 5 main
+            # BRO-369 (Codex adversarial review finding): PUSH_DEADLINE_SEC
+            # above only bounds push-with-retry.sh's LOCAL retry loop — the
+            # Git Data API fallback's own retries run OUTSIDE that budget
+            # (see push-with-retry.sh's comment above its push-via-git-api.sh
+            # call), so the two env vars alone don't give a provable ceiling
+            # on this step's total wall time. Wrap the whole call in the
+            # repo's own hang-guard pattern (matches _timeout()'s `-k 10`
+            # convention inside push-with-retry.sh itself, and the workflow-
+            # authoring guidance in .github/workflows/CLAUDE.md for bounding
+            # a step so a hang produces a real failure — reachable by
+            # if:failure() below — instead of a job-timeout cancellation):
+            # SIGTERM at 480s, SIGKILL 10s later if the process (or a child
+            # git/curl call) ignores it. push-with-retry.sh's EXIT trap
+            # (push_mutex_release) still runs on SIGTERM, so a kill here
+            # doesn't strand next run's mutex.
+            timeout -k 10 480 bash scripts/lib/push-with-retry.sh 5 main
           fi
 
       - name: Commit shared audit telemetry
@@ -298,6 +334,25 @@ jobs:
         # commit/push). git identity is already configured by the
         # ./.github/actions/setup-node step above (configure-git: true).
         if: always()
+        env:
+          # BRO-369 (Codex adversarial review finding): before this fix, this
+          # step ran on push-with-retry.sh's unbounded-relative-to-the-job
+          # defaults (240s local + auto-scaled fallback up to 6 attempts) —
+          # invisible in the 3 real failures only because it happened to find
+          # nothing staged every time (the first step's own rebase/merge had
+          # already pulled in anything pending). That's a latent risk, not a
+          # guarantee: under the SAME high-churn window that broke the first
+          # step, this one could too, and stacked after that step's own new
+          # 480s worst case it could blow well past the job's timeout-minutes.
+          # This data is recoverable (next hour's run re-commits current
+          # state; unlike the sibling step's ledger, losing one run's update
+          # here is noisy — a re-opened alert, a skipped cooldown check — not
+          # a forever-loop), so bias toward failing fast rather than
+          # burning budget chasing a push that self-heals next tick, the same
+          # tradeoff opening-night-completeness-check.yml's "Commit state
+          # file" step made for its own low-stakes snapshot.
+          PUSH_DEADLINE_SEC: '120'
+          PUSH_API_MAX_RETRIES: '1'
         run: |
           # alert-ledger + digest-queue MUST be committed here or the SLA
           # alert router incident state never persists across the hourly runs
@@ -326,7 +381,10 @@ jobs:
             echo "No shared audit telemetry changes to commit"
           else
             git commit -m "audit: opening-night checklist telemetry [skip ci]"
-            bash scripts/lib/push-with-retry.sh 5 main
+            # See the sibling apiFallbackSafe step above for why an outer
+            # hard timeout (not just PUSH_DEADLINE_SEC) is needed to get a
+            # provable ceiling on this step's wall time.
+            timeout -k 10 180 bash scripts/lib/push-with-retry.sh 5 main
           fi
 
       - name: Notify on failure
