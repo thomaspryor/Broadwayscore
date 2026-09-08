@@ -143,20 +143,23 @@ function applyCheckpointRollback(current, auditedIds, checkpointAtStart, opts = 
       // `current`/`merged` from this run's per-show stamp) — never adopt
       // this run's untrusted gaps/uncollected. See the module comment above.
       //
-      // Residual same-show concurrency gap (2nd Codex adversarial pass): if a
-      // DIFFERENT, non-refused run legitimately re-stamped this exact id
-      // between our lock's re-read and now, `merged[id].at` is that run's
-      // real, trustworthy timestamp, but we still pair it with OUR OWN stale
-      // `priorEntry` gaps/uncollected — a fresh timestamp next to stale
-      // counts. This requires two runs auditing the identical show
-      // concurrently, which the workflow's own concurrency group already
-      // prevents for the normal hourly cron; only a manual `--show=X` run
-      // racing the cron could trigger it. Same class of risk the module's
-      // top-of-file docstring already accepts for the whole rollback
-      // mechanism ("a real cross-process lock is out of S0 scope") — not
-      // resolved here, since disambiguating "our own untrusted stamp" from
-      // "a different run's trustworthy one" needs cross-run bookkeeping this
-      // file doesn't have.
+      // Residual same-show concurrency gap (2nd Codex adversarial pass): the
+      // lock only covers THIS read-modify-write, not the whole multi-minute
+      // audit. If a DIFFERENT run legitimately re-stamped this exact id via
+      // its own, separate lock acquisition (e.g. saveCheckpointEntries)
+      // sometime between OUR run's start and THIS rollback call, `current`/
+      // `merged[id].at` here is that other run's real, trustworthy
+      // timestamp — but we still pair it with OUR OWN stale `priorEntry`
+      // gaps/uncollected, since we can't tell "our own untrusted stamp" from
+      // "a different run's trustworthy one" once it's landed as `current`.
+      // Result: a fresh timestamp next to stale counts. Requires two runs
+      // auditing the identical show around the same time, which the
+      // workflow's own concurrency group already prevents for the normal
+      // hourly cron; only a manual `--show=X` run racing the cron could
+      // trigger it. Same class of risk gap-audit-merge.js's own docstring
+      // already accepts for the sibling file ("a real cross-process lock is
+      // out of S0 scope") — not resolved here for the same reason: it needs
+      // cross-run bookkeeping neither file has.
       const freshAt = (merged[id] && merged[id].at) || new Date().toISOString();
       merged[id] = hadTrustedEntry
         ? { ...priorEntry, at: freshAt, quarantineStreak: 0 }
