@@ -15,11 +15,28 @@
          binary to hand a dispatched job to, so this has to run somewhere
          with one — this Mac, same as backlog-drain.js's own launchd tick.
 
-         DISABLED BY DEFAULT — this file is NOT installed. Do not
-         `launchctl bootstrap` this without the owner reviewing at least one
-         supervised manual run first (`node scripts/linear-drain-parked.js
-         --dry-run`, then a live run) and explicitly deciding to turn on
-         continuous unattended dispatch.
+         INSTALLED AND RUNNING since 2026-09-08 (BRO-3060). Do NOT read
+         this file to learn whether the agent is live — a copy of it sits in
+         ~/Library/LaunchAgents/ and can drift from this one. Check the
+         running system instead:
+           launchctl print gui/$(id -u)/com.broadwayscore.linear-drain-parked \
+             | grep -E "runs =|last exit code"
+         For 26 days before this was bootstrapped, 126 auto-filed issues
+         (median age 19 days) sat parked with a do-not-dispatch sentinel and
+         NO ledger row of any kind, because this drain — the thing built to
+         release them — had never executed once. The supervised runs this
+         file's old header asked for have happened and are on the record:
+         a --dry-run shakedown (3 candidates, attempt-memory reconciled
+         BRO-334/BRO-335 to card-pass off their job-done rows), then a live
+         `launchctl kickstart -k` tick that produced 3/3 dispatch attempts
+         and a `launch` + `job-spawned` pair for BRO-346 in
+         data/audit/dispatch-ledger.jsonl.
+
+         To turn it OFF without deleting anything (the kill switch is
+         preferred — it stops dispatch while leaving the tick and its logs
+         in place, so a dead drain still looks different from a disabled
+         one): set LINEAR_NEXT_DISABLED=1 in .env. To stop future ticks
+         entirely, `launchctl bootout` per the note below.
 
          StartCalendarInterval entries are LOCAL TIME on this Mac
          (America/New_York, DST-safe — launchd reads the system clock).
