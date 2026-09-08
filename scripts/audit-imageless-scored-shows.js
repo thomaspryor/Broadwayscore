@@ -27,6 +27,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { hasRealImage } = require('./lib/show-images.js');
 const { findImagelessScoredShows, DEFAULT_THRESHOLD_HOURS } = require('./lib/image-trigger-guard.js');
 const { dispatchImageFetch } = require('./lib/dispatch-image-fetch.js');
+const { planSelfHealDispatch, executeSelfHealDispatch } = require('./lib/image-trigger-guard.js');
 
 const USAGE = `Usage: node scripts/audit-imageless-scored-shows.js [--dry-run]
   --dry-run    Compute + print findings, skip dispatch/alert/write.
@@ -110,43 +111,59 @@ async function main() {
   // a years-old historical gap is lower urgency and can wait its turn.
   const orderedFlagged = [...flagged].sort((a, b) => b.sinceMs - a.sinceMs);
 
-  const nextLedger = [];
-  let dispatchesThisRun = 0;
-  for (const f of orderedFlagged) {
-    const prev = prevById.get(f.id) || { firstFlaggedAt: new Date(nowMs).toISOString(), dispatchAttempts: 0, lastDispatchedAt: null };
-    const cooldownOk = !prev.lastDispatchedAt || (nowMs - Date.parse(prev.lastDispatchedAt)) >= COOLDOWN_HOURS * 3600 * 1000;
-    const underCap = dispatchesThisRun < MAX_DISPATCHES_PER_RUN;
+  // ONE dispatch for the whole batch, never one per show. Each
+  // workflow_dispatch lands in fetch-all-image-formats.yml's single-slot
+  // concurrency group, which keeps one run queued and silently CANCELS the
+  // rest — so the old per-show loop fired five runs seconds apart of which at
+  // most one survived, while recording lastDispatchedAt for all five and
+  // letting the cooldown suppress the retry. planSelfHealDispatch() routes the
+  // ids through buildImageDispatchInputs(), which collapses any number of them
+  // into at most one entry, so the fan-out cannot come back by omission.
+  const plan = planSelfHealDispatch({
+    orderedFlagged,
+    prevById,
+    nowMs,
+    cooldownHours: COOLDOWN_HOURS,
+    maxDispatchesPerRun: MAX_DISPATCHES_PER_RUN,
+  });
+  const nextLedger = plan.entries;
+  const entryById = new Map(nextLedger.map(e => [e.id, e]));
 
-    let entry = { ...prev, id: f.id, title: f.title };
+  for (const f of plan.deferred) {
+    console.log(`… ${f.id} due for dispatch but MAX_DISPATCHES_PER_RUN=${MAX_DISPATCHES_PER_RUN} reached this cycle — picked up next run`);
+  }
 
-    if (cooldownOk && !underCap) {
-      console.log(`… ${f.id} due for dispatch but MAX_DISPATCHES_PER_RUN=${MAX_DISPATCHES_PER_RUN} reached this cycle — picked up next run`);
-    } else if (cooldownOk) {
-      dispatchesThisRun++;
-      const result = await dispatchImageFetch(f.id);
-      if (result.ok) {
-        entry.dispatchAttempts = (prev.dispatchAttempts || 0) + 1;
-        entry.lastDispatchedAt = new Date(nowMs).toISOString();
-        console.log(`✓ self-heal dispatched for ${f.id} (attempt ${entry.dispatchAttempts})`);
-      } else {
-        console.error(`✗ self-heal dispatch failed for ${f.id}: ${result.error}`);
-        try {
-          const { routeAlert } = require('./lib/owner-alert-router.js');
-          await routeAlert({
-            conditionKey: `imageless-scored-show:dispatch-failed:${f.id}`,
-            title: `Image-fetch self-heal dispatch failed for ${f.title || f.id}`,
-            description: `${f.title || f.id} has reviews but no image on disk, and the automatic fetch-all-image-formats.yml dispatch itself failed: ${result.error}`,
-            hint: `Check GITHUB_TOKEN/GH_TOKEN scope for actions:write, then re-run: gh workflow run fetch-all-image-formats.yml -f show_id=${f.id}`,
-            severity: 'error',
-            disposition: 'auto',
-            cooldownHours: 24,
-          });
-        } catch (err) {
-          console.error(`routeAlert failed: ${err.message}`);
-        }
+  // Only shows a SUCCESSFUL dispatch actually carried get their attempt counter
+  // and cooldown advanced — a failed dispatch must leave the ledger untouched so
+  // the next cycle retries instead of waiting out a cooldown for work that never
+  // happened. The alert stays keyed PER SHOW: one global key would let a later
+  // batch of entirely different shows be silenced behind an earlier batch's 24h
+  // cooldown, losing per-show ownership (pre-ship review finding).
+  await executeSelfHealDispatch({
+    plan,
+    dispatch: dispatchImageFetch,
+    nowMs,
+    log: (line) => console.log(line),
+    onAlert: async ({ show, error, batchIds }) => {
+      try {
+        const { routeAlert } = require('./lib/owner-alert-router.js');
+        await routeAlert({
+          conditionKey: `imageless-scored-show:dispatch-failed:${show.id}`,
+          title: `Image-fetch self-heal dispatch failed for ${show.title || show.id}`,
+          description: `${show.title || show.id} has reviews but no image on disk, and the automatic fetch-all-image-formats.yml dispatch itself failed: ${error}. It was dispatched in a batch of ${plan.due.length}: ${batchIds}`,
+          hint: `Check GITHUB_TOKEN/GH_TOKEN scope for actions:write, then re-run: gh workflow run fetch-all-image-formats.yml -f show_id=${show.id}`,
+          severity: 'error',
+          disposition: 'auto',
+          cooldownHours: 24,
+        });
+      } catch (err) {
+        console.error(`routeAlert failed: ${err.message}`);
       }
-    }
+    },
+  });
 
+  for (const f of orderedFlagged) {
+    const entry = entryById.get(f.id);
     if ((entry.dispatchAttempts || 0) >= ESCALATE_AFTER_ATTEMPTS) {
       try {
         const { routeAlert } = require('./lib/owner-alert-router.js');
@@ -163,8 +180,6 @@ async function main() {
         console.error(`routeAlert (escalation) failed: ${err.message}`);
       }
     }
-
-    nextLedger.push(entry);
   }
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
