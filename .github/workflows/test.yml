@@ -1417,6 +1417,12 @@ on:
       # covered by any broad glob, so this needs its own entry or a solo edit
       # to the test gets zero CI.
       - 'scripts/audit-run-budget-coverage.test.mjs'
+      # Alert-reachability guard (BRO-2817) — advisory scan for page-worthy
+      # alert steps unreachable after an earlier hard-fail gate (BRO-2815
+      # class). Root-level scripts/*.js and *.test.mjs are NOT covered by any
+      # broad glob, so both need their own entry or a solo edit gets ZERO CI.
+      - 'scripts/audit-alert-reachability.js'
+      - 'scripts/audit-alert-reachability.test.mjs'
       # push-core-data audit-persistence guard (#1460, cousin of #1442's rule
       # (g)) — advisory scan for workflows that write data/audit/*.json but
       # rely only on push-core-data (which never syncs data/audit/) to
@@ -2723,6 +2729,22 @@ jobs:
         # always exits 0 (see script header for why). Exempt a workflow with
         # # hygiene-run-budget-ok: <reason>.
         run: node scripts/audit-run-budget-coverage.js
+
+      - name: Audit — page-worthy alert steps unreachable after a hard-fail gate (advisory, BRO-2817)
+        if: always() && steps.deps.outcome == 'success'
+        # BRO-2815 class, systematic version: GitHub Actions skips a step by
+        # default once an earlier step in the same job fails — a hard-fail
+        # gate step (process.exit(1), or any unguarded command) upstream of a
+        # routeAlert(disposition:'human', conditionKey: <page-worthy>) alert
+        # step silently swallows that alert unless the alert step carries
+        # `if: always()`. opening-night-broadcast.yml's "Alert if broadcast
+        # overdue" step shipped without it for months. Heuristic
+        # (regex/indent-based YAML parsing, not a real parser — see script
+        # header for its known blind spot: it can't see routeAlert() calls
+        # made from inside an invoked scripts/*.js file, only inline run:
+        # blocks), non-blocking — always exits 0. Exempt a workflow with
+        # # audit-alert-reachability-ok: <reason>.
+        run: node scripts/audit-alert-reachability.js
 
       - name: Audit — push-core-data audit-persistence gap (advisory)
         if: always() && steps.deps.outcome == 'success'
