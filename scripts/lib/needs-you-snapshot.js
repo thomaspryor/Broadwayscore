@@ -15,6 +15,13 @@
  * prefix, so a resolved decision or a closed tab never shows a stale
  * question (the hook clears the state file on resolution, but title + state
  * writes are two separate fs calls, so a crash between them is possible).
+ *
+ * BRO-2989: sequential crown-succession generations (v25 -> v48+) that hit
+ * the SAME unanswered owner decision each write their own state file, so raw
+ * per-ref items would show N indistinguishable "fresh" rows for one open
+ * question. collapseCrownLineages() folds a crown title-family down to its
+ * latest generation, annotated with how long the underlying decision has
+ * actually been pending — see that function's header for the full incident.
  */
 'use strict';
 
@@ -22,6 +29,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { cmuxAvailable, listWorkspaces } = require('./cmux-workspaces.js');
+const { isCrownLaunchTitle } = require('./crown-fanout-guard.js');
+const { extractVersion } = require('./crown-duplicate-detector.js');
 
 const NEEDS_YOU_DIR = process.env.CLAUDE_CODE_NEEDS_YOU_DIR
   || path.join(os.homedir(), '.claude', 'state', 'needs-you');
@@ -77,13 +86,72 @@ function pendingDecisions(states, workspaces) {
     .filter(s => !isEmptyDecisionContent(s.question));
 }
 
+// BRO-2989: a crown succession hand-off (launchCmuxSession({successorOf})
+// in cmux-launch.js) launches a fresh "👑 OWNER — Crown vNN: ..." workspace
+// but never retires the PREDECESSOR's ❓ mark or state file — crown tabs are
+// deliberately exempt from every auto-close path (crown-duplicate-
+// detector.js's header; owner policy: closing an owner-loop tab is a manual,
+// owner-approved sweep, never automatic). Each generation restates whatever
+// it currently thinks is outstanding, but confirmed live (real
+// ~/.claude/state/needs-you/*.json on this machine) generations REWORD the
+// same decision every hand-off ("Cancel the Cyrus Team Cloud subscription at
+// $120/mo?" / "Keep or cancel Cyrus Team Cloud at $120/mo." / "Cyrus Team
+// Cloud, $120/mo — keep or drop.") — even the TITLE text varies generation to
+// generation, not just a version-token suffix — so grouping by title family
+// (crown-duplicate-detector.js's titleFamilyKey, built for its OWN
+// exact-title duplicate sweep) under-merges here and was tried first and
+// rejected (it left every reworded generation in its own group). What is
+// stable is that they are all the SAME "👑 OWNER" crown mandate loop
+// (isCrownLaunchTitle) — this collapses every LIVE crown-titled ❓ tab into
+// ONE row: the most recent generation's own question (freshest signal wins)
+// annotated with how many older generations also sat blocked and how long
+// the thread has been open in total, rather than N indistinguishable "fresh"
+// rows that let three real generations (v25/v32/v33) go unanswered long
+// enough to be reaped as dead. Non-crown ❓ tabs are untouched —
+// isCrownLaunchTitle is a no-op for every other title shape, so an unrelated
+// one-off decision never gets folded into the crown row.
+function collapseCrownLineages(pending) {
+  const crown = [];
+  const rest = [];
+  for (const p of pending) (isCrownLaunchTitle(p.title) ? crown : rest).push(p);
+  if (!crown.length) return rest;
+  const sorted = [...crown].sort((a, b) => {
+    const va = extractVersion(a.title);
+    const vb = extractVersion(b.title);
+    if (va != null && vb != null) return vb - va;
+    if (va != null) return -1;
+    if (vb != null) return 1;
+    return String(b.ts || '').localeCompare(String(a.ts || ''));
+  });
+  const [latest, ...superseded] = sorted;
+  const earliestTs = crown.reduce(
+    (min, it) => (!min || String(it.ts || '') < String(min)) ? it.ts : min,
+    null,
+  );
+  return [...rest, { ...latest, supersededCount: superseded.length, pendingSinceTs: earliestTs }];
+}
+
+// The digest's HTML renderer (autonomous-email-render.js's
+// renderNamedDigestBlock) only ever reads item.title/detail/url/moreCount —
+// baking the age/count into the rendered detail string (rather than adding
+// new structured fields the renderer doesn't know about) is what actually
+// gets it in front of the owner, and keeps this module the single source of
+// truth for how a pending decision reads.
+function formatDetail(p) {
+  const base = p.question || '(no question captured)';
+  if (!p.supersededCount) return base;
+  const since = p.pendingSinceTs ? String(p.pendingSinceTs).slice(0, 10) : 'unknown';
+  const gens = p.supersededCount + 1;
+  return `${base} (pending since ${since}, asked across ${gens} crown generations)`;
+}
+
 function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
   if (!cmuxAvailable()) return null;
   let workspaces;
   try { workspaces = listWorkspaces(); } catch { return null; }
   const states = readNeedsYouState(dir);
-  const pending = pendingDecisions(states, workspaces)
-    .sort((a, b) => String(a.ts || '').localeCompare(String(b.ts || '')));
+  const pending = collapseCrownLineages(pendingDecisions(states, workspaces))
+    .sort((a, b) => String(a.pendingSinceTs || a.ts || '').localeCompare(String(b.pendingSinceTs || b.ts || '')));
   // Glyph/content mismatch count (card #940): ❓-titled tabs whose extracted
   // question was empty/none, so they were excluded above. Logged, not
   // thrown — this must never block the digest, only make the mismatch
@@ -99,10 +167,11 @@ function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
     bannerText: pending.length
       ? `${pending.length} tab${pending.length === 1 ? '' : 's'} waiting on your decision`
       : 'Nothing waiting on you',
-    items: pending.map(p => ({ title: p.title, detail: p.question || '(no question captured)' })),
+    items: pending.map(p => ({ title: p.title, detail: formatDetail(p) })),
   };
 }
 
 module.exports = {
-  NEEDS_YOU_DIR, readNeedsYouState, isNeedsYouTitle, isEmptyDecisionContent, pendingDecisions, buildNeedsYouSnapshot,
+  NEEDS_YOU_DIR, readNeedsYouState, isNeedsYouTitle, isEmptyDecisionContent, pendingDecisions,
+  collapseCrownLineages, formatDetail, buildNeedsYouSnapshot,
 };
