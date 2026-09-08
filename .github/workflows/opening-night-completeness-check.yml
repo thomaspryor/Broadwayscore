@@ -36,20 +36,22 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    # 15, not 8 (BRO-345 what-else, 2026-09-08): observed run 34174218685
+    # 18, not 8 (BRO-345 what-else, 2026-09-08): observed run 34174218685
     # cancelled by this timeout BEFORE the same-session apiFallbackSafe fix
     # even landed, and a "successful" run (22:44-22:52) took 7m47s — already
-    # dangerously close to 8min. The "Commit state file" step's own worst
-    # case (push-with-retry.sh 5 retries within its 240s deadline, THEN up to
-    # 2 Git Data API fallback attempts at a 90s cap each, now reachable since
-    # this session registered both audit files apiFallbackSafe) is ~430s
-    # alone, before Checkout/setup-node/npm ci/the actual completeness check.
-    # 15min matches this file's own soft-fail design intent (push-with-
-    # retry.sh's failure is `|| echo`'d — the NEXT 15-min cron tick
-    # re-snapshots) instead of cutting the job off mid-push into a silent
-    # `cancelled` conclusion that skips both `if: failure()` (Notify on
-    # failure) and notify-failure's own cancelled-conclusion exclusion.
-    timeout-minutes: 15
+    # dangerously close to 8min. The "Commit state file" step below now
+    # bounds its own worst case (PUSH_DEADLINE_SEC=120 local retries + a
+    # single PUSH_API_MAX_RETRIES=1 fallback attempt at push-with-retry.sh's
+    # own documented pessimistic ~3*GIT_NET_TIMEOUT_SEC=270s/attempt cost
+    # model) to ~390s. 18min gives that ~390s step worst case + the observed
+    # ~467s baseline (checkout/setup-node/npm ci/the actual completeness
+    # check) a real margin (~223s / ~21%) instead of landing right at the
+    # cap, while still matching this file's soft-fail design intent
+    # (push-with-retry.sh's failure is `|| echo`'d — the NEXT 15-min cron
+    # tick re-snapshots) instead of cutting the job off mid-push into a
+    # silent `cancelled` conclusion that skips both `if: failure()` (Notify
+    # on failure) and notify-failure's own cancelled-conclusion exclusion.
+    timeout-minutes: 18
 
     steps:
       - name: Checkout
@@ -128,17 +130,27 @@ jobs:
         env:
           # 120s, not the 240s default (BRO-345 what-else, 2026-09-08):
           # this session registered both staged files apiFallbackSafe, making
-          # the Git Data API fallback reachable here for the first time — its
-          # own worst case (2 attempts x 90s cap) adds ~190s on top of
-          # whatever the local retry loop already spent. This step is
-          # soft-fail-tolerant BY DESIGN (see the `|| echo` below — the next
-          # 15min cron tick just re-snapshots), so it should fail fast rather
-          # than spend its full push budget chasing a recovery that isn't
-          # worth more than the job's own timeout margin. 120s local + ~190s
-          # fallback worst case (~310s) keeps the whole step's worst case
-          # comfortably inside the 15min job timeout alongside the observed
-          # ~7m47s baseline for the earlier steps.
+          # the Git Data API fallback reachable here for the first time. This
+          # step is soft-fail-tolerant BY DESIGN (see the `|| echo` below —
+          # the next 15min cron tick just re-snapshots), so it should fail
+          # fast rather than spend its full push budget chasing a recovery
+          # that isn't worth more than the job's own timeout margin.
           PUSH_DEADLINE_SEC: '120'
+          # 1, not push-with-retry.sh's own auto-scaled default (2 for a
+          # tight remaining budget, 6 otherwise): second-opinion review
+          # caught that push-with-retry.sh's OWN documented cost model for
+          # push-via-git-api.sh is "up to ~3 * GIT_NET_TIMEOUT_SEC per
+          # attempt" (ls-remote + fetch + push, each individually capped at
+          # GIT_NET_TIMEOUT_SEC=90s — see push-with-retry.sh's comment above
+          # its push-via-git-api.sh invocation), not the ~90-100s per attempt
+          # this session observed live on process-feedback.yml's fallback.
+          # That pessimistic worst case (270s/attempt) at the default 2
+          # attempts is ~540s — enough to blow even the widened 18min job
+          # timeout below once added to the ~7m47s baseline + 120s local
+          # retries. Proportionate for a file that self-heals on the very
+          # next cron tick regardless of whether this attempt lands: try the
+          # fallback once, not twice.
+          PUSH_API_MAX_RETRIES: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
