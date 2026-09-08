@@ -40,6 +40,21 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
+import { createRequire as _createRequire } from 'node:module';
+
+// The dedup normalizer lives in ONE place. This file used to carry its own
+// copy, and when scripts/lib/ux-walkthrough-filing.js was fixed to fold
+// diacritics before the ASCII strip, the copy here kept the bug — which is
+// worse than losing a dedup match. Verified on real input: "Amelie poster
+// missing" and "Cafe poster missing" (accented) both shred to
+// ["poster","missing"], similarity 1.0, so dedupeFindings MERGES two
+// unrelated defects on two different shows, keeps only the first summary, and
+// hands the survivor a fabricated agreementCount of 2 — clearing the
+// two-model bar and filing a finding no two models ever agreed on.
+// tests/unit/sibling-matchers-diacritics.test.mjs globs .js only, so CI is
+// structurally unable to catch a copy living in a .mjs file.
+const { normalizeWords: _normalizeWords, similarity: _similarity } =
+  _createRequire(import.meta.url)('./lib/ux-walkthrough-filing.js');
 
 function loadDotenv(path = '.env') {
   if (!existsSync(path)) return;
@@ -1091,17 +1106,11 @@ async function runReviewPanel(shots) {
 // Rough token-overlap similarity — good enough to group "star sizes differ
 // between grid and list" (gpt-4o) with "grid/list star inconsistency" (gemini)
 // without a fourth LLM call just to dedupe.
-function normalize(s) {
-  return s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 3);
-}
-function similarity(a, b) {
-  const wa = new Set(normalize(a));
-  const wb = new Set(normalize(b));
-  if (wa.size === 0 || wb.size === 0) return 0;
-  let overlap = 0;
-  for (const w of wa) if (wb.has(w)) overlap++;
-  return overlap / Math.min(wa.size, wb.size);
-}
+// normalize()/similarity() were defined here. They now come from
+// scripts/lib/ux-walkthrough-filing.js (imported at the top of this file) so
+// there is exactly one normalizer, and fixing it fixes every caller.
+const similarity = _similarity;
+const normalize = _normalizeWords;
 
 function dedupeFindings(panelResults) {
   const all = [];
