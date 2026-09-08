@@ -436,11 +436,20 @@ function loadCriticReg() {
   try {
     const raw = JSON.parse(fs.readFileSync(path.join(repo, 'data/critic-registry.json'), 'utf8'));
     const byName = new Map();
-    for (const [slug, c] of Object.entries(raw.critics || {})) {
-      if (c.displayName) byName.set(c.displayName.toLowerCase(), slug);
+    // Same bug class as loadOutletReg() below: the live page slug is
+    // slugify(displayName) (src/lib/data-reviews.ts), not the registry key.
+    // Every critic-registry key happens to already equal slugify(displayName)
+    // today, which is why this was never observed 404ing — but nothing
+    // enforces that, so derive it the same way the page does rather than
+    // relying on the coincidence holding.
+    for (const [, c] of Object.entries(raw.critics || {})) {
+      if (c.displayName) byName.set(c.displayName.toLowerCase(), slugify(c.displayName));
     }
     _criticReg = byName;
-  } catch { _criticReg = new Map(); }
+  } catch (err) {
+    console.error('[newsletter] critic-registry.json unreadable — all critic links will fall back to plain text:', err.message);
+    _criticReg = new Map();
+  }
   return _criticReg;
 }
 function loadOutletReg() {
@@ -448,6 +457,13 @@ function loadOutletReg() {
   try {
     const raw = JSON.parse(fs.readFileSync(path.join(repo, 'data/outlet-registry.json'), 'utf8'));
     const byName = new Map();
+    // Two registry keys ("lighting-and-sound-america" / "lighting-sound-america")
+    // both slugify to "lighting-sound-america" — the only known collision as of
+    // 2026-09-07. Not a bug in practice: only the first has any reviews (so only
+    // it has a real page at that slug), and both displayName variants correctly
+    // resolve to it either way. A future collision between two outlets that BOTH
+    // have reviews would need real tie-breaking (data-reviews.ts appends
+    // -${outletId}); this map doesn't attempt that.
     for (const [, o] of Object.entries(raw.outlets || {})) {
       if (!o.displayName) continue;
       const slug = slugify(o.displayName);
@@ -455,7 +471,10 @@ function loadOutletReg() {
       for (const alias of (o.aliases || [])) byName.set(alias.toLowerCase(), slug);
     }
     _outletReg = byName;
-  } catch { _outletReg = new Map(); }
+  } catch (err) {
+    console.error('[newsletter] outlet-registry.json unreadable — all outlet links will fall back to plain text:', err.message);
+    _outletReg = new Map();
+  }
   return _outletReg;
 }
 

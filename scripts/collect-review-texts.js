@@ -489,6 +489,7 @@ const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = requ
 const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
@@ -2394,6 +2395,11 @@ async function fetchWithScrapingBee(url, useStealth = false) {
 
   stats.tier2Attempts++;
 
+  // Guards the catch block below: isBlocked()/insufficient-text throw AFTER a
+  // successful, already-billed API response — the catch's failure recorder
+  // must not also fire for those, or one billed call becomes two ledger rows.
+  let apiCallRecorded = false;
+
   // Forward subscriber cookies via ScrapingBee's header forwarding
   const cookieHeader = buildCookieHeaderForUrl(url);
   if (cookieHeader) {
@@ -2442,6 +2448,15 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     const response = await axios.get('https://app.scrapingbee.com/api/v1/', requestConfig);
 
     stats.scrapingBeePageCredits += credits;
+    apiCallRecorded = true;
+    recordSbCall({
+      url,
+      fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+      success: true,
+      status: response.status,
+      credits,
+      purpose: 'review-text',
+    });
 
     const html = response.data;
 
@@ -2470,6 +2485,16 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || error.message;
+      if (!apiCallRecorded) {
+        recordSbCall({
+          url,
+          fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+          success: false,
+          status,
+          credits: sbBilledCredits(status, credits),
+          purpose: 'review-text',
+        });
+      }
 
       // Same trigger set as scraper.js's _scrapingBeePageExhausted and
       // url-discovery.js's _scrapingBeeSerpExhausted: auth/plan/rate-limit
@@ -2487,6 +2512,16 @@ async function fetchWithScrapingBee(url, useStealth = false) {
       } else {
         throw new Error(`ScrapingBee error (${status}): ${message}`);
       }
+    }
+    if (!apiCallRecorded) {
+      recordSbCall({
+        url,
+        fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+        success: false,
+        status: 'error',
+        credits: sbBilledCredits('error', credits),
+        purpose: 'review-text',
+      });
     }
     throw error;
   }

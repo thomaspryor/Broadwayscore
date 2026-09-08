@@ -21,7 +21,8 @@ process.env.SCRAPER_SPEND_LEDGER_PATH = LEDGER_SCRATCH;
 const require = createRequire(import.meta.url);
 const {
   recordBbCall, recordBdCall, recordSbCall, recordSdCall,
-  countCallsByProvider, topCallers, computeAttributedPct,
+  countCallsByProvider, topCallers, creditsByProvider, topCallersByCredits,
+  computeAttributedPct,
 } = require('../../scripts/lib/provider-telemetry.js');
 const { mergeScraperSpendLedger } = require('../../scripts/lib/merge-scraper-spend-ledger.js');
 
@@ -233,19 +234,80 @@ test('brightdata combines serpReqs + unlockerReqs as the billing denominator', (
   assert.equal(pct.brightdata, 0.8);
 });
 
-test('scrapingbee/scrapingdog use dayCredits as the billing denominator', () => {
+test('scrapingbee/scrapingdog divide LEDGER CREDITS (not row count) by dayCredits', () => {
   const pct = computeAttributedPct(
-    { scrapingbee: 9, scrapingdog: 4 },
+    { scrapingbee: 9, scrapingdog: 4 }, // row counts — must be ignored for these two providers
     {
       scrapingbee: { status: 'ok', dayCredits: 10 },
       scrapingdog: { status: 'baseline' }, // baseline (no dayCredits yet) -> unmeasurable
     },
+    { scrapingbee: 9, scrapingdog: 4 }, // credits happen to match counts here (1cr/row)
   );
   assert.equal(pct.scrapingbee, 0.9);
   assert.equal(pct.scrapingdog, null);
 });
 
+test('S0-T1: credits/credits, not rows/credits — 4 SB rows of 25 credits vs dayCredits 100 -> 1.0 (was 0.04)', () => {
+  const ledgerCounts = { scrapingbee: 4 }; // 4 ROWS
+  const ledgerCredits = { scrapingbee: 100 }; // but 25 credits each = 100 CREDITS
+  const pctBuggy = ledgerCounts.scrapingbee / 100; // the old units bug, for contrast
+  assert.equal(pctBuggy, 0.04);
+  const pct = computeAttributedPct(
+    ledgerCounts,
+    { scrapingbee: { status: 'ok', dayCredits: 100 } },
+    ledgerCredits,
+  );
+  assert.equal(pct.scrapingbee, 1);
+});
+
+test('scrapingbee/scrapingdog attribution is 0 when ledgerCredits is omitted entirely (never falls back to row count)', () => {
+  const pct = computeAttributedPct(
+    { scrapingbee: 50 }, // a large row count must NOT leak into the credit-based numerator
+    { scrapingbee: { status: 'ok', dayCredits: 100 } },
+  );
+  assert.equal(pct.scrapingbee, 0);
+});
+
+test('browserbase/brightdata are unaffected by ledgerCredits — still row/session count based', () => {
+  const pct = computeAttributedPct(
+    { browserbase: 30 },
+    { browserbase: { status: 'ok', sessions: 30 } },
+    { browserbase: 999999 }, // must be ignored for a count-based provider
+  );
+  assert.equal(pct.browserbase, 1);
+});
+
 test('missing provider entry in billing record -> null for that provider', () => {
   const pct = computeAttributedPct({ browserbase: 5 }, {});
   assert.equal(pct.browserbase, null);
+});
+
+// ---------- creditsByProvider / topCallersByCredits (S0-T1/S0-T7) ----------
+
+test('creditsByProvider sums credits per provider for one day, treating missing/non-numeric credits as 0', () => {
+  const records = [
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', credits: 25 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', credits: 5 },
+    { ts: '2026-09-01T03:00:00Z', provider: 'scrapingbee', credits: null },
+    { ts: '2026-09-01T04:00:00Z', provider: 'scrapingdog', credits: 1 },
+    { ts: '2026-09-02T01:00:00Z', provider: 'scrapingbee', credits: 999 }, // different day
+  ];
+  const sums = creditsByProvider(records, '2026-09-01');
+  assert.deepEqual(sums, { scrapingbee: 30, scrapingdog: 1 });
+});
+
+test('topCallersByCredits ranks by credit sum, not row count', () => {
+  const records = [
+    // script A: 3 cheap rows = 3 credits
+    { ts: '2026-09-01T01:00:00Z', provider: 'scrapingbee', script: 'a.js', credits: 1 },
+    { ts: '2026-09-01T02:00:00Z', provider: 'scrapingbee', script: 'a.js', credits: 1 },
+    { ts: '2026-09-01T03:00:00Z', provider: 'scrapingbee', script: 'a.js', credits: 1 },
+    // script B: 1 expensive row = 25 credits — outranks A despite fewer rows
+    { ts: '2026-09-01T04:00:00Z', provider: 'scrapingbee', script: 'b.js', credits: 25 },
+  ];
+  const top = topCallersByCredits(records, '2026-09-01', 'scrapingbee', 2);
+  assert.deepEqual(top, [
+    { script: 'b.js', credits: 25 },
+    { script: 'a.js', credits: 3 },
+  ]);
 });

@@ -272,6 +272,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
+  {
+    file: 'audit/scraper-spend-daily-agg.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-08 (BRO-3008 S0-T6): same writer/workflow/concurrency-group as its two siblings above (check-provider-spend.js, data-health-check.yml git-add block) — never rotated, appended once/day with idempotent day-replace.',
+  },
   // NOT registered: audit/digest-history.json. findWritingWorkflows()'s regex
   // match on data-health-check.yml's `git add data/audit/digest-history.json`
   // line initially looked like a 15th single-writer candidate, but a deeper
