@@ -43,7 +43,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **Session start:** `linear-brain.js create "<title>" --dispatch|--park "<reason>" --notes "..."`; output the URL. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done|Paused`.
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line. Write it when you file, not when you close.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
-- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Soft cap ~3/session.
+- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Soft cap ~8/session (raised from 3 by owner 2026-09-08).
 - **If Linear is down:** warn, continue untracked, output the Outcome text. Do NOT fall back to Notion.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
