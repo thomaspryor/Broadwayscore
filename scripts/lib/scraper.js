@@ -885,10 +885,48 @@ function unwrapRedirectUrl(url) {
  * @param {boolean} options.preferPlaywright - Skip APIs and go straight to Playwright (e.g. for BroadwayWorld)
  * @returns {Promise<{content: string, format: 'html'|'markdown', source: string}>}
  */
+/**
+ * Pure decision function: ordered tier names for fetchPage's fallback chain.
+ * Extracted for testability (CLAUDE.md rule 15), mirroring serpChainOrder in
+ * url-discovery.js. Reproduces fetchPage's if-chain EXACTLY — each condition
+ * here is copied from the branch it replaces; see page-chain-order.test.mjs
+ * for the enumerated flag combinations this is checked against.
+ *
+ * flags: { hasCookies, preferPlaywright, isBroadwayWorld, isPublicSite,
+ *   skips (Set), useScrapingdog, hasBdToken, sbAllowed }
+ * useScrapingdog/hasBdToken/sbAllowed are pre-computed by the caller from the
+ * same key+budget+quota checks the original branches used — this function
+ * only decides ORDER, never whether a key/budget/quota check itself passes.
+ */
+function pageChainOrder(flags) {
+  const skips = flags.skips || new Set();
+  const order = [];
+  if (flags.hasCookies && !flags.preferPlaywright && !skips.has('cookies-plain')) {
+    order.push('cookies-plain');
+  }
+  if ((flags.preferPlaywright || flags.isBroadwayWorld || flags.isPublicSite) && !skips.has('playwright')) {
+    order.push('playwright-first');
+  }
+  if (flags.useScrapingdog && !skips.has('scrapingdog')) {
+    order.push('scrapingdog');
+  }
+  if (flags.hasBdToken && !skips.has('brightdata')) {
+    order.push('brightdata');
+  }
+  if (flags.sbAllowed && !skips.has('scrapingbee')) {
+    order.push('scrapingbee');
+  }
+  if (!flags.preferPlaywright && !flags.isPublicSite && !flags.isBroadwayWorld && !skips.has('playwright')) {
+    order.push('playwright-last');
+  }
+  return order;
+}
+
 async function fetchPage(url, options = {}) {
   url = unwrapRedirectUrl(url);
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
+  const isBroadwayWorld = url.includes('broadwayworld.com');
   const skips = _getDomainSkips(url);
   const cookieDomain = hasCookiesForUrl(url);
 
@@ -925,25 +963,62 @@ async function fetchPage(url, options = {}) {
     return null;
   }
 
-  // Cookie-gated outlets (WSJ, FT, NYT, Telegraph, etc.): try plain HTTPS with
-  // subscriber cookies FIRST. WSJ's DataDome blocks BD/Playwright even with cookies,
-  // but plain HTTP + subscriber cookies bypasses it (the recover-wsj-subscriber.js
-  // pattern). For non-WSJ cookie outlets this just skips one proxy hop — cheap.
-  if (cookieDomain && !preferPlaywright && !skips.has('cookies-plain')) {
-    console.log(`  → Trying plain HTTPS with ${cookieDomain} cookies...`);
-    const raw = await fetchWithCookiesPlain(url);
-    if (raw && raw.content && raw.content.length > 0) {
-      const checked = _checkAndReturn(raw, 'Cookie-plain');
-      if (checked) return checked;
-    }
+  // Live re-check at chain-build time — matches the original code's gate
+  // conditions exactly, reproduced again (unchanged) inside the scrapingdog/
+  // scrapingbee tier functions below. Scrapingdog/ScrapingBee gate on
+  // module-level mutable state (budgets, quotas, the SB credits-low latch)
+  // that a CONCURRENT fetchPage() call or a fire-and-forget credits check can
+  // flip while THIS call is still awaiting an earlier tier (cookies/
+  // Playwright/SD/BD) — a window that's now as long as those earlier tiers'
+  // combined latency, not "immediately before" as it was pre-refactor. Each
+  // tier's own fetchWithScrapingdog/fetchWithScrapingBee already re-checks
+  // its budget/quota/breaker internally, so a stale "allowed" chain entry
+  // can never overspend — but re-evaluating live here (rather than trusting
+  // the chain's snapshot) keeps the log lines and dispatch decision honest.
+  const chain = pageChainOrder({
+    hasCookies: !!cookieDomain,
+    preferPlaywright,
+    isBroadwayWorld,
+    isPublicSite,
+    skips,
+    // Scrapingdog (flag-gated cheap tier — tried BEFORE Bright Data to avoid BD's
+    // ~$1.50/1k cost on the many hosts Scrapingdog handles for ~$0.09-0.45/1k).
+    useScrapingdog: USE_SCRAPINGDOG && !!SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded,
+    // Bright Data: primary for non-public sites, fallback for public.
+    hasBdToken: !!BRIGHTDATA_TOKEN,
+    // ScrapingBee: skip if credits exhausted, budget exceeded, or page-exhausted.
+    sbAllowed: !!SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted,
+  });
+
+  // Original code logged this the instant it decided to skip Playwright for a
+  // domain-tier-skipped host; pageChainOrder just omits the tier, so log it
+  // here from the same condition to keep that observable behavior identical.
+  if ((preferPlaywright || isBroadwayWorld || isPublicSite) && skips.has('playwright')) {
+    console.log('  → Skipping Playwright (domain-tier-skip)');
   }
 
-  // Playwright-first for known public sites (free, fast with domcontentloaded)
-  // Also for BroadwayWorld (complex JS) and explicit preferPlaywright
-  if (preferPlaywright || url.includes('broadwayworld.com') || isPublicSite) {
-    if (skips.has('playwright')) {
-      console.log('  → Skipping Playwright (domain-tier-skip)');
-    } else {
+  // Each tier function returns the final result to hand back from fetchPage,
+  // or null/undefined to fall through to the next tier in `chain`. Bodies are
+  // copied verbatim from the branches pageChainOrder replaces — behavior is
+  // unchanged, only the ordering/gating moved into the pure function above.
+  const tiers = {
+    // Cookie-gated outlets (WSJ, FT, NYT, Telegraph, etc.): try plain HTTPS
+    // with subscriber cookies FIRST. WSJ's DataDome blocks BD/Playwright even
+    // with cookies, but plain HTTP + subscriber cookies bypasses it (the
+    // recover-wsj-subscriber.js pattern). For non-WSJ cookie outlets this
+    // just skips one proxy hop — cheap.
+    'cookies-plain': async () => {
+      console.log(`  → Trying plain HTTPS with ${cookieDomain} cookies...`);
+      const raw = await fetchWithCookiesPlain(url);
+      if (raw && raw.content && raw.content.length > 0) {
+        const checked = _checkAndReturn(raw, 'Cookie-plain');
+        if (checked) return checked;
+      }
+      return null;
+    },
+    // Playwright-first for known public sites (free, fast with domcontentloaded).
+    // Also for BroadwayWorld (complex JS) and explicit preferPlaywright.
+    'playwright-first': async () => {
       const label = isPublicSite ? 'public site' : 'complex site';
       console.log(`  → Using Playwright (${label})...`);
       const raw = await fetchWithPlaywright(url, {
@@ -956,67 +1031,81 @@ async function fetchPage(url, options = {}) {
         const checked = _checkAndReturn(raw, 'Playwright');
         if (checked) return checked;
       }
-    }
-  }
-
-  // Scrapingdog (flag-gated cheap tier — tried BEFORE Bright Data to avoid BD's
-  // ~$1.50/1k cost on the many hosts Scrapingdog handles for ~$0.09-0.45/1k).
-  // A challenge/short response falls through to Bright Data, which keeps its role
-  // as the strong unblocker for the hard sites Scrapingdog can't crack.
-  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded && !skips.has('scrapingdog')) {
-    console.log('  → Trying Scrapingdog...');
-    const raw = await fetchWithScrapingdog(url, options);
-    if (raw && raw.content && raw.content.length > 0) {
-      if (_isChallengeOrGarbage(raw.content)) {
-        console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
-      } else {
-        const checked = _checkAndReturn(raw, 'Scrapingdog');
+      return null;
+    },
+    // A challenge/short response falls through to Bright Data, which keeps
+    // its role as the strong unblocker for the hard sites Scrapingdog can't crack.
+    scrapingdog: async () => {
+      // Live re-check (see the comment above `chain`): the exact same
+      // condition pageChainOrder was given, re-evaluated now instead of
+      // trusting the snapshot from before the earlier tiers' awaits.
+      if (!(USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded)) {
+        return null;
+      }
+      console.log('  → Trying Scrapingdog...');
+      const raw = await fetchWithScrapingdog(url, options);
+      if (raw && raw.content && raw.content.length > 0) {
+        if (_isChallengeOrGarbage(raw.content)) {
+          console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
+        } else {
+          const checked = _checkAndReturn(raw, 'Scrapingdog');
+          if (checked) return checked;
+        }
+      }
+      return null;
+    },
+    brightdata: async () => {
+      console.log('  → Trying Bright Data...');
+      const raw = await fetchWithBrightData(url);
+      if (raw && raw.content && raw.content.length > 0) {
+        // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge
+        // HTML that passes length > 0 but isn't real content. Fall through to ScrapingBee.
+        if (_isChallengeOrGarbage(raw.content)) {
+          console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${raw.content.length} bytes), trying next provider...`);
+        } else {
+          const checked = _checkAndReturn(raw, 'Bright Data');
+          if (checked) return checked;
+        }
+      } else if (raw) {
+        console.log('  ⚠️  Bright Data returned empty content, trying next provider...');
+      }
+      return null;
+    },
+    scrapingbee: async () => {
+      // Live re-check (see the comment above `chain`): the exact same
+      // condition pageChainOrder was given, re-evaluated now instead of
+      // trusting the snapshot from before the earlier tiers' awaits.
+      if (!(SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted)) {
+        return null;
+      }
+      console.log('  → Trying ScrapingBee...');
+      const raw = await fetchWithScrapingBee(url, options);
+      if (raw) {
+        const checked = _checkAndReturn(raw, 'ScrapingBee');
         if (checked) return checked;
       }
-    }
-  }
-
-  // Try Bright Data (primary for non-public sites, fallback for public)
-  if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
-    console.log('  → Trying Bright Data...');
-    const raw = await fetchWithBrightData(url);
-    if (raw && raw.content && raw.content.length > 0) {
-      // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge HTML
-      // that passes length > 0 but isn't real content. Fall through to ScrapingBee.
-      if (_isChallengeOrGarbage(raw.content)) {
-        console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${raw.content.length} bytes), trying next provider...`);
-      } else {
-        const checked = _checkAndReturn(raw, 'Bright Data');
+      return null;
+    },
+    // Last resort: Playwright (only reached if not already tried above).
+    // playwrightWaitForSelector pass-through is not needed here (that's only
+    // for caller-explicit Playwright via preferPlaywright, above) — this
+    // tier is "everything else failed" fallback, no specific selector.
+    'playwright-last': async () => {
+      console.log('  → Trying Playwright (last resort)...');
+      const raw = await fetchWithPlaywright(url);
+      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+        console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes)`);
+      } else if (raw) {
+        const checked = _checkAndReturn(raw, 'Playwright');
         if (checked) return checked;
       }
-    } else if (raw) {
-      console.log('  ⚠️  Bright Data returned empty content, trying next provider...');
-    }
-  }
+      return null;
+    },
+  };
 
-  // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, page-exhausted, or domain-skipped)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee')) {
-    console.log('  → Trying ScrapingBee...');
-    const raw = await fetchWithScrapingBee(url, options);
-    if (raw) {
-      const checked = _checkAndReturn(raw, 'ScrapingBee');
-      if (checked) return checked;
-    }
-  }
-
-  // Last resort: Playwright (only if not already tried above)
-  if (!preferPlaywright && !isPublicSite && !url.includes('broadwayworld.com') && !skips.has('playwright')) {
-    // (Last-resort Playwright path. playwrightWaitForSelector pass-through:
-    // only needed for caller-explicit Playwright via preferPlaywright above;
-    // this branch is "everything else failed" fallback, no specific selector.)
-    console.log('  → Trying Playwright (last resort)...');
-    const raw = await fetchWithPlaywright(url);
-    if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
-      console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes)`);
-    } else if (raw) {
-      const checked = _checkAndReturn(raw, 'Playwright');
-      if (checked) return checked;
-    }
+  for (const tierName of chain) {
+    const result = await tiers[tierName]();
+    if (result) return result;
   }
 
   throw new Error('All scraping methods failed');
@@ -1505,6 +1594,7 @@ function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
 
 module.exports = {
   fetchPage,
+  pageChainOrder,
   fetchJSON,
   fetchWithCookiesPlain,
   fetchWithBrightData,
