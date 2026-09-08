@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-09-08T02:49:49.629Z",
-  "processed": 122,
-  "failed": 1298,
+  "updatedAt": "2026-09-08T02:51:21.787Z",
+  "processed": 123,
+  "failed": 1307,
   "successRate": "8.6%",
   "tierBreakdown": {
     "playwright": 56,
     "amp": 0,
-    "browserbase": 20,
+    "browserbase": 22,
     "directCookies": 9,
     "scrapingbee": 27,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 20
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-09-07T22:36:52.113Z",
-      "event": "bb-session",
-      "session": "38848fb8",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/andrew-lloyd-webber-p"
-    },
-    {
-      "t": "2026-09-07T22:53:51.861Z",
-      "event": "bb-session",
-      "session": "5559d89e",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
     {
       "t": "2026-09-07T22:53:52.679Z",
       "event": "bb-cookie-inject",
@@ -126,6 +114,17 @@
       "t": "2026-09-08T02:45:30.676Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-08T02:50:59.134Z",
+      "event": "bb-session",
+      "session": "48055e8f",
+      "url": "https://www.thetimes.co.uk/article/stranger-things-the-first-shadow-review-you-n"
+    },
+    {
+      "t": "2026-09-08T02:51:00.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }

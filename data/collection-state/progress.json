@@ -121,7 +121,8 @@
     "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json",
     "the-story-west-end-2026/times-uk--clive-davis.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/playbill--unknown.json",
-    "age-is-a-feeling-off-broadway-2024/broadwayworld--team-bww.json"
+    "age-is-a-feeling-off-broadway-2024/broadwayworld--team-bww.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -1421,7 +1422,16 @@
     "stranger-things-the-first-shadow-west-end-2023/chicagotribune--chris-jones.json",
     "stranger-things-the-first-shadow-west-end-2023/dailybeast--tim-teeman.json",
     "stranger-things-the-first-shadow-west-end-2023/latimes--unknown.json",
-    "stranger-things-the-first-shadow-west-end-2023/nysr--bob-verini.json"
+    "stranger-things-the-first-shadow-west-end-2023/nysr--bob-verini.json",
+    "stranger-things-the-first-shadow-west-end-2023/nysr--david-finkle.json",
+    "stranger-things-the-first-shadow-west-end-2023/one-minute-critic--matthew-wexler.json",
+    "stranger-things-the-first-shadow-west-end-2023/tickertv--cheryl-king.json",
+    "stranger-things-the-first-shadow-west-end-2023/washpost--naveen-kumar.json",
+    "operation-mincemeat-west-end-2024/nyt-theater--jonathan-mandell.json",
+    "operation-mincemeat-west-end-2024/nytg--caroline-cao.json",
+    "operation-mincemeat-west-end-2024/variety--frank-rizzo.json",
+    "operation-mincemeat-west-end-2024/vulture--sara-holdren.json",
+    "operation-mincemeat-west-end-2024/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1504,7 +1514,9 @@
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
-      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+      "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -1581,7 +1593,7 @@
     ]
   },
   "startTime": "2026-09-07T16:52:31.651Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/nysr--bob-verini.json",
+  "lastProcessed": "operation-mincemeat-west-end-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-09-07T16:54:59.341Z",
@@ -1874,6 +1886,17 @@
       "t": "2026-09-08T02:45:30.676Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-08T02:50:59.134Z",
+      "event": "bb-session",
+      "session": "48055e8f",
+      "url": "https://www.thetimes.co.uk/article/stranger-things-the-first-shadow-review-you-n"
+    },
+    {
+      "t": "2026-09-08T02:51:00.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
