@@ -1777,6 +1777,18 @@ on:
       # scripts/check-orphan-commits.js above; found while wiring BRO-2647's
       # process-exit guard, and now ratcheted by audit-test-yml-manifest-paths.js.
       - 'scripts/send-opening-night-broadcast.test.mjs'
+      # BRO-3057: scripts/config/provider-pricing.json (BRO-3009 spend-guards
+      # slice) sits outside every glob — scripts/lib/** covers provider-pricing.js
+      # itself plus chain-escalation.test.mjs/provider-pricing.test.mjs, but not
+      # this JSON config it reads via fs.readFileSync, one hop away from any
+      # require/import specifier audit-test-yml-lib-deps.js can see. Sibling
+      # scripts/config/*.json entries above (domain-tier-skip.json,
+      # direct-provider-calls-allowlist.json) are path-listed for the same
+      # reason. Without this entry, a solo edit here — the exact "one-file JSON
+      # edit" flow provider-pricing.js's own docstring advertises — runs ZERO CI,
+      # including the AUTO_EXEMPT_MAX_MULTIPLIER=50 guard meant to catch a
+      # misplaced decimal.
+      - 'scripts/config/provider-pricing.json'
 
       # ── Manifest-registered tests that no glob reached (BRO-2647 sweep) ──
       # Each of these RUNS in CI (they are in tests/unit-test-manifest*.txt) but

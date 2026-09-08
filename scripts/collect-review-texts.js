@@ -57,6 +57,7 @@ const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { shouldSkipAlreadyAttempted } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions } = require('./lib/review-write-guard.js');
+const { creditsFor } = require('./lib/provider-credits.js');
 const https = require('https');
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
@@ -2371,23 +2372,25 @@ async function fetchWithScrapingBee(url, useStealth = false) {
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } })();
   const needsPremium = SB_PREMIUM_DOMAINS.has(hostname);
 
-  let proxyType, credits, renderJs, waitMs;
+  let proxyType, renderJs, waitMs;
   if (useStealth) {
     proxyType = 'stealth_proxy';
-    credits = 75;
     renderJs = true;
     waitMs = 5000;
   } else if (needsPremium) {
     proxyType = 'premium_proxy';
-    credits = 10;
     renderJs = true;
     waitMs = 5000;
   } else {
     proxyType = 'standard';
-    credits = 1;
     renderJs = false;
     waitMs = 0;  // No wait needed for static HTML
   }
+  // BRO-3057: credits derived from proxyType (the real API param value) via
+  // the shared provider-credits.js table, instead of an independently
+  // maintained literal — a proxyType typo now throws instead of silently
+  // billing the wrong cost.
+  const credits = creditsFor('sb', proxyType);
 
   // Per-run budget guard
   if (stats.scrapingBeePageCredits + credits > SB_PAGE_CREDIT_BUDGET) {
