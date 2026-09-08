@@ -135,6 +135,42 @@ function main() {
     return;
   }
 
+  // --ack=<id>: record a triage decision and exit — doesn't run the audit.
+  // Requires the id to be a real, currently-'announced' show, so a typo or a
+  // not-yet-discovered id can't pre-silence a future real flag.
+  if (ACK_ID) {
+    if (!ACK_NOTE) {
+      console.error('--ack requires --ack-note="<why this show is known-stale>"');
+      process.exit(1);
+    }
+    const show = showsData.shows.find(s => s.id === ACK_ID);
+    if (!show) {
+      console.error(`--ack=${ACK_ID}: no show with this id in ${SHOWS_FILE}`);
+      process.exit(1);
+    }
+    if (show.status !== 'announced') {
+      console.error(`--ack=${ACK_ID}: show status is '${show.status}', not 'announced' — nothing to ack`);
+      process.exit(1);
+    }
+    const acks = addAck(loadAcks(), ACK_ID, ACK_NOTE, new Date().toISOString());
+    saveAcks(acks);
+    console.log(`Acked ${ACK_ID}: ${ACK_NOTE}`);
+    return;
+  }
+
+  // --unack=<id>: remove a previously-recorded ack and exit.
+  if (UNACK_ID) {
+    const acks = loadAcks();
+    const remaining = acks.filter(a => a.id !== UNACK_ID);
+    if (remaining.length === acks.length) {
+      console.error(`--unack=${UNACK_ID}: no ack found for this id`);
+      process.exit(1);
+    }
+    saveAcks(remaining);
+    console.log(`Unacked ${UNACK_ID}`);
+    return;
+  }
+
   const now = new Date();
   const acks = loadAcks();
   const flagged = [];

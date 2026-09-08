@@ -79,7 +79,7 @@ function repoRoot() {
   }
 }
 
-const { activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor } = require('./core-data-merge-registry');
+const { activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor, findEntry } = require('./core-data-merge-registry');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
 // matches diary-shows.json's producers, which write no trailing newline — so a
@@ -137,6 +137,23 @@ function apiFallbackMergerFor(file) {
   return API_FALLBACK_MERGE.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
 }
 
+/** Pure: pick the merger for an EXPLICITLY-named path (BRO-257), unlike
+ * mergerFor() above which only searches MANAGED (activeEntriesFor(), which
+ * excludes `optInReconcile: false` registry entries by design — those are
+ * meant to be reconciled only via push-with-retry.sh's resolve_conflicts()
+ * case arms, not via this module's opt-in whole-sweep default). A caller
+ * that names a specific file is a DIFFERENT, deliberate call site (not the
+ * blanket "reconcile everything opted in" sweep `main()` runs with no file
+ * args) and should find that file's real merge function regardless of its
+ * optInReconcile flag — see push-with-retry.sh's unconditional single-file
+ * call for data/audit/alert-digest-queue.json. Falls back to registry data
+ * (bare basename, no `data/` prefix) the same way MANAGED does above. */
+function explicitMergerFor(file) {
+  const entry = findEntry(file, 'public-repo');
+  if (!entry || !entry.merge) return null;
+  return { file, merge: entry.merge, ...(entry.format === 'jsonl' ? { format: 'jsonl' } : { newline: entry.newline }) };
+}
+
 /** Blank lines are skipped; a genuinely corrupt (non-blank, unparsable) line
  * THROWS — deliberately, unlike bww-roundup-persistence.js's own lenient
  * readRoundupMisses(). This function only feeds the reconciliation pass
@@ -174,8 +191,17 @@ function main() {
   const root = repoRoot();
   if (root) { try { process.chdir(root); } catch { /* fall through, per-file try/catch below fails open */ } }
 
+  // BRO-257: explicit file args resolve via explicitMergerFor() (registry
+  // lookup, unfiltered by optInReconcile) rather than mergerFor()/MANAGED
+  // (the no-args sweep below) — so naming a file here reconciles it even if
+  // its registry entry is optInReconcile:false. Today's only caller is
+  // push-with-retry.sh's single-file alert-digest-queue.json call; any
+  // FUTURE explicit-arg caller gets the same "any active registry entry,
+  // regardless of optInReconcile" behavior — deliberate, not scoped to one
+  // filename, since a caller that names a specific file is making its own
+  // explicit choice, distinct from the opt-in whole-sweep default below.
   const targets = only.length
-    ? only.map((f) => ({ ...(mergerFor(f) || {}), file: f })).filter((t) => t.merge)
+    ? only.map((f) => explicitMergerFor(f)).filter(Boolean)
     : MANAGED;
 
   const changedFiles = [];
@@ -211,6 +237,6 @@ function main() {
   process.stdout.write(changedFiles.join('\n'));
 }
 
-module.exports = { MANAGED, mergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
+module.exports = { MANAGED, mergerFor, explicitMergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
 
 if (require.main === module) main();
