@@ -472,7 +472,23 @@ async function runAggregators(show) {
   // was a latent bug because a null-openingDate show could never reach this
   // function before the stuck-previews poll backstop (opening-signal.js)
   // started admitting them.
-  const year = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
+  //
+  // A bare `null` isn't enough for the stuck-preview cohort specifically: it
+  // doesn't just degrade gracefully, it fully DISABLES year-based
+  // disambiguation — validatePageMatchesShow's year checks are gated
+  // `if (options.openingYear)` (page-validator.js:255,265), and the same
+  // `year` also flows into the BWW SERP query (gather-reviews.js:2076's
+  // `${year}` template literal — a literal "null" poisons the search) and
+  // into tryTbDirectUrl's guessed URLs (tb-direct-url.js:45). Falling back to
+  // previewsStartDate's year keeps that disambiguation live: the
+  // stuck-preview backstop (opening-signal.js) only admits shows whose
+  // previewsStartDate is 5-30 days old, so the real opening year matches
+  // previewsStartDate's year in every case except a preview run spanning a
+  // Dec->Jan boundary — same residual risk the codebase already accepts
+  // elsewhere for previews/opening date estimates.
+  const year = show.openingDate
+    ? new Date(show.openingDate).getFullYear()
+    : (show.previewsStartDate ? new Date(show.previewsStartDate).getFullYear() : null);
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);
 
