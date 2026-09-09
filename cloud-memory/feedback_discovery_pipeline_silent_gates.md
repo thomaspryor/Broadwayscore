@@ -799,3 +799,29 @@ Jane Eyre sat at `cs: None` with 2 scored reviews for several passes. That is
 3 Off-Broadway / 3 Off-West-End / 4 curated-historical. Check the threshold for
 the show's `category` before spending a pass chasing a composite that is simply
 one review away.
+
+## Gate: star rating published only in embedded page data, never in the article body (2026-09-09, on-monitor pass 72)
+
+`londontheatre.co.uk` never prints its star rating in the review body. It lives in
+the page's embedded Contentful/Next payload as `"ourCriticsRating":"<n>"` on the
+**review author's writer entry**, and in the `/reviews` listing block as `<n> / 5`.
+The star-extraction path reads the article body only, so every LondonTheatre review
+arrives with no `originalScore` and gets scored by LLM alone.
+
+Tonight's instance: jane-eyre-off-west-end-2026 `london-theatre--unknown.json` was
+live on prod at LLM 72; the published rating is 3/5 = 60. Corroborated twice — the
+article page's `ourCriticsRating:"3"` on the Julia Rank entry (Julia Rank is the
+JSON-LD `author` of that exact review, which is how you pick the right writer entry
+out of the dozens on the page), and the listing block's `3 / 5` next to the same
+headline. Fixed by hand; systemic fix carded as BRO-3139.
+
+**Generalisation worth checking on any outlet scoring suspiciously LLM-only:** grep
+the raw HTML for `ratingValue`, `ourCriticsRating`, `avgRating`, `stars` before
+concluding the outlet publishes no rating. A `"stars":null` in the page data is not
+proof — the real value may sit on a sibling entity keyed by author or by slug.
+
+**Transport note from the same pass:** `git merge origin/main` in `data/review-texts`
+ABORTS when an incoming commit would overwrite another session's *untracked* file.
+Do not delete or stash that file. Under a deadline, land the single-file fix with
+`gh api PUT /contents/` using the file's current origin sha — it writes straight to
+origin/main without touching the local tree.
