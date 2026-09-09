@@ -722,3 +722,80 @@ must be expressed as a non-sticky state (a stub with `not_attempted`, or a
 `pendingCorroboration` marker), never as `wrongProduction`. Outlets that
 publish a listing page and later overwrite it in place with the review include
 Time Out London and London Box Office.
+
+---
+
+## Reviews that die AFTER scoring: the publish path, not the discovery path
+
+Everything above is about a review never being *found* or being wrongly
+*flagged*. Opening night 2026-09-08/09 (Jane Eyre, Southwark Playhouse Elephant)
+produced three failures where the review was found, ingested, scored correctly —
+and still could not reach the site. Check these when `reviews.json` is right but
+prod is wrong.
+
+### 1. A targeted score dispatch parks behind a capped bulk step (BRO-3128)
+
+`llm-ensemble-score.yml -f show_id=<id>` scored the review in ~2 minutes, then
+sat **32 minutes** in `Comparative within-band rescore (WE/OWE anchored-v6,
+capped)` — because every artifact-publishing step (`Push review-texts to private
+repo`, `Commit and push changes`, `Auto-trigger rebuild for non-chain runs`) is
+ordered *after* the rescore in the same job. The score existed only in the
+runner's working copy the whole time.
+
+- This is also the explanation for the **"frozen `updatedAt` / stuck
+  `in_progress`"** behaviour: the run is alive, just parked. Trust the committed
+  artifact, never the run status.
+- **Do NOT pre-dispatch `rebuild-fast` to "help".** A rebuild before the push
+  folds nothing — the scorer's output is not on the remote yet. Wait for the
+  run's own auto-trigger step.
+- Diagnose with `gh run view <id> --json jobs` and read *step* conclusions, not
+  the run conclusion.
+
+### 2. Push failures that are transport HANGS, not conflicts (BRO-3129)
+
+`rebuild-fast` run 34330669320 failed `Commit and push changes` with 10/10
+attempts logging `FAILED in 30s — timeout: killed mid-transport at the 30s cap
+(rc=124, SIGTERM) ... a transport HANG, not a rejection`. The interleaved
+`fetch`+`rebase` all succeeded in **0–1s**, so the remote was reachable; only
+push hung. A flat 30s cap under transport degradation guarantees rc=124 forever
+— retrying 20 times cannot help.
+
+Then the safety net refused to deploy: `push-with-retry` broke out early at
+`PUSH_API_FALLBACK_AFTER_ATTEMPTS=10` and the **Git Data API fallback
+self-disqualified because the outgoing diff touched `reviews.json`** (a blanket
+disqualifier, no `apiFallbackMerge` entry in
+`scripts/lib/core-data-merge-registry.js`).
+
+**Rule:** when a push step fails, read the log before assuming a conflict. Ten
+30s timeouts with healthy fetches in between is BRO-3129, and no amount of
+re-dispatching will fix it. The file that most needs the API fallback is
+currently the one file the fallback will not carry.
+
+### 3. The deploy gate then declines, and reports success (BRO-3130)
+
+`should-deploy-gate.js` `decide()` applies the already-live dedup
+(`baselineSha === headSha`) **before** the non-schedule explicit-ship exemption,
+so both `workflow_dispatch` and the rebuild's `workflow_run` "ship NOW" path
+no-op when only the *private* core-data repo changed. Normally masked because
+`rebuild-all-reviews.js` commits `public/data/shows/*.json` in lockstep — which
+is exactly what failure #2 prevented.
+
+- Symptom: deploy run reports success, `deploy: skipped`, log line
+  `[content-gate] SKIP -- reason=already-live`.
+- Workaround: dispatch `rebuild-fast.yml` to re-commit `public/data/shows` and
+  move web HEAD. `DEPLOY_GATE_DISABLED=true` is the emergency lever and **must
+  be unset in the same session** or every 5-min tick deploys.
+
+**These three compound.** One parks the score, the next loses the web-repo
+commit, the third silently declines to publish — and each reports success at its
+own layer. Worst case is a scored opening-night review invisible until the ~6h
+staleness backstop, far past the "live within a couple of hours" bar.
+
+### Corollary: a missing composite is usually arithmetic, not a bug
+
+Jane Eyre sat at `cs: None` with 2 scored reviews for several passes. That is
+**correct**: `MIN_REVIEWS_FOR_SCORE_OFF_WEST_END = 3`
+(`src/config/score-buckets.ts`). Thresholds are 5 Broadway / 5 West End /
+3 Off-Broadway / 3 Off-West-End / 4 curated-historical. Check the threshold for
+the show's `category` before spending a pass chasing a composite that is simply
+one review away.
