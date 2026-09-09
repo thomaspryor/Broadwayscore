@@ -389,5 +389,41 @@
       }
     ],
     "queuedAt": "2026-09-09T21:22:44.961Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-jane-eyre-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Jane Eyre",
+    "description": "guardian/Holly O Mahony (guardian--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical adaptation of 'Jane Ey — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\nguardian/Holly O'Mahony (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical adaptation of 'Jane Ey — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\ntheatreboard/Unknown (theatreboard--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate review of Jane Eyre at Southwark — https://theatreboard.com/thread/14928/jane-eyre-musical-southwark-playhouse?page=3",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-09T22:36:59.912Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:jane-eyre-off-west-end-2026",
+    "title": "Shipped review too short to verify on Jane Eyre",
+    "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhouse-elephant-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-09T22:37:00.073Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:jane-eyre-off-west-end-2026",
+    "title": "Shipped review missing publishDate on Jane Eyre",
+    "description": "thestage/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhouse-elephant-london\ntheatreboard/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://theatreboard.com/thread/14928/jane-eyre-musical-southwark-playhouse?page=3",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-09T22:37:00.075Z"
   }
 ]
