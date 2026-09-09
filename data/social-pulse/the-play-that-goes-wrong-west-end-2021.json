@@ -3,49 +3,57 @@
   "showId": "the-play-that-goes-wrong-west-end-2021",
   "showTitle": "The Play That Goes Wrong",
   "market": "West End",
-  "fetchedAt": "2026-08-24T07:32:34.498Z",
+  "fetchedAt": "2026-09-09T12:49:34.738Z",
   "tier": "Hidden",
-  "volume": 2,
-  "effectiveVolume": 0.6,
+  "volume": 7,
+  "effectiveVolume": 1.2,
   "relevanceRates": {
     "byPlatform": {
-      "bluesky": 1
+      "reddit": 0.5,
+      "bluesky": 0.5
     },
-    "overall": 1,
-    "classified": 1
+    "overall": 0.5,
+    "classified": 4
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -75,
-  "baselineMultiple": 1.33,
+  "positivePct": 0,
+  "opinionSample": 1,
+  "weekOverWeekPct": 250,
+  "baselineMultiple": 4.45,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
+    "reddit": 1,
     "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "My weekend at the West End! (27-30 August) So I visited London in late August. This trip started with wanting to go to…",
+      "platform": "reddit",
+      "author": "u/ElisedelaSerre",
+      "url": "https://www.reddit.com/r/TheWestEnd/comments/1wayfx8/my_weekend_at_the_west_end_2730_august/"
+    }
+  ],
   "counters": {
-    "reddit": 0,
-    "bluesky": 1,
-    "x": 1,
-    "wikipedia": 3471
+    "reddit": 2,
+    "bluesky": 2,
+    "x": 3,
+    "wikipedia": 2569
   },
   "wikipediaTitle": "The Play That Goes Wrong",
   "baseline": {
-    "mean": 1.5714285714285714,
-    "weeksOfHistory": 7
+    "mean": 2.25,
+    "weeksOfHistory": 8
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 1
+    "reddit": 2,
+    "bluesky": 2
   },
   "errors": [],
   "rank": {
-    "position": 26,
-    "total": 46,
-    "text": "26/46 West End"
+    "position": 13,
+    "total": 41,
+    "text": "13/41 West End"
   },
-  "compositeScore": 0.3
+  "compositeScore": 0.6
 }
