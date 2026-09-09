@@ -1,115 +1,59 @@
 {
-  "timestamp": "2026-09-05T12:38:49.687Z",
+  "timestamp": "2026-09-09T13:40:37.049Z",
   "summary": {
-    "eventsAdded": 19,
+    "eventsAdded": 30,
     "eventsUpgraded": 0,
-    "eventsCleaned": 0,
+    "eventsCleaned": 1,
     "showsCleaned": 0,
-    "totalChanges": 19,
+    "totalChanges": 31,
     "errors": 0
   },
   "changes": [
     {
+      "showId": "hamilton-2015",
+      "changeType": "applied-arrival",
+      "eventType": "arrival",
+      "name": "Christopher Jackson",
+      "role": "George Washington",
+      "date": "2026-09-08"
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Ana Gasteyer",
+      "role": "Mildred Layton",
+      "source": "playbill-cast"
+    },
+    {
       "showId": "schmigadoon-2026",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Eldridge Taylor Jr.",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Arden Cho",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Young Mazino",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Jim Kaplan",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Michael Arden",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Will Aronson",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Caroline Fairweather",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Nikki M. James",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Andy Mientus",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "added",
-      "eventType": "departure",
-      "name": "Hannah Solow",
-      "role": "Mary",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "oh-mary-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Bianca Leigh",
+      "name": "Jennifer Simard",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
       "showId": "the-great-gatsby-2024",
       "changeType": "added",
-      "eventType": "arrival",
-      "name": "Jonathan Young",
-      "role": "Unknown",
+      "eventType": "departure",
+      "name": "Matthew Saldívar",
+      "role": "Meyer Wolfsheim",
       "source": "playbill-cast"
     },
     {
-      "showId": "the-outsiders-2024",
+      "showId": "the-great-gatsby-2024",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Jeremy Jordan",
+      "role": "Jay Gatsby",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Daryl Tofa",
+      "name": "Eric Anderson",
       "role": "Unknown",
       "source": "playbill-cast"
     },
@@ -117,31 +61,119 @@
       "showId": "and-juliet-2022",
       "changeType": "added",
       "eventType": "departure",
-      "name": "Drew Gehling",
+      "name": "Elsa Keefe",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
       "showId": "and-juliet-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Megan Kane",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Chelsea Mitchell-Bonsu",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Skye Jackson-Williams",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Chantelle Good",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Joshua Colley",
+      "role": "Orpheus",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Morgan Dudley",
+      "role": "Eurydice",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Kurt Elling",
+      "role": "Hermes",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
       "changeType": "added",
       "eventType": "departure",
       "name": "Paulo Szot",
-      "role": "Lance",
+      "role": "Hades",
       "source": "playbill-cast"
     },
     {
-      "showId": "and-juliet-2022",
+      "showId": "hadestown-2019",
       "changeType": "added",
-      "eventType": "arrival",
-      "name": "Corey Mach",
+      "eventType": "departure",
+      "name": "Jack Wolfe",
+      "role": "Orpheus",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hamilton-2015",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Isaiah Johnson",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "harry-potter-2021",
+      "showId": "hamilton-2015",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Jarrod Spector",
+      "role": "King George III",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hamilton-2015",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Rixey Terry",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hamilton-2015",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Timothy Hughes",
+      "name": "Noah Kieserman",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hamilton-2015",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Will Jewett",
       "role": "Unknown",
       "source": "playbill-cast"
     },
@@ -149,7 +181,63 @@
       "showId": "wicked-2003",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Tregoney Shepherd",
+      "name": "Lauren Boyd",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "wicked-2003",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Christianne Tisdale",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Nathan Andrew Riley",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Jacqueline B. Arnold",
+      "role": "Matron \"Mama\" Morton",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Eddie Cooper",
+      "role": "Amos Hart",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Rachel Schur",
+      "role": "Roxie Hart",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Ivy",
+      "role": "Roxie Hart",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Reece Weaver",
       "role": "Unknown",
       "source": "playbill-cast"
     },
@@ -157,7 +245,15 @@
       "showId": "chicago-1996",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "James T. Lane",
+      "name": "Red Concepción",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "NaTasha Yvette Williams",
       "role": "Unknown",
       "source": "playbill-cast"
     }
@@ -169,9 +265,9 @@
     "redditSearches": 0,
     "redditPostsAnalyzed": 0,
     "officialSitesChecked": 0,
-    "eventsAdded": 19,
+    "eventsAdded": 30,
     "eventsUpgraded": 0,
-    "eventsCleaned": 0,
+    "eventsCleaned": 1,
     "showsCleaned": 0,
     "errors": []
   }
