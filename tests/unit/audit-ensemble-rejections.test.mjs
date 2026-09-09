@@ -123,7 +123,9 @@ describe('BRO-79 root-cause fix — clearFailureFlags no longer self-nulls a fre
     // above failing, and this catches an accidental disconnection of the two.
     const srcPath = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'scripts', 'llm-scoring', 'index.ts');
     const src = fs.readFileSync(srcPath, 'utf8');
-    const rejectionWriteMatch = src.match(/fileData\.rejectionReasoning = rejectionReasoning;[\s\S]{0,200}saveReviewFile\([^)]*\)/);
+    // Window widened from 200: a ship-check comment block + rejectionAgreeCount/
+    // promptVersion writes now sit between the assignment and the save call.
+    const rejectionWriteMatch = src.match(/fileData\.rejectionReasoning = rejectionReasoning;[\s\S]{0,1200}saveReviewFile\([^)]*\)/);
     assert.ok(rejectionWriteMatch, 'could not locate the rejection-stamping saveReviewFile call');
     assert.ok(
       /skipRejectionReasonClear:\s*true/.test(rejectionWriteMatch[0]),
