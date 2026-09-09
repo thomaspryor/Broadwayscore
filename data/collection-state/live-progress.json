@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-08T22:24:18.520Z",
-  "processed": 79,
-  "failed": 724,
-  "successRate": "9.8%",
+  "updatedAt": "2026-09-09T00:40:36.106Z",
+  "processed": 82,
+  "failed": 749,
+  "successRate": "9.9%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 46,
     "amp": 0,
     "browserbase": 17,
-    "directCookies": 5,
+    "directCookies": 7,
     "scrapingbee": 17,
     "brightdata": 5,
     "archiveToday": 0,
     "archive": 15
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-09-08T15:17:27.596Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-08T15:20:05.439Z",
-      "event": "bb-session",
-      "session": "578cae33",
-      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
-    },
     {
       "t": "2026-09-08T15:28:34.505Z",
       "event": "bb-session",
@@ -128,6 +117,17 @@
       "event": "bb-session",
       "session": "f8349b21",
       "url": "https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review"
+    },
+    {
+      "t": "2026-09-09T00:40:31.381Z",
+      "event": "bb-session",
+      "session": "79283bba",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-09T00:40:32.288Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
