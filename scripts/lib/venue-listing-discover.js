@@ -245,6 +245,45 @@ const OB_VENUE_CONFIGS = [
     preferPlaywright: false,
     category: 'off-broadway',
   },
+  // ── BRO-3123 (2026-09-09): two venues whose own listing was never in the
+  // discovery rotation at all — neither sells primarily through TodayTix,
+  // and small/limited-run bookings there don't always reach Show Score
+  // either. "The Ford/Hill Project" (BAM) and "Bigfoot Ripped My Dog In
+  // Half I Saw It" (Soho Playhouse, OvationTix-only) were both missing for
+  // exactly this reason before being added to shows.json by hand.
+  {
+    name: 'Soho Playhouse',
+    // Homepage (Squarespace) links each current/upcoming booking at
+    // /see-a-show/<slug> — plain fetch works, no JS rendering needed
+    // (verified 2026-09-09, ~426KB HTML). Slugs here are short marketing
+    // slugs, not full-title slugs (e.g. "bigfoot-ripped" for "Bigfoot
+    // Ripped My Dog In Half I Saw It") — same class of imprecision as
+    // Bedlam's slug-derived titles above; cross-validation reconciles the
+    // real title, this just has to surface the candidate at all.
+    url: 'https://www.sohoplayhouse.com/',
+    strategy: 'link',
+    linkPattern: /\/see-a-show\/[a-z0-9-]+\/?$/,
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
+  {
+    name: 'BAM',
+    // Homepage lists every current/upcoming production across all program
+    // types at /<program>/<year>/<slug> — Theater's own prefix (/theater/)
+    // is unique to that program, so the pattern naturally excludes BAM's
+    // Dance/Opera/Music/Kids listings without a category filter. Plain
+    // fetch works, no JS rendering needed (verified 2026-09-09, ~460KB
+    // HTML; found /theater/2026/ford-hill-project directly). BAM sells
+    // tickets through its own commerce.bam.org, invisible to
+    // TodayTix/Show Score.
+    url: 'https://www.bam.org/',
+    strategy: 'link',
+    linkPattern: /\/theater\/\d{4}\/[a-z0-9-]+\/?$/,
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
 ];
 
 // ============================================================
