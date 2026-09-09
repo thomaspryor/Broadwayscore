@@ -464,7 +464,15 @@ function getKnownUrls(showId, ctx) {
 async function runAggregators(show) {
   console.log('\n[Layer 1] Aggregators...');
   const results = [];
-  const year = new Date(show.openingDate).getFullYear();
+  // Guarded like every other openingYear call site (gather-reviews.js,
+  // scrape-dtli.js, scrape-playbill-verdict.js, scrape-bww-reviews.js,
+  // scrape-nyc-theatre-roundups.js): an unguarded new Date(null) produces the
+  // epoch (year 1970), which validatePageMatchesShow's year-mismatch check
+  // (page-validator.js) then uses to reject every real 2025/2026 page — this
+  // was a latent bug because a null-openingDate show could never reach this
+  // function before the stuck-previews poll backstop (opening-signal.js)
+  // started admitting them.
+  const year = show.openingDate ? new Date(show.openingDate).getFullYear() : null;
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);
 
