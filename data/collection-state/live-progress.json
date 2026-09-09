@@ -1,54 +1,20 @@
 {
-  "updatedAt": "2026-09-09T01:37:19.393Z",
-  "processed": 86,
-  "failed": 1045,
-  "successRate": "7.6%",
+  "updatedAt": "2026-09-09T09:55:38.577Z",
+  "processed": 111,
+  "failed": 1320,
+  "successRate": "7.8%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 61,
     "amp": 0,
-    "browserbase": 17,
+    "browserbase": 20,
     "directCookies": 8,
-    "scrapingbee": 17,
-    "brightdata": 6,
+    "scrapingbee": 21,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 16
+    "archive": 23
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-09-08T15:28:34.505Z",
-      "event": "bb-session",
-      "session": "0432400e",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
-    {
-      "t": "2026-09-08T15:28:35.686Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-08T15:37:29.103Z",
-      "event": "bb-session",
-      "session": "d7139064",
-      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
-    },
-    {
-      "t": "2026-09-08T20:09:10.435Z",
-      "event": "bb-session",
-      "session": "232f770b",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-08T20:09:11.336Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-08T20:20:48.827Z",
-      "event": "bb-session",
-      "session": "c7a1f5a1",
-      "url": "https://www.facebook.com/stagescenenow/posts/midnight-at-the-never-get-starring-"
-    },
     {
       "t": "2026-09-08T20:20:49.399Z",
       "event": "bb-session",
@@ -128,6 +94,40 @@
       "t": "2026-09-09T00:40:32.288Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-09T09:35:24.463Z",
+      "event": "bb-session",
+      "session": "40da8010",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-09-09T09:43:50.734Z",
+      "event": "bb-session",
+      "session": "0e7cc8a1",
+      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-mon"
+    },
+    {
+      "t": "2026-09-09T09:52:28.800Z",
+      "event": "bb-session",
+      "session": "4e6ea960",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-09T09:52:33.303Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-09T09:52:51.610Z",
+      "event": "bb-session",
+      "session": "d4d2bd41",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-09T09:52:56.070Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
