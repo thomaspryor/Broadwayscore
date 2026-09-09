@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-09T01:07:26.325Z",
+  "generatedAt": "2026-09-09T01:50:31.623Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -46,6 +46,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -123,27 +127,27 @@
       "slug": "jane-eyre-off-west-end",
       "thumbnail": "/images/shows/jane-eyre-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 79,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
+      "total": 0,
       "t1": 0,
-      "t2": 1,
+      "t2": 0,
       "t3": 0,
-      "positive": 1,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "0/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:1/6"
+          "hi-conf:0/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -338,6 +342,10 @@
         },
         {
           "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
