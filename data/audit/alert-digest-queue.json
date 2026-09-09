@@ -354,31 +354,6 @@
     "queuedAt": "2026-09-08T15:05:58.833Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34248986147",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34248986147)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34248730310)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "6"
-      }
-    ],
-    "queuedAt": "2026-09-08T16:17:34.157Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-america-who-hurt-you-off-broadway-2026",
     "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
     "description": "synopsis for america-who-hurt-you-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -389,5 +364,30 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-09T11:30:02.094Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34405564923",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34405564923)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34289247993)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "4"
+      }
+    ],
+    "queuedAt": "2026-09-09T21:22:44.961Z"
   }
 ]
