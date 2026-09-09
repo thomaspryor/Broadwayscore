@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-09-04T13:03:48.862Z",
-    "completedAt": "2026-09-04T13:03:53.259Z",
-    "totalReviews": 26,
-    "processed": 0,
-    "skipped": 24,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 4016,
-      "output": 144,
-      "total": 11653
-    },
-    "errorDetails": [
-      {
-        "showId": "a-month-in-the-country-west-end-2026",
-        "outletId": "ents24",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-04T14:18:41.549Z",
     "completedAt": "2026-09-04T14:18:50.857Z",
     "totalReviews": 37,
@@ -320808,6 +320788,20 @@
       "input": 7502,
       "output": 343,
       "total": 22403
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-09T12:13:10.114Z",
+    "completedAt": "2026-09-09T12:13:28.641Z",
+    "totalReviews": 42922,
+    "processed": 1,
+    "skipped": 42918,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 17701,
+      "output": 881,
+      "total": 49158
     },
     "errorDetails": []
   }
