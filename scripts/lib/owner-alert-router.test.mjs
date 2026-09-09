@@ -23,6 +23,17 @@ const { ISSUE_CREATE_MUTATION: REAL_ISSUE_CREATE_MUTATION } = require('./linear.
 // undefined` once this module is stubbed out of require.cache.
 const { isUsageLimitExceeded: REAL_IS_USAGE_LIMIT_EXCEEDED } = require('./linear-issue-create.js');
 
+// Same treatment for intake-breaker.js's LEDGER_PATH (BRO-2656): captured once
+// here, before any test can run. The useRealLinearIssueCreate test below
+// exercises the REAL scripts/lib/linear-issue-create.js chokepoint, which
+// calls the REAL intake-breaker.js recordCreated()/checkIntake() with no path
+// override — those hit LEDGER_PATH's default, i.e. this exact value. remap()
+// below intercepts fs calls made against this path so the real production
+// ledger is never touched, without changing intake-breaker.js's code or
+// reloading it via require.cache (its exported functions are pure fs I/O
+// under whatever path is on disk).
+const { LEDGER_PATH: REAL_INTAKE_LEDGER_PATH } = require('./intake-breaker.js');
+
 // The router calls createLinearIssue() (scripts/lib/linear-issue-create.js,
 // BRO-375 Phase 1 — formerly an execFileSync shell-out to linear-brain.js)
 // for disposition='auto' and calls sendAlert() (Resend) for
@@ -183,6 +194,13 @@ function loadRouterWithFakes({
   const realWriteFileSync = fs.writeFileSync;
   const realRenameSync = fs.renameSync;
   const realMkdirSync = fs.mkdirSync;
+  const realAppendFileSync = fs.appendFileSync;
+  // BRO-2656: intake-breaker.js's LEDGER_PATH has no env override (unlike the
+  // alert ledger above), so — same fallback as TRACKED_LEDGER_PATH — this
+  // needs an exact-path fs remap. Isolates the useRealLinearIssueCreate test's
+  // real chokepoint call (linear-issue-create.js -> intake-breaker.js
+  // recordCreated()/checkIntake()) from the real ledger file on disk.
+  const intakeLedgerPath = path.join(tmpDir, 'intake-ledger.jsonl');
 
   function remap(p) {
     if (typeof p !== 'string') return p;
@@ -194,6 +212,14 @@ function loadRouterWithFakes({
     // local test run would read the repo's REAL alert-ledger.json while a CI
     // run (LEDGER_PATH === tracked path) would not — same test, two answers.
     if (p === router._TRACKED_LEDGER_PATH) return path.join(tmpDir, 'tracked-alert-ledger.json');
+    if (p === REAL_INTAKE_LEDGER_PATH) return intakeLedgerPath;
+    // recordCreated() calls fs.mkdirSync(path.dirname(ledgerPath), ...) before
+    // appending (intake-breaker.js:139) — the dirname, not the exact ledger
+    // path, so it needs its own case here or it falls through to the real
+    // fs.mkdirSync against the production data/audit/ directory (ship-check
+    // finding, BRO-2656: harmless today only because that directory already
+    // exists on disk, making a recursive mkdirSync a no-op).
+    if (p === path.dirname(REAL_INTAKE_LEDGER_PATH)) return path.dirname(intakeLedgerPath);
     return p;
   }
 
@@ -201,12 +227,14 @@ function loadRouterWithFakes({
   fs.writeFileSync = (p, ...rest) => realWriteFileSync(remap(p), ...rest);
   fs.renameSync = (from, to) => realRenameSync(remap(from), remap(to));
   fs.mkdirSync = (p, ...rest) => realMkdirSync(remap(p), ...rest);
+  fs.appendFileSync = (p, ...rest) => realAppendFileSync(remap(p), ...rest);
 
   function restore() {
     fs.readFileSync = realReadFileSync;
     fs.writeFileSync = realWriteFileSync;
     fs.renameSync = realRenameSync;
     fs.mkdirSync = realMkdirSync;
+    fs.appendFileSync = realAppendFileSync;
     delete require.cache[discordNotifyPath];
     delete require.cache[linearClientPath];
     delete require.cache[linearIssueCreatePath];
@@ -469,6 +497,34 @@ test('routeAlert: disposition=auto creates the Linear issue via the injectable c
   } finally {
     restore();
   }
+});
+
+// BRO-2656: the test above exercises the REAL scripts/lib/linear-issue-create.js
+// chokepoint, which calls the REAL scripts/lib/intake-breaker.js
+// recordCreated()/checkIntake() with no ledgerPath override — those default to
+// LEDGER_PATH, i.e. REAL_INTAKE_LEDGER_PATH captured at file top. Before the
+// remap() fix above, this test appended a synthetic "Real chokepoint wiring
+// check" row to that real file every run (158 accumulated in production
+// before this was caught). This asserts the real file is untouched by a full
+// routeAlert() round trip through the real chokepoint.
+test('routeAlert (BRO-2656): the real chokepoint call never writes to the production intake ledger', async () => {
+  const before = fs.existsSync(REAL_INTAKE_LEDGER_PATH)
+    ? fs.readFileSync(REAL_INTAKE_LEDGER_PATH, 'utf8') : null;
+  const { router, restore } = loadRouterWithFakes({ useRealLinearIssueCreate: true });
+  try {
+    await router.routeAlert({
+      conditionKey: 'test:intake-ledger-isolation',
+      title: 'BRO-2656 ledger isolation check',
+      description: 'Must not touch the real intake ledger.',
+      severity: 'error',
+      disposition: 'auto',
+    });
+  } finally {
+    restore();
+  }
+  const after = fs.existsSync(REAL_INTAKE_LEDGER_PATH)
+    ? fs.readFileSync(REAL_INTAKE_LEDGER_PATH, 'utf8') : null;
+  assert.equal(after, before, 'real data/audit/intake-ledger.jsonl must be untouched by this test suite');
 });
 
 test('routeAlert: a failed card dispatch is NOT recorded as notified — retries next call', async () => {

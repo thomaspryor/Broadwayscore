@@ -20,6 +20,7 @@ const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
 const { hasNonMetOperaUrlMarker, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
+const { recordSbCall } = require('./provider-telemetry');
 
 // Helper: parse JSON response, returning empty array if the body is HTML
 // (Cloudflare fallback can return HTML even after fetchSSR's challenge detection
@@ -1060,17 +1061,33 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) return reject(new Error('No ScrapingBee key'));
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
+    // render_js=true bills 5 credits per attempt regardless of status. This
+    // path is the poller's JS site-search tier: it re-renders every
+    // requiresJs outlet that is still "missing" on EVERY poll tick, so an
+    // outlet that will never cover a given show is paid for indefinitely.
+    // It emitted no telemetry at all, which is why the weekly cost report
+    // could not attribute the bulk of ScrapingBee's credits to a workflow.
+    let _recorded = false;
+    // ScrapingBee bills only requests it actually proxied: 401/402 (bad key /
+    // no credits) and connection errors cost 0, everything else costs the tier
+    // price whatever the target returned.
+    const _rec = (success, status) => {
+      if (_recorded) return;
+      _recorded = true;
+      const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 5;
+      try { recordSbCall({ url, fn: 'render', success, status, credits: billed }); } catch (_) {}
+    };
     const req = https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        if (res.statusCode === 200) resolve(data);
-        else reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
+        if (res.statusCode === 200) { _rec(true, 200); resolve(data); }
+        else { _rec(false, res.statusCode); reject(new Error(`ScrapingBee HTTP ${res.statusCode}`)); }
       });
-      res.on('error', reject);
+      res.on('error', (err) => { _rec(false, 'error'); reject(err); });
     });
-    req.on('error', reject);
-    req.setTimeout(timeoutMs, () => { req.destroy(); reject(new Error('Timeout')); });
+    req.on('error', (err) => { _rec(false, 'error'); reject(err); });
+    req.setTimeout(timeoutMs, () => { req.destroy(); _rec(false, 'timeout'); reject(new Error('Timeout')); });
   });
 }
 

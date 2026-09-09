@@ -7,8 +7,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { createRequire } from 'module';
+import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { safeWriteReview, safeRenameReview, checkForDataLoss, checkUrlCollision, coerceAssignedScore } = require('../../scripts/lib/review-write-guard');
+const { safeWriteReview, safeRenameReview, checkForDataLoss, checkUrlCollision, coerceAssignedScore, protectStagedDeletions } = require('../../scripts/lib/review-write-guard');
 
 let tmpDir;
 beforeEach(() => {
@@ -1183,5 +1184,223 @@ describe('delete-without-breadcrumb merge-mode revert (task #1624)', () => {
     assert.equal(written.crossOutletVerified, undefined);
     assert.equal(written.crossOutletVerifiedNote, undefined);
     assert.equal(written.wrongAttribution, true);
+  });
+
+  test('BRO-2559 acceptance: a fresh-object write (merge:false, as review-file-writer.js uses for both "create new" and "merge" paths) over a file carrying wrongProduction=true preserves the flag when the file is still on disk', () => {
+    // This is the literal shape the ticket's acceptance criteria describes.
+    // safeWriteReview already reads the on-disk file whenever it exists,
+    // regardless of the `merge` option (merge only controls whether UNTOUCHED
+    // existing fields get carried forward — the protected-field preserve loop
+    // runs either way), so this passes today. Kept as a permanent regression
+    // guard for BRO-2559's actual fix target: protectStagedDeletions below,
+    // which covers the case this test cannot — the file being ABSENT from disk
+    // at write time.
+    const filePath = path.join(tmpDir, 'fresh-object-over-flagged.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      showId: 'the-producers-west-end-2025',
+      outletId: 'variety',
+      criticName: 'Bob Verini',
+      wrongProduction: true,
+      wrongProductionReason: 'legacy Variety review ID attached to the wrong production',
+    }, null, 2));
+
+    const freshObject = {
+      showId: 'the-producers-west-end-2025',
+      outletId: 'variety',
+      outlet: 'Variety',
+      criticName: 'Bob Verini',
+      url: 'https://variety.com/review/the-producers',
+      source: 'bww-roundup',
+      sources: ['bww-roundup'],
+    };
+    safeWriteReview(filePath, freshObject, { merge: false });
+
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, true);
+    assert.equal(written.wrongProductionReason, 'legacy Variety review ID attached to the wrong production');
+  });
+});
+
+describe('protectStagedDeletions (BRO-2559)', () => {
+  let repoDir;
+  const git = (args) => execFileSync('git', args, { cwd: repoDir, encoding: 'utf8' });
+
+  beforeEach(() => {
+    repoDir = fs.mkdtempSync(path.join(os.tmpdir(), 'review-guard-git-'));
+    git(['init', '-q']);
+    git(['config', 'user.email', 'test@example.com']);
+    git(['config', 'user.name', 'Test']);
+  });
+  afterEach(() => {
+    fs.rmSync(repoDir, { recursive: true, force: true });
+  });
+
+  test('reverses a staged deletion of a file that carries a real protected field at HEAD', () => {
+    const filePath = path.join(repoDir, 'variety--bob-verini.json');
+    const flagged = {
+      showId: 'the-producers-west-end-2025',
+      outletId: 'variety',
+      criticName: 'Bob Verini',
+      wrongProduction: true,
+      wrongProductionReason: 'legacy Variety review ID attached to the wrong production',
+    };
+    fs.writeFileSync(filePath, JSON.stringify(flagged, null, 2));
+    git(['add', '-A']);
+    git(['commit', '-q', '-m', 'add flagged review']);
+
+    // Simulate the BRO-2559 shape: the checkpointing job's local working copy
+    // is missing the file (for any reason — never fetched, cleaned, a race)
+    // and `git add -A` stages that absence as a deletion.
+    fs.rmSync(filePath);
+    git(['add', '-A']);
+    assert.match(git(['diff', '--cached', '--name-status']), /^D\t/m);
+
+    const restored = protectStagedDeletions(repoDir);
+    assert.deepEqual(restored, ['variety--bob-verini.json']);
+
+    assert.ok(fs.existsSync(filePath), 'file should be restored to disk');
+    const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(onDisk.wrongProduction, true);
+    // Restored file must be re-staged, not left as an untracked/unstaged change.
+    assert.doesNotMatch(git(['diff', '--cached', '--name-status']), /variety--bob-verini\.json/);
+    assert.equal(git(['status', '--porcelain']).trim(), '');
+  });
+
+  test('leaves a staged deletion alone when the HEAD copy carries no protected field', () => {
+    const filePath = path.join(repoDir, 'variety--jane-critic.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      showId: 'some-show-2025',
+      outletId: 'variety',
+      criticName: 'Jane Critic',
+      url: 'https://variety.com/review/some-show',
+    }, null, 2));
+    git(['add', '-A']);
+    git(['commit', '-q', '-m', 'add unflagged review']);
+
+    fs.rmSync(filePath);
+    git(['add', '-A']);
+
+    const restored = protectStagedDeletions(repoDir);
+    assert.deepEqual(restored, []);
+    assert.ok(!fs.existsSync(filePath), 'unflagged file should stay deleted');
+    assert.match(git(['diff', '--cached', '--name-status']), /^D\t/m);
+  });
+
+  test('ignores a genuinely new (never-committed) file with no HEAD counterpart', () => {
+    // No commits at all yet — nothing to compare a staged add against, and
+    // there is no deletion in this scenario in the first place.
+    const filePath = path.join(repoDir, 'variety--new-critic.json');
+    fs.writeFileSync(filePath, JSON.stringify({ showId: 'x', wrongProduction: true }, null, 2));
+    git(['add', '-A']);
+    const restored = protectStagedDeletions(repoDir);
+    assert.deepEqual(restored, []);
+  });
+
+  test('does NOT resurrect a same-run rename (ship-check adversarial finding): a staged deletion with a sibling staged change in the same directory is left alone', () => {
+    // Mirrors renameReviewFileForCriticOverride() in collect-review-texts.js:
+    // the old filename is deleted and a new one is created in the SAME
+    // directory, in the SAME commit, carrying the protected field forward.
+    // Naively restoring the old path here would create a stale duplicate
+    // sitting next to the correctly-renamed file.
+    const showDir = path.join(repoDir, 'the-producers-west-end-2025');
+    fs.mkdirSync(showDir);
+    const oldPath = path.join(showDir, 'variety--bob-verini.json');
+    fs.writeFileSync(oldPath, JSON.stringify({
+      showId: 'the-producers-west-end-2025',
+      outletId: 'variety',
+      criticName: 'Bob Verini',
+      wrongProduction: true,
+      wrongProductionReason: 'legacy Variety review ID attached to the wrong production',
+    }, null, 2));
+    git(['add', '-A']);
+    git(['commit', '-q', '-m', 'add flagged review']);
+
+    // Simulate the rename: old path gone, new path present with the same
+    // protected fields carried over under the corrected critic name.
+    fs.rmSync(oldPath);
+    const newPath = path.join(showDir, 'variety--robert-verini.json');
+    fs.writeFileSync(newPath, JSON.stringify({
+      showId: 'the-producers-west-end-2025',
+      outletId: 'variety',
+      criticName: 'Robert Verini',
+      wrongProduction: true,
+      wrongProductionReason: 'legacy Variety review ID attached to the wrong production',
+    }, null, 2));
+    git(['add', '-A']);
+    // Content similarity is high enough that git's own heuristic already
+    // classifies this as a rename (R, not D) — protectStagedDeletions'
+    // `D\t`-only filter already excludes it for free. The sibling-directory
+    // guard below is the defense-in-depth path for a rename whose content
+    // diverges enough (git's default threshold is 50% similarity) to fall
+    // through git's own detection and show up as a plain D+A pair instead.
+    const statusOut = git(['diff', '--cached', '--name-status']);
+    assert.ok(!/^D\t.*variety--bob-verini\.json/m.test(statusOut) || /^R/m.test(statusOut));
+
+    const restored = protectStagedDeletions(repoDir);
+    assert.deepEqual(restored, [], 'a same-directory sibling change must block the restore');
+    assert.ok(!fs.existsSync(oldPath), 'old path must stay deleted — no stale duplicate resurrected');
+    assert.ok(fs.existsSync(newPath), 'renamed file is untouched');
+  });
+
+  test('does NOT resurrect a deletion when git\'s similarity heuristic misses a same-directory sibling change (unit-tests the guard\'s own directory check, not git\'s rename detection)', () => {
+    // The prior test showed realistic review-JSON renames are similar enough
+    // that git's own heuristic already classifies them as R (excluded by the
+    // `D\t`-only filter for free). This test isolates the sibling-directory
+    // guard ITSELF by forcing a plain D+A pair — a same-directory sibling
+    // change with near-zero line overlap, so git cannot detect it as a
+    // rename — and confirms the guard still refuses to restore.
+    const showDir = path.join(repoDir, 'the-producers-west-end-2025');
+    fs.mkdirSync(showDir);
+    const oldPath = path.join(showDir, 'variety--bob-verini.json');
+    fs.writeFileSync(oldPath, JSON.stringify({
+      showId: 'the-producers-west-end-2025',
+      outletId: 'variety',
+      criticName: 'Bob Verini',
+      wrongProduction: true,
+      wrongProductionReason: 'legacy Variety review ID attached to the wrong production',
+    }, null, 2));
+    git(['add', '-A']);
+    git(['commit', '-q', '-m', 'add flagged review']);
+
+    fs.rmSync(oldPath);
+    // A structurally unrelated sibling file — different keys entirely, so
+    // line-level diff similarity to the deleted file is ~0% and git cannot
+    // classify this pair as a rename.
+    fs.writeFileSync(path.join(showDir, 'unrelated-manifest.json'), JSON.stringify({ z: 1, y: 2, x: 3 }));
+    git(['add', '-A']);
+    const statusOut = git(['diff', '--cached', '--name-status']);
+    assert.match(statusOut, /^D\t.*variety--bob-verini\.json/m, 'test setup must actually produce a plain D line, not a git-detected rename');
+
+    const restored = protectStagedDeletions(repoDir);
+    assert.deepEqual(restored, [], 'a same-directory sibling change must block the restore even without git rename detection');
+    assert.ok(!fs.existsSync(oldPath));
+  });
+
+  test('restores an isolated deletion even when OTHER show directories have unrelated staged changes in the same commit', () => {
+    // The real incident (commit 6f36468ea3d) was a multi-file checkpoint
+    // commit ("65 collected") — the guard must only look at siblings within
+    // the SAME show directory as the deletion, not the whole commit.
+    const showDir = path.join(repoDir, 'the-producers-west-end-2025');
+    const otherShowDir = path.join(repoDir, 'some-other-show-2026');
+    fs.mkdirSync(showDir);
+    fs.mkdirSync(otherShowDir);
+    const flaggedPath = path.join(showDir, 'variety--bob-verini.json');
+    fs.writeFileSync(flaggedPath, JSON.stringify({
+      showId: 'the-producers-west-end-2025',
+      wrongProduction: true,
+      wrongProductionReason: 'flagged',
+    }, null, 2));
+    fs.writeFileSync(path.join(otherShowDir, 'nytimes--jesse-green.json'), JSON.stringify({ showId: 'some-other-show-2026' }, null, 2));
+    git(['add', '-A']);
+    git(['commit', '-q', '-m', 'seed']);
+
+    fs.rmSync(flaggedPath);
+    // Unrelated checkpoint activity elsewhere in the SAME commit.
+    fs.writeFileSync(path.join(otherShowDir, 'nytimes--jesse-green.json'), JSON.stringify({ showId: 'some-other-show-2026', bwwExcerpt: 'new excerpt' }, null, 2));
+    git(['add', '-A']);
+
+    const restored = protectStagedDeletions(repoDir);
+    assert.deepEqual(restored, ['the-producers-west-end-2025/variety--bob-verini.json']);
+    assert.ok(fs.existsSync(flaggedPath));
   });
 });

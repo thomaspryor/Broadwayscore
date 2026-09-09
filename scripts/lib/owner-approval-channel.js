@@ -53,10 +53,14 @@ function isAwaitingOwner(issue) {
 // was added by hand, no matching comment), and to null when neither is
 // available — callers must treat null as "age unknown", not "0".
 //
-// buildIssueQuery() (linear-dispatch.js) fetches `comments(first: 20)` —
-// confirmed live against the Linear API that this connection orders newest
-// first, so the cap keeps the most RECENT 20 comments, not the oldest 20.
-// The only way this misses the true latest approval comment is 20+ replies
+// buildIssueQuery() (linear-dispatch.js) fetches `comments(first: 50,
+// orderBy: createdAt)` — confirmed live against the Linear API that this
+// connection orders newest first, so the cap keeps the most RECENT 50
+// comments, not the oldest 50. (Raised from 20 by BRO-2543, which needed a
+// wider window to see a session report on a long thread; the explicit
+// orderBy was added at the same time so that merely EDITING an old comment
+// can no longer displace a recent one out of the window.)
+// The only way this misses the true latest approval comment is 50+ replies
 // on the issue since it was last labeled with none of them being a re-run of
 // linear-attach-approval.js — at that point falling back to updatedAt (a
 // slight understale rather than a crash) is an acceptable degradation.

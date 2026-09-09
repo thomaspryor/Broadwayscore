@@ -16,6 +16,9 @@
 // number here) is what keeps the digest's cap-exhausted line honest after the
 // T13 step-down moves the cap.
 const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
+// BRO-3097: which providers' ledger rows get `host` folded into the daily
+// aggregate's grouping key — see HOST_DIMENSION_PROVIDERS's own docstring.
+const { HOST_DIMENSION_PROVIDERS } = require('./provider-telemetry');
 
 const BB_COST_PER_SESSION = 0.10;
 
@@ -148,6 +151,7 @@ function computeStreak(records, thresholds) {
  */
 function renderSnapshot({
   record, streak, breaches, generatedAt, maxSessionsPerDay = resolveMaxSessionsPerDay(), attribution,
+  attributionCoverageMin = 0.8,
 }) {
   const p = record.providers;
   const items = [];
@@ -183,13 +187,34 @@ function renderSnapshot({
   // spend?" answered as a number instead of an assumption. null means the
   // billing side was unmeasurable that day — reported as "n/a", never as a
   // false 0% or 100%.
+  //
+  // topCoveragePct (S0-T7) answers a DIFFERENT question: even when overall
+  // attribution is high, the printed top-N callers list can still be a small
+  // slice of a long tail — "covers N% of billed X" makes that visible instead
+  // of implying the top-N list IS the whole picture. Below
+  // attributionCoverageMin, this degrades to a coverage warning naming the
+  // fix in flight — it never suppresses the line entirely (Pre-mortem/User
+  // Impact plan-review consensus: suppression hides the only signal).
   if (attribution) {
     for (const [provider, label] of [['browserbase', 'Browserbase'], ['brightdata', 'Bright Data'], ['scrapingbee', 'ScrapingBee'], ['scrapingdog', 'ScrapingDog']]) {
       const a = attribution[provider];
       if (!a || a.pct == null) continue;
       const pctText = `${Math.round(a.pct * 100)}% attributed`;
-      const topText = a.top && a.top.length ? ` — top: ${a.top.map((t) => `${t.script} ${t.count}`).join(', ')}` : '';
-      items.push({ title: `${label} attribution: ${pctText}${topText}` });
+      const unit = a.unit === 'credits' ? 'credits' : 'calls';
+      const suffix = unit === 'credits' ? 'cr' : '';
+      let coverageText = '';
+      if (a.top && a.top.length) {
+        const topList = a.top.map((t) => `${t.script} ${t.amount}${suffix}`).join(', ');
+        coverageText = a.topCoveragePct != null
+          ? ` — top callers (covers ${Math.round(a.topCoveragePct * 100)}% of billed ${unit}): ${topList}`
+          : ` — top: ${topList}`;
+      }
+      items.push({ title: `${label} attribution: ${pctText}${coverageText}` });
+      if (a.topCoveragePct != null && a.topCoveragePct < attributionCoverageMin) {
+        items.push({
+          title: `⚠️ ${label} top-caller coverage low: ${Math.round(a.topCoveragePct * 100)}% of billed ${unit} < ${Math.round(attributionCoverageMin * 100)}% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight`,
+        });
+      }
     }
   }
 
@@ -201,7 +226,72 @@ function renderSnapshot({
   return { generatedAt, bannerText, items, moreCount: 0 };
 }
 
+/**
+ * Collapse one day's raw call-ledger rows (scripts/lib/provider-telemetry.js)
+ * into one row per (provider, workflow, script, fn) with call count + summed
+ * credits (S0-T6).
+ *
+ * WHY THIS EXISTS: the raw ledger rotates at MAX_LEDGER_LINES (20K) — under a
+ * day at unthrottled Scrapingdog volume — so a 7-day attribution window
+ * cannot be built by re-reading the raw ledger; it has already rotated past
+ * yesterday by the time today's reconciliation runs. This produces the
+ * durable daily summary that DOES survive: one row per grouping key per day,
+ * written once to data/audit/scraper-spend-daily-agg.jsonl (a separate,
+ * NON-rotated file — check-provider-spend.js owns that I/O), idempotently
+ * replacing that day's rows on re-run (same pattern as provider-spend-daily.
+ * jsonl). No rotation policy is needed here: cardinality is bounded by
+ * (day x provider x workflow x script x fn x host x category) — host/
+ * category are non-null for exactly one provider today (see
+ * HOST_DIMENSION_PROVIDERS below), so this stays tiny next to the raw
+ * per-call ledger it summarizes.
+ *
+ * Grouping key is (provider, workflow, script, fn) rather than just provider
+ * so the Sprint 3 guard audit and any "which caller costs the most" query can
+ * still be answered from the aggregate after the raw rows are gone. Rows from
+ * a local/launchd run (no GITHUB_WORKFLOW) carry workflow: null and do NOT
+ * merge with a CI row for the same script — that's a distinct row on
+ * purpose, not a bug: null and any real workflow name should stay two
+ * different call paths for the same script, not be conflated.
+ *
+ * BRO-3097 (ship-check finding): the grouping key also splits on `category`
+ * ('review-text'|'discovery'|null) and, for HOST_DIMENSION_PROVIDERS members
+ * (currently just browserbase), on `host`. Without this the review-text/
+ * discovery split BRO-3097 exists to enable would have been lost the moment
+ * the raw ledger rotated past a day — this durable aggregate is what
+ * actually survives the 7-day window the card's spend decision needs. `host`
+ * is scoped to HOST_DIMENSION_PROVIDERS (not every provider) because BD/
+ * ScrapingBee/Scrapingdog hit dozens of review-outlet hosts per script —
+ * adding host to their grouping key would multiply this file's row count
+ * well past the bounded cardinality above, for no attribution question
+ * anyone has asked yet.
+ *
+ * @param {Array<Object>} ledgerRecords - raw parsed ledger lines
+ * @param {string} day - "YYYY-MM-DD" UTC
+ * @returns {Array<{day, provider, workflow, script, fn, host, category, calls, credits}>}
+ *   sorted by credits descending (most expensive grouping first), so a
+ *   --dry-run print or digest line can just take the head of the list.
+ */
+function aggregateLedgerByDay(ledgerRecords, day) {
+  const groups = {};
+  for (const r of ledgerRecords || []) {
+    if (!r || typeof r.ts !== 'string' || r.ts.slice(0, 10) !== day) continue;
+    const workflow = r.workflow || null;
+    const script = r.script || 'unknown';
+    const fn = r.fn || 'unknown';
+    const host = HOST_DIMENSION_PROVIDERS.has(r.provider) ? (r.host || null) : null;
+    const category = r.category || null;
+    const key = `${r.provider}|${workflow}|${script}|${fn}|${host}|${category}`;
+    if (!groups[key]) groups[key] = { day, provider: r.provider, workflow, script, fn, host, category, calls: 0, credits: 0 };
+    groups[key].calls += 1;
+    groups[key].credits += typeof r.credits === 'number' && Number.isFinite(r.credits) ? r.credits : 0;
+  }
+  return Object.values(groups).sort((a, b) => b.credits - a.credits
+    || b.calls - a.calls
+    || a.provider.localeCompare(b.provider)
+    || a.script.localeCompare(b.script));
+}
+
 module.exports = {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
-  utcYesterday, isNextUtcDay, BB_COST_PER_SESSION,
+  utcYesterday, isNextUtcDay, aggregateLedgerByDay, BB_COST_PER_SESSION,
 };

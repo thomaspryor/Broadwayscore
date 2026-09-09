@@ -11,6 +11,8 @@
 #   "commit-dropped-post-push"
 #   "noop-rebase(${RESOLUTION_PATH:-unknown})"   -> e.g. "noop-rebase(rebase)"
 #   "api-fallback-content-dropped"
+#   "api-fallback-exhausted(timeout)"
+#   "api-fallback-exhausted(race-or-other)"
 #   "retries-exhausted"
 # This test extracts record_push_failure()'s EXACT `"--reason=$reason"`
 # interpolation pattern (not push-with-retry.sh's full logic — that needs a

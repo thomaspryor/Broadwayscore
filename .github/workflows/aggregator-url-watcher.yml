@@ -28,7 +28,7 @@ on:
         default: false
 
 permissions:
-  contents: read
+  contents: write
   actions: write
 
 concurrency:
@@ -109,6 +109,13 @@ jobs:
             ARGS="$ARGS --dry-run"
           fi
           node scripts/watch-aggregator-urls.js $ARGS
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: aggregator-url-watcher
 
       - name: Notify on failure
         if: failure()

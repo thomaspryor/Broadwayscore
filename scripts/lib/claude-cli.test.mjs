@@ -341,3 +341,106 @@ test('pathWithClaudeBinDir: prepends the resolved binary dir and never duplicate
   // Idempotent: feeding its own output back must not grow the PATH.
   assert.equal(pathWithClaudeBinDir(out), out, 'must be idempotent');
 });
+
+test('buildBudgetPreamble warns against run_in_background for needed results (BRO-2741)', async () => {
+  // Deliberately in the runner preamble, NOT in buildLinearSeed: the preamble
+  // is prepended to every headless prompt regardless of dispatcher, so this
+  // covers the bsc-next path too -- and the Linear seed is also used for
+  // mode:'tab', where an interactive session does not teardown-kill and the
+  // warning would simply be false.
+  //
+  // This is the ONLY surviving half of the original BRO-2741 change. The
+  // mechanical detection that went with it was reverted: see the commit that
+  // removed it. Empirically, 65 of 155 real job logs contain a killed-task row
+  // and 64 of those recorded job-done, because the dominant killed command is
+  // scripts/lib/wait-for-run.sh -- this repo's own documented CI-wait idiom.
+  // Advisory guidance is safe; failing a job on that signal is not.
+  const runner = await import('./bsc-runner.js');
+  const { buildBudgetPreamble } = runner.default || runner;
+  const preamble = buildBudgetPreamble(120 * 60 * 1000);
+
+  // NOT /killed/ — the pre-existing "hard-killed after N minutes" sentence
+  // already satisfies that, so it passed even with this whole guidance deleted
+  // (adversarial review). Assert the specific clause instead.
+  assert.match(
+    preamble,
+    /does not survive the end of your turn/,
+    'must state that background work dies at end of turn'
+  );
+  assert.match(preamble, /turn-sized batches/, 'must give the worker somewhere to go instead');
+
+  // The properties that actually matter are the two things it must NOT do, and
+  // they are what a future edit is most likely to break.
+  assert.doesNotMatch(
+    preamble,
+    /(do not|don't|never) use run_in_background/i,
+    'a blanket ban would push CI waits (wait-for-run.sh) into the foreground and burn the time budget'
+  );
+  assert.doesNotMatch(
+    preamble,
+    /\b\d{2,}\s+items\b/,
+    'no task-specific counts -- this text is prepended to every headless prompt regardless of task'
+  );
+});
+
+// ── BRO-3053: an OS kill must be distinguishable from any other abrupt exit ──
+//
+// `child.on('close', (code) => …)` DROPPED the second argument, so a process
+// killed by the kernel reported the same `exit null` as any other non-zero end.
+// Two headless jobs died ~90s after spawn on 2026-09-08 with logs that simply
+// stop mid-stream, and nothing in the pipeline could say whether the OS killed
+// them — which is how a whole root-cause theory got built on host memory gauges
+// that turned out to mean nothing. This test runs the REAL runClaudeCli against
+// a stub binary that takes a genuine SIGKILL, so it fails if the argument is
+// ever dropped again.
+test('runClaudeCli: a SIGKILLed child reports exitSignal and says so in errorDetail (BRO-3053)', async () => {
+  const { mkdtempSync, writeFileSync, chmodSync, readFileSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const { tmpdir } = await import('node:os');
+  const { runClaudeCli, STAGES } = await import('./claude-cli.js');
+
+  const dir = mkdtempSync(join(tmpdir(), 'claude-cli-sigkill-'));
+  const bin = join(dir, 'claude');
+  // Emits one stream line, then takes a real SIGKILL — the same shape Node sees
+  // when the kernel kills a child (code=null, signal='SIGKILL'). Self-inflicted
+  // only so the test is deterministic.
+  writeFileSync(bin, '#!/bin/sh\necho \'{"type":"system","subtype":"init"}\'\nkill -KILL $$\nsleep 60\n');
+  chmodSync(bin, 0o755);
+  const logFile = join(dir, 'run.log');
+
+  const r = await runClaudeCli({
+    prompt: 'noop',
+    cwd: dir,
+    // CLAUDE_BIN is the documented operator pin and the only injection point
+    // for the spawned binary (resolveClaudeBin reads it off the spawn env).
+    env: { CLAUDE_BIN: bin },
+    logFile,
+    timeoutMs: 60000,
+  });
+
+  assert.equal(r.exitSignal, 'SIGKILL', 'the signal must survive into the result');
+  assert.equal(r.exitCode, null, 'a signalled exit carries a null code');
+  assert.match(String(r.errorDetail), /killed by SIGKILL/);
+  // Deliberately still the existing stage, not a new spelling: classifyFailure
+  // and the CONTENT_STAGES/INFRA_STAGES sets switch on these strings, so a new
+  // value would silently fall out of both and change retry/breaker behaviour.
+  assert.equal(r.stage, STAGES.ERROR);
+  assert.match(readFileSync(logFile, 'utf8'), /signal=SIGKILL/, 'the run log must record it too');
+});
+
+test('runClaudeCli: every result carries exitSignal, present-and-null on ordinary exits (BRO-3053)', async () => {
+  const { mkdtempSync, writeFileSync, chmodSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const { tmpdir } = await import('node:os');
+  const { runClaudeCli } = await import('./claude-cli.js');
+
+  const dir = mkdtempSync(join(tmpdir(), 'claude-cli-exit3-'));
+  const bin = join(dir, 'claude');
+  writeFileSync(bin, '#!/bin/sh\nexit 3\n');
+  chmodSync(bin, 0o755);
+
+  const r = await runClaudeCli({ prompt: 'noop', cwd: dir, env: { CLAUDE_BIN: bin }, timeoutMs: 60000 });
+  assert.equal(r.exitCode, 3);
+  assert.equal(r.exitSignal, null, 'present and null, never undefined — consumers test === "SIGKILL"');
+  assert.ok(!/killed by/.test(String(r.errorDetail)), 'an ordinary non-zero exit must not claim it was killed');
+});

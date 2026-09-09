@@ -99,6 +99,83 @@ test('a cancellation WITH explicit evidence every job also just cancelled (no fa
   assert.equal(r.redRunCount, 0);
 });
 
+test('a job-level TIMEOUT (cancelled job, failing step inside) counts red — it is not a supersession', () => {
+  // GitHub reports a job that hit timeout-minutes with conclusion 'cancelled',
+  // identically to one cancelled by supersession, but its STEPS keep the
+  // failures it accumulated first. Judging on job conclusions alone scored
+  // these benign, so main failed on every push with alarm:null.
+  // Real incident, main 2026-09-01: runs 33466229004 / 33469747007 /
+  // 33471909555, Data Validation ~35m against timeout-minutes: 30, job
+  // conclusion 'cancelled', step "Validate provisional show venue+dates
+  // against Playbill" conclusion 'failure'.
+  const runs = [
+    run('timedout777', 15, 'cancelled', [
+      testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run tests')]),
+      testJob('data-validation', 'cancelled', [okStep('Set up job'), failedStep('Validate provisional show venue+dates against Playbill')]),
+    ]),
+    run('lastgreen777', 200, 'success', [testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run tests')])]),
+  ];
+  const r = assessMainRedStreak(runs, NOW, 2);
+  assert.notEqual(r.alarm, null);
+  assert.equal(r.redRunCount, 1);
+  assert.equal(r.firstRedSha, 'timedout777');
+});
+
+test('a genuine supersession (cancelled job, NO failing step) still does not count — the timeout fix must not over-trigger', () => {
+  const runs = [
+    run('superseded88', 15, 'cancelled', [
+      testJob('unit-tests', 'cancelled', [okStep('Set up job')]),
+      testJob('data-validation', 'cancelled', [okStep('Set up job')]),
+    ]),
+    run('lastgreen888', 200, 'success', [testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run tests')])]),
+  ];
+  const r = assessMainRedStreak(runs, NOW, 2);
+  assert.equal(r.alarm, null);
+  assert.equal(r.redRunCount, 0);
+});
+
+test('a mid-flight cancel that stamps later always()-steps "failure" is NOT red (phantom failures)', () => {
+  // When the runner cancels a job in flight, GitHub marks every remaining
+  // `if: always()` step 'failure' with zero duration even though it never ran.
+  // Observed on run 33416106078: Data Validation was cancelled during Checkout
+  // (step 2 'cancelled'), then steps 13-53 all reported 'failure' at an
+  // identical timestamp. Nothing failed and no test executed, so counting these
+  // would be the same class of false positive isSetupJobOnlyFailure prevents.
+  const runs = [
+    run('phantom555', 15, 'cancelled', [
+      testJob('data-validation', 'cancelled', [
+        { name: 'Set up job', conclusion: 'success', number: 1 },
+        { name: 'Checkout', conclusion: 'cancelled', number: 2 },
+        { name: 'Audit something (if: always())', conclusion: 'failure', number: 13 },
+        { name: 'Audit something else (if: always())', conclusion: 'failure', number: 14 },
+      ]),
+    ]),
+    run('lastgreen555', 200, 'success', [testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run tests')])]),
+  ];
+  const r = assessMainRedStreak(runs, NOW, 2);
+  assert.equal(r.alarm, null);
+  assert.equal(r.redRunCount, 0);
+});
+
+test('a REAL failure before the cancel point still counts red even though later steps are phantom', () => {
+  // The discriminator is ordering, not presence: a genuine failure precedes the
+  // first cancelled step. This is the shape that must stay red.
+  const runs = [
+    run('realthencancel66', 15, 'cancelled', [
+      testJob('data-validation', 'cancelled', [
+        { name: 'Set up job', conclusion: 'success', number: 1 },
+        { name: 'Validate provisional show venue+dates against Playbill', conclusion: 'failure', number: 16 },
+        { name: 'Later step killed by the cancel', conclusion: 'cancelled', number: 54 },
+      ]),
+    ]),
+    run('lastgreen666', 200, 'success', [testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run tests')])]),
+  ];
+  const r = assessMainRedStreak(runs, NOW, 2);
+  assert.notEqual(r.alarm, null);
+  assert.equal(r.redRunCount, 1);
+  assert.equal(r.firstRedSha, 'realthencancel66');
+});
+
 test('a cancellation with NO job evidence counts as red, not benign (absence of evidence must not manufacture a pass)', () => {
   // Earlier version of isBenignCancellation defaulted an unexplained
   // cancellation to benign — the same "absence of evidence buys an excuse"

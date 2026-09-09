@@ -1,19 +1,238 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-27T01:47:01.750Z",
+    "generatedAt": "2026-09-09T14:21:24.121Z",
     "windowDays": 3,
     "minChurn": 30,
-    "degraded": true,
+    "degraded": false,
     "note": "Churn-vs-merge-attribute coverage monitor. Non-blocking; surfaced via health-check.js digest. Flagged = high-churn tracked file with no merge driver and no merge-coverage=exempt mark in .gitattributes."
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 0,
-    "exemptCount": 0,
-    "coveredCount": 0,
-    "highChurnTracked": 0
+    "flaggedCount": 1,
+    "exemptCount": 33,
+    "coveredCount": 16,
+    "highChurnTracked": 50
   },
-  "flagged": [],
-  "exempt": [],
-  "covered": []
+  "flagged": [
+    {
+      "path": "data/audit/validation-baseline.json",
+      "churn": 34
+    }
+  ],
+  "exempt": [
+    {
+      "path": "data/audit/alert-ledger.json",
+      "churn": 117
+    },
+    {
+      "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
+      "churn": 68
+    },
+    {
+      "path": "public/data/shows/archduke-west-end-2026.json",
+      "churn": 67
+    },
+    {
+      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
+      "churn": 67
+    },
+    {
+      "path": "public/data/shows/into-the-woods-west-end-2025.json",
+      "churn": 67
+    },
+    {
+      "path": "public/data/shows/mass-west-end-2026.json",
+      "churn": 67
+    },
+    {
+      "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
+      "churn": 67
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 66
+    },
+    {
+      "path": "public/data/shows/equus-west-end-2026.json",
+      "churn": 66
+    },
+    {
+      "path": "public/data/shows/manic-street-creature-west-end-2026.json",
+      "churn": 66
+    },
+    {
+      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
+      "churn": 65
+    },
+    {
+      "path": "public/data/shows/oh-mary-west-end-2025.json",
+      "churn": 65
+    },
+    {
+      "path": "public/data/shows/summerfolk-west-end-2026.json",
+      "churn": 65
+    },
+    {
+      "path": "public/data/shows/romeo-and-juliet-west-end-2026.json",
+      "churn": 64
+    },
+    {
+      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
+      "churn": 63
+    },
+    {
+      "path": "public/data/shows/are-you-watching-west-end-2026.json",
+      "churn": 62
+    },
+    {
+      "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
+      "churn": 62
+    },
+    {
+      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
+      "churn": 60
+    },
+    {
+      "path": "public/data/shows/hadestown-west-end-2024.json",
+      "churn": 59
+    },
+    {
+      "path": "public/data/shows/all-my-sons-west-end-2025.json",
+      "churn": 55
+    },
+    {
+      "path": "public/data/shows/care-west-end-2026.json",
+      "churn": 55
+    },
+    {
+      "path": "public/data/shows/six-the-musical-west-end-2021.json",
+      "churn": 53
+    },
+    {
+      "path": "public/data/shows/operation-mincemeat-west-end-2024.json",
+      "churn": 51
+    },
+    {
+      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
+      "churn": 47
+    },
+    {
+      "path": "public/data/admin/critic-coverage.json",
+      "churn": 42
+    },
+    {
+      "path": "public/data/admin/locks.json",
+      "churn": 42
+    },
+    {
+      "path": "public/data/mobile-shows.json",
+      "churn": 42
+    },
+    {
+      "path": "public/data/stats-reviews.json",
+      "churn": 42
+    },
+    {
+      "path": "public/data/shows/teeth-n-smiles-west-end-2026.json",
+      "churn": 37
+    },
+    {
+      "path": "public/data/shows/hit-machine-off-west-end-2026.json",
+      "churn": 36
+    },
+    {
+      "path": "data/audit/alert-digest-queue.json",
+      "churn": 35
+    },
+    {
+      "path": "public/data/shows/paranormal-activity-2026.json",
+      "churn": 35
+    },
+    {
+      "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
+      "churn": 31
+    }
+  ],
+  "covered": [
+    {
+      "path": "data/collection-state/live-progress.json",
+      "churn": 524,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/progress.json",
+      "churn": 506,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 296,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/stage-latency.jsonl",
+      "churn": 290,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 179,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 123,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 95,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/needs-human-review.json",
+      "churn": 95,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/rebuild-score-drift.json",
+      "churn": 95,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 85,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 43,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-the-story-west-end-2026.json",
+      "churn": 42,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 42,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "tests/unit-test-manifest.txt",
+      "churn": 33,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/poller-backoff/paranormal-activity-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    }
+  ]
 }

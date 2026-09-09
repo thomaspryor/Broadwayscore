@@ -31,6 +31,9 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -405,8 +408,8 @@ function extractIndividualReviewFromLBO(html, showId) {
   let critic = 'Unknown';
   $('script[type="application/ld+json"]').each((_, el) => {
     try {
-      const ld = JSON.parse($(el).text());
-      if (ld.author) {
+      for (const ld of parseJsonLd($(el).text())) {
+        if (!ld.author) continue;
         const name = Array.isArray(ld.author)
           ? (ld.author[0]?.name || '')
           : (ld.author.name || ld.author);

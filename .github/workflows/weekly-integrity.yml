@@ -18,7 +18,33 @@ permissions:
 jobs:
   integrity-check:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Raised 15->130 (BRO-2799, same bug class as BRO-2370's data-health-
+    # check.yml fix): all 6 commit steps below call push-with-retry.sh with
+    # NO PUSH_DEADLINE_SEC/MAX_RETRIES override, so each was governed by the
+    # script's own defaults (240s deadline, 7 retries) — but
+    # scripts/audit-push-retry-budgets.js's evaluateStep() measured that
+    # 240s only funds 2 real retry attempts once each attempt costs a full
+    # GIT_NET_TIMEOUT_SEC=90s hang under contention (computeFundableAttempts
+    # gave 2, below the 3-attempt floor). Live evidence: runs 33303127307
+    # (2026-08-30) and 32616475588 (2026-08-23) both hard-failed at "Detect
+    # and auto-fix critic typos" with `push-with-retry: overall deadline
+    # 240s exceeded after 3/2 attempt(s); giving up` — the job itself never
+    # got near the old 15min ceiling in either run (~9-10.5min actual), so
+    # this was push-with-retry.sh's own internal deadline giving up too
+    # early, not GitHub's external SIGKILL.
+    # Fix mirrors data-health-check.yml's established pattern exactly:
+    # PUSH_DEADLINE_SEC=900 + `push-with-retry.sh 25 main` on all 6 steps
+    # (verified against evaluateStep(): fundableAttempts=5, retryDeadlineRatio
+    # =725/900=0.81, both clear their thresholds). That raises each step's
+    # own worst-case budget to 900s, so the job ceiling needs real margin
+    # above 6*900s=5400s (90min) plus ~15min for checkout/npm ci/the node
+    # scripts (real runs today take 3-10min total) = ~105min theoretical
+    # ceiling. 130 gives ~25min headroom on top of that (audit tool's own
+    # marginRatio at 130min: 30.8%, comfortably past its 15% threshold),
+    # nowhere near GitHub Actions' 360min hard job ceiling.
+    # Verified via `node scripts/audit-push-retry-budgets.js --json --top=999
+    # | grep weekly-integrity`: 6 flagged entries -> 0.
+    timeout-minutes: 130
 
     steps:
       - name: Checkout repository
@@ -47,6 +73,23 @@ jobs:
 
       - name: Detect and auto-fix critic typos
         id: typos
+        # BRO-2811 (2026-09-08): BRO-2799 above raised this to 900s/25 retries
+        # to fund enough LOCAL attempts, but the early-trigger threshold for
+        # the Git Data API fallback — floor((25+1)/2)=13 — is still not
+        # reached before the deadline aborts the loop (computeFundableAttempts
+        # gives ~5), so the fallback only ever engages LATE, with its own
+        # minimum retry budget instead of the larger one it'd get from an
+        # early break (scripts/audit-push-retry-budgets.js's
+        # fallback-early-trigger-unreachable flag, ac121bef9bd/45f0ea3e897).
+        # data/auto-critic-aliases.json is outside data/audit/ and unmanaged,
+        # so it's fallback-eligible by push-with-retry.sh's own disqualifier.
+        # Override=3 matches the BRO-2370 data-health-check.yml precedent
+        # exactly (not the full ~5 fundableAttempts) — leaves 2 attempts of
+        # margin for ordinary transient contention to resolve locally before
+        # the early-trigger break hands off to the fallback.
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           node scripts/detect-critic-typos.js
           # Commit auto-aliases if changed
@@ -60,7 +103,7 @@ jobs:
             NEW=$(git diff --staged --stat | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo "0")
             echo "new_typos=$NEW" >> $GITHUB_OUTPUT
             git commit -m "data: Auto-detect critic name typos"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 25 main
           fi
 
       - name: Run dedup cleanup
@@ -90,6 +133,8 @@ jobs:
           message: "data: Weekly Data Integrity Check — Commit dedup cleanup + flag backfill"
       - name: Commit dedup cleanup
         if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -98,7 +143,7 @@ jobs:
             echo "No dedup fixes needed"
           else
             git commit -m "chore: Auto-cleanup duplicate review files"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 25 main
           fi
 
       - name: Clean up junk outlet files
@@ -175,6 +220,8 @@ jobs:
           message: "data: Weekly Data Integrity Check — Commit cleanup"
       - name: Commit cleanup
         if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -183,7 +230,7 @@ jobs:
             echo "No junk files to clean"
           else
             git commit -m "chore: Auto-cleanup junk outlet review files"
-            bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed — cleanup data may not have synced"
+            bash scripts/lib/push-with-retry.sh 25 main || echo "::warning::Push failed — cleanup data may not have synced"
           fi
 
       - name: P0 score integrity check
@@ -205,6 +252,15 @@ jobs:
 
       - name: Commit tier-skip drift alert state (only if a verdict alerted)
         if: always()
+        # BRO-2811 (2026-09-08): same fallback-early-trigger-unreachable shape
+        # as "Detect and auto-fix critic typos" above — alert-ledger.json and
+        # alert-digest-queue.json are both apiFallbackMerge-registered
+        # (BRO-2413), so this call is fallback-eligible, but the fallback only
+        # engages LATE at these numbers. Override=3 matches the same BRO-2370
+        # precedent.
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -213,7 +269,7 @@ jobs:
             echo "No drift alert state to commit"
           else
             git commit -m "chore: Tier-skip drift audit alert state"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 25 main
           fi
 
       - name: Run integrity check
@@ -228,6 +284,14 @@ jobs:
 
       - name: Commit history update
         if: always()
+        # BRO-2811 (2026-09-08): same fallback-early-trigger-unreachable shape
+        # as "Detect and auto-fix critic typos" above — integrity-history.json/
+        # integrity-report.json are outside data/audit/ and unmanaged, so this
+        # call is fallback-eligible by default. Override=3 matches the same
+        # BRO-2370 precedent.
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -236,7 +300,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "data: Update integrity history"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 25 main
           fi
 
       - name: Create issue if problems found
@@ -261,10 +325,12 @@ jobs:
 
       - name: Record pipeline success
         if: success()
+        env:
+          PUSH_DEADLINE_SEC: '900'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/weekly-integrity.last-success
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record weekly-integrity success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record weekly-integrity success" && bash scripts/lib/push-with-retry.sh 25 main || echo "::warning::Health recording push failed"

@@ -19,6 +19,15 @@ aggregator-url-watcher.yml
 audit-imageless-scored-shows.yml
 audit-aggregator-coverage.yml
 audit-aggregator-gap.yml
+# Provisional venue/date cross-validation against Playbill (BRO-2984 — moved out
+# of test.yml's data-validation job, where it spent real ScrapingBee/Bright Data
+# credits on every push to main). Deliberately EXEMPT rather than CRITICAL_CRONS:
+# it reddens itself on a real mismatch, and CRITICAL_CRONS keys on the last
+# SUCCESSFUL run — so a genuine, un-remediated venue mismatch would ALSO page as
+# "this cron is dead", which is the wrong alarm. Its own notify-failure step
+# carries a real mismatch into the daily digest; a stale run means at-worst a
+# 1-day-late detection of provisional drift, with no user-facing staleness.
+audit-provisional-venues.yml
 audit-bww-rr-attributions.yml
 # Digest-noise regression monitor (card #510): self-contained daily check
 # that alerts the owner directly via routeAlert() when it finds a violation.
@@ -213,3 +222,11 @@ clear-stale-wrong-show-flags.yml
 # check-file-sizes/action.yml, so there's no user-facing staleness or gate
 # risk to page on. Failures alert via notify-failure (warning severity).
 stage-latency-rotation.yml
+
+# BRO-3060: read-only backlog-health monitor for scripts/linear-drain-parked.js
+# (real dispatch runs on the Mac via launchd, disabled by default — see that
+# plist's header). A stale/missed run just means a slower-to-notice pileup of
+# undispatched automation-parked issues, not user-facing staleness — its own
+# job failure (>1 cap's worth idle) already surfaces via notify-failure
+# (warning severity) and the daily digest. Not real-time-paging material.
+check-linear-drain-health.yml

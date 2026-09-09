@@ -140,3 +140,154 @@ test('real review outlets are still accepted — the deny-list did not overreach
     assert.equal(classifyReviewUrl(url).ok, true, `${url} must stay a candidate`);
   }
 });
+
+// ---------------------------------------------------------------------------
+// BRO-2776: cvStyle vocabulary reconciliation + loud unknown values.
+//
+// shouldDeferCvWrongShow() requires getCvStyle(outletId) === 'long-biographical'.
+// Zero of the 1127 registered outlets carried a cvStyle key, so the guard could
+// never fire. Worse, review-guards.js's S3-T6 comment documents the spelling
+// 'biographical-lead', which VALID_CV_STYLES rejected — following the docs armed
+// nothing and said nothing, because the fallback to 'standard' was silent.
+//
+// Fix shape (after review 2026-09-05): the canonical vocabulary is corrected at
+// its source in review-guards.js, the wrong spelling is REJECTED rather than
+// aliased, and audit-outlet-registry.js gates bad values at WRITE time via
+// findInvalidCvStyles. resolveCvStyle's warning is the read-time backstop.
+//
+// These exercise the real exported functions, not getCvStyle, because
+// data/outlet-registry.json is gitignored private core data and is absent from
+// every worktree.
+// ---------------------------------------------------------------------------
+const { resolveCvStyle, _resetCvStyleWarnings, CV_STYLES, isValidCvStyle, findInvalidCvStyles, countArmedCvStyles } = require_('./outlet-canonicalize.js');
+
+test('BRO-2776: the OLD documented spelling is rejected, not silently accepted', () => {
+  // review-guards.js used to document 'biographical-lead'. It is NOT canonical.
+  // The first attempt at this fix aliased it; review rejected that as permanent
+  // vocabulary debt bought for zero outlets. It must now be loudly invalid.
+  _resetCvStyleWarnings();
+  const seen = [];
+  const orig = console.warn;
+  console.warn = (m) => seen.push(m);
+  try {
+    assert.equal(resolveCvStyle('biographical-lead', 'vulture'), 'standard');
+  } finally {
+    console.warn = orig;
+  }
+  assert.equal(seen.length, 1, 'the non-canonical spelling must warn, not pass silently');
+  assert.match(seen[0], /biographical-lead/);
+});
+
+test('BRO-2776: the audit and the resolver share ONE vocabulary, not two copies', () => {
+  // The whole bug was two drifted spellings. Assert the exported Set is the
+  // single source of truth and still holds exactly the canonical values.
+  assert.deepEqual([...CV_STYLES].sort(), ['long-biographical', 'standard']);
+  assert.ok(Object.isFrozen(CV_STYLES), 'a mutable export could be re-drifted by any caller');
+  assert.equal(isValidCvStyle('long-biographical'), true);
+  assert.equal(isValidCvStyle('biographical-lead'), false);
+});
+
+test('BRO-2776: canonical values pass through unchanged', () => {
+  assert.equal(resolveCvStyle('long-biographical', 'x'), 'long-biographical');
+  assert.equal(resolveCvStyle('standard', 'x'), 'standard');
+});
+
+test('BRO-2776: absent cvStyle defaults to standard and does NOT warn', () => {
+  _resetCvStyleWarnings();
+  const seen = [];
+  const orig = console.warn;
+  console.warn = (m) => seen.push(m);
+  try {
+    assert.equal(resolveCvStyle(undefined, 'no-style-outlet'), 'standard');
+    assert.equal(resolveCvStyle(null, 'no-style-outlet'), 'standard');
+  } finally {
+    console.warn = orig;
+  }
+  // 1127 of 1127 outlets are in this state today. Warning here would print
+  // 1127 lines per rebuild and train everyone to ignore the message.
+  assert.deepEqual(seen, [], 'an absent cvStyle is normal and must stay silent');
+});
+
+test('BRO-2776: an unrecognised cvStyle is LOUD, warns once, and still falls back safely', () => {
+  _resetCvStyleWarnings();
+  const seen = [];
+  const orig = console.warn;
+  console.warn = (m) => seen.push(m);
+  try {
+    assert.equal(resolveCvStyle('bio-lead-typo', 'the-stage'), 'standard');
+    // Same outlet + same bad value again: memoised, must not re-warn.
+    assert.equal(resolveCvStyle('bio-lead-typo', 'the-stage'), 'standard');
+    // A different bad value at the same outlet is a genuinely new problem.
+    assert.equal(resolveCvStyle('another-typo', 'the-stage'), 'standard');
+    assert.equal(seen.length, 2, 'warn once per (outlet, value), not per call');
+
+    // Codex review 2026-09-05: the assertions above cannot tell a memo keyed by
+    // (outlet, value) from one keyed by value alone — both give 2 warnings.
+    // The SAME bad value at a DIFFERENT outlet must warn again, because it is a
+    // second outlet silently not deferring.
+    assert.equal(resolveCvStyle('bio-lead-typo', 'vulture'), 'standard');
+    assert.equal(
+      seen.length,
+      3,
+      'a value-only memo would swallow this: the same bad value at a second outlet must warn'
+    );
+    assert.match(seen[2], /vulture/);
+  } finally {
+    console.warn = orig;
+  }
+  assert.match(seen[0], /unrecognised/);
+  assert.match(seen[0], /the-stage/);
+  assert.match(seen[0], /bio-lead-typo/);
+  // The message must name the guard that silently will not fire, otherwise the
+  // warning does not tell the reader what it costs them.
+  assert.match(seen[0], /shouldDeferCvWrongShow/);
+});
+
+test('BRO-2776: the write-time gate flags every invalid cvStyle and ignores absent ones', () => {
+  // This is the registry shape audit-outlet-registry.js --strict now rejects.
+  const found = findInvalidCvStyles({
+    outlets: {
+      'no-key': { displayName: 'No Key' },                       // 1127/1127 today
+      'explicit-null': { cvStyle: null },
+      'canonical-a': { cvStyle: 'standard' },
+      'canonical-b': { cvStyle: 'long-biographical' },
+      'old-spelling': { cvStyle: 'biographical-lead' },          // the BRO-2776 trap
+      'typo': { cvStyle: 'long-biographic' },
+      'empty-string': { cvStyle: '' },
+      'wrong-type': { cvStyle: 3 },
+    },
+  });
+  assert.deepEqual(
+    found.map((f) => f.outletId).sort(),
+    ['empty-string', 'old-spelling', 'typo', 'wrong-type']
+  );
+});
+
+test('BRO-2776: the write-time gate is silent on a registry with no cvStyle keys at all', () => {
+  // Today's real registry. The gate must not fail CI on the current data.
+  assert.deepEqual(findInvalidCvStyles({ outlets: { a: {}, b: { displayName: 'B' } } }), []);
+  assert.deepEqual(findInvalidCvStyles({}), []);
+  assert.deepEqual(findInvalidCvStyles(null), []);
+});
+
+test('BRO-2776: countArmedCvStyles is the check that catches VANISHED keys', () => {
+  // The real incident: cbf7e97c5c populated cvStyle, merge 4014d52077 silently
+  // dropped every key, and the defer-gate became a no-op on production main.
+  // findInvalidCvStyles cannot see that — absent is never invalid — so only a
+  // positive count detects it. Assert both halves of that claim.
+  const wiped = { outlets: { vulture: {}, 'new-york-sun': {}, nysr: {} } };
+  assert.deepEqual(findInvalidCvStyles(wiped), [], 'wiped keys look perfectly valid');
+  assert.equal(countArmedCvStyles(wiped), 0, 'only the positive count sees the wipe');
+
+  const armed = {
+    outlets: {
+      vulture: { cvStyle: 'long-biographical' },
+      'new-york-sun': { cvStyle: 'long-biographical' },
+      guardian: { cvStyle: 'standard' },
+      nobody: {},
+    },
+  };
+  assert.equal(countArmedCvStyles(armed), 2, "'standard' and absent must not count as armed");
+  assert.equal(countArmedCvStyles({}), 0);
+  assert.equal(countArmedCvStyles(null), 0);
+});

@@ -262,7 +262,7 @@ function addOperaIdPrefix(prefix) {
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
-(async function main() {
+async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const { meta, shows } = loadShows();
@@ -364,9 +364,21 @@ function addOperaIdPrefix(prefix) {
   console.log('  1. node scripts/validate-data.js  — verify no schema errors');
   console.log('  2. Push shows.json to private repo  — CI picks up from there');
   console.log('  3. node scripts/gather-reviews.js --market=opera  — collect reviews for open shows');
-})()
-  .catch(e => {
-    console.error(e.stack || e.message);
-    process.exit(1);
-  })
-  .finally(() => cleanup?.());
+}
+
+if (require.main === module) {
+  main()
+    .catch(e => {
+      console.error(e.stack || e.message);
+      process.exit(1);
+    })
+    .finally(() => cleanup?.());
+}
+
+// Exports for unit tests / the audit-regex-patterns.js corpus audit (BRO-2315)
+// — isNonOpera() gates which Met season-page titles ever reach shows.json, so
+// it gets the same 0-hit-default FP audit as discover-new-shows.js's arrays.
+module.exports = {
+  NON_OPERA_TITLE_PATTERNS,
+  isNonOpera,
+};

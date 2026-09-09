@@ -8,6 +8,13 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const require = createRequire(import.meta.url);
 const {
   isProvisional, shortTitleSlug, scorePlaybillUrl,
@@ -103,7 +110,7 @@ test('compareShow reports no mismatches when shows.json matches Playbill (Bronco
     titleParse: { rawTitle: 'Bronco Billy - The Musical', market: 'West End', venue: 'Charing Cross Theatre', year: 2024 },
     dates: { firstPreview: '2024-01-24', openingDate: '2024-01-31', closingDate: '2024-04-07' },
   };
-  const mismatches = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
+  const { mismatches } = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
   assert.deepEqual(mismatches, []);
 });
 
@@ -112,7 +119,7 @@ test('compareShow flags a venue mismatch (wrong-venue stub guard)', () => {
     titleParse: { rawTitle: 'Bronco Billy - The Musical', market: 'West End', venue: 'Prince Edward Theatre', year: 2024 },
     dates: { firstPreview: '2024-01-24', openingDate: '2024-01-31', closingDate: '2024-04-07' },
   };
-  const mismatches = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
+  const { mismatches } = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
   assert.ok(mismatches.some(m => m.field === 'venue'));
 });
 
@@ -121,7 +128,7 @@ test('compareShow flags an opening-date delta beyond the 30-day threshold', () =
     titleParse: { rawTitle: 'Bronco Billy - The Musical', market: 'West End', venue: 'Charing Cross Theatre', year: 2024 },
     dates: { firstPreview: null, openingDate: '2024-04-01', closingDate: '2024-04-07' },
   };
-  const mismatches = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
+  const { mismatches } = compareShow(broncoBilly, parsed, broncoBillyPlaybillUrl);
   assert.ok(mismatches.some(m => m.field === 'openingDate'));
 });
 
@@ -135,7 +142,7 @@ test('compareShow flags isRevival mismatch when Playbill says Revival but shows.
     titleParse: null, dates: {},
     tagLine: { tags: ['Broadway', 'Play', 'Dark Comedy', 'Revival'], market: 'Broadway', showType: 'play', revivalStatus: 'revival' },
   };
-  const mismatches = compareShow(gloria, parsed, 'https://playbill.com/production/gloria-broadway-helen-hayes-theater-2027');
+  const { mismatches } = compareShow(gloria, parsed, 'https://playbill.com/production/gloria-broadway-helen-hayes-theater-2027');
   const m = mismatches.find(x => x.field === 'isRevival');
   assert.ok(m, 'expected an isRevival mismatch');
   assert.equal(m.shows, false);
@@ -148,7 +155,7 @@ test('compareShow flags isRevival mismatch when Playbill says Original but shows
     titleParse: null, dates: {},
     tagLine: { tags: ['Broadway', 'Play', 'Drama', 'One Act', 'Original'], market: 'Broadway', showType: 'play', revivalStatus: 'original' },
   };
-  const mismatches = compareShow(interAlia, parsed, 'https://playbill.com/production/inter-alia-broadway-music-box-theatre-2026');
+  const { mismatches } = compareShow(interAlia, parsed, 'https://playbill.com/production/inter-alia-broadway-music-box-theatre-2026');
   const m = mismatches.find(x => x.field === 'isRevival');
   assert.ok(m, 'expected an isRevival mismatch');
   assert.equal(m.shows, true);
@@ -158,7 +165,7 @@ test('compareShow flags isRevival mismatch when Playbill says Original but shows
 test('compareShow does not flag isRevival when Playbill tag line is absent/unknown', () => {
   const show = { id: 'x-2026', title: 'X', venue: 'Some Theatre', category: 'broadway', isRevival: false };
   const parsed = { titleParse: null, dates: {}, tagLine: { tags: [], market: null, showType: null, revivalStatus: 'unknown' } };
-  const mismatches = compareShow(show, parsed, 'https://playbill.com/production/x-2026');
+  const { mismatches } = compareShow(show, parsed, 'https://playbill.com/production/x-2026');
   assert.ok(!mismatches.some(m => m.field === 'isRevival'));
 });
 
@@ -168,11 +175,554 @@ test('compareShow agrees — no isRevival mismatch when shows.json already match
     titleParse: null, dates: {},
     tagLine: { tags: ['Broadway', 'Musical', 'Revival'], market: 'Broadway', showType: 'musical', revivalStatus: 'revival' },
   };
-  const mismatches = compareShow(fantasticks, parsed, 'https://playbill.com/production/the-fantasticks-broadway-helen-hayes-theater-2026');
+  const { mismatches } = compareShow(fantasticks, parsed, 'https://playbill.com/production/the-fantasticks-broadway-helen-hayes-theater-2026');
   assert.ok(!mismatches.some(m => m.field === 'isRevival'));
 });
 
 test('isProvisional flags manual-user-request entries like Bronco Billy for validation', () => {
   assert.equal(isProvisional({ discoverySource: 'manual-user-request', provisional: true }), true);
   assert.equal(isProvisional({ discoverySource: 'todaytix-sync', provisional: false }), false);
+});
+
+test('scorePlaybillUrl rejects a legacy URL whose venue is in another market (BRO-2821)', () => {
+  // A legacy (vault / "-YYYY-YYYY") URL carries NO market segment, so the
+  // -regional-/-tour-, -london- and -broadway- rejects are all no-ops on it and
+  // isCrossMarketPlaybillUrl is too. An earlier fix rejected only legacy+London,
+  // which was one-directional; both of these still scored 8.
+  const obChicago = scorePlaybillUrl(
+    'https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074',
+    { id: 'chicago-ob-2026', title: 'Chicago', venue: 'Some Theatre', category: 'off-broadway' });
+  assert.equal(obChicago, null, 'an off-Broadway stub must not take a Broadway house\'s vault page');
+
+  const bwVsLondon = scorePlaybillUrl(
+    'https://playbill.com/production/hamiltonvictoria-palace-theatre-2017-2018',
+    { id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', category: null });
+  assert.equal(bwVsLondon, null, 'a Broadway show must not take a West End season page');
+
+  // …and the real recovery this branch exists for still works: Chicago the
+  // Broadway production, whose vault URL names the ORIGINAL house while the
+  // corpus records the current one.
+  const bwChicago = scorePlaybillUrl(
+    'https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074',
+    { id: 'chicago-1996', title: 'Chicago', venue: 'Ambassador Theatre', category: null });
+  assert.ok(bwChicago !== null && bwChicago > 0, 'the genuine Broadway recovery must survive');
+});
+
+test('scorePlaybillUrl ranks an exact-title candidate above a relaxed one (BRO-2821)', () => {
+  // The title gate used to score a flat 10 for every accepted URL; it now scores
+  // exact=10 and relaxed=8, so when a SERP page returns both readings of a title
+  // the exact one wins. Nothing pinned multi-candidate ORDERING before — the only
+  // consumer filters `score > 0` and sorts — so an adversarial review noted the
+  // ranking change was only accidentally safe. Pin it.
+  const show = { id: 'doubt-2024', title: 'Doubt: A Parable', venue: 'Todd Haimes Theatre', category: null };
+  const exact = scorePlaybillUrl(
+    'https://playbill.com/production/doubt-a-parable-broadway-todd-haimes-theatre-2024', show);
+  const relaxed = scorePlaybillUrl(
+    'https://playbill.com/production/doubt-broadway-todd-haimes-theatre-2024', show);
+  assert.ok(exact !== null && exact > 0, 'the exact-title URL must still be accepted');
+  assert.ok(relaxed !== null && relaxed > 0, 'the relaxed URL must still be accepted');
+  assert.ok(exact > relaxed,
+    `exact (${exact}) must outrank relaxed (${relaxed}) at the same venue and year`);
+});
+
+// ---------------------------------------------------------------------------
+// BRO-2821 suggestion 1 — the WIRING, not just the decision.
+//
+// scripts/lib/named-show-verdict.test.mjs pins the decision function. This
+// spawns the real script end to end, because deleting the call site in
+// validate-show-venue.js while leaving the require in place would not fail a
+// single one of those tests — the exact shape of v38's defect 11 (a guard that
+// detected an IMPORT rather than a call and stayed green at 23/23 with the fix
+// removed). Reverting the `if (!named.validated)` block turns this test red.
+//
+// No network: serpQuery() returns null before touching any provider when
+// neither SCRAPINGBEE_API_KEY nor BRIGHTDATA_TOKEN is set, which lands the show
+// on 'serp-error' — an unresolved class. The fixture id is deliberately absent
+// from data/playbill-urls.json (read from the real repo regardless of
+// --data-dir, by design) so the cache cannot short-circuit ahead of that.
+test('validate-show-venue exits non-zero when an explicitly named --show cannot be validated (BRO-2821)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vsv-named-'));
+  try {
+    fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify([{
+      id: 'bro-2821-fixture-show-never-real-2099',
+      title: 'BRO-2821 Fixture Show Never Real',
+      venue: 'Fixture Theatre',
+      category: 'broadway',
+      openingDate: '2099-01-01',
+    }]));
+    const res = spawnSync(process.execPath, [
+      path.join(REPO_ROOT, 'scripts', 'validate-show-venue.js'),
+      '--show=bro-2821-fixture-show-never-real-2099',
+      '--dry-run',
+      `--data-dir=${tmp}`,
+    ], {
+      encoding: 'utf8',
+      // v38: the sibling venue-complex wiring test went red on
+      // `spawnSync node ENOBUFS` because a whole-validator spawn crossed the
+      // 1 MiB default. Set it explicitly rather than inherit that boundary.
+      maxBuffer: 32 * 1024 * 1024,
+      env: {
+        ...process.env,
+        SCRAPINGBEE_API_KEY: '',
+        BRIGHTDATA_TOKEN: '',
+        SCRAPINGDOG_API_KEY: '',
+        // Never let a test read or write the repo-wide ledger (BRO-2696).
+        VENUE_AUDIT_PATH: path.join(tmp, 'venue-date-mismatches.json'),
+      },
+    });
+    // Re-raise rather than collapsing to a number: an ENOBUFS or ETIMEDOUT
+    // kill surfaces on res.error with res.status null, and reading that as a
+    // failing exit code would make this test "pass" for the wrong reason.
+    if (res.error) throw res.error;
+    const out = `${res.stdout || ''}${res.stderr || ''}`;
+    assert.notEqual(res.status, 0,
+      `a named --show that produced no verdict must not exit 0. Output:\n${out}`);
+    assert.equal(res.status, 3,
+      `expected the not-validated exit code 3 (1 = real mismatch, 2 = fatal). Output:\n${out}`);
+    assert.match(out, /was NOT validated/);
+    assert.match(out, /bro-2821-fixture-show-never-real-2099/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// The autonomous Tier-2 verifier (scripts/autonomous-merge.js) reports a block
+// reason as the FIRST 400 characters of `err.stderr || err.stdout ||
+// err.message`, stderr preferred. This script's stdout holds a full run log by
+// that point, so a stdout-only reason would surface on the card as the log's
+// opening lines and the real cause would never be read. Pin the reason to
+// stderr, and pin that it survives that exact 400-char slice.
+test('the not-validated reason reaches stderr, so the autonomous block reason is the cause and not the log header (BRO-2821)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vsv-named-stderr-'));
+  try {
+    fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify([{
+      id: 'bro-2821-fixture-show-never-real-2099',
+      title: 'BRO-2821 Fixture Show Never Real',
+      venue: 'Fixture Theatre',
+      category: 'broadway',
+      openingDate: '2099-01-01',
+    }]));
+    const res = spawnSync(process.execPath, [
+      path.join(REPO_ROOT, 'scripts', 'validate-show-venue.js'),
+      '--show=bro-2821-fixture-show-never-real-2099',
+      '--dry-run',
+      `--data-dir=${tmp}`,
+    ], {
+      encoding: 'utf8',
+      maxBuffer: 32 * 1024 * 1024,
+      env: {
+        ...process.env,
+        SCRAPINGBEE_API_KEY: '',
+        BRIGHTDATA_TOKEN: '',
+        SCRAPINGDOG_API_KEY: '',
+        VENUE_AUDIT_PATH: path.join(tmp, 'venue-date-mismatches.json'),
+      },
+    });
+    if (res.error) throw res.error;
+    const harnessVisible = res.stderr ? res.stderr : (res.stdout || '');
+    const firstChunk = String(harnessVisible).slice(0, 400);
+    assert.match(firstChunk, /was NOT validated/,
+      `the first 400 chars of the harness-visible output must carry the cause, got:\n${firstChunk}`);
+    assert.match(firstChunk, /bro-2821-fixture-show-never-real-2099/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// Third wiring test: the run that never REACHED the named show. The
+// time-budget `break` in validate-show-venue.js's loop is not gated on
+// --all-provisional, so `--show=<id> --time-budget-min=<tiny>` produces zero
+// result rows. Before the targetCount check that read as a clean exit 0.
+// Deterministic and offline: the budget is exhausted before the first
+// iteration, so no SERP or Playbill call is made at all.
+test('validate-show-venue exits non-zero when the run never reached the named --show (BRO-2821)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vsv-notreached-'));
+  try {
+    fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify([{
+      id: 'bro-2821-fixture-show-never-real-2099',
+      title: 'BRO-2821 Fixture Show Never Real',
+      venue: 'Fixture Theatre',
+      category: 'broadway',
+      openingDate: '2099-01-01',
+    }]));
+    const res = spawnSync(process.execPath, [
+      path.join(REPO_ROOT, 'scripts', 'validate-show-venue.js'),
+      '--show=bro-2821-fixture-show-never-real-2099',
+      // A tiny POSITIVE value: parseTimeBudgetMin treats <=0 as "disabled"
+      // (scripts/lib/run-budget.js:30), so 0 would silently turn the budget
+      // off and this test would exercise the wrong path.
+      '--time-budget-min=0.000001',
+      '--dry-run',
+      `--data-dir=${tmp}`,
+    ], {
+      encoding: 'utf8',
+      maxBuffer: 32 * 1024 * 1024,
+      env: {
+        ...process.env,
+        SCRAPINGBEE_API_KEY: '',
+        BRIGHTDATA_TOKEN: '',
+        SCRAPINGDOG_API_KEY: '',
+        VENUE_AUDIT_PATH: path.join(tmp, 'venue-date-mismatches.json'),
+      },
+    });
+    if (res.error) throw res.error;
+    const out = `${res.stdout || ''}${res.stderr || ''}`;
+    assert.notEqual(res.status, 0,
+      `a named --show the run never reached must not exit 0. Output:\n${out}`);
+    assert.match(out, /bro-2821-fixture-show-never-real-2099/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// The regional/tour market reject. CI run 34000023372 went RED on
+// much-ado-about-nothing-2026: a Broadway show at the Winter Garden opening
+// 2026-11-19 scored a full 10 against
+// /production/much-ado-about-nothing-regional-playmakers-repertory-company-2023,
+// a different production three years earlier. The guard's own comment said
+// "never a fit for a NYC OB/Broadway entry" while its condition only covered
+// `isOB || !show.category` — the comment was the rule, the code was narrower.
+// An upcoming Broadway show often has no Playbill page yet, so the scorer
+// reaches for the nearest same-titled one; that is the population this guards.
+test('scorePlaybillUrl rejects a REGIONAL production URL for a Broadway show (CI run 34000023372 red main)', () => {
+  const muchAdo = {
+    id: 'much-ado-about-nothing-2026', title: 'Much Ado About Nothing',
+    venue: 'Winter Garden Theatre', category: 'broadway',
+  };
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/much-ado-about-nothing-regional-playmakers-repertory-company-2023',
+    muchAdo), null);
+});
+
+test('scorePlaybillUrl rejects a regional URL for a West End show too — the reject is not NYC-only', () => {
+  const we = { id: 'y-2026', title: 'Some Play', venue: 'Apollo Theatre', category: 'west-end' };
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/some-play-regional-playmakers-repertory-company-2024', we), null);
+});
+
+test('a category-less entry still refuses a regional URL (unchanged behaviour)', () => {
+  const noCat = { id: 'x-2026', title: 'Some Play', venue: 'Whatever', category: null };
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/some-play-regional-playmakers-repertory-company-2024', noCat), null);
+});
+
+test('a REGIONAL show may still hold a regional URL — the reject must not swallow its own market', () => {
+  const regShow = { id: 'some-regional-2024', title: 'Some Play', venue: 'PlayMakers Repertory Company', category: 'regional' };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/some-play-regional-playmakers-repertory-company-2024', regShow);
+  assert.ok(score !== null && score > 0, `a regional show's own regional URL must survive, got ${score}`);
+});
+
+// The other half of the same fix, and a defect that PREDATES it: the test used
+// to search the WHOLE url, and the title is part of the url, so a show whose
+// own name contains "tour" or "regional" condemned itself. This is BRO-2821
+// defect 5's shape (a venue gate that searched the whole url let a show
+// corroborate itself) pointed the other way. Exactly one corpus title has this
+// shape today, and it scored null on its own correct page.
+test('a show whose TITLE contains "tour" still matches its own correct URL (whole-url self-condemnation)', () => {
+  const apology = {
+    id: 'september-l-davis-the-apology-tour-off-broadway-2026',
+    title: 'September L. Davis: The Apology Tour',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/september-l-davis-the-apology-tour-off-broadway-soho-playhouse-2026',
+    apology);
+  assert.ok(score !== null && score > 0,
+    `the title's own "-tour-" must not reject its own off-Broadway page, got ${score}`);
+});
+
+// The SAME whole-url defect in the market tests a few lines further down.
+// v39 narrowed only the regional/tour reject to `marketTail`; `-london-`,
+// `-broadway-` and `-off-broadway-` were still read off the WHOLE url, and the
+// title is part of the url.
+//
+// Both of these are LATENT shapes, stated plainly so nobody later reads them as
+// incident repros: measured 2026-09-06, 16 of 2,942 corpus titles carry a market
+// word, none of them changes score under the market half of the fix, and all 107
+// live playbill-urls.json entries score identically old-vs-new on it. The
+// whole-url read only bites when the title's market word contradicts the url's
+// real market segment, which is why these two cases are constructed rather than
+// quoted. The venue half further down DOES move one live entry, named there.
+test('a show whose TITLE contains "london" still matches its own correct non-London URL', () => {
+  const show = {
+    id: 'a-night-in-london-off-broadway-2026',
+    title: 'A Night in London',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/a-night-in-london-off-broadway-soho-playhouse-2026', show);
+  assert.ok(score !== null && score > 0,
+    `the title's own "-london-" must not trip the cross-market reject on its own off-Broadway page, got ${score}`);
+  // `> 0` alone cannot tell "market read correctly" from "no market signal at
+  // all" — and that gap is exactly why neither of these tests caught the
+  // form-vs-raw-path defect in their own commit. Pin the bonus itself against a
+  // control whose title carries no market word.
+  const control = { ...show, id: 'a-night-out-off-broadway-2026', title: 'A Night Out' };
+  const controlScore = scorePlaybillUrl(
+    'https://playbill.com/production/a-night-out-off-broadway-soho-playhouse-2026', control);
+  assert.equal(score, controlScore,
+    `the "-london-" title must score exactly like the same show without it: ${score} vs ${controlScore}`);
+});
+
+test('a TITLE containing "broadway" does not change the market bonus (self-corroboration)', () => {
+  // Same category, same market segment in the url, same venue — the ONLY
+  // difference is a market word inside the title, so the scores must be equal.
+  const withWord = {
+    id: 'prince-of-broadway-regional-2024', title: 'Prince of Broadway',
+    venue: 'Some Company', category: 'regional',
+  };
+  const without = {
+    id: 'prince-of-tides-regional-2024', title: 'Prince of Tides',
+    venue: 'Some Company', category: 'regional',
+  };
+  const a = scorePlaybillUrl(
+    'https://playbill.com/production/prince-of-broadway-regional-some-company-2024', withWord);
+  const b = scorePlaybillUrl(
+    'https://playbill.com/production/prince-of-tides-regional-some-company-2024', without);
+  assert.ok(a !== null && b !== null, `both must match their own regional page, got ${a} and ${b}`);
+  assert.equal(a, b, `the title's own "-broadway-" must not earn a market bonus: ${a} vs ${b}`);
+});
+
+// The narrowing above is worthless unless the tail is derived correctly, and
+// the first cut of it was not. It read `pathTail.startsWith(titleMatch.form)`,
+// but `form` is a NORMALIZED title — normalizeTitle strips a leading "the-"
+// that Playbill keeps — so the test failed for every "The …" title and the
+// fallback silently restored whole-url behaviour on 16 of the 97 title-matching
+// live cache entries. The matcher now returns the raw tail for the split it
+// chose. This case is a "The …" title carrying a market word: it exercises the
+// derivation, not just the comparison.
+test('a "The …" title gets a REAL market tail, not a silent whole-url fallback', () => {
+  const show = {
+    id: 'the-london-season-off-broadway-2026',
+    title: 'The London Season',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/the-london-season-off-broadway-soho-playhouse-2026', show);
+  assert.ok(score !== null && score > 0,
+    `"the-" is stripped from the normalized form, so deriving the tail from it falls back to the whole url and the title's own "-london-" rejects the show, got ${score}`);
+});
+
+// The venue bonus had the same whole-url shape, defended by an argument that
+// was wrong: competing candidates need NOT consume the same title text, since
+// exact/lossless/lossy each consume a different form, so a +2 taken off the
+// title can outrank a candidate that names the real venue in its tail.
+// music-city-off-broadway-2026 is the live instance — its venue field is
+// literally its title, and it took +2 (18, now 16) off a url whose actual venue
+// is st-lukes-theatre. It is the only one of the 107 cache entries that moves.
+// NOTE for whoever reads these numbers: canonicalVenue() returns only the
+// venue's FIRST WORD, lowercased — "St. Luke's Theatre" becomes "st." — so the
+// bonus is first-word matching and never fires for a punctuated first word.
+// That is pre-existing and deliberately not touched here; it is why the cases
+// below use venues whose first word is a clean token.
+test('the venue bonus does not fire off the title (music-city-off-broadway-2026)', () => {
+  const url = 'https://playbill.com/production/music-city-off-broadway-st-lukes-theatre-2026';
+  // canonicalVenue("Music City") === "music", which appears in the TITLE and
+  // nowhere else in this url. This is the live entry: it scored 18, now 16.
+  const selfNamed = {
+    id: 'music-city-off-broadway-2026', title: 'Music City',
+    venue: 'Music City', category: 'off-broadway',
+  };
+  // canonicalVenue("Palace Theatre") === "palace", which appears nowhere at all.
+  const absent = {
+    id: 'music-city-off-broadway-2026', title: 'Music City',
+    venue: 'Palace Theatre', category: 'off-broadway',
+  };
+  const selfScore = scorePlaybillUrl(url, selfNamed);
+  const absentScore = scorePlaybillUrl(url, absent);
+  assert.ok(selfScore !== null && absentScore !== null,
+    `both must still match the title, got ${selfScore} and ${absentScore}`);
+  assert.equal(selfScore, absentScore,
+    `a venue that only appears inside the show's own TITLE must score the same as one that is absent: self=${selfScore} absent=${absentScore}`);
+});
+
+test('the venue bonus still fires when the venue is genuinely in the tail', () => {
+  // The positive control for the test above — without it, "no bonus ever" would
+  // pass just as happily as "no bonus off the title".
+  const url = 'https://playbill.com/production/music-city-off-broadway-soho-playhouse-2026';
+  const inTail = {
+    id: 'music-city-off-broadway-2026', title: 'Music City',
+    venue: 'Soho Playhouse', category: 'off-broadway',
+  };
+  const absent = {
+    id: 'music-city-off-broadway-2026', title: 'Music City',
+    venue: 'Palace Theatre', category: 'off-broadway',
+  };
+  const withVenue = scorePlaybillUrl(url, inTail);
+  const without = scorePlaybillUrl(url, absent);
+  assert.ok(withVenue > without,
+    `a venue named in the url's tail must still earn its bonus: ${withVenue} vs ${without}`);
+});
+
+// ---------------------------------------------------------------------------
+// Four defects a review found in the lines the market-tail change had just
+// rewritten. Each was reproduced before being fixed, and each assertion below
+// is that reproduction.
+
+// A market word can straddle the title/market SEAM without being inside the
+// title: "Noises Off" + "-broadway-" reads as "-off-broadway-" across the join,
+// so a Broadway show was charged the off-Broadway penalty on its own page
+// (8, then 18). This is a REGRESSION GUARD, not a fix in this commit — the tail
+// read already closed it, and this test passes with or without the four fixes
+// beside it. It is here because it is the clearest real instance of the whole
+// defect class and nothing pinned it: the market word is not in the title, so
+// every title-based sweep, including my own, walked straight past it.
+test('a title ending in "off" is not read as an OFF-BROADWAY url (noises-off)', () => {
+  const bw = { id: 'noises-off-2016', title: 'Noises Off', venue: 'American Airlines Theatre', category: 'broadway' };
+  const seam = scorePlaybillUrl(
+    'https://playbill.com/production/noises-off-broadway-american-airlines-theatre-2016', bw);
+  const control = { id: 'noises-on-2016', title: 'Noises On', venue: 'American Airlines Theatre', category: 'broadway' };
+  const clean = scorePlaybillUrl(
+    'https://playbill.com/production/noises-on-broadway-american-airlines-theatre-2016', control);
+  assert.equal(seam, clean,
+    `the "off" ending must not turn a Broadway url into an off-Broadway one: ${seam} vs ${clean}`);
+});
+
+// MARKET_KEYWORD_RE accepts "-west-end-", so such a url title-matched and then
+// fell through every market gate — the card #590 hole, left open on the other
+// spelling of the same market.
+// …and the first cut of that fix tested "-west-end-" with `includes`, which is
+// the same whole-string mistake one level down: the tail's venue portion
+// contains market words. othello-bedlam-off-broadway-2026 plays at the WEST END
+// THEATRE, a real off-Broadway house on West 86th, and went 16 -> null on its
+// own correct page. Caught by a corpus sweep before it shipped. The market word
+// is now read as the tail's LEADING segment only.
+test('an off-Broadway show at the West End Theatre keeps its own off-Broadway url', () => {
+  const othello = {
+    id: 'othello-bedlam-off-broadway-2026', title: 'Othello (Bedlam)',
+    venue: 'West End Theatre', category: 'off-broadway',
+  };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/othello-bedlam-off-broadway-west-end-theatre-2026', othello);
+  assert.ok(score !== null && score > 0,
+    `a venue named "West End Theatre" must not read as the West End market, got ${score}`);
+});
+
+test('a "-west-end-" url is rejected for a Broadway show, exactly like "-london-"', () => {
+  const bw = { id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', category: 'broadway' };
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/hamilton-west-end-victoria-palace-theatre-2017', bw), null,
+  'a West End url must not be accepted for a Broadway show under the "-west-end-" spelling');
+  assert.equal(scorePlaybillUrl(
+    'https://playbill.com/production/hamilton-london-victoria-palace-theatre-2017', bw), null,
+  'and the "-london-" spelling must still be rejected');
+});
+
+// canonicalVenue() returns a venue's FIRST WORD, so "Broadway Theatre" is
+// "broadway" — which matched the market segment the tail begins with, awarding
+// the venue bonus on a url naming a different house entirely.
+test('a house named after its market does not match the market segment itself', () => {
+  const url = 'https://playbill.com/production/some-play-off-broadway-soho-playhouse-2026';
+  const atBroadwayTheatre = { id: 'some-play-2026', title: 'Some Play', venue: 'Broadway Theatre', category: 'off-broadway' };
+  const atPalace = { id: 'some-play-2026', title: 'Some Play', venue: 'Palace Theatre', category: 'off-broadway' };
+  const a = scorePlaybillUrl(url, atBroadwayTheatre);
+  const b = scorePlaybillUrl(url, atPalace);
+  assert.equal(a, b,
+    `neither venue appears in this url's tail, so both must score the same: Broadway Theatre=${a} Palace=${b}`);
+});
+
+// Our ids are "<title-slug>-<year>", so the FIRST four-digit run is the title
+// for a numerically-titled show. Reading the year off the tail made the signal
+// dead for those 16 shows until the id parse took the LAST run instead.
+// Asserting only "the right url outscores the wrong one" is NOT enough here and
+// the first draft of this test made exactly that mistake — it passed against the
+// unfixed code, because the venue bonus alone produced the gap (17 vs 15) while
+// the year contributed 0 to both. Hold venue and url constant and vary ONLY the
+// id's year, so the assertion can be about the year bonus and nothing else.
+test('a numeric title does not steal the year signal (1776-2022)', () => {
+  const url = 'https://playbill.com/production/1776-broadway-american-airlines-theatre-2022';
+  const matching = { id: '1776-2022', title: '1776', venue: 'American Airlines Theatre', category: 'broadway' };
+  const notMatching = { id: '1776-1999', title: '1776', venue: 'American Airlines Theatre', category: 'broadway' };
+  const withYear = scorePlaybillUrl(url, matching);
+  const withoutYear = scorePlaybillUrl(url, notMatching);
+  assert.ok(withYear > withoutYear,
+    `1776-2022 must earn the year bonus on a 2022 url — reading the FIRST 4-digit run gives "1776", which is the title and is not in the tail, so neither scored it: ${withYear} vs ${withoutYear}`);
+});
+
+// A legacy url has no market tail, and the year bonus used to read the WHOLE
+// url for it — so a numerically-titled show earned the bonus off its own name.
+// This one has to assert the ABSOLUTE score: every relative form of it passes
+// either way, because varying the id's year changes nothing when the bonus is
+// really being paid by the title. 10 = 8 (legacy title match) + 2 (venue), with
+// NO year component; before the fix it was 11.
+test('a legacy url does not pay the year bonus out of the title (1984)', () => {
+  const show = { id: '1984-2017', title: '1984', venue: 'Hudson Theatre', category: 'broadway' };
+  const score = scorePlaybillUrl(
+    'https://playbill.com/production/1984-hudson-theatre-vault-0000012345', show);
+  assert.equal(score, 10,
+    `expected 8 (legacy) + 2 (venue) and no year bonus; 11 means "1984" in the path was read as this show's production year, got ${score}`);
+});
+
+// ---------------------------------------------------------------------------
+// A second review of the fixes above found five more, one of them a REGRESSION
+// this session shipped. The unifying cause: a hand-copied market vocabulary
+// with an exact-equality classifier, where the old code used substring tests.
+// The vocabulary and the classification now live together in
+// playbill-title-match.js; these pin the behaviour that broke.
+
+const { classifyMarketTail, MARKET_KEYWORDS } = require('../../scripts/lib/playbill-title-match.js');
+
+// THE REGRESSION. The capture group returned 'off-regional', which equalled
+// neither 'regional' nor 'tour', so the reject stopped firing. The substring
+// test it replaced had matched '-regional-' inside '-off-regional-'. This is
+// the guard whose absence turned CI run 34000023372 red.
+test('an "-off-regional-" url is rejected for a Broadway show, like "-regional-"', () => {
+  const bw = { id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', category: 'broadway' };
+  for (const seg of ['regional', 'off-regional', 'tour', 'off-tour']) {
+    assert.equal(scorePlaybillUrl(
+      `https://playbill.com/production/hamilton-${seg}-playmakers-repertory-company-2017`, bw), null,
+    `a "-${seg}-" url must not be accepted for a Broadway show`);
+  }
+});
+
+test('both "off-" London spellings are rejected for a Broadway show', () => {
+  const bw = { id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', category: 'broadway' };
+  for (const seg of ['london', 'west-end', 'off-london', 'off-west-end']) {
+    assert.equal(scorePlaybillUrl(
+      `https://playbill.com/production/hamilton-${seg}-victoria-palace-theatre-2017`, bw), null,
+    `a "-${seg}-" url must not be accepted for a Broadway show`);
+  }
+});
+
+// The legacy year regex is $-anchored but ran against a url that had only been
+// lowercased. findPlaybillUrl strips a query and never a trailing slash, and
+// playbill-title-match.js warns in its own comment that SERP results are not
+// slash-free — the same shape that once killed every legacy recovery.
+test('a legacy season url keeps its year bonus with a trailing slash', () => {
+  const show = { id: 'hamilton-2017', title: 'Hamilton', venue: 'Victoria Palace Theatre', category: 'west-end' };
+  const bare = scorePlaybillUrl(
+    'https://playbill.com/production/hamiltonvictoria-palace-theatre-2017-2018', show);
+  const slashed = scorePlaybillUrl(
+    'https://playbill.com/production/hamiltonvictoria-palace-theatre-2017-2018/', show);
+  assert.equal(slashed, bare, `one trailing slash must not cost the year bonus: ${slashed} vs ${bare}`);
+});
+
+// A vault page ends in a Playbill RECORD ID, not a year. Testing a year against
+// a digit blob manufactures coincidences.
+test('a vault url does not pay a year bonus out of a record id', () => {
+  const show = { id: 'hadestown-2019', title: 'Hadestown', venue: 'Walter Kerr Theatre', category: 'broadway' };
+  const coincidence = scorePlaybillUrl(
+    'https://playbill.com/production/hadestownwalter-kerr-theatre-vault-0000002019', show);
+  const control = scorePlaybillUrl(
+    'https://playbill.com/production/hadestownwalter-kerr-theatre-vault-0000009999', show);
+  assert.equal(coincidence, control,
+    `"2019" appearing inside a record id must not read as this show's year: ${coincidence} vs ${control}`);
+});
+
+// The drift guard. The scorer no longer owns a copy of the vocabulary, but a
+// keyword added to MARKET_KEYWORDS that the classifier does not map would fail
+// open on all four gates at once, silently.
+test('every market keyword classifies to a market, in both bare and off- form', () => {
+  assert.ok(MARKET_KEYWORDS.length > 0, 'the vocabulary must not be empty');
+  for (const word of MARKET_KEYWORDS) {
+    for (const kw of [word, `off-${word}`]) {
+      const { market } = classifyMarketTail(`-${kw}-some-theatre-2026`);
+      assert.ok(market, `"${kw}" must classify to a market, got ${market}`);
+      assert.ok(['broadway', 'off-broadway', 'london', 'regional'].includes(market),
+        `"${kw}" classified to an unknown market: ${market}`);
+    }
+  }
+  assert.equal(classifyMarketTail('').market, null, 'an empty tail names no market');
 });

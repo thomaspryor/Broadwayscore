@@ -31,12 +31,38 @@ function verifierArgvFor(cls, { dataDir, showIds }) {
   const node = process.execPath || 'node';
   switch (cls) {
     case 'missing-show':
-      // --all-provisional re-validates every provisional/manual-discovery
-      // entry against Playbill, not just the one this card claims to have
-      // added — cheap (cache-hit heavy) and catches an implementer that
-      // added the WRONG show id/venue under a right-looking title.
+      // Target only the show(s) this diff actually added (showIds, derived
+      // from a shows.json before/after id diff — see
+      // showIdsFromShowsJsonDiff in autonomous-data-workdir.js), via
+      // --show=<id>: same Playbill cross-check as --all-provisional but for
+      // exactly the entry this card touched. --show= bypasses the
+      // isProvisional() filter entirely so it validates regardless of the
+      // card's discoverySource/provisional flag.
+      //
+      // Previously ran --all-provisional here on every single attempt,
+      // re-validating every one of the ~40 provisional shows in shows.json
+      // against Playbill each time — the comment claimed this was "cheap
+      // (cache-hit heavy)", but validate-show-venue.js never writes to its
+      // own read cache (only discover-playbill-urls.js and
+      // fetch-show-images-auto.js do), so every attempt paid full SERP+fetch
+      // cost for the entire provisional backlog. That made it one of the
+      // top Bright Data callers on every day in the ledger (BRO-2226:
+      // 188-825 req/day) for zero correctness benefit over targeting just
+      // the added show — a wrong-show/wrong-venue implementer bug is
+      // exactly as catchable via --show=<addedId>.
+      //
+      // Fallback: if the diff added zero or an unresolvable set of ids
+      // (parse failure, non-standard diff shape), fall back to the full
+      // --all-provisional scan rather than skipping validation — a false
+      // "no verifier ran" here is worse than the wasted BD spend.
+      if (Array.isArray(showIds) && showIds.length) {
+        return showIds.map((id) => ({
+          name: `validate-show-venue --show=${id}`,
+          argv: [node, path.join(REPO, 'scripts', 'validate-show-venue.js'), `--show=${id}`, '--fail-on-mismatch', `--data-dir=${dataDir}`],
+        }));
+      }
       return [{
-        name: 'validate-show-venue (--all-provisional)',
+        name: 'validate-show-venue (--all-provisional fallback: no showIds resolved)',
         argv: [node, path.join(REPO, 'scripts', 'validate-show-venue.js'), '--all-provisional', '--fail-on-mismatch', `--data-dir=${dataDir}`],
       }];
     case 're-gather':

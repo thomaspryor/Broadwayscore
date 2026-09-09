@@ -17,8 +17,15 @@ test('shouldRunTestGate: true when a scripts/lib/ file changed', () => {
   assert.equal(shouldRunTestGate(['scripts/lib/foo.js', 'src/app.tsx']), true);
 });
 
-test('shouldRunTestGate: false when nothing under scripts/lib/ changed', () => {
-  assert.equal(shouldRunTestGate(['scripts/other.js', 'src/app.tsx']), false);
+test('shouldRunTestGate: true for a top-level scripts/ file too (BRO-3063 — arming is not scripts/lib/-only)', () => {
+  // scripts/other.js is a top-level scripts/ file, not scripts/lib/ — it used
+  // to leave the gate unarmed entirely (BRO-3060's exact shape). Widened
+  // arming means this is now true; src/app.tsx alone still isn't.
+  assert.equal(shouldRunTestGate(['scripts/other.js', 'src/app.tsx']), true);
+});
+
+test('shouldRunTestGate: false when nothing under scripts/ or .github/workflows/ changed', () => {
+  assert.equal(shouldRunTestGate(['src/app.tsx', 'README.md']), false);
 });
 
 test('shouldRunTestGate: false on empty/undefined input', () => {
@@ -334,6 +341,100 @@ test('runTestGate: merged run exits non-zero but parses ZERO failures (crash/syn
   assert.match(result.output, /no individual test failure could be parsed/);
 });
 
+// BRO-2874. The gate's `reason` is the ONLY line an operator reads when
+// scripts/merge-worktree-to-main.sh dies, and it used to report `status=null`
+// for every spawn-layer failure — discarding `result.error`, the one field that
+// names the real cause. Four field reproductions blamed "a NEW-since-origin/main
+// colocated test failure" for runs where the tree was clean and the CHILD died.
+// Mutating the source proves each conjunct: dropping the `signal` push fails the
+// SIGTERM assertion, dropping the `error` push fails the ENOBUFS assertions in
+// BOTH the baseline and skip-baseline tests, and reverting describeExit at the
+// skip-baseline return fails only the fourth test.
+// Regression guard, NOT a proof of the BRO-2874 change: the pre-fix code
+// interpolated `status=${result.status}` and would have passed this too. It
+// exists so that a later refactor of describeExit cannot drop the status from
+// the baseline-path call site. The three tests below it are the ones that fail
+// against pre-fix code.
+test('runTestGate: a child that exits non-zero with unparseable output names its real exit status (BRO-2874 status=7)', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => ({ status: 7, stdout: '', stderr: 'Segmentation fault\n' }),
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /status=7/);
+});
+
+test('runTestGate: a spawn-layer failure names the errno and the signal instead of "status=null" (BRO-2874)', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => ({
+      status: null,
+      signal: 'SIGTERM',
+      error: Object.assign(new Error('spawnSync node ENOBUFS'), { code: 'ENOBUFS' }),
+      stdout: '',
+      stderr: '',
+    }),
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /ENOBUFS/, 'the errno must survive into the reason — it was discarded before BRO-2874');
+  assert.match(result.reason, /SIGTERM/, 'a timeout kill must be named, not reported as status=null');
+});
+
+test('runTestGate: surfacing spawn error/signal changes NO pass/fail decision — status 0 still passes', () => {
+  // The invariant that pins the BRO-2874 fix as message-only. `mergedPassed` is
+  // `result.status === 0`; if anyone later folds `result.error` into that
+  // predicate, this flips to false and this test fails.
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => ({
+      status: 0,
+      signal: 'SIGTERM',
+      error: Object.assign(new Error('spawnSync node ENOBUFS'), { code: 'ENOBUFS' }),
+      stdout: '',
+      stderr: '',
+    }),
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, true, 'status===0 is the sole pass predicate; error/signal must not block');
+});
+
+test('runTestGate with baseline DISABLED (MERGE_TEST_GATE_SKIP_BASELINE=1) still names the real cause — the escape hatch the die text recommends must not be worse (BRO-2874)', () => {
+  // This return is the one the original fix missed: it reported `ran N file(s):`
+  // followed by every selected filename, with no exit detail at all.
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => ({
+      status: null,
+      signal: 'SIGTERM',
+      error: Object.assign(new Error('spawnSync node ENOBUFS'), { code: 'ENOBUFS' }),
+      stdout: '',
+      stderr: '',
+    }),
+    makeBaselineCheckout: null,
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /ENOBUFS/);
+  assert.match(result.reason, /SIGTERM/);
+});
+
 test('runTestGate baseline mode: a baseline run that exits non-zero with ZERO parsed failures (crash) is treated as baseline-unavailable, not "zero pre-existing failures" — fails SAFE', () => {
   const dir = makeScratchRepo();
   writeFailingTest(dir); // needs a real .test.mjs file so listColocatedTestFiles doesn't short-circuit; execFn below is mocked
@@ -357,4 +458,428 @@ test('runTestGate baseline mode: a baseline run that exits non-zero with ZERO pa
   assert.equal(result.passed, false);
   assert.match(result.output, /could not build an origin\/main baseline/);
   assert.match(result.output, /cannot trust it as "zero pre-existing failures"/);
+});
+
+// --- BRO-2785: .github/workflows/** is a covered change class ---
+//
+// Before this, a diff touching ONLY .github/workflows/** selected zero test
+// files, so runTestGate returned {ran:false, passed:true} and the integration
+// script printed a clean green. A 504-char line then reddened main against
+// tests/unit/workflow-line-length.test.mjs, with CI on main as the first
+// signal. These tests pin the whole chain: the predicate, the discovery, the
+// merged/baseline set alignment, and the end-to-end "it actually runs".
+
+const {
+  touchesLib,
+  touchesWorkflows,
+  touchesScripts,
+  correspondingUnitTestPath,
+  listCorrespondingUnitTestFiles,
+  listWorkflowGuardTestFiles,
+  selectTestFiles,
+  REQUIRED_WORKFLOW_GUARDS,
+  EXCLUDED_WORKFLOW_GUARDS,
+} = require('./merge-post-merge-test-gate.js');
+
+const REPO_ROOT = path.resolve(__dirname, '..', '..');
+
+// The reason REQUIRED_WORKFLOW_GUARDS exists: workflow-line-length.test.mjs
+// builds its path from separate '.github' + 'workflows' path.join() segments,
+// so the only contiguous ".github/workflows" in that file is its test TITLE.
+// Content discovery matches it by accident. If someone rewords the title, a
+// discovery-only gate would silently stop running the exact guard BRO-2785 is
+// about — invisible non-execution, the same failure class as the original bug.
+test('REQUIRED_WORKFLOW_GUARDS: every listed guard exists in the repo', () => {
+  for (const rel of REQUIRED_WORKFLOW_GUARDS) {
+    assert.ok(
+      fs.existsSync(path.join(REPO_ROOT, rel)),
+      `${rel} is pinned as a required workflow guard but is missing — it was renamed or deleted, and the floor would silently stop running it`
+    );
+  }
+});
+
+test('REQUIRED_WORKFLOW_GUARDS: the line-length guard is selected even when its content never mentions the workflows dir', () => {
+  const dir = makeScratchRepo();
+  const unitDir = path.join(dir, 'tests', 'unit');
+  fs.mkdirSync(unitDir, { recursive: true });
+  // Deliberately contains NO ".github/workflows" substring — this is the file
+  // as it would look after an innocuous title reword.
+  fs.writeFileSync(
+    path.join(unitDir, 'workflow-line-length.test.mjs'),
+    "import { test } from 'node:test';\ntest('no workflow yaml line is too long', () => {});\n"
+  );
+  const selected = selectTestFiles(dir, [path.posix.join('.github/workflows', 'a.yml')]);
+  assert.ok(
+    selected.includes(path.join('tests', 'unit', 'workflow-line-length.test.mjs')),
+    'required guard must be selected by name, not by content discovery'
+  );
+});
+
+test('EXCLUDED_WORKFLOW_GUARDS: an excluded guard is never selected even though its content matches discovery', () => {
+  const dir = makeScratchRepo();
+  const unitDir = path.join(dir, 'tests', 'unit');
+  fs.mkdirSync(unitDir, { recursive: true });
+  for (const rel of EXCLUDED_WORKFLOW_GUARDS) {
+    fs.writeFileSync(
+      path.join(dir, rel),
+      "import { test } from 'node:test';\n// subject: .github/workflows\ntest('live api', () => {});\n"
+    );
+  }
+  const selected = selectTestFiles(dir, [path.posix.join('.github/workflows', 'a.yml')]);
+  for (const rel of EXCLUDED_WORKFLOW_GUARDS) {
+    assert.ok(!selected.includes(rel), `${rel} is excluded and must not run in the local floor`);
+  }
+});
+
+test('EXCLUDED_WORKFLOW_GUARDS: the live-API guard is excluded, so the real repo set is failure-free and never needs a baseline', () => {
+  // If this ever regresses, every workflow merge pays a baseline checkout for
+  // a failure that was never actionable, and MERGE_TEST_GATE_SKIP_BASELINE=1
+  // becomes an outright block.
+  const selected = selectTestFiles(REPO_ROOT, [path.posix.join('.github/workflows', 'a.yml')]);
+  assert.ok(selected.length > 0, 'the real repo must select some workflow guards');
+  assert.ok(
+    !selected.includes(path.join('tests', 'unit', 'branch-protection.test.mjs')),
+    'branch-protection.test.mjs needs an admin token and must stay excluded'
+  );
+});
+
+const WORKFLOW_DIR = path.join('.github', 'workflows');
+
+function seedWorkflowGuard(dir, name, { mentionsWorkflows = true } = {}) {
+  const unitDir = path.join(dir, 'tests', 'unit');
+  fs.mkdirSync(unitDir, { recursive: true });
+  const body = mentionsWorkflows
+    ? "import { test } from 'node:test';\ntest('guards .github/workflows', () => {});\n"
+    : "import { test } from 'node:test';\ntest('unrelated', () => {});\n";
+  fs.writeFileSync(path.join(unitDir, name), body);
+}
+
+test('touchesWorkflows: true only for the .github/workflows/ directory prefix', () => {
+  assert.equal(touchesWorkflows([path.posix.join('.github/workflows', 'test.yml')]), true);
+  // A path that merely CONTAINS the string is not a workflow file. This one
+  // carries the trailing slash too, so it fails unless the check is anchored
+  // at the START of the path — `includes` instead of `startsWith` passes the
+  // no-slash fixture and must not be allowed to pass here.
+  assert.equal(touchesWorkflows(['vendor/.github/workflows/ci.yml']), false);
+  assert.equal(touchesWorkflows(['docs/.github/workflows-notes.md']), false);
+  assert.equal(touchesWorkflows(['src/app.tsx']), false);
+  assert.equal(touchesWorkflows([]), false);
+  assert.equal(touchesWorkflows(undefined), false);
+});
+
+test('shouldRunTestGate: true for a workflow-ONLY change (the BRO-2785 regression)', () => {
+  // This is the exact input that used to return false and skip the floor.
+  assert.equal(shouldRunTestGate(['.github/workflows/check-cron-health.yml']), true);
+  assert.equal(touchesLib(['.github/workflows/check-cron-health.yml']), false);
+});
+
+test('listWorkflowGuardTestFiles: discovers by content, ignores tests that do not mention workflows', () => {
+  const dir = makeScratchRepo();
+  seedWorkflowGuard(dir, 'wf-guard.test.mjs');
+  seedWorkflowGuard(dir, 'unrelated.test.mjs', { mentionsWorkflows: false });
+  fs.writeFileSync(path.join(dir, 'tests', 'unit', 'notatest.mjs'), '// .github/workflows\n');
+  const found = listWorkflowGuardTestFiles(dir);
+  assert.deepEqual(found, [path.join('tests', 'unit', 'wf-guard.test.mjs')]);
+});
+
+test('listWorkflowGuardTestFiles: empty when tests/unit does not exist', () => {
+  assert.deepEqual(listWorkflowGuardTestFiles(makeScratchRepo()), []);
+});
+
+test('selectTestFiles: workflow-only change selects the workflow guards and no lib tests', () => {
+  const dir = makeScratchRepo();
+  writePassingTest(dir, 'lib-contract.test.mjs');
+  seedWorkflowGuard(dir, 'wf-guard.test.mjs');
+  const selected = selectTestFiles(dir, [path.posix.join('.github/workflows', 'a.yml')]);
+  assert.deepEqual(selected, [path.join('tests', 'unit', 'wf-guard.test.mjs')]);
+});
+
+test('selectTestFiles: lib-only change is unchanged — still exactly the colocated tests', () => {
+  const dir = makeScratchRepo();
+  writePassingTest(dir, 'lib-contract.test.mjs');
+  seedWorkflowGuard(dir, 'wf-guard.test.mjs');
+  assert.deepEqual(
+    selectTestFiles(dir, ['scripts/lib/foo.js']),
+    listColocatedTestFiles(dir).sort()
+  );
+});
+
+test('selectTestFiles: a change touching both classes runs the union, sorted and de-duplicated', () => {
+  const dir = makeScratchRepo();
+  writePassingTest(dir, 'lib-contract.test.mjs');
+  seedWorkflowGuard(dir, 'wf-guard.test.mjs');
+  const selected = selectTestFiles(dir, ['scripts/lib/foo.js', path.posix.join('.github/workflows', 'a.yml')]);
+  // Assert the LITERAL expected array. Comparing `selected` against
+  // `[...selected].sort()` or `new Set(selected)` is a tautology that
+  // survives deleting the .sort() and the de-dup entirely (mutation-tested,
+  // 2026-09-04) — it asserts the value equals itself.
+  assert.deepEqual(selected, [
+    path.join('scripts', 'lib', 'lib-contract.test.mjs'),
+    path.join('tests', 'unit', 'wf-guard.test.mjs'),
+  ]);
+});
+
+test('runTestGate: a workflow-only change RUNS and can FAIL — the floor is no longer a silent skip', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  // Stands in for workflow-line-length.test.mjs: a guard whose subject is a
+  // workflow file and which fails on the merged tree.
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'wf-line-length.test.mjs'),
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\ntest('no .github/workflows/*.yml line exceeds 500 chars', () => { assert.equal(1, 2, 'line too long'); });\n"
+  );
+  const result = runTestGate({ cwd: dir, changedFiles: [path.posix.join('.github/workflows', 'probe.yml')] });
+  assert.equal(result.ran, true, 'must actually run — ran:false was the bug');
+  assert.equal(result.passed, false, 'must block on the workflow guard failure');
+  assert.match(result.output, /exceeds 500 chars/);
+});
+
+test('runTestGate: an irrelevant diff skips and passes, naming both covered prefixes', () => {
+  const result = runTestGate({ cwd: makeScratchRepo(), changedFiles: ['src/app.tsx'] });
+  assert.equal(result.ran, false);
+  assert.equal(result.passed, true);
+  assert.match(result.reason, /scripts\/lib\//);
+  assert.match(result.reason, /\.github\/workflows\//);
+});
+
+test('runTestGate: a workflow change that selects ZERO guards FAILS — an empty set is a discovery failure, not an all-clear', () => {
+  // Tree has no tests/unit at all. Passing here would silently reproduce the
+  // original bug: a workflow change validated by nothing, reported green.
+  const result = runTestGate({
+    cwd: makeScratchRepo(),
+    changedFiles: [path.posix.join('.github/workflows', 'a.yml')],
+  });
+  assert.equal(result.ran, false);
+  assert.equal(result.passed, false, 'zero workflow guards must block, not pass');
+  assert.match(result.reason, /ZERO workflow guards/);
+});
+
+test('mentionsWorkflowsDir: matches the path.join idiom, not just the contiguous literal', () => {
+  const dir = makeScratchRepo();
+  const unitDir = path.join(dir, 'tests', 'unit');
+  fs.mkdirSync(unitDir, { recursive: true });
+  // The repo norm: the path is assembled from segments, so the contiguous
+  // string never appears. A literal-only scan missed real guards this way.
+  fs.writeFileSync(
+    path.join(unitDir, 'joined-path.test.mjs'),
+    "import path from 'node:path';\nconst p = path.join(root, '.github', 'workflows', 'x.yml');\n"
+  );
+  fs.writeFileSync(
+    path.join(unitDir, 'double-quoted.test.mjs'),
+    'const p = path.join(root, ".github", "workflows", "y.yml");\n'
+  );
+  fs.writeFileSync(path.join(unitDir, 'unrelated.test.mjs'), "const p = 'src/app.tsx';\n");
+  const found = listWorkflowGuardTestFiles(dir);
+  assert.ok(found.includes(path.join('tests', 'unit', 'joined-path.test.mjs')));
+  assert.ok(found.includes(path.join('tests', 'unit', 'double-quoted.test.mjs')));
+  assert.ok(!found.includes(path.join('tests', 'unit', 'unrelated.test.mjs')));
+});
+
+test('listWorkflowGuardTestFiles: selects the real repo guards that build their path with path.join', () => {
+  // Regression pin for two guards a literal-only scan silently skipped.
+  const found = listWorkflowGuardTestFiles(REPO_ROOT);
+  for (const rel of [
+    path.join('tests', 'unit', 'assert-broadcast-step-order.test.mjs'),
+    path.join('tests', 'unit', 'stale-announced-audit-scheduled.test.mjs'),
+  ]) {
+    assert.ok(found.includes(rel), `${rel} is a workflow-subject guard and must be selected`);
+  }
+});
+
+test('runTestGate: merged and baseline runs select from the SAME change set, so a pre-existing workflow failure does not block', () => {
+  // Both trees carry the same failing workflow guard. If the baseline were
+  // selected with a different change set it would run nothing, the failure
+  // would look NEW, and every workflow merge would be blocked by unrelated
+  // pre-existing redness.
+  const failingGuard =
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\n// subject: .github/workflows\ntest('live: branch protection', () => { assert.equal(1, 2, 'network'); });\n";
+  const mk = () => {
+    const d = makeScratchRepo();
+    fs.mkdirSync(path.join(d, 'tests', 'unit'), { recursive: true });
+    fs.writeFileSync(path.join(d, 'tests', 'unit', 'wf-guard.test.mjs'), failingGuard);
+    return d;
+  };
+  const dir = mk();
+  const baselineDir = mk();
+  const seen = [];
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: [path.posix.join('.github/workflows', 'a.yml')],
+    execFn: (execCwd, testFiles) => {
+      seen.push([execCwd, testFiles]);
+      return spawnSync(process.execPath, ['--test', '--test-reporter=tap', ...testFiles], {
+        cwd: execCwd,
+        encoding: 'utf8',
+        env: (() => { const e = { ...process.env }; delete e.NODE_TEST_CONTEXT; return e; })(),
+      });
+    },
+    makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(seen.length, 2, 'merged run + baseline run');
+  assert.deepEqual(seen[0][1], seen[1][1], 'both runs must execute the same file list');
+  assert.equal(result.passed, true, 'a failure present in BOTH trees is pre-existing and must not block');
+});
+
+// --- BRO-3063: scripts/**/*.{js,mjs} -> tests/unit/<basename>.test.mjs ------
+//
+// Two incidents, same session (2026-09-08):
+//   (1) scripts/lib/landed-but-open-reconciler.js changed; its colocated
+//       scripts/lib/*.test.mjs passed; tests/unit/landed-but-open-reconciler.test.mjs
+//       broke; the floor (armed, glob-scoped) reported green.
+//   (2) scripts/linear-drain-parked.js (top-level, not scripts/lib/) changed;
+//       tests/unit/linear-drain-parked.test.mjs broke; the floor never armed.
+// These tests pin the fix by basename correspondence, and prove each
+// incident's exact shape by mutation: the OLD selection (colocated glob only)
+// would have missed it, the NEW selection (selectTestFiles) catches it.
+
+test('touchesScripts: true for any scripts/ source file, top-level or scripts/lib/', () => {
+  assert.equal(touchesScripts(['scripts/linear-drain-parked.js']), true);
+  assert.equal(touchesScripts(['scripts/lib/landed-but-open-reconciler.js']), true);
+  assert.equal(touchesScripts(['scripts/newsletter/generate.mjs']), true);
+});
+
+test('touchesScripts: false for a colocated test file itself, or a non-scripts path', () => {
+  // .test.mjs files arm via touchesLib already (directory-only check); they
+  // must not ALSO match here, which would just be redundant, but the
+  // exclusion is the thing under test.
+  assert.equal(touchesScripts(['scripts/lib/foo.test.mjs']), false);
+  assert.equal(touchesScripts(['src/app.tsx']), false);
+  assert.equal(touchesScripts([]), false);
+  assert.equal(touchesScripts(undefined), false);
+});
+
+test('correspondingUnitTestPath: basename-only, ignores directory — matches both real incidents', () => {
+  assert.equal(
+    correspondingUnitTestPath('scripts/lib/landed-but-open-reconciler.js'),
+    path.join('tests', 'unit', 'landed-but-open-reconciler.test.mjs')
+  );
+  assert.equal(
+    correspondingUnitTestPath('scripts/linear-drain-parked.js'),
+    path.join('tests', 'unit', 'linear-drain-parked.test.mjs')
+  );
+  assert.equal(
+    correspondingUnitTestPath('scripts/newsletter/generate.mjs'),
+    path.join('tests', 'unit', 'generate.test.mjs')
+  );
+});
+
+test('listCorrespondingUnitTestFiles: includes only tests that actually exist on disk', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'tests', 'unit', 'linear-drain-parked.test.mjs'), "import { test } from 'node:test';\ntest('x', () => {});\n");
+  const found = listCorrespondingUnitTestFiles(dir, [
+    'scripts/linear-drain-parked.js',
+    'scripts/lib/no-such-test-yet.js',
+    'src/app.tsx',
+  ]);
+  assert.deepEqual(found, [path.join('tests', 'unit', 'linear-drain-parked.test.mjs')]);
+});
+
+test('listCorrespondingUnitTestFiles: two source files sharing a basename both resolve to the one test, de-duplicated', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'tests', 'unit', 'foo.test.mjs'), "import { test } from 'node:test';\ntest('x', () => {});\n");
+  const found = listCorrespondingUnitTestFiles(dir, ['scripts/foo.js', 'scripts/lib/foo.js']);
+  assert.deepEqual(found, [path.join('tests', 'unit', 'foo.test.mjs')]);
+});
+
+test('selectTestFiles: a scripts/lib/ change also selects its tests/unit/ correspondence, not just the colocated glob', () => {
+  const dir = makeScratchRepo();
+  writePassingTest(dir, 'landed-but-open-reconciler.test.mjs'); // colocated, passes
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'landed-but-open-reconciler.test.mjs'),
+    "import { test } from 'node:test';\ntest('x', () => {});\n"
+  );
+  const selected = selectTestFiles(dir, ['scripts/lib/landed-but-open-reconciler.js']);
+  assert.deepEqual(selected, [
+    path.join('scripts', 'lib', 'landed-but-open-reconciler.test.mjs'),
+    path.join('tests', 'unit', 'landed-but-open-reconciler.test.mjs'),
+  ]);
+  // Mutation proof: the OLD selection (colocated glob alone) would have
+  // missed the tests/unit/ file entirely — this is incident 1's exact hole.
+  assert.deepEqual(listColocatedTestFiles(dir), [path.join('scripts', 'lib', 'landed-but-open-reconciler.test.mjs')]);
+});
+
+test('selectTestFiles: a top-level scripts/ change selects its tests/unit/ correspondence even with zero scripts/lib/ involvement', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'linear-drain-parked.test.mjs'),
+    "import { test } from 'node:test';\ntest('x', () => {});\n"
+  );
+  const selected = selectTestFiles(dir, ['scripts/linear-drain-parked.js']);
+  assert.deepEqual(selected, [path.join('tests', 'unit', 'linear-drain-parked.test.mjs')]);
+  // Mutation proof: incident 2's exact hole — the OLD arming condition
+  // (touchesLib || touchesWorkflows) is false for a top-level scripts/ file,
+  // so the pre-fix floor would not have run anything at all.
+  assert.equal(touchesLib(['scripts/linear-drain-parked.js']), false);
+  assert.equal(touchesWorkflows(['scripts/linear-drain-parked.js']), false);
+});
+
+test('runTestGate: incident 1 shape — scripts/lib/ file, colocated test passes, tests/unit/ correspondence FAILS — REFUSED', () => {
+  const dir = makeScratchRepo();
+  writePassingTest(dir, 'landed-but-open-reconciler.test.mjs');
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'landed-but-open-reconciler.test.mjs'),
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\ntest('no dispatch-ledger entry at all for this taskId -> still open, not closable', () => { assert.equal(1, 2, 'widened accepted set regression'); });\n"
+  );
+  const result = runTestGate({ cwd: dir, changedFiles: ['scripts/lib/landed-but-open-reconciler.js'] });
+  assert.equal(result.ran, true);
+  assert.equal(result.passed, false, 'incident 1 must be refused now that tests/unit/ is in scope');
+  assert.match(result.output, /widened accepted set regression/);
+});
+
+test('runTestGate: incident 2 shape — top-level scripts/ file with a failing tests/unit/ correspondence — REFUSED (previously never even armed)', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'tests', 'unit', 'linear-drain-parked.test.mjs'),
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\ntest('main() — kill switch and dispatch wiring, fully injected (no live I/O)', () => { assert.deepEqual([{ allowAutofixFiled: true, allowAutomationParked: true }], [{ allowAutofixFiled: true }]); });\n"
+  );
+  const result = runTestGate({ cwd: dir, changedFiles: ['scripts/linear-drain-parked.js'] });
+  assert.equal(result.ran, true, 'must actually arm and run — pre-fix this was ran:false, passed:true');
+  assert.equal(result.passed, false, 'incident 2 must be refused');
+});
+
+test('runTestGate: tests/unit/ correspondence already failing on the baseline sha is NOT blocking (task #1149/#1433 behavior preserved for this new class)', () => {
+  const failingCorrespondence =
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\ntest('pre-existing unit test failure', () => { assert.equal(1, 2, 'already red before this merge'); });\n";
+  const mk = () => {
+    const d = makeScratchRepo();
+    fs.mkdirSync(path.join(d, 'tests', 'unit'), { recursive: true });
+    fs.writeFileSync(path.join(d, 'tests', 'unit', 'linear-drain-parked.test.mjs'), failingCorrespondence);
+    return d;
+  };
+  const baselineDir = mk();
+  const mergedDir = mk(); // identical, unfixed pre-existing failure — this branch didn't touch it
+
+  const result = runTestGate({
+    cwd: mergedDir,
+    changedFiles: ['scripts/linear-drain-parked.js'],
+    makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(result.passed, true, 'a tests/unit/ failure already red on origin/main must not block this merge');
+  assert.match(result.output, /pre-existing on origin\/main/);
+});
+
+// Real-repo pin (mirrors the workflow-guard "live-API guard" pin above): the
+// workflow class has REQUIRED_WORKFLOW_GUARDS + content discovery to notice
+// if the guard set silently goes to zero (BRO-2785's own failure mode). The
+// scripts/**/*.{js,mjs,cjs} -> tests/unit/ correspondence has no such
+// invariant — it is pure basename lookup with no "must find something"
+// check — so a wholesale tests/unit/ restructure could silently zero out
+// this entire protection with no signal (Codex adversarial review,
+// 2026-09-08). This pin at least catches total mechanism death: if it ever
+// goes red, correspondence discovery broke for the ENTIRE real repo, not
+// just one file.
+test('listCorrespondingUnitTestFiles: the real repo has at least one live scripts/ -> tests/unit/ correspondence (mechanism-alive pin)', () => {
+  const found = listCorrespondingUnitTestFiles(REPO_ROOT, [
+    'scripts/linear-drain-parked.js',
+    'scripts/lib/landed-but-open-reconciler.js',
+  ]);
+  assert.ok(found.length > 0, 'correspondence discovery found nothing for two known real files — the mechanism may be silently dead');
 });

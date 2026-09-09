@@ -16,14 +16,34 @@
  * @returns {string} Season in "YYYY-YYYY" format (e.g., "2024-2025")
  */
 function getSeasonForDate(dateInput) {
-  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-
-  if (isNaN(date.getTime())) {
-    throw new Error(`Invalid date: ${dateInput}`);
+  // Parse a plain "YYYY-MM-DD" string's components directly rather than via
+  // `new Date(str)` + local getters: `new Date("2026-07-01")` parses as UTC
+  // midnight, which reads back as "2026-06-30T20:00" in America/New_York —
+  // June, not July — silently misclassifying any show that opened exactly on
+  // the season-boundary date into the PRIOR season (ship-check finding,
+  // 2026-08-30: reproduces the exact cross-season-mix bug this file exists
+  // to prevent, just shifted one day earlier). Date objects (already in
+  // local time, no string to reparse) keep using the getters below.
+  // Also matches an ISO-datetime string with a "YYYY-MM-DD" date component
+  // ("2026-07-01T00:00:00.000Z") — second-opinion review finding, 2026-08-30:
+  // without the optional `T...` suffix, a datetime string fell through to the
+  // `new Date()` branch below and reproduced the exact bug this function
+  // exists to fix, just for a slightly different input shape.
+  const isoMatch = typeof dateInput === 'string' && /^(\d{4})-(\d{2})-(\d{2})(?:T.*)?$/.exec(dateInput);
+  let year, month;
+  if (isoMatch) {
+    const [, y, m] = isoMatch;
+    year = Number(y);
+    month = Number(m) - 1; // 0-indexed, matches Date#getMonth() below
+    if (month < 0 || month > 11) throw new Error(`Invalid date: ${dateInput}`);
+  } else {
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    if (isNaN(date.getTime())) {
+      throw new Error(`Invalid date: ${dateInput}`);
+    }
+    year = date.getFullYear();
+    month = date.getMonth(); // 0-indexed (0 = January, 6 = July)
   }
-
-  const year = date.getFullYear();
-  const month = date.getMonth(); // 0-indexed (0 = January, 6 = July)
 
   // July (6) through December (11) = first year of season
   // January (0) through June (5) = second year of season
@@ -67,10 +87,23 @@ function getSeasonDates(season) {
  * @returns {boolean}
  */
 function isDateInSeason(dateInput, season) {
-  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-  const { start, end } = getSeasonDates(season);
-
-  return date >= start && date <= end;
+  // Delegate to getSeasonForDate + string equality rather than comparing
+  // Date objects across representations: dateInput (parsed as UTC when it's
+  // a "YYYY-MM-DD" string) vs getSeasonDates' boundaries (constructed in
+  // local time) disagreed by up to a day at the season boundary itself —
+  // isDateInSeason('2026-07-01', '2026-2027') returned false (test caught
+  // this, 2026-08-30, while adding coverage for the getSeasonForDate fix).
+  //
+  // getSeasonForDate throws on unparseable input (by design, for callers
+  // that need to fail loud) — but isDateInSeason's own contract is a plain
+  // boolean (its old Date-range-comparison implementation returned false for
+  // an invalid date, never threw). Preserve that: an unparseable dateInput
+  // just isn't in any season (second-opinion review finding, 2026-08-30).
+  try {
+    return getSeasonForDate(dateInput) === season;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -164,6 +197,30 @@ function formatSeasonDisplay(openingDate, closingDate) {
   return `${openSeason} - ${closeSeason} Seasons`;
 }
 
+/**
+ * Whether the newsletter's "New Plays This Season" / "New Musicals This
+ * Season" card should be computed for this opening event at all.
+ *
+ * Reopenings are excluded (BRO-2564). The card's peer list is built by
+ * filtering ALL shows on their own (original) openingDate falling in the
+ * target season — so keying just the TARGET season off reopeningDate while
+ * leaving peer selection on openingDate would exclude the reopening show
+ * from its own peer list (its stale original openingDate falls outside the
+ * corrected season boundaries), leaving the card's "how X stacks up"
+ * heading pointing at a highlight row that never renders. Redefining peer
+ * selection to also key off reopeningDate is possible but adds real
+ * complexity for a low-frequency edge case; skipping the card for
+ * reopenings avoids the stale-season mixing bug this ticket reports without
+ * introducing that new failure mode (second-opinion review finding on the
+ * anchor-date approach, 2026-08-31).
+ * @param {{isRevival?: boolean}} show
+ * @param {boolean} isReopening - true when this week's qualifying event is the reopening
+ * @returns {boolean}
+ */
+function isEligibleForSeasonStanding(show, isReopening) {
+  return !show.isRevival && !isReopening;
+}
+
 module.exports = {
   getSeasonForDate,
   getSeasonDates,
@@ -173,4 +230,5 @@ module.exports = {
   getSeasonRange,
   validateSeason,
   formatSeasonDisplay,
+  isEligibleForSeasonStanding,
 };

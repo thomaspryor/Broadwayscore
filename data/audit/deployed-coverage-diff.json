@@ -1,29 +1,149 @@
 {
-  "generatedAt": "2026-08-27T01:24:04.300Z",
+  "generatedAt": "2026-09-08T16:05:01.194Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 142,
-  "clean": 141,
-  "defective": 1,
+  "checked": 119,
+  "clean": 110,
+  "defective": 9,
   "byType": {
-    "score-drift": 1
+    "score-drift": 9
   },
   "shows": [
     {
-      "showId": "the-hunger-games-on-stage-west-end-2025",
-      "title": "The Hunger Games On Stage",
-      "openingDate": "2025-11-12",
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "openingDate": "2026-09-03",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 53.72 vs local 54.26 (Δ0.54)"
+          "detail": "deployed cs 60.94 vs local 60.5 (Δ0.44)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 25
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "openingDate": "2026-09-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.77 vs local 79.03 (Δ0.74)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 26,
+      "deployedCount": 26
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "title": "Death Note: The Musical",
+      "openingDate": "2026-08-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.92 vs local 73.07 (Δ0.15)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 35,
+      "deployedCount": 35
+    },
+    {
+      "showId": "disruption-off-broadway-2026",
+      "title": "Disruption",
+      "openingDate": "2026-08-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.99 vs local 61.6 (Δ2.39)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-06-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.56 vs local 78.45 (Δ0.11)"
         }
       ],
       "missingFromProd": [],
       "localCount": 23,
-      "deployedCount": 24
+      "deployedCount": 23
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.79 vs local 75.72 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "openingDate": "2021-12-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.29 vs local 86.78 (Δ0.51)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "title": "SIX the Musical",
+      "openingDate": "2019-01-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.13 vs local 81.25 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14
+    },
+    {
+      "showId": "magic-mike-live-west-end-2021",
+      "title": "Magic Mike Live",
+      "openingDate": "2018-11-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.63 vs local 62.34 (Δ1.29)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10
     }
   ]
 }

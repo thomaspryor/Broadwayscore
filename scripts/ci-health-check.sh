@@ -20,7 +20,12 @@
 # its own timeout mid-checkout) is NOT mid-setup-cancelled — it validated.
 #
 # Usage: scripts/ci-health-check.sh [run_count] [threshold_pct]
-#   run_count      how many recent main push runs of test.yml to sample (default 20)
+#   run_count      how many recent main push runs of test.yml to sample (default 20,
+#                  max 100 — the Actions REST per_page cap. Values above 100 now exit
+#                  2 rather than silently sampling a shorter window than asked for.
+#                  The pre-BRO-2771 `gh run list --limit` form paginated past 100, so
+#                  a habit of e.g. `ci-health-check.sh 200` from shell history will
+#                  now be rejected instead of quietly measuring the wrong thing.)
 #   threshold_pct  max acceptable mid-setup-cancel rate, whole percent (default 30)
 #
 # Exit codes:
@@ -37,8 +42,11 @@ set -uo pipefail
 RUN_COUNT="${1:-20}"
 THRESHOLD_PCT="${2:-30}"
 
-if ! [[ "${RUN_COUNT}" =~ ^[0-9]+$ ]] || [ "${RUN_COUNT}" -lt 1 ]; then
-  echo "::error::run_count must be a positive integer, got '${RUN_COUNT}'" >&2
+# Upper bound is the Actions REST per_page cap. Above 100 the endpoint silently
+# returns a SHORTER window than requested, and for a rate check that reads as a
+# genuine sample rather than a truncated one. Fail loudly instead (BRO-2771).
+if ! [[ "${RUN_COUNT}" =~ ^[0-9]+$ ]] || [ "${RUN_COUNT}" -lt 1 ] || [ "${RUN_COUNT}" -gt 100 ]; then
+  echo "::error::run_count must be an integer 1-100 (REST per_page cap), got '${RUN_COUNT}'" >&2
   exit 2
 fi
 if ! [[ "${THRESHOLD_PCT}" =~ ^[0-9]+$ ]] || [ "${THRESHOLD_PCT}" -gt 100 ]; then
@@ -55,9 +63,16 @@ if ! command -v jq >/dev/null 2>&1; then
   exit 2
 fi
 
+# Run history goes through the Actions REST endpoint, never `gh run list --limit`
+# — see scripts/lib/gh-runs-query.sh (BRO-2771/BRO-2767). The literal
+# {owner}/{repo} placeholder is right here: this script is run locally against a
+# checkout, and gh expands it from that checkout.
+# shellcheck source=scripts/lib/gh-runs-query.sh
+. "$(dirname "${BASH_SOURCE[0]}")/lib/gh-runs-query.sh"
+
 echo "Fetching last ${RUN_COUNT} test.yml push runs on main..."
-if ! RUNS_JSON=$(gh run list --workflow=test.yml --branch=main --event=push --limit="${RUN_COUNT}" --json databaseId,conclusion,status) || [ -z "${RUNS_JSON}" ]; then
-  echo "::error::gh run list failed — check auth ('gh auth status') and network" >&2
+if ! RUNS_JSON=$(gh_runs_query "{owner}/{repo}" test.yml "${RUN_COUNT}" branch=main event=push) || [ -z "${RUNS_JSON}" ]; then
+  echo "::error::run listing failed — check auth ('gh auth status') and network" >&2
   exit 2
 fi
 

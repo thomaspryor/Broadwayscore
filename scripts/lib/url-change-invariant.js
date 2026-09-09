@@ -45,6 +45,15 @@
 
 const { REPLACE_CLEAR_FIELDS } = require('./wrongprod-replacement-preserve');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance');
+// BRO-2828. The date-guard carve-out below matches on wrongProductionNote
+// prefixes, but the anticipatory pre-opening gate writes wrongProductionReason
+// and never a Note — so a pure publishDate-vs-openingDate verdict could never
+// take the carve-out and was wiped by every canonical URL change, even when a
+// genuinely new publishDate arrived to re-evaluate it against. Same registry
+// the preserve-on-URL-recovery predicate uses, so the two agree by construction.
+// (No require cycle: wrong-production-autoclear.js imports only date-utils.)
+const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
 
 // Everything derived from (or fetched via) the file's URL. REPLACE_CLEAR_FIELDS
 // carries the wrong-flag / content-state / fetch-state families; the rest are
@@ -90,11 +99,40 @@ const AUTO_DATE_WP_PREFIXES = ['Pre-opening guard', 'Date guard', 'Dateless show
 // Kept for external references/tests: prefixes that can survive a URL change.
 const DATE_BASED_WP_PREFIXES = [...MANUAL_WP_PREFIXES, ...AUTO_DATE_WP_PREFIXES];
 
-const WP_FIELDS = new Set(['wrongProduction', 'wrongProductionNote', 'wrongProductionReason']);
+// The wrongProduction family that the date-guard/Tour-transfer carve-out
+// preserves AS A UNIT. BRO-2740: the provenance breadcrumbs belong here, not
+// just the flag triple. Two failure modes, one list:
+//   - carve-out NOT taken (the common case): the loop below deletes the flag,
+//     and without these names it left `wrongProductionDetectedBy` / `Detail` /
+//     `DetectedAt` on the record — 138 of the 156 orphaned files measured on
+//     2026-09-02 have exactly that shape (flag key absent, no
+//     `wrongProductionAutoCleared` breadcrumb, provenance intact).
+//   - carve-out TAKEN (a preserved 'Tour transfer' / in-date-basis guard): the
+//     flag survives, so its provenance must survive with it. Preserving the
+//     flag while deleting the reason it was set would strand the mirror-image
+//     orphan — a flag no auditor can explain.
+// Sourced from wrongproduction-provenance.js so a new detector field is
+// covered by both paths at once. These names also reach URL_DERIVED_FIELDS via
+// REPLACE_CLEAR_FIELDS above, which is what makes the deletion happen at all.
+const WP_FIELDS = new Set([
+  'wrongProduction', 'wrongProductionNote', 'wrongProductionReason',
+  ...WRONG_PRODUCTION_PROVENANCE_FIELDS,
+]);
 
 function _noteStartsWith(existing, prefixes) {
   const note = existing && existing.wrongProductionNote;
   return typeof note === 'string' && prefixes.some((p) => note.startsWith(p));
+}
+
+// The reason-keyed sibling of _noteStartsWith(AUTO_DATE_WP_PREFIXES): a
+// wrongProduction verdict derived purely from publishDate, carried in
+// wrongProductionReason rather than a Note. Granted the identical carve-out —
+// preserved only when the publishDate basis SURVIVES the URL change, so the
+// rebuild can re-evaluate it against the new date and auto-clear if in-window.
+// A stale date still clears the flag with it (BRO-2828).
+function _reasonIsDateOnly(existing) {
+  const reason = existing && existing.wrongProductionReason;
+  return typeof reason === 'string' && DATE_ONLY_AUTO_REASONS.has(reason);
 }
 
 function _valuesEqual(a, b) {
@@ -230,8 +268,17 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   // date arrived) — the rebuild re-evaluates the guard against that date and
   // auto-clears it if in-window. Clearing the flag while a date remains would
   // red the validate-data [wrong-production-by-date] gate until the rebuild.
+  // The reason-keyed leg additionally requires a real publishDate on the
+  // incoming record. !publishDateWillClear is TRUE for a record that never had
+  // a date at all, and a dateless record gives a publishDate-derived verdict
+  // nothing to stand on — preserving it there would strand an unclearable flag
+  // (the rebuild's anticipatory auto-clear needs reviewDate to even enter) and
+  // would break the BRO-2740 contract that a dateless anticipatory flag clears
+  // with its URL. The note-keyed legs are left exactly as they were.
+  const mergedHasPublishDate = !_emptyDate(merged.publishDate);
   const preserveDateBasedWp = _noteStartsWith(existing, MANUAL_WP_PREFIXES)
-    || (_noteStartsWith(existing, AUTO_DATE_WP_PREFIXES) && !publishDateWillClear);
+    || (_noteStartsWith(existing, AUTO_DATE_WP_PREFIXES) && !publishDateWillClear)
+    || (_reasonIsDateOnly(existing) && !publishDateWillClear && mergedHasPublishDate);
   const cleared = [];
   for (const field of URL_DERIVED_FIELDS) {
     if (preserveFields && preserveFields.has(field)) continue;
@@ -260,6 +307,33 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
     if (!_valuesEqual(merged[field], existing[field])) continue;
     delete merged[field];
     cleared.push(field);
+  }
+
+  // BRO-2740, second pass: provenance is cleared AS A UNIT with the flag, not
+  // value-by-value. The loop above only deletes a field whose post-merge value
+  // is IDENTICAL to the on-disk one — a deliberate rule, because a fresh value
+  // supplied by the incoming write must survive. Provenance breaks that rule:
+  // collect-review-texts.js:4401 re-stamps `wrongProductionDetectedAt` with
+  // `new Date().toISOString()` on every pass, so its value ALWAYS differs and
+  // it always survived, while `wrongProduction` (true both sides) was deleted.
+  // Measured on the first cut of this fix: url A→B with a re-stamped detector
+  // block cleared wrongProduction/Reason/Detail/DetectedBy and stranded
+  // DetectedAt + anticipatoryGateDaysBeforeOpening — a fresh orphan produced
+  // by the very code meant to stop them (found by review, not by the tests).
+  //
+  // A "fresh" provenance value is not independent evidence: it describes a
+  // flag that is now gone, so it must go too. Conversely, when the flag is
+  // still standing after the loop — the carve-out preserved it, or the
+  // incoming write raised a genuinely new one on a record that was not
+  // previously flagged — provenance is kept, which is the mirror-image orphan
+  // this same commit guards against.
+  if (!merged.wrongProduction) {
+    for (const field of WRONG_PRODUCTION_PROVENANCE_FIELDS) {
+      if (preserveFields && preserveFields.has(field)) continue;
+      if (merged[field] === undefined) continue;
+      delete merged[field];
+      if (!cleared.includes(field)) cleared.push(field);
+    }
   }
 
   // Chain-carry a prior breadcrumb: across A→B→C hops, hop 2's own clear list

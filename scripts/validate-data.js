@@ -29,9 +29,11 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
+const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
 const { criticKey } = require('./lib/manual-entry-merge');
+const { sameUrlDuplicateKey } = require('./lib/review-url-collision');
 const { hasRealImage, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
@@ -148,6 +150,37 @@ if (process.env.VALIDATE_DATA_SHOWS_JSON) {
   console.error(warning);
 }
 const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
+
+// FIXTURE RUNS MUST NOT WRITE TRACKED AUDIT ARTIFACTS.
+//
+// VALIDATE_DATA_SHOWS_JSON redirects shows.json only; every other path still
+// resolved under the real DATA_DIR, so a fixture run recomputed the corpus-wide
+// audit artifacts FROM THE FIXTURE and overwrote the real ones in place. On
+// 2026-09-05 a single fixture run cut data/audit/london-only-nyc-accumulation.json
+// from 3,357 lines to 161 — 3,286 deletions of real telemetry — in the shared
+// checkout that ~20 parallel sessions and several auto-committing CI jobs share.
+// It was caught before anything committed the degraded file, but only because a
+// reviewer md5'd it; nothing in the pipeline would have objected.
+//
+// The three artifacts below are all pure derivations of the corpus, so under the
+// override the honest value is "don't write" rather than "write something
+// wrong". Reads are untouched — a fixture run still compares against the real
+// baseline, which is what the sentinel and wiring tests actually assert on.
+//
+// This closes the hazard for every fixture-based test, not just the one that
+// tripped it: tests/unit/validate-data-push-refusal-sentinel.test.mjs has spawned
+// validate-data.js under the same override since long before this.
+const FIXTURE_MODE = !!process.env.VALIDATE_DATA_SHOWS_JSON;
+function writeAuditArtifact(file, contents, label) {
+  if (FIXTURE_MODE) {
+    info(`Skipping ${label} write — VALIDATE_DATA_SHOWS_JSON override active, so this run's corpus is a fixture and would corrupt the tracked file.`);
+    return false;
+  }
+  const dir = path.dirname(file);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(file, contents);
+  return true;
+}
 
 const strictMode = process.argv.includes('--strict');
 
@@ -848,6 +881,190 @@ function validateVenueCategory(shows) {
     ok(`Auto-fixed ${autoFixed} venue/category mismatches`);
   } else {
     ok('All London show venues match their category');
+  }
+}
+
+// ===========================================
+// VENUE-COMPLEX SUB-VENUE SLUG RESOLUTION
+// ===========================================
+
+// Why this lives in validate-data.js and not only in a unit test.
+//
+// The orphan check already existed, but ONLY inside
+// scripts/audit-venue-complex-slugs.test.mjs. That test reads shows.json,
+// which is a symlink into the PRIVATE core-data repo — so the corpus it
+// asserts against changes without any commit in THIS repo. On 2026-09-05 a
+// core-data commit (ff60cf592, "merge duplicate show amaze-off-broadway-2026
+// into amaze-magic-off-broadway-2025") deleted the only show carrying the
+// venue "New World Stages – Stage 5". That orphaned the
+// new-world-stages-stage-5 sub-venue slug at 16:40Z. Nothing failed then: the
+// data-repo session ran validate-data.js, which exits 0, and pushed. main went
+// red 4h42m later on the NEXT unrelated push to this repo (runs 33980744001
+// and 33981854174), where the failure looked like it belonged to whoever had
+// pushed — a crown session spent a cycle suspecting its own unrelated
+// ticketing-identity change before reproducing it.
+//
+// Running the same pure function here moves the signal to the moment the data
+// changes, where the session that caused it can still see why.
+//
+// SEVERITY — advisory warn(), not error(), and that distinction was reviewed.
+//
+// An orphaned sub-venue slug is cosmetic. src/lib/data-core.ts:885-887 does
+// `def.subVenueSlugs.map(slug => bySlug.get(slug)).filter(t => !!t)`, so an
+// unresolvable slug is silently dropped at render: the complex still groups
+// every show that uses its own venue string, no score moves, no build breaks.
+// An error() here would reach exitWithError -> ${RUNNER_TEMP}/.skip-push-core-data
+// (validate-data.js:64-84), which .github/actions/push-core-data/action.yml:30
+// and the workflows using it consult — wedging automated core-data pushes out of
+// the PRIVATE data repo over a cosmetic defect in a file only a human editing
+// THIS repo can fix. That impact mismatch is the same one the cross-market
+// ADVISORY at validate-data.js:4780 was written to avoid, so this follows that
+// pattern, including folding the count into the ok()/summary line so it is
+// visible above the (long) numbered warning dump.
+//
+// The hard gate is unchanged and still exists where it belongs:
+// scripts/audit-venue-complex-slugs.test.mjs fails CI on the same condition.
+// What this adds is TIMING and ATTRIBUTION, not a second blocker.
+//
+// STATE THE RESIDUAL PLAINLY, because an advisory can read as a fix and is not
+// one: this does NOT prevent the delayed red. Automation ignores a warning, so a
+// core-data push that orphans a slug still lands, and main still goes red on the
+// next unrelated push to this repo. What changes is that the session or workflow
+// that CAUSED it sees it in its own output, named, at the moment it happens,
+// instead of someone else inheriting the blame hours later. Actually closing the
+// gap needs a trigger-layer change (core-data push -> repository_dispatch running
+// the data-dependent suite), which covers all ~40 core-data-reading tests at once
+// but multiplies Test Suite runs against a ~30-minute rebuild cadence. That is a
+// CI-spend decision for the owner and is parked on BRO-2880.
+//
+// EVERY finding here is advisory, malformed definitions included. A malformed
+// def does break the Next build (data-core.ts's unguarded .map() above), but the
+// two places that can act on that already fail loudly — the unit test reddens CI
+// and the build itself throws — while error() here would only stop core-data
+// pushes out of a repo that cannot fix the file. See the comment inside the
+// function for the reproduced failure that settled this.
+//
+// Rule 15: this require()s the real audit functions and the market registry, it
+// does not restate them, so this gate and
+// scripts/audit-venue-complex-slugs.test.mjs cannot drift apart.
+//
+// Ordering note: this runs after validateVenueCategory's saveShows write-back
+// (validate-data.js:847), which only ever flips west-end <-> off-west-end. Both
+// sit inside the London market's own predicate, so the result cannot depend on
+// call position.
+//
+// Known false-negatives, all in the same direction — this audit's view of the
+// corpus is WIDER than the site's, so a slug can look alive here and still be
+// absent from the rendered complex. The site drops shows this does not:
+// HIDDEN_LONDON_IDS (data-core.ts:319), the `!show._devOnly` filter in
+// getAllShows (data-core.ts:122), and buildStubTheaterIndex's `_`-prefix /
+// STUB_THEATER_PLACEHOLDER_VENUES skip. Measured 2026-09-05: 3 _devOnly shows
+// exist and none of them props up a def slug, so all three are latent. None can
+// produce a FALSE POSITIVE, and scripts/audit-venue-complex-slugs.test.mjs uses
+// the same predicates, so the two never disagree.
+function validateOrphanSubVenueSlugs(shows) {
+  info('Checking venue-complex sub-venue slugs resolve to real venues...');
+  const {
+    findOrphanSubVenueSlugs,
+    findMalformedComplexDefs,
+    VENUE_COMPLEX_MARKETS,
+  } = require('./lib/venue-complex-audit.js');
+
+  let orphanCount = 0;
+  let malformedCount = 0;
+  let orphanLinesPrinted = 0;
+  let orphanLinesSuppressed = 0;
+  // Cap matches the cross-market validator's at validate-data.js:4757, but it
+  // applies to ORPHAN lines only. A malformed def is the one finding here that
+  // actually breaks the Next build (data-core.ts:885 calls .map() on it
+  // unguarded), and markets are iterated off-Broadway first — so a shared cap
+  // let five cosmetic off-Broadway orphan lines silently swallow a West End
+  // malformed-def line. Never suppress the build-breaking kind to make room for
+  // the cosmetic one.
+  const ORPHAN_PRINT_CAP = 5;
+
+  const blocking = (msg) => warn(`Venue-complex ADVISORY: ${msg}`);
+  // Counts SUPPRESSED MESSAGES, not findings. orphanCount counts individual
+  // slugs while one line lists every missing slug for a complex, so counting
+  // findings made the summary claim "(2 not listed above)" when one complex with
+  // three orphaned slugs had printed its single line and nothing was withheld.
+  const orphanAdvisory = (msg) => {
+    if (orphanLinesPrinted >= ORPHAN_PRINT_CAP) { orphanLinesSuppressed++; return; }
+    orphanLinesPrinted++;
+    warn(`Venue-complex ADVISORY: ${msg}`);
+  };
+
+  for (const market of VENUE_COMPLEX_MARKETS) {
+    // EVERY failure path here is advisory, including a malformed or unreadable
+    // file, and that is deliberate rather than an oversight. Both reviewers
+    // landed on the same impact mismatch: error() reaches exitWithError and
+    // writes the push-core-data refusal sentinel, so it would stop automated
+    // pushes out of the PRIVATE core-data repo because of a file that ONLY a
+    // human editing THIS repo can fix. A malformed def already fails loudly in
+    // the two places that can act on it — scripts/audit-venue-complex-slugs.test.mjs
+    // reddens CI, and src/lib/data-core.ts:885 throws during the Next build.
+    // Blocking the data pipeline as well adds no protection and removes a
+    // working one.
+    let parsed;
+    try {
+      // require(), not fs.readFileSync. These files are small, immutable for the
+      // life of the process, and require's module cache reads each exactly once
+      // at first touch. A re-read mid-validation, on a machine running ~20
+      // parallel worktree sessions, can observe a concurrently-rewritten file
+      // torn mid-write and turn a healthy run into a spurious parse error
+      // (adversarial review). src/lib/data-core.ts imports these the same way.
+      parsed = require(path.join(__dirname, '..', market.defsFile));
+    } catch (e) {
+      malformedCount++;
+      blocking(`${market.defsFile} could not be read or parsed (${e.message}). src/lib/data-core.ts imports this file directly, so the site build fails on the same problem — fix it there.`);
+      continue;
+    }
+
+    // Shape-check the TOP LEVEL before handing it to anything. A reviewer
+    // reproduced this end to end: with `complexes` renamed, absent or null,
+    // `parsed.complexes` is undefined, Object.entries(undefined) throws inside
+    // findMalformedComplexDefs, validate-data.js:87-91's uncaughtException
+    // handler writes the push-refusal sentinel, and the run dies at exit 1 with
+    // a bare stack trace — the exact "one JSON typo hard-blocks every automated
+    // core-data push" failure this validator was supposed to have removed. A
+    // top-level ARRAY parses fine and is equally wrong: its complex slugs would
+    // be "0", "1", ... and every check would pass clean.
+    const defs = parsed && parsed.complexes;
+    if (!defs || typeof defs !== 'object' || Array.isArray(defs)) {
+      malformedCount++;
+      const found = Array.isArray(defs) ? 'an array' : defs === undefined ? 'missing' : `of type ${defs === null ? 'null' : typeof defs}`;
+      blocking(`${market.defsFile} has no usable top-level "complexes" object (it is ${found}). src/lib/data-core.ts reads .complexes from this file, so the site build breaks on the same problem — fix it there.`);
+      continue;
+    }
+
+    for (const [complexSlug, found] of Object.entries(findMalformedComplexDefs(defs))) {
+      malformedCount++;
+      blocking(`${market.defsFile} complex "${complexSlug}" has subVenueSlugs of type ${found}, expected an array. src/lib/data-core.ts:885 calls .map() on it with no guard, so this throws during the Next build.`);
+    }
+
+    for (const [complexSlug, missing] of Object.entries(findOrphanSubVenueSlugs(shows, defs, market.matches))) {
+      orphanCount += missing.length;
+      orphanAdvisory(
+        `${market.defsFile} complex "${complexSlug}" lists sub-venue slug(s) ` +
+          `${missing.map(s => `"${s}"`).join(', ')} that no ${market.label} show's venue resolves to. ` +
+          `Usually a show that used that venue string was removed or renamed (drop the slug); ` +
+          `occasionally a typo. It DOES fail scripts/audit-venue-complex-slugs.test.mjs, ` +
+          `so main goes red on the next push to the web repo.`
+      );
+    }
+  }
+
+  const findings = orphanCount + malformedCount;
+  if (findings === 0) {
+    ok('All venue-complex sub-venue slugs resolve to a real venue');
+  } else {
+    // Single summary path, and never a green tick while findings exist.
+    warn(
+      `Venue-complex ADVISORY SUMMARY: ${orphanCount} orphaned sub-venue slug(s), ` +
+        `${malformedCount} malformed definition(s)` +
+        (orphanLinesSuppressed > 0 ? ` (${orphanLinesSuppressed} further orphan line(s) not listed above)` : '') +
+        `. Advisory here — the blocking gate is scripts/audit-venue-complex-slugs.test.mjs in CI.`
+    );
   }
 }
 
@@ -1825,7 +2042,15 @@ function validateReviewsJson() {
     // (chicago.suntimes.com) mints a provisional second outlet, and the same
     // article then counts twice under two IDs at two different scores
     // (iceboy-regional-2026, Steven Oxman, 75 + 65 — found 2026-08-02).
-    const key = `${r.showId}|${r.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '')}`;
+    // Shared with the writer-side guard in lib/review-url-collision.js
+    // (BRO-3092) so the gate and the thing that prevents the gate tripping can
+    // never disagree about what "the same URL" means.
+    const key = sameUrlDuplicateKey(r.showId, r.url);
+    // The old inline expression THREW on a truthy non-string url (r.url.toLowerCase
+    // is not a function); the shared helper returns null instead. Skipping null
+    // keeps that input out of the map rather than letting every such record
+    // collide under one "null" key and report spurious duplicates.
+    if (key === null) continue;
     if (seenUrls[key]) {
       const prev = seenUrls[key];
       urlDuplicates.push({
@@ -1964,14 +2189,39 @@ function validateReviewsJson() {
             if (fileData.misattributedFullText === true && !fileData.extractedByline) {
               warn(`${showDir}/${file}: misattributedFullText=true but missing extractedByline`);
             }
-            if (fileData.duplicateTextOf !== undefined && typeof fileData.duplicateTextOf !== 'string') {
+            // `!= null` (loose), NOT `!== undefined`: an explicit `duplicateTextOf: null`
+            // means "not a duplicate" and is as absent as a missing key, but
+            // `typeof null === 'object'` so the strict-undefined form reported all 31
+            // of them as `should be string, got object` (62 lines in the run — warn()
+            // prints immediately AND the end-of-run summary re-prints every warning).
+            // Corpus-wide on 2026-09-03 the field is 1305 strings + 31 nulls and
+            // nothing else, so this silences only false positives — and it restores
+            // the check's actual purpose, which is to make a genuine non-string
+            // pointer (array, object, number) visible instead of burying it in a wall
+            // of identical noise.
+            if (fileData.duplicateTextOf != null && typeof fileData.duplicateTextOf !== 'string') {
               warn(`${showDir}/${file}: duplicateTextOf should be string, got ${typeof fileData.duplicateTextOf}`);
             }
             // Validate that duplicateTextOf points to an existing file in the same dir.
             // Broken refs cause silent dedup failures (the duplicate slips through and
             // double-counts the same review under a misattributed critic).
             if (typeof fileData.duplicateTextOf === 'string') {
-              const refPath = path.join(showDir, fileData.duplicateTextOf);
+              // dirPath, NOT showDir. showDir is the bare directory NAME from the
+              // readdir above; dirPath (line 1948) is the resolved
+              // <DATA_DIR>/review-texts/<show> the loop's own reader uses. Joining
+              // against showDir produced "<show-id>/<target>.json" relative to
+              // process.cwd(), which never exists, so this warned on 100% of
+              // pointers — 1305 of 1305 measured on 2026-09-03, zero of them
+              // genuinely dangling. A grep over the run's output counts 2610
+              // because warn() prints each line immediately AND the end-of-run
+              // summary re-prints every warning; one root, printed twice, not
+              // two roots. Either way it dominated the report, and it meant a
+              // REAL broken ref would have arrived as one more indistinguishable
+              // line in a wall of identical false ones.
+              // All 1305 pointer values are bare basenames (none contains "/",
+              // "\", ".." or a leading "/"), matching this check's own
+              // same-directory contract, so nothing legitimate is lost.
+              const refPath = path.join(dirPath, fileData.duplicateTextOf);
               if (!fs.existsSync(refPath)) {
                 warn(`${showDir}/${file}: duplicateTextOf points to non-existent file "${fileData.duplicateTextOf}"`);
               }
@@ -2221,23 +2471,14 @@ function validateOutletRegistryFields() {
   const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
   const outlets = registry.outlets || registry;
 
-  const ALLOWED_STAR_SCALES = new Set([4, 5, 10, 100]);
   let badFields = 0;
   for (const [id, entry] of Object.entries(outlets)) {
     if (id === '_aliasIndex' || id === '_meta') continue;
     if (!entry || typeof entry !== 'object') continue;
 
-    if (entry.starScale !== undefined) {
-      if (typeof entry.starScale !== 'number' || !ALLOWED_STAR_SCALES.has(entry.starScale)) {
-        error(`[registry-field] outlet "${id}": starScale=${JSON.stringify(entry.starScale)} is invalid — must be one of ${[...ALLOWED_STAR_SCALES].join(', ')}`);
-        badFields++;
-      }
-    }
-    if (entry.multiAuthor !== undefined) {
-      if (typeof entry.multiAuthor !== 'boolean') {
-        error(`[registry-field] outlet "${id}": multiAuthor=${JSON.stringify(entry.multiAuthor)} must be a boolean (true or false)`);
-        badFields++;
-      }
+    for (const message of outletFieldShapeErrors(id, entry)) {
+      error(message);
+      badFields++;
     }
   }
   if (badFields === 0) {
@@ -3262,9 +3503,17 @@ function validateBlogReviews() {
  * age of 57 days. This validator prevents that class of gap from growing
  * silently in the future.
  *
- * The filter mirrors rebuild-all-reviews.js skip logic as of 2026-04-11.
- * If rebuild adds a new skip flag, mirror it here or this validator will
- * start surfacing files that rebuild correctly excludes.
+ * As of 2026-07-21 (T1-retrieval S1-T3, commit d377c35faaf) this delegates
+ * directly to the canonical isIncludableForRebuild/hasValidScore predicates
+ * in scripts/lib/review-guards.js — the same functions rebuild-all-reviews.js
+ * itself imports (see its require at the top of the file) — instead of a
+ * hand-copied flag list. There is no separate mirror left to go stale: any
+ * new skip flag added to isIncludableForRebuild is picked up here for free.
+ * BRO-2451: the docstring above previously claimed a "mirror ... as of
+ * 2026-04-11" that needed manual updates; that claim stopped being true once
+ * the delegation above landed but the comment was never corrected. Keep this
+ * function calling isIncludableForRebuild directly — do NOT reintroduce a
+ * hand-copied skip-flag list here.
  */
 function validateUnscoredReviewTexts() {
   info('Checking for unscored review-text files (silent gaps)...');
@@ -3597,34 +3846,22 @@ function validateReviewTextQuality(shows) {
   // Build per-show maps of creative team and cast names.
   // Skip placeholder values ("Unknown", "TBA", etc.) — they collide with generic "Unknown"
   // critic bylines and would flag legitimate reviews as garbage.
-  const PLACEHOLDER_NAMES = new Set(['unknown', 'tba', 'tbd', 'tbc', 'n/a', 'na', 'anonymous']);
-  const showCreativeTeam = {};  // showId -> Set of lowercase names
-  const showCast = {};          // showId -> Set of lowercase names
+  //
+  // The set-building AND the comparison now live in scripts/lib/creative-as-critic.js
+  // (CLAUDE.md §15) so that the save-time chokepoint — createOrMergeReviewFile in
+  // review-file-writer.js — rejects on the SAME predicate this validator errors on.
+  // Detection here alone could never hold: the roundup extractor re-created
+  // how-to-dance-in-ohio-2023/…--sammi-cannold.json after each of two deletes,
+  // reddening main every time, because nothing stopped the WRITE.
+  const showNameSets = {};      // showId -> { creative: Set, cast: Set }, sentinels removed
 
   // Show lookup + date helpers for the prior-production-by-date backstop (CHECK 0).
   const showById = {};
   for (const show of shows) if (show && show.id) showById[show.id] = show;
   const { evaluateDatePlausibility } = require('./lib/date-plausibility');
+  const { buildShowPersonNameSets, classifyCriticAgainstSets } = require('./lib/creative-as-critic');
   for (const show of shows) {
-    showCreativeTeam[show.id] = new Set();
-    showCast[show.id] = new Set();
-    if (show.creativeTeam) {
-      for (const member of show.creativeTeam) {
-        if (member.name) {
-          const name = member.name.toLowerCase().trim();
-          if (!PLACEHOLDER_NAMES.has(name)) showCreativeTeam[show.id].add(name);
-        }
-      }
-    }
-    if (show.cast) {
-      for (const member of show.cast) {
-        const name = typeof member === 'string' ? member : member.name;
-        if (name) {
-          const n = name.toLowerCase().trim();
-          if (!PLACEHOLDER_NAMES.has(n)) showCast[show.id].add(n);
-        }
-      }
-    }
+    showNameSets[show.id] = buildShowPersonNameSets(show);
   }
 
   let issues = 0;
@@ -3688,13 +3925,16 @@ function validateReviewTextQuality(shows) {
 
       // CHECK 1: Critic name matches a creative team member or cast member OF THE SAME SHOW
       // (Global matching causes false positives — e.g., critic "Scott Brown" ≠ actor "Scott Brown")
-      const showCreative = showCreativeTeam[showDir] || new Set();
-      const showCastSet = showCast[showDir] || new Set();
-      if (critic && showCreative.has(critic.toLowerCase())) {
+      // Sentinels lose on BOTH sides inside the predicate: la-ternura-off-broadway-2025's
+      // creativeTeam is literally [{name: "unknown"}], and unbylined reviews are saved as
+      // criticName "Unknown" — filtering only one side would condemn ordinary unbylined
+      // reviews. An unresolvable showDir yields reason 'no-show-record', not a bare false.
+      const creditVerdict = classifyCriticAgainstSets(showNameSets[showDir], critic);
+      if (creditVerdict.kind === 'creative') {
         error(`[garbage-review] ${showDir}/${file}: critic "${critic}" is a creative team member of this show — likely not a real review`);
         creativeAsCritic++;
         issues++;
-      } else if (critic && showCastSet.has(critic.toLowerCase())) {
+      } else if (creditVerdict.kind === 'cast') {
         warn(`[garbage-review] ${showDir}/${file}: critic "${critic}" is a cast member of this show — likely not a real review`);
         creativeAsCritic++;
         issues++;
@@ -4377,10 +4617,9 @@ function validateTonyData(shows) {
         allGaps.push({ showId: id, expected, actual, reason: actual === 0 ? 'no-data' : 'partial' });
       }
     }
-    const auditDir = path.dirname(gapsFile);
-    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
-    fs.writeFileSync(gapsFile, JSON.stringify(allGaps, null, 2) + '\n');
-    ok(`Tony coverage gaps audit: ${allGaps.length} gaps written to audit file`);
+    if (writeAuditArtifact(gapsFile, JSON.stringify(allGaps, null, 2) + '\n', 'Tony coverage gaps audit')) {
+      ok(`Tony coverage gaps audit: ${allGaps.length} gaps written to audit file`);
+    }
   } catch (e) {
     warn(`Failed to write Tony coverage gaps: ${e.message}`);
   }
@@ -4717,7 +4956,7 @@ function validateCrossMarketContamination() {
         }))
         .sort((a, b) => (b.broadwayCount - a.broadwayCount) || (b.offBroadwayCount - a.offBroadwayCount) || a.outletId.localeCompare(b.outletId)),
     };
-    fs.writeFileSync(accumFile, JSON.stringify(payload, null, 2) + '\n');
+    writeAuditArtifact(accumFile, JSON.stringify(payload, null, 2) + '\n', 'London-only NYC accumulation audit');
   } catch (e) {
     warn(`Failed to write London-only NYC accumulation audit: ${e.message}`);
   }
@@ -4848,6 +5087,7 @@ function runValidation() {
   validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
   validateTheaterAddress(shows);
+  validateOrphanSubVenueSlugs(shows);
   console.log('');
   validateSynopsisQuality(shows);
   validateCreativeTeamQuality(shows);
@@ -4971,12 +5211,9 @@ function runValidation() {
     updatedAt: new Date().toISOString(),
   };
   try {
-    const auditDir = path.dirname(BASELINE_FILE);
-    if (!fs.existsSync(auditDir)) {
-      fs.mkdirSync(auditDir, { recursive: true });
+    if (writeAuditArtifact(BASELINE_FILE, JSON.stringify(newBaseline, null, 2) + '\n', 'validation baseline')) {
+      ok(`Baseline written: ${newBaseline.totalShows} shows, ${newBaseline.openShows} open, ${newBaseline.totalReviews} reviews`);
     }
-    fs.writeFileSync(BASELINE_FILE, JSON.stringify(newBaseline, null, 2) + '\n');
-    ok(`Baseline written: ${newBaseline.totalShows} shows, ${newBaseline.openShows} open, ${newBaseline.totalReviews} reviews`);
   } catch (e) {
     warn(`Failed to write baseline file: ${e.message}`);
   }

@@ -41,13 +41,17 @@
 'use strict';
 
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
 const {
   loadAcks,
   addAck,
   saveAcks,
   evaluateAnnouncedShow,
+  hasEvidenceOfOpening,
+  describeOpeningEvidence,
 } = require('./lib/stale-announced-audit');
+const { explainExclusion } = require('./lib/review-guards');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -70,16 +74,32 @@ function loadJSON(file, fallback = null) {
   }
 }
 
-function hasPopulatedReviewTextsDir(showId) {
-  const dir = path.join(REVIEW_TEXTS_DIR, showId);
-  try {
-    return fs.readdirSync(dir).some(f => f.endsWith('.json'));
-  } catch {
-    return false;
-  }
+function hasPopulatedReviewTextsDir(showId, show) {
+  return hasEvidenceOfOpening(REVIEW_TEXTS_DIR, showId, explainExclusion, show);
 }
 
+// Announced shows that have review files but ALL of them discounted as
+// wrong-show contamination. Not flagged (the discount is deliberate), but
+// reported, so the case is visible instead of silent.
+function findSilencedByContamination(shows) {
+  const out = [];
+  for (const show of shows) {
+    if (show.status !== 'announced') continue;
+    const ev = describeOpeningEvidence(REVIEW_TEXTS_DIR, show.id, explainExclusion, show);
+    if (ev.reviewFiles > 0 && !ev.hasEvidence) {
+      out.push({ id: show.id, title: show.title, reviewFiles: ev.reviewFiles, excludedFiles: ev.excludedFiles });
+    }
+  }
+  return out;
+}
+
+const USAGE = `Usage:
+  node scripts/audit-stale-announced-shows.js                                  # report stale 'announced' shows
+  node scripts/audit-stale-announced-shows.js --ack=<show-id> --ack-note="<why>"  # record a triage decision
+`;
+
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadJSON(SHOWS_FILE);
   if (!showsData || !Array.isArray(showsData.shows)) {
     console.error(`Could not load ${SHOWS_FILE}`);
@@ -122,11 +142,48 @@ function main() {
     return;
   }
 
+  // --ack=<id>: record a triage decision and exit — doesn't run the audit.
+  // Requires the id to be a real, currently-'announced' show, so a typo or a
+  // not-yet-discovered id can't pre-silence a future real flag.
+  if (ACK_ID) {
+    if (!ACK_NOTE) {
+      console.error('--ack requires --ack-note="<why this show is known-stale>"');
+      process.exit(1);
+    }
+    const show = showsData.shows.find(s => s.id === ACK_ID);
+    if (!show) {
+      console.error(`--ack=${ACK_ID}: no show with this id in ${SHOWS_FILE}`);
+      process.exit(1);
+    }
+    if (show.status !== 'announced') {
+      console.error(`--ack=${ACK_ID}: show status is '${show.status}', not 'announced' — nothing to ack`);
+      process.exit(1);
+    }
+    const acks = addAck(loadAcks(), ACK_ID, ACK_NOTE, new Date().toISOString());
+    saveAcks(acks);
+    console.log(`Acked ${ACK_ID}: ${ACK_NOTE}`);
+    return;
+  }
+
+  // --unack=<id>: remove a previously-recorded ack and exit.
+  if (UNACK_ID) {
+    const acks = loadAcks();
+    const remaining = acks.filter(a => a.id !== UNACK_ID);
+    if (remaining.length === acks.length) {
+      console.error(`--unack=${UNACK_ID}: no ack found for this id`);
+      process.exit(1);
+    }
+    saveAcks(remaining);
+    console.log(`Unacked ${UNACK_ID}`);
+    return;
+  }
+
   const now = new Date();
   const acks = loadAcks();
   const flagged = [];
 
-  if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
+  const reviewTextsAvailable = fs.existsSync(REVIEW_TEXTS_DIR);
+  if (!reviewTextsAvailable) {
     console.log(`  ⚠️  ${REVIEW_TEXTS_DIR} not found — review-texts signal is disabled in this environment (private repo not checked out); only date-based signals will fire`);
   }
 
@@ -136,7 +193,7 @@ function main() {
     const reasons = evaluateAnnouncedShow(show, {
       now,
       staleDays: STALE_DAYS,
-      hasReviews: hasPopulatedReviewTextsDir(show.id),
+      hasReviews: hasPopulatedReviewTextsDir(show.id, show),
       acks,
     });
 
@@ -154,16 +211,32 @@ function main() {
     }
   }
 
+  const silencedByContamination = findSilencedByContamination(showsData.shows);
+
   const report = {
     generatedAt: now.toISOString(),
     staleDaysThreshold: STALE_DAYS,
+    reviewTextsAvailable,
     flaggedCount: flagged.length,
     flagged,
+    silencedByContaminationCount: silencedByContamination.length,
+    silencedByContamination,
   };
 
   console.log(`audit-stale-announced-shows: ${flagged.length} stale 'announced' show(s) (stale-days=${STALE_DAYS})`);
   for (const f of flagged) {
     console.log(`  - ${f.id} (${f.title}): ${f.reasons.join('; ')}`);
+  }
+  if (silencedByContamination.length > 0) {
+    console.log(
+      `\n${silencedByContamination.length} announced show(s) have review files but ALL are wrong-show/wrong-production contamination —`
+    );
+    console.log(
+      '  not flagged, but if any of those flags is a false positive the show has no other signal:'
+    );
+    for (const s of silencedByContamination) {
+      console.log(`  - ${s.id} (${s.title}): ${s.excludedFiles}/${s.reviewFiles} review file(s) discounted`);
+    }
   }
 
   if (!DRY_RUN) {

@@ -85,8 +85,18 @@ const AUTOFIX_PARKED_RE = new RegExp(`^PARKED:[^\\n]*${AUTOFIX_FILED_MARKER.repl
 //   "BSC Daily: <health row>"       — digest-autofix.js:186
 //   "Fix: BSC Daily: <health row>"  — the pre-BRO-286 email-worker button
 //   "CANARY: touch <marker path>"   — autofix-canary.js's canaryCardTitle
+// Exported so digest-autofix.js BUILDS its titles from the same constant this
+// file MATCHES on (code-review finding): the canary half already has a
+// cross-module pin (autofix-canary.test.mjs asserts isAutofixFiledTitle of a
+// real canaryCardTitle), but the "BSC Daily:" half was two independent string
+// literals. A rename would silently stop the title check matching — and for
+// owner-alert-router trackers, which carry the OTHER PARKED marker so
+// provenance never matches either, the guard would stop firing entirely with
+// no failing test.
+const BSC_DAILY_TITLE_PREFIX = 'BSC Daily: ';
+
 const AUTOFIX_TITLE_PATTERNS = [
-  /^(?:Fix:\s*)?BSC Daily:/,
+  new RegExp(`^(?:Fix:\\s*)?${BSC_DAILY_TITLE_PREFIX.trimEnd().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`),
   /^CANARY: touch\b/,
 ];
 
@@ -123,6 +133,7 @@ function isAutofixFiledIssue(issue) {
 module.exports = {
   AUTOFIX_FILED_MARKER,
   AUTOFIX_PARKED_RE,
+  BSC_DAILY_TITLE_PREFIX,
   AUTOFIX_TITLE_PATTERNS,
   hasAutofixFiledMarker,
   isAutofixFiledTitle,

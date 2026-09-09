@@ -106,25 +106,40 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) + 2 opening-night-checklist.yml files (BRO-2670) + 1 stale-announced-shows.json (BRO-2620) + 2 commercial-rss-poll.yml circuit-breaker files (BRO-2795) + 1 missed-broadcasts.json (BRO-2934) + 1 scraper-spend-daily-agg.jsonl (BRO-3008, pre-existing drift found and closed while fixing BRO-2699) + 2 outlet-registry-baseline files (BRO-2699) + 2 process-feedback.yml files (BRO-345) + 3 tight-cadence what-else follow-up files (BRO-345, opening-night-completeness-check.yml x2 + check-opening-night-drift.yml x1) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 17);
+  assert.equal(publicSafe.length, 32);
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
+    'audit/autonomous-recheck-ledger.jsonl',
+    'audit/bd-circuit-breaker.json',
     'audit/cross-outlet-attribution-drift.json',
     'audit/cv-wrongproduction-lifetime.json',
+    'audit/drift-state.json',
     'audit/fulltext-mentions-show-lifetime.json',
     'audit/health-check-history.json',
     'audit/health-digest-snapshot.json',
     'audit/imageless-scored-shows.json',
     'audit/linear-archive-done.jsonl',
+    'audit/missed-broadcasts.json',
+    'audit/opening-night-completeness-state.json',
+    'audit/opening-night-history.json',
+    'audit/opening-night-live-state.json',
+    'audit/opening-night-sla-state.json',
     'audit/orphan-rescore-requeue-state.json',
+    'audit/outlet-registry-baseline.json',
+    'audit/outlet-registry-junk-baseline.json',
+    'audit/pending-bug-diagnoses.json',
+    'audit/processed-feedback.json',
     'audit/provider-spend-daily.jsonl',
     'audit/provider-spend-snapshot.json',
     'audit/revival-unverified-lifetime.json',
     'audit/roundup-url-mismatch-lifetime.json',
+    'audit/scraper-spend-daily-agg.jsonl',
+    'audit/sd-circuit-breaker.json',
     'audit/slug-mismatch-lifetime.json',
+    'audit/stale-announced-shows.json',
     'audit/time-to-publish-sla.json',
     'audit/trunk-status-snapshot.json',
     'audit/workflow-run-coverage.json',

@@ -22,6 +22,8 @@
  *   node scripts/audit-self-contradictory-clears.js --gate --max=0
  *   node scripts/audit-self-contradictory-clears.js --fix        # retract stale breadcrumbs
  *   node scripts/audit-self-contradictory-clears.js --show=ID    # scope to one show
+ *   node scripts/audit-self-contradictory-clears.js --fix-safe            # safe bulk drain
+ *   node scripts/audit-self-contradictory-clears.js --fix-safe --dry-run  # inspect, write nothing
  *   node scripts/audit-self-contradictory-clears.js --json
  */
 
@@ -34,9 +36,10 @@ const {
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
   demoteStaleWrongShowPromotion,
+  isZeroScoreImpactFix,
 } = require('./lib/flag-contradiction');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
+const { parseArgs: parseArgsLib } = require('./lib/audit-self-contradictory-clears-args.js');
 
 const USAGE = `audit-self-contradictory-clears.js — exclusion flag + its own clear breadcrumb (#1020/#1022/#1023)
 
@@ -54,6 +57,15 @@ Usage:
                     NOT a safe bulk drain — it flips 563 records to
                     contentTier 'invalid' and drops 438 scored reviews out of
                     live scores. Use --show=ID for adjudicated single fixes.
+  --fix-safe        resolve ONLY the contradictions where doing so provably
+                    moves no scored review in or out of the corpus (BRO-185) —
+                    see isZeroScoreImpactFix() in lib/flag-contradiction.js.
+                    Safe to run unattended and in bulk; leaves every
+                    score-impacting contradiction untouched for adjudication.
+  --dry-run         report what --fix/--fix-safe/--record-baseline WOULD do and
+                    write nothing. The intended way to inspect --fix, which
+                    this repo treats as untrusted. Unknown flags are FATAL, so
+                    a typo here can no longer read as a safe no-op (BRO-2705).
   --show=ID         scope the sweep to one show directory
   --json            machine-readable output
 `;
@@ -61,6 +73,21 @@ Usage:
 const ROOT = path.resolve(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const DEFAULT_BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'self-contradictory-clears-baseline.json');
+const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+
+// Show context for isZeroScoreImpactFix's isIncludableForRebuild calls
+// (wrongShow/premature-review checks). Missing/unparseable shows.json only
+// risks a false NEGATIVE (--fix-safe skips a fixable file) — never a
+// false-safe positive — so this degrades to an empty map rather than failing
+// the whole sweep.
+function loadShowsById() {
+  try {
+    const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    return new Map((shows.shows || shows).map((s) => [s.id, s]));
+  } catch {
+    return new Map();
+  }
+}
 
 // Why this gate is a BAND around a committed baseline rather than an absolute
 // ceiling (2026-08-14).
@@ -92,7 +119,27 @@ const DEFAULT_BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'self-contradicto
 // A committed baseline + tolerance keeps drift visible (every run prints the
 // delta) while a single bot write no longer reddens main. A genuine new source
 // of contradictions still fails the moment it exceeds the band.
-const BASELINE_TOLERANCE = 25;
+//
+// BRO-185 (2026-09-01) drained the part of the backlog that WASN'T structural
+// in this sense: --fix-safe (see isZeroScoreImpactFix() in
+// lib/flag-contradiction.js) resolves every contradiction where the fix
+// provably moves no scored review in or out of the corpus, checked against
+// the SAME canonical functions rebuild-all-reviews.js calls
+// (isIncludableForRebuild, getBestScore) — not the classifyContentTier proxy
+// an earlier draft used, which turned out to be needlessly conservative (it
+// doesn't apply isFreshWrongProductionAutoClear's 7-day freshness bound, so
+// it treated hundreds of already-stale, already-excluded records as "risky").
+// Draining against the canonical check dropped the baseline 776 -> 11.
+//
+// The remaining ~11 are genuinely different in kind from the old 776: each
+// one has a wrongProduction/wrongShow auto-clear stamped within the last few
+// days, still inside the freshness window, so resolving it right now WOULD
+// move a live score — which side (the flag or its own clear) is correct is a
+// per-record judgement call, not a state a detector can settle. --fix-safe is
+// safe to re-run any time (it will keep resolving these once they age past
+// the freshness window on their own); it is not a path to resolving the fresh
+// ones while they're still fresh.
+const BASELINE_TOLERANCE = 15;
 
 // Tombstone directories only. `_pending/` is deliberately NOT here: it holds
 // real reviews awaiting a byline strand that later land on a live show, so a
@@ -102,30 +149,10 @@ const BASELINE_TOLERANCE = 25;
 const SKIP_DIRS = new Set(['_superseded-misattributed']);
 
 function parseArgs(argv) {
-  // --max via the shared parser: the old inline parseInt returned NaN for
-  // `--max=abc`/`--max=`, and `unhandled > NaN` is always false, which would
-  // have silently disabled this gate. test.yml now gates on --baseline instead,
-  // but --max is still the fallback path whenever --baseline is absent, so the
-  // NaN-safety it provides still matters.
-  const args = {
-    gate: false,
-    max: parseMaxArgOrExit(argv, { scriptName: 'audit-self-contradictory-clears' }),
-    fix: false,
-    show: null,
-    json: false,
-    baseline: null,
-    recordBaseline: false,
-  };
-  for (const a of argv) {
-    if (a === '--gate') args.gate = true;
-    else if (a === '--fix') args.fix = true;
-    else if (a === '--json') args.json = true;
-    else if (a === '--record-baseline') args.recordBaseline = true;
-    else if (a === '--baseline') args.baseline = DEFAULT_BASELINE_PATH;
-    else if (a.startsWith('--baseline=')) args.baseline = a.slice('--baseline='.length);
-    else if (a.startsWith('--show=')) args.show = a.split('=')[1];
-  }
-  return args;
+  // Delegates to scripts/lib/audit-self-contradictory-clears-args.js so the
+  // unit test can exercise the REAL parser. See that file for why an
+  // unrecognised flag is now fatal (BRO-2705).
+  return parseArgsLib(argv, { defaultBaselinePath: DEFAULT_BASELINE_PATH });
 }
 
 // Committed baseline: { count, tolerance, recordedAt, note }. A missing or
@@ -171,13 +198,16 @@ function main() {
 
   const hits = [];
   let fixed = 0;
+  let wouldFix = 0;
   let scanned = 0;
+  const showsById = args.fixSafe ? loadShowsById() : new Map();
 
   for (const showId of listShowDirs(args.show)) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); }
     catch { continue; }
+    const show = showsById.get(showId) || null;
 
     for (const file of files) {
       const filePath = path.join(showDir, file);
@@ -193,9 +223,14 @@ function main() {
       if (!contradictions.length) continue;
       for (const c of contradictions) hits.push({ showId, file, ...c });
 
-      if (args.fix) {
+      if (args.fix || args.fixSafe) {
         let removedAny = false;
         for (const c of contradictions) {
+          // --fix-safe: skip anything that would move a scored review in or
+          // out of the corpus (BRO-185) — see isZeroScoreImpactFix()'s
+          // docstring and memory/feedback_audit_fix_remediation_untrusted.md
+          // for why blind resolution is not that same thing as a safe one.
+          if (args.fixSafe && !isZeroScoreImpactFix(data, c, { show, filePath })) continue;
           // Dispatch per pair: demote-flag (currently only #1022, wrongShow +
           // contentVerificationPromoted) clears the stale FLAG instead of the
           // breadcrumb — see demoteStaleWrongShowPromotion's docstring for why
@@ -206,7 +241,12 @@ function main() {
             removedAny = true;
           }
         }
-        if (removedAny) {
+        if (removedAny && args.dryRun) {
+          // --dry-run: report the resolution without touching the corpus. The
+          // mutation above already happened in memory on a parsed copy, which
+          // is discarded when this file's loop iteration ends.
+          wouldFix++;
+        } else if (removedAny) {
           // Deliberately a plain write, not safeWriteReview(): the whole point
           // is to REMOVE breadcrumbs that safeWriteReview's isIntentionalClear
           // machinery would otherwise treat as protected and restore. Listed in
@@ -222,7 +262,10 @@ function main() {
   }
 
   if (args.json) {
-    console.log(JSON.stringify({ scanned, count: hits.length, fixed, hits }, null, 2));
+    // dryRun/wouldFix are always present: without them a `--fix-safe --dry-run
+    // --json` run is byte-indistinguishable from a real run that fixed
+    // nothing, which is the exact ambiguity this flag exists to remove.
+    console.log(JSON.stringify({ scanned, count: hits.length, fixed, dryRun: args.dryRun, wouldFix, hits }, null, 2));
   } else {
     console.log(`Self-contradictory clear sweep: ${scanned} review file(s) scanned, ${hits.length} contradiction(s).`);
     const byPair = {};
@@ -235,7 +278,12 @@ function main() {
       for (const h of list.slice(0, 5)) console.log(`         ${h.showId}/${h.file}`);
       if (list.length > 5) console.log(`         … and ${list.length - 5} more`);
     }
-    if (args.fix) console.log(`\nRetracted stale breadcrumbs on ${fixed} file(s).`);
+    if (args.dryRun && (args.fix || args.fixSafe)) {
+      console.log(`\nDRY RUN: would resolve ${wouldFix} file(s). Nothing was written.`);
+    } else {
+      if (args.fix) console.log(`\nRetracted stale breadcrumbs on ${fixed} file(s).`);
+      if (args.fixSafe) console.log(`\nResolved zero-score-impact contradictions on ${fixed} file(s). Re-run without --fix-safe to see what's left for adjudication.`);
+    }
   }
 
   // FAIL LOUD on an empty corpus. review-texts is a private-repo checkout; when
@@ -254,6 +302,15 @@ function main() {
 
   if (args.recordBaseline) {
     const target = args.baseline || DEFAULT_BASELINE_PATH;
+    // --dry-run covers EVERY write this script performs, not just the corpus
+    // one. Guarding only the fix branch left `--dry-run --record-baseline`
+    // overwriting the baseline while printing "Nothing was written" — the same
+    // inspection-is-the-mutation bug this flag exists to fix, one write site
+    // over (/code-review, 2026-09-01).
+    if (args.dryRun) {
+      console.log(`\nDRY RUN: would record baseline ${hits.length} (\u00b1${BASELINE_TOLERANCE}) \u2192 ${target}. Nothing was written.`);
+      return;
+    }
     fs.writeFileSync(target, `${JSON.stringify({
       count: hits.length,
       tolerance: BASELINE_TOLERANCE,

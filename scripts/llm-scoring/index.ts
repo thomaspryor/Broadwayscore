@@ -94,6 +94,7 @@ import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
 const { emitStage } = require('../lib/stage-latency');
+const { decideBatchDrain, decideDrainFollowUp } = require('../lib/batch-drain-decision');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
 const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore, isDeterministicTextGateFailure } = require('../lib/rescore-lifecycle');
@@ -472,6 +473,39 @@ function writeProgress(
  * discarded loudly rather than merged. (task #516 ship-check)
  */
 const BATCH_STATE_MAX_AGE_HOURS = 48;
+// A drain that cannot retrieve a paid vendor leg keeps the state and retries
+// next run — right for a transient 429, fatal for a batch that went terminal
+// with neither an output nor an error file, which can NEVER be fetched. The
+// 48h age gate above is far too slow to be the only escape (vendors expire
+// batches at 24h), so bound the retries too: after this many consecutive
+// refused drains the batch is abandoned and its reviews score fresh.
+const MAX_UNRETRIEVABLE_DRAINS = 3;
+
+// How long ONE run will wait on an in-flight batch before giving up for this
+// run. Two values, because the two kinds of caller want opposite things:
+//
+//   --batch runs (llm-ensemble-score.yml's nightly cron) — waiting IS the job.
+//     The run exists to submit → poll → merge, and its step budget is sized for
+//     it (that workflow passes --batch-poll-minutes=120 explicitly).
+//
+//   Synchronous / inline runs (opening-night-poller.yml, opening-night-express.yml,
+//     llm-ensemble-score.yml's needsRescore drain) — latency is the whole point
+//     (see parseArgs' comment above `--batch`). These callers never SUBMIT a
+//     batch; they only pass through the unconditional drain below. They should
+//     harvest a batch that is already done and never block on one that isn't.
+//
+// This was a single hardcoded 20 in both places, so every inline caller silently
+// inherited the batch-mode wait. In opening-night-poller.yml that 20 min exceeds
+// the step's own `timeout-minutes: 10`, so the drain's graceful "still in flight"
+// return was unreachable: Actions killed the step, its $GITHUB_OUTPUT counters
+// were never written, and the pipeline gate read the missing counters as
+// "score: all 1 failed" — paging the owner on runs whose gather/collect/rebuild/
+// deploy had all succeeded (2026-08-29..31). opening-night-express.yml:333 has no
+// step timeout at all, so it silently stalled the full 20 min instead. Defaulting
+// by MODE fixes every inline caller at once, and means the next one cannot
+// inherit the bug by forgetting a flag.
+const BATCH_MODE_POLL_MINUTES = 20;
+const INLINE_POLL_MINUTES = 0; // one status check, no sleep — batch-runner.ts:377
 
 function readProgressFile(): any {
   try {
@@ -613,7 +647,8 @@ function parseArgs(): ScoringPipelineOptions & {
   maxPromptVersion?: string;
   skipAlreadyAnchored: boolean;
   batch: boolean;
-  batchPollMinutes: number;
+  // undefined = "no explicit --batch-poll-minutes"; resolved mode-aware at use.
+  batchPollMinutes?: number;
 } {
   const args = process.argv.slice(2);
 
@@ -687,7 +722,12 @@ function parseArgs(): ScoringPipelineOptions & {
   // because latency is the whole point there.
   const batch = args.includes('--batch');
   const batchPollArg = args.find(a => a.startsWith('--batch-poll-minutes='));
-  const batchPollMinutes = batchPollArg ? parseInt(batchPollArg.split('=')[1]) : 20;
+  // Left UNDEFINED when the flag is absent so the mode-aware default applies at
+  // the single resolution site below (BATCH_MODE_POLL_MINUTES vs
+  // INLINE_POLL_MINUTES). Duplicating a literal 20 here as well is what let the
+  // two defaults drift apart and made an explicit `--batch-poll-minutes=0`
+  // impossible to express (`0 || 20` === 20).
+  const batchPollMinutes = batchPollArg ? parseInt(batchPollArg.split('=')[1], 10) : undefined;
 
   return {
     showId,
@@ -1505,6 +1545,20 @@ async function main(): Promise<void> {
         fileData.rejectedBy = 'ensemble-scoreability-check';
         fileData.rejectionReason = rejection;
         fileData.rejectionReasoning = rejectionReasoning;
+        // How many rejecting models actually named `rejection` — see
+        // rejectionAgreeCount doc comment (types.ts). Only ensembleResult
+        // carries it (finalizeScoredFile's rejection branch); other writers
+        // of rejectedBy='ensemble-scoreability-check' leave it null and
+        // hasEnsembleConsensus() falls back to its pre-existing heuristic.
+        // Overwritten UNCONDITIONALLY (never left stale from a prior
+        // rejection) — same pattern as rejectedAt/rejectionReason above;
+        // ship-check finding (Codex): a conditional write here would let a
+        // stale count from an earlier rejection survive onto a later,
+        // differently-typed one that this code path didn't recompute it for.
+        const ensembleRejectionAgreeCount = (result as any).ensembleResult?.rejectionAgreeCount;
+        fileData.rejectionAgreeCount = typeof ensembleRejectionAgreeCount === 'number'
+          ? ensembleRejectionAgreeCount
+          : null;
         fileData.promptVersion = PROMPT_VERSION;
         saveReviewFile(filePath, fileData, { skipRejectionReasonClear: true });
       }
@@ -1687,7 +1741,7 @@ async function main(): Promise<void> {
   async function processBatchResults(
     state: BatchState,
     items: Array<PendingBatchItem | null>
-  ): Promise<{ written: Set<string>; merged: boolean }> {
+  ): Promise<{ written: Set<string>; merged: boolean; abandoned: boolean }> {
     const { rows, unretrievableVendors } = await fetchAndMerge(state, batchKeys);
     const cfg = (scorer as EnsembleReviewScorer).getBatchConfig();
     const done = new Set<string>();
@@ -1698,10 +1752,30 @@ async function main(): Promise<void> {
     // 429 on a results download — and then clear the state so the paid results
     // could never be retried. Keep the state; the next run re-fetches.
     if (unretrievableVendors.length > 0) {
+      const { action, attempt } = decideBatchDrain({
+        unretrievableVendors,
+        drainCount: state.unretrievableDrainCount,
+        maxDrains: MAX_UNRETRIEVABLE_DRAINS,
+      });
       console.log(`\n   ⛔ REFUSING TO MERGE — could not retrieve results for: ${unretrievableVendors.join('; ')}`);
-      console.log(`      Merging would write a degraded ensemble corpus-wide. Batch state kept; the next run retries the fetch.`);
+      if (action === 'abandon') {
+        // Permanently unretrievable, not a transient blip. Keeping the state
+        // any longer only wedges every subsequent run until the 48h age gate.
+        // The paid leg is already lost either way, so abandon it and let the
+        // items rescore fresh below.
+        console.log(
+          `::warning::Abandoning batch submitted ${state.submittedAt} after ${attempt} consecutive unretrievable drains ` +
+            `(${unretrievableVendors.join('; ')}). The paid results are unrecoverable; these ${state.itemCount} review(s) will score fresh.`
+        );
+        return { written: done, merged: false, abandoned: true };
+      }
+      console.log(
+        `      Merging would write a degraded ensemble corpus-wide. Batch state kept ` +
+          `(drain ${attempt}/${MAX_UNRETRIEVABLE_DRAINS}); the next run retries the fetch.`
+      );
+      writeBatchState({ ...state, unretrievableDrainCount: attempt });
       process.exitCode = 2;
-      return { written: done, merged: false };
+      return { written: done, merged: false, abandoned: false };
     }
 
     for (const row of rows) {
@@ -1729,7 +1803,7 @@ async function main(): Promise<void> {
         errorDetails.push({ showId: item.showId, outletId: item.outletId, error: e.message });
       }
     }
-    return { written: done, merged: true };
+    return { written: done, merged: true, abandoned: false };
   }
 
   // ========================================
@@ -1741,10 +1815,19 @@ async function main(): Promise<void> {
   // already-anchored skip — runs completely unchanged, so batch and sync
   // score exactly the same set of files with exactly the same input text.
   const batchMode: boolean = options.batch === true;
-  const batchPollMinutes: number = options.batchPollMinutes || 20;
+  // `??`, not `||`: 0 is a MEANINGFUL budget (poll once, never sleep), and `||`
+  // silently promoted it back to 20 — which is why passing --batch-poll-minutes=0
+  // from a workflow could never have fixed the opening-night wedge.
+  const batchPollMinutes: number =
+    options.batchPollMinutes ?? (batchMode ? BATCH_MODE_POLL_MINUTES : INLINE_POLL_MINUTES);
   const pendingBatchItems: PendingBatchItem[] = [];
   const batchKeys = { anthropic: claudeApiKey!, openai: openaiApiKey!, gemini: geminiApiKey };
   let skipNewWork = false;
+  // Files locked by a batch that is still in flight. Re-scoring these
+  // synchronously would double-pay the vendor and race the eventual merge, but
+  // every OTHER file this run selected is fair game — see the "Still in flight"
+  // branch below for why that distinction matters.
+  let batchHeldPaths: Set<string> = new Set();
   let resumedFilePaths: Set<string> = new Set();
 
   if (batchMode) {
@@ -1802,13 +1885,45 @@ async function main(): Promise<void> {
           if (outcome.merged) {
             writeBatchState(null);
             console.log(`   ✓ Resumed batch merged — ${resumedFilePaths.size} file(s) written\n`);
+          } else if (outcome.abandoned) {
+            // State cleared, so this run proceeds to score normally instead of
+            // parking. Deliberately NOT exitCode 2: the wedge is resolved and
+            // the work happens now — failing here would page on every abandon.
+            writeBatchState(null);
+            console.log(`   🗑️  Batch abandoned — state cleared; those reviews will be scored fresh this run.\n`);
           } else {
             console.log(`   ⏸️  Merge refused — state kept for the next run.\n`);
-            skipNewWork = true;
+            // A paid vendor leg could not be retrieved; merging would write a
+            // degraded ensemble corpus-wide, so this run parks entirely and
+            // retries next time (bounded by MAX_UNRETRIEVABLE_DRAINS above, so
+            // it cannot wedge forever). This is the ONE drain outcome where
+            // stopping the whole run is correct.
+            ({ skipAllNewWork: skipNewWork } = decideDrainFollowUp({
+              outcome: 'refused',
+              manifest: existing.manifest,
+            }));
           }
         } else {
-          console.log(`   ⏳ Still in flight (${poll.reason}). Keeping state; NOT submitting new work this run.\n`);
-          skipNewWork = true;
+          // A batch that is STILL IN FLIGHT must not stop this run scoring
+          // everything else. `skipNewWork = true` here short-circuited the whole
+          // scoring loop below (`!skipNewWork && i < finalFiles.length`), so a
+          // single in-flight batch for show A silently stopped every other show
+          // from being scored at all — and because the run then exits 0 having
+          // scored nothing, the opening-night pipeline gate reads score_total=0
+          // as "score: nothing to do" and goes GREEN. That is strictly worse
+          // than the timeout it replaced: a loud false failure became a silent
+          // true one (2026-08-31 plan review, pre-mortem + devil's-advocate).
+          //
+          // Only the batch's OWN manifest files are off limits. `filePath` here
+          // is the same value the scoring loop compares against (both come from
+          // `f.path` — see buildBatchState's `filePath: f.path`).
+          const followUp = decideDrainFollowUp({ outcome: 'in-flight', manifest: existing.manifest });
+          batchHeldPaths = new Set(followUp.holdPaths);
+          skipNewWork = followUp.skipAllNewWork; // false — this is the whole fix
+          console.log(
+            `   ⏳ Still in flight (${poll.reason}). Keeping state; ` +
+              `${batchHeldPaths.size} file(s) held for the batch, other reviews score normally.\n`
+          );
         }
       }
     }
@@ -1867,6 +1982,13 @@ async function main(): Promise<void> {
 
     // Already written by this run's resume drain — don't re-queue it.
     if (resumedFilePaths.has(filePath)) continue;
+
+    // Locked by a batch still in flight — scoring it now would double-pay and
+    // race the merge. Everything else in finalFiles still scores this run.
+    if (batchHeldPaths.has(filePath)) {
+      skipped++;
+      continue;
+    }
 
     // Capture prior retry count BEFORE scoring rebuilds ensembleData (ensemble-scorer.ts:464).
     // If retry succeeds (2+ models), the new ensembleData has no singleModelEmergency and

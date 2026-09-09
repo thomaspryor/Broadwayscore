@@ -167,14 +167,42 @@ function deadAttemptsForTask(taskId, entries) {
 // matched to any folded attempt at all (e.g. a rotated/truncated ledger),
 // this fails CLOSED to SUBSTANTIVE — never silently drops a death, and never
 // risks misreading an unclassifiable one as a free infra retry.
-function classifyDeadAttemptsForTask(taskId, entries) {
+//
+// ── Contradicted dead rows (BRO-2599) ───────────────────────────────────────
+// opts.contradictedDeadKeys is a Set of `${workspaceRef}|${ts}` strings for
+// 'dead' rows PROVEN false by an independent source outside this ledger: the
+// buried worker's own later Linear session-report comment landing on the same
+// issue with no re-dispatch in between (audit-false-dead-ledger-rows.js, added
+// by BRO-2575, is what derives this set — a worker cannot report back after
+// dying before it reported). A matching row is dropped from BOTH buckets
+// entirely, never reclassified as 'infra' — this is the one deliberate
+// exception to this function's own fail-closed doctrine two paragraphs up.
+// That doctrine exists for UNCERTAIN rows ("can't tell, so assume the worse
+// case"); a contradicted row isn't uncertain, it's disproven, so counting it
+// toward EITHER limit (including INFRA_DEAD_ATTEMPT_LIMIT) would still be
+// penalizing a task for a journal entry that never should have existed.
+// Filtering happens on the DERIVED workspaceDeaths list below, never by
+// stripping `entries` itself before foldAttempts(entries) runs a few lines
+// down — foldAttempts must see the ledger's true, unmodified shape (including
+// the contradicted row) or a sibling dead row sharing the same recycled
+// workspaceRef would silently see a different `matches.length` and flip to
+// fail-closed-substantive for the wrong reason (plan review catch).
+// Default empty Set: every existing caller (bsc-prune.js, bsc-reconcile.js,
+// dispatch-guards.js's deadDispatchGuard, dispatch-watchdog-core.js,
+// dispatch-attempts.js) keeps calling this with 2 args and gets identical
+// behavior to before this change.
+function classifyDeadAttemptsForTask(taskId, entries, opts = {}) {
+  const contradictedDeadKeys = opts.contradictedDeadKeys || null;
   const all = deadAttemptsForTask(taskId, entries);
   if (!all.length) return { substantive: [], infra: [] };
   // job-*-class deaths (job-failed/job-orphaned) have no workspaceRef and
   // only ever fire after job-spawned already ran — the wrapper unambiguously
   // executed, so these are always substantive.
   const jobDeaths = all.filter(e => e.event !== 'dead');
-  const workspaceDeaths = all.filter(e => e.event === 'dead');
+  let workspaceDeaths = all.filter(e => e.event === 'dead');
+  if (contradictedDeadKeys && contradictedDeadKeys.size) {
+    workspaceDeaths = workspaceDeaths.filter(e => !contradictedDeadKeys.has(`${e.workspaceRef}|${e.ts}`));
+  }
   if (!workspaceDeaths.length) return { substantive: jobDeaths, infra: [] };
 
   const { attempts } = foldAttempts(entries);
@@ -228,8 +256,8 @@ const INFRA_DEAD_ATTEMPT_LIMIT = 10;
 // infra ceiling) can't drift between bsc-next.js, bsc-prune.js,
 // bsc-reconcile.js and dispatch-watchdog-core.js. Callers own their own
 // message wording; this owns only the counts and the blocked/reason verdict.
-function dispatchCapDecision(taskId, entries) {
-  const { substantive, infra } = classifyDeadAttemptsForTask(taskId, entries);
+function dispatchCapDecision(taskId, entries, opts = {}) {
+  const { substantive, infra } = classifyDeadAttemptsForTask(taskId, entries, opts);
   if (substantive.length >= DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'substantive', substantive, infra };
   if (infra.length >= INFRA_DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'infra', substantive, infra };
   return { blocked: false, reason: null, substantive, infra };
@@ -397,18 +425,186 @@ function launchByRef(workspaceRef, entries) {
 // comparison is against THIS launch's ts, so one stale terminal row from an
 // earlier occupant of a recycled ref cannot suppress a genuinely dying later
 // task's breadcrumb.
-function deadBreadcrumbs(idleWorkspaces, entries) {
+// THIRD SIGNAL — the OS process table (BRO-2575, 2026-08-31)
+// ─────────────────────────────────────────────────────────────────────────
+// The `idleWorkspaces` handed to this function are "dead by BOTH signals"
+// per cmux-workspaces.checkLiveness. That dual-signal design (cards
+// #559/#564) rests on the two signals being INDEPENDENT — but they are not:
+// claudeAliveIn reads `cmux top --processes` and terminalSurfaceAliveIn reads
+// `cmux read-screen`, both over the same socket, from the same daemon. When
+// cmux itself degrades, both go quiet together and every live session in the
+// fleet reads as dead at once.
+//
+// That is not hypothetical. On 2026-08-31T00:55:32Z one sweep journaled
+// 'dead' for FIVE workspaces in the same 2ms — every dispatch launched in the
+// preceding 20 minutes — while its "dead but un-marked" list jumped from 7
+// workspaces to 25 and the `⚠ Registry desync` list of surface-ALIVE
+// workspaces from the immediately preceding sweep dropped to zero. workspace:138
+// (linear:BRO-2506) was in that batch; it committed its fix at 00:53Z and
+// posted its session report at 01:31Z, 36 minutes after being declared dead.
+// The false row then drove a wasted --force opus re-dispatch at 02:15Z.
+// Across the whole ledger 52 of 61 sweep batches journal exactly ONE task;
+// every batch of 3+ is one of these correlated misreads.
+//
+// A per-workspace predicate cannot fix this, and it is worth being precise
+// about why: a live session whose terminal surface cmux has EVICTED and a
+// #1199 husk whose surface NEVER RENDERED emit the identical pair of cmux
+// signals (no process row, read-screen throwing "Terminal surface not
+// found"). Narrowing either signal to spare the first necessarily strands the
+// second — and nothing else reaps husks, since sweepNoPayload swallows the
+// read-screen throw into an empty screen (never flagging) and sweepVanished
+// only fires once a ref leaves the listing, which an open husk never does.
+//
+// What DOES separate them is a signal that is not cmux's to lie about. The
+// bash wrapper cmux-launch.js writes runs as the foreground parent of the real
+// claude process for the session's whole lifetime, so its presence in `ps` is
+// ground truth about THIS launch — cmux-launch.js already calls it "ground
+// truth, independent of cmux's internal bookkeeping" and gates every launch
+// on it (computeStrictAliveness). This wires the same check into the death
+// path: refuse to journal a death for a workspace whose wrapper is still
+// running. Evicted-surface live session -> wrapper alive -> spared. Husk ->
+// no wrapper -> journaled, and the zombie sweep still reaps it. Genuine mass
+// death -> no wrappers -> all journaled, so there is no stall.
+//
+// isWrapperAlive is OPTIONAL and defaults to "no opinion": callers that don't
+// pass it (and launches predating the ledger's `marker` field) keep the exact
+// pre-BRO-2575 behaviour rather than silently losing breadcrumbs. Suppressions
+// are reported through opts.onSuppressed — bsc-prune prints them, because a
+// suppression is direct evidence of the cmux desync and must never be silent.
+// The RETURN stays a plain array of breadcrumbs: every caller and a dozen
+// existing tests compare it with deepEqual, which an extra own property on the
+// array would break.
+// Kill switch, matching ZOMBIE_TAB_SWEEP_DISABLED / NO_PAYLOAD_REAPER_DISABLED.
+// This check can only ever SUPPRESS a death, so a bug in it strands tabs and
+// tasks rather than killing them — but "strands forever" is still an outage,
+// and every other behaviour-changing sweep in this fleet ships with a way to
+// turn it off without a deploy (ship-check, Codex P1).
+function wrapperCheckDisabled() {
+  return process.env.DEAD_WRAPPER_CHECK_DISABLED === '1';
+}
+
+// Shared BRO-2575 predicate: does this launch's wrapper process vouch that the
+// session is still alive? Used by deadBreadcrumbs (bsc-prune + checkDeadDispatch)
+// AND bsc-reconcile, which re-dispatches with --force off the same cmux-only
+// verdict — one predicate rather than two hand-rolled copies (CLAUDE.md rule 15).
+//
+// Every "no" answer means "no positive evidence of life", never "proved dead":
+// no probe, no launch, a launch predating the `marker` field, a throwing probe,
+// or the kill switch all fall back to whatever the caller already believed.
+function wrapperVouchesAlive(launch, isWrapperAlive) {
+  if (wrapperCheckDisabled()) return false;
+  if (typeof isWrapperAlive !== 'function') return false;
+  if (!launch || !launch.marker) return false;
+  try { return isWrapperAlive(launch.marker) === true; } catch { return false; }
+}
+
+// The launch that OWNS a ref right now — null once a terminal event has
+// reconciled it. This is deadBreadcrumbs' own ownership rule, extracted so
+// bsc-prune's idle filter applies exactly the same one (ship-check, Claude P1).
+//
+// Without it the filter strands husks permanently: cmux renumbers on restart,
+// live session S moves workspace:138 -> workspace:120 (remapEntries writes a
+// terminal row for 138), a dead husk lands on the recycled 138, launchByRef
+// still returns S's launch, S's wrapper is alive in `ps` — so the husk is
+// spared from `idle` forever, getting neither a breadcrumb nor a
+// sweepZombieTabs close. deadBreadcrumbs would have skipped that ref as
+// already-reconciled; the filter has to skip it for the same reason.
+function unreconciledLaunchForRef(ref, entries, lastTerminal = null) {
+  const launch = launchByRef(ref, entries);
+  if (!launch) return null; // not a bsc-next auto-dispatch — not ours to judge
+  const terminals = lastTerminal || lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
+  const term = terminals.get(ref);
+  // A launch with no ts can't be ordered against anything; treat any terminal
+  // row for the ref as already-reconciled rather than guessing — the
+  // pre-existing `!e.ts || !launch.ts` fallback made the same choice.
+  const reconciled = term && (!term.ts || !launch.ts || term.ts >= launch.ts);
+  return reconciled ? null : launch;
+}
+
+// The terminal event that ended THIS task's launch, or null if none has been
+// recorded — i.e. "has the ledger already journaled that this specific launch
+// is over?". Returns the entry (not a boolean) so a caller can name the event
+// and its timestamp when it explains a decision to a human.
+//
+// BRO-3045. isAttemptEvent above deliberately excludes 'vanished' /
+// 'prune-closed' / 'remapped' because they describe what happened to a
+// WORKSPACE, not a fresh attempt. That is correct for latestAttemptForTask,
+// but it left linear-dispatch.js's hasLiveLedgerEntry with no way to see a
+// death the ledger had already written: latestAttemptForTask skipped straight
+// past the terminal row back to the stale 'launch', so the dispatch dedup
+// guard called the task live forever. Measured on the live ledger 2026-09-08:
+// 133 linear:BRO-* tasks were "already dispatched", 127 of them already
+// carried one of these breadcrumbs (117 prune-closed, 8 vanished, 2 remapped)
+// and the oldest was 630 hours old. Those cards could only be dispatched with
+// --force. The breadcrumb was written; the reader threw it away.
+//
+// KEYED ON taskId AS WELL AS ref, unlike unreconciledLaunchForRef above.
+// That helper asks a WORKSPACE-ownership question, so ref-scoping is right for
+// it. This one asks a TASK question, and cmux recycles workspace:N across
+// restarts — review measured 8 of the 133 whose launch ref was later
+// re-launched by a different taskId, and for 8 the last same-ref terminal row
+// belonged to a stranger (linear:BRO-2586 held workspace:59, task 75 recycled
+// the ref weeks later and wrote 'remapped' onto it). A ref-only rule would
+// read a stranger's death as this task's.
+//
+// A remapped-then-still-running task is structurally safe here: remapEntries
+// writes 'remapped' AND a new same-taskId 'launch' for the new ref, so
+// latestAttemptForTask returns the new launch and the old ref's terminal row
+// is never consulted.
+//
+// Timestamp handling deliberately DIVERGES from unreconciledLaunchForRef's.
+// That helper treats an unorderable pair as reconciled, which is right for it:
+// its failure direction is stranding a husk. This helper's failure direction is
+// dispatching a SECOND worker onto a card someone is already working, so it
+// requires both timestamps to be present and parseable and the terminal row to
+// be at-or-after the launch. Anything unorderable means "not proven over" and
+// the task stays live. Adversarial review supplied the four sequences that
+// forced this (each of which the looser `e.ts && launch.ts && e.ts < launch.ts`
+// form got wrong, all in the dangerous direction):
+//   launch(A,R,t10) -> prune-closed(A,R,t11) -> launch(A,R, ts missing)
+//   launch(A,R,t10) -> prune-closed(A,R, ts missing) -> launch(A,R,t12)
+//   launch(A,R,t10) -> prune-closed(A,R, malformed ts) -> launch(A,R,t12)
+//   a terminal row appended before its launch by two concurrent writers
+function terminalForLaunch(launch, entries) {
+  if (!launch || !launch.workspaceRef) return null;
+  const launchTs = Date.parse(launch.ts || '');
+  if (!Number.isFinite(launchTs)) return null; // unorderable launch — never claim it is over
+  let found = null;
+  for (const e of entries || []) {
+    if (!e || typeof e !== 'object') continue;
+    if (!TERMINAL_LAUNCH_EVENTS.has(e.event)) continue;
+    if (e.workspaceRef !== launch.workspaceRef) continue;
+    if (String(e.taskId) !== String(launch.taskId)) continue;
+    const ts = Date.parse(e.ts || '');
+    if (!Number.isFinite(ts)) continue; // unorderable terminal — proves nothing
+    // STRICTLY after. A terminal row sharing a timestamp with the launch is
+    // ambiguous — it can be a relaunch onto the same ref in the same
+    // millisecond as an older terminal — and the ambiguous answer must be
+    // "still live", never "safe to dispatch a second worker".
+    if (ts <= launchTs) continue;
+    found = e; // last-wins, matching this file's lastByRef/launchByRef convention
+  }
+  return found;
+}
+
+function deadBreadcrumbs(idleWorkspaces, entries, opts = {}) {
+  const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
+  const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
   const out = [];
   const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   for (const w of idleWorkspaces) {
-    const launch = launchByRef(w.ref, entries);
-    if (!launch) continue; // not a bsc-next auto-dispatch — not ours to journal
-    const term = lastTerminal.get(w.ref);
-    // A launch with no ts can't be ordered against anything; treat any
-    // terminal row for the ref as already-reconciled rather than guessing —
-    // the pre-existing `!e.ts || !launch.ts` fallback made the same choice.
-    const reconciled = term && (!term.ts || !launch.ts || term.ts >= launch.ts);
-    if (reconciled) continue;
+    // Not a bsc-next auto-dispatch, or already reconciled by a terminal event
+    // (prune-closed / vanished / remapped / an earlier death) — not ours to
+    // journal either way. See unreconciledLaunchForRef.
+    const launch = unreconciledLaunchForRef(w.ref, entries, lastTerminal);
+    if (!launch) continue;
+    if (wrapperVouchesAlive(launch, isWrapperAlive)) {
+      if (onSuppressed) {
+        try { onSuppressed({ workspaceRef: w.ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker, title: w.title }); }
+        catch { /* a reporting failure must never change the sweep's verdict */ }
+      }
+      continue;
+    }
     out.push({ event: 'dead', taskId: launch.taskId, subject: launch.subject, workspaceRef: w.ref, title: w.title });
   }
   return out;
@@ -438,10 +634,14 @@ function deadBreadcrumbs(idleWorkspaces, entries) {
 // and skips it as already-recorded. No lock needed.
 //
 // Returns [] when cmux left no workspace behind (nothing to attribute).
-function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, verifyCmd = null, verifyReason = null, notionId = null, failureReason = null, deadConfirmed = true }) {
+function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, verifyCmd = null, verifyReason = null, notionId = null, failureReason = null, deadConfirmed = true, marker = null }) {
   if (!workspaceRef) return [];
   const base = { taskId: String(taskId), subject, workspaceRef, failureReason };
-  const launch = { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, unverified: true };
+  // marker (BRO-2575, ship-check catch): the deadConfirmed=false branch below
+  // is literally "verification gave up while this launch's wrapper was STILL
+  // RUNNING" — the highest-value case for a later sweep's wrapper cross-check,
+  // and the one most likely to be wrongly journaled dead without it.
+  const launch = { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, marker, unverified: true };
   // deadConfirmed=false is the card #705 slow-boot case: verification gave up
   // while this launch's wrapper process was STILL RUNNING, so the workspace is
   // very likely booting a real session. Recording a 'dead' breadcrumb for it
@@ -537,10 +737,23 @@ const HISTORICAL_EXCLUSION_GRACE_MS = 72 * 60 * 60 * 1000;
 // caller forget it and keep getting the (soon-to-be-legacy) permanent-
 // exclusion behavior with no signal, masking exactly the bug class this
 // grace window exists to fix.
-function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
+//
+// opts.isWrapperAlive / opts.onSuppressed (BRO-2649): same THIRD SIGNAL guard
+// deadBreadcrumbs already applies (see its header for the 2026-08-31
+// blackout), extended to the vanished path — a cmux blackout doesn't just
+// make live workspaces read as dead, it can drop them out of the live
+// listing entirely, which is exactly vanishedBreadcrumbs' trigger condition.
+// Reuses the SAME wrapperVouchesAlive() predicate deadBreadcrumbs uses (one
+// guard, not two hand-rolled copies — CLAUDE.md rule 15), and stays optional
+// with the identical "no opinion" default so every existing caller (only
+// bsc-prune.js today) that doesn't pass it keeps today's exact behavior.
+function vanishedBreadcrumbs(liveRefs, entries, opts = {}) {
   if (!(liveRefs instanceof Set)) {
     throw new Error('vanishedBreadcrumbs requires a Set of live workspace refs');
   }
+  const { epochTs = null, now } = opts;
+  const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
+  const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
   if (!Number.isFinite(now)) throw new Error('vanishedBreadcrumbs requires now (ms epoch)');
   // Fail closed on both "no epoch recorded" and "cmux listed nothing". An
   // empty listing is indistinguishable from cmux being restarted, crashed, or
@@ -580,6 +793,18 @@ function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
     if (openElsewhere && openElsewhere.workspaceRef !== ref && liveRefs.has(openElsewhere.workspaceRef)) continue; // superseded by a newer LIVE launch
     const term = lastTerminal.get(ref);
     if (term && term.ts >= launch.ts) continue;            // already reconciled
+    // Wrapper check LAST, same order as deadBreadcrumbs: only reached once
+    // ownership/supersession/reconciliation have already cleared this ref, so
+    // a suppression reported via onSuppressed always means "this ref was
+    // actually about to be journaled vanished" — never noise about a ref that
+    // was never a real candidate.
+    if (wrapperVouchesAlive(launch, isWrapperAlive)) {
+      if (onSuppressed) {
+        try { onSuppressed({ workspaceRef: ref, taskId: launch.taskId, subject: launch.subject, marker: launch.marker }); }
+        catch { /* a reporting failure must never change the sweep's verdict */ }
+      }
+      continue;
+    }
     out.push({
       event: 'vanished',
       taskId: launch.taskId,
@@ -726,11 +951,16 @@ function findRenumberedWorkspace(launch, liveWorkspaces, excludeRefs = new Set()
 // model/verifyCmd/verifyReason are carried forward from the ORIGINAL launch
 // so the nightly acceptance recheck (which reads the latest launch per
 // notionId) doesn't silently downgrade a remapped card to "unverifiable".
-function remapEntries({ taskId, subject, oldRef, newRef, notionId = null, model = null, verifyCmd = null, verifyReason = null }) {
+// marker is carried across a remap (BRO-2575, ship-check catch): the SESSION is
+// the same one — cmux only renumbered its ref — so the same wrapper process is
+// still its ground-truth liveness signal. Dropping it would silently revert
+// every remapped ref to the pre-fix, cmux-only verdict, and a cmux restart is
+// exactly when the fleet-wide desync this guards against is most likely.
+function remapEntries({ taskId, subject, oldRef, newRef, notionId = null, model = null, verifyCmd = null, verifyReason = null, marker = null }) {
   const id = String(taskId);
   return [
     { event: 'remapped', taskId: id, subject, workspaceRef: oldRef, newRef },
-    { event: 'launch', taskId: id, subject, workspaceRef: newRef, notionId, model, verifyCmd, verifyReason, remapped: true, previousRef: oldRef },
+    { event: 'launch', taskId: id, subject, workspaceRef: newRef, notionId, model, verifyCmd, verifyReason, marker, remapped: true, previousRef: oldRef },
   ];
 }
 
@@ -1008,6 +1238,23 @@ const JOB_EVENTS = Object.freeze({
   // feeding it into the substantive-dead-attempt count would let two benign
   // concurrent-dispatch races permanently park a task that never actually failed.
   ABANDONED: 'job-abandoned',
+  // BRO-3052: written by bsc-reconcile the FIRST tick it finds a job's lease
+  // pid not alive, BEFORE it ever writes ORPHANED. Deliberately NOT terminal
+  // (see TERMINAL_JOB_EVENTS below) and NOT deadlike — a single negative
+  // liveness glance is a suspicion, never a verdict. See ORPHAN_CONFIRM_MS's
+  // header for the incident this exists to close.
+  ORPHAN_SUSPECT: 'job-orphan-suspect',
+  // BRO-3052 (Codex adversarial ship-check catch): a bare elapsed-time bound
+  // on ORPHAN_SUSPECT is not "two observations" — it's one observation plus a
+  // clock. Without this event, a one-off `ps` blip writes a suspect row, the
+  // VERY NEXT tick finds the job alive again (falls into the `alive` branch
+  // and does nothing), and if that same job genuinely dies for real minutes
+  // later — well within ORPHAN_SUSPECT_MAX_AGE_MS — the old, already-refuted
+  // blip is wrongly read as corroboration. Written the moment a job with a
+  // pending suspicion is observed ALIVE again, so a later confirmation check
+  // can tell "unbroken silence since the suspicion" from "confirmed dead,
+  // then alive, then dead again" (see lastOrphanEvidence).
+  ORPHAN_CLEARED: 'job-orphan-cleared',
 });
 
 // RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new
@@ -1017,7 +1264,120 @@ const JOB_EVENTS = Object.freeze({
 // lease-held/pre-spawn-abandoned "job" reads as perpetually open to every
 // TERMINAL_JOB_EVENTS consumer (bsc-status.js, backlog-drain.js,
 // dispatch-card-drift.js, digest-autofix.js, autofix-canary.js).
+// ORPHAN_SUSPECT and ORPHAN_CLEARED are deliberately EXCLUDED — both must
+// keep reading as open (same bucket as SPAWNED) until a later tick writes the
+// real terminal ORPHANED row (see orphanConfirmed/orphanSuspectIsStale).
 const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED, JOB_EVENTS.ABANDONED]);
+
+// ── Orphan-detection debounce (BRO-3052) ────────────────────────────────────
+// bsc-reconcile.js's orphan sweep used to treat a SINGLE liveness glance
+// (lease pid vs `ps`) as proof of death, immediately writing job-orphaned AND
+// releasing the task's lease — the exact mutex a second worker needs stolen
+// out from under a live job. Reproduced live 2026-09-08 (linear:BRO-2565):
+// job-orphaned landed 7 minutes after job-spawned, `hadLease:true`, and the
+// job's wrapper process was still demonstrably running 15+ minutes later —
+// isDeadlikeEvent('job-orphaned') then made isLatestDispatchDead() /
+// hasLiveLedgerEntry() read the still-working card as free to re-dispatch.
+// A second, independent case (linear:BRO-2817) was marked orphaned AFTER its
+// work had already merged — the process finished the real work but the
+// ledger's own terminal job-done write never landed (killed in the gap
+// between finishing and appending it).
+//
+// Fix: a negative liveness reading is a SUSPICION, not a verdict.
+// bsc-reconcile writes ORPHAN_SUSPECT (not ORPHANED) the first time a job's
+// lease pid isn't alive, then only promotes to the real terminal ORPHANED row
+// — and releases the lease — once a LATER tick confirms it. Same risk
+// asymmetry this file already applies elsewhere (RESTART_HOLD_MAX_MS below):
+// one extra sweep costs nothing, a false death costs a duplicate dispatch
+// onto live work.
+//
+// EXPLICITLY CLEARED, not just time-bounded (Codex adversarial ship-check
+// catch on the first version of this fix): an elapsed-time bound alone is not
+// "two observations", it's one observation plus a clock. Consider a `ps`
+// blip that writes a suspect row, the VERY NEXT tick finding the job alive
+// again (falls into bsc-reconcile's `alive` branch and does nothing further),
+// and then the SAME job genuinely dying for real a few minutes later — well
+// inside a bare time bound. A time-only check would wrongly treat the
+// already-refuted blip as corroboration for an unrelated later death. The fix
+// is JOB_EVENTS.ORPHAN_CLEARED: bsc-reconcile writes it the moment a job with
+// a pending suspicion is found alive again, and lastOrphanSuspect (below)
+// treats CLEARED as superseding any earlier SUSPECT for the same jobId (last-
+// wins, same convention as lastByRef/foldJobs elsewhere in this file) — so
+// orphanConfirmed/orphanSuspectIsStale see "no suspicion" again, exactly as
+// if the blip had never happened.
+//
+// STILL BOUNDED like RESTART_HOLD_MAX_MS on top of that (defense in depth): a
+// suspect row only counts as corroboration while it is FRESH. Even with
+// explicit clearing, a suspect row could in principle survive uncleared for a
+// long time (e.g. bsc-reconcile itself stops running for days) — ORPHAN_
+// SUSPECT_MAX_AGE_MS still refuses to treat an ancient, unconfirmed suspicion
+// as evidence for a fresh negative reading today.
+//
+// ORPHAN_CONFIRM_MS (3min) is < the 5-min launchd cadence bsc-reconcile.js
+// runs on (com.broadwayscore.bsc-reconcile.plist, StartInterval=300 — same
+// file's own header comment), so the very next tick always qualifies.
+// ORPHAN_SUSPECT_MAX_AGE_MS (15min = 3 ticks) matches RESTART_HOLD_MAX_MS's
+// own "3 ticks at the 5-min ledger cadence" bound: generous enough to absorb
+// one skipped/delayed tick without falsely expiring, but never letting a
+// stale suspicion stand in for corroboration indefinitely.
+const ORPHAN_CONFIRM_MS = 3 * 60 * 1000;
+const ORPHAN_SUSPECT_MAX_AGE_MS = 15 * 60 * 1000;
+
+function orphanSuspectEntry(taskId, jobId) {
+  return { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: String(taskId), jobId };
+}
+
+function orphanClearedEntry(taskId, jobId) {
+  return { event: JOB_EVENTS.ORPHAN_CLEARED, taskId: String(taskId), jobId };
+}
+
+// Last ORPHAN_SUSPECT row for this exact jobId that has NOT since been
+// cleared by a later ORPHAN_CLEARED row for the same jobId, or null. Scoped
+// to jobId, not taskId: a taskId can cycle through multiple jobIds (retries/
+// redispatch), and a stale suspicion about an OLD job must never confirm a
+// death for a NEW, unrelated one. A CLEARED row strictly after the SUSPECT
+// row means the job was observed alive in between — the suspicion is void,
+// same as if it had never been written (see this section's header).
+function lastOrphanSuspect(jobId, entries) {
+  let found = null;
+  for (const e of entries || []) {
+    if (!e || e.jobId !== jobId) continue;
+    if (e.event === JOB_EVENTS.ORPHAN_SUSPECT) found = e;
+    else if (e.event === JOB_EVENTS.ORPHAN_CLEARED) found = null;
+  }
+  return found;
+}
+
+// True once a job's non-liveness has been observed on two reconcile ticks
+// with no intervening "alive" observation: an existing, uncleared suspect row
+// whose age is inside [ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS] — old
+// enough to be a genuinely separate, later observation, not so old it's
+// disconnected evidence. `nowMs` is the caller's own clock (test seam,
+// matching this file's now-threading convention throughout — see
+// countRecentLaunches/vanishedBreadcrumbs/detectLauncherOutage).
+function orphanConfirmed(jobId, entries, nowMs) {
+  if (!Number.isFinite(nowMs)) throw new Error('orphanConfirmed requires nowMs (ms epoch)');
+  const suspect = lastOrphanSuspect(jobId, entries);
+  if (!suspect) return false;
+  const suspectTs = Date.parse(suspect.ts || '');
+  if (!Number.isFinite(suspectTs)) return false;
+  const age = nowMs - suspectTs;
+  return age >= ORPHAN_CONFIRM_MS && age <= ORPHAN_SUSPECT_MAX_AGE_MS;
+}
+
+// True when a fresh ORPHAN_SUSPECT row needs to be (re-)written: none exists
+// (or the last one was cleared), or the existing one has aged past
+// ORPHAN_SUSPECT_MAX_AGE_MS (stale — see this section's header for why an
+// expired suspect must never be reused as corroboration for an unrelated
+// later observation).
+function orphanSuspectIsStale(jobId, entries, nowMs) {
+  if (!Number.isFinite(nowMs)) throw new Error('orphanSuspectIsStale requires nowMs (ms epoch)');
+  const suspect = lastOrphanSuspect(jobId, entries);
+  if (!suspect) return true;
+  const suspectTs = Date.parse(suspect.ts || '');
+  if (!Number.isFinite(suspectTs)) return true;
+  return (nowMs - suspectTs) > ORPHAN_SUSPECT_MAX_AGE_MS;
+}
 
 // Latest job state per jobId: fold events, last one wins. Returns
 // Map<jobId, {jobId, taskId, event, ...lastEntryFields}>.
@@ -1074,6 +1434,7 @@ module.exports = {
   LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
+  wrapperVouchesAlive, wrapperCheckDisabled, unreconciledLaunchForRef,
   failedLaunchEntries, foldJobs, openJobs,
   // isInfraDeadEntry/deadDispatchCapStatus were card #1233's v1 API. The v2
   // implementation (ba2a4f22d3f) replaced both with classifyDeadAttemptsForTask
@@ -1084,6 +1445,7 @@ module.exports = {
   // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
+  terminalForLaunch,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount, countRecentLaunches,
@@ -1094,4 +1456,5 @@ module.exports = {
   detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS,
   detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS, FAILURE_RATE_MIN_LAUNCHES, FAILURE_RATE_THRESHOLD,
   FUTURE_TS_GRACE_MS,
+  ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS, orphanSuspectEntry, orphanClearedEntry, lastOrphanSuspect, orphanConfirmed, orphanSuspectIsStale,
 };

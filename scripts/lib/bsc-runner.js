@@ -25,7 +25,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { runClaudeCli } = require('./claude-cli.js');
 const ledger = require('./dispatch-ledger.js');
-const { shouldRefuseDispatch } = require('./worktree-gc-reclaim.js');
+const { shouldRefuseDispatch, isLeaseLive } = require('./worktree-gc-reclaim.js');
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
 // from inside worktrees, and leases/logs must be one canonical set.
@@ -54,7 +54,15 @@ function pidLooksLikeClaude(pid) {
 /**
  * Acquire the per-task lease. Returns {ok:true} or {ok:false, reason, holder}.
  * A holder whose recorded PID is dead (or not a claude process) is stale and
- * gets stolen; a live holder wins.
+ * gets stolen; a live holder wins. Liveness is decided by the shared
+ * isLeaseLive() (worktree-gc-reclaim.js) so this can't drift from GC's
+ * computeLiveLeaseCwds again (BRO-2414/BRO-2319): a holder with pid:null
+ * (lease claimed but its subprocess hasn't spawned yet — see runJob's
+ * initial acquireLease call, which always writes pid:null) is treated as
+ * live and never stolen — pid:null means "still provisioning", not
+ * "confirmed dead". A lease that gets stuck at pid:null because its holder
+ * crashed before ever spawning is reclaimed by bsc-reconcile.js's periodic
+ * sweep (GRACE_MS-based), not by this function.
  *
  * `isAliveFn` (test-only seam, defaults to the real pidLooksLikeClaude):
  * faking a genuinely-alive holder process to test the "lease already held"
@@ -75,7 +83,7 @@ function acquireLease(taskId, meta, { isAliveFn = pidLooksLikeClaude } = {}) {
   } catch (e) {
     if (e.code !== 'EEXIST') return { ok: false, reason: `lease mkdir failed: ${e.message}`, holder: null };
     const holder = readLease(taskId);
-    if (holder && isAliveFn(holder.pid)) {
+    if (isLeaseLive(holder, isAliveFn)) {
       return { ok: false, reason: 'task already has a live job', holder };
     }
     // Stale lease (crashed holder / dead pid): steal.
@@ -228,7 +236,23 @@ function buildBudgetPreamble(timeoutMs) {
   return `[UNATTENDED TIME BUDGET] This headless session is hard-killed after ${min} minutes of wall-clock time. `
     + `Commit work-in-progress to your worktree branch after each meaningful step (never leave >15 min of work uncommitted). `
     + `By minute ${Math.max(5, min - 10)}, stop starting new work: commit everything and write a short STATE.md at the repo root `
-    + `(what is done, what remains, exact next command) so a resumed session can continue without re-deriving context.\n\n`;
+    + `(what is done, what remains, exact next command) so a resumed session can continue without re-deriving context.\n`
+    // BRO-2741: two dispatches of the same issue, a day apart, each launched a
+    // long batch with run_in_background, ended the turn intending to resume it,
+    // and had the task killed at teardown while still reporting success.
+    //
+    // The failure is ENDING THE TURN on it, not backgrounding as such. An
+    // earlier draft said "do not use run_in_background for work whose result
+    // you need", which a review pointed out would push workers to run
+    // scripts/lib/wait-for-run.sh in the FOREGROUND -- CLAUDE.md's mandated CI
+    // wait, and the single most common backgrounded command in the job corpus
+    // (59 of the 65 logs carrying a killed-task row). Blocking the whole
+    // session on a CI wall-clock wait would burn the budget this preamble
+    // exists to protect. Kept short and free of task-specific numbers: it is
+    // prepended to EVERY headless prompt, whatever the task.
+    + `Background work does not survive the end of your turn: anything still running when you stop is killed, `
+    + `so never finish a turn planning to "pick it back up when it completes". Either stay in the turn until it `
+    + `finishes, or split it into turn-sized batches and commit after each.\n\n`;
 }
 
 async function runJob(opts) {
@@ -378,14 +402,23 @@ async function runJob(opts) {
       // resume path keys off exactly these fields, and the spend breaker
       // stops reading killed sessions as $0 (costEstimated marks the ones
       // computed from streamed usage rather than the CLI's own total).
+      // BRO-3053: exitSignal rides the FAILED row too. This projection is an
+      // ALLOWLIST, so capturing the signal in claude-cli.js alone left it
+      // stranded at the primitive — only direct callers and tests could see
+      // it, and the ledger (the thing anyone actually audits after a job dies)
+      // still could not distinguish an OS kill from any other abrupt exit.
+      // Adversarial review caught that; without this line the whole change is
+      // cosmetic for its own use case. `undefined` on a normal failure so the
+      // row shape is unchanged for everything except a signalled death.
       ledger.appendEntry({
         event: ledger.JOB_EVENTS.FAILED, taskId, jobId, stage: res.stage,
         sessionId: res.sessionId, cwd, model: model || null,
         costUSD: res.costUSD, costEstimated: res.costEstimated || undefined,
+        exitSignal: res.exitSignal || undefined,
         detail: (res.errorDetail || '').slice(0, 300),
       });
     }
-    out = { ok: res.ok, jobId, stage: res.stage, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
+    out = { ok: res.ok, jobId, stage: res.stage, exitSignal: res.exitSignal || null, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
     return out;
   } finally {
     // finally runs after the return expression is evaluated but before the

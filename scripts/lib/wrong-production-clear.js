@@ -53,6 +53,7 @@
  * directly gate wrongShow re-promotion are corrected.
  */
 
+const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance');
 const { classifyContentTier } = require('./content-quality');
 
 /**
@@ -78,6 +79,15 @@ function clearWrongProductionFlags(data, opts = {}) {
     delete data.wrongProduction;
     delete data.wrongProductionReason;
     delete data.wrongProductionNote;
+    // BRO-2740: the flag's provenance dies with the flag. This helper is the
+    // canonical clear for 9+ callers (flag-combined-reviews, rediscover-review-
+    // urls, clear-contradicted-flag-basis, ...), so leaving the detector
+    // breadcrumbs behind made every one of them an orphan producer: a file with
+    // wrongProductionDetectedBy and no flag reads to every downstream auditor as
+    // "this WAS flagged wrong-production". Scoped inside !wrongShowOnly on
+    // purpose — that mode leaves wrongProduction standing, so its provenance
+    // must stand too.
+    for (const field of WRONG_PRODUCTION_PROVENANCE_FIELDS) delete data[field];
   }
   delete data.wrongShow;
   delete data.wrongShowReason;

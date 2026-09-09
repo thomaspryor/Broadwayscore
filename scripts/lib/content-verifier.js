@@ -52,6 +52,82 @@ function resolveCvMarket(show) {
   return show?.category || 'broadway';
 }
 
+/**
+ * Parse a date string the way the temporal guard does, NOT the way bare
+ * `new Date()` does.
+ *
+ * BRO-2835 fixed this class at the guard and at the persisted annotation, but
+ * the two prompt-building sites below kept bare `new Date(...)`, which is
+ * Invalid Date for an ordinal publishDate ("October 6th, 2022"). 13.4% of the
+ * dated review corpus (4,717 of 35,167) stores dates in that form, so the
+ * NaN silently propagated: `daysDiff <= 30` is false for NaN, so the
+ * opening-week temporalHint was omitted for 2,079 reviews that were in fact
+ * within 30 days of opening, and `Number.isFinite(NaN)` is false, so
+ * urlYearConflict was nulled.
+ *
+ * The parseHistoricalDate fallback is load-bearing, not defensive:
+ * parseDate() enforces normalizeDate()'s 1970-2030 calendar-year floor, so a
+ * genuine pre-1970 review would come back null and NEWLY lose a hint it gets
+ * today. Same pairing as daysFromOpening() below and as review-guards' own
+ * parse. The fallback's two hazards — a shape-dependent UTC/local anchor, and
+ * silent rollover of impossible dates — are handled inline below.
+ *
+ * @param {string|null|undefined} dateStr
+ * @returns {Date|null}
+ */
+function _cvParseDate(dateStr) {
+  const { parseDate, parseHistoricalDate, stripOrdinals } = require('./date-utils');
+  const viaNormalized = parseDate(dateStr);
+  if (viaNormalized) return viaNormalized;            // already UTC midnight
+  if (!dateStr || typeof dateStr !== 'string') return null;
+
+  const cleaned = stripOrdinals(dateStr.trim());
+
+  // parseHistoricalDate is `new Date(string)`, whose anchor depends on the
+  // string's SHAPE: an ISO date-only string ("1964-09-22") is parsed as UTC
+  // midnight, a prose date ("September 23, 1964") as LOCAL midnight. Assuming
+  // one basis for both silently shifts the other by a day — re-anchoring an
+  // ISO-shaped historical date moves it a day EARLIER west of UTC, which is
+  // exactly the kind of off-by-one this whole function exists to remove.
+  // The optional time portion matters: an ISO string that carries one
+  // ("1964-09-22T00:00:00Z") would otherwise fall through to the prose branch
+  // and be re-anchored from LOCAL components, landing a day earlier west of
+  // UTC. Post-1970 timestamps never reach here (parseDate handles them), so
+  // this only bites historical ones — no corpus instance today, but the corpus
+  // gains pre-1970 entries whenever an archival show is backfilled.
+  const iso = cleaned.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ].*)?$/);
+  if (iso) {
+    const y = Number(iso[1]);
+    const m = Number(iso[2]);
+    const d = Number(iso[3]);
+    const utc = new Date(Date.UTC(y, m - 1, d));
+    const real = utc.getUTCFullYear() === y && utc.getUTCMonth() === m - 1 && utc.getUTCDate() === d;
+    return real ? utc : null;   // already UTC-anchored; do NOT re-anchor
+  }
+
+  const viaHistorical = parseHistoricalDate(dateStr);
+  if (!viaHistorical) return null;
+
+  // `new Date()` rolls an impossible calendar date silently forward
+  // ("February 30, 2022" -> March 2). parseDate() rejects those through
+  // validateCalendarDate, so without this the historical leg would smuggle
+  // them back in and could fire an opening-week hint off a date that does not
+  // exist. Scoped to month-NAME forms: numeric formats are parseDate's job and
+  // a day-token check would misread the month field in "2022/10/06".
+  if (/[a-z]{3,}/i.test(cleaned)) {
+    const dayToken = cleaned.match(/(?:^|[^\d])(\d{1,2})(?:[^\d]|$)/);
+    if (dayToken && Number(dayToken[1]) !== viaHistorical.getDate()) return null;
+  }
+
+  // Prose form only: re-anchor local midnight onto UTC so the day-difference
+  // and getUTCFullYear() below stop being timezone-dependent.
+  return new Date(Date.UTC(
+    viaHistorical.getFullYear(),
+    viaHistorical.getMonth(),
+    viaHistorical.getDate()
+  ));
+}
+
 function _extractUrlYear(url) {
   if (!url || typeof url !== 'string') return null;
   // Try /YYYY/ path segment first (Variety, NYT, Guardian, etc.)
@@ -346,17 +422,40 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         show,
         fullText: scrapedText,
       });
+      // BRO-2835: these day-counts were `new Date(...)`, which is Invalid Date
+      // for an ordinal publishDate, so the annotation persisted onto the review
+      // read "[OVERRIDE: review within NaNd of opening ...]". Same parser as the
+      // guard itself, including the pre-1970 fallback.
+      const daysFromOpening = () => {
+        // BRO-2840: was the raw parseDate||parseHistoricalDate pairing, which
+        // carries the two fallback hazards _cvParseDate exists to absorb — a
+        // shape-dependent UTC/local anchor, and silent rollover of impossible
+        // calendar dates. Leaving it raw meant the PERSISTED annotation could
+        // report a day-count derived from a date the PROMPT had just refused to
+        // hint on, from the same two inputs. One parser for both.
+        const o = _cvParseDate(openingDate);
+        const p2 = _cvParseDate(publishDate);
+        if (!o || !p2) return null;
+        return Math.round(Math.abs((p2.getTime() - o.getTime()) / 86400000));
+      };
       if (temporalOverrides.bypassedForStrongSignal && wpFlag) {
         console.log(`    ✓ LLM wrongProduction NOT overridden: CV issues contain explicit "different show" markers — keeping ${wpConfidence} confidence`);
       }
       if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
-        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
-        console.log(`    ⚠ LLM wrongProduction overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
-        wpReasoning = `[OVERRIDE: review within ${daysDiff}d of opening, likely correct production] ${wpReasoning}`;
+        const daysDiff = daysFromOpening();
+        // daysFromOpening() returns null when _cvParseDate rejects a date the
+        // override itself accepted — applyTemporalOverrides uses the permissive
+        // raw parser, so the two can disagree on an impossible calendar date.
+        // Interpolating that null persisted "[OVERRIDE: review within nulld of
+        // opening]", which is just the NaNd bug this file already fixed once
+        // wearing a different word. Drop the day-count clause instead.
+        const dayClause = Number.isFinite(daysDiff) ? `within ${daysDiff}d of opening` : 'near opening';
+        console.log(`    ⚠ LLM wrongProduction overridden: review published ${Number.isFinite(daysDiff) ? `${daysDiff}d` : 'an unparseable interval'} from opening — downgrading to low confidence`);
+        wpReasoning = `[OVERRIDE: review ${dayClause}, likely correct production] ${wpReasoning}`;
       }
       if (!temporalOverrides.filmTvFlag && filmTvFlag && openingDate && publishDate) {
-        const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
-        console.log(`    ⚠ LLM isFilmTv overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
+        const daysDiff = daysFromOpening();
+        console.log(`    ⚠ LLM isFilmTv overridden: review published ${Number.isFinite(daysDiff) ? `${daysDiff}d` : 'an unparseable interval'} from opening — downgrading to low confidence`);
         filmTvConfidence = 'low';
       }
       wpConfidence = temporalOverrides.wpConfidence;
@@ -542,8 +641,10 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
 
   // Temporal proximity: if review published within 30 days of opening, very likely correct production
   let temporalHint = '';
-  if (openingDate && publishDate) {
-    const daysDiff = Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000);
+  const _pubDate = _cvParseDate(publishDate);
+  const _openDate = _cvParseDate(openingDate);
+  if (_openDate && _pubDate) {
+    const daysDiff = Math.abs((_pubDate.getTime() - _openDate.getTime()) / 86400000);
     if (daysDiff <= 30) {
       temporalHint = `\n\n**IMPORTANT**: This review was published ${daysDiff <= 1 ? 'on opening night' : `within ${Math.round(daysDiff)} days of the ${mc.label} opening`}. Reviews published near opening night are almost always reviewing the current ${mc.label} production. Be very cautious about flagging wrongProduction or isFilmTv for opening-week reviews. Do NOT confuse the show with same-name films, musicals, or prior productions — use the publish date as strong evidence this is the current ${mc.label} production. Do NOT hallucinate prior productions that may not exist.`;
     }
@@ -571,8 +672,8 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
   let urlYearHint = '';
   const urlYear = _extractUrlYear(url);
   let urlYearConflict = null;
-  if (urlYear && publishDate) {
-    const pubYear = new Date(publishDate).getFullYear();
+  if (urlYear && _pubDate) {
+    const pubYear = _pubDate.getUTCFullYear();
     if (Number.isFinite(pubYear) && Math.abs(pubYear - urlYear) >= 3) {
       const gapYears = Math.abs(pubYear - urlYear);
       urlYearConflict = { urlYear, publishYear: pubYear, gapYears };
@@ -803,18 +904,25 @@ function quickValidityCheck(text, showTitle) {
  * known for long-biographical leads that resemble wrong-show content.
  *
  * Returns true only when ALL of:
- *   1. getCvStyle(outletId) === 'long-biographical'
- *   2. wordCount(fullText) > 500
- *   3. hasOpinionLanguage(fullText) is true
+ *   1. contentTier is NOT 'invalid'
+ *   2. getCvStyle(outletId) === 'long-biographical'
+ *   3. wordCount(fullText) > 500
+ *   4. hasOpinionLanguage(fullText) is true
+ *
+ * The guard exists to rescue real reviews the CV misread (e.g. a genuine
+ * Vulture review with a long essayistic lead) — an invalid-tier scrape is
+ * not a review the CV misread, so it must never qualify for deferral
+ * (BRO-2834: 114/118 historical predicate matches were invalid-tier junk).
  *
  * Safe defaults: returns false for missing outletId or fullText.
  *
- * @param {{ outletId?: string, fullText?: string }} reviewData
+ * @param {{ outletId?: string, fullText?: string, contentTier?: string }} reviewData
  * @returns {boolean}
  */
 function shouldDeferCvWrongShow(reviewData) {
-  const { outletId, fullText } = reviewData || {};
+  const { outletId, fullText, contentTier } = reviewData || {};
   if (!outletId || !fullText) return false;
+  if (contentTier === 'invalid') return false;
   if (getCvStyle(outletId) !== 'long-biographical') return false;
   const wordCount = fullText.split(/\s+/).filter(Boolean).length;
   if (wordCount <= 500) return false;

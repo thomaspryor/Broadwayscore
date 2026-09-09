@@ -239,6 +239,35 @@ const VENUE_ALIASES = [
     canonical: 'august wilson',
     matches: [/august\s*wilson\s*theat/i, /virginia\s*theat/i],
   },
+  // Lincoln Center's opera house. Show Score listing titles carry the bare
+  // "(The Metropolitan Opera)" parenthetical; shows.json has the full
+  // "Metropolitan Opera House" (BRO-2592 parity check on live listing data —
+  // shows.json has exactly one venue matching this pattern today, so a
+  // shared alias is safe, unlike BAM below). Full-string anchored (^...$),
+  // not a bare /metropolitan\s*opera/i substring test — ship-check adversarial
+  // review flagged that an unanchored pattern would also alias a real but
+  // distinct room like "Metropolitan Opera Guild Auditorium" onto this same
+  // key the moment one is ever added to shows.json.
+  {
+    canonical: 'metropolitan opera',
+    matches: [/^\s*(the\s*)?metropolitan\s*opera(\s*house)?\s*$/i],
+  },
+  // spit&vigor's own venue — Show Score listing titles carry the bare
+  // company name; shows.json has the full "...Tiny Baby Blackbox Theatre"
+  // (BRO-2592, same parity check). Anchored at the start (^) only, not the
+  // end — "spit&vigor" is always a PREFIX of this company's full venue name,
+  // never a substring of an unrelated one, so a trailing wildcard is safe.
+  {
+    canonical: 'spit and vigor',
+    matches: [/^\s*spit\s*(&|and)\s*vigor/i],
+  },
+  // Deliberately NOT aliased: bare "BAM" (Brooklyn Academy of Music) from
+  // Show Score listing titles. shows.json has THREE distinct BAM stages
+  // (BAM Harvey Theater, BAM Fisher (Fishman Space), BAM Howard Gilman Opera
+  // House) that can run different productions concurrently — aliasing bare
+  // "BAM" to one canonical would collapse them, the exact failure class
+  // BRO-243/venuesMatch exists to prevent. A listing venue of just "BAM"
+  // with no stage name is genuinely ambiguous and should NOT auto-match.
 ];
 
 /**

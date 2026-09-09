@@ -5,6 +5,13 @@ on:
     - cron: '0 14 * * 1'  # Monday 2 PM UTC (9 AM EST)
   workflow_dispatch: {}
 
+# BRO-2957: this workflow no longer creates issues, so it no longer needs
+# issues: write. Six `gh run list`/`gh run view` calls in the first step still
+# need actions: read, and checkout needs contents: read.
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   report:
     runs-on: ubuntu-latest
@@ -25,6 +32,11 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
         run: |
+          # BRO-2780: never `gh run list --limit=N` for run history on this repo — it returns
+          # arbitrary, sometimes months-stale result SETS (BRO-2767/BRO-2771). The two
+          # latest-run lookups below read the Actions REST endpoint through this helper instead.
+          . scripts/lib/gh-runs-query.sh
+
           SINCE=$(date -d '7 days ago' '+%Y-%m-%dT00:00:00Z' 2>/dev/null || date -v-7d '+%Y-%m-%dT00:00:00Z')
           PERIOD_START=$(date -d '7 days ago' '+%b %d' 2>/dev/null || date -v-7d '+%b %d')
           PERIOD_END=$(date '+%b %d')
@@ -74,8 +86,32 @@ jobs:
               done < <(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' || true)
             done
           done
-          # Real BD Web Unlocker pricing: $0.0015/req (was 0.001 — 50% under-report)
-          BD_COST=$(echo "scale=2; $BD_TOTAL * 0.0015" | bc)
+          # BD Web Unlocker rate comes from scripts/config/provider-pricing.json,
+          # never a literal here (BRO-3009 S1-T6). This value was wrong once
+          # already — 0.001 vs the real 0.0015, a 50% under-report that stood
+          # because four files each held their own copy of the rate. `bc` still
+          # does the arithmetic so the printed figure is unchanged; only the
+          # rate's source moved. Empty/zero rate fails the step loudly rather
+          # than reporting $0.00 BD spend, which reads as "nothing to see".
+          # Read through provider-pricing.js's usdFor() rather than reaching into
+          # the JSON shape from YAML — usdFor already validates the provider
+          # exists and the rate is finite and non-negative, so this step gets the
+          # same guarantee every JS caller gets instead of a second, weaker copy
+          # of it. `|| true` keeps `bash -e` from killing the step before the
+          # ::error:: annotation below can explain what went wrong.
+          BD_RATE=$(node -e "const {usdFor}=require('./scripts/lib/provider-pricing');process.stdout.write(String(usdFor('brightdata',1)))" 2>/dev/null || true)
+          if echo "$BD_RATE" | grep -qE '^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'; then
+            BD_COST=$(echo "scale=2; $BD_TOTAL * $BD_RATE" | bc)
+          else
+            # Report an unknown rate as unknown. Do NOT exit: this step's whole
+            # design (see `set +e` below) is that a partial report still sends,
+            # and killing it here would blank the Browserbase and ScrapingBee
+            # billing sections too. A visible "rate unavailable" is honest; a
+            # silent $0.00 BD line would read as "nothing to see", which is the
+            # exact under-report this rate move exists to prevent.
+            echo "::error::scraper-cost-report: could not read a usable brightdata rate via provider-pricing.js (got '$BD_RATE') — BD cost shown as unavailable"
+            BD_COST="rate unavailable"
+          fi
 
           # Disable `bash -e` for the rest of this step. Everything from here on is
           # observability — partial data is acceptable, but a failed report email is
@@ -168,7 +204,10 @@ jobs:
           fi
 
           # --- SB credit status ---
-          HEALTH_RUN=$(gh run list --workflow=check-secrets-health.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
+          HEALTH_RUN=""
+          if HEALTH_RUNS_JSON=$(gh_runs_query "$GITHUB_REPOSITORY" "check-secrets-health.yml" 1); then
+            HEALTH_RUN=$(echo "$HEALTH_RUNS_JSON" | jq -r '.[0].databaseId // empty')
+          fi
           SB_STATUS="Unknown"
           SB_COLOR="#6b7280"
           if [ -n "$HEALTH_RUN" ]; then
@@ -187,7 +226,10 @@ jobs:
 
           # --- SB page/SERP split ---
           SB_PAGE="-"; SB_SERP="-"
-          LATEST_COLLECT=$(gh run list --workflow=collect-review-texts.yml --limit=5 --status=completed --json databaseId -q '.[].databaseId' 2>/dev/null)
+          LATEST_COLLECT=""
+          if COLLECT_RUNS_JSON=$(gh_runs_query "$GITHUB_REPOSITORY" "collect-review-texts.yml" 5 "status=completed"); then
+            LATEST_COLLECT=$(echo "$COLLECT_RUNS_JSON" | jq -r '.[].databaseId')
+          fi
           for run_id in $LATEST_COLLECT; do
             SB_LINES=$(gh run view "$run_id" --log 2>/dev/null | grep -E "SB page credits:|SB SERP credits:" 2>/dev/null || true)
             if [ -n "$SB_LINES" ]; then
@@ -283,54 +325,15 @@ jobs:
           </div>
           HTMLEOF
 
-          # --- Build markdown for GitHub issue ---
-          cat > /tmp/report.md << MDEOF
-          # Scraper Cost Report — $PERIOD_START – $PERIOD_END
-
-          ## Cost
-          | Provider | Requests | Cost |
-          |----------|----------|------|
-          | Playwright (free) | $PW_TOTAL | \$0 |
-          | BrightData | $BD_TOTAL | ~\$$BD_COST |
-          | ScrapingBee | $SB_TOTAL | $SB_CREDITS_TOTAL credits |
-          | Browserbase | $BB_SESSIONS sessions | \$$BB_COST |
-
-          SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP
-
-          ## Provider-Reported (billing ground truth)
-          - ScrapingDog: $SD_LINE
-          - Bright Data: $BD_LINE
-
-          Telemetry above is sampled attribution; disagreement with these numbers means an untelemetried path is burning.
-
-          ## ScrapingBee Cycle Usage
-          - Used this cycle: $SB_USED_NUM / $SB_CAP_NUM (${SB_PCT}%)
-          - Projected end-of-cycle: ${SB_PROJECTED}% of current cap
-          - Post-downgrade target cap: $SB_TARGET_CAP credits (Startup plan)
-          - Status: $SB_STATUS
-
-          ## Top SB Credit Consumers This Week
-          \`\`\`
-          $SB_TOP5
-          \`\`\`
-
-          ## Workflow Runs ($TOTAL_RUNS total, $TOTAL_FAILED failed)
-          MDEOF
-
-          cat /tmp/report.html
-
-      - name: Create GitHub issue
-        id: create-issue
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TITLE="Scraper Cost Report — Week of $(date '+%Y-%m-%d')"
-          ISSUE_URL=$(gh issue create \
-            --title "$TITLE" \
-            --label "cost-report" \
-            --body-file /tmp/report.md \
-            --repo $GITHUB_REPOSITORY)
-          echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+          # BRO-2957 follow-up: this used to be `cat /tmp/report.html`, which
+          # printed the entire report — provider spend, credit balances,
+          # top-consumer breakdown, failure counts — into the workflow log.
+          # This repository is PUBLIC (`gh repo view --json isPrivate` => false),
+          # and workflow logs on a public repo are readable by anyone. Removing
+          # the weekly public ISSUE while still printing the same numbers to a
+          # public LOG would have left the owner's stated goal unmet. Print only
+          # a size confirmation; the report travels by email.
+          echo "Report built: $(wc -c < /tmp/report.html) bytes of HTML"
 
       - name: Email report
         if: success()
@@ -338,20 +341,51 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
-          ISSUE_URL="${{ steps.create-issue.outputs.issue_url }}"
-          # Append link to HTML
-          sed -i "s|Broadway Scorecard automated report|<a href=\"$ISSUE_URL\">View on GitHub</a> · Broadway Scorecard automated report|" /tmp/report.html
-
+          # BRO-2957: this step used to end in
+          #   | curl -s ... -d @- || echo "Email send failed (non-fatal)"
+          # which could not report its own failure. `curl -s` without `-f`
+          # exits 0 on an HTTP 401/422/429, so the `||` branch never ran, the
+          # step went green, "Notify on failure" never fired, and
+          # check-cron-health.yml saw a successful run and stayed quiet. That
+          # was survivable only because the public GitHub issue happened to be
+          # a second copy of the report. BRO-2957 removed the issue, so a
+          # silent Resend rejection would now lose the week's report outright.
+          # Capture the status code and fail loudly instead.
           jq -n \
             --arg to "$OWNER_EMAIL" \
             --arg subject "Scraper Cost Report — $(date '+%b %d')" \
             --rawfile html /tmp/report.html \
             '{from: "Broadway Scorecard <alerts@broadwayscorecard.com>", to: [$to], subject: $subject, html: $html}' \
-          | curl -s -X POST https://api.resend.com/emails \
+            > /tmp/resend-payload.json
+
+          HTTP_CODE=$(curl -s -o /tmp/resend-response.json -w '%{http_code}' \
+            -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
-            -d @- || echo "Email send failed (non-fatal)"
+            -d @/tmp/resend-payload.json)
 
+          HTTP_CODE="${HTTP_CODE:-000}"
+          if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+            echo "::error::Resend rejected the cost report email (HTTP $HTTP_CODE)"
+            head -c 500 /tmp/resend-response.json || true
+            echo
+            echo "Re-run this workflow to regenerate and resend; the report is derived, not stored."
+            exit 1
+          fi
+          echo "Cost report emailed (HTTP $HTTP_CODE)"
+
+      # BRO-2957 follow-up: notify-failure defaults to severity 'low'
+      # (.github/actions/notify-failure/action.yml:15) and BOTH of its steps are
+      # gated `if: inputs.severity == 'critical'` (:59, :164), so with no
+      # severity passed this step runs and does nothing. That is the intended
+      # channel here, not an oversight: a weekly cost report that failed to send
+      # is not worth a real-time page (memory/email-broadcast-rules.md — alerts
+      # are for ACTION only). The failure still reaches the owner through
+      # health-check.js's daily digest, which reads workflow run status
+      # independently of this action. Stated explicitly because the first pass
+      # of BRO-2957 claimed in its commit message that exit 1 made this step
+      # "actually fire" — it fails the job, which is what the digest reads, but
+      # this action itself sends nothing.
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

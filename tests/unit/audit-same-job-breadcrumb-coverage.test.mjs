@@ -27,6 +27,7 @@ const {
   auditRepo,
   main,
   ACTION_EXTRA_PROTECTED,
+  findMatchingParen,
 } = require(path.join(repoRoot, 'scripts/audit-same-job-breadcrumb-coverage.js'));
 const { PROTECTED_FIELDS, CLEAR_BREADCRUMBS } =
   require(path.join(repoRoot, 'scripts/lib/review-write-guard.js'));
@@ -316,16 +317,32 @@ test('findForceTrueClearSites: exact field match on the real strip-stale-single-
   assert.deepEqual([...fields].sort(), ['assignedScore', 'ensembleData', 'llmMetadata', 'llmScore']);
 });
 
-test('findForceTrueClearSites: correctly resolves 11 independent call sites in the real rebuild-all-reviews.js with no cross-attribution (positive control, large-file/generic-var-name case the second-opinion AND adversarial ship-check reviews both flagged)', () => {
+test('findForceTrueClearSites: resolves at least 11 independent call sites in the real rebuild-all-reviews.js with no cross-attribution (positive control, large-file/generic-var-name case the second-opinion AND adversarial ship-check reviews both flagged)', () => {
   const src = fs.readFileSync(path.join(repoRoot, 'scripts/rebuild-all-reviews.js'), 'utf8');
   const sites = findForceTrueClearSites(src, new Set(PROTECTED_FIELDS));
-  // 11 call sites carry a protected clear as of this writing (up from 5 before
-  // the balanced-parens argument parser fix — the adversarial ship-check
-  // review found the prior `[^,]+`-based first-arg regex silently produced
-  // zero matches on `safeWriteReview(path.join(showDir, file), data, {force:
-  // true})`, live at 7 of this file's call sites). Each site's fields must
-  // come only from its own immediately-preceding statements.
-  assert.equal(sites.length, 11);
+  // This is a POSITIVE CONTROL on the parser, not an inventory of the file.
+  // What it must catch is the parser silently under-matching: the prior
+  // `[^,]+`-based first-arg regex produced ZERO matches on
+  // `safeWriteReview(path.join(showDir, file), data, {force: true})`, live at
+  // 7 of this file's call sites, and the balanced-parens fix took it 5 -> 11.
+  //
+  // An EXACT count asserted that property by proxy and got it wrong: it also
+  // fails every time someone legitimately adds a protected clear to
+  // rebuild-all-reviews.js, which is normal churn in an actively-edited
+  // 4000-line file. That is what turned main red on 2026-08-27 (site 12
+  // landed at line 1517 with correctly-attributed fields and nothing about
+  // the parser had regressed). Asserting a FLOOR keeps the under-matching
+  // regression caught — 0 or 5 still fails loudly — without coupling a parser
+  // test to the file's current call-site inventory.
+  //
+  // Over-matching is caught by the per-field allowlist below, which is the
+  // real cross-attribution guard: a site invented by a runaway window would
+  // pull in fields from an unrelated statement and trip it.
+  assert.ok(sites.length >= 11,
+    `expected the balanced-parens parser to still resolve at least 11 protected-clear ` +
+    `call sites in rebuild-all-reviews.js, got ${sites.length} — a DROP means the ` +
+    `argument parser has regressed (it silently returned 0 before the fix), not that ` +
+    `the file changed`);
   const allowedFields = [
     'wrongProduction', 'wrongProductionNote', 'wrongProductionReason',
     'wrongShow', 'wrongShowNote', 'wrongShowReason',
@@ -575,4 +592,37 @@ test('ACTION_EXTRA_PROTECTED stays in sync with the real push-review-texts/actio
 // assertion about whether a try/catch exists. ──
 test('main(): runs to completion without throwing against the real repo', () => {
   assert.doesNotThrow(() => main());
+});
+
+// --- findMatchingParen must not desync on regex literals (cousin of BRO-109) ---
+//
+// An unescaped paren inside a regex character class (e.g. `/\(/g`) is a real
+// source shape (see scripts/lib/wiki-utils.js's brace-scrubbing siblings). If
+// findMatchingParen doesn't skip regex literals, the stray `(` inside the
+// regex desyncs its depth counter, returning -1 (or the wrong index) instead
+// of the call's real closing paren.
+
+test('findMatchingParen skips a paren hidden inside a regex literal', () => {
+  const src = "foo(/\\(/g, 'x')";
+  const openIdx = src.indexOf('(');
+  const closeIdx = findMatchingParen(src, openIdx);
+  assert.equal(closeIdx, src.length - 1, 'desynced on the paren-like char inside the regex literal');
+});
+
+test('findMatchingParen: real-corpus regex (scripts/lib/wiki-utils.js) does not desync a later safeWriteReview(...) scan', () => {
+  const wikiSrc = fs.readFileSync(path.join(repoRoot, 'scripts/lib/wiki-utils.js'), 'utf8');
+  const src = `${wikiSrc}\nsafeWriteReview(showId, data, { force: true });\n`;
+  const callIdx = src.indexOf('safeWriteReview(');
+  const openParenIdx = callIdx + 'safeWriteReview'.length;
+  const closeParenIdx = findMatchingParen(src, openParenIdx);
+  assert.notEqual(closeParenIdx, -1, 'desynced somewhere in wiki-utils.js before reaching the real call');
+  assert.equal(src[closeParenIdx], ')');
+  assert.ok(src.slice(openParenIdx, closeParenIdx + 1).includes('force: true'));
+});
+
+test('findForceTrueClearSites finds a force:true clear even with real-corpus regex content earlier in the file', () => {
+  const wikiSrc = fs.readFileSync(path.join(repoRoot, 'scripts/lib/wiki-utils.js'), 'utf8');
+  const src = `${wikiSrc}\nsafeWriteReview(showId, reviewData, { force: true });\nreviewData.wrongProduction = false;\n`;
+  const sites = findForceTrueClearSites(src, PROTECTED_FIELDS);
+  assert.ok(Array.isArray(sites), 'expected an array of clear sites even with a regex-heavy file prefix');
 });

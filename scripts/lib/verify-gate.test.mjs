@@ -61,6 +61,30 @@ test('a real command alongside VERIFY: owner-judgment is preserved, not dropped 
   assert.equal(r.ownerJudgment, true);
 });
 
+// BRO-2585: the card-writing convention is `VERIFY: <cmd>` with no
+// backticks — the dispatch seed template documents exactly this shape — and
+// the gate used to refuse it outright.
+test('a VERIFY: <cmd> line with no backticks arms the gate', () => {
+  const r = evaluateVerifiability('## Problem\nSomething is broken.\n\nVERIFY: node --test scripts/lib/verify-gate.test.mjs');
+  assert.equal(r.armed, true);
+  assert.equal(r.cmd, 'node --test scripts/lib/verify-gate.test.mjs');
+  assert.equal(r.reason, null);
+});
+
+// BRO-2585 repro: an incidental backticked non-command word earlier in the
+// acceptance prose must not become "the candidate" and mask a real,
+// un-backticked VERIFY: command later in the section.
+test('an incidental backticked non-command earlier in the section does not prevent a real command later in it from being found', () => {
+  const notes = `## Acceptance criteria
+A regression test proving a workspace that is still running is never classified \`dead\` by that path, plus a count of how many historical \`dead\` rows are contradicted by a later session report.
+
+VERIFY: node --test scripts/lib/dispatch-guards.test.mjs`;
+  const r = evaluateVerifiability(notes);
+  assert.equal(r.armed, true);
+  assert.equal(r.cmd, 'node --test scripts/lib/dispatch-guards.test.mjs');
+  assert.equal(r.reason, null);
+});
+
 test('empty/null notes are unarmed, not a crash', () => {
   assert.equal(evaluateVerifiability(null).armed, false);
   assert.equal(evaluateVerifiability(undefined).armed, false);

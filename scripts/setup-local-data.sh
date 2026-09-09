@@ -232,18 +232,44 @@ if [ "${1:-}" = "--all" ]; then
     fi
   fi
 
-  # Copy review text directories (exclude .git and aggregator-archive)
-  rsync -a --exclude='.git' --exclude='aggregator-archive' "$TEMP_DIR/review-texts/" "$DATA_DIR/review-texts/"
-  RT_COUNT=$(find "$DATA_DIR/review-texts" -name "*.json" -type f | wc -l | tr -d ' ')
-  echo "Review texts: $RT_COUNT files copied to data/review-texts/"
+  # rsync isn't installed in every environment this script runs in (cloud
+  # sessions built from a minimal image) — `rsync: command not found` failed
+  # silently here (no `set -e`, the follow-on `find`/echo still ran against
+  # whatever was already in $DATA_DIR/review-texts from a prior, possibly
+  # stale copy), so `--all` looked like it worked while actually copying
+  # nothing (2026-09-02 incident: an opening-night show's review-texts stayed
+  # at an 11-show snapshot from a much earlier run). `cp -a` is POSIX-ish and
+  # present on every image `git`/`node` already require; strip `.git` and
+  # peel off `aggregator-archive` into its own destination first (rsync's
+  # `--exclude` behavior) rather than excluding on copy.
+  rm -rf "$TEMP_DIR/review-texts/.git"
 
-  # Copy aggregator-archive to its own directory
+  # Copy aggregator-archive to its own directory (peeled off before the main
+  # copy below so it doesn't also land under data/review-texts/)
   if [ -d "$TEMP_DIR/review-texts/aggregator-archive" ]; then
     mkdir -p "$DATA_DIR/aggregator-archive"
-    rsync -a "$TEMP_DIR/review-texts/aggregator-archive/" "$DATA_DIR/aggregator-archive/"
+    # This script runs under `set -uo pipefail` with NO -e, so an unchecked
+    # copy failure falls through to a find|wc that counts whatever was already
+    # on disk and prints a plausible "N files copied". That is the silent
+    # no-op this block is supposed to have fixed: swapping rsync for cp changed
+    # the tool, not the bug class. Check the status explicitly.
+    if ! cp -a "$TEMP_DIR/review-texts/aggregator-archive/." "$DATA_DIR/aggregator-archive/"; then
+      echo "FATAL: cp of aggregator-archive failed — refusing to report a count from stale contents." >&2
+      exit 1
+    fi
     AA_COUNT=$(find "$DATA_DIR/aggregator-archive" -type f | wc -l | tr -d ' ')
     echo "Aggregator archive: $AA_COUNT files copied to data/aggregator-archive/"
+    # Only after a VERIFIED copy — deleting the source on a failed copy loses it.
+    rm -rf "$TEMP_DIR/review-texts/aggregator-archive"
   fi
+
+  # Copy review text directories
+  if ! cp -a "$TEMP_DIR/review-texts/." "$DATA_DIR/review-texts/"; then
+    echo "FATAL: cp of review-texts failed — refusing to report a count from stale contents." >&2
+    exit 1
+  fi
+  RT_COUNT=$(find "$DATA_DIR/review-texts" -name "*.json" -type f | wc -l | tr -d ' ')
+  echo "Review texts: $RT_COUNT files copied to data/review-texts/"
 fi
 
 echo ""

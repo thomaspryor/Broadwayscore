@@ -42,7 +42,11 @@ git init -q "$WORK/seed"
   git push -q origin main
 )
 
-git clone -q "$WORK/origin.git" "$WORK/main-checkout"
+# --branch main pinned (BRO-2597 cousin): the bare origin's HEAD is never
+# set, so without it this clone picks whatever init.defaultBranch the host
+# configures, which can leave the checkout empty on hosts where that
+# default isn't "main".
+git clone -q --branch main "$WORK/origin.git" "$WORK/main-checkout"
 (
   cd "$WORK/main-checkout"
   git config user.email t@example.com

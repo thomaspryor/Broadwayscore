@@ -12,6 +12,8 @@ const {
   updateTodayTixMissingState,
   decideTodayTixCandidates,
   shouldSuppressCandidate,
+  findTitleOffsets,
+  selectAutoApplyClosures,
 } = require('./ob-closing-detector.js');
 
 // --- extractClosingDateMentions: date-pattern extraction ---
@@ -212,4 +214,137 @@ test('suppress: recent past and future proposals on date-less shows are actionab
   const show = { id: 'my-joy-2025', closingDate: null, status: 'open' };
   assert.equal(shouldSuppressCandidate(show, '2026-04-05', '2026-07-12'), null);
   assert.equal(shouldSuppressCandidate(show, '2026-09-11', '2026-07-12'), null);
+});
+
+// --- title-proximity disambiguation (multi-show roundup columns) ---
+//
+// Regression for the 2026-09-08 Spellbound miss: the show's only text-bearing
+// review was a Times Square Chronicles roundup covering three productions, so
+// the sweep saw "Sept 6" (correct), "Sept 13" and "Sept 19" (other shows),
+// treated that as disagreement, and dropped the show entirely.
+
+const ROUNDUP_TEXT = [
+  'Spellbound at SoHo Playhouse runs through September 6, a limited engagement.',
+  'x'.repeat(4000),
+  'Another Opening plays at the Lortel through September 13 before touring.',
+  'y'.repeat(4000),
+  'A Third Show continues at the Cherry Lane through September 19.',
+].join(' ');
+
+test('proximity: roundup column resolves to the date nearest this show title', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20', { title: 'Spellbound' });
+  assert.deepEqual([...new Set(candidates.map((c) => c.isoDate))], ['2026-09-06']);
+  assert.ok(candidates[0].titleDistance < 300);
+});
+
+test('proximity: the roundup is unusable without a title (old behaviour preserved)', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20');
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 3);
+  assert.equal(aggregateClosingDateCandidates('s', '2026-08-19', candidates.map((c) => ({ reviewId: 'r', ...c }))), null);
+});
+
+test('proximity: a title that never appears leaves every mention in place', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20', { title: 'Some Other Play' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 3);
+});
+
+test('proximity: titles too short to anchor on are ignored', () => {
+  // "Job" would match "job" anywhere in ordinary prose.
+  const text = 'The job runs through September 6. Elsewhere, a revival plays through September 13.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Job' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 2);
+});
+
+test('proximity: two dates equally close to the title stay ambiguous', () => {
+  const text = 'Spellbound runs through September 6 and, after a transfer, through September 13.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Spellbound' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 2);
+});
+
+test('proximity: a single distinct date is returned untouched', () => {
+  const text = 'Spellbound runs through September 6. It closes September 6 at SoHo Playhouse.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Spellbound' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 1);
+});
+
+test('findTitleOffsets matches across punctuation and diacritics without shifting offsets', () => {
+  const text = 'A review of Pied \u00e0 Terre, which plays on.';
+  const offsets = findTitleOffsets(text, 'Pied a Terre');
+  assert.equal(offsets.length, 1);
+  assert.equal(text.slice(offsets[0], offsets[0] + 12), 'Pied \u00e0 Terre');
+});
+
+// --- selectAutoApplyClosures: two independent signals required ---
+
+const HIGH = { showId: 's1', proposedClosingDate: '2026-04-05', latestMentionedDate: '2026-04-05', confidence: 'high', reason: '4 reviews agree', evidence: [] };
+const OPEN_NO_DATE = { s1: { id: 's1', status: 'open' } };
+const MISSING_8 = { s1: { consecutiveMissingChecks: 8, firstMissingDate: '2026-07-13' } };
+
+test('auto-apply: high confidence + TodayTix-absent + past date + open/no-date is applied', () => {
+  const picked = selectAutoApplyClosures([HIGH], OPEN_NO_DATE, MISSING_8, '2026-09-08');
+  assert.equal(picked.length, 1);
+  assert.equal(picked[0].closingDate, '2026-04-05');
+  assert.match(picked[0].reason, /8 consecutive checks/);
+});
+
+test('auto-apply: review agreement alone is not enough (Little Shop class)', () => {
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, {}, '2026-09-08'), []);
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, { s1: { consecutiveMissingChecks: 1 } }, '2026-09-08'), []);
+});
+
+test('auto-apply: TodayTix absence alone is not enough (Drunk Shakespeare class)', () => {
+  assert.deepEqual(selectAutoApplyClosures([], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: medium confidence stays alert-only', () => {
+  const medium = { ...HIGH, confidence: 'medium' };
+  assert.deepEqual(selectAutoApplyClosures([medium], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: never closes on a future date', () => {
+  const future = { ...HIGH, proposedClosingDate: '2026-12-01' };
+  assert.deepEqual(selectAutoApplyClosures([future], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: never overwrites an existing closingDate or a closed show', () => {
+  const dated = { s1: { id: 's1', status: 'open', closingDate: '2026-11-08' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], dated, MISSING_8, '2026-09-08'), []);
+  const closed = { s1: { id: 's1', status: 'closed' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], closed, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: unknown show id is skipped rather than throwing', () => {
+  assert.deepEqual(selectAutoApplyClosures([HIGH], {}, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: refuses when a later date is mentioned (extension guard)', () => {
+  // Shifters (2026): nine reviews agree on 2026-08-30 while later reviews say
+  // 09-13 and the run actually went to 09-20. Closing on the majority date
+  // would have marked a running show closed three weeks early.
+  const extended = { ...HIGH, proposedClosingDate: '2026-08-30', latestMentionedDate: '2026-09-13' };
+  assert.deepEqual(selectAutoApplyClosures([extended], OPEN_NO_DATE, MISSING_8, '2026-09-22'), []);
+});
+
+test('auto-apply: TodayTix absence must span real time, not just repeat runs', () => {
+  // Two workflow_dispatch runs an hour apart reach 2 checks the same day.
+  const sameDay = { s1: { consecutiveMissingChecks: 2, firstMissingDate: '2026-09-08' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, sameDay, '2026-09-08'), []);
+  const spanned = { s1: { consecutiveMissingChecks: 2, firstMissingDate: '2026-08-20' } };
+  assert.equal(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, spanned, '2026-09-08').length, 1);
+});
+
+test('auto-apply: missing firstMissingDate is treated as unproven, not as zero', () => {
+  const noDate = { s1: { consecutiveMissingChecks: 99 } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, noDate, '2026-09-08'), []);
+});
+
+test('aggregate: carries the latest mentioned date, not just the most-cited', () => {
+  const mentions = [
+    { reviewId: 'a', isoDate: '2026-08-30' },
+    { reviewId: 'b', isoDate: '2026-08-30' },
+    { reviewId: 'c', isoDate: '2026-09-13' },
+  ];
+  const proposal = aggregateClosingDateCandidates('s1', '2026-07-01', mentions);
+  assert.equal(proposal.proposedClosingDate, '2026-08-30');
+  assert.equal(proposal.latestMentionedDate, '2026-09-13');
 });

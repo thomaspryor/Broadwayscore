@@ -5,7 +5,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { readFileSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { createRequire } from 'node:module';
 
+const require = createRequire(import.meta.url);
 const SCRIPT = join(dirname(fileURLToPath(import.meta.url)), 'run-push-audits.sh');
 const LIB_DIR = dirname(fileURLToPath(import.meta.url));
 const LINT_SCRIPT = join(LIB_DIR, '..', 'lint-write-routing.sh');
@@ -38,7 +40,7 @@ test('tests/unit/*.test.mjs selects tests-vs-derived-data + orphan-tests', () =>
 test('scripts/*.js selects unbounded-fetch + write-routing + help-flag-safety', () => {
   assert.deepEqual(
     listAudits(['scripts/recover-wsj-browser.js']),
-    ['help-flag-safety', 'unbounded-fetch', 'write-routing']
+    ['cmux-spawn-credential', 'help-flag-safety', 'unbounded-fetch', 'write-routing']
   );
 });
 
@@ -56,11 +58,42 @@ test('tests/e2e/*.ts selects playwright-evaluate-click only', () => {
   assert.deepEqual(listAudits(['tests/e2e/foo.spec.ts']), ['playwright-evaluate-click']);
 });
 
-test('.github/workflows/*.yml selects unbounded-fetch', () => {
+test('.github/workflows/*.yml selects unbounded-fetch + the workflow-subject guards (BRO-2785)', () => {
   assert.deepEqual(listAudits(['.github/workflows/test.yml']), [
     'orphan-tests',
     'tests-vs-derived-data',
     'unbounded-fetch',
+    'workflow-actionlint',
+    'workflow-concurrency',
+    'workflow-line-length',
+  ]);
+});
+
+// A change to the GUARD files themselves (not just their .yml subject) must
+// still select them — same "or the guard script / its inputs" pattern the
+// other blocks in this file already follow (see the unbounded-fetch and
+// write-routing triggers above). Both fixture paths also happen to match
+// pre-existing scripts/*.js triggers (unbounded-fetch, help-flag-safety,
+// write-routing) — that overlap is correct, not a bug this card introduces.
+test('a change to workflow-line-length.js alone selects workflow-line-length (plus its own scripts/*.js triggers)', () => {
+  assert.deepEqual(listAudits(['scripts/lib/workflow-line-length.js']), [
+    'cmux-spawn-credential',
+    'unbounded-fetch',
+    'workflow-actionlint',
+    'workflow-concurrency',
+    'workflow-line-length',
+  ]);
+});
+
+test('a change to audit-workflow-concurrency.js alone selects workflow-concurrency (plus its own scripts/*.js triggers)', () => {
+  assert.deepEqual(listAudits(['scripts/audit-workflow-concurrency.js']), [
+    'cmux-spawn-credential',
+    'help-flag-safety',
+    'unbounded-fetch',
+    'workflow-actionlint',
+    'workflow-concurrency',
+    'workflow-line-length',
+    'write-routing',
   ]);
 });
 
@@ -71,6 +104,7 @@ test('argv form (no stdin) matches piped-stdin form', () => {
     { encoding: 'utf8' }
   );
   assert.deepEqual(out.trim().split('\n').filter(Boolean).sort(), [
+    'cmux-spawn-credential',
     'help-flag-safety',
     'unbounded-fetch',
     'write-routing',
@@ -82,14 +116,14 @@ test('scripts/*.mjs and scripts/*.ts also select write-routing (not just .js)', 
   // checks cover .js/.mjs/.ts writers; the local push-time trigger must be
   // able to fire on all three too, or a top-level .mjs/.ts writer silently
   // skips the local gate and is only caught later in CI (task #1826 review).
-  assert.deepEqual(listAudits(['scripts/write-shows.mjs']), ['unbounded-fetch', 'write-routing']);
-  assert.deepEqual(listAudits(['scripts/write-shows.ts']), ['unbounded-fetch', 'write-routing']);
+  assert.deepEqual(listAudits(['scripts/write-shows.mjs']), ['cmux-spawn-credential', 'unbounded-fetch', 'write-routing']);
+  assert.deepEqual(listAudits(['scripts/write-shows.ts']), ['cmux-spawn-credential', 'unbounded-fetch', 'write-routing']);
 });
 
 test('mixed file list unions all applicable audits', () => {
   assert.deepEqual(
     listAudits(['scripts/foo.js', 'tests/unit/bar.test.mjs', 'tests/e2e/baz.spec.ts']),
-    ['help-flag-safety', 'orphan-tests', 'playwright-evaluate-click', 'tests-vs-derived-data', 'unbounded-fetch', 'write-routing']
+    ['cmux-spawn-credential', 'help-flag-safety', 'orphan-tests', 'playwright-evaluate-click', 'tests-vs-derived-data', 'unbounded-fetch', 'write-routing']
   );
 });
 
@@ -195,6 +229,58 @@ test('--scope-stdin: an allowlist-only diff falls back to a full scan (does not 
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+// --- BRO-2785: workflow-subject guard floor ---------------------------------
+//
+// Proves the actual defect the card reports: a .github/workflows/*.yml line
+// over the 500-char cap is DETECTED by the same findLongLines() function
+// tests/unit/workflow-line-length.test.mjs runs (the card's own VERIFY
+// command), and that run-push-audits.sh's new trigger (asserted via --list
+// above) actually SELECTS that check for a workflow-only diff — not just each
+// half in isolation.
+
+test('findLongLines detects a 504-char line (the exact BRO-2771 shape) and reports the correct line/length', () => {
+  const { findLongLines } = require(join(LIB_DIR, 'workflow-line-length.js'));
+  const dir = mkdtempSync(join(tmpdir(), 'workflow-line-length-fixture-'));
+  try {
+    writeFileSync(
+      join(dir, 'fixture.yml'),
+      `on: push\njobs:\n  x:\n    steps:\n      - run: echo "${'a'.repeat(490)}"\n`
+    );
+    const violations = findLongLines(dir);
+    assert.equal(violations.length, 1);
+    assert.equal(violations[0].file, 'fixture.yml');
+    assert.equal(violations[0].line, 5);
+    assert.ok(violations[0].length > 500, `expected >500 chars, got ${violations[0].length}`);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('findLongLines passes on a well-formed workflow with no long lines', () => {
+  const { findLongLines } = require(join(LIB_DIR, 'workflow-line-length.js'));
+  const dir = mkdtempSync(join(tmpdir(), 'workflow-line-length-fixture-'));
+  try {
+    writeFileSync(join(dir, 'fixture.yml'), 'on: push\njobs:\n  x:\n    steps:\n      - run: echo hi\n');
+    assert.deepEqual(findLongLines(dir), []);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// End-to-end (real repo, not a scratch fixture — reusing the file's own
+// established pattern from the write-routing test below): run-push-audits.sh
+// must actually RUN workflow-line-length + workflow-concurrency for a
+// workflow-only diff, and the live .github/workflows/ tree (which CI already
+// keeps green) must pass both.
+test('end-to-end: run-push-audits.sh runs the new workflow-subject guards and they pass on the live repo', () => {
+  const out = execFileSync('bash', [SCRIPT], {
+    input: '.github/workflows/check-cron-health.yml\n',
+    encoding: 'utf8',
+  });
+  assert.doesNotMatch(out, /AUDIT BLOCKED: workflow-line-length/);
+  assert.doesNotMatch(out, /AUDIT BLOCKED: workflow-concurrency/);
 });
 
 test('no --scope-stdin (CI direct-call mode) still scans the whole tree', () => {

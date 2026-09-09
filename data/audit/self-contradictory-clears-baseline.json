@@ -1,6 +1,6 @@
 {
-  "count": 776,
-  "tolerance": 25,
-  "recordedAt": "2026-08-14",
-  "note": "Structural backlog — see the BASELINE_TOLERANCE comment in scripts/audit-self-contradictory-clears.js. --fix is NOT a safe drain (it excludes 438 scored reviews)."
+  "count": 11,
+  "tolerance": 15,
+  "recordedAt": "2026-09-01",
+  "note": "BRO-185: drained 776 -> 11 via --fix-safe (isZeroScoreImpactFix against the canonical isIncludableForRebuild + getBestScore, not a classifyContentTier proxy — see scripts/lib/flag-contradiction.js). The residual is no longer a large structural backlog: every remaining hit has a wrongProduction/wrongShow auto-clear stamped within the last few days (still inside the 7-day freshness window review-write-guard.js's isFreshWrongProductionAutoClear uses), so resolving it actually would move a live score right now — genuine adjudication candidates. Re-running --fix-safe periodically (it is safe to run unattended) should keep this near zero as fresh flags age out; tolerance 15 (not the old 25) absorbs a few days of new fresh flags without flapping, while still catching a real regression. See scripts/audit-self-contradictory-clears.js's BASELINE_TOLERANCE comment and memory/feedback_audit_fix_remediation_untrusted.md."
 }

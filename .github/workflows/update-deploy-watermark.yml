@@ -39,18 +39,63 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Checkout core data
-        uses: ./.github/actions/checkout-core-data
-        with:
-          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
           node-version: '20'
 
+      - name: Check watermark throttle
+        id: throttle
+        # BRO-2983: this run was previously dispatched (and wrote a commit) on
+        # EVERY deploy — ~121 commits/day to main, starving other jobs'
+        # pushes. Throttled to at most once per WATERMARK_MIN_INTERVAL_MIN via
+        # scripts/lib/deploy-watermark-throttle.js (fails OPEN — dispatches —
+        # on a missing/unparseable timestamp, mirroring should-deploy-gate.js's
+        # staleness-tolerant design). Deliberately placed HERE, not in
+        # vercel-deploy.yml's dispatch step: this job's `concurrency` group
+        # (deploy-watermark-update, cancel-in-progress: false) serializes
+        # queued runs, so checking immediately before this run's own write —
+        # against this run's OWN fresh checkout above — can't race the way a
+        # check from a parallel, independently-checked-out deploy job would.
+        # A skipped run's showCount/reviewCount snapshot and deployed-live
+        # event are simply not recorded (not "merged" into a later run's) —
+        # the next run past the throttle records only ITS OWN data, same
+        # bounded-staleness tradeoff already accepted for the burst-drop case
+        # in the concurrency comment above.
+        # Kill switch: repo var WATERMARK_THROTTLE_DISABLED=true forces every
+        # run through (phone-operable, no code change) — mirrors
+        # DEPLOY_GATE_DISABLED in vercel-deploy.yml's should-deploy job.
+        env:
+          WATERMARK_MIN_INTERVAL_MIN: ${{ vars.WATERMARK_MIN_INTERVAL_MIN }}
+          WATERMARK_THROTTLE_DISABLED: ${{ vars.WATERMARK_THROTTLE_DISABLED }}
+        run: |
+          node -e "
+            const { shouldSkipWatermarkDispatch } = require('./scripts/lib/deploy-watermark-throttle.js');
+            const fs = require('fs');
+            if (String(process.env.WATERMARK_THROTTLE_DISABLED).toLowerCase() === 'true') {
+              console.log('::notice::[watermark-throttle] kill switch active — writing unconditionally');
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'skip=false\n');
+              process.exit(0);
+            }
+            let updatedAtRaw = '';
+            try {
+              updatedAtRaw = JSON.parse(fs.readFileSync('data/audit/deploy-watermark.json', 'utf8')).updatedAt || '';
+            } catch {}
+            const parsed = parseInt(process.env.WATERMARK_MIN_INTERVAL_MIN, 10);
+            const intervalMinutes = Number.isFinite(parsed) && parsed > 0 ? parsed : 30;
+            const r = shouldSkipWatermarkDispatch({ updatedAtRaw, nowMs: Date.now(), intervalMinutes });
+            console.log('::notice::[watermark-throttle] ' + r.reason);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, 'skip=' + (r.skip ? 'true' : 'false') + '\n');
+          "
+
+      - name: Checkout core data
+        if: steps.throttle.outputs.skip != 'true'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Emit deployed-live stage-latency event
-        if: inputs.deployed_at != ''
+        if: steps.throttle.outputs.skip != 'true' && inputs.deployed_at != ''
         env:
           DEPLOYED_AT: ${{ inputs.deployed_at }}
           DEPLOY_SHA: ${{ inputs.deploy_sha }}
@@ -74,6 +119,7 @@ jobs:
           "
 
       - name: Update watermark
+        if: steps.throttle.outputs.skip != 'true'
         run: |
           node scripts/pre-deploy-check.js > /dev/null 2>&1 || true
           git config user.name "github-actions[bot]"

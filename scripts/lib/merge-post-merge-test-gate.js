@@ -23,13 +23,79 @@
 //   branch intact instead of shipping it.
 //
 // SCOPE
-//   Deliberately narrow: only scripts/lib/*.test.mjs (the same glob CI's
-//   "Run scripts/lib tests" step already runs — see .github/workflows/test.yml).
-//   That's the shape most susceptible to this collision (many independent
-//   sessions land colocated lib helpers + contract tests concurrently) and
-//   it's fast (~4min, matching CI). A broader floor (full suite, tests/unit/)
-//   would slow every merge down for a class of collision this glob doesn't
-//   see; widen the scope here if that class recurs outside scripts/lib/.
+//   Three change classes, each mapped to the tests that can catch its
+//   collisions. A merge touching none of them still runs nothing.
+//
+//   scripts/lib/**  -> scripts/lib/*.test.mjs (the same glob CI's "Run
+//   scripts/lib tests" step already runs). That's the shape most susceptible
+//   to the collision above (many independent sessions land colocated lib
+//   helpers + contract tests concurrently) and it's fast (~4min, matching CI).
+//
+//   .github/workflows/**  -> the workflow-subject guards under tests/unit/
+//   (BRO-2785). Added 2026-09-04 after a workflow-only merge reported a clean
+//   green and reddened main minutes later: the floor was scoped to
+//   scripts/lib/ alone, so a diff touching ONLY .github/workflows/** selected
+//   no tests, and runTestGate returned {ran:false, passed:true} — a skip that
+//   is indistinguishable from a pass in the log. The concrete miss was a
+//   504-char line against the 500-char cap in
+//   tests/unit/workflow-line-length.test.mjs; CI on main was the first signal,
+//   i.e. after main was already red. Note the "Lint Workflows" job (actionlint)
+//   passed that same run, so actionlint does NOT subsume these guards.
+//
+//   COST: a workflow-touching merge pays one ~29s run (26 files, 384 tests,
+//   measured 2026-09-04) where before it ran nothing at all. Guards that
+//   cannot pass locally are excluded by name — see EXCLUDED_WORKFLOW_GUARDS —
+//   so the normal case passes on the merged run and never builds a baseline
+//   checkout.
+//
+//   scripts/**/*.{js,mjs,cjs}  -> tests/unit/<basename>.test.mjs (BRO-3063). Added
+//   2026-09-08 after TWO merges in one session shipped this exact shape: (1)
+//   scripts/lib/landed-but-open-reconciler.js changed, its colocated
+//   scripts/lib/*.test.mjs suite passed, but tests/unit/landed-but-open-reconciler.test.mjs
+//   — outside that glob — broke, and the floor (armed, scoped to the glob
+//   only) reported green; CI caught it minutes later. (2)
+//   scripts/linear-drain-parked.js (a TOP-LEVEL scripts/ file, not
+//   scripts/lib/) changed and broke tests/unit/linear-drain-parked.test.mjs,
+//   but the floor never armed at all — "no scripts/lib/ or
+//   .github/workflows/ files changed" — because arming was scoped to
+//   scripts/lib/ specifically. Both incidents follow the same repo
+//   convention (source basename == test basename), so this floor closes both
+//   by basename correspondence rather than widening any glob: for every
+//   changed scripts/**/*.{js,mjs,cjs} file, run tests/unit/<basename>.test.mjs if
+//   it exists. No file mapping to nothing (no such test written yet) selects
+//   nothing and costs nothing — unlike the workflow class above, this one has
+//   no "must always find something" invariant, since a scripts/ file with no
+//   corresponding tests/unit test is a normal, unprotected case, not a
+//   discovery failure.
+//
+//   Two different files can share a basename (e.g. scripts/foo.js and
+//   scripts/lib/foo.js both map to tests/unit/foo.test.mjs) — selectTestFiles'
+//   existing de-dup means the test just runs once either way, which is
+//   correct: it's the same assertion regardless of which source triggered it.
+//
+//   KNOWN LIMIT — same-key masking on AGGREGATE guards. The baseline diff
+//   keys failures by <file>::<test name> (parseTapOutput), so a guard that
+//   makes ONE assertion over MANY inputs reports the same key no matter which
+//   input violated it. workflow-line-length.test.mjs is exactly that shape:
+//   one test over every workflow file. If origin/main is ALREADY failing it,
+//   a NEW violation added by the merge produces the same key, matches the
+//   baseline, and is classified pre-existing — so it does not block. This is
+//   a property of the #1433 baseline design rather than of workflow coverage
+//   specifically, and it degrades gracefully: the floor still catches the
+//   case that actually happened in BRO-2785 (main GREEN on the guard, the
+//   merge breaks it). It is NOT a reason to skip the floor — before this,
+//   that case was not caught either. Tracked separately; do not read a green
+//   floor as proof when main is already red on an aggregate guard.
+//
+//   Guard selection is REQUIRED + DISCOVERED - EXCLUDED (see the three
+//   definitions below listTestFiles). The required list pins the guards that
+//   must never silently drop out; content discovery adds any newly written
+//   guard without editing this file, keeping the self-maintaining property the
+//   scripts/lib/ glob has. Measured 2026-09-04: 25 files, ~29s — cheap enough
+//   for a merge gate.
+//
+//   A broader floor (the full suite) would slow every merge down for classes
+//   these globs don't see; widen the scope here if such a class recurs.
 //
 // BASELINE DIFF (card #1433)
 //   The floor above blocked on ANY failing test, including ones that were
@@ -68,6 +134,7 @@ const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const { parseTapOutput } = require('./tap-failure-parser.js');
+const { execErrorDetail } = require('./exec-error-detail.js');
 
 // Matches acceptance-check-core.js's own CHECK_TIMEOUT_MS convention — "a
 // hang is worse than a failure" applies equally to this gate's two spawns.
@@ -90,10 +157,59 @@ function safeRealpath(p) {
   }
 }
 
-// Pure: does this set of changed files require running the scripts/lib/
-// colocated test floor? No I/O — trivially unit-testable.
+// The two change-class prefixes the floor knows how to test. Kept as named
+// constants because both shouldRunTestGate() and selectTestFiles() must agree
+// on them: if they ever disagree, the gate either runs nothing while claiming
+// to have run (the BRO-2785 failure mode) or spawns `node --test` with an
+// empty file list.
+const LIB_PREFIX = 'scripts/lib/';
+const WORKFLOW_PREFIX = '.github/workflows/';
+const SCRIPTS_PREFIX = 'scripts/';
+// The repo's real non-test script source extensions (BRO-3063 review found
+// scripts/newsletter/*.mjs, scripts/llm-scoring/*.mjs, scripts/visual-qa.mjs,
+// etc. — '.js'-only silently misses a whole class of scripts/ files). Test
+// files themselves are `*.test.mjs`, excluded explicitly below rather than by
+// extension, since ".test.mjs" ends in ".mjs" the same as a real source file.
+// '.cjs' included for parity with the post-merge SYNTAX floor in
+// merge-worktree-to-main.sh (`scripts/*.js|scripts/*.mjs|scripts/*.cjs`) even
+// though no .cjs file exists under scripts/ today (Codex adversarial review,
+// 2026-09-08) — the first one written should get semantic coverage from day
+// one, not silently pass syntax-only.
+const SCRIPT_SOURCE_EXTENSIONS = ['.js', '.mjs', '.cjs'];
+
+// Pure: did this change touch scripts/lib/ ? No I/O — trivially unit-testable.
+function touchesLib(changedFiles) {
+  return (changedFiles || []).some((f) => f.startsWith(LIB_PREFIX));
+}
+
+// Pure: did this change touch a workflow file? Directory prefix only — a
+// path merely CONTAINING the string (say a fixture named
+// docs/.github/workflows-notes.md) is not a workflow.
+function touchesWorkflows(changedFiles) {
+  return (changedFiles || []).some((f) => f.startsWith(WORKFLOW_PREFIX));
+}
+
+// Pure: is `f` a real (non-test) scripts/ source file — anywhere under
+// scripts/, not just scripts/lib/ (BRO-3063's incident 2 was a top-level
+// scripts/*.js file, which this deliberately also matches; scripts/lib/*.js
+// files match too, and that overlap with touchesLib is intentional, not a
+// bug — see selectTestFiles).
+function isScriptSourceFile(f) {
+  if (!f.startsWith(SCRIPTS_PREFIX)) return false;
+  if (f.endsWith('.test.mjs')) return false;
+  return SCRIPT_SOURCE_EXTENSIONS.some((ext) => f.endsWith(ext));
+}
+
+// Pure: did this change touch any scripts/ source file, lib or top-level?
+// No I/O — trivially unit-testable.
+function touchesScripts(changedFiles) {
+  return (changedFiles || []).some(isScriptSourceFile);
+}
+
+// Pure: does this set of changed files require running the test floor at all?
+// No I/O — trivially unit-testable.
 function shouldRunTestGate(changedFiles) {
-  return (changedFiles || []).some((f) => f.startsWith('scripts/lib/'));
+  return touchesLib(changedFiles) || touchesWorkflows(changedFiles) || touchesScripts(changedFiles);
 }
 
 // List the scripts/lib/*.test.mjs files present in `cwd` (same glob as CI's
@@ -107,6 +223,129 @@ function listColocatedTestFiles(cwd) {
     .filter((f) => f.endsWith('.test.mjs'))
     .sort()
     .map((f) => path.join('scripts', 'lib', f));
+}
+
+// Guards that MUST be in the selected set for any workflow change, named
+// explicitly because content discovery below cannot be relied on to find
+// them. workflow-line-length.test.mjs — the guard whose miss IS BRO-2785 —
+// builds its path from separate '.github' and 'workflows' path.join()
+// segments, so the only contiguous ".github/workflows" in the file is its
+// human-readable TEST TITLE. Discovery matches it by accident; rewording that
+// title would silently drop the exact guard this gate exists to run, which is
+// the same invisible-non-execution failure as the original bug (Codex
+// adversarial review, 2026-09-04).
+//
+// A required guard that is missing from the tree is NOT thrown on here — a
+// baseline checkout of an older sha can legitimately predate a guard, and
+// throwing mid-merge would block every session. The invariant is enforced
+// loudly instead by a colocated test ("every REQUIRED_WORKFLOW_GUARDS entry
+// exists"), which runs in CI and in this same floor.
+const REQUIRED_WORKFLOW_GUARDS = [path.join('tests', 'unit', 'workflow-line-length.test.mjs')];
+
+// Guards deliberately kept OUT of the floor, each with the reason it cannot
+// run here. These are excluded on their cost/soundness as a PRE-PUSH LOCAL
+// gate only; they still run in CI, where the credentials exist.
+//
+//   branch-protection.test.mjs — calls the live GitHub API and asserts on
+//   branch-protection settings that need an ADMIN token. On a developer
+//   machine it fails on essentially every run. Left in, it would (a) push
+//   every workflow merge down the failing path, paying a baseline checkout
+//   plus a second full run purely to re-learn that it was already failing,
+//   and (b) turn MERGE_TEST_GATE_SKIP_BASELINE=1 into a trap: that hatch
+//   disables the diff and restores all-or-nothing blocking, so this known
+//   failure would block every workflow merge outright.
+const EXCLUDED_WORKFLOW_GUARDS = new Set([path.join('tests', 'unit', 'branch-protection.test.mjs')]);
+
+// Pure: does this test file's SOURCE refer to the workflows directory?
+//
+// Two spellings, because matching only the first missed real guards. The
+// repo norm is to build the path with path.join(..., '.github', 'workflows',
+// ...) — 13 of 39 workflow-mentioning tests use it and never contain the
+// contiguous string, among them assert-broadcast-step-order.test.mjs and
+// stale-announced-audit-scheduled.test.mjs, both genuine subject guards that
+// a literal-only scan silently skipped (independent Claude + Codex reviews,
+// 2026-09-04). A false negative here is invisible, which is the whole failure
+// class BRO-2785 is about, so this errs toward matching.
+function mentionsWorkflowsDir(source) {
+  if (!source) return false;
+  if (source.includes('.github/workflows') || source.includes('.github\\workflows')) return true;
+  // path.join('.github', 'workflows', ...) / path.join(".github", "workflows")
+  return /['"]\.github['"]\s*,\s*['"]workflows['"]/.test(source);
+}
+
+// List the workflow-subject guards present in `cwd`: the REQUIRED ones above,
+// plus any tests/unit/*.test.mjs that mentions the .github/workflows
+// directory, minus the EXCLUDED ones. Content discovery supplements the
+// explicit list rather than replacing it — it picks up a newly added guard
+// for free (a purely hardcoded list would rot silently), while the required
+// list means the guard that matters most cannot go missing by accident.
+//
+// Reads each candidate once (~667 files, string search, no parse). Any file
+// that can't be read is skipped rather than throwing: this runs mid-merge,
+// and an unreadable test file must not abort the merge.
+function listWorkflowGuardTestFiles(cwd) {
+  const out = new Set();
+  for (const rel of REQUIRED_WORKFLOW_GUARDS) {
+    if (fs.existsSync(path.join(cwd, rel))) out.add(rel);
+  }
+  const dir = path.join(cwd, 'tests', 'unit');
+  if (fs.existsSync(dir)) {
+    for (const f of fs.readdirSync(dir).sort()) {
+      if (!f.endsWith('.test.mjs')) continue;
+      const rel = path.join('tests', 'unit', f);
+      let body;
+      try {
+        body = fs.readFileSync(path.join(cwd, rel), 'utf8');
+      } catch {
+        continue;
+      }
+      if (mentionsWorkflowsDir(body)) out.add(rel);
+    }
+  }
+  for (const rel of EXCLUDED_WORKFLOW_GUARDS) out.delete(rel);
+  return [...out].sort();
+}
+
+// Pure: the tests/unit/ path that corresponds to a scripts/ source file, by
+// basename alone (directory is deliberately ignored — this is the repo's
+// existing convention; both BRO-3063 incidents follow it exactly:
+// scripts/lib/landed-but-open-reconciler.js -> tests/unit/landed-but-open-reconciler.test.mjs,
+// scripts/linear-drain-parked.js -> tests/unit/linear-drain-parked.test.mjs).
+function correspondingUnitTestPath(scriptRelPath) {
+  const base = path.basename(scriptRelPath, path.extname(scriptRelPath));
+  return path.join('tests', 'unit', `${base}.test.mjs`);
+}
+
+// List the tests/unit/<basename>.test.mjs files that correspond to changed
+// scripts/ source files and actually exist in `cwd`. A source file with no
+// corresponding test contributes nothing — that's a normal, unprotected case,
+// not a discovery failure (contrast listWorkflowGuardTestFiles, which DOES
+// have a must-find-something invariant).
+function listCorrespondingUnitTestFiles(cwd, changedFiles) {
+  const out = new Set();
+  for (const f of changedFiles || []) {
+    if (!isScriptSourceFile(f)) continue;
+    const rel = correspondingUnitTestPath(f);
+    if (fs.existsSync(path.join(cwd, rel))) out.add(rel);
+  }
+  return [...out].sort();
+}
+
+// Pure-ish (fs reads only): the test files to run for this change set, in a
+// stable order with no duplicates.
+//
+// MUST be used for BOTH the merged tree and the baseline checkout. The
+// baseline diff in runTestGate() classifies a merged-tree failure as
+// pre-existing by looking it up in the baseline's failure map; if the two
+// runs executed DIFFERENT file sets, a pre-existing failure that simply
+// wasn't run in the baseline would be reported as NEW and block the merge.
+// Passing the same changedFiles to both calls keeps the two sets aligned.
+function selectTestFiles(cwd, changedFiles) {
+  const files = [];
+  if (touchesLib(changedFiles)) files.push(...listColocatedTestFiles(cwd));
+  if (touchesWorkflows(changedFiles)) files.push(...listWorkflowGuardTestFiles(cwd));
+  files.push(...listCorrespondingUnitTestFiles(cwd, changedFiles));
+  return [...new Set(files)].sort();
 }
 
 function defaultExec(cwd, testFiles) {
@@ -161,6 +400,35 @@ function formatFailureList(label, items) {
   return `${label} ${items.length} failure(s):\n${items.map((f) => `    - ${f.file}::${f.name}`).join('\n')}`;
 }
 
+// How the child ACTUALLY ended, as a short suffix for `reason`. BRO-2874: the
+// gate used to report only `status=${result.status}`, which prints the literal
+// string "status=null" whenever spawnSync fails at the spawn layer rather than
+// the child exiting — a timeout (SIGTERM via TEST_GATE_TIMEOUT_MS) or a spawn
+// error such as ENOBUFS. `result.error` was read NOWHERE in this file, so the
+// one field naming the real cause was discarded, and the caller in
+// scripts/merge-worktree-to-main.sh then asserted a cause it could not know.
+//
+// Reason-string only, deliberately: `mergedPassed` is `result.status === 0` and
+// nothing here feeds a predicate. A spawn error already yields status !== 0
+// (null), so it already blocks; naming it changes no decision, only the message.
+// Do NOT add `|| result.error` to any predicate — that WOULD change behavior.
+//
+// Kept ABOVE runTestGate's contract block on purpose: a comment block binds to
+// the NEXT declaration, so slotting this between that block and its function
+// silently re-pointed the whole documented contract at this helper (the exact
+// defect an adversarial review caught in the first draft of this change).
+function describeExit(result) {
+  const r = result || {};
+  // Template-literal stringification is deliberate and covers every shape:
+  // 0 -> "status=0", null -> "status=null", absent -> "status=undefined".
+  // Never collapse a null status to a falsy default — "status=null" IS the
+  // signal that the child never ran, and hiding it is the original bug.
+  const parts = [`status=${r.status}`];
+  if (r.signal) parts.push(`signal=${r.signal}`);
+  if (r.error) parts.push(`spawn error: ${execErrorDetail(r.error, 200)}`);
+  return parts.join(', ');
+}
+
 // Run the post-merge test floor. Returns { ran, passed, output, reason }.
 //   ran     — whether tests were actually executed
 //   passed  — true when ran is false (nothing to fail) OR the run exited 0
@@ -180,22 +448,63 @@ function formatFailureList(label, items) {
 // never builds a baseline checkout.
 function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null } = {}) {
   if (!shouldRunTestGate(changedFiles)) {
-    return { ran: false, passed: true, output: '', reason: 'no scripts/lib/ files changed' };
+    return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
-  const testFiles = listColocatedTestFiles(cwd);
+  const testFiles = selectTestFiles(cwd, changedFiles);
   if (testFiles.length === 0) {
-    return { ran: false, passed: true, output: '', reason: 'no scripts/lib/*.test.mjs files found' };
+    // A workflow change that selects ZERO guards is a DISCOVERY failure, not
+    // an "all clear": the repo carries workflow guards, so finding none means
+    // the selection broke (guards renamed, tests/unit moved, discovery regex
+    // stopped matching). Passing there would silently reproduce the exact
+    // BRO-2785 bug this gate exists to close, so fail instead. A lib change
+    // with no colocated tests is genuinely benign and still passes.
+    if (touchesWorkflows(changedFiles)) {
+      return {
+        ran: false,
+        passed: false,
+        output: '',
+        reason:
+          'workflow files changed but ZERO workflow guards were selected — discovery is broken (renamed guards, moved tests/unit, or a stale match). Refusing to report a pass that validated nothing; see REQUIRED_WORKFLOW_GUARDS in scripts/lib/merge-post-merge-test-gate.js',
+      };
+    }
+    return {
+      ran: false,
+      passed: true,
+      output: '',
+      reason: 'no test files found for changed paths (scripts/lib/*.test.mjs, tests/unit/<basename>.test.mjs)',
+    };
   }
   const result = execFn(cwd, testFiles);
   const output = `${result.stdout || ''}${result.stderr || ''}`;
   const mergedPassed = result.status === 0;
 
   if (mergedPassed || !makeBaselineCheckout) {
+    // This branch serves BOTH the passing and failing halves, so the reason
+    // format changed for both — on a pass nothing reads it (main() prints
+    // `reason` only on the skip and fail paths), which is why the change is
+    // invisible in practice, but "only the failure message changed" would be
+    // an inaccurate description of the edit.
+    //
+    // On the FAILING half (MERGE_TEST_GATE_SKIP_BASELINE=1, or no
+    // baseline available) `reason` is what main() prints as
+    // "post-merge test floor: FAILED (...)" — the one line the operator reads.
+    // It used to enumerate all ~402 selected filenames and carry no exit detail,
+    // so the escape hatch the die text recommends produced a message with no
+    // cause in it at all. Counts + how the child ended.
+    //
+    // The filenames are NOT unconditionally recoverable from `output`: an
+    // earlier revision of this comment claimed they were, and that is false in
+    // exactly the case that matters most — a spawn-layer failure produces EMPTY
+    // stdout/stderr, so `output` is empty too (caught by an adversarial review
+    // of this very change). The scope is still reconstructible, because
+    // selectTestFiles() is a pure function of `cwd` + `changedFiles`, but that
+    // is a re-derivation, not a recovery. The count is what goes in the reason;
+    // naming the cause matters more than naming 402 files.
     return {
       ran: true,
       passed: mergedPassed,
       output,
-      reason: `ran ${testFiles.length} file(s): ${testFiles.join(', ')}`,
+      reason: `ran ${testFiles.length} file(s); ${describeExit(result)}`,
     };
   }
 
@@ -217,7 +526,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: false,
       output: `${output}\n\n⚠ post-merge test floor: merged tree exited non-zero but no individual test failure could be parsed (crash/timeout/syntax error, not a normal assertion failure) — blocking as a fail-safe rather than risk a silent pass`,
-      reason: `ran ${testFiles.length} file(s); merged run failed unparseably (status=${result.status})`,
+      reason: `ran ${testFiles.length} file(s); merged run failed unparseably (${describeExit(result)})`,
     };
   }
   let checkout = null;
@@ -233,7 +542,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     if (!checkout || checkout.prepared === false) {
       throw new Error('baseline checkout is missing node_modules (unprepared) — cannot trust its test results');
     }
-    const baselineTestFiles = listColocatedTestFiles(baselineRoot);
+    const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles);
     let baselineFailures = new Map();
     if (baselineTestFiles.length > 0) {
       const baselineResult = execFn(baselineRoot, baselineTestFiles);
@@ -246,7 +555,12 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       // fails toward blocking, not toward a silent pass, but still isn't the
       // honest "baseline unavailable" signal this gate should give).
       if (baselineResult.status !== 0 && baselineParsed.failures.size === 0) {
-        throw new Error('baseline run exited non-zero but no individual test failure could be parsed (crash/timeout) — cannot trust it as "zero pre-existing failures"');
+        // describeExit here too, not just on the merged run (BRO-2874): the
+        // baseline child dies from the same timeouts and spawn errors, and this
+        // message is the ONLY place its cause can ever surface — the catch below
+        // folds it into "baseline checkout unavailable", which reads like broken
+        // baseline INFRASTRUCTURE rather than a crashed test process.
+        throw new Error(`baseline run exited non-zero but no individual test failure could be parsed (${describeExit(baselineResult)}) — cannot trust it as "zero pre-existing failures"`);
       }
       baselineFailures = baselineParsed.failures;
     }
@@ -281,7 +595,21 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   }
 }
 
-module.exports = { shouldRunTestGate, listColocatedTestFiles, runTestGate, diffFailingSets };
+module.exports = {
+  REQUIRED_WORKFLOW_GUARDS,
+  EXCLUDED_WORKFLOW_GUARDS,
+  shouldRunTestGate,
+  touchesLib,
+  touchesWorkflows,
+  touchesScripts,
+  correspondingUnitTestPath,
+  listCorrespondingUnitTestFiles,
+  listColocatedTestFiles,
+  listWorkflowGuardTestFiles,
+  selectTestFiles,
+  runTestGate,
+  diffFailingSets,
+};
 
 if (require.main === module) {
   const input = fs.readFileSync(0, 'utf8');

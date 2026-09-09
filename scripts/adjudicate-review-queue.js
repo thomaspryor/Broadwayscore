@@ -22,6 +22,8 @@ const require = createRequire(import.meta.url);
 const { isLondonMarket } = require('./lib/venue-classification');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -381,7 +383,34 @@ Respond with ONLY this JSON (no markdown fences):
               continue;
             }
             sourceData.wrongProduction = true;
-            sourceData.wrongProductionNote = `Auto-adjudicated: ${result.productionType}. ${result.reasoning}`;
+            sourceData.wrongProductionNote = `${ADJUDICATED_NOTE_PREFIX} ${result.productionType}. ${result.reasoning}`;
+            // BRO-2841 follow-up: shouldAutoClearWrongProduction and
+            // shouldAutoClearWrongProductionUkDualMarket (the two auto-clear
+            // predicates in wrong-production-autoclear.js this card is about)
+            // treat wrongProductionReason as the "this was a manual/adjudicated
+            // call, don't auto-clear it" signal — but until now this was the
+            // only writer of a high-confidence contamination verdict that set
+            // wrongProductionNote WITHOUT also setting wrongProductionReason,
+            // leaving both predicates unprotected. Setting it here fixes both
+            // through the field they already check, rather than adding a
+            // field-specific exemption to each one as they accrete.
+            sourceData.wrongProductionReason = `contamination-adjudicated: ${result.productionType}`;
+            // BRO-3092: re-flagging OVERRULES any earlier auto-clear, so its
+            // breadcrumb must be retracted in the same write. Leaving it
+            // standing produces the wrongProduction + wrongProductionAutoCleared
+            // self-contradiction #1020 exists to catch — and because
+            // wrongProductionAutoCleared is in PROTECTED_FIELDS, only the
+            // clearBreadcrumbRetracted stamp this helper writes lets the
+            // deletion survive push-review-texts' restore. Uses the canonical
+            // invalidateWrongProductionAutoClear() whose own docstring says
+            // every `wrongProduction = true` writer should call it — a second
+            // helper doing the same job here would drift from its
+            // freshness/liveness semantics (BRO-2708). the-car-man-west-end-
+            // 2026/north-west-end--natalia-prucnal.json (a Sheffield Lyceum tour
+            // review adjudicated national-tour after the rebuild had auto-cleared
+            // it on registry region 'london') sat undrained here and failed the
+            // drain acceptance test on main.
+            invalidateWrongProductionAutoClear(sourceData);
           } else {
             sourceData.tourCheckVerified = 'false-positive';
             sourceData.tourCheckNote = `Auto-adjudicated: legitimate ${expectedType} review. ${result.reasoning}`;

@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /**
- * Off-Broadway closing-date detector — ALERT ONLY.
+ * Off-Broadway closing-date detector.
  *
  * Off-Broadway shows have no closing-date automation (Broadway-only via
  * update-show-status.js / audit-closing-dates.js). OB runs are typically
  * 1-6 week limited engagements, so a stale `status=open` is the common case,
  * not the exception (see memory/feedback_closing_date_audit_gaps.md).
  *
- * This script never writes to shows.json. It only produces a report at
- * data/audit/ob-closing-candidates.json for human review, using two signals
- * that require no new scraping:
+ * Produces a report at data/audit/ob-closing-candidates.json, and auto-applies
+ * the subset where both signals below agree (see selectAutoApplyClosures).
+ * Everything else stays alert-only for human review. Signals, both of which
+ * require no new scraping:
  *
  *   1. Review-text sweep — scans data/review-texts/<show>/*.json fullText
  *      for closing-date boilerplate, corroborated across reviews.
@@ -20,9 +21,8 @@
  * Usage:
  *   node scripts/detect-ob-closings.js [--dry-run]
  *
- * --dry-run is accepted for forward compatibility with a future write-mode;
- * this version has no write-to-shows.json path at all, so it has no effect
- * on behavior yet. The audit report is always written (that IS the alert).
+ * --dry-run reports what it would close without touching shows.json. The audit
+ * report is written either way.
  */
 
 const fs = require('fs');
@@ -34,7 +34,11 @@ const {
   shouldSuppressCandidate,
   updateTodayTixMissingState,
   decideTodayTixCandidates,
+  selectAutoApplyClosures,
 } = require('./lib/ob-closing-detector');
+const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+const { writeClosingDate } = require('./lib/closing-date-guard');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -103,7 +107,9 @@ function runReviewTextSweep(obShows) {
       }
       if (!data.fullText) continue;
       const reviewId = `${show.id}/${file}`;
-      const candidatesForReview = extractClosingDateCandidates(data.fullText, data.publishDate);
+      const candidatesForReview = extractClosingDateCandidates(data.fullText, data.publishDate, {
+        title: show.title,
+      });
       for (const c of candidatesForReview) {
         reviewMentions.push({ reviewId, isoDate: c.isoDate, quote: c.quote });
       }
@@ -150,7 +156,64 @@ function runTodayTixStalenessDiff(obShows) {
   return { checked: candidateShowIds.length, candidates, skipped: false };
 }
 
+/**
+ * Writes the two-signal-confirmed closures to shows.json. Anything short of
+ * both signals is left for the alert path.
+ */
+function applyConfirmedClosures(showsData, candidates, dryRun, todaytixSkipped) {
+  // Without a fresh TodayTix feed the staleness counters are whatever the last
+  // successful run committed, which is not a second signal — it is the same
+  // signal replayed. Fall back to alert-only.
+  if (todaytixSkipped) return [];
+
+  const showsById = Object.fromEntries((showsData.shows || []).map((s) => [s.id, s]));
+  const missingState = loadJson(STATE_PATH, {});
+  const selected = selectAutoApplyClosures(candidates, showsById, missingState, todayISO());
+  if (selected.length === 0 || dryRun) return selected;
+
+  const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
+  const snapshot = loadShows();
+  const byId = Object.fromEntries(snapshot.shows.map((s) => [s.id, s]));
+  const written = [];
+  for (const closure of selected) {
+    const show = byId[closure.showId];
+    // Re-check under the write lock: a concurrent writer may have set a date
+    // between our read and this save.
+    if (!show || show.status !== 'open' || show.closingDate) continue;
+    // writeClosingDate honours humanCorrectedClosingDate and stamps
+    // closingDateSource/closingDateUpdatedAt — the same guard every other
+    // automated closing-date writer goes through.
+    if (!writeClosingDate(show, closure.closingDate, 'ob-closing-detector', { todayStr: todayISO() })) continue;
+    show.status = 'closed';
+    written.push(closure);
+  }
+  if (written.length > 0) saveShows(snapshot);
+  // Report only what actually landed: a report claiming a closure the write
+  // lock rejected would read as fixed while the site still says open.
+  return written;
+}
+
+const USAGE = `detect-ob-closings.js — find Off-Broadway shows that have closed and are still marked open.
+
+Two signals, neither of which needs new scraping:
+  1. review-text sweep — closing-date boilerplate in data/review-texts/<show>/*.json
+  2. TodayTix staleness — an open show whose todaytixId has dropped out of the feed
+
+Shows both signals agree on are closed in shows.json (see selectAutoApplyClosures for
+the full gate). Everything else is written to data/audit/ob-closing-candidates.json,
+which health-check.js surfaces in the daily digest.
+
+Usage:
+  node scripts/detect-ob-closings.js            apply confirmed closures
+  node scripts/detect-ob-closings.js --dry-run  report only, never write shows.json
+  node scripts/detect-ob-closings.js --help
+`;
+
 function main() {
+  const argv = process.argv.slice(2);
+  // --help before any read/write, per scripts/lib/cli-help.js.
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  const dryRun = argv.includes('--dry-run');
   const showsData = loadJson(SHOWS_PATH, null);
   if (!showsData) {
     console.error(`::error::${SHOWS_PATH} not found — cannot run detector.`);
@@ -162,13 +225,17 @@ function main() {
 
   const reviewTextSweep = runReviewTextSweep(obShows);
   const todaytixStaleness = runTodayTixStalenessDiff(obShows);
+  const autoApplied = applyConfirmedClosures(
+    showsData,
+    reviewTextSweep.candidates,
+    dryRun,
+    todaytixStaleness.skipped
+  );
 
   const report = {
     generatedAt: new Date().toISOString(),
-    // Alert-only version: there is no write-to-shows.json path yet, so this is
-    // always 'dry-run' regardless of the --dry-run flag (accepted for forward
-    // compatibility with a future write-mode).
-    mode: 'dry-run',
+    mode: dryRun ? 'dry-run' : 'apply',
+    autoApplied,
     reviewTextSweep: {
       scanned: reviewTextSweep.scanned,
       showsWithNoTexts: reviewTextSweep.showsWithNoTexts,

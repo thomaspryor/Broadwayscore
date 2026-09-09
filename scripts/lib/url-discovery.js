@@ -25,6 +25,7 @@ const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
 const { consultScrapingdog } = require('./scrapingdog-caps');
+const { creditsFor } = require('./provider-credits');
 
 // Scrapingdog SERP — cheap primary ahead of BD/SB SERP. Google Light Search =
 // 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default ON (see scraper.js for
@@ -285,7 +286,12 @@ const MAX_CONSECUTIVE_FAILURES = 5;
 // cap is PER PROCESS: matrix-sharded workflows (parallel_jobs=N) get N× this.
 // SERP_NO_SB=1 skips SB SERP entirely (bulk/backfill runs — an empty SD+BD
 // result there is almost always the true answer, not worth 25cr to re-ask).
-const SB_SERP_CREDITS_PER_CALL = 25;
+const SB_SERP_CREDITS_PER_CALL = creditsFor('sb', 'serp');
+// Scrapingdog SERP bills 5 credits/call. Sourced from creditsFor for the same
+// reason as SB above: an unknown mode throws here instead of writing a NaN or
+// undefined into the spend ledger, where it would read as free (BRO-3009 S1-T4;
+// this replaced two inline `5 * attemptsMade` literals).
+const SD_SERP_CREDITS_PER_CALL = creditsFor('sd', 'serp');
 const _sbSerpCapRaw = parseInt(process.env.SERP_SB_MAX_CALLS_PER_RUN || '40', 10);
 // NaN guard: a malformed env value would make `count >= NaN` never trip,
 // silently disabling the cap — default to 40 instead.
@@ -381,7 +387,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
       const organic = data.organic_results || data.organic_data || [];
       _scrapingdogSerpFailures = 0;
       // credits reflects actual attempts made — a retried call bills twice.
-      recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: 5 * attemptsMade });
+      recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: SD_SERP_CREDITS_PER_CALL * attemptsMade });
       return organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
         title: r.title || '',
@@ -397,7 +403,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   }
 
   _scrapingdogSerpFailures++;
-  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: 5 * attemptsMade });
+  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: SD_SERP_CREDITS_PER_CALL * attemptsMade });
   log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${lastError.message} — falling back to BD/SB`);
   return null;
 }

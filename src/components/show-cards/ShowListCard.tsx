@@ -9,7 +9,7 @@ import type { ScoreTier } from '@/components/show-cards';
 import { isNonTheatricalGenre } from '@/lib/genre';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
-import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix } from '@/lib/date-utils';
+import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix, formatShowDate } from '@/lib/date-utils';
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
 import { isOperaShow, OPERA_DURATION_SUFFIX, OPERA_MARKET_LABEL } from '@/lib/show-market';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -161,18 +161,18 @@ const ShowListCard = memo(function ShowListCard({
             })()}
             {show.status === 'open' && show.closingDate && (
               <span className="text-amber-400">
-                {getBroadwayDuration(show.openingDate, durationSuffix) && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                {getBroadwayDuration(show.openingDate, durationSuffix) && '·'} Closes {formatShowDate(show.closingDate)}
               </span>
             )}
             {(show.status === 'previews' || show.status === 'upcoming' || show.status === 'announced') && show.openingDate && (
               <span className="text-purple-400">
-                Opens {new Date(show.openingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                Opens {formatShowDate(show.openingDate)}
               </span>
             )}
             {(show.status === 'announced' || show.status === 'upcoming' || show.status === 'previews') && !show.openingDate && (
               <span className="text-blue-400">
                 {show.previewsStartDate
-                  ? `Previews ${new Date(show.previewsStartDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                  ? `Previews ${formatShowDate(show.previewsStartDate)}`
                   : show.status === 'announced' ? 'Announced — dates TBA' : null}
               </span>
             )}
@@ -182,7 +182,7 @@ const ShowListCard = memo(function ShowListCard({
           <span className="text-orange-400">
             {(() => {
               if (!show.closingDate) return 'Closed';
-              const when = new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+              const when = formatShowDate(show.closingDate, { month: 'short', year: 'numeric' });
               const runLen = getRunLength(show.openingDate, show.closingDate, 'short');
               return runLen ? `Closed ${when}, after ${runLen}` : `Closed ${when}`;
             })()}

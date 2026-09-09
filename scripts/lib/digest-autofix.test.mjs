@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey } = require('./digest-autofix.js');
+const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey, reconcileDigestOutcomes, isDispatchResolved } = require('./digest-autofix.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
@@ -391,6 +391,53 @@ test('runAutofix: reconciles a prior dispatch into card-pass via the shared disp
   assert.equal(resolved.cardId, '504');
 });
 
+// BRO-2506 regression: a content-hash-keyed resolvedKeys Set (the bug already
+// fixed in scripts/linear-drain-parked.js/BRO-2434 and scripts/backlog-drain.js/
+// BRO-2508) collapses two dispatches of the SAME unchanged content onto one
+// key, so the second dispatch's outcome is silently swallowed and
+// attempt-memory's checkPark (2 failures to park) can never see two failures
+// for a repeatedly-failing card. Two REAL dispatches on identical content,
+// each with its own terminal job, must each resolve independently.
+test('reconcileDigestOutcomes: two dispatches on UNCHANGED content each resolve to their own outcome (BRO-2506, not collapsed onto one key)', () => {
+  const HASH = computeContentHash({ name: 'BSC Daily: Chronically broken row' });
+  const digestLedgerEntries = [
+    { event: 'auto-dispatch', taskId: '505', contentHash: HASH, ts: '2026-08-24T12:00:00Z' },
+    { event: 'auto-dispatch', taskId: '505', contentHash: HASH, ts: '2026-08-25T12:00:00Z' },
+  ];
+  const dispatchLedgerEntries = [
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '505', jobId: 'j1', ts: '2026-08-24T12:00:05Z' },
+    { event: dispatchLedger.JOB_EVENTS.DONE, taskId: '505', jobId: 'j1', ts: '2026-08-24T12:10:00Z' },
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '505', jobId: 'j2', ts: '2026-08-25T12:00:05Z' },
+    { event: dispatchLedger.JOB_EVENTS.FAILED, taskId: '505', jobId: 'j2', ts: '2026-08-25T12:10:00Z' },
+  ];
+  const tasksById = new Map([['505', { id: 505, status: 'completed', subject: 'x' }]]);
+  const now = new Date('2026-08-26T20:00:00Z');
+  const out = reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerEntries, now);
+  assert.equal(out.length, 2, 'both dispatches must independently resolve — attempt-memory needs two card-fail entries to park after 2 failures');
+  assert.deepEqual(out.map(e => e.event).sort(), ['card-fail', 'card-pass']);
+  assert.ok(out.every(e => e.cardId === '505' && e.contentHash === HASH));
+});
+
+test('isDispatchResolved: true once a card-fail/card-pass exists for this cardId at or after the dispatch ts', () => {
+  const entries = [{ event: 'card-fail', cardId: '505', ts: '2026-08-26T12:05:00Z' }];
+  assert.equal(isDispatchResolved(entries, '505', '2026-08-26T12:00:00Z'), true);
+});
+
+test('isDispatchResolved: false when the only resolving event predates this dispatch (an OLDER dispatch it actually resolved)', () => {
+  const entries = [{ event: 'card-fail', cardId: '505', ts: '2026-08-24T12:05:00Z' }];
+  assert.equal(isDispatchResolved(entries, '505', '2026-08-25T12:00:00Z'), false);
+});
+
+test('reconcileDigestOutcomes: a malformed/missing ts is skipped, not treated as an immediate NaN-driven failure (ship-check finding)', () => {
+  const HASH = computeContentHash({ name: 'BSC Daily: Bad ts row' });
+  const digestLedgerEntries = [
+    { event: 'auto-dispatch', taskId: '506', contentHash: HASH, ts: 'not-a-date' },
+    { event: 'auto-dispatch', taskId: '507', contentHash: HASH }, // ts missing entirely
+  ];
+  const out = reconcileDigestOutcomes(digestLedgerEntries, new Map(), [], new Date('2026-08-26T13:00:00Z'));
+  assert.deepEqual(out, []);
+});
+
 // ── BRO-286: Linear repoint (fileCard → linear-brain, linear-id dispatch) ──
 //
 // digest-autofix.js destructures { spawn, execFileSync } at module load, so
@@ -555,6 +602,45 @@ test('dispatchDetached: --allow-autofix-filed is appended only for linear ids, o
   });
 });
 
+// BRO-3060: a second, independent guard (headless-dispatchability.js's
+// PARKED_SENTINEL) refuses the exact same population allowAutofixFiled waives
+// — every issue these pipelines dispatch also carries the PARKED: marker
+// fileCard's --park writes. allowAutofixFiled alone was not enough; this is
+// the other half.
+test('dispatchDetached: --allow-automation-parked is appended only for linear ids, only when opted in (BRO-3060)', () => {
+  const fakeChild = { unref: () => {} };
+  withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutomationParked: true });
+    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --allow-automation-parked/);
+
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutofixFiled: true, allowAutomationParked: true });
+    assert.match(calls.spawn[1][1][1], /--id BRO-9 --headless --allow-autofix-filed --allow-automation-parked/);
+
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null);
+    assert.doesNotMatch(calls.spawn[2][1][1], /--allow-automation-parked/);
+
+    // bsc-next.js has no such flag and no such guard — never append it there.
+    mod.dispatchDetached(7, () => {}, 0, null, { allowAutomationParked: true });
+    assert.ok(String(calls.spawn[3][1][3]).endsWith('bsc-next.js'));
+    assert.doesNotMatch(calls.spawn[3][1][1], /--allow-automation-parked/);
+  });
+});
+
+// Cross-module pin (BRO-2499 code-review finding): the canary half already had
+// one (autofix-canary.test.mjs runs isAutofixFiledTitle over a real
+// canaryCardTitle), but "BSC Daily:" was two independent string literals — this
+// producer and the matcher. A rename would silently stop the title check
+// matching, and for owner-alert-router trackers (which carry the OTHER PARKED
+// marker, so provenance never matches either) the guard would stop firing at
+// all, with nothing failing. Assert the REAL produced title, not a fixture.
+test('planAutofix titles are recognised by autofixFiledIssueGuard (BRO-2499 drift pin)', () => {
+  const { isAutofixFiledTitle } = require('./autofix-filed-marker.js');
+  const plan = planAutofix({ health: { errors: [{ name: 'Cron failed: Test Suite', message: 'm' }] }, tasks: [] });
+  assert.equal(plan.length, 1);
+  assert.ok(isAutofixFiledTitle(plan[0].title),
+    `digest-autofix produces "${plan[0].title}" but the guard's title matcher no longer recognises it — the two have drifted`);
+});
+
 // Class-level prevention (BRO-2499 ship-check). The bug this closes was a
 // dispatchDetached CALLER that did not pass the waiver — scripts/linear-drain-
 // parked.js — whose whole population is refused by autofixFiledIssueGuard
@@ -589,7 +675,11 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
 
   const callers = [];
   for (const rel of files) {
-    const src = fs.readFileSync(path.join(repo, rel), 'utf8');
+    // stripComments HERE too, not just in the second loop (code-review
+    // finding): a future file documenting the helper as
+    // `// dispatchDetached(taskId, log, …)` would otherwise join `callers` on
+    // a comment and fail the exact caller-list assertion below for no reason.
+    const src = stripComments(fs.readFileSync(path.join(repo, rel), 'utf8'));
     const bindsIt = /dispatchFn\s*[=|]{1,2}[^;\n]*dispatchDetached/.test(src);
     const invokesIt = /(?<!function\s)dispatchDetached\(\s*[^)]/.test(
       src.replace(/function dispatchDetached\([^)]*\)/g, ''));
@@ -617,6 +707,11 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
     for (const call of calls) {
       assert.match(call, /allowAutofixFiled:\s*true/,
         `${rel} dispatches without the BRO-2499 waiver — autofixFiledIssueGuard refuses it inside the detached child, and silently (the caller journals "attempted" either way): ${call}`);
+      // BRO-3060: same class of bug, the OTHER guard. allowAutofixFiled alone
+      // was not enough — every call site here was still refused by
+      // PARKED_SENTINEL until this waiver was added too.
+      assert.match(call, /allowAutomationParked:\s*true/,
+        `${rel} dispatches without the BRO-3060 waiver — PARKED_SENTINEL refuses it inside the detached child, and silently (the caller journals "attempted" either way): ${call}`);
     }
   }
 });
@@ -635,6 +730,6 @@ test('runAutofix: passes allowAutofixFiled to the dispatcher for its own filed r
     dispatchFn: (...args) => dispatchCalls.push(args),
   });
   assert.equal(dispatchCalls.length, 1);
-  assert.deepEqual(dispatchCalls[0][4], { allowAutofixFiled: true },
-    'runAutofix must waive autofixFiledIssueGuard for the issues it just filed');
+  assert.deepEqual(dispatchCalls[0][4], { allowAutofixFiled: true, allowAutomationParked: true },
+    'runAutofix must waive both autofixFiledIssueGuard AND PARKED_SENTINEL for the issues it just filed (BRO-2499, BRO-3060)');
 });

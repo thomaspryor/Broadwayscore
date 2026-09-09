@@ -405,43 +405,13 @@ function validateCardNotes({ notes, status, force, context }) {
   return { ok: true, warning: armingWarning(notesStr) };
 }
 
-// The acceptance criteria must ARM the verification chain. bsc-next captures
-// ONE backticked command at dispatch (scripts/lib/autonomous-verify-cmd.js)
-// and the nightly acceptance recheck re-runs it after the card is marked Done
-// — prose criteria dispatch unarmed, "Done" stays an unverifiable claim
-// (owner escalation 2026-07-26: every launch in the dispatch ledger had
-// verifyCmd: null). WARN, don't reject: automated card creators
-// (owner-alert-router.js, ux-walkthrough.mjs, notify-pending-commercial-
-// notion.js) file cards with generated prose — a hard reject here would
-// silently break the alert→card chain (#374's canary class). The HARD stop
-// lives at dispatch (bsc-next refuses unarmed cards). Returns null when armed
-// or explicitly owner-judgment.
-function armingWarning(notesStr) {
-  const armed = (() => {
-    try {
-      const { evaluateVerifiability } = require('./lib/verify-gate.js');
-      return evaluateVerifiability(notesStr);
-    } catch (e) {
-      // Validator module unavailable (partial checkout): don't block card
-      // creation on our own tooling being missing.
-      return { armed: true, cmd: 'validator-unavailable', reason: null, ownerJudgment: false };
-    }
-  })();
-  if (armed.armed) return null;
-  return (
-    `Acceptance criteria name no runnable command (${armed.reason}).\n\n` +
-    `The nightly recheck can only verify a Done card by RE-RUNNING a command captured at dispatch. ` +
-    `Put at least one backticked command in "## Acceptance criteria" whose exit code proves the work. ` +
-    `Allowed safe forms (scripts/lib/autonomous-triage-core.js SAFE_CHECK_FORMS):\n` +
-    `  - \`node --test scripts/lib/thing.test.mjs\` (a test file the work adds or extends)\n` +
-    `  - \`npx tsc --noEmit\` / \`npx next lint\`\n` +
-    `  - \`test -f scripts/new-file.js\`\n\n` +
-    `If this card's outcome truly cannot be machine-checked (a decision, an email, a design), add the line:\n` +
-    `  VERIFY: owner-judgment\n` +
-    `so the unverifiability is declared instead of accidental.\n` +
-    `NOTE: the card was still saved — but bsc-next will REFUSE to dispatch it until the criteria are armed.`
-  );
-}
+// The creation-time "this card cannot be closed" warning now lives in
+// scripts/lib/card-arming-warning.js so that linear-brain.js — the Linear
+// chokepoint replacing this file — shares it rather than diverging from it.
+// It had diverged: linear-brain.js had no such check at all until BRO-3060,
+// by which point 17 open issues carried an acceptance command the Done gate
+// refuses. Behaviour here is unchanged; the message is more specific.
+const { armingWarning } = require('./lib/card-arming-warning.js');
 
 // ── Commands ────────────────────────────────────────────────────────────
 

@@ -46,6 +46,15 @@ const FOR_LOOP_INLINE_DO_RE = /^\s*for\s+(\w+)\s+in\s+(.+?);\s*do\s*(?:#.*)?$/;
 const FOR_LOOP_HEADER_RE = /^\s*for\s+(\w+)\s+in\s+(.+?)\s*$/;
 const BARE_DO_RE = /^\s*do\s*$/;
 const DONE_RE = /^\s*done\s*$/;
+// KNOWN LIMITATION (BRO-3051 /ship-check pass): text-based, not YAML/JS-aware.
+// A line whose first non-whitespace char is `#` inside a `script: |` block
+// could in principle be data within a JS template literal rather than a real
+// comment (e.g. a string starting with "# ${routeAlert(...)}"), which would
+// then be wrongly skipped by both this and jobStagesFile()'s pre-existing
+// comment-skip. Same class of blind spot the header above already accepts
+// for subprocess-indirect callers; no workflow in this repo writes calls
+// that way today, and a real parser is out of proportion to a heuristic,
+// non-blocking advisory lint.
 const COMMENT_LINE_RE = /^\s*#/;
 
 // Returns { varName, list, bodyStart } if `line` (at index i in jobLines)
@@ -79,10 +88,26 @@ function splitJobs(workflowYamlText) {
   });
 }
 
+// A `git add`/`git-add-existing.sh` invocation line that ends in a bare
+// line-continuation backslash — the multi-line form where path arguments are
+// listed one per line below it (finance-ingest.yml's dmarc job, weekly-video-
+// reviews.yml, opening-night-checklist.yml). Requires \b before "git" so it
+// doesn't match inside an unrelated longer token.
+const GIT_ADD_CONTINUATION_START_RE = /\b(?:git add|git-add-existing\.sh)\b.*\\\s*$/;
+// A path-argument continuation line: just a bare path (optionally trailing
+// slash for a directory), optionally ending in another continuation
+// backslash. Rejects lines with quotes, `${VAR}` expansions, or trailing
+// flags/redirects — those fall through to "stop scanning" below rather than
+// risk a false match.
+const BARE_PATH_LINE_RE = /^[\w./-]+\s*\\?\s*$/;
+const TRAILING_BACKSLASH_RE = /\\\s*$/;
+
 // True if any non-comment line both invokes `git add` (or the
 // git-add-existing.sh helper) AND mentions `fileName` directly, OR a
 // `for VAR in ...fileName...; do` loop's body (before the matching `done`)
-// stages "$VAR". Comment lines are skipped — a commented-out `# git add
+// stages "$VAR", OR fileName appears on one of the bare continuation lines
+// following a multi-line `git add \` / `git-add-existing.sh \` invocation.
+// Comment lines are skipped — a commented-out `# git add
 // data/audit/alert-ledger.json` (or a prose mention) must not read as real
 // staging.
 function jobStagesFile(jobLines, fileName) {
@@ -92,6 +117,18 @@ function jobStagesFile(jobLines, fileName) {
 
     if (line.includes(fileName) && (/git add\b/.test(line) || /git-add-existing\.sh/.test(line))) {
       return true;
+    }
+
+    if (GIT_ADD_CONTINUATION_START_RE.test(line)) {
+      let continued = true;
+      for (let j = i + 1; continued && j < jobLines.length; j++) {
+        const contLine = jobLines[j];
+        if (COMMENT_LINE_RE.test(contLine)) continue;
+        const trimmed = contLine.trim();
+        if (!BARE_PATH_LINE_RE.test(trimmed)) break;
+        if (contLine.includes(fileName)) return true;
+        continued = TRAILING_BACKSLASH_RE.test(trimmed);
+      }
     }
 
     const loopMatch = matchForLoopStart(jobLines, i);
@@ -129,7 +166,18 @@ function findMissingLedgerCommits(workflowYamlText) {
     // that merely describes what the lint checks for (e.g. "Check
     // routeAlert() callers commit alert-ledger.json") is not itself a call
     // and would otherwise false-positive this very check on test.yml.
-    const body = job.lines.filter(l => !/^\s*-?\s*name:/.test(l)).join('\n');
+    // Also exclude full `#`-comment lines (BRO-3051): test.yml's own
+    // "page-worthy alert steps unreachable" audit step (BRO-2817) documents
+    // that OTHER checker's blind spot with a prose example — "# routeAlert
+    // (disposition:'human', conditionKey: <page-worthy>) alert" — which is
+    // not a call either, but was matched anyway because only step-name
+    // lines were stripped. jobStagesFile() already skips comment lines for
+    // the same reason (a commented-out `git add` mustn't read as real
+    // staging); call detection needs the same treatment for the same
+    // reason, in the opposite direction.
+    const body = job.lines
+      .filter(l => !/^\s*-?\s*name:/.test(l) && !COMMENT_LINE_RE.test(l))
+      .join('\n');
 
     if (ROUTE_ALERT_CALL_RE.test(body) && !jobStagesFile(job.lines, LEDGER_FILE)) {
       violations.push(

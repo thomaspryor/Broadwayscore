@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge, FormatPill, ProductionPill, ToggleBar, ScoreToggle } from '@/components/show-cards';
-import { getBroadwayDuration } from '@/lib/date-utils';
+import { getBroadwayDuration, formatShowDate, getShowYear } from '@/lib/date-utils';
 
 export interface TheaterShow {
   id: string;
@@ -146,14 +146,14 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
                       )}
                       {show.closingDate && (
                         <span className="text-amber-400">
-                          · Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          · Closes {formatShowDate(show.closingDate)}
                         </span>
                       )}
                     </>;
                   })() : (
                     <span>
-                      {show.openingDate ? new Date(show.openingDate).getFullYear() : ''}
-                      {show.closingDate && show.openingDate ? ` – ${new Date(show.closingDate).getFullYear()}` : show.closingDate ? new Date(show.closingDate).getFullYear() : ''}
+                      {show.openingDate ? getShowYear(show.openingDate) : ''}
+                      {show.closingDate && show.openingDate ? ` – ${getShowYear(show.closingDate)}` : show.closingDate ? getShowYear(show.closingDate) : ''}
                     </span>
                   )}
                 </div>

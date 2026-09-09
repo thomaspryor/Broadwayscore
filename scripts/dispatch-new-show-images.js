@@ -47,20 +47,27 @@ async function main() {
     return;
   }
 
+  // BRO-2672: buildImageDispatchInputs now returns at most ONE entry, all
+  // ids comma-joined into a single show_id — fanning N per-show dispatches
+  // into fetch-all-image-formats.yml's single-slot concurrency group
+  // (cancel-in-progress: false) got most of them silently cancelled while
+  // this script logged "✓ dispatched" per show regardless. One dispatch
+  // call can't be cancelled by its own siblings, so success here means the
+  // whole batch was accepted, not any one show individually.
   let failed = 0;
   for (const d of dispatches) {
-    const showId = d.inputs.show_id;
-    const result = await dispatchImageFetch(showId);
+    const showIds = d.inputs.show_id.split(',');
+    const result = await dispatchImageFetch(d.inputs.show_id);
     if (result.ok) {
-      console.log(`✓ dispatched fetch-all-image-formats.yml for ${showId}`);
+      console.log(`✓ dispatched fetch-all-image-formats.yml for ${showIds.length} show(s): ${d.inputs.show_id}`);
     } else {
       failed++;
-      console.error(`✗ image-fetch dispatch failed for ${showId}: ${result.error}`);
+      console.error(`✗ image-fetch dispatch failed for ${showIds.length} show(s) (${d.inputs.show_id}): ${result.error}`);
     }
   }
 
   if (failed > 0) {
-    console.error(`${failed}/${dispatches.length} image-fetch dispatch(es) failed — will still get picked up by the next scheduled sweep.`);
+    console.error(`Batch image-fetch dispatch failed — will still get picked up by the next scheduled sweep.`);
     process.exitCode = 1;
   }
 }

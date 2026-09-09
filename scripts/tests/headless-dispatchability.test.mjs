@@ -17,9 +17,11 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const {
   BLOCKERS,
   UI_PATH_RE,
+  PARKED_SENTINEL_RE,
   classifyHeadlessDispatchability,
   looksLikeUiPath,
   uiPathsIn,
+  isAutomationParked,
 } = require(path.join(REPO, 'scripts', 'lib', 'headless-dispatchability.js'));
 
 const codes = (r) => r.blockers.map(b => b.code);
@@ -200,5 +202,151 @@ describe('UI path matcher stays in lockstep with the hook that actually blocks t
 
   test('uiPathsIn strips markdown backticks and trailing punctuation', () => {
     assert.deepStrictEqual(uiPathsIn('see `src/components/Bar.tsx`, then stop.'), ['src/components/Bar.tsx']);
+  });
+});
+
+// BRO-2753. Measured 2026-09-03 against all 432 live open P0/P1 issues: 160
+// carried the sentinel at string start, but 200 carried it at a LINE start, and
+// 158 of those 200 were classified dispatchable. The funnel had no knowledge of
+// the sentinel at all (`grep -ic PARKED` returned 0), so 127-158 explicitly
+// parked cards were being offered to headless workers.
+describe('PARKED sentinel — the repo\'s own do-not-dispatch marker', () => {
+  const parked = (notes) => classifyHeadlessDispatchability({ subject: 'Some card', notes });
+
+  test('refuses the exact shape linear-issue-create.js writes on --park', () => {
+    // `PARKED: ${reason}\n\n${description}` — linear-issue-create.js:141
+    const r = parked('PARKED: needs an owner call\n\nrest of the description');
+    assert.ok(!r.dispatchable, 'a parked card must not be dispatchable');
+    assert.ok(codes(r).includes(BLOCKERS.PARKED_SENTINEL), `expected PARKED_SENTINEL, got ${codes(r)}`);
+  });
+
+  test('refuses a phrasing OWNER_DECISION_GATE does not catch', () => {
+    // This exact wording slips past the phrase-brittle owner-judgment regex,
+    // which is half of why the sentinel check has to exist independently.
+    const r = parked('PARKED: Needs an owner-level choice between three fixes');
+    assert.ok(!r.dispatchable);
+    assert.ok(codes(r).includes(BLOCKERS.PARKED_SENTINEL));
+  });
+
+  test('refuses when Notion mirror headers precede the sentinel (the /m case)', () => {
+    // Real shape, from BRO-2432 and 39 siblings: two generated header lines
+    // before the marker. A string-anchored regex misses all of them.
+    const r = parked([
+      '[notion:3c8637c5-416f-8100-9535-e040f459a83c] P1 Next · Not started · Bug',
+      '[https://app.notion.com/p/whatever](<https://app.notion.com/p/whatever>)',
+      'PARKED: card owns this file and is In Progress in a live parallel session',
+    ].join('\n'));
+    assert.ok(!r.dispatchable, 'a Notion-mirrored parked card must not be dispatchable');
+    assert.ok(codes(r).includes(BLOCKERS.PARKED_SENTINEL));
+  });
+
+  test('is case- and indent-insensitive', () => {
+    assert.ok(codes(parked('  parked:  lowercase and indented')).includes(BLOCKERS.PARKED_SENTINEL));
+  });
+
+  test('does NOT fire on incidental prose mentioning parking', () => {
+    // These are the 11 the anchor deliberately excludes. If any of them starts
+    // failing, the regex has been loosened past line-start and is refusing
+    // cards nobody parked.
+    for (const notes of [
+      'We parked this last week, then unparked it. VERIFY: node scripts/x.js',
+      'Fix the parked-cars page. VERIFY: node scripts/x.js',
+      'Auto-parked earlier by bsc-reconcile; now live again. VERIFY: node scripts/x.js',
+      'See linear-drain-parked.js for context. VERIFY: node scripts/x.js',
+    ]) {
+      assert.ok(
+        !codes(parked(notes)).includes(BLOCKERS.PARKED_SENTINEL),
+        `should NOT read as parked: ${notes}`,
+      );
+    }
+  });
+
+  test('the gate is not constant-true — an ordinary card still dispatches', () => {
+    const r = parked('Straightforward backend fix.\n\nVERIFY: node scripts/validate-data.js');
+    assert.ok(r.dispatchable, `expected dispatchable, blocked by ${codes(r)}`);
+    assert.deepStrictEqual(r.blockers, []);
+  });
+
+  // BRO-3060: 143 of the sentinel's live cards were parked by automation
+  // (owner-alert-router.js or digest-autofix.js filing their own tracker),
+  // not an owner — but every one printed "an owner parked this deliberately",
+  // which is why 126 of them sat untouched for weeks. The blocker CODE stays
+  // PARKED_SENTINEL in all three cases (nothing downstream branches on it);
+  // only the operator-facing .detail text should tell the two apart.
+  describe('detail text distinguishes automation parks from owner parks', () => {
+    test('digest-autofix-filed card names its own drain, not "an owner"', () => {
+      const r = parked('PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately\n\nrest of body');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /digest-autofix/);
+      assert.doesNotMatch(b.detail, /an owner parked this deliberately/);
+    });
+
+    test('owner-alert-router-filed card names linear-drain-parked.js, not "an owner"', () => {
+      const r = parked('PARKED: Auto-filed by owner-alert-router (condition: x); parked for triage. The Linear-side drain will dispatch machine-verifiable parked issues.\n\nrest of body');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /owner-alert-router/);
+      assert.match(b.detail, /linear-drain-parked\.js/);
+      assert.doesNotMatch(b.detail, /an owner parked this deliberately/);
+    });
+
+    test('a hand-written park still reads as an owner decision', () => {
+      const r = parked('PARKED: card owns this file and is In Progress in a live parallel session');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /an owner parked this deliberately/);
+    });
+
+    // Ship-check finding (Claude + Codex adversarial review, BRO-3060): an
+    // UNANCHORED substring check for the owner-alert-router marker would
+    // misclassify a hand-parked, genuinely owner-gated issue whose body
+    // merely QUOTES "Auto-filed by owner-alert-router" (discussing the
+    // pipeline, e.g. a meta-issue about this exact bug) as automation-parked
+    // — reintroducing the exact false-positive class BRO-2499 anchored
+    // AUTOFIX_PARKED_RE to avoid for the sibling marker. This matters more
+    // here than a wording bug would: isAutomationParked (below) gates
+    // whether --allow-automation-parked is honoured at all, so a false
+    // positive here would let an operator bypass a REAL owner park.
+    test('a hand-written park that only QUOTES the alert-router marker still reads as an owner decision', () => {
+      const r = parked('PARKED: card owns this file and is In Progress in a live parallel session\n\nSee also: owner-alert-router.js files trackers with "Auto-filed by owner-alert-router" as their park reason.');
+      const b = r.blockers.find((x) => x.code === BLOCKERS.PARKED_SENTINEL);
+      assert.match(b.detail, /an owner parked this deliberately/);
+    });
+  });
+
+  describe('isAutomationParked (BRO-3060) — the predicate --allow-automation-parked trusts', () => {
+    test('true for the real digest-autofix and owner-alert-router shapes', () => {
+      assert.equal(isAutomationParked('PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately'), true);
+      assert.equal(isAutomationParked('PARKED: Auto-filed by owner-alert-router (condition: x); parked for triage.'), true);
+    });
+
+    test('false for a hand-written park, even one that quotes an automation marker in prose', () => {
+      assert.equal(isAutomationParked('PARKED: card owns this file and is In Progress'), false);
+      assert.equal(isAutomationParked('PARKED: owner call\n\nSee also: "Auto-filed by owner-alert-router" is the marker that pipeline uses.'), false);
+    });
+
+    test('false for no description at all', () => {
+      assert.equal(isAutomationParked(''), false);
+      assert.equal(isAutomationParked(null), false);
+      assert.equal(isAutomationParked(undefined), false);
+    });
+  });
+
+  test('the exported regex and the classifier agree, and keep the /m flag', () => {
+    assert.ok(PARKED_SENTINEL_RE.multiline, 'the /m flag is load-bearing — 40 live cards depend on it');
+    assert.ok(PARKED_SENTINEL_RE.ignoreCase, 'sentinel matching must be case-insensitive');
+    // Assert AGREEMENT, not just the flags: a divergence between the exported
+    // regex and whatever the classifier actually tests would otherwise pass.
+    for (const notes of [
+      'PARKED: at string start',
+      'header line\nsecond header\nPARKED: after Notion mirror headers',
+      '  parked: indented and lowercase',
+      'We parked this last week. VERIFY: node scripts/x.js',
+      'Fix the parked-cars page. VERIFY: node scripts/x.js',
+    ]) {
+      assert.strictEqual(
+        codes(parked(notes)).includes(BLOCKERS.PARKED_SENTINEL),
+        PARKED_SENTINEL_RE.test(notes),
+        `classifier and exported regex disagree on: ${JSON.stringify(notes)}`,
+      );
+    }
   });
 });

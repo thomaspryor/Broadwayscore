@@ -7,6 +7,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
 import { ToggleBar, StatGrid } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
+import { getReviewKey } from '../../../../scripts/lib/review-list-key';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 type MarketFilter = 'all' | 'broadway' | 'west-end' | 'off-west-end' | 'off-broadway';
@@ -278,7 +279,7 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
       <div className="space-y-2">
         {visibleReviews.length > 0 ? (
           visibleReviews.map((review, index) => (
-            <ReviewCard key={`${review.showSlug}-${review.outletId}-${review.url}`} review={review} showYear={duplicateTitles.has(review.showTitle) ? getShowYear(review) : null} loading={index < 4 ? 'eager' : 'lazy'} />
+            <ReviewCard key={`${review.showSlug}-${getReviewKey(review)}`} review={review} showYear={duplicateTitles.has(review.showTitle) ? getShowYear(review) : null} loading={index < 4 ? 'eager' : 'lazy'} />
           ))
         ) : (
           <div className="card p-8 text-center">

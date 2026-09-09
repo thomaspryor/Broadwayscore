@@ -17,6 +17,9 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { imagePresent } = require('./lib/show-image-presence');
+const { fetchSBCreditStatus } = require('./lib/check-sb-credits');
+const { sbCreditVerdict } = require('./lib/sb-credit-verdict');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -120,10 +123,28 @@ async function runChecks() {
   }
 
   // 2. Images
-  const imgDir = path.join(DATA_DIR, 'public', 'images', 'shows', SHOW_ID);
-  const hasHero = fs.existsSync(path.join(imgDir, 'hero.webp'));
-  const hasPoster = fs.existsSync(path.join(imgDir, 'poster.webp'));
-  const hasThumbnail = fs.existsSync(path.join(imgDir, 'thumbnail.webp'));
+  // Trust shows.json's images field (what the site actually renders) rather
+  // than hardcoding the .webp filename the standard pipeline produces — the
+  // SERP-fallback image path writes .jpg/.png instead, and a hardcoded-webp
+  // check flags those shows as "missing" even though the site displays them
+  // fine (found via a-month-in-the-country-west-end-2026, 2026-09-02: real
+  // poster.jpg + thumbnail.jpg on disk and wired into images.{poster,
+  // thumbnail}, reported as "Missing: hero, poster, thumbnail").
+  const images = show.images || {};
+  // A field being SET is not the same as the file EXISTING. An earlier pass
+  // here checked truthiness only, which fixed a false "missing" (the code
+  // used to hardcode a .webp extension) by introducing a false ALL-CLEAR,
+  // which on an opening-night gate is the worse direction. Real case at the
+  // time of writing: high-society-west-end-2026 has images.hero pointing at
+  // hero.webp, only poster.jpg and thumbnail.jpg are on disk, and the check
+  // printed "✅ Show images". Repo-wide there were 334 images.* refs pointing
+  // at files absent from public/.
+  //
+  // Predicate lives in scripts/lib/show-image-presence.js so the test exercises
+  // the real function instead of a copy (CLAUDE.md rule 15).
+  const hasHero = imagePresent(images.hero);
+  const hasPoster = imagePresent(images.poster);
+  const hasThumbnail = imagePresent(images.thumbnail);
   if (hasHero && hasPoster && hasThumbnail) {
     report(PASS, 'Show images', 'hero + poster + thumbnail all present');
   } else {
@@ -331,31 +352,24 @@ async function runChecks() {
   }
 
   // 10. ScrapingBee credits
-  const sbKey = process.env.SCRAPINGBEE_API_KEY;
-  if (sbKey) {
-    const sbRes = await httpsGet(`https://app.scrapingbee.com/api/v1/usage?api_key=${sbKey}`);
-    if (sbRes.status === 200) {
-      try {
-        const usage = JSON.parse(sbRes.body);
-        const used = usage.used || 0;
-        const limit = usage.max_api_credit || usage.limit || 1;
-        const pct = Math.round((used / limit) * 100);
-        if (pct > 75) {
-          report(FAIL, 'ScrapingBee credits', `${pct}% used (${used}/${limit}). Opening nights at risk.`);
-        } else if (pct > 50) {
-          report(WARN, 'ScrapingBee credits', `${pct}% used (${used}/${limit}). Monitor.`);
-        } else {
-          report(PASS, 'ScrapingBee credits', `${pct}% used (${used}/${limit})`);
-        }
-      } catch {
-        report(WARN, 'ScrapingBee credits', 'Could not parse usage response');
-      }
-    } else {
-      report(WARN, 'ScrapingBee credits', `API returned ${sbRes.status}`);
-    }
-  } else {
-    report(SKIP, 'ScrapingBee credits', 'SCRAPINGBEE_API_KEY not set');
-  }
+  //
+  // BRO-3032: this block used to fetch /usage itself and read `usage.used` —
+  // a field that endpoint has never returned (it returns used_api_credit) —
+  // so the percentage was always 0 and this check reported PASS "0% used" at
+  // every real usage level, including an exhausted cycle. A dead alarm inside
+  // a MANDATORY readiness checklist (CLAUDE.md rule 14).
+  //
+  // Both halves now live where they can be tested and where the payload shape
+  // is already known: lib/check-sb-credits.js owns the fetch and classifies
+  // no-key / api-error / max_api_credit<=0, and lib/sb-credit-verdict.js owns
+  // the thresholds. Nothing here hand-reads a provider field name any more.
+  const sbVerdict = sbCreditVerdict(await fetchSBCreditStatus());
+  // `?? WARN`: an unmapped level would make report() push {status: undefined},
+  // which printSummary counts in none of its four buckets — the check would
+  // silently vanish from the summary, which is the exact failure mode this
+  // whole fix exists to remove. Degrade loudly instead.
+  const sbSymbol = { pass: PASS, warn: WARN, fail: FAIL, skip: SKIP }[sbVerdict.level] ?? WARN;
+  report(sbSymbol, 'ScrapingBee credits', sbVerdict.detail);
 
   // 11. Subscriber sync (Formspree vs Resend)
   const resendKey = process.env.RESEND_API_KEY;

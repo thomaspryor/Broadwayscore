@@ -5,7 +5,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { MEZZANINE_OVERRIDES, normalize } = require('../../scripts/scrape-mezzanine-audience.js');
+const { MEZZANINE_OVERRIDES, normalize, matchProductions } = require('../../scripts/scrape-mezzanine-audience.js');
 const { shows } = require('../../data/shows.json');
 
 // BRO-86: card #313 fixed 2 title-drift Mezzanine coverage gaps
@@ -117,5 +117,22 @@ describe('Mezzanine override collision auditor', () => {
       assert.ok(override, `expected an override for ${showId}`);
       assert.strictEqual(typeof override, 'object', `expected ${showId} override to be venue-pinned object form, got bare string`);
     }
+  });
+
+  // End-to-end proof (not just config shape) that one of the 3 newly-pinned
+  // overrides actually changes matchProductions() behavior: without the venue
+  // pin, Strategy 0 would attach the Broadway Lyric Theatre production to the
+  // West End show too, inflating its ratings with an unrelated market's data.
+  test('Harry Potter venue pin excludes the separate Broadway production from the West End match', () => {
+    const westEndShow = shows.find(s => s.id === 'harry-potter-and-the-cursed-child-both-parts-west-end-2021');
+    assert.ok(westEndShow, 'fixture show missing from shows.json');
+    const productions = [
+      { objectId: 'palace-uk', show: { name: 'Harry Potter and the Cursed Child' }, ratingsCount: 40, averageRating: 4.2, theater: { name: 'Palace Theatre' } },
+      { objectId: 'lyric-broadway', show: { name: 'Harry Potter and the Cursed Child' }, ratingsCount: 60, averageRating: 3.5, theater: { name: 'Lyric Theatre' } },
+    ];
+    const matches = matchProductions(productions, [westEndShow]);
+    assert.strictEqual(matches.length, 1);
+    assert.deepStrictEqual(matches[0].prodIds, ['palace-uk'], `expected only the Palace production, got ${JSON.stringify(matches[0].prodIds)} (Broadway leak if lyric-broadway is included)`);
+    assert.strictEqual(matches[0].ratingsCount, 40, `expected 40 ratings (Palace only), got ${matches[0].ratingsCount} (merge bug if 100)`);
   });
 });

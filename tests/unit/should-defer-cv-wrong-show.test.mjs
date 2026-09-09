@@ -142,3 +142,25 @@ test('missing outletId or fullText → no defer (safe default)', () => {
   assert.strictEqual(shouldDeferCvWrongShow({ outletId: 'new-york-sun' }), false);
   assert.strictEqual(shouldDeferCvWrongShow({ fullText: 'whatever' }), false);
 });
+
+test('BRO-2834: long-biographical + opinion + >500 words but contentTier invalid → no defer', () => {
+  assert.strictEqual(
+    shouldDeferCvWrongShow({
+      outletId: 'new-york-sun',
+      fullText: LONG_OPINION_TEXT,
+      contentTier: 'invalid',
+    }),
+    false,
+  );
+});
+
+test('BRO-2834: same predicate match with contentTier complete → still defers (true)', () => {
+  assert.strictEqual(
+    shouldDeferCvWrongShow({
+      outletId: 'new-york-sun',
+      fullText: LONG_OPINION_TEXT,
+      contentTier: 'complete',
+    }),
+    true,
+  );
+});

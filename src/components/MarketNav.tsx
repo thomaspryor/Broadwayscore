@@ -95,7 +95,13 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
         aria-label="Switch market"
       >
         {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isRegional ? 'Regional' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
-        <svg className={`hidden min-[400px]:block w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        {/* Always visible — below 400px this used to be `hidden`, so the pill
+            read as a plain label with no dropdown cue on narrow phones (task
+            #78: rage clicks on "Broadway" traced to missing affordance here).
+            Shrunk under 400px instead of hidden, to stay inside the same
+            width budget that forced the header's right-side gap to 1 (see
+            layout.tsx, owner report 2026-07-17). */}
+        <svg className={`block w-2.5 h-2.5 min-[400px]:w-3 min-[400px]:h-3 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>

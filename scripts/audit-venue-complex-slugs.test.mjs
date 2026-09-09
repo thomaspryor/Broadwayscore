@@ -69,3 +69,110 @@ test('every West End venue-complex subVenueSlugs entry resolves to a real shows.
   const orphans = findOrphanSubVenueSlugs(showsData.shows, westEndComplexDefs, isLondonShow);
   assert.deepEqual(orphans, {}, `orphaned subVenueSlugs (typo or venue no longer in corpus): ${JSON.stringify(orphans)}`);
 });
+
+// ---------------------------------------------------------------------------
+// The market registry, and the two guards that stop this audit from turning a
+// cosmetic finding into a hard failure.
+//
+// Context: on 2026-09-05 a core-data commit deleted the only show at venue
+// "New World Stages – Stage 5", orphaning the new-world-stages-stage-5 slug.
+// Nothing failed at the data change; main went red 4h42m later on an unrelated
+// push (Test Suite runs 33980744001 and 33981854174) where the failure looked
+// like it belonged to whoever pushed. scripts/validate-data.js now runs the same
+// pure functions at the moment the data changes, which is why they need to be
+// robust against a malformed def instead of throwing.
+// ---------------------------------------------------------------------------
+
+const { findMalformedComplexDefs, VENUE_COMPLEX_MARKETS } =
+  require('./lib/venue-complex-audit.js');
+
+test('VENUE_COMPLEX_MARKETS is the audit-side market/defs-file pairing', () => {
+  // Anti-drift: this test file and scripts/validate-data.js both consume the
+  // registry, so adding a market to the AUDIT is one edit. It is deliberately
+  // not a claim about the site — src/lib/data-core.ts keeps its own membership
+  // predicates and JSON imports, and a third market needs edits there too.
+  assert.deepEqual(
+    VENUE_COMPLEX_MARKETS.map(m => m.defsFile),
+    ['data/venue-complexes.json', 'data/venue-complexes-west-end.json']
+  );
+  const [ob, london] = VENUE_COMPLEX_MARKETS;
+  assert.equal(ob.matches({ category: 'off-broadway' }), true);
+  assert.equal(ob.matches({ category: 'west-end' }), false);
+  assert.equal(london.matches({ category: 'west-end' }), true);
+  assert.equal(london.matches({ category: 'off-west-end' }), true);
+  assert.equal(london.matches({ category: 'off-broadway' }), false);
+});
+
+test('every registered market is orphan-free — covers a third market with no new test', () => {
+  // Count the iterations and assert the count. A bare `for (... of REGISTRY)`
+  // with assertions only INSIDE the loop passes trivially when the registry is
+  // empty — the vacuity shape a reviewer's mutation pass found here. Empty the
+  // registry and this fails on the count, not silently on nothing.
+  let checked = 0;
+  for (const market of VENUE_COMPLEX_MARKETS) {
+    const defs = require(`../${market.defsFile}`).complexes;
+    assert.ok(defs && Object.keys(defs).length > 0, `${market.defsFile} has no complexes to check`);
+    const orphans = findOrphanSubVenueSlugs(showsData.shows, defs, market.matches);
+    assert.deepEqual(orphans, {}, `${market.defsFile}: orphaned subVenueSlugs ${JSON.stringify(orphans)}`);
+    checked++;
+  }
+  assert.equal(checked, VENUE_COMPLEX_MARKETS.length);
+  assert.ok(checked >= 2, `expected at least the two known markets to be checked, checked ${checked}`);
+});
+
+test('findOrphanSubVenueSlugs tolerates a def with no subVenueSlugs key instead of throwing', () => {
+  // Regression guard: the unguarded `def.subVenueSlugs.filter(...)` threw a
+  // TypeError here, and validate-data.js:85-91 converts any throw into a
+  // push-refusal sentinel — so one missing JSON key hard-blocked every automated
+  // core-data push with a stack trace. Revert the Array.isArray guard in
+  // venue-complex-audit.js and this test throws.
+  const shows = [{ category: 'off-broadway', venue: 'Real Venue' }];
+  const defs = { broken: { name: 'Broken' }, fine: { name: 'Fine', subVenueSlugs: ['real-venue'] } };
+  const orphans = findOrphanSubVenueSlugs(shows, defs, isOffBroadway);
+  assert.deepEqual(orphans, {}, 'a def missing subVenueSlugs must be skipped, not throw, and not be reported as an orphan');
+});
+
+test('findMalformedComplexDefs names every def whose subVenueSlugs is not an array', () => {
+  const defs = {
+    missing: { name: 'Missing' },
+    stringy: { name: 'Stringy', subVenueSlugs: 'a-slug' },
+    nulled: null,
+    fine: { name: 'Fine', subVenueSlugs: [] },
+  };
+  assert.deepEqual(findMalformedComplexDefs(defs), {
+    missing: 'missing',
+    stringy: 'string',
+    nulled: 'null',
+  });
+});
+
+test('the live venue-complex files have a usable top-level complexes object and no malformed defs', () => {
+  let checked = 0;
+  for (const market of VENUE_COMPLEX_MARKETS) {
+    const parsed = require(`../${market.defsFile}`);
+    const defs = parsed && parsed.complexes;
+    // The top-level shape, not just the per-def shape. With `complexes` renamed,
+    // absent or a top-level array, every per-def check below passes clean while
+    // src/lib/data-core.ts reads undefined and the site build breaks.
+    assert.ok(defs && typeof defs === 'object' && !Array.isArray(defs), `${market.defsFile} has no usable top-level "complexes" object`);
+    assert.deepEqual(findMalformedComplexDefs(defs), {}, `${market.defsFile} has a def whose subVenueSlugs is not an array`);
+    checked++;
+  }
+  assert.equal(checked, VENUE_COMPLEX_MARKETS.length);
+  assert.ok(checked >= 2, `expected at least the two known markets to be checked, checked ${checked}`);
+});
+
+test('an emptied subVenueSlugs array is legitimate when the complex slug is itself a venue', () => {
+  // Pins the shape of the actual 2026-09-05 fix so nobody "restores" the slug.
+  // new-world-stages carries subVenueSlugs: [] and that is CORRECT: four shows
+  // use the venue string "New World Stages" verbatim, so data-core.ts's
+  // buildComplexIndex renders the complex from ownTheater and still groups all
+  // four. An empty array is therefore never on its own evidence of a problem —
+  // which is why no "dead complex" check ships here (see the note in
+  // venue-complex-audit.js: data-core.ts:885 emits zero-show complexes by design).
+  const def = complexDefs['new-world-stages'];
+  assert.ok(def, 'new-world-stages complex must still exist');
+  assert.deepEqual(def.subVenueSlugs, [], 'new-world-stages.subVenueSlugs must stay empty — the Stage 5 slug was orphaned by a core-data merge');
+  const nwsShows = showsData.shows.filter(s => isOffBroadway(s) && slugify(normalizeVenueName(s.venue || '')) === 'new-world-stages');
+  assert.ok(nwsShows.length > 0, 'the complex now depends entirely on ownTheater, so at least one show must use the bare "New World Stages" venue string');
+});

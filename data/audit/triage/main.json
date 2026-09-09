@@ -1,15 +1,15 @@
 {
   "system": "main",
-  "status": "error",
-  "lastChecked": "2026-08-24T07:46:40.492Z",
+  "status": "pass",
+  "lastChecked": "2026-09-05T02:22:00.874Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
-  "escalationState": "monitoring",
+  "escalationState": "resolved",
   "details": [
     {
       "name": "Main: red streak",
-      "status": "error",
-      "message": "main's Test Suite has had no confirmed-green run in 9.6h (1 failing run) — first red commit 022ce15b7, job \"Data Validation, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "status": "pass",
+      "message": "Last run green"
     }
   ]
 }

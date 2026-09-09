@@ -324,6 +324,8 @@ async function main() {
     const session = await createBbSession({
       caller: 'scrape-stagedoor-critics.js',
       purpose: 'Stagedoor critic-reviews Cloudflare bypass',
+      host: 'stagedoor.com',
+      category: 'discovery',
       body: { keepAlive: true, timeout: 900, browserSettings: { solveCaptchas: true } },
     });
     console.log(`   Session: ${session.id.substring(0, 8)}...`);

@@ -90,6 +90,7 @@ const LORTEL_URL = 'https://lortel.org/currently-playing/';
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'date-enrichment-corrections.json');
 const ABORT_SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'audit', 'enrich-off-broadway-dates-aborted.json');
 const PLAYBILL_URL_CACHE_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
+const playbillUrlStore = require('./lib/playbill-urls-store');
 
 const MONTHS = {
   january: '01', february: '02', march: '03', april: '04',
@@ -277,17 +278,26 @@ async function scrapeLortel() {
 // ("stage 1") appear without a separate canonical form. Three URL-guess
 // attempts vs one SERP query: SERP wins on reliability and total fetches.
 
+// THE THIRD WRITER OF data/playbill-urls.json, and the one BRO-2895 and BRO-2893
+// both missed — each says "both writers". This file is reached from five
+// workflows, so it was the most frequently scheduled of the three. It had the
+// same whole-file read-modify-write: it loaded the cache at the top of a run and
+// wrote the whole thing back at the end, destroying anything a peer added in
+// between. Routed through the shared store so its saves merge like the others'.
+let playbillUrlSession = null;
+
 function loadPlaybillUrlCache() {
-  try {
-    return JSON.parse(fs.readFileSync(PLAYBILL_URL_CACHE_PATH, 'utf8'));
-  } catch {
-    return { shows: {}, lastUpdated: '' };
-  }
+  playbillUrlSession = playbillUrlStore.openPlaybillUrls(PLAYBILL_URL_CACHE_PATH);
+  return playbillUrlSession.data;
 }
 
-function savePlaybillUrlCache(cache) {
-  cache.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(PLAYBILL_URL_CACHE_PATH, JSON.stringify(cache, null, 2) + '\n');
+function savePlaybillUrlCache() {
+  if (!playbillUrlSession) loadPlaybillUrlCache();
+  const r = playbillUrlSession.save();
+  if (r.recovered > 0) {
+    console.log(`  [playbill-urls] merged ${r.recovered} entry(ies) another writer added since load`);
+  }
+  return r;
 }
 
 function decodeBasicEntities(s) {

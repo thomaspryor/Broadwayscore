@@ -51,8 +51,8 @@ function isModelAllowed(model) {
  * @param {object} [opts.env]     extra env merged over runClaudeCli's stripped base (test seam)
  * @param {(pid:number)=>void} [opts.onSpawn]
  * @returns {Promise<{ok:boolean, stage:string|null, error:string|null,
- *                    resultText:string, wallMin:number, usd:number,
- *                    pid:number|null, sessionId:string|null}>}
+ *                    exitSignal:string|null, resultText:string, wallMin:number,
+ *                    usd:number, pid:number|null, sessionId:string|null}>}
  */
 async function runMonitorPass({ prompt, cwd, model, settingsPath = null, maxWallMin = 15, logFile = null, env, onSpawn = null }) {
   const r = await runClaudeCli({
@@ -64,6 +64,13 @@ async function runMonitorPass({ prompt, cwd, model, settingsPath = null, maxWall
     ok: r.ok,
     stage: r.stage,
     error: r.errorDetail,
+    // BRO-3053/BRO-3056: this projection is an ALLOWLIST, same as
+    // bsc-runner.js's FAILED-row projection — exitSignal has to be
+    // re-added at every caller that shapes runClaudeCli's result, or an
+    // OS-killed opening-night pass is indistinguishable from any other
+    // abrupt exit at the one caller (opening-night-monitor-launch.js)
+    // that actually pages the owner about it.
+    exitSignal: r.exitSignal || null,
     resultText: r.resultText,
     wallMin: r.durationMs / 60000,
     usd: r.costUSD || 0,

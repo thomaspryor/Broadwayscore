@@ -521,6 +521,68 @@ test('vanishedBreadcrumbs is idempotent: its own output terminates the next swee
   assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), replayed, { epochTs: EPOCH, now: NOW }), []);
 });
 
+// ── BRO-2649: the same wrapper-alive guard BRO-2575 gave deadBreadcrumbs,
+// extended to the vanished path. A cmux blackout doesn't just make live
+// workspaces read as dead — it can drop them out of the live listing
+// entirely, which is vanishedBreadcrumbs' own trigger condition. Same
+// fixture shape as dispatch-guards.test.mjs's BRO-2575 tests: only the
+// process-table probe is faked, everything else drives the real function.
+const { hasSeedProcess } = require('./cmux-launch.js');
+const VANISHED_LIVE_MARKER = 'bsc-cmd-linear_BRO-2649-a1b2c3d4.sh';
+const VANISHED_PS_WITH_WRAPPER = `/bin/bash /var/folders/xy/T/${VANISHED_LIVE_MARKER}\n/usr/bin/login -pf tompryor\n`;
+const VANISHED_PS_WITHOUT_WRAPPER = '/usr/bin/login -pf tompryor\n/sbin/launchd\n';
+const vanishedProbeOver = psText => marker => hasSeedProcess(psText, marker);
+
+test('vanishedBreadcrumbs: a workspace whose wrapper is STILL RUNNING is never journaled vanished, even when cmux\'s live listing omits it', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']), // workspace:1 is NOT in the live listing
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, marker: VANISHED_LIVE_MARKER })],
+    { epochTs: EPOCH, now: NOW, isWrapperAlive: vanishedProbeOver(VANISHED_PS_WITH_WRAPPER) });
+  assert.deepEqual(out, [], 'the wrapper is alive — cmux\'s listing is the thing that lied, not the session');
+});
+
+test('vanishedBreadcrumbs: the suppression is reported, never silent', () => {
+  const seen = [];
+  vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, marker: VANISHED_LIVE_MARKER })],
+    {
+      epochTs: EPOCH, now: NOW,
+      isWrapperAlive: vanishedProbeOver(VANISHED_PS_WITH_WRAPPER),
+      onSuppressed: info => seen.push(info),
+    });
+  assert.equal(seen.length, 1);
+  assert.equal(seen[0].workspaceRef, 'workspace:1');
+  assert.equal(seen[0].taskId, '1');
+  assert.equal(seen[0].marker, VANISHED_LIVE_MARKER);
+});
+
+test('vanishedBreadcrumbs: a genuinely vanished workspace with no wrapper process IS still journaled (not a blanket amnesty)', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, marker: VANISHED_LIVE_MARKER })],
+    { epochTs: EPOCH, now: NOW, isWrapperAlive: vanishedProbeOver(VANISHED_PS_WITHOUT_WRAPPER) });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].event, 'vanished');
+  assert.equal(out[0].workspaceRef, 'workspace:1');
+});
+
+test('vanishedBreadcrumbs: a launch predating the ledger marker field keeps the pre-fix verdict (no silent breadcrumb loss)', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER })], // no marker
+    { epochTs: EPOCH, now: NOW, isWrapperAlive: vanishedProbeOver(VANISHED_PS_WITH_WRAPPER) });
+  assert.equal(out.length, 1, 'with no marker there is nothing to cross-check — the vanished verdict must stand');
+});
+
+test('vanishedBreadcrumbs: callers that omit isWrapperAlive keep the exact pre-BRO-2649 behavior', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, marker: VANISHED_LIVE_MARKER })],
+    { epochTs: EPOCH, now: NOW });
+  assert.equal(out.length, 1, 'no probe passed — journals exactly as before this change');
+});
+
 test('vanishEpoch reads the stamp; vanishEpochEntry is appendEntry-shaped', () => {
   assert.equal(vanishEpoch([]), null);
   assert.equal(vanishEpoch([{ event: 'vanish-epoch', ts: EPOCH }]), EPOCH);
@@ -1077,6 +1139,228 @@ test('classifyDeadAttemptsForTask: recycled workspaceRef across two DIFFERENT ta
   assert.equal(classifyDeadAttemptsForTask('A', entries).substantive.length, 0);
   assert.equal(classifyDeadAttemptsForTask('B', entries).infra.length, 0);
   assert.equal(classifyDeadAttemptsForTask('B', entries).substantive.length, 1);
+});
+
+// ── Orphan-detection debounce (BRO-3052) ────────────────────────────────────
+const {
+  orphanSuspectEntry, orphanClearedEntry, lastOrphanSuspect, orphanConfirmed, orphanSuspectIsStale,
+  ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS, isDeadlikeEvent, isAttemptEvent,
+  isLatestDispatchDead,
+} = require('./dispatch-ledger.js');
+
+test('orphanSuspectEntry: shapes a non-terminal job-orphan-suspect row', () => {
+  const e = orphanSuspectEntry('42', 'j1');
+  assert.equal(e.event, JOB_EVENTS.ORPHAN_SUSPECT);
+  assert.equal(e.taskId, '42');
+  assert.equal(e.jobId, 'j1');
+});
+
+test('orphanClearedEntry: shapes a non-terminal job-orphan-cleared row', () => {
+  const e = orphanClearedEntry('42', 'j1');
+  assert.equal(e.event, JOB_EVENTS.ORPHAN_CLEARED);
+  assert.equal(e.taskId, '42');
+  assert.equal(e.jobId, 'j1');
+});
+
+test('JOB_EVENTS.ORPHAN_SUSPECT/ORPHAN_CLEARED are neither deadlike nor attempt events — neither must itself count as a death or move "latest attempt"', () => {
+  assert.equal(isDeadlikeEvent(JOB_EVENTS.ORPHAN_SUSPECT), false);
+  assert.equal(isAttemptEvent(JOB_EVENTS.ORPHAN_SUSPECT), false);
+  assert.equal(isDeadlikeEvent(JOB_EVENTS.ORPHAN_CLEARED), false);
+  assert.equal(isAttemptEvent(JOB_EVENTS.ORPHAN_CLEARED), false);
+});
+
+test('lastOrphanSuspect: scoped to jobId, last-wins, ignores other jobIds', () => {
+  const entries = [
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2', jobId: 'j2', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:05:00.000Z' },
+  ];
+  const found = lastOrphanSuspect('j1', entries);
+  assert.equal(found.ts, '2026-09-08T04:05:00.000Z');
+  assert.equal(lastOrphanSuspect('j-missing', entries), null);
+});
+
+// Codex adversarial ship-check catch: a bare elapsed-time bound on the
+// suspect row is only ONE observation plus a clock, not two independent
+// ones. A job observed dead, then alive, then dead again within the window
+// must not let the FIRST (refuted) blip corroborate the second, unrelated
+// death.
+test('lastOrphanSuspect: a CLEARED row after a SUSPECT row voids the suspicion entirely', () => {
+  const entries = [
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_CLEARED, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:05:00.000Z' },
+  ];
+  assert.equal(lastOrphanSuspect('j1', entries), null);
+});
+
+test('lastOrphanSuspect: a SUSPECT row AFTER an earlier CLEARED row is a fresh, live suspicion again', () => {
+  const entries = [
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_CLEARED, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:05:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: '2026-09-08T04:20:00.000Z' },
+  ];
+  const found = lastOrphanSuspect('j1', entries);
+  assert.equal(found.ts, '2026-09-08T04:20:00.000Z');
+});
+
+test('orphanConfirmed: a cleared-then-stale-suspect shape (found alive in between) never confirms off the old blip', () => {
+  // The exact shape Codex's review flagged: dead at t0 (suspect written),
+  // alive at t0+1min (cleared), dead again for real at t0+10min — well
+  // inside a bare elapsed-time window, but the clearing must void the t0
+  // suspicion so this reads as a FRESH, unconfirmed death, not a corroborated one.
+  const t0 = '2026-09-08T04:00:00.000Z';
+  const entries = [
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '1', jobId: 'j1', ts: t0 },
+    { event: JOB_EVENTS.ORPHAN_CLEARED, taskId: '1', jobId: 'j1', ts: new Date(Date.parse(t0) + 60 * 1000).toISOString() },
+  ];
+  const now = Date.parse(t0) + 10 * 60 * 1000;
+  assert.equal(orphanConfirmed('j1', entries, now), false, 'the cleared suspicion must not corroborate an unrelated later death');
+  assert.equal(orphanSuspectIsStale('j1', entries, now), true, 'must be treated as no suspicion exists — write a fresh one');
+});
+
+test('orphanConfirmed: false with no suspect row at all — a job must never be confirmed orphaned off a single glance', () => {
+  assert.equal(orphanConfirmed('j1', [], Date.now()), false);
+});
+
+test('orphanConfirmed: false while the suspect row is still fresh (inside ORPHAN_CONFIRM_MS) — the live BRO-2565 shape', () => {
+  // job-spawned 04:14:26Z, first negative glance at 04:21:27Z (7 min later,
+  // matching the live incident) — must NOT confirm immediately.
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + 60 * 1000; // 1 min later — still well inside the confirm window
+  assert.equal(orphanConfirmed('j2565', entries, now), false, 'one minute after the FIRST negative glance is not two independent observations yet');
+});
+
+test('orphanConfirmed: true once a second tick finds it still dead ORPHAN_CONFIRM_MS later', () => {
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + ORPHAN_CONFIRM_MS + 1000;
+  assert.equal(orphanConfirmed('j2565', entries, now), true);
+});
+
+test('orphanConfirmed: false once the suspect row is stale (past ORPHAN_SUSPECT_MAX_AGE_MS) — a transient blip must not corroborate an unrelated later death', () => {
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + ORPHAN_SUSPECT_MAX_AGE_MS + 1000;
+  assert.equal(orphanConfirmed('j2565', entries, now), false, 'an ancient suspect row is disconnected evidence, not corroboration');
+});
+
+test('orphanConfirmed: requires nowMs (no clock of its own, matches this file\'s other now-threaded functions)', () => {
+  assert.throws(() => orphanConfirmed('j1', [], undefined), /nowMs/);
+});
+
+test('orphanSuspectIsStale: true when no suspect exists yet (must write a fresh one)', () => {
+  assert.equal(orphanSuspectIsStale('j1', [], Date.now()), true);
+});
+
+test('orphanSuspectIsStale: false while an existing suspect is still within its confirm/hold window', () => {
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + 60 * 1000;
+  assert.equal(orphanSuspectIsStale('j2565', entries, now), false, 'must not spam a fresh suspect row every tick while waiting to confirm');
+});
+
+test('orphanSuspectIsStale: true once the suspect ages past ORPHAN_SUSPECT_MAX_AGE_MS — re-arms the debounce for a later, unrelated death', () => {
+  const suspectTs = '2026-09-08T04:21:27.000Z';
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs }];
+  const now = Date.parse(suspectTs) + ORPHAN_SUSPECT_MAX_AGE_MS + 1000;
+  assert.equal(orphanSuspectIsStale('j2565', entries, now), true);
+});
+
+test('BRO-2565 end-to-end shape: latestAttemptForTask/isLatestDispatchDead never see the task as dead while a suspicion is unconfirmed', () => {
+  // job-spawned, then ONE negative glance (suspect only, no job-orphaned yet)
+  // — hasLiveLedgerEntry-style callers must keep reading this task as live.
+  const entries = [
+    { event: 'launch', taskId: '2565', workspaceRef: 'headless:2565', ts: '2026-09-08T04:14:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:21:27.000Z' },
+  ];
+  assert.equal(isLatestDispatchDead('2565', entries), false, 'a bare suspicion must never make isLatestDispatchDead true');
+});
+
+// ── Contradicted dead rows (BRO-2599) ───────────────────────────────────────
+// A 'dead' row proven false by the buried worker's own later Linear session
+// report (audit-false-dead-ledger-rows.js, BRO-2575) must not count toward
+// EITHER bucket — never substantive, never reclassified as infra.
+
+test('classifyDeadAttemptsForTask: a dead row matching opts.contradictedDeadKeys is dropped from both buckets', () => {
+  const entries = [
+    cmuxLaunch('2026-08-31T00:50:00.000Z', 'workspace:138', '2599a'),
+    cmuxDead('2026-08-31T00:55:32.380Z', 'workspace:138', '2599a', 'workspace idle, never booted'),
+  ];
+  const contradictedDeadKeys = new Set(['workspace:138|2026-08-31T00:55:32.380Z']);
+  const { substantive, infra } = classifyDeadAttemptsForTask('2599a', entries, { contradictedDeadKeys });
+  assert.equal(substantive.length, 0);
+  assert.equal(infra.length, 0);
+  // No opts at all: the exact same row is unaffected — purely additive/opt-in.
+  const unfiltered = classifyDeadAttemptsForTask('2599a', entries);
+  assert.equal(unfiltered.substantive.length, 1);
+});
+
+test('dispatchCapDecision: a contradicted dead row does not count toward the 2-death cap, so the task unblocks', () => {
+  // One real death (workspace:801, never contradicted) + one blackout-time
+  // false death (workspace:802, contradicted) — today this reads as 2
+  // substantive deaths and blocks; discounting the contradicted one must
+  // drop the count to 1 and unblock.
+  const entries = [
+    cmuxLaunch('2026-08-10T09:00:00.000Z', 'workspace:801', '2599b'),
+    cmuxDead('2026-08-10T11:30:00.000Z', 'workspace:801', '2599b', 'workspace idle, never booted'),
+    cmuxLaunch('2026-08-31T00:50:00.000Z', 'workspace:802', '2599b'),
+    cmuxDead('2026-08-31T00:55:32.380Z', 'workspace:802', '2599b', 'workspace idle, never booted'),
+  ];
+  const before = dispatchCapDecision('2599b', entries);
+  assert.equal(before.blocked, true);
+  assert.equal(before.reason, 'substantive');
+
+  const contradictedDeadKeys = new Set(['workspace:802|2026-08-31T00:55:32.380Z']);
+  const after = dispatchCapDecision('2599b', entries, { contradictedDeadKeys });
+  assert.equal(after.blocked, false);
+  assert.equal(after.substantive.length, 1, 'the real death (workspace:801) still counts');
+});
+
+test('classifyDeadAttemptsForTask: contradicting one dead row does not disturb a sibling dead row sharing the SAME recycled workspaceRef', () => {
+  // Plan-review catch: filtering must happen on the derived workspaceDeaths
+  // list, never by stripping the contradicted row out of `entries` before
+  // foldAttempts(entries) runs — otherwise a sibling dead row recycling the
+  // same ref would see a different candidatesByRef match count and flip to
+  // fail-closed-substantive for the wrong reason. Two dead rows for the SAME
+  // task on the SAME ref (an edge case foldAttempts already fails closed on,
+  // per the "matches.length !== 1" branch) must classify identically whether
+  // or not one of them is contradicted, since discounting must not change
+  // what foldAttempts itself sees.
+  const entries = [
+    cmuxLaunch('2026-08-31T00:50:00.000Z', 'workspace:900', '2599c'),
+    cmuxDead('2026-08-31T00:55:32.380Z', 'workspace:900', '2599c', 'workspace idle, never booted'),
+    cmuxLaunch('2026-08-31T01:00:00.000Z', 'workspace:900', '2599c'),
+    cmuxDead('2026-08-31T01:30:00.000Z', 'workspace:900', '2599c', 'workspace idle, never booted'),
+  ];
+  const baseline = classifyDeadAttemptsForTask('2599c', entries);
+  const contradictedDeadKeys = new Set(['workspace:900|2026-08-31T00:55:32.380Z']);
+  const { substantive, infra } = classifyDeadAttemptsForTask('2599c', entries, { contradictedDeadKeys });
+  // The contradicted row itself is gone from both buckets...
+  assert.equal(substantive.length + infra.length, baseline.substantive.length + baseline.infra.length - 1);
+  // ...and the SURVIVING sibling row's own classification (substantive vs
+  // infra) is byte-identical to what it got in the unfiltered baseline —
+  // proof foldAttempts saw the same untouched `entries` either way.
+  const survivorBaseline = [...baseline.substantive, ...baseline.infra].find(e => e.ts === '2026-08-31T01:30:00.000Z');
+  const survivorAfter = [...substantive, ...infra].find(e => e.ts === '2026-08-31T01:30:00.000Z');
+  assert.ok(survivorBaseline && survivorAfter);
+  const bucketOf = (list, e) => (list.substantive.includes(e) ? 'substantive' : list.infra.includes(e) ? 'infra' : null);
+  assert.equal(bucketOf(baseline, survivorBaseline), bucketOf({ substantive, infra }, survivorAfter));
+});
+
+test('classifyDeadAttemptsForTask: contradictedDeadKeys is matched byte-exact against a real ledger round-trip (appendEntry/readEntries), not a hand-typed literal', () => {
+  const ledgerPath = tmpLedger();
+  appendEntry({ event: 'launch', taskId: '2599d', subject: 'task 2599d', workspaceRef: 'workspace:911', model: 'sonnet' }, ledgerPath);
+  const deadLine = appendEntry({ event: 'dead', taskId: '2599d', subject: 'task 2599d', workspaceRef: 'workspace:911', failureReason: 'workspace idle, never booted', title: null }, ledgerPath);
+  const entries = readEntries(ledgerPath);
+  // deadLine.ts is exactly what a caller (audit-false-dead-ledger-rows.js)
+  // reads back as `row.ts` from the same file — the key must be built from
+  // that real value, not a re-derived/reformatted timestamp.
+  const contradictedDeadKeys = new Set([`workspace:911|${deadLine.ts}`]);
+  const { substantive, infra } = classifyDeadAttemptsForTask('2599d', entries, { contradictedDeadKeys });
+  assert.equal(substantive.length, 0);
+  assert.equal(infra.length, 0);
 });
 
 // ── Task #1904: a FINISHED dispatch must not be killed by ref recycling ────

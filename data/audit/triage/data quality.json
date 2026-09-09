@@ -1,7 +1,7 @@
 {
   "system": "data quality",
   "status": "error",
-  "lastChecked": "2026-08-24T07:46:40.492Z",
+  "lastChecked": "2026-09-05T02:22:00.874Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,32 +9,37 @@
     {
       "name": "Data quality: cross-outlet attribution drift",
       "status": "error",
-      "message": "Drift-check snapshot is 3d old (>48h) — the daily check itself has stopped running"
+      "message": "Drift-check snapshot is 4d old (>48h) — the daily check itself has stopped running"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
       "status": "error",
-      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
+      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
       "status": "error",
-      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
+      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
       "status": "error",
-      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
+      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
     },
     {
       "name": "Data quality: roundup-url-mismatch lifetime sweep",
       "status": "error",
-      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
+      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
       "status": "error",
-      "message": "Lifetime-sweep snapshot is 3d old (>48h) — the daily sweep itself has stopped running"
+      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
+    },
+    {
+      "name": "Data quality: stale announced shows",
+      "status": "pass",
+      "message": "No stale 'announced' shows (22 silenced by contamination, 23h ago)"
     }
   ]
 }

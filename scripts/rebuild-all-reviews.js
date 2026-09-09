@@ -32,7 +32,7 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -1498,7 +1498,18 @@ const crossShowFingerprints = new Map();
             reviewDate.toISOString().slice(0, 10),
             showOpeningDateMap[sid].toISOString().slice(0, 10),
             d.outletId,
-            { category: showRecord && showRecord.category }
+            {
+              category: showRecord && showRecord.category,
+              // BRO-2828: humanReviewedEarlyPublish is the documented operator
+              // opt-out for the anticipatory gate, but this recheck used to
+              // drop it, so the opt-out could not clear a flag from here. The
+              // only other exit was collect-review-texts.js's wrong_content
+              // URL-recovery cleanup, which now honors the same field and
+              // therefore no longer deletes the flag indiscriminately — so
+              // without this line an operator setting the flag would have no
+              // path to clear it at all.
+              humanReviewedEarlyPublish: d.humanReviewedEarlyPublish === true,
+            }
           );
           if (shouldAutoClearAnticipatoryGrace(d, { stillRejected: anticipRecheck.rejected })) {
             const wasDetail = d.wrongProductionDetail || '(no detail)';
@@ -2861,18 +2872,25 @@ showDirs.forEach(showId => {
           // Compute outlet early for wrongProduction override check
           const earlyRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
           const earlyCanonicalOutlet = normalizeOutletCanonical(earlyRawOutlet);
-          const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(earlyCanonicalOutlet)
-            || outletRegionMap[earlyCanonicalOutlet] === 'london' || outletRegionMap[earlyRawOutlet] === 'london';
-          // Registry region 'london' is as strong a signal as a UK URL: the cross-market
-          // flagger only fires when region !== 'london', so a london-region outlet carrying
-          // this flag means the region was backfilled AFTER flagging (or the flag is a
-          // dangling remnant of an interrupted clear). UK blogs on .com domains
-          // (liamodell.com, jonathanbaz.com, timeout.com/london) never satisfy isUkUrl,
-          // so without this the flag can never self-heal. Dual-market outlets are
-          // deliberately NOT included — their wrongProduction flags can be genuine
-          // same-title other-market reviews.
-          const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
-            || outletRegionMap[earlyRawOutlet] === 'london';
+          const earlyOutletIsUkSide = outletIsUkSideSelfHealRegion(
+            outletRegionMap, earlyCanonicalOutlet, earlyRawOutlet
+          );
+          const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(earlyCanonicalOutlet) || earlyOutletIsUkSide;
+          // A UK-side registry region is as strong a signal as a UK URL: the cross-market
+          // flagger only fires when the region is outside UK_SIDE_REGIONS, so a UK-side
+          // outlet carrying this flag means the region was backfilled AFTER flagging (or
+          // the flag is a dangling remnant of an interrupted clear). UK blogs on .com
+          // domains (liamodell.com, jonathanbaz.com, timeout.com/london, newstatesman.com)
+          // never satisfy isUkUrl, so without this the flag can never self-heal.
+          //
+          // Reads UK_SELF_HEAL_REGIONS from cross-market-guard rather than testing
+          // `=== 'london'` inline: BRO-591 synced the FLAGGING side to UK_SIDE_REGIONS and
+          // left this CLEARING side hardcoded to 'london', which stranded region 'uk'
+          // outlets (New Statesman) under a false "US outlet reviewing London show" flag
+          // with no path back. Dual-market outlets stay deliberately excluded — their
+          // wrongProduction flags can be genuine same-title other-market reviews — which
+          // is why UK_SELF_HEAL_REGIONS is UK_SIDE_REGIONS minus 'dual'.
+          const outletIsLondonRegion = earlyOutletIsUkSide;
           try {
             const hostname = new URL(data.url).hostname || '';
             // Use venue-classification's isUkOutletUrl for consistency (handles US outlet exclusions)
@@ -2905,9 +2923,15 @@ showDirs.forEach(showId => {
             })) {
               delete data.wrongProduction;
               delete data.wrongProductionNote;
+              // Name the region actually matched. Hardcoding 'london' here stamped a
+              // false reason onto every region:'uk' outlet the clearing side now
+              // covers, and this string is the only durable record of WHY a flag was
+              // removed — the note itself is deleted just above.
+              const clearedRegion = outletRegionMap[earlyCanonicalOutlet]
+                || outletRegionMap[earlyRawOutlet] || 'unknown';
               data.wrongProductionAutoCleared = isUkUrl
                 ? `rebuild: UK URL on London show (${hostname})`
-                : `rebuild: registry region 'london' outlet on London show (${earlyCanonicalOutlet})`;
+                : `rebuild: registry region '${clearedRegion}' outlet on London show (${earlyCanonicalOutlet})`;
               // At-stamp required: the push-time restore only honors FRESH
               // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
               data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
@@ -3230,7 +3254,18 @@ showDirs.forEach(showId => {
             urlIsUK = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk');
           } catch (e) { /* ignore malformed URLs */ }
         }
-        if (outletRegion === 'london' || urlIsUK) {
+        // UK_MARKET_REGIONS, not `=== 'london'`: the registry's UK-market bucket is
+        // {london, uk}, and testing only 'london' let every region:'uk' outlet score
+        // Broadway/off-Broadway shows unflagged. Measured before widening — exactly
+        // one review was affected, and it is a true positive: The Wee Review's
+        // Suhani Shah "Spellbound 2.0" piece, whose own text reads "Note: This review
+        // is from the 2024 Fringe" and names Underbelly Bristo Square, was
+        // filed under spellbound-off-broadway-2026 (SoHo Playhouse, opened 2026-08-19,
+        // no declared priorRuns). It was NOT scoring — ensemble-scoreability-check had
+        // already rejected it, so this guard is a second, earlier line of defence
+        // rather than a live score correction. 'dual' stays out of the set; the
+        // DUAL_MARKET_OUTLETS check above is what exempts outlets allowed to cross.
+        if (outletIsUkMarketRegion(outletRegionMap, canonicalOutlet, rawOutlet) || urlIsUK) {
           // Production-continuity exemption (BRO-222): a review whose
           // publishDate falls inside a declared priorRuns window is coverage
           // of THAT run, not this one — its market must be judged against the
@@ -4803,7 +4838,13 @@ if (fs.existsSync(reviewsJsonPath)) {
                     if (!region && d.url) {
                       try { const h = new URL(d.url).hostname; urlIsUK = h.endsWith('.co.uk') || h.endsWith('.org.uk'); } catch {}
                     }
-                    if (region === 'london' || urlIsUK) wouldBeExcluded = true;
+                    // MUST track the real reverse guard above (search UK_MARKET_REGIONS).
+                    // This block predicts exclusions the guard applies without persisting a
+                    // flag; if it stays narrower than the guard it UNDER-predicts drops, and
+                    // the comment below spells out the consequence — a hard abort on the
+                    // first rebuild after a tightening. Widening the guard to the UK-market
+                    // bucket without widening this mirror would have caused exactly that.
+                    if (UK_MARKET_REGIONS.has(region) || urlIsUK) wouldBeExcluded = true;
                   }
                 }
                 // 2. Pre-opening date: review published well before show opened

@@ -7,6 +7,7 @@ import { getGoldThreshold } from '@/config/score-buckets';
 import { getVisibleTicketLinks } from './ticket-utils';
 import { SOCIAL_ACCOUNTS, type SocialPlatform } from '@/config/branding';
 import { AUTHOR } from '@/config/author';
+import { formatShowDate } from './date-utils';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -398,14 +399,18 @@ export function generateTheaterSchema(theater: {
     name: theater.name,
     url: `${BASE_URL}/theater/${theater.slug}`,
     ...(theater.address && { address: toPostalAddress(theater.address, country) }),
-    event: theater.currentShow ? {
+    // Event.location requires an address per Google's structured data spec
+    // (GSC flags "Missing field 'address' (in 'location')" otherwise). Venues
+    // without a known address (e.g. a not-yet-announced "TBA" house) omit the
+    // event entirely rather than emit an incomplete TheaterEvent.
+    event: (theater.currentShow && theater.address) ? {
       '@type': 'TheaterEvent',
       name: theater.currentShow.title,
       url: `${BASE_URL}/show/${theater.currentShow.slug}`,
       location: {
         '@type': 'PerformingArtsTheater',
         name: theater.name,
-        ...(theater.address && { address: toPostalAddress(theater.address, country) }),
+        address: toPostalAddress(theater.address, country),
       },
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -535,9 +540,16 @@ export function generateItemListSchema(items: {
 // with an unconfirmed date.
 function formatFAQDate(dateStr?: string | null): string | null {
   if (!dateStr) return null;
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime()) || date.getFullYear() < 1950) return null;
-  return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  // Mirrors formatShowDate's own UTC-midnight parse (slice to the date part,
+  // force UTC) so this guard can't disagree with the value it's guarding.
+  // The prior `new Date(dateStr).getFullYear()` read the LOCAL year, so on a
+  // non-UTC machine a date of exactly 1950-01-01 parsed as UTC midnight would
+  // read back as Dec 31 1949 local and get wrongly suppressed by this guard —
+  // the same class of bug this whole fix (BRO-3047) exists to close, just
+  // hiding inside the validity check instead of the render call.
+  const date = new Date(`${dateStr.slice(0, 10)}T00:00:00Z`);
+  if (isNaN(date.getTime()) || date.getUTCFullYear() < 1950) return null;
+  return formatShowDate(dateStr, { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
 export function getShowFAQs(show: ComputedShow, consensusText?: string | null): { question: string; answer: string }[] {
@@ -745,7 +757,7 @@ export function generateBrowseFAQSchema(
   });
   if (closingShows.length > 0) {
     const closingStr = closingShows.slice(0, 3).map(s =>
-      `${s.title} (closes ${new Date(s.closingDate!).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })})`
+      `${s.title} (closes ${formatShowDate(s.closingDate, { month: 'long', day: 'numeric', year: 'numeric' })})`
     ).join(', ');
     faqs.push({
       question: `Which of these shows are closing soon?`,

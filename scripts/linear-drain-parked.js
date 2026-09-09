@@ -63,11 +63,21 @@
  *   --help, -h   show this message, do nothing else
  *
  * Wiring: NOT a data-health-check.yml step — the runner has no `claude`
- * binary to hand off to, so a headless dispatch can't run there. Wired on
- * the Mac side via its own launchd tick (scripts/launchd/
- * com.broadwayscore.linear-drain-parked.plist, disabled by default — see
- * that file's header for the install command), mirroring backlog-drain.js's
- * own launchd cadence rather than folding into send-morning-digest.js.
+ * binary to hand off to, so a headless dispatch can't run there. Real
+ * dispatch runs on the Mac side via its own launchd tick (scripts/launchd/
+ * com.broadwayscore.linear-drain-parked.plist), mirroring backlog-drain.js's
+ * own launchd cadence rather than folding into send-morning-digest.js. That
+ * agent was BOOTSTRAPPED 2026-09-08 (BRO-3060) and ticks 10:30/14:30/18:30
+ * ET; before that it had never executed once, which is how 126 auto-filed
+ * issues accumulated with no dispatch-ledger row at all. Check liveness with
+ * `launchctl print gui/$(id -u)/com.broadwayscore.linear-drain-parked`, not
+ * by reading the plist — ~/Library/LaunchAgents/ holds the installed copy
+ * and can drift from the one in this repo.
+ * BRO-3060: .github/workflows/check-linear-drain-health.yml runs this file's
+ * own --dry-run daily as a READ-ONLY CI monitor (Linear API read only, no
+ * spawn) — it goes red if eligible candidates pile up past one dispatch cap,
+ * catching a dead Mac-side drain in days instead of the weeks it took for
+ * 126 issues to accumulate before anyone noticed the drain never ran.
  */
 'use strict';
 
@@ -77,6 +87,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectDrainCandidates, isAutoFiledParked, hasSafeVerifyCommand } = require('./lib/linear-drain-parked.js');
 const { checkPark, computeContentHash } = require('./lib/attempt-memory.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+const dispatchReconcile = require('./lib/dispatch-reconcile.js');
 
 require('./lib/load-env').loadEnv();
 
@@ -125,13 +136,31 @@ function parseArgs(argv) {
   return a;
 }
 
+// Exact-duplicate lines are dropped, and that is load-bearing rather than
+// tidiness (ship-check finding, 2026-09-08). This ledger carries `merge=union`
+// so concurrent appends union instead of conflicting, and union can leave the
+// SAME row twice — sync-audit-checkout.sh's recovery stage re-appends the
+// locally-saved rows on top of origin's committed ones. attempt-memory.js's
+// checkPark() then counts every 'card-fail' row in the newest-to-oldest
+// streak with no dedupe of its own, and DEFAULT_MAX_FAILURES is 2 — so one
+// duplicated fail row is enough to turn a single failure into a park and
+// strand a card that only failed once. Stranded cards are the exact defect
+// BRO-3060 was filed for; re-introducing them through the merge driver would
+// be a poor trade.
+//
+// Exact-line equality is the right key: every row is stamped with an ISO
+// millisecond `ts` at append time, so two genuinely distinct attempts never
+// serialise identically, and appendLedger writes keys in a fixed order.
 function readLedger(p = LEDGER_PATH) {
   let raw;
   try { raw = fs.readFileSync(p, 'utf8'); } catch { return []; }
   const out = [];
+  const seen = new Set();
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
     try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
   }
   return out;
@@ -163,19 +192,12 @@ function computeIssueContentHash(issue) {
   return computeContentHash({ name: issue && issue.title, notes: issue && issue.description });
 }
 
-// Same correlation logic as scripts/lib/digest-autofix.js's findMyJob (see
-// its header comment for why "latest ts for this taskId" is unsafe): scan
-// the raw shared dispatch-ledger for the job-spawned event THIS dispatch's
-// child process caused (earliest spawn at/after our own dispatch timestamp),
-// then follow any retry chain to read its current terminal state.
-function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
-  const sinceMs = new Date(sinceTs).getTime() - 5000;
-  const spawns = (dispatchLedgerEntries || [])
-    .filter((e) => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
-    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
-  if (!spawns.length) return null;
-  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
-}
+// Correlation logic shared with scripts/backlog-drain.js and
+// scripts/lib/digest-autofix.js since BRO-2542 — see dispatch-reconcile.findMyJob
+// for why "latest ts for this taskId" is unsafe, and why any retry chain is
+// followed to read the job's current terminal state. Re-exported, not
+// re-implemented: all three files previously carried a byte-for-byte copy.
+const findMyJob = dispatchReconcile.findMyJob;
 
 // A dispatch is resolved by an outcome recorded AT OR AFTER it, not by "this
 // identifier+contentHash has an outcome somewhere in history" (ship-check
@@ -188,12 +210,12 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
 // same fix scripts/backlog-drain.js's own isDispatchResolved already applies
 // (see its header comment for the "old card-id Set" postmortem this mirrors).
 const RESOLVING_EVENTS = new Set(['card-pass', 'card-fail']);
+// Arity-3 wrapper binding this module's own outcome vocabulary — the shared
+// implementation takes the event set as a 4th argument, since
+// scripts/backlog-drain.js resolves on a richer set (card-stranded,
+// completion-unattributed) than this module's plain pass/fail.
 function isDispatchResolved(ledgerEntries, identifier, dispatchTs) {
-  const at = new Date(dispatchTs).getTime();
-  return (ledgerEntries || []).some((e) =>
-    e && String(e.cardId) === String(identifier) && e.ts &&
-    RESOLVING_EVENTS.has(e.event) &&
-    new Date(e.ts).getTime() >= at);
+  return dispatchReconcile.isDispatchResolved(ledgerEntries, identifier, dispatchTs, RESOLVING_EVENTS);
 }
 
 // Resolves prior 'drain-parked-dispatch' breadcrumbs (this drain's own
@@ -204,70 +226,56 @@ function isDispatchResolved(ledgerEntries, identifier, dispatchTs) {
 // 'drain-parked-dispatch' entries only, where recentlyAttempted() already
 // expects it.
 //
-// isDispatchResolved is checked against the IMMUTABLE pre-pass ledgerEntries
-// only (never entries emitted earlier in this SAME loop) — an earlier draft
-// tagged same-pass emitted breadcrumbs with `now` and cross-checked against
-// them, which is wrong: `now` is later than every historical dispatch ts by
-// construction, so resolving ONE stale dispatch this pass would immediately
-// satisfy the `>= dispatchTs` check for every OTHER unresolved dispatch of
-// the same identifier too — collapsing genuinely separate, sequential
-// re-attempts (exactly what BRO-2434 needs to count separately) onto one
-// outcome. The real hazard the old code was trying to guard — two dispatch
-// rows racing onto the SAME underlying job (e.g. a duplicate-dispatch race
-// where only one job ever actually spawned) — is instead guarded directly by
-// jobId: claimedJobIds below skips emitting a second outcome for a jobId
-// already resolved earlier in this same pass, without touching timestamps.
+// The correlation, resolution and same-pass jobId race guard live in
+// scripts/lib/dispatch-reconcile.js since BRO-2542 — including the
+// Number.isFinite(ts) filter and the "check only the IMMUTABLE pre-pass
+// entries" rule, whose postmortems (this file's own BRO-2434 among them) are
+// in that file's header. What stays here is this drain's own two-outcome
+// vocabulary and note text.
 function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date()) {
-  // Entries written before this feature shipped carry no contentHash and are
-  // silently excluded — same convention attempt-memory.js's own header
-  // documents for pre-feature ledger history.
-  // A malformed/missing ts (hand-edited or corrupted ledger line — readLedger
-  // already drops lines that aren't even valid JSON, but not a field-level
-  // check) would otherwise turn every downstream Date arithmetic into NaN,
-  // which trips `< ORPHAN_TIMEOUT_H` to false and fires an immediate fail
-  // instead of the intended multi-hour grace window. Same defensive
-  // Number.isFinite guard recentlyAttempted() already applies for the exact
-  // same reason.
-  const dispatches = (ledgerEntries || []).filter((e) =>
-    e && e.event === 'drain-parked-dispatch' && e.identifier && e.contentHash &&
-    Number.isFinite(new Date(e.ts).getTime()));
-  const claimedJobIds = new Set();
+  const decisions = dispatchReconcile.classifyDispatches({
+    ledgerEntries,
+    dispatchLedgerEntries,
+    // Entries written before this feature shipped carry no contentHash and are
+    // silently excluded — same convention attempt-memory.js's own header
+    // documents for pre-feature ledger history.
+    isDispatchRow: e => e.event === 'drain-parked-dispatch' && e.identifier && e.contentHash,
+    resolvingEvents: RESOLVING_EVENTS,
+    orphanTimeoutH: ORPHAN_TIMEOUT_H,
+    cardIdOf: d => d.identifier,
+    taskIdOf: d => `linear:${d.identifier}`,
+    now,
+  });
   const newEntries = [];
-  for (const d of dispatches) {
-    if (isDispatchResolved(ledgerEntries, d.identifier, d.ts)) continue;
-    const taskId = `linear:${d.identifier}`;
-    const job = findMyJob(dispatchLedgerEntries, taskId, d.ts);
-    if (!job) {
-      const ageH = (now.getTime() - new Date(d.ts).getTime()) / 3600e3;
-      if (ageH < ORPHAN_TIMEOUT_H) continue; // may still spawn — recheck next run
+  for (const { dispatch: d, cardId, job, kind } of decisions) {
+    if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
-        event: 'card-fail', cardId: d.identifier, contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: kill switch, verify gate, terminal-state guard, or lease already held)`,
       });
       continue;
     }
-    if (job.jobId && claimedJobIds.has(job.jobId)) continue; // a different dispatch row already resolved into this exact job this pass
-    if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
-      // Chain ends at a retry whose successor hasn't spawned yet: still
-      // in-flight within the same orphan bound the no-spawn case uses.
-      const ageH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
-      if (ageH < ORPHAN_TIMEOUT_H) continue;
+    if (kind === dispatchReconcile.DECISION_KINDS.RETRY_TIMEOUT) {
+      // The retry chain ended at 'job-retried' and no successor spawned inside
+      // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
-        event: 'card-fail', cardId: d.identifier, contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
-      if (job.jobId) claimedJobIds.add(job.jobId);
       continue;
     }
-    if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
+    // Explicit, not fall-through (ship-check finding) — see the same guard in
+    // scripts/backlog-drain.js's reconcileOutcomes: a new `kind` from the
+    // shared lib must stop the pass rather than be silently treated as
+    // terminal and dereference a job that may be null.
+    if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
     const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
     newEntries.push({
-      event: outcome, cardId: d.identifier, contentHash: d.contentHash,
+      event: outcome, cardId, contentHash: d.contentHash,
       note: outcome === 'card-pass'
         ? 'session finished (job-done)'
         : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`,
     });
-    if (job.jobId) claimedJobIds.add(job.jobId);
   }
   return newEntries;
 }
@@ -378,7 +386,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // exists only in the detached child's log file.
       // Passed here, at the call site that owns this population — not inside
       // dispatchDetached, which would waive it for every future caller too.
-      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true });
+      // allowAutomationParked (BRO-3060): every candidate here passed
+      // isAutoFiledParked above, i.e. its description carries owner-alert-
+      // router's PARKED marker — a second, independent guard from
+      // autofixFiledIssueGuard that allowAutofixFiled does NOT waive. Without
+      // this every dispatch this drain ever attempted was refused inside the
+      // detached child (discovered live, 2026-09-08: all 3 of this run's
+      // candidates were refused before this fix).
+      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true, allowAutomationParked: true });
       appendLedgerFn({
         event: 'drain-parked-dispatch', identifier: issue.identifier, title: issue.title,
         contentHash: computeIssueContentHash(issue),

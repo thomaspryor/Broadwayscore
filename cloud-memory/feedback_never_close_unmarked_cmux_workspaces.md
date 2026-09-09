@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 53acbb0e-e0c9-444c-9fdd-991f191cdf00
-  modified: 2026-08-02T23:15:40.389Z
+  modified: 2026-09-07T23:09:16.375Z
 ---
 
 On 2026-07-14 I closed 11 "idle" cmux workspaces (no running claude process, associated
@@ -83,5 +83,46 @@ owner said "why did I need to make a call?" after being asked. Recommend-and-act
 state which copy is being closed and why (keep the one further along / the one
 the owner opened), prefix `CMUX_CLOSE_OK=1`, and report it. Do NOT extend this
 to unmarked non-duplicate tabs — those still always go to the owner.
+
+2026-09-07 socket-password-mode broke everything, reverted: cmux.app restarted
+~17:16 that day and picked up automation.socketControlMode="password" for the
+first time (set 2026-08-02, never live until this restart). Result: the CLI
+socket file (~/Library/Application Support/cmux/cmux.sock) stopped being
+created at all — every `cmux` CLI call, including from inside a live cmux tab,
+failed "Socket not found" (not an auth error). This killed bsc-autoprune
+(launchd, failing every 5min), bsc-prune, dispatch-watchdog, and
+zombie-tab-sweep simultaneously — the entire auto-close/dispatch layer was
+dark with no alert. Reverted cmux.json automation block back to
+{"socketControlMode":"cmuxOnly"} (matches pre-2026-08-02 behavior); takes
+effect on next cmux restart (owner's call — bounces all live tabs). If
+password mode is wanted again, it needs the CLI wrapper (cmux-workspaces.js
+run()) to actually pass the password, not just the app-side config flag.
+Separately, confirmed by design (not a bug): 👑-prefixed "Crown" successor-
+chain tabs (v24...v46+, one per hand-off) are permanently exempt from all
+auto-close paths (isCrownTab() in prune-closeable.js, task #1751) — they will
+keep accumulating forever and need a periodic owner-approved manual sweep.
+
+2026-09-07 root cause found + FIXED (BRO-2946, commits eb337a1a4 + 711500aa3): the
+"periodic owner-approved manual sweep" this file kept saying Crown tabs needed had
+never actually happened — a BRO-343 succession chain accumulated 55 concurrent LIVE
+duplicate Crown tabs over ~6 weeks (v20-v46), all running on the bare checkout at
+once (323% CPU, 22.8GB RAM). Two shipped fixes: (1) scripts/lib/crown-duplicate-
+detector.js — report-only, groups live Crown tabs by dispatch-ledger taskId, wired
+into bsc-prune's existing Stop-hook sweep so a future pileup is loud instead of
+silent; (2) scripts/bsc-next.js selfCloseAfterSuccession() — the actual root-cause
+fix: a succession predecessor now closes ONLY its own tab (via $CMUX_WORKSPACE_ID,
+confirmed set in every cmux-launched session) right after its successor is
+confirmed launched. This is a NEW, narrower safe pattern, distinct from the
+external "one session closes ANOTHER tab" pattern every incident above is about —
+self-close by known-own-id, fail-safe on any lookup miss, TOCTOU re-checked right
+before the close call, kill switch SUCCESSION_SELF_CLOSE_DISABLED=1.
+Residual, tracked, not yet fixed: BRO-2949 — findLiveWorkspaceForTask (shared by
+bsc-next.js and linear-next.js to block a FRESH re-dispatch onto an already-live
+task) matches via a 20-char TITLE PREFIX, but Crown succession titles reword
+noticeably each hand-off — very likely why fresh re-dispatches of BRO-343 kept
+slipping past this guard and starting new parallel chains despite it existing.
+Fix belongs in the shared dispatch-guards.js primitive (taskId-first, like
+crown-duplicate-detector.js and zombie-tab-sweep.js already do), needs its own
+rule-18 review given how many callers depend on its exact behavior.
 
 Related: [[feedback_absorb_gate_ceremony]]

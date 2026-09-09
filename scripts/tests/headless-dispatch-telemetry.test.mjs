@@ -51,7 +51,10 @@ test('JOB_EVENTS.ABANDONED is terminal but NOT deadlike', () => {
 });
 
 test('every JOB_EVENTS value is exactly terminal or open (no unclassified event name)', () => {
-  const OPEN = new Set([JOB_EVENTS.SPAWNED]);
+  // ORPHAN_SUSPECT/ORPHAN_CLEARED (BRO-3052) join SPAWNED in the open set —
+  // a job must keep reading as in-flight through a suspicion and its
+  // clearing, until a LATER tick writes the real terminal ORPHANED row.
+  const OPEN = new Set([JOB_EVENTS.SPAWNED, JOB_EVENTS.ORPHAN_SUSPECT, JOB_EVENTS.ORPHAN_CLEARED]);
   for (const [key, value] of Object.entries(JOB_EVENTS)) {
     const classified = TERMINAL_JOB_EVENTS.has(value) || OPEN.has(value);
     assert.ok(classified, `JOB_EVENTS.${key} (${value}) is neither in TERMINAL_JOB_EVENTS nor the known-open set — every consumer that folds job state needs one or the other`);
@@ -97,13 +100,19 @@ test('computeJobLaneOutcomeRate: classifies every outcome shape correctly', () =
   assert.equal(stats.lane, 'headless');
   assert.equal(stats.launches, 6, 'the one workspace:-lane launch must be excluded');
   assert.equal(stats.done, 1);
-  assert.equal(stats.failed, 3, 'job-failed + job-orphaned + job-abandoned all count as failed');
+  // BRO-3052: job-orphaned means "the supervisor lost track", not "the task
+  // failed" — measured live, orphaned rows include jobs whose work had
+  // already merged successfully. It gets its own bucket, excluded from
+  // resolved/failed, same treatment as inFlight/none.
+  assert.equal(stats.failed, 2, 'job-failed + job-abandoned count as failed; job-orphaned no longer does');
+  assert.equal(stats.orphaned, 1);
   assert.equal(stats.inFlight, 1);
   assert.equal(stats.none, 1);
-  assert.equal(stats.resolved, 4, 'done + failed only — in-flight/none have no verdict yet');
-  assert.equal(stats.successRate, 1 / 4);
-  assert.equal(stats.failureRate, 3 / 4);
-  assert.deepEqual(new Set(stats.failedTaskIds), new Set(['t-failed', 't-orphaned', 't-abandoned']));
+  assert.equal(stats.resolved, 3, 'done + failed only — in-flight/none/orphaned have no verdict yet');
+  assert.equal(stats.successRate, 1 / 3);
+  assert.equal(stats.failureRate, 2 / 3);
+  assert.deepEqual(new Set(stats.failedTaskIds), new Set(['t-failed', 't-abandoned']));
+  assert.deepEqual(new Set(stats.orphanedTaskIds), new Set(['t-orphaned']));
 });
 
 test('computeJobLaneOutcomeRate: a resume (job-retried then a fresh job-spawned, no new launch row) attributes to the SAME launch', () => {
@@ -218,6 +227,65 @@ test('runJob: a STALE lease (holder not alive) is stolen normally — no job-aba
     } finally {
       dispatchLedger.appendEntry = originalAppendEntry;
       if (claimed) bscRunner.releaseLease(taskId, 'new-claimant');
+    }
+  });
+
+// ── BRO-2414: a pid:null holder (lease claimed, subprocess not spawned yet) ─
+// must never be stolen by a concurrent acquireLease for the same taskId.
+// runJob() always writes pid:null on its initial acquireLease call — the real
+// pid is only patched in later via onSpawn — so this is the actual shape a
+// double-dispatch race hits, not a synthetic edge case.
+
+test('acquireLease: a pid:null holder is treated as live, never stolen (BRO-2414)',
+  { skip: !leaseRootUsable && 'LEASE_ROOT not writable in this environment (CI) — see the guard above' },
+  () => {
+    const taskId = `test-2414-nullpid-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const holderJobId = `${taskId}-holder`;
+    // isAliveFn must never even need to answer truthfully for a null pid —
+    // pidLooksLikeClaude(null) itself returns false, which is exactly the bug.
+    const neverAlive = () => false;
+    let claimed = false;
+
+    try {
+      const claim = bscRunner.acquireLease(taskId, { jobId: holderJobId, subject: 'provisioning-holder', pid: null }, { isAliveFn: neverAlive });
+      assert.equal(claim.ok, true, 'setup: the pid:null holder must actually claim the lease');
+      claimed = true;
+
+      const stealAttempt = bscRunner.acquireLease(taskId, { jobId: 'double-dispatch-claimant', subject: 'x', pid: null }, { isAliveFn: neverAlive });
+      assert.equal(stealAttempt.ok, false, 'a pid:null holder must refuse a concurrent claim, not get stolen');
+      assert.match(stealAttempt.reason, /already has a live job/);
+      assert.equal(stealAttempt.holder.jobId, holderJobId, 'the reported holder must still be the ORIGINAL job, proving nothing was stolen');
+
+      const stillHeld = bscRunner.readLease(taskId);
+      assert.equal(stillHeld.jobId, holderJobId, 'the lease file on disk must be untouched by the failed steal attempt');
+    } finally {
+      if (claimed) bscRunner.releaseLease(taskId, holderJobId);
+    }
+  });
+
+test('acquireLease: a genuinely dead (non-null) pid holder is still stolen normally (BRO-2414 regression guard)',
+  { skip: !leaseRootUsable && 'LEASE_ROOT not writable in this environment (CI) — see the guard above' },
+  () => {
+    const taskId = `test-2414-deadpid-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    const deadHolderJobId = `${taskId}-dead-holder`;
+    const neverAlive = () => false;
+    let claimed = false;
+
+    try {
+      const claim = bscRunner.acquireLease(taskId, { jobId: deadHolderJobId, subject: 'crashed-holder', pid: 999999 }, { isAliveFn: neverAlive });
+      assert.equal(claim.ok, true, 'setup: the dead-pid holder must claim the lease first');
+      claimed = true;
+
+      const stealAttempt = bscRunner.acquireLease(taskId, { jobId: 'reclaimer', subject: 'x', pid: 999998 }, { isAliveFn: neverAlive });
+      assert.equal(stealAttempt.ok, true, 'a holder with a genuinely dead (non-null) pid must still be stolen — this fix must not regress the existing crash-reclaim path');
+
+      const nowHeld = bscRunner.readLease(taskId);
+      assert.equal(nowHeld.jobId, 'reclaimer', 'the lease must now belong to the new claimant');
+      claimed = true; // ownership moved; release under the new jobId in finally
+      bscRunner.releaseLease(taskId, deadHolderJobId); // no-op: jobId mismatch guard should refuse this
+      assert.equal(bscRunner.readLease(taskId).jobId, 'reclaimer', 'release under the OLD jobId must not remove the new holder\'s lease');
+    } finally {
+      if (claimed) bscRunner.releaseLease(taskId, 'reclaimer');
     }
   });
 

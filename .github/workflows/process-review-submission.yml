@@ -318,6 +318,14 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from process-review-submission'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: process-review-submission
+
       - name: Post success comment
         if: success()
         uses: actions/github-script@v7

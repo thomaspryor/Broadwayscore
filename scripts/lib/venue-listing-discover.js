@@ -33,6 +33,9 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { fetchPage } = require('./scraper');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd, hasJsonLdType } = require('./jsonld');
 
 const STAGING_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'ob-venue-candidates.json');
 
@@ -385,15 +388,11 @@ function extractJsonLdTheaterEvents(doc) {
   const events = [];
   for (const script of doc.querySelectorAll('script[type="application/ld+json"]')) {
     try {
-      const parsed = JSON.parse(script.textContent);
-      const items = Array.isArray(parsed) ? parsed : [parsed];
+      const items = parseJsonLd(script.textContent);
       for (const item of items) {
-        // schema.org allows @type as either a string or an array of strings —
+        // hasJsonLdType covers @type as a string OR an array of strings —
         // sites like LondonTheatre.co.uk emit `@type: ["Event","TheaterEvent"]`.
-        // Without array handling we'd silently drop those events.
-        const t = item['@type'];
-        const isTheaterEvent = Array.isArray(t) ? t.includes('TheaterEvent') : t === 'TheaterEvent';
-        if (isTheaterEvent && !item.subEvent) events.push(item);
+        if (hasJsonLdType(item, 'TheaterEvent') && !item.subEvent) events.push(item);
       }
     } catch { /* malformed JSON-LD blocks are skipped */ }
   }

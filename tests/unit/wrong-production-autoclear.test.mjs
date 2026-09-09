@@ -28,10 +28,13 @@ const {
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
+  REVIEW_LAG_GRACE_DAYS,
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
   shouldAutoClearAnticipatoryGrace,
+  shouldPreserveExclusionFlagsOnUrlRecovery,
+  DATE_ONLY_AUTO_REASONS,
   hasEnsembleConsensus,
   shouldAutoClearWrongProductionTourLeg,
 } = require('../../scripts/lib/wrong-production-autoclear');
@@ -499,6 +502,51 @@ describe('isWithinPriorRun', () => {
       isWithinPriorRun('2025-06-01', [
         { openingDate: '2025-04-15', closingDate: '2025-05-15' },
       ]),
+      false
+    );
+  });
+
+  it('BRO-2561: grants REVIEW_LAG_GRACE_DAYS of lag past closingDate', () => {
+    const runs = [{ openingDate: '2025-04-15', closingDate: '2025-05-15' }];
+    // Exactly at the grace boundary — still within.
+    assert.strictEqual(isWithinPriorRun('2025-05-22', runs), true);
+    // One day past the grace boundary — outside.
+    assert.strictEqual(isWithinPriorRun('2025-05-23', runs), false);
+    assert.strictEqual(REVIEW_LAG_GRACE_DAYS, 7);
+  });
+
+  it('BRO-80: a truthful closingDate no longer rejects a next-day review', () => {
+    // The Reviews Hub filed 2025-08-26 for a Summerhall Fringe run that
+    // closed 2025-08-25 — the incident that motivated this grace.
+    assert.strictEqual(
+      isWithinPriorRun('2025-08-26', [
+        { openingDate: '2025-08-01', closingDate: '2025-08-25', venue: 'Summerhall' },
+      ]),
+      true
+    );
+  });
+
+  it('BRO-2561: a strict match in a later run beats a graced match in an earlier one', () => {
+    // Run A closes June 1; run B opens June 3 (a multi-leg tour/festival
+    // pattern). A June 4 review is genuinely B's own opening-week coverage —
+    // it must not be swallowed by A's grace tail just because A comes first
+    // in the array.
+    const runs = [
+      { openingDate: '2025-04-15', closingDate: '2025-06-01', venue: 'Venue A' },
+      { openingDate: '2025-06-03', closingDate: '2025-06-20', venue: 'Venue B' },
+    ];
+    const { findMatchingPriorRun } = require('../../scripts/lib/wrong-production-autoclear');
+    assert.strictEqual(findMatchingPriorRun('2025-06-04', runs).venue, 'Venue B');
+  });
+
+  it('does not extend the 180-day default window when closingDate is absent', () => {
+    // 2025-04-15 + 180d = 2025-10-12; grace only applies to an explicit closingDate.
+    assert.strictEqual(
+      isWithinPriorRun('2025-10-12', [{ openingDate: '2025-04-15' }]),
+      true
+    );
+    assert.strictEqual(
+      isWithinPriorRun('2025-10-19', [{ openingDate: '2025-04-15' }]),
       false
     );
   });
@@ -1122,6 +1170,39 @@ describe('hasEnsembleConsensus', () => {
       assert.doesNotThrow(() => hasEnsembleConsensus(d, 'wrong_show'));
     }
   });
+
+  // BRO-372 ship-check finding: combineOutcomes() resolves a 1-vs-1 rejection
+  // TYPE split via a priority order (editorial types beat the generic
+  // garbage_text catch-all), so an editorial rejectionReason can now win even
+  // when only ONE model actually named it. The model-tag-counting fallback
+  // above can't tell that apart from real 2-model agreement on the same
+  // type — rejectionAgreeCount can, and must be preferred when present.
+  it('rejectionAgreeCount=1 refuses consensus even though 2 model tags appear in rejectionReasoning (the over-count this field exists to prevent)', () => {
+    const oneVsOneSplit = {
+      rejectionReason: 'wrong_show',
+      rejectedBy: 'ensemble-scoreability-check',
+      rejectionReasoning:
+        "openai: This review is about a different production entirely.; "
+        + 'gemini: The text is navigation menus and ad copy, not article content.',
+      rejectionAgreeCount: 1, // only openai actually named wrong_show; gemini named garbage_text
+    };
+    assert.equal(hasEnsembleConsensus(oneVsOneSplit, 'wrong_show'), false);
+  });
+
+  it('rejectionAgreeCount=2 confirms real consensus and short-circuits the text-tag fallback', () => {
+    const realConsensus = {
+      rejectionReason: 'wrong_show',
+      rejectedBy: 'ensemble-scoreability-check',
+      rejectionReasoning: 'openai: wrong show.; gemini: wrong show too.',
+      rejectionAgreeCount: 2,
+    };
+    assert.equal(hasEnsembleConsensus(realConsensus, 'wrong_show'), true);
+  });
+
+  it('falls back to the text-tag heuristic when rejectionAgreeCount is absent (files written before this field existed)', () => {
+    assert.equal(hasEnsembleConsensus(REAL_ROMEO_SHAPE, 'wrong_show'), true);
+    assert.equal('rejectionAgreeCount' in REAL_ROMEO_SHAPE, false, 'fixture predates the field — this is the case being tested');
+  });
 });
 
 describe('an ensemble verdict outranks every auto-clear heuristic', () => {
@@ -1266,6 +1347,167 @@ describe('no auto-clear predicate may skip the ensemble guard', () => {
 // UK-dual-market predicate had the same defect class, task #1189). Tests
 // passing gave false confidence the predicate governed production behavior.
 // Structural, so an EIGHTH predicate added later cannot quietly repeat it.
+describe('shouldPreserveExclusionFlagsOnUrlRecovery (BRO-2828: URL recovery must not wipe date-only flags)', () => {
+  // The live incident, reduced. collect-review-texts.js re-fetched
+  // the-story-west-end-2026/monstagigz--unknown.json from a corrected URL (a
+  // cosmetic /comment-page-1/ suffix strip on the SAME article) and its
+  // wrong_content cleanup deleted a wrongProduction flag the anticipatory
+  // gate had stamped 10 seconds earlier from publishDate vs openingDate. The
+  // review shipped with assignedScore 44 and blocked the opening-night
+  // broadcast checklist gate.
+  const liveCase = () => ({
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    wrongProductionDetail: 'published 5d before openingDate (2026-09-03); exceeds 2-day grace',
+    wrongProductionDetectedBy: 'ingest-anticipatory-gate',
+    anticipatoryGateDaysBeforeOpening: 5,
+    publishDate: '2026-08-29',
+    outletId: 'monstagigz',
+  });
+
+  it('preserves the anticipatory flag — a re-fetch is no evidence against a date verdict', () => {
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(liveCase()), { wrongProduction: true });
+  });
+
+  it('honors humanReviewedEarlyPublish, the documented operator opt-out', () => {
+    const d = liveCase();
+    d.humanReviewedEarlyPublish = true;
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+  });
+
+  it('does NOT preserve a content-derived flag — that IS what the recovery answers', () => {
+    const d = liveCase();
+    d.wrongProductionReason =
+      'Collector LLM: wrong production (high) — reviews the 2019 Broadway transfer, not this run';
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+  });
+
+  it('does NOT preserve when the reason is missing entirely', () => {
+    const d = liveCase();
+    delete d.wrongProductionReason;
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+  });
+
+  it('does NOT preserve when wrongProduction is not actually set', () => {
+    const d = liveCase();
+    delete d.wrongProduction;
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+  });
+
+  it('is null-safe', () => {
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(null), { wrongProduction: false });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(undefined), { wrongProduction: false });
+  });
+
+  it('stays joined to DATE_ONLY_AUTO_REASONS rather than a private literal', () => {
+    const libSrc = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
+      'utf8',
+    );
+    const body = libSrc.slice(libSrc.indexOf('function shouldPreserveExclusionFlagsOnUrlRecovery'));
+    const fnBody = body.slice(0, body.indexOf('\n}\n') + 3);
+    assert.ok(
+      fnBody.includes('DATE_ONLY_AUTO_REASONS'),
+      'the predicate must key off the shared DATE_ONLY_AUTO_REASONS registry',
+    );
+    assert.ok(
+      !fnBody.includes("'anticipatory_pre_opening_post'"),
+      'a private copy of the reason string is the drift this predicate exists to avoid',
+    );
+  });
+
+  it('the clear site never keeps incompleteReason alive alongside a preserved flag', () => {
+    // Codex adversarial review, BRO-2828. A first pass at this fix also kept
+    // incompleteReason='wrong_content' when preserving, reasoning that clearing
+    // it would strand the file. It does the opposite: the targeted
+    // INCOMPLETE_REASON_FILTER=wrong_content drain selects on exactly that
+    // value, so the file would be re-selected and re-fetched on every drain,
+    // forever, at real scraper cost — and no re-fetch can change a
+    // publishDate-vs-openingDate verdict. Being unreachable by collect IS what
+    // correctly-excluded looks like; the clear path is the rebuild's
+    // anticipatory auto-clear, which re-derives from shows.json.
+    const src = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'collect-review-texts.js'),
+      'utf8',
+    );
+    const start = src.indexOf('const preserve = shouldPreserveExclusionFlagsOnUrlRecovery(postData);');
+    assert.ok(start > -1, 'expected the URL-recovery cleanup to consult the preserve predicate');
+    const block = src.slice(start, src.indexOf('wrong_content recovered', start));
+    const deleteIdx = block.indexOf('delete postData.incompleteReason;');
+    assert.ok(deleteIdx > -1, 'expected the cleanup to delete incompleteReason');
+    // The delete must not sit inside a `if (preserve.wrongProduction)` /
+    // `if (!preserve.wrongProduction)` branch — it is unconditional.
+    const before = block.slice(0, deleteIdx);
+    const lastGuard = before.lastIndexOf('preserve.wrongProduction');
+    const lastBrace = before.lastIndexOf('}');
+    assert.ok(
+      lastGuard === -1 || lastBrace > lastGuard,
+      'delete postData.incompleteReason must be unconditional — gating it on the preserve '
+        + 'decision puts the file into a permanent targeted-drain re-fetch loop (BRO-2828).',
+    );
+  });
+
+  it('the URL-change invariant grants date-only reasons the same carve-out as date-guard notes', () => {
+    // BRO-2828, ship-check P0. applyUrlChangeInvariant's preserve carve-out
+    // matched only on wrongProductionNote prefixes, and the anticipatory gate
+    // writes wrongProductionReason and never a Note — so the flag was wiped by
+    // every canonical URL change BEFORE the recovery cleanup could preserve it,
+    // silently defeating the fix. Policy is identical to the note-based legs:
+    // preserved only while the publishDate basis survives.
+    const { applyUrlChangeInvariant } = require('../../scripts/lib/url-change-invariant.js');
+    const NEW_URL = 'https://monstagigz.test/2026/08/29/the-story/';
+    const existingFor = (reason) => ({
+      url: 'https://monstagigz.test/2026/08/29/the-story/comment-page-1/',
+      wrongProduction: true,
+      wrongProductionReason: reason,
+      publishDate: '2026-08-29',
+    });
+    const run = (reason, mergedDate) => {
+      const existing = existingFor(reason);
+      const merged = { ...existing, url: NEW_URL, publishDate: mergedDate };
+      const res = applyUrlChangeInvariant(existing, merged, NEW_URL);
+      return ((res && res.merged) || merged).wrongProduction;
+    };
+
+    // A genuinely NEW publishDate arrived → flag survives for the rebuild to
+    // re-evaluate against that date.
+    assert.strictEqual(run('anticipatory_pre_opening_post', '2026-09-04'), true);
+    // The date basis did NOT survive → the flag clears with it, no orphan.
+    assert.strictEqual(run('anticipatory_pre_opening_post', '2026-08-29'), undefined);
+    // Control: a content-derived reason gets no carve-out even with a new date.
+    // This is exactly how anticipatory flags behaved before the fix.
+    assert.strictEqual(run('Collector LLM: wrong production (high)', '2026-09-04'), undefined);
+
+    // A record with NO publishDate at all must still clear, preserving the
+    // BRO-2740 contract. !publishDateWillClear is true for a never-dated
+    // record, so without the explicit presence check the carve-out would fire
+    // here and strand a flag the rebuild's auto-clear cannot even reach (it
+    // requires reviewDate to enter). Two BRO-2740 tests caught exactly this.
+    const dateless = {
+      url: 'https://monstagigz.test/2026/08/29/the-story/comment-page-1/',
+      wrongProduction: true,
+      wrongProductionReason: 'anticipatory_pre_opening_post',
+    };
+    const datelessMerged = { ...dateless, url: NEW_URL };
+    applyUrlChangeInvariant(dateless, datelessMerged, NEW_URL);
+    assert.strictEqual(
+      datelessMerged.wrongProduction, undefined,
+      'a dateless anticipatory flag has no surviving basis and must clear with its URL',
+    );
+  });
+
+  it('every DATE_ONLY_AUTO_REASONS member is preserved, so adding one cannot silently regress', () => {
+    for (const reason of DATE_ONLY_AUTO_REASONS) {
+      const d = liveCase();
+      d.wrongProductionReason = reason;
+      assert.deepEqual(
+        shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: true },
+        `reason "${reason}" is registered as content-independent but is not preserved`,
+      );
+    }
+  });
+});
+
 describe('no exported shouldAutoClear* predicate may go unwired (dead-code guard)', () => {
   it('every exported shouldAutoClear* name has at least one call site in a documented caller script', () => {
     const libSrc = fs.readFileSync(
@@ -1277,13 +1519,17 @@ describe('no exported shouldAutoClear* predicate may go unwired (dead-code guard
     const exportedNames = exportsMatch[1]
       .split(',')
       .map(s => s.trim())
-      .filter(s => /^shouldAutoClear\w+$/.test(s));
+      // shouldPreserve* is the mirror-image decision (keep a flag rather than
+      // strip one) and is exactly as prone to going unwired, so it is held to
+      // the same bar. Its caller is collect-review-texts.js (BRO-2828).
+      .filter(s => /^(shouldAutoClear|shouldPreserve)\w+$/.test(s));
     assert.ok(exportedNames.length > 0, 'expected at least one exported shouldAutoClear* name');
 
-    // The two production callers documented in this file's header docstring.
+    // The production callers documented in this file's header docstring.
     const callerPaths = [
       path.join(__dirnameCompat, '..', '..', 'scripts', 'rebuild-all-reviews.js'),
       path.join(__dirnameCompat, '..', '..', 'scripts', 'flag-wrong-production-by-date.js'),
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'collect-review-texts.js'),
     ];
     const callerSrc = callerPaths.map(p => fs.readFileSync(p, 'utf8')).join('\n');
 

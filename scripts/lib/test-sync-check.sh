@@ -60,7 +60,10 @@ test2() {
   IFS='|' read -r workdir script < <(mktest "behind")
   # Simulate another machine pushing 3 commits to remote
   local other=$(mktemp -d)
-  git clone -q "$workdir/remote.git" "$other/clone"
+  # --branch main pinned (BRO-2597 cousin): remote.git's HEAD is never set
+  # after mktest's push, so without it this clone picks whatever
+  # init.defaultBranch the host configures, which can leave it empty.
+  git clone -q --branch main "$workdir/remote.git" "$other/clone"
   cd "$other/clone"
   git config user.email o@o
   git config user.name o
@@ -95,7 +98,8 @@ test3() {
 test4() {
   IFS='|' read -r workdir script < <(mktest "diverged")
   local other=$(mktemp -d)
-  git clone -q "$workdir/remote.git" "$other/clone"
+  # --branch main pinned (BRO-2597 cousin): see test2's comment above.
+  git clone -q --branch main "$workdir/remote.git" "$other/clone"
   cd "$other/clone"
   git config user.email o@o
   git config user.name o

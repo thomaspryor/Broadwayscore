@@ -13,11 +13,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/notion-create-block.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/notion-create-block.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/worktree-enforce.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/worktree-enforce.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       },
@@ -26,15 +26,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/pre-push-visual-gate.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/pre-push-visual-gate.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/pre-push-review-gate.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/pre-push-review-gate.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/check-skill-redaction.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/check-skill-redaction.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       },
@@ -43,7 +43,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/pre-merge-review-gate.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/pre-merge-review-gate.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       },
@@ -52,7 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/enterworktree-guard.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/enterworktree-guard.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       }
@@ -63,7 +63,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/whitespace-nowrap-lint.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/whitespace-nowrap-lint.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       }
@@ -74,11 +74,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/session-start.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/session-start.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/cloud-bootstrap.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/cloud-bootstrap.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       }
@@ -89,7 +89,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/verify-edits.sh"
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/verify-edits.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       }

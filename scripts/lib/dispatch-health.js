@@ -267,7 +267,15 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
       let outcome;
       if (!last) outcome = 'none';
       else if (last.event === JOB_EVENTS.DONE) outcome = 'done';
-      else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/ORPHANED/ABANDONED/RETRIED-with-no-successor-spawn-yet
+      // BRO-3052: ORPHANED means "the supervisor lost track of the process",
+      // not "the process failed" — measured live, orphaned rows include jobs
+      // whose work had already merged successfully (the ledger's own job-done
+      // write just never landed). Folding it into 'failed' understated the
+      // real success rate and made every capacity/health decision read off
+      // this number too pessimistic. Checked BEFORE the general
+      // TERMINAL_JOB_EVENTS branch below so it never falls into 'failed'.
+      else if (last.event === JOB_EVENTS.ORPHANED) outcome = 'orphaned';
+      else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/ABANDONED/RETRIED-with-no-successor-spawn-yet
       else outcome = 'inFlight'; // SPAWNED — chain still open
 
       results.push({ taskId, launchTs: launch.tsIso || launch.ts, outcome });
@@ -276,14 +284,17 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
 
   const done = results.filter((r) => r.outcome === 'done').length;
   const failed = results.filter((r) => r.outcome === 'failed').length;
+  const orphaned = results.filter((r) => r.outcome === 'orphaned').length;
   const inFlight = results.filter((r) => r.outcome === 'inFlight').length;
   const none = results.filter((r) => r.outcome === 'none').length;
   const launchesCount = results.length;
-  // Resolved = the denominator a RATE can honestly be computed over — an
-  // in-flight/never-spawned launch has no verdict yet, and folding it into
-  // either success or failure would misreport a still-running job as one or
-  // the other (same "don't call an unknown outcome healthy" doctrine as
-  // computeDispatchHealthDigest's zero-launches guard below).
+  // Resolved = the denominator a RATE can honestly be computed over.
+  // 'orphaned' is deliberately EXCLUDED, same "don't call an unknown outcome
+  // healthy [or unhealthy]" treatment this function already gives
+  // inFlight/none: the supervisor losing track of a process is not evidence
+  // the task succeeded OR failed (BRO-3052) — the actual answer (did the work
+  // land?) is what landed-but-open-reconciler.js's merge-commit + acceptance
+  // recheck exists to determine, not a raw ledger tally.
   const resolved = done + failed;
 
   return {
@@ -293,12 +304,14 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
     launches: launchesCount,
     done,
     failed,
+    orphaned,
     inFlight,
     none,
     resolved,
     successRate: resolved === 0 ? null : done / resolved,
     failureRate: resolved === 0 ? null : failed / resolved,
     failedTaskIds: [...new Set(results.filter((r) => r.outcome === 'failed').map((r) => r.taskId))],
+    orphanedTaskIds: [...new Set(results.filter((r) => r.outcome === 'orphaned').map((r) => r.taskId))],
   };
 }
 
@@ -312,7 +325,17 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
  * faking a big-enough sample.
  */
 const HEADLESS_CHECK_NAME = 'Headless dispatch: success rate';
-const HEADLESS_DEFAULTS = { windowDays: 14, successRateFloor: 0.80, minResolved: 10 };
+// orphanRateCeiling (BRO-3052, Codex adversarial ship-check catch): excluding
+// orphaned from `resolved`/`successRate` (correct — see computeJobLaneOutcomeRate)
+// has a blind spot on its own: a supervisor that starts mass-orphaning jobs
+// (the exact failure this card is about — measured live at 23% of dispatches
+// in 24h, ~6x the baseline rate) can still show a clean 100% successRate off
+// a shrinking resolved pool while every OTHER launch silently falls into the
+// unmeasured orphaned bucket. minResolved alone doesn't catch it, since a
+// dozen genuinely-successful resolved launches can sit next to hundreds of
+// orphaned ones. 30% mirrors this card's own "orphan rate roughly 6x [a
+// healthy] baseline" framing as the alarm threshold, not an arbitrary number.
+const HEADLESS_DEFAULTS = { windowDays: 14, successRateFloor: 0.80, minResolved: 10, orphanRateCeiling: 0.30 };
 
 const HEADLESS_HINT = 'Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown of failed launches. '
   + 'Judge any fix by this rate over the window, never by one clean dispatch (same doctrine as the tab-lane dead-launch rate, card #1199).';
@@ -323,12 +346,41 @@ function computeHeadlessDispatchDigest({
   windowDays = HEADLESS_DEFAULTS.windowDays,
   successRateFloor = HEADLESS_DEFAULTS.successRateFloor,
   minResolved = HEADLESS_DEFAULTS.minResolved,
+  orphanRateCeiling = HEADLESS_DEFAULTS.orphanRateCeiling,
   lane = JOB_LANE,
 } = {}) {
   const stats = computeJobLaneOutcomeRate(entries, { nowMs, windowDays, lane });
   const span = `last ${windowDays}d`;
   const floorPct = (successRateFloor * 100).toFixed(0);
-  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
+  // BRO-3052: orphaned is excluded from `resolved` (see computeJobLaneOutcomeRate),
+  // so it must still be visible here — otherwise a supervisor that only ever
+  // orphans jobs (never actually failing or succeeding them) would silently
+  // sit outside minResolved forever with no sign anything is wrong.
+  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.orphaned} orphaned (supervisor lost track, not counted as failure), ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
+
+  // Orphan-rate gate FIRST, before the vacuous-gate (resolved===0) check
+  // (Codex adversarial ship-check catch, 2nd pass): the vacuous-gate branch
+  // used to run first and unconditionally, so a window that is ENTIRELY
+  // orphaned (resolved===0, orphaned large) hit it instead of this gate —
+  // reporting "cannot be measured... all in-flight or unspawned", which is
+  // both wrong (they're orphaned, not in-flight) and silent on the exact
+  // mass-orphaning failure this gate exists to catch. Neither branch below
+  // needs `stats.successRate` (null when resolved===0), so ordering this
+  // first is safe regardless of which population is empty.
+  const orphanPool = stats.resolved + stats.orphaned;
+  const orphanRate = orphanPool > 0 ? stats.orphaned / orphanPool : 0;
+  if (orphanPool >= minResolved && orphanRate >= orphanRateCeiling) {
+    const successNote = stats.resolved > 0
+      ? `Success rate ${(stats.successRate * 100).toFixed(0)}% looks clean because orphaned launches are excluded from it. `
+      : '';
+    return {
+      name: HEADLESS_CHECK_NAME,
+      status: 'warn',
+      message: `${(orphanRate * 100).toFixed(0)}% of headless launches (${stats.orphaned}/${orphanPool}) are landing as orphaned rather than done/failed — the supervisor may be losing track of live processes (BRO-3052). ${successNote}${detail}.`,
+      hint: HEADLESS_HINT,
+      ...stats,
+    };
+  }
 
   // Vacuous-gate class (#1063/#1069/#1075): no resolved launches is not a
   // pass, it's "nothing to measure yet". Guard BEFORE any .toFixed() call —
@@ -337,7 +389,7 @@ function computeHeadlessDispatchDigest({
     return {
       name: HEADLESS_CHECK_NAME,
       status: 'warn',
-      message: `No resolved ${lane} launches in the ${span} — the success rate cannot be measured (${stats.launches} launch(es), all in-flight or unspawned).`,
+      message: `No resolved ${lane} launches in the ${span} — the success rate cannot be measured (${stats.launches} launch(es), all in-flight, orphaned, or unspawned).`,
       hint: 'data/audit/dispatch-ledger.jsonl is per-machine and gitignored; run this where headless dispatches actually launch.',
       ...stats,
     };

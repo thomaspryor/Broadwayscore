@@ -31,9 +31,10 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { readCachedArchiveIfValid, checkArchiveCategory } = require('./lib/bww-archive-category-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { classifyContentTier } = require('./lib/content-quality');
@@ -41,16 +42,34 @@ const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
 const { normalizeTitle } = require('./lib/market-routing');
-const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { fetchPage, fetchWithScrapingdog, isChallengeOrGarbage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const reviewsArchiveDir = path.join(__dirname, '../data/aggregator-archive/bww-reviews');
 const roundupArchiveDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 const showsPath = path.join(__dirname, '../data/shows.json');
+
+// Memoized showId -> same-title-sibling categories index, built once per
+// process from the same shows.json the audit reads. Lazy because loadShows()
+// is not cheap and most runs touch only a handful of shows.
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  const showById = {};
+  for (const s of loadShows()) {
+    if (s && s.id) showById[s.id] = s;
+  }
+  _siblingCategoriesCache = buildSiblingCategoriesByTitle(showById);
+  return _siblingCategoriesCache;
+}
 
 // API keys
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -61,6 +80,8 @@ const stats = {
   reviewsPagesFetched: 0,
   reviewsPagesHit: 0,
   reviewsPagesMiss: 0,
+  reviewsPagesCategoryBlocked: 0,
+  cachePurgedPoisoned: 0,
   roundupsFetched: 0,
   roundupsHit: 0,
   roundupsMiss: 0,
@@ -148,32 +169,86 @@ function buildTokenOverlapSiblingSet(shows) {
 // HTTP helpers
 // ---------------------------------------------------------------------------
 
+// A provider that answers 200 with a stub is a MISS, not a hit. Verified live
+// (BRO-2955): Scrapingdog returns a 154-byte JS-redirect shell for some
+// aggregator pages, and isChallengeOrGarbage() only matches Cloudflare
+// challenge markers, so that stub sailed through as a successful fetch and
+// short-circuited the ScrapingBee/fetchPage tiers this helper is explicitly
+// documented to fall through to. Floor matches the callers' own
+// already-established "too short to be a real page" thresholds below.
+const SD_MIN_HTML_BYTES = 500;
+
+/**
+ * Fetch HTML with Scrapingdog (fast, no JS render) → ScrapingBee → shared
+ * fetchPage() fallback. Scrapingdog tried first (BRO-2930): this file was
+ * bypassing fetchPage()'s SD-first chokepoint entirely with a raw ScrapingBee
+ * call, so BWW's steady weekly volume never touched Scrapingdog even after the
+ * SD migration — one of the direct-provider-call sites in
+ * data/audit/direct-provider-calls-baseline.json. SD has ample headroom (SB
+ * was at 92% of its monthly cap, SD ~59%) so shifting this traffic reduces
+ * real cap-exhaustion risk. Purely additive: on any SD miss/failure this falls
+ * straight through to the pre-existing SB path, unchanged.
+ */
+async function fetchHtmlViaSD(url) {
+  if (!process.env.SCRAPINGDOG_API_KEY) return null;
+  try {
+    const raw = await fetchWithScrapingdog(url, { renderJs: false });
+    if (!raw || !raw.content) return null;
+    if (isChallengeOrGarbage(raw.content)) return null;
+    if (raw.content.length < SD_MIN_HTML_BYTES) return null;
+    return raw.content;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Fetch HTML with ScrapingBee (fast, no JS render) → shared fetchPage() fallback.
- * ScrapingBee is tried first for BWW because it's cheaper and BWW /reviews/ pages
- * don't need JS rendering. If SB is unavailable or fails, fetchPage() provides
- * BrightData → Playwright fallback chain.
+ * ScrapingBee is cheap and BWW /reviews/ pages don't need JS rendering. If SB
+ * is unavailable or fails, fetchPage() provides BrightData → Playwright fallback chain.
  */
 async function fetchHtmlViaSB(url) {
   if (!SCRAPINGBEE_KEY) return null;
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
   return new Promise((resolve, reject) => {
+    // recorded guards against a double ledger row for one billed call: after
+    // req.destroy() on timeout, the socket can still emit 'error', and a slow
+    // response can still land after the timeout fires — at most one of
+    // {response, error, timeout} may call recordSbCall.
+    let recorded = false;
+    const record = (opts) => {
+      if (recorded) return;
+      recorded = true;
+      recordSbCall({ url, fn: 'page', purpose: 'bww-reviews', ...opts, credits: sbBilledCredits(opts.status, 1) });
+    };
     const req = https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        record({ success: res.statusCode === 200, status: res.statusCode });
         if (res.statusCode === 200) resolve(data);
         else if (res.statusCode === 404 || res.statusCode === 410) resolve(null);
         else reject(new Error(`SB HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
       });
     });
-    req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('SB Timeout')); });
+    req.on('error', (e) => {
+      record({ success: false, status: 'error' });
+      reject(e);
+    });
+    req.setTimeout(60000, () => {
+      req.destroy();
+      record({ success: false, status: 'timeout' });
+      reject(new Error('SB Timeout'));
+    });
   });
 }
 
 async function fetchHtml(url, maxRetries = 2) {
-  // Attempt 1: ScrapingBee (cheap, no JS render)
+  // Attempt 1: Scrapingdog (cheap, no JS render, ample cap headroom)
+  const sdHtml = await fetchHtmlViaSD(url);
+  if (sdHtml) return sdHtml;
+
+  // Attempt 2: ScrapingBee (cheap, no JS render)
   if (SCRAPINGBEE_KEY) {
     let lastError;
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -190,7 +265,7 @@ async function fetchHtml(url, maxRetries = 2) {
     console.log(`    [WARN] ScrapingBee exhausted for ${url.slice(0, 60)}: ${lastError.message.slice(0, 60)}`);
   }
 
-  // Attempt 2: Shared fetchPage() fallback chain (BrightData → Playwright)
+  // Attempt 3: Shared fetchPage() fallback chain (Scrapingdog → BrightData → Playwright)
   try {
     const result = await fetchPage(url);
     return result ? result.content : null;
@@ -313,12 +388,22 @@ function constructBwwReviewsSlugs(show) {
 async function fetchBwwReviewsPage(show, showId, options = {}) {
   const archivePath = path.join(reviewsArchiveDir, `${showId}.html`);
 
-  // Check cache freshness
-  if (!options.force && fs.existsSync(archivePath)) {
-    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
-    if (age < 14) {
-      console.log(`  [CACHE] /reviews/ for ${showId}`);
-      return fs.readFileSync(archivePath, 'utf8');
+  // Check cache freshness. A fresh mtime alone is not trusted — BRO-2549:
+  // the write-time guard below (checkArchiveCategory) only stops a poisoned
+  // page being WRITTEN. A poisoned file that arrives some other way (a
+  // restore, a manual copy, a different writer, a rolled-back deploy) would
+  // otherwise be served as-is for up to 14 days.
+  if (!options.force) {
+    const cached = readCachedArchiveIfValid(
+      archivePath, 14, show, siblingCategoriesByShowId()[showId],
+    );
+    if (cached) {
+      if (cached.valid) {
+        console.log(`  [CACHE] /reviews/ for ${showId}`);
+        return cached.html;
+      }
+      console.log(`  [CACHE-POISONED] /reviews/ for ${showId}: ${cached.check.reason} (page "${(cached.check.pageTitle || '').substring(0, 80)}") — purging and refetching`);
+      stats.cachePurgedPoisoned++;
     }
   }
 
@@ -336,6 +421,25 @@ async function fetchBwwReviewsPage(show, showId, options = {}) {
         });
         if (!validation.valid) {
           console.log(`  [SKIP] /reviews/${slug} wrong show: ${validation.reason}`);
+          continue;
+        }
+        // Category-aware cache guard. validatePageMatchesShow() above compares
+        // title + opening year, which CANNOT separate a regional premiere from
+        // its later Broadway transfer: same title, and the transfer's page
+        // carries the transfer's year. Re-use the exact predicate
+        // audit-aggregator-archive-integrity.js applies post-hoc (including
+        // its punctuation-false-positive rescue, via checkArchiveCategory),
+        // so a page the audit would call poisoned never reaches the cache in
+        // the first place. Without this, `fix: quarantine 3 poisoned
+        // bww-reviews caches` (2026-08-23) was silently undone by the next
+        // scrape run (2026-08-30) and the trunk went red again on the same
+        // three showIds.
+        const catCheck = checkArchiveCategory(
+          html, show, siblingCategoriesByShowId()[showId],
+        );
+        if (!catCheck.ok) {
+          console.log(`  [SKIP] /reviews/${slug} category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
+          stats.reviewsPagesCategoryBlocked++;
           continue;
         }
         // Archive and return
@@ -412,9 +516,10 @@ function extractBwwReviewsPageData(html, showId) {
   let aggregateRating = null;
   try {
     $('script[type="application/ld+json"]').each((_, el) => {
-      const json = JSON.parse($(el).html());
-      if (json.aggregateRating && json.aggregateRating.ratingValue) {
-        aggregateRating = json.aggregateRating.ratingValue;
+      for (const json of parseJsonLd($(el).html())) {
+        if (json.aggregateRating && json.aggregateRating.ratingValue) {
+          aggregateRating = json.aggregateRating.ratingValue;
+        }
       }
     });
   } catch (e) { /* ignore JSON-LD parse errors */ }
@@ -429,12 +534,20 @@ function extractBwwReviewsPageData(html, showId) {
 async function discoverBwwRoundup(show, showId, options = {}) {
   const archivePath = path.join(roundupArchiveDir, `${showId}.html`);
 
-  // Check cache freshness
-  if (!options.force && fs.existsSync(archivePath)) {
-    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
-    if (age < 14) {
-      console.log(`  [CACHE] roundup for ${showId}`);
-      return fs.readFileSync(archivePath, 'utf8');
+  // Check cache freshness. Same read-path guard as fetchBwwReviewsPage() above
+  // (BRO-2549) — a fresh mtime is not proof the file was written by this
+  // scraper's own validated path.
+  if (!options.force) {
+    const cached = readCachedArchiveIfValid(
+      archivePath, 14, show, siblingCategoriesByShowId()[showId],
+    );
+    if (cached) {
+      if (cached.valid) {
+        console.log(`  [CACHE] roundup for ${showId}`);
+        return cached.html;
+      }
+      console.log(`  [CACHE-POISONED] roundup for ${showId}: ${cached.check.reason} (page "${(cached.check.pageTitle || '').substring(0, 80)}") — purging and refetching`);
+      stats.cachePurgedPoisoned++;
     }
   }
 
@@ -475,6 +588,20 @@ async function discoverBwwRoundup(show, showId, options = {}) {
           console.log(`  [SKIP] forced URL doesn't match "${searchTitleForVal}": ${validation.reason}`);
           return null;
         }
+      }
+      // Category-aware cache guard (BRO-2549) — roundups never got the
+      // BRO-2547 write-time guard applied to /reviews/ pages, so this was the
+      // one write path that could still poison the read-path guard: it would
+      // write a page validatePageMatchesShow() accepts but checkArchiveCategory()
+      // (what the read-path guard checks) rejects, purging and refetching the
+      // same file forever. See the /reviews/ catCheck block above for the
+      // full contamination-class writeup.
+      const catCheck = checkArchiveCategory(
+        html, show, siblingCategoriesByShowId()[showId],
+      );
+      if (!catCheck.ok) {
+        console.log(`  [SKIP] forceRoundupUrl category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
+        return null;
       }
       if (!options.dryRun) {
         if (!fs.existsSync(roundupArchiveDir)) fs.mkdirSync(roundupArchiveDir, { recursive: true });
@@ -604,6 +731,16 @@ async function discoverBwwRoundup(show, showId, options = {}) {
         });
         if (!validation.valid) {
           console.log(`  [SKIP] roundup page doesn't match "${searchTitle}": ${validation.reason}`);
+          continue;
+        }
+
+        // Category-aware cache guard (BRO-2549) — see the forceRoundupUrl
+        // branch above for why roundups need this too.
+        const catCheck = checkArchiveCategory(
+          html, show, siblingCategoriesByShowId()[showId],
+        );
+        if (!catCheck.ok) {
+          console.log(`  [SKIP] roundup category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
           continue;
         }
 
@@ -849,15 +986,11 @@ function extractBwwRoundupData(html, showId) {
       let datePublished = '';
       $('script[type="application/ld+json"]').each((_, el) => {
         try {
-          const json = JSON.parse($(el).html());
-          if (json.articleBody) articleBodyText = json.articleBody;
-          if (json.datePublished) datePublished = json.datePublished;
-          // Also check @graph array
-          if (Array.isArray(json['@graph'])) {
-            for (const item of json['@graph']) {
-              if (item.articleBody) articleBodyText = item.articleBody;
-              if (item.datePublished) datePublished = item.datePublished;
-            }
+          // parseJsonLd yields the wrapper AND its @graph nodes, so the
+          // last-wins precedence of the old hand-rolled version is kept.
+          for (const json of parseJsonLd($(el).html())) {
+            if (json.articleBody) articleBodyText = json.articleBody;
+            if (json.datePublished) datePublished = json.datePublished;
           }
         } catch (e) { /* ignore */ }
       });
@@ -1407,8 +1540,17 @@ async function main() {
   // Print summary
   console.log('\n=== BWW Scraper Summary ===');
   console.log(`Shows processed: ${stats.showsProcessed}`);
-  console.log(`/reviews/ pages: ${stats.reviewsPagesHit} hit, ${stats.reviewsPagesMiss} miss (${stats.reviewsPagesFetched} fetched)`);
+  console.log(`/reviews/ pages: ${stats.reviewsPagesHit} hit, ${stats.reviewsPagesMiss} miss, ${stats.reviewsPagesCategoryBlocked} category-blocked (${stats.reviewsPagesFetched} fetched)`);
+  if (stats.reviewsPagesCategoryBlocked > 0) {
+    // Loud on purpose: a category block is a page we FETCHED and then refused
+    // to cache. Folded into the miss count it would read as 'BWW had nothing',
+    // which is how a mis-tuned guard silently starves a show of reviews.
+    console.log(`  ^ ${stats.reviewsPagesCategoryBlocked} page(s) refused: title's market qualifier belongs to a same-title sibling in another category`);
+  }
   console.log(`Roundups: ${stats.roundupsHit} hit, ${stats.roundupsMiss} miss (${stats.roundupsFetched} fetched, ${stats.googleSearches} searches)`);
+  if (stats.cachePurgedPoisoned > 0) {
+    console.log(`  ^ ${stats.cachePurgedPoisoned} cached archive(s) purged at read time: failed checkArchiveCategory() on disk`);
+  }
   console.log(`Reviews extracted: ${stats.reviewsExtracted}`);
   console.log(`New reviews: ${stats.newReviews}`);
   console.log(`Updated reviews: ${stats.updatedReviews}`);

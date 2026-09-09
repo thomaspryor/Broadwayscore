@@ -1,7 +1,7 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-08-24T07:46:40.492Z",
+  "lastChecked": "2026-09-05T02:22:00.874Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,12 +9,12 @@
     {
       "name": "Coverage: SERP census recall",
       "status": "warn",
-      "message": "Review coverage not judgeable yet: 0 of 21 SERP query-run(s) returned any raw result — provider outage, run NOT recorded to the trend"
+      "message": "Recall last measured 12d ago (weekly cron, >9d)"
     },
     {
       "name": "Coverage: adversarial probe",
       "status": "warn",
-      "message": "This week's sample had nothing measurable (settling/undated shows, or a SERP outage) — no evidence either way"
+      "message": "Probe last ran 12d ago (weekly cron, >9d)"
     }
   ]
 }

@@ -100,6 +100,33 @@ function detectRoundupDigest(rec) {
 // "Time Out" or "Talkin' Broadway".
 const ATTRIBUTION_RE = /\b([A-Z][A-Za-z'.-]+(?:\s+[A-Z][A-Za-z'.-]+){1,3}),\s+([A-Z][A-Za-z0-9&'.\-/ ]{2,40}?)\s*[.:]/g;
 
+// Matches the prose-narrative attribution shape a "sampling of the critical
+// reaction" compilation uses instead of the "{Name}, {Outlet}." comma shape —
+// "{Outlet}'s {Critic} {verb}..." (e.g. "Variety's Frank Rizzo agrees,
+// writing:", "Time Out New York's Raven Snook pens a four-star rave"). Group 1
+// is the outlet, group 2 the critic — reversed order from ATTRIBUTION_RE.
+// `\s?'s` (not a bare `'s`) tolerates a stray space before the apostrophe —
+// a real scraper artifact (Gold Derby's goldderby--ethan-alter.json fullText
+// has "Entertainment Weekly 's Emlyn Travis", "Variety 's Frank Rizzo") that
+// otherwise makes the whole signal a silent no-op on the exact file BRO-2520
+// is about.
+const POSSESSIVE_ATTRIBUTION_RE = /\b([A-Z][A-Za-z0-9&'.\-/ ]{2,40}?)\s?'s\s+([A-Z][A-Za-z'.-]+(?:\s+[A-Z][A-Za-z'.-]+){1,3})\b/g;
+
+// A THIRD prose shape: "{Critic} of {Outlet} {verb}..." (e.g. "Ron Fassler of
+// Theater Pizzaz also yearned for something a bit more substantial"). Group 1
+// is the critic, group 2 the outlet — same order as ATTRIBUTION_RE.
+const OF_ATTRIBUTION_RE = /\b([A-Z][A-Za-z'.-]+(?:\s+[A-Z][A-Za-z'.-]+){1,2})\s+of\s+([A-Z][A-Za-z0-9&'.\-/ ]{2,40}?)\b(?=\s+(?:also|said|writes?|wrote|notes?|noted|adds?|added|argues?|argued))/g;
+
+// A leading conjunction ("And Time Out New York's Raven Snook...") gets swept
+// into the possessive shape's non-greedy outlet capture because the capture
+// starts at the sentence's first capitalized word, not the outlet's actual
+// first word. Strip it before the outlet is checked against the registry —
+// "And Time Out New York" isn't a registered outlet, "Time Out New York" is.
+const LEADING_CONJUNCTION_RE = /^(?:and|but|while|yet|so|meanwhile|then|similarly|however|also)\s+/i;
+function stripLeadingConjunction(outlet) {
+  return outlet.replace(LEADING_CONJUNCTION_RE, '');
+}
+
 // Phrases a "critical consensus" / pull-quote compilation page uses to
 // introduce the block of other outlets' excerpts. Deliberately narrower than
 // ROUNDUP_DIGEST_TEXT above (which is WET-specific and precondition-gated) —
@@ -167,6 +194,26 @@ function isSameCritic(candidateName, byline) {
 // excerpt; a marketing footer's punchy one-liners don't clear this bar.
 const MIN_EXCERPT_CHARS = 60;
 
+// A straight or curly DOUBLE quote mark — required inside a possessive-shape
+// match's trailing span so "Variety's readers loved it" (no quoted excerpt)
+// can't count as a compilation block the way "Variety's Frank Rizzo agrees,
+// writing: "..."" does. The comma shape doesn't need this extra guard: its
+// tighter "{Name}, {Outlet}." grammar is already compilation-specific.
+// Deliberately DOUBLE-quote-only, not a bare ['''] apostrophe class — the
+// possessive shape itself ends in "'s", and ordinary English prose is full of
+// apostrophes (contractions like "didn't", "it's"), so an apostrophe-inclusive
+// class matched almost any paragraph and made this guard a no-op (caught in
+// review: a BBC News interview/profile piece with ordinary contractions
+// tripped the old class even before reaching its own quoted excerpts).
+// Known tradeoff (review, BRO-2520): a UK compilation that quotes exclusively
+// with curly single quotes (‘…’) rather than double quotes will NOT satisfy
+// this gate and stays unflagged via the possessive/of shapes — U+2019 (’) is
+// also the character British typesetting uses for a contraction's apostrophe
+// ("didn't"), so admitting it here would reopen the exact same false-positive
+// class this guard exists to close. Double-quote-only is the safe default;
+// see the "does NOT flag ... single/curly-single quotes" test below.
+const QUOTE_CHAR_RE = /["“”]/;
+
 function detectPullQuoteCompilation(rec) {
   if (!rec || !rec.fullText) return null;
   const text = rec.fullText;
@@ -182,19 +229,55 @@ function detectPullQuoteCompilation(rec) {
       outlet: match[2].trim(),
       start: match.index,
       end: match.index + match[0].length,
+      requireQuote: false,
     });
+  }
+  POSSESSIVE_ATTRIBUTION_RE.lastIndex = 0;
+  while ((match = POSSESSIVE_ATTRIBUTION_RE.exec(text))) {
+    rawMatches.push({
+      name: match[2].trim(),
+      outlet: stripLeadingConjunction(match[1].trim()),
+      start: match.index,
+      end: match.index + match[0].length,
+      requireQuote: true,
+    });
+  }
+  OF_ATTRIBUTION_RE.lastIndex = 0;
+  while ((match = OF_ATTRIBUTION_RE.exec(text))) {
+    rawMatches.push({
+      name: match[1].trim(),
+      outlet: match[2].trim(),
+      start: match.index,
+      end: match.index + match[0].length,
+      requireQuote: true,
+    });
+  }
+  rawMatches.sort((a, b) => a.start - b.start);
+  // Drop a match whose span overlaps the previous kept match's span — the
+  // comma shape and possessive shape can't both match the SAME clause (their
+  // grammars conflict), but this guards against either regex matching twice
+  // within one sentence (e.g. two capitalized-name runs close together) from
+  // being double-counted as two separate attribution blocks.
+  const dedupedMatches = [];
+  let lastEnd = -1;
+  for (const m of rawMatches) {
+    if (m.start < lastEnd) continue;
+    dedupedMatches.push(m);
+    lastEnd = m.end;
   }
 
   const distinctOutlets = new Set();
-  for (let i = 0; i < rawMatches.length; i++) {
-    const { name, outlet, end } = rawMatches[i];
+  for (let i = 0; i < dedupedMatches.length; i++) {
+    const { name, outlet, end, requireQuote } = dedupedMatches[i];
     if (isSameCritic(name, byline)) {
       // The byline critic's own verdict is embedded here — this file is
       // legitimately theirs even though it quotes other outlets too.
       return null;
     }
-    const excerptEnd = i + 1 < rawMatches.length ? rawMatches[i + 1].start : text.length;
-    if (excerptEnd - end < MIN_EXCERPT_CHARS) continue; // one-line blurb, not a real excerpt
+    const excerptEnd = i + 1 < dedupedMatches.length ? dedupedMatches[i + 1].start : text.length;
+    const excerpt = text.slice(end, excerptEnd);
+    if (excerpt.length < MIN_EXCERPT_CHARS) continue; // one-line blurb, not a real excerpt
+    if (requireQuote && !QUOTE_CHAR_RE.test(excerpt)) continue; // possessive shape needs a quoted excerpt, not just prose
     if (!isRegisteredOutlet(outlet)) continue;
     const resolved = normalizeOutlet(outlet);
     if (resolved === ownOutlet) continue; // don't count the byline's own outlet

@@ -37,6 +37,9 @@ const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');
+const { creditsFor } = require('./provider-credits');
+const { usdFor } = require('./provider-pricing');
+const { fallbackFromLabel } = require('./fallback-attribution');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -328,7 +331,32 @@ const _scraperStats = {
   sdBudgetExceeded: false,
   pwAttempts: 0,
   pwSuccess: 0,
+  // Incremented every time a Playwright launch fails because no browser is
+  // installed in this environment (missing `npx playwright install`), as
+  // opposed to a real navigation/scrape failure. A COUNTER, not a sticky
+  // boolean: a caller that wants to know whether THIS SPECIFIC fetch hit a
+  // missing-browser error (vs. an earlier, unrelated show in the same
+  // process) must snapshot this before its own fetchPage() call and compare
+  // after — a boolean that never resets would misattribute every later
+  // total-fetch-failure (a real 404, a real block, exhausted paid providers)
+  // to "missing browser" just because it happened once earlier in the run
+  // (BRO-2560 review finding, both the Claude and Codex ship-check
+  // reviewers). See getScraperStats().
+  pwBrowserMissingCount: 0,
 };
+
+// Matches ONLY the two known "no usable Playwright browser in this
+// environment" shapes: the missing-executable launch error, and the
+// module-not-installed error thrown above (whose message tells the operator
+// to run `npx playwright install`). Deliberately NOT a bare
+// `browserType\.launch` match — that alternative also matches unrelated
+// launch failures (timeout, OOM, sandbox/EPERM) that have nothing to do with
+// a missing browser and would send an operator to run an install that won't
+// fix anything (ship-check review finding).
+const PLAYWRIGHT_MISSING_BROWSER_RE = /Executable doesn't exist|playwright install/i;
+function isPlaywrightMissingBrowserError(message) {
+  return PLAYWRIGHT_MISSING_BROWSER_RE.test(message || '');
+}
 
 function getScraperStats() {
   const bd = getBrightDataRunStats();
@@ -352,7 +380,13 @@ function getScraperStats() {
 /**
  * Fetch page using Bright Data Web Unlocker API (raw HTML output)
  */
-async function fetchWithBrightData(url) {
+async function fetchWithBrightData(url, opts = {}) {
+  // opts.fallbackFrom (BRO-3009 S1-T8) is telemetry only — it never affects
+  // whether or how the request is made, just which tier's failure gets the
+  // blame in the spend ledger. Optional, so the direct callers outside
+  // fetchPage (scrape-alltime.ts, fetchJSON) keep working unchanged.
+  const fallbackFrom = opts.fallbackFrom || null;
+  const onSkip = typeof opts.onSkip === 'function' ? opts.onSkip : () => {};
   if (!BRIGHTDATA_TOKEN) {
     return null;
   }
@@ -369,8 +403,9 @@ async function fetchWithBrightData(url) {
     // attempt thousands, and each row would push a genuine spend row out of the
     // rotating ledger. Per-call totals live in getScraperStats().bdBlocked.
     if (bdVerdict.firstBlock) {
-      recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' });
+      recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped', fallbackFrom });
     }
+    onSkip('bd-budget');
     return null;
   }
 
@@ -423,7 +458,7 @@ async function fetchWithBrightData(url) {
     });
 
     _scraperStats.bdRequests++;
-    recordBdCall({ url, fn: 'web-unlocker', success: true, status: response.status });
+    recordBdCall({ url, fn: 'web-unlocker', success: true, status: response.status, fallbackFrom });
     return {
       content: response.data,
       format: 'html',
@@ -431,7 +466,7 @@ async function fetchWithBrightData(url) {
     };
   } catch (error) {
     console.error(`⚠️  Bright Data failed: ${error.message}`);
-    recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error' });
+    recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error', fallbackFrom });
     return null;
   }
 }
@@ -451,7 +486,14 @@ async function fetchWithBrightData(url) {
  * modes (budget/quota/network) where escalating tiers wouldn't help.
  */
 async function fetchWithScrapingdog(url, options = {}) {
+  // options.onSkip(reason) (BRO-3009 S1-T8) lets the caller learn WHY this
+  // function declined to make the call, without changing what it RETURNS —
+  // every path below still returns null exactly as before, so routing is
+  // untouched. Reported per call, so it cannot be confused with another
+  // concurrent request's skip the way a shared counter could.
+  const onSkip = typeof options.onSkip === 'function' ? options.onSkip : () => {};
   if (!SCRAPINGDOG_API_KEY) {
+    onSkip('sd-unavailable');
     return null;
   }
 
@@ -462,6 +504,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   // also trips the reactive HTTP-status latch below on the first failure.
   _checkScrapingdogQuotaOnce();
   if (_sdQuotaExceeded) {
+    onSkip('sd-quota');
     return null;
   }
 
@@ -472,8 +515,9 @@ async function fetchWithScrapingdog(url, options = {}) {
   const sdBreakerVerdict = consultScrapingdog();
   if (!sdBreakerVerdict.allowed) {
     if (sdBreakerVerdict.firstBlock) {
-      recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0 });
+      recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0, fallbackFrom: options.fallbackFrom || null });
     }
+    onSkip('sd-breaker');
     return null;
   }
 
@@ -483,7 +527,10 @@ async function fetchWithScrapingdog(url, options = {}) {
   const premium = options.premium === true;
   const stealthMode = options.stealthMode === true;
   // premium and stealth_mode both imply a heavier anti-bot bypass (10cr); dynamic/JS is 5cr; plain is 1cr.
-  const creditCost = (premium || stealthMode) ? 10 : (renderJs ? 5 : 1);
+  // sdMode also feeds recordSdCall's telemetry `fn` field below (BRO-3057:
+  // computed once and reused, instead of 3 independent copies of this ternary).
+  const sdMode = stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page'));
+  const creditCost = creditsFor('sd', sdMode);
 
   // Per-run budget guard (0 = unlimited).
   if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
@@ -491,6 +538,7 @@ async function fetchWithScrapingdog(url, options = {}) {
       console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
     }
     _scraperStats.sdBudgetExceeded = true;
+    onSkip('sd-budget');
     return null;
   }
 
@@ -523,7 +571,7 @@ async function fetchWithScrapingdog(url, options = {}) {
         console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
       }
       _scraperStats.sdBudgetExceeded = true;
-      if (attemptsMade === 0) return null;
+      if (attemptsMade === 0) { onSkip('sd-budget'); return null; }
       break;
     }
     _scraperStats.sdRequests++;
@@ -547,7 +595,7 @@ async function fetchWithScrapingdog(url, options = {}) {
         req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
       });
 
-      recordSdCall({ url, fn: stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page')), success: true, status: 200, credits: creditCost * attemptsMade });
+      recordSdCall({ url, fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
       return {
         content: response,
         format: 'html',
@@ -562,7 +610,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  recordSdCall({ host: hostname, fn: stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page')), success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
+  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
 
   // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400
@@ -646,7 +694,10 @@ async function fetchWithScrapingBee(url, options = {}) {
   // REAL premium request when it gets there, not a silent non-premium
   // downgrade that could return a blocked/garbage page unflagged.
   const premium = options.premium === true;
-  const creditCost = premium ? 10 : (renderJs ? 5 : 1);
+  // sbMode also feeds recordSbCall's telemetry `fn` field below (BRO-3057:
+  // computed once and reused, instead of 3 independent copies of this ternary).
+  const sbMode = premium ? 'premium' : (renderJs ? 'render' : 'page');
+  const creditCost = creditsFor('sb', sbMode);
 
   // Per-run budget guard — skip SB if budget would be exceeded
   if (_scraperStats.sbCredits + creditCost > SB_CREDIT_BUDGET) {
@@ -693,7 +744,7 @@ async function fetchWithScrapingBee(url, options = {}) {
       req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
     });
 
-    recordSbCall({ url, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: true, status: 200, credits: creditCost });
+    recordSbCall({ url, fn: sbMode, success: true, status: 200, credits: creditCost, fallbackFrom: options.fallbackFrom || null });
     return {
       content: response,
       format: 'html',
@@ -701,7 +752,7 @@ async function fetchWithScrapingBee(url, options = {}) {
     };
   } catch (error) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-    recordSbCall({ host: hostname, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
+    recordSbCall({ host: hostname, fn: sbMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost, fallbackFrom: options.fallbackFrom || null });
     console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${error.message}`);
     // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
     // 401 (auth/limit), 403 (forbidden/plan), 429 (rate limit) all mean "stop
@@ -814,6 +865,9 @@ async function fetchWithPlaywright(url, options = {}) {
     };
   } catch (error) {
     console.error(`⚠️  Playwright failed: ${error.message}`);
+    if (isPlaywrightMissingBrowserError(error.message)) {
+      _scraperStats.pwBrowserMissingCount++;
+    }
     if (context) {
       try { await context.close(); } catch (_) {}
     }
@@ -857,10 +911,48 @@ function unwrapRedirectUrl(url) {
  * @param {boolean} options.preferPlaywright - Skip APIs and go straight to Playwright (e.g. for BroadwayWorld)
  * @returns {Promise<{content: string, format: 'html'|'markdown', source: string}>}
  */
+/**
+ * Pure decision function: ordered tier names for fetchPage's fallback chain.
+ * Extracted for testability (CLAUDE.md rule 15), mirroring serpChainOrder in
+ * url-discovery.js. Reproduces fetchPage's if-chain EXACTLY — each condition
+ * here is copied from the branch it replaces; see page-chain-order.test.mjs
+ * for the enumerated flag combinations this is checked against.
+ *
+ * flags: { hasCookies, preferPlaywright, isBroadwayWorld, isPublicSite,
+ *   skips (Set), useScrapingdog, hasBdToken, sbAllowed }
+ * useScrapingdog/hasBdToken/sbAllowed are pre-computed by the caller from the
+ * same key+budget+quota checks the original branches used — this function
+ * only decides ORDER, never whether a key/budget/quota check itself passes.
+ */
+function pageChainOrder(flags) {
+  const skips = flags.skips || new Set();
+  const order = [];
+  if (flags.hasCookies && !flags.preferPlaywright && !skips.has('cookies-plain')) {
+    order.push('cookies-plain');
+  }
+  if ((flags.preferPlaywright || flags.isBroadwayWorld || flags.isPublicSite) && !skips.has('playwright')) {
+    order.push('playwright-first');
+  }
+  if (flags.useScrapingdog && !skips.has('scrapingdog')) {
+    order.push('scrapingdog');
+  }
+  if (flags.hasBdToken && !skips.has('brightdata')) {
+    order.push('brightdata');
+  }
+  if (flags.sbAllowed && !skips.has('scrapingbee')) {
+    order.push('scrapingbee');
+  }
+  if (!flags.preferPlaywright && !flags.isPublicSite && !flags.isBroadwayWorld && !skips.has('playwright')) {
+    order.push('playwright-last');
+  }
+  return order;
+}
+
 async function fetchPage(url, options = {}) {
   url = unwrapRedirectUrl(url);
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
+  const isBroadwayWorld = url.includes('broadwayworld.com');
   const skips = _getDomainSkips(url);
   const cookieDomain = hasCookiesForUrl(url);
 
@@ -897,25 +989,67 @@ async function fetchPage(url, options = {}) {
     return null;
   }
 
-  // Cookie-gated outlets (WSJ, FT, NYT, Telegraph, etc.): try plain HTTPS with
-  // subscriber cookies FIRST. WSJ's DataDome blocks BD/Playwright even with cookies,
-  // but plain HTTP + subscriber cookies bypasses it (the recover-wsj-subscriber.js
-  // pattern). For non-WSJ cookie outlets this just skips one proxy hop — cheap.
-  if (cookieDomain && !preferPlaywright && !skips.has('cookies-plain')) {
-    console.log(`  → Trying plain HTTPS with ${cookieDomain} cookies...`);
-    const raw = await fetchWithCookiesPlain(url);
-    if (raw && raw.content && raw.content.length > 0) {
-      const checked = _checkAndReturn(raw, 'Cookie-plain');
-      if (checked) return checked;
-    }
+  // Live re-check at chain-build time — matches the original code's gate
+  // conditions exactly, reproduced again (unchanged) inside the scrapingdog/
+  // scrapingbee tier functions below. Scrapingdog/ScrapingBee gate on
+  // module-level mutable state (budgets, quotas, the SB credits-low latch)
+  // that a CONCURRENT fetchPage() call or a fire-and-forget credits check can
+  // flip while THIS call is still awaiting an earlier tier (cookies/
+  // Playwright/SD/BD) — a window that's now as long as those earlier tiers'
+  // combined latency, not "immediately before" as it was pre-refactor. Each
+  // tier's own fetchWithScrapingdog/fetchWithScrapingBee already re-checks
+  // its budget/quota/breaker internally, so a stale "allowed" chain entry
+  // can never overspend — but re-evaluating live here (rather than trusting
+  // the chain's snapshot) keeps the log lines and dispatch decision honest.
+  const chain = pageChainOrder({
+    hasCookies: !!cookieDomain,
+    preferPlaywright,
+    isBroadwayWorld,
+    isPublicSite,
+    skips,
+    // Scrapingdog (flag-gated cheap tier — tried BEFORE Bright Data to avoid BD's
+    // ~$1.50/1k cost on the many hosts Scrapingdog handles for ~$0.09-0.45/1k).
+    useScrapingdog: USE_SCRAPINGDOG && !!SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded,
+    // Bright Data: primary for non-public sites, fallback for public.
+    hasBdToken: !!BRIGHTDATA_TOKEN,
+    // ScrapingBee: skip if credits exhausted, budget exceeded, or page-exhausted.
+    sbAllowed: !!SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted,
+  });
+
+  // Original code logged this the instant it decided to skip Playwright for a
+  // domain-tier-skipped host; pageChainOrder just omits the tier, so log it
+  // here from the same condition to keep that observable behavior identical.
+  if ((preferPlaywright || isBroadwayWorld || isPublicSite) && skips.has('playwright')) {
+    console.log('  → Skipping Playwright (domain-tier-skip)');
   }
 
-  // Playwright-first for known public sites (free, fast with domcontentloaded)
-  // Also for BroadwayWorld (complex JS) and explicit preferPlaywright
-  if (preferPlaywright || url.includes('broadwayworld.com') || isPublicSite) {
-    if (skips.has('playwright')) {
-      console.log('  → Skipping Playwright (domain-tier-skip)');
-    } else {
+  // Each tier function returns the final result to hand back from fetchPage,
+  // or null/undefined to fall through to the next tier in `chain`. Bodies are
+  // copied verbatim from the branches pageChainOrder replaces — behavior is
+  // unchanged, only the ordering/gating moved into the pure function above.
+  //
+  // Each takes `fallbackFrom`: the label of the tier that ran and came back
+  // empty immediately before it (BRO-3009 S1-T8). Purely a telemetry
+  // passenger — no tier branches on it — so the spend ledger can say WHY this
+  // provider was reached, not just what it cost.
+  const tiers = {
+    // Cookie-gated outlets (WSJ, FT, NYT, Telegraph, etc.): try plain HTTPS
+    // with subscriber cookies FIRST. WSJ's DataDome blocks BD/Playwright even
+    // with cookies, but plain HTTP + subscriber cookies bypasses it (the
+    // recover-wsj-subscriber.js pattern). For non-WSJ cookie outlets this
+    // just skips one proxy hop — cheap.
+    'cookies-plain': async (fallbackFrom) => {
+      console.log(`  → Trying plain HTTPS with ${cookieDomain} cookies...`);
+      const raw = await fetchWithCookiesPlain(url);
+      if (raw && raw.content && raw.content.length > 0) {
+        const checked = _checkAndReturn(raw, 'Cookie-plain');
+        if (checked) return checked;
+      }
+      return null;
+    },
+    // Playwright-first for known public sites (free, fast with domcontentloaded).
+    // Also for BroadwayWorld (complex JS) and explicit preferPlaywright.
+    'playwright-first': async (fallbackFrom) => {
       const label = isPublicSite ? 'public site' : 'complex site';
       console.log(`  → Using Playwright (${label})...`);
       const raw = await fetchWithPlaywright(url, {
@@ -928,67 +1062,97 @@ async function fetchPage(url, options = {}) {
         const checked = _checkAndReturn(raw, 'Playwright');
         if (checked) return checked;
       }
-    }
-  }
-
-  // Scrapingdog (flag-gated cheap tier — tried BEFORE Bright Data to avoid BD's
-  // ~$1.50/1k cost on the many hosts Scrapingdog handles for ~$0.09-0.45/1k).
-  // A challenge/short response falls through to Bright Data, which keeps its role
-  // as the strong unblocker for the hard sites Scrapingdog can't crack.
-  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded && !skips.has('scrapingdog')) {
-    console.log('  → Trying Scrapingdog...');
-    const raw = await fetchWithScrapingdog(url, options);
-    if (raw && raw.content && raw.content.length > 0) {
-      if (_isChallengeOrGarbage(raw.content)) {
-        console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
-      } else {
-        const checked = _checkAndReturn(raw, 'Scrapingdog');
+      return null;
+    },
+    // A challenge/short response falls through to Bright Data, which keeps
+    // its role as the strong unblocker for the hard sites Scrapingdog can't crack.
+    scrapingdog: async (fallbackFrom, onSkip) => {
+      // Live re-check (see the comment above `chain`): the exact same
+      // condition pageChainOrder was given, re-evaluated now instead of
+      // trusting the snapshot from before the earlier tiers' awaits.
+      if (!(USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded)) {
+        // Same three states fetchWithScrapingdog reports for itself, so this
+        // early return is attributed identically rather than collapsing to a
+        // plain "scrapingdog was tried and missed".
+        onSkip(_scraperStats.sdBudgetExceeded ? 'sd-budget'
+             : _sdQuotaExceeded ? 'sd-quota'
+             : 'sd-unavailable');
+        return null;
+      }
+      console.log('  → Trying Scrapingdog...');
+      const raw = await fetchWithScrapingdog(url, { ...options, fallbackFrom, onSkip });
+      if (raw && raw.content && raw.content.length > 0) {
+        if (_isChallengeOrGarbage(raw.content)) {
+          console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
+        } else {
+          const checked = _checkAndReturn(raw, 'Scrapingdog');
+          if (checked) return checked;
+        }
+      }
+      return null;
+    },
+    brightdata: async (fallbackFrom, onSkip) => {
+      console.log('  → Trying Bright Data...');
+      const raw = await fetchWithBrightData(url, { fallbackFrom, onSkip });
+      if (raw && raw.content && raw.content.length > 0) {
+        // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge
+        // HTML that passes length > 0 but isn't real content. Fall through to ScrapingBee.
+        if (_isChallengeOrGarbage(raw.content)) {
+          console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${raw.content.length} bytes), trying next provider...`);
+        } else {
+          const checked = _checkAndReturn(raw, 'Bright Data');
+          if (checked) return checked;
+        }
+      } else if (raw) {
+        console.log('  ⚠️  Bright Data returned empty content, trying next provider...');
+      }
+      return null;
+    },
+    scrapingbee: async (fallbackFrom) => {
+      // Live re-check (see the comment above `chain`): the exact same
+      // condition pageChainOrder was given, re-evaluated now instead of
+      // trusting the snapshot from before the earlier tiers' awaits.
+      if (!(SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted)) {
+        return null;
+      }
+      console.log('  → Trying ScrapingBee...');
+      const raw = await fetchWithScrapingBee(url, { ...options, fallbackFrom });
+      if (raw) {
+        const checked = _checkAndReturn(raw, 'ScrapingBee');
         if (checked) return checked;
       }
-    }
-  }
-
-  // Try Bright Data (primary for non-public sites, fallback for public)
-  if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
-    console.log('  → Trying Bright Data...');
-    const raw = await fetchWithBrightData(url);
-    if (raw && raw.content && raw.content.length > 0) {
-      // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge HTML
-      // that passes length > 0 but isn't real content. Fall through to ScrapingBee.
-      if (_isChallengeOrGarbage(raw.content)) {
-        console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${raw.content.length} bytes), trying next provider...`);
-      } else {
-        const checked = _checkAndReturn(raw, 'Bright Data');
+      return null;
+    },
+    // Last resort: Playwright (only reached if not already tried above).
+    // playwrightWaitForSelector pass-through is not needed here (that's only
+    // for caller-explicit Playwright via preferPlaywright, above) — this
+    // tier is "everything else failed" fallback, no specific selector.
+    'playwright-last': async (fallbackFrom) => {
+      console.log('  → Trying Playwright (last resort)...');
+      const raw = await fetchWithPlaywright(url);
+      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+        console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes)`);
+      } else if (raw) {
+        const checked = _checkAndReturn(raw, 'Playwright');
         if (checked) return checked;
       }
-    } else if (raw) {
-      console.log('  ⚠️  Bright Data returned empty content, trying next provider...');
-    }
-  }
+      return null;
+    },
+  };
 
-  // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, page-exhausted, or domain-skipped)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee')) {
-    console.log('  → Trying ScrapingBee...');
-    const raw = await fetchWithScrapingBee(url, options);
-    if (raw) {
-      const checked = _checkAndReturn(raw, 'ScrapingBee');
-      if (checked) return checked;
-    }
-  }
-
-  // Last resort: Playwright (only if not already tried above)
-  if (!preferPlaywright && !isPublicSite && !url.includes('broadwayworld.com') && !skips.has('playwright')) {
-    // (Last-resort Playwright path. playwrightWaitForSelector pass-through:
-    // only needed for caller-explicit Playwright via preferPlaywright above;
-    // this branch is "everything else failed" fallback, no specific selector.)
-    console.log('  → Trying Playwright (last resort)...');
-    const raw = await fetchWithPlaywright(url);
-    if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
-      console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes)`);
-    } else if (raw) {
-      const checked = _checkAndReturn(raw, 'Playwright');
-      if (checked) return checked;
-    }
+  // BRO-3009 S1-T8: carry the previous tier's identity into the next tier's
+  // ledger row, so the spend ledger records WHY a provider was reached and
+  // not just what it cost. A tier that declined to call at all reports its
+  // own reason through `onSkip` — scoped to THIS call, never inferred from
+  // shared module state (see SKIP_REASONS in fallback-attribution.js for why
+  // the counter-delta version of this was wrong). Telemetry only: no tier
+  // reads `fallbackFrom`, and every tier still returns exactly what it did.
+  let fallbackFrom = null;
+  for (const tierName of chain) {
+    let skipReason = null;
+    const result = await tiers[tierName](fallbackFrom, (reason) => { skipReason = reason; });
+    if (result) return result;
+    fallbackFrom = fallbackFromLabel(tierName, { skipReason });
   }
 
   throw new Error('All scraping methods failed');
@@ -1005,7 +1169,10 @@ async function cleanup() {
     const parts = [];
     if (s.pwSuccess > 0 || s.pwAttempts > 0) parts.push(`${s.pwSuccess}/${s.pwAttempts} Playwright (free)`);
     if (s.sdRequests > 0) parts.push(`${s.sdRequests} SD (${s.sdCredits} credits${s.sdBudgetExceeded ? ', BUDGET HIT' : ''})`);
-    if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${(s.bdRequests * 0.0015).toFixed(3)})`);
+    // BRO-3009 S1-T6: rate from scripts/config/provider-pricing.json, not an
+    // inline 0.0015 — this string is what scraper-cost-report.yml re-prices,
+    // so a drift here silently skews the weekly spend report.
+    if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${usdFor('brightdata', s.bdRequests).toFixed(3)})`);
     if (s.sbRequests > 0) parts.push(`${s.sbRequests} SB (${s.sbCredits} credits${s.sbBudgetExceeded ? ', BUDGET HIT' : ''})`);
     console.log(`[Scraper Summary] ${parts.join(', ')}`);
   }
@@ -1477,6 +1644,7 @@ function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
 
 module.exports = {
   fetchPage,
+  pageChainOrder,
   fetchJSON,
   fetchWithCookiesPlain,
   fetchWithBrightData,
@@ -1491,6 +1659,7 @@ module.exports = {
   checkScrapingBeeCredits,
   checkScrapingdogQuotaOnce: _checkScrapingdogQuotaOnce,
   getScraperStats,
+  isPlaywrightMissingBrowserError,
   verifyFetchedUrl,
   recordUrlMismatch,
   unwrapRedirectUrl,

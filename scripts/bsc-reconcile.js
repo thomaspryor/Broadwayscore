@@ -63,11 +63,12 @@ const ledger = require('./lib/dispatch-ledger.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
-const { setAppFocus, osActivateCmuxApp } = require('./lib/cmux-launch.js');
+const { setAppFocus, osActivateCmuxApp, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
+const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
@@ -98,9 +99,29 @@ const DISPATCH_TIMEOUT_MS = 10 * 60 * 1000;
 // (and the owner's screen, if any of them wake it) in one tick.
 const MAX_REVIVE_PER_TICK = 3;
 
+// Every cmux failure this tick, collected so main() can escalate ONCE at the
+// end rather than paging per sweep (BRO-2959). Routing through report() means
+// all three sweep sites are covered by construction — including any added
+// later — instead of each remembering to escalate for itself.
+//
+// Named explicitly rather than matched by an '-error' suffix. The suffix was
+// safe only while an unclassifiable failure stayed quiet; once 'unknown'
+// became page-worthy, ANY future '-error' kind whose detail did not match the
+// cmux taxonomy would have paged as a cmux socket incident. A comment
+// asserting the old safety property survived the change that falsified it,
+// which is precisely how a stale invariant becomes a bug — so the set is now
+// the thing enforced, not the prose.
+const CMUX_SWEEP_ERROR_KINDS = new Set([
+  'task-sweep-error', 'flagless-sweep-error', 'untracked-sweep-error',
+]);
+const cmuxFailuresThisTick = [];
+
 function report(line) {
   const entry = { ts: new Date().toISOString(), ...line };
   console.log(`[bsc-reconcile] ${entry.kind}: ${entry.detail}`);
+  if (CMUX_SWEEP_ERROR_KINDS.has(entry.kind) && entry.detail) {
+    cmuxFailuresThisTick.push(entry.detail);
+  }
   if (DRY) return;
   try {
     fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
@@ -201,6 +222,9 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
     isDoneTitleFn = cmuxws.isDoneTitle,
     claudeAliveInFn = cmuxws.claudeAliveIn,
     surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
+    // BRO-2575 test seam — the OS-process third signal. Same default and same
+    // lazy `ps` sampling as bsc-prune's.
+    makeWrapperAliveProbe: makeWrapperAliveProbeFn = makeSeedProcessProbe,
     readLedgerEntriesFn = ledger.readEntries,
     wakeFn = () => { osActivateCmuxApp(); return setAppFocus('active'); },
     clearWakeFn = () => setAppFocus('clear'),
@@ -265,6 +289,33 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
   }
   if (!candidates.length) return { checked: tasks.length, dead: [], redispatched: [] };
 
+  // BRO-2575: checkLiveness's two signals are both cmux reads over one socket,
+  // so a daemon blackout reports the whole fleet dead — and THIS reconciler
+  // responds by re-dispatching with --force, which is a duplicate worker on
+  // live work, not just a bogus ledger row. The wake+recheck below only asks
+  // cmux again, so it cannot see through a blackout either. Drop any candidate
+  // whose launch wrapper is still in the OS process table — the one signal not
+  // read through cmux. Same fail directions as bsc-prune: no marker (a launch
+  // predating this field) or an unbuildable probe leaves the verdict exactly as
+  // it was. See dispatch-ledger.deadBreadcrumbs' header for the mechanism.
+  let isWrapperAlive = null;
+  try { isWrapperAlive = makeWrapperAliveProbeFn(); }
+  // Its own kind, NOT task-sweep-error: this is an OS process-table probe, not
+  // a cmux socket call, and task-sweep-error is in CMUX_SWEEP_ERROR_KINDS — so
+  // filing it there fed a non-cmux failure to the cmux classifier, where it
+  // read as 'unknown' and escalated "cmux is unreachable" while cmux was
+  // perfectly healthy (review finding).
+  catch (e) { reportFn({ kind: 'wrapper-probe-error', taskId: 'sweep', detail: `wrapper-process probe unavailable (${e.message}) — cmux-only liveness this tick` }); }
+  const confirmedDead = candidates.filter(({ task, launch }) => {
+    if (!ledger.wrapperVouchesAlive(launch, isWrapperAlive)) return true;
+    reportFn({
+      kind: 'task-session-wrapper-alive', taskId: task.id,
+      detail: `cmux reported ${launch.workspaceRef} dead but its launch wrapper ${launch.marker} is still running — NOT re-dispatching in_progress task #${task.id} "${task.subject}"`,
+    });
+    return false;
+  });
+  if (!confirmedDead.length) return { checked: tasks.length, dead: [], redispatched: [] };
+
   // Wake cmux once before trusting a "dead" verdict (#849 lazy-exec fix): a
   // backgrounded app can leave an EXISTING tab's surface dormant the same
   // way it defers a brand-new launch's typed command. Re-list and re-check
@@ -275,7 +326,7 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
   catch { /* keep the pre-wake snapshot — a failed re-list must not block the sweep */ }
   clearWakeFn();
 
-  const dead = candidates.filter(({ launch }) => {
+  const dead = confirmedDead.filter(({ launch }) => {
     const ws = byRef.get(launch.workspaceRef);
     if (!ws) return false; // vanished between the two listings — bsc-prune's call now, not ours
     return cmuxws.checkLiveness(ws.ref, claudeAliveInFn, surfaceAliveInFn).dead;
@@ -574,7 +625,20 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
   const entries = readLedgerEntriesFn();
   const trackedIds = new Set(entries.filter(e => e.taskId != null).map(e => String(e.taskId)));
   let workspaces = [];
-  try { workspaces = listWorkspacesFn() || []; } catch { /* cmux down — title guard degrades to skip-none */ }
+  // BRO-2993: a failed listing must NOT read the same as "cmux confirmed
+  // zero workspaces" — the two are opposite evidence for the liveTab guard
+  // below. `cmuxUnavailable` (set only in the catch) makes the distinction
+  // explicit so the guard can fail closed instead of silently becoming a
+  // no-op on an empty array. The failure still has to be SEEN either way:
+  // this was the third blind spot in BRO-2959, where an auth rejection here
+  // produced literally no output at all.
+  let cmuxUnavailable = null;
+  try {
+    workspaces = listWorkspacesFn() || [];
+  } catch (e) {
+    cmuxUnavailable = classifyCmuxError(e);
+    reportFn({ kind: 'untracked-sweep-error', detail: `cmux listing failed: ${e.message}` });
+  }
 
   const flipped = [];
   const skipped = [];
@@ -619,7 +683,12 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     if (!hasParkedField && String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue;
     const lease = readLeaseFn(id);
     if (lease && pidLooksLikeClaude(lease.pid)) { skipped.push({ id, why: 'live-lease' }); continue; }
-    const liveTab = workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
+    // BRO-2993: cmux couldn't be asked this tick — uncertainty must not
+    // authorize action, so treat every remaining candidate as if its tab
+    // were live rather than falling through with an unverified empty list.
+    const liveTab = cmuxUnavailable
+      ? { ref: `cmux-unavailable:${cmuxUnavailable}` }
+      : workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
     if (liveTab) { skipped.push({ id, why: `live-tab ${liveTab.ref}` }); continue; }
     const notionId = notionIdOfTask(task);
     if (!notionId) { skipped.push({ id, why: 'no-notion-id' }); continue; } // no timestamp source — too blind to flip
@@ -914,30 +983,116 @@ function amendViaBscNext(taskId) {
   }
 }
 
-async function main() {
-  const entries = ledger.readEntries();
+// ── Orphan sweep (BRO-3052) ─────────────────────────────────────────────────
+// Extracted from main()'s old inline loop so it can be require()d and driven
+// with injected deps in tests — same DI shape as sweepUntrackedInProgress/
+// reconcileTaskSessions above (CLAUDE.md rule 15: this is exactly the kind of
+// decision logic that must not live untested inside main()).
+//
+// A single negative liveness glance no longer writes the terminal
+// job-orphaned row directly — see dispatch-ledger.js's orphanConfirmed for
+// why (live 2026-09-08: linear:BRO-2565 was marked orphaned while its
+// process was still running 15+ minutes later, and releasing its lease is
+// exactly what let a second worker dispatch onto the same card). The first
+// negative glance writes a non-terminal ORPHAN_SUSPECT row instead; only a
+// LATER tick that still finds the job dead (orphanConfirmed) promotes it to
+// the real ORPHANED row and releases the lease.
+function sweepOrphanedJobs(entries, { dryRun = false, deps = {} } = {}) {
+  const {
+    readLeaseFn = readLease,
+    pidLooksLikeClaudeFn = pidLooksLikeClaude,
+    appendEntryFn = (entry) => ledger.appendEntry(entry),
+    releaseLeaseFn = releaseLease,
+    readLedgerEntriesFn = ledger.readEntries,
+    reportFn = report,
+    nowFn = Date.now,
+  } = deps;
+
   const open = ledger.openJobs(entries);
-  let orphaned = 0;
   const orphans = [];
 
+  // TOCTOU close (Codex adversarial ship-check catch, mirrors reconcile-
+  // landed-but-open.js's own re-check before trusting a stale verdict):
+  // `entries` is this tick's snapshot from the top of main(). The job's OWN
+  // process can legitimately finish and append job-done in the gap between
+  // that snapshot and any write this loop makes — appendEntryFn always
+  // appends to the CURRENT end of the ledger regardless of what we read
+  // earlier, so ANY non-terminal row we write (ORPHANED, or the non-terminal
+  // ORPHAN_CLEARED) could land after a real job-done in file order, and
+  // foldJobs' last-wins fold would silently show the job as orphaned/still-
+  // open instead of done. Shared by both write sites below so neither can
+  // drift from the other's protection.
+  // NARROWS the race, does not eliminate it (Codex adversarial review, 2nd
+  // pass — noted explicitly rather than left implicit): a plain append has no
+  // compare-and-swap, so job-done could in principle still land in the few
+  // milliseconds between this read and the write below. Same accepted,
+  // narrowed-not-closed shape as reconcile-landed-but-open.js's own gate-2
+  // re-check (see its header: "must be re-checked... immediately before
+  // reporting a verdict, not only once up front") — closing it fully would
+  // need real locking around ledger writes, which nothing in this
+  // append-only-by-design file has ever done. This shrinks the window from
+  // "the whole 5-min tick" to "one read-to-write gap", which is the same
+  // order of magnitude improvement that re-check already accepts as good enough.
+  const isAlreadyTerminal = (jobId) => {
+    const freshJob = ledger.foldJobs(readLedgerEntriesFn()).get(jobId);
+    return Boolean(freshJob && ledger.TERMINAL_JOB_EVENTS.has(freshJob.event));
+  };
+
   for (const job of open) {
-    const lease = readLease(job.taskId);
+    const lease = readLeaseFn(job.taskId);
+    const now = nowFn();
     // STARTUP GRACE (ship-check Codex blocker): a freshly-acquired lease has
     // pid:null until claude-cli's onSpawn lands. Treating that window as dead
     // would orphan a healthy job at t+0 and let a duplicate dispatch in.
     // Anything younger than the grace window is presumed starting.
-    const leaseAgeMs = lease && lease.acquiredAt ? Date.now() - Date.parse(lease.acquiredAt) : Infinity;
+    const leaseAgeMs = lease && lease.acquiredAt ? now - Date.parse(lease.acquiredAt) : Infinity;
     const starting = lease && lease.jobId === job.jobId && leaseAgeMs < GRACE_MS;
-    const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaude(lease.pid);
-    if (alive || starting) continue;
-    orphaned++;
-    orphans.push({ job, lease });
-    if (!DRY) {
-      ledger.appendEntry({ event: ledger.JOB_EVENTS.ORPHANED, taskId: job.taskId, jobId: job.jobId, subject: job.subject || '', hadLease: Boolean(lease) });
-      releaseLease(job.taskId, job.jobId); // ownership-checked: never removes a replacement job's lease
+    const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaudeFn(lease.pid);
+    if (alive || starting) {
+      // Clear a pending suspicion the moment the job is observed alive again
+      // (Codex adversarial ship-check catch): without this, a one-off `ps`
+      // blip's suspect row sits in the ledger unrefuted, and a LATER,
+      // unrelated death within ORPHAN_SUSPECT_MAX_AGE_MS would wrongly read
+      // that old blip as its second confirming observation. Only write when
+      // there's an actual suspicion to clear — alive jobs are the overwhelming
+      // common case and must not get a ledger row every tick.
+      //
+      // TOCTOU-checked (2nd Codex catch): the job can finish for real (append
+      // job-done) in the gap between this alive glance and the clear write.
+      // ORPHAN_CLEARED is non-terminal — appending it AFTER a real job-done
+      // would fold to "still open", silently reopening a completed job.
+      if (!dryRun && ledger.lastOrphanSuspect(job.jobId, entries) && !isAlreadyTerminal(job.jobId)) {
+        appendEntryFn(ledger.orphanClearedEntry(job.taskId, job.jobId));
+      }
+      continue;
     }
-    report({ kind: 'orphan', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} (task #${job.taskId} ${job.subject || ''}) has no live claude process` });
+
+    if (ledger.orphanConfirmed(job.jobId, entries, now)) {
+      if (isAlreadyTerminal(job.jobId)) {
+        reportFn({ kind: 'orphan-resolved', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} already reached a terminal state since this tick's snapshot — not orphaning` });
+        continue;
+      }
+      orphans.push({ job, lease });
+      if (!dryRun) {
+        appendEntryFn({ event: ledger.JOB_EVENTS.ORPHANED, taskId: job.taskId, jobId: job.jobId, subject: job.subject || '', hadLease: Boolean(lease) });
+        releaseLeaseFn(job.taskId, job.jobId); // ownership-checked: never removes a replacement job's lease
+      }
+      reportFn({ kind: 'orphan', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} (task #${job.taskId} ${job.subject || ''}) has no live claude process` });
+    } else {
+      if (!dryRun && ledger.orphanSuspectIsStale(job.jobId, entries, now)) {
+        appendEntryFn(ledger.orphanSuspectEntry(job.taskId, job.jobId));
+      }
+      reportFn({ kind: 'orphan-suspect', taskId: job.taskId, jobId: job.jobId, detail: `job ${job.jobId} (task #${job.taskId} ${job.subject || ''}) has no live claude process — awaiting confirmation next tick` });
+    }
   }
+
+  return { orphans };
+}
+
+async function main() {
+  const entries = ledger.readEntries();
+  const open = ledger.openJobs(entries);
+  const { orphans } = sweepOrphanedJobs(entries, { dryRun: DRY });
 
   // Optional, capped resume-retry (default OFF — detection first, automation later).
   if (process.env.BSC_RECONCILE_RETRY === '1' && !DRY && orphans.length) {
@@ -1013,7 +1168,7 @@ async function main() {
     if (!DRY) releaseLease(dir);
   }
 
-  console.log(`[bsc-reconcile] open=${open.length} orphaned=${orphaned} sweptLeases=${sweptLeases}${DRY ? ' (dry-run)' : ''}`);
+  console.log(`[bsc-reconcile] open=${open.length} orphaned=${orphans.length} sweptLeases=${sweptLeases}${DRY ? ' (dry-run)' : ''}`);
 
   // Task #883: cmux-tab session reconciler, same tick. Failure here must
   // never take down the headless-job detection above it — this whole step
@@ -1061,10 +1216,73 @@ async function main() {
   } catch (e) {
     console.error(`[bsc-reconcile] card-drift sweep crashed (non-fatal): ${e.message}`);
   }
+
+  await escalateCmuxAuthFailures();
+}
+
+// BRO-2959: a cmux socket AUTH rejection disables every sweep above at once
+// and never clears on its own, so it has to page immediately. The other
+// failure kinds (daemon down, timeout) are genuinely transient and already
+// have correct degraded-mode handling — they stay silent here on purpose,
+// which is what keeps this from becoming one more line of noise in a report
+// file that already logs thousands of them.
+const ESCALATION_TIMEOUT_MS = 20 * 1000;
+
+async function escalateCmuxAuthFailures() {
+  const summary = summarizeCmuxFailures(cmuxFailuresThisTick);
+  if (!summary.escalate || DRY) return;
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router.js');
+    // Hard time bound. routeAlert's 'auto' path makes three Linear GraphQL
+    // calls, each 30s per attempt with up to 5 retries and no outer timeout
+    // of its own — worst case several minutes against this job's 300s
+    // StartInterval, which would make launchd skip the NEXT reconcile tick.
+    // An alert that is late is a nuisance; a self-heal tick that never runs
+    // because the alert about it hung is the failure this card is about.
+    await Promise.race([
+      routeAlert({
+      // Stable key: one open incident for the whole outage, not one per tick.
+      // ONE key for both shapes on purpose. The cooldown is per-key, so
+      // splitting auth-denied and unclassified would let a single ongoing
+      // outage page twice if the classification flapped tick to tick
+      // (ship-check finding). It is one incident — "the sweeps cannot reach
+      // cmux" — and the title/description below carry the distinction.
+      conditionKey: 'cmux-socket:unreachable',
+      title: summary.authDenied > 0
+        ? 'cmux socket is rejecting automation — every self-heal sweep is down'
+        : 'cmux is failing in a way this code does not recognise — self-heal may be down',
+      description:
+        (summary.authDenied > 0
+          ? `bsc-reconcile could not reach the cmux control socket on ${summary.authDenied} sweep(s) this tick because cmux REFUSED the connection.\n\n`
+          : `bsc-reconcile could not reach the cmux control socket on ${summary.unknown} sweep(s) this tick, and the failure matched NONE of the known shapes (auth, daemon-down, timeout, missing binary).\n\n`
+            + 'The likeliest cause is that cmux changed its error wording: the classifier recognises rejections by their English text, so a reworded message stops being detected as auth and would otherwise fail silently. Check the raw error below and update classifyCmuxError in scripts/lib/cmux-socket-auth.js.\n\n') +
+        'This is a configuration state, not a blip: it does not clear on its own. While it holds, the cmux tab-lane self-heal, bsc-prune and dispatch-watchdog are all disabled simultaneously — dead workspaces stop being recovered and nothing else notices.\n\n' +
+        'Cause seen on 2026-09-07: a cmux upgrade set automation.socketControlMode="cmuxOnly" in ~/.config/cmux/cmux.json, which admits only processes started inside cmux. Everything launchd runs is therefore denied.\n\n' +
+        // Both shapes are stated unconditionally. The title above reflects
+        // whichever shape opened the incident, and one conditionKey means a
+        // later tick of the OTHER shape re-fires under that original wording
+        // (ship-check finding). Naming both counts here keeps the body honest
+        // whichever way round it happened.
+        `This tick: ${summary.authDenied} rejected outright, ${summary.unknown} unclassifiable. Full breakdown in the fields below.`,
+      hint:
+        'Check `automation.socketControlMode` in ~/.config/cmux/cmux.json. For launchd callers it must be "password" with a matching `automation.socketPassword` (scripts/lib/cmux-socket-auth.js reads it and injects CMUX_SOCKET_PASSWORD). Verify with: node -e "require(\'./scripts/lib/cmux-workspaces.js\').listWorkspaces()".',
+        severity: 'error',
+        disposition: 'auto',
+        fields: Object.entries(summary.counts).map(([name, value]) => ({ name, value: String(value) })),
+      }),
+      new Promise((_, reject) => setTimeout(
+        () => reject(new Error(`escalation timed out after ${ESCALATION_TIMEOUT_MS}ms`)),
+        ESCALATION_TIMEOUT_MS,
+      ).unref()),
+    ]);
+    console.error('[bsc-reconcile] cmux auth failure escalated to the owner alert router');
+  } catch (e) {
+    console.error(`[bsc-reconcile] cmux auth escalation failed: ${e.message}`);
+  }
 }
 
 if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS };

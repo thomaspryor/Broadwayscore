@@ -774,12 +774,16 @@ test('CLI: post-push clobber (check-ref moved past what we pushed, our lines gon
 //                 line-level addedLinesSurvived downgrade is skipped.
 
 test('isContentSurvivalExempt: true only for \'full\'-mode entries, false for \'deep-only\' and ordinary files', () => {
+  // BRO-2413 (2026-09-04): the 3 alert-* ledgers downgraded from 'full' to
+  // 'deep-only' when core-data-merge-registry.js gained real merge coverage
+  // for them (see their CONTENT_SURVIVAL_EXEMPT_LEDGERS reason text) — no
+  // 'full'-mode ledger entries remain today, only deploy-watermark.json's
+  // pre-existing 'deep-only' one plus these 3. This test asserts the
+  // CURRENT full-mode set is empty and everything else is NOT full-exempt,
+  // rather than hardcoding a stale "at least 3" floor.
   const fullModeFiles = CONTENT_SURVIVAL_EXEMPT_LEDGERS.filter((e) => e.mode === 'full').map((e) => e.file);
-  assert.ok(fullModeFiles.length >= 3, 'expected at least the 3 full-mode ledger exemptions');
-  for (const file of fullModeFiles) {
-    assert.equal(isContentSurvivalExempt(file), true, `expected ${file} to be exempt`);
-  }
-  assert.equal(isContentSurvivalExempt('data/audit/alert-ledger.json'), true);
+  assert.deepEqual(fullModeFiles, [], 'no ledger is currently \'full\'-mode exempt');
+  assert.equal(isContentSurvivalExempt('data/audit/alert-ledger.json'), false, "alert-ledger.json is now 'deep-only', not 'full'");
   assert.equal(isContentSurvivalExempt('data/audit/deploy-watermark.json'), false, "deploy-watermark.json is 'deep-only', not 'full'");
   assert.equal(isContentSurvivalExempt('scripts/lib/push-content-survival.js'), false);
   assert.equal(isContentSurvivalExempt('data/shows.json'), false);
@@ -791,9 +795,11 @@ test('isContentSurvivalExempt: matches by exact path, not suffix (avoids future 
   assert.equal(isContentSurvivalExempt('alert-ledger.json'), false);
 });
 
-test('isDeepCheckExempt: true only for deploy-watermark.json (\'deep-only\' mode)', () => {
+test('isDeepCheckExempt: true for deploy-watermark.json and the 3 apiFallbackMerge-covered alert ledgers (\'deep-only\' mode)', () => {
   assert.equal(isDeepCheckExempt('data/audit/deploy-watermark.json'), true);
-  assert.equal(isDeepCheckExempt('data/audit/alert-ledger.json'), false, "'full'-mode files are not also 'deep-only'");
+  assert.equal(isDeepCheckExempt('data/audit/alert-ledger.json'), true, "downgraded from 'full' to 'deep-only' by BRO-2413's apiFallbackMerge coverage");
+  assert.equal(isDeepCheckExempt('data/audit/alert-digest-queue.json'), true);
+  assert.equal(isDeepCheckExempt('data/audit/alert-router-attempts.jsonl'), true);
   assert.equal(isDeepCheckExempt('data/shows.json'), false);
 });
 
@@ -811,10 +817,16 @@ test('isDeepCheckExempt: true only for deploy-watermark.json (\'deep-only\' mode
 // deploy-watermark.json is deliberately excluded from this check: it isn't
 // in the registry at all (full-overwrite snapshot, not a merge-registry
 // concern), exempt for an unrelated reason documented in its own entry above.
+//
+// BRO-2413 (2026-09-04): this guard already did its job once — it's what
+// caught that the 3 alert-* ledgers needed downgrading from 'full' to
+// 'deep-only' when they gained real apiFallbackMerge coverage (see their
+// updated reason text above). No 'full'-mode entries remain today, so this
+// loop is currently vacuous; it stays here as a live tripwire for the NEXT
+// file that gets exempted 'full' and later gains registry coverage.
 test('CONTENT_SURVIVAL_EXEMPT_LEDGERS: \'full\'-mode entries stay in sync with core-data-merge-registry.js (must still be un-reconciled there)', () => {
   const { findEntry } = require('./core-data-merge-registry.js');
   const registrySourced = CONTENT_SURVIVAL_EXEMPT_LEDGERS.filter((e) => e.mode === 'full');
-  assert.ok(registrySourced.length >= 3, 'expected at least the 3 registry-cited ledger exemptions');
   for (const { file } of registrySourced) {
     const basename = file.replace(/^data\//, ''); // registry paths are relative to data/ for public-repo entries
     const entry = findEntry(basename, 'public-repo');
@@ -869,7 +881,10 @@ test('CLI: append-only multi-writer ledger — base has lines 1-10, branch appen
   // Only the literal failure banner counts as a real alarm — not the word
   // "REVERTED" appearing inside the exemption's OWN historical-incident text.
   assert.doesNotMatch(out, /\[content-survival\] FAILED/);
-  assert.match(out, /EXCLUDED/);
+  // BRO-2413 (2026-09-04): alert-ledger.json downgraded from 'full' to
+  // 'deep-only' exemption mode — the deep line-level check is skipped
+  // ("DEEP-CHECK EXEMPT" + "AMBIGUOUS ... not checked"), not the whole file.
+  assert.match(out, /DEEP-CHECK EXEMPT/);
   assert.match(out, /alert-ledger\.json/);
   // Must NOT reuse the genuinely-vacuous-diff message: merge-worktree-to-
   // main.sh pattern-matches "no modified files to check" to print its own
@@ -878,7 +893,11 @@ test('CLI: append-only multi-writer ledger — base has lines 1-10, branch appen
   // that string here would trade the #619 hard-failure alarm for a softer
   // but still spurious warning on the exact same files (ship-check finding).
   assert.doesNotMatch(out, /no modified files to check/);
-  assert.match(out, /all documented exemptions/);
+  // BRO-2413: 'deep-only' mode means the file IS classified (as AMBIGUOUS,
+  // never checked further) rather than early-returning via the all-'full'-
+  // exempt "nothing left to check" summary path — so the ordinary per-file
+  // OK summary applies here, not the all-exemptions-only one.
+  assert.match(out, /OK — 0\/1 modified file\(s\) confirmed surviving/);
 });
 
 // deploy-watermark.json ('deep-only' mode, adversarial review finding):

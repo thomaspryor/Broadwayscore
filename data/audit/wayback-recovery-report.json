@@ -1,20 +1,30 @@
 {
-  "totalCandidates": 4,
-  "cdxFound": 2,
-  "cdxNotFound": 1,
-  "recovered": 0,
+  "totalCandidates": 44,
+  "cdxFound": 21,
+  "cdxNotFound": 3,
+  "recovered": 9,
   "recoveredByTier": {
-    "1": 0,
-    "2": 0,
-    "3": 0
+    "1": 1,
+    "2": 4,
+    "3": 4
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "latimes.com": 1,
+    "nydailynews.com": 1,
+    "billboard.com": 1,
+    "deadline.com": 1,
+    "amny.com": 1,
+    "forum.broadwayworld.com": 1,
+    "people.com": 1,
+    "newyorktheatreguide.com": 1,
+    "playbill.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
-  "notInArchive": 1,
+  "errors": 20,
+  "notInArchive": 3,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }

@@ -56,6 +56,8 @@ const {
 // Lastname", "Photo:", venue+address) are good and tested, so consume them here
 // rather than leave a second detector rotting unrun.
 const { isChromePrefix } = require('./audit-chrome-pullquotes');
+const { generateReviewFilename, normalizeOutlet, areCriticsSimilar } = require('./lib/review-normalization');
+const { canonicalReviewUrl } = require('./lib/review-url-clusters');
 
 const ROOT = path.join(__dirname, '..');
 const REVIEWS_FILE = process.env.REVIEWS_FILE || path.join(ROOT, 'data', 'reviews.json');
@@ -102,6 +104,68 @@ function sourcesForReview(data) {
   ].filter(t => typeof t === 'string' && t);
 }
 
+/**
+ * Which review-texts file did this reviews.json record come from?
+ *
+ * A show directory can hold several files for the same outlet (a critic
+ * reviewed a return/transfer production, or a byline was later corrected).
+ * Their `data.criticName` fields can end up identical even though the files
+ * are for different reviews — a later correction rewrites the JSON's
+ * criticName but not the filename it was originally written under (BRO-180:
+ * hamlet-off-broadway-2026/nytg had two files both stamped "Austin Fimmano",
+ * one of them for a different Hamlet production entirely). Loosely scanning
+ * by `data.criticName` then picks whichever file sorts first, at random with
+ * respect to which review it's actually for.
+ *
+ * Borrows findExistingReviewFile()'s identity signals from
+ * scripts/lib/review-normalization.js (the write-time resolver this audit
+ * should agree with) rather than inventing unrelated ones, in an order
+ * tuned for THIS question — "which file is record r's own source" — which
+ * findExistingReviewFile doesn't answer (its question is "does an existing
+ * file already represent this INCOMING scrape", so on a shared-URL cluster
+ * it picks a merge target; here we know r's criticName and need the file
+ * that specific value came from). URL first, but ONLY when unambiguous: a
+ * URL identifies one page, but pride-west-end-2026/standard has three
+ * files sharing one identical URL (a stale mis-scrape sitting next to its
+ * later correction, never cleaned up) — there it's the exact-FILENAME
+ * match, not the URL, that lands on the file whose name matches r's
+ * criticName. Exact filename is next (BRO-180's own case: the file this
+ * record would be written to today). Fuzzy same-outlet criticName match
+ * (areCriticsSimilar, the resolver's own aliasing) comes after — it
+ * tolerates a critic-name normalization table that changes over time in a
+ * way an exact-filename recomputation can't. Every pass above skips
+ * wrongProduction/duplicateOf files, like the resolver does. Only the
+ * original loose outletId+criticName scan remains as a last resort, so a
+ * show whose only candidate is itself exclusion-flagged still returns
+ * something rather than nothing (matching this function's pre-BRO-180
+ * behavior).
+ */
+function fileForReview(texts, r) {
+  const normalizedOutlet = normalizeOutlet(r.outletId);
+  const notExcluded = (data) => data && !data.wrongProduction && !data.duplicateOf;
+  const sameOutlet = (file, data) => normalizeOutlet(data.outletId || file.split('--')[0]) === normalizedOutlet;
+
+  if (r.url) {
+    const canonUrl = canonicalReviewUrl(r.url);
+    if (canonUrl) {
+      const urlMatches = texts.filter(({ file, data }) => notExcluded(data) && data.url
+        && sameOutlet(file, data) && canonicalReviewUrl(data.url) === canonUrl);
+      if (urlMatches.length === 1) return urlMatches[0];
+    }
+  }
+
+  const expectedFile = generateReviewFilename(r.outletId, r.criticName);
+  const exact = texts.find(({ file, data }) => file === expectedFile && notExcluded(data));
+  if (exact) return exact;
+
+  const byCritic = texts.find(({ file, data }) => notExcluded(data) && sameOutlet(file, data)
+    && (!r.criticName || !data.criticName || data.criticName === r.criticName || areCriticsSimilar(r.criticName, data.criticName)));
+  if (byCritic) return byCritic;
+
+  return texts.find(({ data }) => data.outletId === r.outletId
+    && (!r.criticName || !data.criticName || data.criticName === r.criticName));
+}
+
 /** Load every review-texts JSON for a show, keyed by outletId. */
 function loadShowTexts(showId, reviewTextsDir) {
   const dir = path.join(reviewTextsDir || REVIEW_TEXTS_DIR, showId);
@@ -136,15 +200,10 @@ function findBadPullQuotes(reviews, reviewTextsDir, textsByShow = new Map()) {
     if (!textsByShow.has(showId)) textsByShow.set(showId, loadShowTexts(showId, reviewTextsDir));
     return textsByShow.get(showId);
   }
-  function fileForReview(r) {
-    return textsFor(r.showId).find(({ data }) => data.outletId === r.outletId
-      && (!r.criticName || !data.criticName || data.criticName === r.criticName));
-  }
-
   const badQuotes = [];
   for (const r of reviews) {
     if (!r.pullQuote) continue;
-    const entry = fileForReview(r);
+    const entry = fileForReview(textsFor(r.showId), r);
     const reason = classifyBadQuote(r.pullQuote, sourcesForReview(entry && entry.data));
     if (reason) {
       badQuotes.push({
@@ -186,11 +245,6 @@ function main() {
     if (!textsByShow.has(showId)) textsByShow.set(showId, loadShowTexts(showId));
     return textsByShow.get(showId);
   }
-  function fileForReview(r) {
-    return textsFor(r.showId).find(({ data }) => data.outletId === r.outletId
-      && (!r.criticName || !data.criticName || data.criticName === r.criticName));
-  }
-
   // --- 1. QUALITY ---------------------------------------------------------
   const badQuotes = findBadPullQuotes(scoped, REVIEW_TEXTS_DIR, textsByShow);
 
@@ -215,7 +269,7 @@ function main() {
 
     const changes = { filled: [], cleared: [], changed: [], same: 0, skipped: 0 };
     for (const r of scoped) {
-      const entry = fileForReview(r);
+      const entry = fileForReview(textsFor(r.showId), r);
       if (!entry) { changes.skipped++; continue; }
       let next;
       try {
@@ -269,4 +323,4 @@ if (require.main === module) {
   process.exit(main());
 }
 
-module.exports = { classifyBadQuote, sourcesForReview, findBadPullQuotes, loadShowTexts, hasHelpFlag };
+module.exports = { classifyBadQuote, sourcesForReview, findBadPullQuotes, loadShowTexts, fileForReview, hasHelpFlag };

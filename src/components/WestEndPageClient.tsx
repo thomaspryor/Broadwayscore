@@ -74,7 +74,7 @@ const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
 const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
-const shortDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+const shortDate = (d: string) => new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
 
 function weHasEnoughReviews(show: WestEndShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;

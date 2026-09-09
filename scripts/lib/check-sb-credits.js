@@ -34,7 +34,11 @@ async function fetchSBCreditStatus() {
     return { ok: false, reason: 'no-key', message: 'SCRAPINGBEE_API_KEY not set' };
   }
   const { status, data, error } = await httpsGetJson(
-    `https://app.scrapingbee.com/api/v1/usage?api_key=${key}`
+    // encodeURIComponent to match the two sibling implementations
+    // (lib/credit-preflight.js, lib/provider-billing.js fetchSbUsage). An
+    // unencoded key containing &, + or # authenticates as something else and
+    // surfaces only as a generic api-error WARN (BRO-3032 review).
+    `https://app.scrapingbee.com/api/v1/usage?api_key=${encodeURIComponent(key)}`
   );
   if (status !== 200 || !data) {
     return { ok: false, reason: 'api-error', status, error, message: `usage endpoint returned ${status}` };

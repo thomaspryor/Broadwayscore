@@ -19,6 +19,7 @@
  */
 
 const { PROTECTED_FIELDS } = require('./review-write-guard');
+const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance');
 
 // Aggregator signals — always preserve regardless of scoring state. These live
 // in the source review JSON and are independent of production validity.
@@ -50,6 +51,9 @@ const HUMAN_DECISION_FIELDS = [
 // should be cleared lands in one obvious place).
 const REPLACE_CLEAR_FIELDS = new Set([
   'wrongProduction', 'wrongProductionReason', 'wrongProductionNote',
+  // BRO-2740: the flag's provenance breadcrumbs must die with the flag. Listed
+  // once in wrongproduction-provenance.js — never re-enumerate them here.
+  ...WRONG_PRODUCTION_PROVENANCE_FIELDS,
   'wrongShow', 'wrongShowReason', 'wrongShowNote', 'wrongShowAutoCleared',
   'contentTier', 'contentTierReason',
   'incompleteReason', 'incompleteDetail',

@@ -70,3 +70,40 @@ test('Domain filter still blocks a known aggregator (control)', () => {
     'show-score.com should still be blocked — the filter itself must work.'
   );
 });
+
+test('listing/press hosts that recur through submit-review-form stay blocked', () => {
+  // These three reddened audit-outlet-registry.js --strict on 2026-09-02, all
+  // via source:'submit-review-form' with criticName 'Unknown' and no score.
+  // Blocked at the domain rather than baselined per outletId: a baseline
+  // silences one id, while the next listing page from the same host (or the
+  // next university announcing an alum's show) simply arrives under a new one.
+  // A previous cycle baselined `nyu` and wrote "do NOT register these if they
+  // recur" — it recurred, which is what made the domain the right level.
+  //
+  // thelondoner.com is the one that mattered most: its page was ingested at
+  // contentTier:'complete' with 3790 chars of well-formed prose, so it was a
+  // live scoring candidate held back only by not having been scored yet. Same
+  // shape as the BRO-2712 southbankcentre finding.
+  for (const url of [
+    'https://www.thelondoner.com/exclusive-offers/a-month-in-the-country',
+    'https://vocaleyes.co.uk/events/electra-persona-2/',
+    'https://tisch.nyu.edu/performance-studies/news/lukas-t--woodyard',
+    'https://nyu.edu/anything', // whole domain, not just the tisch subdomain
+  ]) {
+    assert.strictEqual(isBlockedReviewUrl(url), true, `${url} must be blocked`);
+  }
+});
+
+test('the new blocks do not catch real review outlets', () => {
+  // The parity run behind this: 37,076 review URLs in the corpus, exactly 3
+  // verdicts changed (the three files above), 0 of them scored. These four are
+  // the regression guard for that result.
+  for (const url of [
+    'https://www.thestage.co.uk/reviews/some-show',
+    'https://www.nytimes.com/2026/01/01/theater/review-some-show.html',
+    'https://www.londontheatre.co.uk/reviews/some-show',
+    'https://www.theguardian.com/stage/2026/jan/01/some-show',
+  ]) {
+    assert.strictEqual(isBlockedReviewUrl(url), false, `${url} must NOT be blocked`);
+  }
+});

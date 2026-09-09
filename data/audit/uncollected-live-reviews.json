@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-27T01:23:54.169Z",
+  "generatedAt": "2026-09-08T16:04:50.643Z",
   "maxAgeHours": 12,
-  "showsAffected": 9,
-  "strandedFiles": 10,
+  "showsAffected": 12,
+  "strandedFiles": 13,
   "blackoutShows": [
     "matilda-the-musical-theatre-row-off-broadway-2026"
   ],
@@ -25,7 +25,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 562.2985305555555
+          "ageHours": 864.9808844444444
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -61,19 +61,19 @@
       "totalBlackout": false
     },
     {
-      "showId": "moulin-rouge-2019",
-      "title": "Moulin Rouge! The Musical",
+      "showId": "and-juliet-2022",
+      "title": "& Juliet",
       "status": "open",
       "stranded": [
         {
-          "file": "musical-theatre-review--unknown.json",
-          "url": "https://musicaltheatrereview.com/new-additions-to-join-the-cast-of-the-west-ends-moulin-rouge/",
-          "outlet": "Musical Theatre Review",
-          "ageHours": 38.08204222222222
+          "file": "all-that-dazzles-uk--unknown.json",
+          "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
+          "outlet": "All That Dazzles  (UK)",
+          "ageHours": 283.2002675
         }
       ],
-      "usable": 69,
-      "discovered": 53,
+      "usable": 45,
+      "discovered": 68,
       "totalBlackout": false
     },
     {
@@ -89,7 +89,7 @@
         }
       ],
       "usable": 55,
-      "discovered": 78,
+      "discovered": 77,
       "totalBlackout": false
     },
     {
@@ -121,7 +121,23 @@
         }
       ],
       "usable": 41,
-      "discovered": 47,
+      "discovered": 48,
+      "totalBlackout": false
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "title": "Les Misérables",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "nytimes--unknown.json",
+          "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
+          "outlet": "The New York Times",
+          "ageHours": 216.92019333333334
+        }
+      ],
+      "usable": 29,
+      "discovered": 31,
       "totalBlackout": false
     },
     {
@@ -141,19 +157,51 @@
       "totalBlackout": false
     },
     {
+      "showId": "pride-west-end-2026",
+      "title": "Pride",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "plays-to-see--unknown.json",
+          "url": "https://playstosee.com/reviews/pride/",
+          "outlet": "Plays To See",
+          "ageHours": 168.74256194444445
+        }
+      ],
+      "usable": 42,
+      "discovered": 66,
+      "totalBlackout": false
+    },
+    {
       "showId": "burlesque-west-end-2026",
       "title": "Burlesque",
       "status": "open",
       "stranded": [
         {
           "file": "north-west-end--unknown.json",
-          "url": "https://northwestend.com/the-best-of-burlesque-assembly-rooms/",
+          "url": "https://northwestend.com/burlesque-the-musical-regent-theatre/",
           "outlet": "North West End",
-          "ageHours": 373.7479025
+          "ageHours": 145.23516666666666
         }
       ],
       "usable": 22,
-      "discovered": 28,
+      "discovered": 29,
+      "totalBlackout": false
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "title": "Electra / Persona",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "whatsonstage--sarah-crompton.json",
+          "url": "https://www.whatsonstage.com/news/electra-persona-with-cate-blanchett-and-nina-hoss-at-national-theatre-review_1730588/",
+          "outlet": "WhatsOnStage",
+          "ageHours": null
+        }
+      ],
+      "usable": 45,
+      "discovered": 47,
       "totalBlackout": false
     }
   ]

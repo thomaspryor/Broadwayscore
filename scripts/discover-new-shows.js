@@ -81,6 +81,9 @@ const { validateOne: validatePlaybillProduction } = require('./validate-show-ven
 const { buildExistingTitleMap, detectRevivalByTitleCrossReference } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd, hasJsonLdType } = require('./lib/jsonld');
 
 const USAGE = `discover-new-shows.js — Broadway New Show Discovery.
 
@@ -124,7 +127,20 @@ const NON_THEATER_PATTERNS = [
   'lottery', 'accessible lottery',
   'meet the music', 'lyrics & lyricists',
   'uptown showdown', 'amateur night',
-  'flamenco festival', 'circus',
+  'flamenco festival',
+  // NOT bare 'circus' alone (BRO-2662: matched "The Secret Circus Musical",
+  // a live tracked Off-Broadway musical currently in previews). No safe
+  // multi-word replacement exists either — unlike 'gala'/'tour', "circus" as
+  // a genre has no noise-vs-signal split by title shape: real tracked shows
+  // are titled "Cirque du Soleil Paramour" (Broadway musical),
+  // "Cirque Berserk", "Scrooge: Cirque Extravaganza", "Cirque Alice" (West
+  // End/Off-West End plays) — any "cirque"/"circus"-branded multi-word
+  // pattern collides with one of these. Genuine non-theatrical circus
+  // listings from TodayTix are already routed correctly downstream via
+  // show.todayTixCategory === 'Circus and Magic' (see type-detection below),
+  // so no title-substring gate is needed for that source. No historical log
+  // of the noise titles this bare token was originally added to catch
+  // exists, so it's removed rather than replaced with a guessed list.
   'in concert', 'concert performance',
   'company xiv', // burlesque/cabaret company
   'rakugo', // Japanese storytelling
@@ -814,11 +830,10 @@ async function fetchShowsFromOfficialLondonTheatre() {
 
   for (const script of ldScripts) {
     try {
-      const data = JSON.parse(script.textContent);
-      // Only accept objects where @type is exactly "TheaterEvent" (string, not array)
-      if (typeof data['@type'] !== 'string' || data['@type'] !== 'TheaterEvent') continue;
-      // Skip any with subEvent nesting (season containers)
-      if (data.subEvent) continue;
+      for (const data of parseJsonLd(script.textContent)) {
+        if (!hasJsonLdType(data, 'TheaterEvent')) continue;
+        // Skip any with subEvent nesting (season containers)
+        if (data.subEvent) continue;
 
       const title = (data.name || '').trim()
         .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")  // Curly quotes → straight
@@ -857,6 +872,7 @@ async function fetchShowsFromOfficialLondonTheatre() {
         category: applyGenreCategoryOverride('west-end', genre),
         description,
       });
+      }
     } catch (e) {
       // Skip malformed JSON-LD blocks
     }
@@ -929,12 +945,10 @@ async function fetchShowsFromLondonTheatre() {
 
   for (const script of ldScripts) {
     try {
-      const parsed = JSON.parse(script.textContent);
-      // Handle both single objects and arrays of TheaterEvent (LT uses an array)
-      const items = Array.isArray(parsed) ? parsed : [parsed];
+      const items = parseJsonLd(script.textContent);
 
       for (const data of items) {
-        if (typeof data['@type'] !== 'string' || data['@type'] !== 'TheaterEvent') continue;
+        if (!hasJsonLdType(data, 'TheaterEvent')) continue;
         if (data.subEvent) continue;
 
         const title = (data.name || '').trim()

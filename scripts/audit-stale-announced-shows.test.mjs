@@ -99,7 +99,8 @@ test('BRO-93 acceptance: current shows.json produces zero stale announced flags'
   const fs = require('fs');
   const path = require('path');
   const { fileURLToPath } = require('url');
-  const { loadAcks } = require('./lib/stale-announced-audit.js');
+  const { loadAcks, hasEvidenceOfOpening } = require('./lib/stale-announced-audit.js');
+  const { explainExclusion } = require('./lib/review-guards.js');
 
   const dirname = path.dirname(fileURLToPath(import.meta.url));
   const root = path.join(dirname, '..');
@@ -114,14 +115,12 @@ test('BRO-93 acceptance: current shows.json produces zero stale announced flags'
     return;
   }
 
-  const hasPopulatedReviewTextsDir = (showId) => {
-    const dir = path.join(reviewTextsDir, showId);
-    try {
-      return fs.readdirSync(dir).some((f) => f.endsWith('.json'));
-    } catch {
-      return false;
-    }
-  };
+  // Deliberately NOT a local copy of the review-texts rule. An inline
+  // `readdirSync(dir).some(f => f.endsWith('.json'))` here is what made this
+  // acceptance test assert the OLD behaviour while the production script had
+  // already been fixed — the test stayed red and pointed at data that was not
+  // the problem. Call the real predicate so a production change reaches this
+  // assertion (CLAUDE.md §15).
 
   const acks = loadAcks();
   const now = new Date();
@@ -131,7 +130,7 @@ test('BRO-93 acceptance: current shows.json produces zero stale announced flags'
     const reasons = evaluateAnnouncedShow(show, {
       now,
       staleDays: 30,
-      hasReviews: hasPopulatedReviewTextsDir(show.id),
+      hasReviews: hasEvidenceOfOpening(reviewTextsDir, show.id, explainExclusion, show),
       acks,
     });
     if (reasons.length > 0) flagged.push({ id: show.id, reasons });

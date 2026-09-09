@@ -38,6 +38,9 @@ const {
   VERDICT_TTL_MS,
   MAX_BLOCKS_PER_FILE,
   SHARED_INFRA_RULES,
+  WRAPPER_COMMANDS,
+  WRAPPER_VALUE_FLAGS,
+  WRAPPER_LEADING_ARG,
 } = scope;
 
 const NOW = Date.parse('2026-08-06T12:00:00Z');
@@ -341,6 +344,56 @@ test('bashWriteTargets ignores read-only commands and /dev/null', () => {
   assert.deepEqual(bashWriteTargets('grep -rn foo scripts/lib/'), []);
   assert.deepEqual(bashWriteTargets('node scripts/query.js "SELECT 1" 2> /dev/null'), []);
   assert.deepEqual(bashWriteTargets(''), []);
+});
+
+// BRO-2450: bashWriteTargets() read the wrapper itself ("timeout") as the
+// command head and found no WRITE_COMMANDS entry, so a write wrapped in
+// timeout/env/nohup/nice/stdbuf was invisible to the pre-implementation
+// edit-scope gate — the same blind spot review-gate.mjs's merge gate had
+// before BRO-2436.
+test('bashWriteTargets unwraps command-prefix wrappers (BRO-2450)', () => {
+  const cases = [
+    ["timeout 30 sed -i 's/x/y/' scripts/lib/file-lock.js", 'scripts/lib/file-lock.js'],
+    ['env FOO=1 tee scripts/lib/file-lock.js', 'scripts/lib/file-lock.js'],
+    ['nohup cp /tmp/new.js scripts/lib/file-lock.js', 'scripts/lib/file-lock.js'],
+    ['nice -n 10 mv /tmp/new.js scripts/lib/file-lock.js', 'scripts/lib/file-lock.js'],
+    // stacked wrappers, mirroring merge-gate-command-parsing.test.mjs's
+    // "stacked wrappers" case for the sibling gate.
+    ["timeout 900 nohup sed -i '' 's/a/b/' scripts/lib/file-lock.js", 'scripts/lib/file-lock.js'],
+    // a quoted flag is still a flag to the real shell — this must unwrap
+    // identically to the unquoted form, not stop at "-n" as a fake head.
+    ["nice '-n' 10 cp /tmp/new.js scripts/lib/file-lock.js", 'scripts/lib/file-lock.js'],
+  ];
+  for (const [cmd, expected] of cases) {
+    assert.ok(bashWriteTargets(cmd).includes(expected), `${cmd} → expected ${expected}, got ${JSON.stringify(bashWriteTargets(cmd))}`);
+  }
+});
+
+test('bashWriteTargets does not misparse a `bash -c` payload as the wrapped command', () => {
+  assert.deepEqual(bashWriteTargets('bash -c "sed -i s/x/y/ scripts/lib/file-lock.js"'), []);
+});
+
+test('bashWriteTargets does not hang or throw on a bare/incomplete wrapper', () => {
+  assert.deepEqual(bashWriteTargets('timeout'), []);
+  assert.deepEqual(bashWriteTargets('timeout 30'), []);
+  assert.deepEqual(bashWriteTargets('env FOO=1'), []);
+});
+
+// Codex adversarial review (BRO-2450): these are the one shared definition
+// review-gate.mjs's merge gate also reads (via a lazy require()). Frozen so
+// a bug in either caller mutating them can't silently alter the other gate.
+test('the shared wrapper constants are frozen against mutation', () => {
+  assert.ok(Object.isFrozen(WRAPPER_COMMANDS));
+  assert.ok(Object.isFrozen(WRAPPER_VALUE_FLAGS));
+  assert.ok(Object.isFrozen(WRAPPER_LEADING_ARG));
+  for (const flagSet of Object.values(WRAPPER_VALUE_FLAGS)) assert.ok(Object.isFrozen(flagSet));
+});
+
+test('a wrapped write still lands in the blocking tier, same as an unwrapped one', () => {
+  const targets = bashWriteTargets("timeout 30 sed -i 's/x/y/' scripts/lib/backlog-drain.js");
+  assert.equal(
+    evaluateInfraReviewGate({ paths: targets, verdicts: [], sessionId: SESSION, now: NOW }).action,
+    'block');
 });
 
 // ── the gate decision ────────────────────────────────────────────────────────

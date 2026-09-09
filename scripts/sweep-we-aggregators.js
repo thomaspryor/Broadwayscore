@@ -27,6 +27,7 @@ const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { serpQuery } = require('./lib/url-discovery');
+const { recordSbCall } = require('./lib/provider-telemetry');
 
 // Reuse extraction functions from existing scrapers
 const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPageHtml } = require('./scrape-westendtheatre-roundups');
@@ -48,6 +49,13 @@ Usage:
   node scripts/sweep-we-aggregators.js --help, -h    print this usage and exit
 `;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+
+// BRO-3097: best-effort hostname extraction for Browserbase ledger attribution
+// (a malformed/undefined indexUrl must not throw — attribution is measurement
+// only, never allowed to break the scrape it's observing).
+function safeHostOf(url) {
+  try { return url ? new URL(url).hostname.replace(/^www\./, '') : null; } catch { return null; }
+}
 const ARCHIVE_BASE = path.join(__dirname, '..', 'data', 'aggregator-archive');
 
 // Manually discovered URLs that automated matching can't find (verified via web search)
@@ -266,8 +274,13 @@ async function scrapingBeeRender(url) {
       timeout: 30000,
       responseType: 'text',
     });
+    recordSbCall({ url, fn: 'render', success: true, status: resp.status, credits: 5 });
     return resp.data || null;
   } catch (err) {
+    const status = err.response?.status || 'error';
+    // 401/402 (bad key / no credits) and connection errors are not billed.
+    const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 5;
+    recordSbCall({ url, fn: 'render', success: false, status, credits: billed });
     console.log(`    [SB] Render failed for ${url}: ${(err.message || '').substring(0, 60)}`);
     return null;
   }
@@ -491,8 +504,13 @@ async function sweepWET(show) {
           params: { api_key: SB_KEY, url: apiUrl, render_js: 'false' },
           timeout: 20000, responseType: 'text',
         });
+        recordSbCall({ url: apiUrl, fn: 'json', success: true, status: resp.status, credits: 1 });
         try { posts = JSON.parse(resp.data); } catch {}
-      } catch {}
+      } catch (err) {
+        const status = err.response?.status || 'error';
+        const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 1;
+        recordSbCall({ url: apiUrl, fn: 'json', success: false, status, credits: billed });
+      }
     }
 
     if (posts && Array.isArray(posts)) {
@@ -814,6 +832,8 @@ async function sweepTheatreReviews(show) {
       const session = await createBbSession({
         caller: 'sweep-we-aggregators.js:theatre-reviews',
         purpose: 'Theatre Reviews (TR) CleanTalk bypass, one-shot',
+        host: safeHostOf(indexUrl) || 'theatre.reviews',
+        category: 'discovery',
         body: { browserSettings: { solveCaptchas: true } },
       });
       const browser = await chromium.connectOverCDP(session.connectUrl);
@@ -1040,6 +1060,8 @@ async function getStagePageViaBrowserBase(url) {
     const session = await createBbSession({
       caller: 'sweep-we-aggregators.js:the-stage',
       purpose: 'The Stage cookie-auth session (reused across shows)',
+      host: safeHostOf(url) || 'thestage.co.uk',
+      category: 'discovery',
       body: { keepAlive: true, timeout: 1800, browserSettings: { solveCaptchas: true } },
     });
 

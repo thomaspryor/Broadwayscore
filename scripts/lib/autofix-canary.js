@@ -48,6 +48,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
+const dispatchReconcile = require('./dispatch-reconcile.js');
 // syncTasks no longer imported: Linear filings need no task-mirror sync
 // (BRO-286) — the identifier fileCard returns is directly dispatchable.
 const { fileCard, dispatchDetached } = require('./digest-autofix.js');
@@ -104,18 +105,16 @@ function planCanaryDispatch({ ledgerEntries, dateStr }) {
   return { shouldFile: !alreadyFiled };
 }
 
-// Same taskId correlation digest-autofix.js's findMyJob uses: the earliest
-// SPAWNED event for this taskId at/after the card-filed ts, then follow any
-// retry chain to a terminal (or still-open) state.
-function findCanarySpawn(dispatchLedgerEntries, taskId, sinceTs) {
-  const sinceMs = new Date(sinceTs).getTime() - 5000;
-  const spawns = (dispatchLedgerEntries || [])
-    .filter((e) => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED
-      && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
-    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
-  if (!spawns.length) return null;
-  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
-}
+// The earliest SPAWNED event for this taskId at/after the card-filed ts, then
+// follow any retry chain to a terminal (or still-open) state.
+//
+// This was a FOURTH byte-identical copy of the same correlation logic until
+// BRO-2542 — the three drains were consolidated into
+// scripts/lib/dispatch-reconcile.js and this one was missed, which is exactly
+// how the original drift happened (a fix landing in one copy and not its
+// siblings). Aliased rather than reimplemented so it cannot drift again; the
+// local name stays because this module's callers read `findCanarySpawn`.
+const findCanarySpawn = dispatchReconcile.findMyJob;
 
 /**
  * Furthest stage the canary filed on `dateStr` has reached, folding our own
@@ -493,7 +492,10 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
       // (bsc-next path, where dispatchDetached never appends the flag) — so
       // if the sync-lag branch is ever repointed to a `linear:` id it stays
       // dispatchable instead of silently starting to refuse.
-      dispatchDetached(existingTask.id, log, 0, null, { allowAutofixFiled: true });
+      // allowAutomationParked (BRO-3060): same reasoning, second guard —
+      // fileCard's --park also means this card carries PARKED_SENTINEL,
+      // which autofixFiledIssueGuard's waiver does NOT cover.
+      dispatchDetached(existingTask.id, log, 0, null, { allowAutofixFiled: true, allowAutomationParked: true });
       return { filed: true, dispatched: true, taskId: String(existingTask.id) };
     } catch (err) {
       log(`[autofix-canary] WARN dispatch spawn failed for canary #${existingTask.id}: ${String(err.message).slice(0, 120)}`);
@@ -515,7 +517,11 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
     // "CANARY: touch ..." and carries digest-autofix's PARKED provenance, so
     // autofixFiledIssueGuard would refuse it without this waiver. This is the
     // live path: without it the daily end-to-end canary never dispatches.
-    dispatchDetached(canaryTaskId, log, 0, null, { allowAutofixFiled: true });
+    // allowAutomationParked (BRO-3060) — that same PARKED provenance is ALSO
+    // headless-dispatchability.js's independent PARKED_SENTINEL blocker,
+    // which autofixFiledIssueGuard's waiver never covered: the canary was
+    // dispatching itself into a guaranteed refusal every day.
+    dispatchDetached(canaryTaskId, log, 0, null, { allowAutofixFiled: true, allowAutomationParked: true });
     appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'card-filed', date: today, taskId: canaryTaskId });
     return { filed: true, dispatched: true, taskId: canaryTaskId };
   } catch (err) {

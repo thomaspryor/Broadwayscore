@@ -10,6 +10,7 @@ const {
   phantomImageViolations,
   countEmptyImgSrc,
   extractSiteImageUrls,
+  extractSiteLinkUrls,
   classifyGapEntry,
   completenessFindings,
   gapDisclosureDecisions,
@@ -80,6 +81,20 @@ test('extractSiteImageUrls dedupes and ignores foreign hosts', () => {
   assert.deepEqual(urls.sort(), [
     'https://broadwayscorecard.com/images/shows/a/thumbnail.webp',
     'https://broadwayscorecard.com/images/shows/b/poster.webp',
+  ]);
+});
+
+test('extractSiteLinkUrls dedupes, strips UTM query strings, and ignores foreign hosts', () => {
+  const html = `
+    <a href="https://broadwayscorecard.com/critics/outlets/hollywood-reporter?utm_source=newsletter&utm_medium=email">HR</a>
+    <a href="https://broadwayscorecard.com/west-end/about?utm_source=newsletter">About</a>
+    <a href="https://broadwayscorecard.com/west-end/about">About again, no UTM — same page as above</a>
+    <a href="https://example.com/foo">not us</a>
+    <a href="{{{RESEND_UNSUBSCRIBE_URL}}}">Unsubscribe</a>`;
+  const urls = extractSiteLinkUrls(html);
+  assert.deepEqual(urls.sort(), [
+    'https://broadwayscorecard.com/critics/outlets/hollywood-reporter',
+    'https://broadwayscorecard.com/west-end/about',
   ]);
 });
 

@@ -370,7 +370,7 @@ test('flags a script using assignment-form destructured require (lazy try/catch 
   );
 });
 
-test('does not flag a script that only requires scraper.js (out of scope — see check header comment)', () => {
+test('flags a script that calls scraper.js\'s fetchPage (BRO-2961: tracked since 2026-09-07)', () => {
   withFixtureScripts(
     {
       'lib/scraper.js': `
@@ -385,7 +385,27 @@ test('does not flag a script that only requires scraper.js (out of scope — see
     },
     (dir) => {
       const found = findLedgerScripts(dir);
-      assert.ok(!found.has('plain-scraper.js'), 'scraper.js callers are intentionally out of scope');
+      assert.ok(found.has('plain-scraper.js'), 'scraper.js fetchPage callers are now in scope');
+    }
+  );
+});
+
+test('does NOT flag a script that only imports another export from scraper.js (no fetchPage call)', () => {
+  withFixtureScripts(
+    {
+      'lib/scraper.js': `
+        async function fetchPage(url) { return url; }
+        function getScraperStats() { return {}; }
+        module.exports = { fetchPage, getScraperStats };
+      `,
+      'stats-only.js': `#!/usr/bin/env node
+        const { getScraperStats } = require('./lib/scraper');
+        console.log(getScraperStats());
+      `,
+    },
+    (dir) => {
+      const found = findLedgerScripts(dir);
+      assert.ok(!found.has('stats-only.js'), 'non-fetchPage scraper.js exports are still out of scope');
     }
   );
 });

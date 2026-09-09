@@ -55,6 +55,9 @@ const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
+const { shouldSkipAlreadyAttempted } = require('./lib/collection-attempt-guard.js');
+const { protectStagedDeletions } = require('./lib/review-write-guard.js');
+const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
@@ -132,7 +135,15 @@ function getNytCriticsPicks() {
 }
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
-const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
+const { resolveShowIdentity } = require('./lib/show-identity');
+// Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
+// `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
+const { parseJsonLd } = require('./lib/jsonld');
+const {
+  isWithinPriorRun,
+  isWithinTourLeg,
+  shouldPreserveExclusionFlagsOnUrlRecovery,
+} = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
@@ -248,7 +259,11 @@ const SB_PREMIUM_DOMAINS = new Set([
 
 // Per-run SB page credit budget — prevents runaway spending.
 // For bulk backfills, override: SB_PAGE_CREDIT_BUDGET=1000 node scripts/collect-review-texts.js ...
-const SB_PAGE_CREDIT_BUDGET = parseInt(process.env.SB_PAGE_CREDIT_BUDGET || '200', 10);
+// Strict parse at startup (BRO-3009 ship-check): a malformed value must kill
+// the run here, not surface later as a thrown tier error — the tier runner
+// catches those and falls through to Bright Data, turning an operator typo
+// into a silent, pricier reroute. parseInt alone would read '200oops' as 200.
+const SB_PAGE_CREDIT_BUDGET = resolveSbPageCreditBudget(process.env.SB_PAGE_CREDIT_BUDGET, 200);
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -303,6 +318,15 @@ const CONFIG = {
   showFilterSet: new Set((process.env.SHOW_FILTER || '').split(',').map(s => s.trim()).filter(Boolean)),
   retryFailed: process.env.RETRY_FAILED === 'true',
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
+  // BRO-2983: throttles ONLY the public-repo push cadence (data/collection-state/),
+  // decoupled from pushEveryNBatches which still governs the private review-texts
+  // repo checkpoint. Was batch-count-based (every 5 batches), landing ~267
+  // separate "chore: Checkpoint" commits/day on main and starving other jobs'
+  // pushes. See commitChanges() below.
+  mainPushIntervalMs: (() => {
+    const n = parseInt(process.env.MAIN_PUSH_INTERVAL_MIN, 10);
+    return (Number.isFinite(n) && n > 0 ? n : 30) * 60 * 1000;
+  })(),
   outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
   contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
   domainFilter: (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean), // Filter by URL domain(s)
@@ -471,6 +495,7 @@ const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = requ
 const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
@@ -2162,6 +2187,8 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
       projectId: CONFIG.browserbaseProjectId,
       caller: 'collect-review-texts.js',
       purpose: urlDomain ? `paywalled review fetch: ${urlDomain}` : 'paywalled review fetch',
+      host: urlDomain || null,
+      category: 'review-text',
       body: {
         browserSettings: {
           // Enable stealth and CAPTCHA solving
@@ -2351,30 +2378,47 @@ async function fetchWithScrapingBee(url, useStealth = false) {
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } })();
   const needsPremium = SB_PREMIUM_DOMAINS.has(hostname);
 
-  let proxyType, credits, renderJs, waitMs;
+  let proxyType, renderJs, waitMs;
   if (useStealth) {
     proxyType = 'stealth_proxy';
-    credits = 75;
     renderJs = true;
     waitMs = 5000;
   } else if (needsPremium) {
     proxyType = 'premium_proxy';
-    credits = 10;
     renderJs = true;
     waitMs = 5000;
   } else {
     proxyType = 'standard';
-    credits = 1;
     renderJs = false;
     waitMs = 0;  // No wait needed for static HTML
   }
+  // BRO-3057: credits derived from proxyType (the real API param value) via
+  // the shared provider-credits.js table, instead of an independently
+  // maintained literal — a proxyType typo now throws instead of silently
+  // billing the wrong cost.
+  // BRO-3009 S1-T5: the budget comparison itself now runs through
+  // scripts/lib/crt-sb-credit-guard.js, which asserts both sides are finite
+  // before comparing — an unknown proxyType or a malformed
+  // SB_PAGE_CREDIT_BUDGET used to make `spent + credits > budget` evaluate to
+  // false and disable the cap entirely instead of tripping it.
+  const budgetCheck = sbPageBudgetDecision({
+    spentCredits: stats.scrapingBeePageCredits,
+    mode: proxyType,
+    budget: SB_PAGE_CREDIT_BUDGET,
+  });
+  const credits = budgetCheck.credits;
 
   // Per-run budget guard
-  if (stats.scrapingBeePageCredits + credits > SB_PAGE_CREDIT_BUDGET) {
+  if (budgetCheck.exhausted) {
     throw new Error(`SB page credit budget exhausted (${stats.scrapingBeePageCredits}/${SB_PAGE_CREDIT_BUDGET})`);
   }
 
   stats.tier2Attempts++;
+
+  // Guards the catch block below: isBlocked()/insufficient-text throw AFTER a
+  // successful, already-billed API response — the catch's failure recorder
+  // must not also fire for those, or one billed call becomes two ledger rows.
+  let apiCallRecorded = false;
 
   // Forward subscriber cookies via ScrapingBee's header forwarding
   const cookieHeader = buildCookieHeaderForUrl(url);
@@ -2424,6 +2468,15 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     const response = await axios.get('https://app.scrapingbee.com/api/v1/', requestConfig);
 
     stats.scrapingBeePageCredits += credits;
+    apiCallRecorded = true;
+    recordSbCall({
+      url,
+      fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+      success: true,
+      status: response.status,
+      credits,
+      purpose: 'review-text',
+    });
 
     const html = response.data;
 
@@ -2452,6 +2505,16 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || error.message;
+      if (!apiCallRecorded) {
+        recordSbCall({
+          url,
+          fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+          success: false,
+          status,
+          credits: sbBilledCredits(status, credits),
+          purpose: 'review-text',
+        });
+      }
 
       // Same trigger set as scraper.js's _scrapingBeePageExhausted and
       // url-discovery.js's _scrapingBeeSerpExhausted: auth/plan/rate-limit
@@ -2469,6 +2532,16 @@ async function fetchWithScrapingBee(url, useStealth = false) {
       } else {
         throw new Error(`ScrapingBee error (${status}): ${message}`);
       }
+    }
+    if (!apiCallRecorded) {
+      recordSbCall({
+        url,
+        fn: useStealth ? 'stealth' : (needsPremium ? 'premium' : 'page'),
+        success: false,
+        status: 'error',
+        credits: sbBilledCredits('error', credits),
+        purpose: 'review-text',
+      });
     }
     throw error;
   }
@@ -3675,8 +3748,7 @@ function extractFromJsonLd(html) {
     let bestText = '';
     while ((match = ldRegex.exec(html)) !== null) {
       try {
-        const data = JSON.parse(match[1].trim());
-        const items = Array.isArray(data) ? data : data['@graph'] ? data['@graph'] : [data];
+        const items = parseJsonLd(match[1].trim());
         for (const item of items) {
           const body = item.articleBody || item.reviewBody || item.text;
           if (body && typeof body === 'string' && body.length > bestText.length) {
@@ -5367,14 +5439,33 @@ function _pushToRemote(processed) {
   } else {
     console.log(`    ⚠ Checkpoint push failed (will be caught by final workflow commit): ${stderr.split('\n').slice(-3).join(' ')}`);
   }
+  return ok;
 }
 
 /**
  * Commit changes to git (for incremental saving during long runs).
- * Local commits happen every batch (cheap). Remote pushes happen every
- * pushEveryNBatches to reduce git contention with other workflows.
+ *
+ * Local commit happens every batch, but AMENDS the not-yet-pushed commit
+ * instead of creating a new one each time. GH Actions runners are ephemeral —
+ * an unpushed local commit has no crash-safety edge over an uncommitted
+ * change, both vanish with the container — so batching several batches'
+ * worth of data/collection-state/ changes into one commit costs nothing on
+ * that front, while cutting what lands on origin/main once pushed. Before
+ * this, a fresh commit per batch was landing as ~267 separate "chore:
+ * Checkpoint" commits/day on main, starving other jobs' pushes (BRO-2983).
+ *
+ * The public-repo push (this script's only main-branch write) is throttled
+ * to a wall-clock interval (CONFIG.mainPushIntervalMs, default 30min)
+ * instead of a batch count. This is decoupled from the private review-texts
+ * repo checkpoint below, which keeps its existing every-pushEveryNBatches
+ * cadence — that one guards actual scraped review text, the crash-safety-
+ * relevant data; data/collection-state/ is just resume bookkeeping, and
+ * losing up to one throttle interval of it on a crash means some reviews
+ * get reprocessed on resume, not lost.
  */
 let _batchesSinceLastPush = 0;
+let _hasPendingMainCommit = false;
+let _lastMainPushAt = Date.now();
 
 function commitChanges(processed, forcePush = false) {
   const { execSync } = require('child_process');
@@ -5418,24 +5509,42 @@ function commitChanges(processed, forcePush = false) {
       const tierStr = tierInfo.length ? ` [${tierInfo.join(',')}]` : '';
       const failStr = failCount > 0 ? ` (${failCount} failed)` : '';
       const ctFilter = CONFIG.contentTierFilter ? ` (${CONFIG.contentTierFilter})` : '';
+      const msg = `chore: Checkpoint - collected ${processed} review texts${ctFilter}${tierStr}${failStr}`;
 
-      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts${ctFilter}${tierStr}${failStr}"`, {
-        stdio: 'pipe'
-      });
+      if (_hasPendingMainCommit) {
+        execSync(`git commit --amend -m ${JSON.stringify(msg)}`, { stdio: 'pipe' });
+      } else {
+        execSync(`git commit -m ${JSON.stringify(msg)}`, { stdio: 'pipe' });
+        _hasPendingMainCommit = true;
+      }
 
       console.log(`  ✓ Committed checkpoint locally (${processed} reviews)`);
     } else {
       console.log('  (No changes to commit)');
     }
 
-    // Only push to remotes every N batches (or when forced, e.g. final commit)
-    // This reduces git contention — local commits are cheap, pushes cause conflicts
-    _batchesSinceLastPush++;
-    const shouldPush = forcePush || _batchesSinceLastPush >= CONFIG.pushEveryNBatches;
+    // Push to main at most every mainPushIntervalMs (or when forced, e.g. the
+    // final commit) — the amend above means at most one commit reaches
+    // origin/main per push cycle, regardless of how many batches ran since
+    // the last one.
+    const elapsedSinceMainPush = Date.now() - _lastMainPushAt;
+    if (_hasPendingMainCommit && (forcePush || elapsedSinceMainPush >= CONFIG.mainPushIntervalMs)) {
+      // Only clear the pending-commit flag / reset the clock on a CONFIRMED
+      // push. On failure, leave both as-is: the next batch's amend keeps
+      // accumulating on the same still-unpushed commit, and — since
+      // _lastMainPushAt was never bumped — the very next batch retries the
+      // push immediately rather than waiting out a fresh mainPushIntervalMs.
+      if (_pushToRemote(processed)) {
+        _hasPendingMainCommit = false;
+        _lastMainPushAt = Date.now();
+      }
+    }
 
-    if (shouldPush) {
+    // Private repo review-texts checkpoint: separate cadence (every
+    // pushEveryNBatches), unaffected by the main-repo throttle above.
+    _batchesSinceLastPush++;
+    if (forcePush || _batchesSinceLastPush >= CONFIG.pushEveryNBatches) {
       _batchesSinceLastPush = 0;
-      _pushToRemote(processed);
       pushReviewTextsCheckpoint(processed);
     }
 
@@ -5477,6 +5586,21 @@ function pushReviewTextsCheckpoint(processed) {
 
     // Stage all changes
     execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+
+    // BRO-2559: `git add -A` stages a deletion for ANY tracked file this
+    // job's local working copy happens to be missing — regardless of why
+    // (this checkpoint runs mid-collection on whatever subset of shows the
+    // process touched; a file this job never fetched into its own working
+    // tree is indistinguishable to `git add -A` from one someone deleted on
+    // purpose). A hand-flagged wrongProduction/wrongShow verdict living only
+    // in that file is silently discarded the moment this commits — safe
+    // WriteReview never runs, so its disk-level protection never gets a
+    // chance to fire. Reverse any such deletion for a file that still
+    // carries a protected field at HEAD before it can land.
+    const restoredDeletions = protectStagedDeletions(rtDir);
+    if (restoredDeletions.length > 0) {
+      console.log(`  ⚠ Restored ${restoredDeletions.length} file(s) staged for deletion with protected fields (BRO-2559): ${restoredDeletions.slice(0, 5).join(', ')}${restoredDeletions.length > 5 ? '…' : ''}`);
+    }
 
     // Check if there are changes
     try {
@@ -5617,10 +5741,9 @@ function findReviewsToProcess() {
       // further down as `fetchGate`, once `data` (the review file) is loaded —
       // it needs the review's own fetchRetryAfter/fetchDiscoveryAbandoned
       // state and the urlCorrectedRefetch bypass, neither available here.
-      // Skip already processed in this run
-      if (state.processed.includes(reviewId)) continue;
-      // Skip failed unless retry mode
-      if (!CONFIG.retryFailed && state.failed.includes(reviewId)) continue;
+      // Skip already processed/failed in this session (BRO-3024: shared with
+      // the per-attempt guard below so both loops agree on one definition).
+      if (shouldSkipAlreadyAttempted(state, reviewId, CONFIG.retryFailed)) continue;
 
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -6200,6 +6323,7 @@ function clearFailedFetch(reviewId) {
 // PROCESS REVIEW
 // ============================================================================
 
+
 async function processReview(review) {
   console.log(`\n${'━'.repeat(60)}`);
   console.log(`Processing: ${review.outlet} - ${review.critic}`);
@@ -6335,8 +6459,8 @@ async function processReview(review) {
     console.log(`  ✓ SUCCESS via ${result.method} (${result.text.length} chars)`);
 
     // Content quality check - detect garbage/invalid content before saving
-    const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-    const qualityCheck = assessTextQuality(result.text, showTitle);
+    const { showId: qualityShowId, showTitle } = resolveShowIdentity(review.showId);
+    const qualityCheck = assessTextQuality(result.text, qualityShowId, showTitle);
 
     if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
       // Don't save garbage content as fullText - log as failed fetch
@@ -6516,19 +6640,47 @@ async function processReview(review) {
     if (review.incompleteReason === 'wrong_content' && review._urlDiscovered && review.filePath) {
       try {
         const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        delete postData.wrongProduction;
+        // BRO-2828: this recovery answers ONE question — did re-fetching from
+        // the corrected URL produce the right article? A flag set from data
+        // that is not the article body and not the URL is not answered by it,
+        // and deleting such a flag here silently un-excludes the review. The
+        // live case was the anticipatory pre-opening gate, stamped moments
+        // earlier in this same pass from publishDate vs openingDate, wiped by
+        // a cosmetic /comment-page-1/ suffix strip on the same article.
+        const preserve = shouldPreserveExclusionFlagsOnUrlRecovery(postData);
+        if (!preserve.wrongProduction) {
+          delete postData.wrongProduction;
+          delete postData.wrongProductionReason;
+        }
         delete postData.wrongShow;
-        delete postData.wrongProductionReason;
         delete postData.wrongShowReason;
         delete postData.showNotMentioned;
         delete postData.contentMismatchNote;
+        // incompleteReason/incompleteDetail/contentTier are cleared even when
+        // the flag is preserved, and that is deliberate. Keeping
+        // incompleteReason='wrong_content' would re-select this file on EVERY
+        // targeted INCOMPLETE_REASON_FILTER=wrong_content drain (the filter
+        // above matches on exactly that value), re-fetching it forever at real
+        // scraper cost with no possible progress: a publishDate-vs-openingDate
+        // verdict cannot be changed by fetching the page again. Clearing them
+        // leaves the file skipped by the default pass via the isWrongContent
+        // guard above — which is what "correctly excluded" is supposed to look
+        // like, not a stranding. The clear path for a preserved flag is the
+        // rebuild's anticipatory auto-clear, which re-derives from shows.json
+        // and needs no re-fetch at all. (Codex adversarial review caught this;
+        // an earlier reviewer had argued the opposite and was wrong.)
         delete postData.incompleteReason;
         delete postData.incompleteDetail;
         if (postData.contentTier === 'invalid' || postData.contentTier === 'needs-rescrape') {
           delete postData.contentTier;
         }
+        if (preserve.wrongProduction) {
+          postData.wrongProductionPreservedOnUrlRecoveryAt = new Date().toISOString();
+        }
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
-        console.log(`    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
+        console.log(preserve.wrongProduction
+          ? `    ✓ wrong_content recovered — wrongProduction (${postData.wrongProductionReason}) PRESERVED: not a content verdict, re-fetch is no evidence against it`
+          : `    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
       } catch (e) {
         // Recovery cleanup failed — preserve original state. Log so we know why next-cycle still skips.
         console.log(`    ⚠ wrong_content recovery cleanup failed (${e.message}) — file state preserved`);
@@ -6595,8 +6747,8 @@ async function processReview(review) {
           // Check for garbage content BEFORE writing URL to file
           // (prevents cost leak: if we write the URL first and content is garbage,
           // future runs would re-discover the same URL and waste SERP credits)
-          const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-          const qualityCheck = assessTextQuality(retryResult.text, showTitle);
+          const { showId: qualityShowId, showTitle } = resolveShowIdentity(review.showId);
+          const qualityCheck = assessTextQuality(retryResult.text, qualityShowId, showTitle);
           if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
             console.log(`  ✗ GARBAGE CONTENT from discovered URL: ${qualityCheck.issues[0]}`);
             review.url = originalUrl; // restore before failing
@@ -7036,6 +7188,16 @@ async function main() {
       }
 
       const review = reviews[i];
+
+      // BRO-3024: findReviewsToProcess() only excludes reviews already
+      // failed/processed as of when it built the queue — a defensive re-check
+      // here catches anything recorded as attempted since then (this loop is
+      // the only place that pushes to state.failed/state.processed), so a
+      // paid fetch is never repeated for the same reviewId within one run.
+      if (shouldSkipAlreadyAttempted(state, review.reviewId, CONFIG.retryFailed)) {
+        console.log(`  ⏭ Skipping ${review.reviewId} — already attempted this session`);
+        continue;
+      }
 
       // Hard timeout per review - prevents hung Playwright from killing entire run
       let result;

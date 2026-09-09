@@ -84,8 +84,68 @@ if echo "$CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/
   run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js" || FAIL=1
 fi
 
+# Direct cmux spawns with no socket credential (BRO-3001). Push-time, not
+# CI-only, on purpose: the two sites this caught were merged to main and ran
+# for hours before anyone looked, and the failure mode is silent — the call is
+# simply denied and the caller degrades. Same trigger as unbounded-fetch since
+# a new spawn site can appear in any script.
+#
+# --scope-stdin for the same reason lint-write-routing uses it (see the block
+# below): the main checkout is shared by 20+ concurrent sessions, so an
+# unscoped scan here blocks whoever pushes next on someone else's violation.
+# Out-of-scope violations are still printed, just not fatal. CI's own call in
+# test.yml passes no flag and scans the whole tree, which is right there.
+# LIST_ONLY must skip the pipe entirely — same reason as orphan-tests below:
+# run_audit returns before reading stdin, leaving a writer with no reader.
+if echo "$CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts)$"; then
+  if [ "$LIST_ONLY" = "1" ]; then
+    run_audit "cmux-spawn-credential" "scripts/audit-cmux-spawn-credential.js" --scope-stdin || FAIL=1
+  else
+    printf '%s\n' "$CHANGED_FILES" | run_audit "cmux-spawn-credential" "scripts/audit-cmux-spawn-credential.js" --scope-stdin || FAIL=1
+  fi
+fi
+
+# Workflow-subject guards (BRO-2785). tests/unit/workflow-line-length.test.mjs
+# (500-char cap on .github/workflows/*.yml lines) and
+# scripts/audit-workflow-concurrency.js (cancel-in-progress guard) both assert
+# properties of workflow file CONTENT but were never wired into a push-time
+# gate — only CI (test.yml) ran them, and Lint Workflows' actionlint doesn't
+# cover either check. Reproduced live 2026-09-04 landing BRO-2771: a workflow
+# edit pushed a hint string to 504 chars, this script's caller (merge-worktree-
+# to-main.sh) reported success, and the 500-char cap failed in CI on main
+# minutes later. Both call sites of THIS file (scripts/hooks/pre-push and
+# scripts/merge-worktree-to-main.sh) get the fix for free with zero changes to
+# either caller — that's the whole point of this shared runner (see header).
+# actionlint itself runs via the run-actionlint-if-present.js wrapper (skips
+# rather than blocks when the binary isn't on PATH — CI installs it fresh
+# every run; a local checkout may not have it).
+#
+# scripts/audit-workflow-concurrency.js already also runs from pre-push's own
+# separate inline "Node workflow audits" block — the small (<1s) duplicate run
+# on a plain `git push` is accepted rather than touching that unrelated block
+# in this shared-infra change (CLAUDE.md rule 18 scope discipline).
+if echo "$CHANGED_FILES" | grep -qE "^\.github/workflows/.*\.ya?ml$|^tests/unit/workflow-line-length\.test\.mjs$|^scripts/lib/workflow-line-length\.js$|^scripts/audit-workflow-concurrency\.js$|^scripts/lib/ci-cancellation-guard\.js$|^scripts/lib/run-actionlint-if-present\.js$"; then
+  run_audit "workflow-line-length" "tests/unit/workflow-line-length.test.mjs" || FAIL=1
+  run_audit "workflow-concurrency" "scripts/audit-workflow-concurrency.js" || FAIL=1
+  run_audit "workflow-actionlint" "scripts/lib/run-actionlint-if-present.js" || FAIL=1
+fi
+
 # Orphan/unregistered test detection.
-if echo "$CHANGED_FILES" | grep -qE "^tests/unit/.*\.test\.(mjs|ts|js)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
+#
+# BRO-2751: this pattern was a THIRD hand-maintained copy of the test-file
+# extension list, and it had already drifted — `(mjs|ts|js)` while
+# audit-orphan-tests.js scans `(mjs|ts|js|cjs|sh)` — and was scoped to
+# ^tests/unit/ while that audit also scans scripts/ top level. A push adding
+# scripts/foo.test.sh or tests/unit/foo.test.cjs therefore skipped this local
+# gate entirely: exactly the drift that let two bash tests run in zero CI jobs.
+# CI still runs the audit unconditionally (test.yml, "Audit — no orphan unit
+# tests"), so this was a local-gate hole, not a coverage hole — but the local
+# gate exists to catch it BEFORE the push. Extensions and both scanned roots
+# now match audit-orphan-tests.js. The canonical list lives in
+# scripts/lib/test-manifest.js (TEST_FILE_EXTENSIONS); this file is shell, so
+# it cannot require() it — scripts/lib/colocated-test-ci-coverage.test.mjs
+# asserts the two stay in sync.
+if echo "$CHANGED_FILES" | grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js" || FAIL=1
   # --scope-stdin (card #1488): only orphans among THIS push's changed files
   # are blocking; pre-existing orphans elsewhere print informational and

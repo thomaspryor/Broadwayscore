@@ -167,3 +167,45 @@ test('wrongShowOnly: still reclassifies a stale contentTier:"invalid"', () => {
   assert.equal(data.contentTier, 'complete');
   assert.equal(data.incompleteReason, undefined);
 });
+
+// BRO-2740: this helper is the canonical clear for 9+ callers, so leaving the
+// detector breadcrumbs behind made every one of them an orphan producer.
+test('BRO-2740: full clear removes wrongProduction provenance', () => {
+  const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance.js');
+  const data = {
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    wrongProductionReasonAt: '2026-07-14T02:11:03.000Z',
+    wrongProductionDetail: 'Published 9 days before opening night',
+    wrongProductionDetectedAt: '2026-07-14T02:11:03.000Z',
+    wrongProductionDetectedBy: 'ingest-anticipatory-gate',
+    wrongProductionProvenance: 'date',
+    anticipatoryGateOutletCategory: 'broadsheet',
+    anticipatoryGateDaysBeforeOpening: 9,
+    _wrongProductionDetectedBy: 'cleanup-dedup-comprehensive',
+    _wrongProductionReason: 'URL matches other-show-2019 (year-based)',
+  };
+  clearWrongProductionFlags(data, { source: 'test-script.js' });
+  assert.equal(data.wrongProduction, undefined);
+  for (const f of WRONG_PRODUCTION_PROVENANCE_FIELDS) {
+    assert.equal(data[f], undefined, `${f} must not outlive the flag it explains`);
+  }
+  assert.equal(data.wrongProductionOverride, true, 'the recovery breadcrumb still stands');
+});
+
+test('BRO-2740: wrongShowOnly leaves wrongProduction provenance intact', () => {
+  // That mode leaves the flag standing, so its provenance must stand too —
+  // otherwise the helper strands the mirror-image orphan (a flag nothing explains).
+  const data = {
+    wrongProduction: true,
+    wrongProductionDetail: 'Cleveland tryout, not the Broadway run',
+    wrongProductionDetectedBy: 'auto-triage-cross-production',
+    wrongShow: true,
+    wrongShowReason: 'venue mismatch',
+  };
+  clearWrongProductionFlags(data, { source: 'test-script.js', wrongShowOnly: true });
+  assert.equal(data.wrongProduction, true);
+  assert.equal(data.wrongProductionDetail, 'Cleveland tryout, not the Broadway run');
+  assert.equal(data.wrongProductionDetectedBy, 'auto-triage-cross-production');
+  assert.equal(data.wrongShow, undefined);
+});

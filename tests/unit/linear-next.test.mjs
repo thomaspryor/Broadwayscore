@@ -5,7 +5,31 @@
 // require() the real modules rather than re-deriving their logic here, so a
 // production change to either file fails this test instead of drifting
 // silently past it.
-import { test } from 'node:test';
+import { test, afterEach } from 'node:test';
+import { guardProcessExit } from '../helpers/process-exit-guard.mjs';
+
+// These tests drive main() down its REFUSAL paths, and the code under test
+// signals refusal with `process.exitCode = 1` (scripts/linear-next.js:774,783,793;
+// scripts/bsc-next.js:1416,1425,1439,1441) rather than by calling process.exit.
+// The per-test `finally` blocks below restore process.exit and console.error but
+// cannot restore that, because it is set on the TEST RUNNER's own process.
+//
+// node --test then reports the whole FILE as failed with exitCode 1 while every
+// subtest passes — a file-level `not ok` with failureType 'testCodeFailure' and
+// no named failing subtest. That is precisely the signature that made main's
+// Unit Tests job red while the same files passed locally: locally the refusal
+// path that sets it does not always run.
+//
+// Reset after every test. Proven: a single passing test that leaks
+// process.exitCode = 1 makes `node --test` exit 1 on the file; with this hook it
+// exits 0.
+afterEach(() => {
+  process.exitCode = 0;
+});
+
+// BRO-2647: turn any unstubbed process.exit into a NAMED failing subtest
+// instead of a decapitated TAP stream. See tests/helpers/process-exit-guard.mjs.
+guardProcessExit();
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -275,10 +299,24 @@ test('buildLinearSeed: names the issue, links it, and instructs comment + In Rev
   assert.match(seed, /Full description text here\./);
   // The load-bearing instruction the whole task exists to encode: report back
   // ON THE ISSUE, not just in the ledger.
-  assert.match(seed, /comment on this Linear issue \(BRO-123\)/);
+  //
+  // BRO-2543 changed HOW: the seed used to say "commentCreate ... issueUpdate",
+  // i.e. hand-roll the GraphQL call. That produced outcome comments in whatever
+  // prose the worker chose, so the canonical `**Session report (<status>)**`
+  // header existed only when the machine-local linear-issue-required-stop.sh
+  // Stop hook happened to force linear-session.js — never on a cloud session,
+  // and never for a worker killed at its runner timeout. reportedOutcomeGuard
+  // has to RECOGNISE these comments to stop a duplicate dispatch, so the seed
+  // now names the canonical reporter. Pinned here because a well-meaning
+  // rewrite back to "just post a comment" would silently re-open BRO-2506's
+  // wasted-dispatch hole with every test still green.
+  assert.match(seed, /node scripts\/linear-session\.js report --issue=BRO-123/);
+  assert.match(seed, /--status=<done\|in-review\|paused\|blocked>/);
+  // --status=blocked must stay described as leaving the state alone: that is
+  // what keeps a genuinely stalled issue re-dispatchable (reportedOutcomeGuard
+  // deliberately ignores blocked/paused reports).
+  assert.match(seed, /--status=blocked/);
   assert.match(seed, /"In Review"/);
-  assert.match(seed, /commentCreate/);
-  assert.match(seed, /issueUpdate/);
 });
 
 test('buildLinearSeed: falls back to a placeholder when description is empty', () => {
@@ -468,6 +506,325 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
   assert.equal(res.status, 1, `expected exit 1 (duplicate-tab refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
   assert.match(res.stderr, /a live workspace already matches/, 'must report the duplicate-tab refusal, not some other gate');
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once the duplicate-tab guard refuses — this is the regression the guard-parity fix closes');
+});
+
+// -- reportedOutcomeGuard wiring, BRO-2543 -----------------------------------
+//
+// This is a WIRING test on purpose, and it is the only kind that can catch
+// this ticket's own bug class. A pure-predicate test of reportedOutcomeGuard
+// passes identically whether linear-next.js calls it as
+// `ld.reportedOutcomeGuard(issue, args)` or hides it behind
+// `if (!args.force) { ... }` — and "the guard exists but can never fire" is
+// literally BRO-2488's root cause (no query ever fetched `project`, so no
+// predicate keyed on it could refuse anything). So: drive the real main()
+// in a real subprocess with the real 02:15:05Z payload and the real
+// --force, and assert nothing launches.
+test('reportedOutcomeGuard wiring: --force does NOT dispatch an issue whose outstanding dispatch already reported in-review (BRO-2506 incident)', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    // BRO-2506 exactly as it stood at 02:15:05Z: In Review, the 00:43
+    // dispatch comment, the 01:31 session report. Comments newest-first,
+    // the order Linear's API really returns them in.
+    const issue = {
+      id: 'issue-uuid-2506', identifier: 'BRO-9506',
+      title: 'Reported-outcome guard regression fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9506/reported-outcome-guard-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'in-review-1', name: 'In Review', type: 'started' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: '**Session report (in-review)**\\n\\nFix landed on origin/main.', createdAt: '2026-08-31T01:31:24.775Z' },
+        { body: 'Dispatched 0e0f245d to workspace:138 at 2026-08-31T00:43:00.598Z (cmux)', createdAt: '2026-08-31T00:43:00.704Z' },
+      ] },
+    };
+    main(['--id', issue.identifier, '--model', 'opus', '--force'], {
+      getIssue: async () => issue,
+      launchCmux: () => { console.error('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:36' }; },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1 (reported-outcome refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /ALREADY reported back/, 'must report the reported-outcome refusal, not some other gate');
+  assert.match(res.stderr, /session report \(in-review\)/);
+  // The regression that matters: --force must not reach a launch.
+  assert.doesNotMatch(res.stderr, /LAUNCHCMUX_WAS_CALLED/, 'launchCmux must NEVER be called — this is BRO-2506 recurring');
+  assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called — this is BRO-2506 recurring');
+});
+
+// -- --allow-automation-parked wiring, BRO-3060 ------------------------------
+//
+// scripts/linear-drain-parked.js/digest-autofix.js/autofix-canary.js each
+// dispatch issues THEY themselves parked (via fileCard's --park), and were
+// passing --allow-autofix-filed to waive linear-dispatch.js's
+// autofixFiledIssueGuard — but PARKED_SENTINEL is a SECOND, independent
+// blocker on the exact same description, and nothing waived it. Every real
+// dispatch these three pipelines ever attempted was refused inside the
+// detached child, silently (the caller journals "attempted" regardless of
+// outcome) — discovered live 2026-09-08 running scripts/linear-drain-
+// parked.js for real: all 3 candidates were refused. Fixture description is
+// the real BRO-327 shape (owner-alert-router's park reason, verbatim).
+test('--allow-automation-parked wiring: a no-flag headless dispatch of an automation-parked issue is refused, real subprocess', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-automation-parked', identifier: 'BRO-9327',
+      title: 'Automation-parked regression fixture issue',
+      description: 'PARKED: Auto-filed by owner-alert-router (condition: fixture); parked for triage. The Linear-side drain will dispatch machine-verifiable parked issues.\\n\\n## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9327/automation-parked-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    main(['--id', issue.identifier, '--headless'], {
+      getIssue: async () => issue,
+      launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1 (PARKED_SENTINEL refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /PARKED_SENTINEL/, 'must report the parked-sentinel refusal');
+  assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once PARKED_SENTINEL refuses');
+});
+
+test('--allow-automation-parked wiring: the SAME issue dispatches once the flag is passed (real subprocess)', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-automation-parked-2', identifier: 'BRO-9328',
+      title: 'Automation-parked regression fixture issue',
+      description: 'PARKED: Auto-filed by owner-alert-router (condition: fixture); parked for triage. The Linear-side drain will dispatch machine-verifiable parked issues.\\n\\n## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9328/automation-parked-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    main(['--id', issue.identifier, '--headless', '--allow-automation-parked'], {
+      getIssue: async () => issue,
+      launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      linear: {
+        createComment: async () => {},
+        getTeam: async () => ({ states: [] }),
+        getIssue: async () => null,
+        updateIssue: async () => {},
+        TEAM_KEY: 'BRO',
+      },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.match(res.stderr, /RUNJOB_WAS_CALLED/, `--allow-automation-parked must let the dispatch reach runJob. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.doesNotMatch(res.stderr, /PARKED_SENTINEL/, 'the sentinel must not still be refusing once the flag is passed');
+});
+
+// Ship-check finding (Claude + Codex adversarial review, BRO-3060): the flag
+// must NOT be a blind trust — passing it on a GENUINELY owner-parked issue
+// (no automation marker in the description) must still refuse, or an
+// operator (or a future careless caller) could use --allow-automation-parked
+// as a generic unpark, exactly the mass-unpark the sentinel exists to
+// prevent. This is the regression test for that re-verification.
+test('--allow-automation-parked wiring: does NOT dispatch a genuinely owner-parked issue even with the flag (real subprocess)', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-owner-parked', identifier: 'BRO-9329',
+      title: 'Genuinely owner-parked regression fixture issue',
+      description: 'PARKED: card owns this file and is In Progress in a live parallel session\\n\\n## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9329/owner-parked-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    main(['--id', issue.identifier, '--headless', '--allow-automation-parked'], {
+      getIssue: async () => issue,
+      launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1 (PARKED_SENTINEL still refuses a real owner park), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /PARKED_SENTINEL/, 'must still report the parked-sentinel refusal for a genuine owner park');
+  assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, '--allow-automation-parked must NOT act as a generic unpark for a genuinely owner-parked issue');
+});
+
+test('reportedOutcomeGuard wiring: it refuses BEFORE startedStateGuard, so the message never says "re-run with --force"', () => {
+  // Ordering matters for behaviour, not just prose: startedStateGuard's own
+  // remedy line is "Re-run with --force if you know this is a stalled issue
+  // that needs re-dispatch" — which, on THIS issue, is the exact instruction
+  // that wasted a dispatch. On a no-flag run both guards match, so whichever
+  // runs first owns the operator's next action.
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-2506b', identifier: 'BRO-9507',
+      title: 'Reported-outcome ordering fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9507/reported-outcome-ordering-fixture-issue',
+      priority: 2,
+      state: { id: 'in-review-1', name: 'In Review', type: 'started' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: '**Session report (done)**\\n\\nAll finished.', createdAt: '2026-08-31T01:31:24.775Z' },
+        { body: 'Dispatched 0e0f245d to workspace:138 at 2026-08-31T00:43:00.598Z (cmux)', createdAt: '2026-08-31T00:43:00.704Z' },
+      ] },
+    };
+    main(['--id', issue.identifier], {
+      getIssue: async () => issue,
+      launchCmux: () => { console.error('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:36' }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [], isDoneTitle: () => false,
+      claudeAliveIn: () => true, terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [], appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [], loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true, releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /ALREADY reported back/, 'reportedOutcomeGuard must win the race with startedStateGuard');
+  assert.doesNotMatch(res.stderr, /is already in a started state/, 'startedStateGuard must not be the message the operator reads here');
+});
+
+test('reportedOutcomeGuard wiring: --allow-reported-work "<reason>" lets a genuine re-dispatch through', () => {
+  // The escape hatch has to actually work end-to-end, or an operator facing a
+  // truly-stalled issue is wedged. Proven by reaching a LATER gate (the
+  // kill switch) rather than this one.
+  //
+  // Both flags, because these are two independent guards: --force clears
+  // startedStateGuard ("something has hands on this"), --allow-reported-work
+  // clears this one ("...and it already reported back"). This pair IS the
+  // documented recovery command, and the refusal text names it verbatim —
+  // asserted below so the message can never drift out of sync with what
+  // actually works.
+  const script = `
+    process.env.LINEAR_NEXT_DISABLED = '1';
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-2506c', identifier: 'BRO-9508',
+      title: 'Reported-outcome bypass fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9508/reported-outcome-bypass-fixture-issue',
+      priority: 2,
+      state: { id: 'in-review-1', name: 'In Review', type: 'started' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: '**Session report (in-review)**\\n\\nClaimed done but never landed.', createdAt: '2026-08-31T01:31:24.775Z' },
+        { body: 'Dispatched 0e0f245d to workspace:138 at 2026-08-31T00:43:00.598Z (cmux)', createdAt: '2026-08-31T00:43:00.704Z' },
+      ] },
+    };
+    main(['--id', issue.identifier, '--force', '--allow-reported-work', 'checked main, the commit is not there'], {
+      getIssue: async () => issue,
+      launchCmux: () => { console.error('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:36' }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [], isDoneTitle: () => false,
+      claudeAliveIn: () => true, terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [], appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [], loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true, releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.doesNotMatch(res.stderr, /ALREADY reported back/, 'a reasoned bypass must clear reportedOutcomeGuard');
+  assert.match(res.stderr, /LINEAR_NEXT_DISABLED/, 'should reach the later kill-switch gate, proving it got past this guard');
+});
+
+test('parseArgs: --flag=value form is honoured, and --force=0/false/"" cannot bypass anything (BRO-2576)', () => {
+  // BRO-2543 first "fixed" the `--k=v` form in passing and the pre-ship
+  // adversarial review caught that it made things WORSE: naively splitting on
+  // `=` turns `--force=0` into the truthy string "0", so a flag an operator
+  // wrote expressly to DISABLE forcing would instead bypass every guard
+  // --force gates. Reverted there. BRO-2576 fixes it properly by deciding the
+  // `=0`/`=false`/`=` "off" semantics up front (coerceFlagValue) before ever
+  // splitting on `=`, so `--model=opus` works AND `--force=0` stays inert.
+  const a = parseArgs(['--force=0']);
+  assert.equal(a.force, false, '--force=0 must coerce to false, not the truthy string "0"');
+  assert.equal(a['force=0'], undefined);
+
+  const a2 = parseArgs(['--force=false']);
+  assert.equal(a2.force, false);
+
+  const a3 = parseArgs(['--force=']);
+  assert.equal(a3.force, false, 'a bare trailing = is also "off", not the truthy empty string');
+
+  // Every guard in linear-next.js reads args.force via truthiness
+  // (`!args.force`, `args.force || ...`), so `false` behaves exactly like
+  // "flag never passed" — no guard needs to know about the `=` form.
+  assert.ok(!a.force && !a2.force && !a3.force);
+
+  // The space form still works, unchanged.
+  const b = parseArgs(['--id', 'BRO-1', '--force', '--allow-reported-work', 'checked main, not there']);
+  assert.equal(b.id, 'BRO-1');
+  assert.equal(b.force, true);
+  assert.equal(b['allow-reported-work'], 'checked main, not there');
+
+  // And the `=` form now genuinely carries a value-flag's payload.
+  const c = parseArgs(['--allow-reported-work=some reason here', '--id=BRO-1', '--model=opus']);
+  assert.equal(c['allow-reported-work'], 'some reason here');
+  assert.equal(c.id, 'BRO-1');
+  assert.equal(c.model, 'opus');
+
+  // Only the first `=` splits the key from the value.
+  assert.equal(parseArgs(['--note=a=b']).note, 'a=b');
+
+  // Case-insensitive: an operator typing --force=FALSE means the same thing
+  // as --force=false. A pre-ship review of this exact commit caught that
+  // matching only the lowercase literal would leave --force=FALSE (or
+  // =False, =0 has no case) as the truthy string "FALSE" — reopening the
+  // BRO-2543 hazard under different casing.
+  assert.equal(parseArgs(['--force=FALSE']).force, false);
+  assert.equal(parseArgs(['--force=False']).force, false);
 });
 
 // ── mirror-staleness dispatch claim, task #1898 (parity with bsc-next.js's
@@ -852,6 +1209,174 @@ test('main(): an ordinary backlog issue is unaffected by the auto-filed guard (B
     console.log = origLog;
   }
   assert.match(logs.join('\n'), /would launch/);
+});
+
+// ── started-state dispatch guard, end-to-end (BRO-2518) ────────────────────
+// The third clause of the same documented funnel line BRO-2488/BRO-2499
+// closed ("Backlog/Todo, not `· Marketing`, not BSC Daily/CANARY").
+// checkTerminalStateGuard only ever refused TERMINAL types; nothing refused
+// a STARTED one (In Progress / In Review) — these drive the real main() to
+// prove the guard is actually wired into the --id path, the same way the
+// BRO-2488/BRO-2499 tests above proved theirs.
+function makeStartedIssue(stateName = 'In Progress') {
+  return {
+    id: 'issue-uuid-2518', identifier: 'BRO-2518', title: 'Some in-flight issue',
+    description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-2518/some-in-flight-issue',
+    priority: 2,
+    state: { id: 'state-1', name: stateName, type: 'started' },
+    labels: { nodes: [] }, comments: { nodes: [] },
+  };
+}
+
+test('main(): refuses to dispatch an In Progress issue (BRO-2518)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-2518'], {
+      getIssue: async () => makeStartedIssue('In Progress'),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a started issue'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.match(errors.join('\n'), /already in a started state \("In Progress"\)/);
+});
+
+test('main(): refuses to dispatch an In Review issue too (BRO-2518)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  console.error = () => {};
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-2518'], {
+      getIssue: async () => makeStartedIssue('In Review'),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+});
+
+test('main(): --force overrides the started-state refusal and proceeds to launch (BRO-2518)', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-2518', '--force'], {
+      getIssue: async () => makeStartedIssue('In Progress'),
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      ...noopLinearDeps(),
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(launched, true);
+});
+
+test('main(): a non-started (Backlog) issue is unaffected by the guard (dry-run reaches the seed print) (BRO-2518)', async () => {
+  const origLog = console.log;
+  const logs = [];
+  console.log = (msg) => logs.push(msg);
+  try {
+    await main(['--id', 'BRO-2518', '--dry-run'], {
+      getIssue: async () => ({ ...makeStartedIssue(), state: { id: 'state-1', name: 'Backlog', type: 'backlog' } }),
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.match(logs.join('\n'), /would launch/);
+});
+
+// The load-bearing half of the acceptance criteria: the three machine
+// dispatch paths (digest-autofix.js, autofix-canary.js,
+// linear-drain-parked.js) must still dispatch their common case — a
+// freshly-filed (backlog-type) or explicitly backlog/unstarted-filtered
+// issue (see startedStateGuard's header in linear-dispatch.js) — this proves
+// the auto-filed-pipeline path (BRO-2499's own load-bearing test above)
+// still launches now that the started-state guard sits right next to it in
+// the chain.
+test('main(): --allow-autofix-filed still dispatches a freshly-filed (backlog) auto-filed issue with the started-state guard in place (BRO-2518 regression)', async () => {
+  const origError = console.error;
+  console.error = () => {};
+  let launched = false;
+  try {
+    await main(['--id', 'BRO-9499', '--allow-autofix-filed'], {
+      getIssue: async () => makeAutofixFiledIssue(),
+      launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
+      cmuxAvailable: () => false,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      ...noopLinearDeps(),
+    });
+  } finally {
+    console.error = origError;
+  }
+  assert.equal(launched, true);
+});
+
+// Test gap closed (independent code-review finding on BRO-2518): the common
+// case above is NOT the only one. digest-autofix.js's fileCard() dedups by
+// exact-title match against LIVE Linear state — a reattach hit can land on
+// an issue a PRIOR dispatch already moved to a started state (cross-host, or
+// a stalled prior attempt), and runAutofix's dispatch-loop skip-list
+// ('in-progress'/'card-failed'/'acknowledged'/'decision') does not include
+// the 'card-filed' state a reattached row carries, so it reaches
+// dispatchDetached the same as a freshly-filed row. Refusing here is the
+// CORRECT outcome (this guard closing exactly that class of stray
+// double-dispatch onto still-active work) — proving it explicitly, rather
+// than assuming it, since a --allow-autofix-filed issue is exactly the
+// population where a silent regression (dispatching a duplicate onto active
+// work) would have been easy to miss.
+test('main(): --allow-autofix-filed does NOT bypass the started-state guard — a reattached auto-filed issue already In Progress is still refused (BRO-2518)', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const origError = console.error;
+  const errors = [];
+  console.error = (msg) => errors.push(msg);
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-9499', '--allow-autofix-filed'], {
+      getIssue: async () => ({ ...makeAutofixFiledIssue(), state: { id: 'state-1', name: 'In Progress', type: 'started' } }),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a started issue'); },
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+    }), /EXIT/);
+  } finally {
+    process.exit = origExit;
+    console.error = origError;
+  }
+  assert.equal(exitCode, 1);
+  assert.match(errors.join('\n'), /already in a started state \("In Progress"\)/);
 });
 
 // bsc-next.js's own completedLaunchGuard (the Notion-mirror counterpart)

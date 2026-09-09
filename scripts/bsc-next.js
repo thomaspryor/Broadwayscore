@@ -24,7 +24,7 @@ const path = require('path');
 const os = require('os');
 const { execFileSync, spawnSync } = require('child_process');
 
-// Hardcoded to the main checkout, not __dirname-relative — deliberate, same
+// Resolved to the main checkout, not __dirname-relative — deliberate, same
 // reasoning as QUEUE_PATH below: a dispatch (and everything it shells out to,
 // including `node scripts/notion-brain.js get <id>` inside fetchCardOnce)
 // must always run vetted/merged code, never an in-progress worktree's edits.
@@ -34,10 +34,29 @@ const { execFileSync, spawnSync } = require('child_process');
 // fix that only exists in the worktree will NOT take effect for such a call.
 // Merge to main first, or stick to --dry-run/--print-prompt for worktree-side
 // testing of anything this constant reaches.
-const REPO = '/Users/tompryor/Broadwayscore';
+//
+// BRO-2668: routed through resolveCanonicalRepoRoot() (dispatch-guards.js) —
+// BRO-2647 fixed only the two resolvePathCheck call sites that used to read
+// this literal directly; every other REPO use (DISPATCH_CLAIM_DIR,
+// SUCCESSION_LOCK_DIR, QUEUE_PATH, subprocess cwd, ...) was still resolving
+// the raw hardcoded path, reproducing BRO-2647's same CI-only failure mode
+// for any of THEM. resolveCanonicalRepoRoot() is a no-op on the dev machine
+// (returns this literal unchanged whenever it exists on disk, which it
+// always does there, worktree or not) — byte-identical here, so cross-session
+// dispatch-claim/succession-lock coordination is unaffected. Aliased import
+// (not the `resolveCanonicalRepoRoot` name used by the guard destructure
+// below) to avoid a duplicate top-level binding for the same identifier.
+// Called eagerly here, unlike resolveCanonicalRepoRoot()'s own header
+// ("call this lazily... so --force/--dry-run/--print-prompt still skip the
+// fs I/O") — that convention is about the ternary below skipping I/O whose
+// result would be discarded; REPO itself is needed unconditionally by
+// DISPATCH_CLAIM_DIR/SUCCESSION_LOCK_DIR/QUEUE_PATH/subprocess cwd regardless
+// of any flag, so deferring its own single fs.existsSync() stat buys nothing.
+const { resolveCanonicalRepoRoot: resolveDispatchRepoRoot } = require('./lib/dispatch-guards.js');
+const REPO = resolveDispatchRepoRoot('/Users/tompryor/Broadwayscore', __dirname);
 const cmuxws = require('./lib/cmux-workspaces.js');
 const cardDrift = require('./lib/dispatch-card-drift.js');
-const { launchCmuxSession } = require('./lib/cmux-launch.js');
+const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
 const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
@@ -179,7 +198,7 @@ const {
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
-  dispatchClaimGuard,
+  dispatchClaimGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
 } = require('./lib/dispatch-guards.js');
 // Shared atomic per-key claim primitive (task #1896) — also backs
 // acquireSuccessionLock/releaseSuccessionLock below. See its own header for
@@ -441,6 +460,97 @@ function buildSuccessionSeed(task, project, model, depth, cap, handoffText) {
   ].filter(v => v !== null).join('\n');
 }
 
+// Card #1938: after a succession successor is confirmed running, the
+// OUTGOING predecessor closes its OWN workspace as its final act — never
+// guessing another tab's ref, only ever the caller's own known
+// CMUX_WORKSPACE_ID. Verified live (second-opinion review, 2026-09-07):
+// every cmux-launched session's environment carries CMUX_WORKSPACE_ID, and
+// `cmux workspace close` accepts a UUID directly (its own --help: "a UUID,
+// a short ref... or an index"). This is the root-cause fix for the incident
+// that motivated crown-duplicate-detector.js: without it, a Crown
+// succession hand-off leaves its predecessor open forever — Crown tabs are
+// deliberately exempt from every OTHER close path (prune-closeable.js's
+// isCrownTab) — and 55 of them piled up running concurrently on the bare
+// checkout (323% CPU, 22.8GB RAM) before anyone noticed.
+//
+// Pure decision (CLAUDE.md rule 15): mirrors pruneDone's "never close the
+// selected tab" invariant — the owner may be reading THIS session's final
+// handoff summary the instant it posts, and the successor's own opening
+// message repeats the handoff brief in full, so deferring one tick costs
+// nothing real.
+function shouldSelfCloseAfterSuccession({ workspaceId, selected, disabled }) {
+  if (disabled) return false;
+  if (!workspaceId) return false; // not running inside a cmux-launched session (bare CLI, test harness, etc.)
+  if (selected) return false;
+  return true;
+}
+
+// Side-effecting wrapper. Any failure here (env var absent, lookup error,
+// close error) is swallowed and logged, never thrown or surfaced as a
+// dispatch failure: this only ever runs AFTER the successor is already
+// confirmed launched, so a failure to self-close must never be mistaken for
+// a failure of the succession itself. Worst case on any error: the
+// predecessor tab is left open exactly like it always was before this fix —
+// which crown-duplicate-detector.js's report-only sweep now catches instead
+// of letting it silently reaccumulate. Kill switch (adversarial review,
+// 2026-09-07): SUCCESSION_SELF_CLOSE_DISABLED=1 only stops NEW invocations of
+// this process — it does not retrofit an already-running session's
+// inherited environment, same limitation every other env-var kill switch in
+// this codebase has (NO_PAYLOAD_REAPER_DISABLED, ZOMBIE_TAB_SWEEP_DISABLED).
+//
+// Fail-safe requirement (adversarial review, 2026-09-07 — two independent
+// reviewers caught this): if the fresh listing does NOT contain this exact
+// workspace id, that is "cannot confirm state," not "confirmed not
+// selected." The prior version defaulted `selected` to false on a miss,
+// which is fail-UNSAFE — the opposite of this codebase's checkLiveness
+// convention ("uncertainty must never resolve to dead/closeable"). A miss
+// here (id lookup bug, schema drift in `cmux workspace list --json`, a
+// recycled ref) must abort, never proceed to close.
+function selfCloseAfterSuccession(deps = {}) {
+  const { listWorkspacesWithCwd: listFn = cmuxws.listWorkspacesWithCwd, closeWorkspace: closeFn = cmuxws.closeWorkspace } = deps;
+  const workspaceId = process.env.CMUX_WORKSPACE_ID || null;
+  const disabled = process.env.SUCCESSION_SELF_CLOSE_DISABLED === '1';
+  if (disabled) { console.log('[bsc-next] succession self-close disabled (SUCCESSION_SELF_CLOSE_DISABLED=1) — predecessor tab stays open'); return; }
+  if (!workspaceId) return; // not cmux-launched (e.g. a headless/manual run) — nothing to close
+  let mine;
+  try {
+    mine = listFn().find(w => w.id === workspaceId);
+  } catch (e) {
+    console.error(`[bsc-next] WARN succession self-close lookup failed (non-fatal, predecessor tab stays open): ${e.message}`);
+    return;
+  }
+  if (!mine) {
+    console.error(`[bsc-next] WARN succession self-close: own workspace id ${workspaceId} not found in a fresh listing — cannot confirm it's safe to close, leaving it open`);
+    return;
+  }
+  if (!shouldSelfCloseAfterSuccession({ workspaceId, selected: mine.selected, disabled })) {
+    if (mine.selected) console.log('[bsc-next] succession self-close deferred — this tab is currently selected (owner may be reading the handoff)');
+    return;
+  }
+  // TOCTOU guard (adversarial review, 2026-09-07 — mirrors pruneDone's own
+  // "re-list immediately before the destructive close" pattern in
+  // cmux-workspaces.js): the owner can select this exact tab, or it can
+  // vanish/renumber, in the gap between the check above and the close call.
+  // Re-list right before the destructive call; abort on any change.
+  let fresh;
+  try {
+    fresh = listFn().find(w => w.id === workspaceId);
+  } catch (e) {
+    console.error(`[bsc-next] WARN succession self-close re-check failed (non-fatal, predecessor tab stays open): ${e.message}`);
+    return;
+  }
+  if (!fresh || fresh.selected) {
+    console.log('[bsc-next] succession self-close aborted at the final check — tab vanished or became selected since the first check');
+    return;
+  }
+  try {
+    closeFn(workspaceId);
+    console.log('[bsc-next] predecessor self-closed after successor launch confirmed');
+  } catch (e) {
+    console.error(`[bsc-next] WARN succession self-close failed (non-fatal, predecessor tab stays open): ${e.message}`);
+  }
+}
+
 // Best-effort digest page when a succession chain hits the depth cap (card
 // #856 P0 guard) — never lets an alerting failure mask the refusal already
 // printed to the caller. See cmux-launch.js's pageAuthPreflightFailure for
@@ -527,6 +637,7 @@ function runSuccessionDispatch(task, args, deps) {
     // owner's actual morning digest reads — exactly what happened before
     // this was made injectable. Production callers get the real pager.
     pageSuccessionCapExceeded: pageCapExceededFn = pageSuccessionCapExceeded,
+    selfCloseAfterSuccession: selfCloseFn = selfCloseAfterSuccession,
   } = deps;
 
   if (typeof args.handoff !== 'string' || !args.handoff) {
@@ -569,14 +680,14 @@ function runSuccessionDispatch(task, args, deps) {
   // finally always runs (releasing the lock) before this function exits.
   let exitCode;
   try {
-    exitCode = runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn });
+    exitCode = runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn, selfCloseFn });
   } finally {
     if (!(args['dry-run'] || args['print-prompt'])) releaseLockFn(task.id);
   }
   if (exitCode) process.exit(exitCode);
 }
 
-function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn }) {
+function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn, selfCloseFn }) {
   const handoffText = fs.readFileSync(args.handoff, 'utf8');
   const entries = readLedgerEntriesFn();
   const { newDepth, refusal } = successionRefusal(task.id, entries, args);
@@ -623,6 +734,7 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
   if (res.ok) {
     const tabTitle = buildAutoTitle({ subject: task.subject, project, model });
     console.log(`[bsc-next] opened SUCCESSION Cmux tab "${tabTitle}" (${res.ref}) on #${task.id}, depth ${newDepth}/${dispatchLedger.SUCCESSION_DEPTH_CAP} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''})`);
+    let ledgerWritten = false;
     try {
       appendLedgerEntryFn({
         event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model,
@@ -633,6 +745,11 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
         allowReopenSuspect: args['allow-reopen-suspect'] || null,
         verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
         notionId: pid || null, adoptedLate: res.adoptedLate || null,
+        // BRO-2575 (ship-check catch): a succession dispatch opens a REAL cmux
+        // session like any other, so without its own marker it stays fully
+        // exposed to the false-dead bug the main dispatch path is now guarded
+        // against. Same field, same meaning as the primary launch row below.
+        marker: res.marker || null,
         // Card #1009: hash of the card body this session was seeded with, so a
         // later edit is detectable as drift instead of silently diverging.
         // null when the Notion fetch degraded — an honest "unknown", never a
@@ -657,7 +774,19 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
         // dead launches and terminal-runtime pressure.
         liveRuntimes: res.liveRuntimes ?? null,
       });
+      ledgerWritten = true;
     } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
+    // Card #1938: gated on the ledger write above actually succeeding
+    // (adversarial review, 2026-09-07: a swallowed write failure must not
+    // silently self-close anyway — crown-duplicate-detector.js's PRIMARY
+    // grouping signal is this exact ledger taskId, so a succession that
+    // self-closed without a ledger trail would be invisible to the very
+    // safety net this fix pairs with). If the write failed, the predecessor
+    // stays open — same as before this fix, and now visible in the ⚠
+    // WARN log above for the owner to notice.
+    if (ledgerWritten) {
+      try { selfCloseFn(); } catch (e) { console.error(`[bsc-next] WARN succession self-close threw (non-fatal, predecessor tab stays open): ${e.message}`); }
+    }
   } else if (res.refusedForCapacity && !res.workspaceRef) {
     // Task #1904, same distinction the fresh-dispatch branch draws: cmux is
     // out of terminal runtimes, so NOTHING was created. Reporting this as
@@ -709,6 +838,7 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
       verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
       notionId: pid || null, failureReason: res.reason,
       deadConfirmed: !stillBooting,
+      marker: res.marker || null, // BRO-2575
     });
     if (failedEntries.length) {
       try {
@@ -961,6 +1091,53 @@ function main(argv = process.argv.slice(2), deps = {}) {
   const args = parseArgs(argv);
   const idErr = validateIdArg(args);
   if (idErr) { console.error(`[bsc-next] ${idErr}`); process.exit(1); }
+
+  // BRO-3053: --detach re-execs this CLI in its OWN session and returns, so no
+  // signal on the caller's side can reach the job. The plain --headless path
+  // awaits the job for its whole run, which makes THIS process the job tree's
+  // parent — a `timeout` wrapper, a closing shell or a Ctrl-C then kills the
+  // job with no exit marker and no terminal ledger row. Six linear-next jobs
+  // were lost that way on 2026-09-08. Kept identical to linear-next.js's own
+  // --detach so the guard hook can honestly tell an operator to use it on
+  // EITHER dispatcher. Runs after --id validation (so a bad id still refuses
+  // loudly here) and before the task list is loaded, so this process takes no
+  // side effect the child would repeat.
+  if (args.detach) {
+    if (!args.headless) {
+      console.error('[bsc-next] --detach applies only to --headless (a cmux-tab launch already returns immediately and has no supervisor to protect).');
+      process.exit(1);
+    }
+    // Sync twin: this main() is not async and changing that would alter its
+    // contract for every caller and its own require.main handler.
+    const { spawnDetachedDispatch, stripFlag, waitForSettleSync } = require('./lib/spawn-detached-dispatch.js');
+    const idForLog = String(args.id).replace(/[^A-Za-z0-9_-]/g, '');
+    const logFile = path.join(os.homedir(), 'Library', 'Logs', 'bsc-jobs', `detached-bsc-next-${idForLog}-${Date.now()}.log`);
+    const { pid } = spawnDetachedDispatch({
+      scriptPath: path.join(REPO, 'scripts', 'bsc-next.js'),
+      argv: stripFlag(argv, 'detach'),
+      logFile,
+      cwd: REPO,
+      label: 'bsc-next',
+    });
+    // 30s — see linear-next.js's twin for the measurement (a real refusal
+    // there took 10.285s; the refusal path fetches and scans before it can
+    // say no). Set BSC_NEXT_DETACH_SETTLE_MS=0 to skip the watch.
+    const settleMs = Number(process.env.BSC_NEXT_DETACH_SETTLE_MS ?? 30000);
+    const settled = waitForSettleSync(pid, settleMs);
+    if (!settled.alive) {
+      console.error(`[bsc-next] the detached dispatcher for #${idForLog} EXITED after ${settled.waitedMs}ms — it refused or failed. Its output:`);
+      try {
+        const txt = fs.readFileSync(logFile, 'utf8').trimEnd();
+        console.error(txt ? txt.split('\n').slice(-40).map(l => `  ${l}`).join('\n') : '  (the child wrote nothing before exiting)');
+      } catch (e) { console.error(`  (could not read ${logFile}: ${e.message})`); }
+      console.error(`[bsc-next] full log: ${logFile}`);
+      process.exit(1);
+    }
+    console.log(`[bsc-next] detached dispatcher running (pid ${pid}) — this process is NOT the job's parent.`);
+    console.log(`[bsc-next] dispatcher output: ${logFile}`);
+    return;
+  }
+
   const tasks = loadTasksFn(TASKS_DIR);
   if (!tasks.length) {
     console.error(`[bsc-next] shared task list '${LIST_ID}' is empty (${TASKS_DIR}).`);
@@ -1300,6 +1477,30 @@ function main(argv = process.argv.slice(2), deps = {}) {
     console.error(`[bsc-next] WARN dispatching #${task.id} unarmed: full card unavailable (${pid ? 'Notion fetch failed' : 'native task, no card'}) — gate not enforceable on the truncated mirror.`);
   }
 
+  // Phantom-path guard (BRO-2569): a well-formed, safe-shaped verifyGate.cmd
+  // can still name a file/directory that will never exist — see
+  // dispatch-guards.js's pathVerifiabilityGuard header for the full
+  // rationale. Gated on fullCardInHand for the same reason the shape-check
+  // refusal above is: a truncated Notion-mirror description can produce a
+  // cmd extracted from garbled/incomplete text, and refusing dispatch on
+  // that would be a false positive layered onto an already-known-degraded
+  // data path. --force only (not dry-run/print-prompt — both already
+  // returned earlier in main(), so args['dry-run']/args['print-prompt'] can
+  // never be true by this point); skips the fs I/O entirely under --force,
+  // matching the "don't do work whose result gets discarded" convention.
+  // BRO-2647: REPO is hardcoded to this dev machine's checkout (see its own
+  // header comment above) and doesn't exist on a CI runner, which made this
+  // check refuse EVERY real acceptance path as phantom there. See
+  // resolveCanonicalRepoRoot()'s own header (dispatch-guards.js) for the
+  // full trace of how that produced main's red Unit Tests job. Called
+  // lazily inside the ternary, not hoisted above it, so --force still skips
+  // the fs I/O entirely per this guard's own convention (comment above).
+  const pathCheck = (fullCardInHand && !args.force)
+    ? resolvePathCheck(verifyGate, resolveCanonicalRepoRoot(REPO, __dirname))
+    : null;
+  const pathErr = pathVerifiabilityGuard(task, pathCheck, args);
+  if (pathErr) { console.error(`[bsc-next] ${pathErr}`); process.exit(1); }
+
   // CI-red claim auto-invocation (task #598): record a claim so another
   // in_progress task's pre-push-review-gate.sh check (task #584) sees it —
   // closes the gap where nothing ever called claim-ci-red.js automatically.
@@ -1358,7 +1559,15 @@ function main(argv = process.argv.slice(2), deps = {}) {
     if (!args['allow-human-gated']) {
       const gateText = (card && card.notes) || task.description || '';
       const hg = classifyHeadlessDispatchability({ subject: task.subject, notes: gateText }, { verifyCmd: verifyGate.cmd });
-      if (!hg.dispatchable && hg.blockers.some(b => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD)) {
+      // PARKED_SENTINEL honours --force here for the same reason it does at
+      // linear-next.js:750. The classifier is shared, so this gate inherited the
+      // new blocker automatically; without the exemption an owner who un-parks a
+      // card and re-runs would be refused by a gate naming a THIRD flag
+      // (--allow-human-gated) after predispatchGuard already told them to use
+      // --allow-reopen-suspect. Caught in re-review of BRO-2753.
+      const blocking = hg.blockers.filter(b => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
+        && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && args.force));
+      if (!hg.dispatchable && blocking.length) {
         console.error(`[bsc-next] REFUSING headless dispatch of #${task.id}: an unattended session cannot finish this card.`);
         for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
         console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);
@@ -1386,7 +1595,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -1441,7 +1650,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // for bsc-prune.js's own (typically once/day) sweep to write the
       // breadcrumb.
       try {
-        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args);
+        // BRO-2575: give the self-heal path the same OS-process cross-check
+        // bsc-prune's sweep uses, so a cmux blackout can't manufacture a
+        // 'dead' row here and trip this very call's retry cap. The probe
+        // samples `ps` lazily — no cost when nothing is idle.
+        const { freshDead, refusal } = checkDeadDispatch(task, workspaces, readLedgerEntriesFn(), isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn,
+          { ...args, isWrapperAlive: makeSeedProcessProbe(), onSuppressed: s => console.error(`[bsc-next] cmux said ${s.workspaceRef} is dead but its wrapper ${s.marker} is still running — not journaling a death for task #${s.taskId}`) });
         freshDead.forEach(b => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[bsc-next] ${refusal}`); process.exit(1); }
       } catch (e) { console.error(`[bsc-next] dead-dispatch check failed (continuing): ${e.message}`); }
@@ -1497,13 +1711,20 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
       // Task #1904: the live cmux terminal-runtime count at create time. Until
       // now the ceiling correlation could only be established by live
       // experiment on the machine — recording it makes every future dispatch a
       // data point, so "the rate climbs as the app fills up" is checkable from
       // the ledger instead of re-derived by hand.
-      liveRuntimes: res.liveRuntimes ?? null }); }
+      liveRuntimes: res.liveRuntimes ?? null,
+      // BRO-2575: this launch's own bash-wrapper basename. A later bsc-prune
+      // sweep re-checks it against the OS process table before journaling a
+      // 'dead' breadcrumb for this ref — the one liveness signal not read
+      // through cmux, so it still tells the truth when cmux's tag registry and
+      // terminal surface BOTH go silent at once (2026-08-31: five live
+      // dispatches buried in the same 2ms).
+      marker: res.marker || null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else if (res.refusedForCapacity && !res.workspaceRef) {
     // Task #1904. Nothing was created, so there is no workspace to journal, no
@@ -1552,6 +1773,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // 'dead' breadcrumb so a live session is neither counted toward the
       // 2-death dispatch guard nor treated as a corpse by the pruner.
       deadConfirmed: res.deadConfirmed !== false,
+      marker: res.marker || null, // BRO-2575
     });
     if (failedEntries.length) {
       try {
@@ -1589,4 +1811,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, linearOwned, liveLinearCounterpart, pickTask, validateIdArg, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, closedCardGuard, predispatchGuard, categoryOf, fetchCard, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping, workBranchCollisionGuard, shouldSelfCloseAfterSuccession, selfCloseAfterSuccession };

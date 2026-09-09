@@ -970,6 +970,45 @@ Respond helpfully. If they're asking a question, answer it from your existing co
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
+  // RETIRED — Linear migration Phase 3 (BRO-384).
+  //
+  // This poller spawns Claude sessions from Notion cards with an Action set.
+  // Linear is the board (CLAUDE.md rule 6) and Notion has been read-only for
+  // new pages since BRO-377, so anything it picked up would be work nobody is
+  // filing any more.
+  //
+  // CORRECTION (2026-08-30, caught in review): an earlier version of this
+  // comment claimed the poller was already dormant with 'no launchd job'. That
+  // was wrong, and the method that produced it was wrong — it grepped plist
+  // FILENAMES for 'notion'. The scheduler is named for what it does, not what it
+  // talks to: com.bwsc.action-dispatcher, StartInterval 300, which had been
+  // polling normally until 03:34 that morning. Adding this guard therefore did
+  // not retire a dead script; it turned a live job into a failure every five
+  // minutes until the job was booted out and its plist moved aside.
+  //
+  // Lesson worth keeping next to the code: to find what schedules a script,
+  // grep plist CONTENTS for the script path, never plist names for a keyword.
+  //
+  // The guard still earns its place after the unschedule. A plist can be
+  // restored, and a manual invocation was always possible; without this, the
+  // poller would quietly resume spawning Claude sessions from cards on a board
+  // nobody files to any more.
+  //
+  // Deliberately BEFORE the argument parsing below, so no invocation shape --
+  // --card included -- can reach the sweep. Escape hatch is an env var, not a
+  // file: the file-shaped BOARD_GATE_DISABLED silently switched every board
+  // gate off for six days because nothing expires it.
+  if (process.env.NOTION_POLLER_ALLOWED !== '1') {
+    console.error('\n❌ RETIRED — the Notion action poller is switched off (Linear migration Phase 3, BRO-384).\n' +
+      '  Linear is the board; Notion is read-only for new pages (BRO-377).\n' +
+      '  Dispatch from Linear instead:\n' +
+      '    node scripts/linear-next.js --id BRO-N\n' +
+      '  One-off override for this command only: NOTION_POLLER_ALLOWED=1 <command>\n');
+    process.exitCode = 7;
+    return;
+  }
+  console.error('⚠️  NOTION_POLLER_ALLOWED=1 — running a RETIRED poller against the old board (BRO-384).');
   // Fail closed on a malformed --card: a bare '--card' (missing value, or
   // followed by another flag) must error out rather than silently fall
   // through to the full unscoped sweep this flag exists to prevent.

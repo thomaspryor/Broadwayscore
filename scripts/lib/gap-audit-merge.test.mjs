@@ -11,7 +11,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor } = require('./gap-audit-merge.js');
+const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor, riskStateMap, isRiskyGapChange, partitionAuditedResults } = require('./gap-audit-merge.js');
 
 const result = (showId, over = {}) => ({
   showId,
@@ -78,6 +78,20 @@ test('carried-forward entries age out; this run’s entries never do', () => {
   const kept = mergeGapAudit(prev, runOf([result('fresh-show')]), { retentionDays: 3650 });
   assert.deepStrictEqual(kept.results.map(r => r.showId), ['fresh-show', 'old-show']);
   assert.strictEqual(kept.prunedStale, 0);
+});
+
+test('BRO-3002: protectedIds exempt a quarantined show from the retention-age drop (Codex adversarial review finding)', () => {
+  const prev = mergeGapAudit(null, runOf([result('old-quarantined-show'), result('old-show')], '2026-01-01T00:00:00.000Z'));
+  // Without protection, a show this old and not re-audited gets pruned...
+  const unprotected = mergeGapAudit(prev, runOf([result('fresh-show')]), { retentionDays: 45 });
+  assert.deepStrictEqual(unprotected.results.map(r => r.showId).sort(), ['fresh-show']);
+  // ...but with protectedIds, the same stale show survives the exact same cutoff.
+  const protectedRun = mergeGapAudit(prev, runOf([result('fresh-show')]), {
+    retentionDays: 45,
+    protectedIds: new Set(['old-quarantined-show']),
+  });
+  assert.deepStrictEqual(protectedRun.results.map(r => r.showId).sort(), ['fresh-show', 'old-quarantined-show']);
+  assert.strictEqual(protectedRun.prunedStale, 1, 'the UNprotected old-show still ages out normally');
 });
 
 test('a pre-#893 file (no per-result computedAt) is adopted, not discarded', () => {
@@ -148,6 +162,44 @@ test('stateMap keys by showId and skips junk rows', () => {
   assert.deepStrictEqual(m, { 'a-show': 'complete', 'b-show': 'incomplete' });
 });
 
+// BRO-513: review-gap's blast-radius guard needs to tell "the census found a
+// genuine NEW gap" apart from "we lost coverage we used to have" even though
+// both are the SAME complete -> incomplete verdict transition. riskStateMap +
+// isRiskyGapChange are the real functions the guard call site uses (not
+// hand-rolled test doubles), exercised against realistic result() shapes.
+test('riskStateMap/isRiskyGapChange: a NEW aggregator-listed gap is not risky', () => {
+  const prev = result('a-show', { aggregatorListedUrls: ['https://x.com/review-a'] });
+  // Same covered URL still present, PLUS a brand-new URL the census just found
+  // that we don't have yet — candidateCount grows, liveCount is unaffected.
+  const next = result('a-show', {
+    aggregatorListedUrls: ['https://x.com/review-a'],
+    missing: [{ host: 'y.com', url: 'https://y.com/review-b' }],
+  });
+  const prevMap = riskStateMap([prev]);
+  const nextMap = riskStateMap([next]);
+  assert.strictEqual(prevMap['a-show'], 'complete:1:1');
+  assert.strictEqual(nextMap['a-show'], 'incomplete:1:2');
+  assert.strictEqual(isRiskyGapChange(prevMap['a-show'], nextMap['a-show']), false);
+});
+
+test('riskStateMap/isRiskyGapChange: the SAME URL flipping from covered to missing IS risky (broken checkout)', () => {
+  // Simulates a broken/partial review-texts checkout: the exact same
+  // aggregator-listed URL that used to resolve as covered now shows up in
+  // `missing` (loadDirFiles() returned [] this run) — liveCount drops even
+  // though the verdict transition (complete -> incomplete) looks identical
+  // to the benign new-gap case above.
+  const prev = result('a-show', { aggregatorListedUrls: ['https://x.com/review-a'] });
+  const next = result('a-show', {
+    aggregatorListedUrls: ['https://x.com/review-a'],
+    missing: [{ host: 'x.com', url: 'https://x.com/review-a' }],
+  });
+  const prevMap = riskStateMap([prev]);
+  const nextMap = riskStateMap([next]);
+  assert.strictEqual(prevMap['a-show'], 'complete:1:1');
+  assert.strictEqual(nextMap['a-show'], 'incomplete:0:1');
+  assert.strictEqual(isRiskyGapChange(prevMap['a-show'], nextMap['a-show']), true);
+});
+
 test('countsFor tolerates missing arrays on legacy rows', () => {
   const c = countsFor([{ showId: 'x' }, { showId: 'y', missing: [{ host: 'h' }], flaggedMisses: [{ recoverable: true }] }]);
   assert.strictEqual(c.withGap, 1);
@@ -193,6 +245,62 @@ test('censusVerdictFor: liveCount excludes non-live candidates', () => {
   assert.strictEqual(v.candidateCount, 2);
   assert.strictEqual(v.liveCount, 1);
   assert.strictEqual(v.verdict, 'incomplete');
+});
+
+test('partitionAuditedResults: splits by showId membership in riskyIds, order preserved within each bucket', () => {
+  const results = [result('a'), result('b'), result('c'), result('d')];
+  const { safe, risky } = partitionAuditedResults(results, ['b', 'd']);
+  assert.deepStrictEqual(safe.map(r => r.showId), ['a', 'c']);
+  assert.deepStrictEqual(risky.map(r => r.showId), ['b', 'd']);
+});
+
+test('partitionAuditedResults: empty riskyIds puts everything in safe (BRO-3002 full-write path)', () => {
+  const results = [result('a'), result('b')];
+  const { safe, risky } = partitionAuditedResults(results, []);
+  assert.deepStrictEqual(safe.map(r => r.showId), ['a', 'b']);
+  assert.deepStrictEqual(risky, []);
+});
+
+test('partitionAuditedResults: every id risky puts everything in risky (degrades to full-block)', () => {
+  const results = [result('a'), result('b')];
+  const { safe, risky } = partitionAuditedResults(results, ['a', 'b']);
+  assert.deepStrictEqual(safe, []);
+  assert.deepStrictEqual(risky.map(r => r.showId), ['a', 'b']);
+});
+
+test('partitionAuditedResults: tolerates junk rows and a missing/undefined riskyIds arg', () => {
+  const results = [result('a'), null, { title: 'no id' }];
+  const { safe, risky } = partitionAuditedResults(results, undefined);
+  assert.strictEqual(safe.length, 3);
+  assert.strictEqual(safe[0].showId, 'a');
+  assert.deepStrictEqual(risky, []);
+});
+
+test('BRO-3002: quarantining the risky subset then re-merging only the safe results carries the risky ones forward unchanged (no data loss, no full block)', () => {
+  const prev = {
+    generatedAt: '2026-09-05T00:00:00Z',
+    results: [
+      result('safe-1', { aggregatorListedUrls: ['https://a.com/1'] }),
+      result('risky-1', { aggregatorListedUrls: ['https://a.com/2'] }),
+    ],
+  };
+  const run = {
+    generatedAt: '2026-09-07T00:00:00Z',
+    results: [
+      result('safe-1', { aggregatorListedUrls: ['https://a.com/1', 'https://a.com/1b'] }), // genuinely grew — safe
+      result('risky-1', { flaggedMisses: [{ url: 'https://a.com/2', dirFlags: [] }] }),      // lost live coverage — risky
+    ],
+  };
+  const { safe } = partitionAuditedResults(run.results, ['risky-1']);
+  const quarantined = mergeGapAudit(prev, { ...run, results: safe });
+  const bySid = Object.fromEntries(quarantined.results.map(r => [r.showId, r]));
+  // safe-1 advanced to this run's fresher data.
+  assert.strictEqual(bySid['safe-1'].aggregatorListedUrls.length, 2);
+  assert.strictEqual(bySid['safe-1'].computedAt, run.generatedAt);
+  // risky-1 was NOT clobbered by this run's risky result — it kept the prior
+  // entry (still present, still comparable next run) rather than being lost.
+  assert.strictEqual(bySid['risky-1'].aggregatorListedUrls.length, 1);
+  assert.strictEqual(bySid['risky-1'].computedAt, prev.generatedAt);
 });
 
 test('censusVerdictFor: public counts are outlet-level even as candidates stay URL-level', () => {

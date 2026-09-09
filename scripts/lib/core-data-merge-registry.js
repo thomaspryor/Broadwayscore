@@ -68,11 +68,41 @@ const { mergeGrossesHistory } = require('./merge-grosses-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
 const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
 const { mergeObVenueCandidates } = require('./merge-ob-venue-candidates');
+const { mergeAlertLedger } = require('./merge-alert-ledger');
+const { mergeAlertDigestQueue } = require('./merge-alert-digest-queue');
+const { mergeAlertRouterAttempts } = require('./merge-alert-router-attempts');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
   { file: 'commercial.json', surface: 'public-repo', status: 'active', merge: mergeCommercialJson, format: 'json', newline: true },
-  { file: 'commercial-pending-review.json', surface: 'public-repo', status: 'active', merge: mergePendingReview, format: 'json', newline: true },
+  {
+    file: 'commercial-pending-review.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergePendingReview,
+    format: 'json',
+    newline: true,
+    // BRO-2795 follow-up: this entry was already MANAGED/'active' with a
+    // real per-slug union merge (mergePendingReview, used today by the LOCAL
+    // rebase-conflict path — resolve_conflicts()), but had no apiFallbackMerge
+    // flag, so push-with-retry.sh's Git Data API fallback disqualifier
+    // (`isManaged(f) && !isApiFallbackMergeable(f)`) trips on it EVERY time it
+    // changes — independently of the two circuit-breaker files this card
+    // otherwise fixes. commercial-rss-poll.yml's own PUSH_RECONCILE_MERGED_JSON=1
+    // does NOT cover this: that flag only wires the LOCAL post-rebase
+    // reconcile pass, a completely different code path from the Git Data API
+    // fallback (confirmed by reading push-with-retry.sh directly — an
+    // assumption the original incident writeup got wrong). Genuinely
+    // multi-writer across 5 workflows sharing the commercial-data-write
+    // concurrency group (batch-commercial-research.yml, commercial-friday.yml,
+    // commercial-rss-poll.yml, commercial-weekly.yml, deep-research-
+    // commercial.yml — grepped 2026-09-04), same bar already accepted for
+    // audit/alert-ledger.json (12 writers) and audit/alert-digest-queue.json
+    // (8 writers) below. mergePendingReview has its own colocated test
+    // coverage (tests/unit/merge-commercial-data.test.mjs) and already
+    // defends against the resurrection bug that class of merge is prone to.
+    apiFallbackMerge: true,
+  },
   { file: 'commercial-research-queue.json', surface: 'public-repo', status: 'active', merge: mergeResearchQueue, format: 'json', newline: true },
   { file: 'diary-shows.json', surface: 'public-repo', status: 'active', merge: mergeDiaryShows, format: 'json', newline: false },
   { file: 'social-post-history.json', surface: 'public-repo', status: 'active', merge: mergeSocialPostHistory, format: 'json', newline: true },
@@ -83,6 +113,16 @@ const CORE_DATA_MERGE_REGISTRY = [
     merge: mergeFeedbackLedger,
     format: 'json',
     newline: true,
+    // BRO-345: process-feedback.yml's push-contention-only failures (7x in
+    // 24h, all "All push attempts failed after N of 20 budgeted attempt(s)
+    // (deadline)") were disqualified from the Git Data API fallback with
+    // "touches a union-merge-MANAGED file (without apiFallbackMerge
+    // coverage)" — this was that file. It already had real per-key merge
+    // logic (mergeFeedbackLedger, task #1440) for the local rebase case-arm
+    // path; `apiFallbackMerge: true` opts the SAME merge fn into push-via-
+    // git-api.sh's fast path too, same pattern as audit/alert-ledger.json
+    // below (BRO-2413).
+    apiFallbackMerge: true,
     // Unlike the other public-repo entries, this file is reconciled ONLY via
     // push-with-retry.sh's resolve_conflicts() case arm (fires unconditionally
     // on an actual rebase/merge conflict) — it is NOT part of reconcile-
@@ -147,13 +187,27 @@ const CORE_DATA_MERGE_REGISTRY = [
   // TO ROLL BACK one entry: flip `apiFallbackSafe: true` to `false` (or
   // delete the field). The runtime behavior reverts immediately and safely —
   // reconcile-merged-json.js's API_FALLBACK_SAFE export and push-with-
-  // retry.sh's disqualifier both treat an empty/absent flag as fail-closed,
-  // no other file touched (ship-check finding: this is NOT a zero-file
-  // revert though — core-data-merge-registry.test.mjs's "sanity: exactly the
-  // seeded apiFallbackSafe entry" and api-fallback-writer-drift.test.mjs's
+  // retry.sh's disqualifier both treat an empty/absent flag as fail-closed
+  // (ship-check finding: this is NOT a zero-file revert though —
+  // core-data-merge-registry.test.mjs's "sanity: exactly the seeded
+  // apiFallbackSafe entry" and api-fallback-writer-drift.test.mjs's
   // live-repo regression test both hardcode "expect >=1 entry" and will fail
   // loudly until updated to match — deliberately, so removing the last entry
   // is a reviewed two-line PR, not a silent, unnoticed policy change).
+  //
+  // ONE ENTRY IS NOT PURELY LOCAL (BRO-2588, 2026-08-31): the earlier
+  // "no other file touched" claim on this rollback is no longer true for
+  // audit/autonomous-recheck-ledger.jsonl. That flag is load-bearing for
+  // .github/workflows/data-health-check.yml's STEP ORDER — flipping it off
+  // silently re-opens BRO-2538's stranded-commit cascade, because the
+  // continue-on-error "Commit acceptance recheck ledger" step no longer
+  // runs last in that job. Rolling that one back means also moving that step
+  // back to the end of the job. This is not left to memory:
+  // scripts/lib/push-with-retry.stranded-commit-cascade.test.sh PART B
+  // asserts the general property (every push-with-retry.sh-calling step in
+  // that job git-adds only apiFallbackSafe paths UNLESS it is the last such
+  // step), so a flag-only rollback fails CI loudly instead of quietly
+  // regressing the workflow.
   {
     file: 'audit/health-digest-snapshot.json',
     surface: 'public-repo',
@@ -227,6 +281,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/scraper-spend-daily-agg.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-08 (BRO-3008 S0-T6): same writer/workflow/concurrency-group as its two siblings above (check-provider-spend.js, data-health-check.yml git-add block) — never rotated, appended once/day with idempotent day-replace.',
   },
   // NOT registered: audit/digest-history.json. findWritingWorkflows()'s regex
   // match on data-health-check.yml's `git add data/audit/digest-history.json`
@@ -309,6 +371,74 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
+  {
+    file: 'audit/missed-broadcasts.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: "2026-09-07 (BRO-2934): grep of .github/workflows/*.yml for check-missed-broadcasts.js + 'git add data/audit/missed-broadcasts.json' — 1 writer (data-health-check.yml), group data-health-check, cancel-in-progress: false. Same residual risk already accepted for audit/stale-announced-shows.json below: the CLI writer (scripts/check-missed-broadcasts.js) can also be run locally, and the concurrency group only serializes CI against CI. Accepted on the same grounds — the file is disposable telemetry regenerated in full by the next scheduled run, and it holds no state the alert ledger does not already own.",
+  },
+  {
+    file: 'audit/stale-announced-shows.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-31 (BRO-2620): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check. RESIDUAL RISK (ship-check/Codex adversarial finding, same class already accepted for audit/autonomous-recheck-ledger.jsonl above): the CLI writer (scripts/audit-stale-announced-shows.js, including its --ack/--unack paths) can also be run locally by a human. The concurrency group only serializes CI against CI, not CI against a local run — a locally-pushed snapshot can be silently overwritten by the next CI run\'s Git Data API fallback. Accepted because the file is disposable telemetry regenerated fresh by the next scheduled run; --ack/--unack state lives in the separate acks file this entry does not cover.',
+  },
+  // BRO-2588 (2026-08-31): registering this file is what DISSOLVES BRO-2538's
+  // "the ledger commit step must run LAST in data-health-check.yml" ordering
+  // constraint — a constraint that directly contradicted BRO-386's own
+  // acceptance property ("the ledger-commit step runs BEFORE the bulk commit
+  // step"), leaving test.yml red on whichever of the two suites lost. The
+  // cascade BRO-2538 worked around only exists because a stranded, UNPUSHED
+  // commit from that continue-on-error step carried an UNAUDITED data/audit/
+  // path into every later step's SCRIPT_ENTRY_HEAD diff. Audit the path and
+  // there is nothing left to poison, so the step is free to sit wherever the
+  // job wants it. See data-health-check.yml's "Commit acceptance recheck
+  // ledger" header comment for the full history.
+  {
+    file: 'audit/autonomous-recheck-ledger.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-08-31 (BRO-2588): grepped every .github/workflows/*.yml AND all of scripts/ for the literal filename. Sole WRITER: scripts/autonomous-acceptance-recheck.js (appends through scripts/lib/autonomous-ledger.js:48 fs.appendFileSync), invoked only by data-health-check.yml\'s "Acceptance recheck (shadow mode)" step; data-health-check.yml is also the only workflow that git-adds the path. Every other reference is a READER or a non-writing mention: scripts/autonomous-email.js:435 (ledger.readEntries) and scripts/dispatch-watchdog.js:195 (fs.readFileSync) read it; scripts/freeze-ledgers.js:86 only names it inside a freeze record; scripts/lib/audit-ledger-merge-attrs.js:150 does not write it either, but it is NOT a throwaway mention: it deliberately EXCLUDES this file from the union-merge .gitattributes because autonomous-acceptance-recheck.js:199 enforcementState() reads rechecks[0].ts as the OLDEST recheck (trusting file order as chronological) and counts rechecks.length with no dedup key, and both feed shouldExitShadow() (scripts/lib/autonomous-recheck-core.js:294), which arms automatic card reopening. That workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs of it queue rather than race. RESIDUAL RISK, accepted knowingly and NOT eliminated by this entry: apiFallbackSafe routes this path through scripts/lib/push-via-git-api.sh, whose semantics are ours-wins-outright (see its header, line ~41 \u2014 our version replaces whatever the current remote tip has for that path). The concurrency group serializes CI against CI, but NOT CI against a local run: if the owner runs `node scripts/autonomous-acceptance-recheck.js` on their own machine and pushes appended rows, the next CI run\'s Git Data API fallback can overwrite that path with its checkout-time copy plus its own rows, silently dropping the locally-appended ones and shifting both rechecks[0] and rechecks.length \u2014 the exact two inputs the merge-attrs exclusion above protects. This is the same order/count hazard, reached by a different route, so registering the file apiFallbackSafe trades a push-reliability win for a narrow CI-vs-local clobber window; it is safe only for the CI-only write pattern that is in place today.',
+    note: 'shadow-mode RECHECK-AFTER verdict ledger written by scripts/autonomous-acceptance-recheck.js — append-only JSONL, one line per recheck run',
+  },
+  // BRO-2699 (2026-09-07): outlet-registry-baseline-maintenance.yml's daily
+  // cron exists specifically to keep these two baseline files current so
+  // test.yml's "Audit outlet-registry gaps" --strict gate doesn't flap red
+  // on organic new-critic-outlet growth (card #1766). Without apiFallbackSafe
+  // it was doing the opposite: its commit touches an unaudited data/audit/
+  // path, so push-with-retry.sh's disqualifier forced it onto the slow
+  // local fetch+rebase+push path, which lost the race against main's
+  // constant deploy-watermark/stage-latency churn on 4 of the last 8
+  // scheduled runs (2026-09-02, 09-04, 09-05, 09-07 all failed at the push
+  // step with "overall deadline 240s exceeded" per `gh run list
+  // --workflow=outlet-registry-baseline-maintenance.yml`). Each loss left
+  // the baseline stale until the next successful cron, and any real new
+  // outlet appearing in review-texts during that window hard-failed
+  // test.yml's Data Validation job on main exactly as BRO-2699 reported.
+  {
+    file: 'audit/outlet-registry-baseline.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'outlet-registry-baseline-maintenance',
+    verifiedBy: '2026-09-07 (BRO-2699): grepped every .github/workflows/*.yml and scripts/ for the literal filename — sole writer is scripts/audit-outlet-registry.js\'s --update-baseline mode, invoked only by outlet-registry-baseline-maintenance.yml\'s "Maintain outlet-registry baseline (with burst guard)" step and committed by its own "Commit updated baseline" step (one `git add` line covering both files below). test.yml only READS it (via --strict). That workflow declares concurrency: {group: outlet-registry-baseline-maintenance, cancel-in-progress: false}, so its own cron racing a manual workflow_dispatch queues rather than races. RESIDUAL RISK (same class already accepted for audit/stale-announced-shows.json and audit/autonomous-recheck-ledger.jsonl above): the CLI writer (node scripts/audit-outlet-registry.js --update-baseline) can also be run locally by a human. The concurrency group only serializes CI against CI, not CI against a local run — a locally-pushed baseline could in principle be overwritten by the next CI run\'s Git Data API fallback. Accepted on the same grounds as those two entries: the file is a frozen-backlog snapshot regenerated in full by the next scheduled --update-baseline run, not append-only state that can lose history.',
+    note: 'the frozen missing-outlet backlog scripts/audit-outlet-registry.js --strict diffs new corpus finds against — see that script\'s header for the baseline-diff design',
+  },
+  {
+    file: 'audit/outlet-registry-junk-baseline.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'outlet-registry-baseline-maintenance',
+    verifiedBy: '2026-09-07 (BRO-2699): same writer/commit step/concurrency group as audit/outlet-registry-baseline.json above — both files are written by the same --update-baseline call and staged in the same `git add` line. Same residual local-vs-CI risk accepted for the same reason (full-overwrite snapshot, not append-only state).',
+    note: 'sentinel/reserved-word outletIds already accepted into the registry (e.g. "lets-note") — frozen so isJunkOutlet() suggestions don\'t re-flag them',
+  },
   // BRO-2435 (opening-night-broadcast.yml "Commit orphan-rescore-requeue
   // state" hard-failing every run, retries-exhausted): unlike alert-
   // ledger.json (19 writers — see the "NOT added" note just below), this
@@ -323,13 +453,210 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'broadcast-send',
     verifiedBy: '2026-08-26: grepped every .github/workflows/*.yml for the literal filename — only opening-night-broadcast.yml writes it; that workflow declares concurrency: {group: broadcast-send, cancel-in-progress: false}, so overlapping runs queue rather than race.',
   },
-  // NOT added, deliberately: data/audit/triage/ (also written by
-  // rebuild-reviews.yml), data/audit/alert-ledger.json (12 writers),
-  // data/audit/alert-digest-queue.json (8 writers — the exact file the
-  // comment above this block warns about), data/audit/alert-router-
-  // attempts.jsonl (3 writers). These stay in the bulk "Commit health check
-  // + triage data" step, unprotected — genuinely multi-writer, no apiFallbackSafe
-  // path available for them.
+  // BRO-2670 (opening-night-checklist.yml "Commit audit data" hard-failing 6
+  // of 8 runs, losing the attempt-history ledger and re-dispatching the same
+  // workflow forever): split into its own commit+push step, same class as
+  // the two entries above. opening-night-orchestrator.yml also invokes
+  // scripts/opening-night-checklist.js / scripts/opening-night-sla-
+  // dispatch.js (which write these paths locally), but grepping that
+  // workflow's file for `git add`/commit/push shows it never stages either
+  // path — findWritingWorkflows() (scripts/lib/api-fallback-writer-drift.js)
+  // against every .github/workflows/*.yml confirms exactly one writer for
+  // each.
+  {
+    file: 'audit/opening-night-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-checklist',
+    verifiedBy: '2026-08-31: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-checklist.yml), group opening-night-checklist (moved from a non-serializing per-run-id job-level group to a fixed workflow-level one as part of this same fix — see that workflow\'s own concurrency: block comment).',
+  },
+  {
+    file: 'audit/opening-night-sla-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-checklist',
+    verifiedBy: '2026-08-31: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-checklist.yml), group opening-night-checklist. Written by scripts/lib/opening-night-sla.js:saveSlaState(), also invoked (locally, not committed) by opening-night-orchestrator.yml.',
+  },
+  // BRO-2795 (commercial-rss-poll.yml hourly hard-failure, incident run
+  // 33906734626): the "Commit data changes" step's git-add-existing.sh call
+  // only names commercial-pending-review.json/commercial-rss-state.json, but
+  // its stage-data-changes.sh call (no args) sweeps ALL of data/ minus the
+  // fixed private-path exclusions — so these two provider circuit-breaker
+  // state files, written by the two continue-on-error steps just before it,
+  // ride along uninvited every time either breaker's numbers change. Both
+  // being unaudited data/audit/ paths (not in this list) was enough on its
+  // own to disqualify push-with-retry.sh's Git Data API fallback for the
+  // WHOLE commit (the fail-closed "any unaudited data/audit/ path" branch).
+  // (PUSH_RECONCILE_MERGED_JSON=1 does NOT make the two files the step DOES
+  // name fallback-safe by itself — that flag only wires the LOCAL post-rebase
+  // reconcile pass, a different code path from the Git Data API fallback's
+  // disqualifier; commercial-pending-review.json needed its own
+  // apiFallbackMerge fix, see that entry above.) The
+  // local fetch+rebase+push flow then lost its own race against main's
+  // commit churn 3 times running (push-with-retry.sh's own working-as-
+  // designed budget exit), with no fallback left to catch it, and the job
+  // hard-failed hourly from 2026-09-04 11:47Z. Excluding the breaker files
+  // from the commit instead (the other option this card considered) was
+  // rejected: both breakers exist specifically so their state PERSISTS to
+  // main within the hour (see their own step comments in
+  // commercial-rss-poll.yml) — every other chokepoint that reads
+  // scrapingdog-caps.js / brightdata-caps.js needs the committed file, not a
+  // value that resets every run. Registering them apiFallbackSafe keeps that
+  // persistence AND restores the fallback.
+  {
+    file: 'audit/bd-circuit-breaker.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "bd-circuit-breaker"/"check-bd-breaker.js" — sole writer is scripts/check-bd-breaker.js, invoked only by commercial-rss-poll.yml\'s "Bright Data daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). That workflow declares concurrency: {group: commercial-data-write, cancel-in-progress: false}, so overlapping runs (its own cron racing a workflow_dispatch) queue rather than race. 2026-09-07 (BRO-2960): still sole writer/same concurrency group — the ONLY change is that commercial-rss-poll.yml now commits this file in its own earlier "Commit breaker state" step (a second push-with-retry.sh call in the same job, right after the two breaker checks) instead of bundling it into the later "Commit data changes" step, so a failure on that later, larger commit no longer costs the breaker verdict its push.',
+  },
+  // BRO-345 (process-feedback.yml repeat-failure, 7x/24h 2026-09-06→08): both
+  // files below are unaudited data/audit/ paths, sole writer process-
+  // feedback.yml, committed together with audit/feedback-request-ledger.json
+  // and audit/alert-ledger.json/alert-digest-queue.json (all already
+  // fallback-eligible) in the same "Commit tracking file" step — but these
+  // two, being unregistered, disqualified the Git Data API fallback for the
+  // WHOLE commit (the fail-closed "any unaudited data/audit/ path" branch),
+  // leaving only the slow local fetch+rebase+push flow. That flow then lost
+  // its own race against main's commit churn on every attempt within the
+  // 600s budget (confirmed across all 7 failing runs — 4-6 attempts each,
+  // ending in "push-with-retry: overall deadline 600s exceeded"), hard-
+  // failing the job every ~10min cron tick. Registering these two as
+  // apiFallbackSafe restores the fallback for the whole commit.
+  {
+    file: 'audit/processed-feedback.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'process-feedback',
+    verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Sole writer script: scripts/process-feedback.js. RESIDUAL RISK (same class as audit/stale-announced-shows.json/autonomous-recheck-ledger.jsonl/outlet-registry-baseline.json above): the concurrency group only serializes CI against CI, not CI against a local run — scripts/process-feedback.js needs ANTHROPIC_API_KEY/FORMSPREE_TOKEN from local .env, so a developer running it by hand and pushing could race a CI run. Unlike those disposable-telemetry files, a stale overwrite here would cause loadTracking() to re-see already-answered Formspree submissions as new, i.e. duplicate thank-you emails / duplicate bug-diagnosis issues — accepted knowingly given local pushes to data/audit/ already violate this project\'s worktree-discipline norms (low likelihood), not eliminated.',
+  },
+  {
+    file: 'audit/pending-bug-diagnoses.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'process-feedback',
+    verifiedBy: '2026-09-08 (BRO-345): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (process-feedback.yml), group process-feedback (cancel-in-progress: false). Written by scripts/process-feedback.js and drained/rewritten by the same workflow\'s "Create Bug Diagnosis Issues" github-script step. Same CI-vs-local residual risk as audit/processed-feedback.json above: a stale local overwrite could resurrect an already-drained diagnosis and re-file its bug issue.',
+  },
+  // BRO-345 /what-else follow-up (2026-09-08): auditWorkflowText() over every
+  // workflow found 82 commit steps sharing this exact disqualified-fallback
+  // shape. Most are 24h-cadence audits with ample slack to land a push before
+  // the 600s deadline, but these two run every 15-30min — the same exposure
+  // class that caused process-feedback.yml's repeat-failure alert — so they
+  // get fixed now rather than parked on the roadmap. Both verified single-
+  // writer via findWritingWorkflows() with their own dedicated concurrency
+  // group. The remaining ~78 daily-cadence steps are lower urgency and
+  // tracked as a follow-up card rather than fixed inline here.
+  {
+    file: 'audit/opening-night-completeness-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-completeness-check',
+    verifiedBy: '2026-09-08 (BRO-345 what-else): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-completeness-check.yml), group opening-night-completeness-check (cancel-in-progress: false). Runs every 15min — the tightest cadence of any step found with this disqualification shape.',
+  },
+  {
+    file: 'audit/opening-night-live-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-completeness-check',
+    verifiedBy: '2026-09-08 (BRO-345 what-else): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (opening-night-completeness-check.yml), group opening-night-completeness-check (cancel-in-progress: false). Same "Commit state file" step as audit/opening-night-completeness-state.json above.',
+  },
+  {
+    file: 'audit/drift-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-opening-night-drift',
+    verifiedBy: '2026-09-08 (BRO-345 what-else): findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (check-opening-night-drift.yml), group check-opening-night-drift (cancel-in-progress: false). Runs every 30min.',
+  },
+  {
+    file: 'audit/sd-circuit-breaker.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "sd-circuit-breaker"/"check-sd-breaker.js" — sole writer is scripts/check-sd-breaker.js, invoked only by commercial-rss-poll.yml\'s "ScrapingDog daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). Same concurrency group as bd-circuit-breaker.json above, same workflow. 2026-09-07 (BRO-2960): same "Commit breaker state" step move as bd-circuit-breaker.json above.',
+  },
+  // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
+  // — filename is date-stamped, and BOTH places that check apiFallbackSafe
+  // membership (push-with-retry.sh's inline disqualifier and audit-push-
+  // retry-budgets.js's classifyPushFallbackSafety) do exact-suffix
+  // `.endsWith()` matching with no glob/prefix support. Extending that
+  // shared, duplicated matching logic for one non-gating, continue-on-error
+  // telemetry file isn't worth the blast radius — it stays on the slow path,
+  // unchanged from before this fix.
+  // BRO-2413: alert-ledger.json/alert-digest-queue.json/alert-router-
+  // attempts.jsonl are genuinely multi-writer (12/8/3 writers respectively —
+  // see the comment above this block) so `apiFallbackSafe` (which claims "no
+  // merge needed") is still wrong for them. But unlike a MANAGED entry
+  // without `apiFallbackMerge`, these three now carry a real merge function
+  // AND opt into push-via-git-api.sh's fast path via `apiFallbackMerge:
+  // true` — a distinct, narrower claim than `apiFallbackSafe`: "this file
+  // has real reconciliation logic, safe to run inside the Git Data API
+  // fallback's per-retry loop" rather than "no reconciliation needed at
+  // all." push-with-retry.sh's disqualifier (the `isManaged(f) &&
+  // !isApiFallbackMergeable(f)` check) and push-via-git-api.sh (which looks
+  // these three up via findEntry() and runs their merge fn against the live
+  // remote tip on every retry) both read this same flag — see
+  // apiFallbackMergeEntriesFor() below. Loss here was already explicitly
+  // accepted at a coarser grain (see scripts/lib/push-content-survival.js's
+  // CONTENT_SURVIVAL_EXEMPT_LEDGERS and owner-alert-router.js's module
+  // header) — a real per-key merge is a strict improvement on that existing
+  // baseline, not a new correctness bar.
+  //
+  // data/audit/triage/ remains NOT added: it is a DIRECTORY of per-item
+  // files (also written by rebuild-reviews.yml), a different shape from the
+  // generic {ours,remote}->{merged,stats} single-file contract this registry
+  // and push-via-git-api.sh's blob-overlay both assume — needs its own
+  // design, out of scope here.
+  {
+    file: 'audit/alert-ledger.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeAlertLedger,
+    format: 'json',
+    newline: true,
+    apiFallbackMerge: true,
+    // Excluded from the LOCAL flow's opt-in reconcile-merged-json.js pass
+    // (and therefore from reconcile-coverage.js's ~20-workflow "did this
+    // step opt into PUSH_RECONCILE_MERGED_JSON=1" gate) — same reasoning as
+    // audit/feedback-request-ledger.json and audit/express-retry-queue.json
+    // above: this merge fn's ONLY consumer is push-via-git-api.sh's
+    // apiFallbackMerge path. The local flow's pre-existing behavior for this
+    // file (last-writer-wins on conflict) is UNCHANGED by this entry — that
+    // was already an explicitly accepted loss (push-content-survival.js's
+    // CONTENT_SURVIVAL_EXEMPT_LEDGERS), not a new gap this task needs to
+    // close on the slow path too.
+    optInReconcile: false,
+    verifiedBy: '2026-09-04 (BRO-2413): 12 independent writers via routeAlert() (owner-alert-router.js) — real per-conditionKey union merge (keeps the fresher lastSeen on collision) replaces the old whole-file "ours wins outright" gap. See scripts/lib/merge-alert-ledger.js for the full design note.',
+  },
+  {
+    file: 'audit/alert-digest-queue.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeAlertDigestQueue,
+    format: 'json',
+    newline: true,
+    apiFallbackMerge: true,
+    optInReconcile: false, // see audit/alert-ledger.json's comment above
+    verifiedBy: '2026-09-04 (BRO-2413): 8 independent writers via queueDigestLine() (owner-alert-router.js) — real per-conditionKey union merge (keeps the fresher queuedAt on collision). See scripts/lib/merge-alert-digest-queue.js.',
+  },
+  {
+    file: 'audit/alert-router-attempts.jsonl',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeAlertRouterAttempts,
+    format: 'jsonl',
+    apiFallbackMerge: true,
+    optInReconcile: false, // see audit/alert-ledger.json's comment above
+    verifiedBy: '2026-09-04 (BRO-2413): 3 independent writers — append-only log, union deduped by (ts, conditionKey). See scripts/lib/merge-alert-router-attempts.js.',
+  },
   {
     file: 'audit/ob-venue-candidates.json',
     surface: 'public-repo',
@@ -490,4 +817,16 @@ function apiFallbackSafeEntriesFor(surface) {
   return CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface && e.apiFallbackSafe === true);
 }
 
-module.exports = { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor, apiFallbackSafeEntriesFor };
+/** Entries explicitly marked `apiFallbackMerge: true` for one surface — a
+ * narrower, DISTINCT claim from `apiFallbackSafe`: "this file is genuinely
+ * multi-writer AND carries a real merge function safe to run inside
+ * push-via-git-api.sh's per-retry loop", vs apiFallbackSafe's "no merge
+ * needed at all" (BRO-2413). Every entry here also has `status: 'active'`
+ * (so activeEntriesFor()/MANAGED still reconciles it on the slow local
+ * flow as a backstop) — the two lists overlap by design, they are not
+ * alternatives. */
+function apiFallbackMergeEntriesFor(surface) {
+  return CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface && e.apiFallbackMerge === true);
+}
+
+module.exports = { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor };

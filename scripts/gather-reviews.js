@@ -60,6 +60,7 @@ const {
   WIRE_SERVICE_OUTLETS,
   outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
+const { findSiblingUrlOwner } = require('./lib/review-url-collision');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
@@ -79,6 +80,7 @@ const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
@@ -3370,7 +3372,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             console.log(`    ⟳ Prefix match: merged ${filename} into ${existingFile}`);
             return true;
@@ -3380,7 +3382,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
@@ -3395,7 +3397,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
@@ -3442,9 +3444,28 @@ function createReviewFile(showId, reviewData, options = {}) {
             || existingWpNote.startsWith('Dateless show')
             || existingWpNote.startsWith('Tour transfer')
           );
+          // BRO-3092 ship-check: this branch bypasses mergeReviews entirely
+          // (it builds `replacement` and calls applyUrlChangeInvariant direct),
+          // so it also bypasses the sibling URL-collision guard there — and it
+          // fires ONLY on wrongShow/wrongProduction files, i.e. exactly the
+          // flagged population findExistingReviewFile's pass-0 URL dedup skips.
+          // Without this check it is the widest remaining route to a same-show
+          // duplicate URL. Refusing here just falls through to the merge branch
+          // below, which is guarded.
+          const replacementCollision = reviewData.url && findSiblingUrlOwner({
+            showDir,
+            url: reviewData.url,
+            selfOutletId: existingReview.outletId,
+            selfCriticName: existingReview.criticName,
+            selfFilename: existingFile,
+          });
+          if (replacementCollision) {
+            console.log(`    ⊘ url-collision guard: not replacing ${existingFile} with ${reviewData.url} — already owned by ${replacementCollision.filename}`);
+          }
           if ((existingReview.wrongShow || existingReview.wrongProduction) && reviewData.url
               && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))
               && !isHumanFlagged
+              && !replacementCollision
               && !existingIsDateBasedWrongProd) {
             // A file with llmScore + fullText is real content — the wrongProduction flag may be
             // an LLM false-positive (44% FP rate on opening night; Proof 2026-04-17 P0 incident).
@@ -3514,7 +3535,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           const merged = mergeReviews(existingReview, {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
-          }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+          }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
           fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
 
           // Rename to canonical filename if different
@@ -3591,7 +3612,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const corrected = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+            }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
             // mergeReviews keeps the FIRST-seen source as primary (existing's roundup source);
             // force both fields so a corrected file no longer reads as roundup-attributed.
             corrected.criticName = reviewData.criticName;
@@ -3619,7 +3640,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           const merged = mergeReviews(existingReview, {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
-          }, mergeOpts, { script: 'gather-reviews', showId, show: _showMeta });
+          }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
           fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
           console.log(`    ⟳ URL match: ${!merged.isPreviewPlaceholder && existingReview.isPreviewPlaceholder ? 'replaced placeholder' : 'merged'} ${filename} into ${existingFile}`);
           return true;
@@ -4427,8 +4448,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               params: { api_key: scrapingBeeKey, url: apiUrl, render_js: 'false' },
               timeout: 20000, responseType: 'text',
             });
+            recordSbCall({ url: apiUrl, fn: 'json', success: true, status: resp.status, credits: 1, purpose: 'wet-live-fetch' });
             try { posts = JSON.parse(resp.data); } catch {}
-          } catch {}
+          } catch (e) {
+            const status = e.response?.status || 'error';
+            recordSbCall({ url: apiUrl, fn: 'json', success: false, status, credits: sbBilledCredits(status, 1), purpose: 'wet-live-fetch' });
+          }
         }
 
         if (posts && Array.isArray(posts)) {
@@ -4585,6 +4610,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               projectId: bbProjectId,
               caller: 'gather-reviews.js:the-stage',
               purpose: 'The Stage cookie-auth live fetch',
+              host: 'thestage.co.uk',
+              category: 'discovery',
               body: { keepAlive: true, timeout: 300, browserSettings: { solveCaptchas: true } },
             });
 

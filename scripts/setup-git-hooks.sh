@@ -7,6 +7,14 @@
 #   ./scripts/setup-git-hooks.sh
 #
 # Idempotent. Safe to re-run.
+#
+# WORKTREES: core.hooksPath lives in the shared .git/config (not per-worktree),
+# so every worktree runs the MAIN CHECKOUT's scripts/hooks/*, not its own
+# working copy — a session editing a hook file is silently testing the
+# unmodified main-checkout version until that edit is merged. To exercise a
+# worktree-local hook edit before merging, override explicitly:
+#   git -c core.hooksPath=scripts/hooks commit -m "..."
+# (discovered while verifying card #1825's pre-commit manifest auto-sort)
 
 set -euo pipefail
 

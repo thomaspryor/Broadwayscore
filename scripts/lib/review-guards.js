@@ -209,9 +209,22 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
     !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText));
 
   if (!strongDifferent && openingDate && publishDate) {
-    const opening = new Date(openingDate);
-    const publish = new Date(publishDate);
-    if (!isNaN(opening.getTime()) && !isNaN(publish.getTime())) {
+    // BRO-2835: these were `new Date(...)`, which returns Invalid Date for an
+    // ordinal-suffixed publishDate ("April 18th, 2019"). The !isNaN guard then
+    // short-circuited and this safety net never fired — silently, for 4718 of
+    // 35167 dated reviews (13.4%), 529 of them carrying wrongProduction:true.
+    // BRO-1930 converted 15 publishDate call sites to parseDate on 2026-08-26
+    // and missed this one, the only one inside the guard library itself, which
+    // is why test-temporal-override-regression.js went red the same day.
+    //
+    // parseDate alone is NOT sufficient: it enforces a 1970-2030 window and
+    // returns null for the-mousetrap-west-end-2021's openingDate of 1952-11-25,
+    // which would newly EXCLUDE reviews that currently get the override. Fall
+    // back to parseHistoricalDate, which is exported for exactly this case.
+    const { parseDate: pd, parseHistoricalDate: phd } = require('./date-utils');
+    const opening = pd(openingDate) || phd(openingDate);
+    const publish = pd(publishDate) || phd(publishDate);
+    if (opening && publish && !isNaN(opening.getTime()) && !isNaN(publish.getTime())) {
       const daysDiff = Math.abs((publish.getTime() - opening.getTime()) / 86400000);
       if (daysDiff <= 30) {
         if (wpFlag) resultWpConfidence = 'low';
@@ -986,6 +999,27 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'BroadwayWorld Review-Roundup article (multi-outlet quote compilation)' };
   }
 
+  // bestoftheatre.co.uk /blog/post/review-roundup-{slug} — a named-byline post
+  // that summarises the other critics and prints THEIR average as its own
+  // rating. the-story-west-end-2026's was ingested with originalRating "3.1/5"
+  // (the mean of eight other outlets, stated in its own body) and scored 62
+  // onto a show whose critic score was 59.85 over 18 reviews (2026-09-05).
+  // A named byline is exactly the case the 2026-07-11 owner policy below
+  // excludes: a critic reviewing the show counts, a site's AGGREGATED score
+  // does not.
+  if (/bestoftheatre\.co\.uk\/blog\/post\/review-round[-_ ]?up-/i.test(url)) {
+    return { isRoundup: true, reason: 'BestOfTheatre review round-up post (aggregate of other critics)' };
+  }
+
+  // britishtheatre.com /posts/{slug}-review-round-up — same class, different
+  // host, found live in the same sweep. jesus-christ-superstar-west-end-2026's
+  // was bylined "Editorial Staff", opened "opened at the London Palladium to
+  // sharply divided reviews. Here is the critics' verdict", and was scored 78
+  // in reviews.json (2026-09-05).
+  if (/britishtheatre\.com\/posts\/[^/?#]*review-round[-_ ]?up/i.test(url)) {
+    return { isRoundup: true, reason: 'BritishTheatre review round-up post (aggregate of other critics)' };
+  }
+
   // NOTE: Do NOT add generic cross-domain roundup URL patterns (e.g. bare
   // /review-roundup/ on any host). Many legitimate individual critic reviews
   // are SOURCED from roundup pages — the URL points to the roundup where the
@@ -1447,8 +1481,12 @@ function isStaleCvPromotedWrongProduction(data, cvIsStale) {
   // pass — high confidence — already confirmed this IS the Off-West End run).
   // wrongProductionReason is unset on that path; the note carries the tag.
   const reason = String(data.wrongProductionReason || '');
-  const note = String(data.wrongProductionNote || '');
-  if (!/^CV-promoted:|^CV-low-but-strong-signal:/.test(reason) && !/^Auto-adjudicated:/.test(note)) return false;
+  // hasAdjudicatedNote, not a hand-typed /^Auto-adjudicated:/ regex here: BRO-2841
+  // made the note prefix a shared, exported constant (ADJUDICATED_NOTE_PREFIX)
+  // specifically because a duplicate literal can drift silently between call
+  // sites — this used to be exactly that duplicate.
+  const { hasAdjudicatedNote } = require('./wrong-production-autoclear');
+  if (!/^CV-promoted:|^CV-low-but-strong-signal:/.test(reason) && !hasAdjudicatedNote(data)) return false;
 
   // Never re-touch a human/manual decision (and avoid no-op churn).
   if (data.wrongProductionManualClear === true) return false;
@@ -2066,6 +2104,14 @@ function shouldSkipRoundupAudit(data) {
 const ROUNDUP_HOST_OUTLETS = {
   'whatsonstage.com': ['whatsonstage', 'whats-on-stage'],
   'playbill.com': ['playbill'],
+  // Both added 2026-09-05 alongside their isRoundupUrl patterns. The map entry
+  // alone does nothing: isRoundupPageAsReview returns early on
+  // !isRoundupUrl(url).isRoundup, before it ever reads this table, so a host
+  // registered here without a URL pattern is inert. Alias spellings are
+  // defensive — the corpus uses the bare id, confirmed against
+  // data/outlet-registry.json.
+  'bestoftheatre.co.uk': ['bestoftheatre', 'best-of-theatre'],
+  'britishtheatre.com': ['british-theatre', 'britishtheatre'],
   // Policy decided 2026-07-11 (user): a NAMED CRITIC reviewing the show
   // counts; a site's AGGREGATED score does not. isRoundupUrl matches only
   // these hosts' aggregate/roundup pages — never their individual critic
@@ -3131,7 +3177,14 @@ function explainExclusion(data, show, filePath) {
   // LLM-CV pass would otherwise promote a long-biographical-lead review to
   // `wrongShow=true`. The defer prevents that silent rejection at outlets
   // whose house style legitimately opens with biographical framing
-  // (`cvStyle: 'biographical-lead'` in outlet-registry.json).
+  // (`cvStyle: 'long-biographical'` in outlet-registry.json).
+  //
+  // BRO-2776: this comment previously said `'biographical-lead'`, which is NOT
+  // a value outlet-canonicalize.js accepts. getCvStyle() fell back to
+  // 'standard' silently, so anyone following this comment armed nothing and
+  // was told nothing. The canonical vocabulary is VALID_CV_STYLES in
+  // scripts/lib/outlet-canonicalize.js; audit-outlet-registry.js now rejects
+  // anything else at write time.
   //
   // These reviews must continue to appear in reviews.json AND be scored
   // normally — the defer is about NOT being silently wrongShow'd, not about

@@ -2,6 +2,14 @@
  * Minimal Linear GraphQL client. No SDK dependency — the whole surface this
  * project needs is 4 queries/mutations, and pulling in @linear/sdk for that
  * would be a bigger footprint than a fetch() wrapper.
+ *
+ * audit-secret-scan-always-trace: required by 19+ scripts (well over
+ * workflow-secret-scan.js's SHARED_MODULE_THRESHOLD), but getApiKey() below
+ * is a hard, no-fallback dependency for every one of them — not an optional
+ * provider in a degrade-gracefully chain. Without this marker,
+ * scripts/audit-workflow-secret-gaps.js silently never traces LINEAR_API_KEY
+ * for any caller, which is exactly how audit-imageless-scored-shows.yml
+ * shipped without it for a week (2026-08-31 incident).
  */
 
 const fs = require('fs');
@@ -405,6 +413,38 @@ async function createComment(issueId, body) {
   });
 }
 
+// Mark `issueId` a duplicate of `relatedIssueId`. Linear will not accept a
+// move into a duplicate-type workflow state until this relation exists — the
+// mutation fails with "missing duplicate relation" — so linear-brain.js's
+// `update --state Duplicate --duplicate-of BRO-N` calls this FIRST, before
+// the comment and the state write (linear-duplicate-gate.js's header has the
+// full incident). Direction is not symmetric: the relation is stored as an
+// OUTGOING relation on the issue being retired, so `issueId` must be the
+// duplicate and `relatedIssueId` the canonical twin, never the reverse.
+// Both arguments are UUIDs, not BRO-N identifiers — issueRelationCreate does
+// not resolve human-readable identifiers the way `issue(id:)` does.
+// withArchivedIssueRetry, exactly like createComment/updateIssue: this is the
+// FIRST write of a duplicate close, so without it an archived issue fails at
+// step 1 where the pre-existing comment/state path would have self-healed
+// (codebase review, 2026-09-05).
+async function createIssueRelation(issueId, relatedIssueId, type = 'duplicate') {
+  return withArchivedIssueRetry(issueId, async () => {
+    const data = await graphql(
+      `mutation($issueId: String!, $relatedIssueId: String!, $type: IssueRelationType!) {
+        issueRelationCreate(input: { issueId: $issueId, relatedIssueId: $relatedIssueId, type: $type }) {
+          success
+          issueRelation { id type }
+        }
+      }`,
+      { issueId, relatedIssueId, type }
+    );
+    if (!data.issueRelationCreate || !data.issueRelationCreate.success) {
+      throw new Error(`issueRelationCreate(${type}) failed for issue ${issueId} -> ${relatedIssueId}`);
+    }
+    return data.issueRelationCreate.issueRelation;
+  });
+}
+
 // Archive a Done/Canceled issue so it stops counting against the free-tier
 // 250-unarchived-issue cap (BRO-285). Archiving is reversible in Linear's UI
 // (unarchive), unlike delete, so this carries a lower bar than updateIssue's
@@ -647,6 +687,7 @@ module.exports = {
   listOpenIssuesWithDescriptions,
   searchIssues,
   createComment,
+  createIssueRelation,
   updateIssue,
   archiveIssue,
   issueUnarchive,

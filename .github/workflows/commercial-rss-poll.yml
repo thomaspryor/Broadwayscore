@@ -35,7 +35,19 @@ jobs:
   poll-and-apply:
     runs-on: ubuntu-latest
     # Polling 2 feeds + up to 20 LLM calls + fetchPage per match. Budget headroom.
-    timeout-minutes: 15
+    # BRO-335 follow-up: raised 15->20min after a Codex adversarial review of
+    # the "Commit breaker state" PUSH_DEADLINE_SEC=300 change flagged that the
+    # two sequential push-with-retry.sh steps in this job now advertise 300s
+    # + 420s (720s) of deadline budget alone — under the OLD 15min (900s) cap
+    # that left only ~180s for checkout/poll/apply/breaker-checks/push-core-
+    # data/deploy-dispatch combined, which the poll step's own worst case (up
+    # to 20 LLM calls) can exceed on its own. A worst case where both push
+    # steps fully exhaust local+API-fallback retries simultaneously could
+    # have hit the job timeout, which cancels the job outright — losing the
+    # "Dispatch deploy" and "Notify on failure" steps, strictly worse than a
+    # single failed step. 20min (1200s) leaves real margin (~300s+) even in
+    # that compound worst case.
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -146,7 +158,74 @@ jobs:
         continue-on-error: true
         env:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # BRO-2943 rollback knobs, sourced from repo VARIABLES so an
+          # emergency pin needs `gh variable set SD_BREAKER_CEILING --body N`
+          # (or SD_BREAKER_BURST_FACTOR), not a workflow commit riding the
+          # same push path that loses races most hours. Unset → empty →
+          # ignored by the script (plan-derived fair share applies).
+          SD_BREAKER_CEILING: ${{ vars.SD_BREAKER_CEILING }}
+          SD_BREAKER_BURST_FACTOR: ${{ vars.SD_BREAKER_BURST_FACTOR }}
         run: node scripts/check-sd-breaker.js
+
+      - name: Commit breaker state
+        # BRO-2960: this job's "Commit data changes" step below (the big
+        # commercial-pending-review.json/commercial-rss-state.json commit)
+        # was losing its push race ~9 of the last 12 runs (2026-09-06/07),
+        # throwing away a freshly-computed BD/SD breaker verdict every time —
+        # the two checks above run continue-on-error so the verdict itself
+        # always succeeds, only the commit was silently lost. Giving the
+        # breaker state its OWN small, early commit+push means a later
+        # failure on the bigger commit no longer costs it: this step runs
+        # right after both breaker checks (and "Clear BD blacklist" above,
+        # which also calls routeAlert()) and before anything else touches
+        # data/audit/alert-ledger.json or alert-digest-queue.json this job,
+        # so staging those two here (not just the breaker files) captures
+        # every trip/clear alert from all three checks — the ledger only
+        # exists on this job's ephemeral runner disk and must be committed
+        # in the SAME job (owner-alert-router.js, card #618) or that alert
+        # state is silently lost. data-health-check.yml already establishes
+        # multiple push-with-retry.sh calls per job as a supported pattern
+        # (see its stranded-commit-cascade test). Not continue-on-error —
+        # a failed breaker-state push is exactly the bug this step exists to
+        # surface, unlike the billing-API-blip checks above it.
+        if: always() && inputs.dry_run != true
+        # BRO-335 (2026-09-08): this step ran on the script's default 240s
+        # PUSH_DEADLINE_SEC/fundable=2-attempt budget until run 34195321965
+        # (2026-09-08T06:35 UTC) failed here with the exact push-contention
+        # signature BRO-2811 (965408d99d6, commit below) had already fixed on
+        # the sibling "Commit data changes" step: 2 local attempts (~291s,
+        # cheaper than the 180s/attempt worst-case model since fetch was fast
+        # both times) blew the 240s deadline, leaving 0s remaining for the Git
+        # Data API fallback, which floors to 2 retries (push-with-retry.sh
+        # ~L2200-2207) — both of which also timed out that run. 965408d99d6's
+        # own message explicitly investigated this step and left it alone,
+        # but only evaluated PUSH_API_FALLBACK_AFTER_ATTEMPTS ("only
+        # below-boundary override is 1 — premature"); it never tried
+        # PUSH_DEADLINE_SEC, the lever that actually fixed the sibling step.
+        # 300s is NOT a fundability fix — scripts/lib/audit-push-retry-budgets.js's
+        # own worst-case model still computes fundableAttempts=2 at 300s (needs
+        # ≥373s to reach 3, and 400s+ trips its job-timeout-margin guardrail
+        # given this job's shared 15-min budget across two push-with-retry.sh
+        # calls). It's a narrow, evidence-targeted nudge past the exact
+        # observed choke point (291s > 240s deadline check), matching the
+        # existing 300s precedent at opening-night-broadcast.yml's commit
+        # step. Not raising PUSH_API_FALLBACK_AFTER_ATTEMPTS — still agrees
+        # with 965408d99d6 that 1 is too aggressive for an hourly
+        # primary-path commit. If this repeats, the real fix is
+        # `timeout-minutes: 20` on the job to unlock room for an actual
+        # fundability fix, not further per-step tuning.
+        env:
+          PUSH_DEADLINE_SEC: '300'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json
+          if git diff --staged --quiet; then
+            echo "No breaker state changes to commit"
+          else
+            git commit -m "data: hourly poll — BD/SD breaker state
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Commit data changes
         if: always() && inputs.dry_run != true
@@ -160,7 +239,22 @@ jobs:
           # churn. This job runs hourly with only a 15min timeout (poll+LLM
           # steps use ~4min), so 420s (not the 600s used elsewhere) to leave
           # real buffer against the job timeout.
+          #
+          # BRO-2811 (2026-09-08): commercial-pending-review.json is
+          # apiFallbackMerge (BRO-2795) and the incidental breaker files
+          # stage-data-changes.sh sweeps along (bd-circuit-breaker.json etc.,
+          # also BRO-2795) are apiFallbackSafe, so this diff is fallback-
+          # eligible — but the default fallback threshold, floor((7+1)/2)=4,
+          # exceeds the 3 attempts 420s actually funds, so the fallback only
+          # ever engages LATE with its minimum 2-attempt API budget. Override
+          # to 2 (below the 3 fundable, not just at the boundary — an
+          # override at exactly 3 would fire at essentially the same moment
+          # natural deadline exhaustion would anyway, buying nothing) frees a
+          # real ~185s of extra fallback budget while still giving 2 local
+          # attempts first, in line with push-with-retry.sh's own "ordinary
+          # transient contention resolves in 2-3 attempts" design assumption.
           PUSH_DEADLINE_SEC: '420'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
           bash scripts/lib/stage-data-changes.sh

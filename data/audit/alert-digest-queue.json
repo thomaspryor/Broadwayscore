@@ -2,268 +2,392 @@
   {
     "conditionKey": "provider-spend:overspend",
     "title": "Scraping spend over budget",
-    "description": "Day 2026-08-23. Over budget: browserbase $6.6 > $4 (66 sessions); brightdata $15.48 > $2.5 (5758 serp + 4564 unlocker reqs). 2026-08-23 · Browserbase: $6.6 (66 sessions) · 2026-08-23 · Bright Data: $15.48 (5758 serp / 4564 unlocker) · ScrapingBee: baseline day (cycle 669383) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 2065008) — day figure starts tomorrow · Browserbase attribution: 0% attributed · Bright Data attribution: 25% attributed — top: validate-show-venue.js 764, opening-night-poller.js 706, collect-review-texts.js 536, recover-explicit-ratings.js 289, audit-show-review-gap.js 169. Verification streak reset to 0.",
+    "description": "Day 2026-09-04. Over budget: browserbase $6.3 > $4 (63 sessions); brightdata $4.94 > $2.5 (2386 serp + 906 unlocker reqs). 2026-09-04 · Browserbase: $6.3 (63 sessions) · 2026-09-04 · Bright Data: $4.94 (2386 serp / 906 unlocker) · ScrapingBee: baseline day (cycle 1000010) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 126737) — day figure starts tomorrow · Browserbase attribution: 92% attributed — top: test-caller 56, collect-review-texts.js 2 · Bright Data attribution: 16% attributed — top: opening-night-poller.js 302, validate-show-venue.js 107, gather-reviews.js 58, unknown 24, extract-theatre-record.js 15. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": true,
-    "decisionPrompt": "Scraping spend over budget: browserbase $6.6 > $4 (66 sessions); brightdata $15.48 > $2.5 (5758 serp + 4564 unlocker reqs). Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
+    "decisionPrompt": "Scraping spend over budget: browserbase $6.3 > $4 (63 sessions); brightdata $4.94 > $2.5 (2386 serp + 906 unlocker reqs). Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
     "model": null,
-    "queuedAt": "2026-08-24T07:47:04.916Z"
+    "fields": [],
+    "queuedAt": "2026-09-05T02:22:20.323Z"
   },
   {
-    "conditionKey": "time-to-publish-sla:unmeasurable",
-    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
-    "description": "Scope: 2 opening window(s): abigails-party-west-end-2026 (2026-08-19), spellbound-off-broadway-2026 (2026-08-19)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-06T08:07:06.168Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "conditionKey": "time-to-publish-sla:missed",
+    "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
+    "description": "Scope: 2 opening window(s): the-story-west-end-2026 (2026-09-03), a-month-in-the-country-west-end-2026 (2026-09-02)\nEvaluated 6 review(s), p90 245m.\nSlowest:\n• the-story-west-end-2026 / standard — 245m\n• the-story-west-end-2026 / london-theatre — 221m\n• the-story-west-end-2026 / broadwayworld — 144m\n• the-story-west-end-2026 / whatsonstage — 106m\n• the-story-west-end-2026 / telegraph — 44.3m\n• the-story-west-end-2026 / guardian — 27.5m",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-24T07:48:26.323Z"
+    "fields": [],
+    "queuedAt": "2026-09-05T02:23:04.226Z"
   },
   {
-    "conditionKey": "arm-yield:workflow:scrape-westendtheatre",
-    "title": "Scrape WestEndTheatre has stopped updating (22 days)",
-    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-08-02, 22 days ago. It has never before gone quiet for more than 20 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 22d, from 4 productive day(s) / 4 item(s) between 2026-06-14 and 2026-08-02.)",
+    "conditionKey": "on-monitor-launched-on-monitor-2026-09-04",
+    "title": "Opening-night monitor pass complete: holy-fool-off-west-end-2026",
+    "description": "Pass 1, model opus, 11min, $1.09. Pass 1 complete — exited cleanly inside the 15-min budget, no report sent (parity not reached, window open until 22:59Z).\n\n**Holy Fool (Park Theatre, off-West-End) — press night 2026-09-04**\n\nLive on prod: **1 review** — WhatsOnStage / Miriam Sallon, score 38 (Negative). No composite score yet (1 review is below display threshold). Show status is already `open`.\n\nIndependent census found **9 outlets**, so the gap is large:\n- 6 never seen by the pipeline at all: The Stage, Everything Theatre, The Spy in the Stalls (4★), West End Best Friend, Jewish News, Theatre and Tonic\n- 2 discovered but text never collected (0-byte stubs): The Reviews Hub, readaboutstuff\n- 1 duplicate artifact: `whatsonstage--unknown.json` is a 0-byte stub of the same URL as the live WhatsOnStage file\n\nCaveat I recorded",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T12:31:04.933Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-the-story-west-end-2026",
+    "title": "Review URL cross-show mismatch on The Story",
+    "description": "Review URL for financialtimes/Sarah Hemming does not mention show slug (checked: the-story-west-end, the-story, story): https://www.ft.com/content/ce137235-1a5a-4eef-b82a-d6f9e7f6a244?syn-25a6b1a6=1",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-24T13:26:25.716Z"
+    "fields": [],
+    "queuedAt": "2026-09-05T15:24:59.110Z"
   },
   {
-    "conditionKey": "arm-yield:outlet:nysr",
-    "title": "New York Stage Review (reviews collected) has stopped updating (10 days)",
-    "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-08-14, 10 days ago. It has never before gone quiet for more than 8 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 10d, from 12 productive day(s) / 17 item(s) between 2026-07-16 and 2026-08-14.)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T13:26:25.720Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:pride-theatre-dorfman-west-end-2026",
-    "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/pride-theatre-dorfman-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T15:14:48.802Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
-    "title": "Why I Stuck a Flare Up My Arse for England @ garrick — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/why-i-stuck-a-flare-up-my-arse-for-england-garrick-theatre-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T15:14:48.803Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:an-ideal-husband-hammersmith-review2-west-end-2026",
-    "title": "An Ideal Husband Hammersmith Review2 @ lyric — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review2). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/an-ideal-husband-hammersmith-review2-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T15:14:48.804Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:krapps-last-tape-west-end-2026",
-    "title": "Krapps Last Tape @ royal court — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-krapps-last-tape-royal-court-theatre). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/krapps-last-tape-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T15:14:48.805Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:an-ideal-husband-hammersmith-west-end-2026",
-    "title": "An Ideal Husband Hammersmith @ lyric — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/an-ideal-husband-hammersmith-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T15:14:48.806Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:dracula-west-end-2026",
-    "title": "Dracula @ noel coward — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/dracula-noel-coward-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/dracula-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T15:14:48.807Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:john-proctor-west-end-2026",
-    "title": "John Proctor @ royal court — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/john-proctor-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T15:14:48.808Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:pride-the-musical-west-end-2026",
-    "title": "Pride the Musical @ National Theatre — West End show live and scoring",
-    "description": "Auto-promoted from a wet-listing aggregator listing (https://www.westendtheatre.com/359178/news/reviews/pride-national-theatre-reviews/). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/pride-the-musical-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-24T15:14:48.810Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-paranormal-activity-2026",
-    "title": "Stale 'upcoming' tag on Paranormal Activity",
-    "description": "paranormal-activity-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=paranormal-activity-2026 --apply",
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-story-west-end-2026:timeout-london",
+    "title": "Auto-remediation gave up on the-story-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-25T09:54:54.016Z"
+    "fields": [],
+    "queuedAt": "2026-09-05T15:24:59.114Z"
   },
   {
-    "conditionKey": "arm-yield:workflow:scoring-audit",
-    "title": "Scoring Audit has stopped updating (190 days)",
-    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-16 and 2026-08-25.)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-25T13:17:56.577Z"
-  },
-  {
-    "conditionKey": "opening-night-slug-mismatch-paranormal-activity-2026",
-    "title": "Review URL cross-show mismatch on Paranormal Activity",
-    "description": "Review URL for talkinbroadway/Howard Miller does not mention show slug (checked: paranormal-activity, paranormal, activity): https://www.talkinbroadway.com/page/world/ParanormalActivity.html",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-26T12:39:41.328Z"
-  },
-  {
-    "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-real-ivanov-off-broadway-2026",
-    "title": "Unhandled CV.wrongProduction on The Real Ivanov",
-    "description": "nytg/Austin Fimmano (nytg--austin-fimmano.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'The Real Ivanov — https://www.newyorktheatreguide.com/reviews/the-real-ivanov-off-broadway-review-chekhovs-classic-gets-a-thrilling-update",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-26T12:39:43.765Z"
-  },
-  {
-    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-real-ivanov-off-broadway-2026",
-    "title": "Shipped review missing publishDate on The Real Ivanov",
-    "description": "lighting-and-sound-america/David Barbour SHIPPED with no publishDate — cannot confirm post-opening: http://www.lightingandsoundamerica.com/news/story.asp?ID=TKCH8I\nthis-week-in-new-york/Mark Rifkin SHIPPED with no publishDate — cannot confirm post-opening: https://twi-ny.com/tag/the-real-ivanov/",
+    "conditionKey": "opening-night-fulltext-mentions-show:short:holy-fool-off-west-end-2026",
+    "title": "Shipped review too short to verify on Holy Fool",
+    "description": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-26T12:39:43.767Z"
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.664Z"
   },
   {
-    "conditionKey": "opening-night-revival-unverified-the-real-ivanov-off-broadway-2026",
-    "title": "Unverified revival on The Real Ivanov",
-    "description": "the-real-ivanov-off-broadway-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:holy-fool-off-west-end-2026",
+    "title": "Shipped review missing publishDate on Holy Fool",
+    "description": "thestage/Holly O'Mahony SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-26T12:39:43.768Z"
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.666Z"
   },
   {
-    "conditionKey": "opening-night-slug-mismatch-the-real-ivanov-off-broadway-2026",
-    "title": "Review URL cross-show mismatch on The Real Ivanov",
-    "description": "Review URL for lighting-and-sound-america/David Barbour does not mention show slug (checked: the-real-ivanov-off-broadway, the-real-ivanov, real, ivanov): http://www.lightingandsoundamerica.com/news/story.asp?ID=TKCH8I\nReview URL for talkinbroadway/James Wilson does not mention show slug (checked: the-real-ivanov-off-broadway, the-real-ivanov, real, ivanov): https://www.talkinbroadway.com/page/ob/08_24_26.html",
+    "conditionKey": "opening-night-stale-upcoming-tag-holy-fool-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Holy Fool",
+    "description": "holy-fool-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=holy-fool-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-05T16:52:24.668Z"
+  },
+  {
+    "conditionKey": "cmux-launch:auth-preflight-failed",
+    "title": "cmux launch refused — claude auth preflight failed",
+    "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-26T12:39:44.013Z"
+    "fields": [],
+    "queuedAt": "2026-09-05T23:00:06.190Z"
   },
   {
-    "conditionKey": "opening-night-stale-upcoming-tag-the-real-ivanov-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on The Real Ivanov",
-    "description": "the-real-ivanov-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-real-ivanov-off-broadway-2026 --apply",
-    "severity": "warning",
+    "conditionKey": "dispatch-flow-dead",
+    "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
+    "description": "Only 8 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 197). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-26T12:39:44.014Z"
+    "fields": [],
+    "queuedAt": "2026-09-06T04:32:22.232Z"
   },
   {
     "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 52773/36000 credits",
-    "description": "Scrapingdog billed 52773 credits today against a ceiling of 36000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n2 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: collect-review-texts.js (1150), opening-night-poller.js (696), collect-outlet-reviews.js (297).",
+    "title": "Scrapingdog daily breaker TRIPPED: 35560/21000 credits",
+    "description": "Scrapingdog billed 35560 credits today against a ceiling of 21000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n5 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (717), collect-review-texts.js (300), collect-outlet-reviews.js (276).",
     "severity": "critical",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-26T14:33:02.785Z"
+    "fields": [],
+    "queuedAt": "2026-09-06T09:46:22.710Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 38.2% of shows changed coverage state",
-    "description": "review-gap blast radius 38.2% (13/34 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: animal-wisdom-off-broadway-2022, burlesque-west-end-2026, disruption-off-broadway-2026, game-of-thrones-the-mad-king-regional-2026, heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026, midnight-at-the-never-get-west-end-2026, paranormal-activity-2026, romeo-and-juliet-off-broadway-2026, the-hunger-games-on-stage-west-end-2025, the-pass-off-broadway-2026, the-real-ivanov-off-broadway-2026, the-rocky-horror-show-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1811/1500 reqs)",
+    "description": "Zone web_unlocker2 billed 1811 requests today against a ceiling of 1500.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n5 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (117), gather-reviews.js (33), enrich-stubhub-prices.js (16).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-06T22:30:23.067Z"
+  },
+  {
+    "conditionKey": "watchdog-heartbeat-stale",
+    "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches",
+    "description": "The 👑 OWNER watchdog heartbeat is 1490 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-26T18:50:46.770Z"
+    "fields": [],
+    "queuedAt": "2026-09-07T12:51:57.071Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026",
+    "title": "Placeholder synopsis on Kimberly Akimbo",
+    "description": "synopsis for kimberly-akimbo-off-west-end-2026 is too thin (119 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T20:38:47.994Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:kimberly-akimbo-off-west-end-2026",
+    "title": "Pre-opening publishDate on Kimberly Akimbo",
+    "description": "monstagigz/Unknown SHIPPED with publishDate 2026-08-30 (10d before openingDate 2026-09-09): https://monstagigz.com/2026/08/30/theatre-review-kimberly-akimbo-starring-maria-friedman-at-hampstead-theatre/comment-page-1/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T20:38:47.997Z"
+  },
+  {
+    "conditionKey": "bsc-prune:zombie-sweep:workspace:87:linear:BRO-2654",
+    "title": "Zombie-tab sweep closed workspace:87",
+    "description": "closed workspace:87 \"🤖⚡ Data·BRO-2569 No dispatcher path-checks the command it\" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-07T22:06:55.537Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-09-08T12:26:05.880168+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nSpellbound — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Spellbound closed on september 6\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/809",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34232807906",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-09-08T13:36:53.336Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:kimberly-akimbo-off-west-end-2026",
+    "title": "Auto-remediation gave up on kimberly-akimbo-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"kimberly-akimbo-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T14:37:07.815Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-kimberly-akimbo-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Kimberly Akimbo",
+    "description": "kimberly-akimbo-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=kimberly-akimbo-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T14:37:07.819Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:jane-eyre-off-west-end-2026",
+    "title": "Auto-remediation gave up on jane-eyre-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jane-eyre-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T14:37:07.820Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-jane-eyre-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Jane Eyre",
+    "description": "jane-eyre-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=jane-eyre-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T14:37:07.822Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 40.9% of shows changed coverage state",
+    "description": "review-gap blast radius 40.9% (9/22 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bigfoot-off-broadway-2026, bughouse-off-broadway-2026, chess-2025, data-off-broadway-2026, indian-princesses-off-broadway-2025, the-dinosaurs-off-broadway-2026, the-monsters-off-broadway-2026, well-ill-let-you-go-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nPARTIAL write: the other 22 show(s) audited this run were NOT risky and were persisted normally. Only the 9 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T15:05:36.829Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.6% (373/487)\noff-broadway: 41% (127/310)\nwest-end: 73.5% (392/533)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (605h)\nA Midsummer Night's Dream — observer (605h)\nA Midsummer Night's Dream — standard (605h)\nA Midsummer Night's Dream — times-uk (605h)\nABBA Voyage — independent (605h)\n… 196 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (605h)\nBuena Vista Social Club — broadwaynews (605h)\nHeathers The Musical — dailybeast (605h)\nJust in Time — broadwaynews (605h)\nOthello — broadwaynews (605h)\n… 5 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T15:05:54.809Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "7/119 show(s) differ between internal state and what prod serves.\nscore-drift: 7\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift\nHadestown: score-drift\nOperation Mincemeat: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-08T15:05:58.741Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "64 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Othello — nydailynews (605h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Paranormal Activity — nydailynews (240h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"paranormal-activity-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Schmigadoon! — nydailynews (383h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"schmigadoon-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — nydailynews (605h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The 25th Annual Putnam County Spelling Bee — nysr (605h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-25th-annual-putnam-county-spelling-bee-off-broadway-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Book of Mormon — telegraph (605h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-book-of-mormon-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Book of Mormon — whatsonstage (605h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-book-of-mormon-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Great Gatsby — nydailynews (605h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-great-gatsby-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Importance of Being Oscar — daily-mail (605h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Importance of Being Oscar — financialtimes (605h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-08T15:05:58.833Z"
   },
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 27 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/33005004889",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34248986147",
     "decision": false,
     "decisionPrompt": null,
     "model": "opus",
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33005004889)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34248986147)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/33003973080)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34248730310)"
       },
       {
         "name": "Consecutive failures",
-        "value": "27"
+        "value": "6"
       }
     ],
-    "queuedAt": "2026-08-26T19:52:07.446Z"
+    "queuedAt": "2026-09-08T16:17:34.157Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-america-who-hurt-you-off-broadway-2026",
+    "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
+    "description": "synopsis for america-who-hurt-you-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-09T11:30:02.094Z"
   }
 ]

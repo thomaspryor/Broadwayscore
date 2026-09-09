@@ -29,6 +29,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
+const { isCrownLaunchTitle, shouldLaunchNewCrown } = require('./crown-fanout-guard.js');
 const { decideLaunchWait, isSlowBootFailure, STATES, REASONS,
   shouldProbeSurface, shouldReprobeCapacity,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
@@ -36,6 +37,7 @@ const { preflightAuth } = require('./claude-cli.js');
 const { ensureAutoTitle } = require('./workspace-naming.js');
 const terminalCapacity = require('./cmux-terminal-capacity.js');
 
+const { cmuxSpawnEnv } = require('./cmux-socket-auth.js');
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 const CMUX_APP = '/Applications/cmux.app';
 
@@ -285,7 +287,7 @@ function pollUntil(fn, timeoutSec) {
 // opened themselves at a glance. Never blocks or fails the dispatch — a
 // verified-running claude session matters more than its tab color.
 function setAutoColor(ref) {
-  try { spawnSync(CMUX, ['workspace-action', '--action', 'set-color', '--color', 'Blue', '--workspace', ref], { encoding: 'utf8', timeout: 3000 }); } catch { /* cosmetic only */ }
+  try { spawnSync(CMUX, ['workspace-action', '--action', 'set-color', '--color', 'Blue', '--workspace', ref], { encoding: 'utf8', timeout: 3000, env: cmuxSpawnEnv(process.env) }); } catch { /* cosmetic only */ }
 }
 
 // Force cmux out of its deferred-render state (diagnosed live 2026-08-02):
@@ -304,7 +306,7 @@ function setAutoColor(ref) {
 // a finally, otherwise cmux would be blinded to the app's real focus state
 // indefinitely.
 function setAppFocus(state) {
-  try { return spawnSync(CMUX, ['set-app-focus', state], { encoding: 'utf8', timeout: 3000 }).status === 0; } catch { return false; }
+  try { return spawnSync(CMUX, ['set-app-focus', state], { encoding: 'utf8', timeout: 3000, env: cmuxSpawnEnv(process.env) }).status === 0; } catch { return false; }
 }
 
 // OS-level companion to setAppFocus (card #900, 2026-08-03): `set-app-focus`
@@ -404,22 +406,69 @@ function hasSeedProcess(psText, marker) {
   return String(psText).split('\n').some(line => line.includes(marker));
 }
 
-function osProcessAliveForSeed(marker) {
-  try {
-    // -ww: unlimited width, so a long command line isn't truncated before the
-    // marker. -e: every process, not just this terminal's. maxBuffer raised
-    // from spawnSync's 1MB default — measured ~500KB-1MB+ on a host running a
-    // dozen claude sessions (each session's full seed prompt is its own
-    // argv), and a default-sized buffer silently truncates output near the
-    // END of the process list without setting a non-zero exit status,
-    // producing a false "not alive" that would close/refuse a healthy launch
-    // (adversarial review, 2026-07-26). timeout guards a wedged ps hang.
-    const r = spawnSync('ps', ['-e', '-ww', '-o', 'command='], { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, timeout: 5000 });
-    if (r.error || (r.status !== 0 && !r.stdout)) return false; // ps failed/timed out/truncated — fail CLOSED (verifying a POSITIVE claim, unlike claudeAliveIn's close-path fail-open)
-    return hasSeedProcess(r.stdout || '', marker);
-  } catch {
-    return false;
+// One `ps` sample, reusable across many markers (BRO-2575). A bsc-prune sweep
+// tests every idle dispatched workspace at once; re-running `ps -e` per
+// workspace would be ~25 full process-table dumps per 5-minute tick for
+// identical data. Returns a predicate over markers.
+//
+// Fails CLOSED exactly like osProcessAliveForSeed below (which is now defined
+// in terms of this, so the two can never drift): if ps itself failed, every
+// marker reports not-alive. Both callers treat "not alive" as "no positive
+// evidence of life", never as proof of death — the launch path already
+// required a second signal to agree, and deadBreadcrumbs falls back to the
+// pre-existing cmux verdict rather than inventing one.
+// The sample is taken LAZILY, on the first marker tested, and memoized for the
+// probe's lifetime: callers (checkDeadDispatch) can hand this to a code path
+// that may never test a marker at all, and a dispatch that finds nothing idle
+// must not pay for a process-table dump.
+// sampleFn is a test-only seam (same pattern as this file's other probes) so
+// the memoization is provable by COUNTING calls rather than by timing them —
+// a timing assertion is scheduler folklore and would flake in CI.
+function makeSeedProcessProbe(sampleFn = null) {
+  let text = '';
+  let ok = false;
+  let sampled = false;
+  function sample() {
+    sampled = true;
+    if (sampleFn) {
+      try {
+        const out = sampleFn();
+        ok = typeof out === 'string';
+        text = ok ? out : '';
+      } catch { ok = false; }
+      return;
+    }
+    try {
+      // -ww: unlimited width, so a long command line isn't truncated before the
+      // marker. -e: every process, not just this terminal's. maxBuffer raised
+      // from spawnSync's 1MB default — measured ~500KB-1MB+ on a host running a
+      // dozen claude sessions (each session's full seed prompt is its own
+      // argv), and a default-sized buffer silently truncates output near the
+      // END of the process list without setting a non-zero exit status,
+      // producing a false "not alive" that would close/refuse a healthy launch
+      // (adversarial review, 2026-07-26). timeout guards a wedged ps hang.
+      const r = spawnSync('ps', ['-e', '-ww', '-o', 'command='], { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, timeout: 5000 });
+      // ps failed/timed out/truncated — fail CLOSED (verifying a POSITIVE claim,
+      // unlike claudeAliveIn's close-path fail-open)
+      ok = !(r.error || (r.status !== 0 && !r.stdout));
+      text = r.stdout || '';
+    } catch {
+      ok = false;
+    }
+    // Never silent (ship-check P2): with ok=false every marker reports
+    // not-alive, so the whole fleet quietly reverts to the cmux-only verdict
+    // this check exists to correct. A third signal that has switched itself off
+    // must say so — once per probe, not once per marker.
+    if (!ok) console.error('[cmux-launch] WARN process-table read failed — wrapper liveness unavailable; callers fall back to cmux-only liveness');
   }
+  return (marker) => {
+    if (!sampled) sample();
+    return ok ? hasSeedProcess(text, marker) : false;
+  };
+}
+
+function osProcessAliveForSeed(marker) {
+  return makeSeedProcessProbe()(marker);
 }
 
 // Combined liveness gate for the launch-verification poll: cmux's tag/process
@@ -741,6 +790,7 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  * @param {object}  [opts.probes]  test seam: {wrapperAlive, claudeTagAlive,
  *                                 wake, intervalSec, now, idleSec,
  *                                 strictlyAlive, cmuxExists, cwdIsDir,
+ *                                 listWorkspaces, crownAlive,
  *                                 newWorkspace} — never set in real use. Tests calling
  *                                 waitForLaunchOutcome directly MUST pass
  *                                 probes.wake (a no-op), or a local test run
@@ -789,7 +839,39 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  *                                 capacity estimate is not the same class of
  *                                 act as bypassing a liveness check, which is
  *                                 why one is forceable and the other is not.
- * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string|null, command: string|null}}
+ *                                 It ALSO bypasses the BRO-2953 crown-fanout
+ *                                 guard (a genuinely deliberate SECOND,
+ *                                 independent crown is a real, if rare, use
+ *                                 case) — see crown-fanout-guard.js. For a
+ *                                 sanctioned successor hand-off, prefer
+ *                                 opts.successorOf instead: it exempts only
+ *                                 the caller's own predecessor from the guard
+ *                                 without also disabling the unrelated
+ *                                 terminal-capacity preflight below.
+ * @param {string}  [opts.successorOf] BRO-2953: the CALLER's own predecessor
+ *                                 in a crown succession hand-off — either its
+ *                                 workspace ref ("workspace:162") or its
+ *                                 CMUX_WORKSPACE_ID (a UUID, read from
+ *                                 process.env.CMUX_WORKSPACE_ID inside the
+ *                                 predecessor session before composing the
+ *                                 successor's launch call — every
+ *                                 cmux-launched session's env carries it).
+ *                                 Both forms are matched (BRO-3064: a
+ *                                 ref-only comparison here could never match
+ *                                 the UUID the refusal message documents).
+ *                                 Exempts exactly that one predecessor from the
+ *                                 crown-fanout guard so a sanctioned hand-off
+ *                                 is not itself treated as the duplicate it
+ *                                 exists to prevent; any OTHER live crown
+ *                                 still refuses. No effect on any non-crown
+ *                                 launch, and no effect at all once `force`
+ *                                 is set (force already bypasses the whole
+ *                                 guard). Ignored (with no error) if it does
+ *                                 not match any live crown-titled workspace —
+ *                                 a stale or wrong ref here degrades to "no
+ *                                 exemption", never to "grant an exemption
+ *                                 that was never earned."
+ * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, refusedForCrownFanout?: boolean, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string|null, command: string|null}}
  *   seedFile/command are null only for the argument-validation refusals
  *   (BRO-2251) — those return before either is computed, since no seed/cmd
  *   file is ever written for a call that fails validation.
@@ -827,7 +909,7 @@ function pageAuthPreflightFailure(detail) {
   } catch { /* alerting must never block reporting the real launch failure */ }
 }
 
-function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, workKey = null, force = false, journalPath = LAUNCH_JOURNAL_PATH, probes = {} }, wakeState = { woke: false }) {
+function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, workKey = null, force = false, successorOf = null, journalPath = LAUNCH_JOURNAL_PATH, probes = {} }, wakeState = { woke: false }) {
   // force is deliberately NOT consulted by the reclaim check below — see the
   // @param note. Its one effect is bypassing the terminal-capacity preflight
   // (task #1904); everything between here and there behaves identically with
@@ -937,6 +1019,13 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     recordCapacityOutcome(journalEntry.liveRuntimes, 'runtime-created', probes);
     return {
       ok: true, ref: journalEntry.workspaceRef, adoptedLate: true, reclaimedAcrossInvocation: true,
+      // The PRIOR invocation's marker, never this call's cmdMarker (BRO-2575):
+      // the wrapper actually running in the workspace being adopted is the one
+      // that launch wrote, and this call's cmdFile is never executed on the
+      // reclaim path. Journaling cmdMarker here would give the ledger a marker
+      // no process will ever carry, so every later sweep would read the
+      // workspace as wrapper-dead — worse than no marker at all.
+      marker: journalEntry.marker || null,
       // Finding 9: the count from the invocation that actually CREATED this
       // workspace — the honest value for a ledger row correlating deaths
       // against live-runtime pressure. Omitting it biased the correlation
@@ -947,6 +1036,89 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     };
   }
   if (journalEntry) clearLaunchJournalEntry(effectiveWorkKey, journalPath); // recorded failure is now confirmed dead (or unreachable) — stop tracking it
+
+  // BRO-2953: refuse a second concurrent BRO-343 "crown" launch. Every launch
+  // path (fresh dispatch, succession hand-off, manual scratchpad script)
+  // funnels through here, so this is the one chokepoint that sees every
+  // attempt regardless of caller. Deliberately placed AFTER the reclaim block
+  // above, not before it: reclaim's whole job is recognizing "the live
+  // workspace already out there IS this exact work's own prior attempt,
+  // adopt it" and returns before reaching here — putting this guard earlier
+  // would treat that legitimate self-reclaim as a duplicate sibling and
+  // refuse it outright, defeating task #1706's reclaim mechanism for every
+  // crown-titled launch.
+  //
+  // Two things happen here that shouldLaunchNewCrown itself deliberately does
+  // NOT do (kept pure — rule 15):
+  //  1. LIVENESS: `cmux list-workspaces` lists a title the instant a workspace
+  //     is created and keeps listing it until the tab is closed — a crashed
+  //     claude leaves a corpse tab that still appears. Passing that straight
+  //     to the predicate would let one dead crown block every future crown
+  //     launch until someone notices and closes it by hand. crownAliveFn
+  //     (default cmuxws.claudeAliveIn) filters to workspaces with a live
+  //     claude process first. Its own fail-open contract ("never kill a
+  //     maybe-alive tab") is inverted correctly here: on a socket error it
+  //     reports alive=true, which for a REFUSE decision is the conservative
+  //     answer (never mistakenly allow a probable duplicate on an uncertain
+  //     read) — the same fail-toward-safety direction as the listWorkspaces
+  //     catch below, just pointed at a different failure mode.
+  //  2. SUCCESSOR EXEMPTION: opts.successorOf is the caller's OWN predecessor
+  //     workspace ref (every cmux-launched session's env carries
+  //     CMUX_WORKSPACE_ID — see bsc-next.js's self-close comment for the same
+  //     fact used the other direction). A sanctioned hand-off's predecessor
+  //     is legitimately still alive and crown-titled at the exact moment the
+  //     successor launches; excluding exactly that one ref lets the hand-off
+  //     through while any OTHER, unrelated live crown still refuses. This is
+  //     deliberately separate from `force`, which also bypasses the
+  //     terminal-capacity preflight below — a routine hand-off has no reason
+  //     to touch that unrelated guard, and coupling the two was flagged as a
+  //     design defect (Codex adversarial review, 2026-09-07): every ordinary
+  //     succession would otherwise need force:true just to get past THIS
+  //     check, silently weakening capacity protection on every single hand-off.
+  //     `force` remains the escape hatch for a genuinely deliberate SECOND,
+  //     independent crown (not a hand-off) — see the refusal message.
+  // CROWN_FANOUT_GUARD_DISABLED=1 is the operational kill switch (matches the
+  // CMUX_AUTH_PREFLIGHT_DISABLED / CMUX_CAPACITY_PREFLIGHT_DISABLED /
+  // CMUX_LAUNCH_RECLAIM_DISABLED convention) if this ever needs to be pulled
+  // without a code revert.
+  // isCrownLaunchTitle short-circuit first: every non-crown launch (the
+  // overwhelming majority) skips listWorkspaces()/crownAliveFn entirely —
+  // no reason to pay a cmux round trip per listed crown tab on a launch this
+  // guard is a no-op for anyway.
+  if (!force && isCrownLaunchTitle(title) && process.env.CROWN_FANOUT_GUARD_DISABLED !== '1') {
+    // listWorkspacesWithCwd (JSON-backed `cmux workspace list --json`), not
+    // listWorkspaces (text-backed `cmux list-workspaces`): the successorOf
+    // exemption below needs to match a workspace's `id` (a UUID), and only
+    // the JSON source carries that field — the plain-text `list-workspaces`
+    // output has no id column at all. Same source bsc-next.js's
+    // selfCloseAfterSuccession already uses for the identical
+    // CMUX_WORKSPACE_ID-vs-listed-workspace match (BRO-2953/2989 family).
+    const listWorkspacesFn = probes.listWorkspaces || cmuxws.listWorkspacesWithCwd;
+    const crownAliveFn = probes.crownAlive || cmuxws.claudeAliveIn;
+    let existingWorkspaces = [];
+    try {
+      existingWorkspaces = listWorkspacesFn().filter((w) => {
+        // successorOf may be a workspace ref ("workspace:162") or the UUID
+        // from process.env.CMUX_WORKSPACE_ID (see the refusal message below
+        // and the @param doc above) — the documented contract is the UUID,
+        // and a ref-only comparison here can never match one (BRO-3064: this
+        // refused every sanctioned hand-off, since w.ref and successorOf were
+        // never the same shape).
+        const isSuccessor = w && successorOf && (w.ref === successorOf || w.id === successorOf);
+        if (!w || isSuccessor || !isCrownLaunchTitle(w.title)) return false;
+        try { return crownAliveFn(w.ref); } catch { return true; } // uncertain → treat as alive (see header)
+      });
+    } catch (e) {
+      console.error(`[cmux-launch] WARN could not list existing workspaces for the crown-fanout guard (${e.message}) — proceeding without a duplicate-crown check`);
+      existingWorkspaces = [];
+    }
+    const crownCheck = shouldLaunchNewCrown(existingWorkspaces, title);
+    if (!crownCheck.allow) {
+      const reason = crownCheck.reason;
+      console.error(`[cmux-launch] REFUSING launch "${title}": ${reason}`);
+      return { ok: false, reason, refusedForCrownFanout: true, seedFile, command };
+    }
+  }
 
   // Launcher auth pre-check (card #856, Session-system overhaul S3): 7 cmux
   // launches died to "Not logged in" in the 5 days before this fix, and
@@ -1053,7 +1225,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       wakeState.woke = true;
       (probes.wake || (() => setAppFocus('active')))(true);
     }
-    const r = (probes.newWorkspace || (args => spawnSync(CMUX, args, { encoding: 'utf8' })))(
+    const r = (probes.newWorkspace || (args => spawnSync(CMUX, args, { encoding: 'utf8', env: cmuxSpawnEnv(process.env) })))(
       ['new-workspace', '--name', title, '--cwd', cwd, '--command', typed, '--focus', String(focus)]);
     if (r.stdout) process.stdout.write(r.stdout);
     if (r.status !== 0) {
@@ -1113,7 +1285,12 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
         // cmux DID attach a terminal at this live-runtime count, which is the
         // only evidence that can raise a ceiling learned too low (task #1904).
         recordCapacityOutcome(liveRuntimesBefore, 'runtime-created', probes);
-        return { ok: true, ref: ws.ref, state: outcome.state, liveRuntimes: liveRuntimesBefore, seedFile, command };
+        // marker (BRO-2575): the caller journals this on the ledger's `launch`
+        // row so a LATER bsc-prune sweep can re-run osProcessAliveForSeed()
+        // against this launch's own wrapper — the only liveness signal that is
+        // not read through cmux, and therefore the only one that survives cmux
+        // going silent fleet-wide. See dispatch-ledger.deadBreadcrumbs().
+        return { ok: true, ref: ws.ref, state: outcome.state, liveRuntimes: liveRuntimesBefore, seedFile, command, marker: cmdMarker };
       }
       // Confirmed dead by the one authoritative signal that disagrees with
       // wrapper+tag. Do NOT close it here — that is the same owner-approved
@@ -1195,6 +1372,11 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     // NOT a corpse, must not be closed, and must not be journaled as a death.
     wrapperAlive: !!(outcome && outcome.wrapperAlive),
     deadConfirmed: !slowBoot,
+    // BRO-2575: carried on FAILURE too, not just success. The deadConfirmed
+    // =false (slow-boot) case is precisely "the wrapper is still running" —
+    // exactly what a later sweep's wrapper cross-check needs in order not to
+    // bury a session that was merely slow to verify.
+    marker: cmdMarker,
     workspaceRef: survivingWs ? survivingWs.ref : null,
     seedFile, command,
   };
@@ -1224,7 +1406,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // a compensating 'runtime-created' the false low observation would
       // survive while its disproof never did (/code-review finding 3).
       recordCapacityOutcome(liveRuntimesBefore, 'runtime-created', probes);
-      return { ok: true, ref: failed.workspaceRef, adoptedLate: true, liveRuntimes: liveRuntimesBefore, seedFile, command };
+      return { ok: true, ref: failed.workspaceRef, adoptedLate: true, liveRuntimes: liveRuntimesBefore, seedFile, command, marker: cmdMarker };
     }
   }
   // The in-call grace (if any) is exhausted and the workspace is still
@@ -1256,7 +1438,7 @@ module.exports = {
   launchCmuxSession, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
   osActivateCmuxApp, strictlyAliveWorkspace, computeStrictAliveness, shouldAdoptLateStart,
   waitForLaunchOutcome,
-  hasSeedProcess, osProcessAliveForSeed, verifiedAlive, shouldRefuseForAuth,
+  hasSeedProcess, osProcessAliveForSeed, makeSeedProcessProbe, verifiedAlive, shouldRefuseForAuth,
   buildLaunchCommand, isUsableString, describeLaunchArgError,
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
   REWAKE_INTERVAL_SEC,

@@ -7,7 +7,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth,
   shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, buildLaunchCommand,
-  computeStrictAliveness, isUsableString, describeLaunchArgError, launchCmuxSession } = require('./cmux-launch.js');
+  computeStrictAliveness, isUsableString, describeLaunchArgError, launchCmuxSession,
+  makeSeedProcessProbe } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
 
 // BRO-2251 (P0 regression, 2026-08-20): a crowned-successor handoff call
@@ -77,6 +78,243 @@ test('launchCmuxSession: refuses the literal stringified-undefined cwd (the exac
   assert.equal(newWorkspaceCalls, 0);
 });
 
+// BRO-2953: launchCmuxSession is the one chokepoint every launch path funnels
+// through (fresh dispatch, succession hand-off, manual) — the crown-fanout
+// guard belongs here, not in any one caller, so it sees every attempt.
+test('launchCmuxSession: refuses a duplicate crown launch without creating any workspace', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-a', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+test('launchCmuxSession: force:true bypasses the crown-fanout guard', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-b', cwd: os.tmpdir(), force: true,
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('listWorkspaces must not even be called when force:true'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/);
+});
+
+test('launchCmuxSession: an ordinary (non-crown) launch is never blocked, even with 5 live crowns', () => {
+  const res = launchCmuxSession({
+    title: '🤖 Data·BRO-1234 unrelated card', seed: 'seed text', seedKey: 'k-bro-2953-c', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => [
+        { ref: 'workspace:11', title: '👑 OWNER — Crown v43 S0' },
+        { ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' },
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/); // never refused for a crown-fanout reason
+});
+
+// BRO-3064 what-else finding: `cmuxExists: () => false` short-circuits at
+// cmux-launch.js:988, BEFORE the crown-fanout guard's try/catch ever runs —
+// the listWorkspaces throw below was NEVER actually reached, so this test
+// previously passed unconditionally regardless of whether the fail-open
+// catch worked at all. Isolate with a controlled post-guard failure instead
+// (see the successorOf UUID tests above for the same technique).
+test('launchCmuxSession: a listWorkspaces failure fails OPEN (never blocks a launch on an unrelated cmux-socket error)', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-d', cwd: os.tmpdir(),
+    skipAuthPreflight: true,
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => { throw new Error('cmux socket unavailable'); },
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, undefined); // proceeded past the guard despite the listWorkspaces throw
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+});
+
+test('launchCmuxSession: refusal carries refusedForCrownFanout so callers can distinguish it from a generic failure', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-e', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      crownAlive: () => true,
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, true);
+});
+
+// Same BRO-3064 what-else finding as the listWorkspaces-failure test above —
+// this test's crownAlive:false claim was never actually exercised either.
+test('launchCmuxSession: a crown-titled workspace listed but with no live claude process (a corpse tab) does not block a new launch', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-f', cwd: os.tmpdir(),
+    skipAuthPreflight: true,
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:44', title: '👑 OWNER — Crown v40 (BRO-343 backlog triage + dispatch loop)' }],
+      crownAlive: () => false, // corpse tab: listed, but no live claude process
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, undefined); // never refused for a crown-fanout reason — the corpse never counted
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+});
+
+test('launchCmuxSession: successorOf exempts exactly the caller\'s own predecessor, but a THIRD unrelated crown still refuses', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v46 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-g', cwd: os.tmpdir(), successorOf: 'workspace:45',
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [
+        { ref: 'workspace:45', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }, // my own predecessor — exempt
+        { ref: 'workspace:11', title: '👑 OWNER — Crown v43 S0: unrelated independent start' }, // NOT my predecessor — still refuses
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.match(res.reason, /workspace:11/);
+});
+
+// `cmuxExists: () => false` short-circuits at cmux-launch.js:988, BEFORE the
+// crown-fanout guard even runs (the guard sits at ~1088) — that probe choice
+// would make this test pass unconditionally, whether or not the exemption
+// ever fired, and prove nothing about the guard. Isolate the guard's effect
+// with a controllable failure AFTER it instead: skipAuthPreflight skips the
+// one gate between the guard and the capacity preflight, and a
+// terminalCapacity probe reporting no capacity refuses deterministically
+// right after, with its own distinct `reason` and `refusedForCapacity` flag
+// — so a passing assertion here only holds if the guard itself let the
+// launch through (refusedForCrownFanout absent, reason is the capacity
+// one, not "already running").
+test('launchCmuxSession: successorOf lets a hand-off through when its own predecessor is the ONLY live crown', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v46 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-h', cwd: os.tmpdir(), successorOf: 'workspace:45',
+    skipAuthPreflight: true,
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:45', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, undefined); // never refused for a crown-fanout reason — the guard let it through
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+});
+
+// BRO-3064: the refusal message documents passing process.env.CMUX_WORKSPACE_ID
+// (a UUID) as successorOf, not a workspace ref — a ref-only comparison at the
+// guard's filter can never match that. This is the exact bug: reproduce it by
+// giving the predecessor workspace an `id` (as the real listWorkspacesWithCwd
+// source would) and passing THAT as successorOf, the same shape a real crown
+// hand-off script uses per the message's own instructions.
+test('launchCmuxSession: successorOf exempts the caller\'s own predecessor when given as the workspace UUID (id), not just its ref', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v51 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-3064-a', cwd: os.tmpdir(),
+    successorOf: '67060685-eaf2-45bb-be5d-d7571d31ab3a', // process.env.CMUX_WORKSPACE_ID shape
+    skipAuthPreflight: true,
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [
+        // my own predecessor, listed the way listWorkspacesWithCwd (JSON
+        // source) actually returns it: ref AND id both present, id is the
+        // UUID successorOf was given as.
+        { ref: 'workspace:162', id: '67060685-eaf2-45bb-be5d-d7571d31ab3a', title: '👑 OWNER — Crown v50 (BRO-343 backlog triage + dispatch loop)' },
+      ],
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, undefined); // never refused for a crown-fanout reason — the UUID exemption fired
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+});
+
+test('launchCmuxSession: successorOf given as the UUID exempts only that predecessor — a different live crown (matched by neither ref nor id) still refuses', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v51 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-3064-b', cwd: os.tmpdir(),
+    successorOf: '67060685-eaf2-45bb-be5d-d7571d31ab3a',
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [
+        { ref: 'workspace:162', id: '67060685-eaf2-45bb-be5d-d7571d31ab3a', title: '👑 OWNER — Crown v50 (BRO-343 backlog triage + dispatch loop)' }, // my own predecessor — exempt
+        { ref: 'workspace:11', id: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee', title: '👑 OWNER — Crown v43 S0: unrelated independent start' }, // NOT my predecessor — still refuses
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.match(res.reason, /workspace:11/);
+});
+
+// Same BRO-3064 what-else finding: cmuxExists:false meant listWorkspaces was
+// never reached regardless of the kill switch, so this test could not have
+// caught a regression that deleted the CROWN_FANOUT_GUARD_DISABLED check. A
+// REAL live crown is now present (which would refuse without the kill
+// switch) to prove the switch is what let the launch through, not mere luck.
+test('launchCmuxSession: CROWN_FANOUT_GUARD_DISABLED=1 skips the guard entirely (operational kill switch)', () => {
+  const prev = process.env.CROWN_FANOUT_GUARD_DISABLED;
+  process.env.CROWN_FANOUT_GUARD_DISABLED = '1';
+  try {
+    const res = launchCmuxSession({
+      title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+      seed: 'seed text', seedKey: 'k-bro-2953-i', cwd: os.tmpdir(),
+      skipAuthPreflight: true,
+      probes: {
+        cmuxExists: () => true,
+        crownAlive: () => true,
+        listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }], // would refuse without the kill switch
+        terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+      },
+    });
+    assert.equal(res.ok, false);
+    assert.equal(res.refusedForCrownFanout, undefined); // the live crown above did NOT refuse it — the kill switch skipped the guard
+    assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+  } finally {
+    if (prev === undefined) delete process.env.CROWN_FANOUT_GUARD_DISABLED;
+    else process.env.CROWN_FANOUT_GUARD_DISABLED = prev;
+  }
+});
+
+test('launchCmuxSession: a non-crown launch never pays the listWorkspaces/crownAlive cost at all', () => {
+  const res = launchCmuxSession({
+    title: '🤖 Data·BRO-1234 unrelated card', seed: 'seed text', seedKey: 'k-bro-2953-j', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('must not be called for a non-crown launch'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/);
+});
+
 // Task #1438: replaces a source-regex in bsc-next.test.mjs that pinned this
 // exact template-literal formatting (would break on a harmless reformat while
 // the launched command stayed byte-identical — the #1432/#1434 fragile class).
@@ -124,6 +362,16 @@ function fakeWait({ wrapperAliveAt = () => false, tagAliveAt = () => false, wrap
       // REAL `cmux set-app-focus active` on the host with no clear (lazy-exec
       // fix ship-check finding, 2026-08-02).
       wake: () => {},
+      // Likewise MUST be stubbed (BRO-2575 ship-check): unstubbed, this falls
+      // through to the REAL cmuxws.terminalSurfaceConfirmedMissing, which asks
+      // the live cmux on the host about workspace:900. On a machine running
+      // cmux that ref is genuinely not found, so the harness reported
+      // surfaceConfirmedMissing=true and every INJECTION_NEVER_RAN expectation
+      // below resolved to TERMINAL_RUNTIME_MISSING instead — 4 tests that fail
+      // locally and pass in CI (where there is no cmux binary and the throw is
+      // an unrecognised ENOENT). Host-dependent tests are worse than no tests;
+      // callers that want the surface-missing branch pass it explicitly.
+      surfaceConfirmedMissing: () => false,
     },
   });
   return { res, polls, startedCalls: () => startedCalls };
@@ -446,4 +694,47 @@ test('cmuxIdleSec: sub-ms negative jitter clamps to 0, a real clock step reads a
   assert.equal(cmuxIdleSec(marker, st.mtimeMs - 60_000), Infinity, 'a minute in the future is a clock step, not jitter');
   assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker, st.mtimeMs - 60_000) }), true);
   fs.unlinkSync(marker);
+});
+
+// ── BRO-2575: makeSeedProcessProbe ─────────────────────────────────────────
+// The OS process table is the only liveness signal not read through cmux, so
+// it is the one that still tells the truth when cmux's tag registry and
+// terminal surface go quiet together (2026-08-31: five live dispatches
+// journaled dead in the same 2ms). bsc-prune and checkDeadDispatch both gate
+// their 'dead' verdict on it. These cover the two properties that matter:
+// the sample is taken at most once, and a broken `ps` never manufactures life.
+test('makeSeedProcessProbe: samples the process table exactly once, however many markers are tested', () => {
+  let samples = 0;
+  const probe = makeSeedProcessProbe(() => {
+    samples++;
+    return 'bash /var/folders/__/T/bsc-cmd-linear_BRO-80-f09deda2.sh\n';
+  });
+  assert.equal(samples, 0, 'the sample must be lazy — a probe nobody consults must not spawn ps');
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(probe('bsc-cmd-linear_BRO-99-00000000.sh'), false);
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(samples, 1,
+    'a 25-workspace sweep must dump the process table once, not 25 times');
+});
+
+test('makeSeedProcessProbe: a failing process-table read reports every marker not-alive (fail CLOSED)', () => {
+  const probe = makeSeedProcessProbe(() => { throw new Error('ps: cannot allocate memory'); });
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), false,
+    'a broken ps must never vouch for a session — the caller then keeps its pre-existing verdict');
+});
+
+test('makeSeedProcessProbe: a marker that is not running reports false, not a throw', () => {
+  const probe = makeSeedProcessProbe();
+  assert.equal(probe('bsc-cmd-no-such-launch-deadbeef.sh'), false);
+});
+
+// hasSeedProcess is the pure half both the launch path and the death path
+// share; the marker's nonce is what stops a stale wrapper from an OLDER
+// attempt vouching for a NEW workspace (card #548).
+test('hasSeedProcess: matches the real wrapper line shape, and only the exact nonce', () => {
+  const psText = 'bash /var/folders/__/T/bsc-cmd-linear_BRO-80-f09deda2.sh\n/sbin/launchd\n';
+  assert.equal(hasSeedProcess(psText, 'bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(hasSeedProcess(psText, 'bsc-cmd-linear_BRO-80-99999999.sh'), false,
+    'a different attempt of the SAME task must not vouch for this one');
+  assert.equal(hasSeedProcess('', 'bsc-cmd-linear_BRO-80-f09deda2.sh'), false);
 });

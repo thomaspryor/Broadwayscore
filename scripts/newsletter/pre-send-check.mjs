@@ -45,6 +45,7 @@ const {
   phantomImageViolations,
   countEmptyImgSrc,
   extractSiteImageUrls,
+  extractSiteLinkUrls,
   completenessFindings,
   gapDisclosureDecisions,
   openingsPreserved,
@@ -359,11 +360,36 @@ if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1' && hardFailures.length === 0
   }
 }
 
+// ── SOFT: do the referenced site PAGE links actually resolve? (best-effort) ──
+// Same deploy-lag/bot-challenge caveat as the image check above, so SOFT not
+// HARD. Added after task #804 (footer About link 404 on the WE edition,
+// fixed twice) and the hollywood-reporter outlet-slug 404 shipped alongside
+// it — neither was catchable by the image-only check that predated this.
+// Resend's own pre-send link checker caught both live, after send-test had
+// already generated the draft; this closes that gap earlier, before the
+// human ever opens Resend's editor.
+if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1' && hardFailures.length === 0) {
+  const linkUrls = extractSiteLinkUrls(html).slice(0, 60);
+  // Parallel, not sequential (unlike the image loop above) — up to 60 links at
+  // an 8s timeout each would otherwise add up to ~8 minutes to every pre-send
+  // run whenever prod is slow, on top of the 40-image loop it runs after.
+  const results = await Promise.all(linkUrls.map(async (url) => {
+    try {
+      const res = await fetch(url, { method: 'HEAD', redirect: 'follow', signal: AbortSignal.timeout(8000) });
+      return res.ok ? null : `${url} → ${res.status}`;
+    } catch { return null; /* network error/timeout: unverifiable, stay silent rather than cry wolf */ }
+  }));
+  const badLinks = results.filter(Boolean);
+  if (badLinks.length > 0) {
+    softIssues.push(`${badLinks.length} page link(s) not resolving on prod (deploy lag or 404): ${badLinks.slice(0, 5).join('; ')}`);
+  }
+}
+
 // ── SOFT: section sanity ──────────────────────────────────────────────────────
 const fired = meta.sections.filter(s => s.fired);
 if (fired.length < 6) softIssues.push(`Only ${fired.length} sections fired (expected ≥ 6)`);
 const hasOpening = meta.sections.some(s =>
-  ['broadway-openings', 'offbroadway-openings', 'london-openings'].includes(s.name) && s.fired);
+  ['broadway-openings', 'offbroadway-openings', 'london-openings', 'broadway-we'].includes(s.name) && s.fired);
 if (!hasOpening) softIssues.push('No opening section fired — newsletter has no main story');
 
 // ── SOFT: preheader ───────────────────────────────────────────────────────────

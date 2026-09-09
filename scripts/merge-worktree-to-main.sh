@@ -158,24 +158,39 @@ fi
 unset _bro142_result _bro142_status _bro142_marker
 
 # --- Stash any dirty tracked files (the data-daemon race) ---
+# Factored into stash_if_dirty() (BRO-2552) so the push-retry loop far below
+# can run this exact check again immediately before its own remote merge: the
+# daemon has no cooldown and can re-dirty a tracked file (e.g.
+# data/audit/stage-latency.jsonl) during the minutes-long test-suite/push-audit
+# run that happens between this initial stash and a later retry attempt —
+# which used to hard-fail that retry's merge with "local changes would be
+# overwritten by merge" instead of stashing again (BRO-2540, 2026-08-30 — hit
+# twice live in one session, each costing a full wasted test-suite re-run).
 STASHED=0
-STASH_SHA=""
-if ! g diff --quiet 2>/dev/null || ! g diff --cached --quiet 2>/dev/null; then
-  log "working tree dirty (likely the data daemon) — stashing"
-  if g stash push -m "wt-integ-$$" >/dev/null 2>&1; then
-    STASHED=1
-    # Captured immediately after push, while this stash is unambiguously
-    # stash@{0} — by the time restore_stash() runs, a concurrent session's
-    # own stash push/pop on the SAME shared checkout can have shifted every
-    # index-based reference (ship-check finding, task #888/BRO-253: "git
-    # stash list" alone points at whatever is CURRENTLY top-of-stack, which
-    # may no longer be this run's entry). The SHA is immutable regardless.
-    STASH_SHA=$(g rev-parse -q --verify stash@{0} 2>/dev/null || echo "")
+stash_if_dirty() {
+  if ! g diff --quiet 2>/dev/null || ! g diff --cached --quiet 2>/dev/null; then
+    log "working tree dirty (likely the data daemon) — stashing"
+    g stash push -m "wt-integ-$$" >/dev/null 2>&1 && STASHED=1
   fi
-fi
+}
+stash_if_dirty
 
-restore_stash() {
-  [ "$STASHED" = 1 ] || return 0
+# pop_stash_safely — pops exactly one stash (stash@{0}) with the conflict-
+# safety rules below. Shared by restore_stash() (the top-of-script stash,
+# popped at the very end) and the push-retry loop's own tightly-scoped
+# re-stash (BRO-2552) — both need the identical safety net, not two copies
+# that can drift apart. Captures the stash's SHA FRESH, right before
+# attempting the pop, rather than trusting a value computed earlier: by the
+# time this runs, index-based `stash@{0}` references may have shifted (a
+# concurrent session's own stash push/pop on the SAME shared checkout,
+# ship-check finding, task #888/BRO-253), so only a SHA read at the moment of
+# the pop attempt is guaranteed to name the entry this call is operating on.
+# Returns 0 if safe to consider this stash resolved (popped cleanly, or a
+# conflict that's provably just daemon churn was auto-resolved), 1 only when a
+# genuine unresolved conflict on a non-auto-gen path needs operator attention.
+pop_stash_safely() {
+  local STASH_SHA
+  STASH_SHA=$(g rev-parse -q --verify stash@{0} 2>/dev/null || echo "")
   if ! g stash pop >/dev/null 2>&1; then
     # This fallback used to assume stash-pop conflicts are ALWAYS in auto-
     # generated state files and blindly `checkout HEAD -- .` across the WHOLE
@@ -262,6 +277,11 @@ restore_stash() {
     done <<< "$unmerged"
     g stash drop >/dev/null 2>&1 || true
   fi
+}
+
+restore_stash() {
+  [ "$STASHED" = 1 ] || return 0
+  pop_stash_safely
 }
 
 # merge_or_die <ref> <die-message> — `git merge <ref> --no-edit`, surfacing
@@ -416,7 +436,18 @@ else
     log "post-merge test floor: checking scripts/lib/ colocated tests against the merged tree"
     if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && MERGE_TEST_GATE_BASELINE_SHA="$ORIGIN_BASE_SHA" node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"); then
       restore_stash
-      die "post-merge test floor failed — the MERGED tree has a NEW-since-origin/main scripts/lib/ colocated test failure (likely a semantic collision between two branches, see task #1149/#1433). Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatches: MERGE_TEST_GATE_SKIP_BASELINE=1 to fall back to old all-or-nothing if the baseline diff itself misbehaves, or MERGE_SKIP_POST_MERGE_TEST_GATE=1 for the whole gate — scripts/merge-worktree-to-main.sh)"
+      # BRO-2874, four field reproductions: this used to assert flatly that "the
+      # MERGED tree has a NEW-since-origin/main colocated test failure" for ANY
+      # non-zero exit of the gate. That is only ONE of the reasons the gate
+      # fails. It also fails when the child crashed or timed out and NO
+      # individual test failure could be parsed at all (observed as status=7,
+      # and as a spawn-layer error where status is null) — cases in which the
+      # merged tree may be perfectly clean. The gate prints its own
+      # "post-merge test floor: FAILED (<reason>)" line immediately above,
+      # naming the real cause; quote that rather than restating a cause this
+      # script cannot distinguish. Same shape as the node --check floor above,
+      # which prints the real stderr before hedging.
+      die "post-merge test floor failed — scroll up to the 'post-merge test floor: FAILED (...)' line for the gate's own reason, which distinguishes a NEW-since-origin/main scripts/lib/ colocated test failure (a semantic collision between two branches, see task #1149/#1433) from a crashed or timed-out run whose output could not be parsed at all. It may be well above this line, after the full test output. Do not assume the former without reading it. If NO such line appears at all, the gate itself failed to start (look for a node stack trace, e.g. a missing scripts/lib/ dependency) and neither diagnosis applies. Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatches: MERGE_TEST_GATE_SKIP_BASELINE=1 to fall back to old all-or-nothing if the baseline diff itself misbehaves, or MERGE_SKIP_POST_MERGE_TEST_GATE=1 for the whole gate — scripts/merge-worktree-to-main.sh)"
     fi
   fi
 fi
@@ -469,7 +500,43 @@ else
       restore_stash; die "GitHub unreachable (network) — re-run when connectivity returns. Local merge is intact."
     fi
     log "push not yet confirmed landed (attempt $attempt) — merging remote and retrying"
-    merge_or_die "origin/$DEFAULT_BRANCH" "could not merge remote changes on retry"
+    # BRO-2552: re-check for daemon churn right before THIS merge, not just
+    # once at script start — by this point in the loop the daemon has had a
+    # full push attempt plus fetch/ancestor-check cycle to dirty a tracked
+    # file again. Stash-and-pop is scoped TIGHTLY to just this one merge call
+    # rather than folding into STASHED/restore_stash: that stash can already
+    # be outstanding from the top-of-script check above and won't be popped
+    # until the whole push loop finishes, so a second, transiently-
+    # outstanding stash here can briefly coexist with it on the stack.
+    #
+    # Ordering matters (adversarial review before this shipped, both
+    # /second-opinion and a Codex pass — see review-verdicts.jsonl): the pop
+    # ONLY happens after a merge that completed with NO conflict (checked
+    # first, below). If the merge itself conflicts for real, MERGE_HEAD is
+    # now set, and pop_stash_safely()'s MERGE_HEAD branch cannot tell "this
+    # unmerged path is from the stash-pop I'm about to attempt" apart from
+    # "this unmerged path is the retry-merge's OWN unresolved conflict" —
+    # calling it in that state risks silently auto-resolving THIS merge's
+    # genuine conflict on an allowlisted daemon path to HEAD (discarding the
+    # incoming origin diff) before the failure is ever reported, and the
+    # resulting die() would misreport a real merge conflict as "the
+    # retry-scoped stash pop conflicted" while dropping git's own conflict
+    # text. So on a real conflict here, touch NO stash at all — leave
+    # MERGE_HEAD and any "wt-integ-*" stash entries exactly as git left them
+    # for the operator to resolve, same as this script's other die() paths.
+    RETRY_STASHED=0
+    if ! g diff --quiet 2>/dev/null || ! g diff --cached --quiet 2>/dev/null; then
+      log "working tree dirty again (daemon churn mid-retry) — stashing before remote merge"
+      g stash push -m "wt-integ-retry-$$" >/dev/null 2>&1 && RETRY_STASHED=1
+    fi
+    RETRY_MERGE_OUT=$(g merge "origin/$DEFAULT_BRANCH" --no-edit 2>&1)
+    RETRY_MERGE_RC=$?
+    if [ "$RETRY_MERGE_RC" != 0 ]; then
+      die "could not merge remote changes on retry:"$'\n'"$RETRY_MERGE_OUT"
+    fi
+    if [ "$RETRY_STASHED" = 1 ]; then
+      pop_stash_safely || die "retry-scoped stash pop conflicted on a non-auto-gen path after a CLEAN remote merge — resolve manually in $MAIN_DIR (git -C $MAIN_DIR stash list / stash show -p)"
+    fi
   done
   if [ "$PUSHED" != 1 ]; then
     restore_stash

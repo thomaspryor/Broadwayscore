@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { reconcileTaskSessions, redispatchArgv, USAGE } = require('./bsc-reconcile.js');
+const { JOB_EVENTS, ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS } = require('./lib/dispatch-ledger.js');
 
 test('redispatchArgv: the real redispatch command MUST carry --force', () => {
   // Self-review catch (2026-08-03): bsc-next's duplicate-dispatch guard
@@ -730,6 +731,40 @@ test('zombie sweep: a card already carrying the outcome-park marker is skipped e
   assert.equal(r.checked, 0, 'must not even fetch the card for an already-parked task');
 });
 
+// ── BRO-2993: a failed cmux listing must fail closed, not silently disable
+// the live-tab guard ────────────────────────────────────────────────────────
+test('zombie sweep: a failed cmux listing flips ZERO tasks, even one otherwise eligible to flip', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  h.deps.listWorkspacesFn = () => { throw new Error('cmux socket busy'); };
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(r.flipped, [], 'a cmux outage must never authorize a flip — uncertainty is not evidence the tab is dead');
+  assert.deepEqual(h.flips, []);
+  assert.equal(r.checked, 0, 'must not even reach the Notion card fetch — the guard fires before it');
+  assert.ok(r.skipped.some(s => s.id === '9' && /^live-tab cmux-unavailable:/.test(s.why)));
+  assert.ok(h.reports.some(rep => rep.kind === 'untracked-sweep-error' && /cmux socket busy/.test(rep.detail)));
+});
+
+test('zombie sweep: a successful (even empty) cmux listing behaves exactly as before — a genuinely idle task still flips', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], workspaces: [], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.flips, ['9'], 'a real empty workspace list is legitimate evidence of no live tab, not uncertainty');
+  assert.deepEqual(r.flipped, ['9']);
+});
+
+test('zombie sweep: a failed cmux listing still respects ledger-tracked/recheck-parked exclusions (no over-broad skip inflation)', () => {
+  const h = zombieHarness({
+    tasks: [zTask(1), zTask(2, { metadata: { recheckAfter: '2026-08-20' } })],
+    entries: [{ event: 'launch', taskId: '1', ts: tsAgo(100) }],
+  });
+  h.deps.listWorkspacesFn = () => { throw new Error('cmux socket busy'); };
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(r.flipped, []);
+  assert.ok(!r.skipped.some(s => /cmux-unavailable/.test(s.why)), 'neither task was ever a candidate for the live-tab guard, so the cmux-unavailable reason must not appear for them');
+});
+
 test('zombie sweep: a failed Notion park is reported honestly and never stamps the local marker (retried next sweep)', () => {
   const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
   const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
@@ -738,4 +773,176 @@ test('zombie sweep: a failed Notion park is reported honestly and never stamps t
   assert.deepEqual(h.outcomeParkMarks, [], 'no local marker on a failed park — must retry, not silently give up');
   assert.ok(h.reports.some(rep => rep.kind === 'zombie-outcome-park-failed' && rep.taskId === '9'));
   assert.deepEqual(r.flipped, []);
+});
+
+// ── sweepOrphanedJobs (BRO-3052) ────────────────────────────────────────────
+// Live 2026-09-08 (linear:BRO-2565): a single negative liveness glance wrote
+// job-orphaned + released the lease while the job's process was still
+// running 15+ minutes later. sweepOrphanedJobs debounces: the first negative
+// glance writes ORPHAN_SUSPECT only; the terminal job-orphaned row (and the
+// lease release) only happens once a LATER call still finds it dead, past
+// dispatch-ledger.js's ORPHAN_CONFIRM_MS.
+const { sweepOrphanedJobs, GRACE_MS } = require('./bsc-reconcile.js');
+
+const ORPHAN_NOW = Date.parse('2026-09-08T04:30:00.000Z');
+
+function orphanHarness({ lease = null, alive = false, freshEntries = null } = {}) {
+  const appended = [];
+  const released = [];
+  const reports = [];
+  const deps = {
+    readLeaseFn: () => lease,
+    pidLooksLikeClaudeFn: () => alive,
+    appendEntryFn: (e) => appended.push(e),
+    releaseLeaseFn: (taskId, jobId) => released.push({ taskId, jobId }),
+    // Explicit, never the real on-disk ledger (dispatch-ledger.js's REPO is a
+    // hardcoded Mac-local absolute path) — a test that forgets this override
+    // would silently read this machine's actual dispatch-ledger.jsonl instead
+    // of its own fixture. Defaults to the same entries the sweep was called
+    // with (no divergence since the snapshot), matching the common case.
+    readLedgerEntriesFn: () => freshEntries || [],
+    reportFn: (r) => reports.push(r),
+    nowFn: () => ORPHAN_NOW,
+  };
+  return { appended, released, reports, deps };
+}
+
+test('sweepOrphanedJobs: an alive lease is never touched', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: a freshly-acquired lease (pid:null, inside GRACE_MS) is presumed starting, not orphaned', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: null, acquiredAt: new Date(ORPHAN_NOW - 1000).toISOString() }, alive: false });
+  assert.ok(1000 < GRACE_MS, 'fixture must actually land inside the grace window');
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: FIRST negative glance writes an ORPHAN_SUSPECT row, not job-orphaned — the live BRO-2565 shape', () => {
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'must not write the terminal row off one glance');
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_SUSPECT);
+  assert.equal(h.appended[0].jobId, 'j2565');
+  assert.deepEqual(h.released, [], 'the lease must not be released on a mere suspicion');
+  assert.ok(h.reports.some((r) => r.kind === 'orphan-suspect'));
+});
+
+test('sweepOrphanedJobs: an alive job with a stale prior suspicion CLEARS it — the ledger stops trusting that old blip', () => {
+  const oldSuspectTs = new Date(ORPHAN_NOW - 60 * 1000).toISOString();
+  const h = orphanHarness({ lease: { jobId: 'j9', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '9', jobId: 'j9', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: oldSuspectTs },
+  ];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.equal(h.appended.length, 1, 'must clear the stale suspicion now that the job is observed alive');
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_CLEARED);
+  assert.equal(h.appended[0].jobId, 'j9');
+});
+
+// Codex adversarial ship-check catch (2nd pass): ORPHAN_CLEARED is
+// non-terminal, so the SAME TOCTOU hazard that threatens the ORPHANED write
+// also threatens this one — a real job-done landing between the alive glance
+// and this write would otherwise get "reopened" by a later, non-terminal
+// clear row (last-wins fold).
+test('sweepOrphanedJobs: a job-done that landed AFTER this tick\'s snapshot but BEFORE the clear write is never reopened by ORPHAN_CLEARED', () => {
+  const oldSuspectTs = new Date(ORPHAN_NOW - 60 * 1000).toISOString();
+  const staleSnapshot = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '9', jobId: 'j9', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: oldSuspectTs },
+  ];
+  const freshOnDisk = [
+    ...staleSnapshot,
+    { event: JOB_EVENTS.DONE, taskId: '9', jobId: 'j9', ts: new Date(ORPHAN_NOW - 500).toISOString(), sessionId: 's1' },
+  ];
+  const h = orphanHarness({ lease: { jobId: 'j9', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true, freshEntries: freshOnDisk });
+  const { orphans } = sweepOrphanedJobs(staleSnapshot, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, [], 'must not write ORPHAN_CLEARED over a real completion — that would reopen a finished job');
+});
+
+test('sweepOrphanedJobs: an alive job with NO prior suspicion writes nothing (the overwhelming common case must not spam the ledger)', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: a SECOND tick that still finds it dead, past ORPHAN_CONFIRM_MS, writes the real job-orphaned row and releases the lease', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const entries = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs },
+  ];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: entries });
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.equal(orphans.length, 1);
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHANED);
+  assert.deepEqual(h.released, [{ taskId: '2565', jobId: 'j2565' }]);
+});
+
+// Codex adversarial ship-check catch: main() confirms off a SNAPSHOT read at
+// the top of its tick. The job's own process can legitimately finish and
+// append job-done in the real, on-disk ledger between that snapshot and this
+// write — appendEntryFn always appends to the CURRENT end of the file, so a
+// stale-snapshot ORPHANED write would otherwise land after a real job-done
+// and silently override it (foldJobs' last-wins fold). readLedgerEntriesFn is
+// the TOCTOU re-check's fresh read; here it diverges from the stale snapshot.
+test('sweepOrphanedJobs: TOCTOU — a job-done that landed AFTER this tick\'s snapshot but BEFORE the write is never overridden by job-orphaned', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const staleSnapshot = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '2817', jobId: 'j2817', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2817', jobId: 'j2817', ts: suspectTs },
+  ];
+  const freshOnDisk = [
+    ...staleSnapshot,
+    { event: JOB_EVENTS.DONE, taskId: '2817', jobId: 'j2817', ts: new Date(ORPHAN_NOW - 500).toISOString(), sessionId: 's1' },
+  ];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: freshOnDisk });
+  const { orphans } = sweepOrphanedJobs(staleSnapshot, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'must not orphan a job that has since reached job-done');
+  assert.deepEqual(h.appended, [], 'must not write job-orphaned over a real completion');
+  assert.deepEqual(h.released, []);
+  assert.ok(h.reports.some((r) => r.kind === 'orphan-resolved'));
+});
+
+test('sweepOrphanedJobs: does not spam a fresh suspect row every tick while still waiting to confirm', () => {
+  const suspectTs = new Date(ORPHAN_NOW - 30 * 1000).toISOString(); // 30s old, well inside ORPHAN_CONFIRM_MS
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, [], 'a suspect row already exists and is fresh — must not write a duplicate');
+});
+
+test('sweepOrphanedJobs: a STALE suspect row (past ORPHAN_SUSPECT_MAX_AGE_MS) is not corroboration — re-arms with a fresh suspect instead of confirming', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_SUSPECT_MAX_AGE_MS - 1000).toISOString();
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'an ancient suspicion must never confirm an unrelated later observation');
+  assert.equal(h.appended.length, 1, 'must re-arm with a fresh suspect row');
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_SUSPECT);
+});
+
+test('sweepOrphanedJobs: dryRun never writes to the ledger or releases the lease, even once confirmed', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: entries });
+  const { orphans } = sweepOrphanedJobs(entries, { dryRun: true, deps: h.deps });
+  assert.equal(orphans.length, 1, 'dry-run still reports what WOULD be orphaned');
+  assert.deepEqual(h.appended, []);
+  assert.deepEqual(h.released, []);
 });

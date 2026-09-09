@@ -179,6 +179,101 @@ function stateMap(results) {
 }
 
 /**
+ * Per-show state for the review-gap blast-radius guard (BRO-513), as an
+ * opaque `verdict:liveCount:candidateCount` string keyed by showId — the
+ * shape blastRadiusCheck's stateMap args expect. Unlike stateMap()/
+ * gapStateFor() above (the bare verdict word, used by every OTHER consumer
+ * of this audit file), this deliberately keeps liveCount/candidateCount
+ * alongside the verdict so isRiskyGapChange can tell "the census found a
+ * genuine NEW gap" (candidateCount grew, nothing previously live was lost)
+ * apart from "we lost coverage we used to have" (liveCount dropped — a
+ * broken/partial review-texts checkout makes loadDirFiles() return [] for
+ * every show, so previously-`live` outlets read as newly `missing`, the
+ * SAME complete → incomplete verdict transition as the benign case). See
+ * isRiskyGapChange below and coverage-gate.js's isRiskyChange rationale.
+ */
+function riskStateMap(results) {
+  const out = {};
+  for (const r of results || []) {
+    if (!r || !r.showId) continue;
+    // Prefer the ALREADY-STAMPED censusVerdict (mergeGapAudit computed it once
+    // with the run's real `now`/prevCandidates opts, which affect per-candidate
+    // live/in-flight classification) over recomputing with default opts here,
+    // which could disagree at the margin. Recompute only as a fallback for
+    // legacy rows that predate task #906's censusVerdict stamping.
+    const cv = (r.censusVerdict && typeof r.censusVerdict.liveCount === 'number') ? r.censusVerdict : censusVerdictFor(r);
+    const liveCount = Number.isFinite(cv.liveCount) ? cv.liveCount : 0;
+    const candidateCount = Number.isFinite(cv.candidateCount) ? cv.candidateCount : 0;
+    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}`;
+  }
+  return out;
+}
+
+/**
+ * isRiskyChange predicate for blastRadiusCheck({ ... }) over riskStateMap()
+ * output: risky iff EITHER count went DOWN. A verdict word changing while
+ * both counts hold or grow (new gap discovered, or a gap got filled) is the
+ * audit doing its job and is never risky.
+ *
+ * Known residual blind spot (adversarial ship-check follow-up): this is
+ * cardinality-only, not identity-aware — a run that loses one live outlet
+ * while simultaneously gaining a different one nets to an unchanged
+ * liveCount and would not register as risky. Accepted: the documented
+ * failure modes (dead SERP provider, empty census, partial checkout) zero
+ * counts out, they don't swap one outlet's identity for another's, so this
+ * doesn't match the guard's actual threat model. A full identity diff would
+ * need per-candidate URL comparison, not a per-show scalar blastRadiusCheck
+ * can consume — revisit only if a real incident ever shows this shape.
+ */
+function isRiskyGapChange(prevState, nextState) {
+  const counts = (s) => String(s).split(':').slice(1).map(Number);
+  const [prevLive, prevCandidates] = counts(prevState);
+  const [nextLive, nextCandidates] = counts(nextState);
+  return nextLive < prevLive || nextCandidates < prevCandidates;
+}
+
+/**
+ * Split this run's freshly-audited results into the subset safe to persist
+ * and the subset blastRadiusCheck flagged as risky (BRO-3002).
+ *
+ * WHY THIS EXISTS: the checkpoint selects the LEAST-RECENTLY-audited shows
+ * each run — which shows land in one batch is unrelated to which of them
+ * happen to carry a real new flag. Before this, a batch that mixed a handful
+ * of genuinely-changed shows into a much larger set of unrelated ones had its
+ * ENTIRE write refused, and the checkpoint rollback (audit-show-review-gap.js)
+ * restored ALL of them — including the unrelated majority — to their old
+ * timestamps. Next run, the same least-recently-audited selection picks the
+ * identical batch again, hits the identical few risky shows, and refuses
+ * again — forever. BRO-3002 observed exactly this: the same ~9-show set
+ * recurred across three consecutive hourly runs on 2026-09-07, each one
+ * comparing against the same 2026-09-05 baseline because no run since had
+ * ever been allowed to advance it.
+ *
+ * Splitting the write lets the unrelated majority's freshness stamps advance
+ * normally (so the checkpoint moves on to genuinely-stale shows next run)
+ * while the risky subset alone stays parked at its old entry/timestamp —
+ * still flagged, still re-selected, still alerting, but no longer able to
+ * starve every other show behind it. A batch where EVERY examined show is
+ * risky (the actual dead-SERP/empty-census/partial-checkout signature this
+ * guard exists to catch) degrades to `safe: []` — i.e. today's full-block
+ * behavior, unchanged.
+ *
+ * @param {Array} results  this run's raw per-show results (pre-merge)
+ * @param {string[]} riskyIds  showIds blastRadiusCheck returned as changedIds
+ * @returns {{safe: Array, risky: Array}}
+ */
+function partitionAuditedResults(results, riskyIds) {
+  const risky = new Set(riskyIds || []);
+  const safe = [];
+  const flagged = [];
+  for (const r of (results || [])) {
+    if (r && r.showId && risky.has(r.showId)) flagged.push(r);
+    else safe.push(r);
+  }
+  return { safe, risky: flagged };
+}
+
+/**
  * Merge this run's results into the previously-persisted audit.
  *
  * @param {Object|null} prevAudit  parsed previous show-review-gap.json (or null)
@@ -186,12 +281,23 @@ function stateMap(results) {
  * @param {Object} [opts]
  * @param {number} [opts.retentionDays=45]
  * @param {string} [opts.now=runAudit.generatedAt]  ISO stamp for this run
+ * @param {Set<string>|string[]} [opts.protectedIds]  showIds exempt from the
+ *   retention-age drop below, even though this run did not re-audit them.
+ *   BRO-3002: a quarantined show's carried-forward entry is otherwise an
+ *   ordinary stale row — its computedAt is frozen at the run BEFORE it got
+ *   quarantined and never advances (excluded from freshIds every subsequent
+ *   run for as long as it stays risky), so once real wall-clock time exceeds
+ *   retentionDays it would silently get pruned — "lost", not "parked",
+ *   exactly the outcome the quarantine split exists to prevent. The caller
+ *   (audit-show-review-gap.js) passes the risky showIds here on every
+ *   quarantined-merge call.
  * @returns {Object} merged audit — same shape, plus per-result `computedAt`
  */
 function mergeGapAudit(prevAudit, runAudit, opts = {}) {
   const now = opts.now || (runAudit && runAudit.generatedAt) || new Date().toISOString();
   const retentionDays = opts.retentionDays == null ? DEFAULT_RETENTION_DAYS : opts.retentionDays;
   const cutoffMs = Date.parse(now) - retentionDays * 24 * 3600 * 1000;
+  const protectedIds = opts.protectedIds instanceof Set ? opts.protectedIds : new Set(opts.protectedIds || []);
 
   const runResults = Array.isArray(runAudit && runAudit.results) ? runAudit.results : [];
   const freshIds = new Set(runResults.map(r => r && r.showId).filter(Boolean));
@@ -217,7 +323,7 @@ function mergeGapAudit(prevAudit, runAudit, opts = {}) {
     const stampMs = stamp ? Date.parse(stamp) : NaN;
     // Unparseable/absent stamp → KEEP. Dropping real audited state because a
     // timestamp didn't parse is the wrong direction to fail on this file.
-    if (Number.isFinite(stampMs) && Number.isFinite(cutoffMs) && stampMs < cutoffMs) { dropped++; continue; }
+    if (!protectedIds.has(r.showId) && Number.isFinite(stampMs) && Number.isFinite(cutoffMs) && stampMs < cutoffMs) { dropped++; continue; }
     if (!byId.has(r.showId)) carried++;
     byId.set(r.showId, stamp ? { ...r, computedAt: stamp } : { ...r });
   }
@@ -273,4 +379,4 @@ function countsFor(results) {
 // working.
 const { withFileLock } = require('./file-lock');
 
-module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, withFileLock, DEFAULT_RETENTION_DAYS };
+module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS };

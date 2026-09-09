@@ -27,6 +27,7 @@ const { serpQuery, serpImagesQuery } = require('./lib/url-discovery');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
@@ -51,6 +52,7 @@ Usage:
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
 const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
+const store = require('./lib/playbill-urls-store');
 const IBDB_IMAGE_CACHE_PATH = path.join(__dirname, '..', 'data', 'ibdb-image-cache.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const DRY_RUN_DIR = path.join(__dirname, '..', 'data', 'audit', 'image-dry-run');
@@ -1245,18 +1247,31 @@ function extractAllImageFormats(html) {
   };
 }
 
-// Load or create Playbill URL cache
+// Load or create Playbill URL cache.
+//
+// This script saves after EVERY resolved show, and it is cron-driven alongside
+// discover-playbill-urls.js, so it was the more exposed of the two writers: a
+// whole-file write per show meant a peer's entries were destroyed repeatedly
+// within one run, not once at the end (BRO-2895). The store diffs against the
+// snapshot taken at load and replays only this process's changes onto a fresh
+// read, so a peer's work survives every one of those saves.
+let playbillUrlSession = null;
+
 function loadPlaybillUrls() {
-  try {
-    return JSON.parse(fs.readFileSync(PLAYBILL_URLS_PATH, 'utf8'));
-  } catch {
-    return { shows: {}, lastUpdated: null };
-  }
+  playbillUrlSession = store.openPlaybillUrls(PLAYBILL_URLS_PATH);
+  return playbillUrlSession.data;
 }
 
 function savePlaybillUrls(data) {
-  data.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(PLAYBILL_URLS_PATH, JSON.stringify(data, null, 2) + '\n');
+  // The session owns the snapshot and its re-baselining between saves; the data
+  // object handed back here IS session.data, so the argument is only kept for
+  // the two existing call sites' shape.
+  if (!playbillUrlSession) loadPlaybillUrls();
+  const r = playbillUrlSession.save();
+  if (r.recovered > 0) {
+    console.log(`  [playbill-urls] merged ${r.recovered} entry(ies) another writer added since load`);
+  }
+  return r;
 }
 
 // Global cache for Playbill URLs (loaded at start)
@@ -1356,8 +1371,13 @@ async function fetchFromPlaybill(show) {
 
       if (imageUrl) {
         console.log(`   ✓ Found via Playbill: ${imageUrl.substring(0, 60)}...`);
-        playbillUrlCache.shows[show.id] = playbillUrl;
-        savePlaybillUrls(playbillUrlCache);
+        // Only cache the URL if it is in this show's market — see the guard at
+        // the Google-search branch below for why this script is the one that
+        // poisoned the cache.
+        if (!isCrossMarketPlaybillUrl(playbillUrl, show)) {
+          playbillUrlCache.shows[show.id] = playbillUrl;
+          savePlaybillUrls(playbillUrlCache);
+        }
         // Playbill OG images are always landscape (1200x630) — only suitable as hero
         return { hero: imageUrl, thumbnail: null, poster: null };
       }
@@ -1389,8 +1409,26 @@ async function fetchFromPlaybill(show) {
 
       if (imageUrl) {
         console.log(`   ✓ Found image: ${imageUrl.substring(0, 60)}...`);
-        playbillUrlCache.shows[show.id] = discoveredUrl;
-        savePlaybillUrls(playbillUrlCache);
+        // THIS is where the poison entered data/playbill-urls.json. The regex
+        // above scrapes a Google RESULTS page for the first
+        // playbill.com/production/...-broadway... URL anywhere in the HTML —
+        // and it REQUIRES "-broadway", as does the search query — so for a
+        // London show it can only ever produce a cross-market URL. If that page
+        // happens to yield an OG image, the URL was written into the durable
+        // cache as this show's Playbill page. Six live entries got there this
+        // way ("Ish" at the Kiln -> circle-jerk-off-broadway-...,
+        // "Amplify" at New Diorama -> paranormal-activity-broadway-...).
+        //
+        // The URL write is a SIDE EFFECT here — this script exists to fetch
+        // images — so it poisoned a cache that validate-show-venue.js reads
+        // before building any query, where a wrong entry is permanent. The
+        // image is still fine to use; only the URL write is suppressed.
+        if (!isCrossMarketPlaybillUrl(discoveredUrl, show)) {
+          playbillUrlCache.shows[show.id] = discoveredUrl;
+          savePlaybillUrls(playbillUrlCache);
+        } else {
+          console.log(`   ⚠ not caching cross-market Playbill URL for ${show.id}: ${discoveredUrl}`);
+        }
         // Playbill OG images are always landscape (1200x630) — only suitable as hero
         return { hero: imageUrl, thumbnail: null, poster: null };
       }
@@ -2489,6 +2527,14 @@ async function main() {
   // #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+  // BRO-2672: --show= now accepts a comma-separated list (the batched
+  // fetch-all-image-formats.yml dispatch forwards inputs.show_id verbatim
+  // as --show=id1,id2,...). showFilter itself stays the raw string/undefined
+  // so every existing `!showFilter`/truthy check below is unaffected —
+  // showFilterIds is a separate Set used only for id/slug membership.
+  const showFilterIds = showFilter
+    ? new Set(showFilter.split(',').map(s => s.trim()).filter(Boolean))
+    : null;
   const onlyMissing = args.includes('--missing') || args.includes('--missing-only');
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
@@ -2566,8 +2612,8 @@ async function main() {
     const errors = [];
     let scanned = 0;
 
-    const showsToAudit = showFilter
-      ? showsData.shows.filter(s => s.id === showFilter || s.slug === showFilter)
+    const showsToAudit = showFilterIds
+      ? showsData.shows.filter(s => showFilterIds.has(s.id) || showFilterIds.has(s.slug))
       : showsData.shows.filter(s => s.images?.thumbnail);
 
     console.log(`Scanning ${showsToAudit.length} shows with thumbnails...\n`);
@@ -2646,9 +2692,19 @@ async function main() {
     shows = shows.filter(s => s.status === 'open' || s.status === 'previews');
   }
 
-  if (showFilter) {
-    shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
-    console.log(`Filtering to show: ${showFilter}`);
+  if (showFilterIds) {
+    shows = shows.filter(s => showFilterIds.has(s.id) || showFilterIds.has(s.slug));
+    console.log(`Filtering to ${showFilterIds.size} show(s): ${showFilter}`);
+    // BRO-2672: a batched --show= carries ids straight from a dispatch input
+    // (no upstream validation that each id still exists in shows.json). A
+    // stale/misspelled id silently disappearing from the batch would mean
+    // that show's images never get fetched with no signal anywhere — call
+    // it out so it doesn't read as "the whole batch is being handled".
+    const matched = new Set([...shows.map(s => s.id), ...shows.map(s => s.slug)]);
+    const unmatched = [...showFilterIds].filter(id => !matched.has(id));
+    if (unmatched.length) {
+      console.warn(`⚠ ${unmatched.length} requested id(s) matched no show and will be SKIPPED: ${unmatched.join(',')}`);
+    }
   }
 
   // FILL-HEROES MODE: Find shows with poster/thumbnail but no hero, fill from Theatr/TodayTix

@@ -64,6 +64,10 @@ const MANUAL_FIELDS = [
   'wrongShowOverrideAt',
   'humanReviewedWrongProduction',
   'humanReviewedWrongArticle',
+  // Anticipatory-gate operator opt-out — third leg of the PROTECTED_FIELDS
+  // three-way sync (write-guard + push action + this restore). See the
+  // matching comment in review-write-guard.js (BRO-2828).
+  'humanReviewedEarlyPublish',
   // Manual "this file is not a review at all" exclusion + its provenance and its
   // intentional-unset breadcrumb. Nothing in the repo WRITES these (zero producers
   // as of 2026-08-14) — they only ever arrive by hand, which is precisely the class

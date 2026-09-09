@@ -25,6 +25,36 @@ test('pulls the command out of a VERIFY line when there is no section', () => {
   assert.equal(extract('**VERIFY**: `npx next lint`').cmd, 'npx next lint');
 });
 
+// BRO-2585: cards are routinely written as `VERIFY: node --test x.test.mjs`
+// with no backticks at all — the form the dispatch seed template documents —
+// and the old candidatesFrom() was backtick-only, so these were refused.
+test('a bare, un-backticked VERIFY: line arms the gate', () => {
+  assert.equal(extract('VERIFY: node --test scripts/lib/verify-gate.test.mjs').cmd, 'node --test scripts/lib/verify-gate.test.mjs');
+  assert.equal(extract('## Acceptance criteria\nVERIFY: npx tsc --noEmit').cmd, 'npx tsc --noEmit');
+});
+
+// BRO-2585 repro: an incidental backticked word earlier in the acceptance
+// prose (`dead`) must not mask a real, un-backticked VERIFY: command later in
+// the same section — the gate must not stop at the first candidate.
+test('an incidental backticked non-command earlier in the section does not mask a real VERIFY: command later in it', () => {
+  const notes = `## Acceptance criteria
+A regression test proving a workspace that is still running is never classified \`dead\` by that path.
+
+VERIFY: node --test scripts/lib/dispatch-guards.test.mjs`;
+  const r = extract(notes);
+  assert.equal(r.cmd, 'node --test scripts/lib/dispatch-guards.test.mjs');
+  assert.equal(r.reason, null);
+});
+
+// A demoted/plain unsafe command sitting right after "VERIFY:" must still be
+// refused — the raw-fallback candidate goes through the exact same
+// isSafeCheckCommand gate a backticked one does, never around it.
+test('an un-backticked VERIFY: line naming a mutating command is still refused', () => {
+  const r = extract('## Acceptance criteria\nVERIFY: node scripts/rebuild-all-reviews.js');
+  assert.equal(r.cmd, null);
+  assert.match(r.reason, /rebuild-all-reviews/);
+});
+
 test('strips shell-prompt decoration', () => {
   assert.equal(extract('## Acceptance criteria\n`$ npx tsc --noEmit`').cmd, 'npx tsc --noEmit');
 });

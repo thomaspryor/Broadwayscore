@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-24T07:46:40.492Z",
+  "lastChecked": "2026-09-05T02:22:00.874Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,17 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.6% scored (19941/20215)"
+      "message": "98.3% scored (20183/20532)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "7 audit(s) drifting: cross-show URL contamination (review URL slug names a different show), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "12 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority)"
+    },
+    {
+      "name": "Quality: DMARC deliverability",
+      "status": "warn",
+      "message": "Newest DMARC report is 6d old (reporters send daily)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -28,18 +33,18 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "pass",
-      "message": "No probable domain moves in 190 unregistered host(s)"
+      "status": "warn",
+      "message": "Unknown-outlet census is 2d old (>48h)"
     },
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1138 outlet(s), 42607 review(s)"
+      "message": "No broken-extractor signature in 1163 outlet(s), 42580 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "warn",
-      "message": "4 outlet(s) show a broken-extractor signature (worst: theater-mirror — 5/5 recent invalid, 100% vs 50% baseline)"
+      "message": "1 outlet(s) show a broken-extractor signature (worst: plays-to-see — 4/7 recent invalid, 57% vs 8% baseline)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -53,8 +58,8 @@
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
-      "status": "warn",
-      "message": "Heartbeat monitor last ran 14d ago (>8d)"
+      "status": "pass",
+      "message": "109 outlet×market rows checked, none NEW silent 2+ consecutive weeks (25 known/baselined, 4d ago)"
     }
   ]
 }

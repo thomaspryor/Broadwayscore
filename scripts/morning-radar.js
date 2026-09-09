@@ -9,6 +9,7 @@
  */
 
 const fs = require('fs');
+const { classifyBroadcastState } = require('./lib/missed-broadcasts');
 const path = require('path');
 const {
   hasEmptyCast,
@@ -57,8 +58,14 @@ const results = upcoming.map(s => {
   const sent = sentData.shows || {};
   // Broadcasts only go out for Broadway and West End — not OB/OWE
   const broadcastMarket = market === 'broadway' || market === 'west-end';
+  // classifyBroadcastState, not `.completed` (BRO-2934): `completed` is written
+  // at DRAFT CREATION, not at send, so the bare flag reported "broadcast sent"
+  // for three West End shows whose drafts sat unsent in Resend for two months.
+  // This value goes straight into the owner's morning email — it must mean
+  // "subscribers received it", not "a draft exists".
   const broadcastSent = broadcastMarket
-    ? !!(sent[s.id]?.completed || sent[`${market}:${s.id}`]?.completed)
+    ? classifyBroadcastState(sent[s.id]) === 'sent' ||
+      classifyBroadcastState(sent[`${market}:${s.id}`]) === 'sent'
     : null; // null = not applicable
 
   // Metadata completeness — surfaces the class of bug that shipped The Whoopi

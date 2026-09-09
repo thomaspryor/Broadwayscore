@@ -6,6 +6,7 @@ import { getOutletLogoUrlById, getOutletConfigById } from '@/config/outlet-logos
 import { featureFlags } from '@/config/feature-flags';
 import { getScoreColorClass } from '@/components/show-cards';
 import { getGoldThreshold } from '@/config/score-buckets';
+import { getReviewKey } from '../../scripts/lib/review-list-key';
 
 interface Review {
   showId: string;
@@ -287,7 +288,7 @@ export default function ReviewsList({ reviews, initialCount = 5, category }: Rev
       )}
       {displayedReviews.map((review) => (
         <ReviewCard
-          key={`${review.outletId}-${review.publishDate}`}
+          key={getReviewKey(review)}
           review={review}
           isLast={false}
           category={category}

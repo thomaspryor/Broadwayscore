@@ -64,3 +64,51 @@ test('pendingDecisions: excludes a ❓-titled tab whose extracted question is a 
   assert.equal(pending.length, 1);
   assert.equal(pending[0].ref, 'workspace:1');
 });
+
+test('collapseCrownLineages: folds sequential crown generations of the same lineage into one row, annotated with age + count (BRO-2989)', () => {
+  const { collapseCrownLineages, formatDetail } = require('./needs-you-snapshot.js');
+  const pending = [
+    { ref: 'workspace:83', title: '❓ 👑 OWNER — Crown v25: P1 backlog triage + dispatch loop', question: 'Cancel the Cyrus Team Cloud subscription at $120/mo?', ts: '2026-09-01T01:04:39.663Z' },
+    { ref: 'workspace:140', title: '❓ 👑 OWNER — Crown v33: P1 backlog dispatch + triage', question: 'What happens to the 26 stranded iOS overnight branches?', ts: '2026-09-05T16:21:20.420Z' },
+    { ref: 'workspace:117', title: '❓ 👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)', question: 'Pick a date for the Forbes/Marc Hershberg walkthrough.', ts: '2026-09-08T01:04:51.886Z' },
+    { ref: 'workspace:116', title: '❓ Scraper cost: SD breaker ceiling fix (BRO-2943)', question: 'Go with the revised four-sprint plan?', ts: '2026-09-08T01:05:15.062Z' },
+  ];
+  const collapsed = collapseCrownLineages(pending);
+  // 3 crown generations of the SAME lineage collapse to 1; the unrelated
+  // non-crown ❓ tab passes through untouched.
+  assert.equal(collapsed.length, 2);
+  assert.equal(collapsed.filter(c => c.ref === 'workspace:83' || c.ref === 'workspace:140').length, 0, 'superseded crown generations must not survive as their own rows');
+  const crownRow = collapsed.find(c => c.ref === 'workspace:117');
+  assert.ok(crownRow, 'latest (highest-version) generation is kept, not an older one');
+  assert.equal(crownRow.supersededCount, 2);
+  assert.equal(crownRow.pendingSinceTs, '2026-09-01T01:04:39.663Z');
+  const detail = formatDetail(crownRow);
+  assert.match(detail, /pending since 2026-09-01/);
+  assert.match(detail, /3 crown generations/);
+  const nonCrownRow = collapsed.find(c => c.ref === 'workspace:116');
+  assert.equal(nonCrownRow.supersededCount, undefined);
+  assert.equal(formatDetail(nonCrownRow), 'Go with the revised four-sprint plan?');
+});
+
+test('collapseCrownLineages: a lone crown generation with no predecessor is untouched (no false age annotation)', () => {
+  const { collapseCrownLineages, formatDetail } = require('./needs-you-snapshot.js');
+  const pending = [
+    { ref: 'workspace:1', title: '❓ 👑 OWNER — Crown v50: BRO-343 P1 triage', question: 'ship or wait?', ts: '2026-09-08T02:00:00.000Z' },
+  ];
+  const collapsed = collapseCrownLineages(pending);
+  assert.equal(collapsed.length, 1);
+  assert.equal(collapsed[0].supersededCount, 0);
+  assert.equal(formatDetail(collapsed[0]), 'ship or wait?');
+});
+
+test('collapseCrownLineages: a falsy ts on one crown item never corrupts pendingSinceTs (ship-check finding, BRO-2989)', () => {
+  const { collapseCrownLineages } = require('./needs-you-snapshot.js');
+  const pending = [
+    { ref: 'workspace:1', title: '❓ 👑 OWNER — Crown v10: BRO-343 P1 triage', question: 'a', ts: undefined },
+    { ref: 'workspace:2', title: '❓ 👑 OWNER — Crown v11: BRO-343 P1 triage', question: 'b', ts: '2026-09-01T00:00:00.000Z' },
+    { ref: 'workspace:3', title: '❓ 👑 OWNER — Crown v12: BRO-343 P1 triage', question: 'c', ts: '2026-09-05T00:00:00.000Z' },
+  ];
+  const collapsed = collapseCrownLineages(pending);
+  assert.equal(collapsed.length, 1);
+  assert.equal(collapsed[0].pendingSinceTs, '2026-09-01T00:00:00.000Z');
+});

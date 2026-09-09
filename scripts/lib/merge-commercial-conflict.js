@@ -19,6 +19,7 @@
  */
 
 const fs = require('fs');
+const { execFileSync } = require('child_process');
 const { execSync } = require('child_process');
 const path = require('path');
 
@@ -56,7 +57,26 @@ try {
   // newline; match that so a no-op merge is byte-identical.
   const trailingNewline = entry ? entry.newline !== false : true;
 
-  const mergedResult = merge(localData, remoteData);
+  // BRO-2955 ship-check: the three alert-* mergers take (local, remote, base)
+  // and need the base to tell "they added a row" from "we DELETED a row they
+  // still have". During a conflict git keeps the common ancestor as stage 1,
+  // so read it from there. Arity is the dispatch — every other registry merger
+  // is two-argument and is called exactly as before. Without this, a drained
+  // alert-digest-queue.json (health-check.js clears it after emailing) unions
+  // back every already-delivered row and re-sends the owner the same digest.
+  let baseData;
+  if (merge.length >= 3) {
+    try {
+      const raw = execFileSync('git', ['show', `:1:${file}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+      baseData = file.endsWith('.jsonl')
+        ? raw.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => JSON.parse(l))
+        : JSON.parse(raw);
+    } catch {
+      baseData = undefined; // add/add conflict has no stage 1 — mergers fall back to two-way
+    }
+  }
+
+  const mergedResult = merge.length >= 3 ? merge(localData, remoteData, baseData) : merge(localData, remoteData);
 
   fs.writeFileSync(file, JSON.stringify(mergedResult.merged, null, 2) + (trailingNewline ? '\n' : ''));
   console.log(`merge-commercial-conflict: ${file} merged — ${JSON.stringify(mergedResult.stats)}`);

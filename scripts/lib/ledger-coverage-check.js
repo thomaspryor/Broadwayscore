@@ -12,14 +12,24 @@
  * 436f4a24092/943bd4a9327 — this check is the structural guard so the 20th
  * never needs a manual Explore-agent audit).
  *
- * IMPORTANT SCOPE NOTE: only url-discovery.js is tracked, NOT scraper.js.
- * scraper.js's fetchPage() also writes ledger rows (any BD/SB/SD call) and
- * is used by ~300 of this repo's ~330 scripts/*.js — including it here
- * flagged 107 violations across 83 workflows on a clean main (verified
- * 2026-08-04), wildly out of proportion to the 19 real gaps this card
- * fixed and mostly already covered by some other commit step this check
- * can't see. That's a separate, much larger sweep — url-discovery.js's SERP
- * path matches the actual audited-and-fixed set and starts green.
+ * BRO-2961 (2026-09-07): scraper.js's fetchPage() is now ALSO tracked. It
+ * writes ledger rows for every BD/SB/SD call (recordBdCall/recordSbCall/
+ * recordSdCall in scraper.js, imported from ./bd-telemetry) and is used by
+ * ~300 of this repo's ~330 scripts/*.js — a naive add of it here flagged 107
+ * violations across 83 workflows on a clean main back on 2026-08-04, before
+ * this checker had lineStagesLedgerViaDirectAdd/lineStagesLedgerViaHelper/
+ * matchForLoopStart or the commit-scraper-spend-ledger composite-action
+ * detection (COMMIT_LEDGER_ACTION_RE) — all of which now correctly recognize
+ * staging patterns that a bare LEDGER_FILE substring search missed. Re-run on
+ * 2026-09-07 with today's checker: only 12 real gaps found (aggregator-url-
+ * watcher, audit-reverse-discovery, backfill-review-dates, discover-
+ * historical-shows, enrich-reviews, enrich-runtimes, generate-theater-tips,
+ * ingest-urls, process-review-submission, update-broadway-com, update-
+ * commercial, update-lottery-rush — all fixed), far smaller than BRO-2961's
+ * original 44-file candidate list (a naive `grep SCRAPINGBEE_API_KEY` over
+ * workflow YAML), which over-counted by including false positives like
+ * scraper-cost-report.yml's SB-billing-API curl and opening-night-
+ * orchestrator.yml's SB-quota-check-only steps — neither calls fetchPage().
  *
  * DETECTION METHOD: a real (acorn) AST walk, not text regex, because
  * "requires the file" is not the same as "calls the SERP function" —
@@ -36,9 +46,9 @@
  *  3. Walk the target subtree (whole Program for an entry-point script; a
  *     single function's body when recursing into a required lib) for
  *     CallExpressions whose callee resolves to one of those bindings.
- *  4. A call reaches the ledger if it resolves directly to url-discovery.js's
- *     serpQuery/discoverCorrectUrl, or (recursively, memoized, cycle-safe)
- *     to an exported function in another local file whose OWN body reaches.
+ *  4. A call reaches the ledger if it resolves directly to one of
+ *     TRACKED_TARGETS' exports, or (recursively, memoized, cycle-safe) to an
+ *     exported function in another local file whose OWN body reaches.
  *
  * KNOWN LIMITATIONS: only sees `node scripts/<path>.js` invocations written
  * literally in the workflow YAML; only static/relative requires (no dynamic
@@ -58,8 +68,11 @@ const LEDGER_PATH = 'data/audit/scraper-spend-ledger.jsonl';
 // scan of the CALLING workflow's YAML text. A job that `uses:` it counts as
 // staging the ledger without the check needing to open the action file.
 const COMMIT_LEDGER_ACTION_RE = /uses:\s*\.\/\.github\/actions\/commit-scraper-spend-ledger\b/;
-const TRACKED_LIB_BASENAME = 'url-discovery.js';
-const TRACKED_EXPORT_NAMES = new Set(['serpQuery', 'discoverCorrectUrl']);
+// lib basename -> tracked export names that reach a telemetry writer.
+const TRACKED_TARGETS = new Map([
+  ['url-discovery.js', new Set(['serpQuery', 'discoverCorrectUrl'])],
+  ['scraper.js', new Set(['fetchPage'])],
+]);
 const JOB_KEY_RE = /^  ([A-Za-z0-9_.-]+):\s*$/;
 const SCRIPT_INVOKE_RE = /\bnode\s+(?:--[\w-]+(?:=\S+)?\s+)*scripts\/([A-Za-z0-9_./-]+\.js)/g;
 const COMMENT_LINE_RE = /^\s*#/;
@@ -129,7 +142,8 @@ function resolveRequirePath(fromFileAbs, requirePath) {
 }
 
 function isTrackedExport(resolvedPath, exportName) {
-  return path.basename(resolvedPath) === TRACKED_LIB_BASENAME && TRACKED_EXPORT_NAMES.has(exportName);
+  const names = TRACKED_TARGETS.get(path.basename(resolvedPath));
+  return !!names && names.has(exportName);
 }
 
 // Generic ESTree walk — visits every node with a `.type`, recursing into all
@@ -296,8 +310,9 @@ function parseFileCached(absPath, acorn) {
 }
 
 // Does walking `subtreeNode` (a function node or a whole Program) find a
-// CallExpression that reaches url-discovery.js's serpQuery/discoverCorrectUrl,
-// directly, through another local file's exported function, OR through a
+// CallExpression that reaches one of TRACKED_TARGETS' exports (url-discovery.js's
+// serpQuery/discoverCorrectUrl, or scraper.js's fetchPage), directly, through
+// another local file's exported function, OR through a
 // same-file sibling function call (e.g. discoverAnnouncedClosingDate calling
 // discoverAnnouncedDate — both defined in closing-date-discovery.js, no
 // require() involved for that hop)?
@@ -559,7 +574,7 @@ function findMissingLedgerCommits(workflowYamlText, ledgerScripts) {
     if (invoked.length > 0 && !jobStagesLedgerFile(job.lines)) {
       violations.push({
         job: job.name,
-        message: `job '${job.name}' runs ${invoked.join(', ')} (calls url-discovery.js's serpQuery/discoverCorrectUrl) but no step stages data/audit/${LEDGER_FILE} for commit in this job`,
+        message: `job '${job.name}' runs ${invoked.join(', ')} (calls url-discovery.js's serpQuery/discoverCorrectUrl or scraper.js's fetchPage) but no step stages data/audit/${LEDGER_FILE} for commit in this job`,
       });
     }
   }

@@ -23,12 +23,14 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isLondonMarket } = require('./lib/venue-classification');
 const {
   validateCastExtraction,
   isOperaSourceUrl,
   scoreSerpResult,
   SERP_MIN_SCORE,
+  isViableCastExtraction,
 } = require('./lib/cast-extraction-guards');
 const { GEMINI_FLASH, CLAUDE_HAIKU } = require('./lib/models');
 const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
@@ -138,8 +140,16 @@ async function fetchPageText(url) {
   const renderParam = needsJs ? '&render_js=true&wait=3000' : '&render_js=false';
 
   const fetchUrl = `https://app.scrapingbee.com/api/v1?api_key=${apiKey}&url=${encodeURIComponent(url)}${renderParam}&extract_rules=${encodeURIComponent(JSON.stringify(extractRules))}`;
+  const credits = needsJs ? 5 : 1;
 
-  const result = await httpRequest(fetchUrl, { timeout: 45000 });
+  let result;
+  try {
+    result = await httpRequest(fetchUrl, { timeout: 45000 });
+  } catch (e) {
+    recordSbCall({ url, fn: needsJs ? 'render' : 'page', success: false, status: 'error', credits: sbBilledCredits('error', credits), purpose: 'cast-backfill' });
+    throw e;
+  }
+  recordSbCall({ url, fn: needsJs ? 'render' : 'page', success: result.statusCode === 200, status: result.statusCode, credits: sbBilledCredits(result.statusCode, credits), purpose: 'cast-backfill' });
   if (result.statusCode !== 200) return null;
 
   try {
@@ -367,7 +377,7 @@ async function processShow(show) {
       continue;
     }
 
-    if (cleaned.length >= 2) {
+    if (isViableCastExtraction(cleaned)) {
       console.log(`  Found ${cleaned.length} cast members`);
       return {
         fetchFailed: false,
@@ -472,7 +482,7 @@ async function main() {
     try {
       const result = await processShow(show);
 
-      if (!result.cast || result.cast.length < 2) {
+      if (!result.cast || !isViableCastExtraction(result.cast)) {
         // A transient failure (SERP/fetch/LLM error, blocked page) must NOT
         // be tombstoned — a tombstone permanently blocks re-scraping (default
         // runs skip shows with an existing cast file), so one bad run would

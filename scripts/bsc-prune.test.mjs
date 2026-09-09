@@ -235,6 +235,39 @@ test('sweepVanished: a closed tab parks the ledger AND the Notion card', () => {
   assert.deepEqual(parked.map(p => p.notionId), ['nid']);
 });
 
+// ── BRO-2649: the wrapper cross-check inside sweepVanished ─────────────────
+// dispatch-ledger.test.mjs covers vanishedBreadcrumbs' predicate directly;
+// these cover the SWEEP wiring — that makeWrapperAliveProbeFn is actually
+// threaded from sweepVanished into BOTH vanishedBreadcrumbs() calls (the
+// candidate scan and the re-validate-before-append), mirroring BRO-2575's
+// own dead-path wiring test above.
+const MARKED_LAUNCHED = { ...LAUNCHED, marker: 'bsc-cmd-linear_BRO-2649-c3d4e5f6.sh' };
+
+test('sweepVanished: BRO-2649 — a workspace whose wrapper is STILL RUNNING is never parked, even though cmux\'s live listing omits it', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, MARKED_LAUNCHED]);
+  deps.makeWrapperAliveProbeFn = () => marker => marker === MARKED_LAUNCHED.marker;
+  sweepVanished({ all: [ws(9)], ...deps }); // workspace:1 (the launch's ref) is NOT in `all`
+  assert.deepEqual(appended, [], 'wrapper alive — cmux\'s listing lied, nothing gets journaled');
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: BRO-2649 — a genuinely closed tab with no wrapper process still parks normally (not a blanket amnesty)', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, MARKED_LAUNCHED]);
+  deps.makeWrapperAliveProbeFn = () => () => false;
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'vanished');
+  assert.deepEqual(parked.map(p => p.notionId), ['nid']);
+});
+
+test('sweepVanished: BRO-2649 — a probe that throws on construction falls back to the pre-fix (cmux-only) verdict', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, MARKED_LAUNCHED]);
+  deps.makeWrapperAliveProbeFn = () => { throw new Error('ps unavailable'); };
+  assert.doesNotThrow(() => sweepVanished({ all: [ws(9)], ...deps }));
+  assert.equal(appended[0].event, 'vanished', 'no probe — falls back to the existing cmux-listing verdict, same as before this change');
+  assert.equal(parked.length, 1);
+});
+
 test('sweepVanished: the ledger park holds even when Notion is unreachable', () => {
   const { appended, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
   deps.parkCardFn = () => { throw new Error('notion 503'); };
@@ -568,4 +601,76 @@ test('sweepNoPayload: a ref already in idleRefs (dead process — the pre-existi
   deps.idleRefs = new Set(['workspace:1']);
   sweepNoPayload({ all: [authDeadWs(1)], dryRun: false, ...deps });
   assert.deepEqual(closed, []);
+});
+
+// ── BRO-2575: the wrapper cross-check inside mainLocked ────────────────────
+// dispatch-guards.test.mjs covers deadBreadcrumbs' predicate; these cover the
+// SWEEP wiring — that the filter runs, that a spared workspace leaves `idle`
+// (so sweepZombieTabs cannot close it), and that it is still kept out of the
+// no-payload reaper's candidate pool, which it would otherwise enter for the
+// first time precisely BY virtue of having left `idle`.
+test('BRO-2575: a wrapper-alive workspace gets no dead breadcrumb and is announced, not silently spared', () => {
+  const live = { ref: 'workspace:138', title: '🤖⚡ Data·BRO-2506 digest-autofix' };
+  const husk = { ref: 'workspace:139', title: '🤖⚡ Data·BRO-80 triage' };
+  const appended = [];
+  const logged = [];
+  const origLog = console.log;
+  console.log = (...a) => logged.push(a.join(' '));
+  try {
+    main(['--dry-run'], {
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [live, husk],
+      pruneDone: () => ({ closed: [], skipped: [] }),
+      isDoneTitle: () => false,
+      // The 2026-08-31 blackout: cmux insists BOTH signals are dead, for both.
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      readLedgerEntries: () => [
+        { ts: '2026-08-31T00:43:00.000Z', event: 'launch', taskId: 'linear:BRO-2506', subject: 'digest-autofix', workspaceRef: 'workspace:138', marker: 'bsc-cmd-linear_BRO-2506-aaaa1111.sh' },
+        { ts: '2026-08-31T00:44:00.000Z', event: 'launch', taskId: 'linear:BRO-80', subject: 'triage', workspaceRef: 'workspace:139', marker: 'bsc-cmd-linear_BRO-80-bbbb2222.sh' },
+      ],
+      appendLedgerEntry: e => appended.push(e),
+      // Only workspace:138's wrapper is still in the process table.
+      makeWrapperAliveProbe: () => marker => marker === 'bsc-cmd-linear_BRO-2506-aaaa1111.sh',
+    });
+  } finally {
+    console.log = origLog;
+  }
+  const out = logged.join('\n');
+  assert.deepEqual(appended.filter(e => e.event === 'dead').map(e => e.workspaceRef), ['workspace:139'],
+    'the live session must be spared and the husk must still be journaled');
+  assert.match(out, /the OS process table says ALIVE/);
+  assert.match(out, /workspace:138/);
+  assert.ok(!/Dead but un-marked[\s\S]*workspace:138/.test(out),
+    'a spared workspace must not still be reported as dead');
+});
+
+test('BRO-2575: a spared workspace does not become a no-payload reaper candidate by leaving the idle bucket', () => {
+  const live = { ref: 'workspace:138', title: '🤖⚡ Data·BRO-2506 digest-autofix' };
+  const screened = [];
+  const origLog = console.log;
+  console.log = () => {};
+  try {
+    main(['--dry-run'], {
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [live],
+      pruneDone: () => ({ closed: [], skipped: [] }),
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      readLedgerEntries: () => [
+        { ts: '2026-08-31T00:43:00.000Z', event: 'launch', taskId: 'linear:BRO-2506', subject: 'digest-autofix', workspaceRef: 'workspace:138', marker: 'bsc-cmd-linear_BRO-2506-aaaa1111.sh' },
+      ],
+      appendLedgerEntry: () => {},
+      makeWrapperAliveProbe: () => () => true,
+      // The no-payload reaper reads screens ONLY for workspaces it is willing
+      // to close. If our spared ref is screened here it has entered that close
+      // path — exactly the regression this guards against.
+      readScreen: ref => { screened.push(ref); return ''; },
+    });
+  } finally {
+    console.log = origLog;
+  }
+  assert.deepEqual(screened, [],
+    'a workspace proven alive by its wrapper must not be handed to the no-payload reaper');
 });

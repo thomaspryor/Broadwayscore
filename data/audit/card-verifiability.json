@@ -1,498 +1,428 @@
 {
-  "generatedAt": "2026-08-19T14:21:04.961Z",
+  "generatedAt": "2026-09-01T11:50:46.729Z",
   "total": 300,
-  "armedCount": 230,
-  "refusedCount": 70,
+  "armedCount": 248,
+  "refusedCount": 52,
+  "byKind": {
+    "no-command": 42,
+    "no-section": 10
+  },
   "refused": [
     {
-      "id": "3c0637c5-416f-8130-9e07-c3a2ea0c438f",
-      "name": "OWNER: BRO-343 crown v11 — P1 triage + dispatch loop (v10 handoff successor)",
+      "id": "3cd637c5-416f-8152-9b14-c73399d9f286",
+      "name": "Homepage rage clicks surge to 21x — critical UX breakdown",
       "priority": "P0 Now",
-      "url": "https://app.notion.com/p/OWNER-BRO-343-crown-v11-P1-triage-dispatch-loop-v10-handoff-successor-3c0637c5416f81309e07c3a2ea0c438f",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "url": "https://app.notion.com/p/Homepage-rage-clicks-surge-to-21x-critical-UX-breakdown-3cd637c5416f81529b14c73399d9f286",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
-      "id": "3c1637c5-416f-81b1-9183-da19facd8e89",
-      "name": "P1: ingest-review-from-url.js overwrites a DIFFERENT production's review-texts file (3x in one opening night)",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/P1-ingest-review-from-url-js-overwrites-a-DIFFERENT-production-s-review-texts-file-3x-in-one-openi-3c1637c5416f81b19183da19facd8e89",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "id": "3c8637c5-416f-817a-b698-ddbb70e78ba7",
+      "name": "P0: tour-contamination safety net silently un-publishes LIVE Broadway reviews when their full text arrives",
+      "priority": "P0 Now",
+      "url": "https://app.notion.com/p/P0-tour-contamination-safety-net-silently-un-publishes-LIVE-Broadway-reviews-when-their-full-text-a-3c8637c5416f817ab698ddbb70e78ba7",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
-      "id": "3c1637c5-416f-8104-82e5-cd912f310e8c",
-      "name": "P1: 22 worktrees hold 36 unpushed commits (31GB) — no audit surfaces them, and closing their tabs orphans the work",
+      "id": "3cd637c5-416f-81ab-b6db-d636b42b8036",
+      "name": "Missing show: Mystic Pizza",
       "priority": "P1 Next",
-      "url": "https://app.notion.com/p/P1-22-worktrees-hold-36-unpushed-commits-31GB-no-audit-surfaces-them-and-closing-their-tabs-or-3c1637c5416f810482e5cd912f310e8c",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-worktree-unpushed.js)"
+      "url": "https://app.notion.com/p/Missing-show-Mystic-Pizza-3cd637c5416f81abb6dbd636b42b8036",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3cd637c5-416f-8108-b2ca-c8922771691f",
+      "name": "Missing show: Ride the Cyclone",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Missing-show-Ride-the-Cyclone-3cd637c5416f8108b2cac8922771691f",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3cd637c5-416f-81fc-8126-d8a00162716a",
+      "name": "Missing show: Danny and the Deep Blue Sea",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Missing-show-Danny-and-the-Deep-Blue-Sea-3cd637c5416f81fc8126d8a00162716a",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3cd637c5-416f-8144-8dde-c27022a82200",
+      "name": "Rage clicks on /show/oh-mary — show page has broken element",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Rage-clicks-on-show-oh-mary-show-page-has-broken-element-3cd637c5416f81448ddec27022a82200",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c8637c5-416f-8139-8c84-c50ffd654bae",
+      "name": "BRO-132: pre-send banner strip guard",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/BRO-132-pre-send-banner-strip-guard-3c8637c5416f81398c84c50ffd654bae",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c8637c5-416f-813e-b486-d56cae95337b",
+      "name": "Infra: sync reconcile-broadcast-state.js writes to origin (#1853)",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Infra-sync-reconcile-broadcast-state-js-writes-to-origin-1853-3c8637c5416f813eb486d56cae95337b",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3c8637c5-416f-8157-878b-e2742e32d778",
+      "name": "Triage 30+ dead/zombie cmux workspaces after repeated cmux crashes",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Triage-30-dead-zombie-cmux-workspaces-after-repeated-cmux-crashes-3c8637c5416f8157878be2742e32d778",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3c8637c5-416f-81ec-8062-edc0759a3267",
+      "name": "P1: audit-aggregator-gap auto-ingest writes UNFLAGGED phantom reviews (no roundup detection, no same-URL dedupe)",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/P1-audit-aggregator-gap-auto-ingest-writes-UNFLAGGED-phantom-reviews-no-roundup-detection-no-same-3c8637c5416f81ec8062edc0759a3267",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c8637c5-416f-8176-a9ac-e11f1816b44d",
+      "name": "P1: audit-duplicate-of-url-mismatch.js --fix reverts correct cross-domain duplicateOf (protection fields inert)",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/P1-audit-duplicate-of-url-mismatch-js-fix-reverts-correct-cross-domain-duplicateOf-protection-fi-3c8637c5416f8176a9ace11f1816b44d",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c8637c5-416f-8112-a2ea-de94ba53ad3e",
+      "name": "P1: critic personal-repost sites ingested as independent outlets (double-counts one critic)",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/P1-critic-personal-repost-sites-ingested-as-independent-outlets-double-counts-one-critic-3c8637c5416f8112a2eade94ba53ad3e",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c8637c5-416f-81fb-8efb-cfb60059d3e3",
+      "name": "P1: allowTourSignal / allowFilmSignal missing from PROTECTED_FIELDS — a CI restore can silently strip a manual clear",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/P1-allowTourSignal-allowFilmSignal-missing-from-PROTECTED_FIELDS-a-CI-restore-can-silently-stri-3c8637c5416f81fb8efbcfb60059d3e3",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c7637c5-416f-81c0-95fe-f8bb48c20e96",
+      "name": "Reddit post: Paranormal Activity opening + pre-Broadway reveal",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Reddit-post-Paranormal-Activity-opening-pre-Broadway-reveal-3c7637c5416f81c095fef8bb48c20e96",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3c6637c5-416f-8100-aedd-e7775baddf7a",
+      "name": "Low ticket click volume relative to pageview traffic",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Low-ticket-click-volume-relative-to-pageview-traffic-3c6637c5416f8100aedde7775baddf7a",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c6637c5-416f-8180-9046-fa7dfa950c97",
+      "name": "All ticket clicks routing through TodayTix only — no diversification",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/All-ticket-clicks-routing-through-TodayTix-only-no-diversification-3c6637c5416f81809046fa7dfa950c97",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c5637c5-416f-8107-9165-df9f1dec321e",
+      "name": "Visual-QA, ship-check, and skill-redaction push gates are Bash-only — bypassed by MCP-based pushes in cloud",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Visual-QA-ship-check-and-skill-redaction-push-gates-are-Bash-only-bypassed-by-MCP-based-pushes-i-3c5637c5416f81079165df9f1dec321e",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c5637c5-416f-8134-b3ed-e06d721b96ab",
+      "name": "Audit ~29 stale wrongProductionManualClear review-text files for genuinely-wrong content",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Audit-29-stale-wrongProductionManualClear-review-text-files-for-genuinely-wrong-content-3c5637c5416f8134b3ede06d721b96ab",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c5637c5-416f-818f-b383-cfb9837f24be",
+      "name": "UX audit: Inconsistent action icons for the same action. 'Add date' uses a calendar icon in 'desktop__watchlist_list' bu",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/UX-audit-Inconsistent-action-icons-for-the-same-action-Add-date-uses-a-calendar-icon-in-desktop-3c5637c5416f818fb383cfb9837f24be",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c5637c5-416f-81a1-8f10-e981ef5022d4",
+      "name": "Fetch-depth:1 exposure — 20 more workflows share task #466's push-race risk",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Fetch-depth-1-exposure-20-more-workflows-share-task-466-s-push-race-risk-3c5637c5416f81a18f10e981ef5022d4",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c5637c5-416f-813c-96fb-ec562227d6d4",
+      "name": "push-via-git-api.sh fallback failing with 'non-race reason' even when disqualifier eligibility is correct",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/push-via-git-api-sh-fallback-failing-with-non-race-reason-even-when-disqualifier-eligibility-is-co-3c5637c5416f813c96fbec562227d6d4",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c2637c5-416f-81db-8240-c81895e93b04",
+      "name": "Route remaining IBDB creativeTeam consumers through SERP verification (BRO-102 follow-up)",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Route-remaining-IBDB-creativeTeam-consumers-through-SERP-verification-BRO-102-follow-up-3c2637c5416f81db8240c81895e93b04",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c2637c5-416f-81a4-8ea8-f53ce3586251",
+      "name": "Investigate: Notion card reverted Done→Not started after Auto-closed, resurfaced as duplicate Linear card BRO-111",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Investigate-Notion-card-reverted-Done-Not-started-after-Auto-closed-resurfaced-as-duplicate-Linear-3c2637c5416f81a48ea8f53ce3586251",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c2637c5-416f-81d4-8ea0-f518e03e61ae",
+      "name": "BRO-109: Extend audit-run-budget-coverage.js for script→lib-helper budget-threading gaps",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/BRO-109-Extend-audit-run-budget-coverage-js-for-script-lib-helper-budget-threading-gaps-3c2637c5416f81d48ea0f518e03e61ae",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c2637c5-416f-8135-ae27-dbbced12cd63",
+      "name": "BRO-47: Column-count brittleness audit across table-parsing scrapers",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/BRO-47-Column-count-brittleness-audit-across-table-parsing-scrapers-3c2637c5416f8135ae27dbbced12cd63",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3c2637c5-416f-8161-8bfa-c98a668c00d2",
+      "name": "Triage 28 late-add-flagged shows with no priorRuns/transferOf link",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/Triage-28-late-add-flagged-shows-with-no-priorRuns-transferOf-link-3c2637c5416f81618bfac98a668c00d2",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c1637c5-416f-813b-9f9d-d1cb5cb684b9",
+      "name": "BRO-86: Mezzanine override collision auditor",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/BRO-86-Mezzanine-override-collision-auditor-3c1637c5416f813b9f9dd1cb5cb684b9",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c1637c5-416f-810f-af1e-dcf1bb707929",
+      "name": "BRO-104: Health-digest warning triage — drive warnings to true-state-only",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/BRO-104-Health-digest-warning-triage-drive-warnings-to-true-state-only-3c1637c5416f810faf1edcf1bb707929",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "3c1637c5-416f-81c9-bda8-d6ec592ce58e",
+      "name": "BRO-80: Triage unopened shows carrying scored prior-run reviews",
+      "priority": "P1 Next",
+      "url": "https://app.notion.com/p/BRO-80-Triage-unopened-shows-carrying-scored-prior-run-reviews-3c1637c5416f81c9bda8d6ec592ce58e",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3c1637c5-416f-8135-9574-c26d82a9f208",
       "name": "P1: WSJ URL re-discovery + refetch for 33 recent wrong_content files (finish owner mandate: all WSJ full texts)",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/P1-WSJ-URL-re-discovery-refetch-for-33-recent-wrong_content-files-finish-owner-mandate-all-WSJ--3c1637c5416f81359574c26d82a9f208",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-8130-aec6-ccecd7428473",
-      "name": "Time-boxed: can the real-browser login method beat newspapers.com's viewer? (access ends 2026-08-27)",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Time-boxed-can-the-real-browser-login-method-beat-newspapers-com-s-viewer-access-ends-2026-08-27-3c1637c5416f8130aec6ccecd7428473",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-81b5-8395-e015ef58c6bb",
-      "name": "Feedback auto-fix scopes multi-show reports to a single showId — second show silently dropped (issue #515)",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Feedback-auto-fix-scopes-multi-show-reports-to-a-single-showId-second-show-silently-dropped-issue-3c1637c5416f81b58395e015ef58c6bb",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3c0637c5-416f-8133-ba5a-cde494712eb4",
       "name": "P1: opening-night-poller auto runs cancel-cascade — 6 of 8 cancelled, 5h discovery dead zone on press night",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/P1-opening-night-poller-auto-runs-cancel-cascade-6-of-8-cancelled-5h-discovery-dead-zone-on-pres-3c0637c5416f8133ba5acde494712eb4",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c0637c5-416f-81fd-ac5e-e25503206ac1",
-      "name": "P1: main red — flag-vs-CV contradiction, the-pass-off-broadway-2026 broadwayworld--nicole-rosky.json",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/P1-main-red-flag-vs-CV-contradiction-the-pass-off-broadway-2026-broadwayworld-nicole-rosky-json-3c0637c5416f81fdac5ee25503206ac1",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3bf637c5-416f-817a-bd41-e493bd08c929",
-      "name": "Missing show: Petite Rouge",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Missing-show-Petite-Rouge-3bf637c5416f817abd41e493bd08c929",
-      "reason": "card has no acceptance-criteria section or VERIFY line"
-    },
-    {
-      "id": "3bf637c5-416f-81e2-9adb-dc9065ae698b",
-      "name": "Missing show: Argonautika",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Missing-show-Argonautika-3bf637c5416f81e29adbdc9065ae698b",
-      "reason": "card has no acceptance-criteria section or VERIFY line"
-    },
-    {
-      "id": "3bf637c5-416f-819f-9e8a-df7f63952ad4",
-      "name": "Missing show: Brooklyn's Bridge",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Missing-show-Brooklyn-s-Bridge-3bf637c5416f819f9e8adf7f63952ad4",
-      "reason": "card has no acceptance-criteria section or VERIFY line"
-    },
-    {
-      "id": "3bf637c5-416f-81ab-8726-f91171eb36ba",
-      "name": "Homepage rage clicks — 4 occurrences this week",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Homepage-rage-clicks-4-occurrences-this-week-3bf637c5416f81ab8726f91171eb36ba",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3bf637c5-416f-8121-ab0d-fe09bb04271b",
-      "name": "Loop 5: supervising session that reviews and merges agent PRs (plan redrawn after six-reviewer critique)",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Loop-5-supervising-session-that-reviews-and-merges-agent-PRs-plan-redrawn-after-six-reviewer-criti-3bf637c5416f8121ab0dfe09bb04271b",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3bf637c5-416f-8136-ab2e-c33e199be871",
-      "name": "P1: 7 backlog cards (4 P1) still shape-2 undispatchable after task #1713's SAFE_CHECK_FORMS widening",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/P1-7-backlog-cards-4-P1-still-shape-2-undispatchable-after-task-1713-s-SAFE_CHECK_FORMS-widening-3bf637c5416f8136ab2ec33e199be871",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-card-verifiability.js)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3bf637c5-416f-8124-9b92-d0a51ba3434b",
       "name": "P1: unexplained ENOSPC killed the Cyrus edge worker while 35GB+ was free",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/P1-unexplained-ENOSPC-killed-the-Cyrus-edge-worker-while-35GB-was-free-3bf637c5416f81249b92d0a51ba3434b",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3be637c5-416f-8103-92b4-dd46c0e1b8c4",
-      "name": "worktree-gc has no liveness guard — can remove a worktree that's still a live process's cwd",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/worktree-gc-has-no-liveness-guard-can-remove-a-worktree-that-s-still-a-live-process-s-cwd-3be637c5416f810392b4dd46c0e1b8c4",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3be637c5-416f-81df-8967-ebab151fdc01",
       "name": "CI red: lint-resend-calls.js flags scripts/newsletter/verify-sent-vs-state.mjs (read-only GET, not a send)",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/CI-red-lint-resend-calls-js-flags-scripts-newsletter-verify-sent-vs-state-mjs-read-only-GET-not-a-3be637c5416f81df8967ebab151fdc01",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3be637c5-416f-81fd-91e5-cd38f1b20df3",
-      "name": "P1: 88 worktrees / 76GB filled the disk to 100% — ENOSPC killed local verification mid-session",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/P1-88-worktrees-76GB-filled-the-disk-to-100-ENOSPC-killed-local-verification-mid-session-3be637c5416f81fd91e5cd38f1b20df3",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3be637c5-416f-814a-bafb-f12f1f1457a9",
       "name": "P1: time-bomb audit found stale-sentinel test fails at +30d in validate-data-push-refusal-sentinel.test.mjs",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/P1-time-bomb-audit-found-stale-sentinel-test-fails-at-30d-in-validate-data-push-refusal-sentinel-t-3be637c5416f814abafbf12f1f1457a9",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3be637c5-416f-81af-a492-f2740dd47d71",
       "name": "Session: CI lint guard for Broadway-category re-derivations (#1496)",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/Session-CI-lint-guard-for-Broadway-category-re-derivations-1496-3be637c5416f81afa492f2740dd47d71",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3be637c5-416f-81a2-b3aa-c47e6cfdb568",
-      "name": "P1: RECHECK-AFTER verdicts are silently discarded when data-health-check's commit step loses a push race",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/P1-RECHECK-AFTER-verdicts-are-silently-discarded-when-data-health-check-s-commit-step-loses-a-push--3be637c5416f81a2b3aac47e6cfdb568",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3bd637c5-416f-8153-a684-c5c1b42b21c2",
-      "name": "Corpus-wide sibling-misfile archive cleanup: 158 shows found in Show Score archive",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Corpus-wide-sibling-misfile-archive-cleanup-158-shows-found-in-Show-Score-archive-3bd637c5416f8153a684c5c1b42b21c2",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/extract-show-score-reviews.js)"
-    },
-    {
-      "id": "3bd637c5-416f-816e-9223-c73ed2cf912b",
-      "name": "Structural: new blocking CI gates land straight on main with no pre-merge proof, so main flickers red daily",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Structural-new-blocking-CI-gates-land-straight-on-main-with-no-pre-merge-proof-so-main-flickers-re-3bd637c5416f816e9223c73ed2cf912b",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3bd637c5-416f-8108-83ac-f44c20daa7d6",
       "name": "Extract shared resolveWriteTarget() — classifyMarketRouting caller idiom is now duplicated in 3 write paths",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/Extract-shared-resolveWriteTarget-classifyMarketRouting-caller-idiom-is-now-duplicated-in-3-writ-3bd637c5416f810883acf44c20daa7d6",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3bd637c5-416f-8188-9609-fbbdcb2cc7fa",
-      "name": "Investigate push-with-retry.sh content-survival false-positive on clean rebases",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Investigate-push-with-retry-sh-content-survival-false-positive-on-clean-rebases-3bd637c5416f81889609fbbdcb2cc7fa",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3bc637c5-416f-8152-97c4-ecf71bfcfba5",
-      "name": "Vercel deploy stuck 15+min: cancel-cascade under concurrent push load blocks all deploys",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Vercel-deploy-stuck-15-min-cancel-cascade-under-concurrent-push-load-blocks-all-deploys-3bc637c5416f815297c4ecf71bfcfba5",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: gh run list --workflow=\"Deploy to Vercel\" --limit 5 --json status,conclusion)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3bc637c5-416f-8171-b255-f5498559b922",
       "name": "P1: discovery reconciliation needs source-agreement + concurrency hardening (follow-up to #1446)",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/P1-discovery-reconciliation-needs-source-agreement-concurrency-hardening-follow-up-to-1446-3bc637c5416f8171b255f5498559b922",
-      "reason": "card has no acceptance-criteria section or VERIFY line"
-    },
-    {
-      "id": "3bb637c5-416f-8197-9f17-d20ce2922079",
-      "name": "4 more scripts carry the unreviewed !openingDate guard (cousin of #1409)",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/4-more-scripts-carry-the-unreviewed-openingDate-guard-cousin-of-1409-3bb637c5416f81979f17d20ce2922079",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -rn '!\\s*\\w+\\.openingDate)\\s*\\(return\\|continue\\)' scripts/audit-*.js)"
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
     },
     {
       "id": "3ba637c5-416f-81c5-b5e9-fb876dd92a0e",
       "name": "iOS E2E: show/[slug], settings, rate/[showId] coverage",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/iOS-E2E-show-slug-settings-rate-showId-coverage-3ba637c5416f81c5b5e9fb876dd92a0e",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3b9637c5-416f-8128-961c-c9f4aaa5aaca",
       "name": "[em-20260811-143029] Re: Tony page for this season is bad",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/em-20260811-143029-Re-Tony-page-for-this-season-is-bad-3b9637c5416f8128961cc9f4aaa5aaca",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3b9637c5-416f-817c-9c8f-ef7515fa7df5",
       "name": "[em-20260811-124048] Quiet week · Aug 11",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/em-20260811-124048-Quiet-week-Aug-11-3b9637c5416f817c9c8fef7515fa7df5",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3b9637c5-416f-8115-ab72-e60da833d152",
       "name": "[em-20260810-230914] Manual Fix Needed: 3 Summers of Lincoln (Regional) (#559)",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/em-20260810-230914-Manual-Fix-Needed-3-Summers-of-Lincoln-Regional-559-3b9637c5416f8115ab72e60da833d152",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3b8637c5-416f-81f9-978b-fc8eaf9565e4",
-      "name": "[em-20260810-124816] Manual Fix Needed: 3 Summers of Lincoln (Regional) (#559)",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/em-20260810-124816-Manual-Fix-Needed-3-Summers-of-Lincoln-Regional-559-3b8637c5416f81f9978bfc8eaf9565e4",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3b8637c5-416f-81a2-89a5-ed520e9ed307",
-      "name": "[em-20260810-123602] New submission from Broadway Scorecard Feedback",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/em-20260810-123602-New-submission-from-Broadway-Scorecard-Feedback-3b8637c5416f81a289a5ed520e9ed307",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3b4637c5-416f-81ef-a7a0-ea4c3bda5d23",
-      "name": "P1: main red — CLAUDE.md over byte cap fails Lint Workflows (test.yml)",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/P1-main-red-CLAUDE-md-over-byte-cap-fails-Lint-Workflows-test-yml-3b4637c5416f81efa7a0ea4c3bda5d23",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: wc -c CLAUDE.md)"
-    },
-    {
-      "id": "3b3637c5-416f-817a-960b-cad593603b21",
-      "name": "BSC Daily: Workflow repeat-failure: Opening Night Poller — auto",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/BSC-Daily-Workflow-repeat-failure-Opening-Night-Poller-auto-3b3637c5416f817a960bcad593603b21",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3b3637c5-416f-8197-91e3-e6b68252159b",
       "name": "BSC Daily: Sync: cast coverage",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/BSC-Daily-Sync-cast-coverage-3b3637c5416f819791e3e6b68252159b",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3b2637c5-416f-81d7-8599-ceb4716a06e0",
       "name": "[em-20260804-100852] [Investigation] Deploy to Vercel Failed",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/em-20260804-100852-Investigation-Deploy-to-Vercel-Failed-3b2637c5416f81d78599ceb4716a06e0",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3b1637c5-416f-8172-93e9-d6e2ad604303",
       "name": "BSC Daily: Quality: star-vs-score mismatch — sylvia-off-west-end-2026 Guardian roundup",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/BSC-Daily-Quality-star-vs-score-mismatch-sylvia-off-west-end-2026-Guardian-roundup-3b1637c5416f817293e9d6e2ad604303",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3b0637c5-416f-8159-a5c9-d106e8586882",
-      "name": "BSC Daily: Workflow repeat-failure: Rebuild Reviews Data",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/BSC-Daily-Workflow-repeat-failure-Rebuild-Reviews-Data-3b0637c5416f8159a5c9d106e8586882",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3b0637c5-416f-81b5-98c4-c56c572100d1",
-      "name": "[em-20260802-140817] Fwd: New submission from Broadway Scorecard Feedback",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/em-20260802-140817-Fwd-New-submission-from-Broadway-Scorecard-Feedback-3b0637c5416f81b598c4c56c572100d1",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "3ae637c5-416f-819e-b7fd-e097b8705cd8",
       "name": "BSC Daily: Sync: cast coverage",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/BSC-Daily-Sync-cast-coverage-3ae637c5416f819eb7fde097b8705cd8",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3a8637c5-416f-815f-989d-f513f29369a5",
-      "name": "BSC Daily: Workflow repeat-failure: Process Feedback Submissions",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/BSC-Daily-Workflow-repeat-failure-Process-Feedback-Submissions-3a8637c5416f815f989df513f29369a5",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3a7637c5-416f-81f4-b695-e8bd0a8d73b6",
-      "name": "BSC Daily: Workflow repeat-failure: Commercial RSS Poll",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/BSC-Daily-Workflow-repeat-failure-Commercial-RSS-Poll-3a7637c5416f81f4b695e8bd0a8d73b6",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "39c637c5-416f-8115-9b51-e5c2eaa7a6b8",
       "name": "Commercial data: 33 show(s) awaiting your review",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/Commercial-data-33-show-s-awaiting-your-review-39c637c5416f81159b51e5c2eaa7a6b8",
-      "reason": "card has no acceptance-criteria section or VERIFY line"
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
     },
     {
       "id": "393637c5-416f-8130-a7ba-d029e2fb6411",
       "name": "Clean up 10 byline-explosion review clusters (buried/unscored reviews)",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/Clean-up-10-byline-explosion-review-clusters-buried-unscored-reviews-393637c5416f8130a7bad029e2fb6411",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "377637c5-416f-818f-b648-df92cfef4df2",
-      "name": "CI health: ~75% of test.yml runs on main cancel before validating (data-commit churn)",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/CI-health-75-of-test-yml-runs-on-main-cancel-before-validating-data-commit-churn-377637c5416f818fb648df92cfef4df2",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "376637c5-416f-8170-a9ff-fbe870074cab",
       "name": "Audit other content-quality detectors for buried-signature misses (404 cousin)",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/Audit-other-content-quality-detectors-for-buried-signature-misses-404-cousin-376637c5416f8170a9fffbe870074cab",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "35a637c5-416f-81cd-95ed-cd9dfafd97ae",
-      "name": "CI Test Suite red on main since 2026-05-02 — contamination audit (7 strict) + npm audit high severity",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/CI-Test-Suite-red-on-main-since-2026-05-02-contamination-audit-7-strict-npm-audit-high-severit-35a637c5416f81cd95edcd9dfafd97ae",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: gh run list --workflow=\"Test Suite\" --branch=main --limit=1 --json conclusion --jq '.[0].conclusion')"
-    },
-    {
-      "id": "34b637c5-416f-81aa-818f-dde9766edc08",
-      "name": "Triage 86 shows over drift threshold from check-review-count-drift",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Triage-86-shows-over-drift-threshold-from-check-review-count-drift-34b637c5416f81aa818fdde9766edc08",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "347637c5-416f-81fd-85b0-fd1bc5b78d64",
-      "name": "Audit 946 multi-critic URL collisions in review-texts",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Audit-946-multi-critic-URL-collisions-in-review-texts-347637c5416f81fd85b0fd1bc5b78d64",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "345637c5-416f-81e5-9c77-d54e6ced828e",
       "name": "LLM fallback should fire on PARTIAL extraction, not just zero — resilience to format changes",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/LLM-fallback-should-fire-on-PARTIAL-extraction-not-just-zero-resilience-to-format-changes-345637c5416f81e59c77d54e6ced828e",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "344637c5-416f-81cb-aea1-f1973b3cca40",
       "name": "Add seating section data for top 10 Broadway theaters",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/Add-seating-section-data-for-top-10-Broadway-theaters-344637c5416f81cbaea1f1973b3cca40",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "33f637c5-416f-812e-9eae-f79e5627ea6b",
-      "name": "Stub-tier T1/T2 reviews missing pullQuotes — high-score reviews invisible to CriticReview snippets",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Stub-tier-T1-T2-reviews-missing-pullQuotes-high-score-reviews-invisible-to-CriticReview-snippets-33f637c5416f812e9eaef79e5627ea6b",
-      "reason": "card has no acceptance-criteria section or VERIFY line"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "33b637c5-416f-8133-94bc-e4e8d873c283",
       "name": "Fix rebuild overwriting allowEarlyDate for transferred productions",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/Fix-rebuild-overwriting-allowEarlyDate-for-transferred-productions-33b637c5416f813394bce4e8d873c283",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "337637c5-416f-81ab-99fc-ee0da994001b",
       "name": "Re-enable 7 disabled scraping workflows after SB credit renewal",
       "priority": "P1 Next",
       "url": "https://app.notion.com/p/Re-enable-7-disabled-scraping-workflows-after-SB-credit-renewal-337637c5416f81ab99fcee0da994001b",
-      "reason": "card has no acceptance-criteria section or VERIFY line"
-    },
-    {
-      "id": "334637c5-416f-81c2-8c5b-f278a85d8c8d",
-      "name": "Fix Buttondown migration blockers before switchover",
-      "priority": "P1 Next",
-      "url": "https://app.notion.com/p/Fix-Buttondown-migration-blockers-before-switchover-334637c5416f81c28c5bf278a85d8c8d",
-      "reason": "card has no acceptance-criteria section or VERIFY line"
-    },
-    {
-      "id": "3c1637c5-416f-8174-9717-f3a26e8c6f79",
-      "name": "P2: notion-tasks-sync.js mirror never self-heals for a trashed (archived/in_trash) Notion card",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/P2-notion-tasks-sync-js-mirror-never-self-heals-for-a-trashed-archived-in_trash-Notion-card-3c1637c5416f81749717f3a26e8c6f79",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-812d-b5be-d962db7271ca",
-      "name": "P2: notion-action-poll.js's Action-dispatch pipeline has the same trashed-card blind spot #1811 just closed for bsc-next.js",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/P2-notion-action-poll-js-s-Action-dispatch-pipeline-has-the-same-trashed-card-blind-spot-1811-just-3c1637c5416f812db5bed962db7271ca",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-81c3-8b32-d71b9d396844",
-      "name": "Audit 87 ensemble-scoreability rejections from NYC rollout rescore (19 null-reason) + recover Wicked WaPo/EW",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Audit-87-ensemble-scoreability-rejections-from-NYC-rollout-rescore-19-null-reason-recover-Wicked-3c1637c5416f81c38b32d71b9d396844",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-815d-b404-dff82bdca4dc",
-      "name": "Wire preflightAuth() into the headless dispatch chain (bsc-runner.js path) — last ungated claude spawn",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Wire-preflightAuth-into-the-headless-dispatch-chain-bsc-runner-js-path-last-ungated-claude-spa-3c1637c5416f815db404dff82bdca4dc",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-8137-93ff-eb6db167696a",
-      "name": "Instrument direct HTTP GitHub API calls (fetchJSON duplicated across scripts) — gh CLI ruled out as #821 burner",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Instrument-direct-HTTP-GitHub-API-calls-fetchJSON-duplicated-across-scripts-gh-CLI-ruled-out-as--3c1637c5416f813793ffeb6db167696a",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-8135-9983-d03e3fafaf39",
-      "name": "Canon checklists show wrong-production poster art (In the Heights CenterREP, Avenue Q London)",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Canon-checklists-show-wrong-production-poster-art-In-the-Heights-CenterREP-Avenue-Q-London-3c1637c5416f81359983d03e3fafaf39",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-8180-aed3-cda33ac8dce9",
-      "name": "iOS Stats P2 polish batch (sim-QA leftovers from build-61 audit)",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/iOS-Stats-P2-polish-batch-sim-QA-leftovers-from-build-61-audit-3c1637c5416f8180aed3cda33ac8dce9",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-8199-82c9-fe8bdc202114",
-      "name": "Audit alerts that ask the owner to run a command the automation could run itself (WE-gate variable class)",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Audit-alerts-that-ask-the-owner-to-run-a-command-the-automation-could-run-itself-WE-gate-variable-c-3c1637c5416f819982c9fe8bdc202114",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-8162-8343-ccce89ff1493",
-      "name": "bsc-next: warn when a mid-line \"model:\" hint exists but resolution falls to sonnet floor",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/bsc-next-warn-when-a-mid-line-model-hint-exists-but-resolution-falls-to-sonnet-floor-3c1637c5416f81628343ccce89ff1493",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-8136-84b7-e01b884a15b0",
-      "name": "iOS: HIGH-FIDELITY proposed designs (images, with options) for every key screen — baselines already captured",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/iOS-HIGH-FIDELITY-proposed-designs-images-with-options-for-every-key-screen-baselines-already--3c1637c5416f813684b7e01b884a15b0",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-81c9-9f0e-e9de6fd08129",
-      "name": "Audit other exclusion flags for stale-data drift (wrongShow/wrongProduction/isNonReview/wrongAttribution)",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Audit-other-exclusion-flags-for-stale-data-drift-wrongShow-wrongProduction-isNonReview-wrongAttribu-3c1637c5416f81c99f0ee9de6fd08129",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-812e-bbb7-eb15c12711a7",
-      "name": "Harden readDispatchAttempts with an injectable clock param (avoid future test-fixture date drift)",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Harden-readDispatchAttempts-with-an-injectable-clock-param-avoid-future-test-fixture-date-drift-3c1637c5416f812ebbb7eb15c12711a7",
-      "reason": "acceptance criteria names no runnable command (prose only)"
-    },
-    {
-      "id": "3c1637c5-416f-8158-b5d7-c71bdb9be1ca",
-      "name": "P2: predispatch-guard REOPEN-SUSPECT can hard-block a card indefinitely (stale completedDate/outcome never clears)",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/P2-predispatch-guard-REOPEN-SUSPECT-can-hard-block-a-card-indefinitely-stale-completedDate-outcome-3c1637c5416f8158b5d7c71bdb9be1ca",
-      "reason": "acceptance criteria names no runnable command (prose only)"
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
     }
   ]
 }

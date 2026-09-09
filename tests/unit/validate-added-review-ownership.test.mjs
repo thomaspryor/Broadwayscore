@@ -275,3 +275,163 @@ describe('CLI --base mode — committed re-creation dropped via git rm + commit'
     assert.equal(fs.existsSync(path.join(repo, OWNER_SHOW, 'guardian--new.json')), true);
   });
 });
+
+describe('decideOwnershipDrops — same-show resurrection race (BRO-3092)', () => {
+  const WSJ_URL = 'http://online.wsj.com/article/SB10001424052702303411604575168152141751426.html';
+  const SHOW = 'the-addams-family-2010';
+
+  test('drops a re-created file whose URL a SIBLING IN THE SAME SHOW already owns', () => {
+    // The incumbent — already on origin, never in the added-file set.
+    writeFile(SHOW, 'wsj--terry-teachout.json', {
+      url: WSJ_URL, outletId: 'wsj', criticName: 'Terry Teachout', assignedScore: 63,
+    });
+    // The resurrection: enrich-reviews held this dirty across the delete, and
+    // `git pull --rebase --autostash` + `git add -A` staged it back as an ADD.
+    const resurrected = writeFile(SHOW, 'wsj--unknown.json', {
+      url: WSJ_URL, outletId: 'wsj', criticName: 'Unknown',
+      contentTier: 'complete', assignedScore: 64,
+      fullText: 'WSJ.com is available in the following editions and languages: Please register.',
+    });
+    const drops = decideOwnershipDrops([resurrected], tmpDir);
+    assert.equal(drops.length, 1, 'the same-show re-creation must be dropped');
+    assert.equal(drops[0].file, resurrected);
+    assert.equal(drops[0].kind, 'same-show');
+    assert.equal(drops[0].owner.showId, SHOW);
+    assert.equal(drops[0].owner.file, 'wsj--terry-teachout.json');
+  });
+
+  test('a NAMED added file is never dropped for an unknown-byline sibling', () => {
+    // Direction matters: the rule fires only on the unnamed loser. With the
+    // named file in the added set and the unknown one incumbent, nothing is
+    // dropped — otherwise the gate would delete the better-attributed record.
+    const named = writeFile(SHOW, 'wsj--terry-teachout.json', {
+      url: WSJ_URL, outletId: 'wsj', criticName: 'Terry Teachout', assignedScore: 63,
+    });
+    writeFile(SHOW, 'wsj--unknown.json', { url: WSJ_URL, outletId: 'wsj', criticName: 'Unknown' });
+    assert.equal(decideOwnershipDrops([named], tmpDir).length, 0);
+  });
+
+  test('two NAMED critics at one url are left for adjudication, never deleted', () => {
+    // dedupe-same-url-bylines.js refuses to collapse this class because one of
+    // the two may be a real review carrying a wrong url — deleting it would
+    // drop a real review. This gate must be no more aggressive.
+    writeFile(SHOW, 'variety--peter-marks.json', {
+      url: WSJ_URL, outletId: 'variety', criticName: 'Peter Marks', fullText: 'aaa bbb ccc',
+    });
+    const added = writeFile(SHOW, 'variety--charles-isherwood.json', {
+      url: WSJ_URL, outletId: 'variety', criticName: 'Charles Isherwood', fullText: 'zzz yyy xxx',
+    });
+    assert.equal(decideOwnershipDrops([added], tmpDir).length, 0);
+  });
+
+  test('keeps a same-show file whose URL no sibling holds', () => {
+    writeFile(SHOW, 'wsj--terry-teachout.json', { url: WSJ_URL, outletId: 'wsj' });
+    const newFile = writeFile(SHOW, 'nytimes--ben-brantley.json', {
+      url: 'https://www.nytimes.com/2010/04/09/theater/reviews/09addams.html', outletId: 'nytimes',
+    });
+    assert.equal(decideOwnershipDrops([newFile], tmpDir).length, 0);
+  });
+
+  test('human-vouched and allowCrossShowUrl escapes still win over the same-show check', () => {
+    writeFile(SHOW, 'wsj--terry-teachout.json', { url: WSJ_URL, outletId: 'wsj' });
+    const vouched = writeFile(SHOW, 'wsj--unknown.json', {
+      url: WSJ_URL, outletId: 'wsj', humanReviewScore: 71,
+    });
+    assert.equal(decideOwnershipDrops([vouched], tmpDir).length, 0,
+      'humanReviewScore must exempt the file, as it does for the cross-show check');
+
+    _resetUrlOwnershipIndex();
+    const locked = writeFile(SHOW, 'wsj--anon.json', {
+      url: WSJ_URL, outletId: 'wsj', _locked: true,
+    });
+    assert.equal(decideOwnershipDrops([locked], tmpDir).length, 0);
+
+    _resetUrlOwnershipIndex();
+    const allowed = writeFile(SHOW, 'wsj--other.json', {
+      url: WSJ_URL, outletId: 'wsj', allowCrossShowUrl: true,
+    });
+    assert.equal(decideOwnershipDrops([allowed], tmpDir).length, 0);
+  });
+
+  test('a cross-show violation is still reported as cross-show, not same-show', () => {
+    writeFile(OWNER_SHOW, 'thestage--dave-fargnoli.json', {
+      url: SOHO_URL, outlet: 'The Stage', fullText: 'real review body',
+    });
+    const newFile = writeFile(SIBLING_SHOW, 'thestage--dave-fargnoli.json', { url: SOHO_URL });
+    const drops = decideOwnershipDrops([newFile], tmpDir);
+    assert.equal(drops.length, 1);
+    assert.equal(drops[0].kind, 'cross-show');
+    assert.equal(drops[0].owner.showId, OWNER_SHOW);
+  });
+});
+
+describe('decideOwnershipDrops — same-show hardening (BRO-3092 code review)', () => {
+  const U = 'http://online.wsj.com/article/SB10001424052702303411604575168152141751426.html';
+  const SHOW2 = 'the-addams-family-2010';
+
+  test('scans ALL siblings — a third unknown-byline file must not defeat the gate', () => {
+    // findSiblingUrlOwner returns its FIRST readdir match. When that first hit
+    // was itself unknown-byline, the named-sibling test failed and nothing was
+    // dropped — and readdir order is not guaranteed, so the gate was
+    // nondeterministic. 'aaa--unknown.json' sorts before both wsj files.
+    writeFile(SHOW2, 'aaa--unknown.json', { url: U, outletId: 'aaa', criticName: 'Unknown' });
+    writeFile(SHOW2, 'wsj--terry-teachout.json', { url: U, outletId: 'wsj', criticName: 'Terry Teachout' });
+    const added = writeFile(SHOW2, 'wsj--unknown.json', { url: U, outletId: 'wsj', criticName: 'Unknown' });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1, 'the resurrection must still be dropped past a non-named first hit');
+    assert.equal(drops[0].owner.file, 'wsj--terry-teachout.json', 'owner must be the NAMED sibling');
+  });
+
+  test('requires a LIVE named sibling — never leaves a URL with no includable record', () => {
+    // If the only named sibling is flagged, dropping the added file leaves the
+    // show with nothing includable for that URL, and every later re-collection
+    // is deleted again at push time: a self-perpetuating black hole.
+    // wrongProduction runs ~15% false-positive, so this is not hypothetical.
+    writeFile(SHOW2, 'wsj--terry-teachout.json', {
+      url: U, outletId: 'wsj', criticName: 'Terry Teachout', wrongProduction: true,
+    });
+    const added = writeFile(SHOW2, 'wsj--unknown.json', {
+      url: U, outletId: 'wsj', criticName: 'Unknown', contentTier: 'complete', fullText: 'a real body',
+    });
+    assert.equal(decideOwnershipDrops([added], tmpDir).length, 0);
+  });
+
+  test('a roundup/combined sibling is not a blocking owner either', () => {
+    writeFile(SHOW2, 'wsj--terry-teachout.json', {
+      url: U, outletId: 'wsj', criticName: 'Terry Teachout', isRoundupArticle: true,
+    });
+    const added = writeFile(SHOW2, 'wsj--unknown.json', { url: U, outletId: 'wsj', criticName: 'Unknown' });
+    assert.equal(decideOwnershipDrops([added], tmpDir).length, 0);
+  });
+
+  test('junk / non-ownable urls never read as a collision', () => {
+    // The corpus holds 139+ files whose "url" is a critic-profile href.
+    // url-ownership.js gates the cross-show branch on _isOwnableUrl precisely
+    // so those do not swallow reviews — and here the penalty is DELETION.
+    for (const junk of ['/people/ben-brantley/', 'https://www.nytimes.com/undefined', 'N/A']) {
+      _resetUrlOwnershipIndex();
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'junk-url-'));
+      fs.mkdirSync(path.join(dir, SHOW2));
+      fs.writeFileSync(path.join(dir, SHOW2, 'nytimes--ben-brantley.json'),
+        JSON.stringify({ url: junk, outletId: 'nytimes', criticName: 'Ben Brantley' }));
+      fs.writeFileSync(path.join(dir, SHOW2, 'variety--unknown.json'),
+        JSON.stringify({ url: junk, outletId: 'variety', criticName: 'Unknown', fullText: 'a real review body' }));
+      const drops = decideOwnershipDrops([`${SHOW2}/variety--unknown.json`], dir);
+      assert.equal(drops.length, 0, `junk url ${junk} must not trigger a deletion`);
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('still drops the real incident shape', () => {
+    writeFile(SHOW2, 'wsj--terry-teachout.json', {
+      url: U, outletId: 'wsj', criticName: 'Terry Teachout', assignedScore: 63,
+    });
+    const added = writeFile(SHOW2, 'wsj--unknown.json', {
+      url: U, outletId: 'wsj', criticName: 'Unknown', contentTier: 'complete',
+      fullText: 'WSJ.com is available in the following editions and languages',
+    });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1);
+    assert.equal(drops[0].kind, 'same-show');
+  });
+});

@@ -1,15 +1,15 @@
 {
   "system": "push-retry deadman",
-  "status": "warn",
-  "lastChecked": "2026-08-24T07:46:40.493Z",
+  "status": "error",
+  "lastChecked": "2026-09-05T02:22:00.875Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Push-retry deadman",
-      "status": "warn",
-      "message": "Cannot measure push-retry failures from this environment — data/audit/push-retry-failures.jsonl is gitignored, per-machine, and absent here. This row cannot judge push health from here."
+      "status": "error",
+      "message": "1114 push-retry failure(s) in the last 7d across Broadwayscore:main [Test Suite x215, Rebuild Reviews (Fast) x128, Rebuild Reviews Data x114, Gather Review Data x110, Fetch Show Images x67, Fetch Guardian Reviews via API x44, Commercial RSS Poll x39, Process Feedback Submissions x39, Opening Night Checklist x34, Scrape New Aggregators x33, Audit Aggregator Review Gap x32, Update Show Score Data x29, Audit Imageless Scored Shows x29, Check Opening Night Drift x20, Reverse Discovery Audit x19, Check Corpus Drift x16, Opening Night Broadcast x15, Opening Night Completeness Check x14, unknown x10, Check Review-Count Drift x7, Monitor Scheduled Email Count x7, Audit Opening Dates x7, Opening Night Express x6, Daily Data Health Check x6, Promote West End Aggregator Candidates x6, Auto-Maintain Show Data x5, Refresh Review Data x5, Reddit Engagement Digest x4, Outlet Registry Baseline Maintenance x4, Backfill Cast Data (Web Search) x4, Refresh Show Score (opening-night window) x4, Reconcile Newsletter Dedup State x4, Fix Platform Ticket Links x4, Commercial Weekly Orchestrator x3, Update Lottery/Rush Data x3, Newsletter Draft Refresh (Sunday) x3, Opening Night Express Retry Check x2, Weekly Video Reviews x2, Weekly Newsletter Draft x2, Enrich Off-Broadway Dates x2, Scrape BWW Reviews x2, Scrape WestEndTheatre Roundups x2, Weekly Broadway Grosses x2, Backfill Cast Data x2, Weekly Data Integrity Check x1, Audit Cross-Production (Weekly) x1, Audit Aggregator Coverage x1, Audit Census Recall x1, Coverage Adversarial Probe x1, Weekly Affiliate Report x1, Audit Review Quality x1, Enrich IBDB Dates x1, Detect Revivals (IBDB) x1]. Most recent reason: retries-exhausted."
     }
   ]
 }

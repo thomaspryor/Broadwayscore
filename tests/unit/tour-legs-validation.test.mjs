@@ -12,7 +12,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { isWithinTourLeg, hasDeclaredTourLegs } = require('../../scripts/lib/wrong-production-autoclear');
+const { isWithinTourLeg, hasDeclaredTourLegs, REVIEW_LAG_GRACE_DAYS } = require('../../scripts/lib/wrong-production-autoclear');
 const {
   tourLegMissingCorroboration,
   tourLegMissingVenue,
@@ -40,13 +40,48 @@ describe('isWithinTourLeg', () => {
     );
   });
 
-  it('false when the date falls outside every leg window', () => {
+  it('false when the date falls outside every leg window (incl. grace)', () => {
     assert.strictEqual(
-      isWithinTourLeg('2025-06-01', [
+      isWithinTourLeg('2025-06-02', [
         { venue: 'Ahmanson Theatre', startDate: '2025-04-15', endDate: '2025-05-25', corroborationUrl: 'https://example.com/a' },
       ]),
       false
     );
+  });
+
+  it('BRO-2561: grants REVIEW_LAG_GRACE_DAYS of lag past endDate', () => {
+    const legs = [
+      { venue: 'Ahmanson Theatre', startDate: '2025-04-15', endDate: '2025-05-25', corroborationUrl: 'https://example.com/a' },
+    ];
+    // Exactly at the grace boundary — still within.
+    assert.strictEqual(isWithinTourLeg('2025-06-01', legs), true);
+    // One day past the grace boundary — outside.
+    assert.strictEqual(isWithinTourLeg('2025-06-02', legs), false);
+    assert.strictEqual(REVIEW_LAG_GRACE_DAYS, 7);
+  });
+
+  it('BRO-2561: does not extend the 180-day default window when endDate is absent', () => {
+    // 2025-04-15 + 180d = 2025-10-12; grace only applies to an explicit endDate.
+    assert.strictEqual(
+      isWithinTourLeg('2025-10-12', [{ venue: 'Some Venue', startDate: '2025-04-15', corroborationUrl: 'https://example.com/a' }]),
+      true
+    );
+    assert.strictEqual(
+      isWithinTourLeg('2025-10-19', [{ venue: 'Some Venue', startDate: '2025-04-15', corroborationUrl: 'https://example.com/a' }]),
+      false
+    );
+  });
+
+  it('BRO-2561: a strict match in a later leg beats a graced match in an earlier one', () => {
+    // Leg A closes June 1; leg B opens June 3 (a back-to-back tour stop
+    // change, the norm for tourLegs). A June 4 review is genuinely B's own
+    // opening-week coverage — it must not be swallowed by A's grace tail
+    // just because A comes first in the array.
+    const legs = [
+      { venue: 'Venue A', startDate: '2025-04-15', endDate: '2025-06-01', corroborationUrl: 'https://example.com/a' },
+      { venue: 'Venue B', startDate: '2025-06-03', endDate: '2025-06-20', corroborationUrl: 'https://example.com/b' },
+    ];
+    assert.strictEqual(isWithinTourLeg('2025-06-04', legs), true);
   });
 
   it('defaults endDate to startDate + 180 days when missing', () => {

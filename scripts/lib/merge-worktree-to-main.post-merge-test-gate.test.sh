@@ -38,6 +38,18 @@ GATE="$REPO_ROOT/scripts/lib/merge-post-merge-test-gate.js"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
+# BRO-2751: this test is now registered in CI, so it runs on machines whose
+# ambient git config nobody controls. commit.gpgsign=true, a global
+# core.hooksPath, gpg.format=ssh or a commit template all make the fixture
+# commits below fail for reasons that have nothing to do with the gate under
+# test, and the failure would read as "the post-merge gate is broken". Pin the
+# fixtures to a hermetic config instead of inheriting one. Local identity is
+# still set per-clone below; these two only remove what the host might add.
+# git >= 2.32 honours these; on anything older they are ignored, which leaves
+# the previous (inherited-config) behaviour rather than breaking.
+export GIT_CONFIG_GLOBAL=/dev/null
+export GIT_CONFIG_SYSTEM=/dev/null
+
 PASS=0; FAIL=0
 ok()  { echo "  ✓ $*"; PASS=$((PASS + 1)); }
 bad() { echo "  ✗ $*"; FAIL=$((FAIL + 1)); }
@@ -64,6 +76,12 @@ setup() {
   # (card #1433's baseline-diff TAP parsing), not optional like
   # acceptance-check-core.js — must be present in any real deployment.
   cp "$REPO_ROOT/scripts/lib/tap-failure-parser.js" "$d/main/scripts/lib/"
+  # The gate requires this for describeExit()'s spawn-error text (BRO-2874).
+  # Load-bearing: with this cp removed, the gate dies with MODULE_NOT_FOUND in
+  # the scratch repo and this harness drops to 6 passed / 2 failed (measured, not
+  # assumed — a review predicted it would still score GREEN and that was wrong).
+  # Any future sibling require() of the gate needs its own cp line here.
+  cp "$REPO_ROOT/scripts/lib/exec-error-detail.js" "$d/main/scripts/lib/"
   cp "$REPO_ROOT/scripts/lib/push-mutex.sh" "$d/main/scripts/lib/"
   # Stub the unrelated range-scoped push-audit gate (own coverage elsewhere;
   # a real run here would abort before reaching the check this test targets).

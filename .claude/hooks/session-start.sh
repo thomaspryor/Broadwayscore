@@ -338,6 +338,39 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; }; the
   fi
 fi
 
+# CODE-REPO staleness (BRO-2663, added 2026-08-31). The two blocks above watch
+# derived data checkouts (review-texts, core-data clone); nothing warned when
+# the CODE checkout itself was behind origin/main. Same hazard, same shape: a
+# stale checkout does not fail loudly, it produces a WRONG CONCLUSION. On
+# 2026-08-31 a crown session read scripts/audit-regex-patterns.test.mjs from a
+# checkout 18 commits behind, found a landed commit's 5 new tests apparently
+# missing, and nearly reopened a card against a correct worker. The crown
+# loop's own "am I ahead" check (`git rev-list --count origin/main..HEAD`)
+# answers a different question and reads 0 in both the current AND the
+# arbitrarily-behind case — it cannot catch this; the missing direction is
+# `HEAD..origin/main`, which is what scripts/lib/code-checkout-staleness.js
+# runs. Scoped to the shared MAIN checkout only (`$PWD` not under
+# .claude/worktrees/) — a worktree branch is ahead of origin/main by
+# definition (its own commits), so this same behind/ahead shape there is
+# normal, not the incident's hazard (second-opinion review, BRO-2663 plan
+# review). Extracted to a lib (not inlined like the CORE-DATA block above) so
+# it's unit-tested — see scripts/tests/session-start-staleness.test.mjs.
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
+   && [ -n "$REPO_ROOT" ] && [[ "$PWD" != *"/.claude/worktrees/"* ]] \
+   && [ -f "$REPO_ROOT/scripts/lib/code-checkout-staleness.js" ] \
+   && command -v node >/dev/null 2>&1; then
+  CODE_STALE_MSG=$(node -e '
+    const { runCodeCheckoutStalenessCheck } = require(process.argv[1]);
+    const r = runCodeCheckoutStalenessCheck({ repoDir: process.argv[2] });
+    if (r.message) console.log(r.message);
+  ' "$REPO_ROOT/scripts/lib/code-checkout-staleness.js" "$REPO_ROOT" 2>/dev/null || true)
+  if [ -n "$CODE_STALE_MSG" ]; then
+    echo ""
+    echo "$CODE_STALE_MSG"
+    echo ""
+  fi
+fi
+
 
 # Scoring-delta session baseline (added 2026-06-04). data/review-texts is a single
 # clone SHARED by all concurrent CMUX sessions, so `scoring-delta.js`'s `git diff
@@ -486,6 +519,54 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [
     echo "   Data-file/audit/log churn is almost always safe to drop; anything touching"
     echo "   src/ or scripts/ — diff it against current main first (likely already merged)."
     echo ""
+  fi
+fi
+
+# Disk-space check (BRO-2258). Added 2026-08-30 after the machine silently
+# hit 100% disk (117Mi free of 460Gi) — nothing warned, and it silently broke
+# both cmux runtime spawning (can't write workspace state, so tabs came up
+# runtime=0/tty=nil) and headless job logging (bsc-runner reported "headless
+# job starting" then wrote no log and took no lease — a dispatcher trusting
+# that stdout line would have reported a phantom dispatch as successful). A
+# whole shift went into diagnosing "cmux is broken" / "the launcher is
+# broken" before ENOSPC was found by accident. Runs every fire (not just
+# startup/resume) since free space can change mid-session and the check is
+# cheap (one df call). Also prunes ~/Library/Logs/bsc-jobs, which nothing
+# else does — unbounded growth at 1-2MB/job x ~40 jobs/day is itself a
+# slow-motion repeat of this exact incident; the prune itself is cooldown-
+# gated (pruneJobLogsIfDue, 1h atomic-mkdir claim under data/audit/ — NOT a
+# plain file-mtime check, which isn't atomic across processes; see the lib's
+# own header) so ~20 concurrent sessions firing this hook don't all redo the
+# same readdir+stat+unlink work on every fire. Both node calls are guarded
+# by `[ -f ... ]` existence checks and `2>/dev/null || true` so a missing
+# file, missing node, or any runtime exception is swallowed, never fails
+# closed. `df` itself is timeout-bounded inside disk-space-check.js so a
+# stuck mount can't hang session-start indefinitely (ship-check finding).
+# See scripts/lib/disk-space-check.js's header for the relationship to
+# scripts/health-check.js's existing (looser, daily-digest) disk-space row.
+if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] && command -v node >/dev/null 2>&1; then
+  DISK_MSG=$(node -e '
+    const { runDiskSpaceCheck } = require(process.argv[1]);
+    const r = runDiskSpaceCheck({});
+    if (r.message) process.stdout.write(r.message);
+  ' "$REPO_ROOT/scripts/lib/disk-space-check.js" 2>/dev/null || true)
+  if [ -n "$DISK_MSG" ]; then
+    echo ""
+    echo "$DISK_MSG"
+    echo ""
+  fi
+  if [ -f "$REPO_ROOT/scripts/lib/job-log-retention.js" ]; then
+    node -e '
+      const { pruneJobLogsIfDue } = require(process.argv[1]);
+      const r = pruneJobLogsIfDue({});
+      if (r && r.deleted.length > 0) {
+        const mb = (r.bytesFreed / 1024 / 1024).toFixed(1);
+        console.log(`🔶 JOB-LOG RETENTION: pruned ${r.deleted.length} log(s) older than 14 days from ${r.dir} (freed ~${mb}MB).`);
+      }
+      if (r && r.errors.length > 0) {
+        console.log(`🔶 JOB-LOG RETENTION: ${r.errors.length} error(s) during prune (see ${r.dir} manually) — first: ${r.errors[0]}`);
+      }
+    ' "$REPO_ROOT/scripts/lib/job-log-retention.js" 2>/dev/null || true
   fi
 fi
 

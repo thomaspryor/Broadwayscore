@@ -41,6 +41,22 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
+const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
+
+// Whole-registry sweep over the SAME per-entry decision validate-data.js uses.
+// Deliberately not a second copy of the rule: outlet-registry-field-shape.js
+// owns the contract and the message text, and this only walks the entries.
+function collectFieldShapeErrors(registry) {
+  const outlets = (registry && registry.outlets) || registry || {};
+  const errors = [];
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta') continue;
+    errors.push(...outletFieldShapeErrors(id, entry));
+  }
+  return errors;
+}
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -324,6 +340,18 @@ function auditOutletRegistry() {
       // doesn't re-derive its own narrower version of the same predicate.
       if (isRejectedNonReview(review)) continue;
 
+      // Third exclusion pipeline: a URL on a known non-review domain (ticket/
+      // listing/social/reference/venue/PR-firm — domain-filters.js's
+      // isBlockedReviewUrl) never needs a registry entry either, regardless of
+      // contentTier or classification flags (BRO-2712: a venue "what's on"
+      // page and a PR firm's press release both landed via /submit-review with
+      // no rejectionReason/contentVerification set — isRejectedNonReview alone
+      // doesn't catch a blocked domain). This is the SAME predicate
+      // rebuild-all-reviews.js and explainExclusion() use to drop these files
+      // from scoring (skippedBlockedUrl / blockedReviewUrl) — reusing it here
+      // keeps outlet-level classification canonical instead of a per-file flag.
+      if (review.url && isBlockedReviewUrl(review.url)) continue;
+
       // Track this outlet
       if (!outletsInReviews.has(reviewOutletId)) {
         outletsInReviews.set(reviewOutletId, {
@@ -583,6 +611,20 @@ function printReport(auditResult) {
 function generateJsonOutput(auditResult) {
   const { findings, suggestedAdditions, totalReviewFiles, totalOutletsInReviews, inRegistry } = auditResult;
 
+  // BRO-2776: --strict can exit 1 on cvStyle, so the machine-readable payload
+  // and the committed data/audit/outlet-registry-gaps.json must carry the
+  // reason. Without this a red build ships a JSON document with zero findings
+  // (code-review 2026-09-05).
+  let cvStyleReport = { invalid: [], armedCount: 0 };
+  // Same reasoning for starScale/multiAuthor: --strict can now exit 1 on these,
+  // so a red build must not ship a findings-free JSON document.
+  let registryFieldsReport = [];
+  try {
+    const reg = loadRegistry();
+    cvStyleReport = { invalid: findInvalidCvStyles(reg), armedCount: countArmedCvStyles(reg) };
+    registryFieldsReport = collectFieldShapeErrors(reg);
+  } catch { /* registry unreadable is already fatal in loadRegistry() */ }
+
   // Transform missingFromRegistry to match spec format
   const missingOutlets = findings.missingFromRegistry.map(m => ({
     outletId: m.outletId,
@@ -598,6 +640,8 @@ function generateJsonOutput(auditResult) {
   }));
 
   return {
+    cvStyle: cvStyleReport,
+    invalidRegistryFields: registryFieldsReport,
     generatedAt: new Date().toISOString(),
     summary: {
       totalOutletsInReviews,
@@ -888,6 +932,26 @@ function saveAuditResults(jsonOutput) {
 // Main
 async function main() {
   try {
+    // Field shapes FIRST, before the corpus guard below can exit.
+    //
+    // This check needs only data/outlet-registry.json — not data/review-texts.
+    // The corpus guard exits 1 whenever the private review-texts checkout is
+    // missing or empty, which is precisely the "an earlier step failed" case
+    // the `if: always()` on this step in test.yml exists to survive. Leaving
+    // the field-shape sweep below that guard meant a missing corpus silently
+    // took the registry diagnosis with it — the same shape of bug as the
+    // skipped step it was added to fix, one level down (code-review
+    // 2026-09-06).
+    //
+    // It reports and lets execution continue, so the corpus guard and the
+    // missing-outlet diagnostics still run and an operator sees every reason
+    // in one pass; the exit code is decided once, in the --strict block below.
+    const earlyFieldErrors = collectFieldShapeErrors(loadRegistry());
+    if (earlyFieldErrors.length > 0 && !JSON_OUTPUT) {
+      console.log(`\n⚠️  Invalid starScale/multiAuthor field(s) in data/outlet-registry.json:`);
+      for (const e of earlyFieldErrors) console.log(`  ${e}`);
+    }
+
     const auditResult = auditOutletRegistry();
 
     // FAIL LOUD on an empty corpus (task #1666, same pattern as
@@ -968,7 +1032,85 @@ async function main() {
       console.log(`  A NEW entry must be deleted from data/outlet-registry.json — do not rename or merge.`);
     }
 
+    // BRO-2776: validate cvStyle at WRITE time, in BOTH directions.
+    //
+    // Direction 1 (invalid value): getCvStyle() falls back to 'standard' for
+    // anything outside the canonical vocabulary, so a typo leaves
+    // shouldDeferCvWrongShow() disarmed while looking configured.
+    //
+    // Direction 2 (vanished keys) is the one that actually bit. cvStyle was
+    // populated once (cbf7e97c5c) and a CLEAN 3-way merge (4014d52077) dropped
+    // every key, making the S3 defer-gate a silent no-op on production main —
+    // see cloud-memory/feedback_silent_merge_loss_on_reformat.md. A validity
+    // check can never catch that: vanished keys read as "absent", and absent is
+    // never invalid. Only a positive count does.
+    //
+    // The positive check WAS advisory while 0 outlets were armed. The 6 keys
+    // were restored on 2026-09-05 (nytimes, vulture, newyorker, washpost, nysr,
+    // new-york-sun) and it is now a HARD --strict failure, as promised. A drop
+    // back to zero silently kills the defer-gate at 8 call sites in
+    // rebuild-all-reviews.js, which is exactly what merge 4014d52077 did on
+    // 2026-05-16 with nobody noticing.
+    const cvRegistry = loadRegistry();
+    const badCvStyles = findInvalidCvStyles(cvRegistry);
+    const armedCvStyles = countArmedCvStyles(cvRegistry);
+    const badRegistryFields = collectFieldShapeErrors(cvRegistry);
+    if (!JSON_OUTPUT) {
+      if (badCvStyles.length > 0) {
+        console.log(`\n⚠️  Invalid cvStyle value(s) in data/outlet-registry.json:`);
+        for (const b of badCvStyles) {
+          console.log(`  "${b.outletId}" has cvStyle ${JSON.stringify(b.cvStyle)}`);
+        }
+        console.log(
+          `  Valid values: ${CV_STYLES.join(', ')}. An invalid value leaves ` +
+            `shouldDeferCvWrongShow() disarmed for that outlet (BRO-2776).`
+        );
+      }
+      if (armedCvStyles === 0) {
+        console.log(
+          `\n⚠️  cvStyle DISARMED: 0 outlets carry 'long-biographical', so ` +
+            `shouldDeferCvWrongShow() cannot fire for any review (BRO-2776). ` +
+            `This is how the 2026-05-16 silent merge loss presented.`
+        );
+      }
+      if (badRegistryFields.length > 0) {
+        // The list itself is printed early in main(), above the corpus guard,
+        // so a missing review-texts checkout cannot swallow it. Only the
+        // explanatory footer belongs here, next to the other --strict reasons —
+        // but it needs its own header and a back-reference, or it reads as a
+        // stray indented paragraph about "these" with no antecedent, hundreds
+        // of lines after the actual list (code-review 2026-09-06).
+        console.log(`\n⚠️  ${badRegistryFields.length} invalid starScale/multiAuthor field(s) — listed at the TOP of this report:`);
+        console.log(
+          `  validate-data.js fails on these too, at an EARLIER step of the same ` +
+            `Data Validation job. Until 2026-09-06 registering an outlet with an ` +
+            `invalid field passed HERE and broke the build THERE — and this step, ` +
+            `then lacking an if:, was skipped by that earlier failure, so the run ` +
+            `reported nothing about the registry (arbuturian/starScale:null).`
+        );
+      }
+    }
+
     if (STRICT) {
+      // Collect every reason first, then exit ONCE — exiting on cvStyle before
+      // printing the missing-outlet/junk diagnostics would hide problems the
+      // operator could have fixed in the same pass (code-review 2026-09-05).
+      // armedCvStyles === 0 is now a HARD failure, as the comment above always
+      // said it should become "in the same change that restores them". The keys
+      // are restored (BRO-2776: nytimes, vulture, newyorker, washpost, nysr,
+      // new-york-sun, recovered verbatim from cbf7e97c5c), so the advisory has
+      // nothing left to be lenient about.
+      //
+      // This is the only check that can catch the failure that actually
+      // happened. cvStyle was populated once and a CLEAN 3-way merge dropped
+      // every key; vanished keys read as "absent", and absent is never
+      // "invalid", so findInvalidCvStyles() stays silent through the exact
+      // regression it looks like it guards. Only a positive count sees it.
+      const strictFail = badCvStyles.length > 0
+        || armedCvStyles === 0
+        || badRegistryFields.length > 0
+        || newViolators.length > 0
+        || newJunkViolators.length > 0;
       if (newViolators.length > 0 || newJunkViolators.length > 0) {
         if (!JSON_OUTPUT) {
           if (newViolators.length > 0) {
@@ -983,9 +1125,8 @@ async function main() {
             console.log(`  Delete these from data/outlet-registry.json (task #1783 class of bug) — do not rename or merge.`);
           }
         }
-        process.exit(1);
       }
-      process.exit(0);
+      process.exit(strictFail ? 1 : 0);
     }
 
     process.exit(0); // advisory-first: default mode never fails the build

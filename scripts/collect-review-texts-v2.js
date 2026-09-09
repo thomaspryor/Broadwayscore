@@ -18,7 +18,7 @@ const { extractScore } = require('./lib/score-extractors');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, cleanup } = require('./lib/scraper');
 
 // Configuration
 const CONFIG = {
@@ -698,7 +698,21 @@ async function main() {
   console.log(`Failed fetches logged to: ${CONFIG.failedFetchesFile}`);
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e);
-  process.exit(1);
-});
+// BRO-2701 sibling fix. scripts/audit-fetchpage-cleanup.js flagged this file
+// UNSAFE_CATCH_ONLY: it calls fetchPage() but only ever exits on the ERROR
+// path, so a SUCCESSFUL run leaves Playwright's Chromium holding its stdio
+// pipes open and node's event loop never drains. Same bug class as task #438
+// ("Update Show Status cron red: discover-new-shows blows its 45-min timeout,
+// then 7 push retries exhaust") and as validate-show-venue.js, where it turned
+// a passing CI step into a SIGTERM (exit 143) ~15 minutes after the work was
+// done. This script runs in process-review-submission.yml, so the same hang
+// would burn that workflow's budget.
+main()
+  .catch((e) => {
+    console.error('Fatal error:', e);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    try { await cleanup(); } catch (_) { /* best-effort */ }
+    process.exit(process.exitCode || 0);
+  });

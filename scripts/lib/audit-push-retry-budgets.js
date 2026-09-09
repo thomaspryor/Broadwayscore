@@ -14,7 +14,7 @@
 //     "Extract pull quotes" step's own explicit timeout-minutes: 12, the new
 //     900s push budget left only 180s (10%) of headroom in the 30min job.
 //
-// Two independent flags come out of this module:
+// Three independent flags come out of this module:
 //
 //   1. retryDeadlineRatio — push-with-retry.sh's backoff loop sleeps
 //      WAIT=3+i*2+jitter seconds before each retry (scripts/lib/push-with-
@@ -39,6 +39,13 @@
 //      steps aren't counted — there's no static bound to sum). Flagged when
 //      the job timeout leaves under MARGIN_THRESHOLD (15%) of headroom past
 //      stepBudgetSec + those other steps' budgets.
+//
+//   3. fundableAttempts — BRO-2373 (2026-09-02). Flags 1 and 2 both model an
+//      attempt as costing only its backoff SLEEP. Real CI logs say an attempt
+//      that hits GIT_NET_TIMEOUT_SEC costs at least 2x90s of network cap. See
+//      computeFundableAttempts below for the measurement and the two runs it
+//      was derived from. Flagged as deadline-cannot-fund-retries when
+//      PUSH_DEADLINE_SEC funds fewer than min(MAX_RETRIES, 3) attempts.
 //
 // No YAML library (none of the CI jobs that would run this npm-install first;
 // same constraint scripts/lib/ci-cancellation-guard.js documents). Parsed
@@ -86,9 +93,18 @@ let MANAGED_FILE_INFO = new Map();
 // disqualifying a public-repo push it never touches.
 let PUBLIC_REPO_MANAGED_FILES = [];
 let PUBLIC_REPO_API_FALLBACK_SAFE_FILES = [];
+// BRO-2413 (Codex adversarial ship-check P1 finding): classifyPushFallbackSafety
+// below must mirror push-with-retry.sh's actual disqualifier EXACTLY, which
+// now also exempts apiFallbackMerge-registered files (core-data-merge-
+// registry.js's apiFallbackMergeEntriesFor()) even though they ARE 'active'
+// (MANAGED) — a MANAGED file only still disqualifies when it lacks
+// apiFallbackMerge coverage. Without this, this audit tool would report the
+// 3 alert-* ledgers as still disqualifying the fallback when they no longer
+// do, giving stale advice.
+let PUBLIC_REPO_API_FALLBACK_MERGE_FILES = [];
 try {
   // eslint-disable-next-line global-require
-  const { CORE_DATA_MERGE_REGISTRY, activeEntriesFor, apiFallbackSafeEntriesFor } = require('./core-data-merge-registry.js');
+  const { CORE_DATA_MERGE_REGISTRY, activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor } = require('./core-data-merge-registry.js');
   for (const entry of CORE_DATA_MERGE_REGISTRY) {
     const base = entry.file.split('/').pop();
     const prev = MANAGED_FILE_INFO.get(base);
@@ -97,10 +113,12 @@ try {
   }
   PUBLIC_REPO_MANAGED_FILES = activeEntriesFor('public-repo').map((e) => e.file);
   PUBLIC_REPO_API_FALLBACK_SAFE_FILES = apiFallbackSafeEntriesFor('public-repo').map((e) => e.file);
+  PUBLIC_REPO_API_FALLBACK_MERGE_FILES = apiFallbackMergeEntriesFor('public-repo').map((e) => e.file);
 } catch {
   MANAGED_FILE_INFO = new Map();
   PUBLIC_REPO_MANAGED_FILES = [];
   PUBLIC_REPO_API_FALLBACK_SAFE_FILES = [];
+  PUBLIC_REPO_API_FALLBACK_MERGE_FILES = [];
 }
 
 // data/shows.json / data/reviews.json — push-with-retry.sh's NEVER_FALLBACK
@@ -111,16 +129,23 @@ const NEVER_FALLBACK_FILES = ['data/shows.json', 'data/reviews.json'];
  * Classify one staged repo-relative file path exactly the way push-with-
  * retry.sh's disqualifier does: `isApiFallbackSafe` mirrors its
  * isApiFallbackSafe(f); `disqualifiesFallback` mirrors the `hit` predicate
- * (isManaged || isNeverFallback || unaudited-data/audit/-path). The two are
+ * ((isManaged && !isApiFallbackMergeable) || isNeverFallback ||
+ * unaudited-data/audit/-path). isApiFallbackSafe and isApiFallbackMerge are
  * mutually exclusive by registry construction (an apiFallbackSafe: true
- * entry is never also `status: 'active'` on the same surface).
+ * entry is never also `status: 'active'` on the same surface, and
+ * apiFallbackMerge entries ARE 'active' — see core-data-merge-registry.js's
+ * apiFallbackMergeEntriesFor() header) — but isApiFallbackMerge and isManaged
+ * are NOT mutually exclusive; every apiFallbackMerge entry today is also
+ * MANAGED (status:'active'), which is exactly why disqualifiesFallback needs
+ * the extra `!isApiFallbackMergeable` carve-out on the isManaged clause.
  */
 function classifyPushFallbackSafety(filePath) {
   const isManaged = PUBLIC_REPO_MANAGED_FILES.some((f) => filePath.endsWith(f));
   const isApiFallbackSafe = PUBLIC_REPO_API_FALLBACK_SAFE_FILES.some((f) => filePath.endsWith(f));
+  const isApiFallbackMerge = PUBLIC_REPO_API_FALLBACK_MERGE_FILES.some((f) => filePath.endsWith(f));
   const isNeverFallback = NEVER_FALLBACK_FILES.some((p) => filePath === p || filePath.endsWith('/' + p));
-  const disqualifiesFallback = isManaged || isNeverFallback || (filePath.startsWith('data/audit/') && !isManaged && !isApiFallbackSafe);
-  return { isApiFallbackSafe, disqualifiesFallback };
+  const disqualifiesFallback = (isManaged && !isApiFallbackMerge) || isNeverFallback || (filePath.startsWith('data/audit/') && !isManaged && !isApiFallbackSafe && !isApiFallbackMerge);
+  return { isApiFallbackSafe, isApiFallbackMerge, disqualifiesFallback };
 }
 
 // Shared token filter for both extraction passes below: keeps only literal
@@ -387,15 +412,23 @@ function parseWorkflow(text) {
 
         const runText = runField ? scalarBlockText(lines, runField.idx, runField.inline) : '';
         let envDeadlineSec = null;
+        let envFallbackAfterAttempts = null;
+        let envFallbackDisabled = false;
         if (envField) {
           const envKids = childLines(lines, envField.idx);
           const deadlineField = findChildKey(envKids, 'PUSH_DEADLINE_SEC');
           if (deadlineField) envDeadlineSec = parseIntOrNull(deadlineField.inline.replace(/^['"]|['"]$/g, ''));
+          const fallbackAfterField = findChildKey(envKids, 'PUSH_API_FALLBACK_AFTER_ATTEMPTS');
+          if (fallbackAfterField) envFallbackAfterAttempts = parseIntOrNull(fallbackAfterField.inline.replace(/^['"]|['"]$/g, ''));
+          const fallbackDisableField = findChildKey(envKids, 'PUSH_API_FALLBACK_DISABLE');
+          if (fallbackDisableField) envFallbackDisabled = fallbackDisableField.inline.replace(/^['"]|['"]$/g, '').trim() === '1';
         }
 
         step.name = nameField ? nameField.inline.replace(/^['"]|['"]$/g, '') : null;
         step.runText = runText;
         step.envDeadlineSec = envDeadlineSec;
+        step.envFallbackAfterAttempts = envFallbackAfterAttempts;
+        step.envFallbackDisabled = envFallbackDisabled;
         step.timeoutMinutes = stepTimeoutField ? parseIntOrNull(stepTimeoutField.inline) : null;
         step.continueOnError = continueOnErrorField ? /^true$/i.test(continueOnErrorField.inline) : false;
       }
@@ -487,11 +520,99 @@ function countRawCallSites(fileText) {
   return matches ? matches.length : 0;
 }
 
+
+// Parse GIT_NET_TIMEOUT_SEC's default out of push-with-retry.sh rather than
+// copying the literal — this module's whole history (see MANAGED_FILE_INFO
+// above) is of copied constants drifting from their source. Falls back to 90,
+// the value the script has shipped since task #466, if the line moves.
+function readGitNetTimeoutDefault() {
+  try {
+    // eslint-disable-next-line global-require
+    const src = require('fs').readFileSync(require('path').join(__dirname, 'push-with-retry.sh'), 'utf8');
+    const m = src.match(/^GIT_NET_TIMEOUT_SEC=\$\{GIT_NET_TIMEOUT_SEC:-(\d+)\}/m);
+    if (m) return parseInt(m[1], 10);
+  } catch { /* fall through */ }
+  return 90;
+}
+
 // N^2+4N: sum_{i=1..N} (3 + 2i), push-with-retry.sh's WAIT=3+i*2+jitter
 // backoff formula with the 0-4s random jitter term dropped (worst-case floor,
 // not ceiling — jitter only ever adds time).
 function computeBackoffSum(maxRetries) {
   return maxRetries * maxRetries + 4 * maxRetries;
+}
+
+// How many of MAX_RETRIES attempts PUSH_DEADLINE_SEC can actually fund when
+// every network op costs its full hard cap (BRO-2373 measurement, 2026-09-02).
+//
+// The two flags above model an attempt as costing only its backoff SLEEP, so a
+// 240s deadline with MAX_RETRIES=7 reads "ratio 0.32, deadline is generous".
+// Measured against real CI logs that is wrong by an order of magnitude: on
+// 2026-09-02 five workflows went red at their push step and in EVERY one each
+// `git push` ran for exactly 90.00s — GIT_NET_TIMEOUT_SEC — and was hard-killed
+// by push-with-retry.sh's own `_timeout` wrapper. Evidence, two independent
+// workflows:
+//   run 33679833284 (rebuild-reviews.yml, deadline 900s, MAX_RETRIES=25):
+//     "overall deadline 900s exceeded after 6 attempt(s)"  — 6 of 25.
+//   run 33681436855 (fetch-guardian-reviews.yml, deadline 240s, retries 7):
+//     "overall deadline 240s exceeded after 2 attempt(s)"  — 2 of 7.
+// Both match `2 * GIT_NET_TIMEOUT_SEC + backoff` per attempt, because ONE loop
+// iteration can spend the cap TWICE: the loop-top `git_push` and, after the
+// fetch+rebase, the post-resolution `git_push` (push-with-retry.sh's
+// "Post-resolution push (attempt N) FAILED in Ns — ..." branch). A rejected push, by
+// contrast, returns in ~1s (measured against this repo's origin), so this is
+// the HANG/slow-push ceiling, not the ordinary race-loss path.
+//
+// Counted with the loop's real control flow: push-with-retry.sh checks
+// `SECONDS >= PUSH_DEADLINE_SEC` at the TOP of each iteration (~L1091), so an
+// attempt that merely STARTS under the deadline still runs in full.
+//
+// DIRECTION OF ERROR — read before trusting a NON-flag (adversarial review,
+// 2026-09-02). 2 caps per iteration is a FLOOR on a fully-timed-out iteration,
+// not a ceiling. An iteration can spend the cap more than twice: the primary
+// fetch (~L1334), the ancestry-widening fetch (~L1435), the one-time unshallow
+// (~L1260), and verify_content_survived's own fetches (~L1055) are each
+// separately capped, and the Git Data API fallback runs outside this loop
+// entirely (~L1961). So `fundableAttempts` is an UPPER BOUND on attempts:
+//   * the flag FIRING means the step is genuinely underfunded (no false
+//     positives from this term), which is what it is used for;
+//   * the flag STAYING SILENT does NOT prove the step is well funded.
+// The backoff term likewise drops push-with-retry.sh's 0-4s random jitter
+// (~L1769), which only ever adds time. Both omissions push the same way.
+const GIT_NET_TIMEOUT_SEC = readGitNetTimeoutDefault(); // from push-with-retry.sh, not a copy
+const MIN_TIMED_OUT_ATTEMPT_SEC = 2 * GIT_NET_TIMEOUT_SEC;
+// Below this many fundable attempts a step cannot ride out even a short burst
+// of contention on main. 3 rather than a ratio: the quantity that matters is a
+// small integer count of attempts, and a ratio would hide "2 of 25".
+const MIN_FUNDABLE_ATTEMPTS = 3;
+
+// push-with-retry.sh's per-attempt backoff, WAIT=3+i*2 with the 0-4s jitter
+// dropped. Single source of truth shared with computeBackoffSum's closed form
+// above — a test asserts the two agree, so the formula cannot drift in one
+// place only (adversarial review finding, 2026-09-02).
+function backoffForAttempt(i) {
+  return 3 + 2 * i;
+}
+
+// push-with-retry.sh ~L594: _default_fallback_after=$(( (MAX_RETRIES + 1) / 2 )),
+// floored at 3, then PUSH_API_FALLBACK_AFTER_ATTEMPTS=${PUSH_API_FALLBACK_AFTER_ATTEMPTS:-$_default_fallback_after}.
+// Bash `/` on positive integers truncates toward zero, same as Math.floor here
+// since maxRetries+1 is always >= 0.
+function computeEffectiveFallbackAfter(maxRetries, explicitOverride) {
+  if (explicitOverride != null) return explicitOverride;
+  return Math.max(3, Math.floor((maxRetries + 1) / 2));
+}
+
+function computeFundableAttempts(maxRetries, deadlineSec, attemptSec = MIN_TIMED_OUT_ATTEMPT_SEC) {
+  if (!(maxRetries > 0) || !(deadlineSec > 0)) return 0;
+  let elapsed = 0;
+  let attempts = 0;
+  for (let i = 1; i <= maxRetries; i++) {
+    if (elapsed >= deadlineSec) break; // the loop-top deadline check
+    attempts += 1;
+    elapsed += attemptSec + backoffForAttempt(i); // this attempt's ops, then its backoff
+  }
+  return attempts;
 }
 
 // { touches, apiFallbackSafe } — apiFallbackSafe is true only when EVERY
@@ -573,16 +694,24 @@ function estimateCronIntervalMinutes(text) {
  *   maxRetries: number, deadlineSec: number, backoffSum: number,
  *   retryDeadlineRatio: number, jobTimeoutSec: number, stepBudgetSec: number,
  *   otherStepsBudgetSec: number, marginSec: number, marginRatio: number,
+ *   fallbackAfterAttempts: number, fallbackEarlyTriggerReachable: boolean,
  *   flags: string[]
  * }}
  */
-function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBudgetSec = 0 }) {
+function evaluateStep({
+  maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBudgetSec = 0,
+  fallbackAfterAttemptsOverride = null, fallbackDisabled = false,
+}) {
   const backoffSum = computeBackoffSum(maxRetries);
   const retryDeadlineRatio = deadlineSec > 0 ? backoffSum / deadlineSec : Infinity;
   const jobTimeoutSec = (jobTimeoutMinutes == null ? DEFAULT_JOB_TIMEOUT_MIN : jobTimeoutMinutes) * 60;
   const stepBudgetSec = Math.max(deadlineSec, backoffSum);
   const marginSec = jobTimeoutSec - (stepBudgetSec + otherStepsBudgetSec);
   const marginRatio = jobTimeoutSec > 0 ? marginSec / jobTimeoutSec : -Infinity;
+
+  const fundableAttempts = computeFundableAttempts(maxRetries, deadlineSec);
+  const fallbackAfterAttempts = computeEffectiveFallbackAfter(maxRetries, fallbackAfterAttemptsOverride);
+  const fallbackEarlyTriggerReachable = fallbackDisabled || fundableAttempts >= fallbackAfterAttempts;
 
   const flags = [];
   if (retryDeadlineRatio < RETRY_DEADLINE_RATIO_THRESHOLD) {
@@ -591,10 +720,42 @@ function evaluateStep({ maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBu
   if (marginRatio < MARGIN_THRESHOLD) {
     flags.push('job-timeout-margin-undersized');
   }
+  // BRO-2373: only a real undersizing when the deadline funds fewer attempts
+  // than BOTH the configured retry count and the 3-attempt floor — a step that
+  // deliberately configures MAX_RETRIES=1 is not undersized, it is small.
+  if (fundableAttempts < Math.min(maxRetries, MIN_FUNDABLE_ATTEMPTS)) {
+    flags.push('deadline-cannot-fund-retries');
+  }
+  // BRO-2811: same class as BRO-2370 DEFECT B, made systemic. push-with-retry.sh
+  // checks its loop-top deadline BEFORE an attempt starts (~L1091, the same
+  // control flow computeFundableAttempts models), so an attempt that would first
+  // reach PUSH_API_FALLBACK_AFTER_ATTEMPTS (explicit override, else floor(3,
+  // (MAX_RETRIES+1)/2) — mirrors push-with-retry.sh ~L594) never starts once
+  // fundableAttempts attempts have already exhausted the deadline.
+  //
+  // CORRECTNESS NOTE (Codex adversarial ship-check finding, 2026-09-07): this
+  // does NOT mean the Git Data API fallback "never engages" — push-with-
+  // retry.sh's post-loop fallback block (~L2005) runs on ANY loop exit
+  // (early-trigger break ~L1952 OR the deadline break ~L1255 OR full retry
+  // exhaustion) as long as `_PUSH_API_FALLBACK_ELIGIBLE=true`, independent of
+  // whether the early-trigger threshold itself was ever reached. What an
+  // unreachable early-trigger actually costs: the fallback only gets invoked
+  // LATE, after PUSH_DEADLINE_SEC is already exhausted, at which point
+  // `_api_remaining_sec` (~L2200) is ~0 and push-via-git-api.sh's own retry
+  // budget scales down to its minimum (2 attempts, vs up to 6 with time to
+  // spare) — a real degradation, but not "never". Flag name and this comment
+  // updated accordingly; see auditWorkflowText for the companion fix (this
+  // flag is additionally gated off when the call's own staged files already
+  // disqualify the fallback outright, in which case the trigger's
+  // reachability is moot).
+  if (!fallbackEarlyTriggerReachable) {
+    flags.push('fallback-early-trigger-unreachable');
+  }
 
   return {
     maxRetries, deadlineSec, backoffSum, retryDeadlineRatio,
     jobTimeoutSec, stepBudgetSec, otherStepsBudgetSec, marginSec, marginRatio,
+    fundableAttempts, fallbackAfterAttempts, fallbackEarlyTriggerReachable,
     flags,
   };
 }
@@ -630,19 +791,38 @@ function auditWorkflowText(text, filePath) {
 
     for (const pc of pushCalls) {
       const { step, call, deadlineSec, stagedPaths } = pc;
-      const explicitOtherSec = explicitTimeoutSteps
-        .filter((s) => s !== step)
-        .reduce((sum, s) => sum + s.timeoutMinutes * 60, 0);
-      const siblingPushOtherSec = pushCalls
-        .filter((other) => other !== pc)
-        .reduce((sum, other) => sum + other.stepBudgetSec, 0);
-      const otherStepsBudgetSec = explicitOtherSec + siblingPushOtherSec;
+      // BRO-2370 second-opinion finding: a sibling step that BOTH declares its
+      // own explicit timeout-minutes AND calls push-with-retry.sh used to be
+      // counted TWICE — once via explicitTimeoutSteps (its declared cap) and
+      // again via pushCalls (its own computed stepBudgetSec) — inflating
+      // otherStepsBudgetSec and producing false job-timeout-margin-undersized
+      // flags. A step's real worst-case contribution is bounded by whichever
+      // ceiling GitHub actually enforces: its own explicit timeout-minutes if
+      // it declares one (that hard external kill fires regardless of what
+      // push-with-retry.sh's internal deadline is doing), or its push-call
+      // stepBudgetSec only when it has no explicit cap. Key each OTHER step
+      // ONCE, by identity, so a capped+push-calling sibling is counted only
+      // via its cap.
+      const otherStepInfo = new Map(); // step -> { capped, sec }
+      for (const s of explicitTimeoutSteps) {
+        if (s === step) continue;
+        otherStepInfo.set(s, { capped: true, sec: s.timeoutMinutes * 60 });
+      }
+      for (const other of pushCalls) {
+        if (other === pc || other.step === step) continue;
+        const info = otherStepInfo.get(other.step);
+        if (info && info.capped) continue; // explicit cap already fully bounds this step
+        otherStepInfo.set(other.step, { capped: false, sec: (info?.sec || 0) + other.stepBudgetSec });
+      }
+      const otherStepsBudgetSec = [...otherStepInfo.values()].reduce((sum, v) => sum + v.sec, 0);
 
       const evaluation = evaluateStep({
         maxRetries: call.maxRetries,
         deadlineSec,
         jobTimeoutMinutes: job.timeoutMinutes,
         otherStepsBudgetSec,
+        fallbackAfterAttemptsOverride: step.envFallbackAfterAttempts,
+        fallbackDisabled: step.envFallbackDisabled === true,
       });
 
       // A push wrapped in `|| echo`/`|| true` or a `continue-on-error: true`
@@ -668,6 +848,22 @@ function auditWorkflowText(text, filePath) {
       const mixedSafetyBundleDisqualifyingFiles = stagedPaths.filter((p) => classifyPushFallbackSafety(p).disqualifiesFallback);
       const mixedSafetyBundle = mixedSafetyBundleSafeFiles.length > 0 && mixedSafetyBundleDisqualifyingFiles.length > 0;
       if (mixedSafetyBundle) evaluation.flags.push('mixed-safety-bundle');
+
+      // BRO-2811 (Codex adversarial ship-check finding, 2026-09-07): a call
+      // whose OWN known staged files already disqualify the Git Data API
+      // fallback outright (classifyPushFallbackSafety's disqualifiesFallback —
+      // the SAME per-call staged-path evidence mixed-safety-bundle above
+      // already computes) would never get a working fallback regardless of
+      // whether PUSH_API_FALLBACK_AFTER_ATTEMPTS is reachable — the trigger's
+      // reachability is moot when the destination it triggers is disqualified
+      // on file-safety grounds alone. Only suppresses on POSITIVE evidence of
+      // disqualification (a known disqualifying path was actually staged);
+      // stagedPaths being empty (a bulk-stage idiom this parser can't resolve,
+      // see extractStagedPaths' documented blind spots) leaves the flag on
+      // rather than guessing safety from an absence of evidence.
+      if (mixedSafetyBundleDisqualifyingFiles.length > 0) {
+        evaluation.flags = evaluation.flags.filter((f) => f !== 'fallback-early-trigger-unreachable');
+      }
 
       let contentionScore = 0;
       if (managed) contentionScore += apiFallbackSafe ? 1 : 2;
@@ -706,6 +902,12 @@ module.exports = {
   DEFAULT_JOB_TIMEOUT_MIN,
   MARGIN_THRESHOLD,
   RETRY_DEADLINE_RATIO_THRESHOLD,
+  GIT_NET_TIMEOUT_SEC,
+  MIN_TIMED_OUT_ATTEMPT_SEC,
+  MIN_FUNDABLE_ATTEMPTS,
+  backoffForAttempt,
+  computeFundableAttempts,
+  computeEffectiveFallbackAfter,
   parseWorkflow,
   findPushRetryCalls,
   countRawCallSites,
