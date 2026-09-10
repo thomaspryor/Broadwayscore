@@ -118,7 +118,14 @@ jobs:
         # PUSH_API_FALLBACK_AFTER_ATTEMPTS must be pinned low too. 25/900/3
         # matches that exact precedent and clears all three flags (verified
         # via the audit tool). Job's 60-min timeout has ample headroom — the
-        # actual backfill work completes in under 2 minutes.
+        # actual backfill work completes in under 2 minutes. Note (Codex
+        # adversarial review, BRO-427): the Git Data API fallback runs ON TOP
+        # of PUSH_DEADLINE_SEC, not inside it, so this step's true worst case
+        # is ~900s local (3 attempts, early-fallback trigger) + up to ~400s
+        # fallback ≈ 16-18min, not a flat 15min ceiling — still leaves ~40min
+        # of the 60-min job timeout for the always() steps below (push-core-
+        # data, ledger commit, notify-failure), each of which normally
+        # completes in well under a minute.
         env:
           PUSH_DEADLINE_SEC: '900'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'

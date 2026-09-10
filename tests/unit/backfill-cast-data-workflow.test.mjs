@@ -25,6 +25,15 @@ const WORKFLOW_PATH = path.join(REPO_ROOT, '.github', 'workflows', WORKFLOW_FILE
  * This test reuses the audit tool's own logic (not a reimplementation) so a
  * future edit that quietly shrinks these numbers back down is caught here
  * instead of waiting for the next live incident.
+ *
+ * Deliberately asserts "no flags" rather than the literal 25/900/3 values
+ * (Codex adversarial review, BRO-427): the actual defect was undersizing,
+ * not "not exactly these three numbers", and the audit's flag conditions
+ * (retryDeadlineRatio, fundableAttempts, fallback reachability) already
+ * reject a naive regression — e.g. dropping back to maxRetries=3 trips
+ * retries-undersized-vs-deadline even at a much larger deadline. A future
+ * tuning pass that keeps the step well-resourced shouldn't have to touch
+ * this test.
  */
 test('backfill-cast-web.yml "Commit and push" step is not push-retry-budget-undersized', () => {
   const text = fs.readFileSync(WORKFLOW_PATH, 'utf8');
