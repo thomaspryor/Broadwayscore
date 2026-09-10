@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-10T11:58:25.725Z",
+    "generatedAt": "2026-09-10T16:05:50.269Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,18 +10,18 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 31,
-    "coveredCount": 15,
-    "highChurnTracked": 46
+    "coveredCount": 14,
+    "highChurnTracked": 45
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 121
+      "churn": 122
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 71
+      "churn": 76
     },
     {
       "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
@@ -72,11 +72,11 @@
       "churn": 61
     },
     {
-      "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 59
+      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
+      "churn": 60
     },
     {
-      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
+      "path": "public/data/shows/are-you-watching-west-end-2026.json",
       "churn": 59
     },
     {
@@ -100,12 +100,12 @@
       "churn": 51
     },
     {
-      "path": "public/data/shows/six-the-musical-west-end-2021.json",
-      "churn": 49
+      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
+      "churn": 48
     },
     {
-      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 47
+      "path": "public/data/shows/six-the-musical-west-end-2021.json",
+      "churn": 48
     },
     {
       "path": "public/data/shows/operation-mincemeat-west-end-2024.json",
@@ -113,7 +113,7 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 37
+      "churn": 36
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -132,43 +132,43 @@
       "churn": 36
     },
     {
-      "path": "public/data/shows/hit-machine-off-west-end-2026.json",
-      "churn": 34
+      "path": "public/data/shows/teeth-n-smiles-west-end-2026.json",
+      "churn": 35
     },
     {
-      "path": "public/data/shows/teeth-n-smiles-west-end-2026.json",
-      "churn": 34
+      "path": "public/data/shows/hit-machine-off-west-end-2026.json",
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 333,
+      "churn": 328,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 330,
+      "churn": 327,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 213,
+      "churn": 205,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 212,
+      "churn": 198,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 138,
+      "churn": 137,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 123,
+      "churn": 125,
       "mergeAttr": "union"
     },
     {
@@ -188,7 +188,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 63,
+      "churn": 70,
       "mergeAttr": "ours"
     },
     {
@@ -202,19 +202,14 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-the-story-west-end-2026.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "tests/unit-test-manifest.txt",
       "churn": 34,
       "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 33,
+      "mergeAttr": "ours"
     }
   ]
 }
