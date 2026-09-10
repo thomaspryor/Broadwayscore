@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-10T18:48:16.814Z",
-  "processed": 95,
-  "failed": 666,
-  "successRate": "12.5%",
+  "updatedAt": "2026-09-10T19:53:27.327Z",
+  "processed": 100,
+  "failed": 891,
+  "successRate": "10.1%",
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 57,
     "amp": 0,
-    "browserbase": 8,
-    "directCookies": 3,
+    "browserbase": 11,
+    "directCookies": 4,
     "scrapingbee": 13,
     "brightdata": 25,
     "archiveToday": 0,
     "archive": 10
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-10T14:14:08.572Z",
@@ -88,6 +88,34 @@
       "t": "2026-09-10T18:28:50.416Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-10T19:34:02.251Z",
+      "event": "bb-session",
+      "session": "52d06e62",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-10T19:34:08.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-10T19:46:07.162Z",
+      "event": "bb-session",
+      "session": "9b5fb7ca",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-10T19:50:37.599Z",
+      "event": "bb-session",
+      "session": "2f48d567",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-10T19:50:38.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
