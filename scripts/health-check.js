@@ -3627,13 +3627,56 @@ function obClosingBacklogResults(report, now = new Date()) {
 // (data/audit/reverse-discovery-candidates.json, written daily by
 // audit-reverse-discovery.yml). This is the detector's ONLY human-facing
 // channel — sendAlert in the CLI is log-only by alert-volume policy.
-function reverseDiscoveryBacklogResults(report) {
-  if (!report || !Array.isArray(report.candidates) || report.candidates.length === 0) return [];
-  const first = report.candidates[0];
+// Re-confirm a reverse-discovery candidate against LIVE shows.json before
+// letting it escalate. The candidates report is up to 6h old and can name a
+// show that has already been added (Mad King, 2026-09-10) — escalating that
+// would be the false alarm that teaches everyone to ignore the row.
+// Uses the detector's OWN matcher so the digest and the audit agree on what
+// "missing" means; hand-rolled title matching gets this wrong (verified).
+function buildStillMissingPredicate() {
+  try {
+    const { buildShowTitleIndex, resolveMatchedShowId } = require('./lib/reverse-discovery');
+    const shows = JSON.parse(
+      fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8')
+    ).shows;
+    const nycIndex = buildShowTitleIndex(shows, 'nyc');
+    const weIndex = buildShowTitleIndex(shows, 'west-end');
+    return (c) => {
+      const index = c && c.market === 'west-end' ? weIndex : nycIndex;
+      return !resolveMatchedShowId(c && c.title, index);
+    };
+  } catch {
+    // shows.json unreadable — do not silence the backlog, just stop gating.
+    return undefined;
+  }
+}
+
+function reverseDiscoveryBacklogResults(report, state, now = new Date()) {
+  const { rankReverseDiscoveryBacklog, describeCandidate, RD_AGED_DAYS_ERROR } =
+    require('./lib/reverse-discovery-backlog');
+  const ranked = rankReverseDiscoveryBacklog({
+    candidates: report && report.candidates,
+    state,
+    nowMs: now.getTime(),
+    isStillMissing: buildStillMissingPredicate(),
+  });
+  if (!ranked) return [];
+
+  // Named-first-in-array is not named-most-urgent — the same lesson
+  // obClosingBacklogResults learned. Rhinoceros sat 12 days behind an
+  // unchanging "First: ..." line that read identically on day 1 and day 12.
+  const aged = ranked.agedEvidence.length;
+  const message =
+    `${ranked.count} aggregator-reviewed show(s) not in the catalogue. ` +
+    `Oldest: ${describeCandidate(ranked.oldest)}` +
+    (aged
+      ? ` — ${aged} review-backed candidate(s) past ${RD_AGED_DAYS_ERROR}d, so the daily promotion run has already had ${RD_AGED_DAYS_ERROR} chances at them.`
+      : '');
+
   return [{
     name: 'Data: reviewed shows missing from shows.json',
-    status: 'warn',
-    message: `${report.candidates.length} aggregator-reviewed show(s) not in the catalogue. First: "${first.title}" (${first.source})`,
+    status: ranked.status,
+    message,
     hint: 'Review data/audit/reverse-discovery-candidates.json; validate each via node scripts/validate-show-venue.js, then add per CLAUDE.md §3.',
   }];
 }
@@ -4842,7 +4885,13 @@ async function main() {
 
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
-      allResults.push(...reverseDiscoveryBacklogResults(rdReport));
+      // firstSeen lives in the STATE file, not the candidates report — without
+      // it every candidate looks brand new and nothing can ever escalate.
+      let rdState = {};
+      try {
+        rdState = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-state.json'), 'utf8'));
+      } catch { /* state absent on a first run — ages stay unknown, status stays warn */ }
+      allResults.push(...reverseDiscoveryBacklogResults(rdReport, rdState));
       allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
 

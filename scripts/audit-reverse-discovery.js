@@ -326,7 +326,9 @@ async function main(argv = process.argv.slice(2)) {
   // coverage ledger can anchor on it even when openingDate is null/wrong or
   // status is stuck (the Broad Strokes class). DTLI is excluded: its lastmod
   // can touch an old page for reasons unrelated to reviews.
-  const EVIDENCE_SOURCES = new Set(['wet-roundup', 'bww-roundup', 'playbill-roundup']);
+  // One definition, shared with the digest's escalation rule — two copies
+  // would drift and silently change which candidates can escalate.
+  const { EVIDENCE_SOURCES } = require('./lib/reverse-discovery-backlog');
   const evidenceItems = [];
   for (const it of items) {
     if (!EVIDENCE_SOURCES.has(it.source)) continue;
