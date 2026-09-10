@@ -1,33 +1,5 @@
 [
   {
-    "startedAt": "2026-09-05T02:27:36.177Z",
-    "completedAt": "2026-09-05T02:27:39.543Z",
-    "totalReviews": 44,
-    "processed": 0,
-    "skipped": 43,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5161,
-      "output": 124,
-      "total": 13330
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-05T08:49:14.195Z",
-    "completedAt": "2026-09-05T08:57:36.377Z",
-    "totalReviews": 42633,
-    "processed": 2,
-    "skipped": 42624,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 45985,
-      "output": 1682,
-      "total": 119876
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-05T08:57:44.467Z",
     "completedAt": "2026-09-05T09:01:42.526Z",
     "totalReviews": 42633,
@@ -298238,5 +298210,125 @@
       "total": 13498
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-10T09:29:03.126Z",
+    "completedAt": "2026-09-10T10:42:04.989Z",
+    "totalReviews": 42990,
+    "processed": 6,
+    "skipped": 42977,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 61212,
+      "output": 2780,
+      "total": 160201
+    },
+    "errorDetails": [
+      {
+        "showId": "truly-howard-hughes-off-broadway-2026",
+        "outletId": "cititour",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-10T10:42:12.607Z",
+    "completedAt": "2026-09-10T10:44:54.187Z",
+    "totalReviews": 42990,
+    "processed": 10,
+    "skipped": 42890,
+    "errors": 17,
+    "tokensUsed": {
+      "input": 182409,
+      "output": 5979,
+      "total": 460112
+    },
+    "errorDetails": [
+      {
+        "showId": "summer-2018",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-bands-visit-2017",
+        "outletId": "guardian",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "oslo-2017",
+        "outletId": "rollingstone",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "amelie-a-new-musical-2017",
+        "outletId": "timeout",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "amelie-a-new-musical-2017",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-play-that-goes-wrong-2017",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "sunset-boulevard-2017",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "long-days-journey-into-night-2016",
+        "outletId": "stageandcinema",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-father-2016",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "eclipsed-2016",
+        "outletId": "hollywood-reporter",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "eclipsed-2016",
+        "outletId": "stageandcinema",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "fun-home-2015",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "wolf-hall-parts-one-and-two-2015",
+        "outletId": "guardian",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "wolf-hall-parts-one-and-two-2015",
+        "outletId": "variety",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "wolf-hall-parts-one-and-two-2015",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "fish-in-the-dark-2015",
+        "outletId": "ew",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "big-fish-2013",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
