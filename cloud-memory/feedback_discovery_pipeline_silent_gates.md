@@ -882,3 +882,28 @@ identity survives the URL change — even a correct body will never be scored un
 `fullText.length > 0 && excludeFromScoring !== true`. Never trust the ingest script's own stdout.
 **Fix tonight:** write the fields into the JSON directly (body from a cached fetch), set all 8 protection
 fields, commit immediately.
+
+## Deploy lag masquerading as missed-discovery (2026-09-10, kimberly-akimbo-off-west-end-2026, BRO-3153)
+**Symptom:** An outlet is absent from the live prod show JSON, so gap triage classifies it
+`missing / missed-discovery` and starts URL-resolution work (site search, Google News RSS,
+sitemap probing). In reality the pipeline already discovered, fetched, scored and committed it —
+only the Vercel deploy hadn't carried it yet.
+
+**Real incident:** West End Best Friend was chased as a missed-discovery across passes 25-36
+(~12 monitor passes, three dead URL routes) while the file had existed since 15:13Z that day:
+present on data-repo `origin/main`, `isIncludableForRebuild() === true`, and already in
+`reviews.json` with `assignedScore 79 / llm-v6`. Re-running `ingest-review-from-url.js`
+returned `Skipped: no-changes`. The same class caused two false-alarm `rebuild-fast`
+re-dispatches (passes 34, 35).
+
+**Rule:** prod absence alone NEVER establishes a discovery gap. Check three sources in order
+before using the word "missing":
+1. `data/review-texts/<show>/` for a file matching the outlet — local AND `origin/main`
+2. `git show origin/main:reviews.json` (data repo) for the outlet/url
+3. the live prod show JSON
+Absent at all three = true missed-discovery. Present at 1 or 2 but not 3 = deploy lag; do not
+re-ingest, do not re-dispatch a rebuild, do not resolve URLs. Present at 1 but excluded from 2 =
+gate rejection; run `explainExclusion()` rather than re-ingesting.
+
+**Related:** [[feedback_e2e_runs_against_production.md]] (deploy-lag false negatives),
+[[feedback_pending_no_byline_strand_drain.md]].
