@@ -50,6 +50,18 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Stale-checkout race guard (P1), same pattern as rebuild-reviews.yml
+      # (BRO-3161): a review-texts push landing between THIS checkout and the
+      # "Rebuild reviews.json" step below is invisible to that step — it
+      # exits 0 with a stale checkout and no warning. Recording the
+      # checkout-time SHA here lets the rebuild step detect drift right
+      # before it runs. See scripts/lib/rebuild-staleness-guard.js +
+      # scripts/check-rebuild-staleness.js.
+      - name: Record review-texts checkout SHA
+        id: review_texts_checkout
+        run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -84,8 +96,92 @@ jobs:
 
       - name: Rebuild reviews.json
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: node scripts/rebuild-all-reviews.js
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Stale-checkout race guard, part 2 (BRO-3161, ported from
+          # rebuild-reviews.yml): the Guardian API loop above took real
+          # wall-clock time since the checkout — re-check review-texts'
+          # upstream tip right before rebuilding. A `git fetch` + `rev-parse`
+          # is a few seconds; this runs every invocation but only pays for a
+          # re-sync when drift is actually detected (unchanged SHA = zero
+          # added cost).
+          #
+          # Explicit destination refspec (+main:refs/remotes/origin/main),
+          # not a bare `git fetch origin main` — the checkout-review-texts
+          # composite action's shallow checkout may not leave a fetch refspec
+          # configured that a later bare fetch would resolve into
+          # refs/remotes/origin/main, in which case the ref update would
+          # silently land only in FETCH_HEAD and the drift check below would
+          # never fire.
+          CHECKOUT_SHA="${{ steps.review_texts_checkout.outputs.sha }}"
+          git -C data/review-texts fetch origin +main:refs/remotes/origin/main --depth=1 --quiet
+          CURRENT_SHA=$(git -C data/review-texts rev-parse refs/remotes/origin/main)
+          echo "" > /tmp/stale-checkout-shows.txt
+          if node -e "
+            const { shouldRetryForStaleCheckout } = require('./scripts/lib/rebuild-staleness-guard.js');
+            process.exit(shouldRetryForStaleCheckout(process.argv[1], process.argv[2]) ? 0 : 1);
+          " "$CHECKOUT_SHA" "$CURRENT_SHA"; then
+            echo "⚠️  review-texts advanced during this job ($CHECKOUT_SHA -> $CURRENT_SHA) — syncing drifted files before rebuild"
+            # Record which SHOWS drifted (for the post-rebuild verify step below).
+            git -C data/review-texts diff --name-only "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              | cut -d/ -f1 | sort -u > /tmp/stale-checkout-shows.txt
+            # Update ONLY files that still EXIST at the new tip (--diff-filter=d
+            # excludes deletions) from the fresh tip — a targeted checkout
+            # instead of a full rm -rf + re-clone, so this job's own local
+            # Guardian-fetched edits to OTHER files are not discarded.
+            # NUL-delimited so no filename can be mis-split.
+            git -C data/review-texts diff -z --name-only --diff-filter=d "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              > /tmp/stale-checkout-files.txt
+            if [ -s /tmp/stale-checkout-files.txt ]; then
+              xargs -0 git -C data/review-texts checkout "$CURRENT_SHA" -- < /tmp/stale-checkout-files.txt
+            fi
+          fi
 
+          # First attempt
+          if node scripts/rebuild-all-reviews.js; then
+            echo "Rebuild succeeded on first attempt"
+            exit 0
+          fi
+
+          echo ""
+          echo "⚠️  Rebuild failed (likely stale checkout) — re-cloning review-texts and retrying..."
+          echo ""
+
+          # Re-clone review-texts fresh (fixes stale/partial checkout from concurrent pushes)
+          rm -rf data/review-texts
+          git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+
+          # Retry rebuild
+          node scripts/rebuild-all-reviews.js
+
+      # Stale-checkout race guard, part 3 (BRO-3161, ported from
+      # rebuild-reviews.yml): verify every show that drifted during this job
+      # actually landed in reviews.json. NOT continue-on-error — this is the
+      # "fail the job loudly" backstop the incident (Kimberly Akimbo / The
+      # Times (UK) silently dropped here, 2026-09-10) needed. After 2
+      # consecutive failures it auto-recovers (exits 0) and escalates to an
+      # owner alert instead — see scripts/lib/guard-escalation.js.
+      - name: Verify no scoreable review vanished during checkout drift
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt
+
+      - name: Opening-night drop + completeness check
+        # Complementary real-time alert (not a substitute for the blocking
+        # guard above): same non-blocking pattern as rebuild-fast.yml's
+        # identical step, specifically for shows in the ±7d opening-night
+        # window.
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/check-opening-night-completeness.js
+        continue-on-error: true
 
       - name: Push review-texts to private repo
         if: always()
