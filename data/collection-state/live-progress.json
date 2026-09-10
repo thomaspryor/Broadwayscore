@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-09-09T22:14:19.823Z",
-  "processed": 43,
-  "failed": 317,
-  "successRate": "11.9%",
+  "updatedAt": "2026-09-10T01:33:05.990Z",
+  "processed": 48,
+  "failed": 322,
+  "successRate": "13.0%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 18,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 7,
-    "scrapingbee": 18,
+    "scrapingbee": 20,
     "brightdata": 11,
     "archiveToday": 0,
     "archive": 22
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-09-09T14:27:32.822Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-09T14:28:28.630Z",
-      "event": "bb-session",
-      "session": "5749fa99",
-      "url": "https://www.wsj.com/articles/rhinoceros-review-john-turturro-paul-giamatti-and-m"
-    },
-    {
-      "t": "2026-09-09T14:28:29.507Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-09T14:32:07.748Z",
-      "event": "bb-session",
-      "session": "6818cc23",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
     {
       "t": "2026-09-09T14:32:08.715Z",
       "event": "bb-cookie-inject",
@@ -127,6 +105,29 @@
       "t": "2026-09-09T22:13:41.485Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-10T01:31:00.497Z",
+      "event": "bb-session",
+      "session": "6b7247fc",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-10T01:31:16.264Z",
+      "event": "bb-session",
+      "session": "609e4c6c",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-10T01:32:32.993Z",
+      "event": "bb-session",
+      "session": "af07af47",
+      "url": "https://www.wsj.com/articles/paranormal-activity-review-creepy-horror-high-jinks"
+    },
+    {
+      "t": "2026-09-10T01:32:33.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
