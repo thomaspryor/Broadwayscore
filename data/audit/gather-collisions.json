@@ -1,20 +1,5 @@
 [
   {
-    "recordedAt": "2026-09-04T07:35:57.177Z",
-    "showId": "a-month-in-the-country-west-end-2026",
-    "newFile": "thestage--unknown.json",
-    "ok": false,
-    "file": "thestage--dave-fargnoli.json",
-    "reason": "publish-date-gap-exceeds-365-days",
-    "detail": {
-      "existingPublishDate": "2026-09-03",
-      "incomingPublishDate": "2015-08-07",
-      "diffDays": 4045,
-      "existingUrl": "https://www.thestage.co.uk/reviews/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-sophie-okonedo",
-      "incomingUrl": "https://www.thestage.co.uk/reviews/2015/three-days-country/"
-    }
-  },
-  {
     "recordedAt": "2026-09-04T07:38:04.503Z",
     "showId": "the-story-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9190,6 +9175,25 @@
   },
   {
     "recordedAt": "2026-09-10T02:30:39.081Z",
+    "showId": "paranormal-activity-2026",
+    "newFile": "broadwaynews--unknown.json",
+    "ok": false,
+    "file": "broadwaynews--unknown.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2026-05-13",
+      "incomingUrl": "https://bway.world/ut58r",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-09-10T09:54:03.144Z",
     "showId": "paranormal-activity-2026",
     "newFile": "broadwaynews--unknown.json",
     "ok": false,
