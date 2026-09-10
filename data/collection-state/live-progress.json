@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-10T19:53:27.327Z",
+  "updatedAt": "2026-09-10T20:00:39.968Z",
   "processed": 100,
-  "failed": 891,
-  "successRate": "10.1%",
+  "failed": 961,
+  "successRate": "9.4%",
   "tierBreakdown": {
     "playwright": 57,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 12,
     "directCookies": 4,
     "scrapingbee": 13,
     "brightdata": 25,
     "archiveToday": 0,
     "archive": 10
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-09-10T14:14:08.572Z",
@@ -116,6 +116,17 @@
       "t": "2026-09-10T19:50:38.335Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-10T19:57:04.570Z",
+      "event": "bb-session",
+      "session": "d63e22dd",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-10T19:57:05.398Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
