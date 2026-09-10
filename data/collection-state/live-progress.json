@@ -1,28 +1,28 @@
 {
-  "updatedAt": "2026-09-10T18:15:16.829Z",
-  "processed": 67,
-  "failed": 514,
-  "successRate": "11.5%",
+  "updatedAt": "2026-09-10T18:46:01.260Z",
+  "processed": 95,
+  "failed": 646,
+  "successRate": "12.8%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 53,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 8,
     "directCookies": 3,
-    "scrapingbee": 6,
-    "brightdata": 20,
+    "scrapingbee": 13,
+    "brightdata": 25,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 10
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
-      "t": "2026-09-10T15:25:39.742Z",
+      "t": "2026-09-10T14:14:08.572Z",
       "event": "bb-session",
-      "session": "0ba0e595",
+      "session": "1634288b",
       "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
     },
     {
-      "t": "2026-09-10T15:25:40.629Z",
+      "t": "2026-09-10T14:14:09.308Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     },
@@ -71,6 +71,23 @@
       "t": "2026-09-10T18:14:28.352Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-10T18:17:23.062Z",
+      "event": "bb-session",
+      "session": "07564046",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-09-10T18:28:49.695Z",
+      "event": "bb-session",
+      "session": "fcbc83f4",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-10T18:28:50.416Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
