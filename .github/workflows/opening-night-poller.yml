@@ -160,23 +160,36 @@ jobs:
           else
             SHOWS=$(node -e "
               const shows = require('./data/shows.json').shows;
+              const { isStuckPreviewsPollCandidate } = require('./scripts/lib/opening-signal');
               const now = new Date();
               const cutoff = new Date(now);
               cutoff.setDate(cutoff.getDate() - $LOOKBACK);
               cutoff.setHours(0,0,0,0);
               const market = '$MARKET';
               const opened = shows.filter(s => {
-                if (!s.openingDate) return false;
+                const cat = s.category || 'broadway';
+                if (cat !== 'broadway' && cat !== 'west-end' && cat !== 'off-west-end' && cat !== 'off-broadway') return false;
+                if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
+                if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
+
+                if (!s.openingDate) {
+                  // Stuck-preview backstop (BRO-3138): a null openingDate would
+                  // otherwise permanently exclude this show from every poller
+                  // run, so discovery never finds review URLs, so
+                  // openSignalFromDiscovery() (scripts/lib/opening-signal.js)
+                  // never gets data to backfill openingDate from — a deadlock.
+                  // Poll anyway once previews have run long enough that the
+                  // show has plausibly opened (bounded window — see that file
+                  // for why both ends of the window exist).
+                  return isStuckPreviewsPollCandidate(s, now);
+                }
+
                 // Include 'previews' shows whose opening date has passed — update-show-status
                 // runs at 8 AM UTC but opening night polling starts at 9 PM ET (1 AM UTC),
                 // so shows are still 'previews' during the critical polling window.
                 const validStatus = s.status === 'open' || s.status === 'upcoming' ||
                   (s.status === 'previews' && new Date(s.openingDate) <= now);
                 if (!validStatus) return false;
-                const cat = s.category || 'broadway';
-                if (cat !== 'broadway' && cat !== 'west-end' && cat !== 'off-west-end' && cat !== 'off-broadway') return false;
-                if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
-                if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
                 const d = new Date(s.openingDate);
                 d.setHours(0,0,0,0);
                 return d >= cutoff && d <= now;

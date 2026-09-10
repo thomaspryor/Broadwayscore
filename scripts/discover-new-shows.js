@@ -1826,16 +1826,22 @@ async function discoverShows() {
   // Flat-pushed into discoveredShows so the existing checkForDuplicate /
   // findSameTitleTwinIfNoOpeningDate path adjudicates dups — no custom dedup
   // layer, same reasoning as the OB block below.
-  const BROADWAY_SCHEDULE_CAP = 30;
+  // BRO-3123: this cap breach used to `return { newShows: [], count: 0 }`,
+  // which discarded EVERY source's results for the whole run — including
+  // TodayTix, fetched successfully just above — not just this one. That
+  // silently zeroed discovery fleet-wide for 2.5+ weeks once real OB volume
+  // (see OB_VENUE_CAP below) started tripping the equivalent OB check daily.
+  // Now a cap breach skips only this source; other sources still land.
+  const BROADWAY_SCHEDULE_CAP = 60;
   try {
     const playbillBroadwayShows = await fetchShowsFromPlaybillBroadway();
     sourceCounts.playbillBroadway = playbillBroadwayShows.length;
     if (playbillBroadwayShows.length > BROADWAY_SCHEDULE_CAP) {
-      console.error(`::error::Playbill Broadway returned ${playbillBroadwayShows.length} candidates (cap: ${BROADWAY_SCHEDULE_CAP}) — likely parser regression. Aborting.`);
+      console.error(`::error::Playbill Broadway returned ${playbillBroadwayShows.length} candidates (cap: ${BROADWAY_SCHEDULE_CAP}) — likely parser regression. Skipping this source only.`);
       process.exitCode = 1;
-      return { newShows: [], count: 0 };
+    } else {
+      discoveredShows.push(...playbillBroadwayShows);
     }
-    discoveredShows.push(...playbillBroadwayShows);
   } catch (e) {
     sourceCounts.playbillBroadway = 0;
     console.log(`⚠️  Playbill Broadway schedule failed (${e.message}), continuing with other sources`);
@@ -1851,18 +1857,21 @@ async function discoverShows() {
   //
   // Per-source candidate cap (OB_VENUE_CAP): one bad parser regression
   // can't flood shows.json. If a single source returns >cap candidates we
-  // abort the commit (exit 1) instead of pushing garbage.
-  const OB_VENUE_CAP = 30;
+  // skip THAT source only (exitCode=1 for visibility) — see BRO-3123 above:
+  // this used to `return` and discard every other source's results too,
+  // which is how a real OB count of 38 (routine growth, not a regression)
+  // silently zeroed the entire day's Broadway/OB/West End discovery.
+  const OB_VENUE_CAP = 60;
   if (includeOffBroadway) {
     try {
       const playbillOBShows = await fetchShowsFromPlaybillOB();
       sourceCounts.playbillOB = playbillOBShows.length;
       if (playbillOBShows.length > OB_VENUE_CAP) {
-        console.error(`::error::Playbill OB returned ${playbillOBShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
+        console.error(`::error::Playbill OB returned ${playbillOBShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Skipping this source only.`);
         process.exitCode = 1;
-        return { newShows: [], count: 0 };
+      } else {
+        discoveredShows.push(...playbillOBShows);
       }
-      discoveredShows.push(...playbillOBShows);
     } catch (e) {
       sourceCounts.playbillOB = 0;
       console.log(`⚠️  Playbill OB schedule failed (${e.message}), continuing with other sources`);
@@ -1884,9 +1893,11 @@ async function discoverShows() {
         const r = results[i];
         if (r.status === 'fulfilled') {
           if (r.value.length > OB_VENUE_CAP) {
-            console.error(`::error::Venue ${v.name} returned ${r.value.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
+            // Skip only this venue's candidates (BRO-3123) — matches the
+            // OWE per-venue cap below, which already got this right.
+            console.error(`::error::Venue ${v.name} returned ${r.value.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Skipping this venue's candidates.`);
             process.exitCode = 1;
-            return { newShows: [], count: 0 };
+            continue;
           }
           // Per-venue rolling-median anomaly gate. Fail-soft (warns + sets
           // exitCode but discovery continues for other venues).

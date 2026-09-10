@@ -3,49 +3,57 @@
   "showId": "beetlejuice-west-end-2026",
   "showTitle": "Beetlejuice",
   "market": "West End",
-  "fetchedAt": "2026-08-24T07:18:32.973Z",
-  "tier": "Hidden",
-  "volume": 12,
-  "effectiveVolume": 2.2,
+  "fetchedAt": "2026-09-09T12:36:51.830Z",
+  "tier": "Troubled",
+  "volume": 50,
+  "effectiveVolume": 11.6,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0.5714285714285714
+      "reddit": 1,
+      "bluesky": 1
     },
-    "overall": 0.5714285714285714,
+    "overall": 1,
     "classified": 7
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -8,
-  "baselineMultiple": 0.56,
+  "positivePct": 0,
+  "opinionSample": 4,
+  "weekOverWeekPct": 317,
+  "baselineMultiple": 2.48,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 4,
-    "bluesky": 0
+    "reddit": 3,
+    "bluesky": 4
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Beetlejuice in the West End was so much fun! It's a shame it's going to close earlier than planned, and I think it…",
+      "platform": "bluesky",
+      "author": "@richardkish.co.uk",
+      "url": "https://bsky.app/profile/richardkish.co.uk/post/3muscyht26s2a"
+    }
+  ],
   "counters": {
-    "reddit": 7,
-    "bluesky": 0,
-    "x": 5,
-    "wikipedia": 2289
+    "reddit": 3,
+    "bluesky": 5,
+    "x": 42,
+    "wikipedia": 2905
   },
   "wikipediaTitle": "Beetlejuice (musical)",
   "baseline": {
-    "mean": 20.142857142857142,
-    "weeksOfHistory": 7
+    "mean": 23.875,
+    "weeksOfHistory": 8
   },
   "rawCounts": {
-    "reddit": 7,
-    "bluesky": 0
+    "reddit": 3,
+    "bluesky": 5
   },
   "errors": [],
   "rank": {
-    "position": 8,
-    "total": 46,
-    "text": "8/46 West End"
+    "position": 2,
+    "total": 41,
+    "text": "2/41 West End"
   },
-  "compositeScore": 1.1
+  "compositeScore": 5.8
 }

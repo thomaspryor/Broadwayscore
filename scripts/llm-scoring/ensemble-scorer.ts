@@ -95,6 +95,42 @@ export interface ScoreReviewFileResult {
   inputValidationFailed?: boolean;
 }
 
+// Most-specific-first. garbage_text is the catch-all "no better label"
+// bucket (nav menus, error pages, ad copy) — it should only win a
+// disagreement when every rejecting model converges on it, never by
+// virtue of merely resolving first in Promise.all order.
+const REJECTION_TYPE_PRIORITY: string[] = ['wrong_show', 'wrong_production', 'not_a_review', 'garbage_text'];
+
+/**
+ * Pick the rejection TYPE a >=2-model consensus should record, from the
+ * models that rejected. Exported (not just used inline) so a unit test can
+ * drive the exact disagreement shape without calling any LLM API.
+ *
+ * @param rejections ModelOutcome[] where every entry has rejected=true
+ */
+export function pickConsensusRejection(rejections: ModelOutcome[]): ModelOutcome {
+  const counts = new Map<string, number>();
+  for (const r of rejections) {
+    if (!r.rejection) continue;
+    counts.set(r.rejection, (counts.get(r.rejection) || 0) + 1);
+  }
+  // No rejecting model reported a type at all (should not happen given the
+  // prompt schema, but ModelOutcome.rejection is optional) — nothing to vote
+  // on, fall back to whichever outcome happened to reject first.
+  if (counts.size === 0) return rejections[0];
+  // Plurality (most votes) wins, not a blind priority scan — ship-check
+  // finding (Codex, BRO-372 follow-up): a fixed priority scan run BEFORE
+  // counting votes would let a single model's minority editorial type beat a
+  // type two OTHER models independently agreed on (e.g. garbage_text×2,
+  // wrong_show×1, wrong_production×1 on a 4-model ensemble — the old code
+  // picked wrong_show, which only one model actually said). Priority only
+  // breaks ties AMONG the types tied for the plurality — it never overrides
+  // an outright vote-count lead, including a plurality of garbage_text.
+  const maxCount = Math.max(...Array.from(counts.values()));
+  const winner = REJECTION_TYPE_PRIORITY.find(type => (counts.get(type) || 0) === maxCount)!;
+  return rejections.find(r => r.rejection === winner)!;
+}
+
 // ========================================
 // ENSEMBLE SCORER
 // ========================================
@@ -360,8 +396,36 @@ export class EnsembleReviewScorer {
     const totalModels = results.length;
 
     if (rejections.length >= 2) {
-      // 2/3 or 3/3 models rejected — consensus rejection
-      const primaryRejection = rejections[0];
+      // 2/3 or 3/3 models rejected — consensus rejection. Pick the TYPE by
+      // majority vote among the rejecting models, not just rejections[0]
+      // (BRO-372: for a BroadwayWorld promo/casting page, openai — first in
+      // results push order (claude, openai, gemini, kimi) — labeled its own
+      // "promotional content... lacks a coherent review" reasoning as
+      // 'garbage_text', while gemini's reasoning for the SAME text described
+      // exactly a not_a_review verdict. Blindly taking rejections[0] recorded
+      // 'garbage_text' — t1-silent-gap.js treats that as a retriable
+      // fetch-quality issue, not the terminal editorial exclusion it actually
+      // was, so the >24h backstop re-alerted every 7 days forever with no
+      // possible resolution: no better fetch of this URL can ever produce a
+      // review that was never published).
+      const primaryRejection = pickConsensusRejection(rejections);
+      // How many rejecting models actually named THIS type — distinct from
+      // rejections.length (models that rejected AT ALL, regardless of type).
+      // wrong-production-autoclear.js's hasEnsembleConsensus() needs this
+      // exact count (ship-check finding on this same fix): it previously
+      // inferred "N models agreed" by counting model-name tags in
+      // rejectionReasoning, which lists every rejecting model regardless of
+      // which type each one picked — a 1-vs-1 split (e.g. wrong_show vs
+      // garbage_text) would over-count as 2-model agreement on whichever type
+      // won pickConsensusRejection's priority fallback.
+      // Guard against primaryRejection.rejection being undefined (the
+      // counts.size===0 fallback in pickConsensusRejection) — without this,
+      // `r.rejection === undefined` would match every OTHER untyped
+      // rejection too and report a confident agreeCount for a type nobody
+      // actually named (Codex finding).
+      const agreeCount = primaryRejection.rejection == null
+        ? 0
+        : rejections.filter(r => r.rejection === primaryRejection.rejection).length;
       const rejectionResult: EnsembleResultType = {
         score: 0,
         bucket: 'Pan',
@@ -370,6 +434,7 @@ export class EnsembleReviewScorer {
         rejected: true,
         rejection: primaryRejection.rejection,
         rejectionReasoning: rejections.map(r => `${r.model}: ${r.rejectionReasoning}`).join('; '),
+        rejectionAgreeCount: agreeCount,
         modelResults: {},
         needsReview: false,
         note: `${rejections.length}/${totalModels} models rejected as ${primaryRejection.rejection}`

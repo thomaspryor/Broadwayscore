@@ -1170,6 +1170,39 @@ describe('hasEnsembleConsensus', () => {
       assert.doesNotThrow(() => hasEnsembleConsensus(d, 'wrong_show'));
     }
   });
+
+  // BRO-372 ship-check finding: combineOutcomes() resolves a 1-vs-1 rejection
+  // TYPE split via a priority order (editorial types beat the generic
+  // garbage_text catch-all), so an editorial rejectionReason can now win even
+  // when only ONE model actually named it. The model-tag-counting fallback
+  // above can't tell that apart from real 2-model agreement on the same
+  // type — rejectionAgreeCount can, and must be preferred when present.
+  it('rejectionAgreeCount=1 refuses consensus even though 2 model tags appear in rejectionReasoning (the over-count this field exists to prevent)', () => {
+    const oneVsOneSplit = {
+      rejectionReason: 'wrong_show',
+      rejectedBy: 'ensemble-scoreability-check',
+      rejectionReasoning:
+        "openai: This review is about a different production entirely.; "
+        + 'gemini: The text is navigation menus and ad copy, not article content.',
+      rejectionAgreeCount: 1, // only openai actually named wrong_show; gemini named garbage_text
+    };
+    assert.equal(hasEnsembleConsensus(oneVsOneSplit, 'wrong_show'), false);
+  });
+
+  it('rejectionAgreeCount=2 confirms real consensus and short-circuits the text-tag fallback', () => {
+    const realConsensus = {
+      rejectionReason: 'wrong_show',
+      rejectedBy: 'ensemble-scoreability-check',
+      rejectionReasoning: 'openai: wrong show.; gemini: wrong show too.',
+      rejectionAgreeCount: 2,
+    };
+    assert.equal(hasEnsembleConsensus(realConsensus, 'wrong_show'), true);
+  });
+
+  it('falls back to the text-tag heuristic when rejectionAgreeCount is absent (files written before this field existed)', () => {
+    assert.equal(hasEnsembleConsensus(REAL_ROMEO_SHAPE, 'wrong_show'), true);
+    assert.equal('rejectionAgreeCount' in REAL_ROMEO_SHAPE, false, 'fixture predates the field — this is the case being tested');
+  });
 });
 
 describe('an ensemble verdict outranks every auto-clear heuristic', () => {

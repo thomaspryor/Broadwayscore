@@ -1,14 +1,15 @@
 {
-  "generatedAt": "2026-09-05T16:29:33.796Z",
+  "generatedAt": "2026-09-10T17:28:31.377Z",
   "counts": {
     "accepted": 1,
-    "rejected": 15,
-    "prunedStaged": 0,
+    "rejected": 14,
+    "prunedStaged": 23,
     "byReason": {
       "low-confidence-existing-match": 7,
-      "bot-shell": 4,
-      "placeholder-venue-no-theater": 2,
-      "title-mismatch": 2
+      "title-mismatch": 2,
+      "unparsed-headline": 2,
+      "no-venue": 1,
+      "placeholder-venue-no-theater": 2
     }
   },
   "rejected": [
@@ -46,19 +47,21 @@
       "url": "https://playbill.com/article/did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
       "slug": "did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
       "source": "playbill-verdict",
-      "reason": "bot-shell"
+      "reason": "title-mismatch",
+      "detail": "slug=\"Think American Repertory Theaters Black Swan Was Perfect\" body=\"Think Dave Malloy's Black Swan Musical Was 'Perfect'\""
     },
     {
       "url": "https://playbill.com/article/were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage",
       "slug": "were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage",
       "source": "playbill-verdict",
-      "reason": "bot-shell"
+      "reason": "unparsed-headline",
+      "detail": "title=\"Were Reviewers 'Diggin' On' the TLC Musical CrazySexyCool\""
     },
     {
       "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
       "slug": "reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
       "source": "playbill-verdict",
-      "reason": "bot-shell"
+      "reason": "no-venue"
     },
     {
       "url": "https://playbill.com/article/what-do-reviews-say-about-londons-new-cats-revival",
@@ -71,12 +74,6 @@
       "slug": "reviews-what-do-the-critics-think-of-the-game-of-thrones-prequel-play-mad-king",
       "source": "playbill-verdict",
       "reason": "low-confidence-existing-match"
-    },
-    {
-      "url": "https://playbill.com/article/reviews-what-did-critics-think-of-rhinoceros-starring-paul-giamatti-and-john-turturro",
-      "slug": "reviews-what-did-critics-think-of-rhinoceros-starring-paul-giamatti-and-john-turturro",
-      "source": "playbill-verdict",
-      "reason": "bot-shell"
     },
     {
       "url": "https://www.broadwayworld.com/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
@@ -94,8 +91,8 @@
       "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-CATS-Make-The-Critics-Purr-With-Delight-20260807",
       "slug": "Review-Roundup-Did-CATS-Make-The-Critics-Purr-With-Delight-20260807",
       "source": "bww-roundup",
-      "reason": "title-mismatch",
-      "detail": "slug=\"Did Cats Make The Critics Purr With Delight\" body=\"Did CATS in London Make The Critics Purr With Delight?\""
+      "reason": "unparsed-headline",
+      "detail": "title=\"Did CATS in London Make The Critics Purr With Delight\""
     },
     {
       "url": "https://www.broadwayworld.com/article/Review-Roundup-GAME-OF-THRONES-THE-MAD-KING-is-Now-Playing-in-London-20260810",
@@ -105,5 +102,236 @@
       "detail": "slug=\"Game Of Thrones The Mad King Is Now Playing In London\" body=\"GAME OF THRONES: THE MAD KING is\""
     }
   ],
-  "prunedStaged": []
+  "prunedStaged": [
+    {
+      "title": "I Became We",
+      "venue": "Atlantic Theater",
+      "slug": "i-became-we",
+      "category": "off-broadway",
+      "source": "venue-page:atlantic-theater",
+      "discoveredAt": "2026-09-10T12:50:38.309Z",
+      "candidateHash": "e6ca7205a352eff5",
+      "matchedShowId": "i-became-we-off-broadway-2026"
+    },
+    {
+      "title": "Too Bad For Her",
+      "venue": "Atlantic Theater",
+      "slug": "too-bad-for-her",
+      "category": "off-broadway",
+      "source": "venue-page:atlantic-theater",
+      "discoveredAt": "2026-09-10T12:50:38.309Z",
+      "candidateHash": "f5d35b10f91783e9",
+      "matchedShowId": "too-bad-for-her-off-broadway-2026"
+    },
+    {
+      "title": "Old Actress",
+      "venue": "Atlantic Theater",
+      "slug": "old-actress",
+      "category": "off-broadway",
+      "source": "venue-page:atlantic-theater",
+      "discoveredAt": "2026-09-10T12:50:38.309Z",
+      "candidateHash": "fd0ecbaf6ac0b5a5",
+      "matchedShowId": "old-actress-off-broadway-2026"
+    },
+    {
+      "title": "Push",
+      "venue": "Atlantic Theater",
+      "slug": "push",
+      "category": "off-broadway",
+      "source": "venue-page:atlantic-theater",
+      "discoveredAt": "2026-09-10T12:50:38.309Z",
+      "candidateHash": "a3b2528fe38f5973",
+      "matchedShowId": "push-off-broadway-2026"
+    },
+    {
+      "title": "Petra",
+      "venue": "Vineyard Theatre",
+      "slug": "petra",
+      "category": "off-broadway",
+      "source": "venue-page:vineyard-theatre",
+      "discoveredAt": "2026-09-10T12:50:42.538Z",
+      "candidateHash": "44d4eb6e5e0d60bc",
+      "matchedShowId": "petra-off-broadway-2026"
+    },
+    {
+      "title": "The Hairy Ape",
+      "venue": "Irish Rep",
+      "slug": "the-hairy-ape",
+      "category": "off-broadway",
+      "source": "venue-page:irish-rep",
+      "discoveredAt": "2026-09-10T12:50:37.478Z",
+      "candidateHash": "c54533b2067c7173",
+      "matchedShowId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026"
+    },
+    {
+      "title": "The Good Thief",
+      "venue": "Irish Rep",
+      "slug": "the-good-thief",
+      "category": "off-broadway",
+      "source": "venue-page:irish-rep",
+      "discoveredAt": "2026-09-10T12:50:37.478Z",
+      "candidateHash": "d5d3809279b89f65",
+      "matchedShowId": "the-good-thief-off-broadway-2026"
+    },
+    {
+      "title": "Kramer Fauci",
+      "venue": "St. Ann's Warehouse",
+      "slug": "kramer-fauci",
+      "category": "off-broadway",
+      "source": "venue-page:st.-ann's-warehouse",
+      "discoveredAt": "2026-09-10T12:50:37.384Z",
+      "candidateHash": "c701a8ca81e19c02",
+      "matchedShowId": "kramerfauci-st-anns-off-broadway-2026"
+    },
+    {
+      "title": "Saigon",
+      "venue": "St. Ann's Warehouse",
+      "slug": "saigon",
+      "category": "off-broadway",
+      "source": "venue-page:st.-ann's-warehouse",
+      "discoveredAt": "2026-09-10T12:50:37.384Z",
+      "candidateHash": "94f236bf215193fd",
+      "matchedShowId": "saigon-off-broadway-2026"
+    },
+    {
+      "title": "Birthright",
+      "venue": "MCC Theater",
+      "slug": "birthright",
+      "category": "off-broadway",
+      "source": "venue-page:mcc-theater",
+      "discoveredAt": "2026-09-10T12:50:38.569Z",
+      "candidateHash": "4c3684caa10e293d",
+      "matchedShowId": "birthright-off-broadway-2026"
+    },
+    {
+      "title": "Uncensored No Need To Overthink It",
+      "venue": "MCC Theater",
+      "slug": "uncensored-no-need-to-overthink-it",
+      "category": "off-broadway",
+      "source": "venue-page:mcc-theater",
+      "discoveredAt": "2026-09-10T12:50:38.569Z",
+      "candidateHash": "59d52669d1120fe4",
+      "matchedShowId": "uncensored-no-need-to-overthink-it-off-broadway-2026"
+    },
+    {
+      "title": "Cold War Choir Practice",
+      "venue": "MCC Theater",
+      "slug": "cold-war-choir-practice",
+      "category": "off-broadway",
+      "source": "venue-page:mcc-theater",
+      "discoveredAt": "2026-09-10T12:50:38.569Z",
+      "candidateHash": "2db1e0aee7e5ac5c",
+      "matchedShowId": "cold-war-choir-practice-off-broadway-2026"
+    },
+    {
+      "title": "Caroline",
+      "venue": "MCC Theater",
+      "slug": "caroline",
+      "category": "off-broadway",
+      "source": "venue-page:mcc-theater",
+      "discoveredAt": "2026-09-10T12:50:38.569Z",
+      "candidateHash": "0c1dbd7edd6378c1",
+      "matchedShowId": "caroline-off-broadway-2026"
+    },
+    {
+      "title": "A Ghost In Your Ear",
+      "venue": "Audible's Minetta Lane Theatre",
+      "slug": "a-ghost-in-your-ear",
+      "category": "off-broadway",
+      "source": "venue-page:audible's-minetta-lane-theatre",
+      "discoveredAt": "2026-09-10T12:50:37.206Z",
+      "candidateHash": "cb334f8c1ad70baf",
+      "matchedShowId": "a-ghost-in-your-ear-off-broadway-2026"
+    },
+    {
+      "title": "Elf Lyons The Woman On The Edge",
+      "venue": "Soho Playhouse",
+      "slug": "elf-lyons-the-woman-on-the-edge",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "58b58a129c3369fe",
+      "matchedShowId": "elf-lyons-the-woman-on-the-edge-off-broadway-2026"
+    },
+    {
+      "title": "The Secret Circus Musical",
+      "venue": "Soho Playhouse",
+      "slug": "the-secret-circus-musical",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "ac112c1e6c3ea83c",
+      "matchedShowId": "the-secret-circus-musical-off-broadway-2026"
+    },
+    {
+      "title": "Lost In Del Valle",
+      "venue": "Soho Playhouse",
+      "slug": "lost-in-del-valle",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "8c5eb215a1fe5055",
+      "matchedShowId": "lost-in-del-valle-off-broadway-2026"
+    },
+    {
+      "title": "Conflicted",
+      "venue": "Soho Playhouse",
+      "slug": "conflicted",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "39bc244fef5106b2",
+      "matchedShowId": "conflicted-off-broadway-2026"
+    },
+    {
+      "title": "Jena Friedman Motherfucker",
+      "venue": "Soho Playhouse",
+      "slug": "jena-friedman-motherfucker",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "d921cab262f1b528",
+      "matchedShowId": "jena-friedman-motherfucker-off-broadway-2026"
+    },
+    {
+      "title": "Kelly Mccaughan Catholic Guilt",
+      "venue": "Soho Playhouse",
+      "slug": "kelly-mccaughan-catholic-guilt",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "5e8266bf862d2df9",
+      "matchedShowId": "kelly-mccaughan-catholic-guilt-off-broadway-2026"
+    },
+    {
+      "title": "Anthony Devito Jersey Boy",
+      "venue": "Soho Playhouse",
+      "slug": "anthony-devito-jersey-boy",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "5e44087379566531",
+      "matchedShowId": "anthony-devito-jersey-boy-off-broadway-2026"
+    },
+    {
+      "title": "Kevin",
+      "venue": "Soho Playhouse",
+      "slug": "kevin",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "2be37adac17cec96",
+      "matchedShowId": "kevin-off-broadway-2026"
+    },
+    {
+      "title": "Fly You Fools",
+      "venue": "Soho Playhouse",
+      "slug": "fly-you-fools",
+      "category": "off-broadway",
+      "source": "venue-page:soho-playhouse",
+      "discoveredAt": "2026-09-10T12:50:36.956Z",
+      "candidateHash": "468014dc360766ee",
+      "matchedShowId": "fly-you-fools-off-broadway-2026"
+    }
+  ]
 }

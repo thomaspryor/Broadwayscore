@@ -43,6 +43,39 @@ function minReviewsForCategory(category) {
   return MIN_REVIEWS_BY_CATEGORY[category] ?? MIN_REVIEWS_DEFAULT;
 }
 
+// Poller candidate-selection window for the stuck-preview backstop (BRO-3138:
+// garry-starr-classic-penguins-off-broadway-2026 sat with openingDate=null,
+// status='previews' for 6 days after it actually opened, because
+// opening-night-poller.yml's auto-discovery filter requires openingDate to be
+// set — so discovery never ran, so openSignalFromDiscovery() below never had
+// data to backfill openingDate from. Deadlock.
+//
+// A show enters the backstop once previewsStartDate is old enough that it has
+// plausibly opened (MIN), and leaves it once previewsStartDate is old enough
+// that a still-missing openingDate is very unlikely to ever resolve from
+// review discovery alone (MAX) — past that, an undiscoverable show would
+// otherwise re-enter every orchestrator run (5x/day) forever with no exit,
+// burning SERP/scrape budget on a show discovery cannot help. MAX mirrors
+// audit-opening-dates.js's own OPENING_WINDOW_DAYS=30 "operationally
+// relevant" horizon for opening-date drift.
+const STUCK_PREVIEWS_POLL_MIN_DAYS = 5;
+const STUCK_PREVIEWS_POLL_MAX_DAYS = 30;
+
+/**
+ * Is a previews-status show with no openingDate old enough to poll anyway?
+ * @param {object} show - shows.json entry
+ * @param {Date} now
+ * @returns {boolean}
+ */
+function isStuckPreviewsPollCandidate(show, now) {
+  if (!show || show.status !== 'previews' || show.openingDate) return false;
+  if (!show.previewsStartDate) return false;
+  const previewsStart = new Date(show.previewsStartDate);
+  if (Number.isNaN(previewsStart.getTime())) return false;
+  const daysSincePreviews = (now.getTime() - previewsStart.getTime()) / 86400000;
+  return daysSincePreviews >= STUCK_PREVIEWS_POLL_MIN_DAYS && daysSincePreviews <= STUCK_PREVIEWS_POLL_MAX_DAYS;
+}
+
 /**
  * Verbatim port of reviewsRemainingForScore() in src/config/score-buckets.ts.
  * Returns how many more reviews are needed before a score displays (0 = qualifies).
@@ -324,6 +357,9 @@ module.exports = {
   MIN_REVIEWS_CURATED_HISTORICAL,
   T3_ONLY_EXTRA_REVIEWS,
   PRE_OPEN_STATUSES,
+  STUCK_PREVIEWS_POLL_MIN_DAYS,
+  STUCK_PREVIEWS_POLL_MAX_DAYS,
+  isStuckPreviewsPollCandidate,
   minReviewsForCategory,
   reviewsRemainingForScore,
   countByShow,

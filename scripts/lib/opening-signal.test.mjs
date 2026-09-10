@@ -14,6 +14,8 @@ const {
   MIN_REVIEWS_BY_CATEGORY,
   MIN_REVIEWS_CURATED_HISTORICAL,
   T3_ONLY_EXTRA_REVIEWS,
+  STUCK_PREVIEWS_POLL_MIN_DAYS,
+  STUCK_PREVIEWS_POLL_MAX_DAYS,
   minReviewsForCategory,
   reviewsRemainingForScore,
   countByShow,
@@ -22,6 +24,7 @@ const {
   openSignalFromReviews,
   chooseOpeningDateBackfill,
   findStuckPreviews,
+  isStuckPreviewsPollCandidate,
 } = require('./opening-signal.js');
 
 // Deterministic clock for backfill tests: "today" is 2026-06-03.
@@ -215,4 +218,66 @@ test('findStuckPreviews with isDateReached also surfaces open-signalled shows be
   assert.equal(byId.labelless.signal, 'open-signal');
   assert.equal(byId.rodeo.signal, 'score-threshold');
   assert.equal(byId.labelless.pressNight, '2026-06-18');
+});
+
+// Regression target: garry-starr-classic-penguins-off-broadway-2026 (BRO-3138)
+// sat with openingDate=null, status='previews' for 6 days after it actually
+// opened, because opening-night-poller.yml's auto-discovery filter required
+// openingDate to be set, so discovery never ran and openSignalFromDiscovery
+// never had data to backfill openingDate from — a permanent deadlock.
+test('isStuckPreviewsPollCandidate: admits a previews show once previewsStartDate is old enough', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(
+    isStuckPreviewsPollCandidate(
+      { status: 'previews', openingDate: null, previewsStartDate: '2026-09-03' },
+      now
+    ),
+    true
+  );
+});
+
+test('isStuckPreviewsPollCandidate: rejects a show that just started previews', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(
+    isStuckPreviewsPollCandidate(
+      { status: 'previews', openingDate: null, previewsStartDate: '2026-09-07' },
+      now
+    ),
+    false
+  );
+});
+
+test('isStuckPreviewsPollCandidate: rejects once past the max window (undiscoverable, stop re-polling forever)', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(
+    isStuckPreviewsPollCandidate(
+      { status: 'previews', openingDate: null, previewsStartDate: '2026-07-01' },
+      now
+    ),
+    false
+  );
+});
+
+test('isStuckPreviewsPollCandidate: rejects when openingDate is already set (other branch handles it)', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(
+    isStuckPreviewsPollCandidate(
+      { status: 'previews', openingDate: '2026-09-08', previewsStartDate: '2026-09-03' },
+      now
+    ),
+    false
+  );
+});
+
+test('isStuckPreviewsPollCandidate: rejects wrong status, missing previewsStartDate, and malformed dates', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(isStuckPreviewsPollCandidate({ status: 'open', openingDate: null, previewsStartDate: '2026-09-03' }, now), false);
+  assert.equal(isStuckPreviewsPollCandidate({ status: 'previews', openingDate: null, previewsStartDate: null }, now), false);
+  assert.equal(isStuckPreviewsPollCandidate({ status: 'previews', openingDate: null, previewsStartDate: 'not-a-date' }, now), false);
+  assert.equal(isStuckPreviewsPollCandidate(null, now), false);
+});
+
+test('STUCK_PREVIEWS_POLL_MIN_DAYS/MAX_DAYS are the documented bounds', () => {
+  assert.equal(STUCK_PREVIEWS_POLL_MIN_DAYS, 5);
+  assert.equal(STUCK_PREVIEWS_POLL_MAX_DAYS, 30);
 });

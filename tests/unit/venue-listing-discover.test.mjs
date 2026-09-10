@@ -46,6 +46,14 @@ const EXPECTED = {
   // live 2026-07-22 (curl, no JS rendering needed for either page).
   'Bedlam': { min: 10, max: 25, mustInclude: ['new-portfolio-item', 'hamlet'] },
   'Audible\'s Minetta Lane Theatre': { min: 1, max: 6, mustInclude: ['gloria-steinem'] },
+  // BRO-3123 (2026-09-09): closes the discovery gap that let "The Ford/Hill
+  // Project" (BAM) and "Bigfoot Ripped My Dog In Half I Saw It" (Soho
+  // Playhouse) go missing — neither sold through TodayTix, and Show Score
+  // didn't have Bigfoot listed either. Fixtures captured live 2026-09-09
+  // (curl, no JS rendering needed for either page); real parse counts were
+  // 13 (Soho Playhouse) and 6 (BAM).
+  'Soho Playhouse': { min: 8, max: 20, mustInclude: ['bigfoot-ripped', 'elf-lyons-the-woman-on-the-edge'] },
+  'BAM': { min: 3, max: 12, mustInclude: ['ford-hill-project'] },
 };
 
 for (const venue of OB_VENUE_CONFIGS) {

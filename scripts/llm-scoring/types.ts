@@ -181,6 +181,17 @@ export interface EnsembleResult {
   rejection?: string;
   /** Rejection reasoning from models */
   rejectionReasoning?: string;
+  /**
+   * How many rejecting models' OWN `rejection` type actually matched the
+   * consensus `rejection` value picked by pickConsensusRejection() — NOT the
+   * total number of rejecting models. `rejectionReasoning` always joins every
+   * rejecting model's free text regardless of which type each one picked, so
+   * counting model-name tags in that string (as
+   * wrong-production-autoclear.js's hasEnsembleConsensus did pre-BRO-372) can
+   * over-count "agreement" on a 1-vs-1 type split. This field lets consumers
+   * check the real agreement count directly instead of re-deriving it from text.
+   */
+  rejectionAgreeCount?: number;
 }
 
 // ========================================
