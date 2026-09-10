@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-10T11:29:31.447Z",
+    "generatedAt": "2026-09-10T11:58:47.648Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 42993\nHas fullText: 34432\n\n--- Quality Breakdown ---\n  full: 23685 (68.8%)\n  truncated: 9986 (29.0%)\n  partial: 345 (1.0%)\n  excerpt: 331 (1.0%)\n  stub: 65 (0.2%)\n  complete: 19 (0.1%)\n  unknown: 1 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 7089\n  has_footer_junk: 1592\n  ends_with_ellipsis: 137\n  has_footer_text: 108\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.8% (min: 25%)\n  ✅ Truncated: 29.0% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 42993\nHas fullText: 34432\n\n--- Quality Breakdown ---\n  full: 23693 (68.8%)\n  truncated: 9978 (29.0%)\n  partial: 345 (1.0%)\n  excerpt: 331 (1.0%)\n  stub: 65 (0.2%)\n  complete: 19 (0.1%)\n  unknown: 1 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 7089\n  has_footer_junk: 1592\n  ends_with_ellipsis: 137\n  has_footer_text: 108\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.8% (min: 25%)\n  ✅ Truncated: 29.0% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -81,7 +81,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 0 flagged, 31 exempt, 16 covered\n  ✅ all high-churn tracked files are covered or exempt\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 0 flagged, 31 exempt, 15 covered\n  ✅ all high-churn tracked files are covered or exempt\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
