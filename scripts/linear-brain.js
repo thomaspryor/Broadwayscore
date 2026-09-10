@@ -25,6 +25,7 @@ const { createLinearIssue } = require('./lib/linear-issue-create');
 const { hasHelpFlag } = require('./lib/cli-help');
 const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
+const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 
 const USAGE = `linear-brain.js — file a Linear issue through the one creation chokepoint.
 
@@ -304,9 +305,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           // that read rather than a second round-trip. Evidence posted as a
           // PAST comment (a prior session's "PR-EVIDENCE: ..." or a VERIFY:
           // line) must count too, not just this call's own --comment.
-          const existingComments = ((issue.comments && issue.comments.nodes) || [])
-            .map((c) => c && c.body)
-            .filter(Boolean);
+          // sortedCommentBodies (not a raw .map) — linear-done-gate.js's
+          // newest-first precedence (BRO-3155) needs these oldest-first by
+          // createdAt, and Linear's comments connection is not
+          // createdAt-ascending by default (see that helper's own header).
+          const existingComments = sortedCommentBodies(issue);
           const gate = checkLinearDoneTransition({
             targetStateType: target.type,
             description: issue.description || '',

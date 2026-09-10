@@ -662,3 +662,280 @@ override"`), with a `serpRetryAfter` scheduled for the next morning.
   leave the adjudicated one as a tombstone on its original url.
 - **Corollary:** the pipeline's own SERP recovery falls for stale/soft-404 SERP
   slugs exactly like a human would. Verify every SERP-derived url by direct fetch.
+
+## A recreated review-text file does not inherit the flags you stamped on it (2026-09-08, Jane Eyre / London Box Office)
+
+Five times in one opening night, a London Box Office file for
+`jane-eyre-off-west-end-2026` was adjudicated (flagged or deleted) and then
+**recreated by a later pipeline pass in a materially different shape**. The
+recreate is non-deterministic across three independent axes:
+
+- **critic slug** — `london-box-office--stacey-tyler` → `--shehrazade-zafar-arif`
+  → `--unknown`. A fix keyed on the filename misses the next variant.
+- **body** — `fullText` len 0 (soft-404 / `url_dead`) on one recreate, a real
+  4937-char body on the next.
+- **blocking flags** — one recreate carried `wrongProduction=true` +
+  `contentTier=invalid`; another carried **no blocking flag at all**, having
+  silently dropped an earlier manual `wrongProduction` stamp, while still
+  carrying `aggregatorStars`/`originalScoreNormalized=80`.
+
+That last combination is the dangerous one: `contentTier=excerpt` +
+`fullText` len 0 + `aggregatorStars` is **scoreable** through the
+aggregator-stars fallback, with nothing suppressing it. It reached production —
+`https://broadwayscorecard.com/data/shows/jane-eyre-off-west-end-2026.json`
+served `rv=1` with an `s=80` from a **2017 National Theatre / Bristol Old Vic**
+review of the same title, on a show whose real production had zero published
+reviews. It self-healed on the next deploy (the data layer was correct
+throughout; the bad build was made inside the flag-stripped window), so the
+observable damage was ~20 minutes of a fabricated score on a live show page.
+
+**What this changes:**
+
+- **Never rely on a flag you stamped surviving a recreate.** For a contaminant
+  on an aggregator/roundup path, **delete the file**; do not flag it. Flags
+  either get stripped on recreate or strand as manual overrides that suppress
+  the real review later (the mirror failure — see BRO-3122 above).
+- **Never discriminate on body length.** Empty-body was the tell on one
+  recreate and absent on the next. The reliable discriminators are
+  **`publishDate`** and **venue named in the body**. For a revival or a
+  long-lived title, an aggregator's evergreen excerpts are from a *previous*
+  production and carry stars.
+- **Any writer that sets `aggregatorStars` with `contentTier='excerpt'` and an
+  empty `fullText` should require an explicit production match before writing.**
+  This is the injection mirror of the suppression bugs in this file: BRO-3116
+  hides a real review, this one invents a fake one.
+- **Watch a show's review-texts file COUNT as a tripwire.** "This dir had 12
+  files, now it has 13" caught two of tonight's five incidents within minutes.
+
+### Same class, different writer: the anticipatory gate poisons a reused canonical URL
+
+Not a London Box Office quirk. `timeout-london--unknown.json` was an
+anticipatory **listing** page (`articleType=preview`, 163 words, no star, no
+verdict) that `ingest-anticipatory-gate` correctly excluded — but it excluded it
+by stamping `wrongProduction=true` on **the same canonical URL Time Out reuses
+when it converts that listing into its actual review**. A same-URL refetch takes
+the merge path, and `applyUrlChangeInvariant` only clears blocking flags when
+`urlChanged`, so the stamp would have permanently suppressed the real review.
+
+**Rule:** an anticipatory/preview exclusion on a URL the outlet will *reuse*
+must be expressed as a non-sticky state (a stub with `not_attempted`, or a
+`pendingCorroboration` marker), never as `wrongProduction`. Outlets that
+publish a listing page and later overwrite it in place with the review include
+Time Out London and London Box Office.
+
+---
+
+## Reviews that die AFTER scoring: the publish path, not the discovery path
+
+Everything above is about a review never being *found* or being wrongly
+*flagged*. Opening night 2026-09-08/09 (Jane Eyre, Southwark Playhouse Elephant)
+produced three failures where the review was found, ingested, scored correctly —
+and still could not reach the site. Check these when `reviews.json` is right but
+prod is wrong.
+
+### 1. A targeted score dispatch parks behind a capped bulk step (BRO-3128)
+
+`llm-ensemble-score.yml -f show_id=<id>` scored the review in ~2 minutes, then
+sat **32 minutes** in `Comparative within-band rescore (WE/OWE anchored-v6,
+capped)` — because every artifact-publishing step (`Push review-texts to private
+repo`, `Commit and push changes`, `Auto-trigger rebuild for non-chain runs`) is
+ordered *after* the rescore in the same job. The score existed only in the
+runner's working copy the whole time.
+
+- This is also the explanation for the **"frozen `updatedAt` / stuck
+  `in_progress`"** behaviour: the run is alive, just parked. Trust the committed
+  artifact, never the run status.
+- **Do NOT pre-dispatch `rebuild-fast` to "help".** A rebuild before the push
+  folds nothing — the scorer's output is not on the remote yet. Wait for the
+  run's own auto-trigger step.
+- Diagnose with `gh run view <id> --json jobs` and read *step* conclusions, not
+  the run conclusion.
+
+### 2. Push failures that are transport HANGS, not conflicts (BRO-3129)
+
+`rebuild-fast` run 34330669320 failed `Commit and push changes` with 10/10
+attempts logging `FAILED in 30s — timeout: killed mid-transport at the 30s cap
+(rc=124, SIGTERM) ... a transport HANG, not a rejection`. The interleaved
+`fetch`+`rebase` all succeeded in **0–1s**, so the remote was reachable; only
+push hung. A flat 30s cap under transport degradation guarantees rc=124 forever
+— retrying 20 times cannot help.
+
+Then the safety net refused to deploy: `push-with-retry` broke out early at
+`PUSH_API_FALLBACK_AFTER_ATTEMPTS=10` and the **Git Data API fallback
+self-disqualified because the outgoing diff touched `reviews.json`** (a blanket
+disqualifier, no `apiFallbackMerge` entry in
+`scripts/lib/core-data-merge-registry.js`).
+
+**Rule:** when a push step fails, read the log before assuming a conflict. Ten
+30s timeouts with healthy fetches in between is BRO-3129, and no amount of
+re-dispatching will fix it. The file that most needs the API fallback is
+currently the one file the fallback will not carry.
+
+### 3. The deploy gate then declines, and reports success (BRO-3130)
+
+`should-deploy-gate.js` `decide()` applies the already-live dedup
+(`baselineSha === headSha`) **before** the non-schedule explicit-ship exemption,
+so both `workflow_dispatch` and the rebuild's `workflow_run` "ship NOW" path
+no-op when only the *private* core-data repo changed. Normally masked because
+`rebuild-all-reviews.js` commits `public/data/shows/*.json` in lockstep — which
+is exactly what failure #2 prevented.
+
+- Symptom: deploy run reports success, `deploy: skipped`, log line
+  `[content-gate] SKIP -- reason=already-live`.
+- Workaround: dispatch `rebuild-fast.yml` to re-commit `public/data/shows` and
+  move web HEAD. `DEPLOY_GATE_DISABLED=true` is the emergency lever and **must
+  be unset in the same session** or every 5-min tick deploys.
+
+**These three compound.** One parks the score, the next loses the web-repo
+commit, the third silently declines to publish — and each reports success at its
+own layer. Worst case is a scored opening-night review invisible until the ~6h
+staleness backstop, far past the "live within a couple of hours" bar.
+
+### Corollary: a missing composite is usually arithmetic, not a bug
+
+Jane Eyre sat at `cs: None` with 2 scored reviews for several passes. That is
+**correct**: `MIN_REVIEWS_FOR_SCORE_OFF_WEST_END = 3`
+(`src/config/score-buckets.ts`). Thresholds are 5 Broadway / 5 West End /
+3 Off-Broadway / 3 Off-West-End / 4 curated-historical. Check the threshold for
+the show's `category` before spending a pass chasing a composite that is simply
+one review away.
+
+## Gate: star rating published only in embedded page data, never in the article body (2026-09-09, on-monitor pass 72)
+
+`londontheatre.co.uk` never prints its star rating in the review body. It lives in
+the page's embedded Contentful/Next payload as `"ourCriticsRating":"<n>"` on the
+**review author's writer entry**, and in the `/reviews` listing block as `<n> / 5`.
+The star-extraction path reads the article body only, so every LondonTheatre review
+arrives with no `originalScore` and gets scored by LLM alone.
+
+Tonight's instance: jane-eyre-off-west-end-2026 `london-theatre--unknown.json` was
+live on prod at LLM 72; the published rating is 3/5 = 60. Corroborated twice — the
+article page's `ourCriticsRating:"3"` on the Julia Rank entry (Julia Rank is the
+JSON-LD `author` of that exact review, which is how you pick the right writer entry
+out of the dozens on the page), and the listing block's `3 / 5` next to the same
+headline. Fixed by hand; systemic fix carded as BRO-3139.
+
+**Generalisation worth checking on any outlet scoring suspiciously LLM-only:** grep
+the raw HTML for `ratingValue`, `ourCriticsRating`, `avgRating`, `stars` before
+concluding the outlet publishes no rating. A `"stars":null` in the page data is not
+proof — the real value may sit on a sibling entity keyed by author or by slug.
+
+**Transport note from the same pass:** `git merge origin/main` in `data/review-texts`
+ABORTS when an incoming commit would overwrite another session's *untracked* file.
+Do not delete or stash that file. Under a deadline, land the single-file fix with
+`gh api PUT /contents/` using the file's current origin sha — it writes straight to
+origin/main without touching the local tree.
+
+## Gate class: CHAIN FAILURE — main-repo push primitive (2026-09-10, Kimberly Akimbo Hampstead)
+Not a discovery miss and not a gate false-positive: reviews were correctly on disk and
+correctly pushed to the review-texts repo, but `rebuild-reviews.yml` died at its MAIN-REPO
+"Commit and push changes" step on 4 consecutive runs. Every push attempt was killed at a 30s
+cap (rc=124, SIGTERM, zero git error output — a transport HANG, not a rejection), so retries
+could never succeed, and the Git Data API fallback was disqualified (the rebuild diff touches
+reviews.json / public/data/shows/, paths not on API_FALLBACK_SAFE / API_FALLBACK_MERGE).
+Symptom on an opening night: prod frozen at the same composite + review count for 8 monitor
+passes while corroborated review files pile up un-rebuilt.
+**Check when prod will not advance despite pushed review files:**
+`gh run list --workflow=rebuild-reviews.yml --limit 4 --json conclusion,databaseId` then
+`gh run view <id> --json jobs` and read the FAILING STEP NAME — do not grep --log-failed,
+it is polluted by echoed script source. Card: BRO-3145.
+
+## Gate class: DEDUPE — the url-collision winner is the EXCLUDED file (2026-09-10, same show)
+A live outlet SILENTLY DISAPPEARED from prod after being live. `whatsonstage--alex-wood.json`
+began as a Nov-2025 announcement stamped `isNonReview=true`; its url was later rewritten
+IN PLACE to the real review url and the real review body fetched into it, but `isNonReview`
+was never cleared. Two files then shared one url, and the collision handler stamped
+`duplicateOf` on the CORRECT file (`whatsonstage--sarah-crompton.json`, clean, llmScore 90).
+Winner was the excluded file ⇒ the whole outlet dropped out of the rebuild.
+Distinct from [[feedback_inplace_url_update_preserves_stale_state]] and
+[[feedback_outlet_merge_no_flag_and_keep]]: the novelty is that collision resolution can
+elect an isNonReview/wrongProduction file as the survivor, converting a stale flag on a
+loser into total outlet loss.
+**Check when an outlet regresses off prod:** grep the show's review-texts dir for
+`duplicateReason.*url-collision-detected-at-write` and confirm the WINNER is not carrying
+a blocking flag. Fix = delete the worthless loser, clear duplicateOf/duplicateTextOf/
+duplicateReason on the survivor, set `duplicateClearReason` (required or the push guard
+reverts the clear) plus all 8 protection fields.
+
+## Gate: the Vercel deploy gate is blind to core-data-only changes (2026-09-10, Kimberly Akimbo Hampstead)
+**Where it kills reviews:** the DEPLOY stage — after discovery, gather, rebuild and scoring have all succeeded. This is the last gate in the chain and was not previously in this catalog.
+
+`scripts/lib/should-deploy-gate.js` `decide()` only sees the **public web repo**. On `eventName=='schedule'` it compares `baselineSha` vs `headSha` plus a content diff of that repo. Core data (`reviews.json`, `shows.json`) lives in the private `broadway-scorecard-data` repo and is pulled at **build** time, so a rebuild landing ONLY core data moves no public HEAD and yields no web diff. Every 5-min tick logs `SKIP reason=content-gate` until the 6h `STALENESS_BACKSTOP_SEC` fires — a green run that deploys nothing.
+
+**Proof:** Time Out London (T2, llm-v6 95, Rave) landed in origin/main `reviews.json` at `eb573b33a` 13:46:15Z. Deploy run 34484835943 ran 63s later and logged `[content-gate] SKIP — reason=content-gate baseline=9f46498e75 head=b1f5428292 deployAge=12m event=schedule`; jobs were should-deploy=success, deploy=SKIPPED. Prod held rvLen 11 for 25+ min.
+
+**Why the existing mitigation missed it:** `vercel-deploy.yml` already has a `workflow_run` trigger on the two rebuild workflows for exactly this race, and `decide()` routes non-schedule events to `explicit-ship`. But that tick (run 34484751133) was fired by the FAILED rebuild 34483313225 and the job-level `if:` guard correctly skipped it. The *successful* rebuild-fast produced no proceeding deploy tick. `decide()`'s own comment (L94-97) assumes "rebuild-all-reviews commits public/data/shows/*.json in lockstep with reviews.json (HEAD moves)" — that does NOT hold for the rebuild-**fast** path, which is the opening-night correction path.
+
+**Detect:** prod JSON `rv` count lags `git -C /Users/tompryor/broadway-scorecard-data show origin/main:reviews.json` for the show, with no failing workflow anywhere. Confirm with `gh run view <deploy-run> --json jobs` — `deploy: skipped` under a `success` run.
+**Work around tonight:** `gh workflow run vercel-deploy.yml` with a `# FORCE-DEPLOY` comment on the command (clears the `gh-poll-block.sh` hook). `workflow_dispatch` takes the `explicit-ship` branch and dedups only when `baselineSha === headSha`.
+**Systemic fix:** BRO-3149 — make core data first-class in the gate (`git ls-remote` the private data repo HEAD vs the data SHA baked into the live deployment) instead of relying on the 6h backstop.
+
+## Gate: ingest-manual-review.js url-changed clear destroys the INCOMING fullText (2026-09-10, kimberly-akimbo-off-west-end-2026)
+When direct-URL ingest points an EXISTING review-texts file at a new URL, the `[url-changed]` clear runs
+AFTER the incoming body is merged, so it wipes the body it just fetched. Symptom: the run prints
+`Text: 3530 chars` and exits 0, but the file ends with `fullText` length 0, `publishDate` undefined and
+`_urlChangedClear.cleared` listing `fullText`. The review-write-guard then logs "honoring intentional
+clear of fullText", so nothing looks wrong. Inverse of feedback_inplace_url_update_preserves_stale_state.md.
+Second trap on the same file: `excludeFromScoring: true` left over from the slot's previous (non-review)
+identity survives the URL change — even a correct body will never be scored until it is flipped to false.
+**Detect:** after ANY direct-URL ingest onto an existing file, re-read the file and assert
+`fullText.length > 0 && excludeFromScoring !== true`. Never trust the ingest script's own stdout.
+**Fix tonight:** write the fields into the JSON directly (body from a cached fetch), set all 8 protection
+fields, commit immediately.
+
+## Deploy lag masquerading as missed-discovery (2026-09-10, kimberly-akimbo-off-west-end-2026, BRO-3153)
+**Symptom:** An outlet is absent from the live prod show JSON, so gap triage classifies it
+`missing / missed-discovery` and starts URL-resolution work (site search, Google News RSS,
+sitemap probing). In reality the pipeline already discovered, fetched, scored and committed it —
+only the Vercel deploy hadn't carried it yet.
+
+**Real incident:** West End Best Friend was chased as a missed-discovery across passes 25-36
+(~12 monitor passes, three dead URL routes) while the file had existed since 15:13Z that day:
+present on data-repo `origin/main`, `isIncludableForRebuild() === true`, and already in
+`reviews.json` with `assignedScore 79 / llm-v6`. Re-running `ingest-review-from-url.js`
+returned `Skipped: no-changes`. The same class caused two false-alarm `rebuild-fast`
+re-dispatches (passes 34, 35).
+
+**Rule:** prod absence alone NEVER establishes a discovery gap. Check three sources in order
+before using the word "missing":
+1. `data/review-texts/<show>/` for a file matching the outlet — local AND `origin/main`
+2. `git show origin/main:reviews.json` (data repo) for the outlet/url
+3. the live prod show JSON
+Absent at all three = true missed-discovery. Present at 1 or 2 but not 3 = deploy lag; do not
+re-ingest, do not re-dispatch a rebuild, do not resolve URLs. Present at 1 but excluded from 2 =
+gate rejection; run `explainExclusion()` rather than re-ingesting.
+
+**Related:** [[feedback_e2e_runs_against_production.md]] (deploy-lag false negatives),
+[[feedback_pending_no_byline_strand_drain.md]].
+
+---
+
+## Gate: the Linear dispatch gate parses the DESCRIPTION only — comment fixups are invisible
+
+**Seen:** opening-night monitor, night 2026-09-09 (kimberly-akimbo-off-west-end-2026), passes 37-40.
+Not a review-discovery gate, but it silently ate two whole monitor passes, so it belongs in the
+same catalog: the gate that decides whether the *systemic fix* for a discovery gap ever gets worked.
+
+**Symptom:** a card filed with a malformed `## Acceptance criteria` / `VERIFY:` command is
+PERMANENTLY undispatchable through `node scripts/linear-next.js --id BRO-N`. Retrying quotes the
+ORIGINAL description candidate verbatim, no matter how many corrected acceptance comments you post.
+
+**Why:** the acceptance-candidate extractor reads the issue description and never reads comments.
+And `linear-brain.js update` accepts only `--state` / `--comment` / `--force` / `--duplicate-of` —
+there is **no description-edit path in the CLI**. So the intuitive repair (post a clean
+bare-command comment) is a no-op, and no other documented tool exists.
+
+**Rule:** get the acceptance command right **in the description at create time**. A bare,
+safe-form command on its own line (`VERIFY: node --test tests/unit/foo.test.mjs`) — no prose
+wrapped around it, nothing for the parser to truncate mid-token. If a card is already broken,
+do NOT burn passes posting comments: dispatch with
+`node scripts/linear-next.js --id BRO-N --allow-unverifiable` and accept that the nightly
+acceptance recheck can't machine-verify it at close. Confirm the ledger row carries a non-null
+`verifyCmd` — that field is the proof the acceptance line actually parsed.
+
+**Systemic fix:** BRO-3155 (filed + dispatched pass 41, workspace:180) — make the gate scan
+comments newest-first and prefer the newest valid candidate over the description; same precedence
+in the `linear-brain.js` Done gate (exit 5), which shares the parser. Retroactively unblocks every
+already-filed card.
+
+**Related:** [[notion-brain-workflow.md]], [[feedback_notion_card_context.md]].

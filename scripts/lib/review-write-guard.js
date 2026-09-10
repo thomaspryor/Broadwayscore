@@ -2434,7 +2434,13 @@ function protectStagedDeletions(cwd, options = {}) {
 
     let committed;
     try {
-      committed = JSON.parse(execFileSync('git', ['show', `HEAD:${f}`], { cwd, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }));
+      // maxBuffer: `f` can be reviews.json-scale (20+ MB) when a bulk staged
+      // deletion sweeps it up — execFileSync's 1MB default would throw
+      // ENOBUFS here, get swallowed by this catch, and skip restoring the
+      // exact large file this guard exists to protect (BRO-3153 what-else:
+      // same silent-buffer-swallow bug class found and fixed in
+      // triage-review-gap.js).
+      committed = JSON.parse(execFileSync('git', ['show', `HEAD:${f}`], { cwd, encoding: 'utf8', maxBuffer: 1024 * 1024 * 512, stdio: ['pipe', 'pipe', 'pipe'] }));
     } catch {
       continue; // nothing committed at HEAD to restore from (genuinely new/renamed-away file)
     }
