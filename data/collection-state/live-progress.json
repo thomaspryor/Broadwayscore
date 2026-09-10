@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-09-10T21:09:42.463Z",
-  "processed": 101,
-  "failed": 1260,
-  "successRate": "7.4%",
+  "updatedAt": "2026-09-10T21:35:06.488Z",
+  "processed": 105,
+  "failed": 1283,
+  "successRate": "7.6%",
   "tierBreakdown": {
-    "playwright": 57,
+    "playwright": 59,
     "amp": 0,
     "browserbase": 12,
-    "directCookies": 4,
+    "directCookies": 5,
     "scrapingbee": 13,
-    "brightdata": 25,
+    "brightdata": 27,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-09-10T14:14:08.572Z",
-      "event": "bb-session",
-      "session": "1634288b",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-10T14:14:09.308Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-10T17:44:53.876Z",
-      "event": "bb-session",
-      "session": "0a9102f3",
-      "url": "https://www.wsj.com/articles/rhinoceros-review-john-turturro-paul-giamatti-and-m"
-    },
-    {
-      "t": "2026-09-10T17:44:54.545Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-09-10T17:59:52.203Z",
       "event": "bb-session",
@@ -127,6 +105,28 @@
       "t": "2026-09-10T19:57:05.398Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-10T21:26:48.967Z",
+      "event": "bb-session",
+      "session": "0c1ad855",
+      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
+    },
+    {
+      "t": "2026-09-10T21:26:49.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-09-10T21:27:07.453Z",
+      "event": "bb-session",
+      "session": "43d7cfd2",
+      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
+    },
+    {
+      "t": "2026-09-10T21:27:08.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }

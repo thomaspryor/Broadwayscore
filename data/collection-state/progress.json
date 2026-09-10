@@ -100,7 +100,11 @@
     "as-you-like-it-globe-off-west-end-2026/london-box-office--nicky-allpress.json",
     "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
     "avenue-q-west-end-2026/fairypoweredproductions--unknown.json",
-    "kimberly-akimbo-off-west-end-2026/broadwayworld--stephi-wild.json"
+    "kimberly-akimbo-off-west-end-2026/broadwayworld--stephi-wild.json",
+    "jane-eyre-off-west-end-2026/guardian--holly-omahony.json",
+    "jane-eyre-off-west-end-2026/guardian--unknown.json",
+    "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
+    "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json"
   ],
   "failed": [
     "kimberly-akimbo-off-west-end-2026/broadwayworld--stephi-wild.json",
@@ -1362,7 +1366,30 @@
     "oliver-west-end-2024/theatermania--david-gordon.json",
     "oliver-west-end-2024/all-that-dazzles-uk--all-that-dazzles.json",
     "oliver-west-end-2024/dailybeast--unknown.json",
-    "oliver-west-end-2024/i-paper--fiona-mountford.json"
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "kimberly-akimbo-off-west-end-2026/financialtimes--unknown.json",
+    "kimberly-akimbo-off-west-end-2026/thestage--unknown.json",
+    "kimberly-akimbo-off-west-end-2026/times-uk--clive-davis.json",
+    "jane-eyre-off-west-end-2026/broadwayworld--stephi-wild.json",
+    "jane-eyre-off-west-end-2026/thestage--unknown.json",
+    "holy-fool-off-west-end-2026/thestage--holly-omahony.json",
+    "million-dollar-quartet-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/nyt-theater--unknown.json",
+    "the-story-west-end-2026/nytimes--jesse-green.json",
+    "the-story-west-end-2026/nytimes--mj-franklin.json",
+    "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
+    "the-story-west-end-2026/observer--david-cote.json",
+    "the-story-west-end-2026/firstnightmagazine--unknown.json",
+    "the-story-west-end-2026/huffpost--ron-dicker.json",
+    "the-story-west-end-2026/i-paper--florence-hallett.json",
+    "the-story-west-end-2026/london-box-office--phil-willmott.json",
+    "the-story-west-end-2026/north-west-end--greg-holstead.json",
+    "the-story-west-end-2026/north-west-end--unknown.json",
+    "the-story-west-end-2026/nysr--frank-scheck.json",
+    "the-story-west-end-2026/radio-times--patrick-cremona.json",
+    "the-story-west-end-2026/talkinbroadway--unknown.json",
+    "the-story-west-end-2026/the-spectator-uk--unknown.json",
+    "the-story-west-end-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1423,7 +1450,9 @@
       "kimberly-akimbo-off-west-end-2026/west-end-best-friend--unknown.json",
       "jane-eyre-off-west-end-2026/british-theatre--zia-trench.json",
       "as-you-like-it-globe-off-west-end-2026/london-box-office--nicky-allpress.json",
-      "avenue-q-west-end-2026/fairypoweredproductions--unknown.json"
+      "avenue-q-west-end-2026/fairypoweredproductions--unknown.json",
+      "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
+      "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1444,7 +1473,8 @@
       "the-story-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
-      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json"
+      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+      "kimberly-akimbo-off-west-end-2026/times-uk--clive-davis.json"
     ],
     "scrapingbee": [
       "the-story-west-end-2026/ground--unknown.json",
@@ -1486,7 +1516,9 @@
       "maybe-happy-ending-2024/newyorker--conde-nast.json",
       "and-juliet-2022/newyorker--conde-nast.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "jane-eyre-off-west-end-2026/guardian--holly-omahony.json",
+      "jane-eyre-off-west-end-2026/guardian--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1504,7 +1536,7 @@
     ]
   },
   "startTime": "2026-09-10T13:53:46.244Z",
-  "lastProcessed": "oliver-west-end-2024/i-paper--fiona-mountford.json",
+  "lastProcessed": "the-story-west-end-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-09-10T14:14:08.572Z",
@@ -1618,6 +1650,28 @@
       "t": "2026-09-10T19:57:05.398Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-10T21:26:48.967Z",
+      "event": "bb-session",
+      "session": "0c1ad855",
+      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
+    },
+    {
+      "t": "2026-09-10T21:26:49.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-09-10T21:27:07.453Z",
+      "event": "bb-session",
+      "session": "43d7cfd2",
+      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
+    },
+    {
+      "t": "2026-09-10T21:27:08.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
