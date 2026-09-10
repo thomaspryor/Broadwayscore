@@ -1,54 +1,20 @@
 {
-  "updatedAt": "2026-09-10T22:16:27.955Z",
-  "processed": 135,
-  "failed": 1226,
-  "successRate": "9.9%",
+  "updatedAt": "2026-09-10T22:54:29.838Z",
+  "processed": 143,
+  "failed": 1249,
+  "successRate": "10.3%",
   "tierBreakdown": {
-    "playwright": 74,
+    "playwright": 78,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 4,
-    "scrapingbee": 16,
-    "brightdata": 25,
+    "scrapingbee": 17,
+    "brightdata": 27,
     "archiveToday": 0,
-    "archive": 22
+    "archive": 23
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-09-10T19:46:07.162Z",
-      "event": "bb-session",
-      "session": "9b5fb7ca",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
-    },
-    {
-      "t": "2026-09-10T19:50:37.599Z",
-      "event": "bb-session",
-      "session": "2f48d567",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
-    {
-      "t": "2026-09-10T19:50:38.335Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-10T19:57:04.570Z",
-      "event": "bb-session",
-      "session": "d63e22dd",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-10T19:57:05.398Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-10T21:39:23.769Z",
-      "event": "bb-session",
-      "session": "ea5ef4ad",
-      "url": "https://www.nytimes.com/2026/09/03/theater/electra-persona-national-theatre-cate"
-    },
     {
       "t": "2026-09-10T21:39:24.806Z",
       "event": "bb-cookie-inject",
@@ -123,6 +89,39 @@
     },
     {
       "t": "2026-09-10T22:08:22.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-10T22:46:06.123Z",
+      "event": "bb-session",
+      "session": "351bf73c",
+      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
+    },
+    {
+      "t": "2026-09-10T22:46:06.812Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-09-10T22:46:24.306Z",
+      "event": "bb-session",
+      "session": "28d82301",
+      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
+    },
+    {
+      "t": "2026-09-10T22:46:25.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-09-10T22:50:13.686Z",
+      "event": "bb-session",
+      "session": "6141cfa6",
+      "url": "https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhous"
+    },
+    {
+      "t": "2026-09-10T22:50:14.303Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
