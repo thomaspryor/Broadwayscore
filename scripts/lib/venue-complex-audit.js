@@ -26,6 +26,20 @@ const GENERIC_TOKENS = new Set([
   // BRO-155: "Loft Story" (an unrelated Brooklyn venue) false-positived
   // against "The Players Theatre Loft" sub-venue on this token alone.
   'loft',
+  // BRO-3158: donor/namesake surnames, a spelled-out auditorium number, and
+  // the bare "NYC" disambiguator suffix that each name two-plus unrelated
+  // real venues in the corpus — "Newman" (MCC's Newman Mills Theater vs The
+  // Public's Newman Theater), "Frankel" (MCC's Susan & Ronald Frankel
+  // Theater vs the unrelated Gene Frankel Theatre), "Griffin" (Signature's
+  // Alice Griffin Jewel Box Theater vs The Shed's unrelated Griffin
+  // Theater), "Second" (the "Second Stage Theater/" producer prefix vs the
+  // unrelated Second City Blackbox), "Five" (Theatre Row's numbered
+  // "Theatre Five" vs the unrelated, standalone Five Angels Theater — a
+  // 52nd Street Project venue at 789 Tenth Ave, NOT part of Theatre Row;
+  // bare numbers are already filtered below, this is the spelled-out form),
+  // and "NYC" (Perelman PAC, Masquerade NYC, Asylum NYC — none of which are
+  // related to each other or to MCC).
+  'newman', 'frankel', 'griffin', 'second', 'five', 'nyc',
 ]);
 
 function coreTokens(str) {
