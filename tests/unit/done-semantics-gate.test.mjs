@@ -66,6 +66,14 @@ test('a bare owner-judgment marker alone (no command) does NOT satisfy this gate
   const notes = `## Problem\nEmail Matt about cross-promo.\n\nVERIFY: owner-judgment`;
   const r = evaluateDoneTransition({ prRef: null, notes });
   assert.equal(r.allowed, false, 'owner-judgment arms dispatch (verify-gate.js) but is not done-evidence — no artifact was actually checked');
+  // BRO-3155 (Codex adversarial finding): evaluateVerifiability short-circuits
+  // an armed owner-judgment marker with reason:null, since it exists to arm
+  // DISPATCH, which needs no command for that marker. Naively surfacing that
+  // null as "no acceptance criteria found" would tell the operator the gate
+  // never saw their marker at all, when it did — this gate just requires more
+  // than a marker. The refusal reason must name the marker specifically.
+  assert.match(r.reason, /owner-judgment marker is present/);
+  assert.doesNotMatch(r.reason, /no acceptance criteria found/);
 });
 
 test('isMergedDeployedChecked is false for any partial or missing shape', () => {
