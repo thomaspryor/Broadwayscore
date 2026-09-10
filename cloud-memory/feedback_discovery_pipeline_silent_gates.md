@@ -907,3 +907,35 @@ gate rejection; run `explainExclusion()` rather than re-ingesting.
 
 **Related:** [[feedback_e2e_runs_against_production.md]] (deploy-lag false negatives),
 [[feedback_pending_no_byline_strand_drain.md]].
+
+---
+
+## Gate: the Linear dispatch gate parses the DESCRIPTION only — comment fixups are invisible
+
+**Seen:** opening-night monitor, night 2026-09-09 (kimberly-akimbo-off-west-end-2026), passes 37-40.
+Not a review-discovery gate, but it silently ate two whole monitor passes, so it belongs in the
+same catalog: the gate that decides whether the *systemic fix* for a discovery gap ever gets worked.
+
+**Symptom:** a card filed with a malformed `## Acceptance criteria` / `VERIFY:` command is
+PERMANENTLY undispatchable through `node scripts/linear-next.js --id BRO-N`. Retrying quotes the
+ORIGINAL description candidate verbatim, no matter how many corrected acceptance comments you post.
+
+**Why:** the acceptance-candidate extractor reads the issue description and never reads comments.
+And `linear-brain.js update` accepts only `--state` / `--comment` / `--force` / `--duplicate-of` —
+there is **no description-edit path in the CLI**. So the intuitive repair (post a clean
+bare-command comment) is a no-op, and no other documented tool exists.
+
+**Rule:** get the acceptance command right **in the description at create time**. A bare,
+safe-form command on its own line (`VERIFY: node --test tests/unit/foo.test.mjs`) — no prose
+wrapped around it, nothing for the parser to truncate mid-token. If a card is already broken,
+do NOT burn passes posting comments: dispatch with
+`node scripts/linear-next.js --id BRO-N --allow-unverifiable` and accept that the nightly
+acceptance recheck can't machine-verify it at close. Confirm the ledger row carries a non-null
+`verifyCmd` — that field is the proof the acceptance line actually parsed.
+
+**Systemic fix:** BRO-3155 (filed + dispatched pass 41, workspace:180) — make the gate scan
+comments newest-first and prefer the newest valid candidate over the description; same precedence
+in the `linear-brain.js` Done gate (exit 5), which shares the parser. Retroactively unblocks every
+already-filed card.
+
+**Related:** [[notion-brain-workflow.md]], [[feedback_notion_card_context.md]].
