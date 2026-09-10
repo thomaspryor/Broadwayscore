@@ -825,3 +825,34 @@ ABORTS when an incoming commit would overwrite another session's *untracked* fil
 Do not delete or stash that file. Under a deadline, land the single-file fix with
 `gh api PUT /contents/` using the file's current origin sha — it writes straight to
 origin/main without touching the local tree.
+
+## Gate class: CHAIN FAILURE — main-repo push primitive (2026-09-10, Kimberly Akimbo Hampstead)
+Not a discovery miss and not a gate false-positive: reviews were correctly on disk and
+correctly pushed to the review-texts repo, but `rebuild-reviews.yml` died at its MAIN-REPO
+"Commit and push changes" step on 4 consecutive runs. Every push attempt was killed at a 30s
+cap (rc=124, SIGTERM, zero git error output — a transport HANG, not a rejection), so retries
+could never succeed, and the Git Data API fallback was disqualified (the rebuild diff touches
+reviews.json / public/data/shows/, paths not on API_FALLBACK_SAFE / API_FALLBACK_MERGE).
+Symptom on an opening night: prod frozen at the same composite + review count for 8 monitor
+passes while corroborated review files pile up un-rebuilt.
+**Check when prod will not advance despite pushed review files:**
+`gh run list --workflow=rebuild-reviews.yml --limit 4 --json conclusion,databaseId` then
+`gh run view <id> --json jobs` and read the FAILING STEP NAME — do not grep --log-failed,
+it is polluted by echoed script source. Card: BRO-3145.
+
+## Gate class: DEDUPE — the url-collision winner is the EXCLUDED file (2026-09-10, same show)
+A live outlet SILENTLY DISAPPEARED from prod after being live. `whatsonstage--alex-wood.json`
+began as a Nov-2025 announcement stamped `isNonReview=true`; its url was later rewritten
+IN PLACE to the real review url and the real review body fetched into it, but `isNonReview`
+was never cleared. Two files then shared one url, and the collision handler stamped
+`duplicateOf` on the CORRECT file (`whatsonstage--sarah-crompton.json`, clean, llmScore 90).
+Winner was the excluded file ⇒ the whole outlet dropped out of the rebuild.
+Distinct from [[feedback_inplace_url_update_preserves_stale_state]] and
+[[feedback_outlet_merge_no_flag_and_keep]]: the novelty is that collision resolution can
+elect an isNonReview/wrongProduction file as the survivor, converting a stale flag on a
+loser into total outlet loss.
+**Check when an outlet regresses off prod:** grep the show's review-texts dir for
+`duplicateReason.*url-collision-detected-at-write` and confirm the WINNER is not carrying
+a blocking flag. Fix = delete the worthless loser, clear duplicateOf/duplicateTextOf/
+duplicateReason on the survivor, set `duplicateClearReason` (required or the push guard
+reverts the clear) plus all 8 protection fields.
