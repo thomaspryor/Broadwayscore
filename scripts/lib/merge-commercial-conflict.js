@@ -67,7 +67,10 @@ try {
   let baseData;
   if (merge.length >= 3) {
     try {
-      const raw = execFileSync('git', ['show', `:1:${file}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+      // maxBuffer: `file` can be registry-scale — the 1MB default silently
+      // ENOBUFS-throws into this catch, discarding the real base (BRO-3153
+      // what-else: same bug class fixed in triage-review-gap.js).
+      const raw = execFileSync('git', ['show', `:1:${file}`], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 512, stdio: ['ignore', 'pipe', 'ignore'] });
       baseData = file.endsWith('.jsonl')
         ? raw.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => JSON.parse(l))
         : JSON.parse(raw);

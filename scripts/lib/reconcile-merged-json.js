@@ -177,7 +177,10 @@ function parseJsonlLines(text) {
 
 function readRemote(ref, file, format) {
   try {
-    const text = execFileSync('git', ['show', `${ref}:${file}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    // maxBuffer: `file` can be registry-scale — the 1MB default silently
+    // ENOBUFS-throws into this catch, reporting "absent" for a file that IS
+    // there (BRO-3153 what-else: same bug class fixed in triage-review-gap.js).
+    const text = execFileSync('git', ['show', `${ref}:${file}`], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 512, stdio: ['ignore', 'pipe', 'ignore'] });
     return format === 'jsonl' ? parseJsonlLines(text) : JSON.parse(text);
   } catch {
     return null; // absent on the remote side, or unparsable — nothing to reconcile against
@@ -205,7 +208,8 @@ function readBase(ref, file, format) {
   try {
     const base = execFileSync('git', ['merge-base', 'HEAD', ref], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
     if (!base) return undefined;
-    const text = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    // maxBuffer: same registry-scale-file rationale as readRemote() above.
+    const text = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 512, stdio: ['ignore', 'pipe', 'ignore'] });
     return format === 'jsonl' ? parseJsonlLines(text) : JSON.parse(text);
   } catch {
     return undefined; // no common ancestor, file absent there, or unparsable
