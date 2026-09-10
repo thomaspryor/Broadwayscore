@@ -1,20 +1,5 @@
 [
   {
-    "recordedAt": "2026-09-04T07:35:57.068Z",
-    "showId": "a-month-in-the-country-west-end-2026",
-    "newFile": "guardian--unknown.json",
-    "ok": false,
-    "file": "guardian--unknown.json",
-    "reason": "publish-date-gap-exceeds-365-days",
-    "detail": {
-      "existingPublishDate": "2026-09-03",
-      "incomingPublishDate": "2015-08-07",
-      "diffDays": 4045,
-      "existingUrl": "https://www.theguardian.com/stage/2026/sep/03/a-month-in-the-country-review-donmar-warehouse-london-brian-friel-turgenev",
-      "incomingUrl": "https://www.westendtheatre.com/39949/news/reviews/reviews-three-days-in-the-country-at-the-national-theatre-2/"
-    }
-  },
-  {
     "recordedAt": "2026-09-04T07:35:57.177Z",
     "showId": "a-month-in-the-country-west-end-2026",
     "newFile": "thestage--unknown.json",
@@ -9186,6 +9171,25 @@
   },
   {
     "recordedAt": "2026-09-10T01:19:50.262Z",
+    "showId": "paranormal-activity-2026",
+    "newFile": "broadwaynews--unknown.json",
+    "ok": false,
+    "file": "broadwaynews--unknown.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.broadwaynews.com/paranormal-activity-stage-adaptation-haunts-broadway-this-summer/",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2026-05-13",
+      "incomingUrl": "https://bway.world/ut58r",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-09-10T02:30:39.081Z",
     "showId": "paranormal-activity-2026",
     "newFile": "broadwaynews--unknown.json",
     "ok": false,
