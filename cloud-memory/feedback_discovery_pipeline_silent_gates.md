@@ -869,3 +869,16 @@ reverts the clear) plus all 8 protection fields.
 **Detect:** prod JSON `rv` count lags `git -C /Users/tompryor/broadway-scorecard-data show origin/main:reviews.json` for the show, with no failing workflow anywhere. Confirm with `gh run view <deploy-run> --json jobs` — `deploy: skipped` under a `success` run.
 **Work around tonight:** `gh workflow run vercel-deploy.yml` with a `# FORCE-DEPLOY` comment on the command (clears the `gh-poll-block.sh` hook). `workflow_dispatch` takes the `explicit-ship` branch and dedups only when `baselineSha === headSha`.
 **Systemic fix:** BRO-3149 — make core data first-class in the gate (`git ls-remote` the private data repo HEAD vs the data SHA baked into the live deployment) instead of relying on the 6h backstop.
+
+## Gate: ingest-manual-review.js url-changed clear destroys the INCOMING fullText (2026-09-10, kimberly-akimbo-off-west-end-2026)
+When direct-URL ingest points an EXISTING review-texts file at a new URL, the `[url-changed]` clear runs
+AFTER the incoming body is merged, so it wipes the body it just fetched. Symptom: the run prints
+`Text: 3530 chars` and exits 0, but the file ends with `fullText` length 0, `publishDate` undefined and
+`_urlChangedClear.cleared` listing `fullText`. The review-write-guard then logs "honoring intentional
+clear of fullText", so nothing looks wrong. Inverse of feedback_inplace_url_update_preserves_stale_state.md.
+Second trap on the same file: `excludeFromScoring: true` left over from the slot's previous (non-review)
+identity survives the URL change — even a correct body will never be scored until it is flipped to false.
+**Detect:** after ANY direct-URL ingest onto an existing file, re-read the file and assert
+`fullText.length > 0 && excludeFromScoring !== true`. Never trust the ingest script's own stdout.
+**Fix tonight:** write the fields into the JSON directly (body from a cached fetch), set all 8 protection
+fields, commit immediately.
