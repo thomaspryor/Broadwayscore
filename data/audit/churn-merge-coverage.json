@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-10T16:05:50.269Z",
+    "generatedAt": "2026-09-10T16:53:51.548Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -143,22 +143,22 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 328,
+      "churn": 297,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 327,
+      "churn": 297,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 205,
+      "churn": 203,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 198,
+      "churn": 195,
       "mergeAttr": "ours"
     },
     {
@@ -168,7 +168,7 @@
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 125,
+      "churn": 126,
       "mergeAttr": "union"
     },
     {
@@ -188,7 +188,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 70,
+      "churn": 66,
       "mergeAttr": "ours"
     },
     {
