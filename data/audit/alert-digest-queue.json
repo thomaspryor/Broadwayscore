@@ -132,18 +132,6 @@
     "queuedAt": "2026-09-06T09:46:22.710Z"
   },
   {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1811/1500 reqs)",
-    "description": "Zone web_unlocker2 billed 1811 requests today against a ceiling of 1500.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n5 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (117), gather-reviews.js (33), enrich-stubhub-prices.js (16).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-06T22:30:23.067Z"
-  },
-  {
     "conditionKey": "watchdog-heartbeat-stale",
     "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches",
     "description": "The 👑 OWNER watchdog heartbeat is 1490 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
@@ -425,5 +413,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-09T22:37:00.075Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (998/250 reqs)",
+    "description": "Zone web_unlocker2 billed 998 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n15 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (219), collect-outlet-reviews.js (99), collect-review-texts.js (81).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-10T21:16:30.503Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-serp_api1",
+    "title": "Bright Data daily breaker TRIPPED: serp_api1 (417/250 reqs)",
+    "description": "Zone serp_api1 billed 417 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n15 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (219), collect-outlet-reviews.js (99), collect-review-texts.js (81).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-10T21:16:30.544Z"
   }
 ]
