@@ -939,3 +939,19 @@ in the `linear-brain.js` Done gate (exit 5), which shares the parser. Retroactiv
 already-filed card.
 
 **Related:** [[notion-brain-workflow.md]], [[feedback_notion_card_context.md]].
+
+## Gate: a single-outlet fetch-* script rewrites the WHOLE reviews.json and silently deletes other outlets' rows
+**Found 2026-09-10 (opening-night monitor pass 44, kimberly-akimbo-off-west-end-2026).** Parity had been verified stable for three consecutive passes (rv 20 / cs 83.31); then prod dropped to rv 19 / cs 83.74. The lost row was a fully-scored T1: The Times (UK) / Clive Davis / 78, `contentTier: complete`, anchored-v6, NO blocking flags, present on review-texts origin/main the entire time. **The review text was never the problem** — the row was deleted from `data/reviews.json` itself.
+
+Data-repo bisect isolated it exactly:
+- `282986a05` (gather-reviews) → 20 rows, HAS The Times
+- `e6563b98c` "data: Update from fetch-guardian-reviews" → 19 rows, NO The Times ← culprit
+- `284f0949a` (poller fast-path inline rebuild) → 19 rows
+
+Shape: a per-outlet writer loads reviews.json, mutates only its own outlet's rows, and writes the entire array back from a snapshot taken **before** a concurrent writer (gather-reviews, the poller's inline rebuild) committed. Every row added between that read and that write is silently lost. Any `scripts/fetch-*.js` doing read-modify-write-whole-array has the same bug.
+
+**Why this class is nastier than the other gates in this file:** it has no flag, no exclusion log, no `_pending` file, and no stage-latency event — the row simply ceases to exist. `triage-review-gap.js` reports `in-pipeline-awaiting-deploy` (reviews.json local=true) which reads as benign. It is only detectable by diffing the prod review COUNT against an earlier snapshot.
+
+**Monitor rule that came out of it:** every pass, diff prod `rv` count against the last snapshot in the session-state file. Parity can silently REGRESS after being reached; passes 41/42/43 all reported "PARITY HOLDS" and the loss landed immediately after.
+
+Carded: BRO-3161 (P1) — merge-by-key for single-outlet writers + a CI guard that fails on a per-show reviews.json row-count drop with no corresponding review-text deletion/flag.
