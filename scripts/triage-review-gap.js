@@ -51,10 +51,19 @@ const { normalizeOutlet } = require('./lib/review-normalization');
 const { explainExclusion } = require('./lib/review-guards');
 const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-dir');
 const { classifyGap, justifiesUrlResolution } = require('./lib/review-gap-triage');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--json]';
 
 // ── Args ─────────────────────────────────────────────────────────────────
 
 const args = process.argv.slice(2);
+// Checked against raw argv before any git/network call runs (task #498 —
+// every CLI entry point doing real work must short-circuit --help/-h first).
+if (hasHelpFlag(args)) {
+  console.log(USAGE);
+  process.exit(0);
+}
 const flags = {};
 const orphans = [];
 for (const a of args) {
@@ -75,7 +84,7 @@ const outletName = typeof flags.outlet === 'string' && flags.outlet ? flags.outl
 const asJson = flags.json === true || flags.json === 'true';
 
 if (!showId || !outletName) {
-  console.error('Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--json]');
+  console.error(USAGE);
   console.error('Both --show and --outlet require a value.');
   process.exit(2);
 }
