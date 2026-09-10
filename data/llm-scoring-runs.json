@@ -320873,17 +320873,23 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-10T01:27:29.596Z",
-    "completedAt": "2026-09-10T01:27:35.973Z",
-    "totalReviews": 12,
+    "startedAt": "2026-09-10T01:29:22.764Z",
+    "completedAt": "2026-09-10T01:29:31.802Z",
+    "totalReviews": 15,
     "processed": 1,
-    "skipped": 11,
-    "errors": 0,
+    "skipped": 12,
+    "errors": 1,
     "tokensUsed": {
-      "input": 8946,
-      "output": 339,
-      "total": 19193
+      "input": 10210,
+      "output": 511,
+      "total": 26915
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "garry-starr-classic-penguins-off-broadway-2026",
+        "outletId": "nysr",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
