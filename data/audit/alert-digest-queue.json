@@ -265,18 +265,6 @@
     "queuedAt": "2026-09-08T15:05:36.829Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.6% (373/487)\noff-broadway: 41% (127/310)\nwest-end: 73.5% (392/533)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (605h)\nA Midsummer Night's Dream — observer (605h)\nA Midsummer Night's Dream — standard (605h)\nA Midsummer Night's Dream — times-uk (605h)\nABBA Voyage — independent (605h)\n… 196 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (605h)\nBuena Vista Social Club — broadwaynews (605h)\nHeathers The Musical — dailybeast (605h)\nJust in Time — broadwaynews (605h)\nOthello — broadwaynews (605h)\n… 5 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-08T15:05:54.809Z"
-  },
-  {
     "conditionKey": "deployed-coverage:stale",
     "title": "Deployed coverage — the site is serving stale coverage",
     "description": "7/119 show(s) differ between internal state and what prod serves.\nscore-drift: 7\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift\nHadestown: score-drift\nOperation Mincemeat: score-drift",
@@ -289,59 +277,6 @@
     "queuedAt": "2026-09-08T15:05:58.741Z"
   },
   {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "64 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Othello — nydailynews (605h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Paranormal Activity — nydailynews (240h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"paranormal-activity-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Schmigadoon! — nydailynews (383h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"schmigadoon-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Stranger Things: The First Shadow — nydailynews (605h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The 25th Annual Putnam County Spelling Bee — nysr (605h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-25th-annual-putnam-county-spelling-bee-off-broadway-2025\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Book of Mormon — telegraph (605h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-book-of-mormon-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Book of Mormon — whatsonstage (605h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-book-of-mormon-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Great Gatsby — nydailynews (605h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-great-gatsby-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Importance of Being Oscar — daily-mail (605h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Importance of Being Oscar — financialtimes (605h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-08T15:05:58.833Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-america-who-hurt-you-off-broadway-2026",
     "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
     "description": "synopsis for america-who-hurt-you-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -352,31 +287,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-09T11:30:02.094Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34405564923",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34405564923)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34289247993)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "4"
-      }
-    ],
-    "queuedAt": "2026-09-09T21:22:44.961Z"
   },
   {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-jane-eyre-off-west-end-2026",
@@ -415,27 +325,93 @@
     "queuedAt": "2026-09-09T22:37:00.075Z"
   },
   {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (998/250 reqs)",
-    "description": "Zone web_unlocker2 billed 998 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n15 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (219), collect-outlet-reviews.js (99), collect-review-texts.js (81).",
-    "severity": "critical",
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.8% (374/487)\noff-broadway: 42.5% (128/301)\nwest-end: 73.7% (393/533)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (660h)\nA Midsummer Night's Dream — observer (660h)\nA Midsummer Night's Dream — standard (660h)\nA Midsummer Night's Dream — times-uk (660h)\nABBA Voyage — independent (660h)\n… 178 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (660h)\nThe Book of Mormon — usatoday (660h)\nBuena Vista Social Club — broadwaynews (660h)\nBuena Vista Social Club — nydailynews (660h)\nHadestown — nydailynews (660h)\n… 21 more circuit-open cell(s)",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-10T21:16:30.503Z"
+    "queuedAt": "2026-09-10T21:31:24.575Z"
   },
   {
-    "conditionKey": "bd-circuit-breaker-serp_api1",
-    "title": "Bright Data daily breaker TRIPPED: serp_api1 (417/250 reqs)",
-    "description": "Zone serp_api1 billed 417 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n15 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (219), collect-outlet-reviews.js (99), collect-review-texts.js (81).",
-    "severity": "critical",
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "58 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-10T21:16:30.544Z"
+    "fields": [
+      {
+        "name": "Spellbound — hollywood-reporter (54h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spellbound — indiewire (54h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spellbound — nytimes (54h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spellbound — telegraph (54h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spellbound — thewrap (54h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Spellbound — variety (54h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Importance of Being Oscar — guardian (660h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Importance of Being Oscar — standard (660h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Importance of Being Oscar — telegraph (660h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Importance of Being Oscar — timeout (559h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-10T21:31:26.728Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 10 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34531993666",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34531993666)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34530222324)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "10"
+      }
+    ],
+    "queuedAt": "2026-09-10T21:36:20.638Z"
   }
 ]

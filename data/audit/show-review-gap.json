@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-08T16:04:48.214Z",
-  "windowDays": 21,
-  "targets": 15,
-  "auditedThisRun": 15,
-  "carriedForward": 484,
+  "generatedAt": "2026-09-10T21:31:14.668Z",
+  "windowDays": 1095,
+  "targets": 223,
+  "auditedThisRun": 6,
+  "carriedForward": 494,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 307,
-    "totalMissing": 1587,
+    "withGap": 308,
+    "totalMissing": 1592,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1745,
-    "totalRecoverable": 17,
+    "totalFlaggedMisses": 1754,
+    "totalRecoverable": 18,
     "totalRecovered": 2
   },
   "results": [
@@ -30649,7 +30649,7 @@
       "showId": "day-of-the-hog-off-broadway-2026",
       "title": "Day of the Hog",
       "openingDate": "2026-09-10",
-      "status": "previews",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -30662,12 +30662,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Day of the Hog\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Day of the Hog\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Day of the Hog\" review steve",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Day of the Hog The Steve & Marie Sgouros Theatre (The Players Theatre Loft) review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Day of the Hog The Steve & Marie Sgouros Theatre (The Players Theatre Loft) review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Day of the Hog The Steve & Marie Sgouros Theatre (The Players Theatre Loft) review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "non-review-host": 13,
+          "venue-production-page": 4,
+          "aggregator-internal-nav": 4
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -30678,7 +30739,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-08T15:05:36.720Z"
+      "computedAt": "2026-09-10T21:31:14.668Z"
     },
     {
       "showId": "days-of-wine-and-roses-2024",
@@ -60209,23 +60270,25 @@
         "https://www.londonpubtheatres.com/review-holy-fool-by-rosalind-adler-and-lea-sellers-at-park-theatre-27-august-10-october-2026",
         "https://everything-theatre.co.uk/2026/09/review-holy-fool-park-theatre/",
         "https://www.thereviewshub.com/holy-fool-park-theatre-london/",
-        "https://www.broadwayworld.com/westend/article/Review-HOLY-FOOL-Park-Theatre-20260904",
-        "https://thespyinthestalls.com/2026/09/holy-fool/",
         "https://www.londontheatre1.com/reviews/holy-fool-park-theatre/",
+        "https://thespyinthestalls.com/2026/09/holy-fool/",
         "https://www.londonboxoffice.co.uk/news/post/holy-fool-park-theatre-review",
-        "https://parktheatre.co.uk/events/holy-fool/",
-        "https://sierz.co.uk/reviews/holy-fool-park-theatre/",
+        "https://www.westendbestfriend.co.uk/news/review-holy-fool-park-theatre-london",
         "https://www.allthatdazzles.co.uk/post/review-holy-fool-park-theatre",
-        "https://theatrevibe.co.uk/2026/09/04/review-holy-fool-park-theatre-2026/",
+        "https://parktheatre.co.uk/events/holy-fool/",
+        "https://theatreandtonic.co.uk/blog/benjamin-omahony-holy-fool-park-theatre-interview",
+        "https://sierz.co.uk/reviews/holy-fool-park-theatre/",
         "https://www.britishtheatreguide.info/reviews/holy-fool-park-200-londo-25987",
         "https://northwestend.com/holy-fool-park-theatre/",
+        "https://theatrevibe.co.uk/2026/09/04/review-holy-fool-park-theatre-2026/",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/holy-fool-review-park-theatre",
+        "https://www.broadwayworld.com/westend/article/Review-HOLY-FOOL-Park-Theatre-20260904",
         "https://www.timeout.com/london/theatre/holy-fool",
-        "https://theatreandtonic.co.uk/blog/holy-fool-at-the-park-theatre-review"
+        "https://www.londontheatredirect.com/news/holy-fool-lyn-gardner-interview"
       ],
-      "dirFiles": 40,
-      "dirClean": 26,
-      "inReviewsJson": 25,
+      "dirFiles": 41,
+      "dirClean": 27,
+      "inReviewsJson": 26,
       "missing": [],
       "dirOnly": [
         {
@@ -60257,15 +60320,15 @@
           "count": 1
         },
         {
+          "host": "onin.london",
+          "count": 1
+        },
+        {
           "host": "readaboutstuff.com",
           "count": 1
         },
         {
           "host": "theatreboard.com",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -60302,6 +60365,24 @@
               "file": "timeout-london--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.timeout.com/london/theatre/holy-fool"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/holy-fool-lyn-gardner-interview",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatredirect.com/play/holy-fool-tickets"
             }
           ],
           "serpCensus": true
@@ -60362,7 +60443,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 8,
             "error": null
           },
           {
@@ -60371,8 +60452,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 4,
             "error": null
           },
           {
@@ -60382,7 +60463,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 2,
             "error": null
           },
           {
@@ -60392,19 +60473,19 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 17,
+        "resultCount": 20,
         "error": null
       },
       "candidatesRejected": {
-        "count": 11,
+        "count": 10,
         "byReason": {
-          "non-review-host": 10,
+          "non-review-host": 9,
           "ticketing-listing": 1
         }
       },
@@ -60425,6 +60506,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/holy-fool"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/news/holy-fool-lyn-gardner-interview"
           }
         ],
         "suppressedMissing": [],
@@ -60460,8 +60548,8 @@
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-HOLY-FOOL-Park-Theatre-20260904",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.londontheatre1.com/reviews/holy-fool-park-theatre/",
+            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
@@ -60472,22 +60560,16 @@
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/holy-fool-park-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
             "url": "https://www.londonboxoffice.co.uk/news/post/holy-fool-park-theatre-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
-            "url": "https://sierz.co.uk/reviews/holy-fool-park-theatre/",
-            "outletId": "sierz.co.uk",
+            "url": "https://www.westendbestfriend.co.uk/news/review-holy-fool-park-theatre-london",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-holy-fool-park-theatre",
@@ -60496,10 +60578,16 @@
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
-            "url": "https://theatrevibe.co.uk/2026/09/04/review-holy-fool-park-theatre-2026/",
-            "outletId": "theatrevibe.co.uk",
+            "url": "https://theatreandtonic.co.uk/blog/benjamin-omahony-holy-fool-park-theatre-interview",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://sierz.co.uk/reviews/holy-fool-park-theatre/",
+            "outletId": "sierz.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/holy-fool-park-200-londo-25987",
@@ -60514,14 +60602,20 @@
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
+            "url": "https://theatrevibe.co.uk/2026/09/04/review-holy-fool-park-theatre-2026/",
+            "outletId": "theatrevibe.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
             "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/holy-fool-review-park-theatre",
             "outletId": "stagedtheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/holy-fool-at-the-park-theatre-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://www.broadwayworld.com/westend/article/Review-HOLY-FOOL-Park-Theatre-20260904",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
@@ -60538,12 +60632,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/news/holy-fool-lyn-gardner-interview",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
           }
         ],
-        "liveCount": 16,
-        "candidateCount": 18
+        "liveCount": 17,
+        "candidateCount": 20
       },
-      "computedAt": "2026-09-08T15:05:36.720Z"
+      "computedAt": "2026-09-10T21:31:14.668Z"
     },
     {
       "showId": "home-2024",
@@ -73437,8 +73538,8 @@
         "https://playbill.com/article/reviews-what-did-critics-have-to-say-about-kimberly-akimbo-on-broadway",
         "https://playbill.com/article/what-did-critics-think-of-the-kimberly-akimbo-musical-off-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-KIMBERLY-AKIMBO-The-Musical-Opens-On-Broadway-20221110",
-        "https://www.broadwayworld.com/article/Review-Roundup-KIMBERLY-AKIMBO-Starring-Victoria-Clark-Bonnie-Milligan-More--See-What-the-Critics-Are-Saying-20211208",
-        "https://www.broadwayworld.com/article/Review-Roundup-KIMBERLY-AKIMBO-National-Tour-20241010"
+        "https://www.broadwayworld.com/article/Review-Roundup-KIMBERLY-AKIMBO-National-Tour-20241010",
+        "https://www.broadwayworld.com/article/Review-Roundup-KIMBERLY-AKIMBO-Starring-Victoria-Clark-Bonnie-Milligan-More--See-What-the-Critics-Are-Saying-20211208"
       ],
       "aggregatorListedUrls": [
         "https://www.amny.com/entertainment/theater/review-great-adventure-with-kimberly-akimbo/",
@@ -73475,8 +73576,6 @@
         "http://https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark",
         "https://www.thewrap.com/kimberly-akimbo-off-broadway-review-victoria-clark-tesori/",
         "https://www.thewrap.com/kimberly-akimbo-broadway-review-victoria-clark/",
-        "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark",
-        "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
         "https://www.denverpost.com/2024/09/27/tony-winning-kimberly-akimbo-launches-national-tour-in-denver-theater-review/",
         "https://onstagecolorado.com/kimberly-akimbo-carves-out-grace-in-a-crummy-world/",
         "https://www.sandiegouniontribune.com/2024/10/10/review-kimberly-akimbo-tour-captures-the-humor-poignance-of-broadway-original/",
@@ -73504,14 +73603,44 @@
         "https://www.minnesotamonthly.com/general/review-how-kimberly-akimbo-finds-its-heart-in-the-everyday/",
         "https://mdtheatreguide.com/2026/04/theatre-review-kimberly-akimbo-at-the-hippodrome-theatre/",
         "https://warwickpost.com/ppacs-kimberly-akimbo-takes-bawdy-poignant-turns/",
+        "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark",
+        "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
         "https://www.theatermania.com/off-broadway/reviews/review-kimberly-akimbo-atlantic-theater_93088.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=86UE8C",
         "https://www.talkinbroadway.com/page/ob/12_08_21.html",
-        "http://nystagereview.com/2021/12/08/kimberly-akimbo-david-lindsay-abaires-akimbo-play-now-sings-out/"
+        "http://nystagereview.com/2021/12/08/kimberly-akimbo-david-lindsay-abaires-akimbo-play-now-sings-out/",
+        "http://www.theaterscene.net/musicals/offbway/kimberly-akimbo/victor-gluck/",
+        "http://www.theaterscene.net/musicals/broadway/kimberly-akimbo-broadway/joel-benjamin/",
+        "https://thefrontrowcenter.com/2021/12/kimberly-akimbo/",
+        "https://newyorktheater.me/2021/12/12/kimberly-akimbo-musical-review-she-is-16-going-on-70/",
+        "https://www.offoffonline.com/offoffonline/2021/12/8/kimberly-akimbo",
+        "https://www.theguardian.com/stage/2026/sep/10/kimberly-akimbo-review-hampstead-theatre-london-maria-friedman",
+        "https://www.londontheatre.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre",
+        "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
+        "https://loureviews.blog/2026/09/10/musical-review-kimberly-akimbo-hampstead/",
+        "https://www.westendbestfriend.co.uk/news/review-kimberly-akimbo-hampstead-theatre",
+        "https://www.timeout.com/london/theatre/kimberly-akimbo-review",
+        "https://www.allthatdazzles.co.uk/post/review-kimberly-akimbo-hampstead-theatre",
+        "https://www.whatsonstage.com/news/kimberly-akimbo-at-hampstead-theatre-review_1731228/",
+        "https://theatreandtonic.co.uk/blog/kimberly-akimbo-hampstead-theatre-review",
+        "https://musicaltheatrereview.com/kimberly-akimbo-hampstead-theatre/",
+        "https://loureviews.blog/2026/09/10/musical-review-kimberly-akimbo-hampstead/amp/",
+        "https://www.hampsteadtheatre.com/whats-on/2026/kimberly-akimbo/",
+        "https://monstagigz.com/2026/08/30/theatre-review-kimberly-akimbo-starring-maria-friedman-at-hampstead-theatre/comment-page-1/",
+        "http://boycottingtrends.blogspot.com/2026/09/theatre-review-kimberly-akimbo.html",
+        "https://www.timeout.com/london/theatre/kimberly-akimbo",
+        "https://www.theguardian.com/stage/2026/sep/08/jeanine-tesori-kimberly-akimbo-interview-musical",
+        "https://www.londontheatredirect.com/musical/kimberly-akimbo-tickets",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/kimberly-akimbo-review-london-hampstead-theatre-b3047877.html",
+        "https://www.bestoftheatre.co.uk/kimberly-akimbo",
+        "https://unscriptedtakes.substack.com/p/review-kimberly-akimbo-at-the-orpheum",
+        "https://www.thetimes.com/culture/theatre-dance/article/kimberly-akimbo-review-hampstead-theatre-sszdd7g7c",
+        "https://www.standard.co.uk/culture/theatre/kimberly-akimbo-at-hampstead-theatre-b1296444.html",
+        "https://www.londonboxoffice.co.uk/news/post/kimberly-akimbo-hampstead-theatre-review"
       ],
-      "dirFiles": 3,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 31,
+      "dirClean": 19,
+      "inReviewsJson": 20,
       "missing": [
         {
           "url": "https://www.amny.com/entertainment/theater/review-great-adventure-with-kimberly-akimbo/",
@@ -73640,13 +73769,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-broadway-review-victoria-clark",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://variety.com/2022/legit/reviews/kimberly-akimbo-review-broadway-musical-1235429378/",
           "host": "variety.com",
           "knownOutletId": "variety",
@@ -73748,20 +73870,6 @@
           "url": "https://www.thewrap.com/kimberly-akimbo-broadway-review-victoria-clark/",
           "host": "thewrap.com",
           "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -73878,13 +73986,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.westendbestfriend.co.uk/news/review-kimberly-akimbo-ensemble-arts-philly-us-tour",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://southfloridatheater.com/2025/11/13/a-humorous-heartbreaking-hit-the-kravis-centers-kimberly-akimbo/",
           "host": "southfloridatheater.com",
           "knownOutletId": null,
@@ -73955,6 +74056,13 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.theatermania.com/off-broadway/reviews/review-kimberly-akimbo-atlantic-theater_93088.html",
           "host": "theatermania.com",
           "knownOutletId": "theatermania"
@@ -73963,11 +74071,68 @@
           "url": "http://nystagereview.com/2021/12/08/kimberly-akimbo-david-lindsay-abaires-akimbo-play-now-sings-out/",
           "host": "nystagereview.com",
           "knownOutletId": "nysr"
+        },
+        {
+          "url": "http://www.theaterscene.net/musicals/offbway/kimberly-akimbo/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        },
+        {
+          "url": "http://www.theaterscene.net/musicals/broadway/kimberly-akimbo-broadway/joel-benjamin/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2021/12/kimberly-akimbo/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center"
+        },
+        {
+          "url": "https://newyorktheater.me/2021/12/12/kimberly-akimbo-musical-review-she-is-16-going-on-70/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2021/12/8/kimberly-akimbo",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online"
+        },
+        {
+          "url": "http://boycottingtrends.blogspot.com/2026/09/theatre-review-kimberly-akimbo.html",
+          "host": "boycottingtrends.blogspot.com",
+          "knownOutletId": "boycotting-trends",
+          "serpCensus": true
+        },
+        {
+          "url": "https://unscriptedtakes.substack.com/p/review-kimberly-akimbo-at-the-orpheum",
+          "host": "unscriptedtakes.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [
         {
-          "host": "monstagigz.com",
+          "host": "radiotimes.com",
+          "count": 1
+        },
+        {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatreboard.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.co.uk",
           "count": 1
         }
       ],
@@ -74005,25 +74170,243 @@
               "urlInDir": "https://www.talkinbroadway.com/page/ob/12_08_21.html"
             }
           ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": true,
+          "recoverableFile": "thestage--unknown.json",
+          "recoverableOutletId": "thestage",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.hampsteadtheatre.com/whats-on/2026/kimberly-akimbo/",
+          "host": "hampsteadtheatre.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hampsteadtheatre--unknown.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.hampsteadtheatre.com/whats-on/2026/kimberly-akimbo/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/kimberly-akimbo",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/kimberly-akimbo"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/musical/kimberly-akimbo-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.londontheatredirect.com/musical/kimberly-akimbo-tickets"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/kimberly-akimbo",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--erica-bond.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/kimberly-akimbo-production-images-hampstead"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 6,
+        "sources": {
+          "westendtheatre": {
+            "found": true,
+            "rows": 5,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": true,
+            "rows": 1,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 6,
+        "corroborated": 5,
+        "perSource": {
+          "westendtheatre": {
+            "cited": 5,
+            "corroborated": 4
+          },
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
+          }
+        }
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Kimberly Akimbo\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Kimberly Akimbo\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Kimberly Akimbo\" review hampstead",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Kimberly Akimbo\" Longhurst review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Kimberly Akimbo Hampstead Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Kimberly Akimbo Hampstead Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Kimberly Akimbo Hampstead Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 20,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1156,
+        "count": 1184,
         "byReason": {
+          "non-review-host": 115,
           "aggregator-internal-nav": 840,
           "not-http-url": 205,
           "aggregator-section-root": 20,
-          "non-review-host": 90,
-          "roundup-page": 1
+          "roundup-page": 2,
+          "ticketing-listing": 1,
+          "non-review-path": 1
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/kimberly-akimbo-review-hampstead-theatre-sszdd7g7c",
+          "host": "thetimes.com",
+          "matchedUrl": "https://www.thetimes.co.uk/culture/theatre-dance/article/kimberly-akimbo-review-hampstead-theatre-sszdd7g7c?srsltid=AfmBOorZv6E29U1sRcNSDti37i3OMhGGdXEWiSI6_JKJjxRyZSaVv37h",
+          "outletId": "times-uk",
+          "reason": "same outlet \"times-uk\" already held at thetimes.co.uk; thetimes.com is a registered alias of it"
+        }
+      ],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-what-did-critics-have-to-say-about-kimberly-akimbo-on-broadway",
@@ -74038,12 +74421,12 @@
           "publishDate": "2022-11-10"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-KIMBERLY-AKIMBO-Starring-Victoria-Clark-Bonnie-Milligan-More--See-What-the-Critics-Are-Saying-20211208",
-          "publishDate": "2021-12-08"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-KIMBERLY-AKIMBO-National-Tour-20241010",
           "publishDate": "2024-10-10"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-KIMBERLY-AKIMBO-Starring-Victoria-Clark-Bonnie-Milligan-More--See-What-the-Critics-Are-Saying-20211208",
+          "publishDate": "2021-12-08"
         }
       ],
       "weIngestBlocked": [
@@ -74156,12 +74539,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-broadway-review-victoria-clark",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://variety.com/2022/legit/reviews/kimberly-akimbo-review-broadway-musical-1235429378/",
           "host": "variety.com",
           "priorRun": true,
@@ -74248,18 +74625,6 @@
         {
           "url": "https://www.thewrap.com/kimberly-akimbo-broadway-review-victoria-clark/",
           "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
-          "host": "nystagereview.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -74360,12 +74725,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.westendbestfriend.co.uk/news/review-kimberly-akimbo-ensemble-arts-philly-us-tour",
-          "host": "westendbestfriend.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://southfloridatheater.com/2025/11/13/a-humorous-heartbreaking-hit-the-kravis-centers-kimberly-akimbo/",
           "host": "southfloridatheater.com",
           "priorRun": true,
@@ -74424,6 +74783,12 @@
           "host": "warwickpost.com",
           "priorRun": true,
           "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
       "ingestResults": [
@@ -74437,7 +74802,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
+          "reason": "spawnSync node ETIMEDOUT"
         },
         {
           "url": "http://nystagereview.com/2021/12/08/kimberly-akimbo-david-lindsay-abaires-akimbo-play-now-sings-out/",
@@ -74450,9 +74815,74 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "http://www.theaterscene.net/musicals/offbway/kimberly-akimbo/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "http://www.theaterscene.net/musicals/broadway/kimberly-akimbo-broadway/joel-benjamin/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2021/12/kimberly-akimbo/",
+          "host": "thefrontrowcenter.com",
+          "outletId": "front-row-center",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://newyorktheater.me/2021/12/12/kimberly-akimbo-musical-review-she-is-16-going-on-70/",
+          "host": "newyorktheater.me",
+          "outletId": "nyt-theater"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2021/12/8/kimberly-akimbo",
+          "host": "offoffonline.com",
+          "outletId": "off-off-online"
+        },
+        {
+          "url": "http://boycottingtrends.blogspot.com/2026/09/theatre-review-kimberly-akimbo.html",
+          "host": "boycottingtrends.blogspot.com",
+          "outletId": "boycotting-trends"
+        },
+        {
+          "url": "https://unscriptedtakes.substack.com/p/review-kimberly-akimbo-at-the-orpheum",
+          "host": "unscriptedtakes.substack.com",
+          "outletId": "unscriptedtakes"
+        }
+      ],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
+          "host": "thestage.co.uk",
+          "file": "thestage--unknown.json"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -74583,13 +75013,6 @@
             "url": "https://www.theatrely.com/post/kimberly-akimbo-broadways-miracle-child-review"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-broadway-review-victoria-clark"
-          },
-          {
             "outletId": "variety",
             "outlet": "variety",
             "critic": "Unknown",
@@ -74686,20 +75109,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thewrap.com/kimberly-akimbo-broadway-review-victoria-clark/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/"
           },
           {
             "outletId": "denver-post",
@@ -74814,13 +75223,6 @@
             "url": "https://epgn.com/2025/10/24/kimberly-akimbo-philly-review/"
           },
           {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/review-kimberly-akimbo-ensemble-arts-philly-us-tour"
-          },
-          {
             "outletId": "southfloridatheater.com",
             "outlet": "southfloridatheater.com",
             "critic": "Unknown",
@@ -74891,6 +75293,13 @@
             "url": "https://warwickpost.com/ppacs-kimberly-akimbo-takes-bawdy-poignant-turns/"
           },
           {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/"
+          },
+          {
             "outletId": "theatermania",
             "outlet": "theatermania",
             "critic": "Unknown",
@@ -74905,6 +75314,55 @@
             "url": "http://nystagereview.com/2021/12/08/kimberly-akimbo-david-lindsay-abaires-akimbo-play-now-sings-out/"
           },
           {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/musicals/offbway/kimberly-akimbo/victor-gluck/"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/musicals/broadway/kimberly-akimbo-broadway/joel-benjamin/"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2021/12/kimberly-akimbo/"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2021/12/12/kimberly-akimbo-musical-review-she-is-16-going-on-70/"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2021/12/8/kimberly-akimbo"
+          },
+          {
+            "outletId": "boycotting-trends",
+            "outlet": "boycotting-trends",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://boycottingtrends.blogspot.com/2026/09/theatre-review-kimberly-akimbo.html"
+          },
+          {
+            "outletId": "unscriptedtakes.substack.com",
+            "outlet": "unscriptedtakes.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://unscriptedtakes.substack.com/p/review-kimberly-akimbo-at-the-orpheum"
+          },
+          {
             "outletId": "lighting-and-sound-america",
             "outlet": "lighting-and-sound-america",
             "critic": "Unknown",
@@ -74917,6 +75375,41 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.talkinbroadway.com/page/ob/12_08_21.html"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london"
+          },
+          {
+            "outletId": "hampsteadtheatre.com",
+            "outlet": "hampsteadtheatre.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hampsteadtheatre.com/whats-on/2026/kimberly-akimbo/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/kimberly-akimbo"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/musical/kimberly-akimbo-tickets"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/kimberly-akimbo"
           }
         ],
         "suppressedMissing": [
@@ -74930,150 +75423,257 @@
         ],
         "candidates": [
           {
+            "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-broadway-review-victoria-clark",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T15:05:36.720Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-kimberly-akimbo-ensemble-arts-philly-us-tour",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T15:05:36.720Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-08T15:05:36.720Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/10/kimberly-akimbo-review-hampstead-theatre-london-maria-friedman",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/09/10/musical-review-kimberly-akimbo-hampstead/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-kimberly-akimbo-hampstead-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/kimberly-akimbo-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-kimberly-akimbo-hampstead-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/kimberly-akimbo-at-hampstead-theatre-review_1731228/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/kimberly-akimbo-hampstead-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/kimberly-akimbo-hampstead-theatre/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/09/10/musical-review-kimberly-akimbo-hampstead/amp/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://monstagigz.com/2026/08/30/theatre-review-kimberly-akimbo-starring-maria-friedman-at-hampstead-theatre/comment-page-1/",
+            "outletId": "monstagigz.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/08/jeanine-tesori-kimberly-akimbo-interview-musical",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/kimberly-akimbo-review-london-hampstead-theatre-b3047877.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/kimberly-akimbo-review-hampstead-theatre-sszdd7g7c",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/kimberly-akimbo-at-hampstead-theatre-b1296444.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/kimberly-akimbo-hampstead-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
             "url": "https://www.amny.com/entertainment/theater/review-great-adventure-with-kimberly-akimbo/",
             "outletId": "amny",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://broadwaynews.com/2022/11/08/kimberly-akimbo-is-the-only-reason-to-go-back-to-high-school/",
             "outletId": "broadwaynews",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://cititour.com/NYC_Broadway/Kimberly-Akimbo/1108",
             "outletId": "cititour",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.thedailybeast.com/kimberly-akimbo-is-the-standout-new-musical-on-broadway-right-now",
             "outletId": "dailybeast",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://deadline.com/2022/11/kimberly-akimbo-broadway-review-victoria-clark-1235167797/",
             "outletId": "deadline",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://didtheylikeit.com/shows/kimberly-akimbo/the-intimate-kimberly-akimbo-is-the-best-new-broadway-musical-in-years/",
             "outletId": "dtli",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://ew.com/theater/theater-reviews/kimberly-akimbo-review-broadway/",
             "outletId": "ew",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.hollywoodreporter.com/lifestyle/arts/kimberly-akimbo-theater-review-david-lindsay-abaire-jeanine-tesori-broadway-musical-1235259809/",
             "outletId": "hollywood-reporter",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://nypost.com/2022/11/10/kimberly-akimbo-review-a-weird-but-sweet-broadway-musical/",
             "outletId": "nypost",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://nystagereview.com/2022/11/10/kimberly-akimbo-the-sweet-musical-treat-we-need-right-now/",
             "outletId": "nysr",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://nystagereview.com/2022/11/10/kimberly-akimbo-a-doomed-teen-valiantly-seizes-the-day/",
             "outletId": "nysr",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.nysun.com/article/unexpectedly-kimberly-akimbo-is-as-exhilarating-as-it-is-heartbreaking",
             "outletId": "new-york-sun",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://newyorktheater.me/2022/11/10/kimberly-akimbo-broadway-review/",
             "outletId": "nyt-theater",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/kimberly-akimbo-broadway-review-victoria-clark",
             "outletId": "nytg",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.nytimes.com/2022/11/10/theater/kimberly-akimbo-review.html",
             "outletId": "nytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.nydailynews.com/entertainment/broadway/ny-kimberly-akimbo-broadway-review-20221111-zirpvbfk5jdubn22zm7xtafblq-story.html",
             "outletId": "nydailynews",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.theatermania.com/broadway/reviews/review-on-broadway-kimberly-akimbo_94539.html",
             "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.theatrely.com/post/kimberly-akimbo-broadways-miracle-child-review",
             "outletId": "theatrely",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-broadway-review-victoria-clark",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://variety.com/2022/legit/reviews/kimberly-akimbo-review-broadway-musical-1235429378/",
             "outletId": "variety",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.vulture.com/2022/11/theater-review-kimberly-akimbo-broadway.html",
             "outletId": "vulture",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
@@ -75086,323 +75686,393 @@
           {
             "url": "https://www.washingtonpost.com/theater-dance/2022/11/10/kimberly-akimbo-broadway-clark/",
             "outletId": "washpost",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://dcmetrotheaterarts.com/2021/12/08/off-broadway-musical-adaptation-of-kimberly-akimbo-at-atlantic-theater-company-combines-hilarious-dark-comedy-with-a-meaningful-message/",
             "outletId": "dc-metro-theater-arts",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.vulture.com/2021/12/theater-review-kimberly-akimbo-atlantic.html",
             "outletId": "vulture",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "http://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
             "outletId": "nysr",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-david-lindsay-abaires-akimbo-play-now-sings-out/",
             "outletId": "nysr",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/kimberly-akimbo-off-broadway-review",
             "outletId": "nytg",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.nytimes.com/2021/12/08/theater/kimberly-akimbo-review.html",
             "outletId": "nytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://observer.com/2021/12/kimberly-akimbo-review/",
             "outletId": "observer",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.theatrely.com/post/kimberly-akimbo-a-momentus-masterpiece-review",
             "outletId": "theatrely",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "http://https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark",
             "outletId": "https",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.thewrap.com/kimberly-akimbo-off-broadway-review-victoria-clark-tesori/",
             "outletId": "thewrap",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.thewrap.com/kimberly-akimbo-broadway-review-victoria-clark/",
             "outletId": "thewrap",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-review-david-lindsay-abaire-jeanine-tesori-victoria-clark",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
-            "outletId": "nysr",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.denverpost.com/2024/09/27/tony-winning-kimberly-akimbo-launches-national-tour-in-denver-theater-review/",
             "outletId": "denver-post",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://onstagecolorado.com/kimberly-akimbo-carves-out-grace-in-a-crummy-world/",
             "outletId": "onstagecolorado.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.sandiegouniontribune.com/2024/10/10/review-kimberly-akimbo-tour-captures-the-humor-poignance-of-broadway-original/",
             "outletId": "san-diego-union-tribune",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://dailybruin.com/2024/10/21/theater-review-kimberly-akimbo-fails-to-be-memorable-with-chaotic-plot-generic-soundtrack",
             "outletId": "dailybruin.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.latimes.com/entertainment-arts/story/2024-10-18/review-kimberly-akimbo-pantages-2023-tony-musical",
             "outletId": "latimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://sfist.com/2024/11/08/broadway-vet-carolee-carmello-makes-a-phenomenal-turn-in-kimberly-akimbo-at-the-curran-theater/",
             "outletId": "sfist",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.sfchronicle.com/entertainment/article/kimberly-akimbo-musical-broadwaysf-19871092.php",
             "outletId": "san-francisco-chronicle",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.themorningsun.com/2025/03/13/heart-humor-make-kimberly-akimbo-a-must-see-at-the-fisher-theatre/",
             "outletId": "themorningsun.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.capecodtimes.com/story/entertainment/theater/2025/05/12/review-kimberly-akimbo-musical-in-boston-is-touching-quirky/83515935007/",
             "outletId": "cape-cod-times",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.bostonglobe.com/2025/05/08/arts/kimberly-akimbo-broadway-in-boston-review/",
             "outletId": "boston-globe",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.twincities.com/2025/07/09/theater-review-kimberly-akimbo-is-a-breath-of-fresh-originality/",
             "outletId": "twincities.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.news-herald.com/2025/07/23/kimberly-akimbo-at-playhouse-square-review-cute-quirky-and-tough/",
             "outletId": "news-herald.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.tulsakids.com/kimberly-akimbo-is-a-show-with-heart-and-humor/",
             "outletId": "tulsakids.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://roughdraftatlanta.com/2025/10/15/theatre-review-kimberly-akimbo-walks-a-tightrope-of-humor-and-tragedy/",
             "outletId": "roughdraftatlanta.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.inquirer.com/arts/theater/review-kimberly-akimbo-academy-of-music-20251025.html",
             "outletId": "philadelphia-inquirer",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://epgn.com/2025/10/24/kimberly-akimbo-philly-review/",
             "outletId": "epgn.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-08T15:05:36.720Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-kimberly-akimbo-ensemble-arts-philly-us-tour",
-            "outletId": "west-end-best-friend",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://southfloridatheater.com/2025/11/13/a-humorous-heartbreaking-hit-the-kravis-centers-kimberly-akimbo/",
             "outletId": "southfloridatheater.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://dallasvoice.com/review-kimberly-akimbo-is-just-not-right/",
             "outletId": "dallasvoice",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.thepitchkc.com/touring-musical-kimberly-akimbo-is-equal-parts-charming-overwhelming-and-offbeat-at-kauffman/",
             "outletId": "thepitchkc.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://shepherdexpress.com/culture/theater/broadway-tour-of-kimberly-akimbo-mostly-gets-it-right/",
             "outletId": "shepherdexpress.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.dailycardinal.com/article/2026/02/kimberly-akimbo-where-age-is-just-a-number",
             "outletId": "the-daily-cardinal",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.jsonline.com/story/entertainment/arts/2026/02/18/sweet-musical-kimberly-akimbo-milwaukee-marcus-center/88716497007/",
             "outletId": "milwaukee-journal-sentinel",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.twincities.com/2026/02/25/theater-review-ordway-kimberly-akimbo/",
             "outletId": "twincities.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.minnesotamonthly.com/general/review-how-kimberly-akimbo-finds-its-heart-in-the-everyday/",
             "outletId": "minnesotamonthly.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://mdtheatreguide.com/2026/04/theatre-review-kimberly-akimbo-at-the-hippodrome-theatre/",
             "outletId": "maryland-theatre-guide",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://warwickpost.com/ppacs-kimberly-akimbo-takes-bawdy-poignant-turns/",
             "outletId": "warwickpost.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-08T15:05:36.720Z"
+          },
+          {
+            "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.theatermania.com/off-broadway/reviews/review-kimberly-akimbo-atlantic-theater_93088.html",
             "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "http://nystagereview.com/2021/12/08/kimberly-akimbo-david-lindsay-abaires-akimbo-play-now-sings-out/",
             "outletId": "nysr",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/offbway/kimberly-akimbo/victor-gluck/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/broadway/kimberly-akimbo-broadway/joel-benjamin/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2021/12/kimberly-akimbo/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2021/12/12/kimberly-akimbo-musical-review-she-is-16-going-on-70/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2021/12/8/kimberly-akimbo",
+            "outletId": "off-off-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "http://boycottingtrends.blogspot.com/2026/09/theatre-review-kimberly-akimbo.html",
+            "outletId": "boycotting-trends",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://unscriptedtakes.substack.com/p/review-kimberly-akimbo-at-the-orpheum",
+            "outletId": "unscriptedtakes.substack.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=86UE8C",
             "outletId": "lighting-and-sound-america",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
           },
           {
             "url": "https://www.talkinbroadway.com/page/ob/12_08_21.html",
             "outletId": "talkinbroadway",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-08T15:05:36.720Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.hampsteadtheatre.com/whats-on/2026/kimberly-akimbo/",
+            "outletId": "hampsteadtheatre.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/kimberly-akimbo",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/musical/kimberly-akimbo-tickets",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/kimberly-akimbo",
+            "outletId": "bestoftheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 54
+        "liveCount": 14,
+        "candidateCount": 76
       },
-      "computedAt": "2026-09-08T15:05:36.720Z"
+      "computedAt": "2026-09-10T21:31:14.668Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -76340,7 +77010,7 @@
       "showId": "lean-to-off-broadway-2026",
       "title": "Lean-To",
       "openingDate": "2026-09-10",
-      "status": "previews",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -76353,12 +77023,83 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Lean-To\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Lean-To\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Lean-To\" review 59e59",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Lean-To\" Sheffer review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Lean-To 59E59 Theaters review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Lean-To 59E59 Theaters review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Lean-To 59E59 Theaters review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 43,
+        "byReason": {
+          "non-review-host": 28,
+          "merch-store": 4,
+          "aggregator-internal-nav": 11
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -76369,7 +77110,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-08T15:05:36.720Z"
+      "computedAt": "2026-09-10T21:31:14.668Z"
     },
     {
       "showId": "left-on-tenth-2024",
@@ -81805,7 +82546,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-08T15:05:36.720Z"
+      "computedAt": "2026-09-10T21:31:14.668Z"
     },
     {
       "showId": "manic-street-creature-west-end-2026",
@@ -135550,6 +136291,260 @@
         "candidateCount": 22
       },
       "computedAt": "2026-08-22T12:13:43.001Z"
+    },
+    {
+      "showId": "the-ford-hill-project-off-broadway-2026",
+      "title": "The Ford/Hill Project",
+      "openingDate": "2026-09-08",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/ford-hill-project-off-broadway-review/",
+        "https://www.picturethispost.com/bam-presents-the-ford-hill-project-preview/",
+        "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project",
+        "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel",
+        "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/"
+      ],
+      "dirFiles": 5,
+      "dirClean": 1,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.picturethispost.com/bam-presents-the-ford-hill-project-preview/",
+          "host": "picturethispost.com",
+          "knownOutletId": "picture-this-post",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "picture-this-post--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.picturethispost.com/bam-presents-the-ford-hill-project-preview/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel",
+          "host": "abouttheartists.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "abouttheartists--unknown.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/",
+          "host": "brooklyneagle.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "brooklyneagle--brooklyn-eagle-staff.json",
+              "flag": "clean",
+              "urlInDir": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Ford/Hill Project\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Ford/Hill Project\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Ford/Hill Project\" review fisher",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Ford/Hill Project\" Evans review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Ford/Hill Project BAM Fisher (Fishman Space) review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Ford/Hill Project BAM Fisher (Fishman Space) review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Ford/Hill Project BAM Fisher (Fishman Space) review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 5,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 36,
+        "byReason": {
+          "non-review-host": 26,
+          "venue-production-page": 4,
+          "merch-store": 5,
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-no-host"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project"
+          },
+          {
+            "outletId": "picture-this-post",
+            "outlet": "picture-this-post",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.picturethispost.com/bam-presents-the-ford-hill-project-preview/"
+          },
+          {
+            "outletId": "abouttheartists.com",
+            "outlet": "abouttheartists.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel"
+          },
+          {
+            "outletId": "brooklyneagle.com",
+            "outlet": "brooklyneagle.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://culturesauce.com/ford-hill-project-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.picturethispost.com/bam-presents-the-ford-hill-project-preview/",
+            "outletId": "picture-this-post",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel",
+            "outletId": "abouttheartists.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          },
+          {
+            "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/",
+            "outletId": "brooklyneagle.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 5
+      },
+      "computedAt": "2026-09-10T21:31:14.668Z"
     },
     {
       "showId": "the-gin-game-2026",
