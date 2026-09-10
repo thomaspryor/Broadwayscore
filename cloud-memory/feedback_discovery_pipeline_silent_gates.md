@@ -856,3 +856,16 @@ loser into total outlet loss.
 a blocking flag. Fix = delete the worthless loser, clear duplicateOf/duplicateTextOf/
 duplicateReason on the survivor, set `duplicateClearReason` (required or the push guard
 reverts the clear) plus all 8 protection fields.
+
+## Gate: the Vercel deploy gate is blind to core-data-only changes (2026-09-10, Kimberly Akimbo Hampstead)
+**Where it kills reviews:** the DEPLOY stage — after discovery, gather, rebuild and scoring have all succeeded. This is the last gate in the chain and was not previously in this catalog.
+
+`scripts/lib/should-deploy-gate.js` `decide()` only sees the **public web repo**. On `eventName=='schedule'` it compares `baselineSha` vs `headSha` plus a content diff of that repo. Core data (`reviews.json`, `shows.json`) lives in the private `broadway-scorecard-data` repo and is pulled at **build** time, so a rebuild landing ONLY core data moves no public HEAD and yields no web diff. Every 5-min tick logs `SKIP reason=content-gate` until the 6h `STALENESS_BACKSTOP_SEC` fires — a green run that deploys nothing.
+
+**Proof:** Time Out London (T2, llm-v6 95, Rave) landed in origin/main `reviews.json` at `eb573b33a` 13:46:15Z. Deploy run 34484835943 ran 63s later and logged `[content-gate] SKIP — reason=content-gate baseline=9f46498e75 head=b1f5428292 deployAge=12m event=schedule`; jobs were should-deploy=success, deploy=SKIPPED. Prod held rvLen 11 for 25+ min.
+
+**Why the existing mitigation missed it:** `vercel-deploy.yml` already has a `workflow_run` trigger on the two rebuild workflows for exactly this race, and `decide()` routes non-schedule events to `explicit-ship`. But that tick (run 34484751133) was fired by the FAILED rebuild 34483313225 and the job-level `if:` guard correctly skipped it. The *successful* rebuild-fast produced no proceeding deploy tick. `decide()`'s own comment (L94-97) assumes "rebuild-all-reviews commits public/data/shows/*.json in lockstep with reviews.json (HEAD moves)" — that does NOT hold for the rebuild-**fast** path, which is the opening-night correction path.
+
+**Detect:** prod JSON `rv` count lags `git -C /Users/tompryor/broadway-scorecard-data show origin/main:reviews.json` for the show, with no failing workflow anywhere. Confirm with `gh run view <deploy-run> --json jobs` — `deploy: skipped` under a `success` run.
+**Work around tonight:** `gh workflow run vercel-deploy.yml` with a `# FORCE-DEPLOY` comment on the command (clears the `gh-poll-block.sh` hook). `workflow_dispatch` takes the `explicit-ship` branch and dedups only when `baselineSha === headSha`.
+**Systemic fix:** BRO-3149 — make core data first-class in the gate (`git ls-remote` the private data repo HEAD vs the data SHA baked into the live deployment) instead of relying on the 6h backstop.
