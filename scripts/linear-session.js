@@ -33,6 +33,7 @@ const linear = require('./lib/linear-client');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
+const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 
 const USAGE = `Usage:
   node scripts/linear-session.js claim --issue=BRO-123
@@ -230,9 +231,10 @@ async function cmdReport(args) {
         // description, prior comments (already on `issue` from getIssue()'s
         // comments(first: 20)), and this call's own outcome comment — which
         // was already posted above, so it counts as commentText here too.
-        const existingComments = ((issue.comments && issue.comments.nodes) || [])
-          .map((c) => c && c.body)
-          .filter(Boolean);
+        // sortedCommentBodies (oldest-first by createdAt) — see
+        // linear-done-gate.js's header (BRO-3155) for why raw connection
+        // order is not safe to treat as chronological.
+        const existingComments = sortedCommentBodies(issue);
         const gate = checkLinearDoneTransition({
           targetStateType: 'completed',
           description: issue.description || '',
