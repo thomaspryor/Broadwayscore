@@ -35,8 +35,23 @@
  * same issue for the evidence it is looking for) (ship-check
  * finding on the first version of this gate, which read description +
  * in-flight commentText only and would silently re-refuse a close whose
- * evidence was sitting right there in issue history) — the caller passes
- * those bodies through unchanged, this file does no I/O of its own.
+ * evidence was sitting right there in issue history) — the caller MUST pass
+ * those bodies pre-sorted OLDEST FIRST by createdAt (e.g. via
+ * linear-dispatch.js's sortedCommentBodies(issue) — Linear's comments
+ * connection is not createdAt-ascending by default, same gotcha
+ * sortedCommentBodies's own header documents), this file does no I/O of its
+ * own.
+ *
+ * BRO-3155: description+comments used to be flattened into one string and
+ * handed to evaluateDoneTransition as `notes`, which pooled every acceptance
+ * candidate from every document instead of letting a later comment supersede
+ * an earlier broken one. Kept separate now (`notes` vs `comments`) so
+ * evaluateDoneTransition can apply evaluateVerifiability's newest-first
+ * precedence — the same one the dispatch gate (linear-next.js) already gets.
+ * extractPrRef still scans the flattened, chronologically-ordered text: its
+ * own "last marker wins" rule already gives newest-wins semantics as long as
+ * the documents it sees are in true chronological order, which they are now
+ * that existingComments is contractually sorted.
  */
 
 'use strict';
@@ -46,6 +61,7 @@ const { extractPrRef } = require('./linear-pr-evidence.js');
 
 /**
  * @param {{targetStateType:string, description?:string, commentText?:string, existingComments?:string[]}} args
+ *   existingComments must be oldest-first (see file header).
  * @returns {{gated:false}|({gated:true}&ReturnType<typeof evaluateDoneTransition>)}
  *   gated:false means this call is not moving into a completed-type state at
  *   all, so the gate has nothing to say — evaluateDoneTransition is not even
@@ -55,11 +71,10 @@ const { extractPrRef } = require('./linear-pr-evidence.js');
 function checkLinearDoneTransition({ targetStateType, description = '', commentText = '', existingComments = [] } = {}) {
   if (targetStateType !== 'completed') return { gated: false };
 
-  const combinedText = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText]
-    .filter(Boolean)
-    .join('\n');
+  const comments = [...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean);
+  const combinedText = [description, ...comments].filter(Boolean).join('\n');
   const prRef = extractPrRef(combinedText);
-  const result = evaluateDoneTransition({ prRef, notes: combinedText });
+  const result = evaluateDoneTransition({ prRef, notes: description, comments });
   return { gated: true, ...result };
 }
 
