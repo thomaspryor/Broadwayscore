@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-08T16:04:50.504Z",
+  "generatedAt": "2026-09-10T21:31:16.907Z",
   "windowDays": 45,
-  "showsScanned": 62,
+  "showsScanned": 70,
   "gaps": [
     {
       "showId": "the-story-west-end-2026",
@@ -17,27 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
       "firstSeen": "2026-09-06T13:54:56.426Z",
-      "fileAgeHours": 50.164766388888886,
+      "fileAgeHours": 103.60541222222223,
       "gapSeenAt": "2026-09-08T15:05:38.757Z",
-      "nonTerminalAgeHours": 0.9865963888888889
-    },
-    {
-      "showId": "marlise-off-broadway-2026",
-      "title": "Marlise",
-      "openingDate": "2026-08-13",
-      "file": "broadwayworld--unknown.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.broadwayworld.com/off-off-broadway/regional/Marlise-4396485",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=marlise-off-broadway-2026",
-      "firstSeen": "2026-08-13T09:30:35.424Z",
-      "fileAgeHours": 630.570735,
-      "gapSeenAt": "2026-09-08T15:05:38.757Z",
-      "nonTerminalAgeHours": 0.9865963888888889
+      "nonTerminalAgeHours": 54.42726361111111
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -52,9 +34,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 262.80250027777777,
+      "fileAgeHours": 316.243155,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 224.3934261111111
+      "nonTerminalAgeHours": 277.8340933333333
     }
   ],
   "contradictions": []

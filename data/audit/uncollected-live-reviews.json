@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-08T16:04:50.643Z",
+  "generatedAt": "2026-09-10T21:31:17.565Z",
   "maxAgeHours": 12,
-  "showsAffected": 12,
+  "showsAffected": 11,
   "strandedFiles": 13,
   "blackoutShows": [
     "matilda-the-musical-theatre-row-off-broadway-2026"
@@ -25,7 +25,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 864.9808844444444
+          "ageHours": 918.4216961111111
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -57,7 +57,29 @@
         }
       ],
       "usable": 31,
-      "discovered": 38,
+      "discovered": 39,
+      "totalBlackout": false
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "title": "Pride",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "londontheatredirect--unknown.json",
+          "url": "https://www.londontheatredirect.com/musical/pride-tickets?srsltid=AfmBOorKIlqcMUlzeZL9Mx7IelIadLwUPqjmE25STi3OCUj7W0tZkOaM",
+          "outlet": "Londontheatredirect",
+          "ageHours": 30.573512222222224
+        },
+        {
+          "file": "plays-to-see--unknown.json",
+          "url": "https://playstosee.com/reviews/pride/",
+          "outlet": "Plays To See",
+          "ageHours": 222.1833736111111
+        }
+      ],
+      "usable": 42,
+      "discovered": 67,
       "totalBlackout": false
     },
     {
@@ -69,7 +91,7 @@
           "file": "all-that-dazzles-uk--unknown.json",
           "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
           "outlet": "All That Dazzles  (UK)",
-          "ageHours": 283.2002675
+          "ageHours": 336.64107916666666
         }
       ],
       "usable": 45,
@@ -121,7 +143,7 @@
         }
       ],
       "usable": 41,
-      "discovered": 48,
+      "discovered": 49,
       "totalBlackout": false
     },
     {
@@ -133,7 +155,7 @@
           "file": "nytimes--unknown.json",
           "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
           "outlet": "The New York Times",
-          "ageHours": 216.92019333333334
+          "ageHours": 270.361005
         }
       ],
       "usable": 29,
@@ -157,22 +179,6 @@
       "totalBlackout": false
     },
     {
-      "showId": "pride-west-end-2026",
-      "title": "Pride",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "plays-to-see--unknown.json",
-          "url": "https://playstosee.com/reviews/pride/",
-          "outlet": "Plays To See",
-          "ageHours": 168.74256194444445
-        }
-      ],
-      "usable": 42,
-      "discovered": 66,
-      "totalBlackout": false
-    },
-    {
       "showId": "burlesque-west-end-2026",
       "title": "Burlesque",
       "status": "open",
@@ -181,27 +187,11 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/burlesque-the-musical-regent-theatre/",
           "outlet": "North West End",
-          "ageHours": 145.23516666666666
+          "ageHours": 198.67597833333335
         }
       ],
       "usable": 22,
       "discovered": 29,
-      "totalBlackout": false
-    },
-    {
-      "showId": "electra-persona-west-end-2026",
-      "title": "Electra / Persona",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "whatsonstage--sarah-crompton.json",
-          "url": "https://www.whatsonstage.com/news/electra-persona-with-cate-blanchett-and-nina-hoss-at-national-theatre-review_1730588/",
-          "outlet": "WhatsOnStage",
-          "ageHours": null
-        }
-      ],
-      "usable": 45,
-      "discovered": 47,
       "totalBlackout": false
     }
   ]
