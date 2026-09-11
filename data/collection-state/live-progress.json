@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-11T20:09:17.045Z",
-  "processed": 68,
-  "failed": 382,
-  "successRate": "15.1%",
+  "updatedAt": "2026-09-11T21:08:12.739Z",
+  "processed": 74,
+  "failed": 422,
+  "successRate": "14.9%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 43,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 4,
     "scrapingbee": 11,
-    "brightdata": 6,
+    "brightdata": 9,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-11T16:56:55.885Z",
@@ -42,6 +42,28 @@
       "event": "bb-session",
       "session": "869f985c",
       "url": "https://deadline.com/2026/01/music-city-off-broadway-j-t-harding-1236690521/"
+    },
+    {
+      "t": "2026-09-11T21:02:21.730Z",
+      "event": "bb-session",
+      "session": "f9a7d6da",
+      "url": "https://www.thestage.co.uk/reviews/the-children-review-lyric-hammersmith-london"
+    },
+    {
+      "t": "2026-09-11T21:02:22.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-11T21:04:34.472Z",
+      "event": "bb-session",
+      "session": "6e708cc3",
+      "url": "https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhous"
+    },
+    {
+      "t": "2026-09-11T21:04:35.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
