@@ -137,6 +137,15 @@ on:
       # scripts/check-orphan-commits.js above.
       - 'scripts/ingest-dmarc-reports.js'
       - 'scripts/ingest-dmarc-reports.test.mjs'
+      # scripts/ingest-review-from-url.js + its colocated test (BRO-462): the
+      # single-URL review ingest used by process-review-submission.yml (the
+      # /submit-review pipeline) and gap-recovery audits
+      # (audit-t1-silent-gaps.js) sits at the top level of scripts/, so a solo
+      # edit to either would trigger zero CI — same gap class as
+      # scripts/ingest-dmarc-reports.js above. (scripts/lib/stale-publish-date.js,
+      # its new dependency, is already covered by the scripts/lib/** glob above.)
+      - 'scripts/ingest-review-from-url.js'
+      - 'scripts/ingest-review-from-url.test.mjs'
       # scripts/audit-safe-form-allowlist.js (BRO-2718): required by
       # scripts/lib/safe-form-allowlist.test.mjs (globbed above) but living at
       # the top level of scripts/, so a solo edit to it would trigger zero CI —
