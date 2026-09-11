@@ -14,10 +14,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const { searchIBDB } = require('./lib/ibdb-dates');
 
-// Load .env if available
+// Load .env if available (must run before requiring ./lib/ibdb-dates, which
+// requires scraper.js — scraper.js snapshots BRIGHTDATA_TOKEN/SCRAPINGBEE_API_KEY
+// into module-level consts at require-time, so loading .env afterward is a no-op)
 require('./lib/load-env').loadEnv();
+
+const { searchIBDB } = require('./lib/ibdb-dates');
 
 const AWARDS_FILE = path.join(__dirname, '..', 'data', 'awards.json');
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
