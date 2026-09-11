@@ -1,50 +1,5 @@
 [
   {
-    "startedAt": "2026-09-06T09:38:18.789Z",
-    "completedAt": "2026-09-06T09:41:42.158Z",
-    "totalReviews": 42731,
-    "processed": 22,
-    "skipped": 42572,
-    "errors": 6,
-    "tokensUsed": {
-      "input": 250617,
-      "output": 8978,
-      "total": 625480
-    },
-    "errorDetails": [
-      {
-        "showId": "race-2009",
-        "outletId": "washpost",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "in-the-next-room-2009",
-        "outletId": "washpost",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "hamlet-2009",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "next-to-normal-2009",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "south-pacific-2008",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "grey-gardens-2006",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-06T10:13:20.108Z",
     "completedAt": "2026-09-06T10:13:48.809Z",
     "totalReviews": 42733,
@@ -228982,6 +228937,20 @@
       "input": 3610,
       "output": 103,
       "total": 10925
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-11T11:41:30.085Z",
+    "completedAt": "2026-09-11T11:41:33.567Z",
+    "totalReviews": 43062,
+    "processed": 0,
+    "skipped": 43061,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 101,
+      "total": 10946
     },
     "errorDetails": []
   }
