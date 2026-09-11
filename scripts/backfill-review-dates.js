@@ -30,6 +30,10 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+
+// Load .env if available (launchd/cron/worktree runs don't inherit a login shell)
+require('./lib/load-env').loadEnv();
+
 const { fetchPage } = require('./lib/scraper');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');

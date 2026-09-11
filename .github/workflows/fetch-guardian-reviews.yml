@@ -191,6 +191,24 @@ jobs:
           message: "data: Fetch Guardian Reviews via API — Commit changes"
       - name: Commit changes
         if: always() && github.event.inputs.dry_run != 'true'
+        # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (BRO-440, 2026-09-11): this
+        # step was the only push-with-retry.sh caller left in this file on the
+        # shared 240s/7-retry default, and 10 consecutive runs in the 24h
+        # before this fix all failed at exactly this step with the same
+        # signature — "Pre/Post-resolution push FAILED in 90s ... rc=124,
+        # transport HANG", exhausting the 240s deadline after only 2 real
+        # fetch->rebase->push cycles (confirmed via run 34584002027's job log:
+        # every OTHER step, including the actual Guardian API fetch, succeeded
+        # every time — this is a shared push-contention symptom under main's
+        # commit churn, not a Guardian-API bug). Same class + same fix as
+        # rebuild-fast.yml's "Commit and push changes" step (card #1891):
+        # push-with-retry.sh's backoff sums to ~N^2+4N over N attempts, so
+        # MAX_RETRIES (not PUSH_DEADLINE_SEC alone) is usually the binding
+        # constraint — 20 retries sums to ~480s of backoff, fitting inside the
+        # 600s deadline with margin. No job-level timeout-minutes is set on
+        # this job, so GitHub's 360min default already has ample headroom.
+        env:
+          PUSH_DEADLINE_SEC: '600'
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
@@ -209,7 +227,7 @@ jobs:
 
             Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
 
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh 20 main
           fi
 
 

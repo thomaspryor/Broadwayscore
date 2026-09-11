@@ -20,6 +20,12 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+
+// Load .env if available (must run before requiring ./lib/scraper, which
+// snapshots BRIGHTDATA_TOKEN/SCRAPINGBEE_API_KEY into module-level consts
+// at require-time, so loading .env afterward is a no-op)
+require('./lib/load-env').loadEnv();
+
 const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
 const { setExtractedScore } = require('./lib/score-routing');
@@ -96,8 +102,6 @@ function loadCookiesForUrl(url) {
   return null;
 }
 
-// Load env from .env file if present
-require('./lib/load-env').loadEnv();
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 let _browser;

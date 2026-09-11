@@ -23,6 +23,10 @@
 
 const fs = require('fs');
 const path = require('path');
+
+// Load .env if available (launchd/cron/worktree runs don't inherit a login shell)
+require('./lib/load-env').loadEnv();
+
 const { safeWriteReview, safeRenameReview, safeUnlinkReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
 
 let lockedSkipCount = 0;
