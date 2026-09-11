@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "showId": "garry-starr-classic-penguins-off-broadway-2026",
+  "openingDate": "2026-09-08",
+  "detectedAt": "2026-09-11T19:22:19.708Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "wsj--unknown.json",
+      "outletId": "wsj",
+      "criticName": "Unknown",
+      "url": "https://www.wsj.com/articles/garry-starr-classic-penguins-review-stripped-down-literature-811f876e",
+      "fullTextLen": 604,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
+  "blockBroadcast": true,
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
+}
