@@ -47,6 +47,9 @@ function hasHelpFlag(argv) {
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
 
+  // Load .env if available (launchd/cron/worktree runs don't inherit a login shell)
+  require('./lib/load-env').loadEnv();
+
   const { fetchPage } = require('./lib/scraper');
   const { extractOpeningFactsFromArticle } = require('./lib/reverse-discovery');
   const { loadReviewEvidence, hasFreshEvidence } = require('./lib/review-evidence');
