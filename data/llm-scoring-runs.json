@@ -1,30 +1,5 @@
 [
   {
-    "startedAt": "2026-09-06T10:13:20.108Z",
-    "completedAt": "2026-09-06T10:13:48.809Z",
-    "totalReviews": 42733,
-    "processed": 4,
-    "skipped": 42725,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 29874,
-      "output": 1416,
-      "total": 79186
-    },
-    "errorDetails": [
-      {
-        "showId": "escape-to-margaritaville-2018",
-        "outletId": "billboard",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "john-lithgow-stories-by-heart-2018",
-        "outletId": "culturesauce",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-06T10:43:32.914Z",
     "completedAt": "2026-09-06T10:43:35.656Z",
     "totalReviews": 42733,
@@ -228951,6 +228926,20 @@
       "input": 3610,
       "output": 101,
       "total": 10946
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-11T12:13:35.743Z",
+    "completedAt": "2026-09-11T12:13:38.310Z",
+    "totalReviews": 43062,
+    "processed": 0,
+    "skipped": 43061,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 101,
+      "total": 10923
     },
     "errorDetails": []
   }
