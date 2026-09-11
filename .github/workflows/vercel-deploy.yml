@@ -87,9 +87,12 @@ jobs:
     # re-deploying in a self-reinforcing loop — the "1hr+ to go live" pattern.)
     # Since then the build dropped to ~2-3 min (.next/cache persistence,
     # 2026-05-23) and the stage-latency push moved to the async watermark
-    # workflow (2026-07-13), so 25 min is a generous ceiling that still
-    # catches a hung run quickly.
-    timeout-minutes: 25
+    # workflow (2026-07-13). Raised 25->35 (BRO-451, 2026-09-11) to fit the
+    # Deploy to Production step's retry-on-transient-failure worst case
+    # (~16.5 min, see that step's comment) alongside Build's own 720s worst
+    # case — normal runs still finish in ~3 min either way, so this only
+    # widens the window before a genuinely hung run is caught.
+    timeout-minutes: 35
     concurrency:
       # per-run group intended: GH concurrency queue depth is 1, so a shared
       # "vercel-production-deploy" group cancelled 5+ queued deploys on Beaches
@@ -310,13 +313,47 @@ jobs:
           # Card #90: same hang risk + inline-timeout rationale as the Build
           # step above. 480s (8 min) is ~4-5x the observed 1m28s-1m41s normal
           # duration (sampled 2026-08-22).
-          URL=$(timeout 480 npx vercel deploy --prebuilt --prod --archive=split-tgz --token=$VERCEL_TOKEN)
-          status=$?
+          #
+          # BRO-451: 2026-09-11 failure was a transient network write EPIPE
+          # mid-upload ("request to https://api.vercel.com/v2/files ... failed,
+          # reason: write EPIPE") — the CLI doesn't retry its own upload socket
+          # errors. Retry up to 3 attempts to absorb that class of one-off
+          # network blip. Attempt 1 keeps the full 480s (card #90's calibrated
+          # hang budget, unchanged); retries use a shorter 240s cap so the
+          # worst case (480+240+240+30s backoff=990s=16.5min) plus Build's own
+          # 720s worst case fits inside the job's timeout-minutes (raised
+          # 25->35 below for this same reason).
+          #
+          # The `A && B || C` form (not `URL=$(...); status=$?`) is required
+          # under this step's `bash -e`: an unguarded command-substitution
+          # assignment trips errexit and kills the script before `status=$?`
+          # ever runs, silently disabling the loop on attempt 1 — the exact
+          # bug task #1911 fixed the same way in checkout-core-data/action.yml
+          # (see that file's "Guarded with `|| DECISION=...`" comment).
+          MAX_RETRIES=3
+          for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+            ATTEMPT_TIMEOUT=480
+            if [ "$ATTEMPT" -gt 1 ]; then
+              ATTEMPT_TIMEOUT=240
+            fi
+            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --prod --archive=split-tgz --token=$VERCEL_TOKEN) && status=0 || status=$?
+            if [ "$status" -eq 0 ]; then
+              break
+            fi
+            if [ "$status" -eq 124 ]; then
+              echo "::warning::vercel deploy timed out after ${ATTEMPT_TIMEOUT}s on attempt $ATTEMPT/$MAX_RETRIES (card #90 — possible Vercel-side cancellation hang)"
+            else
+              echo "::warning::vercel deploy failed (exit $status) on attempt $ATTEMPT/$MAX_RETRIES"
+            fi
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              sleep $(( 10 * ATTEMPT ))
+            fi
+          done
           if [ "$status" -ne 0 ]; then
             if [ "$status" -eq 124 ]; then
-              echo "::error::vercel deploy timed out after 8m (card #90 — possible Vercel-side cancellation hang)"
+              echo "::error::vercel deploy timed out on all $MAX_RETRIES attempts (card #90 — possible Vercel-side cancellation hang)"
             else
-              echo "::error::vercel deploy failed (exit $status)"
+              echo "::error::vercel deploy failed (exit $status) on all $MAX_RETRIES attempts"
             fi
             exit 1
           fi
