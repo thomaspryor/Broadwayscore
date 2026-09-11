@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-09-06T20:22:37.426Z",
-    "completedAt": "2026-09-06T20:22:46.769Z",
-    "totalReviews": 34,
-    "processed": 1,
-    "skipped": 32,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 10591,
-      "output": 482,
-      "total": 27444
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-06T22:43:39.907Z",
     "completedAt": "2026-09-06T22:43:43.952Z",
     "totalReviews": 36,
@@ -229089,5 +229075,25 @@
       "total": 10931
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-11T19:42:12.619Z",
+    "completedAt": "2026-09-11T19:42:44.426Z",
+    "totalReviews": 43124,
+    "processed": 3,
+    "skipped": 43116,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 32485,
+      "output": 1567,
+      "total": 88382
+    },
+    "errorDetails": [
+      {
+        "showId": "the-children-off-west-end-2026",
+        "outletId": "theatreboard",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
