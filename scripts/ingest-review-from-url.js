@@ -43,9 +43,11 @@ const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
-const { getOutletDisplayName } = require('./lib/review-normalization');
+const { getOutletDisplayName, findExistingReviewFile } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
+const { safeWriteReview } = require('./lib/review-write-guard');
+const { isStalePublishDate } = require('./lib/stale-publish-date');
 
 const args = process.argv.slice(2);
 function getArg(name) {
@@ -293,6 +295,40 @@ function extractByline(html) {
   // #309 (April 4 preview blocked May 1 review). Surface it here rather than
   // silently merging the new URL into the wrongProduction file.
   const showDir = path.join(__dirname, '..', 'data', 'review-texts', showId);
+
+  // Stale publishDate self-heal (BRO-462): this exact URL was just re-fetched
+  // and confirmed to be the show's own review page (title-matched for the
+  // score-only path above; wrong-show/wrong-production guards cover the
+  // full-text path downstream). If no fresh publishDate came out of that
+  // fetch, an OLD publishDate already on file may be a leftover from a
+  // since-corrected URL (a prior production's review page) — provably too
+  // early for this show's run. review-guards.js's explainExclusion() mirror
+  // doesn't model rebuild-all-reviews.js's date guard, so a stale date like
+  // this silently excludes the file from every future rebuild forever with
+  // no canonical predicate ever flagging it. Clear it here rather than
+  // leaving it for a human to notice the gap again.
+  if (!publishDate) {
+    const existingPath = findExistingReviewFile(showDir, outletId, critic, url);
+    if (existingPath) {
+      try {
+        const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
+        if (
+          existingData.publishDate &&
+          !existingData.allowEarlyDate &&
+          isStalePublishDate({ existingPublishDate: existingData.publishDate, freshPublishDate: null, show })
+        ) {
+          console.warn(`  ⚠️  Existing publishDate "${existingData.publishDate}" fails the date guard for this show's window and no fresh date was recovered — clearing stale value`);
+          if (!dryRun) {
+            existingData.publishDate = null;
+            existingData.stalePublishDateClearedAt = new Date().toISOString();
+            existingData.stalePublishDateClearedBy = 'ingest-review-from-url.js';
+            safeWriteReview(existingPath, existingData, { force: true });
+          }
+        }
+      } catch (e) { /* best-effort — never block the main ingest on this */ }
+    }
+  }
+
   const collision = detectIngestCollision({
     showDir,
     outletId,
