@@ -143,7 +143,9 @@
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
     "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json",
     "a-month-in-the-country-west-end-2026/independent--unknown.json",
-    "a-month-in-the-country-west-end-2026/londonlivinglarge--unknown.json"
+    "a-month-in-the-country-west-end-2026/londonlivinglarge--unknown.json",
+    "garry-starr-classic-penguins-off-broadway-2026/nytimes--helen-shaw.json",
+    "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json"
   ],
   "failed": [
     "kimberly-akimbo-off-west-end-2026/broadwayworld--stephi-wild.json",
@@ -1992,7 +1994,12 @@
     "the-story-west-end-2026/thestage--the-stage.json",
     "the-story-west-end-2026/theupcoming--unknown.json",
     "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
-    "the-children-off-west-end-2026/broadwayworld--michael-dale.json"
+    "the-children-off-west-end-2026/broadwayworld--michael-dale.json",
+    "garry-starr-classic-penguins-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "garry-starr-classic-penguins-off-broadway-2026/theatermania--unknown.json",
+    "the-ford-hill-project-off-broadway-2026/theatermania--pete-hempstead.json",
+    "the-ford-hill-project-off-broadway-2026/abouttheartists--unknown.json",
+    "the-ford-hill-project-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2075,7 +2082,8 @@
       "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
       "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json",
       "a-month-in-the-country-west-end-2026/independent--unknown.json",
-      "a-month-in-the-country-west-end-2026/londonlivinglarge--unknown.json"
+      "a-month-in-the-country-west-end-2026/londonlivinglarge--unknown.json",
+      "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2101,7 +2109,9 @@
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
-      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
+      "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+      "data/review-texts/garry-starr-classic-penguins-off-broadway-2026/nytimes--helen-shaw.json",
+      "garry-starr-classic-penguins-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -2188,7 +2198,7 @@
     ]
   },
   "startTime": "2026-09-10T13:53:46.244Z",
-  "lastProcessed": "the-children-off-west-end-2026/broadwayworld--michael-dale.json",
+  "lastProcessed": "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
   "log": [
     {
       "t": "2026-09-10T14:14:08.572Z",
@@ -2468,6 +2478,29 @@
       "t": "2026-09-11T00:15:56.122Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-11T02:02:02.987Z",
+      "event": "bb-session",
+      "session": "6d2cd5a8",
+      "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.h"
+    },
+    {
+      "t": "2026-09-11T02:02:03.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-11T02:03:10.471Z",
+      "event": "bb-session",
+      "session": "45e91749",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-11T02:03:25.784Z",
+      "event": "bb-session",
+      "session": "512cafeb",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
     }
   ]
 }
