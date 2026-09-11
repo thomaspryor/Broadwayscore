@@ -1,36 +1,20 @@
 {
-  "updatedAt": "2026-09-10T22:54:29.838Z",
-  "processed": 143,
-  "failed": 1249,
-  "successRate": "10.3%",
+  "updatedAt": "2026-09-11T00:07:29.313Z",
+  "processed": 138,
+  "failed": 1823,
+  "successRate": "7.0%",
   "tierBreakdown": {
-    "playwright": 78,
+    "playwright": 75,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 23,
     "directCookies": 4,
     "scrapingbee": 17,
     "brightdata": 27,
     "archiveToday": 0,
-    "archive": 23
+    "archive": 24
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
-    {
-      "t": "2026-09-10T21:39:24.806Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-10T21:42:37.215Z",
-      "event": "bb-session",
-      "session": "736f22ea",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-10T21:42:42.127Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-09-10T21:43:08.335Z",
       "event": "bb-session",
@@ -93,37 +77,54 @@
       "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-09-10T22:46:06.123Z",
+      "t": "2026-09-10T22:52:11.955Z",
       "event": "bb-session",
-      "session": "351bf73c",
-      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
+      "session": "611e81cc",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
     },
     {
-      "t": "2026-09-10T22:46:06.812Z",
+      "t": "2026-09-10T22:52:12.670Z",
       "event": "bb-cookie-inject",
-      "domain": "ft.com"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-10T22:46:24.306Z",
+      "t": "2026-09-10T23:01:11.380Z",
       "event": "bb-session",
-      "session": "28d82301",
-      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
+      "session": "597fb96f",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
     },
     {
-      "t": "2026-09-10T22:46:25.000Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-09-10T22:50:13.686Z",
+      "t": "2026-09-10T23:06:14.984Z",
       "event": "bb-session",
-      "session": "6141cfa6",
-      "url": "https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhous"
+      "session": "22b47635",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
     },
     {
-      "t": "2026-09-10T22:50:14.303Z",
+      "t": "2026-09-10T23:06:15.650Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-10T23:12:24.273Z",
+      "event": "bb-session",
+      "session": "74cb7d86",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-10T23:12:25.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-10T23:14:18.448Z",
+      "event": "bb-session",
+      "session": "1fd9a42b",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-10T23:14:19.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
