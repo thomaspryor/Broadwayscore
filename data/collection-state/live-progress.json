@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-09-11T13:13:25.330Z",
-  "processed": 209,
-  "failed": 2203,
-  "successRate": "8.7%",
+  "updatedAt": "2026-09-11T13:54:13.105Z",
+  "processed": 99,
+  "failed": 1116,
+  "successRate": "8.1%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 15,
     "amp": 0,
     "browserbase": 29,
-    "directCookies": 4,
-    "scrapingbee": 25,
-    "brightdata": 31,
+    "directCookies": 0,
+    "scrapingbee": 4,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-09-11T01:58:40.415Z",
-      "event": "bb-session",
-      "session": "76c8106e",
-      "url": "https://www.ft.com/content/c9a91c9f-d2ee-4908-b01c-cb09a44f5858%3Fsyn-25a6b1a6%3"
-    },
     {
       "t": "2026-09-11T01:58:41.249Z",
       "event": "bb-cookie-inject",
@@ -129,6 +123,12 @@
       "event": "bb-session",
       "session": "90622cb0",
       "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-11T13:53:01.283Z",
+      "event": "bb-session",
+      "session": "2638bc5f",
+      "url": "https://deadline.com/2026/03/peaky-blinders-the-immortal-man-review-cillian-murp"
     }
   ]
 }
