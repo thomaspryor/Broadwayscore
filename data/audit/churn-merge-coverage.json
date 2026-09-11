@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-11T14:06:55.920Z",
+    "generatedAt": "2026-09-11T14:13:52.665Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 22,
-    "coveredCount": 9,
-    "highChurnTracked": 31
+    "coveredCount": 10,
+    "highChurnTracked": 32
   },
   "flagged": [],
   "exempt": [
@@ -21,7 +21,7 @@
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 50
+      "churn": 49
     },
     {
       "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
@@ -107,12 +107,12 @@
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 133,
+      "churn": 134,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 128,
+      "churn": 129,
       "mergeAttr": "ours"
     },
     {
@@ -122,12 +122,17 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 107,
+      "churn": 106,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/progress.json",
+      "churn": 70,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 67,
+      "churn": 68,
       "mergeAttr": "ours"
     },
     {
@@ -147,7 +152,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 44,
+      "churn": 45,
       "mergeAttr": "ours"
     }
   ]
