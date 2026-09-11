@@ -71,6 +71,7 @@ const { mergeObVenueCandidates } = require('./merge-ob-venue-candidates');
 const { mergeAlertLedger } = require('./merge-alert-ledger');
 const { mergeAlertDigestQueue } = require('./merge-alert-digest-queue');
 const { mergeAlertRouterAttempts } = require('./merge-alert-router-attempts');
+const { mergeGuardEscalationState } = require('./merge-guard-escalation-state');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -583,6 +584,22 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'commercial-data-write',
     verifiedBy: '2026-09-04 (BRO-2795): grepped every .github/workflows/*.yml and scripts/ for "sd-circuit-breaker"/"check-sd-breaker.js" — sole writer is scripts/check-sd-breaker.js, invoked only by commercial-rss-poll.yml\'s "ScrapingDog daily circuit-breaker check" step (test.yml only unit-tests the script in isolation, never commits). Same concurrency group as bd-circuit-breaker.json above, same workflow. 2026-09-07 (BRO-2960): same "Commit breaker state" step move as bd-circuit-breaker.json above.',
   },
+  {
+    file: 'audit/corpus-drift.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-corpus-drift',
+    verifiedBy: '2026-09-11 (BRO-447): grepped every .github/workflows/*.yml and scripts/ for the literal filename — sole writer is scripts/check-corpus-drift.js, invoked only by check-corpus-drift.yml\'s "Commit and push audit" step (scripts/check-progress-stalls.js and scripts/health-check.js only READ it). That workflow declares concurrency: {group: check-corpus-drift, cancel-in-progress: false}, so overlapping runs (schedule vs workflow_run vs workflow_dispatch) queue rather than race. Freshly-regenerated verdict every run — nothing to union.',
+  },
+  {
+    file: 'audit/churn-merge-coverage.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-corpus-drift',
+    verifiedBy: '2026-09-11 (BRO-447): grepped every .github/workflows/*.yml and scripts/ for the literal filename — sole writer is scripts/audit-churn-merge-coverage.js, invoked only by check-corpus-drift.yml (same job, same "Commit and push audit" step, same concurrency group as audit/corpus-drift.json above).',
+  },
   // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
   // — filename is date-stamped, and BOTH places that check apiFallbackSafe
   // membership (push-with-retry.sh's inline disqualifier and audit-push-
@@ -656,6 +673,17 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackMerge: true,
     optInReconcile: false, // see audit/alert-ledger.json's comment above
     verifiedBy: '2026-09-04 (BRO-2413): 3 independent writers — append-only log, union deduped by (ts, conditionKey). See scripts/lib/merge-alert-router-attempts.js.',
+  },
+  {
+    file: 'audit/guard-escalation-state.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeGuardEscalationState,
+    format: 'json',
+    newline: true,
+    apiFallbackMerge: true,
+    optInReconcile: false, // see audit/alert-ledger.json's comment above
+    verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js.',
   },
   {
     file: 'audit/ob-venue-candidates.json',
