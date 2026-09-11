@@ -1186,17 +1186,16 @@
       "silentRefires": 16
     },
     "cron-health:Refresh Show Score (opening-night)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Refresh Show Score (opening-night)",
       "firstSeen": "2026-08-17T12:29:31.553Z",
-      "lastSeen": "2026-09-03T15:35:38.274Z",
-      "lastNotifiedAt": "2026-09-03T15:35:38.274Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-09-11T15:40:10.438Z",
+      "lastNotifiedAt": "2026-09-11T15:40:10.438Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-04T15:34:34.018Z"
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-empty-cast:abigails-party-west-end-2026": {
       "status": "open",
@@ -1461,12 +1460,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-10T15:38:43.834Z",
+      "lastSeen": "2026-09-11T15:40:10.525Z",
       "lastNotifiedAt": "2026-09-06T14:44:20.136Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1581,12 +1580,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-10T15:38:43.026Z",
+      "lastSeen": "2026-09-11T15:40:10.522Z",
       "lastNotifiedAt": "2026-09-09T15:43:50.768Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-2303",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1711,11 +1710,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial RSS Poll",
       "firstSeen": "2026-08-27T21:33:20.912Z",
-      "lastSeen": "2026-09-10T15:38:43.028Z",
+      "lastSeen": "2026-09-11T15:40:10.524Z",
       "lastNotifiedAt": "2026-09-10T15:38:43.028Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-2524"
+      "linearIdentifier": "BRO-2524",
+      "silentRefires": 1
     },
     "cron-health:Opening Night Express Retry Check": {
       "status": "resolved",
@@ -1748,24 +1748,24 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-28T21:38:46.942Z",
-      "lastSeen": "2026-09-10T15:38:43.835Z",
+      "lastSeen": "2026-09-11T15:40:10.527Z",
       "lastNotifiedAt": "2026-09-09T15:43:54.093Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-2529",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "cron-health-chronic:Opening Night Checklist": {
       "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
       "firstSeen": "2026-08-28T21:38:50.527Z",
-      "lastSeen": "2026-09-07T17:00:27.919Z",
+      "lastSeen": "2026-09-11T15:40:10.530Z",
       "lastNotifiedAt": "2026-09-06T14:44:20.487Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2865",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
       "status": "open",
@@ -2368,12 +2368,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Scrape WestEndTheatre",
       "firstSeen": "2026-09-07T17:00:27.922Z",
-      "lastSeen": "2026-09-10T15:38:43.838Z",
+      "lastSeen": "2026-09-11T15:40:10.532Z",
       "lastNotifiedAt": "2026-09-07T17:00:27.922Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-2931",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026": {
       "status": "open",
@@ -2510,12 +2510,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Enrich Off-Broadway Dates",
       "firstSeen": "2026-09-08T15:48:29.152Z",
-      "lastSeen": "2026-09-10T15:38:43.837Z",
+      "lastSeen": "2026-09-11T15:40:10.529Z",
       "lastNotifiedAt": "2026-09-08T15:48:29.152Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3107",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "imageless-scored-show:still-imageless:giant-public-theater-off-broadway-2012": {
       "status": "open",
@@ -2591,11 +2591,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Audit Aggregator Review Gap",
       "firstSeen": "2026-09-10T15:38:37.584Z",
-      "lastSeen": "2026-09-10T15:38:37.584Z",
+      "lastSeen": "2026-09-11T15:40:10.518Z",
       "lastNotifiedAt": "2026-09-10T15:38:37.584Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3150"
+      "linearIdentifier": "BRO-3150",
+      "silentRefires": 1
     },
     "gap:the-story-west-end-2026/the-spectator-uk--unknown.json": {
       "status": "open",
