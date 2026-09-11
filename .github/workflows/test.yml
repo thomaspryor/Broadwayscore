@@ -957,6 +957,11 @@ on:
       # tests/unit-test-manifest.txt (unit-tests job node --test batch).
       - 'scripts/audit-cross-show-url-collisions.js'
       - 'scripts/audit-cross-show-url-collisions.test.mjs'
+      # Star-vs-score mismatch audit (card #396 / BRO-434). Root-level
+      # scripts/*.test.mjs is NOT globbed; test registered in
+      # tests/unit-test-manifest.txt (unit-tests job node --test batch).
+      - 'scripts/audit-star-score-mismatch.js'
+      - 'scripts/audit-star-score-mismatch.test.mjs'
       # Its blocking replacement: fires only on a flag whose own date basis the
       # record contradicts (13/13 hand-verified precision). Colocated
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a

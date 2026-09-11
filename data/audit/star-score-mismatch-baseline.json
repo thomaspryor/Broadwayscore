@@ -2,13 +2,11 @@
   "_meta": {
     "description": "Known/triaged star-vs-score mismatches (card #396). The daily health check alerts only on findings NOT listed here. Regenerate after triaging with: node scripts/audit-star-score-mismatch.js --write-baseline",
     "threshold": 30,
-    "count": 53
+    "count": 50
   },
   "keys": [
     "a-christmas-story-the-musical-2012/ew--tanner-stransky.json#B+",
-    "a-life-in-the-theatre-2010/backstage--david-sheward.json#2/5 stars",
     "allegiance-2015/nytg--jane-dentinger.json#D",
-    "allegiance-2015/timeout--david-cote.json#2/5",
     "anastasia-2017/thestage--mark-shenton.json#2/5 stars",
     "be-more-chill-2019/dctheatrescene--deb-miller.json#D",
     "blackbird-2016/guardian--alexis-soloski.json#5/5 stars",
@@ -16,7 +14,6 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--fiona-mountford.json#4/5 stars",
     "catch-me-if-you-can-2011/timeout--david-cote.json#4/5",
     "choir-boy-2019/thestage--nicole-serratore.json#5/5 stars",
-    "come-fly-away-2010/staten-island-advance--michael-kuchwara.json#1/5",
     "come-from-away-2017/guardian--jesse-green.json#3/5 stars",
     "death-becomes-her-2024/the-interested-bystander--cary-wong.json#D",
     "diana-the-musical-2021/timeout--adam-feldman.json#1/5",
@@ -28,11 +25,11 @@
     "i-need-that-2023/theater-life--samuel-l-leiter.json#3.5/5 stars",
     "into-the-woods-2022/theater-life--paulanne-simmons.json#5/5 stars",
     "jekyll-and-hyde-2013/timeout--adam-feldman.json#5/5 stars",
-    "jesus-christ-superstar-2000/ew--melissa-rose-bernardo.json#B",
     "king-kong-2018/guardian--adrian-horton.json#1/5 stars",
     "lend-me-a-tenor-2010/ew--tanner-stransky.json#B+",
     "les-miserables-2014/stagezine--david-nounou.json#A",
     "lysistrata-jones-2011/timeout--adam-feldman.json#3/5",
+    "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json#4/5 stars",
     "oh-hello-on-broadway-2016/ew--jesse-oxfeld.json#B",
     "orphans-2013/timeout--david-cote.json#5/5 stars",
     "patriots-2024/ew--kristen-baldwin.json#B+",
@@ -54,7 +51,7 @@
     "the-price-2017/guardian--jesse-green.json#2/5 stars",
     "the-producers-west-end-2025/broadwayworld--aliya-al-hassan.json#5/5",
     "the-real-thing-2014/ew--thom-geier.json#B+",
-    "the-scottsboro-boys-2010/timeout--david-cote.json#5/5",
+    "the-road-to-mecca-2012/timeout--adam-feldman.json#1/5",
     "the-wiz-2024/ew--lester-fabian-brathwaite.json#A",
     "vanya-and-sonia-and-masha-and-spike-2013/ew--melissa-rose-bernardo.json#B+",
     "walking-with-ghosts-2022/theater-life--paulanne-simmons.json#5/5 stars"

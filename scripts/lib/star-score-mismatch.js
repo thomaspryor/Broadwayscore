@@ -35,6 +35,19 @@ const { listShowDirs } = require('./list-show-dirs');
 // column, wrong DOM element) or the review is misattributed. 30 points ≈ 1.5 stars.
 const DEFAULT_THRESHOLD = 30;
 
+// A review whose originalScore was intentionally wiped (card #396 breadcrumb —
+// see review-write-guard.js CLEAR_BREADCRUMBS.originalScore) must never have
+// originalScore silently re-populated by a later recovery pass. Without this
+// check, recover-explicit-ratings.js's "missing originalScore" candidacy
+// filter (`if (data.originalScore) continue`) treats a cleared originalScore
+// (falsy) as "missing" and re-extracts the SAME wrong wp-api-title value,
+// regressing the fix the next time it runs — confirmed on 195 corpus files,
+// including 2 of the original 10 card #396 fixes (take-me-out-2022,
+// for-colored-girls...-2022), which is how this class of bug produced BRO-434.
+function isIntentionallyClearedRating(review) {
+  return !!(review && review.originalScoreCleared === true);
+}
+
 // Exclusion flags: reviews already suppressed from scoring/coverage shouldn't
 // alert. Mirrors the repo's editorial-exclusion set (t1-silent-gap.js,
 // merge-review-fields.js, validate-data.js) so junk / misattributed files —
@@ -209,6 +222,7 @@ function scanReviewTexts(rootDir, opts = {}) {
 module.exports = {
   DEFAULT_THRESHOLD,
   isExcludedReview,
+  isIntentionallyClearedRating,
   evaluateReview,
   reviewTimestamp,
   keyOf,
