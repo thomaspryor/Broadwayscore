@@ -1,22 +1,22 @@
 {
-  "updatedAt": "2026-09-11T15:27:29.652Z",
-  "processed": 55,
-  "failed": 195,
-  "successRate": "22.0%",
+  "updatedAt": "2026-09-11T15:31:35.562Z",
+  "processed": 58,
+  "failed": 242,
+  "successRate": "19.3%",
   "tierBreakdown": {
     "playwright": 30,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 3,
     "scrapingbee": 11,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 10
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-09-11T15:01:06.995Z",
+      "t": "2026-09-11T14:44:52.902Z",
       "event": "bb-session",
       "session": "caaf9015",
       "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
@@ -60,6 +60,12 @@
       "t": "2026-09-11T15:24:54.503Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-11T15:27:55.607Z",
+      "event": "bb-session",
+      "session": "78b8bcdb",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }
