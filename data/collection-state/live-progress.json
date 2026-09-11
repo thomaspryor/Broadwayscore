@@ -1,36 +1,20 @@
 {
-  "updatedAt": "2026-09-11T05:15:45.073Z",
-  "processed": 148,
-  "failed": 1947,
-  "successRate": "7.1%",
+  "updatedAt": "2026-09-11T10:21:08.141Z",
+  "processed": 207,
+  "failed": 2188,
+  "successRate": "8.6%",
   "tierBreakdown": {
-    "playwright": 82,
+    "playwright": 122,
     "amp": 0,
-    "browserbase": 25,
+    "browserbase": 27,
     "directCookies": 4,
-    "scrapingbee": 18,
-    "brightdata": 29,
+    "scrapingbee": 25,
+    "brightdata": 31,
     "archiveToday": 0,
-    "archive": 24
+    "archive": 35
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-09-10T23:12:25.051Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-10T23:14:18.448Z",
-      "event": "bb-session",
-      "session": "1fd9a42b",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
-    {
-      "t": "2026-09-10T23:14:19.129Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-09-11T00:11:19.055Z",
       "event": "bb-session",
@@ -124,6 +108,24 @@
       "t": "2026-09-11T05:12:04.032Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-11T09:25:10.271Z",
+      "event": "bb-session",
+      "session": "f27389ce",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/cinderella-theater-11"
+    },
+    {
+      "t": "2026-09-11T09:45:20.008Z",
+      "event": "bb-session",
+      "session": "19d51513",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-11T09:45:40.275Z",
+      "event": "bb-session",
+      "session": "76718c55",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
     }
   ]
 }
