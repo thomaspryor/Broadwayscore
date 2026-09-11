@@ -112,13 +112,39 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          URL=$(timeout 600 npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN)
-          status=$?
+          # BRO-451 what-else sweep (2026-09-11): mirrors the retry fix
+          # applied to vercel-deploy.yml's "Deploy to Production" step after
+          # a transient network write EPIPE mid-upload there. No job-level
+          # timeout-minutes exists on this job (see the Build step's comment
+          # above), so there's no ceiling to fit the retry worst-case into.
+          # Guarded `A && B || C` form is required under this step's
+          # `bash -e` — an unguarded `URL=$(...); status=$?` trips errexit
+          # and kills the script before status=$? runs (task #1911 pattern,
+          # see checkout-core-data/action.yml).
+          MAX_RETRIES=3
+          for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+            ATTEMPT_TIMEOUT=600
+            if [ "$ATTEMPT" -gt 1 ]; then
+              ATTEMPT_TIMEOUT=240
+            fi
+            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN) && status=0 || status=$?
+            if [ "$status" -eq 0 ]; then
+              break
+            fi
+            if [ "$status" -eq 124 ]; then
+              echo "::warning::vercel deploy timed out after ${ATTEMPT_TIMEOUT}s on attempt $ATTEMPT/$MAX_RETRIES (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::warning::vercel deploy failed (exit $status) on attempt $ATTEMPT/$MAX_RETRIES"
+            fi
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              sleep $(( 10 * ATTEMPT ))
+            fi
+          done
           if [ "$status" -ne 0 ]; then
             if [ "$status" -eq 124 ]; then
-              echo "::error::vercel deploy timed out after 10m (possible Vercel-side cancellation hang, see card #90)"
+              echo "::error::vercel deploy timed out on all $MAX_RETRIES attempts (possible Vercel-side cancellation hang, see card #90)"
             else
-              echo "::error::vercel deploy failed (exit $status)"
+              echo "::error::vercel deploy failed (exit $status) on all $MAX_RETRIES attempts"
             fi
             exit 1
           fi
