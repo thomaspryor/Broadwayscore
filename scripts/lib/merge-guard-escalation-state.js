@@ -28,7 +28,18 @@
 // not structurally prevented either) keeps whichever side's state is
 // fresher by max(lastBlockedAt, lastClearedAt) — mirroring
 // mergeAlertLedger's lastSeen tie-break, with ours winning an exact tie or
-// unparsable timestamps on both sides.
+// unparsable timestamps on both sides. Same accepted clock-trust model as
+// every other merge fn in this registry (all compare runner wall-clock
+// timestamps) — not a new risk class this file introduces.
+//
+// `base` (optional 3rd arg, supplied by push-via-git-api-merge.js on every
+// call) gets the same delete-aware treatment as mergeAlertLedger: no guard
+// script deletes its own key TODAY, but if one ever does (e.g. a guard is
+// retired/renamed), a naive 2-way union would resurrect the deleted key from
+// remote's stale copy forever, since nothing else would ever remove it
+// again. Restoring a remote-only key is skipped when that key was already
+// present in base — i.e. treated as an intentional local delete — same rule,
+// same reasoning as mergeAlertLedger.js.
 
 function freshnessOf(state) {
   if (!state || typeof state !== 'object') return null;
@@ -38,16 +49,24 @@ function freshnessOf(state) {
   return Math.max(a ?? -Infinity, b ?? -Infinity);
 }
 
-function mergeGuardEscalationState(local, remote) {
-  const localDoc = (local && typeof local === 'object') ? local : {};
-  const remoteDoc = (remote && typeof remote === 'object') ? remote : {};
+function mergeGuardEscalationState(local, remote, base) {
+  const localDoc = (local && typeof local === 'object' && !Array.isArray(local)) ? local : {};
+  const remoteDoc = (remote && typeof remote === 'object' && !Array.isArray(remote)) ? remote : {};
+  const baseDoc = (base && typeof base === 'object' && !Array.isArray(base)) ? base : null;
 
   const merged = { ...localDoc };
   let remoteOnly = 0;
+  let deletesHonored = 0;
   let conflictsResolvedToRemote = 0;
 
   for (const key of Object.keys(remoteDoc)) {
     if (!(key in merged)) {
+      if (baseDoc && key in baseDoc) {
+        // Present in base, present on remote, absent locally: WE deleted it
+        // — do not let remote's stale copy resurrect it.
+        deletesHonored++;
+        continue;
+      }
       merged[key] = remoteDoc[key];
       remoteOnly++;
       continue;
@@ -67,6 +86,7 @@ function mergeGuardEscalationState(local, remote) {
       remoteKeys: Object.keys(remoteDoc).length,
       mergedKeys: Object.keys(merged).length,
       remoteOnly,
+      deletesHonored,
       conflictsResolvedToRemote,
     },
   };

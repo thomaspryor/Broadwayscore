@@ -47,6 +47,25 @@ test('tolerates a missing or malformed doc on either side', () => {
   assert.deepEqual(mergeGuardEscalationState(null, null).merged, {});
   assert.deepEqual(Object.keys(mergeGuardEscalationState({ a: state() }, null).merged), ['a']);
   assert.deepEqual(Object.keys(mergeGuardEscalationState(null, { a: state() }).merged), ['a']);
+  assert.deepEqual(mergeGuardEscalationState([1, 2], null).merged, {});
+});
+
+test('a retired guard key deleted locally is NOT resurrected by remote\'s stale copy when base is supplied', () => {
+  const base = { 'retired-guard': state() };
+  const ours = {}; // guard script removed/retired, key deliberately dropped
+  const remote = { 'retired-guard': state() }; // remote hasn't caught up yet
+  const { merged, stats } = mergeGuardEscalationState(ours, remote, base);
+  assert.deepEqual(merged, {}, 'the deleted key must stay deleted, not come back from remote');
+  assert.equal(stats.deletesHonored, 1);
+  assert.equal(stats.remoteOnly, 0);
+});
+
+test('without a base argument, remote-only keys are always restored (old, more conservative behavior)', () => {
+  const ours = {};
+  const remote = { x: state() };
+  const { merged, stats } = mergeGuardEscalationState(ours, remote);
+  assert.deepEqual(Object.keys(merged), ['x']);
+  assert.equal(stats.remoteOnly, 1);
 });
 
 test('real-corpus sanity: merging the real 3-guard shape against a remote addition never loses existing keys', () => {
