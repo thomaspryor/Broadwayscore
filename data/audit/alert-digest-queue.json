@@ -413,5 +413,17 @@
       }
     ],
     "queuedAt": "2026-09-10T21:36:20.638Z"
+  },
+  {
+    "conditionKey": "on-monitor-launched-on-monitor-2026-09-10",
+    "title": "Opening-night monitor pass complete: day-of-the-hog-off-broadway-2026, lean-to-off-broadway-2026",
+    "description": "Pass 47, model opus, 2min, $1.01. Pass 47 complete, exited clean inside the 15-min budget.\n\n**No gap tonight — both shows are pre-review.** Nothing to fix.\n\n1. **Standing check (Kimberly Akimbo):** prod cs 83.61 vs pass-46 baseline 83.53 — no drop, no clobber regression. Show stays closed at parity.\n2. **Census (Google News RSS, both OB shows):** zero review items. Day of the Hog returns only off-domain noise; Lean-To returns only the BWW Sheffer *interview* plus reviews of five *different* 59E59 productions. Matches passes 43–46.\n3. **Prod state:** both slim files, `cov.state = no-census-yet`, liveCount 0. No `review-texts/` dir and no `_pending/` byline strand for either show — nothing stuck.\n4. **Resolved pass-46's open item:** the orchestrator run sitting `in_progress` since 20:07Z is **not** hung. `opening-night-orche",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-10T23:16:28.281Z"
   }
 ]
