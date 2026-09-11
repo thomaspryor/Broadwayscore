@@ -173,9 +173,12 @@ function main() {
     console.log(`    ${tier1FromDisk.join(', ')}`);
     console.log(`  (.env read: ${envPath || 'unknown path'})`);
     console.log('  Only scripts that load credentials through scripts/lib/load-env.js see');
-    console.log('  these — linear-client.js and the ~24 loadEnv() callers. The ~69 scripts');
-    console.log('  reading process.env directly (gather-reviews.js, opening-night-poller.js,');
-    console.log('  collect-review-texts.js, lib/scraper.js, …) will still fail on them.');
+    console.log('  these — linear-client.js, the ~24 loadEnv() callers, and (as of 2026-09-11)');
+    console.log('  lib/scraper.js itself for BRIGHTDATA_TOKEN/BRIGHTDATA_ZONE/SCRAPINGBEE_API_KEY');
+    console.log('  only, via a scoped readEnvKeys() top-up. Every OTHER secret, and any script');
+    console.log('  reading process.env directly for something scraper.js does not touch');
+    console.log('  (gather-reviews.js\'s OPENAI_API_KEY, opening-night-poller.js\'s RESEND_API_KEY,');
+    console.log('  collect-review-texts.js, …), will still fail on them.');
     console.log('  This does NOT verify a cloud sandbox: a real claude.ai/code session has');
     console.log('  no .env, so it would report these MISSING.');
     return 0;

@@ -33,6 +33,7 @@ const {
   hasCookiesForUrl,
 } = require('./cookie-loader');
 const { fetchWithCookiesPlain } = require('./fetch-plain');
+const { readEnvKeys } = require('./load-env');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
@@ -180,9 +181,18 @@ function setRegistryDomainAliases(aliases) {
   _registryDomainAliases = aliases;
 }
 
-const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
-const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+// .env top-up, scoped to exactly these 3 keys — NOT the mutating loadEnv(),
+// which would publish all ~75 .env keys process-wide. scraper.js is required
+// by ~90 scripts including ones claude-cli.js spawns as untrusted "implementer"
+// subprocesses with a 7-key stripped env specifically so Notion/Resend/Vercel
+// secrets never reach them (Codex P0 on commit fc4999cfc71, 2026-08-01) — a
+// mutating loadEnv() here would silently reopen that containment gap one hop
+// removed. SCRAPINGDOG_API_KEY is deliberately excluded: it lives only in GH
+// Actions secrets, never in local .env (see USE_SCRAPINGDOG comment below).
+const _envTopUp = readEnvKeys(['BRIGHTDATA_TOKEN', 'BRIGHTDATA_ZONE', 'SCRAPINGBEE_API_KEY']);
+const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN || _envTopUp.BRIGHTDATA_TOKEN;
+const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || _envTopUp.BRIGHTDATA_ZONE || 'web_unlocker2';
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY || _envTopUp.SCRAPINGBEE_API_KEY;
 
 // Scrapingdog — cheap tier inserted AHEAD of Bright Data. BD Web Unlocker is
 // ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit), dynamic
