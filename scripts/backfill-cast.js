@@ -21,6 +21,10 @@
 
 const fs = require('fs');
 const path = require('path');
+
+// Load .env if available (launchd/cron/worktree runs don't inherit a login shell)
+require('./lib/load-env').loadEnv();
+
 const { lookupIBDBCast, RATE_LIMIT_MS } = require('./lib/ibdb-cast');
 const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
 const { isBroadwayCategory } = require('./lib/venue-classification');

@@ -17,6 +17,10 @@
 
 const fs = require('fs');
 const path = require('path');
+
+// Load .env if available (launchd/cron/worktree runs don't inherit a login shell)
+require('./lib/load-env').loadEnv();
+
 const { lookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');

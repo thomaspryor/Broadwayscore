@@ -45,6 +45,10 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+
+// Load .env if available (launchd/cron/worktree runs don't inherit a login shell)
+require('./lib/load-env').loadEnv();
+
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { buildCensusFromArchives, sourceExtractors } = require('./lib/review-census');
