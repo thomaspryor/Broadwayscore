@@ -296,39 +296,6 @@ function extractByline(html) {
   // silently merging the new URL into the wrongProduction file.
   const showDir = path.join(__dirname, '..', 'data', 'review-texts', showId);
 
-  // Stale publishDate self-heal (BRO-462): this exact URL was just re-fetched
-  // and confirmed to be the show's own review page (title-matched for the
-  // score-only path above; wrong-show/wrong-production guards cover the
-  // full-text path downstream). If no fresh publishDate came out of that
-  // fetch, an OLD publishDate already on file may be a leftover from a
-  // since-corrected URL (a prior production's review page) — provably too
-  // early for this show's run. review-guards.js's explainExclusion() mirror
-  // doesn't model rebuild-all-reviews.js's date guard, so a stale date like
-  // this silently excludes the file from every future rebuild forever with
-  // no canonical predicate ever flagging it. Clear it here rather than
-  // leaving it for a human to notice the gap again.
-  if (!publishDate) {
-    const existingPath = findExistingReviewFile(showDir, outletId, critic, url);
-    if (existingPath) {
-      try {
-        const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
-        if (
-          existingData.publishDate &&
-          !existingData.allowEarlyDate &&
-          isStalePublishDate({ existingPublishDate: existingData.publishDate, freshPublishDate: null, show })
-        ) {
-          console.warn(`  ⚠️  Existing publishDate "${existingData.publishDate}" fails the date guard for this show's window and no fresh date was recovered — clearing stale value`);
-          if (!dryRun) {
-            existingData.publishDate = null;
-            existingData.stalePublishDateClearedAt = new Date().toISOString();
-            existingData.stalePublishDateClearedBy = 'ingest-review-from-url.js';
-            safeWriteReview(existingPath, existingData, { force: true });
-          }
-        }
-      } catch (e) { /* best-effort — never block the main ingest on this */ }
-    }
-  }
-
   const collision = detectIngestCollision({
     showDir,
     outletId,
@@ -346,6 +313,50 @@ function extractByline(html) {
     console.error(`   detail: ${JSON.stringify(collision.detail, null, 2)}`);
     console.error(`\nManual remediation required: rename or clear the existing file.`);
     process.exit(1);
+  }
+
+  // Stale publishDate self-heal (BRO-462): this exact URL was just re-fetched
+  // and confirmed to be the show's own review page (title-matched for the
+  // score-only path above; wrong-show/wrong-production guards cover the
+  // full-text path downstream), and the collision check above already passed
+  // — this ingest is going ahead, so it's safe to also correct the existing
+  // file's metadata. findExistingReviewFile returns { path, filename, data },
+  // not a path string.
+  //
+  // An OLD publishDate already on file may be a leftover from a since-
+  // corrected URL (a prior production's review page) — provably too early
+  // for this show's run. review-guards.js's explainExclusion() mirror doesn't
+  // model rebuild-all-reviews.js's date guard, so a stale date like this
+  // silently excludes the file from every future rebuild with no canonical
+  // predicate ever flagging it. Two cases:
+  //   - a fresh publishDate WAS recovered this run: correct the file directly
+  //     rather than relying on the normal merge below, which only fills BLANK
+  //     fields and would never overwrite a stale-but-truthy value (review-
+  //     file-writer.js _mergeIntoExisting's `!existing[key]` guard) — so a
+  //     successful re-scrape could never actually fix this on its own.
+  //   - no fresh date was recovered: clear the stale value rather than leave
+  //     a provably-wrong date in place for a human to rediscover the gap.
+  {
+    const existing = findExistingReviewFile(showDir, outletId, critic, url);
+    if (
+      existing &&
+      existing.data.publishDate &&
+      !existing.data.allowEarlyDate &&
+      isStalePublishDate({ existingPublishDate: existing.data.publishDate, show })
+    ) {
+      const correctedValue = publishDate || null;
+      console.warn(`  ⚠️  Existing publishDate "${existing.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
+      if (!dryRun) {
+        const updated = {
+          ...existing.data,
+          publishDate: correctedValue,
+          previousPublishDate: existing.data.publishDate,
+          stalePublishDateClearedAt: new Date().toISOString(),
+          stalePublishDateClearedBy: 'ingest-review-from-url.js',
+        };
+        safeWriteReview(existing.path, updated, { force: true });
+      }
+    }
   }
 
   // operatorTrust:false — a URL ingest (automated audit-aggregator-gap, or the

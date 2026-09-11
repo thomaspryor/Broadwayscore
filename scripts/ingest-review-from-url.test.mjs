@@ -17,20 +17,33 @@
  * forever, with no canonical predicate ever flagging the divergence.
  *
  * The fix: scripts/lib/stale-publish-date.js's isStalePublishDate(), wired
- * into scripts/ingest-review-from-url.js, detects exactly this shape (no
- * fresh publishDate recovered from the current fetch + the existing
- * publishDate would fail the show's date window) and clears the stale field
- * so the review falls back to its normal star-rating score.
+ * into scripts/ingest-review-from-url.js AFTER the existing collision check,
+ * detects an existing publishDate that fails the show's date window and
+ * either corrects it (a fresh date was recovered this run) or clears it (no
+ * fresh date recovered) so the review falls back to its normal score signal.
+ *
+ * The "integration" describe block below exercises the actual wiring, not
+ * just the predicate: a first version of this fix passed findExistingReview-
+ * File()'s return value (an { path, filename, data } object) straight to
+ * fs.readFileSync()/safeWriteReview(), which throws — silently swallowed by
+ * a catch block, so the self-heal never actually ran in production despite
+ * every predicate-level test passing (caught by adversarial review before
+ * merge, not by the original test suite).
  */
-import { test, describe } from 'node:test';
+import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { isStalePublishDate } = require('./lib/stale-publish-date.js');
 const { explainExclusion } = require('./lib/review-guards.js');
 const { evaluatePreWindowInclusion, earliestShowDate } = require('./lib/date-guard.js');
 const { parseDate } = require('./lib/date-utils.js');
+const { findExistingReviewFile } = require('./lib/review-normalization.js');
+const { safeWriteReview } = require('./lib/review-write-guard.js');
 
 const SHOW = {
   id: 'anansi-the-spider-west-end-2026',
@@ -74,28 +87,21 @@ describe('BRO-462: isStalePublishDate detects the exact shape that silently gapp
   test('stale 2023 date on a since-closed 2026 show is flagged stale', () => {
     const file = buildFile();
     assert.equal(
-      isStalePublishDate({ existingPublishDate: file.publishDate, freshPublishDate: null, show: SHOW }),
+      isStalePublishDate({ existingPublishDate: file.publishDate, show: SHOW }),
       true,
-    );
-  });
-
-  test('a fresh publishDate from the current fetch always wins — never flagged stale', () => {
-    assert.equal(
-      isStalePublishDate({ existingPublishDate: 'January 26th, 2023', freshPublishDate: '2026-08-19', show: SHOW }),
-      false,
     );
   });
 
   test('no existing publishDate — nothing to clear', () => {
     assert.equal(
-      isStalePublishDate({ existingPublishDate: null, freshPublishDate: null, show: SHOW }),
+      isStalePublishDate({ existingPublishDate: null, show: SHOW }),
       false,
     );
   });
 
   test('a plausible in-window date is never flagged stale', () => {
     assert.equal(
-      isStalePublishDate({ existingPublishDate: '2026-08-19', freshPublishDate: null, show: SHOW }),
+      isStalePublishDate({ existingPublishDate: '2026-08-19', show: SHOW }),
       false,
     );
   });
@@ -103,7 +109,7 @@ describe('BRO-462: isStalePublishDate detects the exact shape that silently gapp
   test('after the fix (publishDate cleared), the file is no longer stale', () => {
     const fixed = buildFile({ publishDate: null });
     assert.equal(
-      isStalePublishDate({ existingPublishDate: fixed.publishDate, freshPublishDate: null, show: SHOW }),
+      isStalePublishDate({ existingPublishDate: fixed.publishDate, show: SHOW }),
       false,
     );
   });
@@ -140,5 +146,60 @@ describe('BRO-462: the review-guards.js mirror does not model the real rebuild d
     // short-circuits the whole check, same as this assertion pins.
     assert.equal(!!fixed.publishDate, false);
     assert.equal(explainExclusion(fixed, SHOW, undefined), null);
+  });
+});
+
+describe('BRO-462: the actual self-heal wiring (findExistingReviewFile + safeWriteReview)', () => {
+  // Exercises the exact call shape scripts/ingest-review-from-url.js uses,
+  // against a real temp directory — findExistingReviewFile() returns
+  // { path, filename, data }, NOT a path string. A version of the wiring
+  // that passed the returned object straight to fs.readFileSync() would
+  // throw (silently swallowed by a catch), and every test above would still
+  // pass since none of them touch the real function.
+  let dir;
+  before(() => {
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-462-'));
+    fs.writeFileSync(
+      path.join(dir, 'thestage--anna-james.json'),
+      JSON.stringify(buildFile()),
+    );
+  });
+  after(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  test('findExistingReviewFile resolves the file by outlet+critic and exposes a real fs path', () => {
+    const existing = findExistingReviewFile(
+      dir, 'thestage', 'Anna James',
+      'https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london',
+    );
+    assert.ok(existing, 'should find the existing file');
+    assert.equal(existing.filename, 'thestage--anna-james.json');
+    assert.equal(typeof existing.path, 'string');
+    assert.ok(fs.existsSync(existing.path), 'existing.path must be a real, readable file path');
+    assert.equal(existing.data.publishDate, 'January 26th, 2023');
+  });
+
+  test('clearing via safeWriteReview(existing.path, ...) — the exact call the ingest script makes — actually lands on disk', () => {
+    const existing = findExistingReviewFile(
+      dir, 'thestage', 'Anna James',
+      'https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london',
+    );
+    assert.ok(
+      isStalePublishDate({ existingPublishDate: existing.data.publishDate, show: SHOW }),
+      'sanity: the fixture date must still be stale before the write',
+    );
+    const updated = {
+      ...existing.data,
+      publishDate: null,
+      previousPublishDate: existing.data.publishDate,
+      stalePublishDateClearedAt: new Date().toISOString(),
+      stalePublishDateClearedBy: 'ingest-review-from-url.js',
+    };
+    safeWriteReview(existing.path, updated, { force: true });
+
+    const onDisk = JSON.parse(fs.readFileSync(existing.path, 'utf8'));
+    assert.equal(onDisk.publishDate, null);
+    assert.equal(onDisk.previousPublishDate, 'January 26th, 2023');
+    assert.ok(onDisk.stalePublishDateClearedAt);
+    assert.equal(explainExclusion(onDisk, SHOW, existing.path), null);
   });
 });

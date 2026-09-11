@@ -13,10 +13,13 @@
  * rebuild silently excluded the file forever — a stale field neither ingest
  * path nor the guard mirror had a mechanism to notice or clear.
  *
- * Only meaningful when NO fresh publishDate was recovered from the current
- * fetch — a fresh date always wins via the normal merge path, this helper
- * exists for the "current fetch found nothing new, but what's already on
- * file is provably wrong" case.
+ * Judges the EXISTING date only — it does not know or care whether a fresh
+ * date was also recovered this run. That decision (correct with the fresh
+ * value vs. clear to null) belongs to the caller: the normal review-file-
+ * writer.js merge only fills BLANK fields (never overwrites a truthy
+ * existing value — see _mergeIntoExisting's `!existing[key]` guard), so a
+ * stale-but-truthy publishDate would otherwise survive a successful re-scrape
+ * forever even when a correct fresh date WAS recovered.
  */
 
 'use strict';
@@ -28,15 +31,11 @@ const { isLondonMarket } = require('./venue-classification');
 /**
  * @param {object} opts
  * @param {string|null|undefined} opts.existingPublishDate - publishDate currently on file
- * @param {string|null|undefined} opts.freshPublishDate - publishDate recovered from the
- *   current fetch, if any. A truthy value always short-circuits to false — the
- *   normal merge path handles genuine updates.
  * @param {object} opts.show - show record (previewDate/previewsStartDate/openingDate/
  *   category/priorRuns/tourLegs)
- * @returns {boolean} true when existingPublishDate should be cleared
+ * @returns {boolean} true when existingPublishDate is provably too early for this show
  */
-function isStalePublishDate({ existingPublishDate, freshPublishDate, show }) {
-  if (freshPublishDate) return false;
+function isStalePublishDate({ existingPublishDate, show }) {
   if (!existingPublishDate || !show) return false;
   const pubDate = parseDate(existingPublishDate);
   if (!pubDate || isNaN(pubDate.getTime())) return false;
