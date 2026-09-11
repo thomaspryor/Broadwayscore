@@ -37,7 +37,7 @@ const { hasExcerpt } = require('./lib/excerpt-fields');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { setExtractedScore } = require('./lib/score-routing');
-const { isIntentionallyClearedRating } = require('./lib/star-score-mismatch');
+const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 // Build showId → { title } map so isScoreable can activate the wrongShow
@@ -957,12 +957,11 @@ function findMissingRatings() {
           if (data.incompleteReason === 'scraper_garbage') continue;
           if (data.showNotMentioned && !hasExcerpt(data)) continue;
         }
-        if (data.originalScore) continue;
-        // originalScore was intentionally wiped (card #396 wrong-show star
-        // extraction breadcrumb) — a falsy originalScore here is a deliberate
-        // clear, not a genuine gap. Re-extracting would just re-grab the same
-        // wrong value from the same source (BRO-434: 195-file regression).
-        if (isIntentionallyClearedRating(data)) continue;
+        // Not just "originalScore is falsy": a review intentionally cleared
+        // (card #396 wrong-show star extraction breadcrumb) must not be
+        // treated as a genuine gap, or this re-extracts the same wrong value
+        // from the same source (BRO-434: 195-file regression).
+        if (!isMissingOriginalScore(data)) continue;
 
         const outletId = data.outletId || '';
         if (!RATED_OUTLETS.has(outletId)) continue;

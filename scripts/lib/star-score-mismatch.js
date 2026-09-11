@@ -29,23 +29,38 @@ const fs = require('fs');
 const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
 const { listShowDirs } = require('./list-show-dirs');
+const { isIntentionalClear } = require('./review-write-guard');
 
 // A gap this large between an explicit critic rating and the site's independent
 // read almost always means the rating was mis-extracted (wrong show in a combined
 // column, wrong DOM element) or the review is misattributed. 30 points ≈ 1.5 stars.
 const DEFAULT_THRESHOLD = 30;
 
-// A review whose originalScore was intentionally wiped (card #396 breadcrumb —
-// see review-write-guard.js CLEAR_BREADCRUMBS.originalScore) must never have
-// originalScore silently re-populated by a later recovery pass. Without this
-// check, recover-explicit-ratings.js's "missing originalScore" candidacy
-// filter (`if (data.originalScore) continue`) treats a cleared originalScore
-// (falsy) as "missing" and re-extracts the SAME wrong wp-api-title value,
-// regressing the fix the next time it runs — confirmed on 195 corpus files,
-// including 2 of the original 10 card #396 fixes (take-me-out-2022,
-// for-colored-girls...-2022), which is how this class of bug produced BRO-434.
+// A review whose originalScore was intentionally wiped (card #396 breadcrumb,
+// or a url-change-invariant clear) must never have originalScore silently
+// re-populated by a later recovery pass. Without this check,
+// recover-explicit-ratings.js's "missing originalScore" candidacy filter
+// (`if (data.originalScore) continue`) treats a cleared originalScore (falsy)
+// as "missing" and re-extracts the SAME wrong wp-api-title value, regressing
+// the fix the next time it runs — confirmed on 195 corpus files, including 2
+// of the original 10 card #396 fixes (take-me-out-2022, for-colored-girls...-
+// 2022), which is how this class of bug produced BRO-434.
+//
+// Delegates to review-write-guard.js's isIntentionalClear() — the canonical
+// registry (CLEAR_BREADCRUMBS.originalScore) — rather than re-testing
+// originalScoreCleared directly, so this predicate can never drift from the
+// writer's own definition of "intentionally cleared" as that registry grows.
 function isIntentionallyClearedRating(review) {
-  return !!(review && review.originalScoreCleared === true);
+  return !!review && isIntentionalClear('originalScore', review);
+}
+
+// The actual candidacy predicate scripts/recover-explicit-ratings.js's
+// findMissingRatings() calls — extracted so the BRO-434 regression (the
+// script re-extracting an intentionally-cleared rating) can be unit-tested
+// against the REAL guard instead of a re-implementation of it (see
+// scripts/audit-star-score-mismatch.test.mjs).
+function isMissingOriginalScore(review) {
+  return !(review && review.originalScore) && !isIntentionallyClearedRating(review);
 }
 
 // Exclusion flags: reviews already suppressed from scoring/coverage shouldn't
@@ -223,6 +238,7 @@ module.exports = {
   DEFAULT_THRESHOLD,
   isExcludedReview,
   isIntentionallyClearedRating,
+  isMissingOriginalScore,
   evaluateReview,
   reviewTimestamp,
   keyOf,

@@ -28,7 +28,7 @@ import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isIntentionallyClearedRating } = require('./lib/star-score-mismatch.js');
+const { isIntentionallyClearedRating, isMissingOriginalScore } = require('./lib/star-score-mismatch.js');
 
 const SCRIPT = path.join(import.meta.dirname, 'audit-star-score-mismatch.js');
 
@@ -165,9 +165,35 @@ test('a DIFFERENT bad rating in the same file re-alerts even after baselining th
   }
 });
 
-// --- Unit coverage for the predicate that fixes the BRO-434 regression ---
-// (scripts/recover-explicit-ratings.js's candidacy filter calls this exact
-// function; see the file header for the root-cause story.)
+// --- Unit coverage for the ACTUAL candidacy guard in
+// scripts/recover-explicit-ratings.js's findMissingRatings() ---
+//
+// findMissingRatings() has no require.main guard (main() runs unconditionally
+// on import) and its candidacy loop reads several CLI-arg/env-driven module
+// globals (REVIEW_DIR, RATED_OUTLETS, MARKET_FILTER, ...), so the loop itself
+// can't be require()'d in a test without side effects. The originalScore
+// gap-vs-cleared decision — the exact thing BRO-434 broke — is extracted into
+// isMissingOriginalScore() specifically so it CAN be required and tested
+// directly (rule: never re-implement the guard in a test). The call site is
+// `if (!isMissingOriginalScore(data)) continue;` in
+// scripts/recover-explicit-ratings.js's findMissingRatings().
+
+test('isMissingOriginalScore: true only for a genuine gap, false for both a present rating and an intentional clear', () => {
+  // The BRO-434 regression shape: cleared (originalScore falsy, but
+  // deliberately so) must NOT be treated as a recovery candidate.
+  assert.equal(isMissingOriginalScore({
+    originalScore: null,
+    originalScoreCleared: true,
+  }), false, 'an intentionally-cleared rating must never be re-recovered');
+
+  // A genuine gap — no rating was ever extracted, no clear breadcrumb — IS a
+  // candidate.
+  assert.equal(isMissingOriginalScore({ originalScore: null }), true);
+  assert.equal(isMissingOriginalScore({}), true);
+
+  // A present rating is never a candidate, cleared or not.
+  assert.equal(isMissingOriginalScore({ originalScore: '4/5 stars' }), false);
+});
 
 test('isIntentionallyClearedRating: true only when originalScoreCleared === true', () => {
   assert.equal(isIntentionallyClearedRating({ originalScoreCleared: true }), true);
