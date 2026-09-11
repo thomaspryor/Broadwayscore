@@ -22,6 +22,10 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+
+// Load .env if available (launchd/cron/worktree runs don't inherit a login shell)
+require('./lib/load-env').loadEnv();
+
 const { serpQuery } = require('./lib/url-discovery');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isLondonMarket } = require('./lib/venue-classification');
