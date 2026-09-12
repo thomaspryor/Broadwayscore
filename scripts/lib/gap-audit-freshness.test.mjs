@@ -88,6 +88,20 @@ test('malformed checkpoint timestamps read as never-audited, not NaN-skipped', (
   assert.equal(sorted[0].id, 'corrupt');
 });
 
+test('BRO-392: checkpointTs prefers checkedAt (scheduling clock) over at (trust clock) when both are present', () => {
+  assert.equal(
+    checkpointTs({ at: '2026-08-01T00:00:00.000Z', checkedAt: '2026-09-01T00:00:00.000Z' }),
+    new Date('2026-09-01T00:00:00.000Z').getTime(),
+  );
+});
+
+test('BRO-392: checkpointTs falls back to at when checkedAt is absent (legacy entries)', () => {
+  assert.equal(
+    checkpointTs({ at: '2026-08-01T00:00:00.000Z' }),
+    new Date('2026-08-01T00:00:00.000Z').getTime(),
+  );
+});
+
 test('invalid openingDate never enters the priority window', () => {
   assert.equal(inOpeningPriorityWindow({ id: 'x', status: 'open', openingDate: 'TBD' }, NOW), false);
   assert.equal(inOpeningPriorityWindow({ id: 'x', status: 'open', openingDate: null }, NOW), false);

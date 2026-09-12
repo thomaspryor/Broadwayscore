@@ -1606,6 +1606,16 @@ async function main(argv = process.argv.slice(2)) {
       const prevCensusAt = checkpoint[s.id] && checkpoint[s.id].serpCensusAt;
       checkpoint[s.id] = {
         at: new Date().toISOString(),
+        // checkedAt (BRO-392): scheduling-only "last audit ATTEMPT" clock,
+        // read by gap-audit-freshness.js's checkpointTs/compareAuditPriority.
+        // Stamped unconditionally, same as `at` — but unlike `at`, a refused
+        // (blast-radius) run's rollback never touches it (see
+        // applyCheckpointRollback in gap-audit-checkpoint.js), so a
+        // chronically-risky show still ages out of "most overdue" instead of
+        // dominating every subsequent hourly batch forever. `at` stays the
+        // TRUST timestamp newsletter-preflight.js's completeness gate reads,
+        // and rollback fully restores it (with gaps/uncollected) on refusal.
+        checkedAt: new Date().toISOString(),
         gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
         // uncollected: CURRENT-run reviews we literally do not have on disk
         // (aggregator lists a URL we never fetched, or cites an outlet with no
