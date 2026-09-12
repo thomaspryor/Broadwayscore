@@ -630,6 +630,23 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'commercial-data-write',
     verifiedBy: '2026-09-12 (BRO-2285): findWritingWorkflows() against real .github/workflows/*.yml — 2 CI writers (commercial-friday.yml, commercial-weekly.yml, both via scripts/reconcile-recoupment-claims.js), both declaring concurrency: {group: commercial-data-write, cancel-in-progress: false} — the multi-writer-but-shared-group escape hatch this module\'s checkEntry() exists for (same shape already accepted for commercial-pending-review.json\'s apiFallbackMerge entry above, which lists all 5 workflows sharing this exact group). RESIDUAL RISK (same class as audit/commercial-data-history.json above): `node scripts/reconcile-recoupment-claims.js` can also be run locally, and the concurrency group only serializes CI against CI. Accepted on the same grounds — reconcile-recoupment-claims.js regenerates this array from commercial.json\'s current recouped-claim state each run (scripts/reconcile-recoupment-claims.js:373), so a clobbered local run is regenerated fresh next time, not permanently lost.',
   },
+  // BRO-2285 /what-else follow-up: scripts/audit-push-retry-budgets.js (run
+  // post-fix) showed the two entries above were STILL not enough —
+  // commercial-weekly.yml's "Commit applied data + audit" step bundles a
+  // THIRD file, data/audit/commercial-data-audit.json, into the same
+  // git-add-existing.sh call, and push-with-retry.sh's disqualifier is an
+  // all-or-nothing check on the WHOLE staged diff: one unregistered file in
+  // the same commit still disqualifies the other two from the API fallback.
+  // Registering it closes the gap the fix would otherwise have silently left
+  // open until the next chronic-staleness cycle.
+  {
+    file: 'audit/commercial-data-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-12 (BRO-2285 what-else follow-up), corrected 2026-09-12 after a follow-up codex review caught the invocation count wrong the first pass: findWritingWorkflows() against real .github/workflows/*.yml — 2 CI WORKFLOWS write this path (commercial-weekly.yml, update-commercial.yml), both declaring concurrency: {group: commercial-data-write, cancel-in-progress: false} — same multi-writer-but-shared-group escape hatch as recoupment-calibration-anchors.json above. Within commercial-weekly.yml specifically there are 3 sequential steps in the SAME auto-apply job invoking `node scripts/audit-commercial-data.js` (flagless, `--strict`, `--write-history`) plus update-commercial.yml\'s flagless call — 4 invocations total, not 2, but all 4 reach the same unconditional `fs.writeFileSync(OUTPUT_FILE, ...)` (scripts/audit-commercial-data.js:1184) and the 3 same-job steps cannot race each other (sequential, not parallel), so the workflow-level single-group claim still holds. RESIDUAL RISK (same class as the two entries above): the CLI writer can also be run locally. Accepted on the same grounds — OUTPUT_FILE is a full snapshot regenerated fresh from commercial.json\'s current state on every invocation, not appended/accumulated state.',
+  },
   // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
   // — filename is date-stamped, and BOTH places that check apiFallbackSafe
   // membership (push-with-retry.sh's inline disqualifier and audit-push-
