@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-12T12:44:44.866Z",
-  "processed": 34,
-  "failed": 86,
-  "successRate": "28.3%",
+  "updatedAt": "2026-09-12T12:49:11.354Z",
+  "processed": 38,
+  "failed": 112,
+  "successRate": "25.3%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 22,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 3,
     "scrapingbee": 5,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 7
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-12T12:29:40.006Z",
@@ -25,6 +25,12 @@
       "t": "2026-09-12T12:29:41.014Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-12T12:48:12.263Z",
+      "event": "bb-session",
+      "session": "dcece4f6",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
     }
   ]
 }
