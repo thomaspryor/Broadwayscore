@@ -86,11 +86,16 @@ jobs:
           # was overrunning this job's 60-min timeout weekly, and a
           # timeout-killed job reports `cancelled` (notify-failure's
           # `if: failure()` never fires), so the staleness went unnoticed for
-          # weeks. --time-budget-min=45 leaves ~15min for checkout/setup/
-          # Playwright install and the two commit steps below; the job timeout
-          # is now a backstop, not the cap. Progress checkpoints after every
-          # show, so stopping early is lossless.
-          ARGS="--max-per-run=30 --time-budget-min=45"
+          # weeks. Measured overhead: checkout+setup+Playwright install take
+          # ~2min (run 34716206607), so --time-budget-min=40 leaves ~18min of
+          # the 60min job timeout for that overhead, a slow tail show
+          # overrunning MIN_REMAINING_MS_TO_START, and the two commit steps
+          # below (up to 10min each via PUSH_DEADLINE_SEC) — the job timeout
+          # is now a backstop, not the cap. A second-opinion review (BRO-2285)
+          # found the original 45min too tight against that same math; 40min
+          # is the corrected value. Progress checkpoints after every show, so
+          # stopping early loses at most the in-flight show.
+          ARGS="--max-per-run=30 --time-budget-min=40"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
