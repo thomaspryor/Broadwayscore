@@ -390,31 +390,6 @@
     "queuedAt": "2026-09-10T21:31:26.728Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 10 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34531993666",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34531993666)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34530222324)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "10"
-      }
-    ],
-    "queuedAt": "2026-09-10T21:36:20.638Z"
-  },
-  {
     "conditionKey": "on-monitor-launched-on-monitor-2026-09-10",
     "title": "Opening-night monitor pass complete: day-of-the-hog-off-broadway-2026, lean-to-off-broadway-2026",
     "description": "Pass 47, model opus, 2min, $1.01. Pass 47 complete, exited clean inside the 15-min budget.\n\n**No gap tonight — both shows are pre-review.** Nothing to fix.\n\n1. **Standing check (Kimberly Akimbo):** prod cs 83.61 vs pass-46 baseline 83.53 — no drop, no clobber regression. Show stays closed at parity.\n2. **Census (Google News RSS, both OB shows):** zero review items. Day of the Hog returns only off-domain noise; Lean-To returns only the BWW Sheffer *interview* plus reviews of five *different* 59E59 productions. Matches passes 43–46.\n3. **Prod state:** both slim files, `cov.state = no-census-yet`, liveCount 0. No `review-texts/` dir and no `_pending/` byline strand for either show — nothing stuck.\n4. **Resolved pass-46's open item:** the orchestrator run sitting `in_progress` since 20:07Z is **not** hung. `opening-night-orche",
@@ -569,5 +544,30 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-11T21:24:26.814Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 23 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34713658745",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34713658745)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34636725678)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "23"
+      }
+    ],
+    "queuedAt": "2026-09-12T19:25:34.018Z"
   }
 ]
