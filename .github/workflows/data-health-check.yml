@@ -603,6 +603,19 @@ jobs:
         env:
           PUSH_DEADLINE_SEC: '900'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          # EXPERIMENTAL, OPT-IN ONLY (BRO-2233/BRO-2951 Phase 2) — do NOT
+          # copy this into a new workflow step without reading
+          # scripts/lib/push-via-git-api-rest.js's header first. This step
+          # was failing nearly every day (4/4 git-push attempts timing out
+          # at the 90s cap under main's commit contention, confirmed live
+          # run 34690587066) while a diagnostic REST write from the same
+          # actor in the same job completed in ~400ms — the fallback below
+          # now lands via GitHub's REST Git Data API instead of `git push`
+          # for exactly this step. Every other push-with-retry.sh caller
+          # (~150+) is unaffected: this variable is opt-in and unset
+          # everywhere else. Kill switch: delete this line, falls back to
+          # today's exact git-push behavior with zero code change.
+          PUSH_API_REST_REF_UPDATE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -651,6 +664,10 @@ jobs:
         env:
           PUSH_DEADLINE_SEC: '900'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          # EXPERIMENTAL, OPT-IN ONLY (BRO-2233/BRO-2951 Phase 2) — see the
+          # matching comment on "Commit digest snapshot" above for the full
+          # rationale. Kill switch: delete this line.
+          PUSH_API_REST_REF_UPDATE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

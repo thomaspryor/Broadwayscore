@@ -105,6 +105,35 @@ REMOTE="${PUSH_API_REMOTE:-origin}"
 GIT_NET_TIMEOUT_SEC=${GIT_NET_TIMEOUT_SEC:-90}
 GIT_LOW_SPEED_TIME=${GIT_LOW_SPEED_TIME:-45}
 
+# BRO-2233/BRO-2951 Phase 2: opt-in REST ref-update path. The `git push`
+# ref update above times out at GIT_NET_TIMEOUT_SEC on EVERY attempt under
+# this repo's main-branch contention (confirmed live, data-health-check.yml
+# run 34690587066: 4/4 attempts, rc=124, 0 lost ref races) while a
+# diagnostic REST blob-write from the same actor in the same job completes
+# in ~400ms (github-rest-write-probe.js) — the bottleneck is receive-pack
+# itself, not GitHub API throttling. scripts/lib/push-via-git-api-rest.js
+# lands the SAME commit via GitHub's Git Data API (blob -> tree -> commit
+# -> ref PATCH) instead of a git-push transport, so the ref update never
+# touches receive-pack.
+#
+# OFF BY DEFAULT, deliberately NOT gated on remote/token alone (two
+# plan-review rounds both flagged a default-on rollout across
+# push-with-retry.sh's ~155 callers as unsafe with zero canary). Engages
+# ONLY when the CALLER explicitly sets PUSH_API_REST_REF_UPDATE=1 in its
+# own env: block. As of this change that is exactly 2 steps in one
+# workflow — data-health-check.yml's "Commit digest snapshot" and "Commit
+# health check audit snapshots" (both apiFallbackSafe, single-writer,
+# verified via core-data-merge-registry.js). Its THIRD commit step
+# ("Commit health check + triage data") is deliberately NOT opted in: it
+# stages 4 genuinely multi-writer, unregistered paths and is already
+# structurally disqualified from ANY Git Data API fallback (old or new) —
+# see that step's own comment in data-health-check.yml. Fixing that step
+# needs apiFallbackMerge registration + real reconciliation for those 4
+# files, a separate problem tracked independently. Every OTHER
+# push-with-retry.sh caller is completely unaffected by this change —
+# same behavior as before, since none of them set this variable.
+PUSH_API_REST_REF_UPDATE_EXPERIMENTAL="${PUSH_API_REST_REF_UPDATE:-0}"
+
 # BRO-2951: escalating backoff for a TIMEOUT-classified push failure only
 # (the ref-race branch below keeps its short flat jitter — a lost
 # compare-and-swap means the remote genuinely just moved, and retrying fast
@@ -262,6 +291,39 @@ _github_repo_slug() {
   github_repo_slug_from_url "$url"
 }
 
+# Resolve the REST ref-update opt-in ONCE, up front — every retry attempt
+# and the one-time blob-upload phase below both need REST_SLUG/REST_TOKEN,
+# and re-resolving per attempt would waste a git-config read for no benefit
+# (neither can change mid-invocation).
+USE_REST_REF_UPDATE=false
+REST_SLUG=""
+REST_TOKEN=""
+# Test-only seam: tests/unit/push-via-git-api-rest-integration.test.mjs
+# points this at a fake module (real git plumbing standing in for GitHub's
+# object store, no live network) to exercise the bash<->node wiring
+# end-to-end. Never overridden outside tests.
+REST_MODULE_PATH="${PUSH_API_REST_MODULE_PATH:-$SCRIPT_DIR/push-via-git-api-rest.js}"
+if [ "$PUSH_API_REST_REF_UPDATE_EXPERIMENTAL" = "1" ]; then
+  # PUSH_API_REST_REPO_SLUG: same test-only seam as REST_MODULE_PATH above —
+  # lets the integration fixture use a real local bare repo (not an actual
+  # github.com URL) while still exercising the REST branch. Unset in
+  # production, where _github_repo_slug's real remote-URL parse is used.
+  REST_SLUG="${PUSH_API_REST_REPO_SLUG:-}"
+  if [ -z "$REST_SLUG" ]; then
+    REST_SLUG="$(_github_repo_slug || true)"
+  fi
+  if [ -n "$REST_SLUG" ]; then
+    REST_TOKEN="$(_resolve_github_token || true)"
+    if [ -n "$REST_TOKEN" ]; then
+      USE_REST_REF_UPDATE=true
+    else
+      echo "::warning::push-via-git-api: PUSH_API_REST_REF_UPDATE=1 set but no token resolved from GH_TOKEN, GITHUB_TOKEN, or the checkout extraheader — falling back to the git-push path for this run" >&2
+    fi
+  else
+    echo "::warning::push-via-git-api: PUSH_API_REST_REF_UPDATE=1 set but remote is not github.com — falling back to the git-push path for this run" >&2
+  fi
+fi
+
 # Fires at most ONCE per script invocation — a diagnostic that ran on every
 # retry would itself add API writes to a repo we may already be throttled on.
 # A branch name is caller-supplied and ends up inside a JSON-shaped log
@@ -378,6 +440,26 @@ if [ ${#CHANGED_STATUS[@]} -eq 0 ]; then
   exit 1
 fi
 
+# ship-check finding: REST_BLOB_CACHE/MERGE_BLOB_CACHE use TAB/newline as
+# field separators (path<TAB>sha), looked up via awk — unlike the
+# git-plumbing path, which passes paths through git plumbing byte-for-byte
+# with no delimiter-based parsing. A legal git path containing a literal
+# tab or newline would silently corrupt that lookup (wrong/no match). Fail
+# closed rather than risk a mismatched cache hit; this repo's own paths
+# never contain either character, so this is a defensive assertion, not a
+# live case.
+if [ "$USE_REST_REF_UPDATE" = "true" ]; then
+  for entry in "${CHANGED_STATUS[@]}"; do
+    _rest_path_check="${entry#* }"
+    case "$_rest_path_check" in
+      *$'\t'*|*$'\n'*)
+        echo "::error::push-via-git-api: path '$_rest_path_check' contains a tab or newline — the REST path's cache lookups cannot safely key on it, refusing rather than risking a corrupted match" >&2
+        exit 1
+        ;;
+    esac
+  done
+fi
+
 COMMIT_MSG="$(git log -1 --format=%B "$HEAD_SHA")"
 COMMIT_COUNT="$(git rev-list --count "${BASE_SHA}..${HEAD_SHA}")"
 if [ "$COMMIT_COUNT" -gt 1 ]; then
@@ -439,6 +521,112 @@ is_merge_path() {
   return 1
 }
 
+# --- BRO-2233/BRO-2951 Phase 2: REST ref-update helpers ---------------------
+# Only exercised when USE_REST_REF_UPDATE=true (see the opt-in resolution
+# near the top of this file) — a dead branch for every other caller.
+
+# _rest_json_get <json> <field> -> the field's value as a bare string, or
+# empty if absent/null/unparseable. Reads the small, flat JSON objects
+# push-via-git-api-rest.js's CLI prints (ok/outcome/sha/reason/retryAfter)
+# without a fragile hand-rolled bash/awk JSON parse.
+_rest_json_get() {
+  node -e '
+    let d = {};
+    try { d = JSON.parse(process.argv[1] || "{}"); } catch { d = {}; }
+    const v = d[process.argv[2]];
+    process.stdout.write(v === undefined || v === null ? "" : String(v));
+  ' "$1" "$2"
+}
+
+# One-time, pre-loop upload of every non-merge-path blob this push touches.
+# Content is invocation-invariant for these paths — CHANGED_STATUS is
+# snapshotted once at the top of this script and git ls-tree at HEAD_SHA
+# never changes mid-invocation — so uploading once and reusing the
+# resulting REST blob sha across every retry attempt is correct, not an
+# optimization being gambled on (this was the first plan-review round's P0:
+# the first draft re-uploaded every blob on every retry, 15 files x 6
+# retries = 90 content-mutating calls for the real "Commit health check
+# audit snapshots" step, exactly the shape that trips secondary rate
+# limiting). apiFallbackMerge paths are the deliberate exception: their
+# content is recomputed fresh each attempt (merged against whatever the
+# current remote tip is that attempt, via push-via-git-api-merge.js,
+# unchanged from the git-plumbing path below), so THEIR blob upload stays
+# inside the retry loop, not here.
+#
+# Writes "path<TAB>rest-blob-sha" lines to REST_BLOB_CACHE. A failure here
+# aborts the whole script (exit 1) rather than falling through to the
+# git-push path mid-invocation — half-REST, half-git-push is not a state
+# this script reconciles.
+REST_BLOB_CACHE=""
+upload_non_merge_blobs_once() {
+  REST_BLOB_CACHE="$(mktemp)"
+  local entry op path lstree_line blob_sha content_file attempt result ok outcome rest_sha
+  for entry in "${CHANGED_STATUS[@]}"; do
+    op="${entry%% *}"
+    path="${entry#* }"
+    [ "$op" = "D" ] && continue
+    is_merge_path "$path" && continue
+
+    lstree_line="$(git ls-tree "$HEAD_SHA" -- "$path")"
+    if [ -z "$lstree_line" ]; then
+      echo "::error::push-via-git-api: '$path' not found in HEAD's tree (REST blob upload phase)" >&2
+      return 1
+    fi
+    blob_sha="$(printf '%s' "$lstree_line" | awk '{print $3}')"
+
+    content_file="$(mktemp)"
+    git cat-file blob "$blob_sha" | base64 > "$content_file"
+
+    ok=false
+    for attempt in 1 2 3 4 5; do
+      result="$(GH_TOKEN="$REST_TOKEN" _timeout 20 node "$REST_MODULE_PATH" create-blob "$content_file" "$REST_SLUG" 2>/dev/null || true)"
+      [ -z "$result" ] && result='{"outcome":"timeout","reason":"CLI produced no output within its timeout"}'
+      ok="$(_rest_json_get "$result" ok)"
+      if [ "$ok" = "true" ]; then
+        rest_sha="$(_rest_json_get "$result" sha)"
+        printf '%s\t%s\n' "$path" "$rest_sha" >> "$REST_BLOB_CACHE"
+        break
+      fi
+      outcome="$(_rest_json_get "$result" outcome)"
+      if [ "$outcome" = "fatal" ] || [ "$attempt" = "5" ]; then
+        echo "::error::push-via-git-api: REST blob upload failed for '$path' after $attempt attempt(s), outcome=$outcome: $(_rest_json_get "$result" reason)" >&2
+        rm -f "$content_file"
+        return 1
+      fi
+      # ship-check finding: a throttled outcome here used to get the SAME
+      # flat 2/4/6s backoff as any other retryable failure, ignoring
+      # retryAfter entirely — asymmetric with how the main retry loop
+      # treats throttling below (which honors retryAfter, capped). This is
+      # a single small batch of blob creates (not the repeated churn the
+      # main loop absorbs), so a real secondary-rate-limit hit here should
+      # back off by what GitHub actually asked for, not a fixed guess.
+      if [ "$outcome" = "throttled" ]; then
+        _blob_retry_after="$(_rest_json_get "$result" retryAfter)"
+        if ! [[ "$_blob_retry_after" =~ ^[0-9]+$ ]] || [ "$_blob_retry_after" -gt 60 ]; then
+          _blob_retry_after=15
+        fi
+        [ "$_blob_retry_after" -lt 1 ] && _blob_retry_after=1
+        sleep "$_blob_retry_after"
+      else
+        sleep $((2 * attempt))
+      fi
+    done
+    rm -f "$content_file"
+    if [ "$ok" != "true" ]; then
+      return 1
+    fi
+  done
+  return 0
+}
+
+# _rest_blob_for <path> -> the cached REST blob sha for a non-merge path
+# uploaded above. Empty (and non-zero rc) if not found — callers only ask
+# for add/modify, non-merge paths, all of which upload_non_merge_blobs_once
+# guarantees a row for or the script has already exited.
+_rest_blob_for() {
+  awk -F'\t' -v p="$1" '$1 == p { print $2; found=1 } END { if (!found) exit 1 }' "$REST_BLOB_CACHE"
+}
+
 # BRO-2413 round-2 (Codex adversarial ship-check P0 finding): reads
 # <commit>:<path> into <outfile>, distinguishing "path genuinely does not
 # exist in <commit>'s tree" (a real, expected case the merge functions
@@ -486,6 +674,24 @@ read_blob_or_absent() {
 FAIL_TIMEOUT=0    # rc=124/137, the timeout wrapper killed the push
 FAIL_RACE=0       # the race grep matched: our compare-and-swap lost
 FAIL_OTHER=0      # tip unresolved / tip fetch failed — neither of the above
+# REST-only bucket (BRO-2233/BRO-2951 Phase 2). Deliberately its OWN
+# counter, not folded into FAIL_TIMEOUT or FAIL_RACE: a 403/429 throttle
+# response is a real HTTP answer (unlike a timeout, which never gets one)
+# telling us to slow down, not that the ref moved (unlike a race). The
+# design review for this change flagged that mapping it into either
+# existing bucket would corrupt the exact discriminator BRO-2951 exists to
+# sharpen — timeout means "receive-pack itself is the bottleneck", throttled
+# means "GitHub is rate-limiting this actor", and conflating them would
+# misdiagnose the next incident. Stays 0 for every non-REST invocation.
+FAIL_THROTTLED=0
+
+# One-time REST blob upload phase (see upload_non_merge_blobs_once's own
+# header) — runs ONCE before any retry, never inside the loop below.
+if [ "$USE_REST_REF_UPDATE" = "true" ]; then
+  if ! upload_non_merge_blobs_once; then
+    exit 1
+  fi
+fi
 
 for i in $(seq 1 "$MAX_RETRIES"); do
   CURRENT_TIP="$(_git_net ls-remote "$REMOTE" "refs/heads/$BRANCH" 2>/dev/null | awk '{print $1}')"
@@ -543,6 +749,14 @@ for i in $(seq 1 "$MAX_RETRIES"); do
 
   TMP_INDEX="$(mktemp)"
   GIT_INDEX_FILE="$TMP_INDEX" git read-tree "$CURRENT_TIP"
+
+  # Fresh every attempt (REST mode only) — apiFallbackMerge content
+  # legitimately differs per attempt (merged against whatever CURRENT_TIP
+  # is this time), so unlike REST_BLOB_CACHE above this is never reused
+  # across attempts. Populated below wherever merged_blob_sha is minted.
+  if [ "$USE_REST_REF_UPDATE" = "true" ]; then
+    MERGE_BLOB_CACHE="$(mktemp)"
+  fi
 
   build_ok=true
   for entry in "${CHANGED_STATUS[@]}"; do
@@ -620,6 +834,9 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         if node "$SCRIPT_DIR/push-via-git-api-merge.js" "$path" "$OURS_TMP" "$REMOTE_TMP" "$BASE_TMP" > "$MERGED_TMP" 2>"$MERGE_STDERR_TMP"; then
           cat "$MERGE_STDERR_TMP" >&2
           merged_blob_sha="$(git hash-object -w "$MERGED_TMP")"
+          if [ "$USE_REST_REF_UPDATE" = "true" ]; then
+            printf '%s\t%s\t%s\n' "$path" "$merged_blob_sha" "$mode" >> "$MERGE_BLOB_CACHE"
+          fi
           rm -f "$REMOTE_TMP" "$OURS_TMP" "$BASE_TMP" "$MERGED_TMP" "$MERGE_STDERR_TMP"
           GIT_INDEX_FILE="$TMP_INDEX" git update-index --add --cacheinfo "$mode,$merged_blob_sha,$path"
         else
@@ -669,6 +886,159 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     echo "  push-via-git-api: our overlay applied to $CURRENT_TIP yields that same tree, so our content is ALREADY on ${BRANCH} (attempt $i) — reporting the existing commit instead of minting an empty one" >&2
     echo "$CURRENT_TIP"
     exit 0
+  fi
+
+  if [ "$USE_REST_REF_UPDATE" = "true" ]; then
+    # Materialize NEW_TREE (already built above via pure local git plumbing
+    # — free, no network) on GitHub's server via the REST Git Data API,
+    # instead of `git commit-tree` + `git push`. Non-merge blobs were
+    # already uploaded once before the retry loop; only merge-path blobs
+    # (this attempt's freshly-merged content) need uploading now.
+    REST_ENTRIES_FILE="$(mktemp)"
+    printf '[' > "$REST_ENTRIES_FILE"
+    _rest_entry_sep=""
+    _rest_build_ok=true
+    for entry in "${CHANGED_STATUS[@]}"; do
+      op="${entry%% *}"
+      path="${entry#* }"
+      if [ "$op" = "D" ]; then
+        printf '%s{"path":%s,"sha":null}' "$_rest_entry_sep" "$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$path")" >> "$REST_ENTRIES_FILE"
+        _rest_entry_sep=","
+        continue
+      fi
+      if is_merge_path "$path"; then
+        _merge_row="$(awk -F'\t' -v p="$path" '$1 == p { print; found=1 } END { if (!found) exit 1 }' "$MERGE_BLOB_CACHE")"
+        if [ -z "$_merge_row" ]; then
+          echo "::error::push-via-git-api: no cached merge blob for apiFallbackMerge path '$path' (attempt $i) — internal inconsistency between the merge build above and the REST entry build" >&2
+          _rest_build_ok=false
+          break
+        fi
+        _merge_blob_sha="$(printf '%s' "$_merge_row" | cut -f2)"
+        _merge_mode="$(printf '%s' "$_merge_row" | cut -f3)"
+        _merge_content_file="$(mktemp)"
+        git cat-file blob "$_merge_blob_sha" | base64 > "$_merge_content_file"
+        _merge_upload_ok=false
+        for _merge_attempt in 1 2 3; do
+          _merge_result="$(GH_TOKEN="$REST_TOKEN" _timeout 20 node "$REST_MODULE_PATH" create-blob "$_merge_content_file" "$REST_SLUG" 2>/dev/null || true)"
+          [ -z "$_merge_result" ] && _merge_result='{"outcome":"timeout","reason":"CLI produced no output within its timeout"}'
+          if [ "$(_rest_json_get "$_merge_result" ok)" = "true" ]; then
+            _merge_rest_sha="$(_rest_json_get "$_merge_result" sha)"
+            _merge_upload_ok=true
+            break
+          fi
+          _merge_outcome="$(_rest_json_get "$_merge_result" outcome)"
+          [ "$_merge_outcome" = "fatal" ] || [ "$_merge_attempt" = "3" ] && break
+          # Same ship-check fix as upload_non_merge_blobs_once above: honor
+          # retryAfter (capped) for a throttled outcome instead of a flat
+          # guessed backoff.
+          if [ "$_merge_outcome" = "throttled" ]; then
+            _merge_retry_after="$(_rest_json_get "$_merge_result" retryAfter)"
+            if ! [[ "$_merge_retry_after" =~ ^[0-9]+$ ]] || [ "$_merge_retry_after" -gt 60 ]; then
+              _merge_retry_after=15
+            fi
+            [ "$_merge_retry_after" -lt 1 ] && _merge_retry_after=1
+            sleep "$_merge_retry_after"
+          else
+            sleep $((2 * _merge_attempt))
+          fi
+        done
+        rm -f "$_merge_content_file"
+        if [ "$_merge_upload_ok" != "true" ]; then
+          echo "::error::push-via-git-api: REST blob upload failed for apiFallbackMerge path '$path' (attempt $i): $(_rest_json_get "$_merge_result" reason)" >&2
+          _rest_build_ok=false
+          break
+        fi
+        printf '%s{"path":%s,"mode":"%s","sha":%s}' "$_rest_entry_sep" \
+          "$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$path")" "$_merge_mode" \
+          "$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$_merge_rest_sha")" >> "$REST_ENTRIES_FILE"
+        _rest_entry_sep=","
+      else
+        lstree_line="$(git ls-tree "$HEAD_SHA" -- "$path")"
+        mode="$(printf '%s' "$lstree_line" | cut -d' ' -f1)"
+        if ! _cached_sha="$(_rest_blob_for "$path")" || [ -z "$_cached_sha" ]; then
+          echo "::error::push-via-git-api: no cached REST blob for '$path' (attempt $i) — internal inconsistency between the one-time upload phase and the REST entry build" >&2
+          _rest_build_ok=false
+          break
+        fi
+        printf '%s{"path":%s,"mode":"%s","sha":%s}' "$_rest_entry_sep" \
+          "$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$path")" "$mode" \
+          "$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$_cached_sha")" >> "$REST_ENTRIES_FILE"
+        _rest_entry_sep=","
+      fi
+    done
+    printf ']' >> "$REST_ENTRIES_FILE"
+
+    if [ "$_rest_build_ok" != "true" ]; then
+      rm -f "$REST_ENTRIES_FILE"
+      exit 1
+    fi
+
+    REST_REQUEST_FILE="$(mktemp)"
+    node -e '
+      const fs = require("fs");
+      const entries = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+      const req = {
+        repoSlug: process.argv[2],
+        branch: process.argv[3],
+        parentSha: process.argv[4],
+        baseTreeSha: process.argv[5],
+        expectedTreeSha: process.argv[6],
+        message: process.argv[7],
+        entries,
+      };
+      fs.writeFileSync(process.argv[8], JSON.stringify(req));
+    ' "$REST_ENTRIES_FILE" "$REST_SLUG" "$BRANCH" "$CURRENT_TIP" "$CURRENT_TIP_TREE" "$NEW_TREE" "$COMMIT_MSG" "$REST_REQUEST_FILE"
+    rm -f "$REST_ENTRIES_FILE"
+
+    push_start=$SECONDS
+    REST_RESULT="$(GH_TOKEN="$REST_TOKEN" _timeout 60 node "$REST_MODULE_PATH" attempt-push "$REST_REQUEST_FILE" 2>/dev/null || true)"
+    rm -f "$REST_REQUEST_FILE"
+    [ -z "$REST_RESULT" ] && REST_RESULT='{"outcome":"timeout","reason":"CLI produced no output within its timeout"}'
+    REST_OUTCOME="$(_rest_json_get "$REST_RESULT" outcome)"
+
+    case "$REST_OUTCOME" in
+      success)
+        REST_SHA="$(_rest_json_get "$REST_RESULT" sha)"
+        echo "  push-via-git-api: push-api-probe ref_update {\"ok\":true,\"sec\":$((SECONDS - push_start)),\"attempt\":$i,\"branch\":\"$(_json_safe "$BRANCH")\",\"path\":\"rest\"}" >&2 || true
+        echo "$REST_SHA"
+        exit 0
+        ;;
+      race)
+        echo "  push-via-git-api: ref moved during attempt $i/$MAX_RETRIES (REST path, remote tip advanced past $CURRENT_TIP) — retrying" >&2
+        FAIL_RACE=$((FAIL_RACE + 1))
+        sleep $((1 + RANDOM % 3))
+        continue
+        ;;
+      throttled)
+        FAIL_THROTTLED=$((FAIL_THROTTLED + 1))
+        _retry_after="$(_rest_json_get "$REST_RESULT" retryAfter)"
+        # Cap and validate: an unbounded or malformed Retry-After must never
+        # reach `sleep` with something absurd or non-numeric.
+        if ! [[ "$_retry_after" =~ ^[0-9]+$ ]] || [ "$_retry_after" -gt 60 ]; then
+          _retry_after=15
+        fi
+        [ "$_retry_after" -lt 1 ] && _retry_after=1
+        if [ "$i" -lt "$MAX_RETRIES" ]; then
+          echo "  push-via-git-api: REST path throttled on attempt $i/$MAX_RETRIES — backing off ${_retry_after}s (BRO-2233/BRO-2951): $(_rest_json_get "$REST_RESULT" reason)" >&2
+          sleep "$_retry_after"
+        fi
+        continue
+        ;;
+      timeout)
+        FAIL_TIMEOUT=$((FAIL_TIMEOUT + 1))
+        echo "  push-via-git-api: push-api-probe ref_update {\"ok\":false,\"sec\":$((SECONDS - push_start)),\"attempt\":$i,\"branch\":\"$(_json_safe "$BRANCH")\",\"path\":\"rest\"}" >&2 || true
+        if [ "$i" -lt "$MAX_RETRIES" ]; then
+          _backoff="$(escalating_backoff_sec "$FAIL_TIMEOUT")"
+          echo "  push-via-git-api: REST path timed out on attempt $i/$MAX_RETRIES — backing off ${_backoff}s: $(_rest_json_get "$REST_RESULT" reason)" >&2
+          sleep "$_backoff"
+        fi
+        continue
+        ;;
+      *)
+        echo "::error::push-via-git-api: REST path failed for a non-race reason (attempt $i, outcome=${REST_OUTCOME:-unknown}): $(_rest_json_get "$REST_RESULT" reason)" >&2
+        exit 1
+        ;;
+    esac
   fi
 
   NEW_COMMIT="$(git commit-tree "$NEW_TREE" -p "$CURRENT_TIP" -m "$COMMIT_MSG")"
@@ -793,6 +1163,11 @@ if [ "$FAIL_OTHER" -gt 0 ]; then
   # on a run where every attempt died resolving or fetching the tip — a new
   # version of the same lie the old message told.
   EXHAUSTION_BREAKDOWN="$EXHAUSTION_BREAKDOWN, $FAIL_OTHER could not resolve or fetch the tip"
+fi
+if [ "$FAIL_THROTTLED" -gt 0 ]; then
+  # REST-only bucket (BRO-2233/BRO-2951 Phase 2) — see FAIL_THROTTLED's own
+  # declaration for why this must never merge into FAIL_TIMEOUT or FAIL_RACE.
+  EXHAUSTION_BREAKDOWN="$EXHAUSTION_BREAKDOWN, $FAIL_THROTTLED hit a REST rate limit"
 fi
 echo "::error::push-via-git-api: exhausted $MAX_RETRIES attempts: $EXHAUSTION_BREAKDOWN" >&2
 
