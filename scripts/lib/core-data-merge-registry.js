@@ -600,6 +600,36 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'check-corpus-drift',
     verifiedBy: '2026-09-11 (BRO-447): grepped every .github/workflows/*.yml and scripts/ for the literal filename — sole writer is scripts/audit-churn-merge-coverage.js, invoked only by check-corpus-drift.yml (same job, same "Commit and push audit" step, same concurrency group as audit/corpus-drift.json above).',
   },
+  // BRO-2285: commercial-weekly.yml's auto-apply job ("Commit applied data +
+  // audit" step) and sweep-pending job ("Commit sweep results" step) were
+  // losing the local fetch+rebase+push race under main's constant churn on
+  // nearly every run for months (5/5 recent runs sampled 2026-08-08 through
+  // 2026-09-12 failed at this exact step), and push-with-retry.sh's Git Data
+  // API fallback was disqualified because these two files sat outside
+  // API_FALLBACK_SAFE — the same "unaudited data/audit/ path" shape already
+  // fixed for audit/outlet-registry-baseline.json (BRO-2699) above. A
+  // workflow that never lands a successful push never reports `success`, so
+  // check-cron-health.yml's "hours since the last SUCCESSFUL run" staleness
+  // check flagged it chronic — the underlying failure is push contention, not
+  // the cancellation-at-timeout class the card also found in batch-research
+  // (fixed separately via scripts/lib/run-budget.js in batch-commercial-
+  // research.js).
+  {
+    file: 'audit/commercial-data-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-12 (BRO-2285): findWritingWorkflows() (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — sole writer commercial-weekly.yml. Written only via `audit-commercial-data.js --write-history` (scripts/lib/commercial-model-drift.js), which that workflow\'s "Update commercial model drift history" step is the ONLY caller of (per .github/workflows/CLAUDE.md: "--write-history is only passed here"). commercial-weekly.yml declares concurrency: {group: commercial-data-write, cancel-in-progress: false}, so a workflow_dispatch retry queues behind the running schedule instead of racing it.',
+  },
+  {
+    file: 'recoupment-calibration-anchors.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-12 (BRO-2285): findWritingWorkflows() against real .github/workflows/*.yml — 2 writers (commercial-friday.yml, commercial-weekly.yml, both via scripts/reconcile-recoupment-claims.js), both declaring concurrency: {group: commercial-data-write, cancel-in-progress: false} — the multi-writer-but-shared-group escape hatch this module\'s checkEntry() exists for (same shape already accepted for commercial-pending-review.json\'s apiFallbackMerge entry above, which lists all 5 workflows sharing this exact group).',
+  },
   // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
   // — filename is date-stamped, and BOTH places that check apiFallbackSafe
   // membership (push-with-retry.sh's inline disqualifier and audit-push-

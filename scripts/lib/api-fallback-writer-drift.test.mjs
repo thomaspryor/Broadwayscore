@@ -106,15 +106,16 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) + 2 opening-night-checklist.yml files (BRO-2670) + 1 stale-announced-shows.json (BRO-2620) + 2 commercial-rss-poll.yml circuit-breaker files (BRO-2795) + 1 missed-broadcasts.json (BRO-2934) + 1 scraper-spend-daily-agg.jsonl (BRO-3008, pre-existing drift found and closed while fixing BRO-2699) + 2 outlet-registry-baseline files (BRO-2699) + 2 process-feedback.yml files (BRO-345) + 3 tight-cadence what-else follow-up files (BRO-345, opening-night-completeness-check.yml x2 + check-opening-night-drift.yml x1) + 2 check-corpus-drift.yml files (BRO-447, corpus-drift.json + churn-merge-coverage.json) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) + 2 opening-night-checklist.yml files (BRO-2670) + 1 stale-announced-shows.json (BRO-2620) + 2 commercial-rss-poll.yml circuit-breaker files (BRO-2795) + 1 missed-broadcasts.json (BRO-2934) + 1 scraper-spend-daily-agg.jsonl (BRO-3008, pre-existing drift found and closed while fixing BRO-2699) + 2 outlet-registry-baseline files (BRO-2699) + 2 process-feedback.yml files (BRO-345) + 3 tight-cadence what-else follow-up files (BRO-345, opening-night-completeness-check.yml x2 + check-opening-night-drift.yml x1) + 2 check-corpus-drift.yml files (BRO-447, corpus-drift.json + churn-merge-coverage.json) + 2 commercial-weekly.yml files (BRO-2285, audit/commercial-data-history.json + recoupment-calibration-anchors.json) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 34);
+  assert.equal(publicSafe.length, 36);
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
     'audit/autonomous-recheck-ledger.jsonl',
     'audit/bd-circuit-breaker.json',
     'audit/churn-merge-coverage.json',
+    'audit/commercial-data-history.json',
     'audit/corpus-drift.json',
     'audit/cross-outlet-attribution-drift.json',
     'audit/cv-wrongproduction-lifetime.json',
@@ -145,5 +146,6 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/time-to-publish-sla.json',
     'audit/trunk-status-snapshot.json',
     'audit/workflow-run-coverage.json',
+    'recoupment-calibration-anchors.json',
   ]);
 });

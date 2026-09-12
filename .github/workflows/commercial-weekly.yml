@@ -81,7 +81,16 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
-          ARGS="--max-per-run=30"
+          # BRO-2285: --max-per-run=30 is a COUNT cap, not wall-clock — the
+          # per-show loop (SEC + Google + Claude, each with rate-limit sleeps)
+          # was overrunning this job's 60-min timeout weekly, and a
+          # timeout-killed job reports `cancelled` (notify-failure's
+          # `if: failure()` never fires), so the staleness went unnoticed for
+          # weeks. --time-budget-min=45 leaves ~15min for checkout/setup/
+          # Playwright install and the two commit steps below; the job timeout
+          # is now a backstop, not the cap. Progress checkpoints after every
+          # show, so stopping early is lossless.
+          ARGS="--max-per-run=30 --time-budget-min=45"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
