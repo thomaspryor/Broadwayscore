@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-12T10:10:32.430Z",
+    "generatedAt": "2026-09-12T10:57:29.757Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 43158\nHas fullText: 34544\n\n--- Quality Breakdown ---\n  full: 23784 (68.9%)\n  truncated: 9995 (28.9%)\n  partial: 346 (1.0%)\n  excerpt: 331 (1.0%)\n  stub: 68 (0.2%)\n  complete: 19 (0.1%)\n  unknown: 1 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 7110\n  has_footer_junk: 1595\n  ends_with_ellipsis: 138\n  has_footer_text: 108\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.9% (min: 25%)\n  ✅ Truncated: 28.9% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 43158\nHas fullText: 34545\n\n--- Quality Breakdown ---\n  full: 23785 (68.9%)\n  truncated: 9995 (28.9%)\n  partial: 346 (1.0%)\n  excerpt: 331 (1.0%)\n  stub: 68 (0.2%)\n  complete: 19 (0.1%)\n  unknown: 1 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 7110\n  has_footer_junk: 1596\n  ends_with_ellipsis: 138\n  has_footer_text: 108\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.9% (min: 25%)\n  ✅ Truncated: 28.9% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -117,7 +117,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 36433 scored reviews\nAlready rejected: 586\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 36435 scored reviews\nAlready rejected: 586\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
     },
     {
       "name": "review-texts",
