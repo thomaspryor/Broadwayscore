@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-09-08T05:06:11.579Z",
-    "completedAt": "2026-09-08T05:06:14.791Z",
-    "totalReviews": 42817,
-    "processed": 0,
-    "skipped": 42816,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 103,
-      "total": 10925
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-08T05:31:42.970Z",
     "completedAt": "2026-09-08T05:31:49.306Z",
     "totalReviews": 42817,
@@ -229355,5 +229341,25 @@
       "total": 17153
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-12T20:37:22.502Z",
+    "completedAt": "2026-09-12T20:37:22.719Z",
+    "totalReviews": 22,
+    "processed": 0,
+    "skipped": 21,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "garry-starr-classic-penguins-off-broadway-2026",
+        "outletId": "ticketsmarter",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
