@@ -600,6 +600,53 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'check-corpus-drift',
     verifiedBy: '2026-09-11 (BRO-447): grepped every .github/workflows/*.yml and scripts/ for the literal filename — sole writer is scripts/audit-churn-merge-coverage.js, invoked only by check-corpus-drift.yml (same job, same "Commit and push audit" step, same concurrency group as audit/corpus-drift.json above).',
   },
+  // BRO-2285: commercial-weekly.yml's auto-apply job ("Commit applied data +
+  // audit" step) and sweep-pending job ("Commit sweep results" step) were
+  // losing the local fetch+rebase+push race under main's constant churn on
+  // nearly every run for months (5/5 recent runs sampled 2026-08-08 through
+  // 2026-09-12 failed at this exact step), and push-with-retry.sh's Git Data
+  // API fallback was disqualified because these two files sat outside
+  // API_FALLBACK_SAFE — the same "unaudited data/audit/ path" shape already
+  // fixed for audit/outlet-registry-baseline.json (BRO-2699) above. A
+  // workflow that never lands a successful push never reports `success`, so
+  // check-cron-health.yml's "hours since the last SUCCESSFUL run" staleness
+  // check flagged it chronic — the underlying failure is push contention, not
+  // the cancellation-at-timeout class the card also found in batch-research
+  // (fixed separately via scripts/lib/run-budget.js in batch-commercial-
+  // research.js).
+  {
+    file: 'audit/commercial-data-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-12 (BRO-2285): findWritingWorkflows() (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — sole CI writer commercial-weekly.yml. Written only via `audit-commercial-data.js --write-history` (scripts/lib/commercial-model-drift.js), which that workflow\'s "Update commercial model drift history" step is the ONLY caller of (per .github/workflows/CLAUDE.md: "--write-history is only passed here"). commercial-weekly.yml declares concurrency: {group: commercial-data-write, cancel-in-progress: false}, so a workflow_dispatch retry queues behind the running schedule instead of racing it. RESIDUAL RISK (same class already accepted for audit/autonomous-recheck-ledger.jsonl and audit/stale-announced-shows.json above): `node scripts/audit-commercial-data.js --write-history` can also be run locally by a human. The concurrency group only serializes CI against CI, not CI against a local run — a locally-pushed history append can be silently overwritten by the next CI run\'s Git Data API fallback (adversarial review finding, BRO-2285). Accepted because this is a rolling weekly-cadence series regenerated from commercial.json\'s current state each run, not irreplaceable input; a lost local append can be re-run.',
+  },
+  {
+    file: 'recoupment-calibration-anchors.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-12 (BRO-2285): findWritingWorkflows() against real .github/workflows/*.yml — 2 CI writers (commercial-friday.yml, commercial-weekly.yml, both via scripts/reconcile-recoupment-claims.js), both declaring concurrency: {group: commercial-data-write, cancel-in-progress: false} — the multi-writer-but-shared-group escape hatch this module\'s checkEntry() exists for (same shape already accepted for commercial-pending-review.json\'s apiFallbackMerge entry above, which lists all 5 workflows sharing this exact group). RESIDUAL RISK (same class as audit/commercial-data-history.json above): `node scripts/reconcile-recoupment-claims.js` can also be run locally, and the concurrency group only serializes CI against CI. Accepted on the same grounds — reconcile-recoupment-claims.js regenerates this array from commercial.json\'s current recouped-claim state each run (scripts/reconcile-recoupment-claims.js:373), so a clobbered local run is regenerated fresh next time, not permanently lost.',
+  },
+  // BRO-2285 /what-else follow-up: scripts/audit-push-retry-budgets.js (run
+  // post-fix) showed the two entries above were STILL not enough —
+  // commercial-weekly.yml's "Commit applied data + audit" step bundles a
+  // THIRD file, data/audit/commercial-data-audit.json, into the same
+  // git-add-existing.sh call, and push-with-retry.sh's disqualifier is an
+  // all-or-nothing check on the WHOLE staged diff: one unregistered file in
+  // the same commit still disqualifies the other two from the API fallback.
+  // Registering it closes the gap the fix would otherwise have silently left
+  // open until the next chronic-staleness cycle.
+  {
+    file: 'audit/commercial-data-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-09-12 (BRO-2285 what-else follow-up), corrected 2026-09-12 after a follow-up codex review caught the invocation count wrong the first pass: findWritingWorkflows() against real .github/workflows/*.yml — 2 CI WORKFLOWS write this path (commercial-weekly.yml, update-commercial.yml), both declaring concurrency: {group: commercial-data-write, cancel-in-progress: false} — same multi-writer-but-shared-group escape hatch as recoupment-calibration-anchors.json above. Within commercial-weekly.yml specifically there are 3 sequential steps in the SAME auto-apply job invoking `node scripts/audit-commercial-data.js` (flagless, `--strict`, `--write-history`) plus update-commercial.yml\'s flagless call — 4 invocations total, not 2, but all 4 reach the same unconditional `fs.writeFileSync(OUTPUT_FILE, ...)` (scripts/audit-commercial-data.js:1184) and the 3 same-job steps cannot race each other (sequential, not parallel), so the workflow-level single-group claim still holds. RESIDUAL RISK (same class as the two entries above): the CLI writer can also be run locally. Accepted on the same grounds — OUTPUT_FILE is a full snapshot regenerated fresh from commercial.json\'s current state on every invocation, not appended/accumulated state.',
+  },
   // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
   // — filename is date-stamped, and BOTH places that check apiFallbackSafe
   // membership (push-with-retry.sh's inline disqualifier and audit-push-

@@ -81,7 +81,24 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
-          ARGS="--max-per-run=30"
+          # BRO-2285: --max-per-run=30 is a COUNT cap, not wall-clock — the
+          # per-show loop (SEC + Google + Claude, each with rate-limit sleeps)
+          # was overrunning this job's 60-min timeout weekly, and a
+          # timeout-killed job reports `cancelled` (notify-failure's
+          # `if: failure()` never fires), so the staleness went unnoticed for
+          # weeks. Sizing --time-budget-min=30 against the worst case, not the
+          # observed case: measured setup (checkout+node+Playwright) is ~2min
+          # (run 34716206607); the tail show can overrun the budget by up to
+          # MIN_REMAINING_MS_TO_START (5min, since no per-show network call
+          # has its own timeout); "Commit batch research results" below has a
+          # 10min PUSH_DEADLINE_SEC and "Commit scraper-spend ledger" defaults
+          # to push-with-retry.sh's 4min. Worst case: 2+30+5+10+4=51min,
+          # leaving a real ~9min cushion under the 60min job timeout — two
+          # rounds of second-opinion review (BRO-2285) found first 45min then
+          # 40min too tight against this same stacked-worst-case math. Progress
+          # checkpoints after every show, so stopping early loses at most the
+          # in-flight show.
+          ARGS="--max-per-run=30 --time-budget-min=30"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi

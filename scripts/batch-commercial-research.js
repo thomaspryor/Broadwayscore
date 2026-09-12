@@ -23,6 +23,19 @@
  *   --shows=SLUG,SLUG      Specific shows by slug (bypasses default scope filter)
  *   --top-historical=N     Top N historical shows by all-time gross
  *   --max-per-run=N        Cap new shows researched per invocation (default 30)
+ *   --time-budget-min=N    Wall-clock budget in minutes (0 = unlimited, default).
+ *                          The per-show research loop (SEC + Google + Claude,
+ *                          each with rate-limit sleeps) can run well past
+ *                          60-90s/show; --max-per-run=30 alone is a COUNT cap,
+ *                          not a wall-clock one, and does not stop the job's
+ *                          `timeout-minutes: 60` from SIGKILLing the run
+ *                          mid-item (BRO-2285: this was hitting the workflow
+ *                          timeout weekly, and a timeout-killed job reports
+ *                          `cancelled`, not `failure` — notify-failure's
+ *                          `if: failure()` never sees it). Progress is saved
+ *                          after every completed show, so stopping early
+ *                          loses at most the show in flight when the budget
+ *                          hit; the remainder resumes next run.
  *   --skip-sec             Skip SEC EDGAR lookups
  *   --apply                Apply pending review file to commercial.json
  */
@@ -35,6 +48,7 @@ const { normalizeSources } = require('./lib/commercial-sources');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { isCommercialScope, DESIGNATION_CRITERIA, resolveScopeShow } = require('./lib/commercial-scope');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -79,6 +93,17 @@ const MAX_PER_RUN = MAX_PER_RUN_RAW !== undefined && MAX_PER_RUN_RAW !== true &&
   : 30;
 const SKIP_SEC = flags['skip-sec'] === true;
 const APPLY_MODE = flags['apply'] === true;
+const TIME_BUDGET_MIN = parseTimeBudgetMin(args);
+const timeBudget = createRunBudget(TIME_BUDGET_MIN);
+// Conservative per-show worst case: SEC EDGAR (up to 3 filings x 1s) + 2
+// Google queries x (3 verifySourceUrl fetches + 2s) + 2s, plus Claude
+// analysis + per-source re-verification, none of which have their own
+// timeout — a single hung fetch can overrun this by minutes. Mirrors
+// deep-research-commercial.js's MIN_REMAINING_MS_TO_START guard — don't
+// start a show unlikely to finish. 5min (not deep-research's 10min) because
+// this job's timeout headroom is tighter — see --time-budget-min sizing note
+// on the workflow's call site.
+const MIN_REMAINING_MS_TO_START = 5 * 60_000;
 
 // ---------------------------------------------------------------------------
 // Environment
@@ -648,6 +673,12 @@ async function main() {
     // capping here just spreads catch-up over multiple days.
     if (researched >= MAX_PER_RUN) {
       console.log(`  ⏹️  Reached per-run cap (${MAX_PER_RUN}) — resuming tomorrow`);
+      break;
+    }
+
+    if (timeBudget.enabled && timeBudget.remainingMs() < MIN_REMAINING_MS_TO_START) {
+      const remaining = targets.length - researched;
+      console.log(`\n⏱ Time budget (${TIME_BUDGET_MIN} min) reached after ${timeBudget.elapsedMin()} min — stopping cleanly. ${remaining} targets deferred to next run.`);
       break;
     }
 
