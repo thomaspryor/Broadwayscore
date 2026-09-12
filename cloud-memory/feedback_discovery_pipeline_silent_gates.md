@@ -1027,3 +1027,27 @@ with the full 40-char sha worked. Any loop built on `--format='%h'` yields EMPTY
 `grep -c` reports 0, which reads exactly like "the review is not in that commit." This nearly
 produced a false "The Times review is missing from origin/main" conclusion. Always
 `git rev-parse` to a full sha first.
+
+## rebuild-fast can be wholly broken while the poller's inline rebuild still lands the review (2026-09-12, BRO-3197)
+
+On the night of 2026-09-12 FIVE consecutive `rebuild-fast.yml` runs failed or were cancelled
+(34723604760, 34724468965, 34724749882 failure; 34725593058 cancelled; 34726088915 failure).
+The rebuild itself computed fine every time — the COMMIT+PUSH step died: 10 consecutive push
+attempts each hit the 30s git-transport cap (rc=124 SIGTERM, a transport HANG, not a rejection),
+push-with-retry bailed at `PUSH_API_FALLBACK_AFTER_ATTEMPTS=10`, and the Git Data API fallback
+structurally REFUSES any diff touching `reviews.json` (not on API_FALLBACK_SAFE/API_FALLBACK_MERGE).
+
+Two lessons:
+
+1. **A recovered review stranded by a broken rebuild-fast is not lost and must not be re-ingested.**
+   The review-texts file was already safe on the data-repo `origin/main`. Re-dispatching rebuild-fast
+   a 4th/5th time only burns dispatch slots; ingesting MORE reviews while the push path is down
+   strands them identically.
+2. **rebuild-fast is not the only path into reviews.json.** The `opening-night-poller` fast path runs
+   its OWN inline rebuild and pushes through a different code path — commit `d81c8162e`
+   ("data: Opening night poller (fast path) — inline rebuild") is what finally carried the stranded
+   Lighting & Sound America review into `origin/main:reviews.json` (mrs-stern rv 1 -> 2), scored
+   `llm-v6` in the same commit, ~20 minutes after the last rebuild-fast failure.
+   So: when rebuild-fast is failing, DO NOT conclude "the review cannot land." Check
+   `git log origin/main -- reviews.json` for a poller inline-rebuild commit before escalating,
+   and re-check it every pass — the escalation may already have self-resolved.
