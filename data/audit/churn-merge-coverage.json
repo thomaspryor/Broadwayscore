@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-12T05:16:49.364Z",
+    "generatedAt": "2026-09-12T08:38:29.964Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -99,8 +99,13 @@
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 134,
+      "churn": 135,
       "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 125,
+      "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
@@ -108,43 +113,38 @@
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 123,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 102,
+      "churn": 101,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 77,
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 75,
+      "churn": 77,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 59,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 59,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 59,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 53,
+      "churn": 55,
       "mergeAttr": "ours"
     }
   ]
