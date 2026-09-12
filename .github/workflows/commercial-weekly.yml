@@ -86,16 +86,19 @@ jobs:
           # was overrunning this job's 60-min timeout weekly, and a
           # timeout-killed job reports `cancelled` (notify-failure's
           # `if: failure()` never fires), so the staleness went unnoticed for
-          # weeks. Measured overhead: checkout+setup+Playwright install take
-          # ~2min (run 34716206607), so --time-budget-min=40 leaves ~18min of
-          # the 60min job timeout for that overhead, a slow tail show
-          # overrunning MIN_REMAINING_MS_TO_START, and the two commit steps
-          # below (up to 10min each via PUSH_DEADLINE_SEC) — the job timeout
-          # is now a backstop, not the cap. A second-opinion review (BRO-2285)
-          # found the original 45min too tight against that same math; 40min
-          # is the corrected value. Progress checkpoints after every show, so
-          # stopping early loses at most the in-flight show.
-          ARGS="--max-per-run=30 --time-budget-min=40"
+          # weeks. Sizing --time-budget-min=30 against the worst case, not the
+          # observed case: measured setup (checkout+node+Playwright) is ~2min
+          # (run 34716206607); the tail show can overrun the budget by up to
+          # MIN_REMAINING_MS_TO_START (5min, since no per-show network call
+          # has its own timeout); "Commit batch research results" below has a
+          # 10min PUSH_DEADLINE_SEC and "Commit scraper-spend ledger" defaults
+          # to push-with-retry.sh's 4min. Worst case: 2+30+5+10+4=51min,
+          # leaving a real ~9min cushion under the 60min job timeout — two
+          # rounds of second-opinion review (BRO-2285) found first 45min then
+          # 40min too tight against this same stacked-worst-case math. Progress
+          # checkpoints after every show, so stopping early loses at most the
+          # in-flight show.
+          ARGS="--max-per-run=30 --time-budget-min=30"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
