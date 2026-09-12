@@ -964,3 +964,17 @@ Recovery that works: `fetchPage()` (returns `{content,format,source}` — pass `
 
 ## Gate: rebuild-fast computes reviews.json then loses it — no push fallback for MANAGED files (2026-09-12)
 Two consecutive `rebuild-fast.yml` runs (34680223248, 34681753030) rebuilt correctly (`+1 reviews` / `+2 reviews`) and pushed NOTHING: 10x `Pre-resolution push FAILED in 30s — transport HANG (rc=124, SIGTERM)`, then `PUSH_API_FALLBACK_AFTER_ATTEMPTS=10` tripped and the Git Data API fallback self-disqualified because *"our outgoing diff touches a union-merge-MANAGED file … shows.json/reviews.json"*. **A green rebuild step is not evidence the review landed — check `git show origin/main:reviews.json`, never the run conclusion.** Do not re-dispatch rebuild-fast past the second identical failure; it is an infra fault, not a flake. Safe path: `PUSH_RECONCILE_MERGED_JSON=1` or an `apiFallbackMerge` entry for reviews.json. Carded: BRO-3181 (shared push infra → rule 18 review gate required first).
+
+## Gate: syndicated reprints are the ONLY discovery signal for some reviews (2026-09-12, Man to Man / The Independent)
+
+**Symptom:** A published T1/T2 review is invisible to every automated channel AND to direct outlet-RSS reads — it looks like the outlet simply hasn't published yet.
+
+**Instance:** The Independent (Alice Saville) reviewed *Man to Man* (Royal Court) on 2026-09-12. Invisible to the outlet's own theatre-dance RSS (read directly on three separate monitor passes), to every WE aggregator roundup, and to 10 consecutive opening-night monitor passes. `triage-review-gap.js` returned `true-missed-discovery`. Recovered ~23h post-press-night vs the couple-of-hours mission bar.
+
+**What cracked it:** WebSearch surfaced a SYNDICATED REPRINT on `msnbctv.news`. Its headline differed from the already-live Guardian headline — that mismatch is the tell worth opening. Grepping the reprint's HTML for registered-outlet domains exposed the canonical `independent.co.uk` URL, which then ingested cleanly by direct URL (Cookie-plain, contentTier=complete).
+
+**Why the pipeline misses it:** syndication/aggregation domains (msn.com, msnbctv.news, aol.co.uk, yahoo.com, news.google.com, apple.news) are almost certainly filtered out of discovery as non-outlets, so the underlying review URL is never reached.
+
+**Monitor action:** when a T1 is expected-but-unseen for hours and its own RSS shows nothing, do NOT conclude "unpublished" — WebSearch the title and open reprint-domain hits, grepping their HTML for registered-outlet domains. Outlet RSS alone is NOT a sufficient census.
+
+**Systemic fix:** BRO-3188 ("P1: Discovery misses reviews whose only SERP signal is a syndicated reprint (add canonical-source extraction)") — treat those domains as canonical-source EXTRACTION inputs (rel=canonical / og:url / first in-body registered-outlet link), not as candidate URLs to reject.
