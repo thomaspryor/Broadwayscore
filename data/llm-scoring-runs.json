@@ -1,39 +1,5 @@
 [
   {
-    "startedAt": "2026-09-07T10:39:32.917Z",
-    "completedAt": "2026-09-07T10:39:35.190Z",
-    "totalReviews": 42783,
-    "processed": 0,
-    "skipped": 42782,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 103,
-      "total": 10926
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-07T11:12:13.517Z",
-    "completedAt": "2026-09-07T11:12:23.965Z",
-    "totalReviews": 42785,
-    "processed": 1,
-    "skipped": 42782,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 10614,
-      "output": 473,
-      "total": 27265
-    },
-    "errorDetails": [
-      {
-        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
-        "outletId": "theatermania",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-07T11:43:55.908Z",
     "completedAt": "2026-09-07T11:43:58.827Z",
     "totalReviews": 42786,
@@ -229095,5 +229061,140 @@
       "total": 16550
     },
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-12T09:09:37.840Z",
+    "completedAt": "2026-09-12T09:12:55.087Z",
+    "totalReviews": 43155,
+    "processed": 0,
+    "skipped": 43149,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 16559,
+      "output": 587,
+      "total": 47146
+    },
+    "errorDetails": [
+      {
+        "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
+        "outletId": "consequence",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "bridge-and-tunnel-2006",
+        "outletId": "playbill",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-12T09:13:02.895Z",
+    "completedAt": "2026-09-12T09:15:05.794Z",
+    "totalReviews": 43155,
+    "processed": 8,
+    "skipped": 43091,
+    "errors": 19,
+    "tokensUsed": {
+      "input": 172159,
+      "output": 5322,
+      "total": 433044
+    },
+    "errorDetails": [
+      {
+        "showId": "stick-fly-2011",
+        "outletId": "nyt-theater",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "other-desert-cities-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "chinglish-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "follies-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-people-in-the-picture-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "baby-its-you-2011",
+        "outletId": "ew",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "wonderland-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "war-horse-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-motherfucker-with-the-hat-2011",
+        "outletId": "hollywood-reporter",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "catch-me-if-you-can-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "arcadia-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-merchant-of-venice-2010",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "lombardi-2010",
+        "outletId": "hollywood-reporter",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "enron-2010",
+        "outletId": "washpost",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "sondheim-on-sondheim-2010",
+        "outletId": "washpost",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "la-cage-aux-folles-2010",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "looped-2010",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "time-stands-still-2010",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
