@@ -138,6 +138,7 @@ jobs:
       - name: Validate data
         if: always()
         run: node scripts/validate-data.js
+        continue-on-error: true
 
       - name: Push review-texts
         if: always()

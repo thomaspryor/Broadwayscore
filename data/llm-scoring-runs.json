@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-09-08T05:31:42.970Z",
-    "completedAt": "2026-09-08T05:31:49.306Z",
-    "totalReviews": 42817,
-    "processed": 0,
-    "skipped": 42816,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 107,
-      "total": 10930
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-08T05:59:28.062Z",
     "completedAt": "2026-09-08T05:59:39.519Z",
     "totalReviews": 42822,
@@ -229361,5 +229347,19 @@
         "error": "input_validation_failed:body_too_short"
       }
     ]
+  },
+  {
+    "startedAt": "2026-09-12T22:39:20.647Z",
+    "completedAt": "2026-09-12T22:39:25.598Z",
+    "totalReviews": 38,
+    "processed": 1,
+    "skipped": 37,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4972,
+      "output": 312,
+      "total": 13295
+    },
+    "errorDetails": []
   }
 ]
