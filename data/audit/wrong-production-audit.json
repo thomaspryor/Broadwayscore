@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-11T16:34:13.821Z",
+  "timestamp": "2026-09-12T02:04:29.212Z",
   "stats": {
-    "totalReviews": 42808,
-    "alreadyFlagged": 17867,
+    "totalReviews": 42856,
+    "alreadyFlagged": 17887,
     "dateGuardCatches": 236,
     "directorMismatch": 1046,
-    "tvFilmSignals": 1255,
-    "londonSignals": 1040,
-    "offBroadwaySignals": 501,
+    "tvFilmSignals": 1257,
+    "londonSignals": 1044,
+    "offBroadwaySignals": 502,
     "yearMismatch": 92,
-    "noPublishDate": 3677
+    "noPublishDate": 3676
   },
   "findings": [
     {
@@ -1622,20 +1622,6 @@
       ]
     },
     {
-      "showId": "anansi-the-spider-west-end-2026",
-      "file": "thestage--anna-james.json",
-      "score": 96,
-      "publishDate": "January 26th, 2023",
-      "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1297d before show (January 26th, 2023 vs 2026-08-15)"
-        }
-      ]
-    },
-    {
       "showId": "anastasia-2017",
       "file": "variety--frank-rizzo.json",
       "score": 78,
@@ -2387,6 +2373,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "becoming-hamlet-off-broadway-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 60,
+      "publishDate": "2026-09-11",
+      "url": "https://t2conline.com/becoming-hamlet-to-participate-or-not-to-participate-that-is-the-question/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -6320,7 +6325,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6334,7 +6339,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6348,7 +6353,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -8274,7 +8279,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 83,
+      "score": 85,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -14525,7 +14530,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 79,
+      "score": 82,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -14801,7 +14806,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -15594,7 +15599,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -15725,7 +15730,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -17962,6 +17967,24 @@
       ]
     },
     {
+      "showId": "man-to-man-west-end-2026",
+      "file": "airmail--air-mail.json",
+      "publishDate": null,
+      "url": "https://airmail.news/arts-intel/events/man-to-man",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "marjorie-prime-2025",
       "file": "thewrap--robert-hofler.json",
       "score": 56,
@@ -19206,7 +19229,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -19252,7 +19275,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-06-23",
       "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "findings": [
@@ -27452,7 +27475,7 @@
       "showId": "the-children-2017",
       "file": "newsday--barbara-schuler.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "December 12, 2017",
       "url": "http://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
       "findings": [
         {
@@ -34541,7 +34564,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -34569,7 +34592,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-09-03",
       "url": "https://www.broadwayworld.com/westend/article/Review-A-MONTH-IN-THE-COUNTRY-Donmar-Warehouse-20260903",
       "findings": [
@@ -34596,7 +34619,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 73,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -36039,7 +36062,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -37266,7 +37289,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -37280,7 +37303,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-05-20",
       "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
       "findings": [
@@ -38569,7 +38592,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -44123,6 +44146,45 @@
       ]
     },
     {
+      "showId": "man-to-man-west-end-2026",
+      "file": "sunday-telegraph--kirsten-grant.json",
+      "publishDate": "2026-09-11",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/man-to-man-review-tilda-swinton-triumphant-stage-return/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-07-09",
+      "url": "https://theatreweekly.com/tilda-swinton-returns-to-the-stage-in-man-to-man-as-international-revival-opens-royal-courts-70th-anniversary-season/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 58d before show (2026-07-09 vs 2026-09-05)"
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatremonkey.com/show/man-to-man/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "marie-and-rosetta-west-end-2026",
       "file": "thestage--london-theatre-direct-limited.json",
       "score": 79,
@@ -44251,7 +44313,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -44265,7 +44327,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -44279,7 +44341,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -44670,7 +44732,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
@@ -48405,7 +48467,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--susannah-clapp.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2023-12-15",
       "url": "https://www.theguardian.com/stage/2023/dec/24/macbeth-donmar-warehouse-max-webster-david-tennant-cush-jumbo-review-stranger-things-the-first-shadow-phoenix-stephen-daldry-ulster-american-riverside-studios-david-ireland-woody-harrelson-andy-serkis-louisa-harland",
       "findings": [
@@ -48516,7 +48578,7 @@
     {
       "showId": "summerfolk-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-03-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-SUMMERFOLK-starring-Sophie-Rundle-National-Theatre-20260318",
       "findings": [
@@ -49635,7 +49697,7 @@
       "showId": "the-children-2017",
       "file": "broadway-blog--samuel-l-leiter.json",
       "score": 71,
-      "publishDate": null,
+      "publishDate": "December 16, 2017",
       "url": "https://thebroadwayblog.com/the-children-review-mtc/",
       "findings": [
         {
@@ -49663,7 +49725,7 @@
       "showId": "the-children-2017",
       "file": "dailybeast--tim-teeman.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "December 12, 2017",
       "url": "https://www.thedailybeast.com/broadways-brilliant-apocalypse-review-of-the-children",
       "findings": [
         {
@@ -49829,6 +49891,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-children-off-west-end-2026",
+      "file": "london-unattached--dan-paling.json",
+      "score": 81,
+      "publishDate": "2026-09-11",
+      "url": "https://www.london-unattached.com/the-children-lyric-hammersmith-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
