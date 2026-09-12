@@ -1,36 +1,53 @@
 {
-  "updatedAt": "2026-09-12T12:49:11.354Z",
-  "processed": 38,
-  "failed": 112,
-  "successRate": "25.3%",
+  "updatedAt": "2026-09-12T13:48:12.978Z",
+  "processed": 34,
+  "failed": 96,
+  "successRate": "26.2%",
   "tierBreakdown": {
     "playwright": 22,
     "amp": 0,
-    "browserbase": 2,
-    "directCookies": 3,
-    "scrapingbee": 5,
+    "browserbase": 3,
+    "directCookies": 4,
+    "scrapingbee": 7,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-09-12T12:29:40.006Z",
+      "t": "2026-09-12T13:19:55.322Z",
       "event": "bb-session",
-      "session": "3ba8b72f",
+      "session": "15bf5c90",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/man-to-man-theatre-revi"
+    },
+    {
+      "t": "2026-09-12T13:19:56.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-12T13:34:09.407Z",
+      "event": "bb-session",
+      "session": "16b9371b",
       "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
     },
     {
-      "t": "2026-09-12T12:29:41.014Z",
+      "t": "2026-09-12T13:34:10.354Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-12T12:48:12.263Z",
+      "t": "2026-09-12T13:38:37.858Z",
       "event": "bb-session",
-      "session": "dcece4f6",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+      "session": "a1b673f1",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-09-12T13:38:57.714Z",
+      "event": "bb-session",
+      "session": "722df063",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
     }
   ]
 }
