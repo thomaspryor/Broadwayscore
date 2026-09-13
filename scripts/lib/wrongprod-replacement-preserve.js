@@ -60,6 +60,17 @@ const REPLACE_CLEAR_FIELDS = new Set([
   'rejectionReason', 'rejectedBy', 'rejectionReasoning',
   'fetchAttempts', 'lastFetchDate',
   'contentVerification',
+  // BRO-3225 (codex adversarial review): the retraction breadcrumb
+  // (_recordClearBreadcrumbRetraction / _clearBreadcrumbRetracted in
+  // review-write-guard.js) describes a deliberate deletion of specific OLD
+  // fields on THIS file — exactly the same "dies with the flag" shape as
+  // WRONG_PRODUCTION_PROVENANCE_FIELDS above. Newly promoted to
+  // PROTECTED_FIELDS, so without this entry SCORED_PRESERVE_FIELDS (derived
+  // below) would auto-carry it into a replacement for a DIFFERENT production's
+  // article, where clearBreadcrumbRetractedFields could name a field that
+  // happens to go empty there for an unrelated reason and get its restore
+  // wrongly suppressed for up to the retraction's freshness window.
+  'clearBreadcrumbRetracted', 'clearBreadcrumbRetractedAt', 'clearBreadcrumbRetractedFields',
 ]);
 
 // Extra fields the legacy hardcoded list preserved that aren't in PROTECTED_FIELDS.
