@@ -47,6 +47,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { normalizeCritic, normalizeUrl } = require('./lib/review-normalization');
+const { SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS } = require('./lib/review-write-guard');
 
 const USAGE = `validate-added-review-ownership.js — post-rebase cross-show ownership gate.
 
@@ -197,6 +198,24 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
       (sib) => normalizeCritic(sib.data.criticName) !== 'unknown' && _isBlockingOwnerCopy(sib.data),
     );
     if (!liveNamed) continue;
+
+    // CONTENT-RICHNESS GUARD (BRO-3249 hardening, adversarial review finding).
+    // Widening this branch to normalizeUrl-equivalent siblings (above) pulls in
+    // real corpus files this branch could never previously reach — e.g.
+    // charlie-and-the-chocolate-factory-2017/wsj--unknown.json, which carries a
+    // substantive 4.4KB fullText while its named sibling wsj--edward-rothstein
+    // .json has none. review-write-guard.js's own write-time duplicate call
+    // (shouldMarkUrlCollisionDuplicate) never marks a collision when the new
+    // file clears SUBSTANTIVE_BODY_CHARS and the collider is under
+    // NEAR_EMPTY_BODY_CHARS — this mirrors that same threshold so the push-time
+    // gate can never delete a record the write-time guard would have kept
+    // primary. Deliberately NOT gated on data.duplicateOf being present/absent:
+    // the original BRO-3092 incident (enrich-reviews stale-checkout replay)
+    // never carries that field, so requiring it would blind this branch to the
+    // very case it was built for.
+    const addedLen = String(data.fullText || '').trim().length;
+    const siblingLen = String(liveNamed.data.fullText || '').trim().length;
+    if (addedLen >= SUBSTANTIVE_BODY_CHARS && siblingLen < NEAR_EMPTY_BODY_CHARS) continue;
 
     drops.push({
       file: rel,

@@ -479,4 +479,37 @@ describe('decideOwnershipDrops — scheme/www URL-identity gap (BRO-3249, 3rd re
     assert.equal(drops.length, 1);
     assert.equal(drops[0].kind, 'same-show');
   });
+
+  // Adversarial-review finding (Codex, BRO-3249): widening the same-show branch
+  // to normalizeUrl-equivalent siblings reaches real corpus files that never
+  // matched under the old exact/weak key — including at least one,
+  // charlie-and-the-chocolate-factory-2017/wsj--unknown.json, where the
+  // unknown-byline file carries substantive real content and the named sibling
+  // has none. This must never be dropped.
+  test('never drops an unknown-byline file with substantive content when the named sibling is near-empty', () => {
+    writeFile(SHOW3, 'wsj--edward-rothstein.json', {
+      url: 'https://www.wsj.com/articles/charlie-review-empty-calories-1493152575',
+      outletId: 'wsj', criticName: 'Edward Rothstein', contentTier: 'excerpt',
+      // no fullText — near-empty, mirrors the real corpus record
+    });
+    const added = writeFile(SHOW3, 'wsj--unknown.json', {
+      url: 'https://www.wsj.com/articles/charlie-review-empty-calories-1493152575?gaa_at=eafs&gaa_n=x&gaa_ts=y&gaa_sig=z',
+      outletId: 'wsj', criticName: 'Unknown', contentTier: 'complete',
+      fullText: 'x'.repeat(600), // clears SUBSTANTIVE_BODY_CHARS (500)
+    });
+    assert.equal(decideOwnershipDrops([added], tmpDir).length, 0,
+      'a richer unknown-byline record must survive even when a named sibling shares its normalized URL');
+  });
+
+  test('still drops when both sides are thin (richness guard does not mask the original incident)', () => {
+    writeFile(SHOW3, 'wsj--terry-teachout.json', {
+      url: HTTPS_URL, outletId: 'wsj', criticName: 'Terry Teachout', contentTier: 'excerpt',
+    });
+    const added = writeFile(SHOW3, 'wsj--unknown.json', {
+      url: HTTP_URL, outletId: 'wsj', criticName: null, contentTier: 'excerpt',
+      fullText: 'WSJ.com is available in the following editions and languages',
+    });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1, 'a thin/junk unknown-byline file must still be dropped');
+  });
 });
