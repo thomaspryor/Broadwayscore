@@ -56,6 +56,26 @@ LOG="$WORK/run.log"
     bash "$TARGET" 1 main
 ) > "$LOG" 2>&1
 
+# Assertions 1 and 2 require this run to have ACTUALLY produced a timeout-killed
+# push, because git_push_traced() only classifies a stall phase (push-with-retry.sh
+# ~252) for rc 124/137/143. 10.255.255.1 blackholes on most networks (-> rc=124),
+# but it is not guaranteed to: GHA ubuntu runners live inside Azure 10.0.0.0/8
+# VNets where that address can ICMP-unreachable instead, so git returns 128 in
+# under a second and there is no stall phase to classify. That is the documented
+# reason push-rc-diagnosis.test.sh:80-96 made its own assertions rc-agnostic, and
+# it is not hypothetical here: on a dev machine this fixture produced no hang on
+# 1 of 8 consecutive runs (2026-09-13), so asserting unconditionally makes this a
+# step that reddens main intermittently for a network accident.
+#
+# "transport HANG" comes from describe_push_rc() (push-with-retry.sh:292-294),
+# which covers EXACTLY the rc set git_push_traced classifies, via an independent
+# code path from the stall-phase echo this test asserts on. That independence is
+# what makes it a safe guard rather than a self-fulfilling one: deleting the
+# stall-phase echo (the regression this test exists to catch) leaves "transport
+# HANG" present, so assertion 1 still FAILS rather than silently skipping.
+# Verified over 8 runs: the two signals never disagreed.
+if grep -q "transport HANG" "$LOG"; then
+
 # 1. A timeout-killed push must report a classified stall phase, not silence.
 if grep -q "git-transport stall phase:" "$LOG"; then
   phase="$(grep -m1 "git-transport stall phase:" "$LOG" | sed 's/.*stall phase: //')"
@@ -76,6 +96,10 @@ else
   fail 2 "stall phase classification doesn't match a non-routable-address fixture"
   grep -n "stall phase" "$LOG"
 fi
+
+else
+  echo "SKIP[1,2]: this host rejected 10.255.255.1 fast instead of blackholing it (no 'transport HANG' in the run log), so no push was killed mid-transport and there is no stall phase to classify. Assertion 3 still runs."
+fi  # end HANG guard
 
 # 3. The embedded fake credential must never appear in the log, even inside
 #    the echoed curl-trace excerpt.
