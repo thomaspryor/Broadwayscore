@@ -268,6 +268,23 @@ const VENUE_ALIASES = [
   // "BAM" to one canonical would collapse them, the exact failure class
   // BRO-243/venuesMatch exists to prevent. A listing venue of just "BAM"
   // with no stage name is genuinely ambiguous and should NOT auto-match.
+  // Shakespeare's Globe's outdoor main house — audit-duplicate-shows.js's own
+  // docstring already names "the Much Ado 2026 dup" (a real prior incident:
+  // one listing said "Globe Theatre", the other "Shakespeare's Globe", 2-day
+  // opening-date gap let the temporal guard treat them as separate) as the
+  // motivating case, but no alias was ever added. Confirmed 2026-09-13:
+  // as-you-like-it-globe-west-end-2026 ("Shakespeare's Globe") vs the
+  // discovery-recreated as-you-like-it-globe-off-west-end-2026 ("Globe
+  // Theatre") — same TodayTix listing (id 27568) — split real critic reviews
+  // (Daily Mail, London Theatre) onto the wrong page via
+  // rebuild-all-reviews.js's cross-show URL dedup. Anchored so it never
+  // touches the Globe's SEPARATE indoor stage, "Sam Wanamaker Playhouse"
+  // (its own distinct string in shows.json today — deep-azure-globe-west-
+  // end-2026 et al — never matches either pattern below).
+  {
+    canonical: 'shakespeares globe',
+    matches: [/shakespeare.?s\s*globe/i, /^\s*globe\s*theatre?\s*$/i],
+  },
 ];
 
 /**
