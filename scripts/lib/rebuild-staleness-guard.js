@@ -49,4 +49,21 @@ function findMissingScoreableShows(scoreableShowIds, reviewsShowIds) {
   return [...missing].sort();
 }
 
-module.exports = { shouldRetryForStaleCheckout, findMissingScoreableShows };
+/**
+ * BRO-3127: file contents written whenever findMissingScoreableShows() finds
+ * at least one genuinely-missing show, regardless of which branch
+ * check-rebuild-staleness.js's caller takes next (fail-loud / forced-override
+ * / auto-recovery) — consumed by rebuild-fast.yml/rebuild-reviews.yml's
+ * "Revert public data for shows flagged by staleness guard" step, now that
+ * those workflows' downstream regeneration/publish steps run even when this
+ * guard fires (see that comment for why a blanket regenerate would otherwise
+ * republish the flagged show's own incomplete state). One id per line.
+ *
+ * @param {string[]} missingShowIds
+ * @returns {string}
+ */
+function formatMissingShowsFile(missingShowIds) {
+  return (missingShowIds || []).join('\n') + '\n';
+}
+
+module.exports = { shouldRetryForStaleCheckout, findMissingScoreableShows, formatMissingShowsFile };
