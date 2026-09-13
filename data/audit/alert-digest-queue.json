@@ -469,31 +469,6 @@
     "queuedAt": "2026-09-11T21:24:26.814Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 23 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34713658745",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34713658745)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34636725678)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "23"
-      }
-    ],
-    "queuedAt": "2026-09-12T19:25:34.018Z"
-  },
-  {
     "conditionKey": "opening-night-stale-upcoming-tag-the-human-voice-the-seven-deadly-sins-west-end-2026",
     "title": "Stale 'upcoming' tag on The Human Voice / The Seven Deadly Sins",
     "description": "the-human-voice-the-seven-deadly-sins-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --apply",
@@ -641,5 +616,30 @@
       }
     ],
     "queuedAt": "2026-09-13T18:43:23.760Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34783273087",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34783273087)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34776095791)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      }
+    ],
+    "queuedAt": "2026-09-13T21:26:28.297Z"
   }
 ]
