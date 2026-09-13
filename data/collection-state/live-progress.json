@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-09-13T23:34:21.468Z",
-  "processed": 164,
-  "failed": 1424,
+  "updatedAt": "2026-09-13T23:59:43.022Z",
+  "processed": 168,
+  "failed": 1469,
   "successRate": "10.3%",
   "tierBreakdown": {
-    "playwright": 83,
+    "playwright": 85,
     "amp": 15,
-    "browserbase": 12,
+    "browserbase": 13,
     "directCookies": 8,
     "scrapingbee": 21,
-    "brightdata": 21,
+    "brightdata": 22,
     "archiveToday": 0,
-    "archive": 27
+    "archive": 28
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-09-13T22:39:26.577Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-13T22:42:25.401Z",
-      "event": "bb-session",
-      "session": "b5fcdde4",
-      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
-    },
-    {
-      "t": "2026-09-13T22:50:32.729Z",
-      "event": "bb-session",
-      "session": "8c6b5504",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-13T22:50:33.597Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-13T22:53:33.910Z",
-      "event": "bb-session",
-      "session": "8d8bccf3",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
-    {
-      "t": "2026-09-13T22:53:34.679Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-13T23:11:27.723Z",
-      "event": "bb-session",
-      "session": "cbbc5da5",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-13T23:11:32.463Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-09-13T23:11:51.938Z",
       "event": "bb-session",
@@ -122,6 +78,51 @@
     },
     {
       "t": "2026-09-13T23:24:21.165Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-13T23:51:43.339Z",
+      "event": "bb-session",
+      "session": "ee0f69ff",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-13T23:51:52.023Z",
+      "event": "bb-session",
+      "session": "67bfab6c",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-13T23:54:16.585Z",
+      "event": "bb-session",
+      "session": "101fd6f7",
+      "url": "https://www.thestage.co.uk/reviews/the-children-review-lyric-hammersmith-london"
+    },
+    {
+      "t": "2026-09-13T23:54:17.439Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-13T23:55:18.995Z",
+      "event": "bb-session",
+      "session": "2e228f74",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-13T23:55:19.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-13T23:57:52.086Z",
+      "event": "bb-session",
+      "session": "832e3926",
+      "url": "https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhous"
+    },
+    {
+      "t": "2026-09-13T23:57:53.281Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
