@@ -435,3 +435,48 @@ describe('decideOwnershipDrops — same-show hardening (BRO-3092 code review)', 
     assert.equal(drops[0].kind, 'same-show');
   });
 });
+
+describe('decideOwnershipDrops — scheme/www URL-identity gap (BRO-3249, 3rd resurrection)', () => {
+  // The 2026-09-13 recurrence: scrape-dtli-show-score.yml's extractor wrote
+  // this file via review-write-guard.js's checkUrlCollision, which uses
+  // normalizeUrl (scheme+www-agnostic) and correctly matched it to the
+  // incumbent's https:// URL, stamping duplicateOf. But sameShowUrlSiblings
+  // used to key on sameUrlKey (lowercase + fragment/trailing-slash strip
+  // ONLY — no scheme/www normalization), found zero same-show siblings for
+  // the http:// variant, and returned before the criticName check ever ran.
+  // All prior tests in this file use an identical URL string on both sides,
+  // so none of them exercised this actual gap.
+  const HTTPS_URL = 'https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html';
+  const HTTP_URL = 'http://online.wsj.com/article/SB10001424052702303411604575168152141751426.html';
+  const SHOW3 = 'the-addams-family-2010';
+
+  test('drops a re-created file whose URL matches a sibling only after scheme normalization', () => {
+    writeFile(SHOW3, 'wsj--terry-teachout.json', {
+      url: HTTPS_URL, outletId: 'wsj', criticName: 'Terry Teachout', assignedScore: 63,
+    });
+    // criticName: null (not the string "Unknown") — the actual shape
+    // review-write-guard.js's URL-collision stamp writes; normalizeCritic
+    // treats both the same, so this was never the part that was broken.
+    const added = writeFile(SHOW3, 'wsj--unknown.json', {
+      url: HTTP_URL, outletId: 'wsj', criticName: null,
+      duplicateOf: 'wsj--terry-teachout.json', duplicateReason: 'url-collision-detected-at-write',
+      contentTier: 'excerpt', dtliExcerpt: 'If you’re a New Yorker...',
+    });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1, 'http vs https of the same article must still be recognized as the same-show duplicate');
+    assert.equal(drops[0].kind, 'same-show');
+    assert.equal(drops[0].owner.file, 'wsj--terry-teachout.json');
+  });
+
+  test('drops a re-created file whose URL matches a sibling only after www normalization', () => {
+    writeFile(SHOW3, 'wsj--terry-teachout.json', {
+      url: 'https://www.online.wsj.com/article/x.html', outletId: 'wsj', criticName: 'Terry Teachout',
+    });
+    const added = writeFile(SHOW3, 'wsj--unknown.json', {
+      url: 'https://online.wsj.com/article/x.html', outletId: 'wsj', criticName: 'Unknown',
+    });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1);
+    assert.equal(drops[0].kind, 'same-show');
+  });
+});
