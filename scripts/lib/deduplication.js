@@ -190,6 +190,15 @@ function slugify(title) {
     .toLowerCase()
     .normalize('NFKD').replace(/[\u0300-\u036f]/g, '') // Strip diacritics (é→e)
     .replace(/[&]/g, 'and')
+    // "/" is a word separator ("Electra/Persona"), not punctuation to drop —
+    // without this, slugify("Electra/Persona") = "electrapersona" while
+    // slugify("Electra / Persona") = "electra-persona" (the surrounding
+    // spaces survive to \s+->'-' below; a bare "/" has none), so the same
+    // production discovered two ways got two unrelated slugs and every
+    // slug/ID-based dup check in checkForDuplicate() missed the pair
+    // (electra-persona-west-end-2026 / electrapersona-west-end-2026,
+    // BRO-3191, 2026-09-12/13).
+    .replace(/\//g, ' ')
     .replace(/[^a-z0-9\s-]/g, '') // Strip everything except alphanumeric, spaces, hyphens
     .replace(/\s+/g, '-')
     .replace(/^-+|-+$/g, '')
@@ -250,8 +259,12 @@ function normalizeTitle(title) {
     .replace(/^(?:[a-z][a-z0-9.\-]*\s+){0,2}[a-z][a-z0-9.\-]*['’]s\s+(?:the\s+|a\s+|an\s+)?/i, '')
     // Re-strip leading article (in case the possessive removal exposed one)
     .replace(/^(the|a|an)\s+/i, '')
+    // "/" is a word separator, not punctuation to drop — see slugify()'s
+    // matching comment (BRO-3191). Must run before the punctuation strip
+    // below, which would otherwise concatenate the words on either side.
+    .replace(/\//g, ' ')
     // Clean up punctuation and extra spaces
-    .replace(/[!?'":\-–—,\.+\/]/g, '')
+    .replace(/[!?'":\-–—,\.+]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -442,10 +455,34 @@ function isMultiProduction(newShow, existing) {
   // (renter company ≡ host venue, e.g. The New Group ≡ Signature Center).
   const venuesMatch = newVenueSegs.some(a => existVenueSegs.some(b =>
     a.norm === b.norm || (a.alias && a.alias === b.alias)));
-  const venuesKnownDifferent =
+  let venuesKnownDifferent =
     newVenueSegs.length > 0 &&
     existVenueSegs.length > 0 &&
     !venuesMatch;
+  // Exact-title + exact-previewsStartDate override (BRO-3191, 2026-09-13):
+  // electra-persona-west-end-2026 ("National Theatre", previewsStartDate
+  // 2026-08-19) vs the discovery-recreated electrapersona-west-end-2026
+  // ("Lyttelton Theatre" — one of the National's own auditoria, previewsStartDate
+  // also 2026-08-19) kept getting classified as separate productions because
+  // no VENUE_ALIASES entry links a specific NT auditorium to the bare site
+  // name — and unlike Shakespeare's Globe (single main house, aliased above),
+  // the National genuinely runs 3 DIFFERENT concurrent shows across Olivier/
+  // Lyttelton/Dorfman, so blanket-aliasing "National Theatre" to any one of
+  // them would recreate the exact BAM false-positive class this file already
+  // guards against. Two truly independent productions of the identically-
+  // titled show previewing on the identical calendar date is not a real-world
+  // coincidence — validate-data.js already flags this exact pairing as
+  // "possible cloned date; verify" (scripts/validate-data.js) but only as a
+  // post-hoc warning, never as a block. Operationalize that same signal here,
+  // scoped narrowly (both dates present, both equal, EXACT normalized-title
+  // equality — not fuzzy) to avoid widening the venue-mismatch escape hatch
+  // for anything less certain.
+  if (venuesKnownDifferent &&
+      newShow.previewsStartDate && existing.previewsStartDate &&
+      newShow.previewsStartDate === existing.previewsStartDate &&
+      normalizeTitle(newShow.title) === normalizeTitle(existing.title)) {
+    venuesKnownDifferent = false;
+  }
   if (newCat !== existingCat && getMarketPool(newCat) === getMarketPool(existingCat)) {
     if (venuesKnownDifferent) {
       return true; // Different confirmed venues = legitimate transfer
