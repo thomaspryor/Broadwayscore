@@ -63,9 +63,21 @@ const warnedMessages = new Set();
 
 // logFn must never be able to convert a SUCCESSFUL cmux call into a failure:
 // the warning is diagnostic, the command already ran.
-function warnOnce(logFn, message) {
-  if (warnedMessages.has(message)) return;
-  warnedMessages.add(message);
+//
+// `key` defaults to `message` for this file's original 2-arg callers (the
+// auth-retry warnings below, whose message text IS a stable, enum-like
+// identity). A caller whose message embeds data that varies call-to-call
+// passes an explicit, stable `key` instead — listWorkspaces()'s parse-anomaly
+// warning is the case that needed this (BRO-2995, codex ship-check finding):
+// its message interpolates raw/parsed line counts that differ on every call
+// as the real open-workspace count changes, so deduping on the literal
+// message would never actually fire (cmux-launch.js's pollUntil re-lists
+// every few seconds during launch verification — a persistent format change
+// would otherwise flood the log for the duration of every launch attempt
+// fleet-wide instead of warning once per process).
+function warnOnce(logFn, message, key = message) {
+  if (warnedMessages.has(key)) return;
+  warnedMessages.add(key);
   try { logFn(message); } catch { /* diagnostics must not break the caller */ }
 }
 
@@ -253,13 +265,26 @@ function listWorkspaces({ runFn = run } = {}) {
     // "a capacity reading can never block a dispatch." An observability gap
     // must not become an availability outage to fix itself. So this stays a
     // same-shape, never-throwing wrapper — the fix is making the anomaly
-    // LOUD (console.error, always) and INSPECTABLE (parseWorkspacesWithFailures
-    // is exported for any caller — e.g. a future health check — that wants
-    // to tell "confirmed empty" from "parse failure" for itself instead of
-    // trusting a bare [].
-    console.error(workspaces.length === 0
+    // LOUD and INSPECTABLE (parseWorkspacesWithFailures is exported for any
+    // caller — e.g. a future health check — that wants to tell "confirmed
+    // empty" from "parse failure" for itself instead of trusting a bare []).
+    const totalFailure = workspaces.length === 0;
+    const message = totalFailure
       ? `[cmux-workspaces] listWorkspaces(): cmux printed ${rawLineCount} non-blank line(s) but none parsed as a workspace — this looks like a PARSE FAILURE (truncated output, a reworded cmux format, or a crash mid-write), not a genuinely empty workspace list (BRO-2995). Returning [] anyway; callers that already treat [] as fail-safe uncertainty are unaffected. Call parseWorkspacesWithFailures() directly for the raw counts.`
-      : `[cmux-workspaces] listWorkspaces(): ${parseFailures} of ${rawLineCount} raw line(s) from cmux did not parse as a workspace — returning the ${workspaces.length} that did; the open-workspace list may be incomplete (BRO-2995).`);
+      : `[cmux-workspaces] listWorkspaces(): ${parseFailures} of ${rawLineCount} raw line(s) from cmux did not parse as a workspace — returning the ${workspaces.length} that did; the open-workspace list may be incomplete (BRO-2995).`;
+    // warnOnce, not a bare console.error (codex ship-check findings, both
+    // fixed by reusing this file's own existing pattern):
+    //  (1) wraps the log call in try/catch — a replaced/broken console.error
+    //      must not itself become a NEW throw on this uncaught-listWorkspaces()
+    //      dispatch path;
+    //  (2) dedupes per process by ANOMALY CATEGORY (the key below), not the
+    //      literal message — cmux-launch.js's pollUntil re-lists every few
+    //      seconds during launch verification, and the interpolated counts
+    //      differ call to call as real workspaces open/close, so deduping on
+    //      the exact message would never actually fire and a persistent
+    //      format change would flood the log for the duration of every
+    //      launch attempt fleet-wide.
+    warnOnce(console.error, message, totalFailure ? 'cmux-workspaces:parse-failure-total' : 'cmux-workspaces:parse-failure-partial');
   }
   return workspaces;
 }
