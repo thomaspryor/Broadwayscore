@@ -50,6 +50,18 @@ function freshnessMsFor(show, lastEntry, { freshnessHours = 12, now = Date.now()
   const closed = show && show.status === 'closed';
   // A closed show that audited clean won't get new reviews — re-check only yearly
   // (effectively one-time) so the back-catalogue grind doesn't burn credits forever.
+  //
+  // Known tradeoff (BRO-392 3rd Codex adversarial pass): `lastEntry.gaps`
+  // here is the last TRUSTED value — if a refused (blast-radius-quarantined)
+  // run just found this closed-clean show suspicious, that suspicion is
+  // invisible here (the checkpoint's job is scheduling, not trust) and the
+  // show still gets the full 365d skip once its `checkedAt` refreshes. This
+  // is the SAME once-a-year cadence closed-clean shows already get under
+  // completely normal, never-refused operation — not a new gap this fix
+  // introduces — and the quarantine itself still surfaces promptly via
+  // routeAlert's independent 6h-cooldown alert (audit-show-review-gap.js),
+  // so a human isn't waiting a year to learn about it, only the next
+  // automated re-scrape is.
   if (closed && lastEntry && lastEntry.gaps === 0) return MAX_FRESHNESS_SKIP_MS; // 365d
   if (closed) return 14 * 24 * 60 * 60 * 1000; // 14d — retry closed shows that still had gaps
   if (inOpeningPriorityWindow(show, now)) {
@@ -60,12 +72,26 @@ function freshnessMsFor(show, lastEntry, { freshnessHours = 12, now = Date.now()
   return freshnessHours * 60 * 60 * 1000; // open/previews — re-check often for new reviews
 }
 
-// Checkpoint timestamp for sorting. Malformed/missing `at` → 0 (treated as
-// never-audited, i.e. maximum urgency) so a corrupt entry can't push a show
-// to the back of the queue via NaN comparisons.
+// Checkpoint timestamp for sorting. Prefers `checkedAt` — BRO-392: the show's
+// last AUDIT ATTEMPT, stamped unconditionally every run regardless of
+// whether the blast-radius guard later refused to trust the result — over
+// `at`, which is a TRUST timestamp that audit-show-review-gap.js's rollback
+// deliberately restores to its pre-quarantine value on a refused run (so
+// newsletter-preflight.js's completeness gate never reads stale data as
+// fresh). Sorting on `at` instead would make a chronically-risky show's
+// scheduling priority never advance — it would permanently read as "most
+// overdue" and dominate nearly every subsequent batch (the literal
+// starvation bug, observed 2026-09-07/08: the same ~9-10 shows recurred in
+// nearly every hourly run because `at` was the only timestamp and rollback
+// had to touch it). `checkedAt` gives scheduling its own clock that rollback
+// never needs to fudge. Legacy entries written before this field existed
+// fall back to `at`. Malformed/missing values → 0 (never-audited, maximum
+// urgency) so a corrupt entry can't push a show to the back of the queue via
+// NaN comparisons.
 function checkpointTs(entry) {
-  if (!entry || !entry.at) return 0;
-  const t = new Date(entry.at).getTime();
+  const raw = entry && (entry.checkedAt || entry.at);
+  if (!raw) return 0;
+  const t = new Date(raw).getTime();
   return Number.isFinite(t) ? t : 0;
 }
 

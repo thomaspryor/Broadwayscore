@@ -44,9 +44,11 @@ function writeJsonAtomic(filePath, obj) {
 
 /**
  * Pure merge: fold `entries` ({showId: entryObject | undefined}) into
- * `current` ({showId: entryObject}). A value of `undefined` deletes that id
- * (used by rollback for "never audited before this run — leave no stamp").
- * No I/O — the caller supplies `current`, already read under the lock.
+ * `current` ({showId: entryObject}). A value of `undefined` deletes that id.
+ * Used by saveCheckpointEntries (the per-show stamp / WE-alert hash update
+ * paths) — rollback has its own branching in applyCheckpointRollback below,
+ * not this function. No I/O — the caller supplies `current`, already read
+ * under the lock.
  */
 function mergeCheckpointEntries(current, entries) {
   const merged = { ...(current || {}) };
@@ -77,15 +79,43 @@ function saveCheckpointEntries(checkpointPath, entries) {
   });
 }
 
+// BRO-392: a rollback used to restore the PRE-quarantine (arbitrarily old)
+// `at` wholesale, and `at` was the ONLY timestamp compareAuditPriority had to
+// sort on — so a chronically-risky show's scheduling priority never
+// advanced, it permanently read as "most overdue", and it got re-selected
+// into nearly every subsequent hourly batch, re-tripping the blast-radius
+// guard and reddening the workflow run after run (observed: the same ~9-10
+// off-broadway shows, frozen at an early-August `at`, recurred in nearly
+// every run from 2026-09-07 onward).
+//
+// Two earlier attempts at this fix (a per-show rollback streak cap that let
+// the timestamp advance after N strikes) each introduced a new way to leak
+// untrusted or stale data into newsletter-preflight.js's hard completeness
+// gate (classifyGapEntry reads `at` + `uncollected` off this exact file — a
+// fresh `at` next to a zero or stale `uncollected` reads 'ok' and clears a
+// show to send). The actual fix is simpler: SEPARATE the two concerns that
+// were sharing one field. `checkedAt` (gap-audit-freshness.js's
+// checkpointTs) is scheduling-only — stamped unconditionally by the per-show
+// audit loop every run, refused or not — and rollback here never touches it.
+// `at`/`gaps`/`uncollected` stay exactly what they always were: the last
+// genuinely TRUSTED snapshot, fully restored (or left absent) on a refused
+// run, exactly like the original #923/#893 design, with zero new leak
+// surface. A chronically-risky show's `checkedAt` still advances every run
+// it's examined, so it ages out of "most overdue" on its own — no cap, no
+// streak, no extra state to get wrong.
+
 /**
  * Pure restore-vs-delete branching for a refused (blast-radius) run's
  * checkpoint rollback. For each id in `auditedIds`: if `checkpointAtStart`
  * had a pre-run entry for it, restore that entry (the show WAS audited
- * before, this run's stamp just isn't trustworthy); otherwise delete it
- * entirely (the show was never audited before this run, so leaving a stamp
- * behind — even a rolled-back one — would be inventing history). Extracted
- * per CLAUDE.md §15 so the branching is unit-testable without spinning up the
- * whole audit script.
+ * before, this run's TRUSTED fields — `at`/`gaps`/`uncollected` — just
+ * aren't trustworthy this time); otherwise delete it entirely (the show was
+ * never trusted before this run, so leaving trusted-looking fields behind
+ * would be inventing history). Either way, `checkedAt` — this run's real
+ * audit-attempt timestamp, already stamped in `current` before the guard
+ * ever ran — is always preserved, so scheduling keeps moving even though the
+ * trusted snapshot doesn't. Extracted per CLAUDE.md §15 so the branching is
+ * unit-testable without spinning up the whole audit script.
  *
  * @param {Object} current            checkpoint re-read fresh under the lock
  * @param {string[]} auditedIds       ids THIS run touched
@@ -95,8 +125,20 @@ function applyCheckpointRollback(current, auditedIds, checkpointAtStart) {
   const merged = { ...(current || {}) };
   const snapshot = checkpointAtStart || {};
   for (const id of auditedIds || []) {
-    if (Object.prototype.hasOwnProperty.call(snapshot, id)) merged[id] = snapshot[id];
-    else delete merged[id];
+    const checkedAt = merged[id] && merged[id].checkedAt;
+    if (Object.prototype.hasOwnProperty.call(snapshot, id)) {
+      // Null-safety: a persisted `null` entry is a valid (if odd) prior
+      // value — `{...null}` is a safe no-op spread (adversarial review
+      // finding: guards against a future reader adding a property access
+      // here without re-deriving this).
+      merged[id] = { ...snapshot[id], ...(checkedAt ? { checkedAt } : {}) };
+    } else if (checkedAt) {
+      // Never trusted before, but this run's scheduling stamp must still
+      // survive so the show doesn't look perpetually never-audited.
+      merged[id] = { checkedAt };
+    } else {
+      delete merged[id];
+    }
   }
   return merged;
 }
