@@ -24,6 +24,19 @@ data/audit/stage-latency.jsonl merge=union
 # picking one, so a race between two callers loses zero rows at the git
 # level (each JSON line is independent; duplicates are harmless to read).
 data/audit/alert-router-attempts.jsonl merge=union
+# Bot-only append log (BRO-3022), written by scripts/lib/breaker-transitions.js
+# from the two hourly spend-breaker checkers (check-sd-breaker.js,
+# check-bd-breaker.js) — one row per trip/recovery TRANSITION, so Sprint 3 can
+# answer "which days did this guard trip" (alert-ledger.json only ever held a
+# cumulative notifyCount per condition, which is why this file exists). Both
+# checkers run in the same job today, but they are separate processes and a
+# worktree session can run either by hand, so two sides independently appending
+# rows is a real conflict under a plain merge. Union is safe here by
+# construction: no reader aggregates duplicate keys (daysTripped() counts
+# DISTINCT days) and no reader trusts file order (every reader re-sorts by the
+# explicit `ts` field first) — the two disqualifiers audit-ledger-merge-attrs.js
+# names. The writer never prunes, so union cannot resurrect a deleted row.
+data/audit/breaker-transitions.jsonl merge=union
 # Bot-only append log (task #784/#752), written by scripts/lib/provider-
 # telemetry.js's recordProviderCall() from many separate CI runners/checkouts
 # (collect-review-texts.yml matrix, gather-reviews.js, opening-night-poller.js,
