@@ -115,6 +115,25 @@ jobs:
       # The ledger IS the detector's memory — a run that measures and does not
       # commit leaves the next run with the same two data points and the same
       # 'blind' verdict forever.
+      #
+      # BRO-2296: this one commit was losing its push race on 2026-08-31 and
+      # 2026-09-07 ("overall deadline 240s exceeded") because two of its four
+      # files (census-recall-status.json, serp-census-recall.json) were
+      # unaudited data/audit/ paths — enough on their own to disqualify push-
+      # with-retry.sh's Git Data API fallback for the WHOLE commit, forcing
+      # the slow local fetch+rebase+push path against main's constant churn.
+      # Fixed by registering all four files in core-data-merge-registry.js:
+      # the two snapshots as apiFallbackSafe (single-writer, full overwrite
+      # each run), and the two append-only ledgers (already 'active' with a
+      # real union-merge fn for the local PUSH_RECONCILE_MERGED_JSON path) as
+      # apiFallbackMerge — the SAME merge fn also opts into the Data API fast
+      # path. Deliberately NOT split into two commit steps (an earlier
+      # revision of this fix tried that and a Codex adversarial review caught
+      # the hazard: when step 1's push lands via the Data API fallback,
+      # push-with-retry.sh does `git reset --hard origin/main` to resync the
+      # local tree to the API-built commit — which would silently discard
+      # step 2's not-yet-committed working-tree edits to the trend/ledger
+      # files). Keeping one atomic commit avoids that entirely.
       - name: Commit recall report + trend ledger
         if: ${{ always() && !inputs.no_trend }}
         env:
@@ -124,13 +143,22 @@ jobs:
           # vanish silently. This opts into the post-rebase union re-merge; the
           # merger is registered in scripts/lib/reconcile-merged-json.js.
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # scripts/audit-push-retry-budgets.js flagged the default 240s/5-
+          # retries budget as fallback-early-trigger-unreachable: at 240s only
+          # ~2 attempts fund (each git-push hard-caps at 2*GIT_NET_TIMEOUT_SEC
+          # per BRO-2373's measurement), but the default fallback trigger is
+          # floor(3,(5+1)/2)=3 — unreachable before the deadline exhausts, so
+          # the now-eligible Git Data API fallback would never actually get a
+          # chance to run. Same fix already applied to commercial-rss-poll.yml's
+          # "Commit data changes" step (BRO-2811): raise the deadline so 3
+          # local attempts fund, AND lower the trigger below that boundary so
+          # the fallback still gets real budget instead of firing right as the
+          # deadline would have hit anyway. This step has ~1560s of job-timeout
+          # margin to spend (weekly cron, not hourly) so 420s costs nothing.
+          PUSH_DEADLINE_SEC: '420'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
         run: |
-          for f in data/audit/serp-census-recall.json \
-                   data/audit/census-recall-trend.jsonl \
-                   data/audit/census-recall-status.json \
-                   data/audit/scraper-spend-ledger.jsonl; do
-            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
-          done
+          bash scripts/lib/git-add-existing.sh data/audit/serp-census-recall.json data/audit/census-recall-trend.jsonl data/audit/census-recall-status.json data/audit/scraper-spend-ledger.jsonl
           if git diff --cached --quiet; then
             echo "No recall state to commit"
             exit 0

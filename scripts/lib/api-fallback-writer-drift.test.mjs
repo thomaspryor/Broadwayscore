@@ -106,14 +106,15 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) + 2 opening-night-checklist.yml files (BRO-2670) + 1 stale-announced-shows.json (BRO-2620) + 2 commercial-rss-poll.yml circuit-breaker files (BRO-2795) + 1 missed-broadcasts.json (BRO-2934) + 1 scraper-spend-daily-agg.jsonl (BRO-3008, pre-existing drift found and closed while fixing BRO-2699) + 2 outlet-registry-baseline files (BRO-2699) + 2 process-feedback.yml files (BRO-345) + 3 tight-cadence what-else follow-up files (BRO-345, opening-night-completeness-check.yml x2 + check-opening-night-drift.yml x1) + 2 check-corpus-drift.yml files (BRO-447, corpus-drift.json + churn-merge-coverage.json) + 3 commercial-weekly.yml files (BRO-2285, audit/commercial-data-history.json + recoupment-calibration-anchors.json + audit/commercial-data-audit.json what-else follow-up) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) + 2 opening-night-checklist.yml files (BRO-2670) + 1 stale-announced-shows.json (BRO-2620) + 2 commercial-rss-poll.yml circuit-breaker files (BRO-2795) + 1 missed-broadcasts.json (BRO-2934) + 1 scraper-spend-daily-agg.jsonl (BRO-3008, pre-existing drift found and closed while fixing BRO-2699) + 2 outlet-registry-baseline files (BRO-2699) + 2 process-feedback.yml files (BRO-345) + 3 tight-cadence what-else follow-up files (BRO-345, opening-night-completeness-check.yml x2 + check-opening-night-drift.yml x1) + 2 check-corpus-drift.yml files (BRO-447, corpus-drift.json + churn-merge-coverage.json) + 3 commercial-weekly.yml files (BRO-2285, audit/commercial-data-history.json + recoupment-calibration-anchors.json + audit/commercial-data-audit.json what-else follow-up) + 2 audit-census-recall.yml files (BRO-2296, census-recall-status.json + serp-census-recall.json) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 37);
+  assert.equal(publicSafe.length, 39);
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
     'audit/autonomous-recheck-ledger.jsonl',
     'audit/bd-circuit-breaker.json',
+    'audit/census-recall-status.json',
     'audit/churn-merge-coverage.json',
     'audit/commercial-data-audit.json',
     'audit/commercial-data-history.json',
@@ -142,6 +143,7 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/roundup-url-mismatch-lifetime.json',
     'audit/scraper-spend-daily-agg.jsonl',
     'audit/sd-circuit-breaker.json',
+    'audit/serp-census-recall.json',
     'audit/slug-mismatch-lifetime.json',
     'audit/stale-announced-shows.json',
     'audit/time-to-publish-sla.json',
