@@ -190,6 +190,30 @@ const EXEMPT_LEDGERS = [
       'card that failed once, or mask a real 2-in-a-row failure — with a bar this ' +
       'low (2), order corruption is not a marginal risk.',
   },
+  {
+    file: 'data/audit/scraper-spend-daily-agg.jsonl',
+    reason:
+      '2026-09-13 (BRO-3092): became tracked and reddened this gate on main. Its ' +
+      'writer, check-provider-spend.js, is not an appender at all — it does a ' +
+      'KEYED day-replace (`[...existingAgg.filter((r) => r.day !== DAY), ' +
+      '...todaysAggRows]` at :175, then a whole-file writeFileSync at :189), so ' +
+      'superseded rows for a re-recorded day are a REAL intentional deletion, ' +
+      'not the chronological ring-buffer trim this file says is non-' +
+      'disqualifying. That is the same shape as arm-yield-ledger.jsonl above. A ' +
+      'union recovery resurrects the superseded rows, leaving two different ' +
+      'credits figures under one (day, provider, workflow, script, fn) key, and ' +
+      'the writer only ever targets YESTERDAY — so nothing re-touches an older ' +
+      'day and the duplicate persists indefinitely rather than self-healing. ' +
+      'Verified there is no reader that would silently sum it today: grep for ' +
+      'the path across scripts/, src/, .github/ finds only its own writer, this ' +
+      'exemption, core-data-merge-registry.js:288 and a test-name string. But ' +
+      'summing per-day credits is the obvious future read of a SPEND series, ' +
+      'and union buys nothing here to trade against that: the launchd `git ' +
+      'merge --ff-only` outage this gate exists to prevent needs a locally-' +
+      'dirty copy, and this file is registered single-writer, written only by ' +
+      "CI's data-health-check.yml under one concurrency group " +
+      '(core-data-merge-registry.js:287-293), so it is never dirty locally.',
+  },
 ];
 
 const EXEMPT_LEDGER_PATHS = new Set(EXEMPT_LEDGERS.map((e) => e.file));

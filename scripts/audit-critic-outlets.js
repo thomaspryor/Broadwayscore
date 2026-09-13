@@ -102,6 +102,21 @@ const KNOWN_MULTI_OUTLET_PAIRS = {
   'natasha-tripney': ['standard'],
   'john-anderson': ['wsj'],
   'louise-penn': ['plays-international', 'broadwayworld', 'thereviewshub'],
+  // Added 2026-09-13 (BRO-3092). Both verified the way the entries above were —
+  // by fetching the review URL and reading the publisher's own byline markup,
+  // not by inferring from the name:
+  //   theguardian.com/stage/2003/may/05/theatre.artsfeatures2 (Gypsy 2003)
+  //     serves data-gu-name="byline" -> "Edward Karam". The file's star rating
+  //     also came from originalScoreSource:'guardian-api', so the Guardian's
+  //     own API served this piece. Karam's other 10 corpus reviews are at
+  //     off-off-online, which is what put him under the 10% share threshold.
+  //   observer.co.uk/culture/dance/article/the-car-man-blood-sweat-and-gears-
+  //     from-matthew-bourne serves <meta name="author" content="Sarah Crompton">
+  //     and a JSON-LD author url of observer.co.uk/contributor/sarah-crompton.
+  //     Crompton is the Observer's dance critic; her corpus volume sits at
+  //     whatsonstage, hence the 2% share.
+  'edward-karam': ['guardian'],
+  'sarah-crompton': ['observer'],
 };
 
 const MIN_REVIEWS_FOR_REGISTRY = 3;
@@ -153,7 +168,36 @@ function scanReviewTexts() {
         // outlet spread with noise from the SAME underlying review, the same
         // reasoning review-normalization.js already applies when picking
         // merge targets.
-        if (data.wrongAttribution || data.wrongProduction || data.wrongShow || data.duplicateOf) {
+        //
+        // fabricatedEntry joins them for the same reason (BRO-3092), though by a
+        // narrower argument than the flags above. Of the 205 fabricatedEntry
+        // files, exactly ONE is a misattribution outright — marie-and-rosetta-
+        // west-end-2026/thestage--london-theatre-direct-limited.json, stamped
+        // `fabricatedReason: 'Collection script misidentified london-theatre-
+        // direct as the-stage'`, i.e. wrongAttribution by another name, with
+        // url:null and a criticName of "London Theatre Direct Limited". The
+        // other 204 name a plausible, usually CORRECT affiliation (178 "URL
+        // returns 404, no fullText, generic fallback", 24 web-search-era
+        // fabrications, 2 user-verified non-existent reviews) — Hilton Als
+        // really did write for the New Yorker.
+        //
+        // They are skipped anyway because the record never ESTABLISHED that
+        // affiliation: its URL 404s or was invented, so it is not independent
+        // evidence of where a critic publishes, only a restatement of what the
+        // fabricating step already assumed. Counting it lets a manufactured row
+        // vouch for itself.
+        //
+        // Measured delta of this skip against the live corpus (bare write mode,
+        // HEAD vs this change): 632 -> 629 critics, 4 flags removed, 2 critics
+        // lose a knownOutlet, 0 primaryOutlet changes, 0 isFreelancer flips.
+        // The 3 departures (miriam-gillinson, jonas-schwartz, paul-raven) each
+        // fall to 2 real reviews, under MIN_REVIEWS_FOR_REGISTRY — Guard G in
+        // review-file-writer.js gates on `entry &&`, so it fails OPEN for them
+        // rather than flagging. jesse-green loses `newyorker` but is
+        // isFreelancer, which Guard G skips anyway; london-theatre-direct-
+        // limited loses `thestage`, which is the guard tightening correctly.
+        if (data.wrongAttribution || data.wrongProduction || data.wrongShow
+          || data.duplicateOf || data.fabricatedEntry === true) {
           skippedFiles++;
           continue;
         }
@@ -238,6 +282,23 @@ function buildRegistry(rawCritics) {
     // Flag suspicious reviews: critic at outlet with <10% share and 10+ total reviews
     if (data.totalReviews >= SUSPICIOUS_MIN_REVIEWS && !isFreelancer) {
       for (const review of data.reviews) {
+        // A pair in KNOWN_MULTI_OUTLET_PAIRS was adjudicated by reading the
+        // review URL's own domain — the strongest evidence this audit can have
+        // that an attribution is real. Until BRO-3092 that table only widened
+        // `knownOutlets` (Guard G, the WRITE path) and did nothing here, so a
+        // pair could be verified and STILL red this gate on every run, with
+        // the audit baseline as the only place to record the verdict. Suppress
+        // here too, so one table row is the single durable home for
+        // "I checked this attribution and it is correct".
+        //
+        // Side effect, deliberate: one row already in critic-outlets-baseline
+        // .json (alice-saville at timeout-london, sylvia-off-west-end-2026)
+        // stops being produced, and --update-baseline's full overwrite will
+        // drop it. That is the intended direction — the pair table is a
+        // stronger record than a baseline key, because it states WHY the
+        // attribution is accepted. It does mean deleting a table row no longer
+        // has a baseline backstop: the gate goes red on the next run instead.
+        if (manualPairs.includes(review.outlet)) continue;
         const outletShare = data.outletCounts[review.outlet] / data.totalReviews;
         if (outletShare < SUSPICIOUS_SHARE_THRESHOLD) {
           flaggedReviews.push({
