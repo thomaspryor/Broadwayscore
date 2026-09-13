@@ -260,6 +260,11 @@ function findMissedBroadcasts({
       // Suppressed regardless of age — the Round-up already sent subscribers
       // this content, so there is nothing left to page about.
       alertable: roundupCovered ? false : age <= ageBound,
+      // Exposed so callers (alert text, digest summaries) never re-derive the
+      // category rule themselves — the CLI printing a stale "21 days" for a
+      // West End show that actually ages out at 7 was exactly the bug this
+      // field exists to prevent.
+      ageBoundDays: ageBound,
       draftUrl: ((sentShows || {})[s.id] || {}).draftUrl || null,
     });
   }

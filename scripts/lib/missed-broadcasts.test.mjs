@@ -216,6 +216,19 @@ test('owner decision 2026-09-13: a stuck West End draft stops paging past 7 days
   assert.strictEqual(missed[0].alertable, false, 'stops paging past 7d even though draft-stuck normally bypasses roundup suppression');
 });
 
+test('owner decision 2026-09-13: West End 7d boundary — exactly 7d still pages, 8d does not', () => {
+  const at7 = show({ openingDate: '2026-08-31' }); // exactly 7d before NOW
+  const missed7 = find({ shows: [at7] });
+  assert.strictEqual(missed7[0].daysSinceOpening, 7);
+  assert.strictEqual(missed7[0].ageBoundDays, 7);
+  assert.strictEqual(missed7[0].alertable, true, '7d is still within the bound (age <= bound)');
+
+  const at8 = show({ openingDate: '2026-08-30' }); // exactly 8d before NOW
+  const missed8 = find({ shows: [at8] });
+  assert.strictEqual(missed8[0].daysSinceOpening, 8);
+  assert.strictEqual(missed8[0].alertable, false, '8d is one day past the bound');
+});
+
 test('owner decision 2026-09-13: Broadway keeps the 21d bound — no equivalent weekly digest safety net', () => {
   const bway = show({ id: 'y-2026', category: 'broadway', openingDate: '2026-08-28' }); // 10d
   const withAgg = reviewsFor('y-2026', 20).map((r, i) => (i === 0 ? { ...r, dtliThumb: 'up' } : r));
