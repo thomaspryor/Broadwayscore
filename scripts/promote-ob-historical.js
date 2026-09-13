@@ -49,6 +49,7 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 // both of these plus venuesMatch().
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { withMarketSuffix } = require('./lib/market-slug');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -77,7 +78,9 @@ function slugify(s) {
 function buildShowEntry(r) {
   const titleSlug = slugify(r.title);
   const year = String((r.parsed?.titleParse?.year) || new Date().getFullYear());
-  const id = `${titleSlug}-off-broadway-${year}`;
+  // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
+  // class as BRO-3237 if titleSlug already carries "-off-broadway".
+  const id = `${withMarketSuffix(titleSlug, 'off-broadway')}-${year}`;
   const opening = r.parsed?.dates?.openingDate || r.parsed?.dates?.firstPreview || null;
   const closing = r.parsed?.dates?.closingDate || null;
   return {

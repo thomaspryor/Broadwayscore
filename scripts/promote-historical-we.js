@@ -26,6 +26,7 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
 const { foldDiacritics } = require('./lib/title-match');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { withMarketSuffix } = require('./lib/market-slug');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `promote-historical-we.js — Promote corroborated WE historical candidates into shows.json.
@@ -68,7 +69,9 @@ function slugify(s) {
 function buildShowEntry(candidate) {
   const titleSlug = slugify(candidate.title);
   const [seasonStartYear] = candidate.season.split('-');
-  const id = `${titleSlug}-west-end-${seasonStartYear}`;
+  // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
+  // class as BRO-3237 if titleSlug already carries "-west-end".
+  const id = `${withMarketSuffix(titleSlug, 'west-end')}-${seasonStartYear}`;
   return {
     id,
     title: candidate.title,

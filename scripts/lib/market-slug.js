@@ -26,12 +26,18 @@ function stripMarketSuffix(slug) {
 
 /**
  * Build a market-suffixed slug, idempotently. `category` with no entry in
- * CATEGORY_SUFFIX (e.g. 'broadway') returns the bare base slug unchanged.
+ * CATEGORY_SUFFIX (e.g. 'broadway', or undefined) returns `baseSlug`
+ * completely untouched — no stripping — matching the pre-fix behavior for
+ * those categories. Stripping must only ever happen on the branch that is
+ * about to re-append a suffix; otherwise a Broadway show whose own title
+ * happens to end in "West End" or "Off Broadway" would get silently
+ * truncated, which is the same class of corruption this fix closes, just
+ * inverted (caught in review, BRO-3237).
  */
 function withMarketSuffix(baseSlug, category) {
-  const stripped = stripMarketSuffix(baseSlug);
   const suffix = CATEGORY_SUFFIX[category];
-  return suffix ? `${stripped}-${suffix}` : stripped;
+  if (!suffix) return baseSlug;
+  return `${stripMarketSuffix(baseSlug)}-${suffix}`;
 }
 
 module.exports = { stripMarketSuffix, withMarketSuffix, MARKET_SUFFIXES };

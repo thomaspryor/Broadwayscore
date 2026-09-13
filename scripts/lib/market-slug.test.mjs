@@ -27,6 +27,14 @@ test('withMarketSuffix leaves broadway-category slugs unsuffixed', () => {
   assert.equal(withMarketSuffix('hamilton', undefined), 'hamilton');
 });
 
+test('withMarketSuffix does not strip a suffix-shaped title for a category with no suffix mapping', () => {
+  // A Broadway (or otherwise unmapped-category) show whose own title happens
+  // to end in a market phrase must NOT be truncated -- only the branch that
+  // is about to re-append a suffix may strip one (caught in review, BRO-3237).
+  assert.equal(withMarketSuffix('the-real-west-end', 'broadway'), 'the-real-west-end');
+  assert.equal(withMarketSuffix('an-off-broadway-story', undefined), 'an-off-broadway-story');
+});
+
 test('stripMarketSuffix removes only a trailing market suffix, not mid-title occurrences', () => {
   assert.equal(stripMarketSuffix('beetlejuice-the-musical-west-end'), 'beetlejuice-the-musical');
   assert.equal(stripMarketSuffix('west-end-girls'), 'west-end-girls');

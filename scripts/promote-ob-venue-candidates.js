@@ -41,6 +41,7 @@ const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob
 const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
+const { withMarketSuffix } = require('./lib/market-slug');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
@@ -162,7 +163,9 @@ function buildShowEntry(candidate) {
   const year = new Date().getFullYear();
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const category = resolveCandidateCategory(candidate);
-  const id = `${slugBase}-off-broadway-${year}`;
+  // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
+  // class as BRO-3237 if slugBase already carries "-off-broadway".
+  const id = `${withMarketSuffix(slugBase, 'off-broadway')}-${year}`;
   return {
     id,
     title: candidate.title,
@@ -360,7 +363,9 @@ function buildOffBroadwayAggregatorShowEntry(candidate) {
   const year = dm ? Number(dm[1]) : new Date().getFullYear();
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const id = `${slugBase}-off-broadway-${year}`;
+  // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
+  // class as BRO-3237 if slugBase already carries "-off-broadway".
+  const id = `${withMarketSuffix(slugBase, 'off-broadway')}-${year}`;
   return {
     id,
     title: candidate.title,
