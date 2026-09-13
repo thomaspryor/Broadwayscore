@@ -435,3 +435,81 @@ describe('decideOwnershipDrops — same-show hardening (BRO-3092 code review)', 
     assert.equal(drops[0].kind, 'same-show');
   });
 });
+
+describe('decideOwnershipDrops — scheme/www URL-identity gap (BRO-3249, 3rd resurrection)', () => {
+  // The 2026-09-13 recurrence: scrape-dtli-show-score.yml's extractor wrote
+  // this file via review-write-guard.js's checkUrlCollision, which uses
+  // normalizeUrl (scheme+www-agnostic) and correctly matched it to the
+  // incumbent's https:// URL, stamping duplicateOf. But sameShowUrlSiblings
+  // used to key on sameUrlKey (lowercase + fragment/trailing-slash strip
+  // ONLY — no scheme/www normalization), found zero same-show siblings for
+  // the http:// variant, and returned before the criticName check ever ran.
+  // All prior tests in this file use an identical URL string on both sides,
+  // so none of them exercised this actual gap.
+  const HTTPS_URL = 'https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html';
+  const HTTP_URL = 'http://online.wsj.com/article/SB10001424052702303411604575168152141751426.html';
+  const SHOW3 = 'the-addams-family-2010';
+
+  test('drops a re-created file whose URL matches a sibling only after scheme normalization', () => {
+    writeFile(SHOW3, 'wsj--terry-teachout.json', {
+      url: HTTPS_URL, outletId: 'wsj', criticName: 'Terry Teachout', assignedScore: 63,
+    });
+    // criticName: null (not the string "Unknown") — the actual shape
+    // review-write-guard.js's URL-collision stamp writes; normalizeCritic
+    // treats both the same, so this was never the part that was broken.
+    const added = writeFile(SHOW3, 'wsj--unknown.json', {
+      url: HTTP_URL, outletId: 'wsj', criticName: null,
+      duplicateOf: 'wsj--terry-teachout.json', duplicateReason: 'url-collision-detected-at-write',
+      contentTier: 'excerpt', dtliExcerpt: 'If you’re a New Yorker...',
+    });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1, 'http vs https of the same article must still be recognized as the same-show duplicate');
+    assert.equal(drops[0].kind, 'same-show');
+    assert.equal(drops[0].owner.file, 'wsj--terry-teachout.json');
+  });
+
+  test('drops a re-created file whose URL matches a sibling only after www normalization', () => {
+    writeFile(SHOW3, 'wsj--terry-teachout.json', {
+      url: 'https://www.online.wsj.com/article/x.html', outletId: 'wsj', criticName: 'Terry Teachout',
+    });
+    const added = writeFile(SHOW3, 'wsj--unknown.json', {
+      url: 'https://online.wsj.com/article/x.html', outletId: 'wsj', criticName: 'Unknown',
+    });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1);
+    assert.equal(drops[0].kind, 'same-show');
+  });
+
+  // Adversarial-review finding (Codex, BRO-3249): widening the same-show branch
+  // to normalizeUrl-equivalent siblings reaches real corpus files that never
+  // matched under the old exact/weak key — including at least one,
+  // charlie-and-the-chocolate-factory-2017/wsj--unknown.json, where the
+  // unknown-byline file carries substantive real content and the named sibling
+  // has none. This must never be dropped.
+  test('never drops an unknown-byline file with substantive content when the named sibling is near-empty', () => {
+    writeFile(SHOW3, 'wsj--edward-rothstein.json', {
+      url: 'https://www.wsj.com/articles/charlie-review-empty-calories-1493152575',
+      outletId: 'wsj', criticName: 'Edward Rothstein', contentTier: 'excerpt',
+      // no fullText — near-empty, mirrors the real corpus record
+    });
+    const added = writeFile(SHOW3, 'wsj--unknown.json', {
+      url: 'https://www.wsj.com/articles/charlie-review-empty-calories-1493152575?gaa_at=eafs&gaa_n=x&gaa_ts=y&gaa_sig=z',
+      outletId: 'wsj', criticName: 'Unknown', contentTier: 'complete',
+      fullText: 'x'.repeat(600), // clears SUBSTANTIVE_BODY_CHARS (500)
+    });
+    assert.equal(decideOwnershipDrops([added], tmpDir).length, 0,
+      'a richer unknown-byline record must survive even when a named sibling shares its normalized URL');
+  });
+
+  test('still drops when both sides are thin (richness guard does not mask the original incident)', () => {
+    writeFile(SHOW3, 'wsj--terry-teachout.json', {
+      url: HTTPS_URL, outletId: 'wsj', criticName: 'Terry Teachout', contentTier: 'excerpt',
+    });
+    const added = writeFile(SHOW3, 'wsj--unknown.json', {
+      url: HTTP_URL, outletId: 'wsj', criticName: null, contentTier: 'excerpt',
+      fullText: 'WSJ.com is available in the following editions and languages',
+    });
+    const drops = decideOwnershipDrops([added], tmpDir);
+    assert.equal(drops.length, 1, 'a thin/junk unknown-byline file must still be dropped');
+  });
+});

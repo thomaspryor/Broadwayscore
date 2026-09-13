@@ -46,8 +46,8 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { sameUrlKey } = require('./lib/review-url-collision.js');
-const { normalizeCritic } = require('./lib/review-normalization');
+const { normalizeCritic, normalizeUrl } = require('./lib/review-normalization');
+const { SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS } = require('./lib/review-write-guard');
 
 const USAGE = `validate-added-review-ownership.js — post-rebase cross-show ownership gate.
 
@@ -199,6 +199,24 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
     );
     if (!liveNamed) continue;
 
+    // CONTENT-RICHNESS GUARD (BRO-3249 hardening, adversarial review finding).
+    // Widening this branch to normalizeUrl-equivalent siblings (above) pulls in
+    // real corpus files this branch could never previously reach — e.g.
+    // charlie-and-the-chocolate-factory-2017/wsj--unknown.json, which carries a
+    // substantive 4.4KB fullText while its named sibling wsj--edward-rothstein
+    // .json has none. review-write-guard.js's own write-time duplicate call
+    // (shouldMarkUrlCollisionDuplicate) never marks a collision when the new
+    // file clears SUBSTANTIVE_BODY_CHARS and the collider is under
+    // NEAR_EMPTY_BODY_CHARS — this mirrors that same threshold so the push-time
+    // gate can never delete a record the write-time guard would have kept
+    // primary. Deliberately NOT gated on data.duplicateOf being present/absent:
+    // the original BRO-3092 incident (enrich-reviews stale-checkout replay)
+    // never carries that field, so requiring it would blind this branch to the
+    // very case it was built for.
+    const addedLen = String(data.fullText || '').trim().length;
+    const siblingLen = String(liveNamed.data.fullText || '').trim().length;
+    if (addedLen >= SUBSTANTIVE_BODY_CHARS && siblingLen < NEAR_EMPTY_BODY_CHARS) continue;
+
     drops.push({
       file: rel,
       showId,
@@ -220,7 +238,25 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
  * ("thousands of files") is N x M parses inside the push retry loop.
  */
 function sameShowUrlSiblings(reviewTextsDir, showId, url, selfFile, cache) {
-  const key = sameUrlKey(url);
+  // normalizeUrl (BRO-3249), NOT sameUrlKey: this branch's own writer-side
+  // counterpart — review-write-guard.js's checkUrlCollision, which is what
+  // stamps duplicateOf on exactly the files this gate is supposed to catch —
+  // identifies "same URL" via normalizeUrl (strips scheme + www, not just
+  // lowercase + fragment + trailing slash). The cross-show branch above
+  // (findCrossShowOwners -> url-ownership.js) already uses normalizeUrl too;
+  // this branch used the weaker validate-data.js key instead, so it silently
+  // agreed with neither. That mismatch is why the 3rd resurrection of
+  // the-addams-family-2010/wsj--unknown.json (2026-09-13, via
+  // scrape-dtli-show-score.yml, not the historically-blamed enrich-reviews)
+  // sailed through: the DTLI extractor wrote http://online.wsj.com/... via
+  // the shared write-guard path, which correctly matched it to the incumbent
+  // https://online.wsj.com/... wsj--terry-teachout.json and marked it
+  // duplicateOf — but this lookup, keyed on the un-normalized scheme, saw
+  // zero same-show siblings and returned before the criticName check ever
+  // ran. Not a byline-detection gap (criticName here was null, which
+  // normalizeCritic already treats as 'unknown') — a URL-identity mismatch
+  // between the writer and this gate.
+  const key = normalizeUrl(url);
   if (!key) return [];
   let byUrl = cache.get(showId);
   if (!byUrl) {
@@ -235,7 +271,7 @@ function sameShowUrlSiblings(reviewTextsDir, showId, url, selfFile, cache) {
       try {
         d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
       } catch { continue; }
-      const k = sameUrlKey(d && d.url);
+      const k = normalizeUrl(d && d.url);
       if (!k) continue;
       if (!byUrl.has(k)) byUrl.set(k, []);
       byUrl.get(k).push({ file: f, data: d });
