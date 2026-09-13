@@ -441,6 +441,40 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-07 (BRO-2699): same writer/commit step/concurrency group as audit/outlet-registry-baseline.json above — both files are written by the same --update-baseline call and staged in the same `git add` line. Same residual local-vs-CI risk accepted for the same reason (full-overwrite snapshot, not append-only state).',
     note: 'sentinel/reserved-word outletIds already accepted into the registry (e.g. "lets-note") — frozen so isJunkOutlet() suggestions don\'t re-flag them',
   },
+  // BRO-2296 (audit-census-recall.yml losing its push race twice running,
+  // 2026-08-31 and 2026-09-07 — same "overall deadline 240s exceeded" shape
+  // already fixed for outlet-registry-baseline.json above): the weekly
+  // cron's "Commit recall report + trend ledger" step bundles four files in
+  // one commit. census-recall-trend.jsonl and scraper-spend-ledger.jsonl
+  // already had a real merge fn for the LOCAL PUSH_RECONCILE_MERGED_JSON
+  // path (see their 'active' entries below, now also flagged
+  // apiFallbackMerge — same fix, applied where those entries live), but
+  // census-recall-status.json and serp-census-recall.json were unaudited
+  // data/audit/ paths — enough on their own to disqualify the Git Data API
+  // fallback for the WHOLE commit (the fail-closed "any unaudited data/audit/
+  // path" branch), so both runs fell back to the slow local fetch+rebase+push
+  // flow and lost it against main's constant churn. The 2026-08-31 loss
+  // additionally cost a real provider-outage verdict (health-check.js's
+  // "Coverage: SERP census recall" digest check went stale as a result),
+  // which is what filed this card.
+  {
+    file: 'audit/census-recall-status.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-census-recall',
+    verifiedBy: '2026-09-13 (BRO-2296): grepped every .github/workflows/*.yml and scripts/ for the literal filename — sole writer is scripts/audit-serp-census-recall.js (STATUS_PATH), invoked only by audit-census-recall.yml\'s "Measure per-arm census recall" step and git-added by that same workflow\'s "Commit recall report + trend ledger" step; health-check.js only reads it. That workflow declares concurrency: {group: audit-census-recall, cancel-in-progress: false}, so its own cron racing a manual workflow_dispatch queues rather than races.',
+    note: 'the verdict health-check.js renders as the "Coverage: SERP census recall" digest check — a full overwrite each run, not append-only state',
+  },
+  {
+    file: 'audit/serp-census-recall.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-census-recall',
+    verifiedBy: '2026-09-13 (BRO-2296): same writer/commit step/concurrency group as audit/census-recall-status.json above — both written by the same scripts/audit-serp-census-recall.js run and staged in the same commit step.',
+    note: 'the full per-show recall report (OUT_PATH) — a full overwrite each run, not append-only state',
+  },
   // BRO-2435 (opening-night-broadcast.yml "Commit orphan-rescore-requeue
   // state" hard-failing every run, retries-exhausted): unlike alert-
   // ledger.json (19 writers — see the "NOT added" note just below), this
@@ -774,9 +808,22 @@ const CORE_DATA_MERGE_REGISTRY = [
     // (2026-08-26): case-arm-only would have left this, the LIKELY-common
     // race shape for this file, uncovered.
   },
-  { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl' },
+  // BRO-2296: `apiFallbackMerge: true` added to these two — audit-census-
+  // recall.yml's single commit step also stages census-recall-status.json/
+  // serp-census-recall.json (now apiFallbackSafe, see those entries above),
+  // and push-with-retry.sh's Git Data API fallback disqualifier trips on the
+  // WHOLE commit if ANY staged managed file lacks apiFallbackMerge coverage
+  // — these two, already 'active' with a real union-merge fn used by the
+  // local PUSH_RECONCILE_MERGED_JSON path, were the disqualifiers. Same
+  // pattern as commercial-pending-review.json/audit/feedback-request-
+  // ledger.json above: the SAME merge fn opts into both paths, no new
+  // reconciliation logic needed. scraper-spend-ledger.jsonl stays genuinely
+  // multi-writer (5+ workflows per its own header) — apiFallbackMerge does
+  // real per-entry union reconciliation, unlike apiFallbackSafe's fail-closed
+  // whole-file overwrite, so multi-writer is not a disqualifier here.
+  { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
   { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl' },
-  { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl' },
+  { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl', apiFallbackMerge: true },
   { file: 'audit/coverage-adversarial-probe-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCoverageAdversarialProbeTrend, format: 'jsonl' },
   {
     file: 'awards.json',
