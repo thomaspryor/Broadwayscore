@@ -4150,6 +4150,25 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.push-rc-diagnosis.test.sh
 
+      - name: Run push-with-retry stall-diagnostics test (bash integration)
+        # BRO-3213: a killed git_push must say WHICH network phase it died in.
+        # A measured live hang (Opening Night Express run 34694172162,
+        # 2026-09-12) showed ZERO bytes of --progress output for the full 90s,
+        # ruling out both local pack generation and the Writing-objects
+        # transfer phase that --progress (BRO-2373) already distinguishes.
+        # git_push_traced() adds a GIT_TRACE_CURL_NO_DATA=1 capture, routed to
+        # its own temp file, and classifies it via push-diagnostics.js on a
+        # timeout-classified failure (rc 124/137/143). This test exercises the
+        # real script against a real non-routable remote (same fixture pattern
+        # as push-rc-diagnosis.test.sh) and asserts the phase actually shows up
+        # in the run's own log. BRO-3234: this file had neither a run step nor
+        # push-path entry, so it never ran in CI despite existing since
+        # BRO-3213 — added here. No path-allowlist entry needed —
+        # scripts/lib/** (line 22) already covers both the script and this
+        # test file.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.stall-diagnostics.test.sh
+
       - name: Run github-remote-parse test (bash unit)
         # BRO-2951: the two parsers push-via-git-api.sh uses to decide whether a
         # remote is really GitHub and to recover the credential actions/checkout
