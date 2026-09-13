@@ -25,7 +25,6 @@ const {
   generateReviewFilename,
   findExistingReviewFile,
   isFlaggedMergeTarget,
-  isConfirmedNamedCriticMatch,
   isJunkOutlet,
   isSuspiciousOutletId,
   maybeUpgradeUrl,
@@ -842,17 +841,24 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (fs.existsSync(filepath)) {
     try {
       const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-      // BRO-3182 (Codex ship-check finding): findExistingReviewFile() already
-      // refuses to hand back a flagged/rejected file as a merge target unless
-      // the critic is a CONFIRMED named match — this exact-filename fallback
-      // must honor the same rule, or it reopens the exact hole that check
-      // exists to close. Falling through to "create" here is NOT safe either:
-      // the create path below writes to this SAME filepath with merge:false,
-      // which (unlike a merge) lets an explicit incoming value overwrite a
-      // PROTECTED field like fullText outright — silently replacing the
-      // flagged file's content. Refuse instead of guessing.
-      if (isFlaggedMergeTarget(data) && !isConfirmedNamedCriticMatch(criticName, data.criticName)) {
-        console.warn(`  ⛔ Refusing write: ${filename} is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) with no confirmed critic match — a human/override flow must clear it first`);
+      // BRO-3182 (Codex ship-check finding): an UNRESOLVED incoming critic
+      // ('Unknown'/null) reaching this exact "outlet--unknown.json" path
+      // proves nothing about identity — many different unknown-byline pieces
+      // could collide there — so refuse when the target is flagged. A REAL
+      // named critic reaching this path is a DIFFERENT situation: the
+      // filename was constructed FROM that name (generateReviewFilename), so
+      // matching it here already IS a confirmed identity match, exactly as
+      // strong as findExistingReviewFile's own pass-1 same-critic match.
+      // Refusing those too (an earlier version of this fix did) broke real
+      // self-heal/override flows this exact fallback exists to serve:
+      // maybeUpgradeUrl's #1695 stale-wrongProduction-on-genuine-stub clear,
+      // and ingest-manual-review.js's operator-override escape hatch for a
+      // duplicateOf-flagged file (test: review-file-writer-preserves-flags-
+      // on-url-change.test.mjs) — both regressed until this was narrowed to
+      // the unresolved-critic case only.
+      const incomingCriticUnresolved = !criticName || criticName.toLowerCase() === 'unknown';
+      if (incomingCriticUnresolved && isFlaggedMergeTarget(data)) {
+        console.warn(`  ⛔ Refusing write: ${filename} is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first`);
         return { action: 'skipped', reason: 'flagged-filename-collision', guardRefused: true, filepath };
       }
       return _mergeIntoExisting(filepath, data, { showId, outletId, input, fields, criticName, dryRun, onMerge });

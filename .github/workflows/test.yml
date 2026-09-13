@@ -2046,6 +2046,14 @@ on:
       # driver script and workflow, both already covered by other entries in
       # this list) so a solo edit to just the lib file triggers CI.
       - 'scripts/check-rebuild-staleness.js'
+      # BRO-3127 ship-check finding: check-rebuild-staleness.js above is a
+      # root-level scripts/ file (outside the scripts/lib/** glob), and its
+      # *.test.mjs sibling is ALSO root-level — scripts/*.test.mjs is NOT
+      # covered by any broad glob (only scripts/lib/*.test.mjs is), so
+      # without this entry a solo edit to the test file alone triggered ZERO
+      # CI. scripts/lib/test-yml-manifest-paths.test.mjs caught this the
+      # moment the test file was registered in tests/unit-test-manifest.txt.
+      - 'scripts/check-rebuild-staleness.test.mjs'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'

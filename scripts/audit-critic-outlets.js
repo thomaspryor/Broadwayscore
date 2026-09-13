@@ -117,6 +117,15 @@ const KNOWN_MULTI_OUTLET_PAIRS = {
   //     whatsonstage, hence the 2% share.
   'edward-karam': ['guardian'],
   'sarah-crompton': ['observer'],
+  // Added 2026-09-13 (BRO-3092), verified the same way. Bob Verini's corpus is
+  // 38 reviews at New York Stage Review and exactly 1 at Variety, which is what
+  // put him under the 10% share threshold — but the Variety file's URL is
+  // http://www.variety.com/review/VE1117947963?refCatId=33, Variety's own
+  // pre-2013 review-ID scheme on variety.com, i.e. the outletId matches the
+  // URL's own domain. He was a Variety theatre critic for years before NYSR;
+  // a legacy piece of his surviving in the corpus is expected, not a
+  // misattribution.
+  'bob-verini': ['variety'],
 };
 
 const MIN_REVIEWS_FOR_REGISTRY = 3;
