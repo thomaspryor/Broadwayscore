@@ -1,3 +1,7 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural check that measured coverage
+// (derived from current shows.json/reviews.json) doesn't drift from the
+// registry's coverageExpectation claim — not a pinned fact about any show.
+//
 // Regression test for BRO-2297 — the coverageExpectation drift health check
 // flagged ap, broadwaynews, latimes as needing re-decision (their
 // coverageExpectationDecidedAt had aged past the 14-day decay window). Fixed
