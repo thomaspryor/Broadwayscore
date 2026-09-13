@@ -283,7 +283,7 @@ const VENUE_ALIASES = [
   // end-2026 et al — never matches either pattern below).
   {
     canonical: 'shakespeares globe',
-    matches: [/shakespeare.?s\s*globe/i, /^\s*globe\s*theatre?\s*$/i],
+    matches: [/shakespeare.?s\s*globe/i, /^\s*globe\s*theat(?:re|er)?\s*$/i],
   },
 ];
 
