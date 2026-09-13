@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-12T23:47:30.098Z",
+    "generatedAt": "2026-09-13T06:00:05.492Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,102 +9,66 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 10,
+    "exemptCount": 1,
     "coveredCount": 10,
-    "highChurnTracked": 20
+    "highChurnTracked": 11
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
       "churn": 80
-    },
-    {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 32
-    },
-    {
-      "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/archduke-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/manic-street-creature-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/mass-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
-      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 123,
+      "churn": 124,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 118,
+      "churn": 120,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 113,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 85,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 82,
+      "churn": 85,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 62,
+      "churn": 65,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 54,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 54,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 54,
+      "churn": 55,
       "mergeAttr": "ours"
     }
   ]
