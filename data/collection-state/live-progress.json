@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-09-13T23:34:21.468Z",
-  "processed": 164,
-  "failed": 1424,
-  "successRate": "10.3%",
+  "updatedAt": "2026-09-13T23:51:59.621Z",
+  "processed": 193,
+  "failed": 1535,
+  "successRate": "11.2%",
   "tierBreakdown": {
-    "playwright": 83,
-    "amp": 15,
-    "browserbase": 12,
+    "playwright": 100,
+    "amp": 16,
+    "browserbase": 16,
     "directCookies": 8,
-    "scrapingbee": 21,
-    "brightdata": 21,
+    "scrapingbee": 24,
+    "brightdata": 25,
     "archiveToday": 0,
-    "archive": 27
+    "archive": 31
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-09-13T22:39:26.577Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-13T22:42:25.401Z",
-      "event": "bb-session",
-      "session": "b5fcdde4",
-      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
-    },
-    {
-      "t": "2026-09-13T22:50:32.729Z",
-      "event": "bb-session",
-      "session": "8c6b5504",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
     {
       "t": "2026-09-13T22:50:33.597Z",
       "event": "bb-cookie-inject",
@@ -124,6 +107,23 @@
       "t": "2026-09-13T23:24:21.165Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-13T23:37:46.639Z",
+      "event": "bb-session",
+      "session": "2f8c453e",
+      "url": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.htm"
+    },
+    {
+      "t": "2026-09-13T23:37:47.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-13T23:42:18.347Z",
+      "event": "bb-session",
+      "session": "fd233b42",
+      "url": "http://www.hollywoodreporter.com/review/big-fish-theater-review-644026"
     }
   ]
 }
