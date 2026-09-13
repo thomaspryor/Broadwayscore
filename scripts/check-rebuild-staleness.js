@@ -176,6 +176,16 @@ async function main() {
 
   const reviewsDoc = loadJSON(REVIEWS_FILE);
   if (!reviewsDoc || !Array.isArray(reviewsDoc.reviews)) {
+    // BRO-3127 ship-check (Codex adversarial finding): this is a DIFFERENT
+    // failure class than "a specific show is missing" — we have no idea which
+    // shows, if any, are affected, so the workflow must NOT treat this the
+    // same as a scoped single-show block (which is safe to publish around).
+    // Never write MISSING_SHOWS_FILE here — its absence is exactly the signal
+    // the workflow's "Verify no scoreable review vanished" step uses to set
+    // safe_to_publish=false and fall back to blocking every downstream step,
+    // the pre-BRO-3127 behavior, for this specific (rare, since it can only
+    // happen if rebuild-all-reviews.js itself just wrote malformed JSON)
+    // unrecovered-crash case.
     console.error('::error::[check-rebuild-staleness] could not read data/reviews.json — aborting');
     process.exit(1);
   }

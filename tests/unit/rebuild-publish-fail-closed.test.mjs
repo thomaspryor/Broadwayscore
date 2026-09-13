@@ -118,6 +118,81 @@ for (const cfg of WINDOWS) {
   });
 }
 
+// ship-check/Codex adversarial findings (BRO-3127): a first version of this
+// fix gated downstream steps purely on steps.rebuild.outcome, which unblocked
+// publish on ANY failure of the guard step — including an unexplained crash
+// (can't read reviews.json, unhandled exception), not just its normal scoped
+// "show X is missing" detection. The guard step now sets a safe_to_publish
+// output that's only true for the scoped case (exit 1 WITH a populated
+// missing-shows file) — false on an unexplained crash (exit 1 without one) —
+// and downstream steps additionally gate on it.
+for (const cfg of WINDOWS) {
+  test(`${cfg.file}: the staleness guard step sets id: staleness and downstream steps gate on its safe_to_publish output`, () => {
+    const { steps, anchorIdx, endIdx } = windowSteps(cfg);
+    const guardIdx = steps.findIndex((s) => /Verify no scoreable review vanished/i.test(s.name || ''));
+    assert.ok(guardIdx >= 0, `${cfg.file}: staleness guard step not found`);
+    assert.ok(guardIdx > anchorIdx && guardIdx < endIdx, `${cfg.file}: staleness guard step must sit inside the fail-closed window`);
+    assert.equal(
+      steps[guardIdx].id,
+      'staleness',
+      `${cfg.file}: the staleness guard step must carry id: staleness — downstream steps gate on steps.staleness.outputs.safe_to_publish`
+    );
+
+    const run = String(steps[guardIdx].run || '');
+    assert.match(
+      run,
+      /safe_to_publish=true/,
+      `${cfg.file}: the guard step must set safe_to_publish=true on a clean run and on a SCOPED missing-show detection`
+    );
+    assert.match(
+      run,
+      /safe_to_publish=false/,
+      `${cfg.file}: the guard step must set safe_to_publish=false when it fails WITHOUT a populated missing-shows file ` +
+        '(an unexplained crash) — otherwise downstream steps publish blind on any guard failure, not just a scoped one'
+    );
+
+    // Every step in the window after the guard should reference safe_to_publish
+    // (the ones before it — enrichment/utility steps that ran pre-rebuild —
+    // are irrelevant here since this loop is scoped to the anchor..end window).
+    // "Aggregate locked-skip counts" is deliberately exempt — it aggregates
+    // PRE-rebuild utility-step log lines into the step summary, touches no
+    // publish artifact (no public/data/, no reviews.json), and predates
+    // BRO-3127 entirely (unchanged bare `always()`).
+    const SAFE_TO_PUBLISH_EXEMPT = /^Aggregate locked-skip counts/;
+    const after = steps.slice(guardIdx + 1, endIdx).filter((s) => !SAFE_TO_PUBLISH_EXEMPT.test(s.name || ''));
+    const missingSafeCheck = after
+      .filter((s) => !/steps\.staleness\.outputs\.safe_to_publish\s*==\s*'true'/.test(String(s.if || '')))
+      .map((s) => `${s.name}: ${s.if}`);
+    assert.deepEqual(
+      missingSafeCheck,
+      [],
+      `${cfg.file}: these steps run after the staleness guard but do not check safe_to_publish, so an unexplained ` +
+        `guard crash would still let them publish blind:\n  ` + missingSafeCheck.join('\n  ')
+    );
+  });
+
+  test(`${cfg.file}: the revert step checks HEAD existence, not just the working-tree file, before deciding how to reconcile a flagged show`, () => {
+    const { steps } = windowSteps(cfg);
+    const revertIdx = steps.findIndex((s) => /Revert public data for shows flagged by staleness guard/i.test(s.name || ''));
+    assert.ok(revertIdx >= 0, `${cfg.file}: revert step not found`);
+    const run = String(steps[revertIdx].run || '');
+    assert.match(
+      run,
+      /git cat-file -e "HEAD:/,
+      `${cfg.file}: the revert step must check whether HEAD already has a committed version of the flagged show's ` +
+        'public JSON before attempting `git checkout HEAD --` on it — a brand-new show (never committed) has nothing ' +
+        'to revert to, and checking only the working-tree file (which regeneration just created) silently leaves the ' +
+        'freshly-generated incomplete file in place to be published as-is'
+    );
+    assert.match(
+      run,
+      /rm -f "\$TARGET"/,
+      `${cfg.file}: the revert step must REMOVE a brand-new flagged show's freshly-generated public JSON (no HEAD ` +
+        'version to fall back to) rather than leave the incomplete regenerated state to be staged and published'
+    );
+  });
+}
+
 test('check-rebuild-staleness.js writes the missing-shows file the workflow revert step reads (BRO-3127)', () => {
   const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'check-rebuild-staleness.js'), 'utf-8');
   assert.match(
@@ -133,7 +208,12 @@ for (const cfg of WINDOWS) {
   test(`${cfg.file}: a step reverts flagged shows' public JSON, positioned after mobile-artifact regen and inside the fail-closed window`, () => {
     const { steps, anchorIdx, endIdx } = windowSteps(cfg);
     const regenIdx = steps.findIndex((s) => /Regenerate mobile artifacts/i.test(s.name || ''));
-    const revertIdx = steps.findIndex((s) => /staleness-missing-shows\.txt/.test(String(s.run || '')));
+    // Matched by NAME, not by content: the guard step itself ALSO references
+    // staleness-missing-shows.txt (it's what writes the path into $GITHUB_OUTPUT
+    // messaging / reads it back for the safe_to_publish decision), so a
+    // content-based search would false-match the guard step instead of the
+    // actual revert step.
+    const revertIdx = steps.findIndex((s) => /Revert public data for shows flagged by staleness guard/i.test(s.name || ''));
     assert.ok(regenIdx >= 0, `${cfg.file}: "Regenerate mobile artifacts" step not found`);
     assert.ok(
       revertIdx >= 0,

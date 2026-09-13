@@ -17,6 +17,12 @@
 const ACCEPTED_CONDITIONS = [
   /^always\(\)$/,
   /^always\(\)\s*&&\s*steps\.[A-Za-z0-9_-]+\.outcome\s*==\s*'success'$/,
+  // BRO-3127: a step may ALSO need to check a prior step's OUTPUT (not just
+  // its outcome) before it's safe to run — e.g. "the staleness guard failed,
+  // but only in the scoped, known-safe-to-publish-around way, not an
+  // unexplained crash." Still an exact shape (no `||`, no `!=`, both already
+  // rejected above) rather than a free-form expression.
+  /^always\(\)\s*&&\s*steps\.[A-Za-z0-9_-]+\.outcome\s*==\s*'success'\s*&&\s*steps\.[A-Za-z0-9_-]+\.outputs\.[A-Za-z0-9_-]+\s*==\s*'true'$/,
 ];
 
 function conditionIsFailClosed(cond) {
