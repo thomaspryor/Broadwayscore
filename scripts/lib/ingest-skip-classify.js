@@ -39,6 +39,18 @@
  * without classifying it here breaks CI instead of silently defaulting to
  * quiet (which is the exact failure mode this module exists to remove).
  *
+ * BLIND SPOT the grep cannot close (BRO-3182 ship-check): it only scans
+ * review-file-writer.js's own `reason: '...'` literals, so a value computed
+ * from ANOTHER module's return ­— `reason: (writeResult && writeResult.skipped)
+ * || 'write-guard-refused'`, where writeResult.skipped originates in
+ * review-write-guard.js as e.g. 'date_implausible'/'cross_market_
+ * contamination' — is invisible to it; the string 'write-guard-refused'
+ * never sits directly after `reason:` in the source text either. These are
+ * classified by hand below (all in CONFLICT_REASONS) precisely because CI
+ * cannot verify the list stays complete for them — a new safeWriteReview
+ * quarantine reason added later needs a matching hand-add here, with no test
+ * to catch a missed one.
+ *
  * That grep is itself load-bearing, and its FIRST version was too narrow to see
  * two real literals: `onMerge-aborted` (capital M) and `empty-unknown: no URL,
  * no text, unknown critic` (colon + spaces inside the quoted literal). A
@@ -84,6 +96,32 @@ const CONFLICT_REASONS = [
   // refused the write. Also a CONFLICT, not an expected rejection — a cited
   // review was dropped and the roundup link stood in for the outlet's own URL.
   'aggregator-url-refinement-refused',
+  // BRO-3182: the canonical outlet--critic filename is already claimed by a
+  // flagged/rejected record (wrongProduction/duplicateOf/rejectionReason)
+  // with no confirmed critic match to the incoming write — refused rather
+  // than guessing which is right. A human must inspect the flagged file: if
+  // its rejection was wrong, clear the flag; if the incoming write is
+  // actually a different critic's piece, this filename collision itself is
+  // the bug to fix (two reviews cannot share one outlet--critic slot).
+  // Retrying never resolves it on its own.
+  'flagged-filename-collision',
+  // BRO-3182: safeWriteReview() quarantined the write to `_pending/` instead
+  // of landing it — the publish date looked implausible for this show's
+  // run window. A human must look at the quarantined file: either correct
+  // the date and re-ingest, or the URL is a different production entirely.
+  'date_implausible',
+  // BRO-3182: safeWriteReview() quarantined the write to `_pending/` as
+  // suspected cross-market contamination (a West End review landing on a
+  // Broadway show, or vice versa) — same "inspect the quarantine" shape as
+  // date_implausible.
+  'cross_market_contamination',
+  // BRO-3182: generic fallback when safeWriteReview() returned `wrote:
+  // false` without a specific `skipped` reason attached. Should be rare in
+  // practice (safeWriteReview's own refusal paths all set `skipped`); kept
+  // as a CONFLICT rather than BENIGN because a write the caller explicitly
+  // requested did not happen, and the specific reason is unknown without
+  // reading the write-guard's own log line for this run.
+  'write-guard-refused',
 ];
 
 // EXPECTED REJECTION = the write was correctly refused and no human action
@@ -233,6 +271,19 @@ function describeSkip(showId, url, { reason, detail }) {
     return `${showId}: ${url} sits on an aggregator's roundup domain, so it is not that outlet's own review — the write was refused rather than silently refiled as the aggregator's review. `
       + `Find the outlet's own article URL (the roundup links to it) and ingest that. `
       + `A legitimate aggregator star-stub (aggregatorStars/originalScore present) is NOT refused — it lands under its true outlet instead (task #1325); this refusal only fires when there is no score to preserve.`;
+  }
+  if (reason === 'flagged-filename-collision') {
+    return `${showId}: ${url} could not be filed — the canonical outlet--critic filename for this write already belongs to a flagged/rejected file (wrongProduction/duplicateOf/rejectionReason) with no confirmed critic match (BRO-3182). `
+      + `Inspect the existing file in data/review-texts/${showId}/: if it was wrongly rejected, clear the flag; if it's genuinely a different piece, the filename collision itself needs a human call.`;
+  }
+  if (reason === 'date_implausible') {
+    return `${showId}: ${url} was quarantined to _pending/ — its publish date is implausible for this show's run window. Inspect the quarantined file: correct the date and re-ingest, or confirm this URL is actually a different production.`;
+  }
+  if (reason === 'cross_market_contamination') {
+    return `${showId}: ${url} was quarantined to _pending/ as suspected cross-market contamination (West End review on a Broadway show, or vice versa). Inspect the quarantined file and confirm the outlet's market before re-ingesting.`;
+  }
+  if (reason === 'write-guard-refused') {
+    return `${showId}: ${url} was refused by the write-guard with no specific reason attached — check this run's log for the safeWriteReview warning that explains why, then decide whether to re-ingest.`;
   }
   return `${showId}: ${url} skipped as ${reason}${detail ? ` (${detail})` : ''}.`;
 }
