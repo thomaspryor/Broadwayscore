@@ -32,7 +32,8 @@
  *     [--dry-run]
  *
  * Exit codes: 0 on success or skip (review already exists, no-op merge),
- * 1 on hard failure (fetch error, extraction empty, collision-blocked).
+ * 1 on hard failure (fetch error, extraction empty, collision-blocked, or
+ * the write-guard silently refusing/redirecting an update — BRO-3182).
  */
 
 'use strict';
@@ -44,7 +45,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile } = require('./lib/review-normalization');
-const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
@@ -406,8 +407,18 @@ function extractByline(html) {
     console.log(`✅ Updated: ${result.filepath}`);
   } else {
     console.log(`⚠️  Skipped: ${result.reason || result.action}`);
-    if (!dryRun && result.action !== 'updated' && result.action !== 'new') {
-      // Genuine no-op (already exists with this content) is acceptable.
+    // BRO-3182: 'no-changes'/'onMerge-aborted' are genuine no-ops (nothing
+    // new to write). But when createOrMergeReviewFile's own write-guard
+    // refused or redirected the write (date-implausible/cross-market
+    // quarantine, a flagged-file collision), nothing landed on disk despite
+    // an operator-visible ingest request — that must fail loudly, not report
+    // success by omission. `guardRefused` is the authoritative signal (a
+    // caller checking it needn't track every possible `reason` string as the
+    // guard's set of refusal reasons grows); WRITE_GUARD_REFUSED_REASONS is
+    // kept as a documented enumeration/fallback for older-shaped results.
+    if (!dryRun && (result.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(result.reason))) {
+      console.error(`\n❌ Write-guard refused the write — nothing changed on disk (${result.reason})${result.quarantinedPath ? `\n   quarantined to: ${result.quarantinedPath}` : ''}`);
+      process.exit(1);
     }
   }
 

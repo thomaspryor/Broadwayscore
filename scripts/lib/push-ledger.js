@@ -44,7 +44,7 @@ function buildLedgerEntry({ sha, branch, ts, workflow, runId, runAttempt, fallba
 // Deliberately its own builder (not buildLedgerEntry): failure entries have
 // no `sha` — the push never landed — so they can't share that function's
 // required-field contract.
-function buildFailureEntry({ reason, attempt, maxRetries, branch, remote, workflow, ci, ts }) {
+function buildFailureEntry({ reason, attempt, maxRetries, branch, remote, workflow, ci, ts, stallPhase }) {
   if (!reason) throw new Error('buildFailureEntry: reason is required');
   return JSON.stringify({
     reason,
@@ -55,6 +55,12 @@ function buildFailureEntry({ reason, attempt, maxRetries, branch, remote, workfl
     workflow: workflow || '',
     ci: Boolean(ci),
     ts: ts || new Date().toISOString(),
+    // BRO-3213: the last GIT_TRACE_CURL-classified network phase a timed-out
+    // git_push_traced() attempt reached during this invocation — e.g.
+    // "request-sent-awaiting-response" — or "unknown" for callers that
+    // predate this field / ran before push-with-retry.sh's diagnostics CLI
+    // was available. See scripts/lib/push-diagnostics.js.
+    stallPhase: stallPhase || 'unknown',
   });
 }
 

@@ -65,23 +65,15 @@ const EXEMPT = new Map([
 const SCOPED_JOBS = new Set(['data-validation', 'lint-workflows']);
 
 /**
- * An audit step is only genuinely unmaskable if its condition is one of these
- * two exact shapes. Checking merely that the string CONTAINS `always()` is not
+ * An audit step is only genuinely unmaskable if its condition is one of two
+ * exact shapes. Checking merely that the string CONTAINS `always()` is not
  * enough — `always() && false`, `always() && steps.x.outcome != 'failure'`
  * (true when x is skipped) and `always() && (… || true)` all contain it while
- * reopening the hole. BRO-2906.
+ * reopening the hole. BRO-2906. Extracted to scripts/lib/workflow-fail-closed-condition.js
+ * (BRO-3127) so tests/unit/rebuild-publish-fail-closed.test.mjs enforces the
+ * identical rule instead of a parallel, potentially weaker one.
  */
-const ACCEPTED_CONDITIONS = [
-  /^always\(\)$/,
-  /^always\(\)\s*&&\s*steps\.[A-Za-z0-9_-]+\.outcome\s*==\s*'success'$/,
-];
-
-function conditionIsFailClosed(cond) {
-  const c = String(cond || '').trim();
-  if (/\|\|/.test(c)) return false; // an OR can always be made true
-  if (/!=/.test(c)) return false; // != 'failure' is true when the step is SKIPPED
-  return ACCEPTED_CONDITIONS.some((re) => re.test(c));
-}
+const { conditionIsFailClosed } = require('../../scripts/lib/workflow-fail-closed-condition.js');
 
 function loadWorkflow() {
   return yaml.load(fs.readFileSync(WORKFLOW, 'utf-8'));

@@ -24,6 +24,8 @@ const {
   normalizeCritic,
   generateReviewFilename,
   findExistingReviewFile,
+  isFlaggedMergeTarget,
+  isConfirmedNamedCriticMatch,
   isJunkOutlet,
   isSuspiciousOutletId,
   maybeUpgradeUrl,
@@ -840,6 +842,19 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (fs.existsSync(filepath)) {
     try {
       const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+      // BRO-3182 (Codex ship-check finding): findExistingReviewFile() already
+      // refuses to hand back a flagged/rejected file as a merge target unless
+      // the critic is a CONFIRMED named match — this exact-filename fallback
+      // must honor the same rule, or it reopens the exact hole that check
+      // exists to close. Falling through to "create" here is NOT safe either:
+      // the create path below writes to this SAME filepath with merge:false,
+      // which (unlike a merge) lets an explicit incoming value overwrite a
+      // PROTECTED field like fullText outright — silently replacing the
+      // flagged file's content. Refuse instead of guessing.
+      if (isFlaggedMergeTarget(data) && !isConfirmedNamedCriticMatch(criticName, data.criticName)) {
+        console.warn(`  ⛔ Refusing write: ${filename} is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) with no confirmed critic match — a human/override flow must clear it first`);
+        return { action: 'skipped', reason: 'flagged-filename-collision', guardRefused: true, filepath };
+      }
       return _mergeIntoExisting(filepath, data, { showId, outletId, input, fields, criticName, dryRun, onMerge });
     } catch { /* unreadable — fall through to create */ }
   }
@@ -955,7 +970,23 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       fs.mkdirSync(showDir, { recursive: true });
     }
     sanitizeDisplayFields(newReview);
-    safeWriteReview(filepath, newReview, { merge: false });
+    const writeResult = safeWriteReview(filepath, newReview, { merge: false });
+    // BRO-3182 (Codex ship-check finding): same false-success bug as the
+    // merge path below — safeWriteReview can quarantine/refuse a brand-new
+    // file too (date-implausible, cross-market contamination), and this
+    // create branch reported action:'new' unconditionally regardless.
+    if (!writeResult || writeResult.wrote === false) {
+      return {
+        action: 'skipped',
+        reason: (writeResult && writeResult.skipped) || 'write-guard-refused',
+        // Authoritative refusal signal (Codex ship-check finding): a caller
+        // should check THIS, not maintain its own copy of every possible
+        // `reason` string — the set of guard reasons can grow independently.
+        guardRefused: true,
+        filepath,
+        quarantinedPath: writeResult && writeResult.quarantinedPath,
+      };
+    }
     // Keep the process-wide ownership index current so a later create in this
     // same run (another show, same URL) hits Guard I without an fs rescan.
     // Pass the record so blocking state reflects any wrongProduction flag
@@ -1185,10 +1216,40 @@ function _mergeIntoExisting(filepath, existing, ctx) {
 
   if (!dryRun) {
     sanitizeDisplayFields(existing);
-    safeWriteReview(filepath, existing, { merge: false });
+    const writeResult = safeWriteReview(filepath, existing, { merge: false });
+    // BRO-3182: safeWriteReview can refuse/redirect a write entirely (e.g.
+    // date-implausible or cross-market-contamination quarantine to
+    // _pending/) and return `wrote: false` — nothing on disk changed. This
+    // return value went unchecked, so a guard-dropped write still reported
+    // 'updated' here, and the caller printed "Updated" and exited 0 with no
+    // actual diff on disk. Surface the refusal instead of masking it.
+    if (!writeResult || writeResult.wrote === false) {
+      return {
+        action: 'skipped',
+        reason: (writeResult && writeResult.skipped) || 'write-guard-refused',
+        guardRefused: true,
+        filepath,
+        quarantinedPath: writeResult && writeResult.quarantinedPath,
+      };
+    }
   }
 
   return { action: 'updated', filepath };
 }
 
-module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen };
+// Skip reasons from createOrMergeReviewFile that mean the requested write
+// was actively REFUSED or REDIRECTED — by safeWriteReview's own guards
+// (date-implausible/cross-market quarantine to _pending/) or by
+// createOrMergeReviewFile itself refusing to touch a flagged/rejected file
+// with no confirmed identity match (BRO-3182) — distinct from a benign
+// no-op ('no-changes', 'onMerge-aborted') where nothing new was ever
+// attempted. A caller reporting success to an operator (a script printing
+// "Updated"/"Created", an automated ingest) must treat these as failures.
+const WRITE_GUARD_REFUSED_REASONS = new Set([
+  'write-guard-refused',
+  'date_implausible',
+  'cross_market_contamination',
+  'flagged-filename-collision',
+]);
+
+module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS };

@@ -38,7 +38,7 @@ const { isIncludableForRebuild } = require('./lib/review-guards');
 const { getBestScore, applyScoreRelevantMigrations } = require('./lib/rebuild-helpers');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { getSyndicationConfig } = require('./lib/syndication-pairs');
-const { findMissingScoreableShows } = require('./lib/rebuild-staleness-guard');
+const { findMissingScoreableShows, formatMissingShowsFile } = require('./lib/rebuild-staleness-guard');
 // BRO-545 (pipeline self-healing): this guard is right to fail loud on its
 // first occurrence, but must not be allowed to wedge reviews.json indefinitely
 // if the same drift keeps recurring — see guard-escalation.js header.
@@ -63,6 +63,15 @@ const GUARD_STATE_FILE = path.join(DATA_DIR, 'audit', 'guard-escalation-state.js
 const GUARD_ID = 'stale-checkout-staleness';
 const WORKFLOW_DISPLAY_NAME = 'Rebuild Reviews Data';
 const ALERT_CONDITION_KEY = `guard-escalation:${GUARD_ID}`;
+// BRO-3127: consumed by rebuild-fast.yml/rebuild-reviews.yml's "Revert public
+// data for shows flagged by staleness guard" step. Written whenever a show is
+// genuinely missing, regardless of which branch below is taken (fail-loud /
+// forced-override / auto-recovery) — those steps run downstream of this guard
+// now (BRO-3127 unblocked them), so without this file a genuinely-missing
+// show's own public/data/shows/{id}.json would get regenerated from the same
+// incomplete reviews.json this guard just flagged, republishing the exact
+// incomplete state it exists to catch. Not written on a clean run.
+const MISSING_SHOWS_FILE = path.join(process.env.RUNNER_TEMP || '/tmp', 'staleness-missing-shows.txt');
 
 function loadGuardState() {
   const doc = loadJSON(GUARD_STATE_FILE, {});
@@ -167,6 +176,16 @@ async function main() {
 
   const reviewsDoc = loadJSON(REVIEWS_FILE);
   if (!reviewsDoc || !Array.isArray(reviewsDoc.reviews)) {
+    // BRO-3127 ship-check (Codex adversarial finding): this is a DIFFERENT
+    // failure class than "a specific show is missing" — we have no idea which
+    // shows, if any, are affected, so the workflow must NOT treat this the
+    // same as a scoped single-show block (which is safe to publish around).
+    // Never write MISSING_SHOWS_FILE here — its absence is exactly the signal
+    // the workflow's "Verify no scoreable review vanished" step uses to set
+    // safe_to_publish=false and fall back to blocking every downstream step,
+    // the pre-BRO-3127 behavior, for this specific (rare, since it can only
+    // happen if rebuild-all-reviews.js itself just wrote malformed JSON)
+    // unrecovered-crash case.
     console.error('::error::[check-rebuild-staleness] could not read data/reviews.json — aborting');
     process.exit(1);
   }
@@ -203,6 +222,12 @@ async function main() {
   });
 
   if (missing.length > 0) {
+    try {
+      fs.writeFileSync(MISSING_SHOWS_FILE, formatMissingShowsFile(missing));
+    } catch (e) {
+      console.error(`::warning::[check-rebuild-staleness] could not write ${MISSING_SHOWS_FILE}: ${e.message}`);
+    }
+
     const priorState = loadGuardState();
     const state = nextGuardState(priorState, true, Date.now());
     saveGuardState(state);
