@@ -94,7 +94,10 @@ const HEADLESS_MAX_WALL_MIN = 15;
 // passes. This is the actual external brake now — checked independently of
 // launchDecision (which still owns the separate "session looks dead"
 // question) so a long run of genuine successes still gets cut off too.
-const NIGHTLY_USD_CAP = 100;
+// Owner decision 2026-09-13: raised from $100 after legitimate multi-show
+// nights (53 passes, $146.80) hit the old cap and fell back to the standing
+// pipeline for real coverage.
+const NIGHTLY_USD_CAP = 200;
 
 const USAGE = `opening-night-monitor-launch — launch the opening-night monitor session (see header comment)
   --dry-run | --show <id> | --rehearsal | --active-shows | --heartbeat | --help`;
