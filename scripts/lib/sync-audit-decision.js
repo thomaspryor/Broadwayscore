@@ -50,9 +50,13 @@ const REASON_OUTSIDE_AUDIT = 'dirty-outside-audit';
 const REASON_JSONL_LEDGER = 'dirty-jsonl-ledger';
 const REASON_UNRESOLVED = 'dirty-unresolved';
 const REASON_UNION_LEDGER = 'dirty-union-ledger';
+// A RECOVERY label, same contract as REASON_UNION_LEDGER (never written to a
+// refusal snapshot — see the "can never reach a refusal snapshot" tests).
+const REASON_DIVERGED_UNION_LEDGER = 'diverged-union-ledger';
 
 const ACTION_REFUSE = 'refuse';
 const ACTION_UNION_RECOVER = 'union-recover';
+const ACTION_COMMIT_AND_REBASE = 'commit-and-rebase';
 
 function toList(v) {
   if (!Array.isArray(v)) return [];
@@ -106,12 +110,30 @@ function classifyBlock({ blockingPaths = [], aheadCount = 0, unionMergePaths = [
   const unionPaths = blocking.filter((p) => unionSet.has(p));
   const base = { blockingPaths: blocking, unionPaths };
 
-  // A local commit origin does not have is not a dirty-file problem and no
-  // reset or union can fix it. Checked FIRST so a diverged checkout that also
-  // happens to have a dirty ledger is never handed to the recovery stage,
-  // where `git merge --ff-only` would fail anyway and the ledger would be
-  // truncated for nothing.
-  if (Number(aheadCount) > 0) return { ...base, action: ACTION_REFUSE, reason: REASON_DIVERGED };
+  // A local commit origin does not have is not a dirty-file problem, and
+  // `git merge --ff-only` can never fix it — but it is NOT automatically
+  // unrecoverable (BRO-3212). If every path currently blocking a fast-forward
+  // is a tracked, union-safe append-only ledger, the divergence itself is
+  // resolvable the same way any two branches that only touch an
+  // append-only log resolve: commit the local ledger changes and rebase onto
+  // origin/main, letting the `merge=union` attribute auto-resolve the ledger
+  // the way it already does for `git merge` (BRO-2314's step 3 only ever
+  // tried `git merge --ff-only`, which never invokes a merge driver — a real
+  // 3-way merge/rebase does). Before this, a checkout that was one commit
+  // ahead purely because of its own ledger append refused FOREVER: the
+  // ledger regenerates continuously, so "diverged" was permanent, not a
+  // transient state that the next tick could clear on its own.
+  //
+  // Still refuses unconditionally when even one blocker is NOT union-safe —
+  // a real content conflict on a non-ledger file needs a human, and rebasing
+  // over it would be exactly the "let the merge machinery paper over it"
+  // failure mode this whole gate exists to prevent.
+  if (Number(aheadCount) > 0) {
+    if (blocking.length && unionPaths.length === blocking.length) {
+      return { ...base, action: ACTION_COMMIT_AND_REBASE, reason: REASON_DIVERGED_UNION_LEDGER };
+    }
+    return { ...base, action: ACTION_REFUSE, reason: REASON_DIVERGED };
+  }
 
   // Nothing dirty that origin also moves, yet ff-only still failed: there is
   // no file to blame, so this is real divergence (or a fetch/ref problem).
@@ -222,9 +244,11 @@ module.exports = {
   unionIsSafe,
   ACTION_REFUSE,
   ACTION_UNION_RECOVER,
+  ACTION_COMMIT_AND_REBASE,
   REASON_DIVERGED,
   REASON_OUTSIDE_AUDIT,
   REASON_JSONL_LEDGER,
   REASON_UNRESOLVED,
   REASON_UNION_LEDGER,
+  REASON_DIVERGED_UNION_LEDGER,
 };

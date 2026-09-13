@@ -25,7 +25,14 @@
 #      if every one of them is a tracked ledger declared `merge=union` in
 #      .gitattributes, union-recover it: save it, clean it, fast-forward,
 #      then union the saved rows back on top of origin's version (BRO-2314).
-#   4. Otherwise FAIL LOUDLY (exit 1) instead of letting the caller fall
+#   4. If the checkout is DIVERGED (a local commit origin lacks, so ff-only
+#      can never succeed) but every path still blocking is that same kind of
+#      union-safe ledger, commit the dirty ledger(s) `[skip ci]` and
+#      `git rebase origin/main` — a real 3-way merge, unlike ff-only, DOES
+#      invoke the `merge=union` driver, so the ledger conflict auto-resolves
+#      (BRO-3212). Abort and fall through to step 5 on any other rebase
+#      failure.
+#   5. Otherwise FAIL LOUDLY (exit 1) instead of letting the caller fall
 #      through to stale code, naming the file that actually blocked the merge.
 #      Callers that chain with `&&` (the launchd inline pattern) get this for
 #      free.
@@ -43,6 +50,25 @@
 # is the lossless resolution for a bot-written append log; step 3 applies that
 # same resolution at the point a fast-forward needs it, since a fast-forward
 # rewrites the path wholesale and never invokes a merge driver.
+#
+# WHY STEP 4 EXISTS (BRO-3212): step 3's recovery only ever attempts
+# `git merge --ff-only`, which by definition cannot land when the checkout is
+# genuinely diverged (aheadCount > 0) — so classifyBlock refused unconditionally
+# whenever a local commit existed, EVEN if the only paths that commit touched
+# were the same union-safe ledgers step 3 already knows how to reconcile. A
+# launchd checkout that appends to a ledger and commits it locally (or is left
+# one commit ahead by an interrupted recovery) is diverged in exactly that
+# harmless way, and the ledgers regenerate every tick — so the refusal never
+# cleared on its own. digest/predispatch-queue-audit/linear-drain-parked/
+# weekly-retro/bro1794-merge3 all accumulated divergence for days this way,
+# reflected in every Morning Digest as "didn't update overnight" since
+# ~2026-09-06. Step 4 commits the dirty ledger(s) so they stop being loose
+# working-tree state, then `git rebase origin/main` — a real 3-way merge DOES
+# invoke `.gitattributes` merge drivers (unlike ff-only), so the `merge=union`
+# ledger conflict auto-resolves the same way `git merge` already handles it.
+# Any other rebase failure aborts back to the pre-rebase state and falls
+# through to the ordinary loud refusal — this only ever short-circuits the
+# case that was ALWAYS safe to resolve, never a genuine content conflict.
 #
 # Concurrency: this repo runs many launchd jobs and worktree sessions that
 # touch the SAME checkout, and merge-worktree-to-main.sh already established
@@ -176,6 +202,26 @@ union_restore_ledger() {
 # regenerable-snapshot reset at the top of this script already had to learn
 # the index/worktree distinction the hard way (task #732).
 ledger_was_staged() { ! git diff --cached --quiet -- "$1" 2>/dev/null; }
+
+# Self-heal a rebase left mid-flight (BRO-3212 review finding): the new
+# commit-and-rebase stage below can be killed (launchd timeout — the header's
+# own known failure mode) between `git commit` succeeding and `git rebase
+# --abort` completing, leaving `.git/rebase-merge` (or `rebase-apply` for the
+# am-based backend) on disk. Every git command below — even the very first
+# `git merge --ff-only` — fails against a checkout mid-rebase, so without this
+# the next run would cascade through the whole recovery pipeline into the loud
+# refusal every single time: exactly the "refuses forever" failure mode this
+# script exists to close, reintroduced via the new code path. Checked before
+# Stage 0's ledger-backup drain so nothing else touches the repo first.
+REBASE_STATE_DIR="$(git rev-parse --git-path rebase-merge 2>/dev/null)"
+if [ -z "$REBASE_STATE_DIR" ] || [ ! -d "$REBASE_STATE_DIR" ]; then
+  REBASE_STATE_DIR="$(git rev-parse --git-path rebase-apply 2>/dev/null)"
+fi
+if [ -n "$REBASE_STATE_DIR" ] && [ -d "$REBASE_STATE_DIR" ]; then
+  echo "[$TAG] found a rebase left mid-flight by an interrupted run — aborting to self-heal"
+  git rebase --abort 2>/dev/null \
+    || echo "::error::[$TAG] git rebase --abort failed while self-healing a stuck rebase at $REBASE_STATE_DIR — investigate by hand"
+fi
 
 # Stage 0: a previous run that was killed between "clean the ledger" and
 # "union the local rows back in" leaves its local rows ONLY in its backup.
@@ -465,6 +511,69 @@ EOF
     fi
     REASON="dirty-unresolved"
   fi
+fi
+
+if [ "$ACTION" = "commit-and-rebase" ] && [ -n "$UNION_BLOCKING" ]; then
+  # Diverged (a local commit origin lacks), but every path still blocking a
+  # fast-forward is a tracked, merge=union append-only ledger (BRO-3212).
+  # ff-only can never land here — commit the dirty ledger(s) so they stop
+  # being working-tree state, then rebase onto origin/main. A rebase performs
+  # a real 3-way merge per commit, which DOES invoke `.gitattributes` merge
+  # drivers (unlike ff-only), so the ledger conflict auto-resolves via the
+  # `union` driver exactly as it would for `git merge`.
+  echo "[$TAG] diverged, but every blocker is a merge=union append-only ledger — committing and rebasing:"
+  echo "$UNION_BLOCKING" | sed "s/^/[$TAG]   /"
+  STAGE_OK=1
+  STAGED_NOW=""
+  while IFS= read -r L; do
+    [ -n "$L" ] || continue
+    if git add -- "$L"; then
+      STAGED_NOW="${STAGED_NOW}${L}
+"
+    else
+      STAGE_OK=0
+    fi
+  done <<EOF
+$UNION_BLOCKING
+EOF
+
+  # A partial staging failure must not leave a half-`git add`ed ledger sitting
+  # in the index below — every other exit path in this script promises the
+  # tree is left exactly as it was found (review finding, BRO-3212).
+  if [ "$STAGE_OK" -ne 1 ] && [ -n "$STAGED_NOW" ]; then
+    echo "$STAGED_NOW" | while IFS= read -r L; do
+      [ -n "$L" ] || continue
+      git restore --staged -- "$L" 2>/dev/null || git reset -q -- "$L" 2>/dev/null || true
+    done
+  fi
+
+  # `--only -- <paths>` (review finding, BRO-3212): a bare `git commit` with no
+  # pathspec commits the ENTIRE index, not just what the loop above staged —
+  # under push_mutex_acquire's documented fail-open-on-timeout, a concurrent
+  # session sharing this checkout could have unrelated changes already staged,
+  # and this commit must never sweep those in. `--only` restricts the commit
+  # to exactly $UNION_BLOCKING even if something else is sitting in the index.
+  if [ "$STAGE_OK" -eq 1 ] \
+       && git commit --no-verify -q --only -m "chore: sync audit ledgers [skip ci]" -- $UNION_BLOCKING; then
+    # --autostash (review finding, BRO-3212): `--only` above deliberately
+    # leaves any OTHER staged/unstaged content in the working tree untouched
+    # (never swept into the ledger commit — see the comment above), but plain
+    # `git rebase` refuses to even START against a non-clean tree, regardless
+    # of whether that content conflicts with anything being replayed.
+    # --autostash stashes it, runs the rebase, and restores it afterward —
+    # git-native, so it correctly handles both the success and failure paths
+    # (including restoring the stash if the rebase itself is aborted below).
+    if git rebase --autostash origin/main --quiet 2>/dev/null; then
+      echo "[$TAG] recovered — committed local ledger append(s) and rebased onto origin/main"
+      clear_refused_snapshot
+      exit 0
+    fi
+    echo "::error::[$TAG] rebase onto origin/main failed after committing the ledger(s) — aborting rebase, ledger commit preserved locally for the next run to carry forward (git status will look clean; see git log -1 / merge-worktree-to-main.sh)"
+    git rebase --abort 2>/dev/null || echo "::error::[$TAG] git rebase --abort itself failed — checkout may be mid-rebase, investigate by hand"
+  else
+    echo "::error::[$TAG] could not commit the ledger(s) for rebase recovery"
+  fi
+  REASON="dirty-unresolved"
 fi
 
 echo "::error::[$TAG] ff-only merge still blocked after snapshot reset — real divergence or dirty files outside data/audit/. Refusing to run on stale code."
