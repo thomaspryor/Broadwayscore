@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-13T22:31:00.783Z",
-  "processed": 90,
-  "failed": 727,
-  "successRate": "11.0%",
+  "updatedAt": "2026-09-13T23:00:21.313Z",
+  "processed": 124,
+  "failed": 984,
+  "successRate": "11.2%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 66,
     "amp": 15,
-    "browserbase": 2,
-    "directCookies": 0,
-    "scrapingbee": 11,
-    "brightdata": 17,
+    "browserbase": 8,
+    "directCookies": 3,
+    "scrapingbee": 17,
+    "brightdata": 19,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 17
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-09-13T14:58:03.881Z",
@@ -53,7 +53,46 @@
     {
       "t": "2026-09-13T22:29:20.962Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-13T22:39:25.715Z",
+      "event": "bb-session",
+      "session": "87bacf3b",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-13T22:39:26.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-13T22:42:25.401Z",
+      "event": "bb-session",
+      "session": "b5fcdde4",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-09-13T22:50:32.729Z",
+      "event": "bb-session",
+      "session": "8c6b5504",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-13T22:50:33.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-13T22:53:33.910Z",
+      "event": "bb-session",
+      "session": "8d8bccf3",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-13T22:53:34.679Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
