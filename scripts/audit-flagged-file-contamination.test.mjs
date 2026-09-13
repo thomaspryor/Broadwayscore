@@ -41,6 +41,11 @@ test('does not false-positive when the reasoning names the SAME critic as the by
   }
 });
 
+test('does not extract an organization name as an author (ship-check finding)', () => {
+  assert.equal(extractNamedAuthor('claude: This op-ed piece by New York Times reporters has no critical evaluation.'), null);
+  assert.equal(extractNamedAuthor('claude: This text is authored by Sky News about the production history.'), null);
+});
+
 test('returns null when rejectionReasoning is absent', () => {
   assert.equal(extractNamedAuthor(null), null);
   assert.equal(extractNamedAuthor(undefined), null);

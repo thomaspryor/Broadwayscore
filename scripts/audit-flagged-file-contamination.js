@@ -45,7 +45,7 @@
 const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
-const { normalizeCritic, areCriticsSimilar } = require('./lib/review-normalization');
+const { normalizeCritic, areCriticsSimilar, isRegisteredOutlet } = require('./lib/review-normalization');
 
 const args = process.argv.slice(2);
 const asJson = args.includes('--json');
@@ -85,14 +85,32 @@ const NAME_STOPWORDS = new Set([
   'production', 'theatre', 'theater', 'stage', 'guardian', 'critic', 'staff',
 ]);
 
+// Ship-check (Claude + Codex, both independently) found the trigger phrases
+// also match ORGANIZATIONS, not just people: "essay by New York Times",
+// "credited to Tony Award Winner" both pass the [A-Z]-per-word check. That's
+// exactly the wrong direction for a signal meant to point a human at a
+// re-attribution — a bogus org name is worse than no extraction. Reject any
+// candidate that resolves to a real outlet, plus a small set of generic
+// org/role words a person's name will never contain.
+const ORG_WORDS = new Set([
+  'times', 'news', 'verdict', 'award', 'awards', 'winner', 'team', 'desk',
+  'board', 'committee', 'wire', 'press', 'media', 'group', 'network',
+  'magazine', 'journal', 'gazette', 'chronicle', 'herald', 'marketing',
+  'promotional', 'editorial', 'newsdesk', 'roundup', 'aggregator', 'sky',
+  'playbill', 'variety', 'standard', 'telegraph', 'independent', 'observer',
+]);
+
 function looksLikeName(candidate) {
   const words = candidate.trim().split(/\s+/);
   if (words.length < 2 || words.length > 3) return false;
-  return words.every((w) => {
+  const ok = words.every((w) => {
     if (!/^[A-Z]/.test(w)) return false;
     const bare = w.toLowerCase().replace(/[^a-z]/g, '');
-    return bare.length > 0 && !NAME_STOPWORDS.has(bare);
+    return bare.length > 0 && !NAME_STOPWORDS.has(bare) && !ORG_WORDS.has(bare);
   });
+  if (!ok) return false;
+  if (isRegisteredOutlet(candidate)) return false; // e.g. "New York Times", "Sky News"
+  return true;
 }
 
 function extractNamedAuthor(reasoning) {
@@ -125,23 +143,31 @@ function main() {
   const tierA = [];
   const tierB = [];
   let scanned = 0;
+  let showDirsErrored = 0;
+  let filesUnreadable = 0;
 
   for (const showId of listShowDirs()) {
     const showDir = path.join(RT_DIR, showId);
     let files;
-    try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); } catch { continue; }
+    try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); } catch { showDirsErrored++; continue; }
 
     for (const file of files) {
       let data;
-      try { data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8')); } catch { continue; }
+      try { data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8')); } catch { filesUnreadable++; continue; }
       if (!data || !data.rejectionReason) continue;
       scanned++;
 
       const criticName = data.criticName || '';
       const criticIsReal = criticName && criticName.toLowerCase() !== 'unknown';
+      const sources = Array.isArray(data.sources) ? data.sources : (data.source ? [data.source] : []);
+      const sourcesHeuristicHit = sources.length >= 2 && sources.some((s) => LATE_STAGE_SOURCES.has(s));
 
       const extracted = extractNamedAuthor(data.rejectionReasoning);
       if (extracted && !criticNamesMatch(extracted, criticName)) {
+        // Tier A is ranked above Tier B, but a file can independently satisfy
+        // both — record that instead of hiding B's corroborating evidence
+        // (ship-check finding: the `continue` this replaced silently dropped
+        // it from the summary counts).
         tierA.push({
           tier: criticIsReal ? 'A-named' : 'A-unknown',
           show: showId,
@@ -154,12 +180,12 @@ function main() {
           rejectionReasoning: data.rejectionReasoning,
           rejectedAt: data.rejectedAt || null,
           sources: data.sources || data.source || null,
+          alsoMatchesSourcesHeuristic: sourcesHeuristicHit,
         });
-        continue; // Tier A supersedes Tier B for this file.
+        continue;
       }
 
-      const sources = Array.isArray(data.sources) ? data.sources : (data.source ? [data.source] : []);
-      if (sources.length >= 2 && sources.some((s) => LATE_STAGE_SOURCES.has(s))) {
+      if (sourcesHeuristicHit) {
         tierB.push({
           tier: 'B-sources',
           show: showId,
@@ -180,6 +206,8 @@ function main() {
     generatedAt: new Date().toISOString(),
     reviewTextsDir: RT_DIR,
     scannedFlaggedFiles: scanned,
+    showDirsErrored,
+    filesUnreadable,
     tierA,
     tierB,
     summary: {
@@ -188,6 +216,10 @@ function main() {
       tierBSources: tierB.length,
     },
   };
+
+  if (showDirsErrored > 0 || filesUnreadable > 0) {
+    console.error(`WARNING: ${showDirsErrored} show dirs and ${filesUnreadable} files could not be read/parsed — scannedFlaggedFiles undercounts the true corpus.`);
+  }
 
   if (asJson) {
     console.log(JSON.stringify(report, null, 2));
