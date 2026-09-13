@@ -87,6 +87,24 @@ const EXEMPT_LEDGERS = [
       'post-merge reconcile function for exactly that case.',
   },
   {
+    file: 'data/audit/scraper-spend-daily-agg.jsonl',
+    reason:
+      '2026-09-13 (BRO-3202): identical writer and identical semantics to ' +
+      'provider-spend-daily.jsonl directly above — the same script, ' +
+      'check-provider-spend.js, removes every existing row for today before ' +
+      'writing the fresh ones (`existingAgg.filter((r) => r.day !== DAY)` at ' +
+      'check-provider-spend.js:175, the exact shape of the `ledger.filter((r) => ' +
+      'r.day !== DAY)` at :161 that earned its sibling this exemption) and then ' +
+      'fs.writeFileSync()s the whole file at :189. That is a same-day REPLACE, ' +
+      'not an append, so a union merge could leave a superseded day\'s rows ' +
+      'beside the fresh ones with no dedupe rule to resolve them — and these ' +
+      'rows are SUMMED into a 7-day attribution window, so resurrected rows ' +
+      'would inflate spend attribution rather than just duplicate a line. ' +
+      'core-data-merge-registry.js:288 independently records it as ' +
+      'single-writer in the data-health-check concurrency group, so there is no ' +
+      'concurrent-append race for a driver to protect against in the first place.',
+  },
+  {
     file: 'data/audit/recent-pushes.jsonl',
     reason:
       '2026-08-26 (BRO-2493): dead on main since 2c2e9cd7eee (2026-08-02, "move ' +
