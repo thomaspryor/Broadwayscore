@@ -1566,6 +1566,25 @@ function isConfirmedNamedCriticMatch(incomingCritic, fileCritic) {
     areCriticsSimilar(incomingCritic, fileCritic.replace(/-/g, ' '));
 }
 
+// The self-heal exemption from isFlaggedMergeTarget's terminal treatment —
+// but ONLY for a rejectionReason-only file (a CI content-quality verdict
+// that a fresh, better extraction can legitimately correct). wrongProduction
+// and duplicateOf are a DIFFERENT, stronger class of flag — a deliberate
+// assertion that this file is NOT this production's review (or is a known
+// duplicate) — and must stay terminal REGARDLESS of critic match: the same
+// critic can easily have byline'd both the wrong production's coverage and
+// (later) this one, so a name match there is no evidence at all about
+// content identity. Conflating the two broke
+// tests/unit/find-existing-review-by-url.test.mjs's "never merges into a
+// wrongProduction file even if URL matched" — same critic name, wrongProduction
+// file, exact URL match, and the file must still never be reused.
+function isExemptFlaggedMergeTarget(data, incomingCritic, fileCritic) {
+  if (!data) return false;
+  if (data.wrongProduction || data.duplicateOf) return false;
+  if (!data.rejectionReason) return false;
+  return isConfirmedNamedCriticMatch(incomingCritic, fileCritic);
+}
+
 /**
  * Find an existing review file for the same outlet in a show directory.
  * Checks all filename variants: normalized outlet ID, raw slug, with/without critic.
@@ -1646,7 +1665,7 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
         // extract-dtli-reviews.js relies on to clear a stale garbage_text
         // rejection with no URL to hand — weaker evidence (both unknown)
         // does not qualify.
-        if (isFlaggedMergeTarget(data) && !isConfirmedNamedCriticMatch(criticName, fileCritic)) continue;
+        if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, fileCritic)) continue;
         return { path: filePath, filename: file, data };
       } catch {
         return { path: filePath, filename: file, data: null };
@@ -1692,7 +1711,7 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
 
     // Skip flagged/rejected files unless the critic match above was a
     // CONFIRMED same named critic (see pass 1's comment).
-    if (isFlaggedMergeTarget(data) && !isConfirmedNamedCriticMatch(criticName, data.criticName)) continue;
+    if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, data.criticName)) continue;
 
     return { path: filePath, filename: file, data };
   }
@@ -1731,7 +1750,7 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
         continue;
       }
       if (!data) continue;
-      if (isFlaggedMergeTarget(data) && !isConfirmedNamedCriticMatch(criticName, parts[1])) continue;
+      if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, parts[1])) continue;
 
       // Verify via URL resolution: does this file's URL resolve to the incoming outlet?
       // Without URL confirmation, different regional editions on the same domain would
@@ -2144,6 +2163,7 @@ module.exports = {
   isFlaggedMergeTarget,
   criticIsCompatibleMergeTarget,
   isConfirmedNamedCriticMatch,
+  isExemptFlaggedMergeTarget,
   maybeUpgradeUrl,
   slugLooksLikeDifferentShow,
   validateCriticOutlet,
