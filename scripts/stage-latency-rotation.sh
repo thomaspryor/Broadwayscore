@@ -55,12 +55,15 @@ SIZE_AFTER=$(stat --format=%s "$LOG_FILE" 2>/dev/null || stat -f%z "$LOG_FILE" 2
 echo "[stage-latency-rotation] rotated: ${SIZE_BEFORE} -> ${SIZE_AFTER} bytes"
 
 git add "$LOG_FILE"
-# --only (BRO-3212 /what-else cousin fix): this repo's main checkout is
-# shared by ~20 concurrent cron/worktree sessions, and a bare `git commit`
-# here — before push-with-retry.sh even acquires its mutex — would commit
-# the ENTIRE index, sweeping in any change another writer had already
-# staged on this same checkout. `--only` restricts the commit to exactly
-# $LOG_FILE regardless of what else is sitting in the index.
+# --only (BRO-3212 /what-else cousin fix): this script's only caller is
+# .github/workflows/stage-latency-rotation.yml, a fresh actions/checkout@v5
+# each run — not the shared local ~/Broadwayscore checkout sync-audit-
+# checkout.sh's identical fix (scripts/lib/sync-audit-checkout.sh) guards
+# against, so there is no concurrent-writer risk here today. `--only`
+# restricts the commit to exactly $LOG_FILE regardless of what else might
+# be sitting in the index — cheap defense-in-depth that costs nothing when
+# nothing else is staged (the normal case), and keeps this script correct
+# if it's ever run against a shared checkout or gains a second staged file.
 git commit --only -m "chore: Rotate stage-latency.jsonl (${SIZE_BEFORE} -> ${SIZE_AFTER} bytes) [skip ci]" -- "$LOG_FILE"
 
 bash scripts/lib/push-with-retry.sh
