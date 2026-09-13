@@ -22,22 +22,69 @@
  * advisories that share a package with a critical one (2026-07-11 ship-check:
  * the first version walked one transitive level — both unsound directions).
  *
- * Adding an entry requires: the GHSA id, why it can't be fixed, a Notion card
- * or issue reference, and an expiry date ~90 days out.
+ * Adding an entry requires: the GHSA id, `reason` (why it can't be fixed),
+ * `exposure` (whether THIS deployment is actually reachable by the advisory —
+ * hosting platform, whether the affected code path is even live, what input an
+ * anonymous caller controls), a Linear issue reference, and an expiry date
+ * ~90 days out (shorter for a live, patched-upstream critical).
+ *
+ * `exposure` is REQUIRED and validated (>= 40 chars): allowlisting a live RCE
+ * without writing down why it can't reach us defeats the entire gate, so the
+ * gate refuses to run on an entry that skipped the assessment (BRO-3202).
  */
 
 'use strict';
 
 const { execSync } = require('child_process');
 
+/** Minimum length of an `exposure` assessment — long enough to be a sentence. */
+const MIN_EXPOSURE_CHARS = 40;
+
 const ALLOWLIST = [
   {
     ghsa: 'GHSA-mp2f-45pm-3cg9',
     module: 'decompress',
     reason: 'No patched release exists (advisory range <=4.2.1; 4.2.1 is latest). '
-      + 'Reached only via the sanity CLI toolchain (dev-time CMS tooling, not site runtime). '
       + 'Removal requires the breaking sanity major upgrade.',
+    exposure: 'Not exposed: reached only via the sanity CLI toolchain (dev-time CMS tooling). '
+      + 'It is never bundled into the site runtime, so no attacker-supplied archive ever '
+      + 'reaches it — the extraction path only runs against files a developer already has.',
     expires: '2026-10-15',
+  },
+  // --- Next.js 14.2.35: both advisories' first patched release is 15.5.24 ---
+  // 14.2.35 is the LAST 14.x release (npm view next versions, 2026-09-13) —
+  // there is no 14.x backport, so "just patch it" is a Next 14 -> 15/16 major
+  // (React 19 + async request APIs). That upgrade is tracked separately; these
+  // entries carry a SHORT expiry (not the usual ~90d) because they are live
+  // criticals, not permanently-unfixable transitive cruft like decompress.
+  // Exposure was measured, not assumed — see BRO-3202.
+  {
+    ghsa: 'GHSA-p293-qw3h-jr36',
+    module: 'next',
+    reason: 'Range >=13.4.0 <15.5.24 — first patched release is 15.5.24, and 14.2.35 is the '
+      + 'last 14.x, so there is no patch reachable without the Next 14 -> 15/16 major.',
+    exposure: 'Not exposed: the advisory is Windows-filesystem-only ("when the server is hosted '
+      + 'on machines using a Windows filesystem"). Prod runs on Vercel (Linux serverless) and '
+      + 'every CI job runs on ubuntu-latest — this repo has no Windows runtime anywhere.',
+    expires: '2026-11-15',
+  },
+  {
+    ghsa: 'GHSA-2xp9-vwfh-vxw4',
+    module: 'next',
+    reason: 'Range >=10.0.0 <15.5.24 — first patched release is 15.5.24, and 14.2.35 is the '
+      + 'last 14.x, so there is no patch reachable without the Next 14 -> 15/16 major.',
+    exposure: 'Assessed, not waved through: /_next/image IS live on prod (the OG route at '
+      + 'src/app/show/[slug]/opengraph-image.tsx self-calls it), so the affected endpoint is '
+      + 'reachable. Closed from both ends. (1) Attacker-supplied input removed: next.config.js '
+      + 'remotePatterns no longer carries host-only entries for the multi-tenant CDNs '
+      + 'res.cloudinary.com and **.amazonaws.com — verified 2026-09-13 that an arbitrary AVIF '
+      + 'under res.cloudinary.com/demo/ returned 200 through prod /_next/image. Remote input is '
+      + 'now scoped to our own Contentful space, and same-origin /images/** holds zero .avif '
+      + 'files; output formats is pinned to webp so libheif is never used to encode either. '
+      + '(2) Vercel has the platform mitigation the advisory describes ("optimization of AVIF '
+      + 'files is disabled"): an AVIF through prod /_next/image came back byte-identical at '
+      + 'w=64/256/640 (43247 B each), i.e. passed through, never decoded.',
+    expires: '2026-11-15',
   },
 ];
 
@@ -67,6 +114,22 @@ function evaluateAuditReport(report, allowlist, today) {
   }
   if (!report.vulnerabilities || typeof report.vulnerabilities !== 'object') {
     return { ok: false, errors: ['npm audit report has no vulnerabilities object — refusing to treat as clean'], allowedHits: [] };
+  }
+
+  // An allowlist entry with no written exposure assessment is the failure mode
+  // this gate exists to prevent (BRO-3202: two unpatched Next.js RCEs). Refuse
+  // to evaluate a malformed allowlist rather than honour a blank exemption.
+  const malformed = allowlist.filter(
+    (a) => !a || typeof a.exposure !== 'string' || a.exposure.trim().length < MIN_EXPOSURE_CHARS,
+  );
+  if (malformed.length) {
+    for (const a of malformed) {
+      errors.push(
+        `allowlist entry ${(a && a.ghsa) || '(unnamed)'} has no usable \`exposure\` assessment `
+        + `(required, >= ${MIN_EXPOSURE_CHARS} chars) — say why THIS deployment can't be reached`,
+      );
+    }
+    return { ok: false, errors, allowedHits: [] };
   }
 
   const allowByGhsa = new Map(allowlist.map((a) => [a.ghsa, a]));
@@ -134,6 +197,7 @@ function main() {
     console.log('⚠️  Allowlisted critical advisories (NOT clean — tracked, unfixable today):');
     for (const a of result.allowedHits) {
       console.log(`   ${a.ghsa} (${a.module}) — ${a.reason} [expires ${a.expires}]`);
+      console.log(`      exposure: ${a.exposure}`);
     }
   }
 
@@ -146,6 +210,6 @@ function main() {
   console.log('✅ No unallowlisted critical advisories.');
 }
 
-module.exports = { evaluateAuditReport, ALLOWLIST };
+module.exports = { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS };
 
 if (require.main === module) main();
