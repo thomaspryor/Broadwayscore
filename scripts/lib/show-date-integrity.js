@@ -18,7 +18,13 @@
  *    opened 2013) — so it only warns, never blocks.
  */
 
-const PRE_OPEN_STATUSES = new Set(['open', 'previews', 'upcoming', 'announced']);
+// Statuses the id-year-gap heuristic still applies to. Deliberately NOT named
+// PRE_OPEN_STATUSES: opening-signal.js exports a DIFFERENT set under that name
+// (no 'open' - it is the set of statuses the review-driven catch-up may flip TO
+// open, so including 'open' there would re-flip live shows). Two unequal
+// same-named constants in scripts/lib/ is a footgun; renamed on BRO-3091 after
+// ship-check flagged it. Nothing imported this one.
+const DATE_CHECKED_STATUSES = new Set(['open', 'previews', 'upcoming', 'announced']);
 
 const { foldDiacritics } = require('./title-match');
 
@@ -98,7 +104,7 @@ function suspiciousInheritedYear(show, currentYear, opts = {}) {
   if (!Number.isFinite(idYear) || !Number.isFinite(openYear)) return false;
   return idYear >= currentYear - recentWithin
     && idYear - openYear >= gapYears
-    && PRE_OPEN_STATUSES.has(show.status);
+    && DATE_CHECKED_STATUSES.has(show.status);
 }
 
-module.exports = { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, PRE_OPEN_STATUSES };
+module.exports = { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };
