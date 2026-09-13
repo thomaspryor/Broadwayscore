@@ -1281,6 +1281,13 @@ on:
       # Card #1252 — ScrapingDog's equivalent daily breaker (same allow-list
       # gate reasoning as the Bright Data entries above).
       - 'scripts/check-sd-breaker.js'
+      # BRO-3022 — the one-shot seeder for the breaker trip-transition ledger
+      # those two checkers now append to. Same gap shape as the CLIs listed
+      # above: a top-level scripts/ file outside the scripts/lib/** glob, whose
+      # pure core (reconstructTransitions) IS covered by the colocated
+      # scripts/lib/breaker-transitions.test.mjs, but which would get ZERO CI on
+      # a solo edit to its own history-walking/idempotency wrapper.
+      - 'scripts/backfill-breaker-transitions.js'
       - 'scripts/test-opening-night-budget.js'
       # TodayTix runtime extraction (page CMS field is authoritative, API is
       # stale) — parser covered by tests/unit/todaytix-runtime.test.mjs.

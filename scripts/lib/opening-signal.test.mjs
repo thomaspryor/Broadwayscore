@@ -25,6 +25,8 @@ const {
   chooseOpeningDateBackfill,
   findStuckPreviews,
   isStuckPreviewsPollCandidate,
+  openSignalFromDiscovery,
+  PRE_OPEN_STATUSES,
 } = require('./opening-signal.js');
 
 // Deterministic clock for backfill tests: "today" is 2026-06-03.
@@ -280,4 +282,73 @@ test('isStuckPreviewsPollCandidate: rejects wrong status, missing previewsStartD
 test('STUCK_PREVIEWS_POLL_MIN_DAYS/MAX_DAYS are the documented bounds', () => {
   assert.equal(STUCK_PREVIEWS_POLL_MIN_DAYS, 5);
   assert.equal(STUCK_PREVIEWS_POLL_MAX_DAYS, 30);
+});
+
+// --- BRO-3091: date-less 'announced' shows are in scope for the catch-up ----
+// tartuffe-remixed-off-west-end-2026 and night-city-off-west-end-2026 sat in
+// status='announced' with openingDate AND previewsStartDate both null while
+// carrying real scored reviews in reviews.json. decideAnnouncedPromotion needs
+// a date to fire, and this file's catch-up used to skip 'announced' entirely,
+// so there was no path out — and engine.ts hides reviews+score for 'announced',
+// making those reviews invisible on the site.
+
+test('PRE_OPEN_STATUSES covers announced (BRO-3091 deadlock)', () => {
+  assert.equal(PRE_OPEN_STATUSES.has('announced'), true);
+  assert.equal(PRE_OPEN_STATUSES.has('previews'), true);
+  assert.equal(PRE_OPEN_STATUSES.has('upcoming'), true);
+  // Post-open statuses must stay out, or the catch-up would re-flip closed shows.
+  assert.equal(PRE_OPEN_STATUSES.has('open'), false);
+  assert.equal(PRE_OPEN_STATUSES.has('closed'), false);
+});
+
+test('openSignalFromReviews fires for a date-less announced show (night-city class)', () => {
+  // Both dates null, 2 reviews sharing one press night — the real shape of
+  // night-city-off-west-end-2026 on 2026-09-13.
+  const show = {
+    id: 'night-city-off-west-end-2026',
+    status: 'announced',
+    category: 'off-west-end',
+    openingDate: null,
+    previewsStartDate: null,
+  };
+  const sig = openSignalFromReviews(show, { count: 2, tier1And2: 0, dates: ['2026-06-18', '2026-06-18'] }, isReachedLate);
+  assert.deepEqual(sig, { date: '2026-06-18', source: 'review-open-signal' });
+});
+
+test('openSignalFromReviews: a single review unsticks an announced show (tartuffe class)', () => {
+  const show = { id: 'tartuffe-remixed-off-west-end-2026', status: 'announced', category: 'off-west-end', openingDate: null, previewsStartDate: null };
+  const sig = openSignalFromReviews(show, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate);
+  assert.equal(sig.date, '2026-06-18');
+});
+
+test('announced shows still need real evidence — no review, no flip', () => {
+  const base = { id: 'x', status: 'announced', category: 'off-west-end', openingDate: null, previewsStartDate: null };
+  // A speculative future announcement has no reviews at all.
+  assert.equal(openSignalFromReviews(base, { count: 0, tier1And2: 0, dates: [] }, isReachedLate), null);
+  // Reviews exist but the press night has not been reached — a future-dated
+  // record must not flip the show (Check 2c would revert it: oscillation).
+  assert.equal(openSignalFromReviews(base, { count: 1, tier1And2: 0, dates: ['2026-07-01'] }, isReachedLate), null);
+  // A review predating a known previews start is prior-production contamination.
+  assert.equal(
+    openSignalFromReviews({ ...base, previewsStartDate: '2026-06-10' }, { count: 1, tier1And2: 0, dates: ['2026-06-02'] }, isReachedLate),
+    null
+  );
+});
+
+test('openSignalFromDiscovery still refuses date-less announced shows', () => {
+  // The discovery layer is unscrubbed, so previewsStartDate is the only thing
+  // separating this run's press coverage from a prior production's. The BRO-3091
+  // class has no previewsStartDate, so the weakest signal must stay silent for it
+  // even though 'announced' is now a pre-open status.
+  const show = { id: 'night-city-off-west-end-2026', status: 'announced', category: 'off-west-end', previewsStartDate: null };
+  const files = [{ url: 'https://example.com/r', publishDate: '2026-06-18' }];
+  assert.equal(openSignalFromDiscovery(show, files, isReachedLate), null);
+  // With a previewsStartDate it does fire, confirming status was never the blocker.
+  const dated = { ...show, previewsStartDate: '2026-06-10' };
+  assert.deepEqual(openSignalFromDiscovery(dated, files, isReachedLate), { date: '2026-06-18', source: 'discovery-open-signal' });
+});
+
+test('isStuckInPreviews counts an announced show against the score gate', () => {
+  assert.equal(isStuckInPreviews({ status: 'announced', category: 'off-west-end' }, { count: 3, tier1And2: 1 }), true);
+  assert.equal(isStuckInPreviews({ status: 'announced', category: 'off-west-end' }, { count: 2, tier1And2: 1 }), false);
 });

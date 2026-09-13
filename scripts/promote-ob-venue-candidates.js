@@ -334,8 +334,11 @@ function decideOffBroadwayAggregatorPromotion(candidate, options = {}) {
  * class: engine.ts:710 hides reviews/score whenever status==='announced',
  * and the only code that ever promotes 'announced' forward — either
  * decideAnnouncedPromotion (requires an openingDate/previewsStartDate to
- * already exist) or opening-signal.js's review-driven catch-up (scoped to
- * PRE_OPEN_STATUSES = {'previews','upcoming'}, which excludes 'announced')
+ * already exist) or opening-signal.js's review-driven catch-up (at the time,
+ * scoped to PRE_OPEN_STATUSES = {'previews','upcoming'}, which excluded
+ * 'announced'; BRO-3091 has since added it, but that route only fires once
+ * a scored review with a reached press night exists, which is strictly later
+ * than promotion time)
  * — needs a date this class has no other way to acquire (it deliberately
  * skips the Playbill-OB/Lortel cross-validation that would normally supply
  * one). Promoted via buildShowEntry, these shows would have their reviews

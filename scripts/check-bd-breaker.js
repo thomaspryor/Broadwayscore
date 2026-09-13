@@ -37,6 +37,7 @@ const {
 const { fetchBdZoneCostDay } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
 const { countShowsInOpeningWindow } = require('./lib/opening-night-selection');
+const { recordTransitionSafely } = require('./lib/breaker-transitions');
 
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -108,6 +109,11 @@ async function main() {
 
   const state = loadState();
   const changes = [];
+  // Every zone with a KNOWN verdict this run, flipped or not (BRO-3022). The
+  // transition ledger is written from this rather than from `changes` because
+  // its trip rows are repaired-if-missing, not fire-once — see the comment at
+  // the recording loop below.
+  const observed = [];
 
   for (const zone of zones) {
     const prev = state.zones[zone];
@@ -135,8 +141,9 @@ async function main() {
       ? (wasActive && prev.trippedAt) || new Date().toISOString()
       : null;
     state.zones[zone] = { day, trippedAt, billedReqs, ceiling: effectiveCeiling, cost: billing.cost };
+    observed.push({ zone, tripped: verdict.tripped, wasActive, billedReqs, ceiling: effectiveCeiling });
     if (verdict.tripped !== wasActive) {
-      changes.push({ zone, tripped: verdict.tripped, billedReqs, ceiling: effectiveCeiling });
+      changes.push({ zone, tripped: verdict.tripped, wasActive, billedReqs, ceiling: effectiveCeiling });
     }
   }
 
@@ -152,6 +159,40 @@ async function main() {
   fs.writeFileSync(STATE_PATH, JSON.stringify(state, null, 2) + '\n');
   console.log(`Wrote ${STATE_PATH}`);
 
+  // BRO-3022: record trips/recoveries for Sprint 3's guard audit, from EVERY
+  // observed zone rather than only the flipped ones, and ABOVE the "no change"
+  // early return below.
+  //
+  // The state file written just above already carries trippedAt, so if a row's
+  // append fails, the next hourly run would see wasActive === verdict.tripped
+  // for that zone, take the early return, and never retry — losing the trip day
+  // silently, in a way the prevTs chain cannot flag (no row was written for a
+  // later one to reference). recordTransitionSafely's trip side is idempotent
+  // per (conditionKey, day), so attempting it every run repairs a lost row on
+  // the next one while an already-recorded day appends nothing.
+  for (const o of observed) {
+    recordTransitionSafely({
+      conditionKey: `bd-circuit-breaker-${o.zone}`,
+      tripped: o.tripped,
+      wasActive: o.wasActive,
+      day,
+      units: o.billedReqs,
+      ceiling: o.ceiling,
+      // BD's resolveDailyCeiling() is a bare number with no source string of
+      // its own (unlike SD's resolveCeilingForDay(), which returns
+      // {ceiling, source}), so derive one. Compare against the DEFAULT rather
+      // than merely testing that the env var is set: _posInt silently ignores
+      // BD_BREAKER_CEILING=0 or garbage and returns the default, and recording
+      // 'env' there would attribute a ceiling to an override that never
+      // applied (ship-check finding, 2026-09-08). Note `ceiling` here is the
+      // effective (post opening-window-reserve) figure, so say so when the
+      // reserve moved it.
+      ceilingSource: o.ceiling !== ceiling
+        ? 'opening-window-reserve'
+        : (ceiling === resolveDailyCeiling({}) ? 'default' : 'env'),
+    });
+  }
+
   if (!changes.length) {
     console.log('No breaker state change — no alert.');
     return;
@@ -160,6 +201,11 @@ async function main() {
   const openingWindowShows = countShowsInOpeningWindow(SHOWS_PATH);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
   for (const change of changes) {
+    // NOTE the per-zone suffix. BRO-3011's Sprint 3 plan names a flat
+    // 'bd-circuit-breaker' key; that key has never existed. The real condition
+    // keys are bd-circuit-breaker-web_unlocker2 and bd-circuit-breaker-serp_api1,
+    // and the transition rows below use them verbatim so a reader can join the
+    // two files on conditionKey without a translation table.
     const conditionKey = `bd-circuit-breaker-${change.zone}`;
 
     // Recovery is not news. Resolving the condition (rather than routing a

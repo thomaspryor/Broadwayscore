@@ -20,9 +20,9 @@ const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
-const { countByShow, isStuckInPreviews, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill } = require('./lib/opening-signal');
+const { countByShow, isStuckInPreviews, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
-const { decideAnnouncedPromotion } = require('./lib/announced-promotion');
+const { decideAnnouncedPromotion, blockAnnouncedCatchUp } = require('./lib/announced-promotion');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -779,7 +779,26 @@ async function updateShowStatuses() {
       const discoverySignal = (scoreThreshold || openSignal)
         ? null
         : openSignalFromDiscovery(show, loadDiscoveredReviews(show.id), isDateReached);
-      if (scoreThreshold || openSignal || discoverySignal) {
+
+      // 'announced' shows reach Check 2d only when Check 2e declined to act —
+      // i.e. the date-less discovery class (action:'none') or a zombie entry
+      // (action:'triage'). Both lack the temporal evidence the previews/upcoming
+      // population carries, so they get an extra gate before any flip. See
+      // blockAnnouncedCatchUp for the two concrete failure modes it closes
+      // (zombie bypass; prior-production reviews stamping a stale press night).
+      // Pure function in lib/ per CLAUDE.md §15 so the tests exercise the real
+      // decision instead of a copy.
+      const candidatePressNight = discoverySignal
+        ? discoverySignal.date
+        : estimatePressNight(entry ? entry.dates : []);
+      const announcedBlock = (scoreThreshold || openSignal || discoverySignal)
+        ? blockAnnouncedCatchUp(show, announcedDecision, candidatePressNight)
+        : null;
+      if (announcedBlock) {
+        console.log(`  ⚠️  ${show.title} (${show.id}): status=announced, review signal fired but NOT promoted — ${announcedBlock.reason}`);
+      }
+
+      if (!announcedBlock && (scoreThreshold || openSignal || discoverySignal)) {
         const from = show.status;
         const reviewCount = entry ? entry.count : 0;
         changes.status = { from, to: 'open' };

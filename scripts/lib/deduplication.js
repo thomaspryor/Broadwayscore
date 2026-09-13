@@ -190,6 +190,15 @@ function slugify(title) {
     .toLowerCase()
     .normalize('NFKD').replace(/[\u0300-\u036f]/g, '') // Strip diacritics (é→e)
     .replace(/[&]/g, 'and')
+    // "/" is a word separator ("Electra/Persona"), not punctuation to drop —
+    // without this, slugify("Electra/Persona") = "electrapersona" while
+    // slugify("Electra / Persona") = "electra-persona" (the surrounding
+    // spaces survive to \s+->'-' below; a bare "/" has none), so the same
+    // production discovered two ways got two unrelated slugs and every
+    // slug/ID-based dup check in checkForDuplicate() missed the pair
+    // (electra-persona-west-end-2026 / electrapersona-west-end-2026,
+    // BRO-3191, 2026-09-12/13).
+    .replace(/\//g, ' ')
     .replace(/[^a-z0-9\s-]/g, '') // Strip everything except alphanumeric, spaces, hyphens
     .replace(/\s+/g, '-')
     .replace(/^-+|-+$/g, '')
@@ -250,8 +259,12 @@ function normalizeTitle(title) {
     .replace(/^(?:[a-z][a-z0-9.\-]*\s+){0,2}[a-z][a-z0-9.\-]*['’]s\s+(?:the\s+|a\s+|an\s+)?/i, '')
     // Re-strip leading article (in case the possessive removal exposed one)
     .replace(/^(the|a|an)\s+/i, '')
+    // "/" is a word separator, not punctuation to drop — see slugify()'s
+    // matching comment (BRO-3191). Must run before the punctuation strip
+    // below, which would otherwise concatenate the words on either side.
+    .replace(/\//g, ' ')
     // Clean up punctuation and extra spaces
-    .replace(/[!?'":\-–—,\.+\/]/g, '')
+    .replace(/[!?'":\-–—,\.+]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -364,6 +377,41 @@ function isSlugContainmentDuplicate(slugA, slugB) {
   return NON_CONTENT_SLUG_REMAINDER_RE.test(longer.slice(shorter.length));
 }
 
+// Strict (non-lossy) title equality for the National-Theatre parent/child
+// override below — casefold + collapse whitespace + treat "/" as a
+// separator, but do NOT strip subtitles/articles/possessives the way
+// normalizeTitle() does. normalizeTitle()'s fuzziness is correct for its
+// normal callers (Check 5 in checkForDuplicate) but is exactly the wrong
+// tool for a check whose failure mode is silent data loss (Codex adversarial
+// review, BRO-3191 follow-up): "Hamlet" and "Hamlet: Something Else" must
+// stay distinct even though normalizeTitle() strips the subtitle from both.
+function strictTitleKey(title) {
+  return String(title || '')
+    .toLowerCase()
+    .replace(/\//g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// National Theatre (South Bank) runs 3 concurrent auditoria under one site
+// name — Olivier, Lyttelton, Dorfman — so aliasing the bare site name to any
+// ONE of them in VENUE_ALIASES would be unsafe (the same BAM false-positive
+// class that file already documents). But a listing that gives only the BARE
+// site name is genuinely ambiguous with ANY one of its auditoria — unlike two
+// DIFFERENT named auditoria, which are never the same production (the
+// National runs unrelated shows in each concurrently). This is deliberately
+// asymmetric and scoped to exactly that one relationship, not a generic
+// "venues might be related" heuristic.
+const NATIONAL_THEATRE_PARENT = 'national theatre';
+const NATIONAL_THEATRE_CHILDREN = ['lyttelton theatre', 'olivier theatre', 'dorfman theatre'];
+function isAmbiguousParentChildVenue(venueA, venueB) {
+  const a = String(venueA || '').toLowerCase().trim();
+  const b = String(venueB || '').toLowerCase().trim();
+  const isParent = (v) => v === NATIONAL_THEATRE_PARENT;
+  const isChild = (v) => NATIONAL_THEATRE_CHILDREN.includes(v);
+  return (isParent(a) && isChild(b)) || (isParent(b) && isChild(a));
+}
+
 /**
  * Check if two shows are different productions of the same title.
  * Returns true if both have year info and opening years differ by >2 years.
@@ -442,10 +490,50 @@ function isMultiProduction(newShow, existing) {
   // (renter company ≡ host venue, e.g. The New Group ≡ Signature Center).
   const venuesMatch = newVenueSegs.some(a => existVenueSegs.some(b =>
     a.norm === b.norm || (a.alias && a.alias === b.alias)));
-  const venuesKnownDifferent =
+  let venuesKnownDifferent =
     newVenueSegs.length > 0 &&
     existVenueSegs.length > 0 &&
     !venuesMatch;
+  // National-Theatre parent/child override (BRO-3191, 2026-09-13, tightened
+  // 2026-09-13 per Codex adversarial review of the first version of this
+  // fix): electra-persona-west-end-2026 ("National Theatre", previewsStartDate
+  // 2026-08-19) vs the discovery-recreated electrapersona-west-end-2026
+  // ("Lyttelton Theatre" — one of the National's own auditoria, same date)
+  // kept getting classified as separate productions because no VENUE_ALIASES
+  // entry links a specific NT auditorium to the bare site name — and unlike
+  // Shakespeare's Globe (single main house, aliased above), the National
+  // genuinely runs 3 DIFFERENT concurrent shows across Olivier/Lyttelton/
+  // Dorfman, so blanket-aliasing "National Theatre" to any one of them would
+  // recreate the exact BAM false-positive class this file already guards
+  // against.
+  //
+  // The FIRST version of this override matched on `normalizeTitle()`
+  // equality alone, gated only by previewsStartDate + ANY confirmed-
+  // different venue. Codex's adversarial review (BRO-3191 follow-up) caught
+  // two real false-positive paths that would have shipped: (1) normalizeTitle
+  // strips subtitles/articles/possessives, so "Hamlet" and "Hamlet: Something
+  // Else" at two genuinely different venues sharing a preview date would
+  // silently collapse into "same production" and the second one would never
+  // get added — silent data loss, not just a missed duplicate; (2) the
+  // override applied globally to every venue pair, not just the National's
+  // known parent/child relationship, so it could also suppress two
+  // completely unrelated productions elsewhere that happen to share a launch
+  // date. Fixed by narrowing on BOTH axes:
+  //   - isAmbiguousParentChildVenue(): only fires when one side is the BARE
+  //     site name ("National Theatre") and the other is a SPECIFIC named
+  //     auditorium (Lyttelton/Olivier/Dorfman) — two different NAMED
+  //     auditoria (e.g. Lyttelton vs Olivier) are never treated as ambiguous,
+  //     since the National genuinely runs different shows in each.
+  //   - strictTitleKey() equality instead of normalizeTitle() equality — no
+  //     subtitle/article/possessive stripping, so "Hamlet" vs "Hamlet:
+  //     Something Else" no longer match.
+  if (venuesKnownDifferent &&
+      isAmbiguousParentChildVenue(newShow.venue, existing.venue) &&
+      newShow.previewsStartDate && existing.previewsStartDate &&
+      newShow.previewsStartDate === existing.previewsStartDate &&
+      strictTitleKey(newShow.title) === strictTitleKey(existing.title)) {
+    venuesKnownDifferent = false;
+  }
   if (newCat !== existingCat && getMarketPool(newCat) === getMarketPool(existingCat)) {
     if (venuesKnownDifferent) {
       return true; // Different confirmed venues = legitimate transfer
@@ -850,5 +938,7 @@ module.exports = {
   isSubtitleVariantOf,
   aliasCanonical,
   venuesMatch,
-  KNOWN_DUPLICATES
+  KNOWN_DUPLICATES,
+  strictTitleKey,
+  isAmbiguousParentChildVenue
 };

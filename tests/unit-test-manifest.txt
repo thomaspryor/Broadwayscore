@@ -72,6 +72,7 @@ scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/bww-archive-category-guard.test.mjs
 scripts/lib/check-critic-coverage.test.mjs
+scripts/lib/check-merge-history.test.mjs
 scripts/lib/cli-help.test.mjs
 scripts/lib/cmux-launch.test.mjs
 scripts/lib/cmux-run-retry.test.mjs
@@ -710,6 +711,7 @@ tests/unit/settings-hook-paths.test.mjs
 tests/unit/should-defer-cv-wrong-show.test.mjs
 tests/unit/should-skip-locked-enrichment.test.mjs
 tests/unit/should-skip-poller-update.test.mjs
+tests/unit/show-dedup-slash-venue-globe-national.test.mjs
 tests/unit/show-dedup-slug-prefix.test.mjs
 tests/unit/show-dedup-temporal.test.mjs
 tests/unit/show-format-coverage.test.mjs

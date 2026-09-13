@@ -72,6 +72,7 @@ const { mergeAlertLedger } = require('./merge-alert-ledger');
 const { mergeAlertDigestQueue } = require('./merge-alert-digest-queue');
 const { mergeAlertRouterAttempts } = require('./merge-alert-router-attempts');
 const { mergeGuardEscalationState } = require('./merge-guard-escalation-state');
+const { mergeBreakerTransitions } = require('./merge-breaker-transitions');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -731,6 +732,16 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackMerge: true,
     optInReconcile: false, // see audit/alert-ledger.json's comment above
     verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js.',
+  },
+  {
+    file: 'audit/breaker-transitions.jsonl',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeBreakerTransitions,
+    format: 'jsonl',
+    apiFallbackMerge: true,
+    optInReconcile: false, // see audit/alert-ledger.json's comment above
+    verifiedBy: '2026-09-08 (BRO-3022): 2 writers (scripts/check-sd-breaker.js, scripts/check-bd-breaker.js) via scripts/lib/breaker-transitions.js appendTransition() — append-only log, union deduped by (ts, conditionKey), no retention prune so no base-aware delete branch is needed. Registered specifically so that adding this path to commercial-rss-poll.yml\'s "Commit breaker state" step does NOT trip push-with-retry.sh\'s "unaudited data/audit/ path" disqualifier and silently strip the Git Data API fallback from the very commit BRO-2960 carved out and BRO-335 tuned for push contention. NOT apiFallbackSafe: that claims "no reconciliation needed" and is ours-wins-outright, which would drop the other side\'s appended rows (the residual risk documented on audit/autonomous-recheck-ledger.jsonl above) — for an append-only ledger a real per-row union is required. See scripts/lib/merge-breaker-transitions.js.',
   },
   {
     file: 'audit/ob-venue-candidates.json',

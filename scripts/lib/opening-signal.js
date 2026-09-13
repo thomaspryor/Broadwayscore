@@ -37,7 +37,28 @@ const MIN_REVIEWS_CURATED_HISTORICAL = 4;
 const T3_ONLY_EXTRA_REVIEWS = 2;
 
 // Statuses that should auto-flip to 'open' once the review signal fires.
-const PRE_OPEN_STATUSES = new Set(['previews', 'upcoming']);
+//
+// 'announced' is here for the date-less discovery class (BRO-3091,
+// tartuffe-remixed-off-west-end-2026 + night-city-off-west-end-2026, found
+// 2026-09-13). Discovery creates shows with no openingDate AND no
+// previewsStartDate as status='announced', and both routes out of 'announced'
+// needed a date the show did not have:
+//   - decideAnnouncedPromotion (update-show-status Check 2e) returns
+//     action:'none' unless openingDate or previewsStartDate is already set;
+//   - this file's review-driven catch-up (Check 2d) skipped 'announced'.
+// So a date-less announced show that then collected real, scored reviews was
+// stuck in 'announced' permanently — and engine.ts hides reviews AND the score
+// for status==='announced', so those reviews were invisible on the site. Both
+// shows above had scored reviews in reviews.json and were unreachable.
+// promote-ob-venue-candidates.js:336 already documented this exact deadlock.
+//
+// Safe to include because the signals gate on evidence, not on status: a clean
+// reviews.json review with a REACHED press night is positive proof the show
+// opened. Speculative future 'announced' entries have no such review, so they
+// raise no signal and stay put. openSignalFromDiscovery additionally requires
+// previewsStartDate, which this class lacks, so the weakest (uncollected,
+// unscrubbed) signal still cannot fire for it.
+const PRE_OPEN_STATUSES = new Set(['previews', 'upcoming', 'announced']);
 
 function minReviewsForCategory(category) {
   return MIN_REVIEWS_BY_CATEGORY[category] ?? MIN_REVIEWS_DEFAULT;
@@ -161,7 +182,7 @@ function isStuckInPreviews(show, counts) {
   if (!show || !PRE_OPEN_STATUSES.has(show.status)) return false;
   const count = typeof counts === 'number' ? counts : (counts ? counts.count : 0);
   const tier1And2 = typeof counts === 'number' ? undefined : (counts ? counts.tier1And2 : undefined);
-  // A show in previews/upcoming is never a curated-historical import, so pass false.
+  // A show in previews/upcoming/announced is never a curated-historical import, so pass false.
   return reviewsRemainingForScore(count, show.category, tier1And2, false) === 0;
 }
 
