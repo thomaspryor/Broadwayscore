@@ -226,9 +226,9 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-09-10T21:31:26.727Z",
-      "lastNotifiedAt": "2026-09-10T21:31:26.727Z",
-      "notifyCount": 34,
+      "lastSeen": "2026-09-13T18:43:23.759Z",
+      "lastNotifiedAt": "2026-09-13T18:43:23.759Z",
+      "notifyCount": 35,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -237,9 +237,9 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-09-10T21:31:26.818Z",
-      "lastNotifiedAt": "2026-09-10T21:31:24.574Z",
-      "notifyCount": 40,
+      "lastSeen": "2026-09-13T18:43:23.851Z",
+      "lastNotifiedAt": "2026-09-13T18:43:20.658Z",
+      "notifyCount": 41,
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
@@ -249,12 +249,11 @@
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-09-08T16:05:01.207Z",
-      "lastNotifiedAt": "2026-09-08T15:05:58.740Z",
-      "notifyCount": 30,
+      "lastSeen": "2026-09-13T18:43:23.650Z",
+      "lastNotifiedAt": "2026-09-13T18:43:23.650Z",
+      "notifyCount": 31,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -916,12 +915,11 @@
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
       "firstSeen": "2026-08-13T23:42:15.236Z",
-      "lastSeen": "2026-09-10T21:31:20.037Z",
-      "lastNotifiedAt": "2026-09-05T17:16:20.195Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-09-13T18:43:13.585Z",
+      "lastNotifiedAt": "2026-09-13T18:43:13.585Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-328",
-      "silentRefires": 4
+      "linearIdentifier": "BRO-328"
     },
     "opening-night-cv-wrongproduction-unhandled-how-the-other-half-loves-west-end-2026": {
       "status": "open",
@@ -1444,7 +1442,7 @@
       "linearIdentifier": null
     },
     "backstop:marlise-off-broadway-2026/broadwayworld--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Marlise — broadwayworld",
       "firstSeen": "2026-08-21T10:23:57.928Z",
@@ -1452,7 +1450,8 @@
       "lastNotifiedAt": "2026-08-21T10:23:57.928Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-2273"
+      "linearIdentifier": "BRO-2273",
+      "resolvedAt": "2026-09-13T18:41:05.296Z"
     },
     "cron-health-chronic:Commercial Weekly Orchestrator": {
       "status": "open",
@@ -2776,6 +2775,17 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "gap:the-children-off-west-end-2026/times-uk--the-times.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 silent gap on near-opening show: The Children — times-uk",
+      "firstSeen": "2026-09-13T18:43:10.495Z",
+      "lastSeen": "2026-09-13T18:43:10.495Z",
+      "lastNotifiedAt": "2026-09-13T18:43:10.495Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3200"
     }
   }
 }

@@ -265,18 +265,6 @@
     "queuedAt": "2026-09-08T15:05:36.829Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "7/119 show(s) differ between internal state and what prod serves.\nscore-drift: 7\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift\nHadestown: score-drift\nOperation Mincemeat: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-08T15:05:58.741Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-america-who-hurt-you-off-broadway-2026",
     "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
     "description": "synopsis for america-who-hurt-you-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -323,71 +311,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-09T22:37:00.075Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.8% (374/487)\noff-broadway: 42.5% (128/301)\nwest-end: 73.7% (393/533)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (660h)\nA Midsummer Night's Dream — observer (660h)\nA Midsummer Night's Dream — standard (660h)\nA Midsummer Night's Dream — times-uk (660h)\nABBA Voyage — independent (660h)\n… 178 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (660h)\nThe Book of Mormon — usatoday (660h)\nBuena Vista Social Club — broadwaynews (660h)\nBuena Vista Social Club — nydailynews (660h)\nHadestown — nydailynews (660h)\n… 21 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-10T21:31:24.575Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "58 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Spellbound — hollywood-reporter (54h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Spellbound — indiewire (54h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Spellbound — nytimes (54h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Spellbound — telegraph (54h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Spellbound — thewrap (54h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Spellbound — variety (54h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"spellbound-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Importance of Being Oscar — guardian (660h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Importance of Being Oscar — standard (660h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Importance of Being Oscar — telegraph (660h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Importance of Being Oscar — timeout (559h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-10T21:31:26.728Z"
   },
   {
     "conditionKey": "on-monitor-launched-on-monitor-2026-09-10",
@@ -641,5 +564,82 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-13T16:24:13.023Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 75.1% (373/497)\noff-broadway: 40.1% (129/322)\nwest-end: 73.8% (399/541)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (729h)\nA Midsummer Night's Dream — observer (729h)\nA Midsummer Night's Dream — standard (729h)\nA Midsummer Night's Dream — times-uk (729h)\nABBA Voyage — independent (729h)\n… 191 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (729h)\nBuena Vista Social Club — nydailynews (729h)\nHadestown — nydailynews (729h)\nJust in Time — nydailynews (729h)\nMasquerade — nydailynews (729h)\n… 11 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-13T18:43:20.658Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "9/125 show(s) differ between internal state and what prod serves.\nscore-drift: 9\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nDeath Note: The Musical: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-13T18:43:23.650Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "54 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Just in Time — broadwaynews (729h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"just-in-time-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Othello — broadwaynews (729h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — times-uk (69h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The 25th Annual Putnam County Spelling Bee — dailybeast (729h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-25th-annual-putnam-county-spelling-bee-off-broadway-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Importance of Being Oscar — times-uk (685h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Lion King — ew (124h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-1997\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Lion King — i-paper (729h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Lion King — thestage (729h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Lion King — whatsonstage (729h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Misanthrope — thestage (729h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-misanthrope-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-13T18:43:23.760Z"
   }
 ]
