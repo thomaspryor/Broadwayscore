@@ -533,6 +533,23 @@ function lineStagesLedgerViaDirectAdd(line) {
   return args.some((a) => !/[*?[\]{}$]/.test(a) && argCoversLedgerPath(a));
 }
 
+// Does `line` invoke scripts/lib/git-add-existing.sh with the ledger path as
+// a literal argument (BRO-2296)? That helper stages each pathspec
+// independently — the fix for the exact "one missing file drops the whole
+// `git add`" bug this checker's own header cites for stage-data-changes.sh —
+// and is already the established pattern for a step that stages a short,
+// literal, exact list of data/audit/ files (as opposed to a directory
+// sweep). Same argument-matching logic as lineStagesLedgerViaDirectAdd:
+// literal path operands only, `--force`/`-f` and globs excluded.
+function lineStagesLedgerViaGitAddExisting(line) {
+  const m = line.match(/git-add-existing\.sh\b([^#]*)/);
+  if (!m) return false;
+  const argsStr = m[1].trim();
+  if (argsStr === '') return false;
+  const args = argsStr.split(/\s+/).filter((a) => a && !a.startsWith('-'));
+  return args.some((a) => !/[*?[\]{}$]/.test(a) && argCoversLedgerPath(a));
+}
+
 function jobStagesLedgerFile(jobLines) {
   const lines = joinBackslashContinuations(jobLines);
   for (let i = 0; i < lines.length; i++) {
@@ -542,6 +559,7 @@ function jobStagesLedgerFile(jobLines) {
     if (line.includes(LEDGER_FILE) && /git add\b/.test(line)) return true;
     if (lineStagesLedgerViaHelper(line)) return true;
     if (lineStagesLedgerViaDirectAdd(line)) return true;
+    if (lineStagesLedgerViaGitAddExisting(line)) return true;
     if (COMMIT_LEDGER_ACTION_RE.test(line)) return true;
 
     const loopMatch = matchForLoopStart(lines, i);
