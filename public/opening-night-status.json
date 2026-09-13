@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13T17:13:31.122Z",
+  "generatedAt": "2026-09-13T20:06:32.850Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -518,28 +518,28 @@
       "status": "open",
       "slug": "night-city-off-west-end",
       "thumbnail": null,
-      "siteScore": null,
-      "liveScore": 63,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 71.91,
+      "liveScore": 72,
+      "scoreDrift": 0.09000000000000341,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 6,
       "t1": 0,
-      "t2": 1,
-      "t3": 1,
-      "positive": 1,
-      "mixed": 1,
+      "t2": 3,
+      "t3": 3,
+      "positive": 3,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "6/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:2/6"
+          "hi-conf:3/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -595,10 +595,6 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
           "isDualMarket": true
         },
@@ -619,6 +615,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-13T20:06:32.850Z",
+          "rc": 6,
+          "s": 71.91,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 3,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -632,25 +640,25 @@
       "status": "open",
       "slug": "man-to-man-west-end",
       "thumbnail": "/images/shows/man-to-man-west-end-2026/thumbnail.webp",
-      "siteScore": 73.42,
-      "liveScore": 73,
-      "scoreDrift": -0.4200000000000017,
+      "siteScore": 73.97,
+      "liveScore": 74,
+      "scoreDrift": 0.030000000000001137,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 12,
       "t1": 5,
       "t2": 4,
-      "t3": 2,
-      "positive": 8,
+      "t3": 3,
+      "positive": 9,
       "mixed": 1,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -734,6 +742,18 @@
           "m": 1,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-13T20:06:32.850Z",
+          "rc": 12,
+          "s": 73.97,
+          "t1": 5,
+          "t2": 4,
+          "t3": 3,
+          "p": 9,
+          "m": 1,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -747,28 +767,25 @@
       "status": "open",
       "slug": "tartuffe-remixed-off-west-end",
       "thumbnail": null,
-      "siteScore": null,
-      "liveScore": 77,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 78.1,
+      "liveScore": 78,
+      "scoreDrift": -0.09999999999999432,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 0,
-      "t2": 1,
-      "t3": 0,
-      "positive": 1,
-      "mixed": 0,
+      "total": 12,
+      "t1": 2,
+      "t2": 4,
+      "t3": 6,
+      "positive": 9,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:1/6"
+          "T1:1/3"
         ],
-        "highConfidence": 1,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -781,10 +798,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -808,10 +821,6 @@
         {
           "name": "Daily Mail",
           "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -824,15 +833,7 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -846,6 +847,18 @@
           "t3": 0,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-13T20:06:32.850Z",
+          "rc": 12,
+          "s": 78.1,
+          "t1": 2,
+          "t2": 4,
+          "t3": 6,
+          "p": 9,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
@@ -2039,23 +2052,23 @@
       "status": "open",
       "slug": "the-children-off-west-end",
       "thumbnail": "/images/shows/the-children-off-west-end-2026/thumbnail.webp",
-      "siteScore": 70.62,
-      "liveScore": 71,
-      "scoreDrift": 0.37999999999999545,
+      "siteScore": 72.08,
+      "liveScore": 72,
+      "scoreDrift": -0.0799999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
-      "t1": 3,
+      "total": 15,
+      "t1": 4,
       "t2": 5,
       "t3": 6,
-      "positive": 8,
+      "positive": 9,
       "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3",
+          "T1:2/3",
           "hi-conf:4/6"
         ],
         "highConfidence": 4,
@@ -2151,6 +2164,18 @@
           "t2": 5,
           "t3": 6,
           "p": 8,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-13T20:06:32.850Z",
+          "rc": 15,
+          "s": 72.08,
+          "t1": 4,
+          "t2": 5,
+          "t3": 6,
+          "p": 9,
           "m": 5,
           "n": 1,
           "bc": "waiting"

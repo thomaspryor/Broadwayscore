@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-13T17:09:35.704Z",
+    "generatedAt": "2026-09-13T20:03:32.323Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 91,
+    "totalFlagged": 92,
     "highConfidence": 8,
-    "mediumConfidence": 83,
+    "mediumConfidence": 84,
     "lowConfidence": 0,
     "reassignable": 38
   },
@@ -553,6 +553,21 @@
         "year 1975 in text matches revival chicago-1975"
       ],
       "textSnippet": "In that dicey district known as Broadway, there are no sure bets, but reviving a cherished old musical comes close. Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fondly"
+    },
+    {
+      "showId": "chicago-1996",
+      "showTitle": "Chicago",
+      "showYear": 1996,
+      "file": "time--unknown.json",
+      "outlet": "Time",
+      "criticName": null,
+      "publishDate": "April 22, 2014",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2014 is 18 years after original opening 1996"
+      ],
+      "textSnippet": "  In that dicey district known as Broadway, there are no sure bets, but reviving a cherished old musical comes close. Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fond"
     },
     {
       "showId": "chicago-1996",
