@@ -37,6 +37,7 @@ for (const showDir of showDirs) {
     const oldTier = data.contentTier;
     data.contentTier = tier.contentTier;
     data.tierReason = tier.tierReason || null;
+    data.contentTierReason = tier.tierReason || null;
     data.isFullReview = wc >= 300;
 
     fs.writeFileSync(fp, JSON.stringify(data, null, 2) + '\n');

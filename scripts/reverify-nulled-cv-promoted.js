@@ -291,6 +291,7 @@ async function main() {
           data.wordCount = tierResult.wordCount;
           data.truncationSignals = tierResult.truncationSignals;
           data.tierReason = tierResult.tierReason;
+          data.contentTierReason = tierResult.tierReason;
           const tierToTextStatus = { complete: 'complete', truncated: 'truncated', excerpt: 'incomplete', stub: 'incomplete' };
           const tierToTextQuality = { complete: 'full', truncated: 'truncated', excerpt: 'excerpt', stub: 'stub' };
           if (tierToTextStatus[data.contentTier]) data.textStatus = tierToTextStatus[data.contentTier];

@@ -63,6 +63,7 @@ function fixReviewFile(filePath, label) {
   const oldReason = data.tierReason;
   data.contentTier = tierResult.contentTier;
   data.tierReason = tierResult.tierReason || null;
+  data.contentTierReason = tierResult.tierReason || null;
   data.textQuality = cleanedWordCount > 300 ? 'full' : cleanedWordCount > 150 ? 'partial' : data.textQuality;
   data.isFullReview = cleanedWordCount >= 300;
 

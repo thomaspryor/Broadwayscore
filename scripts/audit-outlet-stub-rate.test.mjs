@@ -31,6 +31,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { collectReviewRecords, computeOutletStubRates, computeOutletInvalidRates, computeOutletTierRates } = require('./audit-outlet-stub-rate.js');
+const { WRONG_PRODUCTION_OR_SHOW_FIELDS } = require('./lib/content-quality.js');
 
 const NOW = Date.parse('2026-08-11T12:00:00.000Z');
 const DAY = 24 * 60 * 60 * 1000;
@@ -602,4 +603,102 @@ test('invalid: a genuinely thin/new outlet (no real history either way) still fl
   assert.equal(o.baselineTotal, 0);
   assert.equal(o.flagged, true);
   assert.deepEqual(flaggedOutletIds, ['new-outlet-2']);
+});
+
+// ── BRO-2295: raw wrongProduction/wrongShow flags take priority over a
+// possibly-stale contentTierReason string ──────────────────────────────────
+//
+// Root cause found live on theater-mirror/ew/hollywood-reporter/thewrap/
+// musical-theatre-review (2026-09-13): scripts/collect-review-texts.js's
+// reclassify block wrote data.tierReason from classifyContentTier() but never
+// data.contentTierReason, so records that WERE wrongProduction/wrongShow
+// (current flags + current tierReason both said so) kept whatever
+// contentTierReason an earlier pass had written (e.g. "No text content") —
+// invisible to the excludeTierReasons string match, so 5 outlets falsely
+// flagged as a broken article-extractor. Fixed two ways: (1) collect-review-
+// texts.js now also writes contentTierReason, so future data stays in sync;
+// (2) computeOutletTierRates now re-derives the gate from the record's raw
+// wrongProduction/wrongShow flags (isEffectivelyWrongProductionOrShow) instead
+// of trusting the cached string, whenever those raw flags are present at all
+// — covering both future writers and the ~40k already-written files this
+// fix can't retroactively edit.
+
+function recWithFlags(outletId, contentTier, textFetchedAt, flags, contentTierReason) {
+  return { outletId, contentTier, textFetchedAt, contentTierReason: contentTierReason ?? null, ...flags };
+}
+
+test('invalid: a record with a STALE contentTierReason but CURRENT wrongProduction:true is excluded via the raw-flag gate, not the stale string', () => {
+  const records = [
+    // Mirrors the real bug: contentTierReason left over from an earlier
+    // "No text content" classification pass, but wrongProduction is true
+    // right now and nothing clears it — isEffectivelyWrongProductionOrShow
+    // must catch this even though the string says something else entirely.
+    recWithFlags('stale-reason-outlet', 'invalid', daysAgo(1), { wrongProduction: true }, 'No text content'),
+    recWithFlags('stale-reason-outlet', 'invalid', daysAgo(2), { wrongProduction: true }, 'No text content'),
+    recWithFlags('stale-reason-outlet', 'invalid', daysAgo(3), { wrongProduction: true }, 'No text content'),
+    rec('stale-reason-outlet', 'complete', daysAgo(10)),
+    rec('stale-reason-outlet', 'complete', daysAgo(60)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  assert.deepEqual(flaggedOutletIds, []);
+  const o = outlets.find((x) => x.outletId === 'stale-reason-outlet');
+  // Excluded entirely (like a wrongProduction/wrongShow-reasoned record), not
+  // just uncounted as invalid.
+  assert.equal(o.total, 2);
+  assert.equal(o.invalidCount, 0);
+  assert.equal(o.flagged, false);
+});
+
+test('invalid: a record with a STALE "Wrong production" contentTierReason but flags now CLEARED is NOT excluded — a genuine re-break must still surface', () => {
+  // The inverse failure mode a naive OR-of-both-checks would reintroduce: if a
+  // wrongProductionManualClear/AutoClear happened after contentTierReason was
+  // last written, the string alone would keep masking this outlet forever.
+  // The raw-flag gate must win once real flags are present, in both directions.
+  const records = [
+    recWithFlags('recovered-outlet', 'invalid', daysAgo(1), { wrongProduction: true, wrongProductionManualClear: true }, 'Wrong production'),
+    recWithFlags('recovered-outlet', 'invalid', daysAgo(2), { wrongProduction: true, wrongProductionManualClear: true }, 'Wrong production'),
+    recWithFlags('recovered-outlet', 'invalid', daysAgo(3), { wrongProduction: true, wrongProductionManualClear: true }, 'Wrong production'),
+    rec('recovered-outlet', 'complete', daysAgo(60)),
+    rec('recovered-outlet', 'complete', daysAgo(90)),
+    rec('recovered-outlet', 'complete', daysAgo(120)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  assert.deepEqual(flaggedOutletIds, ['recovered-outlet']);
+  const o = outlets.find((x) => x.outletId === 'recovered-outlet');
+  assert.equal(o.recentInvalidCount, 3);
+  assert.equal(o.flagged, true);
+});
+
+test('invalid: records with no raw wrongProduction/wrongShow fields at all still fall back to the excludeTierReasons string match', () => {
+  // Sanity check that the fallback path (no raw flags captured — the shape
+  // every other test in this file uses) is unaffected by the new predicate.
+  const records = [
+    rec('legacy-shape-outlet', 'invalid', daysAgo(1), null, 'Wrong production'),
+    rec('legacy-shape-outlet', 'invalid', daysAgo(2), null, 'Wrong show'),
+    rec('legacy-shape-outlet', 'invalid', daysAgo(3), null, 'Wrong production'),
+    rec('legacy-shape-outlet', 'complete', daysAgo(10)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  assert.deepEqual(flaggedOutletIds, []);
+  const o = outlets.find((x) => x.outletId === 'legacy-shape-outlet');
+  assert.equal(o.total, 1);
+});
+
+test('WRONG_PRODUCTION_OR_SHOW_FIELDS (content-quality.js) matches what collectReviewRecords actually projects, so the two files cannot silently drift apart', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'outlet-flags-fixture-'));
+  try {
+    const showDir = path.join(tmpDir, 'some-show-2026');
+    fs.mkdirSync(showDir);
+    const allFlagsTrue = Object.fromEntries(WRONG_PRODUCTION_OR_SHOW_FIELDS.map((f) => [f, true]));
+    fs.writeFileSync(
+      path.join(showDir, 'flagged-outlet--critic.json'),
+      JSON.stringify({ outletId: 'flagged-outlet', contentTier: 'invalid', textFetchedAt: daysAgo(1), ...allFlagsTrue }),
+    );
+    const [record] = collectReviewRecords(tmpDir);
+    for (const field of WRONG_PRODUCTION_OR_SHOW_FIELDS) {
+      assert.equal(record[field], true, `collectReviewRecords dropped field "${field}" that content-quality.js declares it needs`);
+    }
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
 });

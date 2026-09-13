@@ -80,6 +80,7 @@ for (const showDir of dirs) {
           updated.fullText = cleaned;
           updated.contentTier = result.contentTier;
           updated.tierReason = result.tierReason;
+          updated.contentTierReason = result.tierReason;
           updated.recleanedAt = new Date().toISOString();
           fs.writeFileSync(filePath, JSON.stringify(updated, null, 2) + '\n');
         }

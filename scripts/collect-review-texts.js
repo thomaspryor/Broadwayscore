@@ -5220,6 +5220,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     data.wordCount = tierResult.wordCount;
     data.truncationSignals = tierResult.truncationSignals;
     data.tierReason = tierResult.tierReason;
+    data.contentTierReason = tierResult.tierReason;
 
     // Sync legacy fields with contentTier — rebuild-all-reviews reads textStatus at lines 492/2359
     const tierToTextStatus = { complete: 'complete', truncated: 'truncated', excerpt: 'incomplete', stub: 'incomplete' };
@@ -5261,6 +5262,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       if (minChars && isProxy && data.fullText.length < minChars) {
         data.contentTier = 'truncated';
         data.tierReason = `Paywall truncation: ${data.fullText.length} chars < ${minChars} min for ${urlHost} (source: ${data.sourceMethod})`;
+        data.contentTierReason = data.tierReason;
         data.textStatus = 'truncated';
         data.textQuality = 'truncated';
         data.isFullReview = false;

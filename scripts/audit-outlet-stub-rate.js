@@ -53,6 +53,7 @@ const os = require('os');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { isEffectivelyWrongProductionOrShow, WRONG_PRODUCTION_OR_SHOW_FIELDS } = require('./lib/content-quality');
 
 const DATA_DIR = path.join(process.env.BSC_DATA_ROOT || path.join(__dirname, '..'), 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
@@ -141,7 +142,7 @@ function collectReviewRecords(reviewTextsDir) {
       // guard.js:shouldSkipPollerUpdate) — that guard never fires for a
       // fresh file with no prior fullText, so real broken-extractor hits
       // ARE timestamped and DO count as recent.
-      records.push({
+      const record = {
         showId,
         file,
         outletId,
@@ -149,7 +150,17 @@ function collectReviewRecords(reviewTextsDir) {
         contentTier: data.contentTier || null,
         contentTierReason: data.contentTierReason || null,
         textFetchedAt: data.textFetchedAt || null,
-      });
+      };
+      // Raw wrongProduction/wrongShow flags (card #1266 follow-up) — kept in sync
+      // with content-quality.js via the shared field list rather than hand-copied,
+      // so isEffectivelyWrongProductionOrShow() can re-derive the gate from ground
+      // truth instead of trusting contentTierReason, which some writers (e.g.
+      // scripts/collect-review-texts.js pre-fix) left stale after a later pass
+      // changed wrongProduction/wrongShow without re-syncing that string.
+      for (const field of WRONG_PRODUCTION_OR_SHOW_FIELDS) {
+        if (data[field] !== undefined) record[field] = data[field];
+      }
+      records.push(record);
     }
   }
   return records;
@@ -179,7 +190,22 @@ function collectReviewRecords(reviewTextsDir) {
  *   list are dropped entirely (from total/recent/baseline, not just the tier count) before
  *   computation — for excluding a different failure mode that happens to share the same
  *   contentTier value (e.g. wrongProduction/wrongShow-reasoned 'invalid' records, which
- *   aren't extractor-health evidence). Default: no exclusion.
+ *   aren't extractor-health evidence). Only consulted for a record when
+ *   opts.excludePredicate can't decide it (see below) — i.e. this is the fallback
+ *   for records with no raw wrongProduction/wrongShow flags captured at all
+ *   (older data, or synthetic test records). Default: no exclusion.
+ * @param {(record: object) => boolean} [opts.excludePredicate] - ground-truth exclusion
+ *   check, consulted in PREFERENCE to excludeTierReasons whenever a record actually
+ *   carries raw wrongProduction/wrongShow flags (WRONG_PRODUCTION_OR_SHOW_FIELDS).
+ *   This exists because contentTierReason is a cached string that some writers
+ *   (e.g. scripts/collect-review-texts.js's reclassify block, historically) can
+ *   leave stale after wrongProduction/wrongShow flags change — trusting the string
+ *   over live flags would either miss records that ARE currently wrongProduction/
+ *   wrongShow (contentTierReason never got the memo) or, just as bad, keep
+ *   excluding records whose flags were LATER cleared (contentTierReason still says
+ *   "Wrong production" after a manual/auto clear) — masking a genuine re-break of
+ *   the same outlet. Re-deriving from the live flags avoids both failure modes.
+ *   Default: never excludes (i.e. always falls through to excludeTierReasons).
  * @returns {{outlets: Array<object>, flaggedOutletIds: string[]}}
  */
 function computeOutletTierRates(records, opts = {}) {
@@ -192,6 +218,15 @@ function computeOutletTierRates(records, opts = {}) {
   const minBaselineForSpikeCheck = opts.minBaselineForSpikeCheck ?? MIN_BASELINE_FOR_SPIKE_CHECK;
   const minBaselineSpikeDelta = opts.minBaselineSpikeDelta ?? MIN_BASELINE_SPIKE_DELTA;
   const excludeTierReasons = new Set(opts.excludeTierReasons || []);
+  const excludePredicate = opts.excludePredicate || null;
+
+  const hasRawWrongProductionFlags = (r) =>
+    WRONG_PRODUCTION_OR_SHOW_FIELDS.some((f) => r[f] !== undefined);
+
+  const isRecordExcluded = (r) => {
+    if (excludePredicate && hasRawWrongProductionFlags(r)) return excludePredicate(r);
+    return excludeTierReasons.size > 0 && excludeTierReasons.has(r.contentTierReason);
+  };
 
   const byOutlet = new Map();
   for (const r of Array.isArray(records) ? records : []) {
@@ -200,7 +235,7 @@ function computeOutletTierRates(records, opts = {}) {
       byOutlet.set(r.outletId, { outletId: r.outletId, outlet: r.outlet || null, reviews: [], excludedReviews: [] });
     }
     const entry = byOutlet.get(r.outletId);
-    if (excludeTierReasons.size > 0 && excludeTierReasons.has(r.contentTierReason)) {
+    if (isRecordExcluded(r)) {
       // Kept aside (not dropped) so the baseline trust check below can tell
       // "genuinely new/thin outlet" apart from "exclusion ate the baseline
       // sample" — see passesSpikeCheck.
@@ -363,7 +398,12 @@ function computeOutletStubRates(records, opts = {}) {
  * @param {number} [opts.minBaselineForSpikeCheck] - default 5
  * @param {number} [opts.minBaselineSpikeDelta] - default 0.3
  * @param {string[]} [opts.excludeTierReasons] - default WRONG_PRODUCTION_TIER_REASONS;
- *   pass [] to disable the exclusion
+ *   pass [] to disable the exclusion. Only the fallback for records with no raw
+ *   wrongProduction/wrongShow flags — see opts.excludePredicate.
+ * @param {(record: object) => boolean} [opts.excludePredicate] - default checks
+ *   isEffectivelyWrongProductionOrShow() against the record's raw flags; pass a
+ *   no-op (`() => false`) to disable and fall back to excludeTierReasons for
+ *   every record regardless of what flags it carries.
  * @returns {{outlets: Array<object>, flaggedOutletIds: string[]}}
  */
 function computeOutletInvalidRates(records, opts = {}) {
@@ -377,6 +417,10 @@ function computeOutletInvalidRates(records, opts = {}) {
     flagRecentTierRate: opts.flagRecentInvalidRate ?? FLAG_RECENT_INVALID_RATE,
     flagMinRecentTierCount: opts.flagMinRecentInvalidCount ?? FLAG_MIN_RECENT_INVALID_COUNT,
     excludeTierReasons: opts.excludeTierReasons ?? WRONG_PRODUCTION_TIER_REASONS,
+    excludePredicate: opts.excludePredicate ?? ((r) => {
+      const gate = isEffectivelyWrongProductionOrShow(r);
+      return gate.effectivelyWrongProduction || gate.effectivelyWrongShow;
+    }),
   });
   return {
     outlets: outlets.map((o) => ({

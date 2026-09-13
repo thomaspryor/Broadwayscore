@@ -1561,6 +1561,48 @@ function hasOpinionLanguage(text) {
   return false;
 }
 
+// Raw review fields isEffectivelyWrongProductionOrShow() reads. Exported so callers
+// that project a narrow field subset off the full review object (e.g. an audit
+// script scanning thousands of files) can keep their projection in sync with the
+// gate instead of hand-copying the field list and silently drifting out of sync.
+const WRONG_PRODUCTION_OR_SHOW_FIELDS = [
+  'wrongProduction', 'wrongShow', 'allowEarlyDate', 'allowCrossMarket',
+  'wrongProductionManualClear', 'wrongProductionCleared', 'wrongProductionAutoCleared',
+  'humanReviewedWrongProduction', 'wrongShowManualClear',
+];
+
+/**
+ * Whether a review's wrongProduction/wrongShow flags are still in effect (not
+ * cleared by a later auto-clear/manual-clear pass). Extracted out of
+ * classifyContentTier() so callers that need the same ground-truth gate — e.g.
+ * scripts/audit-outlet-stub-rate.js, which excludes wrongProduction/wrongShow
+ * noise from its broken-extractor detector — can reuse it directly instead of
+ * re-deriving the gate from a cached tierReason/contentTierReason string that
+ * can go stale (see scripts/collect-review-texts.js's reclassify block, which
+ * historically wrote tierReason but not contentTierReason).
+ *
+ * wrongProduction=true is NOT invalidating when any of the clear-signaling
+ * flags are set — the rebuild pipeline's later auto-clear passes will flip
+ * wrongProduction to false. Without this gate, the early-pass safety-net writes
+ * contentTier='invalid' to disk based on stale wrongProduction, and the
+ * (later-running) auto-clear never re-runs the classifier. See Notion card
+ * 34c637c5-416f-8199 (2026-04-24 reclassify backfill).
+ *
+ * @param {Object} review
+ * @returns {{effectivelyWrongProduction: boolean, effectivelyWrongShow: boolean}}
+ */
+function isEffectivelyWrongProductionOrShow(review) {
+  const effectivelyWrongProduction = !!(review.wrongProduction
+    && !review.allowEarlyDate
+    && !review.allowCrossMarket
+    && !review.wrongProductionManualClear
+    && !review.wrongProductionCleared
+    && !review.wrongProductionAutoCleared
+    && review.humanReviewedWrongProduction !== false);
+  const effectivelyWrongShow = !!(review.wrongShow && !review.wrongShowManualClear);
+  return { effectivelyWrongProduction, effectivelyWrongShow };
+}
+
 /**
  * Classify a review into one of five content tiers
  *
@@ -1614,19 +1656,7 @@ function classifyContentTier(review) {
   );
 
   // T5: INVALID - Check first (garbage, wrong show, corrupted)
-  // Effectively-wrong-production: wrongProduction=true is NOT invalidating when any of these
-  // clear-signaling flags are set — the rebuild pipeline's later auto-clear passes will flip
-  // wrongProduction to false. Without this gate, the early-pass safety-net writes contentTier='invalid'
-  // to disk based on stale wrongProduction, and the (later-running) auto-clear never re-runs the
-  // classifier. See Notion card 34c637c5-416f-8199 (2026-04-24 reclassify backfill).
-  const effectivelyWrongProduction = review.wrongProduction
-    && !review.allowEarlyDate
-    && !review.allowCrossMarket
-    && !review.wrongProductionManualClear
-    && !review.wrongProductionCleared
-    && !review.wrongProductionAutoCleared
-    && review.humanReviewedWrongProduction !== false;
-  const effectivelyWrongShow = review.wrongShow && !review.wrongShowManualClear;
+  const { effectivelyWrongProduction, effectivelyWrongShow } = isEffectivelyWrongProductionOrShow(review);
   if (review.textStatus === 'garbage_cleared' || effectivelyWrongProduction || effectivelyWrongShow) {
     return {
       contentTier: 'invalid',
@@ -3093,6 +3123,8 @@ module.exports = {
   detectConcatenatedArticles,
   // Content tier classification (5-tier taxonomy)
   classifyContentTier,
+  isEffectivelyWrongProductionOrShow,
+  WRONG_PRODUCTION_OR_SHOW_FIELDS,
   detectTruncationSignals,
   stripFooterContent,
   getScrapingPriority,
