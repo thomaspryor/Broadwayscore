@@ -388,8 +388,9 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
   if (coverageComplete) {
     return { action: 'stop', reason: 'show coverage complete — all T1/T2 outlets present and broadcast-ready; nothing left for the monitor to do this window' };
   }
-  // Diminishing-returns brake. NIGHTLY_USD_CAP only stops the night after $100
-  // of opus passes; nothing stopped a *finished* show from burning the rest of
+  // Diminishing-returns brake. NIGHTLY_USD_CAP only stops the night after its
+  // dollar cap (opening-night-monitor-launch.js) of opus passes; nothing
+  // stopped a *finished* show from burning the rest of
   // its ~31h window on passes that changed nothing (2026-08-12: a fully-covered
   // show had ~27 more $5 passes queued). Counting passes that produced neither
   // a session-state write nor a git commit is the market-agnostic version of
