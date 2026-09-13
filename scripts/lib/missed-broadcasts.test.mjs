@@ -205,6 +205,31 @@ test('regression: electra-persona-west-end-2026 as it actually was on 2026-09-07
   assert.strictEqual(missed[0].alertable, true);
 });
 
+test('owner decision 2026-09-13: a stuck West End draft stops paging past 7 days, unlike the 21d default', () => {
+  const stuck = show({ openingDate: '2026-08-28' }); // 10d — past WE's 7d bound, well within the 21d default
+  const missed = find({
+    shows: [stuck],
+    sentShows: { 'x-2026': { completed: true, draftStatus: 'draft', sentAt: null, draftId: 'abc' } },
+  });
+  assert.strictEqual(missed.length, 1, 'still reported');
+  assert.strictEqual(missed[0].state, 'draft-stuck');
+  assert.strictEqual(missed[0].alertable, false, 'stops paging past 7d even though draft-stuck normally bypasses roundup suppression');
+});
+
+test('owner decision 2026-09-13: Broadway keeps the 21d bound — no equivalent weekly digest safety net', () => {
+  const bway = show({ id: 'y-2026', category: 'broadway', openingDate: '2026-08-28' }); // 10d
+  const withAgg = reviewsFor('y-2026', 20).map((r, i) => (i === 0 ? { ...r, dtliThumb: 'up' } : r));
+  const missed = findMissedBroadcasts({
+    shows: [bway],
+    sentShows: {},
+    reviews: withAgg,
+    now: NOW,
+  });
+  assert.strictEqual(missed.length, 1);
+  assert.strictEqual(missed[0].state, 'never-drafted');
+  assert.strictEqual(missed[0].alertable, true, 'Broadway has no weekly round-up, so it still pages at 10d');
+});
+
 // --- BRO-3088: West End Weekly Round-up suppression ---
 
 test('wasCoveredByWeeklyRoundup: true only for issues actually delivered to the West End Resend audience', () => {

@@ -1727,3 +1727,111 @@ describe('isCrossOutletUrl — wire services and syndication (QA review follow-u
     assert.strictEqual(merged.url, incoming.url);
   });
 });
+
+// ============================================================================
+// findExistingReviewFile / isFlaggedMergeTarget / criticIsCompatibleMergeTarget
+// / isConfirmedNamedCriticMatch — BRO-3182
+//
+// findExistingReviewFile matched a merge target purely by OUTLET whenever the
+// incoming critic name was unresolved ('Unknown'/null — the common case for a
+// failed byline extraction), regardless of whether the file on disk already
+// named a completely different, real critic. guardian--stephen-unwin.json (a
+// flagged director essay, rejectionReason: not_a_review) silently absorbed
+// metadata from an unrelated same-day Mark Lawson review this way. Fixed by
+// requiring the incoming/stored critic identities to be compatible, and by
+// refusing to treat a flagged (wrongProduction/duplicateOf/rejectionReason)
+// file as an inferred (non-URL-confirmed) merge target unless the critic
+// match is a CONFIRMED same named critic (the self-heal case
+// extract-dtli-reviews.js relies on).
+// ============================================================================
+
+describe('findExistingReviewFile — BRO-3182', () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const { findExistingReviewFile, isFlaggedMergeTarget, criticIsCompatibleMergeTarget, isConfirmedNamedCriticMatch } =
+    require('../../scripts/lib/review-normalization.js');
+
+  let showDir;
+  const writeReviewFile = (filename, data) => {
+    fs.writeFileSync(path.join(showDir, filename), JSON.stringify(data, null, 2));
+  };
+
+  it('the original incident: an unresolved incoming critic must NOT match a flagged file naming a different real critic', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3182-'));
+    writeReviewFile('guardian--stephen-unwin.json', {
+      outletId: 'guardian',
+      criticName: 'Stephen Unwin',
+      url: 'https://www.theguardian.com/stage/2026/sep/10/man-to-man-tilda-swinton-royal-court-manfred-karge',
+      rejectionReason: 'not_a_review',
+    });
+    // Incoming: byline extraction failed (criticName unresolved), a
+    // DIFFERENT article URL.
+    const result = findExistingReviewFile(
+      showDir, 'guardian', null,
+      'https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre',
+    );
+    assert.strictEqual(result, null, 'must not silently claim a different critic\'s flagged file');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('an unresolved incoming critic still matches an unresolved file at the same outlet (byline-discovery self-heal)', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3182-'));
+    writeReviewFile('variety--unknown.json', { outletId: 'variety', criticName: 'Unknown', url: 'https://variety.com/old' });
+    const result = findExistingReviewFile(showDir, 'variety', null, 'https://variety.com/new');
+    assert.strictEqual(result && result.filename, 'variety--unknown.json');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('a genuinely matching named critic still matches (no regression on ordinary dedup)', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3182-'));
+    writeReviewFile('guardian--jane-critic.json', { outletId: 'guardian', criticName: 'Jane Critic', url: 'https://www.theguardian.com/old' });
+    const result = findExistingReviewFile(showDir, 'guardian', 'Jane Critic', 'https://www.theguardian.com/new');
+    assert.strictEqual(result && result.filename, 'guardian--jane-critic.json');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('an exact URL match still merges regardless of critic (anti byline-explosion dedup, unaffected)', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3182-'));
+    const sameUrl = 'https://www.timeout.com/london/theatre/some-review';
+    writeReviewFile('timeout--alex-wood.json', { outletId: 'timeout', criticName: 'Alex Wood', url: sameUrl });
+    const result = findExistingReviewFile(showDir, 'timeout', 'Alun Hood', sameUrl);
+    assert.strictEqual(result && result.filename, 'timeout--alex-wood.json');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('a confirmed same-named critic still self-heals a flagged file with no URL to hand (DTLI-style)', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3182-'));
+    writeReviewFile('nytimes--jesse-green.json', {
+      outletId: 'nytimes', criticName: 'Jesse Green', url: null, rejectionReason: 'garbage_text',
+    });
+    const result = findExistingReviewFile(showDir, 'nytimes', 'Jesse Green');
+    assert.strictEqual(result && result.filename, 'nytimes--jesse-green.json');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('isFlaggedMergeTarget: true for wrongProduction/duplicateOf/rejectionReason, false otherwise', () => {
+    assert.strictEqual(isFlaggedMergeTarget({ wrongProduction: true }), true);
+    assert.strictEqual(isFlaggedMergeTarget({ duplicateOf: 'other.json' }), true);
+    assert.strictEqual(isFlaggedMergeTarget({ rejectionReason: 'not_a_review' }), true);
+    assert.strictEqual(isFlaggedMergeTarget({ criticName: 'Jane' }), false);
+    assert.strictEqual(isFlaggedMergeTarget(null), false);
+  });
+
+  it('criticIsCompatibleMergeTarget: asymmetric unknown is never compatible', () => {
+    assert.strictEqual(criticIsCompatibleMergeTarget(null, 'Stephen Unwin'), false);
+    assert.strictEqual(criticIsCompatibleMergeTarget('Unknown', 'Stephen Unwin'), false);
+    assert.strictEqual(criticIsCompatibleMergeTarget('Mark Lawson', null), true, 'file byline unknown is a legitimate fill-in target');
+    assert.strictEqual(criticIsCompatibleMergeTarget(null, null), true, 'both unresolved is ambiguous but allowed (existing dedup behavior)');
+    assert.strictEqual(criticIsCompatibleMergeTarget('Jesse Green', 'Jesse Green'), true);
+    assert.strictEqual(criticIsCompatibleMergeTarget('Jesse Green', 'Mark Lawson'), false);
+  });
+
+  it('isConfirmedNamedCriticMatch: requires BOTH sides to name the same real critic', () => {
+    assert.strictEqual(isConfirmedNamedCriticMatch('Jesse Green', 'Jesse Green'), true);
+    assert.strictEqual(isConfirmedNamedCriticMatch('Jesse Green', 'jesse-green'), true, 'accepts a filename slug on either side');
+    assert.strictEqual(isConfirmedNamedCriticMatch(null, null), false, 'both-unknown does not qualify — neither side confirms identity');
+    assert.strictEqual(isConfirmedNamedCriticMatch('Mark Lawson', null), false);
+    assert.strictEqual(isConfirmedNamedCriticMatch('Jesse Green', 'Mark Lawson'), false);
+  });
+});

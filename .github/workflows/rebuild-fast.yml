@@ -127,6 +127,7 @@ jobs:
           fi
 
       - name: Rebuild reviews.json
+        id: rebuild
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
@@ -172,8 +173,50 @@ jobs:
 
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
 
+      # BRO-3127: this step (and everything through "Verify all eligible
+      # reviews scored" below) is gated on `always() && steps.rebuild.outcome
+      # == 'success' && steps.staleness.outputs.safe_to_publish == 'true'` —
+      # the anchor pattern BRO-2906 established for the identical bug class
+      # (test.yml's lint-workflows job, id: deps +
+      # tests/unit/workflow-audit-steps-always.test.mjs). Before this fix, a
+      # bare (no `if:`) step here meant a guard failure below skipped EVERY
+      # subsequent step in this job, including "Regenerate mobile artifacts"
+      # — which writes public/data/shows/{id}.json, the file the live site
+      # reads — so ONE unrelated show's genuine drift blocked publishing for
+      # every other show in the run (run 34318929964, 2026-09-09).
+      #
+      # safe_to_publish (ship-check/Codex adversarial finding, BRO-3127): a
+      # first version of this fix gated purely on steps.rebuild.outcome, which
+      # unblocked downstream publish on ANY failure of the guard step below —
+      # including an unexpected crash (can't read reviews.json, an unhandled
+      # exception), not just its normal "show X is genuinely missing"
+      # detection. Those are different risk classes: a scoped missing-show
+      # detection is safe to publish around (the flagged show gets reverted
+      # below); a crash means we don't know WHAT'S wrong, so the old
+      # block-everything behavior is the safe default. The guard step sets
+      # safe_to_publish=true only when it exits 0 OR exits 1 with a populated
+      # missing-shows file (the scoped case) — never on an unexplained crash.
       - name: Verify no scoreable review vanished during checkout drift
-        run: node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt
+        id: staleness
+        if: always() && steps.rebuild.outcome == 'success'
+        run: |
+          set +e
+          node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt
+          GUARD_EXIT=$?
+          set -e
+          if [ "$GUARD_EXIT" -eq 0 ]; then
+            echo "safe_to_publish=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          MISSING_FILE="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
+          if [ -s "$MISSING_FILE" ]; then
+            echo "::error::check-rebuild-staleness.js flagged specific show(s) as missing (see log above) — downstream steps still publish every OTHER show; the flagged show's own public data reverts to last-known-good below."
+            echo "safe_to_publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::check-rebuild-staleness.js failed WITHOUT a scoped missing-shows list — an unexplained crash, not a normal single-show detection. Blocking downstream publish entirely (pre-BRO-3127 behavior) since the actual scope of the problem is unknown."
+            echo "safe_to_publish=false" >> "$GITHUB_OUTPUT"
+          fi
+          exit 1
 
       # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
       # the checkout-time baseline push-core-data diffs against (2beb6617c58);
@@ -181,6 +224,7 @@ jobs:
       # silently skipped from the private-repo push.
 
       - name: Update critic registry
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: node scripts/audit-critic-outlets.js
         continue-on-error: true
 
@@ -195,8 +239,53 @@ jobs:
       # stages both in the has_changes commit below.
       # See cloud-memory/feedback_mobile_index_committed_artifact.md.
       - name: Regenerate mobile artifacts (detail + index)
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: bash scripts/generate-mobile-artifacts.sh
         continue-on-error: true
+
+      # BRO-3127: generate-mobile-show-details.js above does a full regenerate
+      # of EVERY show from the current (possibly incomplete) reviews.json —
+      # it has no concept of "this specific show is known-bad." Now that the
+      # steps in this window run even when the staleness guard fired, the
+      # GUARD-FLAGGED show's own public/data/shows/{id}.json would otherwise
+      # get rebuilt from the exact incomplete state the guard exists to catch
+      # — regressing already-published data for that one show, not just
+      # leaving it stale. check-rebuild-staleness.js writes the flagged show
+      # ids to $RUNNER_TEMP/staleness-missing-shows.txt whenever missing.length
+      # > 0; revert JUST those per-show files to last-committed HEAD so the
+      # flagged show keeps its last-known-good public data (still "folded" —
+      # not published wrong) while every other show's regenerated data below
+      # stages normally. Aggregate files (mobile-shows.json, stats-canon.json,
+      # stats-reviews.json) are intentionally NOT reverted here — they cover
+      # the whole corpus, and reverting them would also discard legitimate
+      # updates for every OTHER show in this run.
+      - name: Revert public data for shows flagged by staleness guard
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        run: |
+          FILE="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
+          if [ -s "$FILE" ]; then
+            echo "Staleness guard flagged show(s) — reconciling their public/data/shows/*.json (BRO-3127):"
+            while IFS= read -r show_id; do
+              [ -z "$show_id" ] && continue
+              TARGET="public/data/shows/$show_id.json"
+              if git cat-file -e "HEAD:$TARGET" 2>/dev/null; then
+                git checkout HEAD -- "$TARGET" 2>/dev/null \
+                  && echo "  reverted to last-known-good: $show_id" \
+                  || echo "::warning::could not revert $TARGET for flagged show $show_id"
+              elif [ -f "$TARGET" ]; then
+                # ship-check/Codex adversarial finding: a BRAND-NEW show has no
+                # committed HEAD version to revert to — `git checkout HEAD --`
+                # would just fail on it and leave the freshly-regenerated,
+                # incomplete file in place to be staged and published as-is.
+                # Remove it instead; it publishes correctly once the drift
+                # resolves and this show is no longer flagged.
+                rm -f "$TARGET"
+                echo "  removed (newly-generated, no prior committed version to revert to): $show_id"
+              else
+                echo "  skip (no public JSON exists at all): $show_id"
+              fi
+            done < "$FILE"
+          fi
 
       # Coverage Verdict S3 (task #905): stamps the first time each show's
       # score goes public (public/data/shows/{id}.json's `cs` field, just
@@ -204,16 +293,19 @@ jobs:
       # score-regression floor's clock. Append-only, fails open, cheap
       # (local file read, no network) — safe on every rebuild.
       - name: Score-public-since stamp
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: node scripts/audit-score-public-since.js
         continue-on-error: true
 
       - name: Get new review count
         id: after
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: |
           COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
           echo "count=$COUNT" >> $GITHUB_OUTPUT
 
       - name: Opening-night drop + completeness check
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         # Runs the per-critic snapshot diff AND the per-show rebuild-regression
         # alert path for shows in the ±7d opening-night window. Replaces
         # analyze-rebuild-drops.js (full-rebuild only) for the fast path.
@@ -228,6 +320,7 @@ jobs:
         continue-on-error: true
 
       - name: Verify all eligible reviews scored (orphan-unscored guard)
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         # Lost Boys 2026-04-26 #8 defense: walks data/review-texts/ for every
         # show in the ±7d opening-night window and asserts every includable
         # review with substantial text/excerpt has assignedScore. Writes
