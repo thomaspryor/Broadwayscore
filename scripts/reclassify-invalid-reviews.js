@@ -120,6 +120,7 @@ function main() {
         if (args.apply) {
           review.contentTier = newTier;
           review.tierReason = result.tierReason;
+          review.contentTierReason = result.tierReason;
           fs.writeFileSync(filePath, JSON.stringify(review, null, 2) + '\n');
         }
       } else {
