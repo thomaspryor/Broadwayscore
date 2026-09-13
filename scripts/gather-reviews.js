@@ -4160,11 +4160,20 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
   // 1c. BroadwayWorld Review Roundups - Compiles all reviews in one article
   console.log('\n  === BroadwayWorld Review Roundups ===');
-  if (isOffBroadway) {
-    health.bww.skipped = true;
-    console.log(`    [SKIP] BWW roundups disabled for off-Broadway (URL patterns are Broadway-specific)`);
-  }
-  let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year, { openingNight: options.openingNight });
+  // Off-Broadway was blanket-disabled here 2026-02-21 (6d0de3034ed) over
+  // wrong-city/wrong-year URL-guess contamination risk. That URL-guessing
+  // mechanism (BWW "Priority 4") was itself removed entirely on 2026-04-26
+  // (comment below, ~40 lines into searchBWWRoundup) for being slow and
+  // redundant — the feared mechanism no longer exists. Discovery is now
+  // SERP (already category-aware: searchBWWRoundup passes an off-broadway
+  // market keyword, and validateBWWRoundupUrlMatchesShow takes show.category)
+  // + homepage scan, and every result runs through validateBWWRoundupGeography
+  // + validateBWWRoundupYear + isNotBroadway(allowOffBroadway) before being
+  // kept — the exact contamination class this gate was guarding against is
+  // now caught downstream. Leaving OB permanently disabled meant a real,
+  // findable BWW Off-Broadway Review Roundup (e.g. safe-house-off-broadway-2026,
+  // BRO-3247) was silently never even attempted.
+  let bwwResult = await searchBWWRoundup(show, year, { openingNight: options.openingNight });
   // Validate page matches target show (prevents cross-show contamination)
   if (bwwResult && bwwResult.html) {
     const validation = await validatePageMatchesShow(bwwResult.html, show.title, {
