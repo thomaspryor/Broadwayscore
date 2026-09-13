@@ -410,9 +410,13 @@ function extractByline(html) {
     // BRO-3182: 'no-changes'/'onMerge-aborted' are genuine no-ops (nothing
     // new to write). But when createOrMergeReviewFile's own write-guard
     // refused or redirected the write (date-implausible/cross-market
-    // quarantine), nothing landed on disk despite an operator-visible ingest
-    // request — that must fail loudly, not report success by omission.
-    if (!dryRun && WRITE_GUARD_REFUSED_REASONS.has(result.reason)) {
+    // quarantine, a flagged-file collision), nothing landed on disk despite
+    // an operator-visible ingest request — that must fail loudly, not report
+    // success by omission. `guardRefused` is the authoritative signal (a
+    // caller checking it needn't track every possible `reason` string as the
+    // guard's set of refusal reasons grows); WRITE_GUARD_REFUSED_REASONS is
+    // kept as a documented enumeration/fallback for older-shaped results.
+    if (!dryRun && (result.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(result.reason))) {
       console.error(`\n❌ Write-guard refused the write — nothing changed on disk (${result.reason})${result.quarantinedPath ? `\n   quarantined to: ${result.quarantinedPath}` : ''}`);
       process.exit(1);
     }

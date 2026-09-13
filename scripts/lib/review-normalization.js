@@ -1548,6 +1548,24 @@ function criticIsCompatibleMergeTarget(incomingCritic, fileCritic) {
     areCriticsSimilar(incomingCritic, fileCritic.replace(/-/g, ' '));
 }
 
+// True only when BOTH sides name a real, specific critic and they actually
+// match (or are a known pseudonym/typo pair) — the strongest identity
+// signal findExistingReviewFile ever has short of an exact URL. Used to
+// exempt isFlaggedMergeTarget's terminal treatment of flagged/rejected
+// files: several scrapers (extract-dtli-reviews.js's self-heal of a stale
+// garbage_text rejection, chief among them) legitimately re-merge onto a
+// flagged file identified by a confirmed same critic with no URL to hand.
+// The "both unknown" branch of criticIsCompatibleMergeTarget is NOT strong
+// enough for this — neither side confirms who actually wrote either piece —
+// so it does not qualify here.
+function isConfirmedNamedCriticMatch(incomingCritic, fileCritic) {
+  const incomingUnknown = !incomingCritic || incomingCritic.toLowerCase() === 'unknown';
+  const fileUnknown = !fileCritic || fileCritic.toLowerCase() === 'unknown';
+  if (incomingUnknown || fileUnknown) return false;
+  return normalizeCritic(incomingCritic) === normalizeCritic(fileCritic) ||
+    areCriticsSimilar(incomingCritic, fileCritic.replace(/-/g, ' '));
+}
+
 /**
  * Find an existing review file for the same outlet in a show directory.
  * Checks all filename variants: normalized outlet ID, raw slug, with/without critic.
@@ -1622,8 +1640,13 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         // Skip flagged/rejected files — this filename-only match has no URL
-        // confirmation, so a flagged record must never silently absorb it.
-        if (isFlaggedMergeTarget(data)) continue;
+        // confirmation, so a flagged record must never silently absorb an
+        // unconfirmed write. Exempt only a CONFIRMED same-named critic (both
+        // sides name the same real person): that's the self-heal case
+        // extract-dtli-reviews.js relies on to clear a stale garbage_text
+        // rejection with no URL to hand — weaker evidence (both unknown)
+        // does not qualify.
+        if (isFlaggedMergeTarget(data) && !isConfirmedNamedCriticMatch(criticName, fileCritic)) continue;
         return { path: filePath, filename: file, data };
       } catch {
         return { path: filePath, filename: file, data: null };
@@ -1651,17 +1674,25 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     } catch {
       continue;
     }
-    if (!data || isFlaggedMergeTarget(data)) continue;
+    if (!data) continue;
     if (!data.outletId) continue;
 
     if (normalizeOutlet(data.outletId) !== normalizedOutlet) continue;
 
     // Outlet matches by internal field — check critic. BRO-3182: same
     // asymmetric-unknown check as pass 1 — an unresolved incoming critic
-    // must not claim a file that already names someone.
-    if (data.criticName && !criticIsCompatibleMergeTarget(criticName, data.criticName)) {
+    // must not claim a file that already names someone. Deliberately NOT
+    // gated on `data.criticName` being truthy (Codex ship-check finding):
+    // a falsy criticName is exactly the "file names someone" question this
+    // check must still answer — criticIsCompatibleMergeTarget already
+    // treats a missing/empty value as unknown.
+    if (!criticIsCompatibleMergeTarget(criticName, data.criticName)) {
       continue; // Different/unconfirmed critic at same outlet — not a duplicate
     }
+
+    // Skip flagged/rejected files unless the critic match above was a
+    // CONFIRMED same named critic (see pass 1's comment).
+    if (isFlaggedMergeTarget(data) && !isConfirmedNamedCriticMatch(criticName, data.criticName)) continue;
 
     return { path: filePath, filename: file, data };
   }
@@ -1699,7 +1730,8 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
       } catch {
         continue;
       }
-      if (!data || isFlaggedMergeTarget(data)) continue;
+      if (!data) continue;
+      if (isFlaggedMergeTarget(data) && !isConfirmedNamedCriticMatch(criticName, parts[1])) continue;
 
       // Verify via URL resolution: does this file's URL resolve to the incoming outlet?
       // Without URL confirmation, different regional editions on the same domain would
@@ -2111,6 +2143,7 @@ module.exports = {
   findExistingReviewFile,
   isFlaggedMergeTarget,
   criticIsCompatibleMergeTarget,
+  isConfirmedNamedCriticMatch,
   maybeUpgradeUrl,
   slugLooksLikeDifferentShow,
   validateCriticOutlet,
