@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-13T19:38:32.713Z",
+  "runDate": "2026-09-13T20:28:11.000Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 70,
-    "failed": 523,
+    "processed": 72,
+    "failed": 584,
     "skipped": 0,
-    "successRate": "11.8%"
+    "successRate": "11.0%"
   },
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 38,
     "amp": 15,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 9,
     "brightdata": 13,
     "archiveToday": 0,
-    "archive": 9
+    "archive": 10
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 8,
-    "ampAttempts": 15,
-    "ampSuccess": 15,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 17,
-    "tier2Success": 7,
-    "tier3Attempts": 38,
-    "tier3Success": 13,
-    "tier3_6Attempts": 7,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 19,
-    "tier4Success": 6,
-    "totalFailed": 87,
-    "scrapingBeePageCredits": 35,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 61,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 62,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 60,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -120,7 +120,9 @@
     "a-man-for-all-seasons-2008/talkinbroadway--unknown.json",
     "south-pacific-2008/newsday--unknown.json",
     "young-frankenstein-2007/newsday--unknown.json",
-    "bloodsport-after-helen-of-troy-off-west-end-2026/london-box-office--stuart-king.json"
+    "bloodsport-after-helen-of-troy-off-west-end-2026/london-box-office--stuart-king.json",
+    "night-city-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "night-city-off-west-end-2026/broadwayworld--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -645,6 +647,67 @@
     "august-osage-county-2007/variety--unknown.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "mary-poppins-2006/nytimes--unknown.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "appropriate-2023/timeout--adam-feldman.json",
+    "harmony-2023/usatoday--david-rooney.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "waitress-2021/vulture--helen-shaw.json",
+    "the-inheritance-2019/usatoday--charles-isherwood.json",
+    "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "kiss-me-kate-2019/usatoday--david-rooney.json",
+    "kiss-me-kate-2019/usatoday--elysa-gardner.json",
+    "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
+    "the-nap-2018/nypost--johnny-oleksinski.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/observer--rex-reed.json",
+    "indecent-2017/usatoday--elysa-gardner.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+    "tuck-everlasting-2016/usatoday--elysa-gardner.json",
+    "eclipsed-2016/observer--rex-reed.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
+    "motown-the-musical-2013/observer--rex-reed.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
+    "picnic-2013/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "a-life-in-the-theatre-2010/nytimes--unknown.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/usatoday--elysa-gardner.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
   "tierDetails": {
@@ -685,7 +748,8 @@
       "tartuffe-remixed-off-west-end-2026/readaboutstuff--unknown.json",
       "an-american-daughter-off-broadway-2026/nysr--unknown.json",
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/nysr--unknown.json",
-      "bloodsport-after-helen-of-troy-off-west-end-2026/london-box-office--stuart-king.json"
+      "bloodsport-after-helen-of-troy-off-west-end-2026/london-box-office--stuart-king.json",
+      "night-city-off-west-end-2026/all-that-dazzles-uk--unknown.json"
     ],
     "amp": [
       "data/review-texts/wonderland-2011/variety--unknown.json",
@@ -745,44 +809,10 @@
       "bloody-bloody-andrew-jackson-2010/ew--unknown.json",
       "collected-stories-2010/hollywood-reporter--unknown.json",
       "south-pacific-2008/newsday--unknown.json",
-      "young-frankenstein-2007/newsday--unknown.json"
+      "young-frankenstein-2007/newsday--unknown.json",
+      "night-city-off-west-end-2026/broadwayworld--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 2,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The New York Times": {
-      "count": 1,
-      "domain": "nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Variety": {
-      "count": 2,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Newsday": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "lend-me-a-tenor-2010/nydailynews--unknown.json",
-      "oldUrl": "http://www.nydailynews.com/entertainment/music/2010/04/05/2010-04-05_hangover_star_justin_bartha_owns_stanley_tuccis_revival_of_ken_ludwigs_lend_me_a.html",
-      "newUrl": "https://www.nydailynews.com/2010/03/26/qa-hangover-star-justin-bartha-stars-in-stanley-tuccis-broadway-farce-lend-me-a-tenor/"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
