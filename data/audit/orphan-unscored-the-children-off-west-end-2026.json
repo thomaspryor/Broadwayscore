@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "the-children-off-west-end-2026",
   "openingDate": "2026-09-10",
-  "detectedAt": "2026-09-12T02:04:17.510Z",
+  "detectedAt": "2026-09-13T01:56:00.323Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "liamodell--liam-odell.json",
+      "outletId": "liamodell",
+      "criticName": "Liam O’Dell",
+      "url": "https://liamodell.com/2026/09/12/the-children-review-lyric-theatre-hammersmith-lucy-kirkwood-meera-syal/",
+      "fullTextLen": 4825,
+      "dispatchActionable": false,
+      "skipReason": "no_scorable_text",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "theatreboard--unknown.json",
       "outletId": "theatreboard",
@@ -40,9 +57,9 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
+  "orphanCount": 3,
   "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 2,
+  "blockedOrphanCount": 3,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
