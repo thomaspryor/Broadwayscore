@@ -281,9 +281,16 @@ const VENUE_ALIASES = [
   // touches the Globe's SEPARATE indoor stage, "Sam Wanamaker Playhouse"
   // (its own distinct string in shows.json today — deep-azure-globe-west-
   // end-2026 et al — never matches either pattern below).
+  // Note (Codex adversarial review, BRO-3191 follow-up): the first pattern
+  // excludes any string mentioning "wanamaker" so a compound listing like
+  // "Shakespeare's Globe - Sam Wanamaker Playhouse" doesn't fall through to
+  // this alias despite the unanchored /shakespeare.?s\s*globe/. The second
+  // pattern requires the FULL "Theatre"/"Theater" suffix — `theat(?:re|er)`
+  // not `theat(?:re|er)?` — so a malformed/truncated "Globe Theat" no longer
+  // matches either.
   {
     canonical: 'shakespeares globe',
-    matches: [/shakespeare.?s\s*globe/i, /^\s*globe\s*theat(?:re|er)?\s*$/i],
+    matches: [/^(?!.*wanamaker).*shakespeare.?s\s*globe/i, /^\s*globe\s*theat(?:re|er)\s*$/i],
   },
 ];
 
