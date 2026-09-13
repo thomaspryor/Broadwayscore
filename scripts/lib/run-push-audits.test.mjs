@@ -64,6 +64,21 @@ test('a non-test scripts/lib/*.js file does not select the test-registration aud
   assert.deepEqual(listAudits(['scripts/lib/some-helper.js']), ['cmux-spawn-credential', 'unbounded-fetch']);
 });
 
+// Adversarial review (BRO-3239): each of the 3 new audits require()s one or
+// both of these as its canonical source (TEST_FILE_EXTENSIONS/MANIFESTS,
+// push-path glob translation). Editing either alone, with no *.test.* file in
+// the same push, must still re-trigger the block — otherwise a broken change
+// to the canonical list ships without its own gate ever firing.
+test('editing a canonical dependency (test-manifest.js / test-yml-push-paths.js) alone still selects the test-registration audits', () => {
+  for (const dep of ['scripts/lib/test-manifest.js', 'scripts/lib/test-yml-push-paths.js']) {
+    const labels = listAudits([dep]);
+    assert.ok(
+      labels.includes('colocated-test-ci-coverage'),
+      `editing ${dep} alone did not select colocated-test-ci-coverage — got: ${labels.join(', ')}`
+    );
+  }
+});
+
 test('scripts/*.js selects unbounded-fetch + write-routing + help-flag-safety', () => {
   assert.deepEqual(
     listAudits(['scripts/recover-wsj-browser.js']),

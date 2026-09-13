@@ -160,7 +160,14 @@ fi
 # a plain node:test file that runs clean via a bare `node <file>` the same way
 # workflow-line-length below does — confirmed ~1.4s combined added runtime,
 # same order of magnitude as the help-flag-safety block's ~0.7s.
-if echo "$CHANGED_FILES" | grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib/.*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests|toplevel-script-test-yml-coverage)\.js$|^scripts/lib/test-yml-manifest-paths\.js$|^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$"; then
+#
+# Self-trigger list also covers scripts/lib/test-manifest.js and
+# scripts/lib/test-yml-push-paths.js (adversarial review, BRO-3239): every one
+# of the 3 new audits require()s one or both as its canonical source of truth
+# (TEST_FILE_EXTENSIONS, MANIFESTS, push-path glob translation), so editing
+# either alone must still re-run the audits that depend on it, or a broken
+# change to the canonical list ships without its own gate firing.
+if echo "$CHANGED_FILES" | grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib/.*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests|toplevel-script-test-yml-coverage)\.js$|^scripts/lib/(test-yml-manifest-paths|test-manifest|test-yml-push-paths)\.js$|^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js" || FAIL=1
   # scripts/lib/ colocated-test coverage (BRO-2749/BRO-3239): is every
   # scripts/lib/*.test.* file actually invoked by a workflow run: body?
