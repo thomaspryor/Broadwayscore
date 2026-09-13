@@ -192,6 +192,7 @@ jobs:
         continue-on-error: true
 
       - name: Rebuild reviews.json
+        id: rebuild
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
@@ -274,7 +275,23 @@ jobs:
       # bypasses this guard immediately via --force — without it, the
       # "override command" in the escalation alert would just be a plain
       # re-run, not an actual way to unblock before the streak hits 2.
+      # BRO-3127: this step (and everything through "Get new review count"
+      # below) is gated on `always() && steps.rebuild.outcome == 'success'` —
+      # the anchor pattern BRO-2906 established for the identical bug class
+      # (test.yml's lint-workflows job, id: deps +
+      # tests/unit/workflow-audit-steps-always.test.mjs, extended by
+      # tests/unit/rebuild-publish-fail-closed.test.mjs). Before this fix, a
+      # bare (no `if:`) step here meant this guard's failure skipped every
+      # subsequent step in this job, including "Regenerate mobile artifacts"
+      # — which writes public/data/shows/{id}.json, the file the live site
+      # reads — so ONE unrelated show's genuine drift blocked publishing for
+      # every other show in the run (rebuild-fast.yml run 34318929964,
+      # 2026-09-09, same underlying bug). The anchor means these steps still
+      # run after a genuine checkout/rebuild failure skips `rebuild` itself
+      # (steps.rebuild.outcome != 'success'), while no longer being at the
+      # mercy of every step in between remembering `if: always()` alone.
       - name: Verify no scoreable review vanished during checkout drift
+        if: always() && steps.rebuild.outcome == 'success'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -301,14 +318,24 @@ jobs:
         # step times out / cancels, reviews.json + the core-data snapshot are already
         # in place and the next push step will publish them. Pull quotes drain over
         # multiple runs at --limit=200/run; the prior 500/run was timing out at ~28min.
-        if: inputs.skip_enrichment != 'true'
+        # BRO-3127: skip_enrichment check moved from `if:` into the run body so
+        # this step's `if:` stays the same fail-closed shape as every other
+        # step in this window (tests/unit/rebuild-publish-fail-closed.test.mjs
+        # only accepts `always() && steps.<id>.outcome == 'success'`, exactly).
+        if: always() && steps.rebuild.outcome == 'success'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/extract-pull-quotes.js --limit=200
+        run: |
+          if [ "${{ inputs.skip_enrichment }}" = "true" ]; then
+            echo "Skipping — skip_enrichment=true"
+            exit 0
+          fi
+          node scripts/extract-pull-quotes.js --limit=200
         continue-on-error: true
         timeout-minutes: 12
 
       - name: Audit pull quotes for chrome / tag clouds / truncation
+        if: always() && steps.rebuild.outcome == 'success'
         # Post-rebuild quality gate for the class the owner reported 2026-08-01
         # (British Theatre Guide listing block shipped as the Tao of Glass pull
         # quote). Re-runs every SHIPPED pullQuote through the hard guards in
@@ -335,6 +362,7 @@ jobs:
         continue-on-error: true
 
       - name: Analyze review drops and route alert
+        if: always() && steps.rebuild.outcome == 'success'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -347,6 +375,7 @@ jobs:
         continue-on-error: true
 
       - name: Opening-night drop + completeness check
+        if: always() && steps.rebuild.outcome == 'success'
         # Per-critic snapshot diff + per-show rebuild-regression alert path
         # for shows in the ±7d opening-night window. Stricter threshold than
         # analyze-rebuild-drops.js: any per-show drop fires here for opening
@@ -361,6 +390,7 @@ jobs:
         continue-on-error: true
 
       - name: Verify all eligible reviews scored (orphan-unscored guard)
+        if: always() && steps.rebuild.outcome == 'success'
         # Lost Boys 2026-04-26 #8 defense: walks data/review-texts/ for every
         # show in the ±7d opening-night window and asserts every includable
         # review with substantial text/excerpt has assignedScore. Writes
@@ -380,14 +410,17 @@ jobs:
         continue-on-error: true
 
       - name: Audit wrong-production reviews
+        if: always() && steps.rebuild.outcome == 'success'
         run: node scripts/audit-wrong-production.js
         continue-on-error: true
 
       - name: Update critic registry
+        if: always() && steps.rebuild.outcome == 'success'
         run: node scripts/audit-critic-outlets.js
         continue-on-error: true
 
       - name: Enrich cast from cast files
+        if: always() && steps.rebuild.outcome == 'success'
         run: node scripts/enrich-cast-from-files.js
         continue-on-error: true
 
@@ -400,8 +433,43 @@ jobs:
       # regenerate apart again.
       # See cloud-memory/feedback_mobile_index_committed_artifact.md.
       - name: Regenerate mobile artifacts (detail + index)
+        if: always() && steps.rebuild.outcome == 'success'
         run: bash scripts/generate-mobile-artifacts.sh
         continue-on-error: true
+
+      # BRO-3127: generate-mobile-show-details.js above does a full regenerate
+      # of EVERY show from the current (possibly incomplete) reviews.json —
+      # it has no concept of "this specific show is known-bad." Now that the
+      # steps in this window run even when the staleness guard fired, the
+      # GUARD-FLAGGED show's own public/data/shows/{id}.json would otherwise
+      # get rebuilt from the exact incomplete state the guard exists to catch
+      # — regressing already-published data for that one show, not just
+      # leaving it stale. check-rebuild-staleness.js writes the flagged show
+      # ids to $RUNNER_TEMP/staleness-missing-shows.txt whenever missing.length
+      # > 0; revert JUST those per-show files to last-committed HEAD so the
+      # flagged show keeps its last-known-good public data (still "folded" —
+      # not published wrong) while every other show's regenerated data below
+      # stages normally. Aggregate files (mobile-shows.json, stats-canon.json,
+      # stats-reviews.json) are intentionally NOT reverted here — they cover
+      # the whole corpus, and reverting them would also discard legitimate
+      # updates for every OTHER show in this run.
+      - name: Revert public data for shows flagged by staleness guard
+        if: always() && steps.rebuild.outcome == 'success'
+        run: |
+          FILE="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
+          if [ -s "$FILE" ]; then
+            echo "Staleness guard flagged show(s) — reverting their public/data/shows/*.json to last-committed state (BRO-3127):"
+            while IFS= read -r show_id; do
+              [ -z "$show_id" ] && continue
+              if [ -f "public/data/shows/$show_id.json" ]; then
+                git checkout HEAD -- "public/data/shows/$show_id.json" 2>/dev/null \
+                  && echo "  reverted: $show_id" \
+                  || echo "::warning::could not revert public/data/shows/$show_id.json for flagged show $show_id"
+              else
+                echo "  skip (no existing public JSON to revert): $show_id"
+              fi
+            done < "$FILE"
+          fi
 
       # Coverage Verdict S3 (task #905): stamps the first time each show's
       # score goes public (public/data/shows/{id}.json's `cs` field, just
@@ -409,10 +477,12 @@ jobs:
       # score-regression floor's clock. Append-only, fails open, cheap
       # (local file read, no network) — safe on every rebuild.
       - name: Score-public-since stamp
+        if: always() && steps.rebuild.outcome == 'success'
         run: node scripts/audit-score-public-since.js
         continue-on-error: true
 
       - name: Generate opening night status page
+        if: always() && steps.rebuild.outcome == 'success'
         run: node scripts/generate-status-page.js
         continue-on-error: true
 
@@ -460,6 +530,7 @@ jobs:
 
       - name: Get new review count
         id: after
+        if: always() && steps.rebuild.outcome == 'success'
         run: |
           COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
           echo "count=$COUNT" >> $GITHUB_OUTPUT

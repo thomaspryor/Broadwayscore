@@ -52,6 +52,7 @@ scripts/bsc-prune.test.mjs
 scripts/bsc-reconcile-reopen-idempotency.test.mjs
 scripts/bsc-reconcile.test.mjs
 scripts/check-cross-outlet-attribution-drift.test.mjs
+scripts/check-rebuild-staleness.test.mjs
 scripts/check-review-count-drift.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/cloud-memory-sync.test.mjs
@@ -618,6 +619,7 @@ tests/unit/rebuild-dedup-scored-preference.test.mjs
 tests/unit/rebuild-fast-contamination-guard.test.mjs
 tests/unit/rebuild-fast-push-timeout.test.mjs
 tests/unit/rebuild-helpers.test.mjs
+tests/unit/rebuild-publish-fail-closed.test.mjs
 tests/unit/rebuild-reviews-push-timeout.test.mjs
 tests/unit/reconcile-broadcast-state.test.mjs
 tests/unit/reconcile-bww-roundup-ledger.test.mjs
