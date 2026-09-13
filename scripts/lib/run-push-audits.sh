@@ -130,7 +130,7 @@ if echo "$CHANGED_FILES" | grep -qE "^\.github/workflows/.*\.ya?ml$|^tests/unit/
   run_audit "workflow-actionlint" "scripts/lib/run-actionlint-if-present.js" || FAIL=1
 fi
 
-# Orphan/unregistered test detection.
+# Orphan/unregistered test detection, and CI-registration coverage generally.
 #
 # BRO-2751: this pattern was a THIRD hand-maintained copy of the test-file
 # extension list, and it had already drifted — `(mjs|ts|js)` while
@@ -145,8 +145,36 @@ fi
 # scripts/lib/test-manifest.js (TEST_FILE_EXTENSIONS); this file is shell, so
 # it cannot require() it — scripts/lib/colocated-test-ci-coverage.test.mjs
 # asserts the two stay in sync.
-if echo "$CHANGED_FILES" | grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
+#
+# BRO-3239: the trigger above stayed EXTENSION-synced but not DEPTH-synced —
+# `[^/]*` matches only a file directly under tests/unit/ or scripts/, never
+# scripts/lib/**, so scripts/lib/push-with-retry.stall-diagnostics.test.sh
+# (BRO-3213) never fired this block at all. And even when triggered, this
+# block only ran audit-tests-vs-derived-data.js and audit-orphan-tests.js —
+# neither of which covers scripts/lib/ (colocated-test-ci-coverage.test.mjs's
+# own header explains why audit-orphan-tests.js excludes it) or the
+# manifest-vs-push-path / top-level-script-vs-push-path gap classes that
+# actually caught BRO-3219 and BRO-3127. Three main-red incidents in one day
+# (2026-09-13) all fell through this exact seam. Added below, same block
+# (they all answer "is this test file actually wired into CI"), each already
+# a plain node:test file that runs clean via a bare `node <file>` the same way
+# workflow-line-length below does — confirmed ~1.4s combined added runtime,
+# same order of magnitude as the help-flag-safety block's ~0.7s.
+if echo "$CHANGED_FILES" | grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib/.*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests|toplevel-script-test-yml-coverage)\.js$|^scripts/lib/test-yml-manifest-paths\.js$|^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js" || FAIL=1
+  # scripts/lib/ colocated-test coverage (BRO-2749/BRO-3239): is every
+  # scripts/lib/*.test.* file actually invoked by a workflow run: body?
+  # audit-orphan-tests.js structurally cannot see this (glob-blind, see its
+  # own header) — this is the only push-time check that can.
+  run_audit "colocated-test-ci-coverage" "scripts/lib/colocated-test-ci-coverage.test.mjs" || FAIL=1
+  # Manifest <-> push-path reachability (BRO-3239): a test registered in a
+  # manifest that no on.push.paths glob reaches runs in CI but a push
+  # touching only it triggers zero CI — the BRO-3219 shape.
+  run_audit "test-yml-manifest-paths" "scripts/lib/test-yml-manifest-paths.test.mjs" || FAIL=1
+  # Top-level scripts/*.test.* source coverage (BRO-3239): a manifest-
+  # registered tests/**/*.test.* whose required top-level scripts/ SOURCE has
+  # no push-path entry — the BRO-3219/BRO-3127 shape.
+  run_audit "toplevel-script-test-yml-coverage" "scripts/audit-toplevel-script-test-yml-coverage.test.mjs" || FAIL=1
   # --scope-stdin (card #1488): only orphans among THIS push's changed files
   # are blocking; pre-existing orphans elsewhere print informational and
   # don't fail an unrelated push. CI's own direct calls to
