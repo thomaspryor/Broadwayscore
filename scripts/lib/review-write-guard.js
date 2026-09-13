@@ -355,6 +355,29 @@ const PROTECTED_FIELDS = [
   // restore loop only iterates PROTECTED fields).
   'rescoreReason',
   'lateStarAnchorBand',
+  // NOTE: rescoreCompletedAt is intentionally NOT protected, even though
+  // _freshRescoreCompleted (the CLEAR_BREADCRUMBS predicate for needsRescore)
+  // reads it — same shape as duplicateClearReason below. flag-combined-
+  // reviews.js null-assigns it as part of clearing the whole rejection family
+  // (girl-interrupted deadlock fix) with no registered clear breadcrumb of its
+  // own; protecting it makes that null-assignment a permanent no-op (proved by
+  // tests/unit/review-write-guard.test.mjs "flag-combined-reviews.js pattern:
+  // null-assigning the rejection family sticks", which went red the moment
+  // this field was added here). See the READ_UNPROTECTED_ALLOWLIST entry in
+  // tests/unit/intentional-clear-breadcrumb.test.mjs for the full rationale.
+  // BRO-3225: the field-scoped retraction breadcrumb (_recordClearBreadcrumbRetraction)
+  // that makes deleting a PROTECTED clear-breadcrumb field (e.g. wrongProductionAutoCleared)
+  // legible to safeWriteReview as intent rather than data loss. Read by
+  // _clearBreadcrumbRetracted (the CLEAR_BREADCRUMBS predicate several of the wrong-flag
+  // auto-clear entries above delegate to), but was never itself in PROTECTED_FIELDS —
+  // meaning the SAME git-level restore this breadcrumb exists to defeat could silently
+  // drop the breadcrumb's own fields, since LOOP 1 (the git-level restore) only iterates
+  // PROTECTED fields. Found by the BRO-3225 mirror-invariant test, which asks the reverse
+  // question of "every CLEAR_BREADCRUMBS key is reachable": is every field a predicate
+  // itself READS also durable?
+  'clearBreadcrumbRetracted',
+  'clearBreadcrumbRetractedAt',
+  'clearBreadcrumbRetractedFields',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
