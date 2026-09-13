@@ -11,12 +11,12 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS } = require('../../scripts/audit-dependencies');
+const { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS, ISSUE_RE } = require('../../scripts/audit-dependencies');
 
 const EXPOSURE = 'Not exposed: dev-time CLI toolchain only, never bundled into the site runtime.';
 const ALLOW = [{
   ghsa: 'GHSA-mp2f-45pm-3cg9', module: 'decompress', reason: 'no patched release',
-  exposure: EXPOSURE, expires: '2099-01-01',
+  exposure: EXPOSURE, issue: 'BRO-3202', expires: '2099-01-01',
 }];
 const TODAY = '2026-07-11';
 
@@ -139,6 +139,94 @@ describe('exposure assessment is mandatory', () => {
       const entry = ALLOWLIST.find((a) => a.ghsa === ghsa);
       assert.ok(entry, `${ghsa} missing from ALLOWLIST`);
       assert.equal(entry.module, 'next');
+    }
+  });
+});
+
+
+// --- BRO-3202 ship-check (Codex finding): a disqualified entry must not change
+// WHICH problems the run reports. The first version returned as soon as the
+// allowlist looked wrong, so one stale entry could hide a live RCE elsewhere in
+// the tree until someone fixed the prose and pushed again.
+describe('a disqualified entry never hides a real finding', () => {
+  const good = ALLOW[0];
+  const shortExposure = { ...good, exposure: 'too short' };
+  const expiredEntry = { ...good, expires: '2026-01-01' };
+  const noIssue = { ...good, issue: undefined };
+
+  const brandNewCritical = {
+    vulnerabilities: {
+      next: { severity: 'critical', via: [criticalVia('GHSA-9999-9999-9999', 'Unauthenticated RCE')] },
+    },
+  };
+
+  for (const [label, entry] of [
+    ['a too-short exposure', shortExposure],
+    ['a missing issue reference', noIssue],
+    ['an expired entry', expiredEntry],
+  ]) {
+    test(`${label} still reports the unallowlisted critical in the SAME run`, () => {
+      const r = evaluateAuditReport(brandNewCritical, [entry], TODAY);
+      assert.equal(r.ok, false);
+      const joined = r.errors.join(' | ');
+      assert.match(joined, /GHSA-9999-9999-9999/, `the actionable RCE must not be hidden: ${joined}`);
+      assert.ok(r.errors.length >= 2, `both the allowlist problem and the RCE must be reported: ${joined}`);
+    });
+  }
+
+  test('a disqualified entry stops exempting its OWN advisory too', () => {
+    const report = {
+      vulnerabilities: { decompress: { severity: 'critical', via: [criticalVia(good.ghsa)] } },
+    };
+    const r = evaluateAuditReport(report, [shortExposure], TODAY);
+    assert.equal(r.ok, false);
+    assert.equal(r.allowedHits.length, 0, 'a malformed entry must not still grant its exemption');
+    assert.match(r.errors.join(' | '), new RegExp(good.ghsa), 'its advisory must resurface as unallowlisted');
+  });
+
+  test('an expired entry stops exempting its own advisory (was: reported expiry, exempted anyway)', () => {
+    const report = {
+      vulnerabilities: { decompress: { severity: 'critical', via: [criticalVia(good.ghsa)] } },
+    };
+    const r = evaluateAuditReport(report, [expiredEntry], TODAY);
+    assert.equal(r.ok, false);
+    assert.equal(r.allowedHits.length, 0);
+    const joined = r.errors.join(' | ');
+    assert.match(joined, /expired/);
+    assert.match(joined, /not in allowlist/, 'the advisory itself must also be reported');
+  });
+
+  test('a valid entry beside a disqualified one keeps working', () => {
+    const other = {
+      ghsa: 'GHSA-aaaa-bbbb-cccc', module: 'other', reason: 'r',
+      exposure: EXPOSURE, issue: 'BRO-1', expires: '2099-01-01',
+    };
+    const report = {
+      vulnerabilities: { other: { severity: 'critical', via: [criticalVia(other.ghsa)] } },
+    };
+    const r = evaluateAuditReport(report, [shortExposure, other], TODAY);
+    assert.equal(r.allowedHits.length, 1, 'one bad entry must not void the rest of the allowlist');
+    assert.equal(r.allowedHits[0].ghsa, other.ghsa);
+  });
+});
+
+describe('every exemption cites a tracked issue', () => {
+  test('an entry with no issue reference fails', () => {
+    const r = evaluateAuditReport({ vulnerabilities: {} }, [{ ...ALLOW[0], issue: undefined }], TODAY);
+    assert.equal(r.ok, false);
+    assert.match(r.errors[0], /issue/);
+  });
+
+  test('an issue reference that is not a Linear id fails', () => {
+    for (const bad of ['see slack', 'BRO-', '3202', 'https://linear.app/x/BRO-1']) {
+      const r = evaluateAuditReport({ vulnerabilities: {} }, [{ ...ALLOW[0], issue: bad }], TODAY);
+      assert.equal(r.ok, false, `"${bad}" should not pass as an issue reference`);
+    }
+  });
+
+  test('the real shipped ALLOWLIST cites a tracked issue for every entry', () => {
+    for (const entry of ALLOWLIST) {
+      assert.ok(ISSUE_RE.test(String(entry.issue || '').trim()), `${entry.ghsa} has no Linear issue reference`);
     }
   });
 });

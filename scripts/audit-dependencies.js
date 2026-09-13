@@ -25,12 +25,21 @@
  * Adding an entry requires: the GHSA id, `reason` (why it can't be fixed),
  * `exposure` (whether THIS deployment is actually reachable by the advisory —
  * hosting platform, whether the affected code path is even live, what input an
- * anonymous caller controls), a Linear issue reference, and an expiry date
- * ~90 days out (shorter for a live, patched-upstream critical).
+ * anonymous caller controls), `issue` (the Linear id that granted the
+ * exemption), and an expiry date ~90 days out (shorter for a live,
+ * patched-upstream critical).
  *
- * `exposure` is REQUIRED and validated (>= 40 chars): allowlisting a live RCE
- * without writing down why it can't reach us defeats the entire gate, so the
- * gate refuses to run on an entry that skipped the assessment (BRO-3202).
+ * `exposure` and `issue` are REQUIRED and validated: allowlisting a live RCE
+ * without writing down why it can't reach us defeats the entire gate, so an
+ * entry that skipped the assessment is DISQUALIFIED — it is reported as an
+ * error and stops exempting anything, which means the advisory it used to
+ * cover fails the build in the same run (BRO-3202).
+ *
+ * The `exposure` length floor is a floor, not a standard: 40 characters of
+ * nothing passes it. `issue` is the half a reviewer can pull on, and the text
+ * is printed into the CI log on every run so a hollow one is visible. If
+ * exemptions ever start reading as boilerplate, the fix is a named approver,
+ * not a bigger number here.
  */
 
 'use strict';
@@ -39,6 +48,11 @@ const { execSync } = require('child_process');
 
 /** Minimum length of an `exposure` assessment — long enough to be a sentence. */
 const MIN_EXPOSURE_CHARS = 40;
+
+/** Linear issue id an exemption must cite, e.g. BRO-3202. A length check alone
+ * is easy to satisfy with 40 characters of nothing; requiring a tracked issue
+ * is the part a reviewer can actually pull on. */
+const ISSUE_RE = /^BRO-\d+$/;
 
 const ALLOWLIST = [
   {
@@ -49,6 +63,7 @@ const ALLOWLIST = [
     exposure: 'Not exposed: reached only via the sanity CLI toolchain (dev-time CMS tooling). '
       + 'It is never bundled into the site runtime, so no attacker-supplied archive ever '
       + 'reaches it — the extraction path only runs against files a developer already has.',
+    issue: 'BRO-3202',
     expires: '2026-10-15',
   },
   // --- Next.js 14.2.35: both advisories' first patched release is 15.5.24 ---
@@ -66,6 +81,7 @@ const ALLOWLIST = [
     exposure: 'Not exposed: the advisory is Windows-filesystem-only ("when the server is hosted '
       + 'on machines using a Windows filesystem"). Prod runs on Vercel (Linux serverless) and '
       + 'every CI job runs on ubuntu-latest — this repo has no Windows runtime anywhere.',
+    issue: 'BRO-3202',
     expires: '2026-11-15',
   },
   {
@@ -84,6 +100,7 @@ const ALLOWLIST = [
       + '(2) Vercel has the platform mitigation the advisory describes ("optimization of AVIF '
       + 'files is disabled"): an AVIF through prod /_next/image came back byte-identical at '
       + 'w=64/256/640 (43247 B each), i.e. passed through, never decoded.',
+    issue: 'BRO-3202',
     expires: '2026-11-15',
   },
 ];
@@ -116,30 +133,49 @@ function evaluateAuditReport(report, allowlist, today) {
     return { ok: false, errors: ['npm audit report has no vulnerabilities object — refusing to treat as clean'], allowedHits: [] };
   }
 
-  // An allowlist entry with no written exposure assessment is the failure mode
-  // this gate exists to prevent (BRO-3202: two unpatched Next.js RCEs). Refuse
-  // to evaluate a malformed allowlist rather than honour a blank exemption.
-  const malformed = allowlist.filter(
-    (a) => !a || typeof a.exposure !== 'string' || a.exposure.trim().length < MIN_EXPOSURE_CHARS,
-  );
-  if (malformed.length) {
-    for (const a of malformed) {
+  // An allowlist entry that is malformed or expired is DISQUALIFIED: it is
+  // reported as its own error AND stops exempting anything, so the advisory it
+  // used to cover resurfaces in the scan below.
+  //
+  // Deliberately no early return here (BRO-3202 ship-check). Returning early
+  // made the gate report the wrong problem: with a dormant entry one character
+  // short, a brand-new critical RCE elsewhere in the tree was never scanned
+  // for, so CI printed only "fix your prose" and hid the actionable finding
+  // until someone fixed the prose and pushed again. Every reason the audit
+  // fails should be on the FIRST red run — an audit that reveals its findings
+  // one round-trip at a time is worse than one that says everything at once.
+  const disqualified = new Set();
+
+  for (const a of allowlist) {
+    const ghsa = (a && a.ghsa) || '(unnamed)';
+    if (!a || typeof a.exposure !== 'string' || a.exposure.trim().length < MIN_EXPOSURE_CHARS) {
+      disqualified.add(ghsa);
       errors.push(
-        `allowlist entry ${(a && a.ghsa) || '(unnamed)'} has no usable \`exposure\` assessment `
+        `allowlist entry ${ghsa} has no usable \`exposure\` assessment `
         + `(required, >= ${MIN_EXPOSURE_CHARS} chars) — say why THIS deployment can't be reached`,
       );
+      continue; // one error per entry; no need to also report its expiry
     }
-    return { ok: false, errors, allowedHits: [] };
-  }
-
-  const allowByGhsa = new Map(allowlist.map((a) => [a.ghsa, a]));
-  const expired = allowlist.filter((a) => a.expires <= today);
-  if (expired.length) {
-    for (const a of expired) {
+    if (typeof a.issue !== 'string' || !ISSUE_RE.test(a.issue.trim())) {
+      // An exemption nobody can trace back to a decision is an anonymous one.
+      disqualified.add(ghsa);
+      errors.push(
+        `allowlist entry ${ghsa} has no \`issue\` reference (required, e.g. 'BRO-3202') `
+        + '— every exemption must point at the decision that granted it',
+      );
+      continue;
+    }
+    if (a.expires <= today) {
+      disqualified.add(ghsa);
       errors.push(`expired allowlist entry: ${a.ghsa} (${a.module}) expired ${a.expires} — re-triage or extend with a reason`);
     }
-    return { ok: false, errors, allowedHits: [] };
   }
+
+  const allowByGhsa = new Map(
+    allowlist
+      .filter((a) => a && a.ghsa && !disqualified.has(a.ghsa))
+      .map((a) => [a.ghsa, a]),
+  );
 
   // Per-advisory scan: object entries in `via` are the advisories themselves,
   // each with its own severity. String entries are pointers to other package
@@ -210,6 +246,6 @@ function main() {
   console.log('✅ No unallowlisted critical advisories.');
 }
 
-module.exports = { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS };
+module.exports = { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS, ISSUE_RE };
 
 if (require.main === module) main();
