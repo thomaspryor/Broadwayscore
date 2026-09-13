@@ -613,6 +613,88 @@ test('restore decision: markRescoreComplete() success path is NOT reverted by th
     'a freshly-completed rescore must NOT have needsRescore resurrected by the same-job restore');
 });
 
+// ── BRO-3225: mirror invariant for the OTHER direction ──
+//
+// "every CLEAR_BREADCRUMBS key is reachable" (above) asks whether the field a
+// predicate PROTECTS is itself in PROTECTED_FIELDS. This asks the mirror
+// question: is every field a predicate itself READS (an "authoriser" field —
+// clearBreadcrumbRetracted, duplicateClearReason, the *At freshness stamps)
+// ALSO durable across a rebase? A retraction stamp that legibly explains a
+// delete is worthless if the git-level restore can drop the stamp's own
+// fields on some other pass — which is exactly what was happening to
+// clearBreadcrumbRetracted/clearBreadcrumbRetractedAt/
+// clearBreadcrumbRetractedFields (and, caught by this same generalized check,
+// rescoreCompletedAt): none were in PROTECTED_FIELDS, so
+// invalidateWrongProductionAutoClear()'s retraction stamp — and
+// markRescoreComplete()'s completion stamp — could itself be silently dropped
+// by the SAME restore mechanism the breadcrumb exists to defeat.
+//
+// Reflection, not a hand-maintained list: every predicate is `.toString()`d
+// and scanned for `d.<field>` reads, so a new predicate reading a new
+// breadcrumb field is caught automatically without anyone remembering to
+// update this test — the exact class of drift that let 4 fields go
+// unprotected for months unnoticed.
+// Two known blind spots (second-opinion review, BRO-3225) — harmless for the
+// field set that exists today, but worth naming so a future addition isn't
+// trusted beyond what this actually checks:
+//   1. Bracket access `d[field]` (used by _clearBreadcrumbRetracted's `field`
+//      closure param) is invisible to this regex. Only safe today because
+//      every field it's called with is a CLEAR_BREADCRUMBS key in its own
+//      right, so "every key is reachable" (above) covers it independently.
+//   2. A predicate that delegates to another MODULE (_wrongShowCleared calls
+//      require('./review-guards').wrongShowCleared(d), whose body uses a
+//      `data` param, not `d`) is not followed — only the delegating
+//      predicate's own source is scanned. Only safe today because every field
+//      that callee reads is coincidentally re-declared in a sibling local
+//      predicate already covered here.
+const READ_FIELD_RE = /\bd\.([A-Za-z_$][A-Za-z0-9_$]*)\b/g;
+
+// Fields a predicate legitimately reads that are DELIBERATELY left unprotected
+// for a documented reason (mirrors MERGE_PATH_ONLY_BREADCRUMBS above, one level
+// down: those are protected-field KEYS that are unprotected on purpose; this is
+// authoriser READS that are unprotected on purpose).
+const READ_UNPROTECTED_ALLOWLIST = new Map([
+  ['duplicateClearReason',
+    'must stay nullable — review-write-guard nulls it when a sibling becomes a ' +
+    'live duplicate again (see the CLEAR_BREADCRUMBS header comment above). ' +
+    'Protecting it would make the git-level restore resurrect a stale clear-' +
+    'reason on the exact re-duplication the null exists to signal — the same ' +
+    'tombstone failure mode duplicateTextOf is allowlisted against below. The ' +
+    'action.yml push-restore reads it from the SAME working tree that wrote ' +
+    'it, so it is reliable on that path without being in PROTECTED_FIELDS.'],
+  ['rescoreCompletedAt',
+    'must stay nullable — flag-combined-reviews.js null-assigns it as part of ' +
+    'clearing the whole rejection family (rejectionReason/rejectedBy/rejectedAt/' +
+    'rejectionReasoning/rescoreCompletedAt), with no registered CLEAR_BREADCRUMBS ' +
+    'entry of its own. Protecting it turns that null-assignment into a permanent ' +
+    'no-op — confirmed by actually adding it to PROTECTED_FIELDS during the ' +
+    'BRO-3225 fix and watching "flag-combined-reviews.js pattern: null-assigning ' +
+    'the rejection family sticks" (review-write-guard.test.mjs) go red.'],
+]);
+
+test('every field a CLEAR_BREADCRUMBS predicate reads (d.<field>) is itself protected or a documented exception', () => {
+  const seen = new Set();
+  for (const predicate of Object.values(CLEAR_BREADCRUMBS)) {
+    if (typeof predicate !== 'function') continue;
+    const src = predicate.toString();
+    let m;
+    READ_FIELD_RE.lastIndex = 0;
+    while ((m = READ_FIELD_RE.exec(src))) seen.add(m[1]);
+  }
+  assert.ok(seen.size > 5, 'sanity check: reflection should have found several distinct read fields');
+  for (const field of seen) {
+    if (READ_UNPROTECTED_ALLOWLIST.has(field)) {
+      assert.ok(!PROTECTED_FIELDS.includes(field),
+        `'${field}' is allowlisted as a documented unprotected read but IS in PROTECTED_FIELDS — drop the allowlist entry`);
+      continue;
+    }
+    assert.ok(PROTECTED_FIELDS.includes(field),
+      `a CLEAR_BREADCRUMBS predicate reads d.${field}, but '${field}' is not in ` +
+      `PROTECTED_FIELDS and not in READ_UNPROTECTED_ALLOWLIST — a rebase-time ` +
+      `restore can silently drop it, destabilizing the predicate's own decision`);
+  }
+});
+
 test('a genuine FUTURE re-flag still queues once the rescoreCompletedAt stamp is present but the re-flag write is non-empty', () => {
   // Mirrors the stuckRescoreCleared sibling test: every producer that
   // RE-FLAGS needsRescore writes a real, non-empty `true`. wouldRestore only
