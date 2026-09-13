@@ -4,10 +4,10 @@
     "armedCount": 6
   },
   "invalidRegistryFields": [],
-  "generatedAt": "2026-09-08T04:48:37.229Z",
+  "generatedAt": "2026-09-13T17:21:06.535Z",
   "summary": {
-    "totalOutletsInReviews": 699,
-    "inRegistry": 699,
+    "totalOutletsInReviews": 703,
+    "inRegistry": 703,
     "missing": 0,
     "unused": 475
   },
@@ -424,10 +424,6 @@
     {
       "outletId": "clevelands-star-102",
       "displayName": "Clevelands Star 102"
-    },
-    {
-      "outletId": "dayton-local",
-      "displayName": "Dayton Local"
     },
     {
       "outletId": "gephardt-daily",
@@ -872,6 +868,10 @@
     {
       "outletId": "the-gold-knight",
       "displayName": "The Gold Knight"
+    },
+    {
+      "outletId": "theatrereviews-design",
+      "displayName": "TheatreReviews.design"
     },
     {
       "outletId": "the-record-theater",
@@ -1498,10 +1498,6 @@
       "displayName": "Midhurst and Petworth Observer"
     },
     {
-      "outletId": "the-bucks-herald",
-      "displayName": "The Bucks Herald"
-    },
-    {
       "outletId": "evening-chronicle",
       "displayName": "Evening Chronicle"
     },
@@ -1826,10 +1822,6 @@
       "displayName": "Northern Arts Review"
     },
     {
-      "outletId": "the-daily-texan",
-      "displayName": "The Daily Texan"
-    },
-    {
       "outletId": "show-score",
       "displayName": "show-score"
     },
@@ -1910,8 +1902,16 @@
       "displayName": "Sueterryvoices"
     },
     {
+      "outletId": "camdennewjournal",
+      "displayName": "Camden New Journal"
+    },
+    {
       "outletId": "baystatebanner",
       "displayName": "Baystatebanner"
+    },
+    {
+      "outletId": "southernartsreviews",
+      "displayName": "Southern Arts Reviews"
     }
   ],
   "suggestedAdditions": [],
@@ -3537,6 +3537,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/private-lives-1992/vulture--scott-brown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/private-lives-2002/vulture--scott-brown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/rodgers-hammersteins-cinderella-2013/vulture--scott-brown.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/stick-fly-2011/vulture--scott-brown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-road-to-mecca-2012/vulture--scott-brown.json"
       ]
     },
@@ -4255,7 +4256,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/starlight-express-west-end-2024/financialtimes--sarah-hemming.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-hunger-games-on-stage-west-end-2025/financialtimes--sarah-hemming.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-inheritance-2019/financialtimes--financial-times.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/under-the-shadow-off-west-end-2026/financialtimes--unknown.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/under-the-shadow-off-west-end-2026/financialtimes--sarah-hemming.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/witness-for-the-prosecution-west-end-2022/financialtimes--sarah-hemming.json"
       ]
     },
@@ -7472,12 +7473,22 @@
     },
     {
       "showId": "jane-eyre-off-west-end-2026",
-      "outletId": "southernartsreviews",
-      "currentDisplayName": "southernartsreviews",
-      "expectedDisplayName": "Southern Arts Reviews",
-      "canonicalId": "southernartsreviews",
+      "outletId": "emmatheatrics",
+      "currentDisplayName": "Emma Theatrics",
+      "expectedDisplayName": "Emmatheatrics",
+      "canonicalId": "emmatheatrics",
       "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/jane-eyre-off-west-end-2026/southernartsreviews--david-cradduck.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/jane-eyre-off-west-end-2026/emmatheatrics--emma-theatrics.json"
+      ]
+    },
+    {
+      "showId": "jane-eyre-off-west-end-2026",
+      "outletId": "musicaltheatremusings",
+      "currentDisplayName": "musicaltheatremusings",
+      "expectedDisplayName": "Musicaltheatremusings",
+      "canonicalId": "musicaltheatremusings",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/jane-eyre-off-west-end-2026/musicaltheatremusings--unknown.json"
       ]
     },
     {
@@ -8544,7 +8555,7 @@
       "expectedDisplayName": "Broadwayspotted",
       "canonicalId": "broadwayspotted",
       "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/spring-awakening-2015/broadwayspotted--unknown.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/spring-awakening-2015/broadwayspotted--jordan-riefe.json"
       ]
     },
     {
@@ -9792,6 +9803,10 @@
   "skippedJunkOutlets": [
     {
       "outletId": "buy-tickets",
+      "count": 1
+    },
+    {
+      "outletId": "are-likely-to-inspire-a-heavy-outpouring-of-adjectives",
       "count": 1
     },
     {

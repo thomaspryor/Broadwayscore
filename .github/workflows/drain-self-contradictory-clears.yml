@@ -34,6 +34,20 @@ name: Drain Self-Contradictory Clears
 # WHY NOT A WRITE-TIME GUARD INSTEAD: the same non-neutrality rules out enforcing
 # the invariant inside safeWriteReview() — it has no shows.json context, so it
 # cannot run isZeroScoreImpactFix() and would be retracting breadcrumbs blind.
+#
+# WHAT THIS WORKFLOW DOES *NOT* FIX — read BRO-3225 before trusting it. There is
+# a second, faster producer than the one above: rebuild-all-reviews.js:3020's
+# shouldAutoClearWrongShowUkUrl() deletes a live wrongShow and stamps
+# wrongShowAutoCleared, and push-review-texts' PROTECTED_FIELDS restore then puts
+# the (protected) wrongShow straight back — re-creating the pair on every
+# rebuild. Rebuilds run several times a day, so a DAILY drain cannot win that
+# race: jane-eyre-off-west-end-2026/theatreandtonic--penny-walshe.json was
+# drained twice and re-created both times within the hour. Three more files are
+# already queued to do the same (named in BRO-3225). The per-file stopgap is to
+# set wrongShowReason, that function's documented manual escape hatch; the real
+# fix is an owner call between the options in that issue. This workflow is still
+# worth having — nothing ran --fix-safe on any schedule before it — but it is a
+# drain, not a dam.
 on:
   schedule:
     # Daily at 10:10 UTC. Deliberately NOT 11:00/11:30 — clear-stale-duplicate-of.yml
