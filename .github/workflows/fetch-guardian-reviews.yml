@@ -175,7 +175,20 @@ jobs:
         # guard above): same non-blocking pattern as rebuild-fast.yml's
         # identical step, specifically for shows in the ±7d opening-night
         # window.
-        if: ${{ github.event.inputs.dry_run != 'true' }}
+        #
+        # BRO-3127 /what-else finding: this workflow ALSO calls
+        # check-rebuild-staleness.js (the guard above), so it was audited for
+        # the same blast-radius bug. It does NOT reproduce here — this file
+        # never regenerates public/data/shows/*.json, and its actual publish
+        # steps ("Push review-texts", "Commit changes", "Push core data")
+        # already carry if: always(). The ONE gap was this step: without
+        # always(), a guard failure silently skipped this redundant real-time
+        # alert (the guard's own alert still fires either way) — not a
+        # publish blocker, just a missed second signal. Fixed for
+        # consistency; `dry_run` still short-circuits a dry run correctly
+        # since always() only survives an EARLIER step's failure, not a
+        # false input check.
+        if: always() && github.event.inputs.dry_run != 'true'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}

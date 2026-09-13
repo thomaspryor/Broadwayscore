@@ -26,10 +26,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {
-  findMissedBroadcasts,
-  DEFAULT_MAX_ALERT_AGE_DAYS: MAX_ALERT_AGE_DAYS,
-} = require('./lib/missed-broadcasts');
+const { findMissedBroadcasts } = require('./lib/missed-broadcasts');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -184,7 +181,11 @@ async function main() {
     return;
   }
 
-  console.log(`Missed opening-night broadcasts (${missed.length}; ${alertable.length} alertable, ${aged.length} aged out past ${MAX_ALERT_AGE_DAYS}d):`);
+  // The alert bound varies by category (West End 7d, Broadway 21d — see
+  // WEST_END_MAX_ALERT_AGE_DAYS in lib/missed-broadcasts.js), so a single
+  // day count here would misstate it for whichever category ISN'T
+  // MAX_ALERT_AGE_DAYS. Each per-show line already carries its own bound.
+  console.log(`Missed opening-night broadcasts (${missed.length}; ${alertable.length} alertable, ${aged.length} aged out):`);
   for (const m of missed) {
     console.log(`  - ${m.title} (${m.id}) — opened ${m.openingDate}, ${m.daysSinceOpening}d ago, ${m.scoredReviews} scored reviews, ${STATE_LABEL[m.state] || m.state}${m.alertable ? '' : ' [aged out — digest only]'}`);
   }
@@ -215,7 +216,7 @@ async function main() {
         `State: ${STATE_LABEL[m.state] || m.state}.\n\n` +
         `${remediationFor(m)}\n\n` +
         `If the show is simply too stale to be worth emailing, no action is needed — this alert ` +
-        `stops on its own once the show is more than ${MAX_ALERT_AGE_DAYS} days past opening.`,
+        `stops on its own once the show is more than ${m.ageBoundDays} days past opening.`,
       severity: 'error',
       disposition: 'human',
       // Weekly, not daily. The condition is durable and needs a human decision;

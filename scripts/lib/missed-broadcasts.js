@@ -48,11 +48,18 @@ const BROADCAST_CATEGORIES = new Set(['broadway', 'west-end']);
 const DEFAULT_MIN_AGE_DAYS = 3;
 
 // Bounds ALERTING only, never the report. Past this age a show stops paging
-// (a show nobody rescued in three weeks is a backlog item, not an incident)
 // but stays in the snapshot forever, so it can never go silent the way the
 // original bug did — it just moves from "page" to "digest line". Bounding the
 // report itself would recreate this exact bug at a longer horizon.
 const DEFAULT_MAX_ALERT_AGE_DAYS = 21;
+
+// Owner decision 2026-09-13: West End shows get shared in the Sunday roundup
+// email to all subscribers regardless of whether their own opening-night
+// broadcast ever sends, so a still-unsent West End broadcast past one week is
+// no longer worth paging about — unlike Broadway, which has no equivalent
+// weekly digest safety net (see wasCoveredByWeeklyRoundup's Broadway
+// exclusion above) and keeps the longer default bound.
+const WEST_END_MAX_ALERT_AGE_DAYS = 7;
 
 // The opening-night broadcast pipeline did not exist before this date — the
 // earliest record in opening-night-sent.json is 2026-03-19 (62 records checked
@@ -236,6 +243,11 @@ function findMissedBroadcasts({
       && s.category === 'west-end'
       && wasCoveredByWeeklyRoundup(newsletterIssues, s.id);
 
+    // West End gets the shorter bound regardless of state (draft-stuck
+    // included) — the Sunday roundup covers it either way. Broadway has no
+    // such safety net, so it keeps the full default window.
+    const ageBound = s.category === 'west-end' ? WEST_END_MAX_ALERT_AGE_DAYS : maxAlertAgeDays;
+
     missed.push({
       id: s.id,
       title: s.title || s.id,
@@ -247,7 +259,12 @@ function findMissedBroadcasts({
       state: roundupCovered ? 'covered-by-roundup' : state,
       // Suppressed regardless of age — the Round-up already sent subscribers
       // this content, so there is nothing left to page about.
-      alertable: roundupCovered ? false : age <= maxAlertAgeDays,
+      alertable: roundupCovered ? false : age <= ageBound,
+      // Exposed so callers (alert text, digest summaries) never re-derive the
+      // category rule themselves — the CLI printing a stale "21 days" for a
+      // West End show that actually ages out at 7 was exactly the bug this
+      // field exists to prevent.
+      ageBoundDays: ageBound,
       draftUrl: ((sentShows || {})[s.id] || {}).draftUrl || null,
     });
   }
@@ -264,6 +281,7 @@ module.exports = {
   BROADCAST_CATEGORIES,
   DEFAULT_MIN_AGE_DAYS,
   DEFAULT_MAX_ALERT_AGE_DAYS,
+  WEST_END_MAX_ALERT_AGE_DAYS,
   DEFAULT_MAX_REPORT_AGE_DAYS,
   BROADCAST_PIPELINE_EPOCH,
 };

@@ -169,6 +169,98 @@ git_push() {
   _timeout "$GIT_NET_TIMEOUT_SEC" \
     git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@"
 }
+
+# BRO-3213: --progress above answers "pack generation vs Writing-objects
+# transfer" — but a measured live hang (Opening Night Express run
+# 34694172162, 2026-09-12) showed ZERO bytes of --progress output for the
+# FULL 90s, ruling out both: pack generation prints "Enumerating objects"
+# near-instantly, and the transfer phase prints byte/throughput progress as
+# it goes. The hang is stalling even earlier — the connection/TLS/ref-
+# advertisement round trip, before pack-objects is even invoked — a phase
+# --progress has nothing to say about. GIT_TRACE_CURL exposes that phase.
+#
+# Routed to its OWN temp file (GIT_TRACE_CURL accepts a path, verified
+# locally — writes there directly, untouched by fd redirection) rather than
+# sharing git_push's inherited stderr, so it can never interleave with or
+# alter the existing --progress output on that stream. GIT_TRACE_CURL_NO_DATA=1
+# suppresses the raw TLS/pack-byte dump (verified locally: without it, curl
+# logs the full binary TLS handshake and pack payload — unbounded and
+# useless; with it, only header/info lines remain). Classification and
+# credential redaction are pure JS (scripts/lib/push-diagnostics.js, unit
+# tested) — this wrapper only READS/classifies the trace on a timeout
+# failure; every push still WRITES one (a small, bounded git-side cost since
+# NO_DATA suppresses the payload), immediately deleted below regardless of
+# outcome (adversarial review, BRO-3213: the original wording overclaimed
+# "unaffected").
+#
+# PUSH_SKIP_STALL_DIAGNOSTICS=1 disables this wrapper's tracing entirely
+# (falls back to plain git_push) — an escape hatch matching this file's
+# existing PUSH_SKIP_CONFLICT_CHECK/PUSH_API_FALLBACK_DISABLE convention, for
+# a future git/curl version where GIT_TRACE_CURL misbehaves, without needing
+# a revert+redeploy (adversarial review finding: the ledger-only
+# PUSH_SKIP_FAILURE_LEDGER switch doesn't touch trace collection itself).
+#
+# Sets $_LAST_STALL_PHASE as a side effect (bare assignment — this runs at
+# the same non-function retry-loop scope as pre_push_rc/post_push_rc, see
+# BRO-2732's identical note above), RESET at the top of every call so a
+# non-timeout result on a LATER attempt can never inherit an EARLIER
+# attempt's stale timeout classification into the final ledger row
+# (adversarial review finding — the first cut only ever wrote this var, never
+# cleared it). A caller that ultimately exhausts all retries folds the LAST
+# attempt's own phase into record_push_failure's durable ledger row, closing
+# the gap that previously required manually re-pulling a specific run's raw
+# CI log (exactly what this session did by hand) to learn anything past
+# "rc=124".
+_LAST_STALL_PHASE="unknown"
+git_push_traced() {
+  local trace_file rc
+  _LAST_STALL_PHASE="unknown"
+  if [ "${PUSH_SKIP_STALL_DIAGNOSTICS:-}" = "1" ]; then
+    git_push "$@"
+    return $?
+  fi
+  # No predictable-path fallback if mktemp fails (adversarial review finding:
+  # the original `|| echo "/tmp/...$$.$RANDOM"` fallback could have git
+  # create that file honoring the process umask, or follow a pre-existing
+  # symlink at that guessable path — a credential-bearing trace file is the
+  # wrong thing to ever write somewhere non-exclusively-created). Fail open
+  # on the DIAGNOSTIC only — the push itself still runs untraced rather than
+  # not running at all.
+  trace_file=$(mktemp 2>/dev/null) || { git_push "$@"; return $?; }
+  chmod 600 "$trace_file" 2>/dev/null || true
+  # RETURN trap (not a manual `rm -f` at the bottom): covers every exit from
+  # this function, including one this file's own future edits might add
+  # (adversarial review finding — cleanup must not depend on control flow
+  # reaching a specific line). Does not protect against the whole SCRIPT
+  # being SIGKILLed before this function returns; the outer `timeout -k 10`
+  # only kills the inner `git` process, not this bash function, so that
+  # residual window is CI-runner-teardown-bounded, not open-ended.
+  #
+  # Self-clearing (`trap - RETURN` as the trap's OWN last action, follow-up
+  # adversarial review): `trap ... RETURN` set inside a function is NOT
+  # function-call-scoped — verified empirically — it stays registered in the
+  # shell's global trap table after this function returns (confirmed via
+  # `trap -p RETURN`), even though it does not actually refire for an
+  # unrelated function's return. Explicitly clearing it here removes any
+  # dependence on that non-obvious, easy-to-get-wrong behavior and guarantees
+  # this function never silently clobbers a RETURN trap some future caller or
+  # sourced file relies on.
+  trap 'rm -f "$trace_file" 2>/dev/null || true; trap - RETURN' RETURN
+  GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" git_push "$@"
+  rc=$?
+  if [ "$rc" -ne 0 ] && command -v node >/dev/null 2>&1 \
+       && [ -f "$SCRIPT_DIR/../push-diagnostics-cli.js" ]; then
+    case "$rc" in
+      124|137|143)
+        _LAST_STALL_PHASE=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" classify "$trace_file" 2>/dev/null || echo "unknown")
+        echo "  git-transport stall phase: $_LAST_STALL_PHASE"
+        node "$SCRIPT_DIR/../push-diagnostics-cli.js" redact-tail "$trace_file" 2>/dev/null \
+          | sed 's/^/    curl-trace: /' || true
+        ;;
+    esac
+  fi
+  return $rc
+}
 # BRO-2732: classify a FAILED git_push's exit status for the log. git_push runs
 # git under `_timeout ... -k 10` above, and when timeout kills git mid-transport
 # git prints NOTHING of its own — so a fast REJECTION (git's own stderr visible,
@@ -286,10 +378,18 @@ record_push_failure() {
   # surface vanish undetected.
   workflow=$(printf '%s' "${GITHUB_WORKFLOW:-unknown}" | sed 's/\\/\\\\/g; s/"/\\"/g')
   mkdir -p "$(dirname "$PUSH_FAILURE_LOG")" 2>/dev/null || true
-  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s,"workflow":"%s"}\n' \
+  # BRO-3213: the LAST curl-trace-classified stall phase observed by
+  # git_push_traced() during this invocation (see its definition above),
+  # e.g. "request-sent-awaiting-response" or "no-trace" (rc!=124/137/143, a
+  # rejection rather than a hang, or the diagnostics CLI wasn't available).
+  # Recorded here — on the terminal exhaustion/abort paths only, same as the
+  # rest of this function — so the row that actually matters (a push that
+  # never recovered) carries WHICH network phase it died in, closing the gap
+  # that previously required manually re-pulling a run's raw CI log.
+  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s,"workflow":"%s","stallPhase":"%s"}\n' \
     "$ts" "${PULL_BRANCH:-?}" "$remote" "$reason" "$attempt" "${MAX_RETRIES:-?}" \
     "$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
-    "$workflow" \
+    "$workflow" "${_LAST_STALL_PHASE:-unknown}" \
     >> "$PUSH_FAILURE_LOG" 2>/dev/null || true
 
   # Durable telemetry (task: push-retry-failure telemetry, 2026-08-23).
@@ -321,6 +421,7 @@ record_push_failure() {
       "--reason=$reason" "--attempt=$attempt" "--max-retries=${MAX_RETRIES:-0}" \
       "--branch=${PULL_BRANCH:-main}" "--remote=$remote" \
       "--workflow=$workflow" "--ci=$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
+      "--stall-phase=${_LAST_STALL_PHASE:-unknown}" \
       >/dev/null 2>&1 || true
   fi
 }
@@ -1274,7 +1375,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # remaining retry AND the Git Data API fallback. Same reason the fetch path's
   # explicit_fetch_rc/fetch_start (line ~1333) are bare too.
   push_start=$SECONDS
-  if git_push origin "$BRANCH"; then
+  if git_push_traced origin "$BRANCH"; then
     if verify_content_survived; then
       echo "Push succeeded on attempt $i"
       pushed=true
@@ -1897,7 +1998,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if [ "$history_changed" = "true" ]; then
     # BRO-2732: see the identical bare-assignment note at the pre-resolution push.
     push_start=$SECONDS
-    if git_push origin "$BRANCH"; then
+    if git_push_traced origin "$BRANCH"; then
       if verify_content_survived; then
         echo "Push succeeded after conflict resolution (attempt $i)"
         pushed=true

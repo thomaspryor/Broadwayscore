@@ -160,7 +160,11 @@ fi
 # 4. Every git_push call site is preceded by a push_start assignment, so the
 #    elapsed-time report can never reference an unset var under `set -u` (the
 #    second hard-abort the review caught).
-sites="$(grep -c "if git_push origin" "$TARGET")"
+# BRO-3213: matches both the bare wrapper and the diagnostics-instrumented
+# git_push_traced() call sites — the retry loop routes through the latter now,
+# but the invariant under test (push_start set before every attempt) applies
+# identically to either name.
+sites="$(grep -cE "if git_push(_traced)? origin" "$TARGET")"
 starts="$(grep -c "push_start=\$SECONDS" "$TARGET")"
 if [ "$sites" -gt 0 ] && [ "$sites" -eq "$starts" ]; then
   pass 4 "all $sites git_push call site(s) have a matching push_start (set -u safe)"

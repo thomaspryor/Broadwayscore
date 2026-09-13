@@ -123,7 +123,7 @@ function jitterMs(attempt, base = 150, cap = 1800) {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true]');
+    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...]');
     process.exit(0);
   }
 
@@ -151,6 +151,7 @@ async function main() {
     // (push-with-retry.sh:217), not a second independent source of truth.
     ci: isGithubActionsRunner(process.env) || args.ci === 'true',
     ts: new Date().toISOString(),
+    stallPhase: args['stall-phase'] || 'unknown',
   });
 
   const cwd = process.cwd();
