@@ -199,6 +199,7 @@ function findMissedBroadcasts({
   newsletterIssues = [],
   minAgeDays = DEFAULT_MIN_AGE_DAYS,
   maxAlertAgeDays = DEFAULT_MAX_ALERT_AGE_DAYS,
+  westEndMaxAlertAgeDays = WEST_END_MAX_ALERT_AGE_DAYS,
   maxReportAgeDays = DEFAULT_MAX_REPORT_AGE_DAYS,
   pipelineEpoch = BROADCAST_PIPELINE_EPOCH,
 } = {}) {
@@ -245,8 +246,11 @@ function findMissedBroadcasts({
 
     // West End gets the shorter bound regardless of state (draft-stuck
     // included) — the Sunday roundup covers it either way. Broadway has no
-    // such safety net, so it keeps the full default window.
-    const ageBound = s.category === 'west-end' ? WEST_END_MAX_ALERT_AGE_DAYS : maxAlertAgeDays;
+    // such safety net, so it keeps the full default window. Both bounds are
+    // caller-overridable (codex adversarial review, 2026-09-13: a caller
+    // passing maxAlertAgeDays for incident recovery/testing was silently
+    // ignored for West End before this param existed).
+    const ageBound = s.category === 'west-end' ? westEndMaxAlertAgeDays : maxAlertAgeDays;
 
     missed.push({
       id: s.id,

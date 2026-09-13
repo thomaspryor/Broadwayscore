@@ -920,6 +920,12 @@ on:
       # so a solo edit to either triggers CI.
       - 'scripts/audit-false-balance.js'
       - 'scripts/audit-false-balance.test.mjs'
+      # BRO-3219: top-level scripts/ file (no scripts/** glob) with a colocated
+      # test registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — both need their own entry
+      # so a solo edit to either triggers CI.
+      - 'scripts/audit-flagged-file-contamination.js'
+      - 'scripts/audit-flagged-file-contamination.test.mjs'
       # BRO-547: top-level scripts/ file (no scripts/** glob) with a colocated
       # test registered explicitly in tests/unit-test-manifest.txt (root-level
       # scripts/*.test.mjs files are NOT globbed) — both need their own entry
@@ -2054,6 +2060,13 @@ on:
       # CI. scripts/lib/test-yml-manifest-paths.test.mjs caught this the
       # moment the test file was registered in tests/unit-test-manifest.txt.
       - 'scripts/check-rebuild-staleness.test.mjs'
+      # Same shape, one day later (BRO-3219 landed the test; caught by the
+      # BRO-2647 gate in Lint Workflows, which names the fix verbatim).
+      # scripts/audit-flagged-file-contamination.test.mjs is registered in
+      # tests/unit-test-manifest.txt, so it RUNS once CI fires — but it is a
+      # root-level scripts/ file, outside the scripts/lib/** glob, so a push
+      # touching only it triggered zero CI.
+      - 'scripts/audit-flagged-file-contamination.test.mjs'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'

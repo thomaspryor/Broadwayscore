@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-09-13T16:47:14.716Z",
+  "generatedAt": "2026-09-13T17:48:57.654Z",
   "summary": {
-    "total": 7,
-    "high": 2,
+    "total": 8,
+    "high": 3,
     "medium": 4,
     "low": 1
   },
   "collisions": [
+    {
+      "url": "https://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ent-1007-big-fish-broadway-review-20131007,0,1670962.column",
+      "normalizedUrl": "https://chicagotribune.com/entertainment/theater/theaterloop/ct-ent-1007-big-fish-broadway-review-20131007,0,1670962.column",
+      "candidates": [
+        {
+          "showId": "big-fish-2013",
+          "file": "chicagotribune--chris-jones.json",
+          "publishDate": "2013-10-07",
+          "openingDate": "2013-10-06",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "chicagotribune"
+        },
+        {
+          "showId": "fish-off-broadway-2026",
+          "file": "chicagotribune--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-10-11",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "chicagotribune"
+        }
+      ],
+      "suggestedWinner": "big-fish-2013",
+      "reason": "publishDate 2013-10-07 is 1 days from big-fish-2013 opening (2013-10-06)",
+      "confidence": "high"
+    },
     {
       "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
       "normalizedUrl": "https://theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514",

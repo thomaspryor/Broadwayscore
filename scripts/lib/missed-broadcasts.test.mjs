@@ -229,6 +229,19 @@ test('owner decision 2026-09-13: West End 7d boundary — exactly 7d still pages
   assert.strictEqual(missed8[0].alertable, false, '8d is one day past the bound');
 });
 
+test('codex review 2026-09-13: westEndMaxAlertAgeDays is caller-overridable, like every other bound', () => {
+  const stuck = show({ openingDate: '2026-08-28' }); // 10d — past the default WE 7d bound
+  const missed = findMissedBroadcasts({
+    shows: [stuck],
+    sentShows: {},
+    reviews: reviewsFor('x-2026', 20),
+    now: NOW,
+    westEndMaxAlertAgeDays: 30, // e.g. incident-recovery override
+  });
+  assert.strictEqual(missed[0].ageBoundDays, 30);
+  assert.strictEqual(missed[0].alertable, true, 'an explicit override must not be silently ignored for West End');
+});
+
 test('owner decision 2026-09-13: Broadway keeps the 21d bound — no equivalent weekly digest safety net', () => {
   const bway = show({ id: 'y-2026', category: 'broadway', openingDate: '2026-08-28' }); // 10d
   const withAgg = reviewsFor('y-2026', 20).map((r, i) => (i === 0 ? { ...r, dtliThumb: 'up' } : r));

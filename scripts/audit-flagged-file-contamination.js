@@ -46,6 +46,7 @@ const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { normalizeCritic, areCriticsSimilar, isRegisteredOutlet } = require('./lib/review-normalization');
+const { foldDiacritics } = require('./lib/title-match');
 
 const args = process.argv.slice(2);
 const asJson = args.includes('--json');
@@ -105,7 +106,9 @@ function looksLikeName(candidate) {
   if (words.length < 2 || words.length > 3) return false;
   const ok = words.every((w) => {
     if (!/^[A-Z]/.test(w)) return false;
-    const bare = w.toLowerCase().replace(/[^a-z]/g, '');
+    // Fold diacritics BEFORE the ASCII strip (task #648/#781 structural
+    // guard) — a critic name like "José" must not shred to "jos".
+    const bare = foldDiacritics(w.toLowerCase()).replace(/[^a-z]/g, '');
     return bare.length > 0 && !NAME_STOPWORDS.has(bare) && !ORG_WORDS.has(bare);
   });
   if (!ok) return false;
