@@ -1,25 +1,48 @@
 {
-  "updatedAt": "2026-09-13T20:27:57.280Z",
-  "processed": 72,
-  "failed": 584,
-  "successRate": "11.0%",
+  "updatedAt": "2026-09-13T21:00:24.171Z",
+  "processed": 84,
+  "failed": 605,
+  "successRate": "12.2%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 45,
     "amp": 15,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 9,
-    "brightdata": 13,
+    "scrapingbee": 11,
+    "brightdata": 15,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-13T14:58:03.881Z",
       "event": "bb-session",
       "session": "6edf4d14",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-09-13T20:53:45.072Z",
+      "event": "bb-session",
+      "session": "e3e39b68",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-13T20:53:53.549Z",
+      "event": "bb-session",
+      "session": "d45adf9f",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-13T20:58:48.977Z",
+      "event": "bb-session",
+      "session": "9c06f88e",
+      "url": "https://www.thestage.co.uk/reviews/the-children-review-lyric-hammersmith-london"
+    },
+    {
+      "t": "2026-09-13T20:58:49.653Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
