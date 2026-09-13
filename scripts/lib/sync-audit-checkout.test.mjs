@@ -107,11 +107,31 @@ test('classifyBlock refuses when even one blocker is not union-safe', () => {
   assert.equal(d.reason, 'dirty-outside-audit');
 });
 
-test('classifyBlock refuses a diverged checkout even when the blocker is union-safe', () => {
-  // A local commit origin lacks cannot be fixed by a union, and entering the
-  // recovery stage would truncate a live ledger for a merge that then fails.
+test('classifyBlock routes a diverged checkout to commit-and-rebase when every blocker is union-safe (BRO-3212)', () => {
+  // Was: refuse forever. A local commit ahead of origin purely because of a
+  // ledger append is resolvable the same way any two branches that only
+  // differ on an append-only log resolve — commit it and rebase.
   const paths = ['data/audit/stage-latency.jsonl'];
   const d = classifyBlock({ blockingPaths: paths, aheadCount: 1, unionMergePaths: paths });
+  assert.equal(d.action, 'commit-and-rebase');
+  assert.equal(d.reason, 'diverged-union-ledger');
+});
+
+test('classifyBlock still refuses a diverged checkout when even one blocker is NOT union-safe', () => {
+  // A real content conflict on a non-ledger file needs a human — rebasing
+  // over it would be exactly the failure mode this gate exists to prevent.
+  const d = classifyBlock({
+    blockingPaths: ['data/audit/stage-latency.jsonl', 'other.txt'],
+    aheadCount: 1,
+    unionMergePaths: ['data/audit/stage-latency.jsonl'],
+  });
+  assert.equal(d.action, 'refuse');
+  assert.equal(d.reason, 'diverged');
+});
+
+test('classifyBlock still refuses a diverged checkout with no dirty blockers at all', () => {
+  // No file to blame and no union to attempt — genuine, unresolvable divergence.
+  const d = classifyBlock({ blockingPaths: [], aheadCount: 1, unionMergePaths: [] });
   assert.equal(d.action, 'refuse');
   assert.equal(d.reason, 'diverged');
 });
@@ -264,6 +284,88 @@ test('ACCEPTANCE: a dirty merge=union ledger that origin also moved no longer pa
       fs.readFileSync(path.join(clone, 'scripts.txt'), 'utf8'), 'new code from origin\n',
       'the code the job was about to run on is now fresh',
     );
+  });
+});
+
+test('ACCEPTANCE (BRO-3212): a DIVERGED checkout whose only blocker is a union-safe ledger no longer refuses forever', () => {
+  withTmp((root) => {
+    const { origin, clone } = setupPair(root, 'div');
+    // The checkout is genuinely diverged: a local commit origin does not
+    // have, unrelated to the ledger (mirrors an interrupted prior recovery,
+    // or any local-only commit made between launchd ticks).
+    fs.writeFileSync(path.join(clone, 'local-note.txt'), 'local-only commit\n');
+    git(clone, 'add', '-A');
+    git(clone, 'commit', '-q', '-m', 'local: unrelated commit');
+
+    advanceOrigin(root, origin, 'via-div', (via) => {
+      fs.writeFileSync(path.join(via, LEDGER), 'a\nb\nc\norigin-only\n');
+    });
+    // The ONLY thing dirty (uncommitted) is the union ledger.
+    fs.appendFileSync(path.join(clone, LEDGER), 'local-only\n');
+
+    const { code, out } = trySync(clone, 'div');
+    assert.equal(code, 0, `expected recovery via commit+rebase, got ${code}:\n${out}`);
+    assert.equal(
+      fs.existsSync(path.join(clone, 'data/audit/sync-refused-div.json')), false,
+      'no sync-refused snapshot may be written for a run that recovered',
+    );
+    assert.equal(
+      git(clone, 'merge-base', 'origin/main', 'HEAD').trim(),
+      git(clone, 'rev-parse', 'origin/main').trim(),
+      'origin/main must be an ancestor of HEAD — the rebase actually landed',
+    );
+    assert.equal(
+      git(clone, 'status', '--porcelain').trim(), '',
+      'the ledger append was committed, not left dirty',
+    );
+    const after = lines(path.join(clone, LEDGER));
+    assert.equal(count(after, 'local-only'), 1, "the local job's append survived, exactly once");
+    assert.equal(count(after, 'origin-only'), 1, "origin's committed append survived, exactly once");
+    assert.equal(
+      fs.readFileSync(path.join(clone, 'local-note.txt'), 'utf8'), 'local-only commit\n',
+      "the unrelated local commit's content survived the rebase",
+    );
+  });
+});
+
+test('a rebase left mid-flight by an interrupted run is self-healed, not stuck forever (BRO-3212 review finding)', () => {
+  withTmp((root) => {
+    // Simulate a run killed between "git commit" succeeding and "git rebase
+    // --abort" completing: force a REAL conflicting rebase on a non-ledger
+    // file (git rebase, not the script) and leave it unresolved — the same
+    // git state a SIGKILL mid-rebase would leave behind.
+    const { origin, clone } = setupPair(root, 'stuck');
+    fs.writeFileSync(path.join(clone, 'other.txt'), 'local conflicting edit\n');
+    git(clone, 'add', '-A');
+    git(clone, 'commit', '-q', '-m', 'local: conflicting edit');
+    advanceOrigin(root, origin, 'via-stuck', (via) => {
+      fs.writeFileSync(path.join(via, 'other.txt'), 'origin conflicting edit\n');
+    });
+    git(clone, 'fetch', 'origin', 'main');
+    let rebaseThrew = false;
+    try {
+      git(clone, 'rebase', 'origin/main');
+    } catch {
+      rebaseThrew = true; // expected: rebase stopped with a real conflict, .git/rebase-merge left on disk
+    }
+    assert.ok(rebaseThrew, 'precondition: the rebase must actually conflict and stop mid-flight');
+    const rebaseMergeDir = path.join(clone, '.git', 'rebase-merge');
+    assert.equal(fs.existsSync(rebaseMergeDir), true, 'precondition: rebase really is stuck mid-flight');
+
+    const { code, out } = trySync(clone, 'stuck');
+    assert.match(out, /rebase left mid-flight/, 'the self-heal must announce what it is doing');
+    assert.equal(fs.existsSync(rebaseMergeDir), false, 'the stuck rebase state must be cleared');
+    // The underlying divergence on a non-union file is still genuinely
+    // unresolvable by this gate — it must refuse cleanly, not crash or loop.
+    assert.equal(code, 1, `expected a clean refusal (real conflict), got ${code}:\n${out}`);
+    const dirtyAfter = git(clone, 'status', '--porcelain')
+      .split('\n').filter((l) => l && !l.includes('sync-refused-stuck.json')).join('\n');
+    assert.equal(
+      dirtyAfter, '',
+      'self-heal must leave a clean working tree (the local commit survives, nothing left dirty besides the refusal snapshot itself, which is real-repo-gitignored)',
+    );
+    const snap = JSON.parse(fs.readFileSync(path.join(clone, 'data/audit/sync-refused-stuck.json'), 'utf8'));
+    assert.equal(snap.reason, 'diverged');
   });
 });
 
@@ -576,4 +678,14 @@ test("the recovery label 'dirty-union-ledger' can never reach a refusal snapshot
       'dirty-union-ledger',
     );
   }
+});
+
+test("the recovery label 'diverged-union-ledger' can never reach a refusal snapshot either", () => {
+  // Same contract, for the diverged recovery path added by BRO-3212: the
+  // shell forces REASON=dirty-unresolved if commit-and-rebase fails, so this
+  // label is a RECOVERY marker only, never something the digest renders.
+  const paths = ['data/audit/stage-latency.jsonl'];
+  const d = classifyBlock({ blockingPaths: paths, aheadCount: 1, unionMergePaths: paths });
+  assert.equal(d.reason, 'diverged-union-ledger');
+  assert.equal(d.action, 'commit-and-rebase');
 });
