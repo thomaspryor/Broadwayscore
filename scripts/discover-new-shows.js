@@ -45,6 +45,7 @@ const { classifyTodayTixStartDate, unconfirmedStartFlags, productionIdYear } = r
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 const { getTheaterAddress } = require('./lib/venue-addresses');
+const { withMarketSuffix } = require('./lib/market-slug');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
@@ -2223,15 +2224,14 @@ async function discoverShows() {
       || String(new Date().getFullYear());
     const baseSlug = slugify(show.title);
 
-    // Market-aware slug and ID generation
-    const marketSlug = show.category === 'west-end' ? `${baseSlug}-west-end`
-               : show.category === 'off-west-end' ? `${baseSlug}-off-west-end`
-               : show.category === 'off-broadway' ? `${baseSlug}-off-broadway`
-               : baseSlug;
-    const showId = show.category === 'west-end' ? `${baseSlug}-west-end-${idYear}`
-                 : show.category === 'off-west-end' ? `${baseSlug}-off-west-end-${idYear}`
-                 : show.category === 'off-broadway' ? `${baseSlug}-off-broadway-${idYear}`
-                 : `${baseSlug}-${idYear}`;
+    // Market-aware slug and ID generation. withMarketSuffix() strips any
+    // pre-existing market suffix before re-appending — idempotent, so a
+    // title/slug that already carries the suffix (e.g. round-tripped through
+    // another discovery path) doesn't get it appended a second time, which
+    // used to produce IDs like `beetlejuice-the-musical-west-end-west-end-2026`
+    // (BRO-3237).
+    const marketSlug = withMarketSuffix(baseSlug, show.category);
+    const showId = `${marketSlug}-${idYear}`;
 
     // Guard: skip if generated ID collides with existing DB or batch.
     if (existingIds.has(showId)) {
