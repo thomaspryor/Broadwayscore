@@ -99,6 +99,139 @@ on:
       # scripts/lib/ tests, and audit-test-yml-manifest-paths.js checks only
       # the test's own path, so neither audit catches this one.)
       - 'scripts/check-cloud-secrets.js'
+      # tests/unit/audit-dependencies.test.mjs requires ../../scripts/audit-
+      # dependencies.js — the same top-level-scripts/ gap shape as
+      # check-cloud-secrets.js directly above, and self-referential in the same
+      # way. Read the trigger carefully before assuming this entry does more
+      # than it does: the `dependency-audit` JOB is schedule/workflow_dispatch
+      # only (see its `if:` below), so this path does NOT make the npm-audit
+      # gate run on push and is not meant to. What it buys is the unit test,
+      # whose `the real shipped ALLOWLIST satisfies its own rule` case asserts
+      # every entry in that file's ALLOWLIST carries an `exposure` assessment
+      # of >= MIN_EXPOSURE_CHARS. That ALLOWLIST is where a critical CVE gets
+      # EXEMPTED from failing CI, so a solo edit adding a blank exemption is
+      # precisely the push that must not run zero CI (BRO-3202 added two
+      # unpatched Next.js RCEs to it). tests/** covers the test file; only this
+      # entry covers the source, and editing the source alone is the dangerous
+      # direction.
+      - 'scripts/audit-dependencies.js'
+      # --- BRO-3202: the 27 sources below were found by MEASURING the gap, not
+      # by hand-listing it. Each is a top-level scripts/ file that a
+      # manifest-registered test under tests/ require()s, but that had no
+      # push-path entry — so editing the SOURCE alone triggered zero CI while
+      # the test that would have caught the regression sat there un-run. The
+      # test file itself was always covered by the 'tests/**' glob above; the
+      # source is the half that was missing, and the source is the half that
+      # changes behaviour.
+      #
+      # Five of these had already been hand-listed one at a time as they were
+      # tripped over (check-orphan-commits.js, check-missed-broadcasts.js,
+      # freeze-ledgers.js, check-cloud-secrets.js, audit-dependencies.js), each
+      # with a comment noting no audit catches the shape. Extending
+      # scripts/audit-toplevel-script-test-yml-coverage.js to walk tests/**
+      # require literals turned that into a machine-checked list, and its
+      # colocated test now asserts the list stays empty — so a new test added
+      # under tests/unit/ without a path entry for its source fails CI instead
+      # of silently joining this backlog.
+      #
+      # Sorted by source path; the test each one protects is named alongside.
+      # tests/unit/assert-broadcast-step-order.test.mjs
+      - 'scripts/assert-broadcast-step-order.js'
+      # tests/unit/audit-ensemble-rejections.test.mjs
+      - 'scripts/audit-bro79-ensemble-rejections.js'
+      # tests/unit/url-path-matching.test.mjs
+      - 'scripts/audit-url-validation.js'
+      # tests/unit/backfill-html-override-rename.test.mjs
+      - 'scripts/backfill-html-override-rename.js'
+      # tests/unit/backfill-lbo-help-safety.test.mjs
+      - 'scripts/backfill-lbo-individual-stars.js'
+      # tests/unit/backfill-unknown-critics-locked.test.mjs
+      - 'scripts/backfill-unknown-critics.js'
+      # tests/unit/build-ob-venues.test.mjs
+      - 'scripts/build-ob-venues.js'
+      # tests/unit/detect-venue-transfers.test.mjs
+      - 'scripts/detect-venue-transfers.js'
+      # tests/unit/promote-historical-auto.test.mjs
+      - 'scripts/enrich-ob-dates-from-showscore.js'
+      # tests/unit/promote-historical-auto.test.mjs
+      - 'scripts/enrich-west-end-shows.js'
+      # tests/unit/exclusion-rule-consumption.test.mjs
+      - 'scripts/exclusion-rule-census.js'
+      # tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
+      - 'scripts/extract-stagedoor-reviews.js'
+      # tests/unit/initialize-commercial-stub.test.mjs
+      - 'scripts/initialize-commercial-stub.js'
+      # tests/unit/rss-poller-state.test.mjs
+      - 'scripts/poll-trade-press-rss.js'
+      # tests/unit/promote-historical-auto.test.mjs
+      - 'scripts/promote-historical-we.js'
+      # tests/unit/promote-historical-auto.test.mjs
+      - 'scripts/promote-ob-historical.js'
+      # tests/unit/landed-but-open-merge-direction.test.mjs
+      - 'scripts/reconcile-landed-but-open.js'
+      # tests/unit/recoupment-reconcile-gate.test.mjs
+      - 'scripts/reconcile-recoupment-claims.js'
+      # tests/unit/push-retry-failure-ledger.test.mjs
+      - 'scripts/record-push-retry-failure.js'
+      # tests/unit/pending-promote-validation.test.mjs
+      - 'scripts/replay-pending-bylines.js'
+      # tests/unit/cast-changes-validate-event.test.mjs
+      - 'scripts/scrape-cast-changes.js'
+      # tests/unit/mezzanine-override-collision-auditor.test.mjs
+      - 'scripts/scrape-mezzanine-audience.js'
+      # tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
+      - 'scripts/scrape-nysr-reviews.js'
+      # tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
+      - 'scripts/scrape-theatre-reviews.js'
+      # tests/unit/audience-full-snapshot.test.mjs
+      - 'scripts/snapshot-audience-full.js'
+      # --- BRO-3202, third shape: scripts this very workflow EXECUTES (a
+      # `run: node scripts/…` step in a job that runs on push) but that had no
+      # push-path entry, so editing one of them alone triggered zero CI — the
+      # job that runs it never fired. Distinct from the shape above: there the
+      # link is a test's require(), here it is the workflow's own run: line.
+      #
+      # The worst of these was test-temporal-override-regression.js, which
+      # CLAUDE.md §12 names as a MANDATORY gate for every scoring-logic edit.
+      # Editing that gate itself ran nothing.
+      #
+      # NOT yet machine-checked — the detector needs to be job-aware (a
+      # schedule-only job like dependency-audit gains nothing from a push-path
+      # entry), which is why this list is hand-added here and the audit for it
+      # is tracked separately. Line numbers are where the run: step sat when
+      # this list was measured.
+      # test.yml:3797
+      - 'scripts/audit-nft-excluded-runtime-reads.js'
+      # test.yml:3284
+      - 'scripts/audit-playwright-evaluate-click.js'
+      # test.yml:3268
+      - 'scripts/audit-tests-vs-derived-data.js'
+      # test.yml:5172
+      - 'scripts/audit-text-quality.js'
+      # test.yml:5206
+      - 'scripts/audit-verifier-wiring.js'
+      # test.yml:4627
+      - 'scripts/auto-close-expired-shows.js'
+      # test.yml:3756
+      - 'scripts/build-actor-slugs-manifest.js'
+      # test.yml:3757
+      - 'scripts/build-cast-manifest.js'
+      # test.yml:3701
+      - 'scripts/check-brand-tokens-sync.js'
+      # test.yml:4399
+      - 'scripts/check-image-aspect.js'
+      # test.yml:3695
+      - 'scripts/lint-design-tokens.js'
+      # test.yml:4369
+      - 'scripts/test-email-broadcast.js'
+      # test.yml:3981
+      - 'scripts/test-temporal-override-regression.js'
+      # test.yml:5154
+      - 'scripts/validate-archive-productions.js'
+      # tests/unit/is-test-email.test.mjs
+      - 'scripts/sync-followers.js'
+      # tests/unit/grosses-post-resolver.test.mjs
+      - 'scripts/update-commercial-data.js'
       # BRO-172: fix-platform-ticket-links.js's Ticketmaster SERP re-verification
       # had zero CI coverage (no test.yml path entry at all) despite a region-
       # mismatch bug in its matcher regressing shows.json's a-christmas-carol-

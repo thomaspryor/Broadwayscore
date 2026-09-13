@@ -49,9 +49,31 @@ const WORKFLOW = path.join(ROOT, '.github', 'workflows', 'test.yml');
 // re-exported below: this module's public surface is unchanged.
 const { readPushPaths, isCovered } = require('./lib/test-yml-push-paths.js');
 
-const REQUIRE_RE = /require\(['"](\.[^'"]+)['"]\)/g;
+// Whitespace-tolerant on purpose. The original `require\(['"]...` form missed
+// the multi-line shape prettier produces for a long destructure, e.g.
+// tests/unit/assert-broadcast-step-order.test.mjs:25:
+//     const { a, b, c } = require(
+//       '../../scripts/assert-broadcast-step-order.js',
+//     );
+// which silently dropped that dependency from both audits (BRO-3202).
+const REQUIRE_RE = /require\s*\(\s*['"](\.[^'"]+)['"]/g;
 const IMPORT_RE = /(?:from|import)\s*\(?\s*['"](\.[^'"]+)['"]/g;
 const RESOLVE_CANDIDATES = ['', '.js', '.mjs', '.cjs', '.json', '/index.js'];
+
+/** Pure: every relative require()/import specifier in a source file, as a Set.
+ * Single definition shared by this audit and
+ * audit-toplevel-script-test-yml-coverage.js — two copies of these regexes is
+ * exactly how the multi-line blind spot above would come back. Returns a fresh
+ * Set per call, so the /g regexes' lastIndex is never observed by a caller. */
+function relativeSpecifiers(src) {
+  const deps = new Set();
+  let m;
+  REQUIRE_RE.lastIndex = 0;
+  IMPORT_RE.lastIndex = 0;
+  while ((m = REQUIRE_RE.exec(src))) deps.add(m[1]);
+  while ((m = IMPORT_RE.exec(src))) deps.add(m[1]);
+  return deps;
+}
 
 /** Resolve a relative require()/import specifier to an on-disk path, trying
  * the extensions Node's own resolver would (bare, .js, .mjs, .cjs, .json,
@@ -74,12 +96,8 @@ function findGaps() {
   for (const testFile of testFiles) {
     const testPath = path.join(LIB_DIR, testFile);
     const src = fs.readFileSync(testPath, 'utf8');
-    const deps = new Set();
-    let m;
-    while ((m = REQUIRE_RE.exec(src))) deps.add(m[1]);
-    while ((m = IMPORT_RE.exec(src))) deps.add(m[1]);
 
-    for (const rel of deps) {
+    for (const rel of relativeSpecifiers(src)) {
       const abs = resolveDepPath(LIB_DIR, rel);
       if (!abs) continue; // not a local file on disk (e.g. a package import, or unresolvable)
       if (abs.startsWith(LIB_DIR + path.sep)) continue; // covered by scripts/lib/**
@@ -110,6 +128,6 @@ function main() {
   process.exit(0); // advisory — never fails CI (see file header)
 }
 
-module.exports = { readPushPaths, isCovered, resolveDepPath, findGaps };
+module.exports = { readPushPaths, isCovered, resolveDepPath, relativeSpecifiers, findGaps };
 
 if (require.main === module) main();

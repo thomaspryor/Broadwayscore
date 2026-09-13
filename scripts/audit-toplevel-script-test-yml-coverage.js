@@ -38,7 +38,7 @@
 const fs = require('fs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
-const { readPushPaths, isCovered } = require('./audit-test-yml-lib-deps.js');
+const { readPushPaths, isCovered, resolveDepPath, relativeSpecifiers } = require('./audit-test-yml-lib-deps.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const WORKFLOW = path.join(ROOT, '.github', 'workflows', 'test.yml');
@@ -52,6 +52,27 @@ const MANIFESTS = [
 // (scripts/lib/** glob; tests/** glob covers scripts/tests/ via its own path).
 const TOPLEVEL_TEST_RE = /^scripts\/[^/]+\.test\.(mjs|ts)$/;
 
+// tests/unit/*.test.(mjs|ts) — the SECOND shape (BRO-3202). These test files
+// are themselves always covered, because test.yml push-lists 'tests/**'. The
+// gap is the other direction: the top-level scripts/ SOURCE the test requires
+// is usually not path-listed, so editing the source ALONE triggers zero CI
+// while the test that would have caught it sits there un-run. That is the
+// dangerous direction — the source is what changes behaviour.
+//
+// This was hand-listed four times before it was measured (check-orphan-
+// commits.js, check-missed-broadcasts.js, freeze-ledgers.js, check-cloud-
+// secrets.js, then audit-dependencies.js as #5), and each entry's comment
+// notes that no audit catches the shape. Measuring it found 28 uncovered
+// sources, so hand-listing was never going to converge. Neither sibling audit
+// covers this: audit-test-yml-lib-deps.js walks only scripts/lib/*.test.mjs,
+// and the TOPLEVEL_TEST_RE pass above matches only tests that live under
+// scripts/ themselves.
+const TESTS_DIR_TEST_RE = /^tests\/.+\.test\.(mjs|ts)$/;
+
+// A dep worth reporting: a top-level scripts/ source file (scripts/lib/** is
+// already globbed; anything deeper has its own coverage story).
+const TOPLEVEL_SOURCE_RE = /^scripts\/[^/]+\.(js|mjs|cjs|ts)$/;
+
 /** Pure: filter raw manifest lines down to top-level scripts/*.test.(mjs|ts)
  * entries (excludes scripts/lib/, scripts/tests/, tests/, and blank/comment
  * lines). Exported separately from the disk read so it's unit-testable. */
@@ -59,14 +80,44 @@ function filterToplevelTestEntries(lines) {
   return lines.map((l) => l.trim()).filter((t) => t && TOPLEVEL_TEST_RE.test(t));
 }
 
-function readManifestEntries() {
-  const entries = [];
+/** Pure: filter raw manifest lines down to tests/**\/*.test.(mjs|ts) entries.
+ * Counterpart to filterToplevelTestEntries for the second gap shape. */
+function filterTestsDirEntries(lines) {
+  return lines.map((l) => l.trim()).filter((t) => t && TESTS_DIR_TEST_RE.test(t));
+}
+
+function readManifestLines() {
+  const lines = [];
   for (const manifestPath of MANIFESTS) {
     if (!fs.existsSync(manifestPath)) continue;
-    const lines = fs.readFileSync(manifestPath, 'utf8').split('\n');
-    entries.push(...filterToplevelTestEntries(lines));
+    lines.push(...fs.readFileSync(manifestPath, 'utf8').split('\n'));
   }
-  return entries;
+  return lines;
+}
+
+function readManifestEntries() {
+  return filterToplevelTestEntries(readManifestLines());
+}
+
+function readTestsDirEntries() {
+  return filterTestsDirEntries(readManifestLines());
+}
+
+/** Pure: given a test file's source text and the directory it lives in, return
+ * the repo-relative top-level scripts/ files it require()s or imports. Reuses
+ * relativeSpecifiers + resolveDepPath from audit-test-yml-lib-deps.js so
+ * specifier parsing and extension resolution stay identical across the two
+ * audits (a second copy would drift — and the first copy of that regex had a
+ * multi-line blind spot, see the comment on REQUIRE_RE there). */
+function toplevelScriptDeps(src, fromDir) {
+  const out = new Set();
+  for (const rel of relativeSpecifiers(src)) {
+    const abs = resolveDepPath(fromDir, rel);
+    if (!abs) continue; // package import, or nothing on disk
+    const repoRel = path.relative(ROOT, abs);
+    if (TOPLEVEL_SOURCE_RE.test(repoRel)) out.add(repoRel);
+  }
+  return Array.from(out).sort();
 }
 
 function siblingSourcePath(testRelPath) {
@@ -94,9 +145,33 @@ function findGaps() {
         testCovered,
         source: sourceRelPath,
         sourceCovered,
+        via: 'sibling',
       });
     }
   }
+
+  // Second shape (BRO-3202): manifest-registered tests under tests/ whose
+  // required top-level scripts/ source has no push-path entry. The test file
+  // is covered by the 'tests/**' glob; the source is the uncovered half.
+  const seen = new Set();
+  for (const testRelPath of readTestsDirEntries()) {
+    const abs = path.join(ROOT, testRelPath);
+    if (!fs.existsSync(abs)) continue; // stale manifest row — not this audit's job
+    const src = fs.readFileSync(abs, 'utf8');
+    for (const sourceRelPath of toplevelScriptDeps(src, path.dirname(abs))) {
+      if (isCovered(sourceRelPath, pathEntries)) continue;
+      if (seen.has(sourceRelPath)) continue; // report each source once
+      seen.add(sourceRelPath);
+      gaps.push({
+        test: testRelPath,
+        testCovered: true, // 'tests/**' glob
+        source: sourceRelPath,
+        sourceCovered: false,
+        via: 'require',
+      });
+    }
+  }
+
   return gaps;
 }
 
@@ -127,6 +202,9 @@ function main() {
   process.exit(0); // advisory — never fails CI (see file header)
 }
 
-module.exports = { readManifestEntries, filterToplevelTestEntries, siblingSourcePath, findGaps };
+module.exports = {
+  readManifestEntries, filterToplevelTestEntries, siblingSourcePath, findGaps,
+  readTestsDirEntries, filterTestsDirEntries, toplevelScriptDeps,
+};
 
 if (require.main === module) main();
