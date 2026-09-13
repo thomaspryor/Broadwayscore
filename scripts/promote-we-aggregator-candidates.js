@@ -42,6 +42,7 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
 const { WEST_END_VENUES, normalizeVenueName, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { foldDiacritics } = require('./lib/title-match');
+const { withMarketSuffix } = require('./lib/market-slug');
 const {
   fetchWetRecentRoundups,
   fetchWetPostVenue,
@@ -165,8 +166,13 @@ function buildWestEndAggregatorShowEntry(candidate) {
   const year = dm ? Number(dm[1]) : new Date().getFullYear();
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
   const ageDays = openingDate ? (Date.now() - new Date(openingDate).getTime()) / DAY_MS : 0;
+  // withMarketSuffix() strips any pre-existing market suffix before re-appending —
+  // idempotent. candidate.slug isn't guaranteed fresh from the raw title (it may
+  // have round-tripped through another WE discovery path already carrying the
+  // suffix); without this guard it doubles, producing IDs like
+  // `beetlejuice-the-musical-west-end-west-end-2026` (BRO-3237).
   const slugBase = (candidate.slug || foldDiacritics(candidate.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
-  const slug = `${slugBase}-west-end`;
+  const slug = withMarketSuffix(slugBase, 'west-end');
   const id = `${slug}-${year}`;
   return {
     id,
