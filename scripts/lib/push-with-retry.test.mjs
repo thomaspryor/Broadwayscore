@@ -146,3 +146,17 @@ test('redactCurlTrace strips query-string tokens', () => {
   const redacted = redactCurlTrace(line);
   assert.ok(!redacted.includes('abcdef123456'));
 });
+
+test('redactCurlTrace strips ALL-CAPS header names too (follow-up adversarial review: the first cut only matched Title-Case/lower-case)', () => {
+  const line = '=> Send header: AUTHORIZATION: Bearer SECRETVALUE12345\n=> Send header: COOKIE: session=SECRETVALUE12345';
+  const redacted = redactCurlTrace(line);
+  assert.ok(!redacted.includes('SECRETVALUE12345'), `credential must not survive: ${redacted}`);
+});
+
+test('redactCurlTrace strips compound query-string param names (api_key, client_secret, oauth_token — follow-up adversarial review: the first cut only matched an exact "key"/"secret"/"token" immediately after ? or &)', () => {
+  const line = 'url https://host/x?api_key=SECRETVALUE1&client_secret=SECRETVALUE2&oauth_token=SECRETVALUE3';
+  const redacted = redactCurlTrace(line);
+  assert.ok(!redacted.includes('SECRETVALUE1'), `api_key must be redacted: ${redacted}`);
+  assert.ok(!redacted.includes('SECRETVALUE2'), `client_secret must be redacted: ${redacted}`);
+  assert.ok(!redacted.includes('SECRETVALUE3'), `oauth_token must be redacted: ${redacted}`);
+});

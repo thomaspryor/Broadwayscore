@@ -134,7 +134,7 @@ Check for:
    ```
    Pick RECHECK-AFTER as the earliest date the claim becomes checkable (e.g. "streak of N days" → N days out). The command MUST be one of the safe forms `scripts/lib/verify-gate.js` already accepts (`node --test <path>.test.mjs`, `npx tsc --noEmit`, `npx next lint`, `test -f <path>`) — write a real colocated test that asserts the live condition if no existing command covers it (see `scripts/verify-provider-spend-streak.test.mjs` for the pattern: a test that reads live repo data, not a fixture). `scripts/autonomous-acceptance-recheck.js` (hosted daily in `data-health-check.yml`) picks up Paused cards carrying this stamp once the date passes, re-runs the command against fresh `origin/main`, and reports pass/fail in shadow mode — it never auto-reopens or auto-completes the card; a passing recheck is your signal to come back and flip it to Done yourself (or the owner's, if it's their card).
 7.5. **If Status is "Done" and this session claimed a shared-task-list task** (via `TaskUpdate` at session start, per the startup seed prompt): mark that task `completed` via `TaskUpdate` now, in THIS still-live turn — not later. This is what lets the workspace-mark-done Stop hook (`~/.claude/hooks/workspace-mark-done.sh`) ✅-mark the workspace automatically on this session's own next Stop event; the hook only reads the local task-list mirror, and nothing else updates it on a normal timescale (Notion→local sync is on-demand, not cron'd). Skip if this session never claimed a task (ad hoc / non-dispatched sessions).
-8. **Create new cards** for any discovered work items (Status="Not started", appropriate Priority and Tags). Every item in "Discovered work" MUST have a card — don't just list them and forget.
+8. **Create cards only for discovered work this session cannot finish** (Status="Not started", appropriate Priority and Tags). Apply the same three tests `/what-else` Phase 5 uses, in order: (1) can you just fix it now? then fix it — that is the default; (2) is an open issue or the roadmap already covering it? then say so and file nothing; (3) only if neither holds, file it, and the notes must name **why it needs its own session**. Batch related findings into ONE issue. Rationale, measured 2026-09-08: the board held 1,107 open at 3.1 filed per 1 closed, and 89% of a week's 361 new issues were session-authored rather than automated — the session-close ritual was manufacturing the backlog it reports. Report what you fixed AND what you deliberately did not file, so restraint reads as a decision rather than an omission.
    **CRITICAL — every new card must be a self-contained handoff.** Use the Notes field with this template:
    ```
    ## Problem
@@ -326,12 +326,14 @@ Only say "Clean exit, no loose ends" when you are ALSO not recommending any next
 
 ### Phase 7: Workspace self-marking (Cmux sessions only) — mark, NEVER close
 
-**Skip unless this session runs inside a Cmux workspace** — check with `/Applications/cmux.app/Contents/Resources/bin/cmux identify` (succeeds and returns your `workspace_ref`). Finished workspaces must be visually distinct so pruning is at-a-glance (owner rule, 2026-07-12).
+**Skip unless this session runs inside a Cmux workspace of its own.** The test is `[ -n "$CMUX_WORKSPACE_ID" ]` — the same signal cmux itself defaults on. A headless job (bsc-runner / `claude -p`) has no CMUX_* env: `cmux identify` still SUCCEEDS there but returns `"caller": null` (with a `"focused"` block that is the OWNER'S cursor, not your tab). **`caller: null` means you have NO workspace — skip this phase entirely. Never pick a target from `focused`, `[selected]`, or a `list-workspaces` listing.** (BRO-3218, 2026-09-08: a headless job did exactly that and ✅-renamed the owner's focused tab, which was a different live mid-turn session; the `cmux-destructive-guard.sh` hook now blocks any rename/set-color that is not your own tab.) Finished workspaces must be visually distinct so pruning is at-a-glance (owner rule, 2026-07-12).
 
 After delivering the final report:
 ```bash
 CMUX=/Applications/cmux.app/Contents/Resources/bin/cmux
-WS=$($CMUX identify | python3 -c "import sys,json;print(json.load(sys.stdin)['caller']['workspace_ref'])")
+[ -n "${CMUX_WORKSPACE_ID:-}" ] || { echo "no cmux tab of my own (headless) — skipping Phase 7"; exit 0; }
+WS=$($CMUX identify | jq -r '.caller.workspace_ref // empty')
+[ -n "$WS" ] || { echo "cmux identify has no caller — skipping Phase 7"; exit 0; }
 $CMUX workspace-action --action rename --workspace "$WS" --title "✅ <short session title>"
 $CMUX workspace-action --action set-color --workspace "$WS" --color Green
 ```

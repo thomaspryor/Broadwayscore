@@ -8,11 +8,11 @@
 - [Google Search Console API](feedback_gsc_api_auth.md) — ADC + webmasters scope + X-Goog-User-Project
 
 ## 👤 User profile & session discipline
-- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — auto-prune (owner 8/2); unmarked never close
+- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — unmarked never close; tab close kills claude+nohup children, only detached:true survives ([[feedback_cmux_tab_close_kills_children.md]])
 - [Terse output default](feedback_terse_output_default.md) — no recap, keep proof ([[feedback_no_human_day_estimates.md]])
 - [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email
-- [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
-- [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — design asks: confirm venue first; 2 rejections = stop & ask; verify before pointing owner
+- [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff" ([[feedback_user_device_context.md]])
+- [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — confirm venue first; 2 rejections = stop & ask
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/approvals myself, report outcomes not process; bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
 - [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs; flag-gated features verify on demo URL
 - [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — 5-20 file probe first ([[feedback_save_research_findings.md]])
