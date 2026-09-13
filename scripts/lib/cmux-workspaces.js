@@ -63,9 +63,21 @@ const warnedMessages = new Set();
 
 // logFn must never be able to convert a SUCCESSFUL cmux call into a failure:
 // the warning is diagnostic, the command already ran.
-function warnOnce(logFn, message) {
-  if (warnedMessages.has(message)) return;
-  warnedMessages.add(message);
+//
+// `key` defaults to `message` for this file's original 2-arg callers (the
+// auth-retry warnings below, whose message text IS a stable, enum-like
+// identity). A caller whose message embeds data that varies call-to-call
+// passes an explicit, stable `key` instead — listWorkspaces()'s parse-anomaly
+// warning is the case that needed this (BRO-2995, codex ship-check finding):
+// its message interpolates raw/parsed line counts that differ on every call
+// as the real open-workspace count changes, so deduping on the literal
+// message would never actually fire (cmux-launch.js's pollUntil re-lists
+// every few seconds during launch verification — a persistent format change
+// would otherwise flood the log for the duration of every launch attempt
+// fleet-wide instead of warning once per process).
+function warnOnce(logFn, message, key = message) {
+  if (warnedMessages.has(key)) return;
+  warnedMessages.add(key);
   try { logFn(message); } catch { /* diagnostics must not break the caller */ }
 }
 
@@ -218,10 +230,63 @@ function parseWorkspacesJson(jsonText) {
   })).filter(w => w.ref);
 }
 
+// Distinguishes "cmux printed zero workspace lines" (a real empty-cmux
+// state) from "cmux printed N non-blank lines but none of them matched the
+// parser" (truncated output, a crash mid-write, or a future cmux release
+// rewording the list-workspaces line format) — both currently collapse to
+// the same `[]` from parseWorkspaces, which is the exact ambiguity BRO-2995
+// exists to remove. Pure logic, exported for tests (this file's convention).
+//
+// Deliberately does NOT throw and does not change parseWorkspaces()'s own
+// return value — see listWorkspaces() below for why. Callers that want the
+// raw signal (rather than a swallowed [] with a log line) call this
+// directly instead of listWorkspaces().
+function parseWorkspacesWithFailures(text) {
+  const rawLineCount = String(text).split('\n').filter(l => l.trim() !== '').length;
+  const workspaces = parseWorkspaces(text);
+  return { workspaces, rawLineCount, parseFailures: Math.max(0, rawLineCount - workspaces.length) };
+}
+
 // ── socket wrappers ─────────────────────────────────────────────────────────
 
-function listWorkspaces() {
-  return parseWorkspaces(run(['list-workspaces']));
+// `runFn` is a test-only seam (same idiom as run()'s own execFn injection)
+// so the anomaly-logging wiring below is covered end-to-end, not just via
+// parseWorkspacesWithFailures in isolation.
+function listWorkspaces({ runFn = run } = {}) {
+  const { workspaces, rawLineCount, parseFailures } = parseWorkspacesWithFailures(runFn(['list-workspaces']));
+  if (parseFailures > 0) {
+    // NEVER throw here (BRO-2995 plan-review finding, second-opinion agent):
+    // cmux-launch.js's launchCmuxSessionInner (the fleet's actual dispatch
+    // path) calls listWorkspaces() at lines ~1215/1240 with no local
+    // try/catch — it sits inside launchCmuxSession's try/**finally**, not
+    // try/catch, so a throw here would propagate uncaught and abort a live
+    // launch attempt. That module's own terminal-capacity probe a few
+    // hundred lines above documents the same rule for a different signal:
+    // "a capacity reading can never block a dispatch." An observability gap
+    // must not become an availability outage to fix itself. So this stays a
+    // same-shape, never-throwing wrapper — the fix is making the anomaly
+    // LOUD and INSPECTABLE (parseWorkspacesWithFailures is exported for any
+    // caller — e.g. a future health check — that wants to tell "confirmed
+    // empty" from "parse failure" for itself instead of trusting a bare []).
+    const totalFailure = workspaces.length === 0;
+    const message = totalFailure
+      ? `[cmux-workspaces] listWorkspaces(): cmux printed ${rawLineCount} non-blank line(s) but none parsed as a workspace — this looks like a PARSE FAILURE (truncated output, a reworded cmux format, or a crash mid-write), not a genuinely empty workspace list (BRO-2995). Returning [] anyway; callers that already treat [] as fail-safe uncertainty are unaffected. Call parseWorkspacesWithFailures() directly for the raw counts.`
+      : `[cmux-workspaces] listWorkspaces(): ${parseFailures} of ${rawLineCount} raw line(s) from cmux did not parse as a workspace — returning the ${workspaces.length} that did; the open-workspace list may be incomplete (BRO-2995).`;
+    // warnOnce, not a bare console.error (codex ship-check findings, both
+    // fixed by reusing this file's own existing pattern):
+    //  (1) wraps the log call in try/catch — a replaced/broken console.error
+    //      must not itself become a NEW throw on this uncaught-listWorkspaces()
+    //      dispatch path;
+    //  (2) dedupes per process by ANOMALY CATEGORY (the key below), not the
+    //      literal message — cmux-launch.js's pollUntil re-lists every few
+    //      seconds during launch verification, and the interpolated counts
+    //      differ call to call as real workspaces open/close, so deduping on
+    //      the exact message would never actually fire and a persistent
+    //      format change would flood the log for the duration of every
+    //      launch attempt fleet-wide.
+    warnOnce(console.error, message, totalFailure ? 'cmux-workspaces:parse-failure-total' : 'cmux-workspaces:parse-failure-partial');
+  }
+  return workspaces;
 }
 
 function listWorkspacesWithCwd() {
@@ -530,7 +595,7 @@ function pruneDone(opts = {}) {
 
 module.exports = {
   CMUX, cmuxAvailable, run, _resetRunWarnings,
-  parseWorkspaces, parseWorkspacesJson, isDoneTitle, hasRunningClaude, hasLiveClaude,
+  parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
   listWorkspaces, listWorkspacesWithCwd, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
   terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing, checkLiveness, computeClaudeAlive, pruneDone,
