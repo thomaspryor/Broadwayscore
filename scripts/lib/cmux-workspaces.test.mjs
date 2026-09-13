@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseWorkspaces, parseWorkspacesJson, isDoneTitle, hasRunningClaude, hasLiveClaude, hasClaudeChrome, isNotFoundError } = require('./cmux-workspaces.js');
+const { parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, listWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, hasClaudeChrome, isNotFoundError } = require('./cmux-workspaces.js');
 
 // Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
 const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
@@ -78,6 +78,100 @@ test('parseWorkspaces extracts ref, title, selected from real output', () => {
 
 test('parseWorkspaces ignores non-workspace lines', () => {
   assert.deepEqual(parseWorkspaces('no workspaces\n\n'), []);
+});
+
+// BRO-2995: a genuinely-empty cmux (0 non-blank lines) and a PARSE FAILURE
+// (cmux crashed mid-write, reworded its line format, or truncated output —
+// N non-blank lines, 0 of which match the regex) both used to collapse to
+// the same `[]` from parseWorkspaces, indistinguishable to any caller.
+// parseWorkspacesWithFailures separates the two cases without changing
+// parseWorkspaces()'s own contract (still tested above, unchanged).
+test('parseWorkspacesWithFailures: genuinely empty stdout — zero raw lines, zero parse failures', () => {
+  assert.deepEqual(parseWorkspacesWithFailures(''), { workspaces: [], rawLineCount: 0, parseFailures: 0 });
+  assert.deepEqual(parseWorkspacesWithFailures('\n\n'), { workspaces: [], rawLineCount: 0, parseFailures: 0 });
+});
+
+test('parseWorkspacesWithFailures: TOTAL parse failure — non-blank lines present but none parse', () => {
+  const garbled = 'Error: connection reset\nsegfault at 0x0\n';
+  const result = parseWorkspacesWithFailures(garbled);
+  assert.deepEqual(result.workspaces, []);
+  assert.equal(result.rawLineCount, 2);
+  assert.equal(result.parseFailures, 2, 'both raw lines failed to parse — this is a parse failure, NOT a genuinely empty list');
+});
+
+test('parseWorkspacesWithFailures: PARTIAL parse failure — some lines parse, some do not', () => {
+  const mixed = '  workspace:2  Box office card improvements\ngarbled truncated outp\n  workspace:5  Another show\n';
+  const result = parseWorkspacesWithFailures(mixed);
+  assert.equal(result.workspaces.length, 2);
+  assert.equal(result.rawLineCount, 3);
+  assert.equal(result.parseFailures, 1);
+});
+
+test('parseWorkspacesWithFailures: real healthy output has zero parse failures', () => {
+  const result = parseWorkspacesWithFailures(LIST_SAMPLE);
+  assert.equal(result.workspaces.length, 6);
+  assert.equal(result.parseFailures, 0);
+});
+
+// listWorkspaces() itself must NEVER throw on a parse failure — a throw here
+// would propagate uncaught through cmux-launch.js's launchCmuxSessionInner
+// (wrapped in try/**finally**, not try/catch, at its actual dispatch call
+// sites) and abort a live launch attempt. The fix for a silent-drop
+// diagnosability gap must not become a new fleet-wide availability outage.
+test('listWorkspaces: total parse failure logs but does NOT throw, and still returns []', () => {
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    const result = listWorkspaces({ runFn: () => 'Error: connection reset\nsegfault at 0x0\n' });
+    assert.deepEqual(result, []);
+    assert.equal(logged.length, 1);
+    assert.match(logged[0], /PARSE FAILURE/);
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test('listWorkspaces: partial parse failure logs but returns the workspaces that DID parse', () => {
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    const mixed = '  workspace:2  Box office card improvements\ngarbled truncated outp\n';
+    const result = listWorkspaces({ runFn: () => mixed });
+    assert.equal(result.length, 1);
+    assert.equal(result[0].ref, 'workspace:2');
+    assert.equal(logged.length, 1);
+    assert.match(logged[0], /1 of 2 raw line\(s\)/);
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test('listWorkspaces: genuinely empty stdout logs nothing and returns []', () => {
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    const result = listWorkspaces({ runFn: () => '' });
+    assert.deepEqual(result, []);
+    assert.deepEqual(logged, []);
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test('listWorkspaces: healthy real output logs nothing and parses normally', () => {
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    const result = listWorkspaces({ runFn: () => LIST_SAMPLE });
+    assert.equal(result.length, 6);
+    assert.deepEqual(logged, []);
+  } finally {
+    console.error = originalError;
+  }
 });
 
 test('isDoneTitle: leading ✅ (with or without activity glyph) is done', () => {
