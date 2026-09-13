@@ -111,6 +111,15 @@ const AGGREGATOR_DOMAINS = new Set([
   // 2026-08-16). Block outright rather than let a domainless outlet's SERP
   // guard or domain-hint inference ever accept it.
   'theatreandartreviews.com',
+  // BRO-3092: culturecity.london/event/man-to-man is an event LISTING page —
+  // producer blurb ("In 1930s Germany, a woman puts on her dead husband's
+  // trousers ... Tilda Swinton makes a long-awaited return") with no critic,
+  // no byline and no assessment. Ingested via /submit-review, it landed as a
+  // 109-word "truncated" review under a domainless outlet id `culturecity`
+  // and reddened the outlet-registry gate as a NEW unregistered outlet. It
+  // lists what is on; it does not review it, so it belongs here rather than
+  // in TICKET_DOMAINS.
+  'culturecity.london',
 ]);
 
 // Reference sites — not reviews
@@ -140,6 +149,15 @@ const VENUE_DOMAINS = new Set([
   // outlets' reviews rather than criticism of its own — the shape most likely
   // to be misread as a favourable review by a score extractor.
   'studioseaview.com',
+  // BRO-3092: the Oxford venue's own what's-on page. schwarzmancentre.ox.ac.uk/
+  // whats-on/sarah-jones-america-who-hurt-you-live-4ww3 is the identical
+  // box-office shape as the two southbank hosts above ("22 May 2026 - 23 May
+  // 2026 Comedy Past event ... Schwarzman Centre, Oxford Theatre"), and
+  // arrived by the same /submit-review path. Its outletId was derived from the
+  // host as `ox`, which is not an outlet at all — registering it (the only
+  // other way to green the outlet-registry gate) would have put an Oxford
+  // venue in the critic-outlet registry under a two-letter id.
+  'schwarzmancentre.ox.ac.uk',
 ]);
 
 // Theatre PR firms AND institutional press offices — announcements, not

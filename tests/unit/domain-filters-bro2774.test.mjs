@@ -32,6 +32,14 @@ const BLOCKED = [
   ['ents24.com', 'https://www.ents24.com/london-events/donmar-warehouse/a-month-in-the-country/7458547'],
   ['tickpick.com', 'https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/'],
   ['studioseaview.com', 'https://studioseaview.com/show/well-ill-let-you-go/'],
+  // BRO-3092 — the same shape, one crown cycle later: both reached the corpus
+  // via /submit-review, both reddened the outlet-registry gate as NEW
+  // unregistered outlets, and for schwarzmancentre the outletId the host
+  // produced was the literal two-letter `ox`. Blocking by domain (not by
+  // baselining the outletId) is what keeps them out when the review file is
+  // next deleted or renamed.
+  ['schwarzmancentre.ox.ac.uk', 'https://www.schwarzmancentre.ox.ac.uk/whats-on/sarah-jones-america-who-hurt-you-live-4ww3'],
+  ['culturecity.london', 'https://culturecity.london/event/man-to-man'],
 ];
 
 /**

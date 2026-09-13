@@ -255,6 +255,13 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // exists to catch, and which it did catch on this change.
   { host: /(^|\.)studioseaview\.com$/, reason: 'venue-production-page' },
   { host: /(^|\.)anthearepresents\.com$/, reason: 'talent-agency-credit-page' },
+  // BRO-3092 — same phantom-gap reasoning as the two entries above: both hosts
+  // are blocked by domain-filters (VENUE_DOMAINS / AGGREGATOR_DOMAINS) and
+  // neither is a TICKET_DOMAIN, so without these mirrors a SERP census would
+  // keep reporting each as an uncovered review gap for the show it was
+  // wrongly ingested for.
+  { host: /(^|\.)schwarzmancentre\.ox\.ac\.uk$/, reason: 'venue-production-page' },
+  { host: /(^|\.)culturecity\.london$/, reason: 'event-listings-page' },
 ];
 
 /**

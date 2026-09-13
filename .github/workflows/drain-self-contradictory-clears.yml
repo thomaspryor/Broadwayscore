@@ -1,0 +1,214 @@
+name: Drain Self-Contradictory Clears
+
+# Scheduled drain for the ZERO-SCORE-IMPACT half of the self-contradictory-clear
+# backlog in data/review-texts/ (BRO-185, wired up in BRO-3092).
+#
+# Background: a review file can end up asserting an exclusion flag AND its own
+# retraction breadcrumb at once (wrongShow:true beside a live wrongShowAutoCleared)
+# when a clear runs and a LATER pass re-applies the flag without retracting the
+# breadcrumb. test.yml's Data Validation job runs
+# `node --test scripts/audit-self-contradictory-clear-drained.test.mjs` with
+# REQUIRE_REVIEW_CORPUS=1, which asserts that NO such contradiction remains when
+# resolving it is provably zero-score-impact. Until this workflow existed nothing
+# ever ran `--fix-safe` — only `--gate --baseline` (test.yml) — so a single new
+# zero-impact contradiction reddened main on EVERY push until a human drained it
+# by hand. That is exactly what BRO-3092 was: one file
+# (jane-eyre-off-west-end-2026/theatreandtonic--penny-walshe.json) sat red for days.
+#
+# Same rationale, verbatim, as clear-stale-duplicate-of.yml's cron comment: the
+# gate reads live data state and trips on every push while any flag is
+# outstanding, so a slow heal leaves main red most of the week. Daily heal keeps
+# the gate green without removing its teeth — the gate stays a hard failure.
+#
+# WHY --fix-safe AND NOT --fix: `--fix` retracts the breadcrumb on every hit,
+# which is NOT score-neutral (scripts/lib/content-quality.js reads
+# `!review.wrongProductionAutoCleared` in a tier decision; manual-review-fields.js
+# treats it as a manual-clear signal). On 2026-08-14 that dropped 438 live-scored
+# reviews — NYT/Brantley, WSJ, The Stage, the FT — out of composite scores. Only
+# `--fix-safe` is safe unattended: it resolves ONLY hits where isZeroScoreImpactFix()
+# proves no scored review moves in or out, using the SAME predicates
+# rebuild-all-reviews.js calls (isIncludableForRebuild, getBestScore). The
+# score-impacting remainder is deliberately left for per-record adjudication and is
+# tracked by the committed band in data/audit/self-contradictory-clears-baseline.json.
+#
+# WHY NOT A WRITE-TIME GUARD INSTEAD: the same non-neutrality rules out enforcing
+# the invariant inside safeWriteReview() — it has no shows.json context, so it
+# cannot run isZeroScoreImpactFix() and would be retracting breadcrumbs blind.
+on:
+  schedule:
+    # Daily at 10:10 UTC. Deliberately NOT 11:00/11:30 — clear-stale-duplicate-of.yml
+    # already documents that slot as contended (opening-digest, outlet-listing-poller).
+    - cron: '10 10 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no writes'
+        required: false
+        default: 'false'
+        type: string
+      max_files:
+        description: 'Refuse to drain more than this many files in one run (surge guard)'
+        required: false
+        default: '40'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: drain-self-contradictory-clears
+  cancel-in-progress: false
+
+jobs:
+  drain:
+    name: Drain zero-score-impact self-contradictory clears
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # MANDATORY, and before review-texts (the order clear-stale-wrong-production-flags.yml
+      # uses). data/shows.json is gitignored in this repo and only exists via this action.
+      # Without it audit-self-contradictory-clears.js loads an EMPTY show map and
+      # isZeroScoreImpactFix() degrades conservatively — it would skip fixable files and
+      # report a clean run. test.yml's gate DOES check out core data, so the drain would
+      # be evaluating without show context while the gate evaluates with it: this workflow
+      # green, main still red, and nothing saying why.
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      # `wouldFix`, NOT `count`. `count` is hits.length — it includes the
+      # score-impacting adjudication residual that the committed baseline band exists
+      # for (11 at the time of writing, and it does not move). Guarding or
+      # before/after-asserting on `count` would surge-guard the wrong number and make
+      # an "after < before" check a guaranteed false failure. `wouldFix` is the
+      # isZeroScoreImpactFix-gated subset this workflow actually drains.
+      - name: Survey (dry run)
+        id: survey
+        run: |
+          set +e
+          # No eval: the parser appends key=value straight to $GITHUB_OUTPUT. eval on
+          # script-derived text is an injection surface the moment a JSON field stops
+          # being a number, and it buys nothing here (adversarial review, BRO-3092).
+          node scripts/audit-self-contradictory-clears.js --fix-safe --dry-run --json 2>/dev/null \
+            | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{let w='parse-error',n='parse-error';try{const j=JSON.parse(s);w=j.wouldFix;n=j.scanned;}catch{};console.log('wouldfix='+w);console.log('scanned='+n);})" \
+            >> $GITHUB_OUTPUT
+          tail -2 $GITHUB_OUTPUT
+          exit 0
+
+      # Without --gate, assertCorpusScanned is a no-op, so a review-texts checkout that
+      # silently landed nothing yields scanned:0 / wouldFix:0 and this workflow reports a
+      # clean, green, entirely vacuous run forever. An empty corpus is a checkout failure,
+      # never an all-clear — fail loudly on it, and on a non-numeric parse.
+      - name: Assert the corpus actually landed
+        run: |
+          SCANNED='${{ steps.survey.outputs.scanned }}'
+          WOULDFIX='${{ steps.survey.outputs.wouldfix }}'
+          case "$SCANNED" in (*[!0-9]*|'') echo "::error::survey did not return a numeric scanned count (got '$SCANNED') — treat as a failed review-texts checkout, not an all-clear"; exit 1;; esac
+          case "$WOULDFIX" in (*[!0-9]*|'') echo "::error::survey did not return a numeric wouldFix count (got '$WOULDFIX')"; exit 1;; esac
+          if [ "$SCANNED" -eq 0 ]; then
+            echo "::error::scanned 0 review files — the review-texts checkout did not land, so this run would have been vacuous"
+            exit 1
+          fi
+          # checkout-core-data hard-fails on its own, but assert the one file this
+          # script actually needs: without it loadShowsById() returns an empty Map and
+          # isZeroScoreImpactFix degrades to skipping fixable records, which surfaces as
+          # a perfectly clean "wouldFix: 0" rather than as missing show context.
+          if [ ! -s data/shows.json ]; then
+            echo "::error::data/shows.json is missing or empty — isZeroScoreImpactFix would run without show context and silently under-drain"
+            exit 1
+          fi
+          echo "corpus ok: $SCANNED files scanned, $WOULDFIX drainable"
+
+      # A spike means a producer regression, not routine drift. Draining hundreds of
+      # files in one unattended run is how a bad writer's output gets laundered into
+      # a commit nobody reads.
+      - name: Surge guard
+        if: inputs.dry_run != 'true'
+        run: |
+          WOULDFIX='${{ steps.survey.outputs.wouldfix }}'
+          MAX='${{ inputs.max_files || '40' }}'
+          case "$MAX" in (*[!0-9]*|'') echo "::error::max_files is not numeric (got '$MAX')"; exit 1;; esac
+          if [ "$WOULDFIX" -gt "$MAX" ]; then
+            echo "::error::$WOULDFIX drainable contradictions exceeds max_files=$MAX — a spike this size usually means a producer regression, not drift. Investigate before bulk-draining, or re-dispatch with a higher max_files."
+            exit 1
+          fi
+
+      - name: Drain
+        if: inputs.dry_run != 'true' && steps.survey.outputs.wouldfix != '0'
+        run: node scripts/audit-self-contradictory-clears.js --fix-safe
+
+      # retractStaleClearBreadcrumb() writes clearBreadcrumbRetractedFields precisely so
+      # push-review-texts' PROTECTED_FIELDS restore reads the deletion as intent rather
+      # than data loss (isIntentionalClear -> _clearBreadcrumbRetracted, field-scoped and
+      # live-scoped). If that ever stops holding, the re-survey below catches it.
+      - name: Push to private repo
+        if: inputs.dry_run != 'true' && steps.survey.outputs.wouldfix != '0'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            chore: drain ${{ steps.survey.outputs.wouldfix }} zero-score-impact self-contradictory clear(s) [drain-fix-safe]
+
+      # The one check that catches this workflow silently doing nothing — a --fix-safe
+      # that wrote files the push then reverted, or a drain that no-op'd, both leave
+      # wouldFix unchanged. Runs AFTER the push so it re-reads what actually persisted
+      # in the working tree.
+      - name: Re-survey (the drain must have actually taken)
+        if: inputs.dry_run != 'true' && steps.survey.outputs.wouldfix != '0'
+        run: |
+          set +e
+          WOULDFIX=$(node scripts/audit-self-contradictory-clears.js --fix-safe --dry-run --json 2>/dev/null \
+            | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).wouldFix)}catch{console.log('parse-error')}})")
+          case "$WOULDFIX" in (*[!0-9]*|'') echo "::error::re-survey did not return a numeric wouldFix (got '$WOULDFIX')"; exit 1;; esac
+          if [ "$WOULDFIX" -gt 0 ]; then
+            echo "::error::$WOULDFIX drainable contradiction(s) still present after --fix-safe — the drain did not take. Likeliest cause: push-review-texts' PROTECTED_FIELDS restore resurrected the breadcrumbs (its action.yml writes the restored record back to the working tree before committing, which is exactly why re-reading the tree here catches that case)."
+            exit 1
+          fi
+          # Scope of this check: it re-reads the RUNNER's tree, so it proves the drain
+          # survived the protected-field restore. It cannot see a same-file rebase
+          # collision resolved in the remote's favour by another of the ~40 workflows
+          # that push this repo — that case is self-healing, since the next daily run
+          # finds the contradiction again and re-drains it.
+          echo "drain verified on the runner tree: 0 drainable contradictions remain"
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Self-Contradictory Clear Drain"
+            echo ""
+            echo "**Review files scanned:** ${{ steps.survey.outputs.scanned }}"
+            echo "**Zero-score-impact contradictions found:** ${{ steps.survey.outputs.wouldfix }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.survey.outputs.wouldfix }}" = "0" ]; then
+              echo "**Mode:** nothing to drain"
+            else
+              echo "**Mode:** drained + pushed"
+            fi
+            echo ""
+            echo "The score-impacting remainder is deliberately untouched — it is tracked by"
+            echo "the band in \`data/audit/self-contradictory-clears-baseline.json\`."
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Drain Self-Contradictory Clears Failed'
+          severity: 'warning'
