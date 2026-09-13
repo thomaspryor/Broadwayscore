@@ -70,6 +70,19 @@
 # through to the ordinary loud refusal — this only ever short-circuits the
 # case that was ALWAYS safe to resolve, never a genuine content conflict.
 #
+# WHAT PUSHES THE RESULTING COMMIT (/code-review finding, BRO-3212): this
+# script NEVER pushes — none of the seven launchd/cron callers of this file
+# do either. The "chore: sync audit ledgers" commit reaches origin
+# opportunistically, the next time ANY worktree session runs
+# merge-worktree-to-main.sh against this same MAIN_DIR (it merges+pushes
+# whatever is on local main, so it sweeps this commit up for free). This is
+# an acceptable, self-limiting wait, not a new "sits forever" risk: local
+# main was already ahead-until-the-next-merge for ordinary worktree work
+# before this change, active sessions merge every ~30 min per CLAUDE.md, and
+# even in a long gap with zero merges the worst case is more local-only
+# commits piling up (still correct content, just later to origin) — never
+# data loss, and strictly better than the pre-fix permanent refusal.
+#
 # Concurrency: this repo runs many launchd jobs and worktree sessions that
 # touch the SAME checkout, and merge-worktree-to-main.sh already established
 # the convention of serializing mutating git ops here via push-mutex.sh
