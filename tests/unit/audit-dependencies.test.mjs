@@ -11,7 +11,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS, ISSUE_RE } = require('../../scripts/audit-dependencies');
+const { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS, ISSUE_RE, isValidExpiry } = require('../../scripts/audit-dependencies');
 
 const EXPOSURE = 'Not exposed: dev-time CLI toolchain only, never bundled into the site runtime.';
 const ALLOW = [{
@@ -228,5 +228,63 @@ describe('every exemption cites a tracked issue', () => {
     for (const entry of ALLOWLIST) {
       assert.ok(ISSUE_RE.test(String(entry.issue || '').trim()), `${entry.ghsa} has no Linear issue reference`);
     }
+  });
+});
+
+// --- BRO-3202 ship-check: `expires` was the ONLY mechanism forcing re-triage of
+// the two Next.js RCEs, and it was the one field nobody validated. It is
+// compared as a STRING against today, so a plausible typo doesn't read as
+// "expired" — it reads as "never expires", permanently and silently.
+describe('expiry is validated, not trusted', () => {
+  const withExpiry = (expires) => [{ ...ALLOW[0], expires }];
+
+  test('a missing expires does not become a permanent silent exemption', () => {
+    // `undefined <= '2026-07-11'` is false, i.e. the old code read this as
+    // "expires in the future" forever.
+    const r = evaluateAuditReport({ vulnerabilities: {} }, [{ ...ALLOW[0], expires: undefined }], TODAY);
+    assert.equal(r.ok, false);
+    assert.match(r.errors[0], /expires/);
+  });
+
+  test('a non-ISO past date is rejected rather than read as the future', () => {
+    // '2026-9-1' <= '2026-07-11' is false by string compare, despite being a
+    // date well in the past.
+    const r = evaluateAuditReport({ vulnerabilities: {} }, withExpiry('2026-9-1'), TODAY);
+    assert.equal(r.ok, false);
+    assert.match(r.errors[0], /expires/);
+  });
+
+  test('a Date object is rejected (comparison against a string is meaningless)', () => {
+    const r = evaluateAuditReport({ vulnerabilities: {} }, withExpiry(new Date('2099-01-01')), TODAY);
+    assert.equal(r.ok, false);
+  });
+
+  test('an entry with an invalid expiry stops exempting its advisory', () => {
+    const report = { vulnerabilities: { decompress: { severity: 'critical', via: [criticalVia(ALLOW[0].ghsa)] } } };
+    const r = evaluateAuditReport(report, withExpiry(undefined), TODAY);
+    assert.equal(r.allowedHits.length, 0);
+    assert.match(r.errors.join(' | '), /not in allowlist/);
+  });
+
+  test('isValidExpiry rejects dates that do not exist', () => {
+    assert.equal(isValidExpiry('2026-02-30'), false);
+    assert.equal(isValidExpiry('2026-13-01'), false);
+    assert.equal(isValidExpiry('2026-11-15'), true);
+  });
+});
+
+describe('duplicate allowlist entries', () => {
+  test('two entries for the same GHSA are an error, not a silent last-wins', () => {
+    const dup = [ALLOW[0], { ...ALLOW[0], exposure: `${EXPOSURE} (a stale second copy)` }];
+    const report = { vulnerabilities: { decompress: { severity: 'critical', via: [criticalVia(ALLOW[0].ghsa)] } } };
+    const r = evaluateAuditReport(report, dup, TODAY);
+    assert.equal(r.ok, false);
+    assert.match(r.errors.join(' | '), /2 entries for GHSA-mp2f-45pm-3cg9/);
+    assert.equal(r.allowedHits.length, 0, 'a shadowed exemption must not still apply');
+  });
+
+  test('the real shipped ALLOWLIST has no duplicate GHSA ids', () => {
+    const ids = ALLOWLIST.map((a) => a.ghsa);
+    assert.equal(new Set(ids).size, ids.length);
   });
 });

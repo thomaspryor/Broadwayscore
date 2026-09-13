@@ -67,11 +67,15 @@ const TOPLEVEL_TEST_RE = /^scripts\/[^/]+\.test\.(mjs|ts)$/;
 // covers this: audit-test-yml-lib-deps.js walks only scripts/lib/*.test.mjs,
 // and the TOPLEVEL_TEST_RE pass above matches only tests that live under
 // scripts/ themselves.
-const TESTS_DIR_TEST_RE = /^tests\/.+\.test\.(mjs|ts)$/;
+const TESTS_DIR_TEST_RE = /^tests\/.+\.test\.(mjs|cjs|js|ts|tsx)$/;
 
-// A dep worth reporting: a top-level scripts/ source file (scripts/lib/** is
-// already globbed; anything deeper has its own coverage story).
-const TOPLEVEL_SOURCE_RE = /^scripts\/[^/]+\.(js|mjs|cjs|ts)$/;
+// A dep worth reporting: any scripts/ source file OUTSIDE scripts/lib/ (which
+// is already covered by the scripts/lib/** glob). Originally single-segment
+// only, which missed scripts/llm-scoring/input-builder.ts — required by three
+// manifest-registered tests and absent from on.push.paths (BRO-3202
+// ship-check). Subdirectories under scripts/ are not special; they were just
+// out of the first version's field of view.
+const SOURCE_RE = /^scripts\/(?!lib\/).+\.(js|mjs|cjs|ts|tsx)$/;
 
 /** Pure: filter raw manifest lines down to top-level scripts/*.test.(mjs|ts)
  * entries (excludes scripts/lib/, scripts/tests/, tests/, and blank/comment
@@ -115,7 +119,7 @@ function toplevelScriptDeps(src, fromDir) {
     const abs = resolveDepPath(fromDir, rel);
     if (!abs) continue; // package import, or nothing on disk
     const repoRel = path.relative(ROOT, abs);
-    if (TOPLEVEL_SOURCE_RE.test(repoRel)) out.add(repoRel);
+    if (SOURCE_RE.test(repoRel)) out.add(repoRel);
   }
   return Array.from(out).sort();
 }
@@ -151,9 +155,12 @@ function findGaps() {
   }
 
   // Second shape (BRO-3202): manifest-registered tests under tests/ whose
-  // required top-level scripts/ source has no push-path entry. The test file
-  // is covered by the 'tests/**' glob; the source is the uncovered half.
-  const seen = new Set();
+  // required scripts/ source has no push-path entry. The test file is covered
+  // by the 'tests/**' glob; the source is the uncovered half.
+  //
+  // `seen` is seeded from the first loop's gaps so one source can't be reported
+  // twice under two different `via` values (ship-check finding).
+  const seen = new Set(gaps.map((g) => g.source).filter(Boolean));
   for (const testRelPath of readTestsDirEntries()) {
     const abs = path.join(ROOT, testRelPath);
     if (!fs.existsSync(abs)) continue; // stale manifest row — not this audit's job

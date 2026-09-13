@@ -54,6 +54,21 @@ const MIN_EXPOSURE_CHARS = 40;
  * is the part a reviewer can actually pull on. */
 const ISSUE_RE = /^BRO-\d+$/;
 
+/** Strict ISO date. `expires` is compared as a STRING against today, so a
+ * plausible-looking typo silently disables the only mechanism that forces
+ * re-triage: `undefined <= '2026-09-13'` is false, and so is
+ * `'2026-9-1' <= '2026-09-13'` — both mean "never expires" rather than
+ * "expired months ago". Validated, not trusted (BRO-3202 ship-check). */
+const EXPIRES_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** True when `value` is a strict ISO date that names a real calendar day
+ * (rejects 2026-02-30 and 2026-13-01, which the regex alone would accept). */
+function isValidExpiry(value) {
+  if (typeof value !== 'string' || !EXPIRES_RE.test(value)) return false;
+  const d = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === value;
+}
+
 const ALLOWLIST = [
   {
     ghsa: 'GHSA-mp2f-45pm-3cg9',
@@ -165,9 +180,33 @@ function evaluateAuditReport(report, allowlist, today) {
       );
       continue;
     }
+    if (!isValidExpiry(a.expires)) {
+      // An unparseable expiry is worse than an expired one: string comparison
+      // makes it read as "in the future" forever.
+      disqualified.add(ghsa);
+      errors.push(
+        `allowlist entry ${ghsa} has an invalid \`expires\` (${JSON.stringify(a.expires)}) `
+        + '— must be a real calendar date in strict YYYY-MM-DD form, or it never expires',
+      );
+      continue;
+    }
     if (a.expires <= today) {
       disqualified.add(ghsa);
       errors.push(`expired allowlist entry: ${a.ghsa} (${a.module}) expired ${a.expires} — re-triage or extend with a reason`);
+    }
+  }
+
+  // Two entries for the same GHSA silently collapsed into one (last wins) when
+  // the map was built, so a stale exemption could shadow a re-triaged one.
+  const byGhsaCount = new Map();
+  for (const a of allowlist) {
+    const ghsa = (a && a.ghsa) || '(unnamed)';
+    byGhsaCount.set(ghsa, (byGhsaCount.get(ghsa) || 0) + 1);
+  }
+  for (const [ghsa, count] of byGhsaCount) {
+    if (count > 1) {
+      disqualified.add(ghsa);
+      errors.push(`allowlist has ${count} entries for ${ghsa} — collapse them into one, they silently shadow each other`);
     }
   }
 
@@ -246,6 +285,6 @@ function main() {
   console.log('✅ No unallowlisted critical advisories.');
 }
 
-module.exports = { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS, ISSUE_RE };
+module.exports = { evaluateAuditReport, ALLOWLIST, MIN_EXPOSURE_CHARS, ISSUE_RE, isValidExpiry };
 
 if (require.main === module) main();

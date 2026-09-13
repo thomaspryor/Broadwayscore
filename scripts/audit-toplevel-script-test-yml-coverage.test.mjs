@@ -7,7 +7,7 @@ const {
   filterToplevelTestEntries, siblingSourcePath, findGaps,
   filterTestsDirEntries, toplevelScriptDeps,
 } = require('./audit-toplevel-script-test-yml-coverage.js');
-const { relativeSpecifiers } = require('./audit-test-yml-lib-deps.js');
+const { relativeSpecifiers, stripComments } = require('./audit-test-yml-lib-deps.js');
 
 test('filterToplevelTestEntries: keeps only top-level scripts/*.test.(mjs|ts)', () => {
   const lines = [
@@ -108,4 +108,49 @@ test('relativeSpecifiers: is not left stateful by a previous call (/g lastIndex)
 test('findGaps: the real repo reports both shapes and currently has none of either', () => {
   const gaps = findGaps();
   assert.deepEqual(gaps, [], `push-path entries missing for: ${gaps.map((g) => g.source).join(', ')}`);
+});
+
+// --- BRO-3202 ship-check: making REQUIRE_RE whitespace-tolerant widened what
+// PROSE can match. This repo's tests routinely name requires in comments (e.g.
+// tests/unit/linear-next.test.mjs describes `require('./bsc-next.js')`), and
+// today those resolve to nothing only by luck. A doc comment citing a path that
+// does exist would mint a phantom gap and fail the floor test below.
+test('relativeSpecifiers ignores a require() written inside a line comment', () => {
+  const src = [
+    "// The old code called require('../../scripts/audit-dependencies.js') here.",
+    "const real = require('../../scripts/audit-test-yml-lib-deps.js');",
+  ].join('\n');
+  assert.deepEqual([...relativeSpecifiers(src)], ['../../scripts/audit-test-yml-lib-deps.js']);
+});
+
+test('relativeSpecifiers ignores a require() inside a block comment', () => {
+  const src = [
+    '/**',
+    " * Pattern: require('../../scripts/audit-dependencies.js') — do not copy logic.",
+    ' */',
+    "const real = require('./one.js');",
+  ].join('\n');
+  assert.deepEqual([...relativeSpecifiers(src)], ['./one.js']);
+});
+
+test('stripComments preserves line count so nothing else shifts', () => {
+  const src = "a\n// comment\n/* block\n   block */\nb";
+  assert.equal(stripComments(src).split('\n').length, src.split('\n').length);
+});
+
+test('stripComments does not eat the // in a URL', () => {
+  const src = "const u = 'https://example.com/x';\nconst a = require('./one.js');";
+  assert.deepEqual([...relativeSpecifiers(src)], ['./one.js']);
+});
+
+test('toplevelScriptDeps resolves an extensionless TypeScript import', () => {
+  // Without .ts in RESOLVE_CANDIDATES this returned [], which is how
+  // scripts/llm-scoring/input-builder.ts stayed invisible to both audits.
+  const src = "import { buildInput } from '../../scripts/llm-scoring/input-builder';";
+  assert.deepEqual(toplevelScriptDeps(src, UNIT_DIR), ['scripts/llm-scoring/input-builder.ts']);
+});
+
+test('toplevelScriptDeps still ignores scripts/lib (already globbed)', () => {
+  const src = "const x = require('../../scripts/lib/test-yml-push-paths.js');";
+  assert.deepEqual(toplevelScriptDeps(src, UNIT_DIR), []);
 });

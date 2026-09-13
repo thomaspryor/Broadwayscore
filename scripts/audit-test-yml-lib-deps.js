@@ -58,7 +58,26 @@ const { readPushPaths, isCovered } = require('./lib/test-yml-push-paths.js');
 // which silently dropped that dependency from both audits (BRO-3202).
 const REQUIRE_RE = /require\s*\(\s*['"](\.[^'"]+)['"]/g;
 const IMPORT_RE = /(?:from|import)\s*\(?\s*['"](\.[^'"]+)['"]/g;
-const RESOLVE_CANDIDATES = ['', '.js', '.mjs', '.cjs', '.json', '/index.js'];
+// .ts/.tsx included (BRO-3202 ship-check): without them an extensionless
+// import of a TypeScript module resolved to null, which hid
+// scripts/llm-scoring/input-builder.ts — required by three manifest tests and
+// missing from on.push.paths — from both audits.
+const RESOLVE_CANDIDATES = ['', '.js', '.mjs', '.cjs', '.json', '.ts', '.tsx', '/index.js', '/index.ts'];
+
+/** Pure: blank out // and /* *\/ comments, preserving line structure. A source
+ * scan a comment can fool proves nothing: this repo's test files routinely
+ * describe requires in prose (tests/unit/linear-next.test.mjs names
+ * `require('./bsc-next.js')` in a comment), and making REQUIRE_RE
+ * whitespace-tolerant widened what such prose can match. Today none of those
+ * resolve to a real file, so they produce no phantom gap — by luck, not by
+ * design. String literals are left alone; a require specifier inside a string
+ * is rare and erring toward over-reporting is the safe direction for an audit.
+ */
+function stripComments(src) {
+  return src
+    .replace(/\/\*[\s\S]*?\*\//g, (block) => block.replace(/[^\n]/g, ' '))
+    .replace(/(^|[^:])\/\/[^\n]*/g, (line, prefix) => prefix + ' '.repeat(line.length - prefix.length));
+}
 
 /** Pure: every relative require()/import specifier in a source file, as a Set.
  * Single definition shared by this audit and
@@ -66,12 +85,13 @@ const RESOLVE_CANDIDATES = ['', '.js', '.mjs', '.cjs', '.json', '/index.js'];
  * exactly how the multi-line blind spot above would come back. Returns a fresh
  * Set per call, so the /g regexes' lastIndex is never observed by a caller. */
 function relativeSpecifiers(src) {
+  const code = stripComments(src);
   const deps = new Set();
   let m;
   REQUIRE_RE.lastIndex = 0;
   IMPORT_RE.lastIndex = 0;
-  while ((m = REQUIRE_RE.exec(src))) deps.add(m[1]);
-  while ((m = IMPORT_RE.exec(src))) deps.add(m[1]);
+  while ((m = REQUIRE_RE.exec(code))) deps.add(m[1]);
+  while ((m = IMPORT_RE.exec(code))) deps.add(m[1]);
   return deps;
 }
 
@@ -128,6 +148,6 @@ function main() {
   process.exit(0); // advisory — never fails CI (see file header)
 }
 
-module.exports = { readPushPaths, isCovered, resolveDepPath, relativeSpecifiers, findGaps };
+module.exports = { readPushPaths, isCovered, resolveDepPath, relativeSpecifiers, stripComments, findGaps };
 
 if (require.main === module) main();
