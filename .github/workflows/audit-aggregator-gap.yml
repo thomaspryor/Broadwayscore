@@ -361,6 +361,14 @@ jobs:
           # 900s (15min) leaves ~10-11min of headroom for the trailing steps (push-review-texts,
           # trigger-rebuild, notify), which historically take well under 30s combined.
           PUSH_DEADLINE_SEC: '900'
+          # BRO-3068: lower the per-attempt network cap from push-with-retry.sh's
+          # 90s default to 30s. This step's own hangs (see PUSH_DEADLINE_SEC
+          # comment above) were pre-transfer connection stalls burning the FULL
+          # 90s with zero transfer progress, so only ~4-6 retries fit inside the
+          # 900s deadline. 30s roughly triples realized attempts in the same
+          # budget without affecting a healthy connection. Same fix as
+          # rebuild-reviews.yml/rebuild-fast.yml (BRO-334/BRO-346).
+          GIT_NET_TIMEOUT_SEC: '30'
           # scraper-spend-ledger.jsonl is now in the file list below (Sprint 3,
           # card 3b1637c5) — opt into the post-rebase union reconcile so a
           # concurrent writer's rows survive `git rebase -X theirs` instead of

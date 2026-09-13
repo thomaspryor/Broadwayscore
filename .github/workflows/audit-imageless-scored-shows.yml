@@ -154,6 +154,12 @@ jobs:
           # push race" failure mode — task #707) is allowed to run for this
           # file. PUSH_API_FALLBACK_DISABLE removed accordingly.
           PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — the same pre-transfer connection-stall
+          # class as the other PUSH_DEADLINE_SEC-overridden steps above (90s
+          # burns the whole cap with zero transfer progress, starving real
+          # retries out of the 600s deadline). Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

@@ -319,6 +319,11 @@ jobs:
           # reaching resolve_conflicts()'s case-arm merge. This flag routes
           # that path through reconcile-merged-json.js instead.
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 900s deadline above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -588,6 +593,11 @@ jobs:
           # this step an actual chance to win the race against main's
           # concurrent commit traffic instead of surrendering after ~4.
           PUSH_API_FALLBACK_DISABLE: '1'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 900s deadline above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -651,6 +661,16 @@ jobs:
           message: "data: Scrape New Aggregators — Commit and push rebuilt reviews.json"
       - name: Commit and push rebuilt reviews.json
         if: always()
+        env:
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress. Matches BRO-334/BRO-346.
+          # This call site is otherwise unchanged (default MAX_RETRIES=7,
+          # PUSH_DEADLINE_SEC=240) — per push-with-retry.sh's own backoff-sum
+          # math, MAX_RETRIES is usually the binding constraint at the default
+          # deadline, not the deadline itself, so this alone may buy less than
+          # at the sites elsewhere in this repo that also raised the deadline.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

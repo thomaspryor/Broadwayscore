@@ -171,6 +171,11 @@ jobs:
           # update-show-status.yml uses for the same root cause (that job has
           # a much bigger timeout budget).
           PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, the same class as the
+          # #458 failure documented above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git add data/commercial-pending-review.json data/recoupment-calibration-anchors.json 2>/dev/null || true
           bash scripts/lib/stage-data-changes.sh

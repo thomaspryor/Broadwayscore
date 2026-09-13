@@ -225,6 +225,12 @@ jobs:
         # fundability fix, not further per-step tuning.
         env:
           PUSH_DEADLINE_SEC: '300'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, which is exactly the
+          # "2 local attempts blew the 240s/300s deadline" failure shape
+          # documented in BRO-335's comment above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/breaker-transitions.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json
           if git diff --staged --quiet; then
@@ -264,6 +270,11 @@ jobs:
           # transient contention resolves in 2-3 attempts" design assumption.
           PUSH_DEADLINE_SEC: '420'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — same pre-transfer connection-stall class
+          # as the sibling "Commit breaker state" step above. Matches
+          # BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
           bash scripts/lib/stage-data-changes.sh

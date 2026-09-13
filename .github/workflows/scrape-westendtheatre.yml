@@ -129,6 +129,11 @@ jobs:
           # misleading; only 2 ever ran — task #458's documented failure
           # mode). Job has 35min timeout with ~13min headroom past this step.
           PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, the same class as the
+          # #458 failure documented above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

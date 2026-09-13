@@ -119,6 +119,11 @@ jobs:
           # update-show-status.yml uses for the same root cause (that job has
           # a much bigger timeout budget).
           PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, the same class as the
+          # #458 failure documented above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-batch-progress.json
           if git diff --staged --quiet; then
@@ -199,6 +204,10 @@ jobs:
           # a 20min timeout (sweep itself is lightweight, ~3min), so 480s
           # (not the 600s used on longer jobs) to leave real buffer.
           PUSH_DEADLINE_SEC: '480'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — same pre-transfer connection-stall class
+          # as the sibling commits in this file. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-pending-archive.json data/commercial-research-queue.json
           if git diff --staged --quiet; then
@@ -275,6 +284,10 @@ jobs:
           # job has a 120min timeout (mostly consumed by the research loop
           # itself, not this push step), so 600s is safe.
           PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — same pre-transfer connection-stall class
+          # as the sibling commits in this file. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           # commercial.json is gitignored (core data); push-core-data syncs it to the private repo.
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
@@ -549,6 +562,10 @@ jobs:
           # contention class (see the timeout-minutes comment on this job) —
           # 600s gives the retry loop itself the same headroom.
           PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — same pre-transfer connection-stall class
+          # as the sibling commits in this file. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json data/audit/commercial-data-history.json data/recoupment-calibration-anchors.json
           bash scripts/lib/stage-data-changes.sh

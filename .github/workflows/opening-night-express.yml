@@ -450,6 +450,13 @@ jobs:
         if: inputs.dry_run != true && (steps.changes.outputs.has_changes == 'true' || steps.after.outputs.count > steps.before.outputs.count)
         env:
           PUSH_DEADLINE_SEC: '900'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s. Same class of pre-transfer connection
+          # stall as audit-aggregator-gap.yml (task #1791) — 90s burns the
+          # whole cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 900s deadline above. 30s roughly triples realized
+          # attempts in the same budget. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
