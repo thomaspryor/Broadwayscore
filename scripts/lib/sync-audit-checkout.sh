@@ -524,20 +524,51 @@ if [ "$ACTION" = "commit-and-rebase" ] && [ -n "$UNION_BLOCKING" ]; then
   echo "[$TAG] diverged, but every blocker is a merge=union append-only ledger — committing and rebasing:"
   echo "$UNION_BLOCKING" | sed "s/^/[$TAG]   /"
   STAGE_OK=1
+  STAGED_NOW=""
   while IFS= read -r L; do
     [ -n "$L" ] || continue
-    git add -- "$L" || STAGE_OK=0
+    if git add -- "$L"; then
+      STAGED_NOW="${STAGED_NOW}${L}
+"
+    else
+      STAGE_OK=0
+    fi
   done <<EOF
 $UNION_BLOCKING
 EOF
 
-  if [ "$STAGE_OK" -eq 1 ] && git commit --no-verify -q -m "chore: sync audit ledgers [skip ci]"; then
-    if git rebase origin/main --quiet 2>/dev/null; then
+  # A partial staging failure must not leave a half-`git add`ed ledger sitting
+  # in the index below — every other exit path in this script promises the
+  # tree is left exactly as it was found (review finding, BRO-3212).
+  if [ "$STAGE_OK" -ne 1 ] && [ -n "$STAGED_NOW" ]; then
+    echo "$STAGED_NOW" | while IFS= read -r L; do
+      [ -n "$L" ] || continue
+      git restore --staged -- "$L" 2>/dev/null || git reset -q -- "$L" 2>/dev/null || true
+    done
+  fi
+
+  # `--only -- <paths>` (review finding, BRO-3212): a bare `git commit` with no
+  # pathspec commits the ENTIRE index, not just what the loop above staged —
+  # under push_mutex_acquire's documented fail-open-on-timeout, a concurrent
+  # session sharing this checkout could have unrelated changes already staged,
+  # and this commit must never sweep those in. `--only` restricts the commit
+  # to exactly $UNION_BLOCKING even if something else is sitting in the index.
+  if [ "$STAGE_OK" -eq 1 ] \
+       && git commit --no-verify -q --only -m "chore: sync audit ledgers [skip ci]" -- $UNION_BLOCKING; then
+    # --autostash (review finding, BRO-3212): `--only` above deliberately
+    # leaves any OTHER staged/unstaged content in the working tree untouched
+    # (never swept into the ledger commit — see the comment above), but plain
+    # `git rebase` refuses to even START against a non-clean tree, regardless
+    # of whether that content conflicts with anything being replayed.
+    # --autostash stashes it, runs the rebase, and restores it afterward —
+    # git-native, so it correctly handles both the success and failure paths
+    # (including restoring the stash if the rebase itself is aborted below).
+    if git rebase --autostash origin/main --quiet 2>/dev/null; then
       echo "[$TAG] recovered — committed local ledger append(s) and rebased onto origin/main"
       clear_refused_snapshot
       exit 0
     fi
-    echo "::error::[$TAG] rebase onto origin/main failed after committing the ledger(s) — aborting rebase, ledger commit preserved for the next run"
+    echo "::error::[$TAG] rebase onto origin/main failed after committing the ledger(s) — aborting rebase, ledger commit preserved locally for the next run to carry forward (git status will look clean; see git log -1 / merge-worktree-to-main.sh)"
     git rebase --abort 2>/dev/null || echo "::error::[$TAG] git rebase --abort itself failed — checkout may be mid-rebase, investigate by hand"
   else
     echo "::error::[$TAG] could not commit the ledger(s) for rebase recovery"

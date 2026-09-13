@@ -328,6 +328,44 @@ test('ACCEPTANCE (BRO-3212): a DIVERGED checkout whose only blocker is a union-s
   });
 });
 
+test('an unrelated file already STAGED by another writer is never swept into the ledger commit (BRO-3212 review finding)', () => {
+  withTmp((root) => {
+    // push_mutex_acquire fails OPEN on timeout (documented in this file's own
+    // header), so a concurrent session sharing this checkout really can have
+    // something else staged when the commit-and-rebase recovery fires. A bare
+    // `git commit` with no pathspec commits the WHOLE index, not just what
+    // this recovery staged — this must not happen.
+    const { origin, clone } = setupPair(root, 'sweep');
+    fs.writeFileSync(path.join(clone, 'local-note.txt'), 'local-only commit\n');
+    git(clone, 'add', '-A');
+    git(clone, 'commit', '-q', '-m', 'local: unrelated commit');
+
+    advanceOrigin(root, origin, 'via-sweep', (via) => {
+      fs.writeFileSync(path.join(via, LEDGER), 'a\nb\nc\norigin-only\n');
+    });
+    fs.appendFileSync(path.join(clone, LEDGER), 'local-only\n');
+    // Simulate another writer's in-flight staged change, unrelated to the ledger.
+    fs.writeFileSync(path.join(clone, 'other.txt'), 'someone else is mid-edit\n');
+    git(clone, 'add', '--', 'other.txt');
+
+    const { code, out } = trySync(clone, 'sweep');
+    assert.equal(code, 0, `expected recovery via commit+rebase, got ${code}:\n${out}`);
+    // --autostash restores a stashed change as unstaged (standard git
+    // behavior, not something this script controls) — the invariant that
+    // matters is the CONTENT survives uncommitted, not the exact index bit.
+    assert.equal(
+      fs.readFileSync(path.join(clone, 'other.txt'), 'utf8'), 'someone else is mid-edit\n',
+      "the concurrent writer's uncommitted change must survive untouched",
+    );
+    assert.notEqual(
+      git(clone, 'status', '--porcelain', '--', 'other.txt').trim(), '',
+      'other.txt must still show as uncommitted, never silently folded into the ledger commit',
+    );
+    const ledgerCommitFiles = git(clone, 'show', '--name-only', '--format=', 'HEAD').trim().split('\n');
+    assert.deepEqual(ledgerCommitFiles, [LEDGER], 'the ledger commit must contain ONLY the ledger, never other.txt');
+  });
+});
+
 test('a rebase left mid-flight by an interrupted run is self-healed, not stuck forever (BRO-3212 review finding)', () => {
   withTmp((root) => {
     // Simulate a run killed between "git commit" succeeding and "git rebase
