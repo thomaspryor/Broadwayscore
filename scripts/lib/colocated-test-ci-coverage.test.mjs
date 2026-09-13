@@ -38,6 +38,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { MANIFESTS, TEST_FILE_EXTENSIONS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex } = require('./test-manifest.js');
@@ -346,5 +347,32 @@ test('run-push-audits.sh gates on the same test-file extensions as the canonical
     'scripts/lib/run-push-audits.sh gates the pre-push orphan-test audit on a different ' +
       'extension set than scripts/lib/test-manifest.js TEST_FILE_EXTENSIONS. A push adding a ' +
       'test in the missing extension would skip that gate entirely.'
+  );
+});
+
+// BRO-3239 HOLE 1: the extension pin above is only half the guard. The
+// trigger's ORIGINAL shape, `^(tests/unit|scripts)/[^/]*\.test\.(...)$`, has a
+// `[^/]*` that matches a filename directly under tests/unit/ or scripts/ —
+// never scripts/lib/**, no matter how well the extension list stays synced.
+// That depth gap is exactly how scripts/lib/push-with-retry.stall-
+// diagnostics.test.sh (BRO-3213) skipped this local gate entirely: the
+// extension pin above was green the whole time, because `sh` was never the
+// problem. Drives the REAL binary (not a source regex re-derivation, which
+// would just be a second copy of the bug it is meant to catch) so a future
+// narrowing of the trigger fails here, not silently in production three
+// incidents later.
+test('run-push-audits.sh --list selects the test-registration audits for a scripts/lib/ test file (BRO-3239 HOLE 1)', () => {
+  const script = path.join(ROOT, 'scripts/lib/run-push-audits.sh');
+  const out = execFileSync('bash', [script, '--list'], {
+    input: 'scripts/lib/synthetic-depth-pin.test.mjs\n',
+    encoding: 'utf8',
+  });
+  const labels = out.trim().split('\n').filter(Boolean);
+  assert.ok(
+    labels.includes('colocated-test-ci-coverage'),
+    'a scripts/lib/*.test.* path selected none of the test-registration audits — the trigger ' +
+      "regex is scoped to files directly under tests/unit/ or scripts/ (the '[^/]*' depth bug), " +
+      "not recursively into scripts/lib/. This is the exact hole BRO-3213 fell through; restore " +
+      'the `scripts/lib/.*\\.test\\.(...)$` alternative in run-push-audits.sh.'
   );
 });

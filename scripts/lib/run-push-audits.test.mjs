@@ -30,11 +30,53 @@ test('unrelated file selects no audits', () => {
   assert.deepEqual(listAudits(['README.md']), []);
 });
 
-test('tests/unit/*.test.mjs selects tests-vs-derived-data + orphan-tests', () => {
+test('tests/unit/*.test.mjs selects the full test-registration audit set (BRO-3239)', () => {
   assert.deepEqual(
     listAudits(['tests/unit/push-ledger-store.test.mjs']),
-    ['orphan-tests', 'tests-vs-derived-data']
+    ['colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage']
   );
+});
+
+// BRO-3239 HOLE 1: scripts/lib/**/*.test.* never triggered the test-
+// registration block at all before this card — the old `[^/]*` trigger only
+// matched a file directly under tests/unit/ or scripts/. Nested, not just
+// top-level, proves the `.*` widening is actually recursive. Each fixture
+// also lands the existing (unrelated to this card) scripts/**.{js,mjs,cjs,ts,sh}
+// triggers — unbounded-fetch always, cmux-spawn-credential for non-.sh — so
+// those are asserted here too rather than the test only proving the new
+// block in isolation.
+test('scripts/lib/**/*.test.* selects the full test-registration audit set (BRO-3239 HOLE 1)', () => {
+  assert.deepEqual(
+    listAudits(['scripts/lib/push-with-retry.stall-diagnostics.test.sh']),
+    ['colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch']
+  );
+  assert.deepEqual(
+    listAudits(['scripts/lib/nested/deeper/x.test.mjs']),
+    ['cmux-spawn-credential', 'colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch']
+  );
+});
+
+// An unrelated scripts/lib/*.js (not a test file) must still select nothing
+// from the test-registration block specifically — the widened trigger must
+// stay anchored to .test.* files, not scripts/lib/ generally (which the
+// pre-existing unbounded-fetch/cmux-spawn-credential triggers already cover).
+test('a non-test scripts/lib/*.js file does not select the test-registration audits', () => {
+  assert.deepEqual(listAudits(['scripts/lib/some-helper.js']), ['cmux-spawn-credential', 'unbounded-fetch']);
+});
+
+// Adversarial review (BRO-3239): each of the 3 new audits require()s one or
+// both of these as its canonical source (TEST_FILE_EXTENSIONS/MANIFESTS,
+// push-path glob translation). Editing either alone, with no *.test.* file in
+// the same push, must still re-trigger the block — otherwise a broken change
+// to the canonical list ships without its own gate ever firing.
+test('editing a canonical dependency (test-manifest.js / test-yml-push-paths.js) alone still selects the test-registration audits', () => {
+  for (const dep of ['scripts/lib/test-manifest.js', 'scripts/lib/test-yml-push-paths.js']) {
+    const labels = listAudits([dep]);
+    assert.ok(
+      labels.includes('colocated-test-ci-coverage'),
+      `editing ${dep} alone did not select colocated-test-ci-coverage — got: ${labels.join(', ')}`
+    );
+  }
 });
 
 test('scripts/*.js selects unbounded-fetch + write-routing + help-flag-safety', () => {
@@ -58,10 +100,13 @@ test('tests/e2e/*.ts selects playwright-evaluate-click only', () => {
   assert.deepEqual(listAudits(['tests/e2e/foo.spec.ts']), ['playwright-evaluate-click']);
 });
 
-test('.github/workflows/*.yml selects unbounded-fetch + the workflow-subject guards (BRO-2785)', () => {
+test('.github/workflows/*.yml selects unbounded-fetch + the workflow-subject guards (BRO-2785) + the full test-registration set (BRO-3239, test.yml itself gates push-path coverage)', () => {
   assert.deepEqual(listAudits(['.github/workflows/test.yml']), [
+    'colocated-test-ci-coverage',
     'orphan-tests',
+    'test-yml-manifest-paths',
     'tests-vs-derived-data',
+    'toplevel-script-test-yml-coverage',
     'unbounded-fetch',
     'workflow-actionlint',
     'workflow-concurrency',
@@ -123,7 +168,18 @@ test('scripts/*.mjs and scripts/*.ts also select write-routing (not just .js)', 
 test('mixed file list unions all applicable audits', () => {
   assert.deepEqual(
     listAudits(['scripts/foo.js', 'tests/unit/bar.test.mjs', 'tests/e2e/baz.spec.ts']),
-    ['cmux-spawn-credential', 'help-flag-safety', 'orphan-tests', 'playwright-evaluate-click', 'tests-vs-derived-data', 'unbounded-fetch', 'write-routing']
+    [
+      'cmux-spawn-credential',
+      'colocated-test-ci-coverage',
+      'help-flag-safety',
+      'orphan-tests',
+      'playwright-evaluate-click',
+      'test-yml-manifest-paths',
+      'tests-vs-derived-data',
+      'toplevel-script-test-yml-coverage',
+      'unbounded-fetch',
+      'write-routing',
+    ]
   );
 });
 

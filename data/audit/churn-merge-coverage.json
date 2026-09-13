@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-13T20:14:03.186Z",
+    "generatedAt": "2026-09-13T21:22:52.578Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -17,11 +17,11 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 84
+      "churn": 83
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 63
+      "churn": 59
     },
     {
       "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
@@ -52,10 +52,6 @@
       "churn": 33
     },
     {
-      "path": "public/data/shows/kimberly-akimbo-off-west-end-2026.json",
-      "churn": 33
-    },
-    {
       "path": "public/data/shows/manic-street-creature-west-end-2026.json",
       "churn": 33
     },
@@ -73,6 +69,10 @@
     },
     {
       "path": "public/data/shows/into-the-woods-west-end-2025.json",
+      "churn": 32
+    },
+    {
+      "path": "public/data/shows/kimberly-akimbo-off-west-end-2026.json",
       "churn": 32
     },
     {
@@ -95,7 +95,7 @@
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 142,
+      "churn": 139,
       "mergeAttr": "union"
     },
     {
@@ -104,43 +104,43 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 127,
-      "mergeAttr": "union"
-    },
-    {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 126,
+      "churn": 124,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 124,
+      "mergeAttr": "union"
+    },
+    {
       "path": "data/collection-state/progress.json",
-      "churn": 91,
+      "churn": 92,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 88,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 61,
+      "churn": 60,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 61,
+      "churn": 60,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 61,
+      "churn": 60,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 56,
+      "churn": 57,
       "mergeAttr": "ours"
     }
   ]
