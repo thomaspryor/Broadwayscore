@@ -8,13 +8,22 @@
  * status specifically.
  *
  * Why this exists (sherlock-holmes-west-end-2026, 2026-07):
- *   openSignalFromReviews() in opening-signal.js only watches
+ *   openSignalFromReviews() in opening-signal.js used to watch only
  *   PRE_OPEN_STATUSES = {'previews', 'upcoming'} — a show that never got a
- *   previews/upcoming stamp and sits directly in 'announced' with a null
- *   openingDate has no flip path at all. Sherlock Holmes WE ran and closed
+ *   previews/upcoming stamp and sat directly in 'announced' with a null
+ *   openingDate had no flip path at all. Sherlock Holmes WE ran and closed
  *   (2026-05-02 to 2026-06-06 at Regent's Park Open Air Theatre) entirely
  *   while status stayed 'announced', so the review-driven backstop never
  *   looked at it and its score never published.
+ *
+ *   BRO-3091 (2026-09-13) added 'announced' to PRE_OPEN_STATUSES, so that
+ *   backstop now DOES auto-flip the subset it can prove: an announced show
+ *   with a clean, reached press night in reviews.json. This audit is still
+ *   the wider net — it also flags stale previewsStartDate/openingDate, and
+ *   review-texts collected but not yet scored into reviews.json, neither of
+ *   which the flip acts on. Expect the two to overlap: a show this audit
+ *   flags for collected review files will usually be flipped automatically
+ *   on the next update-show-status run, once those reviews are scored.
  *
  * This script does NOT auto-flip status (an 'announced' show can legitimately
  * be pre-sale/unconfirmed and previewsStartDate can slip) — it flags for
