@@ -822,6 +822,12 @@ function vanishedBreadcrumbs(liveRefs, entries, opts = {}) {
 // separate appends and a concurrent sweep can land between them. Written
 // after the close, that sweep would see a launched, absent, unreconciled ref
 // and park a card whose work is already done.
+//
+// READER BEWARE (BRO-3218 / BRO-3228): this row is written for EVERY ✅ tab
+// the sweep sees, including ones pruneDone then SKIPS (live claude mid-turn,
+// selected, owner-opened). A 'prune-closed' row is therefore NOT proof the
+// tab was closed — on 2026-09-08 one was misread that way twice. The truth
+// is the sweep's "Closed N / Skipped N" lines in ~/Library/Logs/bsc-autoprune.log.
 function pruneClosedEntry(workspace, entries) {
   const launch = launchByRef(workspace.ref, entries);
   if (!launch) return null; // not a bsc-next auto-dispatch — not ours to journal
