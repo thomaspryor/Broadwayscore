@@ -359,6 +359,11 @@ const CONTENT_SURVIVAL_EXEMPT_LEDGERS = [
     reason: "2026-08-26 (BRO-2500), downgraded from 'full' 2026-09-04 (BRO-2413): same shape, same registry comment, and same downgrade reasoning as alert-ledger.json above — 3 independent writers.",
   },
   {
+    file: 'data/audit/breaker-transitions.jsonl',
+    mode: 'deep-only',
+    reason: "2026-09-08 (BRO-3022): structurally identical to alert-router-attempts.jsonl above and exempt for the same reason — an append-only JSONL written by 2 independent writers (check-sd-breaker.js, check-bd-breaker.js, via scripts/lib/breaker-transitions.js) and declared merge=union, so a push that legitimately keeps the other side's lines trips the added-lines invariant as a false REVERTED. Not 'full': the rows are NOT disposable (they are Sprint 3's only per-day guard-trip record), so the deep check stays. Losing rows here is already handled honestly rather than ignored — appendTransition's prevTs chain flags middle-loss, recordObservation re-appends a missing same-day trip row on the next hourly run, and backfill-breaker-transitions.js can reconstruct older days from the state files' own history.",
+  },
+  {
     file: 'data/audit/deploy-watermark.json',
     mode: 'deep-only',
     reason:

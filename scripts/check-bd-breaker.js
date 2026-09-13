@@ -37,7 +37,7 @@ const {
 const { fetchBdZoneCostDay } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
 const { countShowsInOpeningWindow } = require('./lib/opening-night-selection');
-const { recordTransitionSafely, stateOf } = require('./lib/breaker-transitions');
+const { recordTransitionSafely } = require('./lib/breaker-transitions');
 
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -109,6 +109,11 @@ async function main() {
 
   const state = loadState();
   const changes = [];
+  // Every zone with a KNOWN verdict this run, flipped or not (BRO-3022). The
+  // transition ledger is written from this rather than from `changes` because
+  // its trip rows are repaired-if-missing, not fire-once — see the comment at
+  // the recording loop below.
+  const observed = [];
 
   for (const zone of zones) {
     const prev = state.zones[zone];
@@ -136,11 +141,8 @@ async function main() {
       ? (wasActive && prev.trippedAt) || new Date().toISOString()
       : null;
     state.zones[zone] = { day, trippedAt, billedReqs, ceiling: effectiveCeiling, cost: billing.cost };
+    observed.push({ zone, tripped: verdict.tripped, wasActive, billedReqs, ceiling: effectiveCeiling });
     if (verdict.tripped !== wasActive) {
-      // wasActive is carried through (BRO-3022) so the transition ledger below
-      // can record the real from-state rather than inferring it: this branch is
-      // already "the status changed", so from is always !tripped today, but
-      // spelling it out keeps the row honest if a third state is ever added.
       changes.push({ zone, tripped: verdict.tripped, wasActive, billedReqs, ceiling: effectiveCeiling });
     }
   }
@@ -157,6 +159,40 @@ async function main() {
   fs.writeFileSync(STATE_PATH, JSON.stringify(state, null, 2) + '\n');
   console.log(`Wrote ${STATE_PATH}`);
 
+  // BRO-3022: record trips/recoveries for Sprint 3's guard audit, from EVERY
+  // observed zone rather than only the flipped ones, and ABOVE the "no change"
+  // early return below.
+  //
+  // The state file written just above already carries trippedAt, so if a row's
+  // append fails, the next hourly run would see wasActive === verdict.tripped
+  // for that zone, take the early return, and never retry — losing the trip day
+  // silently, in a way the prevTs chain cannot flag (no row was written for a
+  // later one to reference). recordTransitionSafely's trip side is idempotent
+  // per (conditionKey, day), so attempting it every run repairs a lost row on
+  // the next one while an already-recorded day appends nothing.
+  for (const o of observed) {
+    recordTransitionSafely({
+      conditionKey: `bd-circuit-breaker-${o.zone}`,
+      tripped: o.tripped,
+      wasActive: o.wasActive,
+      day,
+      units: o.billedReqs,
+      ceiling: o.ceiling,
+      // BD's resolveDailyCeiling() is a bare number with no source string of
+      // its own (unlike SD's resolveCeilingForDay(), which returns
+      // {ceiling, source}), so derive one. Compare against the DEFAULT rather
+      // than merely testing that the env var is set: _posInt silently ignores
+      // BD_BREAKER_CEILING=0 or garbage and returns the default, and recording
+      // 'env' there would attribute a ceiling to an override that never
+      // applied (ship-check finding, 2026-09-08). Note `ceiling` here is the
+      // effective (post opening-window-reserve) figure, so say so when the
+      // reserve moved it.
+      ceilingSource: o.ceiling !== ceiling
+        ? 'opening-window-reserve'
+        : (ceiling === resolveDailyCeiling({}) ? 'default' : 'env'),
+    });
+  }
+
   if (!changes.length) {
     console.log('No breaker state change — no alert.');
     return;
@@ -171,25 +207,6 @@ async function main() {
     // and the transition rows below use them verbatim so a reader can join the
     // two files on conditionKey without a translation table.
     const conditionKey = `bd-circuit-breaker-${change.zone}`;
-
-    // BRO-3022: record the TRANSITION — the only per-day trip record there is.
-    // `changes` holds exactly the zones whose status flipped this run, so an
-    // unchanged zone appends nothing, and the --dry-run early return above
-    // means --dry-run writes no row. Errors are swallowed: the alert below
-    // matters more than the row.
-    recordTransitionSafely({
-      conditionKey,
-      from: stateOf(change.wasActive),
-      to: stateOf(change.tripped),
-      day,
-      units: change.billedReqs,
-      ceiling: change.ceiling,
-      // BD's resolveDailyCeiling() is a bare env-or-default number with no
-      // source string of its own (unlike SD's resolveCeilingForDay(), which
-      // returns {ceiling, source}), so name the two cases explicitly rather
-      // than writing a null the reader would have to guess at.
-      ceilingSource: process.env.BD_BREAKER_CEILING ? 'env' : 'default',
-    });
 
     // Recovery is not news. Resolving the condition (rather than routing a
     // second "all clear" line) clears the cooldown so the NEXT trip notifies

@@ -16,9 +16,12 @@ const {
   parseTransitions,
   loadTransitions,
   appendTransition,
+  recordObservation,
   recordTransitionSafely,
   findChainBreaks,
   daysTripped,
+  auditDays,
+  readLedger,
 } = require('./breaker-transitions.js');
 const { mergeBreakerTransitions } = require('./merge-breaker-transitions.js');
 
@@ -205,12 +208,21 @@ test('an invalid state is rejected loudly, and recordTransitionSafely swallows i
   assert.throws(() => appendTransition({ conditionKey: 'x', from: OK, to: 'maybe', ledgerPath }), /to must be/);
   assert.throws(() => appendTransition({ from: OK, to: TRIPPED, ledgerPath }), /conditionKey/);
 
-  // The wrapper the checkers actually call must NEVER throw — an unwritable
-  // ledger must not suppress the routeAlert() that follows it.
+  // The wrapper the checkers actually call must NEVER throw — an unwritable or
+  // misused ledger must not suppress the routeAlert() that follows it.
   const warnings = [];
-  const got = recordTransitionSafely({ conditionKey: 'x', from: 'maybe', to: TRIPPED, ledgerPath }, { warn: (m) => warnings.push(m) });
-  assert.equal(got, null);
+  const got = recordTransitionSafely({ tripped: true, wasActive: false, day: '2026-09-08', ledgerPath }, { warn: (m) => warnings.push(m) });
+  assert.equal(got, null, 'a missing conditionKey must not throw out of the checker');
   assert.equal(warnings.length, 1);
+
+  // And a genuinely unwritable path is swallowed the same way.
+  const warned = [];
+  const blocked = recordTransitionSafely(
+    { conditionKey: 'sd-circuit-breaker', tripped: true, wasActive: false, day: '2026-09-08', ledgerPath: '/dev/null/nope/ledger.jsonl' },
+    { warn: (m) => warned.push(m) },
+  );
+  assert.equal(blocked, null);
+  assert.equal(warned.length, 1);
 });
 
 test('stateOf maps the checkers\' boolean verdict onto row states', () => {
@@ -230,6 +242,126 @@ test('mergeBreakerTransitions unions both sides, deduped by (ts, conditionKey)',
   // apiFallbackMerge rather than apiFallbackSafe (ours-wins-outright).
   assert.ok(merged.some((r) => r.conditionKey === 'bd-circuit-breaker-serp_api1'));
   assert.equal(daysTripped(merged, { conditionKey: 'sd-circuit-breaker' }).days, 2);
+});
+
+/* --------------------------------------------------------------------------
+ * recordObservation: the self-healing recorder the checkers actually call.
+ * ------------------------------------------------------------------------ */
+
+test('recordObservation REPAIRS a trip row lost after the state file was written', () => {
+  // The silent-loss hole the ship-check found. The checkers write their state
+  // file (setting trippedAt) BEFORE recording, so if the append fails, the next
+  // run sees wasActive === tripped, takes its "no state change" early return,
+  // and would never retry. Hour 1's row is missing here; hour 2 must rewrite it.
+  const ledgerPath = tmpLedger();
+  const hour2 = recordObservation({
+    conditionKey: 'sd-circuit-breaker', tripped: true, wasActive: true, day: '2026-09-08', units: 5000, ceiling: 1, ledgerPath,
+  });
+  assert.ok(hour2, 'an unchanged-but-UNRECORDED tripped day must be repaired');
+  assert.equal(daysTripped(loadTransitions(ledgerPath), { conditionKey: 'sd-circuit-breaker' }).days, 1);
+});
+
+test('recordObservation is idempotent per (conditionKey, day) — the hourly re-check is a no-op', () => {
+  const ledgerPath = tmpLedger();
+  const first = recordObservation({ conditionKey: 'sd-circuit-breaker', tripped: true, wasActive: false, day: '2026-09-08', ledgerPath });
+  assert.ok(first, 'the flip itself records');
+  for (let i = 0; i < 5; i++) {
+    assert.equal(
+      recordObservation({ conditionKey: 'sd-circuit-breaker', tripped: true, wasActive: true, day: '2026-09-08', ledgerPath }),
+      null,
+      'an already-recorded day must append nothing',
+    );
+  }
+  assert.equal(loadTransitions(ledgerPath).length, 1);
+
+  // A NEW day re-trips and does record — that is the day-rollover path.
+  assert.ok(recordObservation({ conditionKey: 'sd-circuit-breaker', tripped: true, wasActive: false, day: '2026-09-09', ledgerPath }));
+  assert.equal(daysTripped(loadTransitions(ledgerPath), { conditionKey: 'sd-circuit-breaker' }).days, 2);
+});
+
+test('recordObservation writes nothing for ok -> ok, and records a real recovery once', () => {
+  const ledgerPath = tmpLedger();
+  assert.equal(recordObservation({ conditionKey: 'sd-circuit-breaker', tripped: false, wasActive: false, day: '2026-09-08', ledgerPath }), null);
+  assert.equal(fs.existsSync(ledgerPath), false, 'a quiet run must not even create the file');
+
+  recordObservation({ conditionKey: 'sd-circuit-breaker', tripped: true, wasActive: false, day: '2026-09-08', ledgerPath });
+  const recovery = recordObservation({ conditionKey: 'sd-circuit-breaker', tripped: false, wasActive: true, day: '2026-09-08', ledgerPath });
+  assert.ok(recovery, 'a real recovery records');
+  assert.equal(recovery.to, OK);
+  // ...and does not repeat every hour afterwards.
+  assert.equal(recordObservation({ conditionKey: 'sd-circuit-breaker', tripped: false, wasActive: false, day: '2026-09-08', ledgerPath }), null);
+  assert.equal(loadTransitions(ledgerPath).length, 2);
+});
+
+/* --------------------------------------------------------------------------
+ * auditDays: the integrity-aware reader Sprint 3 should call.
+ * ------------------------------------------------------------------------ */
+
+test('an OLD gap does not poison a later window', () => {
+  // Ship-check finding: filtering the count by window but checking integrity
+  // over the whole file meant the first gap ever recorded set lowerBound on
+  // every future window — permanently blocking a guard from being cleared.
+  const rows = parseTransitions([
+    JSON.stringify({ ts: '2026-08-01T09:00:00.000Z', conditionKey: 'sd-circuit-breaker', to: TRIPPED, day: '2026-08-01', prevTs: null }),
+    JSON.stringify({ ts: '2026-08-03T09:00:00.000Z', conditionKey: 'sd-circuit-breaker', to: TRIPPED, day: '2026-08-03', prevTs: '2026-08-02T09:00:00.000Z' }),
+    JSON.stringify({ ts: '2026-09-07T09:00:00.000Z', conditionKey: 'sd-circuit-breaker', to: TRIPPED, day: '2026-09-07', prevTs: '2026-08-03T09:00:00.000Z' }),
+  ].join('\n'));
+
+  assert.equal(daysTripped(rows, { conditionKey: 'sd-circuit-breaker' }).lowerBound, true, 'the gap is real over the full history');
+  const sept = daysTripped(rows, { conditionKey: 'sd-circuit-breaker', sinceDay: '2026-09-01' });
+  assert.equal(sept.days, 1);
+  assert.equal(sept.lowerBound, false, 'an August gap must not block clearing a September window');
+});
+
+test('a windowed row whose predecessor precedes the window is NOT a gap', () => {
+  const rows = parseTransitions([
+    JSON.stringify({ ts: '2026-09-01T09:00:00.000Z', conditionKey: 'sd-circuit-breaker', to: TRIPPED, day: '2026-09-01', prevTs: null }),
+    JSON.stringify({ ts: '2026-09-07T09:00:00.000Z', conditionKey: 'sd-circuit-breaker', to: TRIPPED, day: '2026-09-07', prevTs: '2026-09-01T09:00:00.000Z' }),
+  ].join('\n'));
+  const out = daysTripped(rows, { conditionKey: 'sd-circuit-breaker', sinceDay: '2026-09-05' });
+  assert.equal(out.days, 1);
+  assert.equal(out.lowerBound, false, 'the predecessor lives before the window and is present — not loss');
+});
+
+test('auditDays flags a corrupt ledger as a LOWER BOUND', () => {
+  const ledgerPath = tmpLedger();
+  fs.writeFileSync(ledgerPath, [
+    JSON.stringify({ ts: '2026-09-07T09:00:00.000Z', conditionKey: 'sd-circuit-breaker', to: TRIPPED, day: '2026-09-07', prevTs: null }),
+    '{"ts":"2026-09-08T09:00:00.000Z","conditionKey":"sd-circ',
+  ].join('\n') + '\n');
+
+  const { rows, corruptLines } = readLedger(ledgerPath);
+  assert.equal(rows.length, 1);
+  assert.equal(corruptLines, 1);
+
+  const out = auditDays(ledgerPath, { conditionKey: 'sd-circuit-breaker' });
+  assert.equal(out.days, 1);
+  assert.equal(out.lowerBound, true, 'a dropped torn row means the real count may be higher');
+});
+
+test('auditDays tells an ABSENT ledger from an unreadable one', () => {
+  const absent = auditDays(path.join(path.dirname(tmpLedger()), 'nope.jsonl'), { conditionKey: 'sd-circuit-breaker' });
+  assert.equal(absent.missing, true);
+  assert.equal(absent.unreadable, false);
+  assert.equal(absent.days, 0);
+  // A guard that has genuinely never tripped is an exact 0, not a lower bound.
+  assert.equal(absent.lowerBound, false);
+
+  // A directory where a file should be: the read throws EISDIR, not ENOENT.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'breaker-unreadable-'));
+  const bad = auditDays(dir, { conditionKey: 'sd-circuit-breaker' });
+  assert.equal(bad.missing, false);
+  assert.equal(bad.unreadable, true);
+  assert.equal(bad.lowerBound, true, 'a ledger we cannot read is never a confident zero');
+});
+
+test('daysTripped falls back to the row ts when day is missing or malformed', () => {
+  const rows = parseTransitions([
+    JSON.stringify({ ts: '2026-09-07T09:00:00.000Z', conditionKey: 'sd-circuit-breaker', to: TRIPPED, prevTs: null }),
+    JSON.stringify({ ts: '2026-09-08T09:00:00.000Z', conditionKey: 'sd-circuit-breaker', to: TRIPPED, day: 'garbage', prevTs: '2026-09-07T09:00:00.000Z' }),
+  ].join('\n'));
+  const out = daysTripped(rows, { conditionKey: 'sd-circuit-breaker' });
+  assert.deepEqual(out.dayList, ['2026-09-07', '2026-09-08'], 'no row is dropped for want of a well-formed day');
 });
 
 /* ──────────────────────────────────────────────────────────────────────────

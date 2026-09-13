@@ -115,8 +115,19 @@ function collectBd() {
 function main() {
   const candidates = [...collectSd(), ...collectBd()].sort((a, b) => (a.ts < b.ts ? -1 : a.ts > b.ts ? 1 : 0));
 
-  const existing = new Set(loadTransitions(DEFAULT_PATH).map((r) => `${r.ts} ${r.conditionKey}`));
-  const missing = candidates.filter((r) => !existing.has(`${r.ts} ${r.conditionKey}`));
+  // Dedupe WITHIN the batch as well as against the file. A state file whose
+  // trippedAt reverts to an earlier value (A -> null -> A, plausible when a
+  // commit is lost per BRO-2951) reconstructs as two rows with an identical ts,
+  // which would break the (ts, conditionKey) uniqueness that
+  // merge-breaker-transitions.js dedupes on and this script's own idempotency
+  // claim rests on (ship-check finding, 2026-09-08).
+  const seen = new Set(loadTransitions(DEFAULT_PATH).map((r) => `${r.ts} ${r.conditionKey}`));
+  const missing = candidates.filter((r) => {
+    const key = `${r.ts} ${r.conditionKey}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 
   console.log(`Reconstructed ${candidates.length} trip transition(s) from state-file history (--since=${SINCE}); ${candidates.length - missing.length} already recorded, ${missing.length} to add.`);
 

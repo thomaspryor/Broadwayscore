@@ -33,7 +33,7 @@ const { utcDay, breakerAlertSeverity, effectiveCeilingForOpeningWindow } = requi
 const { fetchSdAccount } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
 const { countShowsInOpeningWindow } = require('./lib/opening-night-selection');
-const { recordTransitionSafely, stateOf } = require('./lib/breaker-transitions');
+const { recordTransitionSafely } = require('./lib/breaker-transitions');
 
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -172,31 +172,39 @@ async function main() {
   fs.writeFileSync(STATE_PATH, JSON.stringify(state, null, 2) + '\n');
   console.log(`Wrote ${STATE_PATH}`);
 
-  if (verdict.tripped === wasActive) {
-    console.log('No breaker state change — no alert.');
-    return;
-  }
-
   const conditionKey = 'sd-circuit-breaker';
 
-  // BRO-3022: record the TRANSITION. This is the only per-day trip record that
-  // exists — data/audit/alert-ledger.json keeps a single cumulative
-  // notifyCount per condition (gated by the router's own 6h cooldown), which
-  // cannot answer Sprint 3's "how many days did this guard trip this week".
-  // Deliberately inside this branch, which is already the "status changed"
-  // branch, so an unchanged status appends nothing; and deliberately AFTER the
-  // --dry-run early return above, so --dry-run writes no row. recordTransition-
-  // Safely swallows its own errors: the alert below matters more than the row,
-  // and an unwritable ledger must never suppress it.
+  // BRO-3022: record the trip/recovery for Sprint 3's guard audit. This is the
+  // only per-day trip record that exists — data/audit/alert-ledger.json keeps a
+  // single cumulative notifyCount per condition (gated by the router's own 6h
+  // cooldown), which cannot answer "how many days did this guard trip".
+  //
+  // Placed ABOVE the "no state change" early return on purpose, and idempotent
+  // per (conditionKey, day) rather than fire-once. The state file written just
+  // above already carries trippedAt, so if this append fails, the next hourly
+  // run would see wasActive === verdict.tripped, return early, and NEVER retry
+  // — losing the trip day silently, in a way the prevTs chain cannot even flag
+  // (no row was written for a later one to reference). Attempting it every run
+  // makes the next run repair it. An already-recorded day appends nothing, so
+  // the ordinary unchanged re-check is still a no-op.
+  //
+  // Still after the --dry-run early return above, so --dry-run writes no row,
+  // and still through recordTransitionSafely, which swallows its own errors —
+  // the alert below matters more than the row and must never be suppressed.
   recordTransitionSafely({
     conditionKey,
-    from: stateOf(wasActive),
-    to: stateOf(verdict.tripped),
+    tripped: verdict.tripped,
+    wasActive,
     day,
     units: dayCredits,
     ceiling: effectiveCeiling,
     ceilingSource,
   });
+
+  if (verdict.tripped === wasActive) {
+    console.log('No breaker state change — no alert.');
+    return;
+  }
 
   const openingWindowShows = countShowsInOpeningWindow(SHOWS_PATH);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
