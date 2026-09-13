@@ -174,17 +174,27 @@ jobs:
           set +e
           WOULDFIX=$(node scripts/audit-self-contradictory-clears.js --fix-safe --dry-run --json 2>/dev/null \
             | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).wouldFix)}catch{console.log('parse-error')}})")
+          BEFORE='${{ steps.survey.outputs.wouldfix }}'
           case "$WOULDFIX" in (*[!0-9]*|'') echo "::error::re-survey did not return a numeric wouldFix (got '$WOULDFIX')"; exit 1;; esac
-          if [ "$WOULDFIX" -gt 0 ]; then
-            echo "::error::$WOULDFIX drainable contradiction(s) still present after --fix-safe — the drain did not take. Likeliest cause: push-review-texts' PROTECTED_FIELDS restore resurrected the breadcrumbs (its action.yml writes the restored record back to the working tree before committing, which is exactly why re-reading the tree here catches that case)."
+          # Gate on a DECREASE, not on zero. push-review-texts runs
+          # `git pull --rebase --autostash` before it commits, so this re-read sees
+          # rows written by any of the ~40 other workflows that push this repo — a
+          # contradiction that arrived during our own run would hard-fail a drain
+          # that worked perfectly. No decrease at all is the real signal that the
+          # drain did not take.
+          if [ "$WOULDFIX" -ge "$BEFORE" ]; then
+            echo "::error::wouldFix did not decrease ($BEFORE -> $WOULDFIX) after --fix-safe — the drain did not take. Likeliest cause: push-review-texts' PROTECTED_FIELDS restore resurrected the breadcrumbs (its action.yml writes the restored record back to the working tree before committing, which is exactly why re-reading the tree here catches that case)."
             exit 1
+          fi
+          if [ "$WOULDFIX" -gt 0 ]; then
+            echo "::notice::drained $BEFORE -> $WOULDFIX; the remainder arrived from another writer during this run and drains on the next cron."
           fi
           # Scope of this check: it re-reads the RUNNER's tree, so it proves the drain
           # survived the protected-field restore. It cannot see a same-file rebase
-          # collision resolved in the remote's favour by another of the ~40 workflows
-          # that push this repo — that case is self-healing, since the next daily run
-          # finds the contradiction again and re-drains it.
-          echo "drain verified on the runner tree: 0 drainable contradictions remain"
+          # collision resolved in the remote's favour by another of those writers —
+          # that case is self-healing, since the next daily run finds the
+          # contradiction again and re-drains it.
+          echo "drain verified on the runner tree: $BEFORE -> $WOULDFIX drainable"
 
       - name: Summary
         if: always()

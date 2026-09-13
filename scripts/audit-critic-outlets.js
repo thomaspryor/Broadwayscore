@@ -169,16 +169,33 @@ function scanReviewTexts() {
         // reasoning review-normalization.js already applies when picking
         // merge targets.
         //
-        // fabricatedEntry joins them for the same reason (BRO-3092): the field
-        // means the RECORD itself was manufactured — a fabricated URL, or, in
-        // marie-and-rosetta-west-end-2026/thestage--london-theatre-direct-
-        // limited.json, `fabricatedReason: 'Collection script misidentified
-        // london-theatre-direct as the-stage'`, i.e. a wrongAttribution by
-        // another name, stamped with url:null and a criticName of "London
-        // Theatre Direct Limited". All 205 fabricatedEntry files in the corpus
-        // are that shape (fabricated URL / fabricated outlet / fabricated
-        // byline); none is independent evidence of where a critic publishes,
-        // and counting them reds this gate on attributions nobody asserted.
+        // fabricatedEntry joins them for the same reason (BRO-3092), though by a
+        // narrower argument than the flags above. Of the 205 fabricatedEntry
+        // files, exactly ONE is a misattribution outright — marie-and-rosetta-
+        // west-end-2026/thestage--london-theatre-direct-limited.json, stamped
+        // `fabricatedReason: 'Collection script misidentified london-theatre-
+        // direct as the-stage'`, i.e. wrongAttribution by another name, with
+        // url:null and a criticName of "London Theatre Direct Limited". The
+        // other 204 name a plausible, usually CORRECT affiliation (178 "URL
+        // returns 404, no fullText, generic fallback", 24 web-search-era
+        // fabrications, 2 user-verified non-existent reviews) — Hilton Als
+        // really did write for the New Yorker.
+        //
+        // They are skipped anyway because the record never ESTABLISHED that
+        // affiliation: its URL 404s or was invented, so it is not independent
+        // evidence of where a critic publishes, only a restatement of what the
+        // fabricating step already assumed. Counting it lets a manufactured row
+        // vouch for itself.
+        //
+        // Measured delta of this skip against the live corpus (bare write mode,
+        // HEAD vs this change): 632 -> 629 critics, 4 flags removed, 2 critics
+        // lose a knownOutlet, 0 primaryOutlet changes, 0 isFreelancer flips.
+        // The 3 departures (miriam-gillinson, jonas-schwartz, paul-raven) each
+        // fall to 2 real reviews, under MIN_REVIEWS_FOR_REGISTRY — Guard G in
+        // review-file-writer.js gates on `entry &&`, so it fails OPEN for them
+        // rather than flagging. jesse-green loses `newyorker` but is
+        // isFreelancer, which Guard G skips anyway; london-theatre-direct-
+        // limited loses `thestage`, which is the guard tightening correctly.
         if (data.wrongAttribution || data.wrongProduction || data.wrongShow
           || data.duplicateOf || data.fabricatedEntry === true) {
           skippedFiles++;
@@ -273,6 +290,14 @@ function buildRegistry(rawCritics) {
         // the audit baseline as the only place to record the verdict. Suppress
         // here too, so one table row is the single durable home for
         // "I checked this attribution and it is correct".
+        //
+        // Side effect, deliberate: one row already in critic-outlets-baseline
+        // .json (alice-saville at timeout-london, sylvia-off-west-end-2026)
+        // stops being produced, and --update-baseline's full overwrite will
+        // drop it. That is the intended direction — the pair table is a
+        // stronger record than a baseline key, because it states WHY the
+        // attribution is accepted. It does mean deleting a table row no longer
+        // has a baseline backstop: the gate goes red on the next run instead.
         if (manualPairs.includes(review.outlet)) continue;
         const outletShare = data.outletCounts[review.outlet] / data.totalReviews;
         if (outletShare < SUSPICIOUS_SHARE_THRESHOLD) {
