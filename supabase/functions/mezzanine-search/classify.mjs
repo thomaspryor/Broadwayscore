@@ -39,6 +39,10 @@ export function slugify(text) {
     .replace(/[̀-ͯ]/g, '')
     .replace(/['’]/g, '')
     .replace(/[&]/g, 'and')
+    // "/" is a word separator, not punctuation to drop (BRO-3191 cousin, kept
+    // in sync with scripts/lib/mezzanine-classify.js#slugify per this file's
+    // own header comment).
+    .replace(/\//g, ' ')
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
