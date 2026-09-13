@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-09-10T21:31:14.668Z",
-  "windowDays": 1095,
-  "targets": 223,
-  "auditedThisRun": 6,
-  "carriedForward": 494,
+  "generatedAt": "2026-09-13T17:23:31.424Z",
+  "windowDays": 21,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 500,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 308,
-    "totalMissing": 1592,
+    "withGap": 309,
+    "totalMissing": 1593,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 1754,
     "totalRecoverable": 18,
@@ -10542,6 +10542,230 @@
         "candidateCount": 26
       },
       "computedAt": "2026-08-26T16:26:36.457Z"
+    },
+    {
+      "showId": "becoming-hamlet-off-broadway-2026",
+      "title": "Becoming Hamlet",
+      "openingDate": "2026-09-11",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/becoming-hamlet-off-broadway-review/",
+        "https://www.theatermania.com/news/review-in-becoming-hamlet-you-are-the-prince-of-denmark_1853395/",
+        "https://www.theaterscene.net/plays/offbway-plays/becoming-hamlet/victor-gluck/",
+        "https://t2conline.com/becoming-hamlet-to-participate-or-not-to-participate-that-is-the-question/",
+        "https://thefrontrowcenter.com/2026/09/becoming-hamlet/",
+        "https://everythingimmersive.com/events/becoming-hamlet",
+        "https://artsnewsnow.com/arts_news/the-directors-company-presents-the-oracular-theatres-off-broadway-premiere-of-becoming-hamlet/",
+        "https://openingnight.online/photos-becoming-hamlet-celebrates-opening-night-off-broadway/"
+      ],
+      "dirFiles": 8,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "https://openingnight.online/photos-becoming-hamlet-celebrates-opening-night-off-broadway/",
+          "host": "openingnight.online",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://everythingimmersive.com/events/becoming-hamlet",
+          "host": "everythingimmersive.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "everythingimmersive--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://everythingimmersive.com/events/becoming-hamlet"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://artsnewsnow.com/arts_news/the-directors-company-presents-the-oracular-theatres-off-broadway-premiere-of-becoming-hamlet/",
+          "host": "artsnewsnow.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsnewsnow--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://artsnewsnow.com/arts_news/the-directors-company-presents-the-oracular-theatres-off-broadway-premiere-of-becoming-hamlet/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Becoming Hamlet\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Becoming Hamlet\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Becoming Hamlet\" review five",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Becoming Hamlet Five Angels Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Becoming Hamlet Five Angels Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Becoming Hamlet Five Angels Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 8,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 23,
+        "byReason": {
+          "aggregator-internal-nav": 5,
+          "non-review-host": 14,
+          "merch-store": 3,
+          "ticketing-reseller": 1
+        }
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "openingnight.online",
+            "outlet": "openingnight.online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://openingnight.online/photos-becoming-hamlet-celebrates-opening-night-off-broadway/"
+          },
+          {
+            "outletId": "everythingimmersive.com",
+            "outlet": "everythingimmersive.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://everythingimmersive.com/events/becoming-hamlet"
+          },
+          {
+            "outletId": "artsnewsnow.com",
+            "outlet": "artsnewsnow.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://artsnewsnow.com/arts_news/the-directors-company-presents-the-oracular-theatres-off-broadway-premiere-of-becoming-hamlet/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://culturesauce.com/becoming-hamlet-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-13T17:23:31.424Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-in-becoming-hamlet-you-are-the-prince-of-denmark_1853395/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-13T17:23:31.424Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/becoming-hamlet/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-09-13T17:23:31.424Z"
+          },
+          {
+            "url": "https://t2conline.com/becoming-hamlet-to-participate-or-not-to-participate-that-is-the-question/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-13T17:23:31.424Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/09/becoming-hamlet/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-13T17:23:31.424Z"
+          },
+          {
+            "url": "https://openingnight.online/photos-becoming-hamlet-celebrates-opening-night-off-broadway/",
+            "outletId": "openingnight.online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-13T17:23:31.424Z"
+          },
+          {
+            "url": "https://everythingimmersive.com/events/becoming-hamlet",
+            "outletId": "everythingimmersive.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-13T17:23:31.424Z"
+          },
+          {
+            "url": "https://artsnewsnow.com/arts_news/the-directors-company-presents-the-oracular-theatres-off-broadway-premiere-of-becoming-hamlet/",
+            "outletId": "artsnewsnow.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-13T17:23:31.424Z"
+          }
+        ],
+        "liveCount": 5,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-09-13T17:23:31.424Z"
     },
     {
       "showId": "beetlejuice-2025",
@@ -136301,19 +136525,19 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://culturesauce.com/ford-hill-project-off-broadway-review/",
+        "https://www.nytimes.com/2026/09/11/theater/the-ford-hill-project-review-two-unnerving-testimonies.html",
+        "https://theaterlife.com/the-ford-hill-project/",
         "https://www.picturethispost.com/bam-presents-the-ford-hill-project-preview/",
-        "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project",
-        "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel",
-        "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/"
+        "https://exeuntnyc.com/reviews/the-ford-hill-project-at-la-mama/"
       ],
-      "dirFiles": 5,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 7,
+      "dirClean": 3,
+      "inReviewsJson": 3,
       "missing": [
         {
-          "url": "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project",
-          "host": "show-score.com",
-          "knownOutletId": null,
+          "url": "https://exeuntnyc.com/reviews/the-ford-hill-project-at-la-mama/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
           "serpCensus": true
         }
       ],
@@ -136336,42 +136560,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel",
-          "host": "abouttheartists.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "abouttheartists--unknown.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/",
-          "host": "brooklyneagle.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "brooklyneagle--brooklyn-eagle-staff.json",
-              "flag": "clean",
-              "urlInDir": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -136387,7 +136575,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -136398,7 +136586,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -136428,7 +136616,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -136438,7 +136626,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -136448,39 +136636,24 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 38,
         "byReason": {
-          "non-review-host": 26,
-          "venue-production-page": 4,
-          "merch-store": 5,
-          "aggregator-internal-nav": 1
+          "non-review-host": 32,
+          "venue-production-page": 3,
+          "aggregator-internal-nav": 1,
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-no-host"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project"
+            "url": "https://exeuntnyc.com/reviews/the-ford-hill-project-at-la-mama/"
           },
           {
             "outletId": "picture-this-post",
@@ -136488,20 +136661,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.picturethispost.com/bam-presents-the-ford-hill-project-preview/"
-          },
-          {
-            "outletId": "abouttheartists.com",
-            "outlet": "abouttheartists.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel"
-          },
-          {
-            "outletId": "brooklyneagle.com",
-            "outlet": "brooklyneagle.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/"
           }
         ],
         "suppressedMissing": [],
@@ -136513,11 +136672,23 @@
             "firstSeenAt": "2026-09-10T21:31:14.668Z"
           },
           {
-            "url": "https://www.show-score.com/off-off-broadway-shows/the-ford-hill-project",
-            "outletId": "show-score.com",
+            "url": "https://www.nytimes.com/2026/09/11/theater/the-ford-hill-project-review-two-unnerving-testimonies.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-13T17:22:40.473Z"
+          },
+          {
+            "url": "https://theaterlife.com/the-ford-hill-project/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-13T17:22:40.473Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/the-ford-hill-project-at-la-mama/",
+            "outletId": "exeunt-magazine",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-10T21:31:14.668Z"
+            "firstSeenAt": "2026-09-13T17:22:40.473Z"
           },
           {
             "url": "https://www.picturethispost.com/bam-presents-the-ford-hill-project-preview/",
@@ -136525,26 +136696,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-10T21:31:14.668Z"
-          },
-          {
-            "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-sunday-evans-and-elizabeth-marvel",
-            "outletId": "abouttheartists.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-10T21:31:14.668Z"
-          },
-          {
-            "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-bam-stage/",
-            "outletId": "brooklyneagle.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-10T21:31:14.668Z"
           }
         ],
-        "liveCount": 1,
+        "liveCount": 3,
         "candidateCount": 5
       },
-      "computedAt": "2026-09-10T21:31:14.668Z"
+      "computedAt": "2026-09-13T17:22:40.473Z"
     },
     {
       "showId": "the-gin-game-2026",
