@@ -1185,10 +1185,35 @@ function _mergeIntoExisting(filepath, existing, ctx) {
 
   if (!dryRun) {
     sanitizeDisplayFields(existing);
-    safeWriteReview(filepath, existing, { merge: false });
+    const writeResult = safeWriteReview(filepath, existing, { merge: false });
+    // BRO-3182: safeWriteReview can refuse/redirect a write entirely (e.g.
+    // date-implausible or cross-market-contamination quarantine to
+    // _pending/) and return `wrote: false` — nothing on disk changed. This
+    // return value went unchecked, so a guard-dropped write still reported
+    // 'updated' here, and the caller printed "Updated" and exited 0 with no
+    // actual diff on disk. Surface the refusal instead of masking it.
+    if (!writeResult || writeResult.wrote === false) {
+      return {
+        action: 'skipped',
+        reason: (writeResult && writeResult.skipped) || 'write-guard-refused',
+        filepath,
+        quarantinedPath: writeResult && writeResult.quarantinedPath,
+      };
+    }
   }
 
   return { action: 'updated', filepath };
 }
 
-module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen };
+// Skip reasons from createOrMergeReviewFile that mean the write-guard
+// actively REFUSED or REDIRECTED a write the caller asked for — distinct
+// from a benign no-op ('no-changes', 'onMerge-aborted') where nothing new
+// was ever attempted. A caller reporting success to an operator (a script
+// printing "Updated", an automated ingest) must treat these as failures.
+const WRITE_GUARD_REFUSED_REASONS = new Set([
+  'write-guard-refused',
+  'date_implausible',
+  'cross_market_contamination',
+]);
+
+module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS };

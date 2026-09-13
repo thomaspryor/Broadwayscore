@@ -1512,6 +1512,42 @@ function normalizePublishDate(dateStr) {
   return stripOrdinals(dateStr);
 }
 
+// A CI-rejected ("not a review") or flagged (wrongProduction/duplicateOf)
+// record's identity must never be inferred from a partial signal (outlet
+// name alone, shared domain) — only an exact URL match (pass 0 above/below,
+// which exists specifically to prevent byline-extraction duplicates on a
+// CONFIRMED-identical article) may still reuse one. Every other, weaker pass
+// must treat these as terminal: a human/override flow handles them explicitly.
+// BRO-3182: guardian--stephen-unwin.json (rejectionReason: not_a_review, a
+// flagged director essay) was returned as a merge target for an unrelated,
+// same-day Mark Lawson review purely because it was the only file in the
+// outlet slot.
+function isFlaggedMergeTarget(data) {
+  return !!(data && (data.wrongProduction || data.duplicateOf || data.rejectionReason));
+}
+
+// True when an incoming critic identity is a safe merge match for a file's
+// stored critic (accepts either a hyphenated filename slug or a display
+// name for `fileCritic`). Both sides unresolved (byline-less dedup) is safe;
+// both sides naming the SAME (or a known-similar/pseudonymous) critic is
+// safe. An unresolved incoming critic matching a file that already names a
+// REAL critic is never safe — that asymmetry is exactly what let BRO-3182's
+// ingest fall through to an outlet-only match and silently claim a
+// different critic's review slot.
+function criticIsCompatibleMergeTarget(incomingCritic, fileCritic) {
+  const incomingUnknown = !incomingCritic || incomingCritic.toLowerCase() === 'unknown';
+  const fileUnknown = !fileCritic || fileCritic.toLowerCase() === 'unknown';
+  if (incomingUnknown && fileUnknown) return true;
+  if (incomingUnknown !== fileUnknown) {
+    // Exactly one side is unresolved: only safe when it's the FILE's byline
+    // that's unknown (a legitimate byline-discovery fill-in). An unresolved
+    // incoming critic must never claim a file that already names someone.
+    return fileUnknown;
+  }
+  return normalizeCritic(incomingCritic) === normalizeCritic(fileCritic) ||
+    areCriticsSimilar(incomingCritic, fileCritic.replace(/-/g, ' '));
+}
+
 /**
  * Find an existing review file for the same outlet in a show directory.
  * Checks all filename variants: normalized outlet ID, raw slug, with/without critic.
@@ -1575,22 +1611,19 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     const fileOutletNormalized = normalizeOutlet(fileOutlet);
     if (fileOutletNormalized === normalizedOutlet) {
       // If we have a critic name and file has a different named critic, skip
-      // (different critics at same outlet are separate reviews)
-      if (criticName && criticName.toLowerCase() !== 'unknown' &&
-          fileCritic !== 'unknown') {
-        const normalizedCritic = normalizeCritic(criticName);
-        const fileNormalizedCritic = normalizeCritic(fileCritic);
-        if (normalizedCritic !== fileNormalizedCritic &&
-            !areCriticsSimilar(criticName, fileCritic.replace(/-/g, ' '))) {
-          continue; // Different critic at same outlet — not a duplicate
-        }
+      // (different critics at same outlet are separate reviews). BRO-3182:
+      // an unresolved incoming criticName must not silently match a file
+      // that already names a real critic — see criticIsCompatibleMergeTarget.
+      if (!criticIsCompatibleMergeTarget(criticName, fileCritic)) {
+        continue; // Different/unconfirmed critic at same outlet — not a duplicate
       }
 
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        // Skip wrongProduction and duplicateOf files — they should not act as merge targets
-        if (data && (data.wrongProduction || data.duplicateOf)) continue;
+        // Skip flagged/rejected files — this filename-only match has no URL
+        // confirmation, so a flagged record must never silently absorb it.
+        if (isFlaggedMergeTarget(data)) continue;
         return { path: filePath, filename: file, data };
       } catch {
         return { path: filePath, filename: file, data: null };
@@ -1603,10 +1636,6 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
   // e.g. a file named "nytimes--adam-feldman.json" that has outletId: "timeout" inside,
   // caused by bulk fix scripts that update outletId without renaming files.
   // Without this pass, the next write creates a correctly-named duplicate.
-  const normalizedCriticForPass2 = criticName && criticName.toLowerCase() !== 'unknown'
-    ? normalizeCritic(criticName)
-    : null;
-
   for (const file of files) {
     const parts = file.replace('.json', '').split('--');
     if (parts.length !== 2) continue;
@@ -1622,18 +1651,16 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     } catch {
       continue;
     }
-    if (!data || data.wrongProduction || data.duplicateOf) continue;
+    if (!data || isFlaggedMergeTarget(data)) continue;
     if (!data.outletId) continue;
 
     if (normalizeOutlet(data.outletId) !== normalizedOutlet) continue;
 
-    // Outlet matches by internal field — check critic
-    if (normalizedCriticForPass2 && data.criticName) {
-      const dataFileCritic = normalizeCritic(data.criticName);
-      if (normalizedCriticForPass2 !== dataFileCritic &&
-          !areCriticsSimilar(criticName, data.criticName)) {
-        continue; // Different critic at same outlet — not a duplicate
-      }
+    // Outlet matches by internal field — check critic. BRO-3182: same
+    // asymmetric-unknown check as pass 1 — an unresolved incoming critic
+    // must not claim a file that already names someone.
+    if (data.criticName && !criticIsCompatibleMergeTarget(criticName, data.criticName)) {
+      continue; // Different/unconfirmed critic at same outlet — not a duplicate
     }
 
     return { path: filePath, filename: file, data };
@@ -1649,10 +1676,6 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
   const incomingDomain = outletDefs[normalizedOutlet] ? outletDefs[normalizedOutlet].domain : null;
 
   if (incomingDomain) {
-    const normalizedCriticForPass3 = criticName && criticName.toLowerCase() !== 'unknown'
-      ? normalizeCritic(criticName)
-      : null;
-
     for (const file of files) {
       const parts = file.replace('.json', '').split('--');
       if (parts.length !== 2) continue;
@@ -1664,14 +1687,10 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
       const fileDomain = outletDefs[fileOutletNormalized] ? outletDefs[fileOutletNormalized].domain : null;
       if (!fileDomain || fileDomain !== incomingDomain) continue;
 
-      // Critic pre-filter: only proceed if critic matches (avoids unnecessary file reads)
-      if (normalizedCriticForPass3) {
-        const fileCriticNorm = normalizeCritic(parts[1]);
-        if (fileCriticNorm !== normalizedCriticForPass3 &&
-            !areCriticsSimilar(criticName, parts[1].replace(/-/g, ' '))) {
-          continue;
-        }
-      }
+      // Critic pre-filter: only proceed if critic matches (avoids unnecessary
+      // file reads). BRO-3182: an unresolved incoming critic must not
+      // pre-pass against a filename slug that names a real critic.
+      if (!criticIsCompatibleMergeTarget(criticName, parts[1])) continue;
 
       const filePath = path.join(showDir, file);
       let data;
@@ -1680,7 +1699,7 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
       } catch {
         continue;
       }
-      if (!data || data.wrongProduction || data.duplicateOf) continue;
+      if (!data || isFlaggedMergeTarget(data)) continue;
 
       // Verify via URL resolution: does this file's URL resolve to the incoming outlet?
       // Without URL confirmation, different regional editions on the same domain would
@@ -2090,6 +2109,8 @@ module.exports = {
   loadOutletRegistry,
   levenshteinDistance,
   findExistingReviewFile,
+  isFlaggedMergeTarget,
+  criticIsCompatibleMergeTarget,
   maybeUpgradeUrl,
   slugLooksLikeDifferentShow,
   validateCriticOutlet,
