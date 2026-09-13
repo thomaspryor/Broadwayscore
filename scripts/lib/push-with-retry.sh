@@ -235,7 +235,17 @@ git_push_traced() {
   # being SIGKILLed before this function returns; the outer `timeout -k 10`
   # only kills the inner `git` process, not this bash function, so that
   # residual window is CI-runner-teardown-bounded, not open-ended.
-  trap 'rm -f "$trace_file" 2>/dev/null || true' RETURN
+  #
+  # Self-clearing (`trap - RETURN` as the trap's OWN last action, follow-up
+  # adversarial review): `trap ... RETURN` set inside a function is NOT
+  # function-call-scoped — verified empirically — it stays registered in the
+  # shell's global trap table after this function returns (confirmed via
+  # `trap -p RETURN`), even though it does not actually refire for an
+  # unrelated function's return. Explicitly clearing it here removes any
+  # dependence on that non-obvious, easy-to-get-wrong behavior and guarantees
+  # this function never silently clobbers a RETURN trap some future caller or
+  # sourced file relies on.
+  trap 'rm -f "$trace_file" 2>/dev/null || true; trap - RETURN' RETURN
   GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" git_push "$@"
   rc=$?
   if [ "$rc" -ne 0 ] && command -v node >/dev/null 2>&1 \

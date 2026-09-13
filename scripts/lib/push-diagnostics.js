@@ -35,9 +35,22 @@ function redactCurlTrace(text) {
   if (typeof text !== 'string' || !text) return '';
   return text
     .replace(/:\/\/[^/@\s]*@/g, '://***@')
-    .replace(/([Aa]uthorization:? *)((?:[Bb]asic|[Bb]earer) +)?[A-Za-z0-9+/=_.-]{8,}/g, '$1[REDACTED]')
-    .replace(/((?:[Pp]roxy-)?[Aa]uthorization:|[Cc]ookie:|[Ss]et-[Cc]ookie:)[^\n]*/g, '$1 [REDACTED]')
-    .replace(/([?&](?:access_token|token|key|auth|secret|password)=)[^&\s]+/gi, '$1[REDACTED]');
+    .replace(/(authorization:? *)((?:basic|bearer) +)?[A-Za-z0-9+/=_.-]{8,}/gi, '$1[REDACTED]')
+    // Follow-up adversarial review (BRO-3213): the first cut of this pass only
+    // matched Title-Case/lower-case header names ([Aa]uthorization etc.) — an
+    // ALL-CAPS "AUTHORIZATION:"/"COOKIE:" line (a real curl trace never emits
+    // this, but a hostile or unusual client/proxy could) survived untouched.
+    // Case-insensitive now; \b (not ^) — real curl trace lines are prefixed
+    // with a timestamp + source-file marker before "=> Send header: ", so
+    // the header name is never at the actual start of the line (an earlier
+    // draft anchored on ^ and silently failed to redact Cookie/Set-Cookie as
+    // a result — caught by this file's own test suite before shipping).
+    .replace(/\b((?:proxy-)?authorization:|cookie:|set-cookie:)[^\n]*/gi, '$1 [REDACTED]')
+    // Substring match on the PARAM NAME (not `[?&]exact=`) — the first cut
+    // missed compound names like api_key=, client_secret=, oauth_token=
+    // because none of them are an exact "key"/"secret"/"token" match
+    // immediately after ? or & (follow-up adversarial review).
+    .replace(/([?&][a-z0-9_]*(?:token|key|secret|auth|password)[a-z0-9_]*=)[^&\s]+/gi, '$1[REDACTED]');
 }
 
 // Ordered, monotonically-increasing checkpoints a SINGLE git-over-HTTP
