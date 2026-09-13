@@ -49,6 +49,11 @@ function slugify(text) {
     .replace(/[\u0300-\u036f]/g, '') // strip diacritics
     .replace(/['']/g, '')
     .replace(/[&]/g, 'and')
+    // "/" is a word separator, not punctuation to drop (BRO-3191 cousin —
+    // see scripts/lib/deduplication.js#slugify for the incident this
+    // mirrors: a bare "/" dropped to nothing while a spaced "/" survived as
+    // a hyphen, producing two unrelated slugs for the same title).
+    .replace(/\//g, ' ')
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
