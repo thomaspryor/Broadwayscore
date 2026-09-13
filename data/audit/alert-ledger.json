@@ -137,12 +137,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-13T16:20:17.538Z",
+      "lastSeen": "2026-09-13T16:26:52.823Z",
       "lastNotifiedAt": "2026-09-12T19:25:34.017Z",
       "notifyCount": 65,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -783,12 +783,12 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-13T16:20:17.526Z",
+      "lastSeen": "2026-09-13T16:26:52.822Z",
       "lastNotifiedAt": "2026-09-08T23:24:45.897Z",
       "notifyCount": 48,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 17
+      "silentRefires": 18
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -2658,22 +2658,24 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on The Human Voice / The Seven Deadly Sins",
       "firstSeen": "2026-09-11T16:33:55.827Z",
-      "lastSeen": "2026-09-11T16:33:55.827Z",
+      "lastSeen": "2026-09-13T16:24:07.979Z",
       "lastNotifiedAt": "2026-09-11T16:33:55.827Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Mrs. Stern Wanders the Prussian State Library (Luna Stage)",
       "firstSeen": "2026-09-11T16:33:57.030Z",
-      "lastSeen": "2026-09-11T16:33:57.030Z",
+      "lastSeen": "2026-09-13T16:24:09.222Z",
       "lastNotifiedAt": "2026-09-11T16:33:57.030Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-stale-upcoming-tag-the-children-off-west-end-2026": {
       "status": "open",
@@ -2704,6 +2706,72 @@
       "firstSeen": "2026-09-11T16:34:00.406Z",
       "lastSeen": "2026-09-11T16:34:00.406Z",
       "lastNotifiedAt": "2026-09-11T16:34:00.406Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-the-human-voice-the-seven-deadly-sins-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on The Human Voice / The Seven Deadly Sins",
+      "firstSeen": "2026-09-13T16:24:07.981Z",
+      "lastSeen": "2026-09-13T16:24:07.981Z",
+      "lastNotifiedAt": "2026-09-13T16:24:07.981Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on Mrs. Stern Wanders the Prussian State Library (Luna Stage)",
+      "firstSeen": "2026-09-13T16:24:09.224Z",
+      "lastSeen": "2026-09-13T16:24:09.224Z",
+      "lastNotifiedAt": "2026-09-13T16:24:09.224Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-placeholder-synopsis-golden-boy-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on Golden Boy",
+      "firstSeen": "2026-09-13T16:24:10.983Z",
+      "lastSeen": "2026-09-13T16:24:10.983Z",
+      "lastNotifiedAt": "2026-09-13T16:24:10.983Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-placeholder-synopsis-night-city-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on Night City",
+      "firstSeen": "2026-09-13T16:24:11.240Z",
+      "lastSeen": "2026-09-13T16:24:11.240Z",
+      "lastNotifiedAt": "2026-09-13T16:24:11.240Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-night-city-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on Night City",
+      "firstSeen": "2026-09-13T16:24:11.242Z",
+      "lastSeen": "2026-09-13T16:24:11.242Z",
+      "lastNotifiedAt": "2026-09-13T16:24:11.242Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-placeholder-synopsis-the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
+      "firstSeen": "2026-09-13T16:24:13.022Z",
+      "lastSeen": "2026-09-13T16:24:13.022Z",
+      "lastNotifiedAt": "2026-09-13T16:24:13.022Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
