@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-13T09:08:14.868Z",
+    "generatedAt": "2026-09-13T09:57:21.053Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -17,13 +17,13 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 84
+      "churn": 85
     }
   ],
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "union"
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 120,
+      "churn": 121,
       "mergeAttr": "ours"
     },
     {
@@ -43,12 +43,12 @@
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 93,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 90,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
