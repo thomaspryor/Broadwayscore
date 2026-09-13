@@ -72,7 +72,20 @@ function extractStatusFromHtml(html) {
   const venueLink = topLine.querySelector('a');
   const venueFull = venueLink?.textContent?.trim() || '';
   const venueRaw = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || null;
-  const venue = sanitizeVenueForWrite(venueRaw);
+  let venue = sanitizeVenueForWrite(venueRaw);
+
+  // ShowScore's current template dropped the dedicated venue link entirely —
+  // .show-page-v2__info-top-line now holds ONLY the Google Maps neighbourhood
+  // link (confirmed across multiple current OB/WE show pages, 2026-09-13),
+  // so the block above always fails closed now. When ShowScore disambiguates
+  // a title (e.g. two shows both named "Safe House"), it appends the venue
+  // in parens to <title> and the JSON-LD Product name — parse that as a
+  // fallback rather than losing the venue entirely (Safe House / Theatre Row
+  // never discovered, card #994-class skip-loop).
+  if (!venue) {
+    const titleParen = doc.title?.match(/\(([^)]+)\)/);
+    if (titleParen) venue = sanitizeVenueForWrite(titleParen[1].trim());
+  }
 
   let ssStatus = null;
   let openingDate = null;

@@ -1460,7 +1460,19 @@ async function fetchShowScoreStatus(showScoreUrl) {
     // resurrects the placeholder via `|| 'TBA'` reopens the exact leak this
     // guard exists to close (S0 remainder, card #994: isla-off-broadway-2026
     // landed with venue:'TBA' via this exact `|| 'TBA'` fallback).
-    const venue = sanitizeVenueForWrite(venueRaw);
+    let venue = sanitizeVenueForWrite(venueRaw);
+
+    // ShowScore's current template dropped the dedicated venue link — the
+    // block above now always fails closed (confirmed across multiple current
+    // OB/WE pages, 2026-09-13). When ShowScore disambiguates a title (two
+    // shows both named "Safe House"), it appends the venue in parens to
+    // <title> — parse that as a fallback instead of losing the venue
+    // entirely (this exact gap silently skip-looped safe-house-off-broadway
+    // out of discovery for 3+ days while it was open).
+    if (!venue) {
+      const titleParen = doc.title?.match(/\(([^)]+)\)/);
+      if (titleParen) venue = sanitizeVenueForWrite(titleParen[1].trim());
+    }
 
     // Extract runtime from second segment (between delimiters)
     const delimiters = topLine.querySelectorAll('.show-page-v2__info-top-line-delimiter');
