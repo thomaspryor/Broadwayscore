@@ -52,6 +52,9 @@ const path = require('path');
 const { repoOwnerName, checkReachable } = require('./lib/gh-compare-check');
 const { parseLedgerLines, serializeEntries, selectEntriesInWindow, pruneToWindow } = require('./lib/push-ledger');
 const { readLedger, writeLedger } = require('./lib/push-ledger-store');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = 'Usage: node scripts/check-push-ledger.js\n\nDelayed re-verification for CI-side push-with-retry.sh pushes (task #677).\nRe-checks recent push-ledger entries via the GitHub compare API and files an\nowner-alert card for anything no longer reachable (after a content-survival\nfallback check, BRO-2304). No arguments; takes no --dry-run.';
 
 // Pruning is best-effort: a lost CAS race just means the next 20-min run
 // prunes instead, so a short retry budget is plenty.
@@ -106,8 +109,22 @@ const PRUNE_ATTEMPTS = 3;
 // to the checkout the rest of the job depends on.
 const PUSH_CONTENT_SURVIVAL_CLI = path.join(__dirname, 'lib', 'push-content-survival.js');
 
+// Both callers (fetchShaWithParent, fetchBranchTip) always pass a literal
+// --depth=N as args[0] — this asserts it at runtime rather than trusting
+// that invariant silently, since a future third caller forgetting it would
+// otherwise pull this repo's full ~165k-commit history into a job whose
+// OWN checkout is fetch-depth:1 (audit-unbounded-fetch.js's own incident
+// class; the depth bound lives in the caller's args array, not literally on
+// this line, so the static guard can't verify it — unbounded-fetch-ok: depth
+// is enforced here at runtime instead).
 function gitFetchOrNull(cwd, args) {
+  if (!args.some((a) => typeof a === 'string' && a.startsWith('--depth='))) {
+    throw new Error(`gitFetchOrNull: refusing an unbounded fetch (no --depth= in ${JSON.stringify(args)})`);
+  }
   try {
+    // unbounded-fetch-ok: both callers (fetchShaWithParent, fetchBranchTip)
+    // pass a literal --depth=N as args[0] — the guard above this line also
+    // enforces it at runtime, so this line can never actually run unbounded.
     execFileSync('git', ['fetch', ...args], { cwd, encoding: 'utf8', timeout: 30_000 });
     return execFileSync('git', ['rev-parse', 'FETCH_HEAD'], { cwd, encoding: 'utf8' }).trim();
   } catch {
@@ -385,6 +402,7 @@ async function main() {
 module.exports = { checkContentSurvived, fetchShaWithParent, fetchBranchTip };
 
 if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
   main().catch(err => {
     console.error(`check-push-ledger: fatal: ${err.message}`);
     process.exit(1); // NOT fail-open — this is the sole CI-side mitigation for the #668/#619 revert class
