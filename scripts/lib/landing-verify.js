@@ -37,7 +37,8 @@
  * push budget and git was SIGTERMed before it ever started its own transport.
  * Run 34848771085's curl trace is the proof: across 13 retry attempts, 14
  * occurrences of git-upload-pack (a FETCH) and ZERO of git-receive-pack (the
- * PUSH). 214 of 240 workflows use actions/checkout's default fetch-depth, and
+ * PUSH). 211 of the 237 workflows that check out (239 files total) leave
+ * actions/checkout at its default fetch-depth, i.e. shallow, and
  * postinstall installs the hook in every CI job, so this was the wall behind
  * ~3,800 push failures since 2026-08-23 (~165/day, origin/push-retry-failures).
  *
