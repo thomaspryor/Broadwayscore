@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T00:33:55.838Z",
+  "generatedAt": "2026-09-14T00:56:06.029Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -518,19 +518,19 @@
       "status": "open",
       "slug": "night-city-off-west-end",
       "thumbnail": null,
-      "siteScore": 69.88,
-      "liveScore": 70,
-      "scoreDrift": 0.12000000000000455,
+      "siteScore": 67.09,
+      "liveScore": 67,
+      "scoreDrift": -0.09000000000000341,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 0,
-      "t2": 4,
+      "t2": 5,
       "t3": 4,
       "positive": 4,
       "mixed": 3,
-      "negative": 1,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
@@ -637,6 +637,18 @@
           "p": 4,
           "m": 3,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-14T00:56:06.029Z",
+          "rc": 9,
+          "s": 67.09,
+          "t1": 0,
+          "t2": 5,
+          "t3": 4,
+          "p": 4,
+          "m": 3,
+          "n": 2,
           "bc": "waiting"
         }
       ]
@@ -1315,9 +1327,9 @@
       "status": "open",
       "slug": "safe-house-off-broadway",
       "thumbnail": "/images/shows/safe-house-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 72.69,
-      "liveScore": 73,
-      "scoreDrift": 0.3100000000000023,
+      "siteScore": 71.91,
+      "liveScore": 72,
+      "scoreDrift": 0.09000000000000341,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1325,8 +1337,8 @@
       "t1": 0,
       "t2": 2,
       "t3": 9,
-      "positive": 6,
-      "mixed": 3,
+      "positive": 5,
+      "mixed": 4,
       "negative": 2,
       "readiness": {
         "ready": false,
@@ -1690,6 +1702,18 @@
           "t3": 9,
           "p": 6,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-14T00:56:06.029Z",
+          "rc": 11,
+          "s": 71.91,
+          "t1": 0,
+          "t2": 2,
+          "t3": 9,
+          "p": 5,
+          "m": 4,
           "n": 2,
           "bc": "waiting"
         }
