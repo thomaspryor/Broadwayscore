@@ -1,15 +1,30 @@
 {
-  "generatedAt": "2026-09-13T18:43:23.637Z",
+  "generatedAt": "2026-09-14T19:55:39.239Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 125,
-  "clean": 116,
+  "checked": 126,
+  "clean": 117,
   "defective": 9,
   "byType": {
     "score-drift": 9
   },
   "shows": [
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
+      "openingDate": "2026-09-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.21 vs local 72.93 (Δ0.28)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 24,
+      "deployedCount": 24
+    },
     {
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
@@ -18,27 +33,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.19 vs local 73.42 (Δ0.23)"
+          "detail": "deployed cs 76.66 vs local 76.84 (Δ0.18)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 11
-    },
-    {
-      "showId": "kimberly-akimbo-off-west-end-2026",
-      "title": "Kimberly Akimbo",
-      "openingDate": "2026-09-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.43 vs local 81.31 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 26
+      "localCount": 16,
+      "deployedCount": 16
     },
     {
       "showId": "a-month-in-the-country-west-end-2026",
@@ -48,27 +48,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.01 vs local 79.07 (Δ0.06)"
+          "detail": "deployed cs 78.91 vs local 79.19 (Δ0.28)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
-    },
-    {
-      "showId": "how-the-other-half-loves-west-end-2026",
-      "title": "How the Other Half Loves",
-      "openingDate": "2026-08-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.16 vs local 77.22 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25
+      "localCount": 28,
+      "deployedCount": 28
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
@@ -78,7 +63,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.79 vs local 72.92 (Δ0.13)"
+          "detail": "deployed cs 72.9 vs local 72.77 (Δ0.13)"
         }
       ],
       "missingFromProd": [],
@@ -86,34 +71,34 @@
       "deployedCount": 35
     },
     {
-      "showId": "the-producers-west-end-2025",
-      "title": "The Producers",
-      "openingDate": "2025-09-13",
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-06-20",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 87.05 vs local 87.36 (Δ0.31)"
+          "detail": "deployed cs 78.4 vs local 78.33 (Δ0.07)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 21
+      "localCount": 23,
+      "deployedCount": 23
     },
     {
-      "showId": "come-alive-the-greatest-showman-circus-spectacular-off-west-end-2024",
-      "title": "Come Alive! The Greatest Showman Circus Spectacular",
-      "openingDate": "2024-10-17",
+      "showId": "titanique-west-end-2024",
+      "title": "Titanique",
+      "openingDate": "2025-01-08",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 68.67 vs local 66.79 (Δ1.88)"
+          "detail": "deployed cs 76.8 vs local 75.94 (Δ0.86)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9
+      "localCount": 16,
+      "deployedCount": 16
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -123,7 +108,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.95 vs local 73.77 (Δ0.18)"
+          "detail": "deployed cs 73.83 vs local 73.95 (Δ0.12)"
         }
       ],
       "missingFromProd": [],
@@ -131,19 +116,34 @@
       "deployedCount": 21
     },
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
+      "showId": "operation-mincemeat-west-end-2024",
+      "title": "Operation Mincemeat",
+      "openingDate": "2023-05-09",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.21 vs local 81.11 (Δ0.1)"
+          "detail": "deployed cs 88.02 vs local 88.08 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25
+      "localCount": 23,
+      "deployedCount": 23
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "title": "SIX the Musical",
+      "openingDate": "2019-01-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.01 vs local 80.89 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14
     }
   ]
 }
