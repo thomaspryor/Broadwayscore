@@ -76,6 +76,15 @@ const TARGETED = flags['shows'] ? flags['shows'].split(',').map(s => s.trim()).f
 const MAX_RESULTS_PER_QUERY = 8;
 const TIME_BUDGET_MIN = parseTimeBudgetMin(args);
 const timeBudget = createRunBudget(TIME_BUDGET_MIN);
+// Conservative per-show worst case: 5 SERP queries (~1-3s each + 1200ms
+// throttle) + up to 4 fetchPage() @25s timeout + LLM classification calls —
+// none of which have a combined per-show timeout, so a single show can run
+// 2+ minutes. Mirrors batch-commercial-research.js's MIN_REMAINING_MS_TO_START
+// guard (BRO-2285/BRO-2303 same root-cause class): don't start a show
+// unlikely to finish before the budget. Smaller than that script's 5min
+// because this per-show cost ceiling is lower (no SEC EDGAR, no Claude
+// analysis pass).
+const MIN_REMAINING_MS_TO_START = 2 * 60_000;
 
 // Outlets we trust for recoupment announcements (preferred sources). Shared with
 // apply-commercial-pending.js so the auto-apply gate uses the same whitelist.
@@ -309,12 +318,14 @@ async function main() {
   log('');
 
   const allFindings = [];
+  let attempted = 0;
   for (const show of candidates) {
-    if (timeBudget.exceeded()) {
-      const remaining = candidates.length - allFindings.length;
+    if (timeBudget.enabled && timeBudget.remainingMs() < MIN_REMAINING_MS_TO_START) {
+      const remaining = candidates.length - attempted;
       log(`\n⏱ Time budget (${TIME_BUDGET_MIN} min) reached after ${timeBudget.elapsedMin()} min — stopping cleanly. ${remaining} show(s) deferred to next run.`);
       break;
     }
+    attempted++;
     try {
       const findings = await processShow(show);
       allFindings.push({ show, findings });
@@ -326,7 +337,7 @@ async function main() {
   const promotable = summarize(allFindings);
 
   log(`\n========== SUMMARY ==========`);
-  log(`Shows scanned: ${candidates.length}`);
+  log(`Shows scanned: ${attempted}${attempted < candidates.length ? ` of ${candidates.length}` : ''}`);
   log(`Promotable recoupment findings: ${promotable.length}`);
   for (const p of promotable) {
     log(`  ✅ ${p.show.slug}: ${p.finding.verdict.recoupedDate || 'date?'} (${p.finding.host})`);

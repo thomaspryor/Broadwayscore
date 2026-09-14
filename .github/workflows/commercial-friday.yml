@@ -1,7 +1,7 @@
 name: Commercial Friday Refresh
 
 # Mid-week refresh so the Sunday newsletter has fresh recoupment data.
-# Sunday cron (commercial-weekly.yml) runs the heavy batch + deep-research pass.
+# Saturday cron (commercial-weekly.yml, 18:00 UTC) runs the heavy batch + deep-research pass.
 # This Friday run is lightweight: just the recoupment-announcement scraper,
 # which catches "X recouped" trade-press announcements that drop Mon-Fri.
 
