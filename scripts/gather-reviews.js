@@ -2731,11 +2731,22 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
   // to re-derive its own id->region map inline, the exact duplication shape that
   // let cross-market-guard.js's copy ship with a missed-alias-lowercasing bug once).
   const { outletRegionMap: __outletRegionMap } = require('./lib/outlet-region-map').buildOutletMaps({ outlets: outletRegistry });
+  // "us" belongs in the Broadway-local set alongside 'nyc'/'national': it's
+  // the value loadOutlets()'s own US_REGIONS whitelist uses for exactly the
+  // domestic tier-3 outlets meant to be discoverable/includable for Broadway
+  // and off-Broadway shows (cititour, frontmezzjunkies, culturesauce, nbcnews,
+  // forward, one-minute-critic, stageandcinema, jitney — see the comment on
+  // that whitelist). Before this fix, that SAME field was read with a
+  // narrower {nyc, national} local-set here, so any outlet tagged 'us' for
+  // SERP-discovery purposes was simultaneously excluded from BWW roundups as
+  // "non-local" — caught live on Safe House (BRO-3247, 2026-09-14): Front Mezz
+  // Junkies' real review of Safe House was dropped from the roundup this way.
+  const BROADWAY_LOCAL_REGIONS = new Set(['nyc', 'national', 'us']);
   const NON_LOCAL_OUTLET_IDS = new Set();
   for (const [key, region] of Object.entries(__outletRegionMap)) {
     const isLocal = isWestEnd
       ? (region === 'london' || region === 'national-uk' || region === 'national')
-      : (region === 'nyc' || region === 'national');
+      : BROADWAY_LOCAL_REGIONS.has(region);
     if (!isLocal) NON_LOCAL_OUTLET_IDS.add(key);
   }
 
@@ -2753,7 +2764,7 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
       if (outletId.endsWith('-uk') || outletId.includes('london')) return true;
       const entry = outletRegistry[outletId];
       if (!entry) return false;
-      if (entry.region && entry.region !== 'nyc' && entry.region !== 'national') return true;
+      if (entry.region && !BROADWAY_LOCAL_REGIONS.has(entry.region)) return true;
       if (entry.domain && entry.domain.endsWith('.co.uk')) return true;
       return false;
     }
