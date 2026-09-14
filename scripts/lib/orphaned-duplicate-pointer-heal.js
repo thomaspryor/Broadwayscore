@@ -31,6 +31,15 @@
 
 'use strict';
 
+const { isEffectivelyWrongProductionOrShow } = require('./content-quality.js');
+// The project's canonical URL-comparison primitive — the SAME one
+// review-write-guard.checkUrlCollision uses to decide that two siblings share a
+// URL. Using anything narrower here (e.g. the fragment-only normalization
+// validate-data.js's duplicate gate applies) would miss a collision basis that
+// differs only by protocol/www/tracking params, which is exactly the
+// operation-mincemeat-2025 Time Out pair.
+const { normalizeUrl } = require('./review-normalization.js');
+
 const SUBSTANTIVE_BODY_CHARS = 500;
 
 /**
@@ -40,14 +49,29 @@ const SUBSTANTIVE_BODY_CHARS = 500;
  * URL-mismatch or a deleted sibling — the difference is WHY the target
  * stopped being a legitimate canonical.
  *
- * @param {{wrongShow?: any, wrongProduction?: any, nonReviewFlag?: any, rejectedBy?: any}} target
+ * `wrongProduction` / `wrongShow` are read through content-quality.js's
+ * canonical isEffectivelyWrongProductionOrShow() gate, NOT as raw booleans
+ * (BRO-3092). A raw `wrongProduction === true` is routinely a false positive
+ * an operator or an auto-clear pass has already retracted via
+ * wrongProductionManualClear / wrongProductionAutoCleared / allowEarlyDate /
+ * humanReviewedWrongProduction:false — those records stay INCLUDED by
+ * classifyContentTier, so treating one as "invalidated" here clears a pointer
+ * whose collision basis is intact and re-admits a second copy of the same URL.
+ * That is exactly what happened on 2026-09-14: 6 of 127 clears aimed at
+ * manually-cleared targets, and romeo-juliet-2024 Vulture went red in
+ * validate-data.js as a same-show+outlet duplicate URL.
+ *
+ * @param {object} target
  * @returns {boolean}
  */
 function isTargetInvalidated(target) {
   if (!target) return false;
+  // Strict === true first (unchanged): a non-boolean truthy flag has never
+  // counted here, and this fix must only ever NARROW what gets cleared.
+  const { effectivelyWrongProduction, effectivelyWrongShow } = isEffectivelyWrongProductionOrShow(target);
   return !!(
-    target.wrongShow === true
-    || target.wrongProduction === true
+    (target.wrongShow === true && effectivelyWrongShow)
+    || (target.wrongProduction === true && effectivelyWrongProduction)
     || target.nonReviewFlag === true
     || target.rejectedBy
   );
@@ -65,6 +89,10 @@ function isTargetInvalidated(target) {
  */
 function hasSubstantiveUnflaggedContent(data) {
   if (!data) return false;
+  // Deliberately NOT softened by the retraction breadcrumbs isTargetInvalidated
+  // now reads (BRO-3092): this is the conservative clean-source gate on the
+  // record being re-admitted, not an inclusion verdict, and loosening it would
+  // WIDEN what the heal clears — the opposite of what BRO-3092 needs.
   if (data.wrongShow === true || data.wrongProduction === true || data.nonReviewFlag === true) return false;
   if (data.contentTier === 'invalid') return false;
   const text = typeof data.fullText === 'string' ? data.fullText : '';
@@ -124,10 +152,90 @@ function findOrphanedDuplicatePointers(records) {
   return out;
 }
 
+// ── Retraction of this heal's OWN past clears (BRO-3092) ───────────────────
+//
+// The 2026-09-14 --force-bulk run wrote 127 clears under the pre-BRO-3092
+// predicate, 6 of them against targets that were never actually invalid (a
+// wrongProduction flag an operator had already retracted). Those 6 re-admitted
+// a second copy of an already-canonical URL. A code fix alone leaves them on
+// disk forever — nothing re-evaluates a duplicateClearReason — so the heal owns
+// undoing the clears it is responsible for, the same way
+// duplicate-of-cleared-contradiction.js retracts a _duplicateOfCleared its own
+// evidence has since disproved.
+
+const HEAL_CLEAR_BREADCRUMB_PREFIX = 'heal-orphaned-duplicate-pointers.js on ';
+
+/**
+ * The exact duplicateClearReason this heal stamps. Single source of truth so
+ * parseHealClearTarget() can never drift out of sync with what fix() writes.
+ *
+ * @param {string} day  YYYY-MM-DD
+ * @param {string} targetFile
+ * @param {string} reason
+ * @returns {string}
+ */
+function buildHealClearReason(day, targetFile, reason) {
+  return `${HEAL_CLEAR_BREADCRUMB_PREFIX}${day}: target ${targetFile} was flagged invalid after this pointer was set (${reason})`;
+}
+
+/**
+ * Extract the target filename out of a duplicateClearReason this heal wrote.
+ * Returns null for any breadcrumb written by a different clearer — this
+ * retraction must never touch someone else's intentional clear.
+ *
+ * @param {*} reason
+ * @returns {string|null}
+ */
+function parseHealClearTarget(reason) {
+  if (typeof reason !== 'string' || !reason.startsWith(HEAL_CLEAR_BREADCRUMB_PREFIX)) return null;
+  const m = reason.match(/: target (\S+\.json) was flagged invalid after this pointer was set/);
+  return m ? m[1] : null;
+}
+
+/**
+ * Find clears this heal made that the corrected predicate no longer justifies:
+ * the file still carries the heal's breadcrumb, has no live duplicateOf, and
+ * the target it names is present, URL-identical, and NOT actually invalidated.
+ * Those are the pointers that should never have been cleared.
+ *
+ * URL identity is required (under the canonical collision normalization) so a
+ * retraction can only ever restore a pointer whose collision basis is
+ * verifiably still there.
+ *
+ * @param {Array<{file: string, data: object}>} records  all records in one show dir
+ * @returns {Array<{loserFile: string, targetFile: string, reason: string}>}
+ */
+function findUnjustifiedHealClears(records) {
+  const byFile = new Map((records || []).map((r) => [r.file, r.data]));
+  const out = [];
+  for (const { file, data } of records || []) {
+    if (!data) continue;
+    if (data.duplicateOf) continue; // pointer already live again — nothing to restore
+    const targetFile = parseHealClearTarget(data.duplicateClearReason);
+    if (!targetFile || targetFile === file) continue;
+    const targetData = byFile.get(targetFile);
+    if (!targetData) continue; // target gone — the clear stands
+    if (isTargetInvalidated(targetData)) continue; // clear was justified
+    const ownUrl = typeof data.url === 'string' ? normalizeUrl(data.url) : null;
+    const targetUrl = typeof targetData.url === 'string' ? normalizeUrl(targetData.url) : null;
+    if (!ownUrl || !targetUrl || ownUrl !== targetUrl) continue;
+    out.push({
+      loserFile: file,
+      targetFile,
+      reason: `unjustified-heal-clear: ${targetFile} is not actually invalidated (flag already retracted) and still shares this URL`,
+    });
+  }
+  return out;
+}
+
 module.exports = {
   SUBSTANTIVE_BODY_CHARS,
+  HEAL_CLEAR_BREADCRUMB_PREFIX,
   isTargetInvalidated,
   hasSubstantiveUnflaggedContent,
   shouldClearOrphanedDuplicatePointer,
   findOrphanedDuplicatePointers,
+  buildHealClearReason,
+  parseHealClearTarget,
+  findUnjustifiedHealClears,
 };

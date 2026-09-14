@@ -36,7 +36,11 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { findOrphanedDuplicatePointers } = require('./lib/orphaned-duplicate-pointer-heal');
+const {
+  findOrphanedDuplicatePointers,
+  findUnjustifiedHealClears,
+  buildHealClearReason,
+} = require('./lib/orphaned-duplicate-pointer-heal');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `heal-orphaned-duplicate-pointers.js — Retro-heals duplicateOf pointers orphaned by a later target-invalidation (BRO-3250).
@@ -46,11 +50,13 @@ Usage:
   node scripts/heal-orphaned-duplicate-pointers.js --help, -h    print this usage and exit
 
 Options:
-  --json         machine-readable report
-  --dry-run      report only (default; accepted explicitly for scripting)
-  --fix          repair in place
-  --force-bulk   override the surge guard (FIX_SURGE_THRESHOLD)
-  --show=ID      scope to a single show directory
+  --json                machine-readable report
+  --dry-run             report only (default; accepted explicitly for scripting)
+  --fix                 repair in place
+  --force-bulk          override the surge guard (FIX_SURGE_THRESHOLD)
+  --show=ID             scope to a single show directory
+  --revert-unjustified  retract clears THIS heal made whose target was never
+                        actually invalidated (BRO-3092); report only unless --fix
 `;
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
@@ -74,6 +80,7 @@ const args = process.argv.slice(2);
 const FIX = args.includes('--fix');
 const JSON_OUT = args.includes('--json');
 const FORCE_BULK = args.includes('--force-bulk');
+const REVERT_UNJUSTIFIED = args.includes('--revert-unjustified');
 const showArg = args.find((a) => a.startsWith('--show='));
 const SHOW_FILTER = showArg ? showArg.slice('--show='.length) : null;
 
@@ -85,25 +92,68 @@ function walkShowDirs(root) {
     .map((e) => path.join(root, e.name));
 }
 
-/** Find all orphaned duplicateOf pointers. Returns [{showId, loserFile, targetFile, reason}]. */
-function audit() {
+/** Read one show directory into the {file, data} record list the pure lib takes. */
+function readShowRecords(showDir) {
+  let files;
+  try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+  catch { return null; }
+  const records = [];
+  for (const file of files) {
+    try {
+      records.push({ file, data: JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8')) });
+    } catch { /* unreadable file — skip, other audits catch corrupt JSON */ }
+  }
+  return records;
+}
+
+/**
+ * Walk the corpus with one of the pure detectors.
+ * @param {(records: Array) => Array} detect
+ * @returns {Array<{showId: string, loserFile: string, targetFile: string, reason: string}>}
+ */
+function scan(detect) {
   const results = [];
   for (const showDir of walkShowDirs(REVIEW_TEXTS_DIR)) {
     const showId = path.basename(showDir);
-    let files;
-    try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json'); }
-    catch { continue; }
-    const records = [];
-    for (const file of files) {
-      try {
-        records.push({ file, data: JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8')) });
-      } catch { /* unreadable file — skip, other audits catch corrupt JSON */ }
-    }
-    for (const orphan of findOrphanedDuplicatePointers(records)) {
-      results.push({ showId, ...orphan });
-    }
+    const records = readShowRecords(showDir);
+    if (!records) continue;
+    for (const hit of detect(records)) results.push({ showId, ...hit });
   }
   return results;
+}
+
+/** Find all orphaned duplicateOf pointers. Returns [{showId, loserFile, targetFile, reason}]. */
+function audit() {
+  return scan(findOrphanedDuplicatePointers);
+}
+
+/** Find clears this heal made that the corrected predicate no longer justifies (BRO-3092). */
+function auditUnjustified() {
+  return scan(findUnjustifiedHealClears);
+}
+
+/**
+ * Restore the duplicateOf pointers listed by auditUnjustified(). Mirrors the
+ * write-guard's own re-mark branch: set duplicateOf/duplicateReason and null
+ * out the now-false clear breadcrumb, so the push-review-texts restore
+ * exception (isIntentionalClear) stops treating the file as intentionally
+ * un-suppressed.
+ */
+function revert(unjustified) {
+  let restored = 0;
+  const day = new Date().toISOString().slice(0, 10);
+  for (const o of unjustified) {
+    const filePath = path.join(REVIEW_TEXTS_DIR, o.showId, o.loserFile);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    data.duplicateOf = o.targetFile;
+    data.duplicateReason = 'url-collision-detected-at-write';
+    data.duplicateClearReason = null;
+    data.duplicateHealRetractedReason =
+      `heal-orphaned-duplicate-pointers.js --revert-unjustified on ${day}: ${o.reason} (BRO-3092)`;
+    safeWriteReview(filePath, data);
+    restored++;
+  }
+  return restored;
 }
 
 function fix(orphans) {
@@ -113,8 +163,7 @@ function fix(orphans) {
     const dir = path.join(REVIEW_TEXTS_DIR, o.showId);
     const filePath = path.join(dir, o.loserFile);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    data.duplicateClearReason =
-      `heal-orphaned-duplicate-pointers.js on ${day}: target ${o.targetFile} was flagged invalid after this pointer was set (${o.reason})`;
+    data.duplicateClearReason = buildHealClearReason(day, o.targetFile, o.reason);
     data.duplicateOf = null;
     data.duplicateReason = null;
     safeWriteReview(filePath, data);
@@ -126,6 +175,32 @@ function fix(orphans) {
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
+  if (REVERT_UNJUSTIFIED) {
+    const unjustified = auditUnjustified();
+    if (JSON_OUT) {
+      console.log(JSON.stringify({ mode: 'revert-unjustified', count: unjustified.length, unjustified }, null, 2));
+      process.exit(unjustified.length === 0 ? 0 : (FIX ? 0 : 1));
+    }
+    if (unjustified.length === 0) {
+      console.log('OK: no unjustified heal clears found');
+      process.exit(0);
+    }
+    console.log(`Found ${unjustified.length} unjustified heal clear(s):\n`);
+    for (const o of unjustified) {
+      console.log(`  ${o.showId}`);
+      console.log(`    ${o.loserFile}  cleared duplicateOf → ${o.targetFile} (target is NOT invalidated; URLs still match)`);
+    }
+    if (!FIX) {
+      console.log('\nRun with --fix to restore these pointers.');
+      process.exit(1);
+    }
+    const restored = revert(unjustified);
+    console.log(`\nRestored ${restored} duplicateOf pointer(s).`);
+    console.log('Re-run the rebuild so the re-suppressed duplicates drop back out of reviews.json.');
+    process.exit(0);
+  }
+
   const orphans = audit();
   if (JSON_OUT) {
     console.log(JSON.stringify({ count: orphans.length, orphans }, null, 2));
@@ -166,4 +241,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { audit, fix, walkShowDirs, FIX_SURGE_THRESHOLD };
+module.exports = { audit, auditUnjustified, fix, revert, walkShowDirs, FIX_SURGE_THRESHOLD };
