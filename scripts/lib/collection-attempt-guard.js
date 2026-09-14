@@ -40,18 +40,34 @@ function shouldSkipAlreadyAttempted(state, reviewId, retryFailed = false) {
  * carried 291 unique ids and 87 duplicate entries, with six overlapping
  * opening-night-poller runs in that window.
  *
- * Deduping at the WRITE (and normalising on load) is idempotent under both
- * mechanisms: whichever run serialises last writes a unique-only array. It
- * also makes the "(N failed)" figure in every "chore: Checkpoint" commit
- * message count failed URLs rather than attempts — that number was inflated
- * ~2x and the whole fleet reads it as a failure count.
+ * Deduping at the WRITE (and normalising on load) makes the persisted arrays
+ * duplicate-free under both mechanisms: whichever run serialises last writes
+ * a unique-only array.
+ *
+ * SCOPE, precisely — this fixes DUPLICATION, not concurrency. Mechanism (B)
+ * has a second half this does NOT address: last-writer-wins also DISCARDS the
+ * other run's ids. That loss is deliberate elsewhere in the stack —
+ * push-with-retry.sh's `data/collection-state/*` conflict arm resolves
+ * "keep the local run's data", whole-file ours-wins, because progress.json is
+ * per-run scratch rather than a union ledger. Do not read this function as
+ * "concurrency is handled".
+ *
+ * It ALSO drops any id that is in `failed` but has since succeeded into
+ * `processed`. Under RETRY_FAILED=true a review can legitimately fail and
+ * then succeed within the same state file, landing in both arrays — leaving
+ * the stale entry keeps the "(N failed)" figure in every "chore: Checkpoint"
+ * commit message, and the success-rate denominator, counting a URL that is no
+ * longer failed. `processed` is authoritative: shouldSkipAlreadyAttempted
+ * checks it first and unconditionally, and real retry scheduling lives in
+ * data/review-texts/failed-fetches.json (failureCount / shouldRetryFetch,
+ * BRO-787), never in state.failed.
  *
  * Mutates `state` in place and returns a summary of what it removed, so
  * callers can log it. Missing/non-array fields are left alone rather than
  * invented, so an older or partial state file is not reshaped by a save.
  */
 function dedupeAttemptState(state) {
-  const removed = { processed: 0, failed: 0 };
+  const removed = { processed: 0, failed: 0, succeededAfterFailure: 0 };
   if (!state || typeof state !== 'object') return removed;
   for (const key of ['processed', 'failed']) {
     const arr = state[key];
@@ -59,6 +75,12 @@ function dedupeAttemptState(state) {
     const unique = [...new Set(arr)];
     removed[key] = arr.length - unique.length;
     if (removed[key] > 0) state[key] = unique;
+  }
+  if (Array.isArray(state.failed) && Array.isArray(state.processed)) {
+    const succeeded = new Set(state.processed);
+    const stillFailed = state.failed.filter((id) => !succeeded.has(id));
+    removed.succeededAfterFailure = state.failed.length - stillFailed.length;
+    if (removed.succeededAfterFailure > 0) state.failed = stillFailed;
   }
   return removed;
 }

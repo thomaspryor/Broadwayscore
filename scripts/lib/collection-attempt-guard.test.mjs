@@ -70,7 +70,28 @@ describe('dedupeAttemptState (BRO-3024 owner re-verification)', () => {
     const state = { processed: ['x', 'x'], failed: ['a', 'a'] };
     dedupeAttemptState(state);
     const second = dedupeAttemptState(state);
-    assert.deepEqual(second, { processed: 0, failed: 0 });
+    assert.deepEqual(second, { processed: 0, failed: 0, succeededAfterFailure: 0 });
+  });
+
+  test('drops an id that failed then SUCCEEDED, so "(N failed)" stops counting it', () => {
+    // Under RETRY_FAILED=true a review can fail and then succeed within the
+    // same state file, landing in both arrays. processed is authoritative.
+    const state = { processed: ['a', 'b'], failed: ['a', 'c'] };
+    const removed = dedupeAttemptState(state);
+    assert.deepEqual(state.failed, ['c'], 'the retried-and-succeeded id is gone from failed');
+    assert.deepEqual(state.processed, ['a', 'b'], 'processed is untouched');
+    assert.equal(removed.succeededAfterFailure, 1);
+  });
+
+  test('failed-then-succeeded purge is idempotent and does not touch a genuine failure', () => {
+    const state = { processed: ['a'], failed: ['a', 'a', 'z'] };
+    const first = dedupeAttemptState(state);
+    assert.deepEqual(state.failed, ['z']);
+    assert.equal(first.failed, 1, 'one duplicate entry removed');
+    assert.equal(first.succeededAfterFailure, 1, 'one failed-then-succeeded id removed');
+    const second = dedupeAttemptState(state);
+    assert.deepEqual(second, { processed: 0, failed: 0, succeededAfterFailure: 0 });
+    assert.deepEqual(state.failed, ['z'], 'a genuine failure survives every pass');
   });
 
   test('holds under RETRY_FAILED=true, the mechanism the in-process guard cannot cover', () => {
@@ -98,29 +119,46 @@ describe('dedupeAttemptState (BRO-3024 owner re-verification)', () => {
     assert.equal('processed' in state, false, 'does not invent a processed array');
     assert.equal(removed.processed, 0);
     assert.deepEqual(state.failed, ['a']);
-    assert.deepEqual(dedupeAttemptState(null), { processed: 0, failed: 0 });
+    assert.deepEqual(dedupeAttemptState(null), { processed: 0, failed: 0, succeededAfterFailure: 0 });
     assert.deepEqual(dedupeAttemptState({ failed: 'not-an-array' }).failed, 0);
   });
 
   test('collect-review-texts.js calls the shared dedupe at BOTH persistence sites', () => {
     // Source-level assertion (CLAUDE.md rule 15): deleting either call site
     // fails this test instead of silently regressing the fix.
-    assert.match(
-      COLLECTOR_SRC,
-      /const \{ shouldSkipAlreadyAttempted, dedupeAttemptState \} = require\('\.\/lib\/collection-attempt-guard\.js'\);/,
+    //
+    // Deliberately NOT pinned to the destructuring order or quote style of
+    // the require line — adding a third export to this module must not break
+    // this test. Only the two facts that matter are asserted: the collector
+    // imports from this module, and it names dedupeAttemptState.
+    const requireLine = COLLECTOR_SRC.split('\n').find(
+      (l) => l.includes("require('./lib/collection-attempt-guard.js')"),
+    );
+    assert.ok(requireLine, 'collect-review-texts.js must require the shared attempt-guard lib');
+    assert.ok(
+      requireLine.includes('dedupeAttemptState'),
       'collect-review-texts.js must import dedupeAttemptState from the shared lib',
     );
-    const saveState = COLLECTOR_SRC.slice(COLLECTOR_SRC.indexOf('function saveState()'));
+
+    // Locate both functions explicitly and fail with a legible message if a
+    // rename moved them, rather than letting indexOf(-1) produce a slice that
+    // silently passes or fails for the wrong reason.
+    const loadIdx = COLLECTOR_SRC.indexOf('function loadState()');
+    const saveIdx = COLLECTOR_SRC.indexOf('function saveState()');
+    assert.notEqual(loadIdx, -1, 'loadState() not found — was it renamed? update this test');
+    assert.notEqual(saveIdx, -1, 'saveState() not found — was it renamed? update this test');
+    assert.ok(loadIdx < saveIdx, 'this test assumes loadState() is defined before saveState()');
+
+    const saveBody = COLLECTOR_SRC.slice(saveIdx);
+    const writeIdx = saveBody.indexOf('fs.writeFileSync');
+    assert.notEqual(writeIdx, -1, 'saveState() no longer calls fs.writeFileSync — update this test');
     assert.ok(
-      saveState.slice(0, saveState.indexOf('fs.writeFileSync')).includes('dedupeAttemptState(state)'),
+      saveBody.slice(0, writeIdx).includes('dedupeAttemptState(state)'),
       'saveState() must dedupe BEFORE serialising progress.json',
     );
-    const loadState = COLLECTOR_SRC.slice(
-      COLLECTOR_SRC.indexOf('function loadState()'),
-      COLLECTOR_SRC.indexOf('function saveState()'),
-    );
+
     assert.ok(
-      loadState.includes('dedupeAttemptState(state)'),
+      COLLECTOR_SRC.slice(loadIdx, saveIdx).includes('dedupeAttemptState(state)'),
       'loadState() must normalise duplicates inherited from a concurrent run',
     );
   });

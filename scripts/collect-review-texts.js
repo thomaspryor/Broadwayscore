@@ -5358,7 +5358,6 @@ function loadState() {
       const startTime = new Date(saved.startTime);
       const hoursSinceStart = (Date.now() - startTime.getTime()) / (1000 * 60 * 60);
       if (hoursSinceStart < 24) {
-        console.log(`Resuming from previous run (${saved.processed.length} already processed)`);
         state = saved;
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
@@ -5371,12 +5370,13 @@ function loadState() {
         if (!state.log) state.log = [];
         // BRO-3024: a resumed file may already carry duplicates written by a
         // CONCURRENT run (per-show concurrency groups share this one file) or
-        // by an earlier RETRY_FAILED=true pass. Normalise on load so this
-        // run's in-process shouldSkipAlreadyAttempted() checks a unique list
-        // and the next saveState() cannot re-serialise inherited duplicates.
+        // by an earlier RETRY_FAILED=true pass. Normalise BEFORE the resume
+        // line below reports a count, so the run never prints a pre-dedupe
+        // and a post-dedupe figure for the same array one line apart.
         const inherited = dedupeAttemptState(state);
-        if (inherited.processed || inherited.failed) {
-          console.log(`  Dropped inherited duplicate attempt entries: ${inherited.processed} processed, ${inherited.failed} failed`);
+        console.log(`Resuming from previous run (${state.processed.length} already processed)`);
+        if (inherited.processed || inherited.failed || inherited.succeededAfterFailure) {
+          console.log(`  Normalised inherited attempt state: dropped ${inherited.processed} duplicate processed, ${inherited.failed} duplicate failed, ${inherited.succeededAfterFailure} failed-then-succeeded`);
         }
         return true;
       }
