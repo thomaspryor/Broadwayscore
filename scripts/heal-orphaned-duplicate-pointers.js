@@ -2,8 +2,9 @@
 /**
  * heal-orphaned-duplicate-pointers.js
  *
- * Driver for scripts/lib/orphaned-duplicate-pointer-heal.js (BRO-3250). Walks
- * data/review-texts, finds duplicateOf pointers whose TARGET was flagged
+ * Driver for scripts/lib/orphaned-duplicate-pointer-heal.js (BRO-3250, plus
+ * the duplicateTextOf extension in BRO-3336). Walks data/review-texts, finds
+ * duplicateOf and/or duplicateTextOf pointers whose TARGET was flagged
  * invalid (wrongShow/wrongProduction/nonReviewFlag/rejectedBy) by a
  * downstream classifier AFTER the pointer was set, and clears the pointer so
  * the wrongly-suppressed file re-enters isIncludableForRebuild.
@@ -11,13 +12,18 @@
  * Same write pattern as heal-duplicate-of-direction.js / the fix() in
  * audit-duplicate-of-url-mismatch.js: LOAD-MODIFY-SAVE the full object,
  * stamp duplicateClearReason (the push-restore exception breadcrumb
- * isIntentionalClear() honors), then safeWriteReview.
+ * isIntentionalClear() honors), then safeWriteReview. duplicateOf clears by
+ * nulling duplicateOf/duplicateReason; duplicateTextOf clears by nulling
+ * duplicateTextOf alone (NOT `delete` — see the comment at fix()'s
+ * duplicateTextOf branch for why that matters).
  *
  * Surge guard: above FIX_SURGE_THRESHOLD, --fix refuses without
  * --force-bulk — a spike could mean a classifier regression flagged a batch
  * of siblings that were never actually invalid, and blindly re-admitting
  * that many reviews would flood scoring. Same philosophy as
- * audit-duplicate-of-url-mismatch.js's FIX_SURGE_THRESHOLD.
+ * audit-duplicate-of-url-mismatch.js's FIX_SURGE_THRESHOLD. Checked PER
+ * FIELD, not on the combined --field=both total — see the comment at the
+ * surge-check site for why.
  *
  * Usage:
  *   node scripts/heal-orphaned-duplicate-pointers.js                # report (exit 1 if any)
@@ -26,6 +32,7 @@
  *   node scripts/heal-orphaned-duplicate-pointers.js --fix           # repair in place
  *   node scripts/heal-orphaned-duplicate-pointers.js --fix --force-bulk  # override surge guard
  *   node scripts/heal-orphaned-duplicate-pointers.js --show=ID --fix     # scope to one show
+ *   node scripts/heal-orphaned-duplicate-pointers.js --field=duplicateTextOf --fix  # one field only
  *   REVIEW_TEXTS_DIR=/path node scripts/... --fix                        # target a clone
  *
  * Exit codes: 0 = no orphans (report) / repaired (--fix); 1 = orphans found (report) / surge refused.
@@ -41,10 +48,13 @@ const {
   findUnjustifiedHealClears,
   findChainPointersThrough,
   buildHealClearReason,
+  findOrphanedDuplicateTextPointers,
+  buildDuplicateTextClearReason,
+  partitionOrphansForFix,
 } = require('./lib/orphaned-duplicate-pointer-heal');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = `heal-orphaned-duplicate-pointers.js — Retro-heals duplicateOf pointers orphaned by a later target-invalidation (BRO-3250).
+const USAGE = `heal-orphaned-duplicate-pointers.js — Retro-heals duplicateOf/duplicateTextOf pointers orphaned by a later target-invalidation (BRO-3250, BRO-3336).
 
 Usage:
   node scripts/heal-orphaned-duplicate-pointers.js [options]
@@ -56,9 +66,12 @@ Options:
   --fix                 repair in place
   --force-bulk          override the surge guard (FIX_SURGE_THRESHOLD)
   --show=ID             scope to a single show directory
+  --field=X             duplicateOf | duplicateTextOf | both (default: both; BRO-3336)
   --revert-unjustified  retract clears THIS heal made whose target was never
                         actually invalidated (BRO-3092); report only unless --fix
 `;
+
+const VALID_FIELDS = new Set(['duplicateOf', 'duplicateTextOf', 'both']);
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'orphaned-duplicate-pointer-heal.json');
@@ -84,6 +97,12 @@ const FORCE_BULK = args.includes('--force-bulk');
 const REVERT_UNJUSTIFIED = args.includes('--revert-unjustified');
 const showArg = args.find((a) => a.startsWith('--show='));
 const SHOW_FILTER = showArg ? showArg.slice('--show='.length) : null;
+const fieldArg = args.find((a) => a.startsWith('--field='));
+const FIELD = fieldArg ? fieldArg.slice('--field='.length) : 'both';
+if (!VALID_FIELDS.has(FIELD)) {
+  console.error(`Invalid --field=${FIELD} — must be one of: duplicateOf, duplicateTextOf, both`);
+  process.exit(1);
+}
 
 function walkShowDirs(root) {
   if (!fs.existsSync(root)) return [];
@@ -123,9 +142,19 @@ function scan(detect) {
   return results;
 }
 
-/** Find all orphaned duplicateOf pointers. Returns [{showId, loserFile, targetFile, reason}]. */
+/**
+ * Find all orphaned duplicateOf and/or duplicateTextOf pointers, per FIELD
+ * (BRO-3336). Returns [{showId, loserFile, targetFile, field, reason}].
+ */
 function audit() {
-  return scan(findOrphanedDuplicatePointers);
+  const out = [];
+  if (FIELD === 'duplicateOf' || FIELD === 'both') {
+    out.push(...scan(findOrphanedDuplicatePointers).map((o) => ({ ...o, field: 'duplicateOf' })));
+  }
+  if (FIELD === 'duplicateTextOf' || FIELD === 'both') {
+    out.push(...scan(findOrphanedDuplicateTextPointers).map((o) => ({ ...o, field: 'duplicateTextOf' })));
+  }
+  return out;
 }
 
 /** Find clears this heal made that the corrected predicate no longer justifies (BRO-3092). */
@@ -222,9 +251,25 @@ function fix(orphans) {
     const dir = path.join(REVIEW_TEXTS_DIR, o.showId);
     const filePath = path.join(dir, o.loserFile);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    data.duplicateClearReason = buildHealClearReason(day, o.targetFile, o.reason, data.duplicateReason);
-    data.duplicateOf = null;
-    data.duplicateReason = null;
+    if (o.field === 'duplicateTextOf') {
+      data.duplicateClearReason = buildDuplicateTextClearReason(day, o.targetFile, o.reason);
+      // NULL, not delete — verified live against 1536-west-end-2026/
+      // broadwayworld--debbie-gilpin.json (BRO-3336): `delete` leaves
+      // newData.duplicateTextOf `undefined`, and safeWriteReview's merge-mode
+      // restore pass ("keep any existing field not in newData") re-merges it
+      // back from disk whenever the file already carried a duplicateClearReason
+      // from an EARLIER, unrelated clear — the shared breadcrumb field makes
+      // clearHonored() see "already set", not "newly set", so the restore
+      // silently wins (hit 15 of 122 corpus-wide orphans). Assigning null
+      // instead leaves the key present (not undefined), so the merge loop's
+      // `newData[key] === undefined` guard never matches. validate-data.js
+      // treats null the same as absent (`!= null` loose check).
+      data.duplicateTextOf = null;
+    } else {
+      data.duplicateClearReason = buildHealClearReason(day, o.targetFile, o.reason, data.duplicateReason);
+      data.duplicateOf = null;
+      data.duplicateReason = null;
+    }
     safeWriteReview(filePath, data);
     cleared++;
   }
@@ -296,31 +341,42 @@ function main() {
     process.exit(orphans.length === 0 ? 0 : (FIX ? 0 : 1));
   }
   if (orphans.length === 0) {
-    console.log('OK: no orphaned duplicateOf pointers found');
+    console.log('OK: no orphaned duplicateOf/duplicateTextOf pointers found');
     process.exit(0);
   }
-  console.log(`Found ${orphans.length} orphaned duplicateOf pointer(s):\n`);
+  console.log(`Found ${orphans.length} orphaned pointer(s):\n`);
   for (const o of orphans) {
     console.log(`  ${o.showId}`);
-    console.log(`    ${o.loserFile}  duplicateOf → ${o.targetFile} (now invalid)`);
+    console.log(`    ${o.loserFile}  ${o.field} → ${o.targetFile} (now invalid)`);
   }
   if (FIX) {
-    if (orphans.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
-      console.log(`\nRefusing to auto-clear ${orphans.length} pointer(s) — above FIX_SURGE_THRESHOLD (${FIX_SURGE_THRESHOLD}).`);
+    // Surge-checked PER FIELD, not on the combined total (partitionOrphansForFix,
+    // unit-tested in orphaned-duplicate-pointer-heal.test.mjs) — BRO-3336:
+    // --field=both runs both detectors independently, and their steady-state
+    // backlogs don't move together. Gating on the sum would make the threshold
+    // trip purely as a function of how many fields happen to be selected, and
+    // would silently regress duplicateOf's existing auto-heal the moment a
+    // separate duplicateTextOf backlog pushed the combined count over.
+    const { fixable, surgingFields } = partitionOrphansForFix(orphans, FIX_SURGE_THRESHOLD, FORCE_BULK);
+    if (surgingFields.length > 0) {
+      for (const { field, count } of surgingFields) {
+        console.log(`\nRefusing to auto-clear ${count} ${field} pointer(s) — above FIX_SURGE_THRESHOLD (${FIX_SURGE_THRESHOLD}).`);
+      }
       console.log('This many at once could mean a classifier regression, not normal drift. Review the list above, then re-run with --force-bulk to proceed.');
-      process.exit(1);
+      if (fixable.length === 0) process.exit(1);
+      console.log(`\nProceeding with the ${fixable.length} pointer(s) in field(s) under the threshold.`);
     }
-    const cleared = fix(orphans);
+    const cleared = fix(fixable);
     try {
       fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
       fs.writeFileSync(AUDIT_PATH, JSON.stringify({
         generated: new Date().toISOString(),
-        note: 'Orphaned duplicateOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250).',
-        count: orphans.length,
-        orphans,
+        note: 'Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).',
+        count: fixable.length,
+        orphans: fixable,
       }, null, 2) + '\n');
     } catch (e) { console.warn(`[heal-orphaned-duplicate-pointers] could not write audit report: ${e.message}`); }
-    console.log(`\nCleared ${cleared} orphaned duplicateOf pointer(s).`);
+    console.log(`\nCleared ${cleared} orphaned pointer(s).`);
     console.log('Re-run the rebuild to pick up the re-admitted reviews.');
     process.exit(0);
   }

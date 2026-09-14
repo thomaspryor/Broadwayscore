@@ -15,6 +15,9 @@ const {
   wouldCloseDuplicateCycle,
   findChainPointersThrough,
   HEAL_CLEAR_BREADCRUMB_PREFIX,
+  findOrphanedDuplicateTextPointers,
+  buildDuplicateTextClearReason,
+  partitionOrphansForFix,
 } = require('./orphaned-duplicate-pointer-heal.js');
 
 const REAL_TEXT = 'x'.repeat(600);
@@ -363,4 +366,135 @@ test('findUnjustifiedHealClears: refuses to restore a pointer that would close a
     { file: 'b.json', data: { fullText: REAL_TEXT, url: DUP_URL, duplicateOf: 'a.json' } },
   ];
   assert.deepEqual(findUnjustifiedHealClears(records), []);
+});
+
+// --- findOrphanedDuplicateTextPointers (BRO-3336: the duplicateTextOf cousin) ---
+
+test('findOrphanedDuplicateTextPointers: 1536-west-end-2026 shaped fixture — finds the pair', () => {
+  const records = [
+    { file: 'broadwayworld--debbie-gilpin.json', data: { ...loser(), duplicateTextOf: 'broadwayworld--cindy-marcolina.json' } },
+    { file: 'broadwayworld--cindy-marcolina.json', data: target() },
+    { file: 'nyt--jesse-green.json', data: { fullText: REAL_TEXT } },
+  ];
+  const flips = findOrphanedDuplicateTextPointers(records);
+  assert.deepEqual(flips.map((f) => [f.loserFile, f.targetFile]), [
+    ['broadwayworld--debbie-gilpin.json', 'broadwayworld--cindy-marcolina.json'],
+  ]);
+});
+
+test('findOrphanedDuplicateTextPointers: target still valid — no flips', () => {
+  const records = [
+    { file: 'a.json', data: { ...loser(), duplicateTextOf: 'b.json' } },
+    { file: 'b.json', data: { fullText: REAL_TEXT } },
+  ];
+  assert.deepEqual(findOrphanedDuplicateTextPointers(records), []);
+});
+
+test('findOrphanedDuplicateTextPointers: self-referential duplicateTextOf is ignored', () => {
+  const records = [
+    { file: 'a.json', data: { ...loser(), duplicateTextOf: 'a.json' } },
+  ];
+  assert.deepEqual(findOrphanedDuplicateTextPointers(records), []);
+});
+
+test('findOrphanedDuplicateTextPointers: target missing from records — ignored', () => {
+  const records = [
+    { file: 'a.json', data: { ...loser(), duplicateTextOf: 'ghost.json' } },
+  ];
+  assert.deepEqual(findOrphanedDuplicateTextPointers(records), []);
+});
+
+test('findOrphanedDuplicateTextPointers: no duplicateTextOf at all — no flips', () => {
+  const records = [
+    { file: 'a.json', data: loser() },
+    { file: 'b.json', data: target() },
+  ];
+  assert.deepEqual(findOrphanedDuplicateTextPointers(records), []);
+});
+
+test('findOrphanedDuplicateTextPointers: loser itself flagged — clean-source gate refuses (shared with duplicateOf)', () => {
+  const records = [
+    { file: 'a.json', data: { ...loser({ wrongProduction: true }), duplicateTextOf: 'b.json' } },
+    { file: 'b.json', data: target() },
+  ];
+  assert.deepEqual(findOrphanedDuplicateTextPointers(records), []);
+});
+
+test('findOrphanedDuplicateTextPointers: duplicateOf on the same record is untouched — fields are independent', () => {
+  const records = [
+    { file: 'a.json', data: { ...loser(), duplicateOf: 'c.json', duplicateTextOf: 'b.json' } },
+    { file: 'b.json', data: target() },
+    { file: 'c.json', data: { fullText: REAL_TEXT } },
+  ];
+  const textFlips = findOrphanedDuplicateTextPointers(records);
+  assert.deepEqual(textFlips.map((f) => [f.loserFile, f.targetFile]), [['a.json', 'b.json']]);
+  assert.deepEqual(findOrphanedDuplicatePointers(records), []);
+});
+
+test('findOrphanedDuplicateTextPointers: honors BRO-3092 retraction-aware isTargetInvalidated', () => {
+  // Target's wrongProduction was already retracted by an operator — the shared
+  // predicate must decline, exactly as it does for duplicateOf.
+  const records = [
+    { file: 'a.json', data: { ...loser(), duplicateTextOf: 'b.json' } },
+    { file: 'b.json', data: { fullText: REAL_TEXT, wrongProduction: true, wrongProductionManualClear: true } },
+  ];
+  assert.deepEqual(findOrphanedDuplicateTextPointers(records), []);
+});
+
+// --- buildDuplicateTextClearReason (BRO-3336: must not cross-talk with duplicateOf's revert parser) ---
+
+test('buildDuplicateTextClearReason: does not match parseHealClearTarget (no cross-talk with --revert-unjustified)', () => {
+  const reason = buildDuplicateTextClearReason('2026-09-14', 'broadwayworld--cindy-marcolina.json', 'orphaned-duplicate-heal: ... (duplicateTextOf)');
+  assert.equal(parseHealClearTarget(reason), null);
+  assert.ok(!reason.startsWith(HEAL_CLEAR_BREADCRUMB_PREFIX));
+  assert.match(reason, /target broadwayworld--cindy-marcolina\.json was flagged invalid/);
+});
+
+// --- partitionOrphansForFix (BRO-3336: surge guard checked per field, not combined) ---
+
+function orphan(field, n) {
+  return Array.from({ length: n }, (_, i) => ({ loserFile: `${field}-${i}.json`, targetFile: 'x.json', field }));
+}
+
+test('partitionOrphansForFix: both fields under threshold — all fixable, nothing surging', () => {
+  const orphans = [...orphan('duplicateOf', 5), ...orphan('duplicateTextOf', 5)];
+  const { fixable, surgingFields } = partitionOrphansForFix(orphans, 10, false);
+  assert.equal(fixable.length, 10);
+  assert.deepEqual(surgingFields, []);
+});
+
+test('partitionOrphansForFix: one field over threshold — only the OTHER field is fixable', () => {
+  const orphans = [...orphan('duplicateOf', 20), ...orphan('duplicateTextOf', 5)];
+  const { fixable, surgingFields } = partitionOrphansForFix(orphans, 10, false);
+  assert.equal(fixable.length, 5);
+  assert.ok(fixable.every((o) => o.field === 'duplicateTextOf'));
+  assert.deepEqual(surgingFields, [{ field: 'duplicateOf', count: 20 }]);
+});
+
+test('partitionOrphansForFix: both fields over threshold — nothing fixable, both reported surging', () => {
+  const orphans = [...orphan('duplicateOf', 20), ...orphan('duplicateTextOf', 15)];
+  const { fixable, surgingFields } = partitionOrphansForFix(orphans, 10, false);
+  assert.equal(fixable.length, 0);
+  assert.deepEqual(
+    surgingFields.sort((a, b) => a.field.localeCompare(b.field)),
+    [{ field: 'duplicateOf', count: 20 }, { field: 'duplicateTextOf', count: 15 }],
+  );
+});
+
+test('partitionOrphansForFix: exactly at threshold is fixable, one over is not', () => {
+  const orphans = orphan('duplicateOf', 10);
+  assert.equal(partitionOrphansForFix(orphans, 10, false).fixable.length, 10);
+  assert.equal(partitionOrphansForFix([...orphans, orphan('duplicateOf', 1)[0]], 10, false).fixable.length, 0);
+});
+
+test('partitionOrphansForFix: force=true bypasses the guard entirely, even when surging', () => {
+  const orphans = [...orphan('duplicateOf', 20), ...orphan('duplicateTextOf', 15)];
+  const { fixable, surgingFields } = partitionOrphansForFix(orphans, 10, true);
+  assert.equal(fixable.length, 35);
+  assert.deepEqual(surgingFields, []);
+});
+
+test('partitionOrphansForFix: empty input — nothing fixable, nothing surging', () => {
+  assert.deepEqual(partitionOrphansForFix([], 10, false), { fixable: [], surgingFields: [] });
+  assert.deepEqual(partitionOrphansForFix(undefined, 10, false), { fixable: [], surgingFields: [] });
 });
