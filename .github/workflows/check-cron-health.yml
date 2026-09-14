@@ -5,6 +5,14 @@ on:
     - cron: '0 12 * * *'  # Noon UTC daily — checks that morning crons actually fired
   workflow_dispatch: {}
 
+# BRO-3071: added so its own cron can't race a manual workflow_dispatch into
+# a lost push on data/audit/cron-health-state.json (that file is now
+# apiFallbackSafe — see scripts/lib/core-data-merge-registry.js — which
+# requires this dedicated group).
+concurrency:
+  group: check-cron-health
+  cancel-in-progress: false
+
 jobs:
   check:
     runs-on: ubuntu-latest

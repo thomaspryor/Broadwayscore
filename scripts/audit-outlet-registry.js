@@ -40,7 +40,7 @@ const readline = require('readline');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { isNonReviewDemotedByFreshCV, isRejectedNonReview } = require('./lib/review-guards');
+const { isNonReviewDemotedByFreshCV, isRejectedNonReview, wrongShowCleared } = require('./lib/review-guards');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
@@ -63,6 +63,9 @@ const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const AUDIT_OUTPUT_PATH = path.join(__dirname, '../data/audit/outlet-registry-gaps.json');
 const NORMALIZATION_PATH = path.join(__dirname, './lib/review-normalization.js');
+// Rejection reasons that mean "this review will never score, but is not
+// non-review junk either" — see the wrong-production exclusion below.
+const WRONG_PRODUCTION_REJECTION_REASONS = new Set(['wrong_production', 'wrong_show']);
 const BASELINE_PATH = path.join(__dirname, '../data/audit/outlet-registry-baseline.json');
 // Separate baseline for pre-existing exact-sentinel registry entries (task
 // #1783). Same reasoning as BASELINE_PATH: a handful of these (e.g.
@@ -351,6 +354,36 @@ function auditOutletRegistry() {
       // from scoring (skippedBlockedUrl / blockedReviewUrl) — reusing it here
       // keeps outlet-level classification canonical instead of a per-file flag.
       if (review.url && isBlockedReviewUrl(review.url)) continue;
+
+      // Fourth exclusion pipeline: a review confidently rejected as
+      // wrong_production/wrong_show by ensemble-scoreability-check (rejectedAt
+      // + rejectionReason set, no manual clear) is excluded from scoring —
+      // but review-guards.js's isRejectedNonReview deliberately does NOT treat
+      // it as excluded (its docstring: "Deliberately EXCLUDES wrongProduction
+      // / wrongShow ... so scored / stale-flag files keep blocking
+      // rediscovery" — a re-discovery concern, not a scoring one). Left
+      // unchecked here, an outlet whose only current review is a
+      // correctly-rejected wrong-production match (a same-named production in
+      // another market/venue) trips --strict forever, even though it will
+      // never be scored (BRO-3115: stalbanstimes, then same-day
+      // theatreinchicago — a real UK regional paper and a real Chicago
+      // aggregator, each with exactly one review, each a 3-model-agreed
+      // wrong-production rejection).
+      //
+      // Deliberately NOT the full isIncludableForRebuild/explainExclusion
+      // predicate — tried that first and it pulled in duplicateOf/temporal-
+      // window/roundup exclusions unrelated to this audit's question, dropping
+      // 64 otherwise-legitimate outlets from the scan in a real-data test
+      // (also needs data/shows.json + data/critic-registry.json, neither of
+      // which this audit otherwise touches). This mirrors ONLY the
+      // rejectionReason branch of explainExclusion, using wrongShowCleared()
+      // — the single exported source of truth for the 5 manual-clear flags
+      // (review-guards.js:1114) — so a human-cleared file still counts.
+      if (
+        WRONG_PRODUCTION_REJECTION_REASONS.has(review.rejectionReason) &&
+        review.rejectedAt &&
+        !wrongShowCleared(review)
+      ) continue;
 
       // Track this outlet
       if (!outletsInReviews.has(reviewOutletId)) {

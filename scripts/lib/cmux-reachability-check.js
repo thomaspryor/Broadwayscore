@@ -117,8 +117,8 @@ function logReachabilityAttempt({ ok, error }, { logPath = ATTEMPTS_LOG_PATH, no
 // Sorted oldest→newest by `ts` — summarizeFailureStreak (like
 // owner-alert-router.js's readDispatchAttempts) relies on array order, and a
 // rewrite-after-filter or manual edit could disturb append order.
-function readReachabilityAttempts({ logPath = ATTEMPTS_LOG_PATH, days = ATTEMPTS_RETENTION_DAYS } = {}) {
-  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+function readReachabilityAttempts({ logPath = ATTEMPTS_LOG_PATH, days = ATTEMPTS_RETENTION_DAYS, now = Date.now() } = {}) {
+  const cutoff = now - days * 24 * 60 * 60 * 1000;
   let lines = [];
   try {
     lines = fs.readFileSync(logPath, 'utf8').split('\n').filter(Boolean);
@@ -203,7 +203,7 @@ async function runReachabilityCheck({
 
   if (!dryRun) logReachabilityAttempt({ ok: probe.reachable, error: probe.error }, { logPath, now });
 
-  const attempts = readReachabilityAttempts({ logPath });
+  const attempts = readReachabilityAttempts({ logPath, now });
   const { consecutiveFailures, forHowLong, shouldAlert } = decideReachabilityAlert(attempts, { now });
 
   const routerLib = (!routeAlertFn || !resolveConditionFn) ? require('./owner-alert-router.js') : null;

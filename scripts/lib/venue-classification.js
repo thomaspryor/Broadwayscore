@@ -47,6 +47,47 @@ function isWestEndVenue(venue) {
   return WEST_END_VENUES.has(normalizeVenueName(venue));
 }
 
+// Theatres OUTSIDE New York that TodayTix nonetheless lists in its NYC feed
+// (location=1) — and, worse, tags "Off Broadway". They are touring houses
+// playing 2-3 day road dates of shows that are not New York productions at all.
+//
+// This needs its own denylist rather than "absent from OFF_BROADWAY_VENUES"
+// because the OB allowlist is DERIVED from category='off-broadway' rows in
+// shows.json and then FEEDS isKnownOffBroadwayVenue(). One mis-categorised road
+// date therefore teaches the allowlist a touring venue permanently, and every
+// later engagement there is minted as an Off-Broadway production, which
+// re-feeds the list. State Theatre New Jersey (New Brunswick, NJ) rode that
+// loop to three bogus rows — The Music Man, Spamalot and Beetlejuice (BRO-3211).
+//
+// Checked BEFORE the subcategory tag, because the tag is exactly what is wrong:
+// TodayTix returns subcategories ["Comedy","Off Broadway"] for Beetlejuice at
+// State Theatre New Jersey (verified against the live API, 2026-09-14), so a
+// venue-allowlist fix alone would not have stopped the row coming straight back.
+// Substring regex, NOT an exact Set — the same choice (and for the same reason)
+// as SPECIAL_ENGAGEMENT_VENUE_RE below. An exact Set.has(normalizeVenueName(v))
+// was tried first and is one keystroke from useless here: normalizeVenueName
+// only strips a TRAILING parenthetical, a TRAILING "theatre"/"theater" and a
+// LEADING "the", so every one of these real-world shapes slipped past it --
+//   "State Theater New Jersey"               (American spelling; mid-string, so not stripped)
+//   "State Theatre, New Jersey"              (comma)
+//   "State Theatre New Jersey - New Brunswick"  (locality suffix)
+// -- and a single miss is not cosmetic: the row is admitted, written as
+// category='off-broadway', and build-ob-venues.js then re-learns the venue into
+// the allowlist, restarting the very loop this is here to break. \W+ separators
+// absorb the punctuation variants and theat(?:er|re) absorbs the spelling.
+const NON_NYC_VENUE_RE = /state\W+theat(?:er|re)\W+(?:new\W+jersey|nj\b)/i;
+
+/**
+ * True when a venue is a known non-New-York house. Such a venue can never be
+ * Broadway or Off-Broadway no matter how TodayTix tags it. Accepts a string
+ * venue name or a TodayTix-shape `{ name }` object.
+ */
+function isNonNycVenue(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name) return false;
+  return NON_NYC_VENUE_RE.test(name);
+}
+
 /**
  * True when a venue name matches a theatre we already classify as
  * Off-Broadway. Lets discovery rescue OB shows that TodayTix lists without
@@ -283,4 +324,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, NON_NYC_VENUE_RE, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
