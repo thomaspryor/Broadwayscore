@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-13T20:06:28.211Z",
+  "timestamp": "2026-09-14T00:33:48.994Z",
   "stats": {
-    "totalReviews": 43220,
-    "alreadyFlagged": 18005,
-    "dateGuardCatches": 235,
-    "directorMismatch": 1047,
+    "totalReviews": 43235,
+    "alreadyFlagged": 18010,
+    "dateGuardCatches": 237,
+    "directorMismatch": 1048,
     "tvFilmSignals": 1264,
     "londonSignals": 1052,
     "offBroadwaySignals": 503,
     "yearMismatch": 92,
-    "noPublishDate": 3722
+    "noPublishDate": 3721
   },
   "findings": [
     {
@@ -1058,7 +1058,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -6381,7 +6381,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -12845,6 +12845,17 @@
       ]
     },
     {
+      "showId": "here-there-are-blueberries-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 902d before show (2024-05-14 vs 2026-11-02)"
+        }
+      ]
+    },
+    {
       "showId": "high-noon-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
       "score": 57,
@@ -14572,7 +14583,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -14848,7 +14859,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -15575,7 +15586,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "afridiziak-theatre-news--mark-arbouine.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-03-28",
       "url": "https://www.afridiziak.com/reviews/john-proctor-is-the-villain/",
       "findings": [
@@ -15772,7 +15783,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -19231,7 +19242,21 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 92,
       "publishDate": "2025-02-20",
-      "url": null,
+      "url": "https://www.ft.com/content/9f767a15-8d37-4bc3-bbf3-9417d8e9ad45?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 79,
+      "publishDate": "2025-02-20",
+      "url": "https://www.londontheatre.co.uk/reviews/much-ado-about-nothing-review-theatre-royal-drury-lane",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -19245,7 +19270,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 71,
       "publishDate": "2025-02-23",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-tom-hiddleston-3mfwhtv89",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -19285,7 +19310,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -21201,6 +21226,19 @@
       "score": 81,
       "publishDate": "2025-12-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/Review-Round-Up%3A-PARANORMAL-ACTIVITY-at-the-Ambassadors-Theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "london-box-office--unknown.json",
+      "publishDate": "2025-12-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/Review-Round-Up:-PARANORMAL-ACTIVITY-at-the-Ambassadors-Theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34675,7 +34713,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -34730,7 +34768,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 73,
+      "score": 74,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -37414,7 +37452,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -37428,7 +37466,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-05-20",
       "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
       "findings": [
@@ -40828,7 +40866,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -44316,7 +44354,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "guardian--mark-lawson.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2026-09-11",
       "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
       "findings": [
@@ -44411,7 +44449,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2026-09-12",
       "url": "https://www.timeout.com/london/news/review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre-091226",
       "findings": [
@@ -44551,7 +44589,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -48323,7 +48361,7 @@
     {
       "showId": "sting-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-06-24",
       "url": "https://theatreweekly.com/review-sting-at-young-vic/",
       "findings": [
@@ -48664,7 +48702,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--susannah-clapp.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2023-12-15",
       "url": "https://www.theguardian.com/stage/2023/dec/24/macbeth-donmar-warehouse-max-webster-david-tennant-cush-jumbo-review-stranger-things-the-first-shadow-phoenix-stephen-daldry-ulster-american-riverside-studios-david-ireland-woody-harrelson-andy-serkis-louisa-harland",
       "findings": [
@@ -48775,7 +48813,7 @@
     {
       "showId": "summerfolk-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-03-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-SUMMERFOLK-starring-Sophie-Rundle-National-Theatre-20260318",
       "findings": [
