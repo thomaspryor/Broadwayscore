@@ -353,10 +353,16 @@ function parseStreamLine(line) {
 // breakdown (BRO-3100) alongside the flat cache_creation_input_tokens sum, so
 // estimateCostUSD can price the two cache-write durations separately.
 function addUsage(total, usage) {
-  const t = total || {
-    input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0,
-    cache_creation: { ephemeral_1h_input_tokens: 0, ephemeral_5m_input_tokens: 0 },
-  };
+  // NOTE: cache_creation is deliberately NOT seeded here. estimateCostUSD
+  // treats "usage.cache_creation is an object with a numeric ephemeral key"
+  // as "the nested breakdown is present" — a pre-seeded all-zero object would
+  // satisfy that check and silently zero out cache-write cost via 2*0+1.25*0
+  // instead of falling back to the flat cache_creation_input_tokens*1.25 on
+  // sessions whose events never carry the nested field (verified live: this
+  // exact bug shipped in the first BRO-3100 commit and priced $500K flat
+  // cache-creation tokens at $0.0015 instead of $9.38). Only add the key once
+  // a real usage event supplies it, below.
+  const t = total || { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 };
   if (!usage) return t;
   for (const k of ['input_tokens', 'output_tokens', 'cache_creation_input_tokens', 'cache_read_input_tokens']) {
     if (typeof usage[k] === 'number') t[k] += usage[k];
@@ -392,10 +398,11 @@ function estimateCostUSD(usage, model) {
   const key = Object.keys(APPROX_MODEL_RATES_PER_MTOK).find(k => String(model || '').includes(k)) || 'sonnet';
   const r = APPROX_MODEL_RATES_PER_MTOK[key];
   const cc = usage.cache_creation;
-  const hasSplit = cc && typeof cc === 'object' &&
-    (typeof cc.ephemeral_1h_input_tokens === 'number' || typeof cc.ephemeral_5m_input_tokens === 'number');
+  const ephemeral1h = cc && typeof cc.ephemeral_1h_input_tokens === 'number' ? cc.ephemeral_1h_input_tokens : null;
+  const ephemeral5m = cc && typeof cc.ephemeral_5m_input_tokens === 'number' ? cc.ephemeral_5m_input_tokens : null;
+  const hasSplit = cc && typeof cc === 'object' && (ephemeral1h !== null || ephemeral5m !== null);
   const cacheWriteTok = hasSplit
-    ? 2 * (cc.ephemeral_1h_input_tokens || 0) + 1.25 * (cc.ephemeral_5m_input_tokens || 0)
+    ? 2 * (ephemeral1h || 0) + 1.25 * (ephemeral5m || 0)
     : 1.25 * (usage.cache_creation_input_tokens || 0);
   const inTok = (usage.input_tokens || 0) + cacheWriteTok + 0.1 * (usage.cache_read_input_tokens || 0);
   const usd = (inTok * r.in + (usage.output_tokens || 0) * r.out) / 1e6;
