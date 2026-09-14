@@ -126,8 +126,9 @@ jobs:
       #   Keeping it here keeps the audit fresh for the enrichment workflow.
       # - backfill-unknown-outlets: local-only, no network, ~5s
       # - cleanup-phantom-outlets, strip-stale-single-model-scores,
-      #   detect-syndicated-duplicates, apply-audit-flags: utility steps,
-      #   each <30s, shape data the rebuild reads.
+      #   detect-syndicated-duplicates, apply-audit-flags,
+      #   heal-orphaned-duplicate-pointers: utility steps, each <30s, shape
+      #   data the rebuild reads.
 
       - name: Flag wrong-production reviews by date window
         if: inputs.skip_enrichment != 'true'
@@ -173,6 +174,18 @@ jobs:
       - name: Sweep stale duplicateOf flags
         if: inputs.skip_enrichment != 'true'
         run: node scripts/audit-duplicate-of-url-mismatch.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      # Self-heal duplicateOf pointers whose TARGET was flagged invalid
+      # (wrongShow/wrongProduction/nonReviewFlag/rejectedBy) by a downstream
+      # classifier AFTER the pointer was set (BRO-3250). Different from the
+      # sweep above: the URL here still matches — the pointer was correct
+      # when set — but nothing re-evaluates it once the target is
+      # reclassified, so a genuinely valid review stays silently excluded
+      # (moulin-rouge-2019 WSJ Terry Teachout, confirmed missing).
+      - name: Sweep orphaned duplicateOf pointers (stale target invalidation)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/heal-orphaned-duplicate-pointers.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       # Coerce URL-shaped critic names (scraper grabbed the byline link href) to
