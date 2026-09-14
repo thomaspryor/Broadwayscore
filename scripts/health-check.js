@@ -297,6 +297,12 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Revenue: affiliate health$/, urgency: 'fix-now',
     humanAction: 'The affiliate ticket-revenue monitor flagged a problem (or the monitor itself stopped running). Open Claude Code and say: "Run check-affiliate-health.js --dry-run and investigate the failing layer — the check output names it (site clicks, Impact handoff, conversions, or payouts)."' },
 
+  // Provider spend ledger dead-man (BRO-3317). fix-now: the whole reason this
+  // check exists is that the ledger froze for 11 days with nothing paging —
+  // a repeat needs to surface the same day, not sit in a weekly bucket.
+  { match: /^Data quality: provider spend ledger$/, urgency: 'fix-now',
+    humanAction: 'The provider spend ledger (data/audit/provider-spend-daily.jsonl) has not been updated in >48h. Open Claude Code and say: "Check the \'Commit provider spend ledger (apiFallbackSafe)\' and \'Provider spend reconciliation\' steps in data-health-check.yml — confirm the write in the reconciliation step is actually reaching a committed push, not being wiped by an earlier commit step\'s push-with-retry.sh fallback."' },
+
   // Cookies — requires human action on Mac. Urgency escalates with proximity.
   { match: /^Cookies:/, urgency: 'fix-now',
     humanAction: 'A paywall cookie needs refreshing. On your Mac, open Claude Code and say: "Refresh the expired paywall cookies — check which ones need updating."',
@@ -1364,6 +1370,48 @@ function checkQuality() {
         return { name: 'Revenue: affiliate health', status: 'warn', message: `${warns.length} anomaly: ${warns.map(c => c.label).join(', ')}${shadowTag}`, hint: warns[0].reason };
       }
       return { name: 'Revenue: affiliate health', status: 'pass', message: `${checks.length} checks healthy (${formatAge(age)} ago)${shadowTag}` };
+    }),
+
+    // Provider spend ledger dead-man (BRO-3317): "Provider spend
+    // reconciliation" runs earlier in this same data-health-check.yml job.
+    // Reads provider-spend-daily.jsonl's own last `day` field directly —
+    // NOT provider-spend-snapshot.json's generatedAt — because the two files
+    // are staged by separate `git add` lines in the same commit step
+    // (adversarial review finding, 2026-09-14): if the ledger's `git add`
+    // ever silently no-ops (bad path, permissions) while the snapshot's
+    // succeeds, a generatedAt-based check would report healthy while the
+    // ledger itself — the thing this check exists to guard, and the thing
+    // BRO-3317's acceptance criteria literally names — stays frozen. Same
+    // dead-man shape as "Revenue: affiliate health" above otherwise. error at
+    // >48h (not a separate warn tier — matches every sibling dead-man check
+    // in this block, and BRO-3317's acceptance bar is simply "loud within
+    // 48h, not silent for 11 days"). check-provider-spend.js's DAY default is
+    // utcYesterday(), so a healthy daily run's last `day` is always ~24-31h
+    // old at check time (this job runs ~06:45 UTC) — comfortably under the
+    // 48h bar with room for one late/retried run before it trips.
+    runCheck('Data quality: provider spend ledger', () => {
+      const name = 'Data quality: provider spend ledger';
+      const ledgerFile = path.join(AUDIT_DIR, 'provider-spend-daily.jsonl');
+      if (!fs.existsSync(ledgerFile)) {
+        return { name, status: 'warn', message: 'No provider-spend ledger yet (cron not yet run)', hint: 'node scripts/check-provider-spend.js' };
+      }
+      let lastDay;
+      try {
+        const lines = fs.readFileSync(ledgerFile, 'utf8').split('\n').filter(Boolean);
+        // Corrupt-line-tolerant, same as check-provider-spend.js's own
+        // readLedger(): a bad row loses one day, never the whole check.
+        for (const line of lines) {
+          try { lastDay = JSON.parse(line).day || lastDay; } catch { /* skip corrupt line */ }
+        }
+      } catch { /* fall through to the missing-day warn below */ }
+      if (!lastDay) {
+        return { name, status: 'warn', message: 'Provider-spend ledger has no parseable rows', hint: 'node scripts/check-provider-spend.js' };
+      }
+      const age = hoursAgo(lastDay);
+      if (age > 48) {
+        return { name, status: 'error', message: `Provider spend ledger's newest entry (day=${lastDay}) is ${formatAge(age)} old (>48h) — the daily reconciliation itself has stopped landing`, hint: 'Check the "Commit provider spend ledger (apiFallbackSafe)" step in data-health-check.yml — a push that reports success can still silently drop this file if an earlier commit step in the same job hard-resets the working tree first.' };
+      }
+      return { name, status: 'pass', message: `Newest entry (day=${lastDay}) ${formatAge(age)} old` };
     }),
 
     // Cross-outlet attribution drift (card #1550, Notion 3bd637c5-416f-81b0):

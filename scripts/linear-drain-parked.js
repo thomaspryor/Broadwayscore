@@ -98,7 +98,10 @@ const DISPATCH_CAP = 3;
 // window — past it with no job-spawned event at all, the detached child was
 // refused before it ever reached bsc-runner (same reasoning as
 // digest-autofix.js's/backlog-drain.js's own ORPHAN_TIMEOUT_H).
-const ORPHAN_TIMEOUT_H = 3;
+// Single source of truth: scripts/lib/dispatch-reconcile.js, the module this
+// value is handed straight back to as classifyDispatches' `orphanTimeoutH`.
+// All three reconcilers used to declare their own `= 3` (BRO-3321).
+const ORPHAN_TIMEOUT_H = dispatchReconcile.ORPHAN_TIMEOUT_H;
 // A parked issue this drain already spawned a dispatch for stays "pending
 // its dispatch" until linear-next.js's detached child actually runs and
 // moves it out of Backlog (or writes the shared dispatch-ledger 'launch'
@@ -250,7 +253,7 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
   for (const { dispatch: d, cardId, job, kind } of decisions) {
     if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
-        event: 'card-fail', cardId, contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: kill switch, verify gate, terminal-state guard, or lease already held)`,
       });
       continue;
@@ -259,7 +262,7 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
-        event: 'card-fail', cardId, contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
       continue;
@@ -271,7 +274,7 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
     if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
     const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
     newEntries.push({
-      event: outcome, cardId, contentHash: d.contentHash,
+      event: outcome, cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts,
       note: outcome === 'card-pass'
         ? 'session finished (job-done)'
         : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`,

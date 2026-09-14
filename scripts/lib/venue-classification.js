@@ -77,6 +77,37 @@ function isWestEndVenue(venue) {
 // absorb the punctuation variants and theat(?:er|re) absorbs the spelling.
 const NON_NYC_VENUE_RE = /state\W+theat(?:er|re)\W+(?:new\W+jersey|nj\b)/i;
 
+// Structural "this venue is plainly not in New York" detection, for catching
+// touring/regional houses NON_NYC_VENUE_RE does not yet name by hand.
+//
+// Deliberately NOT a list of city keywords: that was tried and false-positived
+// on real New York houses -- "Virginia Theatre" (Broadway, in the corpus today)
+// trips /virginia/, the Ohio Theatre on Wooster St trips /ohio/, and anything
+// on Houston St trips /houston/. Every genuine regional row in the corpus
+// instead carries an explicit ", <city>, <ST>" suffix ("Goodman Theatre,
+// Chicago, IL"), a shape a New York venue name never takes. The spelled-out
+// state list is the no-comma fallback ("State Theatre New Jersey") and omits
+// single-word state names that double as NY venue names -- Virginia, Ohio,
+// Georgia, Washington -- for the same false-positive reason.
+//
+// Measured when introduced (BRO-3211): 0 hits across every broadway/
+// off-broadway row, 26 of 29 regional rows correctly detected.
+const NON_NYC_LOCALE_SUFFIX_RE = /,\s*[^,]+,\s*(?:d\.?c\.?|[a-z]{2})\.?$/i;
+const SPELLED_OUT_US_STATE_RE = /\b(?:new jersey|rhode island|new hampshire|north carolina|south carolina|west virginia|connecticut|massachusetts|pennsylvania|illinois|minnesota|wisconsin|michigan|maryland|delaware|kentucky|tennessee|nebraska|oklahoma|arkansas|missouri|colorado|arizona|nevada|oregon|kansas|iowa|utah|idaho|montana|wyoming|alabama|alaska|hawaii|louisiana|mississippi|indiana)\b/i;
+
+/**
+ * True when a venue NAME itself says it is outside New York — either a
+ * ", <city>, <ST>" suffix or a spelled-out non-NY state. Broader and more
+ * speculative than isNonNycVenue(): use this for validation and CI guards
+ * (catch the unknown next offender), and isNonNycVenue() for ingest decisions
+ * (reject the ones we have confirmed). Accepts a string or a `{ name }` object.
+ */
+function isNonNycLocale(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name) return false;
+  return NON_NYC_LOCALE_SUFFIX_RE.test(name) || SPELLED_OUT_US_STATE_RE.test(name);
+}
+
 /**
  * True when a venue is a known non-New-York house. Such a venue can never be
  * Broadway or Off-Broadway no matter how TodayTix tags it. Accepts a string
@@ -324,4 +355,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, NON_NYC_VENUE_RE, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };

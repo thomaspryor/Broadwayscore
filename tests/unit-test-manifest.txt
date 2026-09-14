@@ -152,6 +152,7 @@ scripts/tests/alert-sender-bypass.test.mjs
 scripts/tests/audit-card-relevance.test.mjs
 scripts/tests/brightdata-daily-spend.test.mjs
 scripts/tests/bww-roundup-yield-provenance.test.mjs
+scripts/tests/check-push-ledger-content-check.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/cmux-launch-reclaim.test.mjs
 scripts/tests/cmux-reachability-check.test.mjs
@@ -182,6 +183,7 @@ scripts/tests/notion-mirror-status-reconcile.test.mjs
 scripts/tests/observable-before-absence.test.mjs
 scripts/tests/opening-night-monitor-kill-switch-staleness.test.mjs
 scripts/tests/orphan-task-reconciliation.test.mjs
+scripts/tests/provider-spend-ledger-commit-ordering.test.mjs
 scripts/tests/pull-quote-quality.test.mjs
 scripts/tests/recheck-ledger-persistence.test.mjs
 scripts/tests/record-push-ledger-redaction.test.mjs
@@ -195,6 +197,7 @@ scripts/tests/tracked-and-ignored-guard.test.mjs
 scripts/tests/trunk-status.test.mjs
 scripts/tests/verify-edits-heredoc.test.mjs
 scripts/tests/verify-gate-ts-runner.test.mjs
+scripts/trace-connect-phase.test.mjs
 scripts/verify-addams-wsj-dedup-held.test.mjs
 scripts/verify-contamination-gate.test.mjs
 scripts/verify-frankie-2002-cleanup.test.mjs

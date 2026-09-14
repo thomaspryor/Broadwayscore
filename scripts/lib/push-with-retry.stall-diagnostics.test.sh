@@ -78,7 +78,10 @@ if grep -q "transport HANG" "$LOG"; then
 
 # 1. A timeout-killed push must report a classified stall phase, not silence.
 if grep -q "git-transport stall phase:" "$LOG"; then
-  phase="$(grep -m1 "git-transport stall phase:" "$LOG" | sed 's/.*stall phase: //')"
+  # BRO-2839 appended a " (service: X)" suffix to this line. Strip it so
+  # $phase stays the bare phase token this test has always reported, rather
+  # than silently becoming "pre-connect (service: unknown)".
+  phase="$(grep -m1 "git-transport stall phase:" "$LOG" | sed -e 's/.*stall phase: //' -e 's/ (service: [^)]*)$//')"
   pass 1 "timed-out push reported a stall phase: $phase"
 else
   fail 1 "timed-out push (rc=124/137/143 expected) reported no stall phase at all"

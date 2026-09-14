@@ -259,6 +259,41 @@ jobs:
           BROWSERBASE_MAX_SESSIONS_PER_DAY: ${{ vars.BROWSERBASE_MAX_SESSIONS_PER_DAY }}
         run: node scripts/check-provider-spend.js
 
+      # BRO-3317: the write above (fs.writeFileSync in check-provider-spend.js)
+      # lands in the working tree UNCOMMITTED. Every later commit checkpoint
+      # in this job — starting with "Commit acceptance recheck ledger" right
+      # below — calls push-with-retry.sh, whose last-resort fallback path
+      # (rebase AND merge both fail) does `git reset --hard origin/main` then
+      # cherry-picks only its OWN commit back on top. That hard reset silently
+      # discards any uncommitted file this job wrote and hasn't committed yet
+      # — confirmed live on 2026-09-14 (run 34857395085): the "Commit health
+      # check audit snapshots" step further below reported a successful push,
+      # but `git show <that commit> -- data/audit/provider-spend-daily.jsonl`
+      # was empty — the write from this step never survived, which is why the
+      # ledger sat frozen at 2026-09-04 for 11 days despite the job running
+      # daily. Commit right here, before any other step gets a chance to
+      # trigger that fallback. Same apiFallbackSafe pattern as "Commit
+      # lifetime sweep snapshots" below.
+      - name: Commit provider spend ledger (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
+          git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No provider spend ledger changes"
+          else
+            git commit -m "data: Update provider spend ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
       # Acceptance recheck (task #695): the only host for
       # scripts/autonomous-acceptance-recheck.js was the Mac-local
       # autonomous-nightly launchd job, retired 2026-07-27 — it currently
@@ -818,9 +853,12 @@ jobs:
           git add data/audit/health-check-history.json 2>/dev/null || true
           git add data/audit/time-to-publish-sla.json 2>/dev/null || true
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
-          git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
-          git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
-          git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true
+          # provider-spend-daily.jsonl, provider-spend-snapshot.json, and
+          # scraper-spend-daily-agg.jsonl moved to their own earlier
+          # "Commit provider spend ledger (apiFallbackSafe)" step (BRO-3317)
+          # — committing them here was too late: intervening commit steps'
+          # push-with-retry.sh hard-reset fallback could wipe the uncommitted
+          # write before it ever reached this step.
           # digest-history.json intentionally NOT added here — ship-check
           # review (2026-08-23) found it has zero writers anywhere in the
           # codebase (orphaned since card #364); see core-data-merge-

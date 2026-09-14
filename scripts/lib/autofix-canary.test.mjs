@@ -320,3 +320,64 @@ test('canaryCardTitle is exactly the shape autofixFiledIssueGuard recognises (BR
   // stops recognising the canary and a crown-loop sweep can pick it up.
   assert.equal(isAutofixFiledTitle(canaryCardTitle(TODAY)), true);
 });
+
+// ── BRO-3321: outcomes are bucketed by the day their DISPATCH ran ────────────
+
+test('assessThroughputRow: a late-reconciled pass is credited to its dispatch day, not the write day', () => {
+  // The 2026-09-14 shape: reconciliation ran long after the dispatch. Crediting
+  // the pass to the write day moves it to a day the work did not happen on —
+  // and, when the lag exceeds the window, into a day that is not in it at all.
+  // 10 days back: OUTSIDE the 7-day throughput window. This is what makes the
+  // test discriminate — under write-time bucketing the pass lands on today and
+  // counts; under dispatch-time bucketing it is correctly out of window. A
+  // 3-day offset would have been inside the window either way and proved
+  // nothing.
+  const dispatchDay = new Date(NOW - 10 * 86400000).toISOString();
+  const rows = [
+    { event: 'auto-dispatch', ts: dispatchDay },
+    { event: 'card-pass', ts: new Date(NOW).toISOString(), judgedDispatchTs: dispatchDay },
+    // Keep the zero-DISPATCH arm quiet so this test measures only where the
+    // pass was bucketed — that arm fires first and would mask the assertion.
+    { event: 'auto-dispatch', ts: new Date(NOW).toISOString() },
+    { event: 'auto-dispatch', ts: new Date(NOW - 86400000).toISOString() },
+  ];
+  const r = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: [], now: new Date(NOW) });
+  // Aged to its 10-day-old dispatch, the pass is outside the 7d window, so the
+  // window genuinely holds zero passes and the zero-pass arm fires. That arm
+  // firing IS the observable difference between the two clocks.
+  assert.equal(r.status, 'error', `got ${JSON.stringify(r)}`);
+  assert.match(r.message, /0 passes/, `got ${JSON.stringify(r)}`);
+
+  // Control: the SAME rows without judgedDispatchTs fall back to write time,
+  // land the pass on today, and do NOT alarm — proving the field, and not some
+  // other difference in the fixture, is what moved it.
+  const unstamped = rows.map((e) => { const { judgedDispatchTs, ...rest } = e; return rest; });
+  const c = assessThroughputRow({ digestLedgerEntries: unstamped, backlogLedgerEntries: [], now: new Date(NOW) });
+  assert.notEqual(c.status, 'error', `control: got ${JSON.stringify(c)}`);
+  assert.match(c.message, /2 dispatched, 1 passed/, `control: got ${JSON.stringify(c)}`);
+});
+
+test("assessThroughputRow: today's empty bucket never starts a zero-pass streak on its own", () => {
+  // Today is unobserved, not zero: reconciliation for today's dispatches has
+  // not run yet. Counting it added a permanent +1 and turned
+  // ZERO_PASS_ERROR_DAYS = 3 into an effective 2.
+  const day = (n) => new Date(NOW - n * 86400000).toISOString();
+  const rows = [
+    { event: 'auto-dispatch', ts: day(0) },
+    { event: 'auto-dispatch', ts: day(1) },
+    { event: 'card-pass', ts: day(1), judgedDispatchTs: day(1) },
+    { event: 'auto-dispatch', ts: day(2) },
+    { event: 'card-pass', ts: day(2), judgedDispatchTs: day(2) },
+  ];
+  const r = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: [], now: new Date(NOW) });
+  assert.notEqual(r.status, 'error', `two of the last three days landed passes; got ${JSON.stringify(r)}`);
+});
+
+test('assessThroughputRow: a genuine zero-pass run of 3 real days still errors', () => {
+  // The grace must delay the alarm by the unobserved day, not disable it.
+  const day = (n) => new Date(NOW - n * 86400000).toISOString();
+  const rows = [1, 2, 3, 4].map((n) => ({ event: 'auto-dispatch', ts: day(n) }));
+  const r = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: [], now: new Date(NOW) });
+  assert.equal(r.status, 'error', `dispatching daily and landing nothing IS dead; got ${JSON.stringify(r)}`);
+  assert.match(r.message, /0 passes/);
+});
