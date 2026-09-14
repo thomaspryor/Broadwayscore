@@ -290,6 +290,15 @@ function decideDigestEscalation({ conditionKey, existing, notifyCount, now, thre
   // out resurfaceHours — a worsening overage must not be invisible for a week
   // just because a tracker exists. See NEVER_QUIET_CONDITION_RE.
   if (isNeverQuietCondition(conditionKey)) {
+    // NOTE (review catch): this exemption only ever RUNS if the caller's own
+    // cooldownHours is short enough for routeAlert() to get this far — the
+    // ledger cooldown gate short-circuits to 'silent' before the escalation
+    // block. It works today because the cost callers pass short windows
+    // (check-provider-spend.js cooldownHours: 20, the breaker checks: 6). If
+    // someone raises one of those to the 168h default, this exemption becomes
+    // a silent no-op. neverQuietRequiresShortCooldown() below is asserted by
+    // the test suite against the real caller files so that change fails CI
+    // instead of quietly restoring the 7-day blackout.
     return { action: 'resurface', neverQuiet: true };
   }
   const lastSurfacedAtMs = existing.lastSurfacedAt ? new Date(existing.lastSurfacedAt).getTime() : NaN;
@@ -808,10 +817,21 @@ async function routeAlert(opts) {
       queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
       result.lastSurfacedAt = now;
     } else if (digestDecision.action === 'resurface') {
+      // Carry the caller's OWN description through (BRO-3030 P0 follow-up).
+      // The first version of this branch emitted only "Still firing after N
+      // notifications", discarding description/decisionPrompt — which defeats
+      // the whole point for the never-quiet cost families: provider-spend
+      // deliberately keeps its TITLE stable and puts every breach number in
+      // the description, so a spend going $40/day -> $400/day produced a line
+      // identical to yesterday's except the counter. A resurfaced cost alert
+      // has to carry today's number or it is not telling the owner anything.
       queueDigestLine({
         title: `${title} (still open — ${existing.linearIdentifier})`,
-        description: `Still firing after ${digestNotifyCount} notifications since it was filed. Tracked at ${existing.linearIdentifier}.`,
-        severity, conditionKey, url, decision: true, fields,
+        description: [
+          `Still firing after ${digestNotifyCount} notifications since it was filed. Tracked at ${existing.linearIdentifier}.`,
+          description,
+        ].filter(Boolean).join('\n\n'),
+        severity, conditionKey, url, decision: true, decisionPrompt, model, fields,
       });
       result.lastSurfacedAt = now;
     }

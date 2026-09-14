@@ -1595,12 +1595,9 @@ test('BRO-3030 P0: every paid-usage family resurfaces instead of going quiet whi
       'bd-circuit-breaker-serp_api1',
       'bd-circuit-breaker-web_unlocker2',
       'sd-circuit-breaker',
-      'anthropic:spend-anomaly',
-      'scrapingbee:credits-exhausted',
-      'gha:quota-exceeded',
-      'vercel:billing-spike',
-      'llm:cost-regression',
-      'autonomous:budget-breach',
+      // Real keys only — an earlier draft asserted six invented ones that
+      // exist nowhere in the repo, which proves nothing about production.
+      'provider-spend:unmeasured',
     ]) {
       const d = decideDigestEscalation({ conditionKey: key, existing: neverQuietTracked(1), notifyCount: 30, now });
       assert.equal(d.action, 'resurface', key + ' must never be quieted');
@@ -1643,14 +1640,74 @@ test('BRO-3030 P0: the predicate neither under- nor over-matches', () => {
   } finally { restore(); }
 });
 
-test('BRO-3030 P0: routeAlert threads conditionKey into the escalation decision', () => {
-  // Source-level assertion (CLAUDE.md rule 15): without conditionKey at the
-  // call site the exemption is unreachable no matter how correct the predicate
-  // is, which is exactly how this shipped broken the first time.
+test('BRO-3030 P0: routeAlert threads conditionKey into the escalation decision (CALL SITE, not the signature)', () => {
+  // The first version of this test matched /decideDigestEscalation\(\{\s*conditionKey,/
+  // against the whole file, which ALSO matches the function DEFINITION's
+  // parameter list — so deleting conditionKey from the call site left the
+  // suite green while the exemption became unreachable in production, exactly
+  // the bug that shipped the first time. Mutation-verified by a reviewer.
+  // Anchor on the ASSIGNMENT instead, which only the call site can satisfy.
   const src = fs.readFileSync(new URL('./owner-alert-router.js', import.meta.url), 'utf8');
   assert.match(
     src,
-    /decideDigestEscalation\(\{\s*conditionKey,/,
-    'routeAlert() must pass conditionKey to decideDigestEscalation',
+    /digestDecision\s*=\s*decideDigestEscalation\(\{\s*conditionKey,/,
+    'routeAlert() must pass conditionKey to decideDigestEscalation at the CALL SITE',
   );
+});
+
+test('BRO-3030 P0: end-to-end — a tracked cost condition surfaces a digest line instead of going silent', async () => {
+  // Behavioural backstop for the source assertion above: this fails if
+  // conditionKey stops reaching decideDigestEscalation, regardless of how the
+  // source is spelled. Goes through the real routeAlert(), real ledger file.
+  const { router, restore, tmpDir } = loadRouterWithFakes();
+  try {
+    const { routeAlert, drainDigestQueue } = router;
+    const ledgerPath = process.env.ALERT_LEDGER_PATH;
+    // Seed: already escalated and tracked, surfaced 1h ago (well inside the
+    // 168h resurface window), and last notified long enough ago to clear the
+    // caller's own cooldown gate.
+    const hoursAgo = (h) => new Date(Date.now() - h * 3600 * 1000).toISOString();
+    fs.writeFileSync(ledgerPath, JSON.stringify({
+      conditions: {
+        'provider-spend:overspend': {
+          status: 'open', disposition: 'digest', title: 'Browserbase over budget',
+          linearIdentifier: 'BRO-9999', notifyCount: 25,
+          lastNotifiedAt: hoursAgo(48), lastSurfacedAt: hoursAgo(1), lastSeen: hoursAgo(1),
+        },
+      },
+    }, null, 2));
+
+    const res = await routeAlert({
+      conditionKey: 'provider-spend:overspend',
+      title: 'Browserbase over budget',
+      description: 'browserbase $412.00 > $4 (today)',
+      disposition: 'digest',
+      severity: 'warning',
+      cooldownHours: 20,
+    });
+
+    assert.notEqual(res.action, 'silent', 'a cost condition must not be silenced inside the resurface window');
+    const queued = drainDigestQueue();
+    const line = queued.find(l => l.conditionKey === 'provider-spend:overspend');
+    assert.ok(line, 'a digest line must be queued for the tracked cost condition');
+    assert.match(line.description, /412\.00/, "the resurfaced line must carry TODAY's number, not just a counter");
+  } finally { restore(); }
+});
+
+test('BRO-3030 P2: the never-quiet callers keep a cooldown short enough for the exemption to run', () => {
+  // The ledger cooldown gate short-circuits to 'silent' BEFORE the escalation
+  // block, so this exemption only executes when the caller's own cooldownHours
+  // is well under the 168h default. Raising one of these silently restores the
+  // 7-day blackout with a fully green suite — so assert it here, against the
+  // real caller files.
+  const repoRoot = new URL('../../', import.meta.url);
+  for (const [file, maxHours] of [['scripts/check-provider-spend.js', 24]]) {
+    const src = fs.readFileSync(new URL(file, repoRoot), 'utf8');
+    const m = src.match(/cooldownHours:\s*(\d+)/);
+    assert.ok(m, `${file} must pass an explicit cooldownHours to routeAlert`);
+    assert.ok(
+      Number(m[1]) <= maxHours,
+      `${file} cooldownHours=${m && m[1]} is too long — the never-quiet exemption never runs above ~${maxHours}h`,
+    );
+  }
 });
