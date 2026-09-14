@@ -20,7 +20,29 @@ const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
 // aggregate's grouping key — see HOST_DIMENSION_PROVIDERS's own docstring.
 const { HOST_DIMENSION_PROVIDERS } = require('./provider-telemetry');
 
-const BB_COST_PER_SESSION = 0.10;
+// BRO-3240: BB_COST_PER_SESSION priced Browserbase per SESSION CREATED, but
+// Browserbase bills browser-HOURS against a monthly plan, not sessions — real
+// sessions are tiny (~0.06-0.2 min each), so the per-session model overstated
+// cost ~10x ($6-9/day modeled vs $19.65-27.74/mo actual invoice total) and
+// fired the browserbaseDailyUsd digest alarm on phantom spend nearly every
+// day. Rates below sourced live from browserbase.com/pricing (Developer plan,
+// checked 2026-09-14) and cross-checked against the account's real invoice
+// base lines (Sept $19.65, Aug/Jul $20.00 — matches BB_BASE_MONTHLY_USD).
+//
+// Deliberately NOT quota-gated (no "first 100 browser-hours/mo are free"
+// logic): that would require knowing Browserbase's actual billing-cycle
+// reset date, and the account's only cumulative usage counter
+// (GET /v1/projects/{id}/usage's browserMinutes) is documented
+// lifetime-cumulative by health-check.js's own Browserbase check — it never
+// resets, so a monthly quota boundary can't be derived from it without an
+// unverified assumption. Charging the overage rate on ALL measured minutes
+// (never gating out an included allowance) means this model can only ever
+// OVER-state cost relative to a quota-aware one — the safe direction for an
+// overspend alarm to be wrong in, unlike under-stating it (plan-review
+// consensus, BRO-3240).
+const BB_BASE_MONTHLY_USD = 20;
+const BB_BASE_AMORTIZED_DAYS = 30;
+const BB_OVERAGE_PER_BROWSER_HOUR_USD = 0.12;
 
 /** "YYYY-MM-DD" for the UTC day before `now`. The reconciliation target is
  * always a COMPLETE day — recording the in-progress day would freeze a
@@ -33,6 +55,28 @@ function utcYesterday(now = new Date()) {
 function isNextUtcDay(prevDay, day) {
   if (!prevDay || !day) return false;
   return new Date(`${day}T00:00:00Z`) - new Date(`${prevDay}T00:00:00Z`) === 86400000;
+}
+
+/**
+ * Pure Browserbase pricing function, factored out of computeDayRecord so the
+ * $ math is independently testable with plain numbers (plan-review finding,
+ * BRO-3240) rather than only reachable through the full day-record shape.
+ * costBase/costOverage are exposed alongside the summed `cost` so a reader of
+ * the ledger/digest can tell a flat subscription day apart from a real
+ * overage day, instead of one blended number that reads as "usage-driven"
+ * even on a zero-session day.
+ * @param {{sessions:number, minutes:number}} bb
+ */
+function bbCost(bb) {
+  const costBase = +(BB_BASE_MONTHLY_USD / BB_BASE_AMORTIZED_DAYS).toFixed(2);
+  const costOverage = +((bb.minutes / 60) * BB_OVERAGE_PER_BROWSER_HOUR_USD).toFixed(2);
+  return {
+    sessions: bb.sessions,
+    minutes: +bb.minutes.toFixed(2),
+    costBase,
+    costOverage,
+    cost: +(costBase + costOverage).toFixed(2),
+  };
 }
 
 /**
@@ -52,9 +96,9 @@ function computeDayRecord({ day, bb, bd, sb, sd, prev }) {
   const prevAdjacent = prev && isNextUtcDay(prev.day, day) ? prev : null;
   const rec = { day, providers: {} };
 
-  rec.providers.browserbase = bb == null
+  rec.providers.browserbase = bb == null || typeof bb.minutes !== 'number'
     ? { status: 'unknown' }
-    : { status: 'ok', sessions: bb, cost: +(bb * BB_COST_PER_SESSION).toFixed(2) };
+    : { status: 'ok', ...bbCost(bb) };
 
   if (bd == null || bd.serp == null || bd.unlocker == null) {
     rec.providers.brightdata = { status: 'unknown' };
@@ -99,7 +143,7 @@ function budgetBreaches(record, thresholds) {
 
   if (p.browserbase?.status === 'ok') {
     if (thresholds.browserbaseDailyUsd != null && p.browserbase.cost > thresholds.browserbaseDailyUsd) {
-      overspend.push(`browserbase $${p.browserbase.cost} > $${thresholds.browserbaseDailyUsd} (${p.browserbase.sessions} sessions)`);
+      overspend.push(`browserbase $${p.browserbase.cost} > $${thresholds.browserbaseDailyUsd} (${p.browserbase.sessions} sessions, ${p.browserbase.minutes}min)`);
     }
   } else unmeasured.push('browserbase');
 
@@ -157,7 +201,7 @@ function renderSnapshot({
   const items = [];
   const fmt = (e, money, extra) => (e.status === 'ok' ? `${money}${extra || ''}` : e.status);
 
-  items.push({ title: `${record.day} · Browserbase: ${fmt(p.browserbase, `$${p.browserbase.cost ?? '?'}`, ` (${p.browserbase.sessions} sessions)`)}` });
+  items.push({ title: `${record.day} · Browserbase: ${fmt(p.browserbase, `$${p.browserbase.cost ?? '?'}`, ` (${p.browserbase.sessions} sessions, ${p.browserbase.minutes}min)`)}` });
 
   // Cap-exhausted line (Scraping v2 T13). Spend alone can't answer "did the
   // ceiling actually BITE?" — and that is the question the step-down
@@ -293,5 +337,6 @@ function aggregateLedgerByDay(ledgerRecords, day) {
 
 module.exports = {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
-  utcYesterday, isNextUtcDay, aggregateLedgerByDay, BB_COST_PER_SESSION,
+  utcYesterday, isNextUtcDay, aggregateLedgerByDay, bbCost,
+  BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,
 };

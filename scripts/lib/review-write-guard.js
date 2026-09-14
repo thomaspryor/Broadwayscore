@@ -508,6 +508,29 @@ function invalidateWrongProductionAutoClear(d) {
 }
 
 /**
+ * Invalidate the auto-clear breadcrumb when a writer RE-FLAGS wrongShow. Mirrors
+ * invalidateWrongProductionAutoClear above exactly — same inverted-ping-pong shape
+ * (BRO-3225): without this, a legitimate re-flag within AUTO_CLEAR_FRESH_DAYS of a
+ * fresh wrongShowAutoCleared stamp could have its restore suppressed by that
+ * now-stale stamp if a stale checkout races the push.
+ *
+ * @param {object} d - review record being flagged (mutated in place)
+ */
+function invalidateWrongShowAutoClear(d) {
+  if (!d) return;
+  const retracted = [];
+  if (!_isEmptyValue(d.wrongShowAutoCleared)) retracted.push('wrongShowAutoCleared');
+  if (!_isEmptyValue(d.wrongShowAutoClearedAt)) retracted.push('wrongShowAutoClearedAt');
+  delete d.wrongShowAutoCleared;
+  delete d.wrongShowAutoClearedAt;
+  _recordClearBreadcrumbRetraction(
+    d,
+    retracted,
+    'retracted wrongShowAutoCleared: re-flagged wrongShow (BRO-3225)'
+  );
+}
+
+/**
  * Stamp (or extend) the field-scoped retraction breadcrumb that makes deleting a PROTECTED
  * clear-breadcrumb field legible to safeWriteReview as intent rather than data loss.
  *
@@ -534,6 +557,43 @@ const _freshWrongProductionAutoClear = (d) => {
   if (Number.isNaN(at)) return false;
   return (Date.now() - at) <= AUTO_CLEAR_FRESH_DAYS * 86400000;
 };
+
+// Shared freshness-gate shape (BRO-3225 codebase review, plan-review 2026-09-14):
+// this is the 6th near-identical "flag + *At stamp, fresh within N days" predicate
+// in this file (wrongProduction above; staleScoredBeforeOpening/fullTextWrongAuthor/
+// stuckRescoreCleared/rescoreCompletedAt below). The three most recent siblings
+// (_freshStaleScoredBeforeOpening, _freshFullTextWrongAuthor, _freshStuckRescoreCleared)
+// all carry an `age >= 0` future-dated-stamp guard that _freshWrongProductionAutoClear
+// above does NOT — added specifically because a codex adversarial review (task #1237,
+// "apply-audit-flags.js fullTextWrongAuthor is the same same-job restore-resurrection
+// bug as task #97's staleScoredBeforeOpening") found a clock-skewed/malformed future
+// stamp can pass `<= FRESH_DAYS` via a negative age and suppress a real data-loss
+// restore FOREVER, not just for the intended window. Copying the OLDER
+// _freshWrongProductionAutoClear shape for a new field would silently reintroduce
+// that already-fixed defect class. This helper is the fix's actual generalization:
+// used by the new wrongShow predicate below; the 4 existing ones are deliberately
+// NOT retrofitted in this diff (out of scope — they are independently battle-tested
+// and retrofitting them is a separate, lower-risk-when-isolated cleanup).
+//
+// `flagIsString`: wrongProduction/wrongShow's own AutoCleared stamps are STRING
+// annotations ("rebuild: ..."), so the flag check is truthiness, matching
+// _freshWrongProductionAutoClear's `!d[flagField]` (not the boolean `!== true`
+// check the 3 newer siblings use for their own, boolean-typed flags).
+function _freshAutoClearStamp(d, { flagField, atField, days, flagIsString = true }) {
+  if (!d) return false;
+  const flagOk = flagIsString ? !!d[flagField] : d[flagField] === true;
+  if (!flagOk || !d[atField]) return false;
+  const at = Date.parse(String(d[atField]));
+  if (Number.isNaN(at)) return false;
+  const age = Date.now() - at;
+  return age >= 0 && age <= days * 86400000;
+}
+
+const _freshWrongShowAutoClear = (d) => _freshAutoClearStamp(d, {
+  flagField: 'wrongShowAutoCleared',
+  atField: 'wrongShowAutoClearedAt',
+  days: AUTO_CLEAR_FRESH_DAYS,
+});
 
 // staleScoredBeforeOpening freshness gate (task #97 codex adversarial review).
 // Same shape as _freshWrongProductionAutoClear above but a shorter window: this
@@ -817,9 +877,18 @@ const CLEAR_BREADCRUMBS = {
   wrongProduction: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionNote: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionReason: _wrongProductionCleared,
-  wrongShow: _wrongShowCleared,
-  wrongShowReason: _wrongShowCleared,
-  wrongShowNote: _wrongShowCleared,
+  // BRO-3225: OR'd with _freshWrongShowAutoClear so shouldAutoClearWrongShowUkUrl's
+  // rebuild-time auto-clear (rebuild-all-reviews.js ~3019/3033, which deletes all
+  // three of wrongShow/wrongShowNote/wrongShowReason together — see
+  // shouldAutoClearWrongShow) is honored the same way wrongProduction's sibling
+  // auto-clear already is. wrongShowReason is included (plan-review "structure &
+  // devil's advocate" finding, 2026-09-14): shouldAutoClearWrongShow deletes it
+  // alongside the flag/note, but the original plan only gated wrongShow/
+  // wrongShowNote, which would have left a stale wrongShowReason resurrectable
+  // by the restore even while wrongShow itself stayed freshness-protected cleared.
+  wrongShow: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
+  wrongShowReason: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
+  wrongShowNote: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
   wrongFullText: _wrongArticleCleared,
   wrongAttribution: _wrongArticleCleared,
   // wrongAttributionReason (task #1624, found by ship-check codebase review):
@@ -2493,4 +2562,4 @@ function protectStagedDeletions(cwd, options = {}) {
   return restored;
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS };
