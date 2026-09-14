@@ -5375,8 +5375,8 @@ function loadState() {
         // and a post-dedupe figure for the same array one line apart.
         const inherited = dedupeAttemptState(state);
         console.log(`Resuming from previous run (${state.processed.length} already processed)`);
-        if (inherited.processed || inherited.failed || inherited.succeededAfterFailure) {
-          console.log(`  Normalised inherited attempt state: dropped ${inherited.processed} duplicate processed, ${inherited.failed} duplicate failed, ${inherited.succeededAfterFailure} failed-then-succeeded`);
+        if (inherited.processed || inherited.failed || inherited.succeededAfterFailure || inherited.tierBreakdown) {
+          console.log(`  Normalised inherited attempt state: dropped ${inherited.processed} duplicate processed, ${inherited.failed} duplicate failed, ${inherited.tierBreakdown} duplicate tier entries; moved ${inherited.succeededAfterFailure} failed-then-succeeded into recoveredAfterFailure (${state.recoveredAfterFailure?.length || 0} total)`);
         }
         return true;
       }

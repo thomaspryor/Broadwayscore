@@ -70,7 +70,7 @@ describe('dedupeAttemptState (BRO-3024 owner re-verification)', () => {
     const state = { processed: ['x', 'x'], failed: ['a', 'a'] };
     dedupeAttemptState(state);
     const second = dedupeAttemptState(state);
-    assert.deepEqual(second, { processed: 0, failed: 0, succeededAfterFailure: 0 });
+    assert.deepEqual(second, { processed: 0, failed: 0, succeededAfterFailure: 0, tierBreakdown: 0 });
   });
 
   test('drops an id that failed then SUCCEEDED, so "(N failed)" stops counting it', () => {
@@ -90,7 +90,7 @@ describe('dedupeAttemptState (BRO-3024 owner re-verification)', () => {
     assert.equal(first.failed, 1, 'one duplicate entry removed');
     assert.equal(first.succeededAfterFailure, 1, 'one failed-then-succeeded id removed');
     const second = dedupeAttemptState(state);
-    assert.deepEqual(second, { processed: 0, failed: 0, succeededAfterFailure: 0 });
+    assert.deepEqual(second, { processed: 0, failed: 0, succeededAfterFailure: 0, tierBreakdown: 0 });
     assert.deepEqual(state.failed, ['z'], 'a genuine failure survives every pass');
   });
 
@@ -119,7 +119,7 @@ describe('dedupeAttemptState (BRO-3024 owner re-verification)', () => {
     assert.equal('processed' in state, false, 'does not invent a processed array');
     assert.equal(removed.processed, 0);
     assert.deepEqual(state.failed, ['a']);
-    assert.deepEqual(dedupeAttemptState(null), { processed: 0, failed: 0, succeededAfterFailure: 0 });
+    assert.deepEqual(dedupeAttemptState(null), { processed: 0, failed: 0, succeededAfterFailure: 0, tierBreakdown: 0 });
     assert.deepEqual(dedupeAttemptState({ failed: 'not-an-array' }).failed, 0);
   });
 
@@ -147,8 +147,6 @@ describe('dedupeAttemptState (BRO-3024 owner re-verification)', () => {
     const saveIdx = COLLECTOR_SRC.indexOf('function saveState()');
     assert.notEqual(loadIdx, -1, 'loadState() not found — was it renamed? update this test');
     assert.notEqual(saveIdx, -1, 'saveState() not found — was it renamed? update this test');
-    assert.ok(loadIdx < saveIdx, 'this test assumes loadState() is defined before saveState()');
-
     const saveBody = COLLECTOR_SRC.slice(saveIdx);
     const writeIdx = saveBody.indexOf('fs.writeFileSync');
     assert.notEqual(writeIdx, -1, 'saveState() no longer calls fs.writeFileSync — update this test');
@@ -157,9 +155,46 @@ describe('dedupeAttemptState (BRO-3024 owner re-verification)', () => {
       'saveState() must dedupe BEFORE serialising progress.json',
     );
 
+    // Order-independent: slice from loadState() to whichever function is
+    // defined next, so reordering loadState/saveState cannot silently empty
+    // this slice (or pass for the wrong reason).
+    const afterLoad = COLLECTOR_SRC.slice(loadIdx + 'function loadState()'.length);
+    const nextFnIdx = afterLoad.search(/\nfunction /);
     assert.ok(
-      COLLECTOR_SRC.slice(loadIdx, saveIdx).includes('dedupeAttemptState(state)'),
+      afterLoad.slice(0, nextFnIdx === -1 ? undefined : nextFnIdx).includes('dedupeAttemptState(state)'),
       'loadState() must normalise duplicates inherited from a concurrent run',
     );
+  });
+
+  test('MOVES failed-then-succeeded ids to recoveredAfterFailure instead of erasing them', () => {
+    // Purging them from `failed` is what makes "(N failed)" truthful, but the
+    // per-id history must survive — clearFailedFetch() already drops the
+    // failed-fetches.json entry on success, so this is the only record left.
+    const state = { processed: ['a'], failed: ['a', 'z'] };
+    dedupeAttemptState(state);
+    assert.deepEqual(state.failed, ['z']);
+    assert.deepEqual(state.recoveredAfterFailure, ['a'], 'the flaky id is still recorded somewhere');
+  });
+
+  test('recoveredAfterFailure accumulates across runs without duplicating', () => {
+    const state = { processed: ['a', 'b'], failed: ['a', 'b'], recoveredAfterFailure: ['a'] };
+    dedupeAttemptState(state);
+    assert.deepEqual(state.failed, []);
+    assert.deepEqual(state.recoveredAfterFailure.sort(), ['a', 'b']);
+    const second = dedupeAttemptState(state);
+    assert.equal(second.succeededAfterFailure, 0);
+    assert.deepEqual(state.recoveredAfterFailure.sort(), ['a', 'b'], 'idempotent');
+  });
+
+  test('dedupes tierBreakdown arrays so tier counts match the processed count', () => {
+    const state = {
+      processed: ['a', 'a'], failed: [],
+      tierBreakdown: { playwright: ['a', 'a', 'b'], browserbase: ['c'], amp: 'not-an-array' },
+    };
+    const removed = dedupeAttemptState(state);
+    assert.deepEqual(state.tierBreakdown.playwright, ['a', 'b']);
+    assert.deepEqual(state.tierBreakdown.browserbase, ['c'], 'already-unique tiers untouched');
+    assert.equal(state.tierBreakdown.amp, 'not-an-array', 'non-array tier left alone');
+    assert.equal(removed.tierBreakdown, 1);
   });
 });

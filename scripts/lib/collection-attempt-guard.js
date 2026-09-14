@@ -67,7 +67,7 @@ function shouldSkipAlreadyAttempted(state, reviewId, retryFailed = false) {
  * invented, so an older or partial state file is not reshaped by a save.
  */
 function dedupeAttemptState(state) {
-  const removed = { processed: 0, failed: 0, succeededAfterFailure: 0 };
+  const removed = { processed: 0, failed: 0, succeededAfterFailure: 0, tierBreakdown: 0 };
   if (!state || typeof state !== 'object') return removed;
   for (const key of ['processed', 'failed']) {
     const arr = state[key];
@@ -76,11 +76,41 @@ function dedupeAttemptState(state) {
     removed[key] = arr.length - unique.length;
     if (removed[key] > 0) state[key] = unique;
   }
+  // tierBreakdown arrays are appended per success from the same loop and are
+  // duplicated by the same two mechanisms, so the "[PW:48,BB:3,BD:9]" figures
+  // in each checkpoint commit message inflate exactly as "(N failed)" did.
+  // Normalising them here keeps every count in one commit message consistent
+  // with every other — otherwise the first resume after this ships prints
+  // shrunken processed/failed next to un-shrunken tier counts.
+  if (state.tierBreakdown && typeof state.tierBreakdown === 'object') {
+    for (const [tier, arr] of Object.entries(state.tierBreakdown)) {
+      if (!Array.isArray(arr)) continue;
+      const unique = [...new Set(arr)];
+      if (unique.length !== arr.length) {
+        removed.tierBreakdown += arr.length - unique.length;
+        state.tierBreakdown[tier] = unique;
+      }
+    }
+  }
+
   if (Array.isArray(state.failed) && Array.isArray(state.processed)) {
     const succeeded = new Set(state.processed);
     const stillFailed = state.failed.filter((id) => !succeeded.has(id));
     removed.succeededAfterFailure = state.failed.length - stillFailed.length;
-    if (removed.succeededAfterFailure > 0) state.failed = stillFailed;
+    if (removed.succeededAfterFailure > 0) {
+      // MOVE, don't delete. Purging these ids from `failed` is what makes the
+      // "(N failed)" count truthful, but it would also erase the only record
+      // that the id ever failed: clearFailedFetch() already removes its
+      // failed-fetches.json entry on success, and failuresByOutlet is
+      // outlet-keyed rather than id-keyed. Without this an operator asking
+      // "which URLs are flaky?" would see a clean report for a review that
+      // timed out twice before landing. Keeping them in their own array costs
+      // nothing and preserves the per-id history.
+      const recovered = new Set(Array.isArray(state.recoveredAfterFailure) ? state.recoveredAfterFailure : []);
+      for (const id of state.failed) if (succeeded.has(id)) recovered.add(id);
+      state.recoveredAfterFailure = [...recovered];
+      state.failed = stillFailed;
+    }
   }
   return removed;
 }
