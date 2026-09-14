@@ -125,23 +125,23 @@ test('the rejection does not swallow legitimate NYC venues', () => {
 });
 
 test('no venue outside New York is in the Off-Broadway allowlist', () => {
-  // Off-Broadway is a New York City designation. Any entry naming another
-  // state or a non-NYC metro is a touring/regional house that leaked in via a
-  // mis-categorised show — the failure this catches is the NEXT State Theatre
-  // New Jersey, before it mints shows.
-  const NON_NYC = new RegExp([
-    'new jersey', 'connecticut', 'massachusetts', 'pennsylvania', 'maryland',
-    'delaware', 'virginia', 'california', 'illinois', 'texas', 'florida',
-    'georgia', 'ohio', 'michigan', 'minnesota', 'colorado', 'arizona',
-    'washington, d\\.?c\\.?', 'rhode island', 'new hampshire', 'vermont',
-    'philadelphia', 'boston', 'chicago', 'los angeles', 'san diego',
-    'san francisco', 'seattle', 'denver', 'atlanta', 'houston', 'dallas',
-    'baltimore', 'pittsburgh', 'cleveland', 'detroit', 'nashville',
-    'new brunswick', 'red bank', 'princeton', 'stamford', 'hartford',
-    'la jolla', 'cambridge, ma', 'toronto', 'london',
-  ].join('|'), 'i');
+  // Off-Broadway is a New York City designation. An entry naming another state
+  // or metro is a touring/regional house that leaked in via a mis-categorised
+  // show — this catches the NEXT State Theatre New Jersey before it mints shows.
+  //
+  // Matched STRUCTURALLY, not by a list of city words. A bare-word list was
+  // tried first and false-positived on real New York houses: "Virginia Theatre"
+  // (Broadway) trips /virginia/, the Ohio Theatre on Wooster St trips /ohio/,
+  // and anything on Houston St trips /houston/. Every genuine regional row in
+  // the corpus instead carries an explicit ", <city>, <ST>" suffix
+  // ("Goodman Theatre, Chicago, IL"), which a New York venue name never does.
+  const REGIONAL_SUFFIX = /,\s*[^,]+,\s*(?:d\.?c\.?|[a-z]{2})\.?$/i;
+  // Plus multi-word state names, for the no-comma shape ("State Theatre New
+  // Jersey"). Deliberately excludes single-word state names that are also real
+  // New York venue names (Virginia, Ohio, Georgia, Washington).
+  const SPELLED_OUT_STATE = /\b(?:new jersey|rhode island|new hampshire|north carolina|south carolina|west virginia|connecticut|massachusetts|pennsylvania|illinois|minnesota|wisconsin|michigan|maryland|delaware|kentucky|tennessee|nebraska|oklahoma|arkansas|missouri|colorado|arizona|nevada|oregon|kansas|iowa|utah|idaho|montana|wyoming|alabama|alaska|hawaii|louisiana|mississippi|indiana)\b/i;
 
-  const leaked = committed.filter(v => NON_NYC.test(v));
+  const leaked = committed.filter(v => REGIONAL_SUFFIX.test(v) || SPELLED_OUT_STATE.test(v));
   assert.deepEqual(
     leaked, [],
     `non-NYC venue(s) in the Off-Broadway allowlist: ${leaked.join(', ')}. ` +
@@ -150,4 +150,28 @@ test('no venue outside New York is in the Off-Broadway allowlist', () => {
     'NON_NYC_VENUE_RE in scripts/lib/venue-classification.js (which both the ' +
     'generator and discovery reject on), or the derive->classify loop re-adds it.',
   );
+
+  // The matcher must actually fire on the shapes it is meant to catch...
+  for (const regional of [
+    'american repertory theater, cambridge, ma',
+    'goodman theatre, chicago, il',
+    'arena stage, washington, dc',
+    'state theatre new jersey',
+  ]) {
+    assert.ok(
+      REGIONAL_SUFFIX.test(regional) || SPELLED_OUT_STATE.test(regional),
+      `should be detected as non-NYC: ${regional}`,
+    );
+  }
+  // ...and must NOT fire on real New York venue names.
+  for (const nyc of [
+    'virginia', 'ohio', 'the ohio', 'houston hall', 'chicago',
+    'new york city center', 'cherry lane', 'lucille lortel', 'st. ann\'s warehouse',
+    '59e59 theaters, theater a', 'theatre row, theatre 5',
+  ]) {
+    assert.ok(
+      !REGIONAL_SUFFIX.test(nyc) && !SPELLED_OUT_STATE.test(nyc),
+      `real NYC venue must not be flagged: ${nyc}`,
+    );
+  }
 });

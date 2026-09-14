@@ -75,7 +75,7 @@ function isWestEndVenue(venue) {
 // category='off-broadway', and build-ob-venues.js then re-learns the venue into
 // the allowlist, restarting the very loop this is here to break. \W+ separators
 // absorb the punctuation variants and theat(?:er|re) absorbs the spelling.
-const NON_NYC_VENUE_RE = /state\W+theat(?:er|re)\W+new\W+jersey/i;
+const NON_NYC_VENUE_RE = /state\W+theat(?:er|re)\W+(?:new\W+jersey|nj\b)/i;
 
 /**
  * True when a venue is a known non-New-York house. Such a venue can never be

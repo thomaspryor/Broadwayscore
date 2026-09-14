@@ -38,7 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
 const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob-cross-validation');
-const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
+const { isKnownOffBroadwayVenue, isNonNycVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { withMarketSuffix } = require('./lib/market-slug');
@@ -273,6 +273,19 @@ function decideOffBroadwayAggregatorPromotion(candidate, options = {}) {
     isKnownVenue = isKnownOffBroadwayVenue,
     venueDirectoryAvailable = () => OFF_BROADWAY_VENUES.size > 0,
   } = options;
+
+  // Non-NYC touring house: refuse unconditionally (BRO-3211). Every other
+  // rejection below is an "unless --admin-force" judgement call, because a
+  // human can legitimately know better about a new or unlisted NYC venue.
+  // This one is not: Off-Broadway is a New York City designation, so a venue
+  // in another state is never a genuine Off-Broadway house and there is
+  // nothing for an operator to override. Placed ahead of the admin escape
+  // hatches on purpose — the loop this guards (a mis-categorised row teaching
+  // build-ob-venues.js a touring venue, which then admits more rows) is
+  // exactly as damaging when a human starts it with a flag.
+  if (isNonNycVenue(candidate.venue)) {
+    return { confirmed: false, reason: `venue "${candidate.venue}" is a non-NYC touring house — Off-Broadway is a New York City designation, so this cannot be promoted (not overridable with --admin-force)` };
+  }
 
   if (!candidate || candidate.category !== 'off-broadway') {
     return { confirmed: false, reason: 'not an off-broadway candidate' };

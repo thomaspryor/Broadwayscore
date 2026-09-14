@@ -369,6 +369,14 @@ async function fetchShowsFromTodayTix() {
   if (filteredByOneNight.length > 0) {
     console.log(`  Filtered ${filteredByOneNight.length} one-night events: ${filteredByOneNight.map(s => s.displayName || s.name).join(', ')}`);
   }
+  // Non-NYC touring houses (BRO-3211). Logged even at zero: this guard is the
+  // only thing standing between a TodayTix row tagged "Off Broadway" at an
+  // out-of-state venue and a bogus Off-Broadway production, and it matches the
+  // venue by name. If TodayTix ever renames the venue the guard silently stops
+  // matching, so a run that prints 0 here when the road date is still listed is
+  // the signal that it has drifted — without the line there is no evidence either way.
+  const filteredByNonNyc = allShows.filter(s => isNonNycVenue(s.venue));
+  console.log(`  Filtered ${filteredByNonNyc.length} non-NYC touring-house shows${filteredByNonNyc.length ? `: ${filteredByNonNyc.map(s => `${s.displayName || s.name} @ ${s.venue?.name || s.venue}`).join(', ')}` : ''}`);
 
   // Deduplicate by displayName (API sometimes has duplicate listings)
   const seen = new Set();
