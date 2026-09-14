@@ -277,8 +277,69 @@ function getShowInfo(showId) {
 
 let _scrapingBeeSerpExhausted = false;
 let _brightDataConsecutiveFailures = 0;
+let _brightDataBreakerOpenedAt = null; // ms timestamp; null = closed or never tripped
 let _scrapingdogSerpFailures = 0;
+let _scrapingdogBreakerOpenedAt = null; // ms timestamp; null = closed or never tripped
 const MAX_CONSECUTIVE_FAILURES = 5;
+
+// BRO-2939: once either consecutive-failure counter above hits
+// MAX_CONSECUTIVE_FAILURES, the ONLY way it resets to 0 is a success on that
+// same provider — but the guard that checks the counter returns null (skips
+// the call) before a request is ever made, so a tripped breaker could never
+// see the success needed to reset it. One bad patch of 5 consecutive
+// failures (a transient outage) permanently redirected every remaining SERP
+// query in the process to the next provider in the chain at several times
+// the cost, for the rest of that run. Same NaN-guard shape as
+// SERP_SB_MAX_CALLS_PER_RUN below: a malformed env value falls back to the
+// default instead of silently disabling the cooldown (Infinity-like no-op).
+// Rollback: setting this to a value longer than any run (e.g. a few hours)
+// reproduces the pre-fix permanent-latch behavior without a code change —
+// the cooldown just never elapses, so consecutiveFailureBreakerBlocked never
+// returns halfOpen.
+const _breakerCooldownRaw = parseInt(process.env.SERP_BREAKER_COOLDOWN_MS || '', 10);
+const SERP_BREAKER_COOLDOWN_MS = Number.isFinite(_breakerCooldownRaw) && _breakerCooldownRaw > 0
+  ? _breakerCooldownRaw
+  : 10 * 60 * 1000; // 10 min default
+
+/**
+ * Pure half-open circuit-breaker decision, shared by the Scrapingdog and
+ * Bright Data SERP consecutive-failure guards (BRO-2939). Generic — nothing
+ * provider-specific — so one implementation backs both counters instead of
+ * two copies drifting apart.
+ *
+ * `openedAt` is caller-owned state (this function never mutates it): the
+ * caller passes back whatever this function last returned as `openedAt` on
+ * the next call. Returns:
+ *   - { blocked: false }                        — under threshold, breaker closed
+ *   - { blocked: true, openedAt: now }           — just tripped this call
+ *   - { blocked: true, openedAt }                — still cooling down (openedAt unchanged)
+ *   - { blocked: false, halfOpen: true, openedAt } — cooldown elapsed: let exactly
+ *     one probe call through. `openedAt` is unchanged here on purpose — only
+ *     the probe's own outcome (success → null, failure → now) should move it;
+ *     otherwise every check during the same tick would look like a fresh trip.
+ */
+function consecutiveFailureBreakerBlocked(failures, openedAt, now, maxFailures = MAX_CONSECUTIVE_FAILURES, cooldownMs = SERP_BREAKER_COOLDOWN_MS) {
+  if (failures < maxFailures) return { blocked: false };
+  if (openedAt === null) return { blocked: true, openedAt: now };
+  if (now - openedAt >= cooldownMs) return { blocked: false, halfOpen: true, openedAt };
+  return { blocked: true, openedAt };
+}
+
+// BD's consecutive-failure counter is incremented/reset from six sites across
+// two sub-functions (SERP API poll loop + Web Unlocker), unlike Scrapingdog's
+// single call site — these two helpers centralize the openedAt bookkeeping so
+// every site stays correct without repeating the threshold check six times.
+// _noteBdFailure re-arms the cooldown timer whenever the counter is AT/ABOVE
+// threshold after incrementing — covering both the moment it first trips and
+// a failed half-open probe (which re-enters here already at/above threshold).
+function _noteBdFailure() {
+  _brightDataConsecutiveFailures++;
+  if (_brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) _brightDataBreakerOpenedAt = Date.now();
+}
+function _noteBdSuccess() {
+  _brightDataConsecutiveFailures = 0;
+  _brightDataBreakerOpenedAt = null;
+}
 
 // ScrapingBee SERP (store/google) costs ~25 credits/call and is SEPARATE from
 // scraper.js's SB_CREDIT_BUDGET (page fetches) — sharing one flag would let a
@@ -336,11 +397,24 @@ function _resolveGeo(query, override) {
  * falls through to BD/SB). Bake-off 2026-06-21 confirmed clean organic results.
  */
 async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page = 0) {
+  if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY) return null;
+
   // Circuit breaker (mirrors BD/SB SERP): once Scrapingdog SERP has failed
   // MAX_CONSECUTIVE_FAILURES times in a row this run, stop trying it first so a
   // degraded provider doesn't burn a credit + latency on every query before the
-  // BD/SB fallback runs. Resets to 0 on any success.
-  if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY || _scrapingdogSerpFailures >= MAX_CONSECUTIVE_FAILURES) return null;
+  // BD/SB fallback runs. BRO-2939: a permanent per-process latch (the only reset
+  // was a success, but a tripped breaker never got called again to earn one) sent
+  // every remaining query in the run to ScrapingBee at 5x the cost. Half-open
+  // now: after SERP_BREAKER_COOLDOWN_MS, exactly one probe call gets through
+  // below (isProbe) — its own outcome decides whether the breaker fully closes
+  // or restarts the cooldown.
+  const _breakerNow = Date.now();
+  const _breakerVerdict = consecutiveFailureBreakerBlocked(_scrapingdogSerpFailures, _scrapingdogBreakerOpenedAt, _breakerNow);
+  if (_breakerVerdict.blocked) {
+    _scrapingdogBreakerOpenedAt = _breakerVerdict.openedAt;
+    return null;
+  }
+  const isProbe = _breakerVerdict.halfOpen === true;
   // Actual-exhaustion circuit breaker — same quota check scraper.js's
   // fetchWithScrapingdog uses, shared/memoized across both call sites per
   // process (trips only when the prepaid pool is truly empty; pace projections
@@ -356,6 +430,11 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   // caller's BD/SB fallback chain (line ~803) routes around it.
   if (!consultScrapingdog().allowed) return null;
 
+  // Logged only once we're past every other gate — otherwise a quota/daily
+  // breaker that's exhausted independently of this one would make the log
+  // claim a probe fired on every call while the unrelated gate stays shut.
+  if (isProbe) log(`    ⟳ Scrapingdog SERP breaker half-open — probing after ${Math.round(SERP_BREAKER_COOLDOWN_MS / 60000)}min cooldown`);
+
   const axios = require('axios');
   let q = query;
   if (dateRange) {
@@ -368,8 +447,11 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   // clear on a second attempt. Non-transient (4xx) failures are not retried.
   // Skipped entirely under preferSpeed (opening-night polling): a 30s SD
   // timeout followed by a 30s retry would blow well past the freshness window
-  // that flow exists to protect — fail fast to BD/SB there instead.
-  const MAX_ATTEMPTS = preferSpeed ? 1 : 2;
+  // that flow exists to protect — fail fast to BD/SB there instead. Also
+  // skipped on a half-open probe: retrying a call we already suspect is
+  // dead just bills a second credit for no benefit — a probe gets one bare
+  // attempt and lets the cooldown handle the next try.
+  const MAX_ATTEMPTS = (preferSpeed || isProbe) ? 1 : 2;
   let lastError = null;
   let attemptsMade = 0;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
@@ -386,6 +468,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
       const data = response.data || {};
       const organic = data.organic_results || data.organic_data || [];
       _scrapingdogSerpFailures = 0;
+      _scrapingdogBreakerOpenedAt = null;
       // credits reflects actual attempts made — a retried call bills twice.
       recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: SD_SERP_CREDITS_PER_CALL * attemptsMade });
       return organic.slice(0, 10).map(r => ({
@@ -403,6 +486,11 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   }
 
   _scrapingdogSerpFailures++;
+  // A failed probe restarts the cooldown from now rather than leaving the
+  // stale openedAt in place — otherwise a genuinely-dead provider would get
+  // probed on every single query once the first cooldown expired instead of
+  // once per cooldown window.
+  if (isProbe) _scrapingdogBreakerOpenedAt = _breakerNow;
   recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: SD_SERP_CREDITS_PER_CALL * attemptsMade });
   log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${lastError.message} — falling back to BD/SB`);
   return null;
@@ -491,7 +579,21 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange, page = 0) {
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
 async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) {
-  if (!apiKey || _brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) return null;
+  if (!apiKey) return null;
+
+  // Half-open breaker (BRO-2939, mirrors the Scrapingdog fix above — see
+  // consecutiveFailureBreakerBlocked): a permanent per-process latch here is
+  // higher-impact than Scrapingdog's, since BD is the default primary SERP
+  // provider (serpChainOrder puts it before ScrapingBee unless preferSpeed).
+  // Sub-increments inside _serpViaBrightDataSerpApi/_serpViaBrightDataWebUnlocker
+  // re-arm this same cooldown whenever they push the counter back to/above
+  // threshold — see the comment by each increment site below.
+  const _bdBreakerNow = Date.now();
+  const _bdBreakerVerdict = consecutiveFailureBreakerBlocked(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, _bdBreakerNow);
+  if (_bdBreakerVerdict.blocked) {
+    _brightDataBreakerOpenedAt = _bdBreakerVerdict.openedAt;
+    return null;
+  }
 
   // Daily circuit breaker + per-run budget (S2-T4). This is the single BD SERP
   // dispatcher — both sub-paths below (serp-api and serp-unlocker) bill the
@@ -509,6 +611,11 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
     }
     return null;
   }
+
+  // Logged only once we're past the daily/per-run budget gate too — otherwise
+  // an exhausted budget (independent of this breaker) would make the log
+  // claim a probe fired on every call for as long as the budget stays capped.
+  if (_bdBreakerVerdict.halfOpen) log(`    ⟳ Bright Data SERP breaker half-open — probing after ${Math.round(SERP_BREAKER_COOLDOWN_MS / 60000)}min cooldown`);
 
   const fmtD = d => d.toISOString().split('T')[0];
   const dateQuery = dateRange ? ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}` : '';
@@ -555,7 +662,7 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
       }
     );
     if (!submitRes.ok) {
-      _brightDataConsecutiveFailures++;
+      _noteBdFailure();
       log(`    ✗ BD SERP API submit ${submitRes.status} (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}) — trying Web Unlocker`);
       recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: submitRes.status });
       return null; // Fall through to Web Unlocker
@@ -563,7 +670,7 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
     const submitData = await submitRes.json();
     const responseId = submitData.response_id;
     if (!responseId) {
-      _brightDataConsecutiveFailures++;
+      _noteBdFailure();
       recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'no_response_id' });
       return null;
     }
@@ -580,13 +687,13 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
       );
       if (pollRes.status === 202) continue;
       if (!pollRes.ok) {
-        _brightDataConsecutiveFailures++;
+        _noteBdFailure();
         recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: pollRes.status });
         return null;
       }
       const data = await pollRes.json();
       if (data.organic) {
-        _brightDataConsecutiveFailures = 0;
+        _noteBdSuccess();
         recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 200 });
         return data.organic.slice(0, 10).map(r => ({
           url: r.link || r.url || '',
@@ -595,16 +702,16 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
         }));
       }
       if (data.response_id) continue;
-      _brightDataConsecutiveFailures = 0;
+      _noteBdSuccess();
       recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 'empty' });
       return [];
     }
-    _brightDataConsecutiveFailures++;
+    _noteBdFailure();
     log('    ⚠ BD SERP API timeout (20s) — trying Web Unlocker');
     recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'timeout' });
     return null;
   } catch (error) {
-    _brightDataConsecutiveFailures++;
+    _noteBdFailure();
     log(`    ✗ BD SERP API error: ${error.message} — trying Web Unlocker`);
     recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: error.message?.slice(0, 80) || 'error' });
     return null;
@@ -635,7 +742,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
 
     // Structured JSON response (unlikely from Web Unlocker but handle it)
     if (data && typeof data === 'object' && Array.isArray(data.organic)) {
-      _brightDataConsecutiveFailures = 0;
+      _noteBdSuccess();
       recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api' });
       return data.organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
@@ -675,14 +782,14 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
       titleIdx++;
     }
 
-    _brightDataConsecutiveFailures = 0;
+    _noteBdSuccess();
     recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api' });
     return results.slice(0, 10);
   } catch (error) {
-    _brightDataConsecutiveFailures++;
+    _noteBdFailure();
     log(`    ✗ Bright Data Web Unlocker error (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message}`);
     if (_brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
-      log(`    ⚠ Bright Data SERP disabled after ${MAX_CONSECUTIVE_FAILURES} consecutive failures`);
+      log(`    ⚠ Bright Data SERP breaker open after ${MAX_CONSECUTIVE_FAILURES} consecutive failures — cooling down ${Math.round(SERP_BREAKER_COOLDOWN_MS / 60000)}min before the next probe`);
     }
     recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: false, status: error.message?.slice(0, 80) || 'error', fallbackFrom: 'serp-api' });
     return null;
@@ -1663,6 +1770,7 @@ module.exports = {
   serpImagesQuery,
   serpChainOrder,
   shouldAcceptEmptyScrapingdogSerp,
+  consecutiveFailureBreakerBlocked,
   getShowInfo,
   calculateDateWindow,
   earliestPriorRunStart,

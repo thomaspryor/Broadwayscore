@@ -611,6 +611,13 @@ on:
       - 'scripts/check-push-ledger.js'
       - 'tests/unit/push-ledger.test.mjs'
       - '.github/workflows/check-push-ledger.yml'
+      # BRO-2304: content-equivalence fallback (checkContentSurvived) added to
+      # check-push-ledger.js — reuses scripts/lib/push-content-survival.js
+      # (already covered by the scripts/lib/** glob above) via a new optional
+      # --diff-filter flag there. Colocated test lives in scripts/tests/,
+      # which is NOT covered by any glob (registered in
+      # tests/unit-test-manifest.txt); path-listed so a solo edit triggers CI.
+      - 'scripts/tests/check-push-ledger-content-check.test.mjs'
       - 'tests/unit/rescore-queue-depth.test.mjs'
       - 'tests/unit/rescore-actionable-depth.test.mjs'
       - 'scripts/check-progress-stalls.js'
@@ -838,11 +845,13 @@ on:
       - 'scripts/lib/push-with-retry.shallow-retry-escalation.test.sh'
       - 'scripts/lib/shallow-fetch-args.js'
       # BRO-2538: a continue-on-error commit+push step that strands a
-      # non-apiFallbackSafe commit poisons every LATER commit+push-with-
+      # fallback-disqualified commit poisons every LATER commit+push-with-
       # retry.sh step in the same job/checkout. Part A documents the
       # by-design cascade against the real script; Part B is the regression
-      # guard on data-health-check.yml's step order (the actual fix). Path-
-      # listed so a solo edit to either file triggers CI.
+      # guard — registry-driven, not step-order-by-name (BRO-2588), and it
+      # accepts apiFallbackMerge alongside apiFallbackSafe because the runtime
+      # disqualifier does too (BRO-2413, guard taught to match in BRO-3348).
+      # Path-listed so a solo edit to either file triggers CI.
       - 'scripts/lib/push-with-retry.stranded-commit-cascade.test.sh'
       - '.github/workflows/data-health-check.yml'
       # Card 3b1637c5: merge-worktree-to-main.sh verified file EXISTENCE, not
@@ -1890,8 +1899,32 @@ on:
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
       # individually listed in the unit-test batch (scripts/ root-level tests
       # aren't globbed) — path-listed here so a solo edit triggers CI.
+      # Its colocated scripts/lib/backfill-judged-dispatch-ts.test.mjs runs in
+      # the scripts/lib/*.test.mjs glob step, but the top-level script it
+      # exercises is outside scripts/lib/** and so triggers no CI on its own.
+      # audit-test-yml-lib-deps.js's regression floor fails without this entry
+      # (it landed red on main 2026-09-14 — not this branch's change, but this
+      # branch's merge is what carried it into a CI run, so fixing it here).
+      - 'scripts/backfill-judged-dispatch-ts.js'
       - 'scripts/backlog-drain.js'
       - 'scripts/backlog-drain.test.mjs'
+      # BRO-2839 push-stall connect-phase breakdown. The logic lives in
+      # scripts/lib/push-diagnostics.js and its colocated
+      # scripts/lib/push-diagnostics.test.mjs runs in the scripts/lib/*.test.mjs
+      # glob step (and scripts/lib/** already triggers CI) — but
+      # scripts/trace-connect-phase.test.mjs sits at the scripts/ ROOT, which
+      # neither glob reaches, so it is registered in
+      # tests/unit-test-manifest.txt AND path-listed here. Without this entry a
+      # solo edit to it runs ZERO CI (the #1745 bug class). Same shape as
+      # scripts/backlog-drain.test.mjs directly above.
+      - 'scripts/trace-connect-phase.test.mjs'
+      - 'scripts/push-diagnostics-cli.js'
+      # The captured CI trace that test asserts against, byte-for-byte (it
+      # checks bytes === 2000 to prove the old redact-tail cap was a keyhole).
+      # Without this entry a fixture-only edit — or a trailing-whitespace/EOF
+      # hook touching it — runs zero CI and reddens on some later unrelated
+      # push (ship-check finding).
+      - 'tests/fixtures/push-stall-trace-ci-34852355418.txt'
       # Headless dispatchability gate (task #1004) — "can an unattended session
       # FINISH this card?", asked at selection time by both backlog-drain.js and
       # bsc-next.js --headless. Its test lives under scripts/tests/ (registered
@@ -2372,6 +2405,13 @@ on:
       # (registered in tests/unit-test-manifest.txt, not globbed), so it's
       # path-listed here so a solo edit to just the test still triggers CI.
       - 'scripts/tests/recheck-ledger-persistence.test.mjs'
+      # BRO-3317: same shape as the BRO-386 note directly above — the
+      # provider-spend ledger's commit is its own step in data-health-check.yml
+      # (already covered by the '.github/workflows/**' glob), but this
+      # ordering test lives in scripts/tests/ (registered in
+      # tests/unit-test-manifest.txt, not globbed), so it's path-listed here
+      # so a solo edit to just the test still triggers CI.
+      - 'scripts/tests/provider-spend-ledger-commit-ordering.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).
@@ -4324,9 +4364,18 @@ jobs:
         # design property of push-with-retry.sh's disqualifier (not a bug to
         # fix there — the fix landed 2026-08-16 for the DIFFERENT
         # merge-fallback-pollution mechanism, confirmed still correct here).
-        # Part B is the actual regression guard: asserts data-health-check.yml
-        # now runs the strandable ledger step LAST among its commit+push
-        # steps, so nothing later in that job can be poisoned by it.
+        # Part B is the actual regression guard, and it is REGISTRY-DRIVEN,
+        # not order-by-name: for every step in data-health-check.yml that
+        # calls push-with-retry.sh, it requires all but the LAST such step to
+        # stage only fallback-eligible paths — registered apiFallbackSafe or
+        # apiFallbackMerge, and never one the runtime disqualifier still
+        # vetoes — so nothing later in that job can be poisoned by a stranded
+        # earlier commit.
+        # BRO-3348: this comment used to say Part B "asserts data-health-check
+        # .yml now runs the strandable ledger step LAST". That stopped
+        # describing the test when BRO-2588 made the assertion name-free, and
+        # stopped being true at all when BRO-3318 split the final commit step
+        # in two. See the test file's own PART B header for the full history.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
 

@@ -46,13 +46,19 @@
 # is the real safety invariant underneath both:
 #
 #   For every step in data-health-check.yml that calls push-with-retry.sh,
-#   every path it `git add`s must be registered apiFallbackSafe in
-#   scripts/lib/core-data-merge-registry.js — UNLESS it is the LAST such step
+#   every path it stages must be FALLBACK-ELIGIBLE — registered apiFallbackSafe
+#   OR apiFallbackMerge in scripts/lib/core-data-merge-registry.js, and not
+#   vetoed by the runtime disqualifier itself — UNLESS it is the LAST such step
 #   in the job (nothing after it can inherit its stranding).
 #
 # That single property fails on BOTH failure modes: a bad reorder (a step
 # staging unaudited paths moved ahead of another commit+push step) AND a
-# rollback of an apiFallbackSafe flag that a non-last step depends on.
+# rollback of a fallback-eligibility flag that a non-last step depends on.
+#
+# BRO-3348 widened "apiFallbackSafe" to "apiFallbackSafe OR apiFallbackMerge"
+# here. Until then this header claimed parity with the runtime disqualifier
+# that the check below no longer had — see the BRO-3348 block just above the
+# PART B implementation for the full history and the attribution evidence.
 #
 # Run: bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
 set -uo pipefail
@@ -65,6 +71,9 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 # core-data-merge-registry.js — the same list push-with-retry.sh's runtime
 # disqualifier consults).
 REGISTRY_PROBE_MODULE="$SCRIPT_DIR/reconcile-merged-json.js"
+# BRO-3348: Part B also needs the CANONICAL runtime-disqualifier predicate, not
+# just the registry lists — see its classifyPushFallbackSafety() require below.
+BUDGETS_PROBE_MODULE="$SCRIPT_DIR/audit-push-retry-budgets.js"
 fail=0
 
 TMP=$(mktemp -d)
@@ -239,7 +248,7 @@ else
 fi
 
 echo
-echo "=== PART B: regression guard — every non-last commit+push step stages only apiFallbackSafe paths ==="
+echo "=== PART B: regression guard — every non-last commit+push step stages only fallback-eligible (apiFallbackSafe or apiFallbackMerge) paths ==="
 
 # Codex adversarial review finding (BRO-2538): checking that one named step
 # merely sits after a second named step and before a third is fragile — a
@@ -247,12 +256,40 @@ echo "=== PART B: regression guard — every non-last commit+push step stages on
 # defeat the fix and still pass. BRO-2588 goes one further and drops step
 # NAMES from the assertion entirely: enumerate every step whose OWN `run:`
 # body actually invokes push-with-retry.sh, read the paths it `git add`s, and
-# require every one of them to be registered apiFallbackSafe — except for the
-# LAST such step, which has nothing after it to poison. Name-free, so it keeps
-# holding through renames, insertions and reorders, and it reads the SAME
-# registry the runtime disqualifier reads (scripts/lib/reconcile-merged-
-# json.js's API_FALLBACK_SAFE, derived from core-data-merge-registry.js) — so
-# a flag rollback fails here too, not only a reorder.
+# require every one of them to be registered fallback-eligible — except for
+# the LAST such step, which has nothing after it to poison. Name-free, so it
+# keeps holding through renames, insertions and reorders, and it reads the
+# SAME registry the runtime disqualifier reads (scripts/lib/reconcile-merged-
+# json.js, derived from core-data-merge-registry.js) — so a flag rollback
+# fails here too, not only a reorder.
+#
+# BRO-3348: this guard used to accept API_FALLBACK_SAFE *only*, while the
+# comment above already claimed parity with the runtime disqualifier — the
+# "must match X" comment WAS the bug (memory: feedback_must_match_comment_is
+# _a_bug). BRO-2413 taught the real disqualifier in push-with-retry.sh to
+# accept apiFallbackMerge paths too; its predicate is now:
+#
+#   hit = (isManaged(f) && !isApiFallbackMergeable(f))
+#      || isNeverFallback(f)
+#      || (f.startsWith("data/audit/") && !isManaged(f)
+#          && !isApiFallbackSafe(f) && !isApiFallbackMergeable(f))
+#
+# So a staged apiFallbackMerge path does NOT disqualify the Git Data API
+# fallback: push-via-git-api.sh looks that path's merge function up and
+# reconciles it against the live remote tip on every retry instead of doing a
+# whole-file overlay. This guard never learned that. When data-health-check
+# .yml legitimately split its final commit step in two (BRO-3318, commit
+# c04489ebfd3) — moving the three genuinely multi-writer alert-router files,
+# all registered apiFallbackMerge since BRO-2413, into their own non-last
+# step — Part B failed and turned main red on a change that is correct at
+# runtime. Attribution confirmed by running this test at c04489ebfd3^ (PASS)
+# and at c04489ebfd3 (FAIL), not inferred.
+#
+# Accepting SAFE + MERGE is deliberately still STRICTER than the runtime
+# predicate: a path outside data/audit/ that is neither MANAGED nor
+# registered is non-disqualifying at runtime but remains a violation here.
+# That conservatism is the point of a guard; narrowing it to exact runtime
+# parity would be a separate, reviewed change, not a drive-by widening.
 WORKFLOW="$REPO_ROOT/.github/workflows/data-health-check.yml"
 if [ ! -f "$WORKFLOW" ]; then
   echo "FAIL[B]: $WORKFLOW not found"
@@ -260,8 +297,53 @@ if [ ! -f "$WORKFLOW" ]; then
 else
   B_RESULT=$(node -e '
     const fs = require("fs");
-    const { API_FALLBACK_SAFE } = require(process.argv[2]);
-    const SAFE = new Set(API_FALLBACK_SAFE.map((e) => e.file));
+    const { API_FALLBACK_SAFE, API_FALLBACK_MERGE } = require(process.argv[2]);
+    // CLAUDE.md rule 15 (never copy a decision): the predicate the runtime
+    // disqualifier uses already exists as a real exported function —
+    // classifyPushFallbackSafety() in
+    // scripts/lib/audit-push-retry-budgets.js,
+    // whose `disqualifiesFallback` is a line-for-line mirror of the `hit`
+    // expression quoted in the BRO-3348 block above. Requiring it here rather
+    // than hand-rolling a third approximation is what stops this guard
+    // drifting away from the runtime a second time.
+    const { classifyPushFallbackSafety } = require(process.argv[3]);
+    if (typeof classifyPushFallbackSafety !== "function") {
+      console.log("ERROR|classifyPushFallbackSafety not exported by the budgets module — cannot check runtime parity");
+      process.exit(1);
+    }
+    // SAFE (single-writer, no merge fn) and MERGE (multi-writer WITH a real
+    // reconciliation fn) are both fallback-eligible at runtime. Fail CLOSED if
+    // either list is missing or empty: a registry refactor that silently
+    // dropped one would otherwise turn this guard into a rubber stamp (or a
+    // permanent false alarm) with no signal — the same fail-open shape
+    // BRO-2413 had to fix in the real disqualifier.
+    if (!Array.isArray(API_FALLBACK_SAFE) || API_FALLBACK_SAFE.length === 0) {
+      console.log("ERROR|API_FALLBACK_SAFE missing or empty in the registry probe module");
+      process.exit(1);
+    }
+    if (!Array.isArray(API_FALLBACK_MERGE) || API_FALLBACK_MERGE.length === 0) {
+      console.log("ERROR|API_FALLBACK_MERGE missing or empty in the registry probe module");
+      process.exit(1);
+    }
+    const ELIGIBLE = new Set(
+      [...API_FALLBACK_SAFE, ...API_FALLBACK_MERGE].map((e) => e.file)
+    );
+    // Adversarial-review finding (Codex, BRO-3348): "explicitly registered" and
+    // "not disqualified at runtime" are NOT the same set, and the comment above
+    // only claims this guard is the stricter of the two. Runtime ALSO vetoes a
+    // path that is MANAGED-without-merge, or shows.json/reviews.json, even if
+    // something registered it apiFallbackSafe. Today no registry entry is in
+    // both camps, so the claim holds — but nothing enforced it, which is how
+    // the original drift happened. Requiring BOTH conditions makes the
+    // stricter-than-runtime property structural instead of incidental.
+    const notEligible = (p) => !ELIGIBLE.has(p);
+    const runtimeVetoes = (p) => {
+      try {
+        return classifyPushFallbackSafety(p).disqualifiesFallback === true;
+      } catch {
+        return true; // unclassifiable is not evidence of safety
+      }
+    };
     const lines = fs.readFileSync(process.argv[1], "utf8").split("\n");
     const stepStartRe = /^\s{6}- name: (.+?)\s*$/; // steps in this job are indented 6 spaces
     const steps = [];
@@ -331,7 +413,11 @@ else
     const violations = [];
     for (const s of callers.slice(0, -1)) {
       for (const p of s.adds) {
-        if (!SAFE.has(p)) violations.push(`"${s.name}"@L${s.start + 1} stages ${p}`);
+        if (notEligible(p)) {
+          violations.push(`"${s.name}"@L${s.start + 1} stages ${p} (not registered apiFallbackSafe or apiFallbackMerge)`);
+        } else if (runtimeVetoes(p)) {
+          violations.push(`"${s.name}"@L${s.start + 1} stages ${p} (registered, but the RUNTIME disqualifier still vetoes it — registry entry and runtime predicate disagree)`);
+        }
       }
     }
     if (violations.length === 0) {
@@ -339,19 +425,36 @@ else
     } else {
       console.log(`FAIL|${names}|${violations.join("; ")}`);
     }
-  ' "$WORKFLOW" "$REGISTRY_PROBE_MODULE")
+  ' "$WORKFLOW" "$REGISTRY_PROBE_MODULE" "$BUDGETS_PROBE_MODULE")
   B_STATUS="${B_RESULT%%|*}"
   B_REST="${B_RESULT#*|}"
   if [ "$B_STATUS" = "OK" ]; then
-    echo "PASS[B]: every push-with-retry.sh-calling step except the last stages only apiFallbackSafe"
-    echo "         paths, in this job's execution order: $B_REST"
+    echo "PASS[B]: every push-with-retry.sh-calling step except the last stages only"
+    echo "         fallback-eligible (apiFallbackSafe or apiFallbackMerge) paths, in this"
+    echo "         job's execution order: $B_REST"
+  elif [ "$B_STATUS" = "ERROR" ]; then
+    # BRO-3348 review finding (both reviewers): an ERROR here means the probe
+    # modules could not be read at all — a rename, a broken export, an emptied
+    # registry list. Printing the BRO-2538 "register those paths or move the
+    # step to the end" remediation for THAT cause names a fix that cannot
+    # possibly apply and sends the next reader to the wrong file.
+    echo "FAIL[B]: $B_REST"
+    echo "         This is a PROBE failure, not a workflow-ordering violation — the guard could"
+    echo "         not load what it checks against, so it is reporting 'unverified', not 'unsafe'."
+    echo "         Look at scripts/lib/reconcile-merged-json.js (API_FALLBACK_SAFE /"
+    echo "         API_FALLBACK_MERGE) and scripts/lib/audit-push-retry-budgets.js"
+    echo "         (classifyPushFallbackSafety) — one of them was renamed, moved, or stopped"
+    echo "         exporting what this guard requires. Do NOT reorder the workflow for this."
+    fail=1
   else
     echo "FAIL[B]: $B_REST"
     echo "         This is the BRO-2538/BRO-2588 regression: a step that can strand a commit"
-    echo "         touching a non-apiFallbackSafe path must be the LAST commit+push step in this"
-    echo "         job — otherwise its stranded commit poisons a later step's Git Data API"
-    echo "         fallback. Either register those paths (with real single-writer verification)"
-    echo "         in scripts/lib/core-data-merge-registry.js, or move that step to the end."
+    echo "         touching a path that is neither apiFallbackSafe nor apiFallbackMerge must be"
+    echo "         the LAST commit+push step in this job — otherwise its stranded commit poisons"
+    echo "         a later step's Git Data API fallback. Either register those paths in"
+    echo "         scripts/lib/core-data-merge-registry.js (apiFallbackSafe needs real"
+    echo "         single-writer verification; apiFallbackMerge needs a real merge function),"
+    echo "         or move that step to the end."
     fail=1
   fi
 fi

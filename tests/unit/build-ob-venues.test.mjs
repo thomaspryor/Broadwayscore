@@ -20,7 +20,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { serialize, BLOCKLIST } = require('../../scripts/build-ob-venues.js');
-const { isNonNycVenue } = require('../../scripts/lib/venue-classification.js');
+const { isNonNycVenue, isNonNycLocale } = require('../../scripts/lib/venue-classification.js');
 const committed = require('../../data/off-broadway-venues.json');
 
 test('serialize matches the on-disk format (2-space indent + trailing newline)', () => {
@@ -129,19 +129,10 @@ test('no venue outside New York is in the Off-Broadway allowlist', () => {
   // or metro is a touring/regional house that leaked in via a mis-categorised
   // show — this catches the NEXT State Theatre New Jersey before it mints shows.
   //
-  // Matched STRUCTURALLY, not by a list of city words. A bare-word list was
-  // tried first and false-positived on real New York houses: "Virginia Theatre"
-  // (Broadway) trips /virginia/, the Ohio Theatre on Wooster St trips /ohio/,
-  // and anything on Houston St trips /houston/. Every genuine regional row in
-  // the corpus instead carries an explicit ", <city>, <ST>" suffix
-  // ("Goodman Theatre, Chicago, IL"), which a New York venue name never does.
-  const REGIONAL_SUFFIX = /,\s*[^,]+,\s*(?:d\.?c\.?|[a-z]{2})\.?$/i;
-  // Plus multi-word state names, for the no-comma shape ("State Theatre New
-  // Jersey"). Deliberately excludes single-word state names that are also real
-  // New York venue names (Virginia, Ohio, Georgia, Washington).
-  const SPELLED_OUT_STATE = /\b(?:new jersey|rhode island|new hampshire|north carolina|south carolina|west virginia|connecticut|massachusetts|pennsylvania|illinois|minnesota|wisconsin|michigan|maryland|delaware|kentucky|tennessee|nebraska|oklahoma|arkansas|missouri|colorado|arizona|nevada|oregon|kansas|iowa|utah|idaho|montana|wyoming|alabama|alaska|hawaii|louisiana|mississippi|indiana)\b/i;
-
-  const leaked = committed.filter(v => REGIONAL_SUFFIX.test(v) || SPELLED_OUT_STATE.test(v));
+  // Uses the SHARED isNonNycLocale predicate rather than a copy of its regexes,
+  // so this test and validate-data.js's category/venue gate cannot drift
+  // (CLAUDE.md 15 — require the real function, never restate the logic).
+  const leaked = committed.filter(v => isNonNycLocale(v));
   assert.deepEqual(
     leaked, [],
     `non-NYC venue(s) in the Off-Broadway allowlist: ${leaked.join(', ')}. ` +
@@ -150,28 +141,25 @@ test('no venue outside New York is in the Off-Broadway allowlist', () => {
     'NON_NYC_VENUE_RE in scripts/lib/venue-classification.js (which both the ' +
     'generator and discovery reject on), or the derive->classify loop re-adds it.',
   );
+});
 
-  // The matcher must actually fire on the shapes it is meant to catch...
+test('isNonNycLocale fires on regional shapes and stays silent on New York ones', () => {
+  // Both directions asserted, so the guard above cannot rot into a rubber stamp
+  // by quietly matching nothing.
   for (const regional of [
     'american repertory theater, cambridge, ma',
     'goodman theatre, chicago, il',
     'arena stage, washington, dc',
+    'Joan and Robert Rechnitz Theater, Two River Theater, Red Bank, NJ',
     'state theatre new jersey',
   ]) {
-    assert.ok(
-      REGIONAL_SUFFIX.test(regional) || SPELLED_OUT_STATE.test(regional),
-      `should be detected as non-NYC: ${regional}`,
-    );
+    assert.ok(isNonNycLocale(regional), `should be detected as non-NYC: ${regional}`);
   }
-  // ...and must NOT fire on real New York venue names.
   for (const nyc of [
-    'virginia', 'ohio', 'the ohio', 'houston hall', 'chicago',
-    'new york city center', 'cherry lane', 'lucille lortel', 'st. ann\'s warehouse',
-    '59e59 theaters, theater a', 'theatre row, theatre 5',
+    'virginia', 'the ohio', 'houston hall', 'chicago',        // bare city/state words that are real NY venue names
+    'new york city center', 'cherry lane', 'lucille lortel',
+    '59e59 theaters, theater a', 'theatre row, theatre 5',    // internal commas, but no ", city, ST" tail
   ]) {
-    assert.ok(
-      !REGIONAL_SUFFIX.test(nyc) && !SPELLED_OUT_STATE.test(nyc),
-      `real NYC venue must not be flagged: ${nyc}`,
-    );
+    assert.ok(!isNonNycLocale(nyc), `real NYC venue must not be flagged: ${nyc}`);
   }
 });

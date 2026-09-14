@@ -274,6 +274,15 @@ function decideOffBroadwayAggregatorPromotion(candidate, options = {}) {
     venueDirectoryAvailable = () => OFF_BROADWAY_VENUES.size > 0,
   } = options;
 
+  // Null guard first: every gate below dereferences `candidate`, so it has to
+  // precede them all. The BRO-3211 non-NYC check was inserted above this and
+  // read `candidate.venue`, turning `decideOffBroadwayAggregatorPromotion(null)`
+  // — a documented, tested contract — into a TypeError instead of a refusal,
+  // and leaving main red.
+  if (!candidate) {
+    return { confirmed: false, reason: 'not an off-broadway candidate' };
+  }
+
   // Non-NYC touring house: refuse unconditionally (BRO-3211). Every other
   // rejection below is an "unless --admin-force" judgement call, because a
   // human can legitimately know better about a new or unlisted NYC venue.
@@ -287,7 +296,7 @@ function decideOffBroadwayAggregatorPromotion(candidate, options = {}) {
     return { confirmed: false, reason: `venue "${candidate.venue}" is a non-NYC touring house — Off-Broadway is a New York City designation, so this cannot be promoted (not overridable with --admin-force)` };
   }
 
-  if (!candidate || candidate.category !== 'off-broadway') {
+  if (candidate.category !== 'off-broadway') {
     return { confirmed: false, reason: 'not an off-broadway candidate' };
   }
   if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {

@@ -1,29 +1,29 @@
 {
-  "generatedAt": "2026-09-14T14:58:06.406Z",
+  "generatedAt": "2026-09-14T16:01:31.180Z",
   "lookbackDays": 3,
   "shows": [
     {
-      "id": "the-human-voice-the-seven-deadly-sins-west-end-2026",
-      "title": "The Human Voice / The Seven Deadly Sins",
+      "id": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
       "market": "west-end",
       "category": "off-west-end",
       "type": "play",
-      "openingDate": "2026-09-12",
+      "openingDate": "2026-09-13",
       "status": "open",
-      "slug": "the-human-voice-the-seven-deadly-sins-west-end",
-      "thumbnail": "/images/shows/the-human-voice-the-seven-deadly-sins-west-end-2026/thumbnail.jpg",
+      "slug": "bloodsport-after-helen-of-troy-off-west-end",
+      "thumbnail": "/images/shows/bloodsport-after-helen-of-troy-off-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 77,
+      "liveScore": 74,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
       "total": 1,
       "t1": 0,
-      "t2": 0,
-      "t3": 1,
-      "positive": 1,
-      "mixed": 0,
+      "t2": 1,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
@@ -103,6 +103,120 @@
       ],
       "timeline": [
         {
+          "t": "2026-09-14T15:43:25.673Z",
+          "rc": 1,
+          "s": 74,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "the-human-voice-the-seven-deadly-sins-west-end-2026",
+      "title": "The Human Voice / The Seven Deadly Sins",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-09-12",
+      "status": "open",
+      "slug": "the-human-voice-the-seven-deadly-sins-west-end",
+      "thumbnail": "/images/shows/the-human-voice-the-seven-deadly-sins-west-end-2026/thumbnail.jpg",
+      "siteScore": 72.84,
+      "liveScore": 73,
+      "scoreDrift": 0.1599999999999966,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 3,
+      "t1": 0,
+      "t2": 1,
+      "t3": 2,
+      "positive": 2,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "3/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
           "t": "2026-09-14T14:58:06.406Z",
           "rc": 1,
           "s": 77,
@@ -111,6 +225,18 @@
           "t3": 1,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-14T15:43:25.673Z",
+          "rc": 3,
+          "s": 72.84,
+          "t1": 0,
+          "t2": 1,
+          "t3": 2,
+          "p": 2,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -532,27 +658,27 @@
       "status": "open",
       "slug": "night-city-off-west-end",
       "thumbnail": null,
-      "siteScore": 68.78,
+      "siteScore": 69,
       "liveScore": 69,
-      "scoreDrift": 0.21999999999999886,
+      "scoreDrift": 0,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 1,
       "t2": 5,
-      "t3": 10,
+      "t3": 11,
       "positive": 8,
-      "mixed": 5,
+      "mixed": 6,
       "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -672,6 +798,18 @@
           "m": 5,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-14T15:43:25.673Z",
+          "rc": 17,
+          "s": 69,
+          "t1": 1,
+          "t2": 5,
+          "t3": 11,
+          "p": 8,
+          "m": 6,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -685,17 +823,17 @@
       "status": "open",
       "slug": "man-to-man-west-end",
       "thumbnail": "/images/shows/man-to-man-west-end-2026/thumbnail.webp",
-      "siteScore": 76.34,
-      "liveScore": 76,
-      "scoreDrift": -0.3400000000000034,
+      "siteScore": 76.93,
+      "liveScore": 77,
+      "scoreDrift": 0.06999999999999318,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
+      "total": 16,
       "t1": 6,
       "t2": 5,
-      "t3": 4,
-      "positive": 12,
+      "t3": 5,
+      "positive": 13,
       "mixed": 1,
       "negative": 2,
       "readiness": {
@@ -815,6 +953,30 @@
           "m": 1,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-14T15:43:25.673Z",
+          "rc": 15,
+          "s": 76.25,
+          "t1": 6,
+          "t2": 5,
+          "t3": 4,
+          "p": 12,
+          "m": 1,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-14T15:53:31.242Z",
+          "rc": 16,
+          "s": 76.93,
+          "t1": 6,
+          "t2": 5,
+          "t3": 5,
+          "p": 13,
+          "m": 1,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -828,18 +990,18 @@
       "status": "open",
       "slug": "tartuffe-remixed-off-west-end",
       "thumbnail": null,
-      "siteScore": 75.98,
+      "siteScore": 75.97,
       "liveScore": 76,
-      "scoreDrift": 0.01999999999999602,
+      "scoreDrift": 0.030000000000001137,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
-      "t1": 3,
-      "t2": 5,
-      "t3": 9,
-      "positive": 13,
-      "mixed": 4,
+      "total": 20,
+      "t1": 4,
+      "t2": 6,
+      "t3": 10,
+      "positive": 15,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": false,
@@ -940,6 +1102,18 @@
           "t3": 9,
           "p": 13,
           "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-14T15:43:25.673Z",
+          "rc": 20,
+          "s": 75.97,
+          "t1": 4,
+          "t2": 6,
+          "t3": 10,
+          "p": 15,
+          "m": 5,
           "n": 0,
           "bc": "waiting"
         }
@@ -1365,23 +1539,23 @@
       "status": "open",
       "slug": "safe-house-off-broadway",
       "thumbnail": "/images/shows/safe-house-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 81.6,
-      "liveScore": 82,
-      "scoreDrift": 0.4000000000000057,
+      "siteScore": 77.61,
+      "liveScore": 78,
+      "scoreDrift": 0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 6,
       "positive": 6,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/12 total",
+          "8/12 total",
           "T1:0/3",
           "T2:0/3",
           "hi-conf:6/8"
@@ -1764,6 +1938,18 @@
           "t3": 6,
           "p": 6,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-14T15:43:25.673Z",
+          "rc": 8,
+          "s": 77.61,
+          "t1": 0,
+          "t2": 2,
+          "t3": 6,
+          "p": 6,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }

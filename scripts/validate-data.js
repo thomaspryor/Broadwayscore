@@ -40,7 +40,7 @@ const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, sus
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
-const { isBroadwayCategory } = require('./lib/venue-classification');
+const { isBroadwayCategory, isOffBroadwayCategory, isNonNycLocale } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -444,6 +444,31 @@ function validateStatus(shows) {
       // pages), and they're a leading indicator of a discover-historical-shows.js
       // regression.
       error(`Closed show "${show.title}" (${show.id}) missing category — historical insert path regressed; check scripts/discover-historical-shows.js + lib/classify-show.js wiring.`);
+      invalid++;
+    }
+    // A Broadway/Off-Broadway row whose VENUE name says it is in another state
+    // (BRO-3211). Both are New York City designations, so this is always a
+    // mis-categorisation — and an expensive one, because build-ob-venues.js
+    // derives the Off-Broadway venue allowlist FROM these rows and
+    // isKnownOffBroadwayVenue() then admits future TodayTix rows at that venue,
+    // so one bad row teaches the classifier a touring house and mints more.
+    // State Theatre New Jersey rode that loop to three bogus rows before anyone
+    // noticed. discover-new-shows.js and promote-ob-venue-candidates.js reject
+    // the confirmed venues by name; this catches the ones they do not know
+    // about, and any row a human or a future importer writes directly.
+    // isNonNycLocale's matching rationale (structural, not city keywords) and
+    // its measured false-positive rate live with the predicate.
+    // Uses the canonical predicates, not raw `category === 'broadway'`
+    // literals (audit-broadway-category-predicate.js --strict, which fails CI
+    // on any NEW raw literal — BRO-3211 shipped this check with the raw form
+    // and reddened main on the very next run). isBroadwayCategory() also
+    // treats an absent category as Broadway, which is the project-wide
+    // meaning; measured against the live corpus at the time of this change,
+    // the two forms flagged an identical set (0 rows, and 0 null-category
+    // rows exist), so this is a pure de-duplication, not a widening.
+    if ((isBroadwayCategory(show) || isOffBroadwayCategory(show))
+        && show.venue && isNonNycLocale(show.venue)) {
+      error(`Show "${show.title}" (${show.id}) has category="${show.category ?? 'null (treated as broadway)'}" but venue "${show.venue}" is outside New York — Broadway and Off-Broadway are NYC designations, so this is a mis-categorised touring/regional date. Remove the row or recategorise it (category="regional"), and fix the creator: if it came from TodayTix, add the venue to NON_NYC_VENUE_RE in scripts/lib/venue-classification.js so discovery stops re-minting it.`);
       invalid++;
     }
     if (['open', 'previews', 'upcoming', 'closed', 'announced'].includes(show.status) && show.category && !show.market) {

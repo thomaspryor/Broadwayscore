@@ -320,3 +320,145 @@ test('canaryCardTitle is exactly the shape autofixFiledIssueGuard recognises (BR
   // stops recognising the canary and a crown-loop sweep can pick it up.
   assert.equal(isAutofixFiledTitle(canaryCardTitle(TODAY)), true);
 });
+
+// ── BRO-3321: outcomes are bucketed by the day their DISPATCH ran ────────────
+
+test('assessThroughputRow: a late-reconciled pass is credited to its dispatch day, not the write day', () => {
+  // The 2026-09-14 shape: reconciliation ran long after the dispatch. Crediting
+  // the pass to the write day moves it to a day the work did not happen on —
+  // and, when the lag exceeds the window, into a day that is not in it at all.
+  // 10 days back: OUTSIDE the 7-day throughput window. This is what makes the
+  // test discriminate — under write-time bucketing the pass lands on today and
+  // counts; under dispatch-time bucketing it is correctly out of window. A
+  // 3-day offset would have been inside the window either way and proved
+  // nothing.
+  const dispatchDay = new Date(NOW - 10 * 86400000).toISOString();
+  const rows = [
+    { event: 'auto-dispatch', ts: dispatchDay },
+    { event: 'card-pass', ts: new Date(NOW).toISOString(), judgedDispatchTs: dispatchDay },
+    // Keep the zero-DISPATCH arm quiet so this test measures only where the
+    // pass was bucketed — that arm fires first and would mask the assertion.
+    { event: 'auto-dispatch', ts: new Date(NOW).toISOString() },
+    { event: 'auto-dispatch', ts: new Date(NOW - 86400000).toISOString() },
+  ];
+  const r = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: [], now: new Date(NOW) });
+  // Aged to its 10-day-old dispatch, the pass is outside the 7d window, so the
+  // window genuinely holds zero passes and the zero-pass arm fires. That arm
+  // firing IS the observable difference between the two clocks.
+  assert.equal(r.status, 'error', `got ${JSON.stringify(r)}`);
+  assert.match(r.message, /0 passes/, `got ${JSON.stringify(r)}`);
+
+  // Control: the SAME rows without judgedDispatchTs fall back to write time,
+  // land the pass on today, and do NOT alarm — proving the field, and not some
+  // other difference in the fixture, is what moved it.
+  const unstamped = rows.map((e) => { const { judgedDispatchTs, ...rest } = e; return rest; });
+  const c = assessThroughputRow({ digestLedgerEntries: unstamped, backlogLedgerEntries: [], now: new Date(NOW) });
+  assert.notEqual(c.status, 'error', `control: got ${JSON.stringify(c)}`);
+  assert.match(c.message, /2 dispatched, 1 passed/, `control: got ${JSON.stringify(c)}`);
+});
+
+test("assessThroughputRow: today's empty bucket never starts a zero-pass streak on its own", () => {
+  // Today is unobserved, not zero: reconciliation for today's dispatches has
+  // not run yet. Counting it added a permanent +1 and turned
+  // ZERO_PASS_ERROR_DAYS = 3 into an effective 2.
+  const day = (n) => new Date(NOW - n * 86400000).toISOString();
+  const rows = [
+    { event: 'auto-dispatch', ts: day(0) },
+    { event: 'auto-dispatch', ts: day(1) },
+    { event: 'card-pass', ts: day(1), judgedDispatchTs: day(1) },
+    { event: 'auto-dispatch', ts: day(2) },
+    { event: 'card-pass', ts: day(2), judgedDispatchTs: day(2) },
+  ];
+  const r = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: [], now: new Date(NOW) });
+  assert.notEqual(r.status, 'error', `two of the last three days landed passes; got ${JSON.stringify(r)}`);
+});
+
+test('assessThroughputRow: a genuine zero-pass run of 3 real days still errors', () => {
+  // The grace must delay the alarm by the unobserved day, not disable it.
+  const day = (n) => new Date(NOW - n * 86400000).toISOString();
+  const rows = [1, 2, 3, 4].map((n) => ({ event: 'auto-dispatch', ts: day(n) }));
+  const r = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: [], now: new Date(NOW) });
+  assert.equal(r.status, 'error', `dispatching daily and landing nothing IS dead; got ${JSON.stringify(r)}`);
+  assert.match(r.message, /0 passes/);
+});
+
+// ── BRO-3321 follow-up: the zero-dispatch banner's gate ─────────────────────
+// This decides whether the owner gets a red "DEAD" banner. It was a bare
+// conditional inside send-morning-digest.js — a file that reads disk and sends
+// mail, so it could not be tested at all. Extracted and pinned here.
+
+const DEAD_DISPATCH = { status: 'error', message: 'Autofix throughput DEAD: 0 dispatches on each of the last 3 day(s) — this is the exact 8/5-8/9 starvation shape (task #1184).' };
+const DEAD_PASS = { status: 'error', message: 'Autofix throughput DEAD: 0 passes on each of the last 3 day(s) — dispatches are launching but nothing is landing.' };
+const HEALTHY = { status: 'pass', message: 'Autofix throughput over the last 7d: 9 dispatched, 8 passed (net 1).' };
+
+test('throughputDeathMessage: surfaces the zero-DISPATCH death only when work is queued', () => {
+  const { throughputDeathMessage } = require('./autofix-canary.js');
+  assert.equal(
+    throughputDeathMessage(DEAD_DISPATCH, { pendingIssues: 42 }),
+    DEAD_DISPATCH.message,
+    'issues queued and nothing dispatching IS the dead shape'
+  );
+});
+
+test('throughputDeathMessage: an idle fleet with an empty queue is HEALTHY, not dead', () => {
+  const { throughputDeathMessage } = require('./autofix-canary.js');
+  // ZERO_DISPATCH_ERROR_DAYS is 2, so without this guard two quiet days — a
+  // fleet with nothing to fix — would email the owner "Autofix throughput DEAD".
+  assert.equal(throughputDeathMessage(DEAD_DISPATCH, { pendingIssues: 0 }), null);
+  assert.equal(throughputDeathMessage(DEAD_DISPATCH, {}), null, 'defaults to quiet, not to alarming');
+});
+
+test('throughputDeathMessage: never double-fires the zero-PASS arm', () => {
+  const { throughputDeathMessage } = require('./autofix-canary.js');
+  // assessAutofixEffectiveness already answers "dispatching but not landing".
+  // Surfacing it here too would render one condition as two red banners.
+  assert.equal(throughputDeathMessage(DEAD_PASS, { pendingIssues: 42 }), null);
+});
+
+test('throughputDeathMessage: stays quiet on healthy, warn, and junk input', () => {
+  const { throughputDeathMessage } = require('./autofix-canary.js');
+  assert.equal(throughputDeathMessage(HEALTHY, { pendingIssues: 42 }), null);
+  assert.equal(throughputDeathMessage({ status: 'warn', message: '0 dispatches ...' }, { pendingIssues: 42 }), null,
+    'warn is "not measurable here", not a death — it must never become a DEAD banner');
+  for (const junk of [null, undefined, {}, { status: 'error' }, { status: 'error', message: 42 }]) {
+    assert.equal(throughputDeathMessage(junk, { pendingIssues: 42 }), null, `junk input must not throw or alarm: ${JSON.stringify(junk)}`);
+  }
+});
+
+test('assessThroughputRow: an unparseable ts never throws — one bad row must not kill the digest', () => {
+  // REGRESSION (BRO-3321 follow-up). canaryDateStr does new Date(ts).toISOString(),
+  // which throws RangeError on a truthy-but-unparseable ts. dailyCounts only
+  // guarded `if (!ts)`. Once this row was wired into send-morning-digest.js's
+  // localLoopDeadMessage, that throw escaped buildHtml and the owner's morning
+  // digest would simply never send — one malformed ledger row becoming a silent
+  // daily outage. The ledger explicitly models this shape existing
+  // (autofix-effectiveness.js's undatedNote: "unreadable timestamps — writer bug").
+  const { assessThroughputRow } = require('./autofix-canary.js');
+  for (const bad of ['not-a-date', '   ', '2026-13-45T99:99:99Z', 'null', '0000']) {
+    assert.doesNotThrow(
+      () => assessThroughputRow({
+        digestLedgerEntries: [{ event: 'card-pass', ts: bad }],
+        backlogLedgerEntries: [{ event: 'drain-dispatch', ts: bad }],
+        now: new Date(NOW),
+      }),
+      `ts ${JSON.stringify(bad)} must be skipped, not thrown on`
+    );
+  }
+});
+
+test('assessThroughputRow: a bad row is skipped, and the GOOD rows around it still count', () => {
+  // Skipping must not mean discarding the whole report.
+  const { assessThroughputRow } = require('./autofix-canary.js');
+  const good = new Date(NOW - 86400000).toISOString();
+  const r = assessThroughputRow({
+    digestLedgerEntries: [
+      { event: 'auto-dispatch', ts: 'not-a-date' },
+      { event: 'auto-dispatch', ts: good },
+      { event: 'card-pass', ts: good, judgedDispatchTs: good },
+      { event: 'auto-dispatch', ts: new Date(NOW).toISOString() },
+    ],
+    backlogLedgerEntries: [],
+    now: new Date(NOW),
+  });
+  assert.match(r.message, /2 dispatched, 1 passed/, `the readable rows must still be counted; got ${JSON.stringify(r)}`);
+});

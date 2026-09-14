@@ -35,11 +35,36 @@ test('commercial-friday "Reconcile recoupment claim queue" step is wall-clock bu
   assert.match(step.run, /--time-budget-min=\d+/, 'reconcile step must pass --time-budget-min to reconcile-recoupment-claims.js');
 });
 
+// Regex requires the guard and its use to be the SAME expression, not just
+// present anywhere in the file (a bare separate `timeBudget.remainingMs()`
+// call elsewhere in the file, e.g. a log line, would satisfy a looser match
+// without actually gating the loop).
+const START_GUARD_RE = /timeBudget\.enabled\s*&&\s*timeBudget\.remainingMs\(\)\s*<\s*MIN_REMAINING_MS_TO_START/;
+
 test('scrape-recoupment-announcements.js supports --time-budget-min via the shared run-budget helper', () => {
   const src = fs.readFileSync(
     new URL('../../scripts/scrape-recoupment-announcements.js', import.meta.url),
     'utf8'
   );
   assert.match(src, /require\(['"]\.\/lib\/run-budget['"]\)/, 'must use the shared run-budget helper (not a bespoke timer)');
-  assert.match(src, /timeBudget\.exceeded\(\)/, 'must check the budget inside the per-show loop');
+  assert.match(
+    src,
+    START_GUARD_RE,
+    'must gate the per-show loop on a proactive remaining-time check (MIN_REMAINING_MS_TO_START), not a bare exceeded() check — no per-show call (SERP + fetchPage + LLM classify) has its own combined timeout, so a show starting right at the deadline can still run minutes over'
+  );
+  const guardValue = src.match(/MIN_REMAINING_MS_TO_START\s*=\s*(\d+)\s*\*\s*60_000/);
+  assert.ok(guardValue, 'MIN_REMAINING_MS_TO_START must be defined as N * 60_000 (minutes)');
+  assert.ok(Number(guardValue[1]) >= 1, 'guard must reserve at least 1 full minute, not an ~0 threshold that never actually fires early');
+});
+
+test('reconcile-recoupment-claims.js also gates its per-entry loop on the same proactive guard (BRO-2303 follow-up)', () => {
+  const src = fs.readFileSync(
+    new URL('../../scripts/reconcile-recoupment-claims.js', import.meta.url),
+    'utf8'
+  );
+  assert.match(
+    src,
+    START_GUARD_RE,
+    'verifyClaim() has the identical unbounded-per-entry-cost shape (SERP + fetchPage + LLM classify) as scrape-recoupment-announcements.js\'s per-show loop, and is budgeted by both commercial-friday.yml (12min slice) and commercial-weekly.yml (25min slice) — it needs the same start guard, not just exceeded()'
+  );
 });
