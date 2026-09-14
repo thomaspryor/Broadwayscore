@@ -718,7 +718,7 @@ jobs:
           dispatch_with_retry "$REBUILD_WF" -f reason="$REASON" || true
 
       - name: Count remaining unscored reviews
-        if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && steps.check-needed.outputs.skip != 'true'
+        if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true')
         id: count-remaining
         run: |
           # Count review files without llmScore (excluding unscorable: roundups, garbage, no text)
@@ -760,7 +760,7 @@ jobs:
           always() && job.status != 'cancelled'
           && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && steps.check-changes.outputs.has_scored_reviews == 'false'
-          && steps.check-needed.outputs.skip != 'true'
+          && (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true')
         run: |
           REMAINING="${{ steps.count-remaining.outputs.remaining }}"
           echo "::notice::Scoring run processed 0 reviews with ${REMAINING} remaining unscored (likely all have insufficient text)"
