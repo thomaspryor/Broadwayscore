@@ -2372,6 +2372,13 @@ on:
       # (registered in tests/unit-test-manifest.txt, not globbed), so it's
       # path-listed here so a solo edit to just the test still triggers CI.
       - 'scripts/tests/recheck-ledger-persistence.test.mjs'
+      # BRO-3317: same shape as the BRO-386 note directly above — the
+      # provider-spend ledger's commit is its own step in data-health-check.yml
+      # (already covered by the '.github/workflows/**' glob), but this
+      # ordering test lives in scripts/tests/ (registered in
+      # tests/unit-test-manifest.txt, not globbed), so it's path-listed here
+      # so a solo edit to just the test still triggers CI.
+      - 'scripts/tests/provider-spend-ledger-commit-ordering.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).
