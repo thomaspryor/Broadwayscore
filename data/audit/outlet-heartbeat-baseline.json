@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The \"Quality: outlet-heartbeat red flags\" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline",
-    "count": 39
+    "count": 38
   },
   "keys": [
     "ap::broadway",
@@ -34,7 +34,6 @@
     "telegraph::broadway",
     "thestage::broadway",
     "thewrap::broadway",
-    "thewrap::off-broadway",
     "time::broadway",
     "timeout::off-broadway",
     "times-uk::off-broadway",

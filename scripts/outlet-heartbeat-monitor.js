@@ -25,12 +25,19 @@ const { evaluateOutletHeartbeat } = require('./lib/outlet-heartbeat-monitor-core
 
 function main() {
   const jsonOut = process.argv.includes('--json');
-  const result = evaluateOutletHeartbeat();
+  let result;
+  try {
+    result = evaluateOutletHeartbeat();
+  } catch (err) {
+    // Same shape health-check.js's runCheck() falls back to on a crash, so
+    // --json callers can rely on `status` always being present.
+    result = { name: 'Quality: outlet-heartbeat red flags', status: 'error', message: `Check crashed: ${err.message}` };
+  }
 
   if (jsonOut) {
     console.log(JSON.stringify(result, null, 2));
   } else {
-    const icon = result.status === 'pass' ? 'PASS' : 'WARN';
+    const icon = result.status === 'pass' ? 'PASS' : result.status === 'error' ? 'ERROR' : 'WARN';
     console.error(`[${icon}] ${result.name}: ${result.message}`);
     if (result.hint) console.error(`  hint: ${result.hint}`);
     if (result.actionable?.length) {
