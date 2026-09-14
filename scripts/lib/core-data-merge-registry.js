@@ -197,18 +197,23 @@ const CORE_DATA_MERGE_REGISTRY = [
   // loudly until updated to match — deliberately, so removing the last entry
   // is a reviewed two-line PR, not a silent, unnoticed policy change).
   //
-  // ONE ENTRY IS NOT PURELY LOCAL (BRO-2588, 2026-08-31): the earlier
-  // "no other file touched" claim on this rollback is no longer true for
-  // audit/autonomous-recheck-ledger.jsonl. That flag is load-bearing for
-  // .github/workflows/data-health-check.yml's STEP ORDER — flipping it off
-  // silently re-opens BRO-2538's stranded-commit cascade, because the
-  // continue-on-error "Commit acceptance recheck ledger" step no longer
-  // runs last in that job. Rolling that one back means also moving that step
-  // back to the end of the job. This is not left to memory:
-  // scripts/lib/push-with-retry.stranded-commit-cascade.test.sh PART B
-  // asserts the general property (every push-with-retry.sh-calling step in
-  // that job git-adds only apiFallbackSafe paths UNLESS it is the last such
-  // step), so a flag-only rollback fails CI loudly instead of quietly
+  // ONE ENTRY IS NOT PURELY LOCAL (BRO-2588, 2026-08-31; position updated
+  // BRO-471, 2026-09-14): the earlier "no other file touched" claim on this
+  // rollback is no longer true for audit/autonomous-recheck-ledger.jsonl.
+  // That flag is load-bearing for .github/workflows/data-health-check.yml's
+  // "Commit acceptance recheck ledger" step, which BRO-471 repositioned to
+  // run immediately after the script step that writes it — specifically
+  // BECAUSE it is apiFallbackSafe, so it can safely sit ahead of the OTHER
+  // apiFallbackSafe/apiFallbackMerge commit+push steps in that job without
+  // poisoning their Git Data API fallback. Flipping this flag off would make
+  // this step's OWN git-add unsafe to run non-last, re-opening BRO-2538's
+  // stranded-commit cascade for every step after it. Rolling that one back
+  // means also moving the step back to the end of the job. This is not left
+  // to memory: scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
+  // PART B asserts the general property (every push-with-retry.sh-calling
+  // step in that job git-adds only apiFallbackSafe paths UNLESS it is the
+  // last such step), so a flag-only rollback fails CI loudly instead of
+  // quietly
   // regressing the workflow.
   {
     file: 'audit/health-digest-snapshot.json',

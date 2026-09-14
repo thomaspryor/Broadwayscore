@@ -10,30 +10,32 @@ import { loadWorkflow, findStep } from '../helpers/workflow-push-timeout.mjs';
  * ever being applied. Pins the exact shipped value, not a loose "<90" bound
  * (rejected in review on the original fix, commit 0b81edfabe6).
  *
- * One of the three call sites ("Commit health check audit snapshots") was
- * independently given a STRONGER fix by a concurrent session (BRO-2233/
- * BRO-2951 Phase 2): PUSH_API_REST_REF_UPDATE routes the push through
- * GitHub's REST Git Data API instead of `git push` entirely, so a
- * git-transport timeout is moot there. GIT_NET_TIMEOUT_SEC only applies to
- * the remaining two sites, which still use plain `git push`.
+ * BRO-352 (2026-09-14) merged the former "Commit digest snapshot" step into
+ * "Commit health check audit snapshots (apiFallbackSafe)". BRO-472
+ * (2026-09-14) added a new REST-API step, "Commit lifetime sweep snapshots
+ * (apiFallbackSafe)", that this test file previously never covered.
  *
- * BRO-352 (2026-09-14): the former "Commit digest snapshot" step was merged
- * into "Commit health check audit snapshots (apiFallbackSafe)" (both were
- * REST-API steps already, so this list shrinks from 2 to 1 rather than
- * needing a new entry).
+ * BRO-471 follow-up (adversarial-review finding) corrected a wrong assumption
+ * this test's prior version made: PUSH_API_REST_REF_UPDATE does NOT mean a
+ * step "bypasses git push entirely." PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 means
+ * the local retry loop still makes 3 real `git push` attempts (at whatever
+ * GIT_NET_TIMEOUT_SEC is set to) before falling back to the REST API — so
+ * BOTH REST-opted-in steps now ALSO set GIT_NET_TIMEOUT_SEC=30, and are their
+ * own hybrid category below rather than "REST-only, no timeout needed."
  */
 
 const WORKFLOW = 'data-health-check.yml';
 const JOB = 'health-check';
-const GIT_NET_TIMEOUT_STEPS = [
+const GIT_NET_TIMEOUT_ONLY_STEPS = [
   { name: 'Commit acceptance recheck ledger', deadline: '900' },
   { name: 'Commit health check + triage data', deadline: '900' },
 ];
-const REST_API_STEPS = [
-  'Commit health check audit snapshots (apiFallbackSafe)',
+const HYBRID_TIMEOUT_AND_REST_STEPS = [
+  { name: 'Commit lifetime sweep snapshots (apiFallbackSafe)', deadline: '900' },
+  { name: 'Commit health check audit snapshots (apiFallbackSafe)', deadline: '900' },
 ];
 
-for (const { name, deadline } of GIT_NET_TIMEOUT_STEPS) {
+for (const { name, deadline } of [...GIT_NET_TIMEOUT_ONLY_STEPS, ...HYBRID_TIMEOUT_AND_REST_STEPS]) {
   test(`data-health-check "${name}" overrides GIT_NET_TIMEOUT_SEC to the shipped 30s value`, () => {
     const step = findStep(loadWorkflow(WORKFLOW), JOB, name);
     const env = step.env || {};
@@ -48,11 +50,10 @@ for (const { name, deadline } of GIT_NET_TIMEOUT_STEPS) {
   });
 }
 
-for (const name of REST_API_STEPS) {
-  test(`data-health-check "${name}" uses the REST API bypass, not GIT_NET_TIMEOUT_SEC`, () => {
+for (const { name } of HYBRID_TIMEOUT_AND_REST_STEPS) {
+  test(`data-health-check "${name}" ALSO opts into the REST API fallback on top of GIT_NET_TIMEOUT_SEC`, () => {
     const step = findStep(loadWorkflow(WORKFLOW), JOB, name);
     const env = step.env || {};
-    assert.equal(env.PUSH_API_REST_REF_UPDATE, '1', 'expected the REST bypass fix, not a timeout tweak');
-    assert.ok(!('GIT_NET_TIMEOUT_SEC' in env), 'GIT_NET_TIMEOUT_SEC would be moot here - REST bypasses git push entirely');
+    assert.equal(env.PUSH_API_REST_REF_UPDATE, '1', 'expected the REST bypass fix in addition to the timeout tweak');
   });
 }
