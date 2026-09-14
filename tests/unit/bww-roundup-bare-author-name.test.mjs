@@ -145,8 +145,42 @@ describe('BWW Roundup Method 1: bare critic name in author.name', () => {
 
     const reviews = extractBWWRoundupReviews(html, 'safe-house-off-broadway-2026', BWW_URL);
     assert.strictEqual(reviews.length, 1);
-    assert.strictEqual(reviews[0].outletId, 'jon-sobel',
-      'without a registered headline outlet the pre-fix behavior is preserved');
+    // Assert only what this guard rail is about — the unregistered headline
+    // segment must not become the outlet — rather than pinning whatever the
+    // fallthrough currently produces. Pinning outletId==='jon-sobel' here would
+    // encode the un-fixed behavior as a requirement and block a later
+    // hardening that drops or re-routes these postings.
+    assert.notStrictEqual(reviews[0].outletId, 'some-unregistered-zine',
+      'an unregistered headline segment must never become the outlet');
     assert.strictEqual(reviews[0].criticName, null);
+  });
+
+  test('a delimiter-bearing unregistered author is NOT demoted to criticName', () => {
+    // The demotion guard is shape-gated. `!criticName && !isRegisteredOutlet()`
+    // is also true for the comma/colon branches when neither side is a
+    // registered outlet — those fall through with the delimiter intact. Before
+    // the shape gate, "Mandell, Some Unregistered Blog" was written whole into
+    // criticName, producing a junk critic that deduped against nothing and
+    // recreated the duplicate-pair shape this fix exists to kill.
+    for (const author of [
+      'Mandell, Some Unregistered Blog',
+      'Some Zine: Jane Doe',
+      'Some Long Winded Unregistered Blog Name Here',
+    ]) {
+      const html = makeLiveBlogHtml([
+        {
+          author,
+          headline: 'Blogcritics - Theater Review (NYC): Safe House',
+          text: 'A gripping state-of-the-nation drama.',
+        },
+      ]);
+
+      const reviews = extractBWWRoundupReviews(html, 'safe-house-off-broadway-2026', BWW_URL);
+      assert.strictEqual(reviews.length, 1, `author=${JSON.stringify(author)}`);
+      assert.strictEqual(reviews[0].outletId, 'blogcritics',
+        `author=${JSON.stringify(author)}: outlet still comes from the headline`);
+      assert.strictEqual(reviews[0].criticName, null,
+        `author=${JSON.stringify(author)}: must stay an unknown slot, not a junk criticName`);
+    }
   });
 });
