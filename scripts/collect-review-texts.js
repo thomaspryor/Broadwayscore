@@ -55,7 +55,7 @@ const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
-const { shouldSkipAlreadyAttempted } = require('./lib/collection-attempt-guard.js');
+const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions } = require('./lib/review-write-guard.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
@@ -148,7 +148,7 @@ const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
+const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { parseDate } = require('./lib/date-utils');
@@ -5163,6 +5163,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.wrongShow = true;
         data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
         data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+        invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
         console.log(`    ✗ LLM: Film/TV content (${contentVerification.confidence}) — fullText nulled`);
       }
     }
@@ -5358,7 +5359,6 @@ function loadState() {
       const startTime = new Date(saved.startTime);
       const hoursSinceStart = (Date.now() - startTime.getTime()) / (1000 * 60 * 60);
       if (hoursSinceStart < 24) {
-        console.log(`Resuming from previous run (${saved.processed.length} already processed)`);
         state = saved;
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
@@ -5369,6 +5369,16 @@ function loadState() {
           }
         }
         if (!state.log) state.log = [];
+        // BRO-3024: a resumed file may already carry duplicates written by a
+        // CONCURRENT run (per-show concurrency groups share this one file) or
+        // by an earlier RETRY_FAILED=true pass. Normalise BEFORE the resume
+        // line below reports a count, so the run never prints a pre-dedupe
+        // and a post-dedupe figure for the same array one line apart.
+        const inherited = dedupeAttemptState(state);
+        console.log(`Resuming from previous run (${state.processed.length} already processed)`);
+        if (inherited.processed || inherited.failed || inherited.succeededAfterFailure || inherited.tierBreakdown) {
+          console.log(`  Normalised inherited attempt state: dropped ${inherited.processed} duplicate processed, ${inherited.failed} duplicate failed, ${inherited.tierBreakdown} duplicate tier entries; moved ${inherited.succeededAfterFailure} failed-then-succeeded into recoveredAfterFailure (${state.recoveredAfterFailure?.length || 0} total)`);
+        }
         return true;
       }
     } catch (e) {
@@ -5379,6 +5389,13 @@ function loadState() {
 }
 
 function saveState() {
+  // BRO-3024: dedupe at the WRITE, not only at the read. The in-process
+  // shouldSkipAlreadyAttempted() guard is bypassed by design under
+  // RETRY_FAILED=true and cannot see a concurrent run's appends at all, so
+  // this is the only point that holds under both mechanisms — whichever run
+  // serialises last writes a unique-only array. Also makes the "(N failed)"
+  // figure in each "chore: Checkpoint" commit message truthful.
+  dedupeAttemptState(state);
   fs.mkdirSync(CONFIG.stateDir, { recursive: true });
   fs.writeFileSync(
     path.join(CONFIG.stateDir, 'progress.json'),

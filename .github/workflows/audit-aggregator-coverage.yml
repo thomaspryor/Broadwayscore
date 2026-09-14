@@ -22,6 +22,13 @@ on:
 permissions:
   contents: write
 
+# BRO-3071: added so its own cron can't race a manual workflow_dispatch into
+# a lost push on data/audit/possible-venue-transfers.json (now apiFallbackSafe
+# — see scripts/lib/core-data-merge-registry.js — which requires this group).
+concurrency:
+  group: audit-aggregator-coverage
+  cancel-in-progress: false
+
 jobs:
   audit:
     name: Run coverage audit
@@ -89,14 +96,45 @@ jobs:
         if: steps.changes.outputs.has_changes == 'true'
         uses: ./.github/actions/check-file-sizes
 
+      # BRO-3071: split out of the combined "Commit and push" step so this
+      # file's push-with-retry.sh call isn't bundled with (and defeated by)
+      # aggregator-coverage.json, which stays multi-writer/unregistered — see
+      # scripts/lib/core-data-merge-registry.js's "NOT added, deliberately"
+      # comment for that file. Runs FIRST so a slow/failed second commit can
+      # never strand this one uncommitted.
+      - name: Commit possible-venue-transfers.json (apiFallbackSafe)
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/possible-venue-transfers.json 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "No venue-transfer changes to commit"
+            exit 0
+          fi
+
+          git commit -m "audit: possible venue transfers
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
       - name: Commit and push
         if: always() && steps.changes.outputs.has_changes == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
+          if git diff --quiet data/audit/aggregator-coverage.json 2>/dev/null; then
+            if [ ! -f data/audit/aggregator-coverage.json ] || git ls-files --error-unmatch data/audit/aggregator-coverage.json 2>/dev/null; then
+              echo "No aggregator-coverage changes to commit"
+              exit 0
+            fi
+          fi
+
           git add data/audit/aggregator-coverage.json
-          git add data/audit/possible-venue-transfers.json 2>/dev/null || true
 
           if [ -n "${{ inputs.show }}" ]; then
             MSG="audit: Aggregator coverage for ${{ inputs.show }}"
