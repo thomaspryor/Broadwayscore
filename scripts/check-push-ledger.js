@@ -45,6 +45,8 @@
  */
 'use strict';
 
+const { execFileSync } = require('child_process');
+const path = require('path');
 const { repoOwnerName, checkReachable } = require('./lib/gh-compare-check');
 const { parseLedgerLines, serializeEntries, selectEntriesInWindow, pruneToWindow } = require('./lib/push-ledger');
 const { readLedger, writeLedger } = require('./lib/push-ledger-store');
@@ -52,6 +54,97 @@ const { readLedger, writeLedger } = require('./lib/push-ledger-store');
 // Pruning is best-effort: a lost CAS race just means the next 20-min run
 // prunes instead, so a short retry budget is plenty.
 const PRUNE_ATTEMPTS = 3;
+
+// BRO-2304: checkReachable() only answers "is entry.sha still an ancestor of
+// origin/<branch>'s tip" — the right question for a genuine revert, but blind
+// to a different, benign shape push-with-retry.sh's OWN push-time check
+// already models (scripts/lib/push-content-survival.js, task #619): a
+// conflict-resolution/rebase step can recreate a commit's exact intended
+// content under a brand-new SHA ('superseded'). That's expected, not a loss —
+// but checkReachable() only ever sees the OLD sha, which is unreachable by
+// definition once superseded, so it filed a false alert.
+//
+// Live case (BRO-2304): commit c10b785d0b4587af0f1d6942ea8b74b5e53ed2b1 was
+// verified-pushed, then reported unreachable. Manual investigation found its
+// content (a wrap-up-ran Stop-hook gate + test) was never actually lost — the
+// identical logical change landed on main under two OTHER shas, both via PRs
+// (#692/#708) already merged. But the *literal lines* were NOT a clean
+// superset by the time of that later landing — an in-session redesign commit
+// had already rewritten the same block, so this exact classifier (verified
+// live against the real BRO-2304 shas) still reports 'reverted' for that
+// specific case. It's included anyway because it correctly, conservatively
+// suppresses the SIMPLER and more common shape — a conflict-resolution/rebase
+// step that recreates a commit's content verbatim (or as a pure superset)
+// under a brand-new sha — without any risk of masking a genuine revert
+// elsewhere: any ambiguity still falls through to the ordinary alert path.
+// BRO-2304 itself is closed by deleting the dead source branch (both its PRs
+// already merged, no open PR depends on it) — see the Linear card — not by
+// this classifier reclassifying that specific historical case.
+//
+// Rather than reimplement push-content-survival.js's classifier (it already
+// has the exemption list, the cheap/deep-check split, and the
+// ambiguous-vs-reverted judgment push-with-retry.sh trusts at push time),
+// this fetches just enough of the entry's own commit + the branch's current
+// tip to hand the SAME CLI the identical question in the delayed context,
+// and trusts its verdict. Any fetch/parse failure returns false (the safe
+// default) — an unconfirmed case still alerts, never silently suppressed.
+const PUSH_CONTENT_SURVIVAL_CLI = path.join(__dirname, 'lib', 'push-content-survival.js');
+
+function gitFetchOrNull(cwd, args) {
+  try {
+    execFileSync('git', ['fetch', ...args], { cwd, encoding: 'utf8', timeout: 30_000 });
+    return execFileSync('git', ['rev-parse', 'FETCH_HEAD'], { cwd, encoding: 'utf8' }).trim();
+  } catch {
+    return null;
+  }
+}
+
+// depth=2: the commit itself plus its immediate parent — enough to diff what
+// THIS commit changed without pulling the branch's full history. A root
+// commit (no parent) can't be diffed this way; caught below, not thrown.
+function fetchShaWithParent(cwd, sha) {
+  if (!gitFetchOrNull(cwd, ['--depth=2', 'origin', sha])) return null;
+  try {
+    return execFileSync('git', ['rev-parse', `${sha}^`], { cwd, encoding: 'utf8' }).trim();
+  } catch {
+    return null;
+  }
+}
+
+function fetchBranchTip(cwd, branch) {
+  return gitFetchOrNull(cwd, ['--depth=1', 'origin', branch]);
+}
+
+/**
+ * @param {string} cwd a git checkout with `origin` pointing at the repo
+ * @param {{sha: string, branch: string}} entry the ledger entry under re-check
+ * @returns {boolean} true only when push-content-survival.js's own classifier
+ *   finds no genuine revert (survived/unchanged/ambiguous/superseded) between
+ *   entry.sha's intended content and origin/<branch>'s current tip. Never
+ *   throws — any failure (fetch, parse, classifier crash) is treated as "not
+ *   confirmed", so the caller falls through to its ordinary alert path.
+ */
+function checkContentSurvived(cwd, entry) {
+  try {
+    const parentSha = fetchShaWithParent(cwd, entry.sha);
+    if (!parentSha) return false;
+    const branchTip = fetchBranchTip(cwd, entry.branch);
+    if (!branchTip) return false;
+    execFileSync('node', [
+      PUSH_CONTENT_SURVIVAL_CLI,
+      `--before-sha=${entry.sha}`,
+      `--base-sha=${parentSha}`,
+      `--check-ref=${branchTip}`,
+      // ACMT not MT (BRO-2304): no sibling check-post-rebase-survival.js runs
+      // at this delayed checkpoint, so Added files must be in scope here too
+      // — see push-content-survival.js's own --diff-filter comment.
+      '--diff-filter=ACMT',
+    ], { cwd, timeout: 30_000 });
+    return true; // exit 0 => not a genuine revert (survived/unchanged/ambiguous/superseded/SKIP)
+  } catch {
+    return false; // exit 1 (reverted), or any exception along the way — don't suppress
+  }
+}
 
 // push-retry-failures branch: NO revert-detection needed here (unlike the
 // push-ledger success stream above) — a failure record has no "did it land"
@@ -188,7 +281,12 @@ async function main() {
       console.log(`check-push-ledger: ${entry.sha.slice(0, 12)} still reachable from origin/${entry.branch} (${result.status})`);
       continue;
     }
-    console.error(`check-push-ledger: ${entry.sha.slice(0, 12)} NO LONGER reachable from origin/${entry.branch} (${result.status}) — filing alert`);
+    console.error(`check-push-ledger: ${entry.sha.slice(0, 12)} NO LONGER reachable from origin/${entry.branch} (${result.status}) — checking content survival before alerting`);
+    if (checkContentSurvived(cwd, entry)) {
+      console.log(`check-push-ledger: ${entry.sha.slice(0, 12)} content confirmed still present on origin/${entry.branch} despite SHA divergence (superseded by an equivalent later commit, BRO-2304) — suppressing alert`);
+      continue;
+    }
+    console.error(`check-push-ledger: ${entry.sha.slice(0, 12)} content NOT confirmed on origin/${entry.branch} — filing alert`);
     if (await fileRevertAlert(repoInfo, entry, result.status)) flaggedCount++;
   }
 
@@ -245,7 +343,11 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error(`check-push-ledger: fatal: ${err.message}`);
-  process.exit(1); // NOT fail-open — this is the sole CI-side mitigation for the #668/#619 revert class
-});
+module.exports = { checkContentSurvived, fetchShaWithParent, fetchBranchTip };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error(`check-push-ledger: fatal: ${err.message}`);
+    process.exit(1); // NOT fail-open — this is the sole CI-side mitigation for the #668/#619 revert class
+  });
+}
