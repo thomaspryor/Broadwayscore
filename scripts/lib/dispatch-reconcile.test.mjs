@@ -472,3 +472,28 @@ test('no file reimplements the spawn->job correlation outside this lib (BRO-2542
     'these files pair JOB_EVENTS.SPAWNED with followRetryChain — that is findMyJob. '
     + 'Require it from scripts/lib/dispatch-reconcile.js instead of writing a fifth copy.');
 });
+
+// ── BRO-3321: outcomeWindowTs + the hoisted ORPHAN_TIMEOUT_H ────────────────
+
+test('outcomeWindowTs prefers the judged dispatch ts, falls back to write ts', () => {
+  const { outcomeWindowTs } = require('./dispatch-reconcile.js');
+  assert.equal(
+    outcomeWindowTs({ ts: '2026-09-14T11:37:13Z', judgedDispatchTs: '2026-08-14T11:30:46Z' }),
+    '2026-08-14T11:30:46Z',
+    'an outcome is ABOUT the dispatch it judges, not the moment we wrote it down'
+  );
+  // Rows written before the field existed must still be usable, not dropped.
+  assert.equal(outcomeWindowTs({ ts: '2026-09-14T11:37:13Z' }), '2026-09-14T11:37:13Z');
+  assert.equal(outcomeWindowTs(null), undefined);
+  assert.equal(outcomeWindowTs(undefined), undefined);
+  assert.equal(outcomeWindowTs({}), undefined);
+});
+
+test('ORPHAN_TIMEOUT_H is exported here and is the value all reconcilers use', () => {
+  // Hoisted because four modules declared their own `= 3` while all four then
+  // handed it back to classifyDispatches as `orphanTimeoutH`.
+  const { ORPHAN_TIMEOUT_H } = require('./dispatch-reconcile.js');
+  assert.equal(typeof ORPHAN_TIMEOUT_H, 'number');
+  assert.ok(ORPHAN_TIMEOUT_H > 0);
+  assert.equal(ORPHAN_TIMEOUT_H, 3, 'changing this changes orphan detection for every drain at once — deliberate');
+});
