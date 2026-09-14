@@ -11,6 +11,9 @@ const {
   findUnjustifiedHealClears,
   buildHealClearReason,
   parseHealClearTarget,
+  parseHealClearPriorReason,
+  wouldCloseDuplicateCycle,
+  findChainPointersThrough,
   HEAL_CLEAR_BREADCRUMB_PREFIX,
 } = require('./orphaned-duplicate-pointer-heal.js');
 
@@ -261,6 +264,103 @@ test('findUnjustifiedHealClears: never touches another clearer’s breadcrumb', 
 test('findUnjustifiedHealClears: target missing from the directory — clear stands', () => {
   const records = [
     { file: 'a.json', data: { ...loser(), url: DUP_URL, duplicateClearReason: buildHealClearReason('2026-09-14', 'ghost.json', 'r') } },
+  ];
+  assert.deepEqual(findUnjustifiedHealClears(records), []);
+});
+
+test('wouldCloseDuplicateCycle: direct, transitive, and clean chains', () => {
+  const byFile = new Map([
+    ['a.json', { duplicateOf: null }],
+    ['b.json', { duplicateOf: 'a.json' }],      // b → a
+    ['c.json', { duplicateOf: 'b.json' }],      // c → b → a
+    ['d.json', { duplicateOf: null }],
+  ]);
+  assert.equal(wouldCloseDuplicateCycle('a.json', 'b.json', byFile), true);  // a → b → a
+  assert.equal(wouldCloseDuplicateCycle('a.json', 'c.json', byFile), true);  // a → c → b → a
+  assert.equal(wouldCloseDuplicateCycle('a.json', 'd.json', byFile), false);
+  // A loop that does NOT include the loser still terminates rather than hanging.
+  const looped = new Map([['x.json', { duplicateOf: 'y.json' }], ['y.json', { duplicateOf: 'x.json' }]]);
+  assert.equal(wouldCloseDuplicateCycle('z.json', 'x.json', looped), true);
+});
+
+test('buildHealClearReason: records the duplicateReason it nulls, and old breadcrumbs still parse', () => {
+  const withPrior = buildHealClearReason('2026-09-14', 'b.json', 'r', 'byline-explosion-collapse');
+  assert.equal(parseHealClearTarget(withPrior), 'b.json');
+  assert.equal(parseHealClearPriorReason(withPrior), 'byline-explosion-collapse');
+  // Pre-suffix breadcrumb (127 of these already on disk) — target still parses, prior reason is unknown.
+  const legacy = buildHealClearReason('2026-09-14', 'b.json', 'r');
+  assert.equal(parseHealClearTarget(legacy), 'b.json');
+  assert.equal(parseHealClearPriorReason(legacy), null);
+});
+
+test('findUnjustifiedHealClears: carries the prior duplicateReason through for restore', () => {
+  const records = [
+    { file: 'a.json', data: { ...loser(), url: DUP_URL, duplicateClearReason: buildHealClearReason('2026-09-14', 'b.json', 'r', 'criticName-override-collided-at-rename') } },
+    { file: 'b.json', data: { fullText: REAL_TEXT, url: DUP_URL, wrongProduction: true, wrongProductionManualClear: true } },
+  ];
+  assert.equal(findUnjustifiedHealClears(records)[0].priorDuplicateReason, 'criticName-override-collided-at-rename');
+});
+
+test('findUnjustifiedHealClears: honors _duplicateOfCleared — never re-suppresses a human-verified same-URL pair', () => {
+  const records = [
+    {
+      file: 'a.json',
+      data: {
+        ...loser(),
+        url: DUP_URL,
+        _duplicateOfCleared: 'auto:2026-04-12 different critics (matt windman vs ben brantley)',
+        duplicateClearReason: buildHealClearReason('2026-09-14', 'b.json', 'r'),
+      },
+    },
+    { file: 'b.json', data: { fullText: REAL_TEXT, url: DUP_URL, wrongProduction: true, wrongProductionManualClear: true } },
+  ];
+  assert.deepEqual(findUnjustifiedHealClears(records), []);
+});
+
+test('findUnjustifiedHealClears: refuses to bury a substantive body under a near-empty sibling', () => {
+  const records = [
+    { file: 'a.json', data: { fullText: 'x'.repeat(4000), url: DUP_URL, duplicateClearReason: buildHealClearReason('2026-09-14', 'b.json', 'r') } },
+    { file: 'b.json', data: { fullText: 'stub', url: DUP_URL, wrongProduction: true, wrongProductionManualClear: true } },
+  ];
+  assert.deepEqual(findUnjustifiedHealClears(records), []);
+});
+
+test('findChainPointersThrough: re-aims the sibling that pointed at a re-suppressed loser', () => {
+  // romeo-juliet-2024: jackson-mchenry → helen-shaw → sara-holdren. Once
+  // helen-shaw is a duplicate again, jackson-mchenry must point at sara-holdren
+  // directly or rebuild-all-reviews.js recovers it into reviews.json.
+  const records = [
+    { file: 'vulture--jackson-mchenry.json', data: { fullText: REAL_TEXT, url: DUP_URL, duplicateOf: 'vulture--helen-shaw.json', duplicateTextOf: 'vulture--helen-shaw.json' } },
+    { file: 'vulture--helen-shaw.json', data: { fullText: REAL_TEXT, url: DUP_URL, duplicateOf: 'vulture--sara-holdren.json' } },
+    { file: 'vulture--sara-holdren.json', data: { fullText: REAL_TEXT, url: DUP_URL } },
+  ];
+  assert.deepEqual(findChainPointersThrough(records, 'vulture--helen-shaw.json').map((c) => [c.loserFile, c.targetFile]), [
+    ['vulture--jackson-mchenry.json', 'vulture--sara-holdren.json'],
+  ]);
+});
+
+test('findChainPointersThrough: nothing to flatten when the loser is already canonical', () => {
+  const records = [
+    { file: 'a.json', data: { fullText: REAL_TEXT, url: DUP_URL, duplicateOf: 'b.json' } },
+    { file: 'b.json', data: { fullText: REAL_TEXT, url: DUP_URL } },
+  ];
+  assert.deepEqual(findChainPointersThrough(records, 'b.json'), []);
+});
+
+test('findChainPointersThrough: skips a sibling whose URL differs from the canonical', () => {
+  const records = [
+    { file: 'a.json', data: { fullText: REAL_TEXT, url: 'https://example.com/other', duplicateOf: 'b.json' } },
+    { file: 'b.json', data: { fullText: REAL_TEXT, url: DUP_URL, duplicateOf: 'c.json' } },
+    { file: 'c.json', data: { fullText: REAL_TEXT, url: DUP_URL } },
+  ];
+  assert.deepEqual(findChainPointersThrough(records, 'b.json'), []);
+});
+
+test('findUnjustifiedHealClears: refuses to restore a pointer that would close a cycle', () => {
+  const records = [
+    { file: 'a.json', data: { ...loser(), url: DUP_URL, duplicateClearReason: buildHealClearReason('2026-09-14', 'b.json', 'r') } },
+    // b already points back at a — restoring a → b would exclude both from the rebuild.
+    { file: 'b.json', data: { fullText: REAL_TEXT, url: DUP_URL, duplicateOf: 'a.json' } },
   ];
   assert.deepEqual(findUnjustifiedHealClears(records), []);
 });

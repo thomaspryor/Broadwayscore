@@ -39,6 +39,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const {
   findOrphanedDuplicatePointers,
   findUnjustifiedHealClears,
+  findChainPointersThrough,
   buildHealClearReason,
 } = require('./lib/orphaned-duplicate-pointer-heal');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -133,6 +134,25 @@ function auditUnjustified() {
 }
 
 /**
+ * Chains left one hop short behind a pointer this heal has ALREADY restored
+ * (a file carrying duplicateHealRetractedReason with a live duplicateOf).
+ * Scanned separately from revert()'s own in-pass flattening so the mode is
+ * idempotent: a restore that landed before chain-flattening existed still gets
+ * cleaned up on the next run, rather than silently leaving the sibling that
+ * pointed at it recoverable by rebuild-all-reviews.js.
+ */
+function auditChainsBehindRestores() {
+  return scan((records) => {
+    const out = [];
+    for (const { file, data } of records) {
+      if (!data || !data.duplicateHealRetractedReason || !data.duplicateOf) continue;
+      out.push(...findChainPointersThrough(records, file));
+    }
+    return out;
+  });
+}
+
+/**
  * Restore the duplicateOf pointers listed by auditUnjustified(). Mirrors the
  * write-guard's own re-mark branch: set duplicateOf/duplicateReason and null
  * out the now-false clear breadcrumb, so the push-review-texts restore
@@ -141,19 +161,58 @@ function auditUnjustified() {
  */
 function revert(unjustified) {
   let restored = 0;
+  let flattened = 0;
   const day = new Date().toISOString().slice(0, 10);
   for (const o of unjustified) {
-    const filePath = path.join(REVIEW_TEXTS_DIR, o.showId, o.loserFile);
+    const showDir = path.join(REVIEW_TEXTS_DIR, o.showId);
+    const filePath = path.join(showDir, o.loserFile);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     data.duplicateOf = o.targetFile;
-    data.duplicateReason = 'url-collision-detected-at-write';
+    // The reason fix() nulled, when the breadcrumb recorded it — inventing
+    // 'url-collision-detected-at-write' over a real 'byline-explosion-collapse'
+    // or task-#1072 outlet-mismatch verdict would falsify the provenance.
+    data.duplicateReason = o.priorDuplicateReason || 'url-collision-detected-at-write';
     data.duplicateClearReason = null;
     data.duplicateHealRetractedReason =
       `heal-orphaned-duplicate-pointers.js --revert-unjustified on ${day}: ${o.reason} (BRO-3092)`;
-    safeWriteReview(filePath, data);
+    // force:true — this write CHOOSES its duplicateOf target deliberately, and
+    // the detector has already applied the guard's own decision predicate
+    // (shouldMarkUrlCollisionDuplicate) plus the cycle check to that exact
+    // pair. Without force, safeWriteReview's collision self-heal re-points the
+    // file at whatever same-URL sibling readdir happens to return first, which
+    // in a 3-file cluster silently overwrites the target we picked (measured on
+    // romeo-juliet-2024). We read-modify-write the complete record, so nothing
+    // force would otherwise preserve is lost.
+    safeWriteReview(filePath, data, { force: true });
     restored++;
+
+    // The loser is a duplicate again, so anything pointing AT it is now one hop
+    // short of the canonical — and rebuild-all-reviews.js recovers through that
+    // hop instead of following it. Flatten, or the restore just swaps which
+    // byline carries the duplicate URL into reviews.json.
+    flattened += flatten(findChainPointersThrough(readShowRecords(showDir) || [], o.loserFile)
+      .map((c) => ({ showId: o.showId, ...c })));
   }
-  return restored;
+  return { restored, flattened };
+}
+
+/** Re-aim one-hop chain pointers at the canonical they should have pointed at. */
+function flatten(chains) {
+  let n = 0;
+  const day = new Date().toISOString().slice(0, 10);
+  for (const c of chains) {
+    const chainPath = path.join(REVIEW_TEXTS_DIR, c.showId, c.loserFile);
+    const chainData = JSON.parse(fs.readFileSync(chainPath, 'utf-8'));
+    const wasPointingAt = chainData.duplicateOf;
+    chainData.duplicateOf = c.targetFile;
+    if (chainData.duplicateTextOf === wasPointingAt) chainData.duplicateTextOf = c.targetFile;
+    chainData.duplicateClearReason = null;
+    chainData.duplicateHealRetractedReason =
+      `heal-orphaned-duplicate-pointers.js --revert-unjustified on ${day}: ${c.reason} (BRO-3092)`;
+    safeWriteReview(chainPath, chainData, { force: true }); // same reasoning as revert()
+    n++;
+  }
+  return n;
 }
 
 function fix(orphans) {
@@ -163,7 +222,7 @@ function fix(orphans) {
     const dir = path.join(REVIEW_TEXTS_DIR, o.showId);
     const filePath = path.join(dir, o.loserFile);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    data.duplicateClearReason = buildHealClearReason(day, o.targetFile, o.reason);
+    data.duplicateClearReason = buildHealClearReason(day, o.targetFile, o.reason, data.duplicateReason);
     data.duplicateOf = null;
     data.duplicateReason = null;
     safeWriteReview(filePath, data);
@@ -178,26 +237,56 @@ function main() {
 
   if (REVERT_UNJUSTIFIED) {
     const unjustified = auditUnjustified();
-    if (JSON_OUT) {
-      console.log(JSON.stringify({ mode: 'revert-unjustified', count: unjustified.length, unjustified }, null, 2));
-      process.exit(unjustified.length === 0 ? 0 : (FIX ? 0 : 1));
-    }
-    if (unjustified.length === 0) {
-      console.log('OK: no unjustified heal clears found');
+    const standingChains = auditChainsBehindRestores();
+    if (unjustified.length === 0 && standingChains.length === 0) {
+      console.log(JSON_OUT
+        ? JSON.stringify({ mode: 'revert-unjustified', count: 0, unjustified: [], chains: [] }, null, 2)
+        : 'OK: no unjustified heal clears found');
       process.exit(0);
     }
-    console.log(`Found ${unjustified.length} unjustified heal clear(s):\n`);
-    for (const o of unjustified) {
-      console.log(`  ${o.showId}`);
-      console.log(`    ${o.loserFile}  cleared duplicateOf → ${o.targetFile} (target is NOT invalidated; URLs still match)`);
+    if (FIX && unjustified.length === 0) {
+      // Nothing new to restore, but earlier restores left chains one hop short.
+      const n = flatten(standingChains);
+      console.log(JSON_OUT
+        ? JSON.stringify({ mode: 'revert-unjustified', count: 0, restored: 0, flattened: n, chains: standingChains }, null, 2)
+        : `Restored 0 duplicateOf pointer(s); flattened ${n} chain pointer(s) behind earlier restores.`);
+      process.exit(0);
     }
-    if (!FIX) {
-      console.log('\nRun with --fix to restore these pointers.');
+    if (unjustified.length === 0) {
+      console.log(JSON_OUT
+        ? JSON.stringify({ mode: 'revert-unjustified', count: 0, unjustified: [], chains: standingChains }, null, 2)
+        : `Found ${standingChains.length} chain pointer(s) left one hop short behind an earlier restore.\n\nRun with --fix to re-aim them at the canonical.`);
       process.exit(1);
     }
-    const restored = revert(unjustified);
-    console.log(`\nRestored ${restored} duplicateOf pointer(s).`);
-    console.log('Re-run the rebuild so the re-suppressed duplicates drop back out of reviews.json.');
+    if (!FIX) {
+      // Report-only: --json prints the machine-readable form, exit 1 = work pending.
+      if (JSON_OUT) {
+        console.log(JSON.stringify({ mode: 'revert-unjustified', count: unjustified.length, unjustified }, null, 2));
+      } else {
+        console.log(`Found ${unjustified.length} unjustified heal clear(s):\n`);
+        for (const o of unjustified) {
+          console.log(`  ${o.showId}`);
+          console.log(`    ${o.loserFile}  cleared duplicateOf → ${o.targetFile} (target is NOT invalidated; URLs still match)`);
+        }
+        console.log('\nRun with --fix to restore these pointers.');
+      }
+      process.exit(1);
+    }
+    // Same reasoning as the --fix surge guard below: a spike in retractions
+    // would mean the invalidation predicate itself moved, and re-suppressing
+    // that many reviews at once deserves a human look first.
+    if (unjustified.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+      console.log(`Refusing to restore ${unjustified.length} pointer(s) — above FIX_SURGE_THRESHOLD (${FIX_SURGE_THRESHOLD}).`);
+      console.log('Review the list with --revert-unjustified (no --fix), then re-run with --force-bulk to proceed.');
+      process.exit(1);
+    }
+    const { restored, flattened } = revert(unjustified);
+    if (JSON_OUT) {
+      console.log(JSON.stringify({ mode: 'revert-unjustified', count: unjustified.length, restored, flattened, unjustified }, null, 2));
+    } else {
+      console.log(`Restored ${restored} duplicateOf pointer(s); flattened ${flattened} chain pointer(s) behind them.`);
+      console.log('Re-run the rebuild so the re-suppressed duplicates drop back out of reviews.json.');
+    }
     process.exit(0);
   }
 
