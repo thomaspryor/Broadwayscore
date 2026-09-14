@@ -161,7 +161,11 @@ function assessAutofixEffectiveness(rows, opts = {}) {
   }
 
   const attempts = passes + fails;
-  const undatedNote = undated ? ` (${undated} ledger row(s) had unreadable timestamps — writer bug, investigate separately)` : '';
+  // Terse for the same reason as youngNote below: both notes can render on the
+  // SAME DEAD message, and digest-autofix.js:187 truncates at 400. With the
+  // long form the silent-dispatch branch measured 392 — passing, but eight
+  // characters from silently eating its own remediation clause.
+  const undatedNote = undated ? ` (${undated} row(s) have unreadable timestamps — writer bug)` : '';
   // Terse on purpose. digest-autofix.js:187 truncates the card body at 400
   // chars, and this note plus undatedNote on a DEAD message measured 436 —
   // over the bound that a test exists specifically to guard (that test only
