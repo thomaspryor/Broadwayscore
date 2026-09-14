@@ -31,6 +31,21 @@
 
 'use strict';
 
+const { isEffectivelyWrongProductionOrShow } = require('./content-quality.js');
+// The project's canonical URL-comparison primitive — the SAME one
+// review-write-guard.checkUrlCollision uses to decide that two siblings share a
+// URL. Using anything narrower here (e.g. the fragment-only normalization
+// validate-data.js's duplicate gate applies) would miss a collision basis that
+// differs only by protocol/www/tracking params, which is exactly the
+// operation-mincemeat-2025 Time Out pair.
+const { normalizeUrl } = require('./review-normalization.js');
+// The write-time collision verdict. Required here (not just relied on inside
+// safeWriteReview) because that function's collision branch only ever SETS
+// duplicateOf — when it declines, it logs "keeping primary" and leaves whatever
+// value the caller already put on the object, so a caller that sets the pointer
+// itself bypasses the decision entirely.
+const { shouldMarkUrlCollisionDuplicate } = require('./review-write-guard.js');
+
 const SUBSTANTIVE_BODY_CHARS = 500;
 
 /**
@@ -40,14 +55,29 @@ const SUBSTANTIVE_BODY_CHARS = 500;
  * URL-mismatch or a deleted sibling — the difference is WHY the target
  * stopped being a legitimate canonical.
  *
- * @param {{wrongShow?: any, wrongProduction?: any, nonReviewFlag?: any, rejectedBy?: any}} target
+ * `wrongProduction` / `wrongShow` are read through content-quality.js's
+ * canonical isEffectivelyWrongProductionOrShow() gate, NOT as raw booleans
+ * (BRO-3092). A raw `wrongProduction === true` is routinely a false positive
+ * an operator or an auto-clear pass has already retracted via
+ * wrongProductionManualClear / wrongProductionAutoCleared / allowEarlyDate /
+ * humanReviewedWrongProduction:false — those records stay INCLUDED by
+ * classifyContentTier, so treating one as "invalidated" here clears a pointer
+ * whose collision basis is intact and re-admits a second copy of the same URL.
+ * That is exactly what happened on 2026-09-14: 6 of 127 clears aimed at
+ * manually-cleared targets, and romeo-juliet-2024 Vulture went red in
+ * validate-data.js as a same-show+outlet duplicate URL.
+ *
+ * @param {object} target
  * @returns {boolean}
  */
 function isTargetInvalidated(target) {
   if (!target) return false;
+  // Strict === true first (unchanged): a non-boolean truthy flag has never
+  // counted here, and this fix must only ever NARROW what gets cleared.
+  const { effectivelyWrongProduction, effectivelyWrongShow } = isEffectivelyWrongProductionOrShow(target);
   return !!(
-    target.wrongShow === true
-    || target.wrongProduction === true
+    (target.wrongShow === true && effectivelyWrongShow)
+    || (target.wrongProduction === true && effectivelyWrongProduction)
     || target.nonReviewFlag === true
     || target.rejectedBy
   );
@@ -65,6 +95,10 @@ function isTargetInvalidated(target) {
  */
 function hasSubstantiveUnflaggedContent(data) {
   if (!data) return false;
+  // Deliberately NOT softened by the retraction breadcrumbs isTargetInvalidated
+  // now reads (BRO-3092): this is the conservative clean-source gate on the
+  // record being re-admitted, not an inclusion verdict, and loosening it would
+  // WIDEN what the heal clears — the opposite of what BRO-3092 needs.
   if (data.wrongShow === true || data.wrongProduction === true || data.nonReviewFlag === true) return false;
   if (data.contentTier === 'invalid') return false;
   const text = typeof data.fullText === 'string' ? data.fullText : '';
@@ -124,10 +158,210 @@ function findOrphanedDuplicatePointers(records) {
   return out;
 }
 
+// ── Retraction of this heal's OWN past clears (BRO-3092) ───────────────────
+//
+// The 2026-09-14 --force-bulk run wrote 127 clears under the pre-BRO-3092
+// predicate, 6 of them against targets that were never actually invalid (a
+// wrongProduction flag an operator had already retracted). Those 6 re-admitted
+// a second copy of an already-canonical URL. A code fix alone leaves them on
+// disk forever — nothing re-evaluates a duplicateClearReason — so the heal owns
+// undoing the clears it is responsible for, the same way
+// duplicate-of-cleared-contradiction.js retracts a _duplicateOfCleared its own
+// evidence has since disproved.
+
+const HEAL_CLEAR_BREADCRUMB_PREFIX = 'heal-orphaned-duplicate-pointers.js on ';
+const PRIOR_REASON_OPEN = '[prior duplicateReason: ';
+
+/**
+ * The exact duplicateClearReason this heal stamps. Single source of truth so
+ * parseHealClearTarget() can never drift out of sync with what fix() writes.
+ *
+ * @param {string} day  YYYY-MM-DD
+ * @param {string} targetFile
+ * @param {string} reason
+ * @returns {string}
+ */
+function buildHealClearReason(day, targetFile, reason, priorDuplicateReason) {
+  const base = `${HEAL_CLEAR_BREADCRUMB_PREFIX}${day}: target ${targetFile} was flagged invalid after this pointer was set (${reason})`;
+  // The duplicateReason being nulled alongside the pointer is provenance, not
+  // noise: the corpus carries families like 'byline-explosion-collapse',
+  // 'criticName-override-collided-at-rename' and the task #1072 outlet-mismatch
+  // reasons. Without recording it, a later --revert-unjustified could only
+  // guess, and would falsify how the duplicate was found. Appended as an
+  // OPTIONAL suffix so the 127 breadcrumbs already on disk still parse.
+  return priorDuplicateReason
+    ? `${base} ${PRIOR_REASON_OPEN}${priorDuplicateReason}]`
+    : base;
+}
+
+/**
+ * Recover the duplicateReason fix() nulled, or null when the breadcrumb
+ * predates the suffix (those restore under the generic collision reason).
+ *
+ * @param {*} reason
+ * @returns {string|null}
+ */
+function parseHealClearPriorReason(reason) {
+  if (typeof reason !== 'string') return null;
+  const i = reason.lastIndexOf(PRIOR_REASON_OPEN);
+  if (i === -1 || !reason.endsWith(']')) return null;
+  const inner = reason.slice(i + PRIOR_REASON_OPEN.length, -1);
+  return inner || null;
+}
+
+/**
+ * Extract the target filename out of a duplicateClearReason this heal wrote.
+ * Returns null for any breadcrumb written by a different clearer — this
+ * retraction must never touch someone else's intentional clear.
+ *
+ * @param {*} reason
+ * @returns {string|null}
+ */
+function parseHealClearTarget(reason) {
+  if (typeof reason !== 'string' || !reason.startsWith(HEAL_CLEAR_BREADCRUMB_PREFIX)) return null;
+  const m = reason.match(/: target (\S+\.json) was flagged invalid after this pointer was set/);
+  return m ? m[1] : null;
+}
+
+/**
+ * True when pointing `loserFile` at `targetFile` would close a duplicateOf
+ * cycle — i.e. the target's own chain already (transitively) leads back to the
+ * loser. Restoring into a cycle would drop EVERY member of the loop from the
+ * rebuild, the 242-file failure review-write-guard.wouldFormDuplicateCycle
+ * exists to prevent; safeWriteReview only checks the cycle against the first
+ * URL-colliding sibling it finds, which is not necessarily our target, so the
+ * check has to happen here too.
+ *
+ * @param {string} loserFile
+ * @param {string} targetFile
+ * @param {Map<string, object>} byFile
+ * @returns {boolean}
+ */
+function wouldCloseDuplicateCycle(loserFile, targetFile, byFile) {
+  const seen = new Set([loserFile]);
+  let cursor = targetFile;
+  while (cursor) {
+    if (seen.has(cursor)) return true;
+    seen.add(cursor);
+    const node = byFile.get(cursor);
+    const next = node && typeof node.duplicateOf === 'string' ? node.duplicateOf : null;
+    cursor = next;
+  }
+  return false;
+}
+
+/**
+ * Find clears this heal made that the corrected predicate no longer justifies:
+ * the file still carries the heal's breadcrumb, has no live duplicateOf, and
+ * the target it names is present, URL-identical, and NOT actually invalidated.
+ * Those are the pointers that should never have been cleared.
+ *
+ * URL identity is required (under the canonical collision normalization) so a
+ * retraction can only ever restore a pointer whose collision basis is
+ * verifiably still there.
+ *
+ * @param {Array<{file: string, data: object}>} records  all records in one show dir
+ * @returns {Array<{loserFile: string, targetFile: string, reason: string}>}
+ */
+function findUnjustifiedHealClears(records) {
+  const byFile = new Map((records || []).map((r) => [r.file, r.data]));
+  const out = [];
+  for (const { file, data } of records || []) {
+    if (!data) continue;
+    if (data.duplicateOf) continue; // pointer already live again — nothing to restore
+    const targetFile = parseHealClearTarget(data.duplicateClearReason);
+    if (!targetFile || targetFile === file) continue;
+    const targetData = byFile.get(targetFile);
+    if (!targetData) continue; // target gone — the clear stands
+    if (isTargetInvalidated(targetData)) continue; // clear was justified
+    if (wouldCloseDuplicateCycle(file, targetFile, byFile)) continue; // never restore into a loop
+    const ownUrl = typeof data.url === 'string' ? normalizeUrl(data.url) : null;
+    const targetUrl = typeof targetData.url === 'string' ? normalizeUrl(targetData.url) : null;
+    if (!ownUrl || !targetUrl || ownUrl !== targetUrl) continue;
+    // Defer to the write-time decision the guard would make for this exact
+    // pair, rather than re-suppressing on URL identity alone. This is what
+    // honors _duplicateOfCleared (the human-verified "two critics, one URL"
+    // breadcrumb, 163 corpus instances 2026-07-15) and refuses to tombstone a
+    // substantive body under a near-empty sibling — neither of which
+    // safeWriteReview can protect on this path, because its collision branch
+    // only ever SETS duplicateOf and leaves a caller-supplied value standing.
+    if (!shouldMarkUrlCollisionDuplicate(data, targetData)) continue;
+    out.push({
+      loserFile: file,
+      targetFile,
+      priorDuplicateReason: parseHealClearPriorReason(data.duplicateClearReason),
+      reason: `unjustified-heal-clear: ${targetFile} is not actually invalidated (flag already retracted) and still shares this URL`,
+    });
+  }
+  return out;
+}
+
+/**
+ * A restored pointer turns its loser back into a NON-canonical record — and any
+ * sibling that was pointing AT that loser is now one hop short of the real
+ * canonical. rebuild-all-reviews.js does not follow that hop: its duplicateOf
+ * block reads `refAlsoDupe = !!refData.duplicateOf` and treats a reference that
+ * is itself a duplicate as a stale-flag RECOVERY signal, letting the sibling
+ * straight into reviews.json (see the loves-labours-lost-globe-west-end-2026
+ * comment there). On romeo-juliet-2024 that would have swapped one duplicate
+ * Vulture byline for another — helen-shaw out, jackson-mchenry in — and left
+ * validate-data.js just as red.
+ *
+ * So a restore has to flatten the one-hop chains that run through it: every
+ * sibling pointing at `throughFile` is re-pointed at the terminus of
+ * `throughFile`'s own chain, provided it still shares that terminus's URL and
+ * the hop closes no cycle. Deliberately scoped to chains through a file this
+ * pass just restored — corpus-wide chain flattening is a separate question.
+ *
+ * @param {Array<{file: string, data: object}>} records  all records in one show dir
+ * @param {string} throughFile  the file whose pointer was just restored
+ * @returns {Array<{loserFile: string, targetFile: string, reason: string}>}
+ */
+function findChainPointersThrough(records, throughFile) {
+  const byFile = new Map((records || []).map((r) => [r.file, r.data]));
+  // Walk throughFile's chain to its terminus (the record that points nowhere).
+  const seen = new Set();
+  let terminus = throughFile;
+  while (terminus && !seen.has(terminus)) {
+    seen.add(terminus);
+    const node = byFile.get(terminus);
+    const next = node && typeof node.duplicateOf === 'string' ? node.duplicateOf : null;
+    if (!next) break;
+    terminus = next;
+  }
+  if (!terminus || terminus === throughFile) return []; // no chain to flatten
+  const terminusData = byFile.get(terminus);
+  if (!terminusData) return [];
+  const terminusUrl = typeof terminusData.url === 'string' ? normalizeUrl(terminusData.url) : null;
+  if (!terminusUrl) return [];
+
+  const out = [];
+  for (const { file, data } of records || []) {
+    if (!data || file === terminus) continue;
+    if (data.duplicateOf !== throughFile) continue;
+    const ownUrl = typeof data.url === 'string' ? normalizeUrl(data.url) : null;
+    if (!ownUrl || ownUrl !== terminusUrl) continue;
+    if (wouldCloseDuplicateCycle(file, terminus, byFile)) continue;
+    out.push({
+      loserFile: file,
+      targetFile: terminus,
+      reason: `chain-flatten: ${throughFile} is a duplicate again, so this pointer is re-aimed at the canonical ${terminus}`,
+    });
+  }
+  return out;
+}
+
 module.exports = {
   SUBSTANTIVE_BODY_CHARS,
+  HEAL_CLEAR_BREADCRUMB_PREFIX,
   isTargetInvalidated,
   hasSubstantiveUnflaggedContent,
   shouldClearOrphanedDuplicatePointer,
   findOrphanedDuplicatePointers,
+  buildHealClearReason,
+  parseHealClearTarget,
+  parseHealClearPriorReason,
+  wouldCloseDuplicateCycle,
+  findUnjustifiedHealClears,
+  findChainPointersThrough,
 };

@@ -123,7 +123,7 @@ function jitterMs(attempt, base = 150, cap = 1800) {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...]');
+    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...] [--stall-service=...]');
     process.exit(0);
   }
 
@@ -152,6 +152,8 @@ async function main() {
     ci: isGithubActionsRunner(process.env) || args.ci === 'true',
     ts: new Date().toISOString(),
     stallPhase: args['stall-phase'] || 'unknown',
+    // BRO-2839 — see buildFailureEntry's field comment in scripts/lib/push-ledger.js.
+    stallService: args['stall-service'] || 'unknown',
   });
 
   const cwd = process.cwd();
