@@ -351,6 +351,93 @@ function findChainPointersThrough(records, throughFile) {
   return out;
 }
 
+// ── duplicateTextOf extension (BRO-3336, the duplicateOf cousin above) ─────
+//
+// Same failure mode as findOrphanedDuplicatePointers, for `duplicateTextOf`
+// (the content-fingerprint syndicated-identical-text dedup pointer) instead
+// of `duplicateOf`. classify-wrong-production.js / classify-wrong-show.js /
+// classify-non-reviews.js / ensemble-scoreability-check never look for
+// siblings pointing duplicateTextOf at the file they're flagging, so a real
+// syndicated review can be silently orphaned behind a target that was
+// invalidated after the pointer was set. Reuses isTargetInvalidated /
+// hasSubstantiveUnflaggedContent / shouldClearOrphanedDuplicatePointer
+// unchanged — including BRO-3092's retraction-aware isTargetInvalidated —
+// the decision doesn't care which pointer field it's evaluating.
+
+/**
+ * @param {Array<{file: string, data: object}>} records
+ * @returns {Array<{loserFile: string, targetFile: string, reason: string}>}
+ */
+function findOrphanedDuplicateTextPointers(records) {
+  const byFile = new Map((records || []).map((r) => [r.file, r.data]));
+  const out = [];
+  for (const { file, data } of records || []) {
+    if (!data || typeof data.duplicateTextOf !== 'string' || !data.duplicateTextOf.endsWith('.json')) continue;
+    if (data.duplicateTextOf === file) continue; // self-ref — handled by review-write-guard's self-heal
+    const targetFile = data.duplicateTextOf;
+    const targetData = byFile.get(targetFile);
+    if (!targetData) continue; // sibling missing — audit-duplicate-of-url-mismatch.js's job
+    if (!shouldClearOrphanedDuplicatePointer(data, targetData)) continue;
+    out.push({
+      loserFile: file,
+      targetFile,
+      reason: `orphaned-duplicate-heal: ${targetFile} was flagged invalid after ${file} was pointed at it (duplicateTextOf)`,
+    });
+  }
+  return out;
+}
+
+// Deliberately NOT the shared HEAL_CLEAR_BREADCRUMB_PREFIX/buildHealClearReason
+// above: those are parsed by parseHealClearTarget() for --revert-unjustified,
+// which assumes any breadcrumb it recognizes cleared `duplicateOf` (it
+// restores by setting `data.duplicateOf = targetFile`). A file this function
+// clears often has duplicateOf already null for unrelated reasons — if its
+// breadcrumb matched that parser, findUnjustifiedHealClears() could
+// misinterpret it as an unjustified duplicateOf clear and wrongly stamp a
+// duplicateOf pointer the file never had. A distinct, non-matching prefix
+// keeps the two mechanisms from cross-talking.
+const DUPLICATE_TEXT_CLEAR_BREADCRUMB_PREFIX = 'heal-orphaned-duplicate-pointers.js (duplicateTextOf) on ';
+
+/**
+ * The exact duplicateClearReason fix() stamps when clearing duplicateTextOf.
+ * @param {string} day  YYYY-MM-DD
+ * @param {string} targetFile
+ * @param {string} reason
+ * @returns {string}
+ */
+function buildDuplicateTextClearReason(day, targetFile, reason) {
+  return `${DUPLICATE_TEXT_CLEAR_BREADCRUMB_PREFIX}${day}: target ${targetFile} was flagged invalid after this pointer was set (${reason})`;
+}
+
+/**
+ * Decides which orphans the driver's --fix may actually write, honoring the
+ * surge guard PER FIELD rather than on the combined total (BRO-3336): a
+ * combined check would make the threshold trip purely as a function of how
+ * many fields --field selects, so a duplicateTextOf spike could block
+ * healing an unrelated, perfectly-normal duplicateOf backlog. force=true
+ * (--force-bulk) bypasses the guard entirely, same as before.
+ *
+ * Pure — no fs, no console — so the per-field-vs-combined decision is
+ * unit-testable without a real corpus.
+ *
+ * @param {Array<{field: string}>} orphans
+ * @param {number} threshold
+ * @param {boolean} force
+ * @returns {{fixable: Array, surgingFields: Array<{field: string, count: number}>}}
+ */
+function partitionOrphansForFix(orphans, threshold, force) {
+  const list = orphans || [];
+  if (force) return { fixable: list, surgingFields: [] };
+  const byField = new Map();
+  for (const o of list) byField.set(o.field, (byField.get(o.field) || []).concat(o));
+  const surgingFields = [...byField.entries()]
+    .filter(([, entries]) => entries.length > threshold)
+    .map(([field, entries]) => ({ field, count: entries.length }));
+  const surgingSet = new Set(surgingFields.map((s) => s.field));
+  const fixable = list.filter((o) => !surgingSet.has(o.field));
+  return { fixable, surgingFields };
+}
+
 module.exports = {
   SUBSTANTIVE_BODY_CHARS,
   HEAL_CLEAR_BREADCRUMB_PREFIX,
@@ -364,4 +451,8 @@ module.exports = {
   wouldCloseDuplicateCycle,
   findUnjustifiedHealClears,
   findChainPointersThrough,
+  findOrphanedDuplicateTextPointers,
+  DUPLICATE_TEXT_CLEAR_BREADCRUMB_PREFIX,
+  buildDuplicateTextClearReason,
+  partitionOrphansForFix,
 };
