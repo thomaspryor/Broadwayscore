@@ -224,6 +224,38 @@ test('addUsage accumulates the nested cache_creation ephemeral 1h/5m split (BRO-
   assert.equal(t.cache_creation.ephemeral_5m_input_tokens, 110);
 });
 
+test('addUsage + estimateCostUSD: flat-only events (no nested cache_creation ever seen) still price at 1.25x, not zero (BRO-3100 regression)', () => {
+  // Second-opinion review caught this live: addUsage used to pre-seed an
+  // all-zero `cache_creation` object on every total, which made
+  // estimateCostUSD's "is the nested split present" check pass on the
+  // zeros and silently price cache-write cost at 2*0+1.25*0=0 instead of
+  // falling back to the flat field — the exact killed-session path the
+  // spend circuit breaker relies on.
+  const total = addUsage(null, { input_tokens: 100, cache_creation_input_tokens: 500_000 });
+  assert.equal(total.cache_creation, undefined, 'no nested key should exist when no event ever supplied one');
+  assert.equal(estimateCostUSD(total, 'claude-opus-5'), 9.3765);
+});
+
+test('addUsage: nested cache_creation created lazily still accumulates correctly when a later event supplies it (BRO-3100)', () => {
+  // First event carries no cache_creation at all (older-shape event); a
+  // later event in the same session does. The lazy `if (!t.cache_creation)`
+  // guard must still create and accumulate it correctly, not drop it or
+  // throw on the second call.
+  let t = addUsage(null, { input_tokens: 1, cache_creation_input_tokens: 50 });
+  assert.equal(t.cache_creation, undefined);
+  t = addUsage(t, {
+    input_tokens: 1, cache_creation_input_tokens: 300,
+    cache_creation: { ephemeral_1h_input_tokens: 200, ephemeral_5m_input_tokens: 100 },
+  });
+  assert.equal(t.cache_creation_input_tokens, 350);
+  assert.equal(t.cache_creation.ephemeral_1h_input_tokens, 200);
+  assert.equal(t.cache_creation.ephemeral_5m_input_tokens, 100);
+  // A third event without cache_creation must not reset what's already accumulated.
+  t = addUsage(t, { input_tokens: 1, cache_creation_input_tokens: 10 });
+  assert.equal(t.cache_creation_input_tokens, 360);
+  assert.equal(t.cache_creation.ephemeral_1h_input_tokens, 200, 'third event without cache_creation must not reset it');
+});
+
 test('estimateCostUSD: null without usage; opus > sonnet; unknown model estimates as sonnet', () => {
   assert.equal(estimateCostUSD(null, 'sonnet'), null);
   const usage = { input_tokens: 1_000_000, output_tokens: 100_000 };
