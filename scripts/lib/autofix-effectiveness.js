@@ -162,7 +162,13 @@ function assessAutofixEffectiveness(rows, opts = {}) {
 
   const attempts = passes + fails;
   const undatedNote = undated ? ` (${undated} ledger row(s) had unreadable timestamps — writer bug, investigate separately)` : '';
-  const youngNote = tooYoung ? ` (${tooYoung} dispatch(es) launched within the last ${ORPHAN_TIMEOUT_H}h — too recent to have reported back, not counted as silent)` : '';
+  // Terse on purpose. digest-autofix.js:187 truncates the card body at 400
+  // chars, and this note plus undatedNote on a DEAD message measured 436 —
+  // over the bound that a test exists specifically to guard (that test only
+  // passed because none of its cases set tooYoung). The remediation clause is
+  // the part that must survive truncation, so the diagnostics get shortened
+  // rather than the instructions.
+  const youngNote = tooYoung ? ` (+${tooYoung} launched <${ORPHAN_TIMEOUT_H}h ago, too recent to have reported back)` : '';
   const base = { attempts, passes, fails, dispatched, undated, tooYoung };
 
   // Launched jobs that never reported back. This is the dead-fleet shape, and it

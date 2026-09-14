@@ -290,3 +290,27 @@ test('outcome rows written before judgedDispatchTs existed still age by ts (back
   assert.equal(r.attempts, 3, 'unstamped rows must still be counted, not silently dropped');
   assert.equal(r.status, 'error', 'three real in-window failures with no passes is genuinely dead');
 });
+
+test('the 400-char card bound holds on a DEAD message carrying BOTH diagnostic notes', () => {
+  // The existing length test never set tooYoung, so when BRO-3321 appended
+  // youngNote to the DEAD messages the worst case silently grew to 436 chars —
+  // past digest-autofix.js:187's slice(0, 400) — while the test that exists to
+  // guard exactly this still passed. Construct the actual worst case: a DEAD
+  // verdict with a too-young dispatch AND an undated row, so both notes render.
+  const now = Date.parse('2026-09-14T12:00:00Z');
+  const old = new Date(now - 5 * 24 * 3600 * 1000).toISOString();
+  const rows = [
+    ...[0, 1, 2].map((i) => ({ event: 'auto-dispatch', ts: old, taskId: 't' + i })),
+    ...[0, 1, 2].map((i) => ({ event: 'card-fail', ts: old, cardId: 't' + i, judgedDispatchTs: old })),
+    { event: 'auto-dispatch', ts: new Date(now - 60000).toISOString(), taskId: 'young' },
+    { event: 'card-fail', ts: 'not-a-date', cardId: 'z' },
+  ];
+  const r = assessAutofixEffectiveness(rows, { now });
+  assert.equal(r.status, 'error', 'fixture precondition: must be the DEAD branch');
+  assert.ok(r.tooYoung > 0 && r.undated > 0, 'fixture precondition: both notes must render');
+  assert.ok(
+    r.message.length <= 400,
+    `DEAD message is ${r.message.length} chars — digest-autofix.js truncates at 400, and the remediation clause must survive: ${r.message}`
+  );
+  assert.match(r.message, /ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN/, 'the instructions are the part that must not be truncated away');
+});
