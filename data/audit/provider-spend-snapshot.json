@@ -1,24 +1,30 @@
 {
-  "generatedAt": "2026-09-05T02:22:20.309Z",
-  "bannerText": "OVER BUDGET: browserbase $6.3 > $4 (63 sessions); brightdata $4.94 > $2.5 (2386 serp + 906 unlocker reqs)",
+  "generatedAt": "2026-09-14T15:47:05.182Z",
+  "bannerText": "Within budget · streak 0 of 7 verified days",
   "items": [
     {
-      "title": "2026-09-04 · Browserbase: $6.3 (63 sessions)"
+      "title": "2026-09-13 · Browserbase: $0.69 (51 sessions, 11.55min)"
     },
     {
-      "title": "2026-09-04 · Bright Data: $4.94 (2386 serp / 906 unlocker)"
+      "title": "2026-09-13 · Bright Data: $2.13 (263 serp / 1160 unlocker)"
     },
     {
-      "title": "ScrapingBee: baseline day (cycle 1000010) — day figure starts tomorrow"
+      "title": "ScrapingBee: baseline day (cycle 209820) — day figure starts tomorrow"
     },
     {
-      "title": "ScrapingDog: baseline day (cycle 126737) — day figure starts tomorrow"
+      "title": "ScrapingDog: baseline day (cycle 638015) — day figure starts tomorrow"
     },
     {
-      "title": "Browserbase attribution: 92% attributed — top: test-caller 56, collect-review-texts.js 2"
+      "title": "Browserbase attribution: 0% attributed"
     },
     {
-      "title": "Bright Data attribution: 16% attributed — top: opening-night-poller.js 302, validate-show-venue.js 107, gather-reviews.js 58, unknown 24, extract-theatre-record.js 15"
+      "title": "⚠️ Browserbase top-caller coverage low: 0% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
+    },
+    {
+      "title": "Bright Data attribution: 38% attributed — top callers (covers 35% of billed calls): opening-night-poller.js 350, collect-outlet-reviews.js 57, recollect-for-scores.js 38, recover-explicit-ratings.js 32, audit-show-review-gap.js 22"
+    },
+    {
+      "title": "⚠️ Bright Data top-caller coverage low: 35% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
     }
   ],
   "moreCount": 0
