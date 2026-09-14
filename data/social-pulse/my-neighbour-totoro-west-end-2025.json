@@ -3,49 +3,57 @@
   "showId": "my-neighbour-totoro-west-end-2025",
   "showTitle": "My Neighbour Totoro",
   "market": "West End",
-  "fetchedAt": "2026-09-09T12:42:32.958Z",
+  "fetchedAt": "2026-09-14T12:04:03.845Z",
   "tier": "Hidden",
-  "volume": 1,
-  "effectiveVolume": 0,
+  "volume": 3,
+  "effectiveVolume": 0.4,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0
+      "reddit": 0,
+      "bluesky": 1
     },
-    "overall": 0,
-    "classified": 1
+    "overall": 0.5,
+    "classified": 2
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -75,
-  "baselineMultiple": 0.29,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 200,
+  "baselineMultiple": 0.96,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "What to watch tonight? Avengers Endgame now on Channel 4 Or the animation My Neighbour Totoro, having seen the west…",
+      "platform": "bluesky",
+      "author": "@darthming.eurosky.social",
+      "url": "https://bsky.app/profile/darthming.eurosky.social/post/3mvdsegfnb22y"
+    }
+  ],
   "counters": {
     "reddit": 1,
-    "bluesky": 0,
-    "x": 0,
-    "wikipedia": 972
+    "bluesky": 1,
+    "x": 1,
+    "wikipedia": 971
   },
   "wikipediaTitle": "My Neighbour Totoro (play)",
   "baseline": {
-    "mean": 3.125,
+    "mean": 3.109375,
     "weeksOfHistory": 8
   },
   "rawCounts": {
     "reddit": 1,
-    "bluesky": 0
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 33,
-    "total": 41,
-    "text": "33/41 West End"
+    "position": 23,
+    "total": 42,
+    "text": "23/42 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.2
 }
