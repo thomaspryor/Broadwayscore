@@ -176,16 +176,16 @@ function isAncestor(sha, ref, cwd) {
  * scripts/merge-worktree-to-main.sh's two call sites do; a stale local ref
  * can read LANDED against a tip the remote has since moved past.
  */
-function checkLanded({ sha, branch = 'main', remote = 'origin', ref, cwd = process.cwd(), log = () => {}, env = process.env } = {}) {
+function checkLanded({ sha, branch = 'main', remote = 'origin', ref, cwd = process.cwd(), log = () => {} } = {}) {
   if (!sha) throw new Error('checkLanded requires sha');
   const targetRef = ref || `${remote}/${branch}`;
 
-  const { shallow, skipped } = ensureFullHistory({ cwd, remote, log, env });
+  const { shallow, skipped } = ensureFullHistory({ cwd, remote, log });
   if (shallow) {
     // Two different roads to the same UNKNOWN, kept distinguishable: a fetch
     // that was TRIED and failed is a network/repo problem worth chasing, while
     // a deliberate CI skip is expected and not worth a single minute of
-    // anyone's debugging. check-prod-deploy.js:100 interpolates this straight
+    // anyone's debugging. check-prod-deploy.js:99 interpolates this straight
     // into its operator-facing warning, so the distinction lands where it is
     // actually read.
     return { verdict: 'UNKNOWN', landed: null, shallow: true, reason: skipped ? 'unshallow-skipped-ci' : 'unshallow-failed' };

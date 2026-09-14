@@ -193,8 +193,15 @@ for (const [label, skip] of [['GITHUB_ACTIONS is set (CI)', 'ci'], ['PUSH_SKIP_U
         isShallowRepo(workdir), true,
         'the repo must still be shallow — proof no unshallow was performed'
       );
-      // A real attempt against a nonexistent remote cannot return this fast.
-      assert.ok(elapsedMs < 1000, `must return without a network attempt; took ${elapsedMs}ms`);
+      // Deliberately loose. The load-bearing proof is the pair above —
+      // `reason === 'unshallow-skipped-ci'` is only reachable via `skipped:true`,
+      // and the repo being still shallow means nothing was fetched. This bound
+      // is a backstop against a future edit reintroducing a real network call,
+      // NOT the proof itself: origin points at a local nonexistent path, so an
+      // attempted fetch would fail in milliseconds too. Tight enough to catch a
+      // reintroduced 30s unshallow, loose enough not to flake on a contended
+      // runner where each execFileSync('git') spawn is slow.
+      assert.ok(elapsedMs < 5000, `must return without a network attempt; took ${elapsedMs}ms`);
     } finally {
       fs.rmSync(root, { recursive: true, force: true });
     }
