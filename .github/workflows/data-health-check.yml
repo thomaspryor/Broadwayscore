@@ -124,6 +124,13 @@ jobs:
     # uncapped setup/scan steps ≈ 160min. 180 keeps the same real-margin-
     # above-the-sum convention as every prior raise, still nowhere near
     # GitHub Actions' 360-min hard job ceiling.
+    #
+    # BRO-352: "Commit digest snapshot" and "Commit health check audit
+    # snapshots (apiFallbackSafe)" were merged into ONE step (see that step's
+    # own comment below) — down from 3 uncapped 900s-governed commit steps to
+    # 2. This only SHRINKS the worst-case sum computed above; timeout-minutes
+    # stays at 180 since that already has real margin above the new, smaller
+    # total.
     timeout-minutes: 180
     permissions:
       contents: write
@@ -538,48 +545,76 @@ jobs:
           retention-days: 90
           if-no-files-found: ignore
 
-      # Commit digest snapshot in its OWN small, isolated commit+push (task
-      # #1868), split out of the bulk "Commit health check + triage data"
-      # step below — same reasoning as BRO-386's "Commit acceptance recheck
-      # ledger" isolation earlier in this job. Root cause of the split: run
-      # 32559247279 (2026-08-22T07:32Z) bundled health-digest-snapshot.json
-      # with 14 OTHER data/audit/* files into one commit; that commit's push
-      # lost the race against main's concurrent commit traffic 7 times in a
-      # row and hit push-with-retry.sh's 900s deadline, so NONE of the 15
-      # files landed — including the one file this job's failure alert
-      # specifically claims is at risk. A single-file commit is faster per
-      # fetch/rebase/push cycle (higher odds of winning the race before
-      # origin moves again) and, more importantly, isolates blast radius: if
-      # the bulk step below still loses its own push on a heavy-churn day,
-      # the digest snapshot — the one thing the alert is actually about —
-      # already landed independently.
+      # BRO-352 MERGE (2026-09-14): this step used to be TWO separate steps —
+      # "Commit digest snapshot" (health-digest-snapshot.json alone) and
+      # "Commit health check audit snapshots (apiFallbackSafe)" (the other 15
+      # files below), with the digest-only step running first. That split was
+      # itself a prior fix (task #1868 / run 32559247279 push-race, then run
+      # 32625283171) for a DIFFERENT problem: a bulk commit's push losing its
+      # race and hard-failing the whole job, taking every file in the commit
+      # down with it. Splitting into small isolated commits fixed that.
       #
-      # UPDATE (follow-up task, plan-reviewed): health-digest-snapshot.json
-      # is now ALSO registered `apiFallbackSafe: true` in scripts/lib/core-
-      # data-merge-registry.js, so push-with-retry.sh's Git Data API fallback
-      # (a fast compare-and-swap that skips the fetch/rebase race entirely)
-      # can engage for it directly. This step's own workflow-level isolation
-      # is NOT made redundant by that — they're two independent layers, not
-      # duplicated effort: isolation shrinks the commit so the LOCAL retry
-      # loop wins the race faster and blast-radius stays contained even if
-      # the fallback is disabled/unavailable for any reason
-      # (PUSH_API_FALLBACK_DISABLE=1, node missing, etc — see push-with-
-      # retry.sh's own eligibility comment); the fallback is a faster escape
-      # hatch on top of that when it's available. Every other data/audit/*
-      # file this job writes still gets no help from the fallback (fail-
-      # closed default, unaudited) — isolation remains the only lever for
-      # those until each is individually verified the same way.
+      # It created a NEW, silent problem the split's authors didn't have
+      # visibility into yet: push-with-retry.sh's Git Data API fallback
+      # (task #707), used when local fetch/rebase/push keeps failing (as it
+      # has been doing daily this week — GitHub git-transport hangs, rc=124
+      # after the 90s per-op timeout), captures its own commit's diff and
+      # then runs `git reset --hard "$RESTORE_BASE_HEAD"` (push-with-
+      # retry.sh, search "Git Data API fallback") to get a clean local state
+      # before applying that diff via the REST API. `git reset --hard`
+      # discards EVERYTHING in the working tree that isn't part of the
+      # commit being captured — including any OTHER file an earlier step in
+      # this same job had already written to disk but not yet committed,
+      # because a LATER step (this one) owns committing it.
+      #
+      # Confirmed live (run 34783179310, 2026-09-13): the "Cross-outlet
+      # attribution drift check" step (above) wrote a fresh
+      # data/audit/cross-outlet-attribution-drift.json at 21:18:41. The old
+      # "Commit digest snapshot" step ran next, hit 3 transport-hang push
+      # failures, and its Git Data API fallback fired at 21:25:30 — wiping
+      # the drift file (and, by the same mechanism, every other file below)
+      # back to whatever was last actually committed. The old
+      # "Commit health check audit snapshots" step then ran at 21:25:37,
+      # `git add`ed the drift file, and found nothing staged: the fresh write
+      # was already gone. This is why data/audit/cross-outlet-attribution-
+      # drift.json sat stuck at its 2026-09-05 content for 9 days straight
+      # despite the check running (and overwriting it) correctly every day.
+      #
+      # FIX: merge the two steps into ONE commit+push, so there is no window
+      # between "file written by an earlier step" and "file committed" for a
+      # DIFFERENT step's push-with-retry.sh call to land in and reset away.
+      # All 16 files here (health-digest-snapshot.json + the 15 below) are
+      # independently registered `apiFallbackSafe: true` in scripts/lib/core-
+      # data-merge-registry.js (single-writer, same concurrency group), so
+      # the merge does not weaken the Git Data API fallback's own safety
+      # check (see push-with-retry.sh's disqualifier) — it only removes the
+      # gap between them. Traded away: the old split's failure-isolation
+      # property (if this step's OWN push totally fails — both the local
+      # retry loop AND the API fallback — all 16 files miss this run
+      # together, not just some of them). Accepted because that property was
+      # never what actually failed here; every observed failure of these
+      # steps this week was the API fallback SUCCEEDING and then wiping a
+      # sibling step's uncommitted work, which merging removes entirely.
+      #
+      # IF YOU ADD A NEW SHADOW-MODE STEP that writes a data/audit/*.json
+      # snapshot for the daily digest to read: (1) make sure it runs BEFORE
+      # this step (i.e. above this point in the job), (2) add its `git add`
+      # line to the list below, and (3) do NOT insert a new commit+push step
+      # between its write and this one — that reopens exactly this bug for
+      # the new file.
+      #
       # No continue-on-error: unlike the shadow-mode steps above, a failure
-      # to persist the digest snapshot is exactly the page-worthy failure
-      # this workflow exists to catch.
+      # to persist these snapshots (especially health-digest-snapshot.json)
+      # is exactly the page-worthy failure this workflow exists to catch.
       #
-      # No explicit timeout-minutes (BRO-2370, removed the prior 17min cap —
-      # live incidents 2026-09-01→09-04 showed 17min isn't enough headroom
-      # above this step's own PUSH_DEADLINE_SEC=900 for push-with-retry.sh's
-      # internal deadline check + Git Data API fallback to run to completion
-      # before GitHub's external timeout SIGKILLs it mid-iteration; see the
-      # job-level timeout-minutes comment above for the full incident and
-      # sizing rationale). Inherits the job ceiling instead, same treatment
+      # No explicit timeout-minutes (BRO-2370, removed the prior 17min caps
+      # from both original steps — live incidents 2026-09-01→09-04 showed
+      # 17min isn't enough headroom above this step's own
+      # PUSH_DEADLINE_SEC=900 for push-with-retry.sh's internal deadline
+      # check + Git Data API fallback to run to completion before GitHub's
+      # external timeout SIGKILLs it mid-iteration; see the job-level
+      # timeout-minutes comment above for the full incident and sizing
+      # rationale). Inherits the job ceiling instead, same treatment
       # "Commit health check + triage data" already got from #1791/#1842.
       # BRO-2370 DEFECT B: MAX_RETRIES=25 makes push-with-retry.sh's own
       # PUSH_API_FALLBACK_AFTER_ATTEMPTS default to (25+1)/2=13 — but the
@@ -594,11 +629,11 @@ jobs:
       # at 25 — that value stays as-is because aa51b22c558 (task #1842) chose
       # it specifically to give this step many cheap retries under the
       # common low-contention case, which lowering MAX_RETRIES would regress.
-      # This file is single-writer + apiFallbackSafe (see the step's own
-      # comment above), so the fallback is actually usable here — unlike
-      # "Commit health check + triage data" below, which deliberately does
-      # NOT get this override (see its own comment).
-      - name: Commit digest snapshot
+      # All 16 files here are single-writer + apiFallbackSafe, so the
+      # fallback is actually usable — unlike "Commit health check + triage
+      # data" below, which deliberately does not get this override (see its
+      # own comment).
+      - name: Commit health check audit snapshots (apiFallbackSafe)
         if: always()
         env:
           PUSH_DEADLINE_SEC: '900'
@@ -606,78 +641,25 @@ jobs:
           # EXPERIMENTAL, OPT-IN ONLY (BRO-2233/BRO-2951 Phase 2) - do NOT
           # copy this into a new workflow step without reading
           # scripts/lib/push-via-git-api-rest.js's header first. This step
-          # was failing nearly every day (4/4 git-push attempts timing out
-          # at the 90s cap under main's commit contention, confirmed live
-          # run 34690587066) while a diagnostic REST write from the same
-          # actor in the same job completed in ~400ms - the fallback below
-          # now lands via GitHub's REST Git Data API instead of `git push`
-          # for exactly this step. Every other push-with-retry.sh caller
-          # (~150+) is unaffected: this variable is opt-in and unset
-          # everywhere else. Kill switch: delete this line, falls back to
-          # today's exact git-push behavior with zero code change.
-          #
-          # BRO-3068 note: NOT also adding GIT_NET_TIMEOUT_SEC here - this
-          # step bypasses `git push` entirely via the REST fallback above,
-          # so a git-transport timeout is moot. See "Commit health check +
-          # triage data" below (unguarded by REST) for where
+          # (as "Commit digest snapshot") was failing nearly every day (4/4
+          # git-push attempts timing out at the 90s cap under main's commit
+          # contention, confirmed live run 34690587066) while a diagnostic
+          # REST write from the same actor in the same job completed in
+          # ~400ms - the fallback below now lands via GitHub's REST Git Data
+          # API instead of `git push` for exactly this step. Every other
+          # push-with-retry.sh caller (~150+) is unaffected: this variable is
+          # opt-in and unset everywhere else. Kill switch: delete this line,
+          # falls back to today's exact git-push behavior with zero code
+          # change. BRO-3068 note: NOT also adding GIT_NET_TIMEOUT_SEC here -
+          # this step bypasses `git push` entirely via the REST fallback
+          # above, so a git-transport timeout is moot. See "Commit health
+          # check + triage data" below (unguarded by REST) for where
           # GIT_NET_TIMEOUT_SEC=30 actually applies in this file.
           PUSH_API_REST_REF_UPDATE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/health-digest-snapshot.json 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No digest snapshot changes"
-          else
-            git commit -m "data: Update digest snapshot [skip ci]"
-            bash scripts/lib/push-with-retry.sh 25 main
-          fi
-
-      # Isolates the 15 files below from the bulk "Commit health check +
-      # triage data" step (task, run 32625283171, 2026-08-23) — same class as
-      # "Commit digest snapshot" above, one incident later. That step still
-      # bundled these files with the bulk step's other ~19; the bulk commit
-      # lost its push race and hard-failed the job, re-firing the same
-      # "Daily Data Health Check Crashed" alert the digest-isolation fix was
-      # meant to stop (isolating ONE file didn't help when the OTHER 15 could
-      # still take the whole job down).
-      #
-      # All 15 are registered `apiFallbackSafe: true` in scripts/lib/core-
-      # data-merge-registry.js — each independently verified via
-      # findWritingWorkflows() against the real .github/workflows/*.yml files
-      # to have exactly one writer (this workflow) sharing its own
-      # concurrency group (data-health-check, cancel-in-progress: false), so
-      # push-with-retry.sh's Git Data API fallback can engage for this commit
-      # instead of relying on the local fetch/rebase/push race at all. Kept
-      # as their own step (not folded into "Commit digest snapshot" above) to
-      # avoid touching that already-merged, already-verified step.
-      #
-      # 4 other files that step also writes — data/audit/triage/,
-      # alert-ledger.json, alert-digest-queue.json, alert-router-
-      # attempts.jsonl — are genuinely multi-writer (verified same way) and
-      # stay in the bulk step below, unprotected.
-      #
-      # No explicit timeout-minutes (BRO-2370, removed the prior 17min cap —
-      # same live-evidence fix as "Commit digest snapshot" above; see the
-      # job-level timeout-minutes comment for the incident and sizing
-      # rationale). Inherits the job ceiling instead.
-      # BRO-2370 DEFECT B: same PUSH_API_FALLBACK_AFTER_ATTEMPTS-unreachable
-      # issue as "Commit digest snapshot" above (see that step's comment for
-      # the full analysis) — all 15 files here are apiFallbackSafe, so the
-      # override is safe and makes the fallback actually reachable.
-      - name: Commit health check audit snapshots (apiFallbackSafe)
-        if: always()
-        env:
-          PUSH_DEADLINE_SEC: '900'
-          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
-          # EXPERIMENTAL, OPT-IN ONLY (BRO-2233/BRO-2951 Phase 2) - see the
-          # matching comment on "Commit digest snapshot" above for the full
-          # rationale. Kill switch: delete this line. BRO-3068 note: same as
-          # above - GIT_NET_TIMEOUT_SEC is moot once REST bypasses git push.
-          PUSH_API_REST_REF_UPDATE: '1'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/health-check-history.json 2>/dev/null || true
           git add data/audit/time-to-publish-sla.json 2>/dev/null || true
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
@@ -866,9 +848,10 @@ jobs:
       # ahead of it in this job.
       #
       # BRO-2370 DEFECT B (deliberately NOT applying the fix here):
-      # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 was added to the 3 apiFallbackSafe
-      # steps above to make their Git Data API fallback reachable (see
-      # "Commit digest snapshot"'s comment). Do NOT "helpfully" add it here
+      # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 was added to the 2 apiFallbackSafe
+      # steps above (BRO-352 merged what used to be 3 into 2) to make their
+      # Git Data API fallback reachable (see "Commit health check audit
+      # snapshots (apiFallbackSafe)"'s comment). Do NOT "helpfully" add it here
       # too — the 4 files this step stages (triage/, alert-ledger.json,
       # alert-digest-queue.json, alert-router-attempts.jsonl) are verified
       # genuinely multi-writer with no apiFallbackSafe registration, so the
@@ -911,9 +894,12 @@ jobs:
           # step's fallback is disqualified on its own merits regardless, by
           # the 4 deliberately-unregistered multi-writer paths it stages.
           # health-digest-snapshot.json (Card #364's file) is committed+pushed
-          # in its OWN earlier step ("Commit digest snapshot", Notion 3c4637c5-416f-8127 (run 32559247279 push-race)) —
-          # NOT added here, so a bulk-commit push failure can never take the
-          # one file the failure alert cares about down with it again.
+          # in the earlier "Commit health check audit snapshots
+          # (apiFallbackSafe)" step above (originally its own isolated step,
+          # "Commit digest snapshot", Notion 3c4637c5-416f-8127 (run
+          # 32559247279 push-race); merged into that step by BRO-352) — NOT
+          # added here, so a bulk-commit push failure can never take the one
+          # file the failure alert cares about down with it again.
           # 4 files remain here — verified genuinely multi-writer (2026-08-23),
           # no apiFallbackSafe path available for them:
           git add data/audit/triage/ 2>/dev/null || true
