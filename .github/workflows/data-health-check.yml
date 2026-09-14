@@ -312,13 +312,81 @@ jobs:
           retention-days: 90
           if-no-files-found: ignore
 
-      # The commit for this ledger lives further down this job — see "Commit
-      # acceptance recheck ledger" below, immediately before the bulk "Commit
-      # health check + triage data" step (BRO-2588, 2026-08-31; BRO-2538 had
-      # briefly parked it at the very END of the job instead — see that
-      # step's own header comment for why that constraint dissolved). Only
-      # the commit sits down there; the recheck computation and the artifact
-      # backup above stay here so the recheck itself still runs early.
+      # Commit acceptance recheck ledger in its OWN small commit+push
+      # (BRO-386), immediately after the script step that writes it and the
+      # artifact backup above — repositioned here from much later in the job
+      # by BRO-471 (2026-09-14), same fix pattern as BRO-472's "Commit
+      # lifetime sweep snapshots" step below. Root cause of the ORIGINAL bug
+      # this step fixed: run 31871526977 (2026-08-15T07:19Z) evaluated 10+
+      # cards correctly — including the owner's 24h-green headline bar — but
+      # the bulk commit bundled this file with 15 OTHER data/audit/* files
+      # into ONE commit, and that commit's push lost its push-with-retry.sh
+      # race. The whole 16-file commit failed to push together, and because
+      # the GitHub Actions runner filesystem is ephemeral, every recheck
+      # verdict from that run vanished with it.
+      #
+      # BRO-2588 (2026-08-31) registered this file `apiFallbackSafe: true` and
+      # dissolved the "must run last" constraint BRO-2538 had imposed — but
+      # left the step positioned THIRD of the job's four commit+push steps,
+      # right before the bulk step. BRO-471's adversarial-review pass found
+      # that position still left a real gap: this file is written here, but
+      # TWO other apiFallbackSafe/apiFallbackMerge commit+push steps
+      # ("Commit lifetime sweep snapshots", "Commit health check audit
+      # snapshots") ran BEFORE the old position and could each independently
+      # trigger push-with-retry.sh's Git Data API fallback prep — which does
+      # an unconditional `git reset --hard "$RESTORE_BASE_HEAD"` that reverts
+      # every OTHER already-tracked file's uncommitted content, this ledger
+      # included, back to its last-committed version (see "Commit lifetime
+      # sweep snapshots"'s own header comment for the confirmed-live incident
+      # this exact mechanism caused for a sibling file group). Moving the
+      # commit to run immediately after the write, before ANY other
+      # push-with-retry.sh call in this job, closes that window the same way
+      # BRO-472 closed it for the 5 lifetime-sweep files.
+      #
+      # continue-on-error: true, matching every other shadow-mode step in this
+      # job (including "Acceptance recheck" itself) — this ledger is
+      # explicitly non-enforcing shadow-mode telemetry (see that step's own
+      # header comment: "never reopens a card"), so a push failure here
+      # should degrade silently rather than trip this workflow's
+      # severity:critical failure() steps. The artifact upload immediately
+      # above is what makes that silent degrade survivable instead of a
+      # second silent loss. "Silent" here means "doesn't page" — a push
+      # failure still isn't invisible: push-with-retry.sh's own
+      # record_push_failure() logs every exhausted retry to
+      # data/audit/push-retry-failures.jsonl regardless of continue-on-error,
+      # and health-check.js surfaces that as the "Push-retry deadman" digest
+      # row.
+      #
+      # timeout-minutes: 17, PUSH_DEADLINE_SEC='900' (task #1842, same class
+      # as task #1791's audit-aggregator-gap.yml fix) — this step calls the
+      # identical push-with-retry.sh against the identical heavy
+      # data/audit/* write contention every other commit step in this job
+      # faces, so it gets the same generous budget as those. This file is
+      # single-writer + apiFallbackSafe (scripts/lib/core-data-merge-
+      # registry.js), so PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 makes the Git
+      # Data API fallback actually reachable, same override as its sibling
+      # apiFallbackSafe steps.
+      - name: Commit acceptance recheck ledger
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          # BRO-3068: same GIT_NET_TIMEOUT_SEC=90s hang class documented in the
+          # job-level comment above (line ~102). Lower to 30s so more real
+          # attempts fit in the 900s deadline. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/autonomous-recheck-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No recheck ledger changes"
+          else
+            git commit -m "data: Update acceptance recheck ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
 
       # Cross-outlet attribution drift check (card #1550, Notion 3bd637c5-416f-81b0):
       # audit-cross-outlet-attributions.test.mjs's four acceptance assertions were
@@ -460,6 +528,12 @@ jobs:
         env:
           PUSH_DEADLINE_SEC: '900'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          # BRO-471 consistency fix: PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 means
+          # the local loop still makes 3 real `git push` attempts before
+          # falling back to REST (see "Commit health check audit snapshots
+          # (apiFallbackSafe)"'s comment for the full correction) — this gets
+          # those 3 attempts through their fail-fast cycle sooner.
+          GIT_NET_TIMEOUT_SEC: '30'
           PUSH_API_REST_REF_UPDATE: '1'
         run: |
           git config user.name "github-actions[bot]"
@@ -702,11 +776,19 @@ jobs:
           # push-with-retry.sh caller (~150+) is unaffected: this variable is
           # opt-in and unset everywhere else. Kill switch: delete this line,
           # falls back to today's exact git-push behavior with zero code
-          # change. BRO-3068 note: NOT also adding GIT_NET_TIMEOUT_SEC here -
-          # this step bypasses `git push` entirely via the REST fallback
-          # above, so a git-transport timeout is moot. See "Commit health
-          # check + triage data" below (unguarded by REST) for where
-          # GIT_NET_TIMEOUT_SEC=30 actually applies in this file.
+          # change.
+          #
+          # BRO-3068 correction (BRO-471 adversarial-review finding): the
+          # PREVIOUS version of this comment claimed GIT_NET_TIMEOUT_SEC was
+          # unnecessary here because this step "bypasses git push entirely" —
+          # that's wrong. PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 means the local
+          # loop still makes 3 real `git push` attempts (at the 90s default
+          # GIT_NET_TIMEOUT_SEC) BEFORE falling back to the REST API. Setting
+          # it to 30 here gets those 3 attempts through their fail-fast cycle
+          # sooner, reaching the REST fallback in ~90s instead of ~270s under
+          # a hung transport — matching BRO-334/BRO-346's fix on the plain
+          # `git push` steps in this file.
+          GIT_NET_TIMEOUT_SEC: '30'
           PUSH_API_REST_REF_UPDATE: '1'
         run: |
           git config user.name "github-actions[bot]"
@@ -737,113 +819,6 @@ jobs:
             echo "No health check audit snapshot changes"
           else
             git commit -m "data: Update health check audit snapshots [skip ci]"
-            bash scripts/lib/push-with-retry.sh 25 main
-          fi
-
-      # Commit acceptance recheck ledger in its OWN small commit+push (BRO-386),
-      # separate from the bulk "Commit health check + triage data" step below.
-      # Root cause of the original bug this fixes: run 31871526977
-      # (2026-08-15T07:19Z) evaluated 10+ cards correctly — including the
-      # owner's 24h-green headline bar — but the bulk commit bundled this file
-      # with 15 OTHER data/audit/* files into ONE commit, and that commit's
-      # push lost its push-with-retry.sh race ("Rebase had conflicts,
-      # attempting auto-resolution..." x2, "overall deadline 240s exceeded").
-      # The whole 16-file commit failed to push together, and because the
-      # GitHub Actions runner filesystem is ephemeral, every recheck verdict
-      # from that run — including the ledger lines already correctly written
-      # to disk by the "Acceptance recheck (shadow mode)" step above —
-      # vanished with it. RECHECK-AFTER exists to be the durable answer to
-      # "did this fix actually hold"; losing a run's verdicts this way is
-      # indistinguishable from the recheck never having run at all.
-      #
-      # POSITION (BRO-2588, 2026-08-31) — this step runs immediately BEFORE
-      # "Commit health check + triage data" below, i.e. THIRD of this job's
-      # four commit+push steps. This SUPERSEDES BRO-2538, which had moved it
-      # to run LAST in the job; that ordering directly contradicted BRO-386's
-      # own acceptance property (recheck-ledger-persistence.test.mjs: "the
-      # ledger-commit step runs BEFORE the bulk commit step"), and the two
-      # suites asserting the two orderings could not both be green.
-      #
-      # BRO-2538's underlying concern was real: this step is
-      # `continue-on-error: true`, so when its push exhausts BOTH the local
-      # retry loop and the Git Data API fallback, the JOB continues but the
-      # commit it already made stays on local HEAD, UNPUSHED (a GitHub
-      # Actions runner never rolls back a step's git state). At the time,
-      # data/audit/autonomous-recheck-ledger.jsonl was NOT registered
-      # apiFallbackSafe, so every LATER commit+push step in this SAME
-      # job/checkout inherited that stranded, non-safe commit as an ancestor
-      # of its own SCRIPT_ENTRY_HEAD, and push-with-retry.sh's Git Data API
-      # fallback disqualifier — correctly, by design — refused the fast path
-      # for a combined diff containing an unaudited data/audit/ path, even
-      # though that later step's OWN commit was 100% apiFallbackSafe (real
-      # incident: run 33253487319, 2026-08-29).
-      #
-      # BRO-2588 fixes the CAUSE rather than the ordering: the ledger is now
-      # registered `apiFallbackSafe: true` in scripts/lib/core-data-merge-
-      # registry.js (verified single-writer — scripts/autonomous-acceptance-
-      # recheck.js, run only by this workflow, which declares concurrency:
-      # {group: data-health-check, cancel-in-progress: false}). A stranded
-      # commit from this step therefore no longer disqualifies anything after
-      # it, the "must run last" constraint dissolves, and both properties
-      # hold at once.
-      #
-      # Belt and braces on top of that: the ONLY later push-with-retry.sh
-      # caller in this job is the bulk "Commit health check + triage data"
-      # step below, whose own fallback is permanently disqualified on its own
-      # merits anyway — it stages 4 genuinely multi-writer, deliberately
-      # unregistered paths (data/audit/triage/, alert-ledger.json,
-      # alert-digest-queue.json, alert-router-attempts.jsonl). So no later
-      # step's fallback depends on this step's commit being clean, flag or no
-      # flag. scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
-      # PART B is the registry-driven guard on exactly that property: every
-      # push-with-retry.sh-calling step in this job must git-add ONLY
-      # apiFallbackSafe paths UNLESS it is the LAST such step. That single
-      # assertion fails both on a bad reorder and on a rollback of the
-      # apiFallbackSafe flag.
-      #
-      # continue-on-error: true, matching every other shadow-mode step in this
-      # job (including "Acceptance recheck" itself) — this ledger is
-      # explicitly non-enforcing shadow-mode telemetry (see that step's own
-      # header comment: "never reopens a card"), so a push failure here
-      # should degrade silently rather than trip this workflow's
-      # severity:critical failure() steps. The artifact upload earlier in
-      # this job is what makes that silent degrade survivable instead of a
-      # second silent loss. "Silent" here means "doesn't page" — a push
-      # failure still isn't invisible: push-with-retry.sh's own
-      # record_push_failure() logs every exhausted retry to
-      # data/audit/push-retry-failures.jsonl regardless of continue-on-error,
-      # and health-check.js surfaces that as the "Push-retry deadman" digest
-      # row.
-      #
-      # timeout-minutes: 17, PUSH_DEADLINE_SEC='900' (task #1842, same class
-      # as task #1791's audit-aggregator-gap.yml fix) — this step calls the
-      # identical push-with-retry.sh against the identical heavy
-      # data/audit/* write contention every other commit step in this job
-      # faces, so it gets the same generous budget as those.
-      # BRO-2370 DEFECT B: same PUSH_API_FALLBACK_AFTER_ATTEMPTS-unreachable
-      # issue as "Commit digest snapshot" above (see that step's comment for
-      # the full analysis) — autonomous-recheck-ledger.jsonl is single-writer
-      # + apiFallbackSafe, so the override is safe and makes the fallback
-      # actually reachable.
-      - name: Commit acceptance recheck ledger
-        if: always()
-        continue-on-error: true
-        timeout-minutes: 17
-        env:
-          PUSH_DEADLINE_SEC: '900'
-          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
-          # BRO-3068: same GIT_NET_TIMEOUT_SEC=90s hang class documented in the
-          # job-level comment above (line ~102). Lower to 30s so more real
-          # attempts fit in the 900s deadline. Matches BRO-334/BRO-346.
-          GIT_NET_TIMEOUT_SEC: '30'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/autonomous-recheck-ledger.jsonl 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No recheck ledger changes"
-          else
-            git commit -m "data: Update acceptance recheck ledger [skip ci]"
             bash scripts/lib/push-with-retry.sh 25 main
           fi
 
