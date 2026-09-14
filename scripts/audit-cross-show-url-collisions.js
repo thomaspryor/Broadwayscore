@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 
 // Overridable via env so tests can point at a temp fixture dir/file instead
 // of real data (same pattern as scripts/flag-wrong-production-by-date.js).
@@ -88,6 +89,12 @@ function atomicWriteJSON(filePath, data) {
       }
     }
   }
+  // BRO-3225: centralized here (rather than at each of this file's ~13
+  // wrongShow=true assignment sites) so it covers all of them at once and
+  // survives the withholding pass above — checked against data.wrongShow's
+  // FINAL state, so a flag this run withheld does NOT wrongly invalidate a
+  // stamp for a flag that never actually gets written.
+  if (data.wrongShow === true) invalidateWrongShowAutoClear(data);
   const tmp = filePath + '.tmp';
   fs.writeFileSync(tmp, JSON.stringify(data, null, 2) + '\n');
   fs.renameSync(tmp, filePath);
