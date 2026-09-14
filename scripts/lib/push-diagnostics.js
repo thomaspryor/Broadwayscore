@@ -416,9 +416,17 @@ function formatTimeline(timeline) {
   const where = g.terminal
     ? `SILENCE AFTER last trace line (no further network activity${g.approximate ? ', approximate' : ''})`
     : 'between trace lines';
-  const attribution = timeline.attributedToPush
-    ? ''
-    : ` [service=${timeline.service} — NOT receive-pack, so this exchange is NOT the push's own and must not be reported as its stall]`;
+  // Only warn on a service we POSITIVELY identified as something other than
+  // receive-pack. "unknown" means the marker was absent from the captured
+  // range — most often because the capture is a truncated tail — NOT that the
+  // exchange belonged to something else. Asserting the latter from the former
+  // would be exactly the unearned diagnosis classifyStallPhase's own comment
+  // warns about for unrecognized-vs-pre-connect, and "unknown" is the common
+  // case, not the edge (stall-diagnostics.test.sh's real fixture hits it).
+  const attribution =
+    timeline.attributedToPush || timeline.service === 'unknown'
+      ? ''
+      : ` [service=${timeline.service} — NOT receive-pack, so this exchange is NOT the push's own and must not be reported as its stall]`;
   return `${secs}s in phase "${g.phase}" — ${where}${attribution}`;
 }
 

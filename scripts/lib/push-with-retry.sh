@@ -264,14 +264,19 @@ git_push_traced() {
   # NOT do: git writes its first trace line only once it starts connecting, so
   # elapsed silently folds process startup in and puts the two endpoints in
   # different coordinate systems (second-opinion review finding).
-  # BSD `date` has no %N — fall back to whole seconds rather than emitting a
-  # literal "N" that the parser would reject.
-  kill_ts=$(date +%H:%M:%S.%N 2>/dev/null || true)
-  case "$kill_ts" in *N* | '') kill_ts="$(date +%H:%M:%S).000" ;; esac
   if [ "$rc" -ne 0 ] && command -v node >/dev/null 2>&1 \
        && [ -f "$SCRIPT_DIR/../push-diagnostics-cli.js" ]; then
     case "$rc" in
       124|137|143)
+        # Captured INSIDE the timeout case, not before it: this runs in ~153
+        # workflows, and a SUCCESSFUL push should not pay two extra `date`
+        # forks per attempt for a diagnostic only the failure path reads
+        # (ship-check finding). BSD `date` has no %N — fall back to whole
+        # seconds rather than emit a literal "N" the parser would reject. That
+        # costs sub-second precision on macOS only (CI is GNU date), measured
+        # against gaps of tens of seconds.
+        kill_ts=$(date +%H:%M:%S.%N 2>/dev/null || true)
+        case "$kill_ts" in *N* | '') kill_ts="$(date +%H:%M:%S).000" || true ;; esac
         _LAST_STALL_PHASE=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" classify "$trace_file" 2>/dev/null || echo "unknown")
         _LAST_STALL_SERVICE=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" service "$trace_file" 2>/dev/null || echo "unknown")
         echo "  git-transport stall phase: $_LAST_STALL_PHASE (service: $_LAST_STALL_SERVICE)"

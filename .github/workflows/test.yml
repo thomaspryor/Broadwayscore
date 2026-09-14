@@ -1903,6 +1903,12 @@ on:
       # scripts/backlog-drain.test.mjs directly above.
       - 'scripts/trace-connect-phase.test.mjs'
       - 'scripts/push-diagnostics-cli.js'
+      # The captured CI trace that test asserts against, byte-for-byte (it
+      # checks bytes === 2000 to prove the old redact-tail cap was a keyhole).
+      # Without this entry a fixture-only edit — or a trailing-whitespace/EOF
+      # hook touching it — runs zero CI and reddens on some later unrelated
+      # push (ship-check finding).
+      - 'tests/fixtures/push-stall-trace-ci-34852355418.txt'
       # Headless dispatchability gate (task #1004) — "can an unattended session
       # FINISH this card?", asked at selection time by both backlog-drain.js and
       # bsc-next.js --headless. Its test lives under scripts/tests/ (registered

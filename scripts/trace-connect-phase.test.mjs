@@ -148,7 +148,11 @@ test('real CI trace: census exposes that the logged tail is a truncated keyhole'
 // SECONDARY: live end-to-end — a REAL push, really killed, really parsed.
 // ---------------------------------------------------------------------------
 
-const STALL_SEC = 3; // keep well inside test.yml's 15-minute unit-tests budget
+// 5s, not 3: the request handler does a blocking ref-advertisement spawn,
+// which is tight on a 2-core runner — too short a stall risks killing the push
+// before the response headers land, flaking the phase assertion (ship-check
+// finding). Still trivial against test.yml's 15-minute unit-tests budget.
+const STALL_SEC = 5;
 
 function gitAvailable() {
   try {
@@ -159,7 +163,11 @@ function gitAvailable() {
   }
 }
 
-test('live: a real push killed mid-stall produces a trace whose terminal gap is identified', { skip: !gitAvailable() && 'git not available' }, async (t) => {
+test('live: a real push killed mid-stall produces a trace whose terminal gap is identified', {
+  skip: !gitAvailable() && 'git not available',
+  // Explicit ceiling so a wedged child can never hold the whole CI job.
+  timeout: 60000,
+}, async (t) => {
   const tmp = fs.mkdtempSync(join(os.tmpdir(), 'bro2839-'));
   const bare = join(tmp, 'remote.git');
   const work = join(tmp, 'work');

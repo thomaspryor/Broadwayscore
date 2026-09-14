@@ -17,6 +17,7 @@ const {
   classifyStallPhase,
   classifyStallService,
   censusTrace,
+  formatTimeline,
   extractPhaseTimeline,
   parseTraceRecords,
   parseTraceClock,
@@ -267,6 +268,24 @@ test('extractPhaseTimeline: attribution follows the service', () => {
   assert.equal(extractPhaseTimeline({ traceText: push }).attributedToPush, true);
   assert.equal(extractPhaseTimeline({ traceText: fetch }).attributedToPush, false);
   assert.equal(extractPhaseTimeline({ traceText: 'nothing' }).attributedToPush, false);
+});
+
+test('formatTimeline: an UNKNOWN service is not accused of being someone else\'s traffic', () => {
+  // "unknown" means the service marker was absent from the captured range —
+  // usually because the capture is a truncated tail — NOT that the exchange
+  // belonged to something other than the push. Claiming the latter from the
+  // former is the same unearned diagnosis classifyStallPhase avoids for
+  // unrecognized-vs-pre-connect, and it is the COMMON case.
+  const t = line('10:00:00.000000', '== Info:   Trying 1.2.3.4...');
+  const timeline = extractPhaseTimeline({ traceText: t, killedAt: '10:00:30.000000' });
+  assert.equal(timeline.service, 'unknown');
+  assert.doesNotMatch(formatTimeline(timeline), /NOT receive-pack/);
+});
+
+test('formatTimeline: a POSITIVELY identified non-push service still is flagged', () => {
+  const t = line('10:00:00.000000', '=> Send header: GET /o/r.git/info/refs?service=git-upload-pack HTTP/2');
+  const timeline = extractPhaseTimeline({ traceText: t, killedAt: '10:00:30.000000' });
+  assert.match(formatTimeline(timeline), /NOT receive-pack/);
 });
 
 test('extractPhaseTimeline: an empty trace reports no-trace rather than throwing', () => {
