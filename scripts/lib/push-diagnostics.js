@@ -178,11 +178,16 @@ const MAX_PLAUSIBLE_GAP_MS = 3600000;
 // (23:59:59 -> 00:00:29 is 30s), while jitter leaves a remainder just under a
 // full day. Anything still implausible after wrapping is reported as 0 rather
 // than guessed at.
+// The clamp is SYMMETRIC. Bounding only the backwards case would leave the
+// mirror-image hole open: a forward clock step, or a corrupt killedAt two
+// hours ahead, yields "7200.0s of silence" from a 90s-bounded operation —
+// stated with exactly the confidence the backwards clamp exists to prevent.
+// Both directions are implausible inputs and both report 0 rather than a
+// number a reader would act on (post-ship-check review finding).
 function forwardDelta(fromMs, toMs) {
   const d = toMs - fromMs;
-  if (d >= 0) return d;
-  const wrapped = d + MS_PER_DAY;
-  return wrapped <= MAX_PLAUSIBLE_GAP_MS ? wrapped : 0;
+  const candidate = d >= 0 ? d : d + MS_PER_DAY;
+  return candidate >= 0 && candidate <= MAX_PLAUSIBLE_GAP_MS ? candidate : 0;
 }
 
 /**
