@@ -2,19 +2,52 @@
   "processed": [
     "night-city-off-west-end-2026/fringereview--unknown.json",
     "night-city-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "night-city-off-west-end-2026/southwarkplayhouse--unknown.json"
+    "night-city-off-west-end-2026/southwarkplayhouse--unknown.json",
+    "the-human-voice-the-seven-deadly-sins-west-end-2026/consequence--unknown.json",
+    "man-to-man-west-end-2026/ground--unknown.json",
+    "man-to-man-west-end-2026/liamodell--liam-odell.json",
+    "man-to-man-west-end-2026/whatsonstage--alex-wood.json",
+    "the-children-off-west-end-2026/revstanstheatreblog--unknown.json",
+    "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
+    "the-children-off-west-end-2026/theatreboard--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "man-to-man-west-end-2026/deadline--pete-hammond.json",
+    "man-to-man-west-end-2026/deadline--unknown.json",
+    "man-to-man-west-end-2026/airmail--air-mail.json",
+    "man-to-man-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "man-to-man-west-end-2026/bestoftheatre--unknown.json",
+    "man-to-man-west-end-2026/huffpost--carly-ledbetter.json",
+    "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
+    "man-to-man-west-end-2026/the-recs--unknown.json",
+    "man-to-man-west-end-2026/theatremonkey--unknown.json",
+    "tartuffe-remixed-off-west-end-2026/thestage--unknown.json",
+    "the-children-off-west-end-2026/hollywood-reporter--david-rooney.json",
+    "the-children-off-west-end-2026/daily-mail--unknown.json",
+    "the-children-off-west-end-2026/huffpost--steven-suskin.json",
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-children-off-west-end-2026/stagebuddy--elyse-trevers.json",
+    "the-children-off-west-end-2026/thestage--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "night-city-off-west-end-2026/fringereview--unknown.json",
-      "night-city-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
+      "night-city-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "the-human-voice-the-seven-deadly-sins-west-end-2026/consequence--unknown.json",
+      "man-to-man-west-end-2026/liamodell--liam-odell.json",
+      "man-to-man-west-end-2026/whatsonstage--alex-wood.json",
+      "the-children-off-west-end-2026/revstanstheatreblog--unknown.json",
+      "the-children-off-west-end-2026/theatreboard--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "man-to-man-west-end-2026/ground--unknown.json",
+      "the-children-off-west-end-2026/telegraph--fiona-mountford.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
@@ -22,6 +55,30 @@
     ]
   },
   "startTime": "2026-09-14T00:45:52.847Z",
-  "lastProcessed": "night-city-off-west-end-2026/southwarkplayhouse--unknown.json",
-  "log": []
+  "lastProcessed": "the-children-off-west-end-2026/thestage--unknown.json",
+  "log": [
+    {
+      "t": "2026-09-14T01:57:52.898Z",
+      "event": "bb-session",
+      "session": "66f490b1",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-14T01:58:04.261Z",
+      "event": "bb-session",
+      "session": "5458a3d6",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-14T02:00:37.019Z",
+      "event": "bb-session",
+      "session": "808738cf",
+      "url": "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-in"
+    },
+    {
+      "t": "2026-09-14T02:00:37.988Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
