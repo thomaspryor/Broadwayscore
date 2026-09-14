@@ -322,6 +322,33 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
   };
 }
 
+/**
+ * Should the digest tell the owner the loop has stopped DISPATCHING?
+ *
+ * Extracted as a pure function (BRO-3321 follow-up) because it was a bare
+ * conditional inside send-morning-digest.js, which reads files and sends mail
+ * and so could not be unit tested — and it decides whether the owner gets a
+ * red "DEAD" banner, which is exactly the class of decision that has cried
+ * wolf before.
+ *
+ * Two guards, both load-bearing:
+ *   - `pendingIssues`: zero dispatches with an EMPTY queue is a healthy fleet
+ *     with nothing to fix. ZERO_DISPATCH_ERROR_DAYS is 2, so without this,
+ *     two quiet days would email "Autofix throughput DEAD".
+ *   - the zero-DISPATCH arm only: the zero-PASS arm asks the same question
+ *     assessAutofixEffectiveness already answers, and surfacing both would
+ *     render one condition as two banners.
+ *
+ * @param {{status:string, message:string}|null} row - assessThroughputRow's result
+ * @param {{pendingIssues?: number}} opts
+ * @returns {string|null} the message to surface, or null to stay quiet
+ */
+function throughputDeathMessage(row, { pendingIssues = 0 } = {}) {
+  if (!pendingIssues) return null;
+  if (!row || row.status !== 'error' || typeof row.message !== 'string') return null;
+  return /0 dispatches/.test(row.message) ? row.message : null;
+}
+
 function appendJsonlLedger(p, entry) {
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.appendFileSync(p, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n');
@@ -559,6 +586,7 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
 }
 
 module.exports = {
+  throughputDeathMessage,
   CANARY_LEDGER_PATH,
   CANARY_TITLE_PREFIX,
   ZERO_DISPATCH_ERROR_DAYS,

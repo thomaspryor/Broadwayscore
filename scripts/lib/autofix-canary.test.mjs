@@ -381,3 +381,46 @@ test('assessThroughputRow: a genuine zero-pass run of 3 real days still errors',
   assert.equal(r.status, 'error', `dispatching daily and landing nothing IS dead; got ${JSON.stringify(r)}`);
   assert.match(r.message, /0 passes/);
 });
+
+// ── BRO-3321 follow-up: the zero-dispatch banner's gate ─────────────────────
+// This decides whether the owner gets a red "DEAD" banner. It was a bare
+// conditional inside send-morning-digest.js — a file that reads disk and sends
+// mail, so it could not be tested at all. Extracted and pinned here.
+
+const DEAD_DISPATCH = { status: 'error', message: 'Autofix throughput DEAD: 0 dispatches on each of the last 3 day(s) — this is the exact 8/5-8/9 starvation shape (task #1184).' };
+const DEAD_PASS = { status: 'error', message: 'Autofix throughput DEAD: 0 passes on each of the last 3 day(s) — dispatches are launching but nothing is landing.' };
+const HEALTHY = { status: 'pass', message: 'Autofix throughput over the last 7d: 9 dispatched, 8 passed (net 1).' };
+
+test('throughputDeathMessage: surfaces the zero-DISPATCH death only when work is queued', () => {
+  const { throughputDeathMessage } = require('./autofix-canary.js');
+  assert.equal(
+    throughputDeathMessage(DEAD_DISPATCH, { pendingIssues: 42 }),
+    DEAD_DISPATCH.message,
+    'issues queued and nothing dispatching IS the dead shape'
+  );
+});
+
+test('throughputDeathMessage: an idle fleet with an empty queue is HEALTHY, not dead', () => {
+  const { throughputDeathMessage } = require('./autofix-canary.js');
+  // ZERO_DISPATCH_ERROR_DAYS is 2, so without this guard two quiet days — a
+  // fleet with nothing to fix — would email the owner "Autofix throughput DEAD".
+  assert.equal(throughputDeathMessage(DEAD_DISPATCH, { pendingIssues: 0 }), null);
+  assert.equal(throughputDeathMessage(DEAD_DISPATCH, {}), null, 'defaults to quiet, not to alarming');
+});
+
+test('throughputDeathMessage: never double-fires the zero-PASS arm', () => {
+  const { throughputDeathMessage } = require('./autofix-canary.js');
+  // assessAutofixEffectiveness already answers "dispatching but not landing".
+  // Surfacing it here too would render one condition as two red banners.
+  assert.equal(throughputDeathMessage(DEAD_PASS, { pendingIssues: 42 }), null);
+});
+
+test('throughputDeathMessage: stays quiet on healthy, warn, and junk input', () => {
+  const { throughputDeathMessage } = require('./autofix-canary.js');
+  assert.equal(throughputDeathMessage(HEALTHY, { pendingIssues: 42 }), null);
+  assert.equal(throughputDeathMessage({ status: 'warn', message: '0 dispatches ...' }, { pendingIssues: 42 }), null,
+    'warn is "not measurable here", not a death — it must never become a DEAD banner');
+  for (const junk of [null, undefined, {}, { status: 'error' }, { status: 'error', message: 42 }]) {
+    assert.equal(throughputDeathMessage(junk, { pendingIssues: 42 }), null, `junk input must not throw or alarm: ${JSON.stringify(junk)}`);
+  }
+});

@@ -65,7 +65,7 @@ const {
   autofixLoopDeadMessage,
 } = require('./lib/autonomous-email-render.js');
 const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
-const { assessThroughputRow } = require('./lib/autofix-canary.js');
+const { assessThroughputRow, throughputDeathMessage } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
@@ -110,12 +110,6 @@ function localLoopDeadMessage({ pendingIssues = 0 } = {}) {
   // Scoped to the zero-DISPATCH arm deliberately. The zero-PASS arm is the
   // same question assessAutofixEffectiveness already answers above, and
   // surfacing both would double-fire one condition as two banners.
-  // Only when there is actually something to dispatch. Zero dispatches with an
-  // empty queue is a HEALTHY fleet with nothing to fix, and ZERO_DISPATCH_ERROR_DAYS
-  // is 2 — without this, two quiet days would email the owner "Autofix throughput
-  // DEAD". Closing one false alarm by opening another is not a fix.
-  if (!pendingIssues) return null;
-
   // readLedgerRows, not a fourth reader: same null-means-absent contract
   // assessThroughputRow requires (null is "unreadable here", [] is "genuinely
   // empty" — it must never score a missing ledger as healthy).
@@ -125,9 +119,11 @@ function localLoopDeadMessage({ pendingIssues = 0 } = {}) {
   } catch (err) {
     console.error(`[digest] WARN could not read backlog-drain ledger: ${String(err.message).slice(0, 120)}`);
   }
+  // The decision itself lives in autofix-canary.js as a pure function so it is
+  // unit-testable — it gates a red banner in the owner's inbox, and this file
+  // reads disk and sends mail, so nothing here can be tested directly.
   const t = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: backlogRows });
-  if (t.status === 'error' && /0 dispatches/.test(t.message)) return t.message;
-  return null;
+  return throughputDeathMessage(t, { pendingIssues });
 }
 
 // Cyrus relay health. Same reasoning as the ledger above: the status file is
