@@ -1886,37 +1886,12 @@ function checkOutletHealth() {
     // Same "known backlog vs genuinely new" split as "Quality: star-vs-score
     // mismatch" above: alert only on rows NOT in the committed baseline
     // (data/audit/outlet-heartbeat-baseline.json, card #643).
+    // Logic extracted to lib/outlet-heartbeat-monitor-core.js (BRO-2521) so
+    // it's also runnable standalone via scripts/outlet-heartbeat-monitor.js
+    // without duplicating the staleness/actionable-rows logic here.
     runCheck('Quality: outlet-heartbeat red flags', () => {
-      const heartbeatFile = path.join(AUDIT_DIR, 'outlet-heartbeat.json');
-      if (!fs.existsSync(heartbeatFile)) {
-        return { name: 'Quality: outlet-heartbeat red flags', status: 'warn', message: 'No outlet-heartbeat.json (audit-critic-coverage.yml may not have run)', hint: 'Trigger the "Audit Critic Coverage" workflow' };
-      }
-      const data = readJSON(heartbeatFile);
-      const age = data?.generatedAt ? hoursAgo(data.generatedAt) : Infinity;
-      // Weekly cron; 8 days means it's missed a week's run.
-      if (age > 192) {
-        return { name: 'Quality: outlet-heartbeat red flags', status: 'warn', message: `Heartbeat monitor last ran ${formatAge(age)} ago (>8d)`, hint: 'audit-critic-coverage.yml may be stale/disabled' };
-      }
-      const rows = Array.isArray(data?.rows) ? data.rows : [];
-      const stateFile = path.join(AUDIT_DIR, 'outlet-heartbeat-state.json');
-      const state = fs.existsSync(stateFile) ? readJSON(stateFile) : {};
-      let baselineKeys = new Set();
-      try {
-        const b = readJSON(path.join(AUDIT_DIR, 'outlet-heartbeat-baseline.json'));
-        if (b && Array.isArray(b.keys)) baselineKeys = new Set(b.keys);
-      } catch { /* no baseline yet — everything is "new" */ }
-      const { getActionableOutletRows } = require('./lib/outlet-heartbeat-state');
-      const { actionable, baselinedCount } = getActionableOutletRows(rows, state, baselineKeys);
-      if (actionable.length === 0) {
-        return { name: 'Quality: outlet-heartbeat red flags', status: 'pass', message: `${rows.length} outlet×market rows checked, none NEW silent 2+ consecutive weeks (${baselinedCount} known/baselined, ${formatAge(age)} ago)` };
-      }
-      const worst = actionable[0];
-      return {
-        name: 'Quality: outlet-heartbeat red flags',
-        status: 'warn',
-        message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined)`,
-        hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). `--write-baseline` acks the ENTIRE current red backlog at once (not just the worst offender) — only run it once every currently-red outlet has been triaged.',
-      };
+      const { evaluateOutletHeartbeat } = require('./lib/outlet-heartbeat-monitor-core');
+      return evaluateOutletHeartbeat({ auditDir: AUDIT_DIR });
     }),
   ];
 }
