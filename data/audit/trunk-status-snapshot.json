@@ -1,34 +1,27 @@
 {
-  "generatedAt": "2026-09-14T12:35:04.924Z",
+  "generatedAt": "2026-09-14T13:34:57.617Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "9a9077cc58506a7142cbb2b534228e56bc43f22e",
+  "latestRunHeadSha": "0609cd5da113e5cae364af4011e440524244c270",
   "state": "RED",
-  "consecutiveFailures": 6,
+  "consecutiveFailures": 3,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-13T22:41:00Z",
-  "redForHours": 13.901367777777779,
+  "redSince": "2026-09-06T09:08:07Z",
+  "redForHours": 196.44739361111112,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-13T22:10:46Z",
-  "latestFailedRunId": "34843077237",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34843077237",
-  "decidedRuns": 99,
+  "lastSuccessAt": "2026-09-05T16:09:42Z",
+  "latestFailedRunId": "34024962161",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34024962161",
+  "decidedRuns": 96,
   "failingJobs": [
     {
       "name": "Data Validation",
       "steps": [
-        "Audit flag-vs-CV contradictions",
-        "Run self-contradictory-clear drain acceptance test (needs review-texts)",
-        "Audit outlet-registry gaps"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
+        "Run data validation",
+        "Run self-contradictory-clear drain acceptance test (needs review-texts)"
       ]
     },
     {
@@ -40,16 +33,34 @@
   ],
   "failingPaths": [
     {
+      "path": "scripts/audit-duplicate-shows.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
       "path": "scripts/audit-self-contradictory-clear-drained.test.mjs",
       "job": "Data Validation",
-      "step": "Run self-contradictory-clear drain acceptance test (needs review-texts)",
+      "step": "UNKNOWN STEP",
       "evidence": "not ok 1 - no zero-score-impact self-contradictory-clear remains undrained (BRO-185)"
     },
     {
-      "path": "scripts/tests/cmux-reachability-check.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 2366 - logReachabilityAttempt + readReachabilityAttempts round-trip in chronological order"
+      "path": "scripts/audit-contradicted-flag-basis.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
+      "path": "scripts/lib/push-via-git-api.sh",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-"
+    },
+    {
+      "path": "scripts/audit-aggregator-url-latent.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-"
     }
   ],
   "topFailingJob": "Data Validation"
