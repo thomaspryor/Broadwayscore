@@ -349,11 +349,23 @@ function parseStreamLine(line) {
 
 // Running usage totals across assistant events — the only cost signal that
 // survives a kill (the authoritative result-event totals never arrive).
+// Preserves the nested cache_creation.{ephemeral_1h,ephemeral_5m}_input_tokens
+// breakdown (BRO-3100) alongside the flat cache_creation_input_tokens sum, so
+// estimateCostUSD can price the two cache-write durations separately.
 function addUsage(total, usage) {
-  const t = total || { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 };
+  const t = total || {
+    input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0,
+    cache_creation: { ephemeral_1h_input_tokens: 0, ephemeral_5m_input_tokens: 0 },
+  };
   if (!usage) return t;
   for (const k of ['input_tokens', 'output_tokens', 'cache_creation_input_tokens', 'cache_read_input_tokens']) {
     if (typeof usage[k] === 'number') t[k] += usage[k];
+  }
+  if (usage.cache_creation && typeof usage.cache_creation === 'object') {
+    if (!t.cache_creation) t.cache_creation = { ephemeral_1h_input_tokens: 0, ephemeral_5m_input_tokens: 0 };
+    for (const k of ['ephemeral_1h_input_tokens', 'ephemeral_5m_input_tokens']) {
+      if (typeof usage.cache_creation[k] === 'number') t.cache_creation[k] += usage.cache_creation[k];
+    }
   }
   return t;
 }
@@ -369,11 +381,23 @@ const APPROX_MODEL_RATES_PER_MTOK = Object.freeze({
   haiku: { in: 1, out: 5 },
 });
 
+// Cache-write multipliers by TTL: 1h writes bill at 2x base input, 5m writes
+// at 1.25x. Real transcripts carry the split in usage.cache_creation and the
+// 1h tokens dominate (measured 599:1 vs 5m in one transcript) — pricing them
+// at the flat 1.25x understated cache-write cost ~38% (BRO-3100). Fall back
+// to the flat cache_creation_input_tokens*1.25 when the nested breakdown is
+// absent (older transcripts / envelopes that don't carry it).
 function estimateCostUSD(usage, model) {
   if (!usage) return null;
   const key = Object.keys(APPROX_MODEL_RATES_PER_MTOK).find(k => String(model || '').includes(k)) || 'sonnet';
   const r = APPROX_MODEL_RATES_PER_MTOK[key];
-  const inTok = (usage.input_tokens || 0) + 1.25 * (usage.cache_creation_input_tokens || 0) + 0.1 * (usage.cache_read_input_tokens || 0);
+  const cc = usage.cache_creation;
+  const hasSplit = cc && typeof cc === 'object' &&
+    (typeof cc.ephemeral_1h_input_tokens === 'number' || typeof cc.ephemeral_5m_input_tokens === 'number');
+  const cacheWriteTok = hasSplit
+    ? 2 * (cc.ephemeral_1h_input_tokens || 0) + 1.25 * (cc.ephemeral_5m_input_tokens || 0)
+    : 1.25 * (usage.cache_creation_input_tokens || 0);
+  const inTok = (usage.input_tokens || 0) + cacheWriteTok + 0.1 * (usage.cache_read_input_tokens || 0);
   const usd = (inTok * r.in + (usage.output_tokens || 0) * r.out) / 1e6;
   return Math.round(usd * 10000) / 10000;
 }

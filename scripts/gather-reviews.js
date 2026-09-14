@@ -2312,6 +2312,27 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           }
         }
 
+        // posting.author sometimes carries just the critic's bare name with no
+        // "Outlet - Critic"/"Critic, Outlet"/"Outlet: Critic" delimiter (e.g.
+        // author.name = "Jon Sobel"). Every branch above falls through to
+        // `outletRaw = authorName` in that case, minting a phantom outlet from
+        // the critic's own name ("jon-sobel") while criticName stays null —
+        // creating a permanent duplicate alongside the real outlet-attributed
+        // record a later run (or Method 2/3 below) writes for the same critic
+        // (Safe House / BRO-3247, 2026-09-14: 4 shows-up-twice pairs, e.g.
+        // outletId="jon-sobel" criticName=null next to outletId="blogcritics"
+        // criticName="Jon Sobel" — same review, double-counted in the score).
+        // Prefer the headline's "Outlet - Title" outlet when outletRaw isn't a
+        // registered outlet, and demote the bare author name to criticName.
+        if (outletRaw && !criticName && !isRegisteredOutlet(outletRaw) &&
+            posting.headline && posting.headline.includes(' - ')) {
+          const headlineOutlet = posting.headline.split(' - ')[0].trim();
+          if (headlineOutlet.split(/\s+/).length <= 5 && isRegisteredOutlet(headlineOutlet)) {
+            criticName = outletRaw;
+            outletRaw = headlineOutlet;
+          }
+        }
+
         if (!outletRaw) continue;
 
         const outletId = normalizeOutlet(outletRaw);
