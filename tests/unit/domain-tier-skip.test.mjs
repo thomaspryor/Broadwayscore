@@ -83,4 +83,59 @@ describe('buildSkipConfig', () => {
     const out = buildSkipConfig(stats, {}, { skipThreshold: 3, now: '2026-07-30' });
     assert.deepEqual(Object.keys(out), ['aaa.com', 'zzz.com']);
   });
+
+  // BRO-3334: hand-authored entries (narrative reason, not the machine-
+  // generated "N failures, 0 successes" shape) must survive a regeneration
+  // even when they can't be re-derived from this run's stats.
+  test('preserves a hand-authored entry with partial success (reason does not match generated pattern)', () => {
+    const handAuthored = {
+      skip: true,
+      reason: 'BRO-3325 (2026-09-14): flipped by the tier-skip drift audit verdict — 3% success over 1551 Scrapingdog calls',
+      addedAt: '2026-09-14',
+    };
+    const existing = { 'didtheylikeit.com': { scrapingdog: handAuthored } };
+    // Current run's stats show partial success (47/1551 ~ 3%) — the
+    // failures>=threshold && successes===0 branch never fires for this pair.
+    const stats = { 'didtheylikeit.com': { scrapingdog: { successes: 47, failures: 1504 } } };
+    const out = buildSkipConfig(stats, existing, { skipThreshold: 3, now: '2026-09-21' });
+    assert.deepEqual(out['didtheylikeit.com'].scrapingdog, handAuthored);
+  });
+
+  test('preserves a hand-authored entry for a domain absent from this run\'s stats entirely', () => {
+    const handAuthored = {
+      skip: true,
+      reason: 'Scraping cost v3 S1-T2 (2026-08-03): production ledger showed 22% success/301 calls over the prior 7d',
+      addedAt: '2026-08-03',
+    };
+    const existing = { 'theatre.reviews': { scrapingdog: handAuthored } };
+    // No fetchAttempts recorded for theatre.reviews this run at all.
+    const stats = { 'example.com': { brightdata: { successes: 0, failures: 5 } } };
+    const out = buildSkipConfig(stats, existing, { skipThreshold: 3, now: '2026-09-21' });
+    assert.deepEqual(out['theatre.reviews'].scrapingdog, handAuthored);
+  });
+
+  test('a fresh generated entry wins over a stale hand-authored entry on collision', () => {
+    const handAuthored = { skip: true, reason: 'old narrative reason', addedAt: '2026-01-01' };
+    const existing = { 'example.com': { brightdata: handAuthored } };
+    const stats = { 'example.com': { brightdata: { successes: 0, failures: 10 } } };
+    const out = buildSkipConfig(stats, existing, { skipThreshold: 3, now: '2026-09-21' });
+    assert.equal(out['example.com'].brightdata.reason, '10 failures, 0 successes');
+  });
+
+  test('generated entry still refreshes on rebuild (reason matches the machine pattern)', () => {
+    const existing = {
+      'example.com': { brightdata: { skip: true, reason: '3 failures, 0 successes', addedAt: '2026-01-01' } },
+    };
+    const stats = { 'example.com': { brightdata: { successes: 0, failures: 5 } } };
+    const out = buildSkipConfig(stats, existing, { skipThreshold: 3, now: '2026-09-21' });
+    assert.equal(out['example.com'].brightdata.reason, '5 failures, 0 successes');
+    assert.equal(out['example.com'].brightdata.addedAt, '2026-01-01', 'addedAt still preserved on refresh');
+  });
+
+  test('ignores legacy array-shape existing entries when scanning for hand-authored reasons', () => {
+    const existing = { 'example.com': ['brightdata'] };
+    const stats = {};
+    const out = buildSkipConfig(stats, existing, { skipThreshold: 3, now: '2026-09-21' });
+    assert.deepEqual(out, {});
+  });
 });
