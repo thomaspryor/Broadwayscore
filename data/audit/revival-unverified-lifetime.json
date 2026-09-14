@@ -1,13 +1,10 @@
 {
-  "updatedAt": "2026-09-05T02:23:01.305Z",
-  "scanned": 2030,
-  "showsWithViolations": 41,
-  "totalViolations": 41,
-  "newSinceLastRun": 2,
-  "newViolationKeys": [
-    "a-month-in-the-country-west-end-2026",
-    "the-story-west-end-2026"
-  ],
+  "updatedAt": "2026-09-14T12:27:40.981Z",
+  "scanned": 2076,
+  "showsWithViolations": 42,
+  "totalViolations": 42,
+  "newSinceLastRun": 0,
+  "newViolationKeys": [],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -35,7 +32,7 @@
     "the-mousetrap-west-end-2021",
     "the-phantom-of-the-opera-west-end-1986",
     "as-you-like-it-globe-west-end-2026",
-    "loves-labours-lost-globe-west-end-2026",
+    "man-to-man-west-end-2026",
     "cabaret-at-the-kit-kat-club-west-end-2021",
     "operation-mincemeat-west-end-2024",
     "death-note-the-musical-west-end-2026",
@@ -45,11 +42,12 @@
     "paranormal-activity-2026",
     "la-boheme-off-broadway-2026",
     "tosca-off-broadway-2026",
-    "jeeves-takes-charge-west-end-2026",
     "the-smile-of-her-off-west-end-2026",
     "abigails-party-west-end-2026",
     "disruption-off-broadway-2026",
-    "the-real-ivanov-off-broadway-2026"
+    "the-real-ivanov-off-broadway-2026",
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+    "becoming-hamlet-off-broadway-2026"
   ],
   "hits": [
     {
@@ -287,10 +285,10 @@
       ]
     },
     {
-      "showId": "loves-labours-lost-globe-west-end-2026",
-      "title": "Love's Labour's Lost",
-      "openingDate": "2026-07-28",
-      "message": "loves-labours-lost-globe-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "showId": "man-to-man-west-end-2026",
+      "title": "Man to Man",
+      "openingDate": "2026-09-11",
+      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 33x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -326,7 +324,7 @@
       "showId": "a-month-in-the-country-west-end-2026",
       "title": "A Month in the Country",
       "openingDate": "2026-09-02",
-      "message": "a-month-in-the-country-west-end-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "a-month-in-the-country-west-end-2026 review text mentions \"revival\" 11x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -335,7 +333,7 @@
       "showId": "the-story-west-end-2026",
       "title": "The Story",
       "openingDate": "2026-09-03",
-      "message": "the-story-west-end-2026 review text mentions \"revival\" 10x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-story-west-end-2026 review text mentions \"revival\" 21x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -371,16 +369,7 @@
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "openingDate": "2026-11-01",
-      "message": "tosca-off-broadway-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "jeeves-takes-charge-west-end-2026",
-      "title": "Jeeves Takes Charge",
-      "openingDate": "2026-08-18",
-      "message": "jeeves-takes-charge-west-end-2026 review text mentions \"revival\" 12x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "tosca-off-broadway-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -416,7 +405,25 @@
       "showId": "the-real-ivanov-off-broadway-2026",
       "title": "The Real Ivanov",
       "openingDate": "2026-08-25",
-      "message": "the-real-ivanov-off-broadway-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-real-ivanov-off-broadway-2026 review text mentions \"revival\" 16x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "title": "Rhinoceros",
+      "openingDate": "2026-08-24",
+      "message": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "becoming-hamlet-off-broadway-2026",
+      "title": "Becoming Hamlet",
+      "openingDate": "2026-09-11",
+      "message": "becoming-hamlet-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

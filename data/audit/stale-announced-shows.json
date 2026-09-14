@@ -1,10 +1,23 @@
 {
-  "generatedAt": "2026-09-08T02:44:20.543Z",
+  "generatedAt": "2026-09-14T12:35:04.861Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 0,
-  "flagged": [],
-  "silencedByContaminationCount": 22,
+  "flaggedCount": 1,
+  "flagged": [
+    {
+      "id": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
+      "venue": "Theatre Royal Stratford East",
+      "category": "off-west-end",
+      "previewsStartDate": null,
+      "openingDate": null,
+      "todaytixId": null,
+      "reasons": [
+        "data/review-texts/ has collected review file(s)"
+      ]
+    }
+  ],
+  "silencedByContaminationCount": 23,
   "silencedByContamination": [
     {
       "id": "midnight-in-the-garden-of-good-and-evil-2024",
@@ -137,6 +150,12 @@
       "title": "Bull",
       "reviewFiles": 1,
       "excludedFiles": 1
+    },
+    {
+      "id": "death-of-a-salesman-west-end-2026",
+      "title": "Death of a Salesman",
+      "reviewFiles": 2,
+      "excludedFiles": 2
     }
   ]
 }
