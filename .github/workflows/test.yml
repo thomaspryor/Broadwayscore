@@ -611,6 +611,13 @@ on:
       - 'scripts/check-push-ledger.js'
       - 'tests/unit/push-ledger.test.mjs'
       - '.github/workflows/check-push-ledger.yml'
+      # BRO-2304: content-equivalence fallback (checkContentSurvived) added to
+      # check-push-ledger.js — reuses scripts/lib/push-content-survival.js
+      # (already covered by the scripts/lib/** glob above) via a new optional
+      # --diff-filter flag there. Colocated test lives in scripts/tests/,
+      # which is NOT covered by any glob (registered in
+      # tests/unit-test-manifest.txt); path-listed so a solo edit triggers CI.
+      - 'scripts/tests/check-push-ledger-content-check.test.mjs'
       - 'tests/unit/rescore-queue-depth.test.mjs'
       - 'tests/unit/rescore-actionable-depth.test.mjs'
       - 'scripts/check-progress-stalls.js'
