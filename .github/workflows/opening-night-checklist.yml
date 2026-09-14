@@ -56,19 +56,21 @@ permissions:
 # cooldown ledger and double-dispatching the same remediation. Real
 # serialization (queue, not cancel) removes that race as a side effect.
 #
-# ROLLBACK IS COUPLED (Codex adversarial review, BRO-2670): this group and
-# the 2 apiFallbackSafe entries it licenses in scripts/lib/core-data-merge-
-# registry.js (audit/opening-night-history.json, audit/opening-night-sla-
-# state.json) must be rolled back TOGETHER, not independently. Reverting
+# ROLLBACK IS COUPLED (Codex adversarial review, BRO-2670; extended BRO-3071
+# 2026-09-14 when audit/remediation-log.jsonl became the 3rd entry riding
+# this same group): this group and the 3 apiFallbackSafe entries it licenses
+# in scripts/lib/core-data-merge-registry.js (audit/opening-night-
+# history.json, audit/opening-night-sla-state.json, audit/remediation-
+# log.jsonl) must be rolled back TOGETHER, not independently. Reverting
 # only this concurrency change while leaving those registry entries active
 # would let overlapping runs race into the Git Data API fallback's
 # fail-closed "ours wins outright" compare-and-swap with no serialization —
 # the exact hazard concurrencyGroup exists to prevent. Reverting only the
 # registry entries while leaving this group in place is safe on its own
-# (just reintroduces the slow local push path for those 2 files) but
+# (just reintroduces the slow local push path for those 3 files) but
 # forfeits the fix. tests/unit/opening-night-checklist-push.test.mjs
-# cross-checks the group here against both entries' concurrencyGroup value,
-# so a rollback that touches only one side fails that test loudly.
+# cross-checks the group here against all three entries' concurrencyGroup
+# value, so a rollback that touches only one side fails that test loudly.
 concurrency:
   group: opening-night-checklist
   cancel-in-progress: false
@@ -294,15 +296,24 @@ jobs:
           # workflow forever (see scripts/opening-night-checklist.js's
           # appendToHistory() comment). opening-night-sla-state.json is
           # routeAlert()'s per-condition cooldown state — without it the SLA
-          # alert router re-opens + re-emails every run. BOTH are registered
-          # apiFallbackSafe:true in scripts/lib/core-data-merge-registry.js
-          # (concurrencyGroup: opening-night-checklist — see this workflow's
-          # own concurrency: block above), verified sole writer via grep
-          # across every .github/workflows/*.yml for the literal filename
-          # (opening-night-orchestrator.yml also invokes the same underlying
-          # scripts but never stages/commits/pushes either path).
+          # alert router re-opens + re-emails every run. remediation-log.jsonl
+          # is the cooldown store for self-declared remediations (task #389) —
+          # decideRequeueAction reads prior attempts out of it, same
+          # forever-redispatch failure mode as the history ledger if lost.
+          # ALL THREE are registered apiFallbackSafe:true in scripts/lib/
+          # core-data-merge-registry.js (concurrencyGroup: opening-night-
+          # checklist — see this workflow's own concurrency: block above),
+          # verified sole writer via grep across every .github/workflows/*.yml
+          # for the literal filename (opening-night-orchestrator.yml also
+          # invokes the same underlying script but never stages/commits/
+          # pushes any of the three paths). remediation-log.jsonl moved here
+          # from the sibling "Commit shared audit telemetry" step (BRO-3071,
+          # 2026-09-14) — BRO-2670 left it there only because it was "not yet
+          # registered" at the time (see that step's own comment), not
+          # because it is genuinely multi-writer.
           git add data/audit/opening-night-history.json 2>/dev/null || true
           git add data/audit/opening-night-sla-state.json 2>/dev/null || true
+          git add data/audit/remediation-log.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No opening night state changes to commit"
           else
@@ -358,9 +369,6 @@ jobs:
           # alert router incident state never persists across the hourly runs
           # — routeAlert would re-open + re-email every run, reintroducing the
           # storm this migration fixes (#406).
-          # remediation-log.jsonl is the cooldown store for self-declared
-          # remediations (task #389) — decideRequeueAction reads prior
-          # attempts out of it.
           # opening-night-latency-*.json is dated (opening-night-latency-
           # YYYY-MM-DD.json) — NOT apiFallbackSafe (the registry's matcher is
           # exact-suffix only, no glob support) so it stays here rather than
@@ -368,15 +376,17 @@ jobs:
           # "Run latency report" step above is continue-on-error), not gating
           # state, so riding the slower path with the other multi-writer
           # files here is an accepted, deliberate choice (BRO-2670).
-          # All files here are genuinely multi-writer (alert-ledger.json,
-          # alert-digest-queue.json) or not yet registered
-          # (remediation-log.jsonl) — no apiFallbackSafe path available, same
-          # as before this split.
+          # remediation-log.jsonl MOVED to the sibling "Commit opening night
+          # state (apiFallbackSafe)" step above (BRO-3071, 2026-09-14) — it
+          # was single-writer all along, just not yet registered when BRO-2670
+          # split this commit.
+          # The two files left here (alert-ledger.json, alert-digest-
+          # queue.json) are genuinely multi-writer — no apiFallbackSafe path
+          # available for them, same as before this split.
           git add data/audit/opening-night-latency-*.json 2>/dev/null || true
           git add data/audit/stage-latency.jsonl 2>/dev/null || true
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
-          git add data/audit/remediation-log.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No shared audit telemetry changes to commit"
           else

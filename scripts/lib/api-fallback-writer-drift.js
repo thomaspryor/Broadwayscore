@@ -42,12 +42,47 @@ function escapeRegExp(s) {
   return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// `for f in data/audit/a.json data/audit/b.json; do ... git add "$f" ...;
+// done` — the loop-staged idiom used across ~9 real workflows (BRO-3071:
+// same blind spot scripts/lib/audit-push-retry-budgets.js's own
+// extractLoopStagedPaths already closed for its sibling tool — e.g.
+// audit-aggregator-gap.yml, audit-critic-coverage.yml, monitor-gate-ab.yml,
+// coverage-adversarial-probe.yml, check-arm-yield.yml, send-follow-
+// notifications.yml, check-cron-health.yml). Without this, findWritingWorkflows
+// only ever sees the loop VARIABLE on the `git add "$f"` line itself (which
+// pathTokensFrom-style matching can't resolve to a literal path), so every
+// apiFallbackSafe entry staged this way false-negatived the live-repo
+// regression test in api-fallback-writer-drift.test.mjs even though it was a
+// real, hand-verified single writer. Gated on the loop body actually
+// referencing `git add ... $VAR` for the SAME loop variable so an unrelated
+// for-loop's arguments are never misattributed as staged paths. Does not
+// handle nested loops (finds the first `done` after the loop body starts) —
+// no such shape exists in this repo's push-staging loops today.
+function loopStagesBasename(text, basename) {
+  const forRe = /for\s+(\w+)\s+in\s+([\s\S]*?);\s*do\b/g;
+  let m;
+  while ((m = forRe.exec(text))) {
+    const varName = m[1];
+    const listText = m[2].replace(/\\\s*\n/g, ' ');
+    const bodyStart = forRe.lastIndex;
+    const doneIdx = text.indexOf('\ndone', bodyStart);
+    const body = text.slice(bodyStart, doneIdx === -1 ? text.length : doneIdx);
+    const addsVar = new RegExp(`git\\s+add\\b[^\\n]*\\$\\{?${escapeRegExp(varName)}\\}?\\b`).test(body);
+    if (!addsVar) continue;
+    const pathRe = new RegExp(`(?:^|[\\s"'])data/${escapeRegExp(basename)}(?:[\\s"']|$)`);
+    if (pathRe.test(listText)) return true;
+  }
+  return false;
+}
+
 /**
  * Workflow files (by name) whose text contains a `git add`/`git-add-
- * existing.sh` reference to `data/<basename>`. Matches the two real staging
- * shapes seen across this repo's workflows: an inline `git add data/audit/
- * foo.json` and the shared `bash scripts/lib/git-add-existing.sh ... data/
- * audit/foo.json ...` helper.
+ * existing.sh` reference to `data/<basename>`. Matches the three real
+ * staging shapes seen across this repo's workflows: an inline `git add
+ * data/audit/foo.json`, the shared `bash scripts/lib/git-add-existing.sh
+ * ... data/audit/foo.json ...` helper, and the loop-staged `for f in
+ * data/audit/foo.json ...; do git add "$f"; done` idiom (see
+ * loopStagesBasename above).
  *
  * @param {string} dataPath repo-relative path, e.g. 'data/audit/foo.json'
  * @param {Record<string,string>} workflowTexts {filename: raw yaml text}
@@ -59,7 +94,7 @@ function findWritingWorkflows(dataPath, workflowTexts) {
   const re = new RegExp(`(?:git add|git-add-existing\\.sh)[^\\n]*\\bdata/${escapeRegExp(basename)}\\b`);
   const writers = [];
   for (const [wfFile, text] of Object.entries(workflowTexts || {})) {
-    if (re.test(text)) writers.push(wfFile);
+    if (re.test(text) || loopStagesBasename(text, basename)) writers.push(wfFile);
   }
   return writers;
 }
