@@ -241,9 +241,13 @@ const CORE_DATA_MERGE_REGISTRY = [
   // each has exactly ONE writer (data-health-check.yml) sharing that
   // workflow's own concurrency group ('data-health-check',
   // cancel-in-progress: false). Moved into their own isolated commit+push
-  // step ("Commit health check audit snapshots (apiFallbackSafe)",
-  // immediately after "Commit digest snapshot") so they get the same Git
-  // Data API fallback protection.
+  // step ("Commit health check audit snapshots (apiFallbackSafe)") so they
+  // get the same Git Data API fallback protection. BRO-352 (2026-09-14)
+  // later merged that step with the former "Commit digest snapshot" step
+  // (health-digest-snapshot.json's entry above) into one atomic commit —
+  // the isolation that used to separate them was silently losing writes to
+  // push-with-retry.sh's own reset-to-clean-diff step; see the merged
+  // step's comment in data-health-check.yml for the full incident.
   {
     file: 'audit/health-check-history.json',
     surface: 'public-repo',
