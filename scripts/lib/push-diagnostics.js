@@ -160,15 +160,29 @@ function clockToMs(hh, mm, ss, frac) {
   );
 }
 
+// The longest interval this module can legitimately be measuring is one push
+// attempt, bounded by GIT_NET_TIMEOUT_SEC (90s by default, and callers set it
+// lower). An hour is therefore an enormously generous ceiling on a real gap.
+const MAX_PLAUSIBLE_GAP_MS = 3600000;
+
 // Trace timestamps carry no date, so a run that crosses midnight produces a
-// smaller "later" value. Any backwards step is treated as a single day wrap —
-// these intervals are bounded by GIT_NET_TIMEOUT_SEC (at most a few minutes),
-// so a genuine backwards clock step would have to be nearly a full day to be
-// misread, and a multi-day gap is not a thing a single push can produce.
+// smaller "later" value and needs a day added.
+//
+// But NOT every backwards step is a midnight wrap, and treating them alike is
+// actively dangerous here: a kill timestamp even a few milliseconds behind the
+// last trace line (ordinary clock jitter, or NTP nudging the clock during the
+// attempt) would wrap to ~86400000ms and be reported as "86400.0s of silence"
+// — a fabricated 24-hour answer stated with total confidence. That is the
+// exact failure mode this card exists to stop, so the two cases are
+// distinguished by magnitude: a real wrap leaves a SMALL forward remainder
+// (23:59:59 -> 00:00:29 is 30s), while jitter leaves a remainder just under a
+// full day. Anything still implausible after wrapping is reported as 0 rather
+// than guessed at.
 function forwardDelta(fromMs, toMs) {
-  let d = toMs - fromMs;
-  if (d < 0) d += MS_PER_DAY;
-  return d;
+  const d = toMs - fromMs;
+  if (d >= 0) return d;
+  const wrapped = d + MS_PER_DAY;
+  return wrapped <= MAX_PLAUSIBLE_GAP_MS ? wrapped : 0;
 }
 
 /**
@@ -181,11 +195,14 @@ function forwardDelta(fromMs, toMs) {
  */
 function parseTraceRecords(traceText) {
   if (typeof traceText !== 'string' || !traceText) return [];
-  let lines = traceText.split('\n');
   // A trace killed by SIGTERM mid-write ends in a partial, newline-less line.
-  // Dropping it costs nothing (the record before it carries the same phase)
-  // and stops a half-written timestamp being parsed into a bogus record.
-  if (!traceText.endsWith('\n') && lines.length > 0) lines.pop();
+  // It is NOT dropped: the timestamp is written at the START of the line, so a
+  // line truncated mid-message still carries a fully-valid timestamp, and that
+  // is the single most useful record in a killed trace — it is the last thing
+  // git did before the silence. TRACE_LINE_RE is the arbiter: a line cut
+  // before its timestamp completes simply fails to match and is skipped, so
+  // there is no bogus-record risk to protect against by discarding it.
+  const lines = traceText.split('\n');
 
   const records = [];
   let phase = 'pre-connect';
@@ -196,6 +213,15 @@ function parseTraceRecords(traceText) {
     const m = TRACE_LINE_RE.exec(line);
     if (!m) continue;
     const [, hh, mm, ss, frac, detail] = m;
+
+    // A new request cycle starts here. Reset the service so the next request
+    // line re-derives it instead of inheriting the PREVIOUS exchange's value:
+    // a push's trace can contain more than one exchange, and carrying a stale
+    // marker forward would let one exchange's service be reported for another
+    // — which is precisely the misattribution `attributedToPush` exists to
+    // prevent. (Phase needs no explicit reset: this same line matches the
+    // 'sending-request' marker below and so resets it naturally.)
+    if (/=> Send header, \d+ bytes/.test(detail)) service = 'unknown';
 
     const svc = SERVICE_RE.exec(detail);
     if (svc) service = svc[1];
@@ -267,7 +293,12 @@ function censusTrace(traceText) {
   for (const r of records) {
     const req = /=> Send header: ((?:GET|POST|PUT|HEAD) \S+)/.exec(r.detail);
     if (!req) continue;
-    requests.push(req[1]);
+    // Redact before collecting, not after. These strings go straight into CI
+    // logs via the census line, bypassing redact-tail entirely — and this repo
+    // pushes to data repos over URLs carrying an embedded access token, so a
+    // request line is exactly the shape that can leak one. Defense in depth on
+    // a credential path costs one call.
+    requests.push(redactCurlTrace(req[1]));
     // One count per actual request line, so the totals mean "exchanges" and
     // stay equal to requests.length — not "lines mentioning a service", which
     // double-counts the byte-count line that precedes every request.

@@ -180,6 +180,8 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
   const pkt = (line) =>
     Buffer.from((line.length + 4).toString(16).padStart(4, '0') + line);
 
+  let advertisementFailed = false;
+
   // Minimal git smart-HTTP: answer the ref advertisement for real (delegated
   // to git itself, so the pkt-line format is never hand-rolled), then accept
   // the receive-pack POST, send response headers, and STALL forever.
@@ -190,6 +192,15 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
         ['receive-pack', '--stateless-rpc', '--advertise-refs', bare],
         { maxBuffer: 1 << 24 }
       ).stdout;
+      if (!adv || adv.length === 0) {
+        // No advertisement means this environment's git cannot serve
+        // receive-pack. Answering 500 makes the client fail FAST and loudly
+        // rather than letting the test sit until its own kill timer, which
+        // would look like the stall under test and assert against garbage.
+        advertisementFailed = true;
+        res.writeHead(500).end();
+        return;
+      }
       res.writeHead(200, {
         'content-type': 'application/x-git-receive-pack-advertisement',
         'cache-control': 'no-cache',
@@ -265,6 +276,10 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
       `${String(d.getMinutes()).padStart(2, '0')}:` +
       `${String(d.getSeconds()).padStart(2, '0')}.` +
       `${String(d.getMilliseconds()).padStart(3, '0')}000`;
+
+    if (advertisementFailed) {
+      return t.skip('this environment\'s git cannot serve receive-pack');
+    }
 
     const traceText = fs.readFileSync(trace, 'utf8');
 

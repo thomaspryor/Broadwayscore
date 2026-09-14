@@ -102,13 +102,25 @@ test('parseTraceClock: parses micro- and nanosecond precision, rejects junk', ()
   assert.equal(parseTraceClock(undefined), null);
 });
 
-test('parseTraceRecords: drops a trailing partial line from a SIGTERM-killed trace', () => {
-  // A trace killed mid-write ends without a newline. Parsing that fragment
-  // could yield a record with a half-written timestamp.
+test('parseTraceRecords: a trailing line cut BEFORE its timestamp completes yields no record', () => {
+  // A trace killed mid-write ends without a newline. A fragment too short to
+  // carry a full timestamp must not become a record with a half-written time.
   const complete = line('10:00:00.000000', '== Info: Connected to github.com');
-  const withPartial = complete + '10:00:01.1';
-  assert.equal(parseTraceRecords(withPartial).length, 1);
+  assert.equal(parseTraceRecords(complete + '10:00:01.1').length, 1);
   assert.equal(parseTraceRecords(complete).length, 1);
+});
+
+test('parseTraceRecords: a trailing line cut mid-MESSAGE keeps its (valid) timestamp', () => {
+  // The timestamp is written at the start of the line, so a line truncated
+  // partway through its message still carries a fully valid one — and in a
+  // killed trace that is the single most useful record, being the last thing
+  // git did before the silence. Discarding it would shift the terminal gap's
+  // start point earlier and overstate the stall.
+  const complete = line('10:00:00.000000', '== Info: Connected to github.com');
+  const cutMidMessage = complete + '10:00:02.500000 http.c:889              <= Recv hea';
+  const records = parseTraceRecords(cutMidMessage);
+  assert.equal(records.length, 2);
+  assert.equal(records[1].stamp, '10:00:02.500000');
 });
 
 test('parseTraceRecords: skips headless lines from a mid-line-truncated tail', () => {
@@ -212,6 +224,31 @@ test('extractPhaseTimeline: a kill time across midnight is a forward wrap, never
   const t = line('23:59:59.000000', '<= Recv header: HTTP/2 200');
   const timeline = extractPhaseTimeline({ traceText: t, killedAt: '00:00:29.000000' });
   assert.equal(timeline.dominantGap.ms, 30000);
+});
+
+test('extractPhaseTimeline: a few ms of BACKWARDS clock jitter is 0, not a fabricated 24 hours', () => {
+  // Regression test for a real bug found in adversarial review: treating every
+  // backwards step as a midnight wrap turned 5ms of clock jitter into a
+  // confident "86400.0s of silence". A 24h answer from a 90s-bounded operation
+  // is exactly the kind of confidently-wrong output this card exists to stop.
+  const t =
+    line('10:00:00.000000', '== Info:   Trying 1.2.3.4...') +
+    line('10:00:01.000000', '<= Recv header: HTTP/2 200');
+  const timeline = extractPhaseTimeline({ traceText: t, killedAt: '10:00:00.995000' });
+  assert.ok(
+    timeline.dominantGap.ms < 60000,
+    `backwards jitter must not wrap to a day, got ${timeline.dominantGap.ms}ms`
+  );
+});
+
+test('extractPhaseTimeline: an elapsedMs shorter than the trace span does not wrap either', () => {
+  const t =
+    line('10:00:00.000000', '== Info:   Trying 1.2.3.4...') +
+    line('10:00:10.000000', '<= Recv header: HTTP/2 200');
+  // elapsed (1s) is shorter than the trace's own 10s span — incoherent input.
+  const timeline = extractPhaseTimeline({ traceText: t, elapsedMs: 1000 });
+  const terminal = timeline.gaps.find((g) => g.terminal);
+  assert.ok(terminal.ms < 60000, `expected a clamped value, got ${terminal.ms}ms`);
 });
 
 test('extractPhaseTimeline: elapsedMs is accepted as a fallback and flagged approximate', () => {
