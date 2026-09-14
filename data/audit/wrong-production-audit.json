@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-14T16:01:23.959Z",
+  "timestamp": "2026-09-14T16:39:35.764Z",
   "stats": {
-    "totalReviews": 43202,
-    "alreadyFlagged": 17951,
-    "dateGuardCatches": 237,
+    "totalReviews": 43223,
+    "alreadyFlagged": 17953,
+    "dateGuardCatches": 236,
     "directorMismatch": 1047,
     "tvFilmSignals": 1267,
-    "londonSignals": 1053,
+    "londonSignals": 1054,
     "offBroadwaySignals": 504,
     "yearMismatch": 91,
-    "noPublishDate": 3719
+    "noPublishDate": 3712
   },
   "findings": [
     {
@@ -19253,20 +19253,6 @@
     },
     {
       "showId": "much-ado-about-nothing-2026",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 79,
-      "publishDate": "2025-02-20",
-      "url": "https://www.londontheatre.co.uk/reviews/much-ado-about-nothing-review-theatre-royal-drury-lane",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
       "file": "times-uk--dominic-maxwell.json",
       "score": 71,
       "publishDate": "2025-02-23",
@@ -36797,6 +36783,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 49,
+      "publishDate": "2026-09-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
