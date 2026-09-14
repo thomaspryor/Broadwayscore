@@ -1,90 +1,78 @@
 {
-  "generatedAt": "2026-08-24T12:02:22.884Z",
+  "generatedAt": "2026-09-14T17:06:00.998Z",
   "verdict": "ok",
-  "reason": "3 search method(s) within 0.15 of their 2-run median",
+  "reason": "3 search method(s) within 0.15 of their 3-run median",
   "regressions": [],
   "comparedArms": 3,
-  "trendEntries": 3,
+  "trendEntries": 4,
   "latest": {
-    "date": "2026-08-24",
-    "generatedAt": "2026-08-24T12:02:22.884Z",
+    "date": "2026-09-14",
+    "generatedAt": "2026-09-14T17:06:00.998Z",
     "naivePages": 2,
     "shows": 5,
     "excluded": {},
-    "truthUrls": 125,
-    "onDiskUrls": 117,
-    "newFromNaive": 6,
+    "truthUrls": 80,
+    "onDiskUrls": 66,
+    "newFromNaive": 9,
     "families": {
-      "naive": 0.296,
-      "onDisk": 0.936,
-      "scoped": 0.136
+      "naive": 0.463,
+      "onDisk": 0.825,
+      "scoped": 0.2
     },
     "arms": {
-      "naive-p0": 0.16,
-      "naive-p1": 0.136,
-      "onDisk": 0.936,
-      "scoped-q0": 0.08,
-      "scoped-q1": 0.104,
-      "scoped-q2": 0.024
+      "naive-p0": 0.263,
+      "naive-p1": 0.2,
+      "onDisk": 0.825,
+      "scoped-q0": 0.163,
+      "scoped-q1": 0.138
     },
-    "combinedRecall": 0.952,
+    "combinedRecall": 0.888,
     "familyYield": {
       "naive": 7.4,
-      "onDisk": 23.4,
-      "scoped": 3.4
+      "onDisk": 13.2,
+      "scoped": 3.2
     },
     "armYield": {
-      "naive-p0": 4,
-      "naive-p1": 3.4,
-      "onDisk": 23.4,
-      "scoped-q0": 2,
-      "scoped-q1": 2.6,
-      "scoped-q2": 0.6
+      "naive-p0": 4.2,
+      "naive-p1": 3.2,
+      "onDisk": 13.2,
+      "scoped-q0": 2.6,
+      "scoped-q1": 2.2
     },
     "armsFailed": {
       "naive-p0": 0,
       "naive-p1": 0,
       "onDisk": 0,
       "scoped-q0": 0,
-      "scoped-q1": 0,
-      "scoped-q2": 0
+      "scoped-q1": 0
     },
     "unavailableArms": [],
     "byCategory": {
       "off-broadway": {
-        "shows": 1,
-        "truthUrls": 7,
+        "shows": 2,
+        "truthUrls": 27,
         "families": {
-          "naive": 0.571,
-          "onDisk": 0.857,
-          "scoped": 0.143
+          "naive": 0.37,
+          "onDisk": 0.741,
+          "scoped": 0.074
         }
       },
       "off-west-end": {
         "shows": 3,
-        "truthUrls": 91,
+        "truthUrls": 53,
         "families": {
-          "naive": 0.341,
-          "onDisk": 0.934,
-          "scoped": 0.154
-        }
-      },
-      "west-end": {
-        "shows": 1,
-        "truthUrls": 27,
-        "families": {
-          "naive": 0.074,
-          "onDisk": 0.963,
-          "scoped": 0.074
+          "naive": 0.509,
+          "onDisk": 0.868,
+          "scoped": 0.264
         }
       }
     },
     "sampleIds": [
-      "as-you-like-it-globe-west-end-2026",
-      "spellbound-off-broadway-2026",
-      "abigails-party-west-end-2026",
-      "jeeves-takes-charge-west-end-2026",
-      "anansi-the-spider-west-end-2026"
+      "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "night-city-off-west-end-2026",
+      "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
+      "the-human-voice-the-seven-deadly-sins-west-end-2026",
+      "safe-house-off-broadway-2026"
     ]
   }
 }
