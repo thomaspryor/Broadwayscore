@@ -40,7 +40,7 @@ const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, sus
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
-const { isBroadwayCategory, isMisCategorisedNonNycRow, isNonNycLocale } = require('./lib/venue-classification');
+const { isBroadwayCategory, isMisCategorisedNonNycRow } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
