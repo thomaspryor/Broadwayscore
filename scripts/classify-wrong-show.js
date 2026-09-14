@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { GEMINI_FLASH } = require('./lib/models');
 const { mergeWriteCheckpoint, deleteCheckpointIfCaughtUp } = require('./lib/classify-checkpoint');
 
@@ -380,6 +380,7 @@ async function main() {
             data.wrongShowReason = `LLM: ${parsed.reasoning}`;
             data.wsClassified = 'wrong_show';
             data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
+            invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
             const r = safeWriteReview(candidate.filePath, data);
             if (r.lockedSkipped) lockedSkipCount++;
             stats.applied++;
@@ -389,6 +390,7 @@ async function main() {
             data.wrongShowReason = `LLM (medium): ${parsed.reasoning}`;
             data.wsClassified = 'wrong_show';
             data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
+            invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
             const r = safeWriteReview(candidate.filePath, data);
             if (r.lockedSkipped) lockedSkipCount++;
             stats.applied++;

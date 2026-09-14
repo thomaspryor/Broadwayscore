@@ -22,17 +22,28 @@ import { loadWorkflow, findStep } from '../helpers/workflow-push-timeout.mjs';
  * GIT_NET_TIMEOUT_SEC is set to) before falling back to the REST API — so
  * BOTH REST-opted-in steps now ALSO set GIT_NET_TIMEOUT_SEC=30, and are their
  * own hybrid category below rather than "REST-only, no timeout needed."
+ *
+ * BRO-3318 (2026-09-14) split the former "Commit health check + triage data"
+ * step in two: "Commit triage data" (data/audit/triage/ alone — still
+ * genuinely fallback-disqualified, GIT_NET_TIMEOUT_SEC-only, same as before)
+ * and "Commit alert router state (apiFallbackMerge)" (alert-ledger.json/
+ * alert-digest-queue.json/alert-router-attempts.jsonl — these 3 gained real
+ * apiFallbackMerge registration back on 2026-09-04/BRO-2413 but were still
+ * bundled with the disqualified triage/ directory until this split, so they
+ * never actually reached the REST path they'd been registered for). The new
+ * alert-router-state step joins the hybrid category below.
  */
 
 const WORKFLOW = 'data-health-check.yml';
 const JOB = 'health-check';
 const GIT_NET_TIMEOUT_ONLY_STEPS = [
   { name: 'Commit acceptance recheck ledger', deadline: '900' },
-  { name: 'Commit health check + triage data', deadline: '900' },
+  { name: 'Commit triage data', deadline: '900' },
 ];
 const HYBRID_TIMEOUT_AND_REST_STEPS = [
   { name: 'Commit lifetime sweep snapshots (apiFallbackSafe)', deadline: '900' },
   { name: 'Commit health check audit snapshots (apiFallbackSafe)', deadline: '900' },
+  { name: 'Commit alert router state (apiFallbackMerge)', deadline: '900' },
 ];
 
 for (const { name, deadline } of [...GIT_NET_TIMEOUT_ONLY_STEPS, ...HYBRID_TIMEOUT_AND_REST_STEPS]) {

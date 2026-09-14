@@ -81,7 +81,7 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
-const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
@@ -1961,6 +1961,7 @@ const crossShowFingerprints = new Map();
           } else {
             d.wrongShow = true;
             d.wrongShowReason = d.wrongShowReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
+            invalidateWrongShowAutoClear(d); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
             promoted = true;
           }
         } else if (cv.wrongArticle === true && ensembleSaysReview) {
@@ -1975,6 +1976,7 @@ const crossShowFingerprints = new Map();
           } else {
             d.wrongShow = true;
             d.wrongShowReason = d.wrongShowReason || `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
+            invalidateWrongShowAutoClear(d); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
             promoted = true;
           }
         }
@@ -2061,6 +2063,7 @@ showDirs.forEach(showId => {
             } else {
               ud.wrongShow = true;
               ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
+              invalidateWrongShowAutoClear(ud); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
               promoted = true;
             }
           } else if (ucv.wrongArticle === true && uEnsembleSaysReview) {
@@ -2744,6 +2747,7 @@ showDirs.forEach(showId => {
             } else {
               data.wrongShow = true;
               data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
+              invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
               promoted = true;
             }
           } else if (cv.wrongArticle === true && ensembleSaysReview) {
@@ -2758,6 +2762,7 @@ showDirs.forEach(showId => {
             } else {
               data.wrongShow = true;
               data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
+              invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
               promoted = true;
             }
           }
@@ -2785,6 +2790,7 @@ showDirs.forEach(showId => {
           } else {
             data.wrongShow = true;
             data.contentVerificationPromoted = `rebuild: promoted via wrongShowReason fallback (stale cv)`;
+            invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
             stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
             try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
           }
@@ -3024,6 +3030,11 @@ showDirs.forEach(showId => {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
+        // At-stamp required (BRO-3225): the push-time restore only honors FRESH
+        // auto-clears (review-write-guard.js _freshWrongShowAutoClear) — mirrors
+        // the wrongProductionAutoClearedAt discipline this file already follows
+        // for the sibling field (see ~line 2937).
+        data.wrongShowAutoClearedAt = new Date().toISOString().split('T')[0];
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
@@ -3036,6 +3047,7 @@ showDirs.forEach(showId => {
         delete data.wrongShowReason;
         const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
         data.wrongShowAutoCleared = `rebuild: ${reason} bypasses wrongShow`;
+        data.wrongShowAutoClearedAt = new Date().toISOString().split('T')[0];
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }

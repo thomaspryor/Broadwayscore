@@ -193,10 +193,36 @@ jobs:
           cd ../..
           echo "Review-texts refreshed"
 
-      - name: Check if scoring needed (scheduled runs)
-        if: github.event_name == 'schedule'
+      - name: Check if scoring needed
         id: check-needed
         run: |
+          # BRO-3029: this gate used to be schedule-only (if:
+          # github.event_name == 'schedule'), so every workflow_dispatch —
+          # including the ~49-runs-in-2-days per-show auto-dispatch from
+          # scripts/lib/dispatch-rescore.js — always spun up the full
+          # pipeline even when there was nothing to score for that show,
+          # producing near-empty scoring-progress.json commits. Now runs on
+          # every trigger; downstream steps gate on `skip` OR `force_run`
+          # (set below) so an EXPLICIT dispatch request — a show_id, or any
+          # of the action-selecting inputs — is NEVER swallowed by this
+          # GLOBAL (corpus-wide, not per-show) count. That matters most for
+          # the Phase-4 runaway guard below (EMERGENCY -gt 50): its own log
+          # message tells the operator to manually dispatch
+          # retry_emergency=true after investigating, and this gate must not
+          # then block that recovery dispatch just because the rest of the
+          # corpus happens to have nothing pending.
+          FORCE_RUN=false
+          if [ -n "${{ github.event.inputs.show_id }}" ] || \
+             [ "${{ github.event.inputs.rescore }}" == "true" ] || \
+             [ "${{ github.event.inputs.retry_emergency }}" == "true" ] || \
+             [ "${{ github.event.inputs.upgrade_ensemble }}" == "true" ] || \
+             [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || \
+             [ "${{ github.event.inputs.stale_scores }}" == "true" ] || \
+             [ "${{ github.event.inputs.outdated }}" == "true" ] || \
+             [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            FORCE_RUN=true
+          fi
+          echo "force_run=$FORCE_RUN" >> $GITHUB_OUTPUT
           # ONE canonical counter for all four phases (task #652). Every phase
           # count used to be its own hand-rolled `node -e` block here, each
           # LOOSER than the selection filter scripts/llm-scoring/index.ts
@@ -304,7 +330,7 @@ jobs:
 
       - name: Build CLI arguments
         id: build-args
-        if: github.event_name != 'schedule' || steps.check-needed.outputs.skip != 'true'
+        if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
         run: |
           ARGS="--ensemble"
 
@@ -428,7 +454,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run ensemble scoring pipeline
-        if: github.event_name != 'schedule' || steps.check-needed.outputs.skip != 'true'
+        if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts ${{ steps.build-args.outputs.args }}
 
@@ -468,10 +494,21 @@ jobs:
       # skip means most scheduled runs process a small delta, not the backlog.
       # Kill switch: set repo variable DISABLE_COMPARATIVE_RESCORE=1.
       - name: Comparative within-band rescore (WE/OWE anchored-v6, capped)
-        if: steps.check-needed.outputs.skip != 'true' && vars.DISABLE_COMPARATIVE_RESCORE != '1'
+        if: (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true') && vars.DISABLE_COMPARATIVE_RESCORE != '1'
         continue-on-error: true
         run: |
-          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --all-we --max-rescores=30
+          # BRO-3029: used to always pass --all-we, so a single-show dispatch
+          # (e.g. the per-show auto-rescore from dispatch-rescore.js) fired a
+          # comparative pass across EVERY West End show's anchored-v6 backlog,
+          # rewriting unrelated shows' scores nobody aimed this run at.
+          # comparative-rescore.ts already supports --show=ID; a Broadway
+          # show_id just finds zero anchored-v6 groups and no-ops (that scope
+          # is WE/OWE-only by design — see the script's own header).
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --show=${{ github.event.inputs.show_id }} --max-rescores=30
+          else
+            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --all-we --max-rescores=30
+          fi
 
       # Liveness snapshot (task #597): the drain step above only tells you it
       # RAN, not whether the backlog actually moved — a queue can sit at the
@@ -681,7 +718,7 @@ jobs:
           dispatch_with_retry "$REBUILD_WF" -f reason="$REASON" || true
 
       - name: Count remaining unscored reviews
-        if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && steps.check-needed.outputs.skip != 'true'
+        if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true')
         id: count-remaining
         run: |
           # Count review files without llmScore (excluding unscorable: roundups, garbage, no text)
@@ -723,7 +760,7 @@ jobs:
           always() && job.status != 'cancelled'
           && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && steps.check-changes.outputs.has_scored_reviews == 'false'
-          && steps.check-needed.outputs.skip != 'true'
+          && (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true')
         run: |
           REMAINING="${{ steps.count-remaining.outputs.remaining }}"
           echo "::notice::Scoring run processed 0 reviews with ${REMAINING} remaining unscored (likely all have insufficient text)"

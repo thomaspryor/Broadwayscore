@@ -895,26 +895,98 @@ jobs:
       # headroom past its new 900s internal deadline even after every step
       # ahead of it in this job.
       #
-      # BRO-2370 DEFECT B (deliberately NOT applying the fix here):
+      # BRO-2370 DEFECT B history (superseded by BRO-3318 split below):
       # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 was added to the apiFallbackSafe
       # steps above ("Commit lifetime sweep snapshots", "Commit health check
       # audit snapshots", "Commit acceptance recheck ledger" — BRO-352 merged
       # two of the original steps into one, BRO-472 added a new one, net
       # unchanged at 3) to make their Git Data API fallback reachable (see
       # "Commit health check audit snapshots (apiFallbackSafe)"'s comment).
-      # Do NOT "helpfully" add it here
-      # too — the 4 files this step stages (triage/, alert-ledger.json,
-      # alert-digest-queue.json, alert-router-attempts.jsonl) are verified
-      # genuinely multi-writer with no apiFallbackSafe registration, so the
-      # fallback is disqualified on its own merits regardless (see the
-      # comment a few lines below). Cutting this step's attempt budget from
-      # MAX_RETRIES=25 to an early break at attempt 3 would only reintroduce
-      # the exact regression aa51b22c558/task #1842 fixed (7 retries wasn't
-      # enough attempts for this step's real contention) — reachable-fallback
-      # steps get the early-break override, disqualified-fallback steps keep
-      # their full retry budget instead. (second-opinion review, 2026-09-04)
-      - name: Commit health check + triage data
+      # This job used to bundle triage/, alert-ledger.json, alert-digest-
+      # queue.json, and alert-router-attempts.jsonl into ONE step and treat
+      # all 4 as equally fallback-disqualified ("verified genuinely
+      # multi-writer (2026-08-23), no apiFallbackSafe path available for
+      # them"). That was already stale by the time it mattered: BRO-2413
+      # (2026-09-04, 10 days before this split) registered the 3 non-triage
+      # files `apiFallbackMerge: true` in core-data-merge-registry.js with
+      # real per-key reconciliation functions (mergeAlertLedger/
+      # mergeAlertDigestQueue/mergeAlertRouterAttempts) — push-via-git-api.sh
+      # looks them up unconditionally, no env opt-in needed. Only
+      # data/audit/triage/ (a directory, a different shape from the
+      # registry's single-file merge contract — see its own "NOT added"
+      # comment in core-data-merge-registry.js) genuinely has no fallback
+      # path. Because push-with-retry.sh's disqualifier is a `.find()` over
+      # the WHOLE staged diff, bundling triage/ into the same commit as the
+      # other 3 disqualified the fallback for ALL 4 — so the 3 mergeable
+      # files were silently riding on the slow fetch+rebase+push loop alone,
+      # identical to a file with no protection at all. BRO-3318 (2026-09-14)
+      # split them into two steps below so the 3 apiFallbackMerge files
+      # actually get the fast REST path push-with-retry.sh already offers
+      # every other apiFallbackSafe/Merge step in this job, instead of
+      # resting on continue-on-error as the only safety net.
+      - name: Commit alert router state (apiFallbackMerge)
         if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          # Same override as "Commit lifetime sweep snapshots"/"Commit health
+          # check audit snapshots" above — makes the fallback reachable
+          # within the deadline instead of exhausting all 25 local attempts
+          # first (BRO-2370 DEFECT B). Safe here because these 3 files are
+          # apiFallbackMerge-covered, unlike the triage/ step below.
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No alert router state changes"
+          else
+            git commit -m "data: Update alert router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # data/audit/triage/ split out alone (BRO-3318, 2026-09-14): a
+      # directory of per-item files, structurally different from the
+      # registry's single-file {ours,remote}->merged contract, so it has no
+      # apiFallbackMerge path and (per core-data-merge-registry.js's own
+      # comment) "needs its own design, out of scope" — genuinely
+      # fallback-disqualified, not just under-registered like its former
+      # 3 bundle-mates above.
+      #
+      # continue-on-error: true (BRO-3318): this was the ONLY commit step in
+      # the job without it, on the theory that a lost push here was uniquely
+      # page-worthy (see the incident comment above — run 32344089679 is why
+      # it fired the critical alert). Field evidence from the SAME day this
+      # card was filed falsified that theory: runs 34841009910 (11:59 UTC)
+      # and 34848771085 (13:21 UTC, AFTER BRO-352/BRO-471/BRO-472 landed at
+      # 12:31 UTC — ruling those fixes out as the cause) both crashed on
+      # THIS step (then still bundled with the 3 files above), both with the
+      # identical signature — all 13 local push attempts failing with
+      # rc=124 "killed mid-transport at the 30s cap... a transport HANG, not
+      # a rejection" (task #1810's known GitHub git-transport degradation,
+      # not a rebase/data bug), correctly DISQUALIFIED from the fallback.
+      # That combination — real transport degradation this step has no
+      # escape hatch from — crashed the job on every run for a week
+      # (2026-09-07 through 2026-09-14+), paging on infrastructure noise
+      # instead of a real data-loss signal, while masking the one thing this
+      # workflow uniquely hosts: scripts/autonomous-acceptance-recheck.js's
+      # shadow-mode recheck ledger (confirmed via the run logs to still
+      # execute successfully every time — it runs and commits in its own
+      # earlier, already-continue-on-error step, unaffected by this one).
+      # record_push_failure() (scripts/lib/push-with-retry.sh) writes to
+      # data/audit/push-retry-failures.jsonl unconditionally on exhaustion,
+      # independent of continue-on-error, and health-check.js surfaces that
+      # ledger as the "Push-retry deadman" digest row — so a lost push here
+      # still reaches the owner, just via the non-critical daily digest
+      # instead of a critical page + a false "Daily Data Health Check
+      # Crashed" reading of the whole job.
+      - name: Commit triage data
+        if: always()
+        continue-on-error: true
         env:
           PUSH_DEADLINE_SEC: '900'
           # BRO-3068: same GIT_NET_TIMEOUT_SEC=90s hang class documented in the
@@ -942,30 +1014,19 @@ jobs:
           # autonomous-recheck-ledger.jsonl is committed+pushed in its OWN
           # step much earlier in this job (BRO-386, "Commit acceptance
           # recheck ledger"; repositioned to run immediately after its own
-          # write step by BRO-471, 2026-09-14 — see that step's comment) —
-          # NOT added here, so a bulk-commit push failure can never take the
-          # recheck verdicts down with it again. That file is now registered
-          # apiFallbackSafe too, so a stranded commit from that step cannot
-          # disqualify THIS step's Git Data API fallback either — though this
-          # step's fallback is disqualified on its own merits regardless, by
-          # the 4 deliberately-unregistered multi-writer paths it stages.
+          # write step by BRO-471, 2026-09-14 — see that step's comment).
           # health-digest-snapshot.json (Card #364's file) is committed+pushed
           # in the earlier "Commit health check audit snapshots
-          # (apiFallbackSafe)" step above (originally its own isolated step,
-          # "Commit digest snapshot", Notion 3c4637c5-416f-8127 (run
-          # 32559247279 push-race); merged into that step by BRO-352) — NOT
-          # added here, so a bulk-commit push failure can never take the one
-          # file the failure alert cares about down with it again.
-          # 4 files remain here — verified genuinely multi-writer (2026-08-23),
-          # no apiFallbackSafe path available for them:
+          # (apiFallbackSafe)" step above. alert-ledger.json/alert-digest-
+          # queue.json/alert-router-attempts.jsonl moved to their own earlier
+          # "Commit alert router state (apiFallbackMerge)" step (BRO-3318,
+          # 2026-09-14) — see that step's comment for why they no longer
+          # share a commit with triage/.
           git add data/audit/triage/ 2>/dev/null || true
-          git add data/audit/alert-ledger.json 2>/dev/null || true
-          git add data/audit/alert-digest-queue.json 2>/dev/null || true
-          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
-            echo "No health check data changes"
+            echo "No triage data changes"
           else
-            git commit -m "data: Update health check + triage state [skip ci]"
+            git commit -m "data: Update triage state [skip ci]"
             bash scripts/lib/push-with-retry.sh 25 main
           fi
 

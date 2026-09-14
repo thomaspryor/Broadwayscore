@@ -4,6 +4,14 @@ on:
     - cron: '0 15 * * 1'  # Monday 3 PM UTC (10 AM EST, after PostHog insights at 2 PM)
   workflow_dispatch: {}
 
+# BRO-3071: added so its own cron can't race a manual workflow_dispatch into
+# a lost push on data/audit/collection-coverage.json / collection-coverage-
+# history.json (both now apiFallbackSafe — see scripts/lib/core-data-
+# merge-registry.js — which requires this dedicated group).
+concurrency:
+  group: collection-coverage-report
+  cancel-in-progress: false
+
 jobs:
   report:
     runs-on: ubuntu-latest

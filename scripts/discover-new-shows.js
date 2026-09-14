@@ -51,7 +51,7 @@ const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
-const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
@@ -339,6 +339,7 @@ async function fetchShowsFromTodayTix() {
   // Gate 1: One-night shows are filtered at TodayTix ingestion (not IBDB historical)
   const broadwayShows = allShows.filter(s => {
     if (isNonTheaterContent(s) || isOneNightShow(s)) return false;
+    if (isNonNycVenue(s.venue)) return false; // touring house in TodayTix's NYC feed (BRO-3211)
     // TodayTix mis-tags some Broadway shows (no "Broadway" subcat). Fall back to
     // venue: if it plays one of the 41 official Broadway houses, include it.
     // Other Desert Cities (Hudson Theatre) slipped through on subcat alone.
@@ -349,6 +350,11 @@ async function fetchShowsFromTodayTix() {
     // TodayTix mis-tags some OB shows (no "Off Broadway" subcat). Fall back to
     // venue name: if it plays a theatre we already classify as Off-Broadway,
     // include it. Broken Snow (Theatre 71) slipped through on subcat alone.
+    // Checked BEFORE taggedOB: TodayTix tags out-of-state touring houses
+    // "Off Broadway" (Beetlejuice @ State Theatre New Jersey, verified against
+    // the live API 2026-09-14), so the tag cannot be trusted to exclude them
+    // and the venue-allowlist fallback below never gets a chance to. BRO-3211.
+    if (isNonNycVenue(s.venue)) return false;
     const taggedOB = s.subcategories?.some(sc => sc.name === 'Off Broadway');
     if (!taggedOB && !isKnownOffBroadwayVenue(s.venue)) return false;
     return !isNonTheaterContent(s) && !isOneNightShow(s);
@@ -363,6 +369,14 @@ async function fetchShowsFromTodayTix() {
   if (filteredByOneNight.length > 0) {
     console.log(`  Filtered ${filteredByOneNight.length} one-night events: ${filteredByOneNight.map(s => s.displayName || s.name).join(', ')}`);
   }
+  // Non-NYC touring houses (BRO-3211). Logged even at zero: this guard is the
+  // only thing standing between a TodayTix row tagged "Off Broadway" at an
+  // out-of-state venue and a bogus Off-Broadway production, and it matches the
+  // venue by name. If TodayTix ever renames the venue the guard silently stops
+  // matching, so a run that prints 0 here when the road date is still listed is
+  // the signal that it has drifted — without the line there is no evidence either way.
+  const filteredByNonNyc = allShows.filter(s => isNonNycVenue(s.venue));
+  console.log(`  Filtered ${filteredByNonNyc.length} non-NYC touring-house shows${filteredByNonNyc.length ? `: ${filteredByNonNyc.map(s => `${s.displayName || s.name} @ ${s.venue?.name || s.venue}`).join(', ')}` : ''}`);
 
   // Deduplicate by displayName (API sometimes has duplicate listings)
   const seen = new Set();
