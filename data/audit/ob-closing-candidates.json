@@ -1,13 +1,15 @@
 {
-  "generatedAt": "2026-08-31T18:34:12.480Z",
-  "mode": "dry-run",
+  "generatedAt": "2026-09-14T17:22:18.777Z",
+  "mode": "apply",
+  "autoApplied": [],
   "reviewTextSweep": {
-    "scanned": 36,
-    "showsWithNoTexts": 2,
+    "scanned": 31,
+    "showsWithNoTexts": 5,
     "candidates": [
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
         "proposedClosingDate": "2026-04-05",
+        "latestMentionedDate": "2026-04-12",
         "confidence": "high",
         "reason": "4 reviews agree",
         "evidence": [
@@ -30,50 +32,6 @@
             "reviewId": "my-joy-is-heavy-off-broadway-2025/vulture--sara-holdren.json",
             "isoDate": "2026-04-05",
             "quote": "through April 5"
-          }
-        ]
-      },
-      {
-        "showId": "dukes-off-broadway-2026",
-        "proposedClosingDate": "2026-08-02",
-        "confidence": "medium",
-        "reason": "single review, 3.6wk implied run length",
-        "evidence": [
-          {
-            "reviewId": "dukes-off-broadway-2026/broadwayworld--unknown.json",
-            "isoDate": "2026-08-02",
-            "quote": "run through Sunday August 2, 2026"
-          },
-          {
-            "reviewId": "dukes-off-broadway-2026/broadwayworld--unknown.json",
-            "isoDate": "2026-08-02",
-            "quote": "run through Sunday August 2, 2026"
-          }
-        ]
-      },
-      {
-        "showId": "masticate-off-broadway-2026",
-        "proposedClosingDate": "2026-08-23",
-        "confidence": "medium",
-        "reason": "single review, 2.4wk implied run length",
-        "evidence": [
-          {
-            "reviewId": "masticate-off-broadway-2026/theater-scene--unknown.json",
-            "isoDate": "2026-08-23",
-            "quote": "through August 23, 2026"
-          }
-        ]
-      },
-      {
-        "showId": "marlise-off-broadway-2026",
-        "proposedClosingDate": "2026-09-06",
-        "confidence": "medium",
-        "reason": "single review, 3.4wk implied run length",
-        "evidence": [
-          {
-            "reviewId": "marlise-off-broadway-2026/playbill--unknown.json",
-            "isoDate": "2026-09-06",
-            "quote": "through September 6"
           }
         ]
       }
@@ -158,6 +116,26 @@
             "quote": "through May 20"
           }
         ]
+      },
+      {
+        "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
+        "mentions": [
+          {
+            "reviewId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/theater-pizzazz--carol-rocamora.json",
+            "isoDate": "2024-11-10",
+            "quote": "Through November 10"
+          }
+        ]
+      },
+      {
+        "showId": "safe-house-off-broadway-2026",
+        "mentions": [
+          {
+            "reviewId": "safe-house-off-broadway-2026/blogcritics--jon-sobel.json",
+            "isoDate": "2026-09-13",
+            "quote": "runs through September 13, 2026"
+          }
+        ]
       }
     ],
     "suppressed": [
@@ -197,28 +175,18 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "the-house-of-the-negro-insane-off-broadway-2026",
-        "proposedClosingDate": "2026-09-06",
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "shifters-off-broadway-2026",
         "proposedClosingDate": "2026-08-30",
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
-        "proposedClosingDate": "2026-09-11",
-        "reason": "already-has-closing-date"
-      },
-      {
-        "showId": "the-black-mirror-experience-off-broadway-2026",
-        "proposedClosingDate": "2026-09-06",
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "disruption-off-broadway-2026",
         "proposedClosingDate": "2026-09-27",
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "garry-starr-classic-penguins-off-broadway-2026",
+        "proposedClosingDate": "2026-10-11",
         "reason": "already-has-closing-date"
       },
       {
@@ -237,8 +205,13 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "benevolent-off-broadway-2026",
-        "proposedClosingDate": "2026-09-05",
+        "showId": "the-ford-hill-project-off-broadway-2026",
+        "proposedClosingDate": "2026-09-20",
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "becoming-hamlet-off-broadway-2026",
+        "proposedClosingDate": "2026-10-03",
         "reason": "already-has-closing-date"
       }
     ]
@@ -249,33 +222,18 @@
     "candidates": [
       {
         "showId": "pied-a-terre-off-broadway-2026",
-        "consecutiveMissingChecks": 5,
+        "consecutiveMissingChecks": 6,
         "firstMissingDate": "2026-08-03"
       },
       {
-        "showId": "los-soles-truncos-off-broadway-2025",
-        "consecutiveMissingChecks": 3,
-        "firstMissingDate": "2026-08-17"
-      },
-      {
         "showId": "drunk-shakespeare-off-broadway-2022",
-        "consecutiveMissingChecks": 9,
+        "consecutiveMissingChecks": 10,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
-        "consecutiveMissingChecks": 8,
-        "firstMissingDate": "2026-07-13"
-      },
-      {
-        "showId": "age-is-a-feeling-off-broadway-2024",
         "consecutiveMissingChecks": 9,
-        "firstMissingDate": "2026-07-12"
-      },
-      {
-        "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
-        "consecutiveMissingChecks": 5,
-        "firstMissingDate": "2026-08-03"
+        "firstMissingDate": "2026-07-13"
       }
     ]
   }
