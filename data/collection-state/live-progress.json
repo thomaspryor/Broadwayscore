@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-14T21:08:06.528Z",
-  "processed": 73,
-  "failed": 273,
-  "successRate": "21.1%",
+  "updatedAt": "2026-09-14T22:10:19.773Z",
+  "processed": 83,
+  "failed": 282,
+  "successRate": "22.7%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 13,
-    "brightdata": 8,
+    "brightdata": 11,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 10
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-14T17:16:48.481Z",
@@ -25,6 +25,39 @@
       "t": "2026-09-14T17:16:49.375Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-14T22:03:11.041Z",
+      "event": "bb-session",
+      "session": "c9f81f38",
+      "url": "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough"
+    },
+    {
+      "t": "2026-09-14T22:03:11.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-14T22:04:06.255Z",
+      "event": "bb-session",
+      "session": "cd5084f5",
+      "url": "https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c"
+    },
+    {
+      "t": "2026-09-14T22:04:07.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-09-14T22:09:43.531Z",
+      "event": "bb-session",
+      "session": "e8df02ed",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-14T22:09:44.485Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }

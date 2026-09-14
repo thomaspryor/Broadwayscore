@@ -72,10 +72,19 @@
     "burlesque-west-end-2026/thereviewshub--unknown.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "stranger-things-2024/timeout--unknown.json"
+    "stranger-things-2024/timeout--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+    "night-city-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
+    "man-to-man-west-end-2026/bestoftheatre--unknown.json",
+    "man-to-man-west-end-2026/london-theatre--unknown.json",
+    "man-to-man-west-end-2026/standard--nick-curtis.json",
+    "man-to-man-west-end-2026/theqr--unknown.json",
+    "tartuffe-remixed-off-west-end-2026/standard--unknown.json",
+    "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
+    "jane-eyre-off-west-end-2026/guardian--holly-omahony.json",
+    "jane-eyre-off-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
-    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
     "night-city-off-west-end-2026/southwarkplayhouse--unknown.json",
     "man-to-man-west-end-2026/deadline--pete-hammond.json",
     "man-to-man-west-end-2026/deadline--unknown.json",
@@ -347,7 +356,17 @@
     "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
     "buena-vista-social-club-2025/observer--david-cote.json",
     "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
-    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+    "night-city-off-west-end-2026/reviewsgate--william-russell.json",
+    "night-city-off-west-end-2026/thestage--unknown.json",
+    "man-to-man-west-end-2026/airmail--air-mail.json",
+    "man-to-man-west-end-2026/financialtimes--unknown.json",
+    "man-to-man-west-end-2026/the-recs--unknown.json",
+    "man-to-man-west-end-2026/theatremonkey--unknown.json",
+    "man-to-man-west-end-2026/thestage--unknown.json",
+    "tartuffe-remixed-off-west-end-2026/thestage--unknown.json",
+    "the-children-off-west-end-2026/thestage--unknown.json",
+    "the-children-off-west-end-2026/times-uk--the-times.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -397,11 +416,17 @@
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
       "burlesque-west-end-2026/thereviewshub--unknown.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "stranger-things-2024/timeout--unknown.json"
+      "stranger-things-2024/timeout--unknown.json",
+      "night-city-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
+      "man-to-man-west-end-2026/bestoftheatre--unknown.json",
+      "man-to-man-west-end-2026/london-theatre--unknown.json",
+      "man-to-man-west-end-2026/theqr--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/man-to-man-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/the-children-off-west-end-2026/times-uk--the-times.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -427,7 +452,10 @@
       "the-lost-boys-2026/rollingstone--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
-      "just-in-time-2025/newyorker--conde-nast.json"
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+      "jane-eyre-off-west-end-2026/guardian--holly-omahony.json",
+      "jane-eyre-off-west-end-2026/guardian--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -437,11 +465,14 @@
       "bloodsport-after-helen-of-troy-off-west-end-2026/stratfordeast--unknown.json",
       "paranormal-activity-2026/theatermania--unknown.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-      "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+      "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+      "man-to-man-west-end-2026/standard--nick-curtis.json",
+      "tartuffe-remixed-off-west-end-2026/standard--unknown.json",
+      "the-children-off-west-end-2026/telegraph--fiona-mountford.json"
     ]
   },
   "startTime": "2026-09-14T16:57:02.293Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+  "lastProcessed": "jane-eyre-off-west-end-2026/broadwayworld--stephi-wild.json",
   "log": [
     {
       "t": "2026-09-14T17:16:48.481Z",
@@ -453,9 +484,43 @@
       "t": "2026-09-14T17:16:49.375Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-14T22:03:11.041Z",
+      "event": "bb-session",
+      "session": "c9f81f38",
+      "url": "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough"
+    },
+    {
+      "t": "2026-09-14T22:03:11.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-14T22:04:06.255Z",
+      "event": "bb-session",
+      "session": "cd5084f5",
+      "url": "https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c"
+    },
+    {
+      "t": "2026-09-14T22:04:07.129Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-09-14T22:09:43.531Z",
+      "event": "bb-session",
+      "session": "e8df02ed",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-14T22:09:44.485Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ],
   "recoveredAfterFailure": [
-    "electra-persona-west-end-2026/vocaleyes--unknown.json"
+    "electra-persona-west-end-2026/vocaleyes--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json"
   ]
 }
