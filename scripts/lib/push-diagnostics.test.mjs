@@ -332,3 +332,29 @@ test('extractPhaseTimeline: an empty trace reports no-trace rather than throwing
   assert.equal(timeline.dominantGap, null);
   assert.equal(timeline.records, 0);
 });
+
+test('formatTimeline: a measurable inter-record gap does not hide an UNMEASURABLE terminal one', () => {
+  // The winning number here is real, but it is not the answer to "where did
+  // the timeout go" — the interval that consumed it is the one that could not
+  // be measured. Reporting "2.0s between trace lines" alone reads as "the push
+  // barely paused" (adversarial review: the implausible-gap fix stopped one
+  // step short of its own goal).
+  const t =
+    line('10:00:00.000000', '== Info:   Trying 1.2.3.4...') +
+    line('10:00:02.000000', '<= Recv header: HTTP/2 200');
+  const timeline = extractPhaseTimeline({ traceText: t, killedAt: '13:00:00.000000' });
+  assert.equal(timeline.dominantGap.terminal, false, 'the measurable inter-record gap wins');
+  assert.equal(timeline.dominantGap.ms, 2000);
+  const out = formatTimeline(timeline);
+  assert.match(out, /terminal interval .* could not be measured/);
+  assert.match(out, /NOT located by this number/);
+});
+
+test('formatTimeline: a fully measurable timeline carries NO such caveat', () => {
+  const t =
+    line('10:00:00.000000', '== Info:   Trying 1.2.3.4...') +
+    line('10:00:02.000000', '<= Recv header: HTTP/2 200');
+  const timeline = extractPhaseTimeline({ traceText: t, killedAt: '10:00:32.000000' });
+  assert.equal(timeline.dominantGap.terminal, true);
+  assert.doesNotMatch(formatTimeline(timeline), /could not be measured/);
+});
