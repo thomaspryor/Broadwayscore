@@ -236,6 +236,26 @@ test('addUsage + estimateCostUSD: flat-only events (no nested cache_creation eve
   assert.equal(estimateCostUSD(total, 'claude-opus-5'), 9.3765);
 });
 
+test('addUsage: nested cache_creation created lazily still accumulates correctly when a later event supplies it (BRO-3100)', () => {
+  // First event carries no cache_creation at all (older-shape event); a
+  // later event in the same session does. The lazy `if (!t.cache_creation)`
+  // guard must still create and accumulate it correctly, not drop it or
+  // throw on the second call.
+  let t = addUsage(null, { input_tokens: 1, cache_creation_input_tokens: 50 });
+  assert.equal(t.cache_creation, undefined);
+  t = addUsage(t, {
+    input_tokens: 1, cache_creation_input_tokens: 300,
+    cache_creation: { ephemeral_1h_input_tokens: 200, ephemeral_5m_input_tokens: 100 },
+  });
+  assert.equal(t.cache_creation_input_tokens, 350);
+  assert.equal(t.cache_creation.ephemeral_1h_input_tokens, 200);
+  assert.equal(t.cache_creation.ephemeral_5m_input_tokens, 100);
+  // A third event without cache_creation must not reset what's already accumulated.
+  t = addUsage(t, { input_tokens: 1, cache_creation_input_tokens: 10 });
+  assert.equal(t.cache_creation_input_tokens, 360);
+  assert.equal(t.cache_creation.ephemeral_1h_input_tokens, 200, 'third event without cache_creation must not reset it');
+});
+
 test('estimateCostUSD: null without usage; opus > sonnet; unknown model estimates as sonnet', () => {
   assert.equal(estimateCostUSD(null, 'sonnet'), null);
   const usage = { input_tokens: 1_000_000, output_tokens: 100_000 };
