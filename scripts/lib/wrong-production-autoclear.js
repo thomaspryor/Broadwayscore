@@ -639,6 +639,17 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
  * explicit human override must always win. This strips only our own flag —
  * recognised by its note prefix or reason — never a manual/CV/cross-market flag.
  *
+ * Defense-in-depth (#1156/BRO-3328): every sibling auto-clear predicate in
+ * this file defers to hasEnsembleConsensus — a unanimous ensemble
+ * wrong_production verdict on the fetched text outranks a domain/market
+ * heuristic. This path had never been given that same guard, so a review the
+ * ensemble had already rejected on content grounds could be silently
+ * restored the moment the show gained a usable date, even though a date
+ * proves nothing about whether the text is the right production
+ * (much-ado-about-nothing-2026's london-theatre--marianka-swain.json).
+ * humanOverride is checked FIRST and still always wins, per this function's
+ * original contract above.
+ *
  * @param {object} data - the review JSON object
  * @param {object} ctx
  * @param {boolean} ctx.hasUsableDate - true if the review now has a usable date
@@ -654,7 +665,9 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
   const humanOverride = !!data.allowEarlyDate
     || !!data.wrongProductionManualClear
     || data.humanReviewedWrongProduction === true;
-  return !!hasUsableDate || humanOverride;
+  if (humanOverride) return true;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  return !!hasUsableDate;
 }
 
 /**
