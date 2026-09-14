@@ -127,10 +127,12 @@ jobs:
     #
     # BRO-352: "Commit digest snapshot" and "Commit health check audit
     # snapshots (apiFallbackSafe)" were merged into ONE step (see that step's
-    # own comment below) — down from 3 uncapped 900s-governed commit steps to
-    # 2. This only SHRINKS the worst-case sum computed above; timeout-minutes
-    # stays at 180 since that already has real margin above the new, smaller
-    # total.
+    # own comment below), which by itself would drop this job from 3 to 2
+    # uncapped 900s-governed commit steps. A concurrent fix (BRO-472) added a
+    # NEW one, "Commit lifetime sweep snapshots (apiFallbackSafe)", landing
+    # net-neutral at 3 — the same count this comment's ~90min budget already
+    # assumes, just composed of different steps than when that budget was
+    # written. timeout-minutes stays at 180.
     timeout-minutes: 180
     permissions:
       contents: write
@@ -432,6 +434,48 @@ jobs:
         timeout-minutes: 2
         run: node scripts/audit-revival-unverified-lifetime.js
 
+      # Commit the 5 lifetime-sweep snapshots (BRO-472) IMMEDIATELY after the
+      # 5 sweep steps above write them, in their own isolated step — same
+      # "isolate to shrink blast radius" reasoning as "Commit digest snapshot"
+      # below, one incident later. Root cause: these 5 files used to sit
+      # UNCOMMITTED in the working tree from here until the much-later "Commit
+      # health check audit snapshots (apiFallbackSafe)" step, with several
+      # OTHER push-with-retry.sh invocations (e.g. "Commit digest snapshot")
+      # running in between. push-with-retry.sh's Git Data API fallback path
+      # does `git reset --hard "$RESTORE_BASE_HEAD"` to get a clean diff when
+      # ITS push needs the fallback — a hard reset clears the WHOLE working
+      # tree, not just commits, so it silently wiped these 5 files' fresh,
+      # not-yet-staged content every time it fired. Confirmed live: sweep
+      # step logs "16 new since last run" (fresh content written), but the
+      # later bulk step then logs "No health check audit snapshot changes"
+      # (nothing left to commit) — these 5 files hadn't actually updated on
+      # main since 2026-09-05, a 9-day silent gap, until this fix. Committing
+      # here, before any other push-with-retry.sh call in this job can run,
+      # closes the window entirely — no other step's `git add` for these 5
+      # paths remains needed, so they're removed from the later bulk step.
+      # Same apiFallbackSafe env as "Commit health check audit snapshots"
+      # below — all 5 files are independently verified single-writer there.
+      - name: Commit lifetime sweep snapshots (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/cv-wrongproduction-lifetime.json 2>/dev/null || true
+          git add data/audit/fulltext-mentions-show-lifetime.json 2>/dev/null || true
+          git add data/audit/slug-mismatch-lifetime.json 2>/dev/null || true
+          git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
+          git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No lifetime sweep snapshot changes"
+          else
+            git commit -m "data: Update lifetime sweep snapshots [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
       # Stale announced-shows audit (BRO-2620, BRO-93). audit-stale-announced-
       # shows.js catches a show still marked status='announced' after it has
       # demonstrably already opened (Sherlock Holmes WE ran and closed entirely
@@ -583,18 +627,26 @@ jobs:
       # FIX: merge the two steps into ONE commit+push, so there is no window
       # between "file written by an earlier step" and "file committed" for a
       # DIFFERENT step's push-with-retry.sh call to land in and reset away.
-      # All 16 files here (health-digest-snapshot.json + the 15 below) are
+      # All 13 files here (health-digest-snapshot.json + the 12 below) are
       # independently registered `apiFallbackSafe: true` in scripts/lib/core-
       # data-merge-registry.js (single-writer, same concurrency group), so
       # the merge does not weaken the Git Data API fallback's own safety
       # check (see push-with-retry.sh's disqualifier) — it only removes the
       # gap between them. Traded away: the old split's failure-isolation
       # property (if this step's OWN push totally fails — both the local
-      # retry loop AND the API fallback — all 16 files miss this run
+      # retry loop AND the API fallback — all 13 files miss this run
       # together, not just some of them). Accepted because that property was
       # never what actually failed here; every observed failure of these
       # steps this week was the API fallback SUCCEEDING and then wiping a
       # sibling step's uncommitted work, which merging removes entirely.
+      #
+      # NOTE: a concurrent fix (BRO-472) independently found and closed the
+      # SAME class of gap for 5 sibling files (the "lifetime sweep"
+      # snapshots) via a different lever — committing each right after the
+      # step that writes it, in its own new earlier "Commit lifetime sweep
+      # snapshots (apiFallbackSafe)" step — rather than merging them in here.
+      # Both fixes are complementary, not overlapping: those 5 files are
+      # deliberately NOT in this step's git-add list below.
       #
       # IF YOU ADD A NEW SHADOW-MODE STEP that writes a data/audit/*.json
       # snapshot for the daily digest to read: (1) make sure it runs BEFORE
@@ -629,7 +681,7 @@ jobs:
       # at 25 — that value stays as-is because aa51b22c558 (task #1842) chose
       # it specifically to give this step many cheap retries under the
       # common low-contention case, which lowering MAX_RETRIES would regress.
-      # All 16 files here are single-writer + apiFallbackSafe, so the
+      # All 13 files here are single-writer + apiFallbackSafe, so the
       # fallback is actually usable — unlike "Commit health check + triage
       # data" below, which deliberately does not get this override (see its
       # own comment).
@@ -674,11 +726,11 @@ jobs:
           git add data/audit/linear-archive-done.jsonl 2>/dev/null || true
           git add data/audit/trunk-status-snapshot.json 2>/dev/null || true
           git add data/audit/cross-outlet-attribution-drift.json 2>/dev/null || true
-          git add data/audit/cv-wrongproduction-lifetime.json 2>/dev/null || true
-          git add data/audit/fulltext-mentions-show-lifetime.json 2>/dev/null || true
-          git add data/audit/slug-mismatch-lifetime.json 2>/dev/null || true
-          git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
-          git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
+          # cv-wrongproduction-lifetime.json, fulltext-mentions-show-lifetime.json,
+          # slug-mismatch-lifetime.json, roundup-url-mismatch-lifetime.json,
+          # revival-unverified-lifetime.json moved to their own earlier
+          # "Commit lifetime sweep snapshots (apiFallbackSafe)" step (BRO-472)
+          # — no longer added here.
           git add data/audit/stale-announced-shows.json 2>/dev/null || true
           git add data/audit/missed-broadcasts.json 2>/dev/null || true
           if git diff --staged --quiet; then
@@ -848,10 +900,13 @@ jobs:
       # ahead of it in this job.
       #
       # BRO-2370 DEFECT B (deliberately NOT applying the fix here):
-      # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 was added to the 2 apiFallbackSafe
-      # steps above (BRO-352 merged what used to be 3 into 2) to make their
-      # Git Data API fallback reachable (see "Commit health check audit
-      # snapshots (apiFallbackSafe)"'s comment). Do NOT "helpfully" add it here
+      # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 was added to the apiFallbackSafe
+      # steps above ("Commit lifetime sweep snapshots", "Commit health check
+      # audit snapshots", "Commit acceptance recheck ledger" — BRO-352 merged
+      # two of the original steps into one, BRO-472 added a new one, net
+      # unchanged at 3) to make their Git Data API fallback reachable (see
+      # "Commit health check audit snapshots (apiFallbackSafe)"'s comment).
+      # Do NOT "helpfully" add it here
       # too — the 4 files this step stages (triage/, alert-ledger.json,
       # alert-digest-queue.json, alert-router-attempts.jsonl) are verified
       # genuinely multi-writer with no apiFallbackSafe registration, so the
@@ -884,6 +939,10 @@ jobs:
           # isolated "Commit health check audit snapshots (apiFallbackSafe)"
           # step above (run 32625283171 push-race, 2026-08-23) — verified
           # single-writer, now apiFallbackSafe in core-data-merge-registry.js.
+          # BRO-472 (2026-09-14): the 5 lifetime-sweep files listed above moved
+          # AGAIN, this time to their own even-earlier "Commit lifetime sweep
+          # snapshots (apiFallbackSafe)" step, right after the sweep scripts
+          # that write them — see that step's comment for why.
           # autonomous-recheck-ledger.jsonl is committed+pushed in its OWN
           # step immediately above this one (BRO-386, "Commit acceptance
           # recheck ledger"; restored to that position by BRO-2588) — NOT
