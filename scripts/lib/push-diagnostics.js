@@ -184,10 +184,19 @@ const MAX_PLAUSIBLE_GAP_MS = 3600000;
 // stated with exactly the confidence the backwards clamp exists to prevent.
 // Both directions are implausible inputs and both report 0 rather than a
 // number a reader would act on (post-ship-check review finding).
+// Returns null — NOT 0 — when the interval is implausible, because the two
+// cases must stay distinguishable downstream. Collapsing them to 0 would make
+// a trace with unusable timestamps render as "0.0s — SILENCE AFTER last trace
+// line", i.e. "the push didn't stall", which is a confidently-wrong answer of
+// exactly the family this card exists to eliminate (adversarial review of the
+// clamp itself). Callers mark such gaps `implausible` and say so in the output.
 function forwardDelta(fromMs, toMs) {
   const d = toMs - fromMs;
+  // A genuine midnight wrap in a GIT_NET_TIMEOUT_SEC-bounded operation leaves a
+  // SMALL forward remainder (23:59:59 -> 00:00:29 is 30s). A wrapped value past
+  // the ceiling would mean the push ran over an hour, which it cannot.
   const candidate = d >= 0 ? d : d + MS_PER_DAY;
-  return candidate >= 0 && candidate <= MAX_PLAUSIBLE_GAP_MS ? candidate : 0;
+  return candidate >= 0 && candidate <= MAX_PLAUSIBLE_GAP_MS ? candidate : null;
 }
 
 /**
@@ -360,16 +369,19 @@ function extractPhaseTimeline({ traceText, killedAt, elapsedMs } = {}) {
     return { ...base, reason: 'no-trace' };
   }
 
+  // An implausible interval keeps ms=0 for shape compatibility but is FLAGGED,
+  // so "we measured no gap" and "we could not measure this gap" stay distinct.
+  const mkGap = (raw, rest) => ({ ...rest, ms: raw === null ? 0 : raw, implausible: raw === null });
+
   const gaps = [];
   for (let i = 1; i < records.length; i++) {
-    gaps.push({
+    gaps.push(mkGap(forwardDelta(records[i - 1].tsMs, records[i].tsMs), {
       phase: records[i - 1].phase,
       service: records[i - 1].service,
-      ms: forwardDelta(records[i - 1].tsMs, records[i].tsMs),
       from: records[i - 1].stamp,
       to: records[i].stamp,
       terminal: false,
-    });
+    }));
   }
 
   const last = records[records.length - 1];
@@ -380,32 +392,36 @@ function extractPhaseTimeline({ traceText, killedAt, elapsedMs } = {}) {
   const lastService = last.service !== 'unknown' ? last.service : service;
   const killMs = parseTraceClock(killedAt);
   if (killMs !== null) {
-    gaps.push({
+    gaps.push(mkGap(forwardDelta(last.tsMs, killMs), {
       phase: last.phase,
       service: lastService,
-      ms: forwardDelta(last.tsMs, killMs),
       from: last.stamp,
       to: killedAt.trim(),
       terminal: true,
-    });
+    }));
   } else if (Number.isFinite(elapsedMs) && elapsedMs > 0 && records.length > 0) {
     // Fallback: approximate the kill point as first-record + elapsed. Marked
     // approximate so a reader never mistakes it for a measured stamp.
-    const approx = forwardDelta(last.tsMs, records[0].tsMs + elapsedMs);
-    gaps.push({
+    gaps.push(mkGap(forwardDelta(last.tsMs, records[0].tsMs + elapsedMs), {
       phase: last.phase,
       service: lastService,
-      ms: approx,
       from: last.stamp,
       to: null,
       terminal: true,
       approximate: true,
-    });
+    }));
   }
 
+  // Rank only gaps we could actually measure. If every gap is implausible the
+  // honest answer is "the timestamps are unusable", never "the largest gap was
+  // 0.0s" — which a reader would take as "it did not stall".
+  const measurable = gaps.filter((g) => !g.implausible);
   let dominantGap = null;
-  for (const g of gaps) {
+  for (const g of measurable) {
     if (!dominantGap || g.ms > dominantGap.ms) dominantGap = g;
+  }
+  if (!dominantGap && gaps.length > 0) {
+    return { ...base, gaps, dominantGap: null, reason: 'timestamps-implausible' };
   }
 
   return { ...base, gaps, dominantGap };
@@ -413,6 +429,13 @@ function extractPhaseTimeline({ traceText, killedAt, elapsedMs } = {}) {
 
 /** One-line human summary of a timeline, for the CI log. */
 function formatTimeline(timeline) {
+  if (timeline && timeline.reason === 'timestamps-implausible') {
+    // Distinct from both "no trace" and "0.0s of silence". Every interval in
+    // this trace was outside any plausible range, so the honest report is that
+    // the time CANNOT be located — not a number that reads as "it never
+    // stalled" (adversarial review of the clamp).
+    return `cannot locate the time — every interval in this trace is implausible (clock skew or corrupt timestamps); records=${timeline.records}`;
+  }
   if (!timeline || !timeline.dominantGap) {
     return `no-timeline (records=${timeline ? timeline.records : 0})`;
   }
