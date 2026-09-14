@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-09-10T10:55:03.906Z",
-    "completedAt": "2026-09-10T10:55:17.147Z",
-    "totalReviews": 32,
-    "processed": 2,
-    "skipped": 30,
-    "errors": 6,
-    "tokensUsed": {
-      "input": 39662,
-      "output": 1616,
-      "total": 104856
-    },
-    "errorDetails": [
-      {
-        "showId": "truly-howard-hughes-off-broadway-2026",
-        "outletId": "cititour",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-10T10:42:12.607Z",
     "completedAt": "2026-09-10T10:44:54.187Z",
     "totalReviews": 42990,
@@ -415112,6 +415092,20 @@
       "input": 5085,
       "output": 312,
       "total": 13471
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-14T18:15:52.346Z",
+    "completedAt": "2026-09-14T18:16:01.600Z",
+    "totalReviews": 43660,
+    "processed": 0,
+    "skipped": 43658,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 8114,
+      "output": 361,
+      "total": 23329
     },
     "errorDetails": []
   }
