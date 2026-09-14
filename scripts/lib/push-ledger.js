@@ -44,7 +44,18 @@ function buildLedgerEntry({ sha, branch, ts, workflow, runId, runAttempt, fallba
 // Deliberately its own builder (not buildLedgerEntry): failure entries have
 // no `sha` — the push never landed — so they can't share that function's
 // required-field contract.
-function buildFailureEntry({ reason, attempt, maxRetries, branch, remote, workflow, ci, ts, stallPhase }) {
+function buildFailureEntry({
+  reason,
+  attempt,
+  maxRetries,
+  branch,
+  remote,
+  workflow,
+  ci,
+  ts,
+  stallPhase,
+  stallService,
+}) {
   if (!reason) throw new Error('buildFailureEntry: reason is required');
   return JSON.stringify({
     reason,
@@ -61,6 +72,15 @@ function buildFailureEntry({ reason, attempt, maxRetries, branch, remote, workfl
     // predate this field / ran before push-with-retry.sh's diagnostics CLI
     // was available. See scripts/lib/push-diagnostics.js.
     stallPhase: stallPhase || 'unknown',
+    // BRO-2839: which git service the classified exchange belonged to —
+    // "receive-pack" (what a push speaks), "upload-pack" (what a FETCH
+    // speaks), or "unknown". Separate from stallPhase rather than folded into
+    // it, because stallPhase's value space is asserted elsewhere and because
+    // the two answer different questions: stallPhase says how far the exchange
+    // got, stallService says whether that exchange was the push's at all. A
+    // row that is not "receive-pack" describes traffic the push did not
+    // generate, so its stallPhase is not evidence about the push.
+    stallService: stallService || 'unknown',
   });
 }
 
