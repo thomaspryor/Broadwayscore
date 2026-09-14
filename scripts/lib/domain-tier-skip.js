@@ -28,10 +28,24 @@ function getSkippedTiers(config, hostname) {
   return new Set(Object.keys(entry).filter(tierId => entry[tierId] && entry[tierId].skip === true));
 }
 
+// A reason exactly this shape means buildSkipConfig generated it from raw
+// stats — anything else (a hand-authored narrative, a migration note) is
+// provenance that must survive a regeneration untouched.
+const GENERATED_REASON_RE = /^\d+ failures, 0 successes$/;
+
 /**
  * Pure: build the new-shape skip config from raw failure stats, preserving
  * each entry's original addedAt across regenerations (only a first-seen
  * domain+tier skip gets stamped with `now`).
+ *
+ * Two-pass merge (BRO-3334): pass 1 derives entries fresh from current
+ * `stats` exactly as before. Pass 2 walks EVERY domain in `existingConfig`
+ * (not just domains present in `stats` this run) and carries forward any
+ * entry whose `reason` isn't machine-generated — a hand-authored skip whose
+ * tier now has partial success, or whose domain got zero fetchAttempts this
+ * run, would otherwise be silently dropped instead of just left alone. A
+ * fresh pass-1 entry on the same domain+tier always wins the collision
+ * (independent data reconfirming the skip).
  * @param {object} stats - { [domain]: { [tierId]: { successes, failures } } }
  * @param {object} existingConfig - previous domain-tier-skip.json content (either shape)
  * @param {object} opts
@@ -41,6 +55,7 @@ function getSkippedTiers(config, hostname) {
  */
 function buildSkipConfig(stats, existingConfig, { skipThreshold, now }) {
   const out = {};
+
   for (const domain of Object.keys(stats).sort()) {
     const tiers = stats[domain];
     const existingEntry = existingConfig && existingConfig[domain];
@@ -59,7 +74,28 @@ function buildSkipConfig(stats, existingConfig, { skipThreshold, now }) {
       }
     }
   }
-  return out;
+
+  if (existingConfig) {
+    for (const domain of Object.keys(existingConfig)) {
+      const entry = existingConfig[domain];
+      if (Array.isArray(entry)) continue; // legacy shape carries no reason to inspect
+      for (const tierId of Object.keys(entry)) {
+        const existingTier = entry[tierId];
+        if (!existingTier || GENERATED_REASON_RE.test(existingTier.reason)) continue;
+        if (out[domain] && out[domain][tierId]) continue; // fresh generated data wins on collision
+        if (!out[domain]) out[domain] = {};
+        out[domain][tierId] = { ...existingTier };
+      }
+    }
+  }
+
+  const sorted = {};
+  for (const domain of Object.keys(out).sort()) {
+    const tierSorted = {};
+    for (const tierId of Object.keys(out[domain]).sort()) tierSorted[tierId] = out[domain][tierId];
+    sorted[domain] = tierSorted;
+  }
+  return sorted;
 }
 
 module.exports = { getSkippedTiers, buildSkipConfig };
