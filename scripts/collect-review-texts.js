@@ -148,7 +148,7 @@ const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
+const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { parseDate } = require('./lib/date-utils');
@@ -5163,6 +5163,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.wrongShow = true;
         data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
         data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+        invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
         console.log(`    ✗ LLM: Film/TV content (${contentVerification.confidence}) — fullText nulled`);
       }
     }
