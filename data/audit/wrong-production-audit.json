@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-14T21:17:47.836Z",
+  "timestamp": "2026-09-14T23:10:50.284Z",
   "stats": {
-    "totalReviews": 43266,
-    "alreadyFlagged": 17956,
+    "totalReviews": 43271,
+    "alreadyFlagged": 17958,
     "dateGuardCatches": 236,
     "directorMismatch": 1044,
     "tvFilmSignals": 1269,
-    "londonSignals": 1056,
+    "londonSignals": 1061,
     "offBroadwaySignals": 504,
     "yearMismatch": 91,
-    "noPublishDate": 3716
+    "noPublishDate": 3712
   },
   "findings": [
     {
@@ -44314,6 +44314,19 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "publishDate": "2026-09-14",
+      "url": "https://ayoungishperspective.co.uk/2026/09/14/review-man-to-man/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 96,
       "publishDate": "2026-09-12",
@@ -44323,6 +44336,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "bestoftheatre--arthur-fisher.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-man-to-man-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -44364,6 +44390,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "london-theatre--holly-omahony.json",
+      "publishDate": "2026-09-12",
+      "url": "https://www.londontheatre.co.uk/reviews/man-to-man-review-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-09-12",
+      "url": "https://www.londontheatre.co.uk/reviews/man-to-man-review-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -49228,6 +49280,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tartuffe-remixed-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.standard.co.uk/culture/theatre/tartuffe-remixed-at-marylebone-theatre-review-b1296887.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
