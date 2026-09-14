@@ -111,4 +111,293 @@ function classifyStallPhase(traceText) {
   return reached || 'unrecognized';
 }
 
-module.exports = { redactCurlTrace, classifyStallPhase };
+// ---------------------------------------------------------------------------
+// BRO-2839: classifyStallPhase above answers "how far did the LAST exchange
+// get", which is all BRO-3213 needed. It cannot answer the question this card
+// was filed for — WHERE the 90 seconds go — for a structural reason:
+//
+//   Measured on CI run 34852355418 (Process Feedback Submissions, 2026-09-14,
+//   GIT_NET_TIMEOUT_SEC=30): the trace's LAST line is stamped 13:58:34.383856,
+//   ~1.7s into an attempt that was killed at 13:59:02.69. The remaining ~28s
+//   produced NO trace output at all. The stall is therefore not "inside" any
+//   logged phase — it is the silence AFTER the last logged line, and a
+//   classifier that only reports the furthest marker reached can never say so.
+//   It will always answer "response-received-then-stalled", which is exactly
+//   what 100% of ledger rows since 2026-09-13 say.
+//
+// So the terminal silence has to be a first-class interval, which means the
+// extractor needs to know when the process was killed. That kill time is
+// passed on the SAME clock as the trace's own lines (a wall-clock
+// HH:MM:SS.frac stamp taken right after the timeout wrapper returns), NOT as
+// an elapsed-since-fork duration: git writes its first trace line only once it
+// starts connecting, so an elapsed measurement silently folds process startup
+// into the first gap and puts the two endpoints in different coordinate
+// systems (second-opinion review finding, BRO-2839).
+
+// One trace line: "13:58:34.383790 http.c:941              <= Recv header, ..."
+const TRACE_LINE_RE = /^(\d{2}):(\d{2}):(\d{2})\.(\d+)\s+\S+\s+(.*)$/;
+
+// Which git service an exchange belongs to. A push is receive-pack; a fetch is
+// upload-pack. Both the request line (?service=git-receive-pack, or the
+// /git-receive-pack POST path) and the response content-type carry it.
+const SERVICE_RE = /(?:service=git-|\/git-|x-git-)(receive-pack|upload-pack)/;
+
+const MS_PER_DAY = 86400000;
+
+function parseTraceClock(stamp) {
+  if (typeof stamp !== 'string') return null;
+  const m = /^(\d{2}):(\d{2}):(\d{2})\.(\d+)$/.exec(stamp.trim());
+  if (!m) return null;
+  return clockToMs(m[1], m[2], m[3], m[4]);
+}
+
+function clockToMs(hh, mm, ss, frac) {
+  // GIT_TRACE_CURL prints microseconds; `date +%H:%M:%S.%N` prints nanoseconds.
+  // Normalize whatever precision we get to milliseconds rather than assuming.
+  const fractionMs = Number(`0.${frac}`) * 1000;
+  return (
+    Number(hh) * 3600000 + Number(mm) * 60000 + Number(ss) * 1000 + fractionMs
+  );
+}
+
+// Trace timestamps carry no date, so a run that crosses midnight produces a
+// smaller "later" value. Any backwards step is treated as a single day wrap —
+// these intervals are bounded by GIT_NET_TIMEOUT_SEC (at most a few minutes),
+// so a genuine backwards clock step would have to be nearly a full day to be
+// misread, and a multi-day gap is not a thing a single push can produce.
+function forwardDelta(fromMs, toMs) {
+  let d = toMs - fromMs;
+  if (d < 0) d += MS_PER_DAY;
+  return d;
+}
+
+/**
+ * Split a trace into timestamped records, each tagged with the phase and git
+ * service in effect at that point. Lines without a timestamp (a 2000-byte tail
+ * that begins mid-line, blank lines) are skipped rather than guessed at.
+ *
+ * @param {string} traceText raw or redacted GIT_TRACE_CURL output
+ * @returns {Array<{tsMs:number, stamp:string, phase:string, service:string, detail:string}>}
+ */
+function parseTraceRecords(traceText) {
+  if (typeof traceText !== 'string' || !traceText) return [];
+  let lines = traceText.split('\n');
+  // A trace killed by SIGTERM mid-write ends in a partial, newline-less line.
+  // Dropping it costs nothing (the record before it carries the same phase)
+  // and stops a half-written timestamp being parsed into a bogus record.
+  if (!traceText.endsWith('\n') && lines.length > 0) lines.pop();
+
+  const records = [];
+  let phase = 'pre-connect';
+  let service = 'unknown';
+  let sawAnyPhase = false;
+
+  for (const line of lines) {
+    const m = TRACE_LINE_RE.exec(line);
+    if (!m) continue;
+    const [, hh, mm, ss, frac, detail] = m;
+
+    const svc = SERVICE_RE.exec(detail);
+    if (svc) service = svc[1];
+
+    for (const stage of STAGES) {
+      if (stage.test.test(detail)) {
+        phase = stage.name;
+        sawAnyPhase = true;
+      }
+    }
+
+    records.push({
+      tsMs: clockToMs(hh, mm, ss, frac),
+      stamp: `${hh}:${mm}:${ss}.${frac}`,
+      phase: sawAnyPhase ? phase : 'unrecognized',
+      service,
+      detail,
+    });
+  }
+  return records;
+}
+
+/**
+ * Which git service the LAST exchange in the trace belongs to — reported
+ * separately from the phase so a non-push exchange can never be silently
+ * presented as the push's own stall (second-opinion review, BRO-2839). Uses
+ * the same last-request-cycle isolation as classifyStallPhase so both describe
+ * the same exchange.
+ *
+ * @returns {'receive-pack'|'upload-pack'|'unknown'}
+ */
+function classifyStallService(traceText) {
+  if (typeof traceText !== 'string' || !traceText.trim()) return 'unknown';
+  const records = parseTraceRecords(traceText);
+  for (let i = records.length - 1; i >= 0; i--) {
+    if (records[i].service !== 'unknown') return records[i].service;
+  }
+  // Fallback for a TRUNCATED capture. git_push_traced logs only the trace's
+  // last 2000 bytes, which routinely begins mid-line — and the service marker
+  // (a content-type header) is often on exactly that headless first line, so
+  // it carries no timestamp and never becomes a record. Scanning the raw text
+  // recovers it. Last match wins, matching the last-exchange rule above.
+  let found = 'unknown';
+  const re = new RegExp(SERVICE_RE, 'g');
+  let m;
+  while ((m = re.exec(traceText)) !== null) found = m[1];
+  return found;
+}
+
+/**
+ * Whole-file provenance census. classifyStallPhase reads the entire trace but
+ * git_push_traced only ever LOGGED its last 2000 bytes, so a CI failure could
+ * be inspected only through a keyhole: the two runs that prompted this card
+ * showed nothing but upload-pack response headers, and there was no way to
+ * tell whether receive-pack traffic existed earlier in the same file or not.
+ * This reports the whole file's shape in a handful of lines so the next real
+ * failure answers that directly instead of by inference.
+ *
+ * @returns {{bytes:number, records:number, receivePack:number, uploadPack:number,
+ *            firstStamp:(string|null), lastStamp:(string|null), requests:string[]}}
+ */
+function censusTrace(traceText) {
+  const text = typeof traceText === 'string' ? traceText : '';
+  const records = parseTraceRecords(text);
+  const requests = [];
+  let receivePack = 0;
+  let uploadPack = 0;
+
+  for (const r of records) {
+    const req = /=> Send header: ((?:GET|POST|PUT|HEAD) \S+)/.exec(r.detail);
+    if (!req) continue;
+    requests.push(req[1]);
+    // One count per actual request line, so the totals mean "exchanges" and
+    // stay equal to requests.length — not "lines mentioning a service", which
+    // double-counts the byte-count line that precedes every request.
+    if (r.service === 'receive-pack') receivePack++;
+    else if (r.service === 'upload-pack') uploadPack++;
+  }
+
+  return {
+    bytes: Buffer.byteLength(text, 'utf8'),
+    records: records.length,
+    receivePack,
+    uploadPack,
+    firstStamp: records.length ? records[0].stamp : null,
+    lastStamp: records.length ? records[records.length - 1].stamp : null,
+    requests,
+  };
+}
+
+/**
+ * Break a stalled push's lifetime into named sub-phases and name the one that
+ * actually consumed the time.
+ *
+ * The interval from the last trace record to the kill is a first-class
+ * candidate — see the block comment above; without it the largest gap in a
+ * real CI failure is the ~1s connect round trip and the 28s of silence that
+ * actually killed the job is invisible.
+ *
+ * @param {object} opts
+ * @param {string} opts.traceText GIT_TRACE_CURL output for ONE attempt.
+ * @param {string} [opts.killedAt] wall clock "HH:MM:SS.frac" captured right
+ *   after the timeout wrapper returned — same clock as the trace's own lines.
+ * @param {number} [opts.elapsedMs] fallback when no killedAt is available;
+ *   less precise (see block comment) but better than no terminal interval.
+ * @returns {{records:number, gaps:Array, dominantGap:(object|null),
+ *            service:string, attributedToPush:boolean, reason:(string|undefined)}}
+ */
+function extractPhaseTimeline({ traceText, killedAt, elapsedMs } = {}) {
+  const records = parseTraceRecords(traceText);
+  const service = classifyStallService(traceText);
+  const base = {
+    records: records.length,
+    gaps: [],
+    dominantGap: null,
+    service,
+    // The ONLY service a `git push` can produce is receive-pack (verified
+    // locally against this repo's origin from both a full and a depth-1
+    // shallow clone: every push trace contains receive-pack exchanges and zero
+    // upload-pack lines). Anything else in a file that wrapped only a push is
+    // unexplained, and must not be reported as the push's own stall.
+    attributedToPush: service === 'receive-pack',
+  };
+
+  if (records.length === 0) {
+    return { ...base, reason: 'no-trace' };
+  }
+
+  const gaps = [];
+  for (let i = 1; i < records.length; i++) {
+    gaps.push({
+      phase: records[i - 1].phase,
+      service: records[i - 1].service,
+      ms: forwardDelta(records[i - 1].tsMs, records[i].tsMs),
+      from: records[i - 1].stamp,
+      to: records[i].stamp,
+      terminal: false,
+    });
+  }
+
+  const last = records[records.length - 1];
+  // On a truncated tail the timestamped records may carry no service marker at
+  // all while the raw text does (see classifyStallService's fallback) — prefer
+  // the resolved one so the terminal gap isn't labelled less precisely than
+  // the timeline it belongs to.
+  const lastService = last.service !== 'unknown' ? last.service : service;
+  const killMs = parseTraceClock(killedAt);
+  if (killMs !== null) {
+    gaps.push({
+      phase: last.phase,
+      service: lastService,
+      ms: forwardDelta(last.tsMs, killMs),
+      from: last.stamp,
+      to: killedAt.trim(),
+      terminal: true,
+    });
+  } else if (Number.isFinite(elapsedMs) && elapsedMs > 0 && records.length > 0) {
+    // Fallback: approximate the kill point as first-record + elapsed. Marked
+    // approximate so a reader never mistakes it for a measured stamp.
+    const approx = forwardDelta(last.tsMs, records[0].tsMs + elapsedMs);
+    gaps.push({
+      phase: last.phase,
+      service: lastService,
+      ms: approx,
+      from: last.stamp,
+      to: null,
+      terminal: true,
+      approximate: true,
+    });
+  }
+
+  let dominantGap = null;
+  for (const g of gaps) {
+    if (!dominantGap || g.ms > dominantGap.ms) dominantGap = g;
+  }
+
+  return { ...base, gaps, dominantGap };
+}
+
+/** One-line human summary of a timeline, for the CI log. */
+function formatTimeline(timeline) {
+  if (!timeline || !timeline.dominantGap) {
+    return `no-timeline (records=${timeline ? timeline.records : 0})`;
+  }
+  const g = timeline.dominantGap;
+  const secs = (g.ms / 1000).toFixed(1);
+  const where = g.terminal
+    ? `SILENCE AFTER last trace line (no further network activity${g.approximate ? ', approximate' : ''})`
+    : 'between trace lines';
+  const attribution = timeline.attributedToPush
+    ? ''
+    : ` [service=${timeline.service} — NOT receive-pack, so this exchange is NOT the push's own and must not be reported as its stall]`;
+  return `${secs}s in phase "${g.phase}" — ${where}${attribution}`;
+}
+
+module.exports = {
+  redactCurlTrace,
+  classifyStallPhase,
+  classifyStallService,
+  censusTrace,
+  extractPhaseTimeline,
+  formatTimeline,
+  parseTraceRecords,
+  parseTraceClock,
+};

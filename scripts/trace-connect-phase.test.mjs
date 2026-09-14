@@ -1,0 +1,306 @@
+// BRO-2839 — break a hard-killed push's CONNECT phase into named sub-phases
+// and identify the one that consumes the timeout.
+//
+// WHY THIS FILE EXISTS
+// Every affected CI push runs to the GIT_NET_TIMEOUT_SEC wall and is killed
+// (rc=124). BRO-3213 added GIT_TRACE_CURL capture plus classifyStallPhase(),
+// which reports how far the LAST HTTP exchange got. Since 2026-09-13 that has
+// answered "response-received-then-stalled" on 100% of ledger rows — and it
+// structurally cannot answer anything else for this failure, because:
+//
+//   On CI run 34852355418 (Process Feedback Submissions, 2026-09-14,
+//   GIT_NET_TIMEOUT_SEC=30) the trace's LAST line is stamped 13:58:34.383856,
+//   ~1.7s into an attempt killed at 13:59:02.69. The other ~28s produced NO
+//   trace output at all. The time is not spent INSIDE a logged phase; it is
+//   the silence AFTER the last logged line. A furthest-marker-reached
+//   classifier has no vocabulary for that.
+//
+// So the sub-phase breakdown has to treat "last trace line -> kill" as a
+// first-class interval, which is what extractPhaseTimeline() adds and what
+// these tests pin down.
+//
+// TEST STRATEGY (and its honest limits)
+//  - PRIMARY assertions run against a REAL redacted CI trace captured from the
+//    failing run above (tests/fixtures/). That is the actual artifact.
+//  - The live end-to-end case below runs a REAL `git push` against a local
+//    server that stalls, proving the capture->parse->identify chain works on a
+//    genuinely killed push. It is HTTP/1.1 on loopback, whereas GitHub is
+//    HTTP/2, so it validates the chain, NOT the CI wire shape. The fixture is
+//    what speaks to the CI shape. Neither is claimed to reproduce the CI ROOT
+//    CAUSE, which remains unidentified.
+//
+// Every function under test is require()d from the real module (CLAUDE.md
+// rule 15) — no logic is reimplemented here.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { execFileSync, spawnSync, spawn } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import http from 'node:http';
+
+const require = createRequire(import.meta.url);
+const {
+  extractPhaseTimeline,
+  classifyStallService,
+  censusTrace,
+  formatTimeline,
+} = require('./lib/push-diagnostics.js');
+
+const REPO_ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
+const FIXTURE = join(
+  REPO_ROOT,
+  'tests/fixtures/push-stall-trace-ci-34852355418.txt'
+);
+
+// ---------------------------------------------------------------------------
+// PRIMARY: the real CI artifact.
+// ---------------------------------------------------------------------------
+
+test('real CI trace: the timeout is spent in the SILENCE after the last trace line, not inside any HTTP phase', () => {
+  const traceText = fs.readFileSync(FIXTURE, 'utf8');
+  // Attempt 1 of run 34852355418 was killed at 13:59:02.69 (from the CI log's
+  // own "Pre-resolution push (attempt 1) FAILED in 30s" line).
+  const timeline = extractPhaseTimeline({
+    traceText,
+    killedAt: '13:59:02.690000',
+  });
+
+  assert.ok(timeline.dominantGap, 'a dominant gap must be identified');
+  assert.equal(
+    timeline.dominantGap.terminal,
+    true,
+    'the sub-phase consuming the timeout must be the terminal silence, not an inter-record gap'
+  );
+
+  // The whole point: the terminal gap must dominate by a wide margin. If an
+  // inter-record gap ever won here, the identification would be wrong.
+  const interRecord = timeline.gaps.filter((g) => !g.terminal);
+  const largestInterRecord = interRecord.reduce((m, g) => Math.max(m, g.ms), 0);
+  assert.ok(
+    timeline.dominantGap.ms > largestInterRecord * 100,
+    `terminal silence (${timeline.dominantGap.ms}ms) must dwarf the largest inter-record gap ` +
+      `(${largestInterRecord}ms) — otherwise "where the time went" is not answered`
+  );
+
+  // ~28.3s of a 30s attempt. Asserted as a range so a re-capture of the same
+  // fixture with slightly different rounding does not redden main.
+  assert.ok(
+    timeline.dominantGap.ms > 25000 && timeline.dominantGap.ms < 30000,
+    `expected ~28s of silence, got ${timeline.dominantGap.ms}ms`
+  );
+});
+
+test('real CI trace: an exchange that is not receive-pack is never attributed to the push', () => {
+  const traceText = fs.readFileSync(FIXTURE, 'utf8');
+  const timeline = extractPhaseTimeline({
+    traceText,
+    killedAt: '13:59:02.690000',
+  });
+
+  // INVARIANT, not a hardcoded expectation of the current artifact. A `git
+  // push` speaks receive-pack and nothing else — verified locally against this
+  // repo's origin from both a full clone and a depth-1 shallow clone: every
+  // push trace contained receive-pack exchanges and ZERO upload-pack lines.
+  // So whatever service the trace turns out to describe, the rule is the same:
+  // only receive-pack may be reported as the push's own stall. This keeps
+  // passing if the census later explains the upload-pack traffic away.
+  const service = classifyStallService(traceText);
+  assert.equal(
+    timeline.attributedToPush,
+    service === 'receive-pack',
+    'attribution must follow the service, never be assumed'
+  );
+
+  if (service !== 'receive-pack') {
+    assert.equal(
+      timeline.attributedToPush,
+      false,
+      'a non-receive-pack exchange must NOT be reported as the push stall'
+    );
+    assert.match(
+      formatTimeline(timeline),
+      /NOT receive-pack/,
+      'the human-readable summary must say so out loud, so a reader cannot mistake it for the push'
+    );
+  }
+});
+
+test('real CI trace: census exposes that the logged tail is a truncated keyhole', () => {
+  const traceText = fs.readFileSync(FIXTURE, 'utf8');
+  const c = censusTrace(traceText);
+  // The captured artifact is exactly the old 2000-byte redact-tail cap, and it
+  // does not contain a single request line — which is precisely why the CI
+  // logs could not answer "which exchange stalled". This is the evidence that
+  // motivated raising the cap and adding the census.
+  assert.equal(c.bytes, 2000, 'fixture is the old 2000-byte tail cap verbatim');
+  assert.equal(
+    c.requests.length,
+    0,
+    'the 2000-byte tail contained NO request line — the keyhole this card had to work through'
+  );
+  assert.ok(c.records > 0, 'but it does contain timestamped records');
+});
+
+// ---------------------------------------------------------------------------
+// SECONDARY: live end-to-end — a REAL push, really killed, really parsed.
+// ---------------------------------------------------------------------------
+
+const STALL_SEC = 3; // keep well inside test.yml's 15-minute unit-tests budget
+
+function gitAvailable() {
+  try {
+    execFileSync('git', ['--version'], { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+test('live: a real push killed mid-stall produces a trace whose terminal gap is identified', { skip: !gitAvailable() && 'git not available' }, async (t) => {
+  const tmp = fs.mkdtempSync(join(os.tmpdir(), 'bro2839-'));
+  const bare = join(tmp, 'remote.git');
+  const work = join(tmp, 'work');
+  const trace = join(tmp, 'push.trace');
+
+  execFileSync('git', ['init', '-q', '--bare', bare]);
+  execFileSync('git', ['init', '-q', work]);
+  const G = (...a) =>
+    execFileSync('git', ['-C', work, ...a], { stdio: 'pipe' });
+  fs.writeFileSync(join(work, 'a.txt'), 'hello\n');
+  G('add', 'a.txt');
+  G('-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'seed');
+  execFileSync('git', ['-C', work, 'push', '-q', bare, 'HEAD:refs/heads/main']);
+  fs.writeFileSync(join(work, 'b.txt'), 'world\n');
+  G('add', 'b.txt');
+  G('-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'second');
+
+  const pkt = (line) =>
+    Buffer.from((line.length + 4).toString(16).padStart(4, '0') + line);
+
+  // Minimal git smart-HTTP: answer the ref advertisement for real (delegated
+  // to git itself, so the pkt-line format is never hand-rolled), then accept
+  // the receive-pack POST, send response headers, and STALL forever.
+  const server = http.createServer((req, res) => {
+    if (req.method === 'GET' && req.url.includes('service=git-receive-pack')) {
+      const adv = spawnSync(
+        'git',
+        ['receive-pack', '--stateless-rpc', '--advertise-refs', bare],
+        { maxBuffer: 1 << 24 }
+      ).stdout;
+      res.writeHead(200, {
+        'content-type': 'application/x-git-receive-pack-advertisement',
+        'cache-control': 'no-cache',
+      });
+      res.write(pkt('# service=git-receive-pack\n'));
+      res.write(Buffer.from('0000'));
+      res.write(adv);
+      res.end();
+      return;
+    }
+    if (req.method === 'POST' && req.url.endsWith('/git-receive-pack')) {
+      req.resume();
+      req.on('end', () => {
+        res.writeHead(200, {
+          'content-type': 'application/x-git-receive-pack-result',
+          'cache-control': 'no-cache',
+        });
+        if (typeof res.flushHeaders === 'function') res.flushHeaders();
+        // Deliberately never res.end() — this is the stall under test.
+      });
+      return;
+    }
+    res.writeHead(404).end();
+  });
+
+  const listening = await new Promise((resolve) => {
+    server.on('error', () => resolve(false));
+    server.listen(0, '127.0.0.1', () => resolve(true));
+  });
+  if (!listening) {
+    fs.rmSync(tmp, { recursive: true, force: true });
+    return t.skip('cannot listen on loopback in this environment');
+  }
+
+  try {
+    const url = `http://127.0.0.1:${server.address().port}/remote.git`;
+    // detached: own process group. SIGTERM to the `git push` parent alone
+    // leaves `git-remote-http` alive holding the stdio pipes, so 'close' never
+    // fires and the test hangs — found the hard way while prototyping this.
+    // Killing the GROUP and waiting on 'exit' (not 'close') is what works.
+    const child = spawn(
+      'git',
+      ['-C', work, 'push', '--progress', url, 'HEAD:refs/heads/main'],
+      {
+        env: {
+          ...process.env,
+          GIT_TRACE_CURL: trace,
+          GIT_TRACE_CURL_NO_DATA: '1',
+          GIT_TERMINAL_PROMPT: '0',
+        },
+        stdio: ['ignore', 'pipe', 'pipe'],
+        detached: true,
+      }
+    );
+    child.stdout.resume();
+    child.stderr.resume();
+
+    const killer = setTimeout(() => {
+      try {
+        process.kill(-child.pid, 'SIGKILL');
+      } catch {
+        /* already exited */
+      }
+    }, STALL_SEC * 1000);
+    // Wall clock at the kill, on the SAME clock GIT_TRACE_CURL stamps its
+    // lines with — mirroring what push-with-retry.sh's git_push_traced()
+    // captures right after the timeout wrapper returns.
+    await new Promise((resolve) => child.on('exit', () => resolve()));
+    clearTimeout(killer);
+    const d = new Date();
+    const killedAt =
+      `${String(d.getHours()).padStart(2, '0')}:` +
+      `${String(d.getMinutes()).padStart(2, '0')}:` +
+      `${String(d.getSeconds()).padStart(2, '0')}.` +
+      `${String(d.getMilliseconds()).padStart(3, '0')}000`;
+
+    const traceText = fs.readFileSync(trace, 'utf8');
+
+    // The capture itself must be real: a genuine receive-pack conversation.
+    const census = censusTrace(traceText);
+    assert.ok(
+      census.requests.length >= 1,
+      'the live trace must contain at least one request line'
+    );
+    assert.equal(
+      classifyStallService(traceText),
+      'receive-pack',
+      'a real push speaks receive-pack — if this ever fails, the premise behind the attribution rule is wrong'
+    );
+
+    const timeline = extractPhaseTimeline({ traceText, killedAt });
+    assert.ok(timeline.dominantGap, 'a dominant gap must be identified');
+    assert.equal(
+      timeline.attributedToPush,
+      true,
+      'a real receive-pack push IS attributable to the push'
+    );
+    assert.equal(
+      timeline.dominantGap.terminal,
+      true,
+      'the stall was the silence after the last trace line, so that gap must win'
+    );
+    // The server answered headers then went silent, so the last logged phase
+    // is the response-received one — the same terminal marker CI reports.
+    assert.equal(
+      timeline.dominantGap.phase,
+      'response-received-then-stalled',
+      'the live stall lands in the same phase CI reports, which is exactly why the phase label alone is not enough to locate the time'
+    );
+  } finally {
+    server.close();
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

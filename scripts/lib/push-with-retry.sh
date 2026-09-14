@@ -212,9 +212,16 @@ git_push() {
 # CI log (exactly what this session did by hand) to learn anything past
 # "rc=124".
 _LAST_STALL_PHASE="unknown"
+# BRO-2839: reported alongside the phase, never folded INTO it — the phase
+# string's value space is asserted by push-with-retry.stall-diagnostics.test.sh
+# and documented in push-ledger.js, and widening it would break both. Reset per
+# call for the same reason _LAST_STALL_PHASE is (a later non-timeout attempt
+# must not inherit an earlier attempt's classification into the ledger row).
+_LAST_STALL_SERVICE="unknown"
 git_push_traced() {
-  local trace_file rc
+  local trace_file rc kill_ts
   _LAST_STALL_PHASE="unknown"
+  _LAST_STALL_SERVICE="unknown"
   if [ "${PUSH_SKIP_STALL_DIAGNOSTICS:-}" = "1" ]; then
     git_push "$@"
     return $?
@@ -248,13 +255,40 @@ git_push_traced() {
   trap 'rm -f "$trace_file" 2>/dev/null || true; trap - RETURN' RETURN
   GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" git_push "$@"
   rc=$?
+  # BRO-2839: kill wall-clock, captured on the SAME clock the trace's own lines
+  # use, immediately after the timeout wrapper returns. The stall this card is
+  # about is the SILENCE AFTER the last trace line (measured: 28.3s of a 30s
+  # attempt on run 34852355418), so without a kill timestamp the largest
+  # measurable interval is the ~1s connect round trip and the thing that
+  # actually killed the job is invisible. An elapsed-since-fork duration would
+  # NOT do: git writes its first trace line only once it starts connecting, so
+  # elapsed silently folds process startup in and puts the two endpoints in
+  # different coordinate systems (second-opinion review finding).
+  # BSD `date` has no %N — fall back to whole seconds rather than emitting a
+  # literal "N" that the parser would reject.
+  kill_ts=$(date +%H:%M:%S.%N 2>/dev/null || true)
+  case "$kill_ts" in *N* | '') kill_ts="$(date +%H:%M:%S).000" ;; esac
   if [ "$rc" -ne 0 ] && command -v node >/dev/null 2>&1 \
        && [ -f "$SCRIPT_DIR/../push-diagnostics-cli.js" ]; then
     case "$rc" in
       124|137|143)
         _LAST_STALL_PHASE=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" classify "$trace_file" 2>/dev/null || echo "unknown")
-        echo "  git-transport stall phase: $_LAST_STALL_PHASE"
-        node "$SCRIPT_DIR/../push-diagnostics-cli.js" redact-tail "$trace_file" 2>/dev/null \
+        _LAST_STALL_SERVICE=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" service "$trace_file" 2>/dev/null || echo "unknown")
+        echo "  git-transport stall phase: $_LAST_STALL_PHASE (service: $_LAST_STALL_SERVICE)"
+        echo "  where the time went: $(node "$SCRIPT_DIR/../push-diagnostics-cli.js" timeline "$trace_file" "$kill_ts" 2>/dev/null || echo 'timeline unavailable')"
+        # Whole-file provenance. The redacted tail below is a keyhole (its cap
+        # is bytes, not exchanges), and two BRO-2839 runs showed nothing but
+        # upload-pack response headers in it with no way to tell whether
+        # receive-pack traffic existed earlier in the SAME file. A `git push`
+        # produces receive-pack exchanges and nothing else (verified locally
+        # from both a full and a depth-1 shallow clone of this repo), so a
+        # non-zero upload-pack count here is the anomaly to chase.
+        node "$SCRIPT_DIR/../push-diagnostics-cli.js" census "$trace_file" 2>/dev/null \
+          | sed 's/^/    trace-census: /' || true
+        # 8000 (not the 2000 default): the tail is the only durable record of a
+        # failure nobody can reproduce on demand, and 2000 bytes was not even
+        # enough to contain one request line on the runs that prompted this card.
+        node "$SCRIPT_DIR/../push-diagnostics-cli.js" redact-tail "$trace_file" 8000 2>/dev/null \
           | sed 's/^/    curl-trace: /' || true
         ;;
     esac
@@ -386,10 +420,20 @@ record_push_failure() {
   # rest of this function — so the row that actually matters (a push that
   # never recovered) carries WHICH network phase it died in, closing the gap
   # that previously required manually re-pulling a run's raw CI log.
-  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s,"workflow":"%s","stallPhase":"%s"}\n' \
+  # BRO-2839: stallService rides ALONGSIDE stallPhase as its own field. A
+  # `git push` can only produce receive-pack exchanges (verified locally from
+  # both a full and a depth-1 shallow clone of this repo: every push trace
+  # contains receive-pack and zero upload-pack lines), so a row whose
+  # stallService is anything else is describing an exchange the push did not
+  # make, and its stallPhase must NOT be read as the push's own stall. That
+  # distinction was previously unrecordable, which is how every row since
+  # 2026-09-13 came to read "response-received-then-stalled" regardless.
+  # Like stallPhase, this reflects the LAST attempt only — record_push_failure
+  # fires once per invocation, on terminal exhaustion.
+  printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s,"workflow":"%s","stallPhase":"%s","stallService":"%s"}\n' \
     "$ts" "${PULL_BRANCH:-?}" "$remote" "$reason" "$attempt" "${MAX_RETRIES:-?}" \
     "$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
-    "$workflow" "${_LAST_STALL_PHASE:-unknown}" \
+    "$workflow" "${_LAST_STALL_PHASE:-unknown}" "${_LAST_STALL_SERVICE:-unknown}" \
     >> "$PUSH_FAILURE_LOG" 2>/dev/null || true
 
   # Durable telemetry (task: push-retry-failure telemetry, 2026-08-23).
@@ -422,6 +466,7 @@ record_push_failure() {
       "--branch=${PULL_BRANCH:-main}" "--remote=$remote" \
       "--workflow=$workflow" "--ci=$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
       "--stall-phase=${_LAST_STALL_PHASE:-unknown}" \
+      "--stall-service=${_LAST_STALL_SERVICE:-unknown}" \
       >/dev/null 2>&1 || true
   fi
 }

@@ -1892,6 +1892,17 @@ on:
       # aren't globbed) — path-listed here so a solo edit triggers CI.
       - 'scripts/backlog-drain.js'
       - 'scripts/backlog-drain.test.mjs'
+      # BRO-2839 push-stall connect-phase breakdown. The logic lives in
+      # scripts/lib/push-diagnostics.js and its colocated
+      # scripts/lib/push-diagnostics.test.mjs runs in the scripts/lib/*.test.mjs
+      # glob step (and scripts/lib/** already triggers CI) — but
+      # scripts/trace-connect-phase.test.mjs sits at the scripts/ ROOT, which
+      # neither glob reaches, so it is registered in
+      # tests/unit-test-manifest.txt AND path-listed here. Without this entry a
+      # solo edit to it runs ZERO CI (the #1745 bug class). Same shape as
+      # scripts/backlog-drain.test.mjs directly above.
+      - 'scripts/trace-connect-phase.test.mjs'
+      - 'scripts/push-diagnostics-cli.js'
       # Headless dispatchability gate (task #1004) — "can an unattended session
       # FINISH this card?", asked at selection time by both backlog-drain.js and
       # bsc-next.js --headless. Its test lives under scripts/tests/ (registered
