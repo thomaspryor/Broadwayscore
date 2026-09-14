@@ -200,6 +200,14 @@ const INCLUSION_FILES = [
   // watched, but the caller wasn't, so a change to WHEN/WHETHER those checks
   // fire (not what they return) would have run this gate to "nothing to check".
   'scripts/lib/review-write-guard.js',
+  // Fifth of this exact shape (BRO-3338, ship-check finding): the
+  // shouldAutoClearAnticipatoryGrace replay this diff adds calls
+  // isAnticipatoryPreviewPost from here to recompute its stillRejected ctx —
+  // a change to its grace-period constants (e.g.
+  // OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING) changes real inclusion decisions
+  // at both ingest time (collect-review-texts.js) and via this auto-clear,
+  // but was not watched, so this gate would report "nothing to check".
+  'scripts/lib/content-filters.js',
 ];
 
 // Phase B — score-source files. Changes here can keep a review included but
@@ -223,6 +231,13 @@ const FLAG_FIELDS = new Set([
   'rejectedAt', 'incompleteReason', 'duplicateOf', 'assignedScore',
   'wrongProductionManualClear', 'humanReviewedWrongProduction',
   'wrongProductionOverride', 'allowCrossMarket', 'allowEarlyDate',
+  // BRO-3338 (ship-check finding): load-bearing for the 6 new auto-clear
+  // predicates' outer gates (DatelessRevival/StaleDateGuard match on
+  // wrongProductionNote prefixes; AnticipatoryGrace/UrlYear match on
+  // wrongProductionReason / wrongProductionNote content) — an audit sweep
+  // that clears one WITHOUT touching wrongProduction itself would otherwise
+  // escape Guard 1b's data-flag-change detection.
+  'wrongProductionReason', 'wrongProductionNote',
 ]);
 
 // Detect flag-field changes in data/review-texts/ (a separate git repo from
