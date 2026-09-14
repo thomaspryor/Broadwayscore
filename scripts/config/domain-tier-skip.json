@@ -243,8 +243,7 @@
     "scrapingdog": {
       "skip": true,
       "reason": "BRO-3325 (2026-09-14): flipped by the tier-skip drift audit verdict — 3% success over 1551 Scrapingdog calls in the 7d ledger (1,208 x SD \"HTTP 404 This URL does not exist\", 272 x 400, 232 x 500 at the 20cr stealth escalation), while the Bright Data fallthrough on the same requests succeeds 99.9% (1,058 rows fallback_from=scrapingdog). Direct curl from outside returns 403 Attention Required (Cloudflare managed challenge) — SD cannot get through it any more; the 2026-08-03 30/30 plain+stealth parity retest no longer holds. Skipping SD sends DTLI straight to BD (same tier that was already doing the work) and stops ~6.8K wasted SD credits per 1.5 days plus a failed round-trip on every poller tick. Monthly recovery probe will re-test.",
-      "addedAt": "2026-09-14",
-      "previousReason": "Scraping cost v3 S1-T2 (2026-08-03): 30-URL live parity retest = 30/30 (100%) via plain+stealth_mode escalation, despite the production ledger showing 6% success/647 calls over the prior 7d — the gap was NOT domain support, it was scraper.js not auto-retrying SD's own '400 Oops...try Stealth Mode' response before falling through to Bright Data. Fixed at the param level in fetchWithScrapingdog() (auto-escalates to stealth_mode on that exact 400 signature) rather than by flipping this flag — the ≥80%-with-param-fix branch of the approved decision bar. Superseded the stale 2026-07-31 3-URL conclusion, which correctly kept skip:false but for the wrong reason (never observed the 400 rate at scale)."
+      "addedAt": "2026-09-14"
     }
   },
   "dramaqueennyc.com": {
