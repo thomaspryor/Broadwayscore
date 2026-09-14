@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, isNextUtcDay,
-  aggregateLedgerByDay,
+  aggregateLedgerByDay, bbCost,
 } = require('./provider-spend-core.js');
 
 const THRESHOLDS = {
@@ -15,7 +15,7 @@ const THRESHOLDS = {
 
 const okReadings = {
   day: '2026-07-30',
-  bb: 25,
+  bb: { sessions: 25, minutes: 30 },
   bd: { serp: { cost: 0.8, reqs: 500 }, unlocker: { cost: 0.6, reqs: 400 } },
   sb: { cycleUsed: 100500, cap: 1000000 },
   sd: { cycleUsed: 210000, limit: 1000000 },
@@ -40,12 +40,29 @@ test('utcYesterday and isNextUtcDay', () => {
   assert.equal(isNextUtcDay(null, '2026-07-30'), false);
 });
 
-test('computeDayRecord: deltas vs adjacent previous day, BB priced per session', () => {
+test('computeDayRecord: deltas vs adjacent previous day, BB priced per browser-minute (amortized base + measured overage)', () => {
   const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
-  assert.equal(rec.providers.browserbase.cost, 2.5);
+  assert.equal(rec.providers.browserbase.cost, 0.73); // 0.67 base + (30/60)*0.12 overage
+  assert.equal(rec.providers.browserbase.sessions, 25);
+  assert.equal(rec.providers.browserbase.minutes, 30);
   assert.equal(rec.providers.brightdata.cost, 1.4);
   assert.equal(rec.providers.scrapingbee.dayCredits, 500);
   assert.equal(rec.providers.scrapingdog.dayCredits, 10000);
+});
+
+test('bbCost: a heavy-session, low-duration day stays near the amortized baseline, not driven by session count', () => {
+  // Real-world shape (BRO-3240): 92 sessions in 19.2 minutes — session COUNT
+  // is high but real browser-time is tiny. The old per-session model would
+  // have priced this at 92 * $0.10 = $9.20; the fix must not reproduce that.
+  const { cost, costBase, costOverage } = bbCost({ sessions: 92, minutes: 19.2 });
+  assert.equal(costBase, 0.67);
+  assert.ok(costOverage < 0.05, `overage should be near-zero for 19.2 real minutes, got ${costOverage}`);
+  assert.ok(cost < 1, `total cost should stay near the flat baseline, got ${cost}`);
+});
+
+test('bbCost: a genuine multi-hour burst still crosses a real dollar figure (alarm stays reachable)', () => {
+  const { cost } = bbCost({ sessions: 80, minutes: 2000 }); // 33.3 browser-hours in one day
+  assert.equal(cost, 4.67);
 });
 
 test('computeDayRecord: counter reset = cycle renewal, day usage is the new counter', () => {
@@ -68,10 +85,10 @@ test('computeDayRecord: null reading is unknown, missing prev is baseline', () =
 });
 
 test('budgetBreaches separates overspend from unmeasured', () => {
-  const rec = computeDayRecord({ ...okReadings, bb: 80, bd: null, prev: prevRecord });
+  const rec = computeDayRecord({ ...okReadings, bb: { sessions: 80, minutes: 2000 }, bd: null, prev: prevRecord });
   const { overspend, unmeasured } = budgetBreaches(rec, THRESHOLDS);
   assert.equal(overspend.length, 1);
-  assert.match(overspend[0], /browserbase \$8 > \$4/);
+  assert.match(overspend[0], /browserbase \$4\.67 > \$4 \(80 sessions, 2000min\)/);
   assert.deepEqual(unmeasured, ['brightdata']);
 });
 
@@ -123,7 +140,7 @@ test('renderSnapshot: items are {title} objects (renderer drops bare strings)', 
     assert.equal(typeof item.title, 'string');
     assert.ok(item.title.length > 0);
   }
-  assert.match(snap.items[0].title, /2026-07-30 · Browserbase: \$2\.5/);
+  assert.match(snap.items[0].title, /2026-07-30 · Browserbase: \$0\.73/);
   assert.match(snap.bannerText, /streak 4 of 7/);
 });
 

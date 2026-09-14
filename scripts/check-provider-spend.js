@@ -24,7 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
 const {
-  fetchBdZoneCostDay, fetchBbSessionCountForDay, fetchSbUsage, fetchSdAccount,
+  fetchBdZoneCostDay, fetchBbUsageForDay, fetchSbUsage, fetchSdAccount,
 } = require('./lib/provider-billing');
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, aggregateLedgerByDay,
@@ -113,8 +113,8 @@ async function main() {
   const prev = [...ledger].reverse().find((r) => r.day < DAY) || null;
 
   const zone = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
-  const [bbSessions, bdSerp, bdUnlocker, sb, sd] = await Promise.all([
-    fetchBbSessionCountForDay(process.env.BROWSERBASE_API_KEY, process.env.BROWSERBASE_PROJECT_ID, DAY),
+  const [bbUsage, bdSerp, bdUnlocker, sb, sd] = await Promise.all([
+    fetchBbUsageForDay(process.env.BROWSERBASE_API_KEY, process.env.BROWSERBASE_PROJECT_ID, DAY),
     fetchBdZoneCostDay('serp_api1', DAY, process.env.BRIGHTDATA_TOKEN),
     fetchBdZoneCostDay(zone, DAY, process.env.BRIGHTDATA_TOKEN),
     fetchSbUsage(process.env.SCRAPINGBEE_API_KEY),
@@ -123,7 +123,7 @@ async function main() {
 
   const record = computeDayRecord({
     day: DAY,
-    bb: bbSessions,
+    bb: bbUsage,
     bd: bdSerp == null || bdUnlocker == null ? null : { serp: bdSerp, unlocker: bdUnlocker },
     sb,
     sd,

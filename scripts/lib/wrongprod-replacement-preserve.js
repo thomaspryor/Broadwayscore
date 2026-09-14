@@ -55,6 +55,15 @@ const REPLACE_CLEAR_FIELDS = new Set([
   // once in wrongproduction-provenance.js — never re-enumerate them here.
   ...WRONG_PRODUCTION_PROVENANCE_FIELDS,
   'wrongShow', 'wrongShowReason', 'wrongShowNote', 'wrongShowAutoCleared',
+  // BRO-3225 (plan-review "structure & devil's advocate" + gpt-5.4-mini production
+  // lens findings, 2026-09-14): the `At` companion was missing here even though
+  // wrongShowAutoClearedAt is itself in PROTECTED_FIELDS with its own retraction
+  // entry — the plumbing half-existed already. Inert under the OLD logic (no
+  // freshness gate consumed it), but load-bearing now that wrongShow gained one:
+  // without this, a URL replacement could carry a stale wrongShowAutoClearedAt
+  // forward onto a different production's file, same leak class as
+  // clearBreadcrumbRetracted* above.
+  'wrongShowAutoClearedAt',
   'contentTier', 'contentTierReason',
   'incompleteReason', 'incompleteDetail',
   'rejectionReason', 'rejectedBy', 'rejectionReasoning',

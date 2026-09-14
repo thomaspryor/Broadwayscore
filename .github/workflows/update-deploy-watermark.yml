@@ -124,12 +124,29 @@ jobs:
           node scripts/pre-deploy-check.js > /dev/null 2>&1 || true
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # BRO-3071: deploy-watermark.json committed in its OWN push-with-
+          # retry.sh call, split out of stage-latency.jsonl — that file stays
+          # genuinely multi-writer (also written by opening-night-
+          # checklist.yml under a DIFFERENT concurrency group, see
+          # scripts/lib/core-data-merge-registry.js's "NOT added,
+          # deliberately" comment) and bundling it in the same commit
+          # disqualified push-with-retry.sh's Git Data API fallback for BOTH
+          # files even though deploy-watermark.json alone is now
+          # apiFallbackSafe.
           git add data/audit/deploy-watermark.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to watermark"
+          else
+            git commit -m "chore: Update deploy watermark [skip ci]"
+            bash scripts/lib/push-with-retry.sh 3 main
+          fi
+
           git add data/audit/stage-latency.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
-            echo "No changes to watermark or stage-latency"
+            echo "No changes to stage-latency"
           else
-            git commit -m "chore: Update deploy watermark + stage-latency [skip ci]"
+            git commit -m "chore: Update stage-latency [skip ci]"
             bash scripts/lib/push-with-retry.sh 3 main
           fi
 

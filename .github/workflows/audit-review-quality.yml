@@ -36,6 +36,14 @@ on:
 permissions:
   contents: write
 
+# BRO-3071: added so its own cron can't race a manual workflow_dispatch into
+# a lost push on data/audit/non-review-audit.json / cross-outlet-
+# duplicates.json (both now apiFallbackSafe — see scripts/lib/core-data-
+# merge-registry.js — which requires this dedicated group).
+concurrency:
+  group: audit-review-quality
+  cancel-in-progress: false
+
 jobs:
   audit:
     name: Audit review quality
