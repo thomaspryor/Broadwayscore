@@ -224,6 +224,18 @@ test('addUsage accumulates the nested cache_creation ephemeral 1h/5m split (BRO-
   assert.equal(t.cache_creation.ephemeral_5m_input_tokens, 110);
 });
 
+test('addUsage + estimateCostUSD: flat-only events (no nested cache_creation ever seen) still price at 1.25x, not zero (BRO-3100 regression)', () => {
+  // Second-opinion review caught this live: addUsage used to pre-seed an
+  // all-zero `cache_creation` object on every total, which made
+  // estimateCostUSD's "is the nested split present" check pass on the
+  // zeros and silently price cache-write cost at 2*0+1.25*0=0 instead of
+  // falling back to the flat field — the exact killed-session path the
+  // spend circuit breaker relies on.
+  const total = addUsage(null, { input_tokens: 100, cache_creation_input_tokens: 500_000 });
+  assert.equal(total.cache_creation, undefined, 'no nested key should exist when no event ever supplied one');
+  assert.equal(estimateCostUSD(total, 'claude-opus-5'), 9.3765);
+});
+
 test('estimateCostUSD: null without usage; opus > sonnet; unknown model estimates as sonnet', () => {
   assert.equal(estimateCostUSD(null, 'sonnet'), null);
   const usage = { input_tokens: 1_000_000, output_tokens: 100_000 };
