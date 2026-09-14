@@ -303,6 +303,87 @@ test('fresh auto-clear does NOT extend to wrongProductionReason (manual-reason c
   assert.equal(wouldRestore('wrongProductionReason', local, committed), true);
 });
 
+// ── BRO-3225: the wrongShow sibling of the wrongProduction freshness gate above.
+// shouldAutoClearWrongShowUkUrl/shouldAutoClearWrongShow (rebuild-all-reviews.js
+// ~3019/3033) delete the flag and stamp wrongShowAutoCleared(+At), but nothing
+// previously recognized that stamp — isIntentionalClear('wrongShow', ...) always
+// returned false for it, so the push-time restore reverted every wrongShow
+// auto-clear, making it a permanent no-op (the reported bug). Unlike
+// wrongProduction, shouldAutoClearWrongShow ALSO deletes wrongShowReason
+// alongside the flag/note (plan-review finding, 2026-09-14), so the freshness
+// gate covers all three fields, not just flag+note.
+const wsCommittedFlagged = {
+  wrongShow: true,
+  wrongShowNote: 'Cross-market: US outlet reviewing London show',
+  wrongShowReason: 'LLM: content mismatch',
+};
+
+test('fresh wrongShow auto-clear (stamped today) suppresses wrongShow/Note/Reason restore', () => {
+  const local = {
+    wrongShowAutoCleared: 'rebuild: UK/major outlet URL on London show',
+    wrongShowAutoClearedAt: today,
+  };
+  assert.equal(wouldRestore('wrongShow', local, wsCommittedFlagged), false);
+  assert.equal(wouldRestore('wrongShowNote', local, wsCommittedFlagged), false);
+  assert.equal(wouldRestore('wrongShowReason', local, wsCommittedFlagged), false);
+});
+
+test('boolean-true wrongShow auto-clear stamp with fresh At also suppresses restore', () => {
+  const local = { wrongShowAutoCleared: true, wrongShowAutoClearedAt: today };
+  assert.equal(wouldRestore('wrongShow', local, wsCommittedFlagged), false);
+});
+
+test('STALE wrongShow auto-clear stamp (30d old) does NOT suppress restore', () => {
+  const local = {
+    wrongShowAutoCleared: 'rebuild: allowEarlyDate bypasses wrongShow',
+    wrongShowAutoClearedAt: new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0],
+  };
+  assert.equal(wouldRestore('wrongShow', local, wsCommittedFlagged), true);
+});
+
+test('wrongShow auto-clear stamp WITHOUT an At date does NOT suppress restore', () => {
+  const local = { wrongShowAutoCleared: 'rebuild: UK/major outlet URL on London show' };
+  assert.equal(isIntentionalClear('wrongShow', local), false);
+  assert.equal(wouldRestore('wrongShow', local, wsCommittedFlagged), true);
+});
+
+test('FUTURE-dated wrongShowAutoClearedAt does NOT suppress restore (age>=0 guard, BRO-3225 plan-review "code design" finding, task #1237 pattern)', () => {
+  // The generalized _freshAutoClearStamp helper carries the age>=0 guard the
+  // OLDER _freshWrongProductionAutoClear lacks — this locks it in for wrongShow
+  // specifically so a clock-skewed/malformed future stamp can't suppress a real
+  // data-loss restore forever.
+  const local = {
+    wrongShowAutoCleared: 'rebuild: UK/major outlet URL on London show',
+    wrongShowAutoClearedAt: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
+  };
+  assert.equal(isIntentionalClear('wrongShow', local), false);
+  assert.equal(wouldRestore('wrongShow', local, wsCommittedFlagged), true);
+});
+
+test('re-flagging wrongShow invalidates the auto-clear stamp (inverted-ping-pong guard, mirrors wrongProduction)', async () => {
+  const { invalidateWrongShowAutoClear } =
+    require(path.join(repoRoot, 'scripts/lib/review-write-guard.js'));
+  const d = {
+    wrongShowAutoCleared: 'rebuild: UK/major outlet URL on London show',
+    wrongShowAutoClearedAt: today,
+  };
+  // fresh stamp suppresses restore…
+  assert.equal(wouldRestore('wrongShow', d, { wrongShow: true }), false);
+  // …until a writer re-flags and invalidates it
+  d.wrongShow = true;
+  invalidateWrongShowAutoClear(d);
+  assert.equal(d.wrongShowAutoCleared, undefined);
+  assert.equal(d.wrongShowAutoClearedAt, undefined);
+  // a later stale-checkout copy WITHOUT the flag now restores normally
+  const staleLocal = {};
+  assert.equal(wouldRestore('wrongShow', staleLocal, { wrongShow: true }), true);
+});
+
+test('wrongShowAutoCleared(+At) is itself a PROTECTED_FIELD', () => {
+  assert.ok(PROTECTED_FIELDS.includes('wrongShowAutoCleared'));
+  assert.ok(PROTECTED_FIELDS.includes('wrongShowAutoClearedAt'));
+});
+
 // ── Task #97 audit: staleScoredBeforeOpening (strip-stale-single-model-scores.js
 // --before-opening mode, run inline by opening-night-express.yml before the SAME
 // job's push-review-texts step). FRESHNESS-GATED (codex adversarial review,
