@@ -331,6 +331,10 @@ test('the 400-char card bound holds on BOTH DEAD branches at extreme counts', ()
     { event: 'card-fail', ts: 'not-a-date', cardId: 'z' },
   ];
 
+  // Pin that these are genuinely TWO branches. Asserting only status==='error'
+  // on both would keep passing if they ever collapsed into one, and the whole
+  // point of this test is that the two have different lengths.
+  const seen = new Set();
   for (const [label, rows] of [['silent-dispatch', mk(9999, 0)], ['passes===0', mk(3, 9999)]]) {
     const r = assessAutofixEffectiveness(rows, { now });
     assert.equal(r.status, 'error', `${label}: fixture precondition — must be a DEAD branch`);
@@ -344,5 +348,7 @@ test('the 400-char card bound holds on BOTH DEAD branches at extreme counts', ()
       /ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN/,
       `${label}: the remediation instructions are the part that must survive truncation`
     );
+    seen.add(r.message);
   }
+  assert.equal(seen.size, 2, 'the two DEAD branches must produce DIFFERENT messages — otherwise this test is measuring one branch twice');
 });
