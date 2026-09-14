@@ -58,6 +58,22 @@
  *   the ambiguity guard (all assignments must agree on ONE literal) covers
  *   the realistic reassignment case, and shadowed severity idents around a
  *   sendAlert call don't exist in this corpus today.
+ * - The literal name `routeAlert` is matched through a preceding dot (BRO-2421,
+ *   so `require('./owner-alert-router.js').routeAlert(...)` isn't invisible to
+ *   the scan). This trades a theoretical false positive — an unrelated object
+ *   happening to expose its own `.routeAlert(...)` method — for closing a real
+ *   blind spot; `routeAlert` is distinctive enough in this corpus that the
+ *   collision has never been observed, and even if it occurred it would only
+ *   inflate the 'router' inventory count, not suppress a real 'direct'
+ *   sendAlert(email:true) finding in the same file (that detection is
+ *   independent). A DOTTED call assigned to a variable and inspected for
+ *   `disposition:'human'` result handling (scanHumanDispositionCaller's
+ *   assignMatch/destructureMatch/nextCallRe) is NOT yet covered by this same
+ *   dot-tolerance — those regexes still require a bare `await routeAlert(`.
+ *   No known caller hits this gap today; tracked as a follow-up rather than
+ *   fixed alongside this change, since extending it risks the exact kind of
+ *   regex-interaction bug this file's own "Known accepted limitations" are
+ *   full of.
  *
  * Second check (card #616): routeAlert()'s disposition='human' path can now
  * silently downgrade to result.action==='digest' (the page-worthy allowlist
