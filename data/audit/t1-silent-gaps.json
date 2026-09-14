@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T19:55:31.363Z",
+  "generatedAt": "2026-09-14T23:04:18.502Z",
   "windowDays": 45,
   "showsScanned": 70,
   "gaps": [
@@ -17,27 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
       "firstSeen": "2026-09-06T13:54:56.426Z",
-      "fileAgeHours": 198.00948166666666,
+      "fileAgeHours": 201.1558325,
       "gapSeenAt": "2026-09-08T15:05:38.757Z",
-      "nonTerminalAgeHours": 148.83127944444445
-    },
-    {
-      "showId": "truly-howard-hughes-off-broadway-2026",
-      "title": "Truly, Howard Hughes",
-      "openingDate": null,
-      "file": "cititour--unknown.json",
-      "outletId": "cititour",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
-      "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 124.98282694444444,
-      "gapSeenAt": "2026-09-14T19:55:31.363Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 151.97770694444444
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -52,9 +34,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 410.6471786111111,
+      "fileAgeHours": 413.79359694444446,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 372.2381091666667
+      "nonTerminalAgeHours": 375.3845366666667
     }
   ],
   "contradictions": []
