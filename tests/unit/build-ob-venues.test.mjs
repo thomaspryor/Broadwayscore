@@ -20,6 +20,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { serialize, BLOCKLIST } = require('../../scripts/build-ob-venues.js');
+const { isNonNycVenue } = require('../../scripts/lib/venue-classification.js');
 const committed = require('../../data/off-broadway-venues.json');
 
 test('serialize matches the on-disk format (2-space indent + trailing newline)', () => {
@@ -70,18 +71,57 @@ test('BLOCKLIST covers known neighborhood/placeholder noise but not real venues'
 //
 // State Theatre New Jersey (New Brunswick, NJ) rode that loop to three bogus OB
 // rows — The Music Man, Spamalot and Beetlejuice, all 2-3 day tour stops — and
-// was only caught by eye. These two tests close it: the first pins the known
-// offender, the second catches the NEXT one by shape rather than by name.
+// was only caught by eye. These tests close it: the first pins the known
+// offender, the next two lock the matching behaviour that actually makes the
+// rejection hold (variants in, real NYC venues out), and the last catches the
+// NEXT touring house by shape rather than by name.
 // ---------------------------------------------------------------------------
 
-test('the State Theatre New Jersey touring house stays blocklisted (BRO-3211)', () => {
+test('the State Theatre New Jersey touring house is rejected (BRO-3211)', () => {
   assert.ok(
-    BLOCKLIST.has('state theatre new jersey'),
-    'state theatre new jersey is a New Brunswick, NJ touring house that TodayTix lists ' +
-    'under its NYC feed; without the blocklist entry it re-enters the allowlist as soon ' +
-    'as one mis-categorised road date lands, and mints more',
+    isNonNycVenue('State Theatre New Jersey'),
+    'State Theatre New Jersey is a New Brunswick, NJ touring house that TodayTix lists ' +
+    'under its NYC feed AND tags "Off Broadway"; if it is not rejected it re-enters the ' +
+    'allowlist as soon as one road date lands, and mints more',
   );
   assert.ok(!committed.includes('state theatre new jersey'));
+});
+
+test('the rejection survives spelling and punctuation variants, not just the exact name', () => {
+  // This is the test that matters. An exact Set.has(normalizeVenueName(v)) was
+  // tried first and let three real-world shapes through, because
+  // normalizeVenueName only strips a TRAILING parenthetical / TRAILING
+  // "theatre"|"theater" / LEADING "the". A single miss is not cosmetic: the row
+  // is admitted, written as category='off-broadway', and the generator then
+  // re-learns the venue into this very list, restarting the loop.
+  for (const variant of [
+    'State Theatre New Jersey',
+    'The State Theatre New Jersey',
+    'State Theater New Jersey',                  // American spelling, mid-string
+    'State Theatre New Jersey (New Brunswick)',  // trailing parenthetical
+    'State Theatre, New Jersey',                 // comma
+    'State Theatre New Jersey - New Brunswick',  // locality suffix
+    'STATE THEATRE NEW JERSEY',
+    '  State Theatre New Jersey  ',
+  ]) {
+    assert.ok(isNonNycVenue(variant), `variant must be rejected: ${JSON.stringify(variant)}`);
+  }
+  // A TodayTix-shape object, the form discover-new-shows.js actually passes.
+  assert.ok(isNonNycVenue({ name: 'State Theater New Jersey' }));
+});
+
+test('the rejection does not swallow legitimate NYC venues', () => {
+  for (const ok of [
+    'Cherry Lane Theatre', 'New York City Center', 'Theatre 71', 'Soho Playhouse',
+    'New Jersey Performing Arts Center', // a DIFFERENT venue - must not be caught by a loose /new jersey/
+    'Lucille Lortel Theatre', 'The Public Theater',
+  ]) {
+    assert.ok(!isNonNycVenue(ok), `must NOT be rejected: ${ok}`);
+  }
+  assert.equal(isNonNycVenue(null), false);
+  assert.equal(isNonNycVenue(undefined), false);
+  assert.equal(isNonNycVenue({}), false);
+  assert.equal(isNonNycVenue(''), false);
 });
 
 test('no venue outside New York is in the Off-Broadway allowlist', () => {
@@ -106,7 +146,8 @@ test('no venue outside New York is in the Off-Broadway allowlist', () => {
     leaked, [],
     `non-NYC venue(s) in the Off-Broadway allowlist: ${leaked.join(', ')}. ` +
     'Off-Broadway is a NYC designation — a touring or regional house here means a show ' +
-    'was mis-categorised as off-broadway. Fix the show row AND add the venue to ' +
-    'BLOCKLIST in scripts/build-ob-venues.js, or the derive->classify loop re-adds it.',
+    'was mis-categorised as off-broadway. Fix the show row AND extend ' +
+    'NON_NYC_VENUE_RE in scripts/lib/venue-classification.js (which both the ' +
+    'generator and discovery reject on), or the derive->classify loop re-adds it.',
   );
 });

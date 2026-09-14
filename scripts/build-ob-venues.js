@@ -26,7 +26,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeVenueName, NON_NYC_VENUES } = require('./lib/venue-classification');
+const { normalizeVenueName, isNonNycVenue } = require('./lib/venue-classification');
 const { OB_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -43,21 +43,6 @@ const BLOCKLIST = new Set([
   'music city', 'magic mike live', 'masquerade nyc', 'paradise club',
   'bowery ballroom', 'lotte new york palace hotel',
   'please check your confirmation email for address',
-  // Touring houses OUTSIDE New York that TodayTix lists under its NYC feed.
-  // These are the dangerous entries, because this list is DERIVED from
-  // category='off-broadway' shows and then FEEDS isKnownOffBroadwayVenue(),
-  // which is what rescues untagged TodayTix rows INTO category='off-broadway'.
-  // So a single mis-categorised road date teaches the allowlist a touring
-  // venue, and every later engagement there is silently minted as an
-  // Off-Broadway production — a self-reinforcing loop. State Theatre New
-  // Jersey (New Brunswick, NJ) did exactly that: it produced three bogus OB
-  // rows (The Music Man, Spamalot, Beetlejuice — all 2-3 day tour stops) before
-  // anyone noticed (BRO-3211). Blocklisting breaks the loop at the source, so
-  // the venue cannot re-enter even if a bad row reappears.
-  //
-  // Shared with discover-new-shows.js (which rejects these at ingest, ahead of
-  // TodayTix's own "Off Broadway" tag) so the two cannot drift apart.
-  ...NON_NYC_VENUES,
 ]);
 
 function buildList() {
@@ -73,6 +58,19 @@ function buildList() {
   for (const venue of [...obShowVenues, ...configVenues]) {
     const normalized = normalizeVenueName(venue || '');
     if (!normalized || BLOCKLIST.has(normalized)) continue;
+    // Touring houses OUTSIDE New York that TodayTix lists under its NYC feed.
+    // This matters more here than anywhere else, because this list is DERIVED
+    // from category='off-broadway' shows and then FEEDS isKnownOffBroadwayVenue(),
+    // which is what admits TodayTix rows INTO category='off-broadway'. So one
+    // mis-categorised road date would teach the allowlist a touring venue and
+    // every later engagement there would be minted as an Off-Broadway
+    // production, re-feeding the list -- a self-reinforcing loop. State Theatre
+    // New Jersey rode it to three bogus rows before anyone noticed (BRO-3211).
+    //
+    // Deliberately the SAME predicate discover-new-shows.js rejects on at
+    // ingest, rather than a second copy of the list here, so the build-time
+    // and ingest-time views cannot drift apart.
+    if (isNonNycVenue(normalized)) continue;
     set.add(normalized);
   }
   return [...set].sort();

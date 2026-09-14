@@ -63,9 +63,19 @@ function isWestEndVenue(venue) {
 // TodayTix returns subcategories ["Comedy","Off Broadway"] for Beetlejuice at
 // State Theatre New Jersey (verified against the live API, 2026-09-14), so a
 // venue-allowlist fix alone would not have stopped the row coming straight back.
-const NON_NYC_VENUES = new Set([
-  'state theatre new jersey',
-]);
+// Substring regex, NOT an exact Set — the same choice (and for the same reason)
+// as SPECIAL_ENGAGEMENT_VENUE_RE below. An exact Set.has(normalizeVenueName(v))
+// was tried first and is one keystroke from useless here: normalizeVenueName
+// only strips a TRAILING parenthetical, a TRAILING "theatre"/"theater" and a
+// LEADING "the", so every one of these real-world shapes slipped past it --
+//   "State Theater New Jersey"               (American spelling; mid-string, so not stripped)
+//   "State Theatre, New Jersey"              (comma)
+//   "State Theatre New Jersey - New Brunswick"  (locality suffix)
+// -- and a single miss is not cosmetic: the row is admitted, written as
+// category='off-broadway', and build-ob-venues.js then re-learns the venue into
+// the allowlist, restarting the very loop this is here to break. \W+ separators
+// absorb the punctuation variants and theat(?:er|re) absorbs the spelling.
+const NON_NYC_VENUE_RE = /state\W+theat(?:er|re)\W+new\W+jersey/i;
 
 /**
  * True when a venue is a known non-New-York house. Such a venue can never be
@@ -75,7 +85,7 @@ const NON_NYC_VENUES = new Set([
 function isNonNycVenue(venue) {
   const name = typeof venue === 'string' ? venue : venue?.name;
   if (!name) return false;
-  return NON_NYC_VENUES.has(normalizeVenueName(name));
+  return NON_NYC_VENUE_RE.test(name);
 }
 
 /**
@@ -314,4 +324,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, NON_NYC_VENUES, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, NON_NYC_VENUE_RE, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
