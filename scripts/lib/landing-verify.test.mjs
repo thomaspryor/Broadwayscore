@@ -65,7 +65,35 @@ test('control: git cat-file -e succeeds on the older commit but merge-base --is-
   }
 });
 
-test('checkLanded never reports NOT_LANDED for a shallow-truncated commit that is genuinely on main', () => {
+// These tests run IN GitHub Actions, where GITHUB_ACTIONS is always set — and
+// ensureFullHistory now skips the unshallow whenever it is (BRO-3320). A test
+// that read the ambient environment would therefore exercise the SKIP path in
+// CI while appearing to cover the fetch path, and pass for the wrong reason.
+// So every test below states which branch it wants, rather than inheriting one.
+// Registered as `t.after` as well as `finally` so a thrown assertion cannot
+// leak the mutation into the next test (node:test runs top-level tests within
+// a file sequentially, so restoring is sufficient — but only if it happens).
+function forceUnshallowEnv(t, { skip }) {
+  const saved = {
+    GITHUB_ACTIONS: process.env.GITHUB_ACTIONS,
+    PUSH_SKIP_UNSHALLOW: process.env.PUSH_SKIP_UNSHALLOW,
+  };
+  const restore = () => {
+    for (const [k, v] of Object.entries(saved)) {
+      if (v === undefined) delete process.env[k];
+      else process.env[k] = v;
+    }
+  };
+  t.after(restore);
+  delete process.env.GITHUB_ACTIONS;
+  delete process.env.PUSH_SKIP_UNSHALLOW;
+  if (skip === 'ci') process.env.GITHUB_ACTIONS = 'true';
+  else if (skip === 'env') process.env.PUSH_SKIP_UNSHALLOW = '1';
+  return restore;
+}
+
+test('checkLanded never reports NOT_LANDED for a shallow-truncated commit that is genuinely on main', (t) => {
+  forceUnshallowEnv(t, { skip: false });
   const { root, origin, workdir, shas } = makeThreeCommitRepo();
   try {
     const [c1] = shas;
@@ -89,7 +117,8 @@ test('checkLanded never reports NOT_LANDED for a shallow-truncated commit that i
   }
 });
 
-test('checkLanded reports UNKNOWN, not NOT_LANDED, when unshallow is impossible', () => {
+test('checkLanded reports UNKNOWN, not NOT_LANDED, when unshallow is impossible', (t) => {
+  forceUnshallowEnv(t, { skip: false });
   const { root, workdir, shas } = makeThreeCommitRepo();
   try {
     const [c1] = shas;
@@ -120,6 +149,71 @@ test('checkLanded reports UNKNOWN, not NOT_LANDED, when unshallow is impossible'
       warnings.some((w) => /STILL shallow/i.test(w)),
       'must log a distinct loud warning when unshallow fails, not fail silently'
     );
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+// BRO-3320. The unshallow used to run unconditionally, including from the
+// pre-push hook — which executes INSIDE `timeout $GIT_NET_TIMEOUT_SEC git push`.
+// On this repo it has ~1.8 GB to move and never finishes, so it burned the
+// whole push budget and the push died before its own transport ever started.
+// These two tests pin the skip by OBSERVABLE EFFECT rather than by mocking:
+// origin is pointed at a path that does not exist, so a fetch could only fail
+// slowly and loudly. Returning a clean verdict fast is proof none was made.
+for (const [label, skip] of [['GITHUB_ACTIONS is set (CI)', 'ci'], ['PUSH_SKIP_UNSHALLOW=1', 'env']]) {
+  test(`checkLanded skips the unshallow entirely and reports UNKNOWN immediately when ${label}`, (t) => {
+    forceUnshallowEnv(t, { skip });
+    const { root, workdir, shas } = makeThreeCommitRepo();
+    try {
+      const [c1] = shas;
+      shallowGraftAtTip(workdir);
+      assert.equal(isShallowRepo(workdir), true, 'fixture precondition: must be shallow');
+      // Unreachable remote: any attempted fetch would have to fail, not succeed.
+      execFileSync('git', ['remote', 'set-url', 'origin', path.join(root, 'does-not-exist.git')], { cwd: workdir });
+
+      const warnings = [];
+      const started = Date.now();
+      const result = checkLanded({ sha: c1, branch: 'main', remote: 'origin', cwd: workdir, log: (m) => warnings.push(m) });
+      const elapsedMs = Date.now() - started;
+
+      assert.equal(result.verdict, 'UNKNOWN');
+      assert.equal(result.landed, null, 'must never answer NOT_LANDED — the whole point of the module');
+      assert.equal(result.shallow, true);
+      assert.equal(
+        result.reason,
+        'unshallow-skipped-ci',
+        'a deliberate skip must be distinguishable from a fetch that was tried and failed'
+      );
+      assert.ok(
+        warnings.some((w) => /SKIPPED/.test(w)),
+        `the skip must be loud and greppable, not silent; got ${JSON.stringify(warnings)}`
+      );
+      assert.equal(
+        isShallowRepo(workdir), true,
+        'the repo must still be shallow — proof no unshallow was performed'
+      );
+      // A real attempt against a nonexistent remote cannot return this fast.
+      assert.ok(elapsedMs < 1000, `must return without a network attempt; took ${elapsedMs}ms`);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+}
+
+test('the skip does NOT fire on a repo that is not shallow — a full checkout still gets a real verdict in CI', (t) => {
+  forceUnshallowEnv(t, { skip: 'ci' });
+  const { root, workdir, shas } = makeThreeCommitRepo();
+  try {
+    const [c1] = shas;
+    assert.equal(isShallowRepo(workdir), false, 'fixture precondition: NOT shallow');
+    const result = checkLanded({ sha: c1, branch: 'main', remote: 'origin', cwd: workdir, log: () => {} });
+    // The early `if (!isShallowRepo(cwd))` return runs before the skip, so the
+    // guard keeps all of its teeth wherever history is actually present —
+    // which is every local session, and the 26 fetch-depth:0 workflows.
+    assert.equal(result.verdict, 'LANDED');
+    assert.equal(result.landed, true);
+    assert.equal(result.reason, null);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

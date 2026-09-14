@@ -22,6 +22,42 @@
  * same env knob scripts/lib/push-with-retry.sh's git_fetch wrapper uses —
  * so both the bash and Node fetch paths share one timeout value instead of
  * drifting apart.
+ *
+ * IT IS ALSO SKIPPED ENTIRELY IN CI (BRO-3320, 2026-09-14). GIT_NET_TIMEOUT_SEC
+ * bounds the DURATION of the fetch, not the AMOUNT OF HISTORY it has to move,
+ * and on this repo those are not close: a depth-1 checkout's .git is 485 MB
+ * against 2.3 GB of full history, so an unshallow has to pull ~1.8 GB. The
+ * depth-1 clone alone measured 36.9s. There is no timeout value at which that
+ * completes — not the 30s CI now uses, not the 90s default it used before.
+ *
+ * That mattered far more than "one slow check", because the pre-push hook calls
+ * this (scripts/hooks/pre-push's non-fast-forward guard) and the hook runs
+ * INSIDE `timeout $GIT_NET_TIMEOUT_SEC git push` (scripts/lib/push-with-retry.sh's
+ * git_push wrapper). So on every CI push the doomed unshallow ate the entire
+ * push budget and git was SIGTERMed before it ever started its own transport.
+ * Run 34848771085's curl trace is the proof: across 13 retry attempts, 14
+ * occurrences of git-upload-pack (a FETCH) and ZERO of git-receive-pack (the
+ * PUSH). 214 of 240 workflows use actions/checkout's default fetch-depth, and
+ * postinstall installs the hook in every CI job, so this was the wall behind
+ * ~3,800 push failures since 2026-08-23 (~165/day, origin/push-retry-failures).
+ *
+ * And it bought nothing: a timed-out unshallow returns STILL-shallow, which
+ * checkLanded reports as UNKNOWN, which every caller already fails open on (see
+ * the call-site walk below). Skipping reaches the identical verdict instantly.
+ *
+ * The skip condition and its PUSH_SKIP_UNSHALLOW escape hatch deliberately
+ * mirror scripts/lib/push-with-retry.sh:1549-1551, which made exactly this call
+ * for its OWN unshallow ("local checkout is SHALLOW outside CI — this should
+ * never happen"). Keep the two in step; they are one policy expressed in two
+ * languages. This module was simply the copy that never got the guard.
+ *
+ * Callers and what UNKNOWN means to each (verified 2026-09-14 — none of them
+ * force-pushes, re-pushes or "recovers" on it):
+ *   scripts/hooks/pre-push:82           exit!=1 -> non_ff=0, push proceeds
+ *   scripts/check-prod-deploy.js:97     warns, treats as not-yet-live
+ *   scripts/lib/review-gate.mjs:449     caches shallow, ancestry "can't confirm"
+ *   scripts/merge-worktree-to-main.sh   rc=2 -> retry, then die loudly
+ *   scripts/gc-merged-worktrees.sh:457  rc=2 -> falls through to `git cherry`
  */
 const { execFileSync } = require('child_process');
 
@@ -55,6 +91,26 @@ function isShallowRepo(cwd) {
  */
 function ensureFullHistory({ cwd = process.cwd(), remote = 'origin', log = () => {}, timeoutMs = null } = {}) {
   if (!isShallowRepo(cwd)) return { shallow: false };
+  // Read from process.env directly rather than through an injectable
+  // parameter. scripts/lib/push-with-retry.sh:1550 reads GITHUB_ACTIONS the
+  // same way, and a per-caller override here would be a second mechanism for
+  // one policy — the forgettable-flag shape this fix exists to avoid. The
+  // tests save/delete/restore these two vars instead (they have to: they run
+  // in GitHub Actions, where GITHUB_ACTIONS is always set, so a test reading
+  // the ambient environment would silently exercise the skip path in CI while
+  // appearing to cover the fetch path).
+  const env = process.env;
+  if (env.GITHUB_ACTIONS || env.PUSH_SKIP_UNSHALLOW === '1') {
+    // Distinct and greppable on purpose: this is the line that tells you a
+    // shallow verdict was a deliberate skip rather than a failed fetch, and
+    // it is the only external signal if a stray GITHUB_ACTIONS ever leaks
+    // into a local shell (review-gate.mjs caches `shallow` for 5 min, so a
+    // poisoned entry would otherwise degrade silently).
+    log(
+      `NOTE: local checkout is shallow and 'git fetch --unshallow ${remote}' is SKIPPED here (${env.GITHUB_ACTIONS ? 'GITHUB_ACTIONS' : 'PUSH_SKIP_UNSHALLOW=1'}) — on this repo it must move ~1.8 GB and cannot finish inside GIT_NET_TIMEOUT_SEC, and when it runs inside a pre-push hook it kills the push itself (BRO-3320). Reporting UNKNOWN immediately, which is the same verdict the timeout produced. Mirrors scripts/lib/push-with-retry.sh:1549-1551.`
+    );
+    return { shallow: true, skipped: true };
+  }
   log(
     `WARNING: local checkout is shallow — 'git merge-base --is-ancestor' can false-negative on commits genuinely present. Attempting 'git fetch --unshallow ${remote}' (task #1489).`
   );
@@ -120,13 +176,19 @@ function isAncestor(sha, ref, cwd) {
  * scripts/merge-worktree-to-main.sh's two call sites do; a stale local ref
  * can read LANDED against a tip the remote has since moved past.
  */
-function checkLanded({ sha, branch = 'main', remote = 'origin', ref, cwd = process.cwd(), log = () => {} } = {}) {
+function checkLanded({ sha, branch = 'main', remote = 'origin', ref, cwd = process.cwd(), log = () => {}, env = process.env } = {}) {
   if (!sha) throw new Error('checkLanded requires sha');
   const targetRef = ref || `${remote}/${branch}`;
 
-  const { shallow } = ensureFullHistory({ cwd, remote, log });
+  const { shallow, skipped } = ensureFullHistory({ cwd, remote, log, env });
   if (shallow) {
-    return { verdict: 'UNKNOWN', landed: null, shallow: true, reason: 'unshallow-failed' };
+    // Two different roads to the same UNKNOWN, kept distinguishable: a fetch
+    // that was TRIED and failed is a network/repo problem worth chasing, while
+    // a deliberate CI skip is expected and not worth a single minute of
+    // anyone's debugging. check-prod-deploy.js:100 interpolates this straight
+    // into its operator-facing warning, so the distinction lands where it is
+    // actually read.
+    return { verdict: 'UNKNOWN', landed: null, shallow: true, reason: skipped ? 'unshallow-skipped-ci' : 'unshallow-failed' };
   }
 
   const landed = isAncestor(sha, targetRef, cwd);
