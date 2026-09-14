@@ -541,83 +541,6 @@
     "queuedAt": "2026-09-13T16:24:13.023Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 75.1% (373/497)\noff-broadway: 40.1% (129/322)\nwest-end: 73.8% (399/541)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (729h)\nA Midsummer Night's Dream — observer (729h)\nA Midsummer Night's Dream — standard (729h)\nA Midsummer Night's Dream — times-uk (729h)\nABBA Voyage — independent (729h)\n… 191 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (729h)\nBuena Vista Social Club — nydailynews (729h)\nHadestown — nydailynews (729h)\nJust in Time — nydailynews (729h)\nMasquerade — nydailynews (729h)\n… 11 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T18:43:20.658Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "9/125 show(s) differ between internal state and what prod serves.\nscore-drift: 9\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nDeath Note: The Musical: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T18:43:23.650Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "54 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Just in Time — broadwaynews (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"just-in-time-2025\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Othello — broadwaynews (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Stranger Things: The First Shadow — times-uk (69h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The 25th Annual Putnam County Spelling Bee — dailybeast (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-25th-annual-putnam-county-spelling-bee-off-broadway-2025\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Importance of Being Oscar — times-uk (685h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lion King — ew (124h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-1997\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lion King — i-paper (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lion King — thestage (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lion King — whatsonstage (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Misanthrope — thestage (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-misanthrope-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-13T18:43:23.760Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -703,123 +626,80 @@
     "queuedAt": "2026-09-14T19:27:23.368Z"
   },
   {
-    "conditionKey": "we-aggregator-go-live:the-story-olivier-west-end-2026",
-    "title": "The Story Olivier @ national — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/the-story-olivier-national-theatre-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/the-story-olivier-west-end-2026",
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "9/126 show(s) differ between internal state and what prod serves.\nscore-drift: 9\nBLOODSPORT: After Helen of Troy: score-drift\nMan to Man: score-drift\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift",
+    "severity": "error",
+    "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.103Z"
+    "queuedAt": "2026-09-14T19:55:39.251Z"
   },
   {
-    "conditionKey": "we-aggregator-go-live:pride-theatre-dorfman-west-end-2026",
-    "title": "Pride Theatre Dorfman @ national — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/pride-theatre-dorfman-west-end-2026",
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "44 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.105Z"
+    "fields": [
+      {
+        "name": "Just in Time — timeout (25h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"just-in-time-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Children — independent (25h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-children-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Lost Boys — nydailynews (754h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lost-boys-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Outsiders — deadline (754h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-outsiders-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Outsiders — nydailynews (754h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-outsiders-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Outsiders — thewrap (754h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-outsiders-2024\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Pass — deadline (754h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Pass — nypost (754h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Pass — nysr (754h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Pass — nytimes (754h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-14T19:55:39.339Z"
   },
   {
-    "conditionKey": "we-aggregator-go-live:why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
-    "title": "Why I Stuck a Flare Up My Arse for England @ garrick — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/why-i-stuck-a-flare-up-my-arse-for-england-garrick-theatre-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.1% (378/497)\noff-broadway: 42.8% (131/306)\nwest-end: 75.5% (418/554)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (754h)\nA Midsummer Night's Dream — observer (754h)\nA Midsummer Night's Dream — standard (754h)\nABBA Voyage — independent (754h)\nAladdin — ew (754h)\n… 184 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (754h)\nBuena Vista Social Club — broadwaynews (754h)\nHeathers The Musical — dailybeast (754h)\nJust in Time — broadwaynews (754h)\nOthello — broadwaynews (754h)\n… 5 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.107Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:an-ideal-husband-hammersmith-review2-west-end-2026",
-    "title": "An Ideal Husband Hammersmith Review2 @ lyric — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review2). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/an-ideal-husband-hammersmith-review2-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.109Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:krapps-last-tape-west-end-2026",
-    "title": "Krapps Last Tape @ royal court — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-krapps-last-tape-royal-court-theatre). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/krapps-last-tape-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.111Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:an-ideal-husband-hammersmith-west-end-2026",
-    "title": "An Ideal Husband Hammersmith @ lyric — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/an-ideal-husband-hammersmith-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.113Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:dracula-west-end-2026",
-    "title": "Dracula @ noel coward — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/dracula-noel-coward-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/dracula-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.115Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:john-proctor-west-end-2026",
-    "title": "John Proctor @ royal court — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/john-proctor-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.117Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:jajas-african-hair-braiding-hammersmith-west-end-2026",
-    "title": "Jajas African Hair Braiding Hammersmith @ lyric — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-roundup-jajas-african-hair-braiding-lyric-hammersmith). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/jajas-african-hair-braiding-hammersmith-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.119Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:to-maury-with-love-concert-west-end-2026",
-    "title": "To Maury With Love Concert @ theatre royal drury lane — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/to-maury-with-love-concert-theatre-royal-drury-lane-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/to-maury-with-love-concert-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-14T19:38:42.121Z"
+    "queuedAt": "2026-09-14T19:55:39.414Z"
   }
 ]
