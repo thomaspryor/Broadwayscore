@@ -639,8 +639,8 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
  * explicit human override must always win. This strips only our own flag —
  * recognised by its note prefix or reason — never a manual/CV/cross-market flag.
  *
- * Defense-in-depth (#1156/BRO-3328): every sibling auto-clear predicate in
- * this file defers to hasEnsembleConsensus — a unanimous ensemble
+ * Defense-in-depth (#1156/BRO-3328): most sibling auto-clear predicates in
+ * this file defer to hasEnsembleConsensus — a unanimous ensemble
  * wrong_production verdict on the fetched text outranks a domain/market
  * heuristic. This path had never been given that same guard, so a review the
  * ensemble had already rejected on content grounds could be silently
@@ -649,6 +649,10 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
  * (much-ado-about-nothing-2026's london-theatre--marianka-swain.json).
  * humanOverride is checked FIRST and still always wins, per this function's
  * original contract above.
+ * NOTE: shouldAutoClearStaleDateGuard below has the identical shape (a date
+ * moving back in-window releases a hold) and is STILL missing this guard —
+ * tracked as a separate follow-up (BRO-3328 ship-check finding) rather than
+ * folded into this fix, since no live corpus violation exists for it today.
  *
  * @param {object} data - the review JSON object
  * @param {object} ctx
