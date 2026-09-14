@@ -40,7 +40,7 @@ const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, sus
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
-const { isBroadwayCategory, isOffBroadwayCategory, isNonNycLocale } = require('./lib/venue-classification');
+const { isBroadwayCategory, isMisCategorisedNonNycRow } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -458,16 +458,13 @@ function validateStatus(shows) {
     // about, and any row a human or a future importer writes directly.
     // isNonNycLocale's matching rationale (structural, not city keywords) and
     // its measured false-positive rate live with the predicate.
-    // Uses the canonical predicates, not raw `category === 'broadway'`
-    // literals (audit-broadway-category-predicate.js --strict, which fails CI
-    // on any NEW raw literal — BRO-3211 shipped this check with the raw form
-    // and reddened main on the very next run). isBroadwayCategory() also
-    // treats an absent category as Broadway, which is the project-wide
-    // meaning; measured against the live corpus at the time of this change,
-    // the two forms flagged an identical set (0 rows, and 0 null-category
-    // rows exist), so this is a pure de-duplication, not a widening.
-    if ((isBroadwayCategory(show) || isOffBroadwayCategory(show))
-        && show.venue && isNonNycLocale(show.venue)) {
+    // The decision itself lives in scripts/lib/venue-classification.js as
+    // isMisCategorisedNonNycRow() — extracted so the colocated test can
+    // require the REAL function instead of re-implementing it (CLAUDE.md rule
+    // 15). BRO-3211 shipped this check as a raw `category === 'broadway'`
+    // literal, which reddened main on the very next run against
+    // audit-broadway-category-predicate.js --strict.
+    if (isMisCategorisedNonNycRow(show)) {
       error(`Show "${show.title}" (${show.id}) has category="${show.category ?? 'null (treated as broadway)'}" but venue "${show.venue}" is outside New York — Broadway and Off-Broadway are NYC designations, so this is a mis-categorised touring/regional date. Remove the row or recategorise it (category="regional"), and fix the creator: if it came from TodayTix, add the venue to NON_NYC_VENUE_RE in scripts/lib/venue-classification.js so discovery stops re-minting it.`);
       invalid++;
     }
@@ -1796,7 +1793,11 @@ function validateSchedulesJson(shows) {
   }
 
   // Shows that should have multi-week data: Broadway, open-status only (bwayrush is Broadway-only).
-  const broadwayOpen = shows.filter(s => s.status === 'open' && (!s.category || s.category === 'broadway'));
+  // Canonical predicate, not an inlined `!s.category || s.category === 'broadway'`
+  // — this file imports isBroadwayCategory and this was the last raw copy in it
+  // (ship-check finding on the BRO-3211 follow-up; clears validate-data.js from
+  // audit-broadway-category-predicate.js's frozen baseline entirely).
+  const broadwayOpen = shows.filter(s => s.status === 'open' && isBroadwayCategory(s));
   const openIds = new Set(broadwayOpen.map(s => s.id));
 
   let multiWeek = 0;

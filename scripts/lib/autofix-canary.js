@@ -217,6 +217,14 @@ function dailyCounts(entries, dispatchEvent, windowDays, now) {
   }
   const dispatched = Object.fromEntries(days.map((d) => [d, 0]));
   const passed = Object.fromEntries(days.map((d) => [d, 0]));
+  // Rows skipped because their timestamp will not parse. Counted, not dropped:
+  // this reader covers BOTH ledgers, and only the digest one has a check
+  // (assessAutofixEffectiveness's `undated`) that would otherwise name the
+  // writer bug. A malformed row in backlog-drain-ledger.jsonl would be
+  // invisible here while still starving zeroDispatchStreak toward a false DEAD
+  // banner — silence causing the exact alarm this whole change set exists to
+  // stop being wrong about.
+  let unreadable = 0;
   for (const e of Array.isArray(entries) ? entries : []) {
     if (!e) continue;
     // BRO-3321: a card-pass belongs to the day its dispatch RAN, not the day
@@ -238,13 +246,13 @@ function dailyCounts(entries, dispatchEvent, windowDays, now) {
     // writer bug, investigate separately" and counts such rows rather than
     // dropping or dying on them. Same posture here: skip the row, keep the
     // report, let the writer bug be found by the check that names it.
-    if (!Number.isFinite(Date.parse(ts))) continue;
+    if (!Number.isFinite(Date.parse(ts))) { unreadable++; continue; }
     const day = canaryDateStr(ts);
     if (!(day in dispatched)) continue;
     if (e.event === dispatchEvent) dispatched[day]++;
     else if (e.event === 'card-pass') passed[day]++;
   }
-  return { days, dispatched, passed };
+  return { days, dispatched, passed, unreadable };
 }
 
 /**
@@ -269,6 +277,10 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
 
   const digestDaily = dailyCounts(digestNull ? [] : digestLedgerEntries, 'auto-dispatch', windowDays, now);
   const backlogDaily = dailyCounts(backlogNull ? [] : backlogLedgerEntries, 'drain-dispatch', windowDays, now);
+  // Surfaced on every verdict below, including the DEAD ones: a streak built
+  // out of rows this reader silently threw away is not a measurement.
+  const unreadable = digestDaily.unreadable + backlogDaily.unreadable;
+  const unreadableNote = unreadable ? ` (${unreadable} ledger row(s) skipped — unparseable timestamp, writer bug)` : '';
 
   const days = digestDaily.days;
   const dispatchedTotal = days.map((d) => digestDaily.dispatched[d] + backlogDaily.dispatched[d]);
@@ -303,14 +315,14 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
     return {
       name,
       status: 'error',
-      message: `Autofix throughput DEAD: 0 dispatches on each of the last ${zeroDispatchStreak} day(s)${partialNote} — this is the exact 8/5-8/9 starvation shape (task #1184).`,
+      message: `Autofix throughput DEAD: 0 dispatches on each of the last ${zeroDispatchStreak} day(s)${partialNote}${unreadableNote} — this is the exact 8/5-8/9 starvation shape (task #1184).`,
     };
   }
   if (zeroPassStreak >= ZERO_PASS_ERROR_DAYS) {
     return {
       name,
       status: 'error',
-      message: `Autofix throughput DEAD: 0 passes on each of the last ${zeroPassStreak} day(s)${partialNote} — dispatches are launching but nothing is landing.`,
+      message: `Autofix throughput DEAD: 0 passes on each of the last ${zeroPassStreak} day(s)${partialNote}${unreadableNote} — dispatches are launching but nothing is landing.`,
     };
   }
 
@@ -325,13 +337,13 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
     return {
       name,
       status: 'warn',
-      message: `Autofix throughput partially measurable over the last ${windowDays}d${partialNote}: ${dSum} dispatched, ${pSum} passed from the readable source — the unreadable source could be starved without this row catching it.`,
+      message: `Autofix throughput partially measurable over the last ${windowDays}d${partialNote}${unreadableNote}: ${dSum} dispatched, ${pSum} passed from the readable source — the unreadable source could be starved without this row catching it.`,
     };
   }
   return {
     name,
     status: 'pass',
-    message: `Autofix throughput over the last ${windowDays}d: ${dSum} dispatched, ${pSum} passed (net ${dSum - pSum}).`,
+    message: `Autofix throughput over the last ${windowDays}d: ${dSum} dispatched, ${pSum} passed (net ${dSum - pSum})${unreadableNote}.`,
   };
 }
 

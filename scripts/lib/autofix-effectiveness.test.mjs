@@ -331,6 +331,12 @@ test('the 400-char card bound holds on BOTH DEAD branches at extreme counts', ()
     { event: 'card-fail', ts: 'not-a-date', cardId: 'z' },
   ];
 
+  // Pin that these are genuinely TWO branches. Asserting only status==='error'
+  // on both would keep passing if they ever collapsed into one, and the whole
+  // point of this test is that the two have different lengths. (The earlier
+  // "392 chars, eight from the limit" note above described the message BEFORE
+  // undatedNote was trimmed; the trimmed worst case measures 362.)
+  const seen = new Set();
   for (const [label, rows] of [['silent-dispatch', mk(9999, 0)], ['passes===0', mk(3, 9999)]]) {
     const r = assessAutofixEffectiveness(rows, { now });
     assert.equal(r.status, 'error', `${label}: fixture precondition — must be a DEAD branch`);
@@ -344,5 +350,22 @@ test('the 400-char card bound holds on BOTH DEAD branches at extreme counts', ()
       /ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN/,
       `${label}: the remediation instructions are the part that must survive truncation`
     );
+    seen.add(label);
+    // Assert the SHAPE of each branch, not merely that two strings differ.
+    // `seen.size === 2` on the raw messages proved nothing: the fixtures carry
+    // different counts (9999 vs 3), so a single collapsed template would still
+    // interpolate two distinct strings and pass. These two phrasings come from
+    // genuinely different branches.
+    if (label === 'silent-dispatch') {
+      assert.match(r.message, /job\(s\) launched .* reported back/, 'silent-dispatch branch must report launches with no reply');
+      assert.doesNotMatch(r.message, /0 of \d+ job\(s\) succeeded/, 'must not be the passes===0 branch');
+    } else {
+      assert.match(r.message, /0 of \d+ job\(s\) succeeded/, 'passes===0 branch must report outcomes that all failed');
+      // NOT /reported back/ — youngNote ("too recent to have reported back")
+      // contains that phrase and renders on both branches. The discriminator
+      // has to be the branch's own clause.
+      assert.doesNotMatch(r.message, /job\(s\) launched in the last/, 'must not be the silent-dispatch branch');
+    }
   }
+  assert.equal(seen.size, 2, 'both branches must actually have been exercised');
 });

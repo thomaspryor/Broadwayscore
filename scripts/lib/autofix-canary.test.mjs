@@ -434,7 +434,15 @@ test('assessThroughputRow: an unparseable ts never throws — one bad row must n
   // daily outage. The ledger explicitly models this shape existing
   // (autofix-effectiveness.js's undatedNote: "unreadable timestamps — writer bug").
   const { assessThroughputRow } = require('./autofix-canary.js');
-  for (const bad of ['not-a-date', '   ', '2026-13-45T99:99:99Z', 'null', '0000']) {
+  // Every entry must ACTUALLY fail Date.parse. An earlier version listed
+  // '0000', which parses to year 0 and so never reached the guard at all — a
+  // vacuous case padding out a list that was described as exercising more
+  // shapes than it did.
+  const shapes = ['not-a-date', '   ', '2026-13-45T99:99:99Z', 'null', 'Invalid Date', '[object Object]'];
+  for (const bad of shapes) {
+    assert.ok(!Number.isFinite(Date.parse(bad)), `fixture precondition: ${JSON.stringify(bad)} must be genuinely unparseable, or this case proves nothing`);
+  }
+  for (const bad of shapes) {
     assert.doesNotThrow(
       () => assessThroughputRow({
         digestLedgerEntries: [{ event: 'card-pass', ts: bad }],
@@ -461,4 +469,50 @@ test('assessThroughputRow: a bad row is skipped, and the GOOD rows around it sti
     now: new Date(NOW),
   });
   assert.match(r.message, /2 dispatched, 1 passed/, `the readable rows must still be counted; got ${JSON.stringify(r)}`);
+  // And the skipped row must be SURFACED, not silently dropped. This reader
+  // covers both ledgers, but only the digest one has a check that would
+  // otherwise name the writer bug — a malformed row in backlog-drain-ledger
+  // would be invisible here while still starving zeroDispatchStreak toward a
+  // false DEAD banner.
+  assert.match(r.message, /1 ledger row\(s\) skipped/, `the unparseable row must be reported; got ${JSON.stringify(r)}`);
+});
+
+test('assessThroughputRow: EVERY verdict reports skipped rows, including the warn/partial arm', () => {
+  // The warn arm was the one verdict left without the note — and it is the arm
+  // most likely to be showing a half-blind measurement, since it already means
+  // "one source is unreadable". A skipped row invisible exactly there is the
+  // gap this note exists to close, left open on the worst arm to leave it on.
+  const { assessThroughputRow } = require('./autofix-canary.js');
+  const day = (n) => new Date(NOW - n * 86400000).toISOString();
+  const unreadable = [{ event: 'card-pass', ts: 'not-a-date' }, { event: 'card-pass', ts: 'garbage' }];
+
+  // warn/partial: one ledger null, dispatches on every day so neither streak fires
+  const warnRows = [
+    ...[0, 1, 2, 3].map((n) => ({ event: 'drain-dispatch', ts: day(n) })),
+    { event: 'card-pass', ts: day(1), judgedDispatchTs: day(1) },
+    ...unreadable,
+  ];
+  const warn = assessThroughputRow({ digestLedgerEntries: null, backlogLedgerEntries: warnRows, now: new Date(NOW) });
+  assert.equal(warn.status, 'warn', `fixture precondition: must be the partial arm; got ${JSON.stringify(warn)}`);
+  assert.match(warn.message, /2 ledger row\(s\) skipped/, `the partial arm must report skipped rows too; got ${warn.message}`);
+
+  // healthy: both ledgers readable. The digest ledger's dispatch event is
+  // 'auto-dispatch', not 'drain-dispatch' — reusing warnRows verbatim here
+  // counted zero dispatches and landed on a DEAD arm instead.
+  const ok = assessThroughputRow({
+    digestLedgerEntries: [
+      ...[0, 1, 2, 3].map((n) => ({ event: 'auto-dispatch', ts: day(n) })),
+      { event: 'card-pass', ts: day(1), judgedDispatchTs: day(1) },
+      ...unreadable,
+    ],
+    backlogLedgerEntries: [],
+    now: new Date(NOW),
+  });
+  assert.equal(ok.status, 'pass', `fixture precondition: must be the healthy arm; got ${JSON.stringify(ok)}`);
+  assert.match(ok.message, /2 ledger row\(s\) skipped/, `the healthy arm must report skipped rows too; got ${ok.message}`);
+
+  // DEAD arms are covered by the zero-dispatch fixture below/above; assert one here
+  const dead = assessThroughputRow({ digestLedgerEntries: unreadable, backlogLedgerEntries: [], now: new Date(NOW) });
+  assert.equal(dead.status, 'error', `fixture precondition: must be a DEAD arm; got ${JSON.stringify(dead)}`);
+  assert.match(dead.message, /2 ledger row\(s\) skipped/, `a DEAD arm must report skipped rows too; got ${dead.message}`);
 });

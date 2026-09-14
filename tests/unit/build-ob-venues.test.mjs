@@ -20,7 +20,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { serialize, BLOCKLIST } = require('../../scripts/build-ob-venues.js');
-const { isNonNycVenue, isNonNycLocale } = require('../../scripts/lib/venue-classification.js');
+const { isNonNycVenue, isNonNycLocale, isMisCategorisedNonNycRow } = require('../../scripts/lib/venue-classification.js');
 const committed = require('../../data/off-broadway-venues.json');
 
 test('serialize matches the on-disk format (2-space indent + trailing newline)', () => {
@@ -162,4 +162,37 @@ test('isNonNycLocale fires on regional shapes and stays silent on New York ones'
   ]) {
     assert.ok(!isNonNycLocale(nyc), `real NYC venue must not be flagged: ${nyc}`);
   }
+});
+
+test('isMisCategorisedNonNycRow: the COMBINED category+venue decision, both directions', () => {
+  // Ship-check finding on the BRO-3211 follow-up: the venue half
+  // (isNonNycLocale) is asserted both ways above, but nothing covered the
+  // decision validate-data.js actually makes — category AND venue TOGETHER.
+  // That gap is why the guard shipped as a raw `category === 'broadway'`
+  // literal and reddened main against
+  // audit-broadway-category-predicate.js --strict on the very next run.
+  //
+  // This requires the REAL exported predicate (CLAUDE.md rule 15), so a change
+  // to the decision in scripts/lib/venue-classification.js fails HERE instead
+  // of passing against a re-implemented copy.
+  const NJ = 'State Theatre New Jersey, New Brunswick, NJ'; // the venue that actually minted 3 bogus rows
+
+  // MUST fire — a NYC-only category at a venue outside New York.
+  assert.ok(isMisCategorisedNonNycRow({ category: 'broadway', venue: NJ }));
+  assert.ok(isMisCategorisedNonNycRow({ category: 'off-broadway', venue: NJ }));
+  // A null category counts as Broadway by project-wide convention
+  // (isBroadwayCategory's own documented behaviour), so it fires too — this is
+  // the case the raw literal silently missed.
+  assert.ok(isMisCategorisedNonNycRow({ venue: NJ }));
+  assert.ok(isMisCategorisedNonNycRow({ category: null, venue: NJ }));
+
+  // MUST NOT fire — real NYC houses, out-of-scope categories, absent venue.
+  assert.ok(!isMisCategorisedNonNycRow({ category: 'broadway', venue: 'Winter Garden Theatre' }));
+  assert.ok(!isMisCategorisedNonNycRow({ category: 'off-broadway', venue: 'Lucille Lortel Theatre' }));
+  assert.ok(!isMisCategorisedNonNycRow({ category: 'regional', venue: NJ }), 'regional AT a regional house is correct, not a defect');
+  assert.ok(!isMisCategorisedNonNycRow({ category: 'west-end', venue: 'Prince Edward Theatre' }));
+  assert.ok(!isMisCategorisedNonNycRow({ category: 'broadway', venue: null }), 'no venue means nothing to judge');
+  assert.ok(!isMisCategorisedNonNycRow({ category: 'broadway' }));
+  assert.ok(!isMisCategorisedNonNycRow(null), 'must not throw on a null row');
+  assert.ok(!isMisCategorisedNonNycRow(undefined));
 });

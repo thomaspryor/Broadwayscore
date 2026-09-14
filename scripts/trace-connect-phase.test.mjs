@@ -191,6 +191,11 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
     G('-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'second');
   } catch (err) {
     fs.rmSync(tmp, { recursive: true, force: true });
+    // Skipping is right on a developer machine with an unusual git config, but
+    // WRONG in CI: there, a fixture that suddenly cannot be built is a real
+    // breakage, and silently skipping would hide it behind a green run
+    // (adversarial review finding). CI fails hard.
+    if (process.env.CI) throw err;
     return t.skip(`git could not build the fixture repo here: ${err.message}`);
   }
 
