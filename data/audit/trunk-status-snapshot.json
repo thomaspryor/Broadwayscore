@@ -1,34 +1,36 @@
 {
-  "generatedAt": "2026-09-14T14:52:00.182Z",
+  "generatedAt": "2026-09-14T15:48:59.748Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "a2620ca8fd76949cc509e889dbc301723f37e3de",
+  "latestRunHeadSha": "7f19b1e889b3d26d84728dc5f3152ff499a313d0",
   "state": "RED",
-  "consecutiveFailures": 14,
+  "consecutiveFailures": 26,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
   "redSince": "2026-09-13T22:41:00Z",
-  "redForHours": 16.18338388888889,
+  "redForHours": 17.133263333333332,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-09-13T22:10:46Z",
-  "latestFailedRunId": "34856966163",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34856966163",
-  "decidedRuns": 98,
+  "latestFailedRunId": "34863130605",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34863130605",
+  "decidedRuns": 95,
   "failingJobs": [
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run push-with-retry stranded-commit-cascade test (bash integration)"
+      ]
+    },
     {
       "name": "Data Validation",
       "steps": [
         "Run autoclear-vs-ensemble corpus test (needs review-texts)",
         "Autoclear-vs-ensemble audit (strict)",
-        "Audit flag-vs-CV contradictions"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run push-with-retry stranded-commit-cascade test (bash integration)"
+        "Run data validation",
+        "Audit flag-vs-CV contradictions",
+        "Audit Broadway-category predicate re-derivations"
       ]
     },
     {
@@ -46,5 +48,5 @@
       "evidence": "not ok 5 - corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)"
     }
   ],
-  "topFailingJob": "Data Validation"
+  "topFailingJob": "Unit Tests"
 }
