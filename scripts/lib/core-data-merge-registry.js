@@ -225,10 +225,13 @@ const CORE_DATA_MERGE_REGISTRY = [
   // means also moving the step back to the end of the job. This is not left
   // to memory: scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
   // PART B asserts the general property (every push-with-retry.sh-calling
-  // step in that job git-adds only apiFallbackSafe paths UNLESS it is the
-  // last such step), so a flag-only rollback fails CI loudly instead of
-  // quietly
-  // regressing the workflow.
+  // step in that job stages only FALLBACK-ELIGIBLE paths — apiFallbackSafe
+  // OR apiFallbackMerge, and never one the runtime disqualifier still vetoes
+  // — UNLESS it is the last such step), so a flag-only rollback fails CI
+  // loudly instead of quietly regressing the workflow.
+  // BRO-3348 widened that from apiFallbackSafe-only: this sentence used to
+  // say "only apiFallbackSafe", which had silently stopped matching the
+  // runtime disqualifier when BRO-2413 taught it to accept apiFallbackMerge.
   {
     file: 'audit/health-digest-snapshot.json',
     surface: 'public-repo',

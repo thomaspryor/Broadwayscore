@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-09-14T14:51:49.948Z",
+  "updatedAt": "2026-09-14T15:48:49.558Z",
   "scanned": 2076,
   "showsWithViolations": 720,
-  "totalViolations": 1620,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "totalViolations": 1621,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "good-people-2011::http://theater.nytimes.com/2011/03/04/theater/reviews/04good.html"
+  ],
   "violationKeys": [
     "joe-turners-come-and-gone-2026::https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
     "the-balusters-2026::https://davidcote1.substack.com/p/down-another-rabbit-hole-at-manhattan",
@@ -843,6 +845,7 @@
     "that-championship-season-2011::https://www.usatoday.com/life/theater/reviews/2011-03-07-season07_ST_N.htm",
     "that-championship-season-2011::https://www.vulture.com/2011/03/stage_dive_the_faded_glory_of.html",
     "good-people-2011::https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3iaf3864c8eb9b2c77cda50f2d93739485",
+    "good-people-2011::http://theater.nytimes.com/2011/03/04/theater/reviews/04good.html",
     "good-people-2011::https://www.usatoday.com/life/theater/reviews/2011-03-04-goodpeople04_ST_N.htm",
     "the-importance-of-being-earnest-2011::http://abcnews.go.com/Entertainment/wireStory?id=12612595&amp;page=3",
     "the-importance-of-being-earnest-2011::https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i21b2e5f14866c91b50f26e262ff781cc",
@@ -9360,13 +9363,19 @@
       "showId": "good-people-2011",
       "title": "Good People",
       "openingDate": "2011-03-03",
-      "message": "Review URL for backstage/Erik Haagensen does not mention show slug (checked: good-people-2011, good-people, good, people, goodpeople): https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3iaf3864c8eb9b2c77cda50f2d93739485\nReview URL for usatoday/Elysa Gardner does not mention show slug (checked: good-people-2011, good-people, good, people, goodpeople): https://www.usatoday.com/life/theater/reviews/2011-03-04-goodpeople04_ST_N.htm",
+      "message": "Review URL for backstage/Erik Haagensen does not mention show slug (checked: good-people-2011, good-people, good, people, goodpeople): https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3iaf3864c8eb9b2c77cda50f2d93739485\nReview URL for reviewing-the-drama/Ben Brantley does not mention show slug (checked: good-people-2011, good-people, good, people, goodpeople): http://theater.nytimes.com/2011/03/04/theater/reviews/04good.html\nReview URL for usatoday/Elysa Gardner does not mention show slug (checked: good-people-2011, good-people, good, people, goodpeople): https://www.usatoday.com/life/theater/reviews/2011-03-04-goodpeople04_ST_N.htm",
       "violations": [
         {
           "outletId": "backstage",
           "criticName": "Erik Haagensen",
           "url": "https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3iaf3864c8eb9b2c77cda50f2d93739485",
           "urlSlug": "bso content_display reviews ny-theatre-reviews e3iaf3864c8eb9b2c77cda50f2d93739485"
+        },
+        {
+          "outletId": "reviewing-the-drama",
+          "criticName": "Ben Brantley",
+          "url": "http://theater.nytimes.com/2011/03/04/theater/reviews/04good.html",
+          "urlSlug": "2011 03 04 theater reviews 04good"
         },
         {
           "outletId": "usatoday",

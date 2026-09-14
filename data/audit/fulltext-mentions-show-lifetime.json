@@ -1,10 +1,14 @@
 {
-  "updatedAt": "2026-09-14T14:51:49.023Z",
+  "updatedAt": "2026-09-14T15:48:48.642Z",
   "scanned": 2076,
-  "showsWithViolations": 325,
-  "totalViolations": 637,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "showsWithViolations": 327,
+  "totalViolations": 640,
+  "newSinceLastRun": 3,
+  "newViolationKeys": [
+    "a-midsummer-nights-dream-globe-west-end-2026::thestage--holly-omahony.json",
+    "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025::ew--dalton-ross.json",
+    "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025::nypost--johnny-oleksinski.json"
+  ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -565,6 +569,7 @@
     "dog-man-the-musical-west-end-2026::londontheatre1--unknown.json",
     "dog-man-the-musical-west-end-2026::the-sun--unknown.json",
     "dog-man-the-musical-west-end-2026::whatsonstage--theo-bosanquet.json",
+    "a-midsummer-nights-dream-globe-west-end-2026::thestage--holly-omahony.json",
     "please-please-me-west-end-2026::guardian--unknown.json",
     "please-please-me-west-end-2026::thestage--unknown.json",
     "the-playboy-of-the-western-world-west-end-2025::guardian--arifa-akbar.json",
@@ -641,6 +646,8 @@
     "the-winters-tale-off-broadway-2026::talkinbroadway--unknown.json",
     "la-boheme-off-broadway-2024::operawire--jennifer-e-pyron.json",
     "the-children-off-west-end-2026::thestage--dave-fargnoli.json",
+    "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025::ew--dalton-ross.json",
+    "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025::nypost--johnny-oleksinski.json",
     "barcelona-west-end-2024::times-uk--clive-davis.json",
     "high-society-west-end-2026::guardian--arifa-akbar.json"
   ],
@@ -7382,6 +7389,22 @@
       ]
     },
     {
+      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "title": "A Midsummer Night's Dream",
+      "openingDate": "2026-05-01",
+      "message": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED but fullText never mentions 'A Midsummer Night's Dream' (2938 chars): https://www.thestage.co.uk/reviews/a-midsummer-nights-dream-review-shakespeares-globe-london-emily-lim\n⚠️  whatsonstage/Alex Wood (whatsonstage--alex-wood.json) also too short to assess (0 chars): https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/\n⚠️  whatsonstage/Alun Hood (whatsonstage--alun-hood.json) also too short to assess (0 chars): https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/\n⚠️  whatsonstage/James FitzGerald (whatsonstage--james-fitzgerald.json) also too short to assess (0 chars): https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/\n⚠️  whatsonstage/Michael Davies (whatsonstage--michael-davies.json) also too short to assess (0 chars): https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/\n⚠️  whatsonstage/Ron Simpson (whatsonstage--ron-simpson.json) also too short to assess (0 chars): https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/\n⚠️  whatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) also too short to assess (0 chars): https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/",
+      "violations": [
+        {
+          "filename": "thestage--holly-omahony.json",
+          "url": "https://www.thestage.co.uk/reviews/a-midsummer-nights-dream-review-shakespeares-globe-london-emily-lim",
+          "outletId": "thestage",
+          "criticName": "Holly O'Mahony",
+          "haystackLength": 2938,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
       "showId": "please-please-me-west-end-2026",
       "title": "Please Please Me",
       "openingDate": "2026-04-22",
@@ -8305,6 +8328,30 @@
           "outletId": "thestage",
           "criticName": "Dave Fargnoli",
           "haystackLength": 2996,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+      "title": "Two Strangers (Carry A Cake Across New York)",
+      "openingDate": "2025-06-02",
+      "message": "ew/Dalton Ross (ew--dalton-ross.json) SHIPPED but fullText never mentions 'Two Strangers (Carry A Cake Across New York)' (500 chars): https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800\nnypost/Johnny Oleksinski (nypost--johnny-oleksinski.json) SHIPPED but fullText never mentions 'Two Strangers (Carry A Cake Across New York)' (184 chars): https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
+      "violations": [
+        {
+          "filename": "ew--dalton-ross.json",
+          "url": "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
+          "outletId": "ew",
+          "criticName": "Dalton Ross",
+          "haystackLength": 500,
+          "textIssuesFlag": false
+        },
+        {
+          "filename": "nypost--johnny-oleksinski.json",
+          "url": "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
+          "outletId": "nypost",
+          "criticName": "Johnny Oleksinski",
+          "haystackLength": 184,
           "textIssuesFlag": false
         }
       ]
