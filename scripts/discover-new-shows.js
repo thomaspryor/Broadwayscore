@@ -1470,9 +1470,21 @@ async function fetchShowScoreStatus(showScoreUrl) {
     // <title> — parse that as a fallback instead of losing the venue
     // entirely (this exact gap silently skip-looped safe-house-off-broadway
     // out of discovery for 3+ days while it was open).
+    // sanitizeVenueForWrite is a denylist, not an allowlist — a parenthetical
+    // that isn't a venue ("World Premiere", "2026 Revival", a subtitle) would
+    // sail through it and get written as a real venue, un-flagged. Require a
+    // positive match against the known venue lists instead (ship-check
+    // finding). Off-West-End has no enumerated list (isOffWestEndVenue is the
+    // NEGATION of the West End list, so it can't be used as a positive check)
+    // — those shows get no rescue here and stay deferred, the safe prior behavior.
     if (!venue) {
       const titleParen = doc.title?.match(/\(([^)]+)\)/);
-      if (titleParen) venue = sanitizeVenueForWrite(titleParen[1].trim());
+      if (titleParen) {
+        const candidate = titleParen[1].trim();
+        if (isKnownOffBroadwayVenue(candidate) || isWestEndVenue(candidate)) {
+          venue = sanitizeVenueForWrite(candidate);
+        }
+      }
     }
 
     // Extract runtime from second segment (between delimiters)

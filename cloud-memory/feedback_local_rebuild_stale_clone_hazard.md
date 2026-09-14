@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 1f9057e0-7e51-418d-bece-e697ac8cc073
-  modified: 2026-09-11T19:32:15.678Z
+  modified: 2026-09-13T22:52:32.064Z
 ---
 
 **Never run `scripts/rebuild-all-reviews.js` locally on this machine. Rebuild via `gh workflow run rebuild-reviews.yml` only.**
@@ -31,3 +31,5 @@ Three stacked hazards, all hit on 2026-07-05:
 - **In the main checkout (`~/Broadwayscore`):** `data/review-texts` IS a real, git-tracked second clone of `broadway-review-texts.git` (not a symlink to `~/broadway-review-texts`), but it lags — compare `git -C ~/Broadwayscore/data/review-texts log -1` vs `git -C ~/broadway-review-texts log -1` before trusting it for anything read-sensitive. Cookies for outlet-authenticated scripts (`data/cookies/`) only live in the main checkout too — a worktree needs `ln -s ~/Broadwayscore/data/cookies data/cookies` (gitignored, harmless) to run cookie-dependent scripts at all.
 - To actually FIX one file safely: read/write it directly via its absolute path in `~/broadway-review-texts` (the canonical, kept-fresh clone) using the real pure functions (e.g. `safeWriteReview`) rather than trusting the script's own `__dirname`-relative resolution — then `git pull --ff-only`/rebase + push from `~/broadway-review-texts` itself.
 - To prove a code FIX to such a script actually works end-to-end without touching the canonical clone: run it for real (no `--dry-run`) from the main checkout against its own stale `data/review-texts` copy — a genuine execution that writes to disk, safe because that clone is already known-secondary/non-authoritative.
+
+**Recovering YOUR OWN new reviews after `checkout -- reviews.json` discards the fallout (2026-09-13, BRO-3247):** the checkout also throws away the legitimate new-show entries you actually wanted, since reviews.json is entirely derived output, not a source file with a clean per-show diff. Fix: after any full local `rebuild-all-reviews.js`/`gather-reviews.js` run, before touching git, `require()` the just-written `reviews.json`, filter to `showId === yourShowId`, and write that array to a scratch file. THEN `git checkout -- reviews.json` (or `git reset --hard origin/main` if a concurrent session already clobbered your uncommitted copy — this happens; confirmed via `git reflog` showing `reset: moving to origin/main` mid-session with no action from me). Re-`require()` the now-clean file, `.push(...)` your scratch-saved entries onto its `.reviews` array, bump `_meta.lastUpdated`/`stats.totalReviews`, write, `git diff --stat` to confirm the diff is additions-only touching no other showId, then commit+push immediately (don't batch — see the reset-hard risk above).

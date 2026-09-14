@@ -8,7 +8,7 @@
  */
 
 const { JSDOM } = require('jsdom');
-const { sanitizeVenueForWrite } = require('./venue-classification');
+const { sanitizeVenueForWrite, isKnownOffBroadwayVenue, isWestEndVenue } = require('./venue-classification');
 
 const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
 
@@ -82,9 +82,27 @@ function extractStatusFromHtml(html) {
   // in parens to <title> and the JSON-LD Product name — parse that as a
   // fallback rather than losing the venue entirely (Safe House / Theatre Row
   // never discovered, card #994-class skip-loop).
+  //
+  // sanitizeVenueForWrite is a denylist (rejects known junk), not an
+  // allowlist — a title parenthetical that ISN'T a venue ("World Premiere",
+  // "2026 Revival", a subtitle) would sail through it and get written as a
+  // real venue, un-flagged, for ANY show (ship-check finding: this fallback
+  // fires whenever the primary link is absent, which per the comment above
+  // is now every show). Require a positive match against the known venue
+  // lists instead of trusting the parenthetical on denylist-silence alone.
+  // Off-West-End has no enumerated venue list to check against (it's defined
+  // as "everything else in London" — isOffWestEndVenue is the NEGATION of the
+  // West End list, so it would accept "World Premiere" just as readily as a
+  // real venue and can't be used as a positive check here). Those shows get
+  // no parenthetical rescue and stay null/deferred — the safe prior behavior.
   if (!venue) {
     const titleParen = doc.title?.match(/\(([^)]+)\)/);
-    if (titleParen) venue = sanitizeVenueForWrite(titleParen[1].trim());
+    if (titleParen) {
+      const candidate = titleParen[1].trim();
+      if (isKnownOffBroadwayVenue(candidate) || isWestEndVenue(candidate)) {
+        venue = sanitizeVenueForWrite(candidate);
+      }
+    }
   }
 
   let ssStatus = null;
