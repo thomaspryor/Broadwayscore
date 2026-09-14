@@ -207,6 +207,38 @@ function isOffBroadwayCategory(show) {
 }
 
 /**
+ * "This row claims a NYC-only category but sits at a venue outside New York."
+ *
+ * Broadway and Off-Broadway are both New York City designations, so a row
+ * carrying either category at a non-NYC venue is always a mis-categorised
+ * touring/regional date — and an expensive one: build-ob-venues.js derives the
+ * Off-Broadway venue allowlist FROM these rows, and isKnownOffBroadwayVenue()
+ * then admits future TodayTix rows at that venue, so one bad row teaches the
+ * classifier a touring house and mints more. State Theatre New Jersey rode
+ * that loop to three bogus rows before anyone noticed (BRO-3211).
+ *
+ * Extracted here rather than left inline in validate-data.js (CLAUDE.md rule
+ * 15, and a ship-check finding on the BRO-3211 follow-up): the caller is a
+ * validator, so the only way to test the COMBINED category+venue decision was
+ * to re-implement it in the test — which is precisely how the raw-literal form
+ * this replaces came to diverge in the first place. Both validate-data.js and
+ * the colocated test now require THIS function, so a change to the decision
+ * cannot pass the test by construction.
+ *
+ * Note the null-category asymmetry, which is deliberate: isBroadwayCategory()
+ * treats an absent category as Broadway (see its own comment), so this fires
+ * on a null-category row at a touring house too. validate-data.js separately
+ * hard-fails any null category on a live status, so in practice the only row
+ * this uniquely catches is one with a null category AND an invalid/missing
+ * status — narrow, but the safer direction for a guard whose whole purpose is
+ * catching rows a writer should never have created.
+ */
+function isMisCategorisedNonNycRow(show) {
+  if (!show || !show.venue) return false;
+  return (isBroadwayCategory(show) || isOffBroadwayCategory(show)) && isNonNycLocale(show.venue);
+}
+
+/**
  * Write-time guard for the `venue` field (S0-T3, card 3b2637c5/#994).
  *
  * ShowScore's `.show-page-v2__info-top-line` element sometimes puts its
@@ -355,4 +387,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, isMisCategorisedNonNycRow, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
