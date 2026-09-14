@@ -685,6 +685,13 @@ on:
       # runs in the lib-test glob); path-listed so a solo edit triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/heal-duplicate-of-direction.js'
+      # Orphaned duplicateOf pointer heal (BRO-3250): duplicateOf pointers
+      # whose target was flagged invalid by a later classifier pass. Pure
+      # decision fns in scripts/lib/orphaned-duplicate-pointer-heal.js
+      # (colocated *.test.mjs runs in the lib-test glob); path-listed so a
+      # solo edit to the top-level driver triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/heal-orphaned-duplicate-pointers.js'
       # Reverse discovery (task #101 / Midnight at the Never Get miss): parsing +
       # matching in scripts/lib/reverse-discovery.js (colocated *.test.mjs runs in
       # the lib-test glob); path-listed so a solo edit triggers CI.

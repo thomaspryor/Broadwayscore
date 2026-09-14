@@ -161,7 +161,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `rebuild-reviews.yml`
 - **Runs:** Daily at 4 AM UTC (11 PM EST), auto-triggered via `workflow_run` when "Collect Review Texts" completes successfully, or manually triggered
-- **Does:** Rebuilds `reviews.json` from `review-texts/` source files. Pre-rebuild utilities: `flag-wrong-production-by-date`, `audit-pre2005-reviews`, `backfill-unknown-outlets` (local), `cleanup-phantom-outlets`, `strip-stale-single-model-scores`, `detect-syndicated-duplicates`, `apply-audit-flags`. LLM enrichment (4 steps) MOVED to `enrich-reviews.yml` 2026-04-30.
+- **Does:** Rebuilds `reviews.json` from `review-texts/` source files. Pre-rebuild utilities: `flag-wrong-production-by-date`, `audit-pre2005-reviews`, `backfill-unknown-outlets` (local), `cleanup-phantom-outlets`, `strip-stale-single-model-scores`, `detect-syndicated-duplicates`, `apply-audit-flags`, `audit-duplicate-of-url-mismatch --fix` (URL-mismatch/dangling duplicateOf), `heal-orphaned-duplicate-pointers --fix` (BRO-3250: duplicateOf pointers whose target was later flagged invalid). LLM enrichment (4 steps) MOVED to `enrich-reviews.yml` 2026-04-30.
 - **Manual trigger:** `gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"`
 - **Purpose:** PRIMARY sync mechanism for derived data
 - **Concurrency:** `rebuild-reviews` group (queued, not cancelled)
