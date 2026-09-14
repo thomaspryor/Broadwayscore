@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-14T03:33:56.660Z",
-  "processed": 31,
-  "failed": 71,
-  "successRate": "30.4%",
+  "updatedAt": "2026-09-14T05:04:50.562Z",
+  "processed": 32,
+  "failed": 95,
+  "successRate": "25.2%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 21,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-09-14T01:57:52.898Z",
@@ -82,6 +82,51 @@
     },
     {
       "t": "2026-09-14T03:29:26.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-14T04:55:50.770Z",
+      "event": "bb-session",
+      "session": "609c0e27",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-14T04:56:00.040Z",
+      "event": "bb-session",
+      "session": "09573df8",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-14T04:58:01.558Z",
+      "event": "bb-session",
+      "session": "a22a143f",
+      "url": "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-in"
+    },
+    {
+      "t": "2026-09-14T04:58:02.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-14T04:59:35.821Z",
+      "event": "bb-session",
+      "session": "2afd66f6",
+      "url": "https://www.thestage.co.uk/reviews/the-children-review-lyric-hammersmith-london"
+    },
+    {
+      "t": "2026-09-14T04:59:36.765Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-14T05:00:59.060Z",
+      "event": "bb-session",
+      "session": "54b13221",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-14T05:01:00.002Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     }

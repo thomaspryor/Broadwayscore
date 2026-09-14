@@ -30,7 +30,8 @@
     "jane-eyre-off-west-end-2026/guardian--unknown.json",
     "jane-eyre-off-west-end-2026/emmatheatrics--emma-theatrics.json",
     "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
-    "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json"
+    "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json",
+    "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json"
   ],
   "failed": [
     "man-to-man-west-end-2026/deadline--pete-hammond.json",
@@ -103,7 +104,31 @@
     "the-children-off-west-end-2026/times-uk--unknown.json",
     "the-children-off-west-end-2026/whatsonstage--sarah-crompton.json",
     "jane-eyre-off-west-end-2026/broadwayworld--stephi-wild.json",
-    "jane-eyre-off-west-end-2026/thestage--unknown.json"
+    "jane-eyre-off-west-end-2026/thestage--unknown.json",
+    "night-city-off-west-end-2026/reviewsgate--william-russell.json",
+    "man-to-man-west-end-2026/deadline--pete-hammond.json",
+    "man-to-man-west-end-2026/deadline--unknown.json",
+    "man-to-man-west-end-2026/airmail--air-mail.json",
+    "man-to-man-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "man-to-man-west-end-2026/bestoftheatre--unknown.json",
+    "man-to-man-west-end-2026/huffpost--carly-ledbetter.json",
+    "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
+    "man-to-man-west-end-2026/the-recs--unknown.json",
+    "man-to-man-west-end-2026/theatremonkey--unknown.json",
+    "tartuffe-remixed-off-west-end-2026/thestage--unknown.json",
+    "the-children-off-west-end-2026/hollywood-reporter--david-rooney.json",
+    "the-children-off-west-end-2026/daily-mail--unknown.json",
+    "the-children-off-west-end-2026/huffpost--steven-suskin.json",
+    "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
+    "the-children-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-children-off-west-end-2026/stagebuddy--elyse-trevers.json",
+    "the-children-off-west-end-2026/thestage--unknown.json",
+    "the-children-off-west-end-2026/times-uk--the-times.json",
+    "the-children-off-west-end-2026/times-uk--unknown.json",
+    "the-children-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "jane-eyre-off-west-end-2026/broadwayworld--stephi-wild.json",
+    "jane-eyre-off-west-end-2026/thestage--unknown.json",
+    "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -127,10 +152,12 @@
       "kimberly-akimbo-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "jane-eyre-off-west-end-2026/emmatheatrics--emma-theatrics.json",
       "jane-eyre-off-west-end-2026/london-box-office--phil-willmott.json",
-      "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json"
+      "jane-eyre-off-west-end-2026/london-box-office--stacey-tyler.json",
+      "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json"
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/the-children-off-west-end-2026/times-uk--the-times.json",
       "data/review-texts/the-children-off-west-end-2026/times-uk--the-times.json"
     ],
     "directCookies": [],
@@ -154,7 +181,7 @@
     ]
   },
   "startTime": "2026-09-14T00:45:52.847Z",
-  "lastProcessed": "jane-eyre-off-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
   "log": [
     {
       "t": "2026-09-14T01:57:52.898Z",
@@ -223,6 +250,51 @@
     },
     {
       "t": "2026-09-14T03:29:26.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-14T04:55:50.770Z",
+      "event": "bb-session",
+      "session": "609c0e27",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-14T04:56:00.040Z",
+      "event": "bb-session",
+      "session": "09573df8",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-14T04:58:01.558Z",
+      "event": "bb-session",
+      "session": "a22a143f",
+      "url": "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-in"
+    },
+    {
+      "t": "2026-09-14T04:58:02.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-14T04:59:35.821Z",
+      "event": "bb-session",
+      "session": "2afd66f6",
+      "url": "https://www.thestage.co.uk/reviews/the-children-review-lyric-hammersmith-london"
+    },
+    {
+      "t": "2026-09-14T04:59:36.765Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-14T05:00:59.060Z",
+      "event": "bb-session",
+      "session": "54b13221",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-14T05:01:00.002Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
     }
