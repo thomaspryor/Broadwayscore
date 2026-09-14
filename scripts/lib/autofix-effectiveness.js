@@ -168,7 +168,14 @@ function assessAutofixEffectiveness(rows, opts = {}) {
   // Launched jobs that never reported back. This is the dead-fleet shape, and it
   // stays detectable when a straggler or two DID report — which `attempts === 0`
   // alone would score as "not enough to judge".
-  const silent = dispatched - attempts;
+  // Clamped at 0. A dispatch inside the grace is excluded from `dispatched`,
+  // but if it has ALREADY been reconciled its outcome still counts in
+  // `attempts` — so the subtraction can go negative (3 old dispatches + 3
+  // fails + 1 young dispatch + its pass => dispatched 3, attempts 4). It
+  // already failed safe, since a negative can never satisfy the `>=` guard
+  // below, but "launched jobs that never reported back" has to actually BE a
+  // count of those jobs for the guard to keep meaning what it says.
+  const silent = Math.max(0, dispatched - attempts);
   if (dispatched >= MIN_OUTCOMES_TO_JUDGE
       && passes === 0
       && silent >= dispatched * SILENT_DISPATCH_RATIO) {
@@ -177,7 +184,7 @@ function assessAutofixEffectiveness(rows, opts = {}) {
       rate: attempts ? 0 : null,
       status: 'error',
       message: `Auto-fix loop is DEAD: ${dispatched} job(s) launched in the last ${windowDays}d, ${attempts} reported back, 0 succeeded. `
-        + `Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.${undatedNote}`,
+        + `Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.${youngNote}${undatedNote}`,
     };
   }
 
@@ -197,7 +204,7 @@ function assessAutofixEffectiveness(rows, opts = {}) {
       rate,
       status: 'error',
       message: `Auto-fix loop is DEAD: 0 of ${attempts} job(s) succeeded in the last ${windowDays}d. `
-        + `Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.${undatedNote}`,
+        + `Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.${youngNote}${undatedNote}`,
     };
   }
   if (rate < WARN_BELOW_RATE) {

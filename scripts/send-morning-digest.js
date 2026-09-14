@@ -81,7 +81,7 @@ const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-r
 // CI-produced health.errors to ever carry the dead-loop signal.
 const DIGEST_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'digest-autofix-ledger.jsonl');
 const BACKLOG_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'backlog-drain-ledger.jsonl');
-function localLoopDeadMessage() {
+function localLoopDeadMessage({ pendingIssues = 0 } = {}) {
   let rows;
   try {
     rows = readLedgerRows(DIGEST_LEDGER_PATH);
@@ -110,6 +110,12 @@ function localLoopDeadMessage() {
   // Scoped to the zero-DISPATCH arm deliberately. The zero-PASS arm is the
   // same question assessAutofixEffectiveness already answers above, and
   // surfacing both would double-fire one condition as two banners.
+  // Only when there is actually something to dispatch. Zero dispatches with an
+  // empty queue is a HEALTHY fleet with nothing to fix, and ZERO_DISPATCH_ERROR_DAYS
+  // is 2 — without this, two quiet days would email the owner "Autofix throughput
+  // DEAD". Closing one false alarm by opening another is not a fix.
+  if (!pendingIssues) return null;
+
   // readLedgerRows, not a fourth reader: same null-means-absent contract
   // assessThroughputRow requires (null is "unreadable here", [] is "genuinely
   // empty" — it must never score a missing ledger as healthy).
@@ -433,7 +439,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // Local ledger read is authoritative (this machine IS the dispatch host);
   // fall back to scanning health.errors only for the hypothetical case that
   // check ever runs somewhere the ledger is actually visible.
-  const loopDeadMsg = localLoopDeadMessage() || autofixLoopDeadMessage(sections.health);
+  const loopDeadMsg = localLoopDeadMessage({ pendingIssues: fixing }) || autofixLoopDeadMessage(sections.health);
   if (errs) {
     parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} site error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
   } else {
