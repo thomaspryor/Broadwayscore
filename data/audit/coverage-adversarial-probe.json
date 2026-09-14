@@ -1,46 +1,145 @@
 {
-  "generatedAt": "2026-08-24T13:12:50.849Z",
+  "generatedAt": "2026-09-14T18:06:11.762Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "the-gin-game-2026",
-    "cat-cohen-broad-strokes-off-broadway-2026",
-    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-    "abigails-party-west-end-2026",
-    "les-miserables-arena-concert-spectacular-off-broadway-2026"
+    "now-you-see-me-live-west-end-2026",
+    "the-story-west-end-2026",
+    "night-city-off-west-end-2026",
+    "man-to-man-west-end-2026",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026"
   ],
   "shows": [
     {
-      "showId": "the-gin-game-2026",
-      "title": "The Gin Game",
-      "openingDate": "2026-07-15",
+      "showId": "now-you-see-me-live-west-end-2026",
+      "title": "Now You See Me Live",
+      "openingDate": "2026-08-03",
       "sampleState": "measured",
-      "sampleReason": "opened 41d ago",
-      "naiveQuery": "The Gin Game Housing Works Bookstore review",
+      "sampleReason": "opened 43d ago",
+      "naiveQuery": "Now You See Me Live London Coliseum review",
       "candidates": [
         {
-          "url": "https://www.theatermania.com/news/review-the-gin-game-starring-debra-winger-and-arliss-howard_1846902/",
+          "url": "https://www.londontheatre.co.uk/reviews/now-you-see-me-live-review-london-coliseum",
+          "state": "excluded",
+          "reason": "duplicateOf"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-now-you-see-me-live-london-coliseum",
+          "state": "excluded",
+          "reason": "duplicateOf"
+        },
+        {
+          "url": "https://liamodell.com/2026/08/03/now-you-see-me-live-review-london-coliseum/",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
+          "url": "https://www.thereviewshub.com/now-you-see-me-live-london-coliseum/",
+          "state": "excluded",
+          "reason": "wrongProduction"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/now-you-see-me-live-at-the-london-coliseum-review",
+          "state": "excluded",
+          "reason": "duplicateOf"
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 9
+        }
+      ],
+      "onDiskCount": 35
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "openingDate": "2026-09-03",
+      "sampleState": "measured",
+      "sampleReason": "opened 12d ago",
+      "naiveQuery": "The Story National Theatre (Olivier) review",
+      "candidates": [
+        {
+          "url": "https://www.timeout.com/london/theatre/the-story-review",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://bookevents.nyc/events/the-gin-game-jul-15",
-          "state": "live",
-          "reason": null
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-story-olivier-theatre",
+          "state": "excluded",
+          "reason": "duplicateOf"
         },
         {
-          "url": "https://www.tickpick.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-8-6-26-7pm/8129318/",
+          "url": "https://rolandcat.substack.com/p/review-the-story-national-theatre",
           "state": "gap",
           "reason": null
         },
         {
-          "url": "https://pulsd.com/new-york/events/housing-works-bookstore-cafe/the-gin-game",
-          "state": "gap",
+          "url": "https://www.thereviewshub.com/the-story-national-theatre-london/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.london-unattached.com/the-story-national-theatre/",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 95
+    },
+    {
+      "showId": "night-city-off-west-end-2026",
+      "title": "Night City",
+      "openingDate": "2026-09-12",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "naiveQuery": "Night City Southwark Playhouse review",
+      "candidates": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://southwarkplayhouse.co.uk/productions/night-city/",
+          "state": "excluded",
+          "reason": "wrongShow"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
+          "state": "live",
           "reason": null
         }
       ],
@@ -50,67 +149,40 @@
           "raw": 9
         }
       ],
-      "onDiskCount": 13
+      "onDiskCount": 20
     },
     {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "openingDate": "2026-07-27",
+      "showId": "man-to-man-west-end-2026",
+      "title": "Man to Man",
+      "openingDate": "2026-09-11",
       "sampleState": "measured",
-      "sampleReason": "opened 29d ago",
-      "naiveQuery": "Cat Cohen: Broad Strokes Lucille Lortel Theatre review",
+      "sampleReason": "opened 4d ago",
+      "naiveQuery": "Man to Man Royal Court review",
       "candidates": [
         {
-          "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.vulture.com/article/cat-cohen-broad-strokes-lucille-lortel.html",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
+          "url": "https://royalcourttheatre.com/events/man-to-man",
           "state": "excluded",
           "reason": "rejectionReason"
-        }
-      ],
-      "queries": [
+        },
         {
-          "ok": true,
-          "raw": 7
-        }
-      ],
-      "onDiskCount": 26
-    },
-    {
-      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-      "title": "The Wind in the Willows - Theatre On Kew",
-      "openingDate": "2026-07-25",
-      "sampleState": "measured",
-      "sampleReason": "opened 31d ago",
-      "naiveQuery": "The Wind in the Willows - Theatre On Kew Theatre on Kew review",
-      "candidates": [
-        {
-          "url": "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
+          "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.broadwayworld.com/westend/article/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
+          "url": "https://www.londontheatre.co.uk/reviews/man-to-man-review-royal-court",
           "state": "gap",
           "reason": null
         },
         {
-          "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
+          "url": "https://www.timeout.com/london/news/review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre-091226",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court",
           "state": "excluded",
-          "reason": "rejectionReason"
+          "reason": "wrongShow"
         }
       ],
       "queries": [
@@ -119,54 +191,38 @@
           "raw": 9
         }
       ],
-      "onDiskCount": 6
+      "onDiskCount": 61
     },
     {
-      "showId": "abigails-party-west-end-2026",
-      "title": "Abigail’s Party",
-      "openingDate": "2026-08-19",
+      "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
+      "title": "Mrs. Stern Wanders the Prussian State Library (Luna Stage)",
+      "openingDate": "2026-09-12",
       "sampleState": "measured",
-      "sampleReason": "opened 6d ago",
-      "naiveQuery": "Abigail’s Party Harold Pinter Theatre review",
+      "sampleReason": "opened 3d ago",
+      "naiveQuery": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) 59E59 Theaters (Theater A) review",
       "candidates": [
         {
-          "url": "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
-          "state": "live",
-          "reason": null
+          "url": "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage",
+          "state": "excluded",
+          "reason": "aggregator-own-page"
         }
       ],
       "queries": [
         {
           "ok": true,
-          "raw": 8
+          "raw": 10
         }
       ],
-      "onDiskCount": 29
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "title": "Les Misérables: The Arena Concert Spectacular",
-      "openingDate": "2026-07-28",
-      "sampleState": "measured",
-      "sampleReason": "opened 28d ago",
-      "naiveQuery": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-      "candidates": [],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 0
-        }
-      ],
-      "onDiskCount": 15
+      "onDiskCount": 14
     }
   ],
   "summary": {
     "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 3,
+    "gapCount": 2,
     "gapShows": [
-      "the-gin-game-2026",
-      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+      "the-story-west-end-2026",
+      "man-to-man-west-end-2026"
     ]
   }
 }
