@@ -46,6 +46,8 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { repoOwnerName, checkReachable } = require('./lib/gh-compare-check');
 const { parseLedgerLines, serializeEntries, selectEntriesInWindow, pruneToWindow } = require('./lib/push-ledger');
@@ -88,6 +90,20 @@ const PRUNE_ATTEMPTS = 3;
 // tip to hand the SAME CLI the identical question in the delayed context,
 // and trusts its verdict. Any fetch/parse failure returns false (the safe
 // default) — an unconfirmed case still alerts, never silently suppressed.
+//
+// Runs in a throwaway scratch clone, NEVER the live job checkout (adversarial
+// review finding): check-push-ledger.yml's checkout is shallow (depth-1,
+// main-only) and its own LATER "Commit alert state" step runs `git add` /
+// `git commit` / push-with-retry.sh against that SAME checkout. This repo has
+// a documented history of shallow-fetch fragility exactly there
+// (push-with-retry.sh's own incidents #466, #1489, #1723, #394) — fetching
+// arbitrary historical shas/branches by depth into that checkout would leave
+// extra `.git/shallow` grafts no existing test or incident covers, ahead of a
+// step that's already proven sensitive to shallow-boundary state. A fresh
+// `git init` + `remote add origin` scratch dir costs one extra `mkdtemp` and
+// is torn down in a `finally`, at the price of re-resolving the origin URL
+// once per entry — worth it to keep this guard's own footprint at zero risk
+// to the checkout the rest of the job depends on.
 const PUSH_CONTENT_SURVIVAL_CLI = path.join(__dirname, 'lib', 'push-content-survival.js');
 
 function gitFetchOrNull(cwd, args) {
@@ -116,7 +132,8 @@ function fetchBranchTip(cwd, branch) {
 }
 
 /**
- * @param {string} cwd a git checkout with `origin` pointing at the repo
+ * @param {string} liveRepoCwd the job's own checkout — read-only, used ONLY
+ *   to resolve `origin`'s URL. Never fetched into.
  * @param {{sha: string, branch: string}} entry the ledger entry under re-check
  * @returns {boolean} true only when push-content-survival.js's own classifier
  *   finds no genuine revert (survived/unchanged/ambiguous/superseded) between
@@ -124,11 +141,17 @@ function fetchBranchTip(cwd, branch) {
  *   throws — any failure (fetch, parse, classifier crash) is treated as "not
  *   confirmed", so the caller falls through to its ordinary alert path.
  */
-function checkContentSurvived(cwd, entry) {
+function checkContentSurvived(liveRepoCwd, entry) {
+  let scratchDir = null;
   try {
-    const parentSha = fetchShaWithParent(cwd, entry.sha);
+    const originUrl = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: liveRepoCwd, encoding: 'utf8' }).trim();
+    scratchDir = fs.mkdtempSync(path.join(os.tmpdir(), 'check-push-ledger-content-'));
+    execFileSync('git', ['init', '-q'], { cwd: scratchDir, timeout: 30_000 });
+    execFileSync('git', ['remote', 'add', 'origin', originUrl], { cwd: scratchDir, timeout: 30_000 });
+
+    const parentSha = fetchShaWithParent(scratchDir, entry.sha);
     if (!parentSha) return false;
-    const branchTip = fetchBranchTip(cwd, entry.branch);
+    const branchTip = fetchBranchTip(scratchDir, entry.branch);
     if (!branchTip) return false;
     execFileSync('node', [
       PUSH_CONTENT_SURVIVAL_CLI,
@@ -139,10 +162,26 @@ function checkContentSurvived(cwd, entry) {
       // at this delayed checkpoint, so Added files must be in scope here too
       // — see push-content-survival.js's own --diff-filter comment.
       '--diff-filter=ACMT',
-    ], { cwd, timeout: 30_000 });
+    ], { cwd: scratchDir, timeout: 30_000 });
     return true; // exit 0 => not a genuine revert (survived/unchanged/ambiguous/superseded/SKIP)
-  } catch {
-    return false; // exit 1 (reverted), or any exception along the way — don't suppress
+  } catch (err) {
+    // Logged for observability (adversarial review finding): without this, a
+    // broken fetch mechanism (e.g. GitHub restricting direct-sha fetch, or
+    // the object having aged out of dangling-object retention) silently
+    // degrades to pre-BRO-2304 behavior — always alerts — with no trail
+    // distinguishing that from a genuine revert. classifier exit 1 (reverted)
+    // also lands here; its own stdout above already explains itself.
+    console.error(`check-push-ledger: content-survival check inconclusive for ${entry.sha.slice(0, 12)}: ${err.message.split('\n')[0]}`);
+    return false; // don't suppress — an unconfirmed case still alerts
+  } finally {
+    if (scratchDir) {
+      try {
+        fs.rmSync(scratchDir, { recursive: true, force: true });
+      } catch {
+        // best-effort cleanup — a leftover scratch dir in the runner's own
+        // /tmp doesn't survive past job end anyway
+      }
+    }
   }
 }
 
