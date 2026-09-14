@@ -337,7 +337,7 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
     return {
       name,
       status: 'warn',
-      message: `Autofix throughput partially measurable over the last ${windowDays}d${partialNote}: ${dSum} dispatched, ${pSum} passed from the readable source — the unreadable source could be starved without this row catching it.`,
+      message: `Autofix throughput partially measurable over the last ${windowDays}d${partialNote}${unreadableNote}: ${dSum} dispatched, ${pSum} passed from the readable source — the unreadable source could be starved without this row catching it.`,
     };
   }
   return {

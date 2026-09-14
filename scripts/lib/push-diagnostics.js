@@ -455,7 +455,19 @@ function formatTimeline(timeline) {
     timeline.attributedToPush || timeline.service === 'unknown'
       ? ''
       : ` [service=${timeline.service} — NOT receive-pack, so this exchange is NOT the push's own and must not be reported as its stall]`;
-  return `${secs}s in phase "${g.phase}" — ${where}${attribution}`;
+  // PARTIAL implausibility. If the winning gap is an inter-record one while the
+  // TERMINAL interval was unmeasurable, the number above is real but is not the
+  // answer to "where did the timeout go" — the interval that consumed it is the
+  // one we could not measure. Reporting "2.0s between trace lines" and stopping
+  // there would read as "the push barely paused", which is the same
+  // confidently-wrong shape this card exists to remove, just narrower
+  // (adversarial review: the fix stopped one step short of its own goal).
+  const terminalUnmeasurable =
+    !g.terminal && (timeline.gaps || []).some((x) => x.terminal && x.implausible);
+  const caveat = terminalUnmeasurable
+    ? ' — NOTE: the terminal interval (last trace line -> kill) was IMPLAUSIBLE and could not be measured, so the time that actually consumed the timeout is NOT located by this number'
+    : '';
+  return `${secs}s in phase "${g.phase}" — ${where}${attribution}${caveat}`;
 }
 
 module.exports = {
