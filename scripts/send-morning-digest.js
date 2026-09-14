@@ -65,6 +65,7 @@ const {
   autofixLoopDeadMessage,
 } = require('./lib/autonomous-email-render.js');
 const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
+const { assessThroughputRow } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
@@ -79,7 +80,8 @@ const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-r
 // that writes the ledger) — read it directly here instead of trusting the
 // CI-produced health.errors to ever carry the dead-loop signal.
 const DIGEST_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'digest-autofix-ledger.jsonl');
-function localLoopDeadMessage() {
+const BACKLOG_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'backlog-drain-ledger.jsonl');
+function localLoopDeadMessage({ pendingIssues = 0 } = {}) {
   let rows;
   try {
     rows = readLedgerRows(DIGEST_LEDGER_PATH);
@@ -89,7 +91,43 @@ function localLoopDeadMessage() {
   }
   if (rows === null) return null; // ledger absent on this machine this run — unknown, not dead
   const r = assessAutofixEffectiveness(rows);
-  return r.status === 'error' ? r.message : null;
+  if (r.status === 'error') return r.message;
+
+  // BRO-3321. assessAutofixEffectiveness can only speak about dispatches that
+  // HAPPENED — its window counts outcomes and launches. A loop that stopped
+  // dispatching altogether produces neither, and reads as "not enough to
+  // judge", i.e. silence. That is not hypothetical: this ledger has a
+  // 2026-08-15..2026-09-13 hole with zero rows of any kind, a month in which
+  // nothing alarmed at all. Quieting the false DEAD banner without covering
+  // that hole would have traded a noisy wrong alarm for a quiet missing one.
+  //
+  // assessThroughputRow already detects it (ZERO_DISPATCH_ERROR_DAYS), but it
+  // is only wired into health-check.js, which runs in GitHub Actions where
+  // BOTH of these ledgers are per-machine and absent — so there it can only
+  // ever say 'warn'. Same reasoning as the block above: this sender runs on
+  // the machine that WRITES them, so it is the only place the row can be real.
+  //
+  // Scoped to the zero-DISPATCH arm deliberately. The zero-PASS arm is the
+  // same question assessAutofixEffectiveness already answers above, and
+  // surfacing both would double-fire one condition as two banners.
+  // Only when there is actually something to dispatch. Zero dispatches with an
+  // empty queue is a HEALTHY fleet with nothing to fix, and ZERO_DISPATCH_ERROR_DAYS
+  // is 2 — without this, two quiet days would email the owner "Autofix throughput
+  // DEAD". Closing one false alarm by opening another is not a fix.
+  if (!pendingIssues) return null;
+
+  // readLedgerRows, not a fourth reader: same null-means-absent contract
+  // assessThroughputRow requires (null is "unreadable here", [] is "genuinely
+  // empty" — it must never score a missing ledger as healthy).
+  let backlogRows = null;
+  try {
+    backlogRows = readLedgerRows(BACKLOG_LEDGER_PATH);
+  } catch (err) {
+    console.error(`[digest] WARN could not read backlog-drain ledger: ${String(err.message).slice(0, 120)}`);
+  }
+  const t = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: backlogRows });
+  if (t.status === 'error' && /0 dispatches/.test(t.message)) return t.message;
+  return null;
 }
 
 // Cyrus relay health. Same reasoning as the ledger above: the status file is
@@ -401,7 +439,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // Local ledger read is authoritative (this machine IS the dispatch host);
   // fall back to scanning health.errors only for the hypothetical case that
   // check ever runs somewhere the ledger is actually visible.
-  const loopDeadMsg = localLoopDeadMessage() || autofixLoopDeadMessage(sections.health);
+  const loopDeadMsg = localLoopDeadMessage({ pendingIssues: fixing }) || autofixLoopDeadMessage(sections.health);
   if (errs) {
     parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} site error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
   } else {

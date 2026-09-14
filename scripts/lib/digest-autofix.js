@@ -80,7 +80,10 @@ const DISPATCH_CAP = 3;
 // documents: runner disabled, live cmux duplicate, lease already held).
 // Without a timeout the row would sit unresolved forever, permanently
 // occupying attempt-memory's "in flight" slot.
-const ORPHAN_TIMEOUT_H = 3;
+// Single source of truth: scripts/lib/dispatch-reconcile.js, the module this
+// value is handed straight back to as classifyDispatches' `orphanTimeoutH`.
+// All three reconcilers used to declare their own `= 3` (BRO-3321).
+const ORPHAN_TIMEOUT_H = dispatchReconcile.ORPHAN_TIMEOUT_H;
 const VALID_MODELS = new Set(['opus', 'sonnet', 'haiku']);
 
 // Canonical row-family key (BRO-232 S4): different checks sometimes name the
@@ -502,7 +505,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
   for (const { dispatch: d, cardId, job, kind } of decisions) {
     if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
-        event: 'card-fail', cardId, contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts,
         // BRO-2518: fileCard()'s exact-title dedup can reattach a row to an
         // issue a PRIOR dispatch already moved to a started Linear state (In
         // Progress/In Review) — linear-next.js's startedStateGuard refuses
@@ -516,7 +519,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
-        event: 'card-fail', cardId, contentHash: d.contentHash,
+        event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
       continue;
@@ -538,7 +541,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
     newEntries.push({
       event: outcome,
       cardId,
-      contentHash: d.contentHash,
+      contentHash: d.contentHash, judgedDispatchTs: d.ts,
       note: outcome === 'card-pass'
         ? (isLinear ? 'session finished (Linear-tracked; board Done-audit verifies closure separately)' : 'session finished, task marked completed')
         : (sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`),
