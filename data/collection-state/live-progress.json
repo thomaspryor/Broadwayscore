@@ -1,18 +1,64 @@
 {
-  "updatedAt": "2026-09-14T23:27:38.394Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-09-14T23:41:57.244Z",
+  "processed": 10,
+  "failed": 22,
+  "successRate": "31.3%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-09-14T23:34:42.979Z",
+      "event": "bb-session",
+      "session": "935df28b",
+      "url": "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough"
+    },
+    {
+      "t": "2026-09-14T23:34:43.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-14T23:35:45.336Z",
+      "event": "bb-session",
+      "session": "a4e1637d",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-14T23:35:53.721Z",
+      "event": "bb-session",
+      "session": "bb49d1fd",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-14T23:38:14.586Z",
+      "event": "bb-session",
+      "session": "c5f480c4",
+      "url": "https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-"
+    },
+    {
+      "t": "2026-09-14T23:38:15.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-14T23:39:50.195Z",
+      "event": "bb-session",
+      "session": "e1d4dc41",
+      "url": "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-in"
+    },
+    {
+      "t": "2026-09-14T23:39:51.020Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
