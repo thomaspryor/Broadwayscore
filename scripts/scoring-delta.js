@@ -56,19 +56,22 @@ const { parseDate } = require('./lib/date-utils');
 const { buildOutletRegionMap } = require('./lib/cross-market-guard');
 const { normalizeOutlet: normalizeOutletCanonical } = require('./lib/review-normalization');
 const { isEvergreenListingUrl } = require('./lib/cross-production-guards');
-// Working-tree copy, same rationale as normalizeOutletCanonical above (already
-// a SCORE_VALUE_FILES/Phase-B module used unreplayed for Phase-A ctx): rebuild's
-// dateless-revival/stale-date-guard/anticipatory-grace auto-clears (BRO-3338)
-// need the SAME reviewDate rebuild computes, including its URL-date fallback
-// (rebuild-all-reviews.js:1380-1387) — parseDate(publishDate) alone silently
-// diverges from rebuild on the review's own reviewDate. A regression in
-// extractDateFromUrl ITSELF is still caught independently by Phase B.
-const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 // Working-tree copy: pure classification helper (ingest-time gate), not on
 // either watchlist — same rationale as isLondonMarket/isUkOutletUrl above.
 // Only shouldAutoClearAnticipatoryGrace itself (sandboxed per-side via
 // __priorRunLib) is the thing under test; this just feeds its ctx.
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
+// Working-tree copy: pure classification helper reading only show.category/
+// openingDate/id (all on the summary object) — same rationale as
+// isLondonMarket above. Gates the dateless-revival/stale-date-guard/
+// anticipatory-grace/priorRun/tourLeg replays below (BRO-3338), mirroring
+// rebuild-all-reviews.js:1356-1359's `if (!showEarliest) continue; if
+// (showLongRunWE.has(sid)) continue;` — that whole guard-auto-clear loop
+// never runs for a show with no earliestDate or a pre-2015 West End long
+// runner, so a stale flag on one of those shows' files must stay untouched
+// here too (ship-check adversarial finding, BRO-3338: without this gate the
+// replay could clear a flag rebuild would never even evaluate).
+const { isLongRunningProduction } = require('./lib/long-runner-registry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -696,26 +699,37 @@ function loadWorkingTreeScoring() {
 // ─── Decision replay ─────────────────────────────────────────────────────────
 
 /**
- * Resolves a review's effective date exactly like rebuild-all-reviews.js's
- * per-file loop does at rebuild-all-reviews.js:1380-1387 — parseDate(publishDate)
- * first, falling back to a URL-embedded YYYY-MM-DD date when publishDate is
- * missing/unparseable. Shared by the dateless-revival/stale-date-guard/
- * anticipatory-grace replays below (BRO-3338) so all three see the same
- * reviewDate rebuild would compute, instead of silently diverging on reviews
- * whose only usable date lives in the URL.
+ * Resolves a review's effective date for the dateless-revival/stale-date-guard/
+ * anticipatory-grace replays below (BRO-3338). Deliberately parseDate(publishDate)
+ * ONLY — no URL-date fallback, unlike rebuild-all-reviews.js:1380-1387's
+ * reviewDate. Two reasons, both found in ship-check's adversarial review:
+ *   1. extractDateFromUrl lives in rebuild-helpers.js, which is NOT sandboxed
+ *      per-side (only date-guard.js/wrong-production-autoclear.js/
+ *      failed-fetch-policy.js/cross-market-guard.js are, in
+ *      loadBaselineGuards/loadWorkingTreeGuards below) — a URL-fallback-using
+ *      version would silently use the SAME working-tree extractDateFromUrl on
+ *      both replay sides, so a change to extractDateFromUrl itself could
+ *      never show up as a delta here, and Phase B's SCORE_VALUE_FILES replay
+ *      doesn't exercise extractDateFromUrl's date output either (it only
+ *      compares getBestScore's score/source) — a real, silent blind spot.
+ *   2. Guard 3 below (the inline pre-window/date-guard check, ~line 940) only
+ *      fires when `review.publishDate` itself is truthy — it does NOT use
+ *      this resolved date. A URL-fallback-derived hasUsableDate could clear a
+ *      dateless-revival hold here while Guard 3 stays silent (no publishDate
+ *      to gate on), reporting a review as included when rebuild's own
+ *      dated-guard fall-through (rebuild-all-reviews.js:1577-1604, which DOES
+ *      use the URL-resolved reviewDate) would immediately re-exclude it —
+ *      a phantom inclusion.
+ * Matches this file's EXISTING precedent for date-based ctx (the
+ * wrongShowUkUrl/UkDualMarket dateMismatchOver90d/isDateMismatch calcs above
+ * already use parseDate(review.publishDate) only, no URL fallback).
  *
  * @param {object} review
  * @returns {Date|null}
  */
 function resolveReviewDate(review) {
-  let d = review.publishDate ? parseDate(review.publishDate) : null;
-  if ((!d || isNaN(d.getTime())) && review.url) {
-    const urlDate = extractDateFromUrl(review.url);
-    if (urlDate && urlDate.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDate.date)) {
-      const parsed = parseDate(urlDate.date);
-      if (parsed && !isNaN(parsed.getTime())) d = parsed;
-    }
-  }
+  if (!review.publishDate) return null;
+  const d = parseDate(review.publishDate);
   return (d && !isNaN(d.getTime())) ? d : null;
 }
 
@@ -782,68 +796,82 @@ function decideInclusion(review, show, guards) {
 
   let wrongProductionCleared = false;
 
-  // PriorRun/TourLeg auto-clear — mirrors rebuild-all-reviews.js:1418's exact
-  // call shape. Cheapest of the BRO-3338 additions: both predicates take
-  // (data, show) with no ctx object, reading only show.priorRuns/show.tourLegs
-  // — both already on the show summary main() builds. (Previously left out
-  // under a stale "needs per-file provenance not modeled here" comment that
-  // no longer applied once the summary carried priorRuns/tourLegs.)
-  if (review.wrongProduction === true) {
-    const priorRunClear = typeof autoClear.shouldAutoClearWrongProductionPriorRun === 'function'
-      && autoClear.shouldAutoClearWrongProductionPriorRun(review, show);
-    const tourLegClear = typeof autoClear.shouldAutoClearWrongProductionTourLeg === 'function'
-      && autoClear.shouldAutoClearWrongProductionTourLeg(review, show);
-    if (priorRunClear || tourLegClear) wrongProductionCleared = true;
-  }
+  // PriorRun/TourLeg/DatelessRevival/StaleDateGuard/AnticipatoryGrace
+  // (BRO-3338) all live inside rebuild-all-reviews.js's ONE pre-opening-guard
+  // loop (rebuild-all-reviews.js:1354-1533), which itself is skipped entirely
+  // for a show with no earliestDate or a pre-2015 West End long runner
+  // (rebuild-all-reviews.js:1355-1359: `if (!showEarliest) continue; if
+  // (showLongRunWE.has(sid)) continue;`). Gate all 5 replays the same way —
+  // ship-check's adversarial review found that without this, the replay
+  // could clear a stale flag on one of those shows' files that rebuild would
+  // never even evaluate (the flag can only exist there from before the show
+  // was reclassified, e.g. a retroactive long-runner correction).
+  const inPreOpeningGuardLoop = !!show?.earliestDate && !isLongRunningProduction(show);
 
-  // Dateless-revival auto-clear — mirrors rebuild-all-reviews.js:1393's
-  // hasUsableDate ctx (reviewDate resolution incl. URL-date fallback, see
-  // resolveReviewDate above).
-  if (!wrongProductionCleared && review.wrongProduction === true
-      && typeof autoClear.shouldAutoClearDatelessRevival === 'function') {
-    const reviewDate = resolveReviewDate(review);
-    wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate });
-  }
-
-  // Stale dated pre-opening guard auto-clear — mirrors rebuild-all-reviews.js:
-  // 1461-1464's outer gate (own-flag note prefix + no manual/human override)
-  // and 1463's evaluateDateGuard(...).flag === false ctx.
-  if (!wrongProductionCleared && review.wrongProduction === true
-      && String(review.wrongProductionNote || '').startsWith('Pre-opening guard:')
-      && !review.wrongProductionManualClear
-      && review.humanReviewedWrongProduction !== false
-      && !review.allowEarlyDate
-      && typeof autoClear.shouldAutoClearStaleDateGuard === 'function'
-      && typeof guards.__dateGuard?.evaluateDateGuard === 'function') {
-    const reviewDate = resolveReviewDate(review);
-    if (reviewDate) {
-      const dgDecision = guards.__dateGuard.evaluateDateGuard({ pubDate: reviewDate, show, outletId: review.outletId });
-      wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false });
+  if (inPreOpeningGuardLoop) {
+    // PriorRun/TourLeg auto-clear — mirrors rebuild-all-reviews.js:1418's exact
+    // call shape. Cheapest of the BRO-3338 additions: both predicates take
+    // (data, show) with no ctx object, reading only show.priorRuns/show.tourLegs
+    // — both already on the show summary main() builds. (Previously left out
+    // under a stale "needs per-file provenance not modeled here" comment that
+    // no longer applied once the summary carried priorRuns/tourLegs.)
+    if (review.wrongProduction === true) {
+      const priorRunClear = typeof autoClear.shouldAutoClearWrongProductionPriorRun === 'function'
+        && autoClear.shouldAutoClearWrongProductionPriorRun(review, show);
+      const tourLegClear = typeof autoClear.shouldAutoClearWrongProductionTourLeg === 'function'
+        && autoClear.shouldAutoClearWrongProductionTourLeg(review, show);
+      if (priorRunClear || tourLegClear) wrongProductionCleared = true;
     }
-  }
 
-  // Stale anticipatory-gate auto-clear (BRO-39) — mirrors rebuild-all-reviews.js:
-  // 1508-1531's outer gate (own reason + no manual/human override + resolvable
-  // openingDate) and its isAnticipatoryPreviewPost(...).rejected recheck ctx.
-  if (!wrongProductionCleared && review.wrongProduction === true
-      && review.wrongProductionReason === 'anticipatory_pre_opening_post'
-      && !review.wrongProductionManualClear
-      && review.humanReviewedWrongProduction !== false
-      && !review.allowEarlyDate
-      && show?.openingDate
-      && typeof autoClear.shouldAutoClearAnticipatoryGrace === 'function') {
-    const reviewDate = resolveReviewDate(review);
-    if (reviewDate) {
-      const stillRejected = isAnticipatoryPreviewPost(
-        reviewDate.toISOString().slice(0, 10),
-        new Date(show.openingDate).toISOString().slice(0, 10),
-        review.outletId,
-        {
-          category: show?.category,
-          humanReviewedEarlyPublish: review.humanReviewedEarlyPublish === true,
-        }
-      ).rejected;
-      wrongProductionCleared = autoClear.shouldAutoClearAnticipatoryGrace(review, { stillRejected });
+    // Dateless-revival auto-clear — mirrors rebuild-all-reviews.js:1393's
+    // hasUsableDate ctx (parseDate(publishDate) only — see resolveReviewDate's
+    // docstring for why the URL-date fallback is deliberately NOT replayed).
+    if (!wrongProductionCleared && review.wrongProduction === true
+        && typeof autoClear.shouldAutoClearDatelessRevival === 'function') {
+      const reviewDate = resolveReviewDate(review);
+      wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate });
+    }
+
+    // Stale dated pre-opening guard auto-clear — mirrors rebuild-all-reviews.js:
+    // 1461-1464's outer gate (own-flag note prefix + no manual/human override)
+    // and 1463's evaluateDateGuard(...).flag === false ctx.
+    if (!wrongProductionCleared && review.wrongProduction === true
+        && String(review.wrongProductionNote || '').startsWith('Pre-opening guard:')
+        && !review.wrongProductionManualClear
+        && review.humanReviewedWrongProduction !== false
+        && !review.allowEarlyDate
+        && typeof autoClear.shouldAutoClearStaleDateGuard === 'function'
+        && typeof guards.__dateGuard?.evaluateDateGuard === 'function') {
+      const reviewDate = resolveReviewDate(review);
+      if (reviewDate) {
+        const dgDecision = guards.__dateGuard.evaluateDateGuard({ pubDate: reviewDate, show, outletId: review.outletId });
+        wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false });
+      }
+    }
+
+    // Stale anticipatory-gate auto-clear (BRO-39) — mirrors rebuild-all-reviews.js:
+    // 1508-1531's outer gate (own reason + no manual/human override + resolvable
+    // openingDate) and its isAnticipatoryPreviewPost(...).rejected recheck ctx.
+    if (!wrongProductionCleared && review.wrongProduction === true
+        && review.wrongProductionReason === 'anticipatory_pre_opening_post'
+        && !review.wrongProductionManualClear
+        && review.humanReviewedWrongProduction !== false
+        && !review.allowEarlyDate
+        && show?.openingDate
+        && typeof autoClear.shouldAutoClearAnticipatoryGrace === 'function') {
+      const reviewDate = resolveReviewDate(review);
+      if (reviewDate) {
+        const stillRejected = isAnticipatoryPreviewPost(
+          reviewDate.toISOString().slice(0, 10),
+          new Date(show.openingDate).toISOString().slice(0, 10),
+          review.outletId,
+          {
+            category: show?.category,
+            humanReviewedEarlyPublish: review.humanReviewedEarlyPublish === true,
+          }
+        ).rejected;
+        wrongProductionCleared = autoClear.shouldAutoClearAnticipatoryGrace(review, { stillRejected });
+      }
     }
   }
 
@@ -1220,6 +1248,25 @@ function main() {
         // in this list even though decideInclusion now calls it, which would have
         // reopened the exact #1163 blind spot this comparison block exists to close.
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '')
+        // BRO-3338: the 6 predicates decideInclusion's inPreOpeningGuardLoop
+        // block + URL-year block now replay. Skipping any one of these here
+        // is EXACTLY the #1163/#1190 blind spot documented above, one level
+        // further out — BRO-3328 needs to edit shouldAutoClearDatelessRevival
+        // specifically, and without this line a session doing ONLY that edit
+        // would see every OTHER compared function still byte-identical,
+        // guardsIdentical would stay true, and Phase A would report
+        // "decisions identical — skipping inclusion replay" despite the edit
+        // (ship-check adversarial finding).
+        && (baseline.__priorRunLib?.shouldAutoClearWrongProductionPriorRun?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionPriorRun?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearWrongProductionTourLeg?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionTourLeg?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearDatelessRevival?.toString() || '') === (working.__priorRunLib?.shouldAutoClearDatelessRevival?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '') === (working.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '') === (working.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUrlYear?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUrlYear?.toString() || '')
+        // evaluateDateGuard feeds shouldAutoClearStaleDateGuard's nowInWindow
+        // ctx — same "the ctx-computing helper is as load-bearing as the
+        // predicate it feeds" rationale as outletIsUkSideSelfHealRegion below.
+        && (baseline.__dateGuard?.evaluateDateGuard?.toString() || '') === (working.__dateGuard?.evaluateDateGuard?.toString() || '')
         // The ctx feeding that predicate is computed by this helper, so a change
         // to it changes inclusion just as much as a change to the predicate.
         && (baseline.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '') === (working.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '')

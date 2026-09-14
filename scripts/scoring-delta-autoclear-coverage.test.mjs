@@ -193,7 +193,7 @@ function extractRebuildAutoClearCallSites() {
     'utf8'
   );
   const names = new Set();
-  for (const m of rebuildSrc.matchAll(/\bshouldAutoClear[A-Za-z]*(?=\()/g)) {
+  for (const m of rebuildSrc.matchAll(/\bshouldAutoClear[A-Za-z]*(?=\s*\()/g)) {
     names.add(m[0]);
   }
   return [...names];
@@ -218,9 +218,87 @@ describe('scoring-delta.js auto-clear predicate drift guard (BRO-3338)', () => {
     // source string (never touches the real file) to prove the drift guard
     // actually fires on an addition, not just passes today by coincidence.
     const fakeRebuildSrc = "if (shouldAutoClearTotallyMadeUpPredicate(d, showRecord)) { d.wrongProduction = false; }";
-    const names = [...new Set([...fakeRebuildSrc.matchAll(/\bshouldAutoClear[A-Za-z]*(?=\()/g)].map((m) => m[0]))];
+    const names = [...new Set([...fakeRebuildSrc.matchAll(/\bshouldAutoClear[A-Za-z]*(?=\s*\()/g)].map((m) => m[0]))];
     const body = decideInclusion.toString();
     const missing = names.filter((name) => !body.includes(`${name}(`) && !ALLOWED_UNREPLAYED.has(name));
     assert.deepStrictEqual(missing, ['shouldAutoClearTotallyMadeUpPredicate']);
+  });
+});
+
+// ship-check adversarial finding (BRO-3338): decideInclusion replaying a
+// predicate is NOT sufficient on its own — main()'s `guardsIdentical`
+// fast-path (a separate, hand-maintained AND-chain of baseline/working
+// .toString() comparisons) decides whether Phase A's per-review replay even
+// RUNS. A predicate added to decideInclusion but left out of guardsIdentical
+// means: a session editing ONLY that predicate (e.g. BRO-3328 editing
+// shouldAutoClearDatelessRevival) sees every OTHER compared function still
+// byte-identical, guardsIdentical stays true, and scoring-delta.js prints
+// "decisions identical — skipping inclusion replay" despite the edit — this
+// is the exact #1163/#1190 blind spot the file's own comments warn about
+// repeatedly, one level further out than the drift guard above (which only
+// checks decideInclusion, not the fast-path gate around it).
+function extractGuardsIdenticalBlockSource() {
+  const src = require('fs').readFileSync(require.resolve('./scoring-delta.js'), 'utf8');
+  const start = src.indexOf('const guardsIdentical =');
+  assert.ok(start >= 0, 'could not find `const guardsIdentical =` in scoring-delta.js — has it been renamed?');
+  const end = src.indexOf('registryComparable && registryHash === baselineRegistryHash;', start);
+  assert.ok(end >= 0, 'could not find guardsIdentical block terminator in scoring-delta.js — has it been restructured?');
+  return src.slice(start, end);
+}
+
+describe('scoring-delta.js guardsIdentical fast-path coverage (BRO-3338)', () => {
+  test('every shouldAutoClear* predicate decideInclusion calls is also compared by guardsIdentical', () => {
+    const body = decideInclusion.toString();
+    const calledNames = [...new Set([...body.matchAll(/\bshouldAutoClear[A-Za-z]*(?=\s*\()/g)].map((m) => m[0]))];
+    assert.ok(calledNames.length >= 8, `expected decideInclusion to call at least 8 shouldAutoClear* predicates (got ${calledNames.length}: ${calledNames.join(', ')}) — did the replay shrink?`);
+
+    const guardsIdenticalSrc = extractGuardsIdenticalBlockSource();
+    // Require the CALL-SHAPED `.toString()` comparison, not a bare name
+    // substring — a bare-substring check would (and, caught in review, DID)
+    // pass on a name mentioned only in a comment inside the block, exactly
+    // the "checks spelling, not coverage" weakness ship-check flagged for
+    // the drift-guard test above, applied to a case that actually bit this
+    // very test during development.
+    const missing = calledNames.filter((name) => !guardsIdenticalSrc.includes(`${name}?.toString()`));
+    assert.deepStrictEqual(
+      missing,
+      [],
+      `decideInclusion replays these predicates but guardsIdentical's fast-path comparison doesn't check them — a change to ONLY one of these would silently skip Phase A's replay ("decisions identical"). Add a baseline/working .toString() comparison line: ${missing.join(', ')}`
+    );
+  });
+
+  test('evaluateDateGuard is compared by guardsIdentical when shouldAutoClearStaleDateGuard is replayed', () => {
+    // shouldAutoClearStaleDateGuard's nowInWindow ctx is computed by
+    // evaluateDateGuard, not by the predicate itself — a change to
+    // evaluateDateGuard changes inclusion just as much as a change to the
+    // predicate (same rationale already applied to
+    // outletIsUkSideSelfHealRegion for the UK-dual-market replay).
+    const body = decideInclusion.toString();
+    if (!body.includes('shouldAutoClearStaleDateGuard(')) return; // nothing to check if the replay itself is gone
+    const guardsIdenticalSrc = extractGuardsIdenticalBlockSource();
+    assert.ok(
+      guardsIdenticalSrc.includes('evaluateDateGuard'),
+      'shouldAutoClearStaleDateGuard is replayed but guardsIdentical never compares evaluateDateGuard — a change to it would silently skip Phase A\'s replay'
+    );
+  });
+
+  test('a synthetic guardsIdentical block missing a replayed predicate is detected, and a comment mention alone does not count', () => {
+    // Proves the detection itself fires on an omission, not just passes
+    // today by coincidence — mirrors the fake-11th-predicate test above.
+    // Also proves the call-shaped `?.toString()` requirement actually bites:
+    // shouldAutoClearWrongProduction appears in a COMMENT here (bare name,
+    // no `?.toString()`), which a bare-substring check would have wrongly
+    // accepted as "covered" — this is the exact false pass a bare-substring
+    // version of this test suffered during development.
+    const fakeGuardsIdenticalSrc = [
+      'const guardsIdentical =',
+      '  baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()',
+      "  && (baseline.__priorRunLib?.shouldAutoClearDatelessRevival?.toString() || '') === (working.__priorRunLib?.shouldAutoClearDatelessRevival?.toString() || '')",
+      '  // TODO: also compare shouldAutoClearWrongProduction here',
+      '  ;',
+    ].join('\n');
+    const fakeCalledNames = ['shouldAutoClearDatelessRevival', 'shouldAutoClearWrongProduction'];
+    const missing = fakeCalledNames.filter((name) => !fakeGuardsIdenticalSrc.includes(`${name}?.toString()`));
+    assert.deepStrictEqual(missing, ['shouldAutoClearWrongProduction']);
   });
 });
