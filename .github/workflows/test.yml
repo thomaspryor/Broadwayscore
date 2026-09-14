@@ -838,11 +838,13 @@ on:
       - 'scripts/lib/push-with-retry.shallow-retry-escalation.test.sh'
       - 'scripts/lib/shallow-fetch-args.js'
       # BRO-2538: a continue-on-error commit+push step that strands a
-      # non-apiFallbackSafe commit poisons every LATER commit+push-with-
+      # fallback-disqualified commit poisons every LATER commit+push-with-
       # retry.sh step in the same job/checkout. Part A documents the
       # by-design cascade against the real script; Part B is the regression
-      # guard on data-health-check.yml's step order (the actual fix). Path-
-      # listed so a solo edit to either file triggers CI.
+      # guard — registry-driven, not step-order-by-name (BRO-2588), and it
+      # accepts apiFallbackMerge alongside apiFallbackSafe because the runtime
+      # disqualifier does too (BRO-2413, guard taught to match in BRO-3348).
+      # Path-listed so a solo edit to either file triggers CI.
       - 'scripts/lib/push-with-retry.stranded-commit-cascade.test.sh'
       - '.github/workflows/data-health-check.yml'
       # Card 3b1637c5: merge-worktree-to-main.sh verified file EXISTENCE, not
@@ -4324,9 +4326,18 @@ jobs:
         # design property of push-with-retry.sh's disqualifier (not a bug to
         # fix there — the fix landed 2026-08-16 for the DIFFERENT
         # merge-fallback-pollution mechanism, confirmed still correct here).
-        # Part B is the actual regression guard: asserts data-health-check.yml
-        # now runs the strandable ledger step LAST among its commit+push
-        # steps, so nothing later in that job can be poisoned by it.
+        # Part B is the actual regression guard, and it is REGISTRY-DRIVEN,
+        # not order-by-name: for every step in data-health-check.yml that
+        # calls push-with-retry.sh, it requires all but the LAST such step to
+        # stage only fallback-eligible paths — registered apiFallbackSafe or
+        # apiFallbackMerge, and never one the runtime disqualifier still
+        # vetoes — so nothing later in that job can be poisoned by a stranded
+        # earlier commit.
+        # BRO-3348: this comment used to say Part B "asserts data-health-check
+        # .yml now runs the strandable ledger step LAST". That stopped
+        # describing the test when BRO-2588 made the assertion name-free, and
+        # stopped being true at all when BRO-3318 split the final commit step
+        # in two. See the test file's own PART B header for the full history.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
 

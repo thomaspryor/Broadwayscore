@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor, apiFallbackSafeEntriesFor } from './core-data-merge-registry.js';
+import { CORE_DATA_MERGE_REGISTRY, findEntry, activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor } from './core-data-merge-registry.js';
 
 test('every entry has a file, surface, and valid status', () => {
   const validStatuses = new Set(['active', 'special', 'deferred', 'single-writer']);
@@ -65,6 +65,42 @@ test('every apiFallbackSafe entry carries the required verification fields', () 
     assert.ok(e.concurrencyGroup.length > 0, `${e.file}: empty concurrencyGroup`);
     assert.equal(typeof e.verifiedBy, 'string', `${e.file}: missing verifiedBy`);
     assert.ok(e.verifiedBy.length > 20, `${e.file}: verifiedBy note is suspiciously short`);
+  }
+});
+
+test('every apiFallbackMerge entry carries a REAL merge function and is active', () => {
+  // BRO-3348 (both ship-check reviewers, independently): apiFallbackSafe has
+  // had a field-gate since it was introduced, but apiFallbackMerge — the flag
+  // that lets a genuinely MULTI-writer file keep the Git Data API fallback —
+  // had NO gate at all. That asymmetry stopped being tolerable the moment
+  // push-with-retry.stranded-commit-cascade.test.sh PART B started trusting
+  // apiFallbackMerge as proof a staged path cannot poison a later step's
+  // fallback: without this test, adding `apiFallbackMerge: true` to an entry
+  // with no working merge function would silently buy that trust, and
+  // push-via-git-api.sh would fall through to the plain "ours wins outright"
+  // overlay — dropping a concurrent writer's rows, the exact hazard the flag
+  // exists to prevent.
+  const merged = CORE_DATA_MERGE_REGISTRY.filter((e) => e.apiFallbackMerge === true);
+  assert.ok(merged.length > 0, 'no apiFallbackMerge entries at all — did the flag get renamed?');
+  for (const e of merged) {
+    assert.equal(e.surface, 'public-repo', `${e.file}: apiFallbackMerge is only meaningful on public-repo today`);
+    assert.equal(e.status, 'active', `${e.file}: apiFallbackMerge is for MULTI-writer files, which are status:'active' (single-writer files take apiFallbackSafe instead)`);
+    assert.equal(typeof e.merge, 'function', `${e.file}: apiFallbackMerge with no merge function — push-via-git-api.sh would silently fall back to a whole-file overlay`);
+  }
+});
+
+test('apiFallbackMergeEntriesFor never crosses surfaces and is disjoint from apiFallbackSafe', () => {
+  for (const e of apiFallbackMergeEntriesFor('public-repo')) {
+    assert.equal(e.surface, 'public-repo');
+    assert.equal(e.apiFallbackMerge, true);
+  }
+  // The two flags answer DIFFERENT questions — "one writer, so an overlay is
+  // safe" vs "many writers, but we can reconcile them" — so no file may claim
+  // both. PART B of the cascade guard unions these two lists; an overlap
+  // would mean one file silently satisfying a bar it never met.
+  const safeFiles = new Set(apiFallbackSafeEntriesFor('public-repo').map((e) => e.file));
+  for (const e of apiFallbackMergeEntriesFor('public-repo')) {
+    assert.ok(!safeFiles.has(e.file), `${e.file} is flagged BOTH apiFallbackSafe and apiFallbackMerge — should be impossible`);
   }
 });
 
