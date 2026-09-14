@@ -141,7 +141,7 @@ function main() {
     console.log(`    ${o.loserFile}  duplicateOf → ${o.targetFile} (now invalid)`);
   }
   if (FIX) {
-    if (orphans.length > FIX_SURGE_THRESHOLD && !FORCE_BULK && !SHOW_FILTER) {
+    if (orphans.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
       console.log(`\nRefusing to auto-clear ${orphans.length} pointer(s) — above FIX_SURGE_THRESHOLD (${FIX_SURGE_THRESHOLD}).`);
       console.log('This many at once could mean a classifier regression, not normal drift. Review the list above, then re-run with --force-bulk to proceed.');
       process.exit(1);
