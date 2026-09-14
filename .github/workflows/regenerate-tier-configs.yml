@@ -27,14 +27,13 @@ on:
 permissions:
   contents: write
 
-# BRO-3334: required for the "Commit and push" step's PUSH_API_REST_REF_UPDATE
-# fallback — scripts/config/domain-tier-order.json and domain-tier-skip.json
-# are outside push-with-retry.sh's MANAGED list and data/audit/, so the REST
-# path's "ours wins" whole-file overlay is otherwise ungated. This workflow's
-# own "Regenerate configs" step (scripts/regenerate-tier-configs.js) is the
-# ONLY writer of either file anywhere in scripts/ (audit-tier-skip-drift.js
-# only reads it) — this group makes that single-writer assumption real by
-# serializing overlapping cron + workflow_dispatch runs.
+# BRO-3334: scripts/config/domain-tier-order.json and domain-tier-skip.json
+# are also hand-edited and pushed directly to main outside this workflow (they
+# are deliberately excluded from the "PR required for code paths" ruleset —
+# see branch-ruleset-paths.js's own docstring, which names this exact
+# workflow) — narrows the window for this workflow's own cron+workflow_dispatch
+# runs to race each other over the same commit, on top of the push-with-
+# retry.sh's own rebase-based conflict handling for a concurrent direct push.
 concurrency:
   group: regenerate-tier-configs
   cancel-in-progress: false
@@ -79,19 +78,26 @@ jobs:
       - name: Commit and push
         if: inputs.dry_run != 'true'
         env:
-          # Job's own timeout-minutes: 15 (900s) budget is much tighter than
-          # data-health-check.yml's 180-min job, so PUSH_DEADLINE_SEC is sized
-          # well under that ceiling rather than copied at 900s verbatim —
-          # leaves headroom for checkout/setup/regenerate ahead of this step.
-          PUSH_DEADLINE_SEC: '600'
-          GIT_NET_TIMEOUT_SEC: '30'
           # BRO-3334: the inline `git pull --rebase && git push` retry loop
           # below hit this job's 15-min timeout ("cancelled") 4 consecutive
-          # Sundays via a GitHub git-transport hang — the same failure mode
-          # data-health-check.yml's commit steps hit and fixed with the Git
-          # Data API fallback. See this file's concurrency: block above for
-          # why the fallback's "ours wins" overlay is safe here.
-          PUSH_API_REST_REF_UPDATE: '1'
+          # Sundays — it had no per-operation timeout at all, so a stalled
+          # git transport could burn the FULL 15-min job budget in silence.
+          # push-with-retry.sh's GIT_NET_TIMEOUT_SEC hard-caps every fetch/push
+          # op regardless of the REST fallback, so this alone fixes the hang.
+          # Deliberately NOT setting PUSH_API_REST_REF_UPDATE here (unlike
+          # data-health-check.yml's apiFallbackSafe steps): these two config
+          # files are hand-edited and pushed directly to main outside this
+          # workflow (see the concurrency: block's comment above) and are not
+          # apiFallbackMerge-registered, so the REST fallback's "ours wins"
+          # whole-file overlay could silently clobber a concurrent hand-edit
+          # with this run's stale pre-checkout content — exactly the class of
+          # silent data loss this ticket exists to fix, via a different path.
+          # Job's own timeout-minutes: 15 (900s) budget is much tighter than
+          # data-health-check.yml's 180-min job, so PUSH_DEADLINE_SEC is sized
+          # well under that ceiling — leaves headroom for checkout/setup/
+          # regenerate ahead of this step.
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
