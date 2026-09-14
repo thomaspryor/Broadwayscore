@@ -151,6 +151,37 @@ const DEFAULT_COOLDOWN_HOURS = 168; // 7 days
 // filed against: no open condition should sit past notifyCount 14 untracked.
 const ESCALATION_NOTIFY_THRESHOLD = 14;
 
+// BRO-3030 pre-mortem P0 — the condition families that may NEVER be quieted.
+//
+// The escalation above is "notify to threshold, file a tracker, then stop
+// repeating and resurface only every resurfaceHours". For most families that
+// is exactly right. For anything metering PAID usage it is not: a genuinely
+// WORSENING cost metric would fire on day 1, get carded, and then say nothing
+// for the next seven days while the money kept going out. The card's own
+// plan-review named this before implementation — "Recurring cost alarms must
+// keep firing until the metric returns to baseline, not until a card exists.
+// Allowlist which condition families may ever be quieted."
+//
+// This was NOT a hypothetical corner. Measured on the live ledger the day this
+// landed, 3 of the 10 open conditions past the notify threshold were cost
+// families: provider-spend:overspend (notifyCount 20),
+// bd-circuit-breaker-serp_api1 (19), sd-circuit-breaker (18). And they really
+// do take this path — scripts/check-provider-spend.js passes
+// disposition: 'digest'.
+//
+// A tracker still gets filed for these (the escalation half is what the card
+// is for); they simply keep surfacing in the digest afterwards instead of
+// going silent, so the owner sees a worsening number every day rather than
+// once. The cost of being wrong here is asymmetric: an extra digest line
+// versus an unnoticed overage, so this matches on the FAMILY prefix and errs
+// toward keeping things visible.
+const NEVER_QUIET_CONDITION_RE = /(^provider-spend:|circuit-breaker|(^|[:-])(spend|cost|billing|quota|credits?|overspend|budget)([:-]|$))/i;
+
+/** Is `conditionKey` a paid-usage family that must never be silenced? */
+function isNeverQuietCondition(conditionKey) {
+  return NEVER_QUIET_CONDITION_RE.test(String(conditionKey || ''));
+}
+
 function readLedgerFile(p) {
   try {
     const parsed = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -248,10 +279,18 @@ function hoursSince(iso) {
 // lastSurfacedAt only advances on a call that actually puts something in the
 // digest (a promote/resurface notice, or a plain pre-threshold line) — see
 // where routeAlert() sets result.lastSurfacedAt below.
-function decideDigestEscalation({ existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS }) {
+function decideDigestEscalation({ conditionKey, existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS }) {
   const alreadyTracked = !!(existing && existing.linearIdentifier);
   if (!alreadyTracked) {
     return { action: notifyCount > threshold ? 'promote' : 'normal' };
+  }
+  // BRO-3030 pre-mortem P0: paid-usage families are never silenced. They are
+  // still promoted+tracked above (that is the escalation this card exists
+  // for), but from then on they keep surfacing every call instead of waiting
+  // out resurfaceHours — a worsening overage must not be invisible for a week
+  // just because a tracker exists. See NEVER_QUIET_CONDITION_RE.
+  if (isNeverQuietCondition(conditionKey)) {
+    return { action: 'resurface', neverQuiet: true };
   }
   const lastSurfacedAtMs = existing.lastSurfacedAt ? new Date(existing.lastSurfacedAt).getTime() : NaN;
   const hrsSinceSurfaced = Number.isFinite(lastSurfacedAtMs) ? (now - lastSurfacedAtMs) / (1000 * 60 * 60) : Infinity;
@@ -668,7 +707,7 @@ async function routeAlert(opts) {
   let digestNotifyCount = null;
   if (effectiveDisposition === 'digest') {
     digestNotifyCount = (existing?.notifyCount || 0) + 1;
-    digestDecision = decideDigestEscalation({ existing, notifyCount: digestNotifyCount, now: Date.now() });
+    digestDecision = decideDigestEscalation({ conditionKey, existing, notifyCount: digestNotifyCount, now: Date.now() });
     if (digestDecision.action === 'promote') {
       effectiveDisposition = 'auto';
       promotedFromDigest = true;
@@ -876,6 +915,8 @@ module.exports = {
   loadLedger,
   headStandsAlone,
   decideDigestEscalation,
+  isNeverQuietCondition,
+  NEVER_QUIET_CONDITION_RE,
   ESCALATION_NOTIFY_THRESHOLD,
   drainDigestQueue,
   peekDigestQueue,

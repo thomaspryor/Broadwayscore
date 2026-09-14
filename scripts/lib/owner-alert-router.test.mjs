@@ -1570,3 +1570,87 @@ test('routeAlert: a promoted digest escalation that dedupe-matches an existing t
     restore();
   }
 });
+
+// -- BRO-3030 pre-mortem P0: paid-usage families are never silenced ----------
+// The card's own plan-review demanded this BEFORE implementation ("Recurring
+// cost alarms must keep firing until the metric returns to baseline, not until
+// a card exists. Allowlist which condition families may ever be quieted").
+// The first implementation shipped without it: decideDigestEscalation did not
+// even RECEIVE a conditionKey, so no family COULD be exempted, and a tracked
+// provider-spend:overspend on day 2 of a real overage returned 'quiet' and
+// stayed quiet for the full 168h default.
+const NEVER_QUIET_HOUR_MS = 3600 * 1000;
+const neverQuietTracked = (hrsAgo) => ({
+  linearIdentifier: 'BRO-9999',
+  lastSurfacedAt: new Date(Date.now() - hrsAgo * NEVER_QUIET_HOUR_MS).toISOString(),
+});
+
+test('BRO-3030 P0: every paid-usage family resurfaces instead of going quiet while tracked', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation } = router;
+    const now = Date.now();
+    for (const key of [
+      'provider-spend:overspend',
+      'bd-circuit-breaker-serp_api1',
+      'bd-circuit-breaker-web_unlocker2',
+      'sd-circuit-breaker',
+      'anthropic:spend-anomaly',
+      'scrapingbee:credits-exhausted',
+      'gha:quota-exceeded',
+      'vercel:billing-spike',
+      'llm:cost-regression',
+      'autonomous:budget-breach',
+    ]) {
+      const d = decideDigestEscalation({ conditionKey: key, existing: neverQuietTracked(1), notifyCount: 30, now });
+      assert.equal(d.action, 'resurface', key + ' must never be quieted');
+      assert.equal(d.neverQuiet, true, key + ' must be flagged neverQuiet');
+    }
+  } finally { restore(); }
+});
+
+test('BRO-3030 P0: a cost condition is still PROMOTED first, the escalation half is unchanged', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation } = router;
+    const now = Date.now();
+    assert.equal(decideDigestEscalation({ conditionKey: 'provider-spend:overspend', existing: null, notifyCount: 15, now }).action, 'promote');
+    assert.equal(decideDigestEscalation({ conditionKey: 'provider-spend:overspend', existing: null, notifyCount: 3, now }).action, 'normal');
+  } finally { restore(); }
+});
+
+test('BRO-3030 P0: non-cost families keep the quiet-then-resurface behaviour', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation } = router;
+    const now = Date.now();
+    for (const key of ['t1-coverage:scoreboard', 'deployed-coverage:stale', 'review-gap:blast-radius-refused', 'test-yml:main-streak']) {
+      assert.equal(decideDigestEscalation({ conditionKey: key, existing: neverQuietTracked(1), notifyCount: 30, now }).action, 'quiet', key);
+      assert.equal(decideDigestEscalation({ conditionKey: key, existing: neverQuietTracked(169), notifyCount: 30, now }).action, 'resurface', key);
+    }
+  } finally { restore(); }
+});
+
+test('BRO-3030 P0: the predicate neither under- nor over-matches', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { isNeverQuietCondition, decideDigestEscalation } = router;
+    assert.equal(decideDigestEscalation({ existing: neverQuietTracked(1), notifyCount: 30, now: Date.now() }).action, 'quiet');
+    for (const empty of [undefined, '', null]) assert.equal(isNeverQuietCondition(empty), false, String(empty));
+    for (const key of ['coverage:stale', 'opening-night:missed-broadcast', 'data-validation:red', 'costume-audit:missing']) {
+      assert.equal(isNeverQuietCondition(key), false, key + ' should NOT be a paid-usage family');
+    }
+  } finally { restore(); }
+});
+
+test('BRO-3030 P0: routeAlert threads conditionKey into the escalation decision', () => {
+  // Source-level assertion (CLAUDE.md rule 15): without conditionKey at the
+  // call site the exemption is unreachable no matter how correct the predicate
+  // is, which is exactly how this shipped broken the first time.
+  const src = fs.readFileSync(new URL('./owner-alert-router.js', import.meta.url), 'utf8');
+  assert.match(
+    src,
+    /decideDigestEscalation\(\{\s*conditionKey,/,
+    'routeAlert() must pass conditionKey to decideDigestEscalation',
+  );
+});
