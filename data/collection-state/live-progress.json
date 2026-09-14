@@ -1,36 +1,30 @@
 {
-  "updatedAt": "2026-09-14T16:29:58.427Z",
-  "processed": 31,
-  "failed": 119,
-  "successRate": "20.7%",
+  "updatedAt": "2026-09-14T17:24:26.178Z",
+  "processed": 41,
+  "failed": 109,
+  "successRate": "27.3%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 28,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 10,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-09-14T16:17:33.242Z",
+      "t": "2026-09-14T17:16:48.481Z",
       "event": "bb-session",
-      "session": "50391360",
+      "session": "4866e808",
       "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
     },
     {
-      "t": "2026-09-14T16:17:34.085Z",
+      "t": "2026-09-14T17:16:49.375Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-14T16:29:18.951Z",
-      "event": "bb-session",
-      "session": "5fe136e9",
-      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }
