@@ -19,7 +19,7 @@ Identify what to review. This is either:
 - If no arguments, look at the most recent plan or proposed changes in the conversation
 - If in plan mode, read the current plan file
 
-Write the plan + relevant codebase context to `/tmp/check-plan.txt`. Include:
+Write the plan + relevant codebase context to a private per-run temp file — never a shared fixed path like `/tmp/check-plan.txt`. This machine routinely runs many parallel Claude Code sessions, and a shared path lets one session's write clobber another's mid-review (confirmed live 2026-09-08: a BRO-2699 session's plan file was overwritten mid-flight by an unrelated BRO-2817 session using the same path, corrupting the review until caught and corrected by hand). Use `mktemp /tmp/check-plan.XXXXXX` (portable form — no suffix after the X's, since BSD `mktemp` on macOS silently ignores a non-X-terminated template and returns the literal path instead of erroring) and use that path for the rest of this run. Include in the file:
 - The plan itself
 - Tech stack context (Next.js 14, TypeScript, Tailwind, static export)
 - Key constraints (CLAUDE.md rules that apply)

@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  parseBdZoneCost, parseBdBalance, countBbSessionsOnDay, parseSbUsage, parseSdAccount,
+  parseBdZoneCost, parseBdBalance, countBbSessionsOnDay, sumBbMinutesOnDay, parseSbUsage, parseSdAccount,
 } = require('./provider-billing.js');
 
 test('parseBdZoneCost sums cost and reqs_* across customers', () => {
@@ -45,6 +45,23 @@ test('countBbSessionsOnDay counts only the requested UTC day', () => {
   assert.equal(countBbSessionsOnDay(sessions, '2026-07-30'), 2);
   assert.equal(countBbSessionsOnDay({ data: sessions }, '2026-07-29'), 1);
   assert.equal(countBbSessionsOnDay({ nonsense: true }, '2026-07-30'), null);
+});
+
+test('sumBbMinutesOnDay (BRO-3240): sums real duration for the requested day, skips sessions missing timestamps', () => {
+  const sessions = [
+    // 2 min session, in-day
+    { createdAt: '2026-07-30T10:00:00.000+00:00', startedAt: '2026-07-30T10:00:00.000+00:00', endedAt: '2026-07-30T10:02:00.000+00:00' },
+    // 30s session, in-day
+    { createdAt: '2026-07-30T11:00:00.000+00:00', startedAt: '2026-07-30T11:00:00.000+00:00', endedAt: '2026-07-30T11:00:30.000+00:00' },
+    // created the day before — excluded
+    { createdAt: '2026-07-29T23:59:00.000+00:00', startedAt: '2026-07-29T23:59:00.000+00:00', endedAt: '2026-07-30T00:01:00.000+00:00' },
+    // in-day but still running (no endedAt) — excluded, not zero
+    { createdAt: '2026-07-30T12:00:00.000+00:00', startedAt: '2026-07-30T12:00:00.000+00:00' },
+  ];
+  assert.equal(sumBbMinutesOnDay(sessions, '2026-07-30'), 2.5);
+  assert.equal(sumBbMinutesOnDay({ data: sessions }, '2026-07-30'), 2.5);
+  assert.equal(sumBbMinutesOnDay({ nonsense: true }, '2026-07-30'), null);
+  assert.equal(sumBbMinutesOnDay([], '2026-07-30'), 0);
 });
 
 test('parseSbUsage (real 2026-07-30 exhausted-cycle fixture)', () => {

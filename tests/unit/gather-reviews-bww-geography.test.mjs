@@ -40,3 +40,37 @@ test('a review from a London-only outlet (matttrueman) is NOT filtered from a We
 test('an empty reviews array returns unchanged (no-op, never throws)', () => {
   assert.deepEqual(validateBWWRoundupGeography([], '', 'show-id', false), []);
 });
+
+/**
+ * BRO-3247 (2026-09-14): the Broadway-local region set here was {nyc, national},
+ * but loadOutlets()'s own US_REGIONS discovery whitelist tags exactly the same
+ * class of domestic tier-3 outlet with region:'us' (frontmezzjunkies,
+ * blogcritics, cititour, stageandcinema, ...). Reading that field with the
+ * narrower set meant every 'us' outlet was simultaneously discoverable by SERP
+ * and excluded from BWW roundups as "non-local" — Front Mezz Junkies' real
+ * Safe House review was dropped this way. Fix: 'us' joined the local set.
+ */
+test("region:'us' outlets (frontmezzjunkies) are Broadway-local, not filtered from a Broadway roundup", () => {
+  const reviews = [
+    { outletId: 'nytimes', excerpt: 'a Broadway review' },
+    { outletId: 'variety', excerpt: 'another Broadway review' },
+    { outletId: 'frontmezzjunkies', excerpt: 'a NYC blogger review' },
+  ];
+  const result = validateBWWRoundupGeography(reviews, '', 'safe-house-off-broadway-2026', false);
+  assert.equal(result.length, 3, 'no review should be dropped');
+  assert.ok(result.some(r => r.outletId === 'frontmezzjunkies'),
+    "region:'us' outlet must survive the Broadway geography filter");
+});
+
+test("region:'us' outlets are still non-local for a West End roundup", () => {
+  // Guard rail: widening the Broadway set must not leak into the WE branch,
+  // which keeps its own {london, national-uk, national} local set.
+  const reviews = [
+    { outletId: 'thestage', excerpt: 'a London review' },
+    { outletId: 'whatsonstage', excerpt: 'another London review' },
+    { outletId: 'frontmezzjunkies', excerpt: 'a NYC blogger review' },
+  ];
+  const result = validateBWWRoundupGeography(reviews, '', 'some-west-end-show-2026', true);
+  assert.ok(!result.some(r => r.outletId === 'frontmezzjunkies'),
+    'a US outlet must still be filtered out of a West End roundup');
+});

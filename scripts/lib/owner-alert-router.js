@@ -72,6 +72,13 @@
  * run too. Outcome is a duplicate card/email, not a crash or lost alert —
  * acceptable for a single-owner project; harden with a real lock (e.g. the
  * pattern in scripts/lib/send-lock.js) if duplicates become a real problem.
+ *
+ * BRO-3030 (digest escalation, added after Sprint 1): a 'digest' condition
+ * that re-notifies past ESCALATION_NOTIFY_THRESHOLD with no tracker attached
+ * is promoted to 'auto' for that one call (see decideDigestEscalation()),
+ * which means it inherits the exact same known-limitation race above — just
+ * on a wider set of conditionKeys than only ever hit the 'auto' path before.
+ * Same accepted tradeoff, wider surface; not a new risk class.
  */
 
 const fs = require('fs');
@@ -134,6 +141,15 @@ const ATTEMPTS_LOG_RETENTION_DAYS = 30;
 
 const DISPOSITIONS = ['auto', 'digest', 'human'];
 const DEFAULT_COOLDOWN_HOURS = 168; // 7 days
+
+// BRO-3030: a 'digest' condition that has re-notified more than this many
+// times with no tracker ever attached gets escalated — see
+// decideDigestEscalation() below. 208 conditions were audited fleet-wide,
+// 179 open, only 36 carded; 8 had fired on most days for 25-43+ days because
+// the 'digest' disposition previously had no escalation path at all (only
+// 'auto' ever filed a tracker). Matches the acceptance bar the card was
+// filed against: no open condition should sit past notifyCount 14 untracked.
+const ESCALATION_NOTIFY_THRESHOLD = 14;
 
 function readLedgerFile(p) {
   try {
@@ -207,6 +223,39 @@ function hoursSince(iso) {
   const t = new Date(iso).getTime();
   if (!Number.isFinite(t)) return Infinity;
   return (Date.now() - t) / (1000 * 60 * 60);
+}
+
+// BRO-3030 — pure decision for a 'digest'-disposition routeAlert() call: does
+// THIS call promote to 'auto' (so it flows through the file/dedupe/persist
+// machinery 'auto' already owns, rather than a second hand-rolled copy of it
+// living here), stay fully quiet (already tracked, reminder window hasn't
+// elapsed), post a short "still open" reminder (already tracked, window
+// elapsed — so a condition never vanishes from the digest forever just
+// because its filed tracker went stale), or behave exactly as it always has
+// (below threshold, not yet tracked)? No fs, no network — pure state in,
+// decision out, mirroring guard-escalation.js's shouldEscalate()/
+// shouldAutoRecover() shape and CLAUDE.md rule 15 (extract, don't inline,
+// so the threshold logic is require()-tested instead of re-derived in a
+// test file).
+//
+// Deliberately keyed on `existing.lastSurfacedAt`, NOT `existing.lastNotifiedAt`
+// (ship-check catch): lastNotifiedAt is routeAlert()'s general "this incident
+// was processed" clock and gets stamped to `now` on EVERY non-silent call,
+// including a 'quiet' one — real digest callers pass short cooldownHours
+// (1-24h, see dispatch-drift-watch.js/check-corpus-drift.js/etc.) and call
+// routeAlert() roughly that often, so lastNotifiedAt never sits still long
+// enough for an hours-since check against it to ever reach resurfaceHours.
+// lastSurfacedAt only advances on a call that actually puts something in the
+// digest (a promote/resurface notice, or a plain pre-threshold line) — see
+// where routeAlert() sets result.lastSurfacedAt below.
+function decideDigestEscalation({ existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS }) {
+  const alreadyTracked = !!(existing && existing.linearIdentifier);
+  if (!alreadyTracked) {
+    return { action: notifyCount > threshold ? 'promote' : 'normal' };
+  }
+  const lastSurfacedAtMs = existing.lastSurfacedAt ? new Date(existing.lastSurfacedAt).getTime() : NaN;
+  const hrsSinceSurfaced = Number.isFinite(lastSurfacedAtMs) ? (now - lastSurfacedAtMs) / (1000 * 60 * 60) : Infinity;
+  return { action: hrsSinceSurfaced >= resurfaceHours ? 'resurface' : 'quiet' };
 }
 
 // A floor on how much context an auto-filed tracker carries. It originated as
@@ -605,9 +654,25 @@ async function routeAlert(opts) {
   // downgraded to 'digest' — the caller's requested disposition is honored in
   // spirit (the owner is still told, just not by immediate email).
   const pageGated = disposition === 'human' && !isPageWorthy(conditionKey);
-  const effectiveDisposition = pageGated ? 'digest' : disposition;
+  let effectiveDisposition = pageGated ? 'digest' : disposition;
   if (pageGated) {
     console.log(`[alert-router] disposition 'human' requested for "${conditionKey}" ("${title}") is not on the page-worthy allowlist — routed to the morning digest instead. Add it to scripts/lib/page-worthy-alerts.js if this should page immediately.`);
+  }
+
+  // BRO-3030: decide digest escalation BEFORE the rail-2 dedupe check below,
+  // so a promotion to 'auto' flows through that same dedupe+dispatch+persist
+  // path unmodified — see decideDigestEscalation()'s header for why this
+  // reuses 'auto' rather than duplicating its machinery here.
+  let promotedFromDigest = false;
+  let digestDecision = null;
+  let digestNotifyCount = null;
+  if (effectiveDisposition === 'digest') {
+    digestNotifyCount = (existing?.notifyCount || 0) + 1;
+    digestDecision = decideDigestEscalation({ existing, notifyCount: digestNotifyCount, now: Date.now() });
+    if (digestDecision.action === 'promote') {
+      effectiveDisposition = 'auto';
+      promotedFromDigest = true;
+    }
   }
 
   // Rail 2 cross-system dedupe (Phase 0, plan 2026-08-12, task #1341): 'auto'
@@ -627,6 +692,18 @@ async function routeAlert(opts) {
     const linearDup = await findLinearDuplicate(conditionKey);
     if (linearDup.matched) {
       console.log(`[alert-router] conditionKey ${conditionKey} already tracked as ${linearDup.identifier} — not double-filing`);
+      // BRO-3030 ship-check catch (Bug 2): a promoted-from-digest call that
+      // hits this dedupe match used to return silent with NO digest line at
+      // all — the owner-used-to-seeing-this-daily condition would just
+      // vanish, no different from the bug this card exists to fix. One-time
+      // notice, same as the direct-file path below.
+      if (promotedFromDigest) {
+        queueDigestLine({
+          title: `${title} — already tracked at ${linearDup.identifier}`,
+          description: `This condition already has an open tracker (${linearDup.identifier}); not filing a duplicate. It will go quiet in the digest from here.\n\n${description}`,
+          severity, conditionKey, url, decision: true, fields,
+        });
+      }
       ledger.conditions[conditionKey] = {
         status: 'open',
         disposition: effectiveDisposition,
@@ -634,6 +711,10 @@ async function routeAlert(opts) {
         firstSeen: existing?.firstSeen || now,
         lastSeen: now,
         lastNotifiedAt: now,
+        // See decideDigestEscalation()'s header: only advance this when we
+        // actually surfaced something (the notice above), not on every silent
+        // dedupe-match refire.
+        lastSurfacedAt: promotedFromDigest ? now : (existing?.lastSurfacedAt || null),
         notifyCount: (existing?.notifyCount || 0) + 1,
         // A previously-filed open Notion card keeps its reference — the Linear
         // match means "don't file ANOTHER tracker", not "the old card vanished".
@@ -663,12 +744,49 @@ async function routeAlert(opts) {
     if (!dispatch.ok) result.dispatchError = dispatch.error;
     if (dispatch.usageLimitExceeded) result.usageLimitExceeded = true;
     notifyOk = dispatch.ok;
+    if (promotedFromDigest) {
+      if (dispatch.ok) {
+        // One-time notice that this previously-noisy digest condition now
+        // has a tracker — after this it goes quiet in the digest (occasional
+        // reminder only, see decideDigestEscalation()'s 'resurface' branch
+        // below) instead of repeating in full every day.
+        queueDigestLine({
+          title: `${title} — escalated after ${digestNotifyCount} notifications`,
+          description: `Filed ${dispatch.linearIdentifier} for owner triage after ${digestNotifyCount} repeats with no tracker.\n\n${description}`,
+          severity, conditionKey, url, decision: true, fields,
+        });
+        result.lastSurfacedAt = now;
+      } else {
+        // Dispatch failed: don't leave the owner blind on this call — fall
+        // back to the plain line so visibility isn't worse than before this
+        // fix. The ledger write below is skipped on notifyOk===false either
+        // way, so the NEXT call retries escalation from the same state.
+        queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
+      }
+    }
   } else if (effectiveDisposition === 'digest') {
-    queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
+    if (digestDecision.action === 'normal') {
+      queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
+      result.lastSurfacedAt = now;
+    } else if (digestDecision.action === 'resurface') {
+      queueDigestLine({
+        title: `${title} (still open — ${existing.linearIdentifier})`,
+        description: `Still firing after ${digestNotifyCount} notifications since it was filed. Tracked at ${existing.linearIdentifier}.`,
+        severity, conditionKey, url, decision: true, fields,
+      });
+      result.lastSurfacedAt = now;
+    }
+    // digestDecision.action === 'quiet': already tracked, resurface window
+    // hasn't elapsed yet — no line queued this call, and result.lastSurfacedAt
+    // is deliberately left unset so the ledger write below carries the OLD
+    // lastSurfacedAt forward unchanged (see decideDigestEscalation's header —
+    // this is the field the resurface decision actually depends on).
+    // notifyCount/lastSeen/lastNotifiedAt still advance normally below.
   } else if (effectiveDisposition === 'human') {
     const delivered = await sendAlert({ title, description, severity, fields, url, email: true });
     result.delivered = delivered;
     notifyOk = delivered;
+    if (delivered) result.lastSurfacedAt = now;
   }
 
   if (!notifyOk) {
@@ -689,6 +807,10 @@ async function routeAlert(opts) {
     firstSeen: existing?.firstSeen || now,
     lastSeen: now,
     lastNotifiedAt: now,
+    // See decideDigestEscalation()'s header: this is a SEPARATE clock from
+    // lastNotifiedAt above — it only advances when a call actually surfaced
+    // something in the digest, not on every processed call.
+    lastSurfacedAt: result.lastSurfacedAt !== undefined ? result.lastSurfacedAt : (existing?.lastSurfacedAt || null),
     notifyCount: (existing?.notifyCount || 0) + 1,
     cardId: result.cardId !== undefined ? result.cardId : (existing?.cardId || null),
     // Filed-tracker identity survives in the ledger so the cooldown
@@ -753,6 +875,8 @@ module.exports = {
   deleteCondition,
   loadLedger,
   headStandsAlone,
+  decideDigestEscalation,
+  ESCALATION_NOTIFY_THRESHOLD,
   drainDigestQueue,
   peekDigestQueue,
   clearDigestQueue,

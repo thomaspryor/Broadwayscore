@@ -30,6 +30,28 @@ test('findWritingWorkflows finds every distinct writer, order-independent of glo
   assert.deepEqual(findWritingWorkflows('data/audit/shared.json', workflows), ['a.yml', 'b.yml']);
 });
 
+test('findWritingWorkflows matches the loop-staged idiom (BRO-3071)', () => {
+  const workflows = {
+    'foo.yml': 'run: |\n  for f in data/audit/a.json data/audit/b.json; do\n    [ -e "$f" ] && git add "$f" || echo skip\n  done\n',
+  };
+  assert.deepEqual(findWritingWorkflows('data/audit/a.json', workflows), ['foo.yml']);
+  assert.deepEqual(findWritingWorkflows('data/audit/b.json', workflows), ['foo.yml']);
+});
+
+test('findWritingWorkflows matches the loop-staged idiom with backslash line continuations', () => {
+  const workflows = {
+    'foo.yml': 'run: |\n  for f in data/audit/a.json \\\n           data/audit/b.json; do\n    git add "$f"\n  done\n',
+  };
+  assert.deepEqual(findWritingWorkflows('data/audit/b.json', workflows), ['foo.yml']);
+});
+
+test('findWritingWorkflows ignores an unrelated for-loop that never git-adds its own variable', () => {
+  const workflows = {
+    'foo.yml': 'run: |\n  for f in data/audit/a.json; do\n    echo "$f"\n  done\n  git add data/audit/unrelated.json\n',
+  };
+  assert.deepEqual(findWritingWorkflows('data/audit/a.json', workflows), []);
+});
+
 test('extractConcurrencyGroup reads a plain top-level group', () => {
   const yaml = 'name: X\nconcurrency:\n  group: data-health-check\n  cancel-in-progress: false\n';
   assert.equal(extractConcurrencyGroup(yaml), 'data-health-check');
@@ -106,48 +128,133 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (1 original + 1 imageless-scored-shows.json + 14 bulk-step follow-up + 1 orphan-rescore-requeue-state.json (BRO-2435) + 1 autonomous-recheck-ledger.jsonl (BRO-2588) + 2 opening-night-checklist.yml files (BRO-2670) + 1 stale-announced-shows.json (BRO-2620) + 2 commercial-rss-poll.yml circuit-breaker files (BRO-2795) + 1 missed-broadcasts.json (BRO-2934) + 1 scraper-spend-daily-agg.jsonl (BRO-3008, pre-existing drift found and closed while fixing BRO-2699) + 2 outlet-registry-baseline files (BRO-2699) + 2 process-feedback.yml files (BRO-345) + 3 tight-cadence what-else follow-up files (BRO-345, opening-night-completeness-check.yml x2 + check-opening-night-drift.yml x1) + 2 check-corpus-drift.yml files (BRO-447, corpus-drift.json + churn-merge-coverage.json) + 3 commercial-weekly.yml files (BRO-2285, audit/commercial-data-history.json + recoupment-calibration-anchors.json + audit/commercial-data-audit.json what-else follow-up) + 2 audit-census-recall.yml files (BRO-2296, census-recall-status.json + serp-census-recall.json) — digest-history.json deliberately excluded, zero real writers), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (124 as of BRO-3071 2026-09-14 what-else sweep -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 39);
+  assert.equal(publicSafe.length, 124);
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
+    'audit/affiliate-link-probe.json',
+    'audit/alert-sender-inventory.json',
+    'audit/arm-yield-ledger.jsonl',
+    'audit/autoclear-shadow-report.json',
+    'audit/autoclear-shadow.jsonl',
     'audit/autonomous-recheck-ledger.jsonl',
     'audit/bd-circuit-breaker.json',
+    'audit/brand-mentions.json',
+    'audit/broadway-source-coverage-gaps.json',
+    'audit/broadway-source-coverage-state.json',
+    'audit/bundle-size-baseline.json',
+    'audit/bundle-size-history.json',
+    'audit/bww-roundup-unmatched.json',
+    'audit/cast-changes-diff.json',
     'audit/census-recall-status.json',
     'audit/churn-merge-coverage.json',
+    'audit/collection-coverage-history.json',
+    'audit/collection-coverage.json',
     'audit/commercial-data-audit.json',
     'audit/commercial-data-history.json',
     'audit/corpus-drift.json',
+    'audit/coverage-adversarial-probe-status.json',
+    'audit/coverage-adversarial-probe.json',
+    'audit/coverage-digest-snapshot.json',
+    'audit/creative-team-audit.json',
+    'audit/critic-coverage-audit.json',
+    'audit/critic-coverage-buckets.json',
+    'audit/critic-coverage-cooldown.json',
+    'audit/cron-health-state.json',
     'audit/cross-outlet-attribution-drift.json',
+    'audit/cross-outlet-duplicates.json',
     'audit/cv-wrongproduction-lifetime.json',
+    'audit/daily-digest-snapshot.json',
+    'audit/daily-snapshot.json',
+    'audit/date-enrichment-corrections.json',
+    'audit/deploy-watermark.json',
+    'audit/deployed-coverage-diff.json',
+    'audit/discovery-source-coverage.json',
+    'audit/dmarc-report-ledger.jsonl',
+    'audit/dmarc-summary.json',
     'audit/drift-state.json',
+    'audit/email-gate-funnel-monitor-state.json',
+    'audit/enrich-off-broadway-dates-aborted.json',
+    'audit/flag-parity-monitor-state.json',
+    'audit/follow-send-checkpoint.json',
     'audit/fulltext-mentions-show-lifetime.json',
+    'audit/gap-audit-checkpoint.json',
+    'audit/gate-cold-start-monitor-state.json',
     'audit/health-check-history.json',
     'audit/health-digest-snapshot.json',
     'audit/imageless-scored-shows.json',
     'audit/linear-archive-done.jsonl',
     'audit/missed-broadcasts.json',
+    'audit/needs-human-review.json',
+    'audit/non-review-audit.json',
+    'audit/ob-closing-candidates.json',
+    'audit/ob-todaytix-missing-state.json',
+    'audit/ob-venue-counts.json',
     'audit/opening-night-completeness-state.json',
+    'audit/opening-night-express-completed.json',
     'audit/opening-night-history.json',
     'audit/opening-night-live-state.json',
     'audit/opening-night-sla-state.json',
     'audit/orphan-rescore-requeue-state.json',
+    'audit/outlet-heartbeat-state.json',
+    'audit/outlet-heartbeat.json',
     'audit/outlet-registry-baseline.json',
     'audit/outlet-registry-junk-baseline.json',
+    'audit/owe-venue-candidates.json',
     'audit/pending-bug-diagnoses.json',
+    'audit/playbill-broadway-last-success.json',
+    'audit/playbill-verdict-sitemap-seen.json',
+    'audit/playbill-verdict-unmatched.json',
+    'audit/possible-venue-transfers.json',
     'audit/processed-feedback.json',
+    'audit/processed-review-submissions.json',
     'audit/provider-spend-daily.jsonl',
     'audit/provider-spend-snapshot.json',
+    'audit/rebuild-score-drift.json',
+    'audit/reddit-digest-snapshot.json',
+    'audit/regional-serp-discovery.json',
+    'audit/remediation-log.jsonl',
+    'audit/reverse-discovery-candidates.json',
+    'audit/reverse-discovery-state.json',
+    'audit/review-evidence.json',
     'audit/revival-unverified-lifetime.json',
     'audit/roundup-url-mismatch-lifetime.json',
+    'audit/same-title-confusion.json',
+    'audit/scoring-audit-history.json',
+    'audit/scoring-audit.json',
+    'audit/scoring-audit.md',
     'audit/scraper-spend-daily-agg.jsonl',
     'audit/sd-circuit-breaker.json',
     'audit/serp-census-recall.json',
+    'audit/show-changes-digest.json',
+    'audit/show-review-gap.json',
+    'audit/show-score-extraction-gaps.json',
     'audit/slug-mismatch-lifetime.json',
+    'audit/slug-misroute-audit.json',
+    'audit/social-tier-transitions.json',
     'audit/stale-announced-shows.json',
+    'audit/t1-coverage-ack.json',
+    'audit/t1-coverage-digest-state.json',
+    'audit/t1-coverage-ledger.json',
+    'audit/t1-coverage-signals.json',
+    'audit/t1-coverage-stats.json',
+    'audit/t1-outlet-breaker.json',
+    'audit/t1-recovery-state.json',
+    'audit/t1-silent-gap-alerts.json',
+    'audit/t1-silent-gaps.json',
+    'audit/theatr-coverage.json',
+    'audit/ticket-ab-monitor-state.json',
     'audit/time-to-publish-sla.json',
     'audit/trunk-status-snapshot.json',
+    'audit/uncollected-live-reviews.json',
+    'audit/unknown-aggregator-outlets.json',
+    'audit/venue-date-mismatches.json',
+    'audit/video-review-audit.json',
+    'audit/we-gate-proving.json',
+    'audit/we-last-promotion-ids.json',
+    'audit/we-promotion-log.jsonl',
     'audit/workflow-run-coverage.json',
     'recoupment-calibration-anchors.json',
   ]);

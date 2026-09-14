@@ -56,6 +56,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { wrongShowCleared } = require('./lib/review-guards');
+const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 const BASE = 'data/review-texts';
@@ -228,6 +229,7 @@ async function processVerify(items) {
               data.wrongShow = true;
               data.wrongShowReason = `Retroactive LLM verify: ${result.reasoning || reason}`;
             }
+            invalidateWrongShowAutoClear(data); // BRO-3225: this file's own workflow calls push-review-texts in the SAME job
           }
 
           // Preserve fullText in wrongFullText before nulling

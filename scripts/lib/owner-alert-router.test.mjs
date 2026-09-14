@@ -1237,3 +1237,336 @@ test('an unwritable ledger path does not throw — the alert still dispatches, l
     fs.rmSync(path.dirname(path.dirname(unwritable)), { recursive: true, force: true });
   }
 });
+
+// ── BRO-3030: digest escalation — a 'digest' condition that re-notifies past
+// ESCALATION_NOTIFY_THRESHOLD with no tracker attached gets one automatically
+// filed, then goes quiet (short "still open" reminder only every
+// DEFAULT_COOLDOWN_HOURS) instead of repeating the full line forever. ──────
+
+test('decideDigestEscalation: pure boundary — promotes at notifyCount>14, not at exactly 14, when untracked', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation, ESCALATION_NOTIFY_THRESHOLD } = router;
+    assert.equal(ESCALATION_NOTIFY_THRESHOLD, 14);
+    assert.equal(decideDigestEscalation({ existing: null, notifyCount: 14, now: Date.now() }).action, 'normal');
+    assert.equal(decideDigestEscalation({ existing: undefined, notifyCount: 15, now: Date.now() }).action, 'promote');
+    // Real starting values from the audit (BRO-3030): conditions already sat
+    // at notifyCount 31-39 when this shipped — an off-by-one against a small
+    // fixture wouldn't catch a bug that only shows up against a large,
+    // already-past-threshold existing count.
+    assert.equal(decideDigestEscalation({ existing: { notifyCount: 34 }, notifyCount: 35, now: Date.now() }).action, 'promote');
+  } finally {
+    restore();
+  }
+});
+
+test('decideDigestEscalation: pure — already-tracked stays quiet inside the resurface window, resurfaces once it elapses', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation, DEFAULT_COOLDOWN_HOURS } = router;
+    const now = Date.now();
+    const justSurfaced = new Date(now - 1000).toISOString();
+    const longAgo = new Date(now - (DEFAULT_COOLDOWN_HOURS + 1) * 60 * 60 * 1000).toISOString();
+    assert.equal(decideDigestEscalation({
+      existing: { linearIdentifier: 'BRO-999', lastSurfacedAt: justSurfaced }, notifyCount: 40, now,
+    }).action, 'quiet');
+    assert.equal(decideDigestEscalation({
+      existing: { linearIdentifier: 'BRO-999', lastSurfacedAt: longAgo }, notifyCount: 40, now,
+    }).action, 'resurface');
+    // No lastSurfacedAt at all on an otherwise-tracked row (defensive —
+    // should never happen in practice, but a condition tracked via the rail-2
+    // dedupe-match path before that path set lastSurfacedAt too would land
+    // here) must resurface rather than throw or stay silent forever.
+    assert.equal(decideDigestEscalation({
+      existing: { linearIdentifier: 'BRO-999', lastSurfacedAt: null }, notifyCount: 40, now,
+    }).action, 'resurface');
+    // A row carrying the OLD field name (lastNotifiedAt, no lastSurfacedAt)
+    // must also resurface, not silently misread lastNotifiedAt as if it were
+    // lastSurfacedAt — this is the exact confusion the ship-check catch was.
+    assert.equal(decideDigestEscalation({
+      existing: { linearIdentifier: 'BRO-999', lastNotifiedAt: justSurfaced }, notifyCount: 40, now,
+    }).action, 'resurface');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a digest condition escalates to a filed tracker exactly on the call that crosses notifyCount>14, not before', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    for (let i = 1; i <= 14; i++) {
+      const r = await router.routeAlert({
+        conditionKey: 'test:digest-escalation', title: 'Noisy check', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+      assert.equal(r.action, 'digest', `call ${i} should stay on the digest path (below threshold)`);
+    }
+    assert.equal(calls.createLinearIssue.length, 0, 'must not file before notifyCount>14');
+    assert.equal(router.loadLedger().conditions['test:digest-escalation'].notifyCount, 14);
+
+    const escalated = await router.routeAlert({
+      conditionKey: 'test:digest-escalation', title: 'Noisy check', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(escalated.action, 'auto', 'the 15th call is promoted so it reuses the auto dedupe/dispatch/persist path');
+    assert.equal(calls.createLinearIssue.length, 1);
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:digest-escalation'].linearIdentifier, 'BRO-999');
+    assert.equal(ledger.conditions['test:digest-escalation'].notifyCount, 15);
+
+    const queued = router.drainDigestQueue();
+    assert.equal(queued.length, 1);
+    assert.match(queued[0].title, /escalated after 15 notifications/);
+    assert.match(queued[0].description, /Filed BRO-999/);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: an escalated condition stays quiet on the next call, then resurfaces a short reminder once DEFAULT_COOLDOWN_HOURS elapses — never a repeat of the full noisy line', async () => {
+  const { router, calls, restore, tmpDir } = loadRouterWithFakes();
+  try {
+    for (let i = 1; i <= 15; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-quiet', title: 'Noisy check', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    assert.equal(calls.createLinearIssue.length, 1, 'escalated once at call 15');
+    router.drainDigestQueue(); // clear the one-time "escalated" line
+
+    // Call 16, immediately after escalation: must NOT re-file and must NOT
+    // queue anything (still inside the 7-day resurface window).
+    const quiet = await router.routeAlert({
+      conditionKey: 'test:digest-quiet', title: 'Noisy check', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(quiet.action, 'digest');
+    assert.equal(calls.createLinearIssue.length, 1, 'must not re-file while already tracked');
+    assert.equal(router.peekDigestQueue().length, 0, 'must not repeat the full noisy line once tracked');
+
+    // Force the resurface window to have elapsed by rewriting lastSurfacedAt
+    // directly on the temp ledger file (the router has no setter for this —
+    // it is real production drift, not a router-controlled clock). NOT
+    // lastNotifiedAt — that field is intentionally NOT what the resurface
+    // decision keys on (see decideDigestEscalation's header + the regression
+    // test right below this one, which proves why).
+    const ledgerPath = path.join(tmpDir, 'alert-ledger.json');
+    const onDisk = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+    onDisk.conditions['test:digest-quiet'].lastSurfacedAt = new Date(Date.now() - (router.DEFAULT_COOLDOWN_HOURS + 1) * 60 * 60 * 1000).toISOString();
+    fs.writeFileSync(ledgerPath, JSON.stringify(onDisk, null, 2) + '\n');
+
+    const resurfaced = await router.routeAlert({
+      conditionKey: 'test:digest-quiet', title: 'Noisy check', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(resurfaced.action, 'digest');
+    assert.equal(calls.createLinearIssue.length, 1, 'a resurface reminder is not a re-file');
+    const queued = router.drainDigestQueue();
+    assert.equal(queued.length, 1);
+    assert.match(queued[0].title, /still open — BRO-999/);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a promoted digest escalation still runs the rail-2 Linear dedupe — an already-tracked conditionKey (e.g. filed by another card) is not double-filed', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-2943' }),
+  });
+  try {
+    for (let i = 1; i <= 14; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-dedupe', title: 'Shared circuit-breaker condition', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    const result = await router.routeAlert({
+      conditionKey: 'test:digest-dedupe', title: 'Shared circuit-breaker condition', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(result.action, 'silent', 'rail-2 dedupe short-circuits before any new card is filed');
+    assert.equal(result.linearIdentifier, 'BRO-2943');
+    assert.equal(calls.createLinearIssue.length, 0, 'must not file a duplicate tracker for a conditionKey another card already tracks');
+    assert.equal(router.loadLedger().conditions['test:digest-dedupe'].linearIdentifier, 'BRO-2943');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a failed dispatch during digest escalation does not mark the condition tracked, falls back to the plain line so the owner stays informed, and retries next call', async () => {
+  let dispatchAttempts = 0;
+  const { router, calls, restore } = loadRouterWithFakes({
+    createLinearIssueImpl: async () => {
+      dispatchAttempts++;
+      if (dispatchAttempts === 1) throw new Error('Linear API unavailable');
+      return { issue: { id: 'uuid-opaque', identifier: 'BRO-999', title: 't' }, mode: 'park', stateName: 'Backlog' };
+    },
+  });
+  try {
+    for (let i = 1; i <= 14; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-dispatch-fail', title: 'Flaky escalation', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    const failedCall = await router.routeAlert({
+      conditionKey: 'test:digest-dispatch-fail', title: 'Flaky escalation', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(dispatchAttempts, 1);
+    assert.equal(failedCall.dispatchOk, false);
+    assert.equal(router.loadLedger().conditions['test:digest-dispatch-fail'].linearIdentifier, null,
+      'a failed dispatch must not be recorded as tracked');
+    assert.equal(router.loadLedger().conditions['test:digest-dispatch-fail'].notifyCount, 14,
+      'ledger is not persisted on a failed notify, so the next call retries from the same count');
+    const fallbackLine = router.drainDigestQueue();
+    assert.equal(fallbackLine.length, 1, 'the owner still sees the plain line on a failed escalation attempt, not silence');
+    assert.equal(fallbackLine[0].title, 'Flaky escalation');
+
+    const retried = await router.routeAlert({
+      conditionKey: 'test:digest-dispatch-fail', title: 'Flaky escalation', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(retried.action, 'auto', 'the next call retries escalation from the same unpersisted state and succeeds');
+    assert.equal(dispatchAttempts, 2);
+    assert.equal(router.loadLedger().conditions['test:digest-dispatch-fail'].linearIdentifier, 'BRO-999');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: resolveCondition() after an escalation does not clear the filed tracker — a reoccurrence does not file a second card (matches existing cardId/linearIdentifier survival for every other disposition)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    for (let i = 1; i <= 15; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-resolve-reoccur', title: 'Recurs sometimes', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    assert.equal(calls.createLinearIssue.length, 1);
+    const filedIdentifier = router.loadLedger().conditions['test:digest-resolve-reoccur'].linearIdentifier;
+    assert.equal(filedIdentifier, 'BRO-999');
+
+    assert.equal(router.resolveCondition('test:digest-resolve-reoccur'), true);
+    assert.equal(router.loadLedger().conditions['test:digest-resolve-reoccur'].status, 'resolved');
+
+    await router.routeAlert({
+      conditionKey: 'test:digest-resolve-reoccur', title: 'Recurs sometimes', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(calls.createLinearIssue.length, 1, 'a reoccurrence must not file a second tracker while the old identifier is still on the row');
+    assert.equal(router.loadLedger().conditions['test:digest-resolve-reoccur'].linearIdentifier, filedIdentifier);
+  } finally {
+    restore();
+  }
+});
+
+// Ship-check catch (Bug 1): decideDigestEscalation originally keyed the
+// resurface decision on `lastNotifiedAt`, which the bottom ledger write
+// stamps to `now` on EVERY non-silent call including a 'quiet' one. Real
+// digest callers pass short cooldownHours (dispatch-drift-watch.js: 6,
+// check-corpus-drift.js: 1, cmux-reachability-check.js: 24) and call
+// routeAlert() about that often, so the "hours since last notified" gap
+// never accumulated to DEFAULT_COOLDOWN_HOURS — an escalated condition went
+// quiet FOREVER under any realistic calling cadence, reproducing the exact
+// "vanishes from the digest permanently" failure mode this card exists to
+// prevent. This test simulates that realistic cadence (repeated calls with
+// cooldownHours:0, standing in for "called again after its short cooldown
+// elapsed") and proves the fix (a separate lastSurfacedAt clock) survives it.
+test('routeAlert: repeated quiet calls at a realistic short cooldown do NOT reset the resurface clock (regression for the lastNotifiedAt-vs-lastSurfacedAt ship-check catch)', async () => {
+  const { router, calls, restore, tmpDir } = loadRouterWithFakes();
+  try {
+    for (let i = 1; i <= 15; i++) {
+      // cooldownHours:0 stands in for "this call landed after its real
+      // (short, e.g. 6h) cooldown had already elapsed" — a test loop has no
+      // way to let wall-clock hours actually pass between calls, and a
+      // nonzero cooldownHours here would just hit the top-of-function
+      // ledger-cooldown short-circuit every call since they run microseconds
+      // apart, never even reaching the escalation logic under test.
+      await router.routeAlert({
+        conditionKey: 'test:digest-realistic-cadence', title: 'Noisy check', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    assert.equal(calls.createLinearIssue.length, 1, 'escalated once at call 15');
+    router.drainDigestQueue();
+    const surfacedAtEscalation = router.loadLedger().conditions['test:digest-realistic-cadence'].lastSurfacedAt;
+    assert.ok(surfacedAtEscalation);
+
+    // Simulate 20 more "next day" calls, each finding the top-of-function
+    // cooldown already expired (cooldownHours:0 stands in for that — the
+    // exact realistic cadence that broke the old lastNotifiedAt-keyed logic).
+    for (let i = 0; i < 20; i++) {
+      const r = await router.routeAlert({
+        conditionKey: 'test:digest-realistic-cadence', title: 'Noisy check', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+      assert.equal(r.action, 'digest');
+    }
+    assert.equal(calls.createLinearIssue.length, 1, 'still only ever filed once');
+    assert.equal(router.peekDigestQueue().length, 0, 'no full-noise line repeated across 20 quiet calls');
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:digest-realistic-cadence'].lastSurfacedAt, surfacedAtEscalation,
+      'lastSurfacedAt must NOT advance on quiet calls — this is the field the resurface decision depends on');
+    assert.ok(ledger.conditions['test:digest-realistic-cadence'].lastNotifiedAt !== surfacedAtEscalation,
+      'lastNotifiedAt DOES keep advancing (that is expected/fine) — proving the test would have caught the old bug, which kept both fields in lockstep');
+
+    // Now actually cross the resurface window, measured from the ORIGINAL
+    // escalation moment (lastSurfacedAt), not from the last quiet call.
+    const ledgerPath = path.join(tmpDir, 'alert-ledger.json');
+    const onDisk = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+    onDisk.conditions['test:digest-realistic-cadence'].lastSurfacedAt =
+      new Date(Date.now() - (router.DEFAULT_COOLDOWN_HOURS + 1) * 60 * 60 * 1000).toISOString();
+    fs.writeFileSync(ledgerPath, JSON.stringify(onDisk, null, 2) + '\n');
+
+    await router.routeAlert({
+      conditionKey: 'test:digest-realistic-cadence', title: 'Noisy check', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    const queued = router.drainDigestQueue();
+    assert.equal(queued.length, 1, 'resurface fires once the window elapses, proving the mechanism is reachable in the first place');
+  } finally {
+    restore();
+  }
+});
+
+// Ship-check catch (Bug 2): a promoted-from-digest call that hits the rail-2
+// Linear dedupe match used to return `{action:'silent'}` with NO digest line
+// at all — the condition just vanished, the same failure mode this card
+// exists to fix, just via a different code path than Bug 1.
+test('routeAlert: a promoted digest escalation that dedupe-matches an existing tracker still queues a one-time notice (not silent disappearance)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-2943' }),
+  });
+  try {
+    for (let i = 1; i <= 14; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-dedupe-notice', title: 'Shared circuit-breaker condition', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    assert.equal(router.peekDigestQueue().length, 1, 'sanity: queueDigestLine replaces, not stacks, per conditionKey');
+    router.drainDigestQueue();
+
+    const result = await router.routeAlert({
+      conditionKey: 'test:digest-dedupe-notice', title: 'Shared circuit-breaker condition', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(result.action, 'silent');
+    assert.equal(calls.createLinearIssue.length, 0);
+
+    const queued = router.drainDigestQueue();
+    assert.equal(queued.length, 1, 'the owner must be told this condition is now tracked, not have it silently vanish');
+    assert.match(queued[0].title, /already tracked at BRO-2943/);
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:digest-dedupe-notice'].linearIdentifier, 'BRO-2943');
+    assert.ok(ledger.conditions['test:digest-dedupe-notice'].lastSurfacedAt, 'the resurface clock must start here too, not stay null forever');
+  } finally {
+    restore();
+  }
+});

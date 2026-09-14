@@ -70,6 +70,48 @@ function countBbSessionsOnDay(json, dayIso) {
   return items.filter((s) => typeof s?.createdAt === 'string' && s.createdAt.startsWith(dayIso)).length;
 }
 
+/**
+ * Sum real session duration (minutes) for sessions CREATED on `dayIso`, from
+ * the same /v1/sessions payload countBbSessionsOnDay reads (each item already
+ * carries startedAt/endedAt — confirmed live 2026-09-14). A session missing
+ * either timestamp (still running, or errored before starting) is skipped —
+ * check-provider-spend.js only ever reconciles yesterday (a COMPLETE day, see
+ * its own utcYesterday() docstring), so an in-flight session on the target
+ * day is the rare exception, not the common case.
+ *
+ * KNOWN LIMITATION (ship-check finding, BRO-3240): a session that never
+ * closes at all (client crash, orphaned session, a Browserbase-side bug) is
+ * indistinguishable from one correctly excluded as still-running — it
+ * silently contributes 0 minutes forever, with `sessions` still counting it
+ * and no `unknown`/flagged state anywhere. Accepted deliberately: the
+ * alternative (tracking "how many of today's sessions never got an
+ * endedAt" as a distinct signal) reintroduces exactly the kind of
+ * cross-call state this fix's plan-review steered away from for a
+ * failure mode that, empirically, is rare and small (a few cents/day at
+ * most, given real usage here is ~15-20 min/day total).
+ *
+ * Deliberately NOT sourced from GET /v1/projects/{id}/usage's `browserMinutes`
+ * — that field is account-LIFETIME-cumulative (confirmed by health-check.js's
+ * own "Credits: Browserbase" check, which labels it "usage trend only (minutes
+ * are lifetime-cumulative...)" and never resets), so it cannot answer "how
+ * many minutes on THIS day" without an unverified assumption about when/if
+ * Browserbase's account-level counter resets. Real per-session timestamps
+ * from THIS day answer that directly, with no cycle-boundary guesswork.
+ * @returns {number|null} null when the payload shape is unrecognizable
+ */
+function sumBbMinutesOnDay(json, dayIso) {
+  const items = Array.isArray(json) ? json : json && Array.isArray(json.data) ? json.data : null;
+  if (!items) return null;
+  let ms = 0;
+  for (const s of items) {
+    if (typeof s?.createdAt !== 'string' || !s.createdAt.startsWith(dayIso)) continue;
+    if (typeof s.startedAt !== 'string' || typeof s.endedAt !== 'string') continue;
+    const dur = new Date(s.endedAt).getTime() - new Date(s.startedAt).getTime();
+    if (Number.isFinite(dur) && dur > 0) ms += dur;
+  }
+  return ms / 60000;
+}
+
 /** ScrapingBee /usage → {cycleUsed, cap, renewalDate}|null */
 function parseSbUsage(json) {
   if (!json || typeof json.used_api_credit !== 'number') return null;
@@ -106,13 +148,25 @@ async function fetchBdBalance(token) {
   return parseBdBalance(await _getJson('https://api.brightdata.com/customer/balance', { Authorization: `Bearer ${token}` }));
 }
 
-async function fetchBbSessionCountForDay(apiKey, projectId, dayIso) {
+/**
+ * ONE call to /v1/sessions, read for both the session count (already used
+ * for the cap-exhausted digest line + attribution-% denominator) and the
+ * real per-day minutes (BRO-3240 — pricing was per-session, ~10x off vs
+ * Browserbase's actual browser-hour billing). Was two separate concerns
+ * fetched from the same endpoint by two functions; merged into one fetch
+ * since both parsers read the identical payload.
+ * @returns {{sessions:number, minutes:number}|null}
+ */
+async function fetchBbUsageForDay(apiKey, projectId, dayIso) {
   if (!apiKey || !projectId) return null;
   const json = await _getJson(
     `https://api.browserbase.com/v1/sessions?projectId=${encodeURIComponent(projectId)}`,
     { 'X-BB-API-Key': apiKey },
   );
-  return json == null ? null : countBbSessionsOnDay(json, dayIso);
+  if (json == null) return null;
+  const sessions = countBbSessionsOnDay(json, dayIso);
+  const minutes = sumBbMinutesOnDay(json, dayIso);
+  return sessions == null || minutes == null ? null : { sessions, minutes };
 }
 
 async function fetchSbUsage(apiKey) {
@@ -129,11 +183,12 @@ module.exports = {
   parseBdZoneCost,
   parseBdBalance,
   countBbSessionsOnDay,
+  sumBbMinutesOnDay,
   parseSbUsage,
   parseSdAccount,
   fetchBdZoneCostDay,
   fetchBdBalance,
-  fetchBbSessionCountForDay,
+  fetchBbUsageForDay,
   fetchSbUsage,
   fetchSdAccount,
 };
