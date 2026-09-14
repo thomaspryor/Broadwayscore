@@ -249,7 +249,35 @@ test('extractPhaseTimeline: a kill time absurdly far AHEAD is clamped too, not r
   // number a reader would act on.
   const t = line('10:00:00.000000', '<= Recv header: HTTP/2 200');
   const timeline = extractPhaseTimeline({ traceText: t, killedAt: '12:00:00.000000' });
-  assert.equal(timeline.dominantGap.ms, 0);
+  assert.equal(timeline.dominantGap, null, 'an unmeasurable gap must not become the dominant one');
+  assert.equal(timeline.reason, 'timestamps-implausible');
+  assert.equal(timeline.gaps[0].implausible, true);
+});
+
+test('formatTimeline: an all-implausible trace says the time CANNOT be located, never "0.0s"', () => {
+  // The failure this guards: collapsing an unmeasurable interval to 0 renders
+  // as "0.0s ... SILENCE AFTER last trace line", which a reader takes as "the
+  // push did not stall" — a confidently-wrong answer of the same family this
+  // whole card exists to remove.
+  const t = line('10:00:00.000000', '<= Recv header: HTTP/2 200');
+  const timeline = extractPhaseTimeline({ traceText: t, killedAt: '12:00:00.000000' });
+  const out = formatTimeline(timeline);
+  assert.match(out, /cannot locate the time/);
+  assert.doesNotMatch(out, /0\.0s/);
+  assert.doesNotMatch(out, /SILENCE AFTER/);
+});
+
+test('extractPhaseTimeline: one implausible gap does not suppress a measurable one', () => {
+  // Mixed case: the terminal gap is fine, an inter-record gap is not. The
+  // measurable gap must still win rather than the whole trace being discarded.
+  const t =
+    line('10:00:00.000000', '== Info:   Trying 1.2.3.4...') +
+    line('05:00:00.000000', '== Info: Connected to github.com') +
+    line('05:00:01.000000', '<= Recv header: HTTP/2 200');
+  const timeline = extractPhaseTimeline({ traceText: t, killedAt: '05:00:31.000000' });
+  assert.equal(timeline.dominantGap.terminal, true);
+  assert.equal(timeline.dominantGap.ms, 30000);
+  assert.equal(timeline.dominantGap.implausible, false);
 });
 
 test('extractPhaseTimeline: an elapsedMs shorter than the trace span does not wrap either', () => {
