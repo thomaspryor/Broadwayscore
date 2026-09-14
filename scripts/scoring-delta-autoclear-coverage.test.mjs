@@ -161,3 +161,66 @@ describe('scoring-delta.js FLAG_FIELDS / decideInclusion coverage', () => {
     );
   });
 });
+
+// BRO-3338: the tests above exercise a HAND-PICKED subset of
+// wrong-production-autoclear.js's predicates (WrongShowUkUrl, WrongShow,
+// WrongProduction) — nothing previously enumerated rebuild-all-reviews.js's
+// REAL shouldAutoClear* call list, so decideInclusion silently fell behind
+// (4 of 10 replayed) with every test here still green, and a NEW 11th
+// predicate added to rebuild-all-reviews.js with no scoring-delta.js handling
+// would pass silently too. This closes that gap: it parses
+// rebuild-all-reviews.js for every shouldAutoClear*( call site rather than
+// trusting a hand-maintained list (the two-copies-of-one-policy trap this
+// repo already has a memory for, one level up — in the gate, not the
+// pipeline) and requires each name to appear CALL-SHAPED (name + '(', not a
+// bare substring that could match only a comment) inside decideInclusion's
+// own source, mirroring the FLAG_FIELDS coverage test's
+// decideInclusion.toString() pattern above rather than checking the whole
+// scoring-delta.js file (which would also match the file's own descriptive
+// comments naming predicates it does NOT replay).
+//
+// ALLOWED_UNREPLAYED: predicates intentionally left out of decideInclusion,
+// each with why. Empty as of BRO-3338 — all 10 real predicates are replayed
+// — but kept as an explicit escape hatch (with a required reason) rather
+// than silently widening the substring check, so the NEXT genuinely
+// provenance-bound predicate has one documented place to land instead of a
+// silent gap.
+const ALLOWED_UNREPLAYED = new Set([]);
+
+function extractRebuildAutoClearCallSites() {
+  const rebuildSrc = require('fs').readFileSync(
+    require.resolve('./rebuild-all-reviews.js'),
+    'utf8'
+  );
+  const names = new Set();
+  for (const m of rebuildSrc.matchAll(/\bshouldAutoClear[A-Za-z]*(?=\()/g)) {
+    names.add(m[0]);
+  }
+  return [...names];
+}
+
+describe('scoring-delta.js auto-clear predicate drift guard (BRO-3338)', () => {
+  test('every shouldAutoClear* predicate rebuild-all-reviews.js actually calls is replayed in decideInclusion, or explicitly allowlisted', () => {
+    const rebuildNames = extractRebuildAutoClearCallSites();
+    assert.ok(rebuildNames.length >= 10, `expected to find rebuild-all-reviews.js's real shouldAutoClear* call sites (got ${rebuildNames.length}: ${rebuildNames.join(', ')}) — regex may be broken`);
+
+    const body = decideInclusion.toString();
+    const missing = rebuildNames.filter((name) => !body.includes(`${name}(`) && !ALLOWED_UNREPLAYED.has(name));
+    assert.deepStrictEqual(
+      missing,
+      [],
+      `rebuild-all-reviews.js calls these shouldAutoClear* predicates but decideInclusion doesn't replay them and they're not in ALLOWED_UNREPLAYED (drift — add a branch or an allowlist entry with a reason): ${missing.join(', ')}`
+    );
+  });
+
+  test('a fake 11th shouldAutoClear* predicate in rebuild-all-reviews.js source is detected as unreplayed', () => {
+    // Same detection the test above uses, run against a SYNTHETIC rebuild
+    // source string (never touches the real file) to prove the drift guard
+    // actually fires on an addition, not just passes today by coincidence.
+    const fakeRebuildSrc = "if (shouldAutoClearTotallyMadeUpPredicate(d, showRecord)) { d.wrongProduction = false; }";
+    const names = [...new Set([...fakeRebuildSrc.matchAll(/\bshouldAutoClear[A-Za-z]*(?=\()/g)].map((m) => m[0]))];
+    const body = decideInclusion.toString();
+    const missing = names.filter((name) => !body.includes(`${name}(`) && !ALLOWED_UNREPLAYED.has(name));
+    assert.deepStrictEqual(missing, ['shouldAutoClearTotallyMadeUpPredicate']);
+  });
+});
