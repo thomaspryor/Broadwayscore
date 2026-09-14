@@ -415010,17 +415010,23 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-14T20:29:34.550Z",
-    "completedAt": "2026-09-14T20:29:39.733Z",
-    "totalReviews": 22,
+    "startedAt": "2026-09-14T20:33:06.200Z",
+    "completedAt": "2026-09-14T20:33:11.870Z",
+    "totalReviews": 9,
     "processed": 1,
-    "skipped": 21,
+    "skipped": 8,
     "errors": 0,
     "tokensUsed": {
-      "input": 4379,
-      "output": 326,
-      "total": 12438
+      "input": 5846,
+      "output": 317,
+      "total": 14574
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+        "outletId": "stratfordeast",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
