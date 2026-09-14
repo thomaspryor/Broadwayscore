@@ -1,30 +1,15 @@
 {
-  "generatedAt": "2026-09-14T19:55:39.239Z",
+  "generatedAt": "2026-09-14T23:04:28.108Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 126,
-  "clean": 117,
-  "defective": 9,
+  "clean": 125,
+  "defective": 1,
   "byType": {
-    "score-drift": 9
+    "score-drift": 1
   },
   "shows": [
-    {
-      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "title": "BLOODSPORT: After Helen of Troy",
-      "openingDate": "2026-09-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.21 vs local 72.93 (Δ0.28)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 24,
-      "deployedCount": 24
-    },
     {
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
@@ -33,117 +18,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 76.66 vs local 76.84 (Δ0.18)"
+          "detail": "deployed cs 75.32 vs local 75.42 (Δ0.1)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.91 vs local 79.19 (Δ0.28)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "openingDate": "2026-08-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.9 vs local 72.77 (Δ0.13)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 35,
-      "deployedCount": 35
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing",
-      "openingDate": "2026-06-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.4 vs local 78.33 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
-    },
-    {
-      "showId": "titanique-west-end-2024",
-      "title": "Titanique",
-      "openingDate": "2025-01-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.8 vs local 75.94 (Δ0.86)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.83 vs local 73.95 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "title": "Operation Mincemeat",
-      "openingDate": "2023-05-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 88.02 vs local 88.08 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
-    },
-    {
-      "showId": "six-the-musical-west-end-2021",
-      "title": "SIX the Musical",
-      "openingDate": "2019-01-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.01 vs local 80.89 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 14
+      "localCount": 17,
+      "deployedCount": 17
     }
   ]
 }

@@ -628,19 +628,19 @@
   {
     "conditionKey": "deployed-coverage:stale",
     "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "9/126 show(s) differ between internal state and what prod serves.\nscore-drift: 9\nBLOODSPORT: After Helen of Troy: score-drift\nMan to Man: score-drift\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift",
+    "description": "1/126 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nMan to Man: score-drift",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-14T19:55:39.251Z"
+    "queuedAt": "2026-09-14T23:04:28.124Z"
   },
   {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
-    "description": "44 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "description": "33 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -648,58 +648,58 @@
     "model": null,
     "fields": [
       {
-        "name": "Just in Time — timeout (25h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"just-in-time-2025\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Children — independent (25h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-children-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lost Boys — nydailynews (754h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lost-boys-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Outsiders — deadline (754h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-outsiders-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Outsiders — nydailynews (754h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-outsiders-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Outsiders — thewrap (754h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-outsiders-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Pass — deadline (754h)",
+        "name": "The Pass — observer (757h)",
         "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
       },
       {
-        "name": "The Pass — nypost (754h)",
+        "name": "The Pass — thewrap (757h)",
         "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
       },
       {
-        "name": "The Pass — nysr (754h)",
+        "name": "The Pass — timeout (757h)",
         "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
       },
       {
-        "name": "The Pass — nytimes (754h)",
+        "name": "The Pass — variety (757h)",
         "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Pass — vulture (757h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Pass — washpost (757h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Play That Goes Wrong — guardian (757h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-play-that-goes-wrong-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Play That Goes Wrong — times-uk (757h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-play-that-goes-wrong-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Play That Goes Wrong — whatsonstage (757h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-play-that-goes-wrong-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "The Producers — financialtimes (757h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"the-producers-west-end-2025\" -f max_tier=3 -f aggregators_only=false"
       }
     ],
-    "queuedAt": "2026-09-14T19:55:39.339Z"
+    "queuedAt": "2026-09-14T23:04:28.230Z"
   },
   {
     "conditionKey": "t1-coverage:scoreboard",
     "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (378/497)\noff-broadway: 42.8% (131/306)\nwest-end: 75.5% (418/554)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (754h)\nA Midsummer Night's Dream — observer (754h)\nA Midsummer Night's Dream — standard (754h)\nABBA Voyage — independent (754h)\nAladdin — ew (754h)\n… 184 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nThe Book of Mormon — usatoday (754h)\nBuena Vista Social Club — broadwaynews (754h)\nHeathers The Musical — dailybeast (754h)\nJust in Time — broadwaynews (754h)\nOthello — broadwaynews (754h)\n… 5 more circuit-open cell(s)",
+    "description": "broadway: 76.1% (378/497)\noff-broadway: 42.8% (131/306)\nwest-end: 75.5% (420/556)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (757h)\nA Midsummer Night's Dream — observer (757h)\nA Midsummer Night's Dream — standard (757h)\nABBA Voyage — independent (757h)\nAladdin — ew (757h)\n… 169 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (757h)\nThe Book of Mormon — usatoday (757h)\nBuena Vista Social Club — broadwaynews (757h)\nBuena Vista Social Club — nydailynews (757h)\nHadestown — nydailynews (757h)\n… 20 more circuit-open cell(s)",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-14T19:55:39.414Z"
+    "queuedAt": "2026-09-14T23:04:28.324Z"
   }
 ]
