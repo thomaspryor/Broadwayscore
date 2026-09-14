@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-14T03:17:23.810Z",
-  "processed": 22,
-  "failed": 49,
-  "successRate": "31.0%",
+  "updatedAt": "2026-09-14T03:33:56.660Z",
+  "processed": 31,
+  "failed": 71,
+  "successRate": "30.4%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 20,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 5,
-    "brightdata": 1,
+    "scrapingbee": 6,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-09-14T01:57:52.898Z",
@@ -73,6 +73,17 @@
       "event": "bb-session",
       "session": "9880c911",
       "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
+    },
+    {
+      "t": "2026-09-14T03:29:25.433Z",
+      "event": "bb-session",
+      "session": "10d52073",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-14T03:29:26.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
