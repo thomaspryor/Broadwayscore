@@ -58,3 +58,55 @@ test('BLOCKLIST covers known neighborhood/placeholder noise but not real venues'
     assert.ok(!BLOCKLIST.has(real), `"${real}" must NOT be blocklisted`);
   }
 });
+
+// ---------------------------------------------------------------------------
+// Touring-house contamination (BRO-3211).
+//
+// This list is DERIVED from category='off-broadway' rows in shows.json, and it
+// FEEDS isKnownOffBroadwayVenue(), which rescues untagged TodayTix rows INTO
+// category='off-broadway'. That is a closed loop: one mis-categorised road date
+// teaches the allowlist a touring venue, and every later engagement there is
+// minted as an Off-Broadway production, which re-feeds the list.
+//
+// State Theatre New Jersey (New Brunswick, NJ) rode that loop to three bogus OB
+// rows — The Music Man, Spamalot and Beetlejuice, all 2-3 day tour stops — and
+// was only caught by eye. These two tests close it: the first pins the known
+// offender, the second catches the NEXT one by shape rather than by name.
+// ---------------------------------------------------------------------------
+
+test('the State Theatre New Jersey touring house stays blocklisted (BRO-3211)', () => {
+  assert.ok(
+    BLOCKLIST.has('state theatre new jersey'),
+    'state theatre new jersey is a New Brunswick, NJ touring house that TodayTix lists ' +
+    'under its NYC feed; without the blocklist entry it re-enters the allowlist as soon ' +
+    'as one mis-categorised road date lands, and mints more',
+  );
+  assert.ok(!committed.includes('state theatre new jersey'));
+});
+
+test('no venue outside New York is in the Off-Broadway allowlist', () => {
+  // Off-Broadway is a New York City designation. Any entry naming another
+  // state or a non-NYC metro is a touring/regional house that leaked in via a
+  // mis-categorised show — the failure this catches is the NEXT State Theatre
+  // New Jersey, before it mints shows.
+  const NON_NYC = new RegExp([
+    'new jersey', 'connecticut', 'massachusetts', 'pennsylvania', 'maryland',
+    'delaware', 'virginia', 'california', 'illinois', 'texas', 'florida',
+    'georgia', 'ohio', 'michigan', 'minnesota', 'colorado', 'arizona',
+    'washington, d\\.?c\\.?', 'rhode island', 'new hampshire', 'vermont',
+    'philadelphia', 'boston', 'chicago', 'los angeles', 'san diego',
+    'san francisco', 'seattle', 'denver', 'atlanta', 'houston', 'dallas',
+    'baltimore', 'pittsburgh', 'cleveland', 'detroit', 'nashville',
+    'new brunswick', 'red bank', 'princeton', 'stamford', 'hartford',
+    'la jolla', 'cambridge, ma', 'toronto', 'london',
+  ].join('|'), 'i');
+
+  const leaked = committed.filter(v => NON_NYC.test(v));
+  assert.deepEqual(
+    leaked, [],
+    `non-NYC venue(s) in the Off-Broadway allowlist: ${leaked.join(', ')}. ` +
+    'Off-Broadway is a NYC designation — a touring or regional house here means a show ' +
+    'was mis-categorised as off-broadway. Fix the show row AND add the venue to ' +
+    'BLOCKLIST in scripts/build-ob-venues.js, or the derive->classify loop re-adds it.',
+  );
+});
