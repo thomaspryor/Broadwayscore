@@ -314,3 +314,35 @@ test('the 400-char card bound holds on a DEAD message carrying BOTH diagnostic n
   );
   assert.match(r.message, /ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN/, 'the instructions are the part that must not be truncated away');
 });
+
+test('the 400-char card bound holds on BOTH DEAD branches at extreme counts', () => {
+  // The first version of this test pinned only the passes===0 branch and only
+  // at small counts. Review found the OTHER DEAD branch (silent-dispatch) runs
+  // longer — 392 chars, eight from the limit — which is the same "passes for
+  // the inputs it happens to pick" failure the test was added to close.
+  // Both branches, both notes rendering, counts inflated to widen every
+  // interpolated number.
+  const now = Date.parse('2026-09-14T12:00:00Z');
+  const old = new Date(now - 5 * 24 * 3600 * 1000).toISOString();
+  const mk = (nDispatch, nFail) => [
+    ...Array.from({ length: nDispatch }, (_, i) => ({ event: 'auto-dispatch', ts: old, taskId: 't' + i })),
+    ...Array.from({ length: nFail }, (_, i) => ({ event: 'card-fail', ts: old, cardId: 't' + i, judgedDispatchTs: old })),
+    { event: 'auto-dispatch', ts: new Date(now - 60000).toISOString(), taskId: 'young' },
+    { event: 'card-fail', ts: 'not-a-date', cardId: 'z' },
+  ];
+
+  for (const [label, rows] of [['silent-dispatch', mk(9999, 0)], ['passes===0', mk(3, 9999)]]) {
+    const r = assessAutofixEffectiveness(rows, { now });
+    assert.equal(r.status, 'error', `${label}: fixture precondition — must be a DEAD branch`);
+    assert.ok(r.tooYoung > 0 && r.undated > 0, `${label}: fixture precondition — both notes must render`);
+    assert.ok(
+      r.message.length <= 400,
+      `${label}: message is ${r.message.length} chars, over digest-autofix.js's slice(0, 400): ${r.message}`
+    );
+    assert.match(
+      r.message,
+      /ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN/,
+      `${label}: the remediation instructions are the part that must survive truncation`
+    );
+  }
+});

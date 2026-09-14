@@ -173,17 +173,26 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
   const work = join(tmp, 'work');
   const trace = join(tmp, 'push.trace');
 
-  execFileSync('git', ['init', '-q', '--bare', bare]);
-  execFileSync('git', ['init', '-q', work]);
-  const G = (...a) =>
-    execFileSync('git', ['-C', work, ...a], { stdio: 'pipe' });
-  fs.writeFileSync(join(work, 'a.txt'), 'hello\n');
-  G('add', 'a.txt');
-  G('-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'seed');
-  execFileSync('git', ['-C', work, 'push', '-q', bare, 'HEAD:refs/heads/main']);
-  fs.writeFileSync(join(work, 'b.txt'), 'world\n');
-  G('add', 'b.txt');
-  G('-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'second');
+  // Setup runs under its own try: the temp dir already exists by this point,
+  // and any git failure here (a restrictive core.hooksPath, a missing identity
+  // fallback) would otherwise throw past the main try/finally below and leak
+  // the directory (post-ship-check review finding).
+  try {
+    execFileSync('git', ['init', '-q', '--bare', bare]);
+    execFileSync('git', ['init', '-q', work]);
+    const G = (...a) =>
+      execFileSync('git', ['-C', work, ...a], { stdio: 'pipe' });
+    fs.writeFileSync(join(work, 'a.txt'), 'hello\n');
+    G('add', 'a.txt');
+    G('-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'seed');
+    execFileSync('git', ['-C', work, 'push', '-q', bare, 'HEAD:refs/heads/main']);
+    fs.writeFileSync(join(work, 'b.txt'), 'world\n');
+    G('add', 'b.txt');
+    G('-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'second');
+  } catch (err) {
+    fs.rmSync(tmp, { recursive: true, force: true });
+    return t.skip(`git could not build the fixture repo here: ${err.message}`);
+  }
 
   const pkt = (line) =>
     Buffer.from((line.length + 4).toString(16).padStart(4, '0') + line);

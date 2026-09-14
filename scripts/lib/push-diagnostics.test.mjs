@@ -242,6 +242,16 @@ test('extractPhaseTimeline: a few ms of BACKWARDS clock jitter is 0, not a fabri
   );
 });
 
+test('extractPhaseTimeline: a kill time absurdly far AHEAD is clamped too, not reported', () => {
+  // The mirror of the backwards-jitter case. A forward clock step or a corrupt
+  // killedAt must not yield "7200.0s of silence" from a 90s-bounded operation;
+  // the clamp is symmetric precisely so neither direction produces a confident
+  // number a reader would act on.
+  const t = line('10:00:00.000000', '<= Recv header: HTTP/2 200');
+  const timeline = extractPhaseTimeline({ traceText: t, killedAt: '12:00:00.000000' });
+  assert.equal(timeline.dominantGap.ms, 0);
+});
+
 test('extractPhaseTimeline: an elapsedMs shorter than the trace span does not wrap either', () => {
   const t =
     line('10:00:00.000000', '== Info:   Trying 1.2.3.4...') +

@@ -424,3 +424,41 @@ test('throughputDeathMessage: stays quiet on healthy, warn, and junk input', () 
     assert.equal(throughputDeathMessage(junk, { pendingIssues: 42 }), null, `junk input must not throw or alarm: ${JSON.stringify(junk)}`);
   }
 });
+
+test('assessThroughputRow: an unparseable ts never throws — one bad row must not kill the digest', () => {
+  // REGRESSION (BRO-3321 follow-up). canaryDateStr does new Date(ts).toISOString(),
+  // which throws RangeError on a truthy-but-unparseable ts. dailyCounts only
+  // guarded `if (!ts)`. Once this row was wired into send-morning-digest.js's
+  // localLoopDeadMessage, that throw escaped buildHtml and the owner's morning
+  // digest would simply never send — one malformed ledger row becoming a silent
+  // daily outage. The ledger explicitly models this shape existing
+  // (autofix-effectiveness.js's undatedNote: "unreadable timestamps — writer bug").
+  const { assessThroughputRow } = require('./autofix-canary.js');
+  for (const bad of ['not-a-date', '   ', '2026-13-45T99:99:99Z', 'null', '0000']) {
+    assert.doesNotThrow(
+      () => assessThroughputRow({
+        digestLedgerEntries: [{ event: 'card-pass', ts: bad }],
+        backlogLedgerEntries: [{ event: 'drain-dispatch', ts: bad }],
+        now: new Date(NOW),
+      }),
+      `ts ${JSON.stringify(bad)} must be skipped, not thrown on`
+    );
+  }
+});
+
+test('assessThroughputRow: a bad row is skipped, and the GOOD rows around it still count', () => {
+  // Skipping must not mean discarding the whole report.
+  const { assessThroughputRow } = require('./autofix-canary.js');
+  const good = new Date(NOW - 86400000).toISOString();
+  const r = assessThroughputRow({
+    digestLedgerEntries: [
+      { event: 'auto-dispatch', ts: 'not-a-date' },
+      { event: 'auto-dispatch', ts: good },
+      { event: 'card-pass', ts: good, judgedDispatchTs: good },
+      { event: 'auto-dispatch', ts: new Date(NOW).toISOString() },
+    ],
+    backlogLedgerEntries: [],
+    now: new Date(NOW),
+  });
+  assert.match(r.message, /2 dispatched, 1 passed/, `the readable rows must still be counted; got ${JSON.stringify(r)}`);
+});

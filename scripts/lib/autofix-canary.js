@@ -226,6 +226,19 @@ function dailyCounts(entries, dispatchEvent, windowDays, now) {
     // using their own ts, because for a dispatch the write IS the event.
     const ts = e.event === dispatchEvent ? e.ts : outcomeWindowTs(e);
     if (!ts) continue;
+    // A truthy-but-unparseable ts used to reach canaryDateStr, which does
+    // `new Date(ts).toISOString()` and throws RangeError: Invalid time value.
+    // Nothing up the stack caught it, and since BRO-3321 wired this row into
+    // send-morning-digest.js's localLoopDeadMessage, that throw would escape
+    // buildHtml and the owner's morning digest would simply never send —
+    // turning one malformed ledger row into a silent daily outage.
+    //
+    // The ledger explicitly models this row shape existing: autofix-
+    // effectiveness.js's undatedNote calls it out as "unreadable timestamps —
+    // writer bug, investigate separately" and counts such rows rather than
+    // dropping or dying on them. Same posture here: skip the row, keep the
+    // report, let the writer bug be found by the check that names it.
+    if (!Number.isFinite(Date.parse(ts))) continue;
     const day = canaryDateStr(ts);
     if (!(day in dispatched)) continue;
     if (e.event === dispatchEvent) dispatched[day]++;
