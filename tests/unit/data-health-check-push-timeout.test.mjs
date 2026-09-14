@@ -32,6 +32,15 @@ import { loadWorkflow, findStep } from '../helpers/workflow-push-timeout.mjs';
  * bundled with the disqualified triage/ directory until this split, so they
  * never actually reached the REST path they'd been registered for). The new
  * alert-router-state step joins the hybrid category below.
+ *
+ * BRO-3317 (2026-09-14) added "Commit provider spend ledger (apiFallbackSafe)"
+ * right after "Provider spend reconciliation" — provider-spend-daily.jsonl/
+ * provider-spend-snapshot.json/scraper-spend-daily-agg.jsonl were being
+ * written there but not committed until much later in "Commit health check
+ * audit snapshots," and an intervening commit step's push-with-retry.sh
+ * hard-reset fallback could wipe the uncommitted write before it got there.
+ * Same env shape as its apiFallbackSafe siblings, so it joins the hybrid
+ * category below too.
  */
 
 const WORKFLOW = 'data-health-check.yml';
@@ -41,6 +50,7 @@ const GIT_NET_TIMEOUT_ONLY_STEPS = [
   { name: 'Commit triage data', deadline: '900' },
 ];
 const HYBRID_TIMEOUT_AND_REST_STEPS = [
+  { name: 'Commit provider spend ledger (apiFallbackSafe)', deadline: '900' },
   { name: 'Commit lifetime sweep snapshots (apiFallbackSafe)', deadline: '900' },
   { name: 'Commit health check audit snapshots (apiFallbackSafe)', deadline: '900' },
   { name: 'Commit alert router state (apiFallbackMerge)', deadline: '900' },

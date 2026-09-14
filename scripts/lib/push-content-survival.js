@@ -418,11 +418,24 @@ module.exports = {
 // ── CLI ───────────────────────────────────────────────────────────────────
 // Usage: node push-content-survival.js --before-sha=<sha> --base-sha=<sha>
 //          --check-ref=<ref> [--path-prefix=<prefix>] [--pushed-sha=<sha>]
+//          [--diff-filter=<filter>]
 //
 // --pushed-sha (optional): the commit the caller just pushed (post-conflict-
 // resolution HEAD, or the Git Data API fallback's new SHA). Enables the
 // 'superseded' classification — see classifyFileSurvivalDeep. Absent: exact
 // pre-existing behavior.
+//
+// --diff-filter (optional, default 'MT'): which git diff-filter status
+// letters count as "modified" for this run. Default preserves exact
+// pre-existing behavior for push-time callers (push-with-retry.sh), where
+// Added files are intentionally OUT of scope — they're covered by a separate
+// check-post-rebase-survival.js in that same job. BRO-2304's delayed-recheck
+// caller (scripts/check-push-ledger.js) has no such sibling check running at
+// its own (much later) checkpoint, so it passes 'ACMT' to also catch a
+// commit that only ADDED a file — without this, a pure-addition commit hits
+// "no modified files to check" below and reports OK regardless of whether
+// the added file is still there, which is exactly wrong for a delayed
+// re-verification with no other net to catch that case.
 //
 // Exit codes: 0 = OK (nothing reverted), 1 = at least one file REVERTED,
 // 2 = invalid args / git failure (fail-open — caller should treat as "skip",
@@ -447,6 +460,7 @@ if (require.main === module) {
   const checkRef = arg('check-ref');
   const pathPrefix = arg('path-prefix') || '';
   const pushedSha = arg('pushed-sha');
+  const diffFilter = arg('diff-filter') || 'MT';
 
   if (!beforeSha || !baseSha || !checkRef) {
     console.log('SKIP (missing --before-sha/--base-sha/--check-ref)');
@@ -462,7 +476,7 @@ if (require.main === module) {
     // auto-resolution. Without T here, this second-layer check would report
     // "no modified files to check" on exactly that class, leaving it covered
     // ONLY by the resolve_conflicts() fix and not by this independent guard.
-    const diffArgs = ['diff', '--name-only', '--diff-filter=MT', `${baseSha}..${beforeSha}`];
+    const diffArgs = ['diff', '--name-only', `--diff-filter=${diffFilter}`, `${baseSha}..${beforeSha}`];
     if (pathPrefix) diffArgs.push('--', pathPrefix);
     modifiedFiles = execFileSync('git', diffArgs, { encoding: 'utf8', timeout: 30_000 })
       .split('\n')

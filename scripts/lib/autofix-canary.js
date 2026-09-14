@@ -49,6 +49,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const dispatchReconcile = require('./dispatch-reconcile.js');
+const { outcomeWindowTs } = dispatchReconcile;
 // syncTasks no longer imported: Linear filings need no task-mirror sync
 // (BRO-286) — the identifier fileCard returns is directly dispatchable.
 const { fileCard, dispatchDetached } = require('./digest-autofix.js');
@@ -57,10 +58,12 @@ const { repoDepthArgs } = require('./shallow-fetch-args.js');
 const REPO = path.join(__dirname, '..', '..');
 const CANARY_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autofix-canary-ledger.jsonl');
 const CANARY_TITLE_PREFIX = 'CANARY: touch';
-// Same bound digest-autofix.js uses for its own orphan detection (see
-// ORPHAN_TIMEOUT_H there) — a dispatch whose job-spawned event never arrives
-// within this window is treated as refused, not "still running".
-const ORPHAN_TIMEOUT_H = 3;
+// A dispatch whose job-spawned event never arrives within this window is
+// treated as refused, not "still running". Imported rather than redeclared
+// (BRO-3321): this was the FOURTH independent `= 3` in the codebase, alongside
+// the three reconcilers, all of which hand it straight back to
+// dispatch-reconcile.classifyDispatches as `orphanTimeoutH`.
+const { ORPHAN_TIMEOUT_H } = dispatchReconcile;
 const ZERO_DISPATCH_ERROR_DAYS = 2;
 const ZERO_PASS_ERROR_DAYS = 3;
 const THROUGHPUT_WINDOW_DAYS = 7;
@@ -215,8 +218,15 @@ function dailyCounts(entries, dispatchEvent, windowDays, now) {
   const dispatched = Object.fromEntries(days.map((d) => [d, 0]));
   const passed = Object.fromEntries(days.map((d) => [d, 0]));
   for (const e of Array.isArray(entries) ? entries : []) {
-    if (!e || !e.ts) continue;
-    const day = canaryDateStr(e.ts);
+    if (!e) continue;
+    // BRO-3321: a card-pass belongs to the day its dispatch RAN, not the day
+    // reconciliation got around to writing it down — otherwise a late
+    // reconciliation credits the pass to the wrong day (and a month-late one,
+    // as happened on 2026-09-14, to a day a month away). Dispatch rows keep
+    // using their own ts, because for a dispatch the write IS the event.
+    const ts = e.event === dispatchEvent ? e.ts : outcomeWindowTs(e);
+    if (!ts) continue;
+    const day = canaryDateStr(ts);
     if (!(day in dispatched)) continue;
     if (e.event === dispatchEvent) dispatched[day]++;
     else if (e.event === 'card-pass') passed[day]++;
@@ -253,8 +263,25 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
 
   let zeroDispatchStreak = 0;
   for (let i = dispatchedTotal.length - 1; i >= 0 && dispatchedTotal[i] === 0; i--) zeroDispatchStreak++;
+  // Skip the trailing day. Now that a pass is credited to its DISPATCH day
+  // (BRO-3321), today's bucket is zero by construction on every run —
+  // reconciliation for today's dispatches has not happened yet, and won't
+  // until the next digest. Counting it would add a permanent +1 to this
+  // streak, quietly turning ZERO_PASS_ERROR_DAYS = 3 into an effective 2.
+  // Dropping the day costs no detection latency: the alarm still fires at the
+  // same wall-clock moment, because the day that made the streak real is
+  // yesterday either way. The constant keeps meaning what it says.
   let zeroPassStreak = 0;
-  for (let i = passedTotal.length - 1; i >= 0 && passedTotal[i] === 0; i--) zeroPassStreak++;
+  if (passedTotal[passedTotal.length - 1] === 0) {
+    // Today contributed nothing, so start from yesterday — today's zero is
+    // UNOBSERVED, not measured. Counting it would add a permanent +1 to this
+    // streak and quietly turn ZERO_PASS_ERROR_DAYS = 3 into an effective 2.
+    for (let i = passedTotal.length - 2; i >= 0 && passedTotal[i] === 0; i--) zeroPassStreak++;
+  }
+  // else: a pass landed today, so there is no streak at all — the loop is
+  // demonstrably landing work and nothing about the preceding days changes
+  // that. (Dropping the trailing day unconditionally would have thrown this
+  // proof away and alarmed on a loop that had just succeeded.)
 
   const partialNote = digestNull ? ' (digest-autofix ledger unreadable here — backlog-drain only)'
     : backlogNull ? ' (backlog-drain ledger unreadable here — digest-autofix only)' : '';
