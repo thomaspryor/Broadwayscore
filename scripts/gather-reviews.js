@@ -2324,11 +2324,25 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         // criticName="Jon Sobel" — same review, double-counted in the score).
         // Prefer the headline's "Outlet - Title" outlet when outletRaw isn't a
         // registered outlet, and demote the bare author name to criticName.
+        //
+        // The demotion is shape-gated (/second-opinion, same day): `!criticName
+        // && !isRegisteredOutlet(outletRaw)` is also true for the comma and
+        // colon branches above when NEITHER side is a registered outlet — they
+        // fall through to `outletRaw = authorName` with the delimiter intact.
+        // Demoting those wholesale wrote junk critic names
+        // ("Mandell, Some Unregistered Blog") that dedup against nothing,
+        // recreating the very duplicate-pair shape this block exists to kill.
+        // Only a person-name-shaped string becomes a criticName; anything else
+        // still takes the headline outlet but stays criticName=null, which
+        // routes it into the per-outlet unknown-slot path Method 2 upgrades
+        // from articleBody.
         if (outletRaw && !criticName && !isRegisteredOutlet(outletRaw) &&
             posting.headline && posting.headline.includes(' - ')) {
           const headlineOutlet = posting.headline.split(' - ')[0].trim();
           if (headlineOutlet.split(/\s+/).length <= 5 && isRegisteredOutlet(headlineOutlet)) {
-            criticName = outletRaw;
+            const looksLikePersonName = !/[,:;|/]/.test(outletRaw) &&
+              outletRaw.split(/\s+/).length <= 4;
+            criticName = looksLikePersonName ? outletRaw : null;
             outletRaw = headlineOutlet;
           }
         }

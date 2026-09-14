@@ -16,9 +16,34 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { validateBWWRoundupGeography } = require('../../scripts/gather-reviews.js');
 
+// These tests read the real registry through gather-reviews.js's own
+// loadOutlets(), so their fixtures are only meaningful while the outlets they
+// name still carry the region the test is about. BRO-3251 is an open audit to
+// retag region:'us' outlets — if frontmezzjunkies becomes 'nyc', the two
+// region:'us' tests below would pass VACUOUSLY ('nyc' is Broadway-local and
+// non-local for WE, so both assertions still hold while testing nothing).
+// Silent coverage loss is worse than a false alarm, so assert the precondition
+// and fail loudly instead.
+const outletRegistry = require('../../data/outlet-registry.json');
+const REGISTRY = outletRegistry.outlets || outletRegistry;
+const US_REGION_FIXTURE = 'frontmezzjunkies';
+
+test("precondition: the region:'us' fixture outlet is still tagged region:'us'", () => {
+  assert.equal(
+    REGISTRY[US_REGION_FIXTURE]?.region,
+    'us',
+    `${US_REGION_FIXTURE} was retagged (BRO-3251?) — the two region:'us' tests below now pass vacuously. Point US_REGION_FIXTURE at another region:'us' outlet, or delete these tests if no outlet carries 'us' any more.`,
+  );
+});
+
 test('a review from a London-only outlet (matttrueman, market:west-end, no explicit region) is filtered from a Broadway roundup', () => {
   // 3 reviews so the single non-local outlet (1/3 = 0.33) stays under the
-  // >=0.5 "reject entire roundup" threshold and hits the per-review filter path.
+  // >=0.5 "reject entire roundup" threshold and hits the per-review filter
+  // path. Keep at least 2 local reviews per non-local one in these fixtures —
+  // adding a second non-local outlet here tips the ratio and silently switches
+  // the test onto the whole-roundup-rejection path instead.
+  // (nytimes/variety carry no `region` field at all; they count as local by
+  // absence, which is load-bearing for the ratio above.)
   const reviews = [
     { outletId: 'nytimes', excerpt: 'a Broadway review' },
     { outletId: 'variety', excerpt: 'another Broadway review' },
