@@ -55,7 +55,7 @@ const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
-const { shouldSkipAlreadyAttempted } = require('./lib/collection-attempt-guard.js');
+const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions } = require('./lib/review-write-guard.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
@@ -5369,6 +5369,15 @@ function loadState() {
           }
         }
         if (!state.log) state.log = [];
+        // BRO-3024: a resumed file may already carry duplicates written by a
+        // CONCURRENT run (per-show concurrency groups share this one file) or
+        // by an earlier RETRY_FAILED=true pass. Normalise on load so this
+        // run's in-process shouldSkipAlreadyAttempted() checks a unique list
+        // and the next saveState() cannot re-serialise inherited duplicates.
+        const inherited = dedupeAttemptState(state);
+        if (inherited.processed || inherited.failed) {
+          console.log(`  Dropped inherited duplicate attempt entries: ${inherited.processed} processed, ${inherited.failed} failed`);
+        }
         return true;
       }
     } catch (e) {
@@ -5379,6 +5388,13 @@ function loadState() {
 }
 
 function saveState() {
+  // BRO-3024: dedupe at the WRITE, not only at the read. The in-process
+  // shouldSkipAlreadyAttempted() guard is bypassed by design under
+  // RETRY_FAILED=true and cannot see a concurrent run's appends at all, so
+  // this is the only point that holds under both mechanisms — whichever run
+  // serialises last writes a unique-only array. Also makes the "(N failed)"
+  // figure in each "chore: Checkpoint" commit message truthful.
+  dedupeAttemptState(state);
   fs.mkdirSync(CONFIG.stateDir, { recursive: true });
   fs.writeFileSync(
     path.join(CONFIG.stateDir, 'progress.json'),
