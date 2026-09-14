@@ -1326,10 +1326,19 @@ describe('no auto-clear predicate may skip the ensemble guard', () => {
     for (const b of bodies) {
       const name = b.slice(0, b.indexOf('('));
       if (!/^shouldAutoClear/.test(name)) continue;
-      // Stale-date-guard clears are re-evaluations of OUR OWN date guard against
-      // a corrected date; they carry no cross-production claim, so they are
-      // deliberately exempt. Named explicitly so the exemption is a decision.
-      if (name === 'shouldAutoClearStaleDateGuard' || name === 'shouldAutoClearDatelessRevival') continue;
+      // shouldAutoClearStaleDateGuard clears are re-evaluations of OUR OWN
+      // date guard against a corrected date. BRO-3328 found that reasoning
+      // does NOT actually hold — a live corpus file
+      // (much-ado-about-nothing-2026/london-theatre--marianka-swain.json)
+      // proved a "date now in window" re-evaluation can still silently
+      // override a genuine cross-production ensemble verdict, which is why
+      // shouldAutoClearDatelessRevival (the sibling this exemption used to
+      // also cover) now DOES consult hasEnsembleConsensus and was removed
+      // from this list. shouldAutoClearStaleDateGuard remains exempt only
+      // because the fix hasn't landed there yet — tracked as BRO-3343, not a
+      // reasoned permanent exception. Named explicitly so the exemption is
+      // visibly temporary, not a design decision.
+      if (name === 'shouldAutoClearStaleDateGuard') continue;
       if (!b.includes('hasEnsembleConsensus')) missing.push(name);
     }
     assert.deepEqual(
