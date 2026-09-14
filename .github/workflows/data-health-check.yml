@@ -296,11 +296,15 @@ jobs:
       # run page (90-day retention) even if the commit step that follows
       # crashes outright or its push loses a rebase race with nothing else in
       # this run to carry it. Concretely this is the ONLY safety net when the
-      # isolated push fails AND none of the 15 other data/audit/* files in the
-      # bulk commit below happen to have changed that run — the bulk step's
-      # own `git diff --staged --quiet` would then be true for ITS staged set
-      # and it never calls push-with-retry.sh at all, so there is no second
-      # chance to carry the stranded local ledger commit along.
+      # isolated push fails AND none of the OTHER data/audit/* files staged by
+      # ANY of this job's later commit+push steps happen to have changed that
+      # run — a later step's successful push carries forward whatever is
+      # already on local HEAD (including this step's stranded, unpushed
+      # commit), even though that later step's own `git diff --staged` only
+      # reflects ITS OWN files; if every later step's staged set is also
+      # unchanged that run, none of them call push-with-retry.sh at all, so
+      # there is no second chance to carry the stranded local ledger commit
+      # along.
       # if-no-files-found: ignore — a run where nothing changed writes no new
       # ledger lines (the file may not exist yet on a fresh checkout).
       - name: Upload acceptance recheck ledger (artifact backup)
@@ -340,8 +344,25 @@ jobs:
       # sweep snapshots"'s own header comment for the confirmed-live incident
       # this exact mechanism caused for a sibling file group). Moving the
       # commit to run immediately after the write, before ANY other
-      # push-with-retry.sh call in this job, closes that window the same way
-      # BRO-472 closed it for the 5 lifetime-sweep files.
+      # push-with-retry.sh call in this job, closes that window FOR THIS
+      # FILE, the same way BRO-472 closed it for the 5 lifetime-sweep files.
+      #
+      # NOT a full fix for the class of bug (second-opinion review, BRO-471
+      # follow-up): this step's OWN fallback prep can now trigger the same
+      # `git reset --hard` against files written by "Affiliate health
+      # monitor", "Run health check", and "Provider spend reconciliation"
+      # (all of which run earlier and remain uncommitted at this point) —
+      # health-digest-snapshot.json, health-check-history.json,
+      # workflow-run-coverage.json, the provider-spend-* files, and
+      # affiliate-health.json specifically. That risk already existed before
+      # this step moved (BRO-472's own earlier "Commit lifetime sweep
+      # snapshots" step has the identical exposure to the same files, since
+      # it also runs before "Commit health check audit snapshots" commits
+      # them) — this move adds a second opportunity for the same pre-existing
+      # gap, not a new bug class. BRO-3311 tracks auditing and closing this
+      # properly (likely: commit those files right after "Provider spend
+      # reconciliation", mirroring this exact pattern, before either sweep
+      # step's commit can run).
       #
       # continue-on-error: true, matching every other shadow-mode step in this
       # job (including "Acceptance recheck" itself) — this ledger is
@@ -919,9 +940,10 @@ jobs:
           # snapshots (apiFallbackSafe)" step, right after the sweep scripts
           # that write them — see that step's comment for why.
           # autonomous-recheck-ledger.jsonl is committed+pushed in its OWN
-          # step immediately above this one (BRO-386, "Commit acceptance
-          # recheck ledger"; restored to that position by BRO-2588) — NOT
-          # added here, so a bulk-commit push failure can never take the
+          # step much earlier in this job (BRO-386, "Commit acceptance
+          # recheck ledger"; repositioned to run immediately after its own
+          # write step by BRO-471, 2026-09-14 — see that step's comment) —
+          # NOT added here, so a bulk-commit push failure can never take the
           # recheck verdicts down with it again. That file is now registered
           # apiFallbackSafe too, so a stranded commit from that step cannot
           # disqualify THIS step's Git Data API fallback either — though this
