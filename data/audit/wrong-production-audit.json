@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-14T20:41:20.536Z",
+  "timestamp": "2026-09-14T21:17:47.836Z",
   "stats": {
     "totalReviews": 43266,
-    "alreadyFlagged": 17955,
+    "alreadyFlagged": 17956,
     "dateGuardCatches": 236,
     "directorMismatch": 1044,
-    "tvFilmSignals": 1268,
-    "londonSignals": 1055,
+    "tvFilmSignals": 1269,
+    "londonSignals": 1056,
     "offBroadwaySignals": 504,
     "yearMismatch": 91,
     "noPublishDate": 3716
@@ -48656,6 +48656,19 @@
     },
     {
       "showId": "stranger-things-2024",
+      "file": "timeout--unknown.json",
+      "publishDate": "2025-04-22",
+      "url": "https://timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
       "file": "vogue--taylor-antrim.json",
       "score": 78,
       "publishDate": "2025-04-30",
@@ -52977,6 +52990,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-09-11",
+      "url": "https://www.theguardian.com/stage/2026/sep/11/in-support-of-the-fourth-wall-proscenium-arch-theatres-surprisingly-radical-history",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },

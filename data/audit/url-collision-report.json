@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-14T00:49:06.565Z",
+  "generatedAt": "2026-09-14T21:10:55.650Z",
   "summary": {
-    "total": 9,
-    "high": 4,
+    "total": 8,
+    "high": 3,
     "medium": 4,
     "low": 1
   },
@@ -116,6 +116,33 @@
       "confidence": "medium"
     },
     {
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=28993",
+      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
+      "candidates": [
+        {
+          "showId": "jane-eyre-off-west-end-2026",
+          "file": "london-theatre-reviews--unknown.json",
+          "publishDate": "2026-09-10",
+          "openingDate": "2026-09-08",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre-reviews"
+        },
+        {
+          "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
+          "file": "london-theatre-reviews--unknown.json",
+          "publishDate": null,
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "london-theatre-reviews"
+        }
+      ],
+      "suggestedWinner": "jane-eyre-off-west-end-2026",
+      "reason": "publishDate 2026-09-10 is 2 days from jane-eyre-off-west-end-2026 opening (2026-09-08)",
+      "confidence": "high"
+    },
+    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -170,42 +197,6 @@
       "confidence": "high"
     },
     {
-      "url": "https://nystagereview.com/2026/08/25/paranormal-activity-cheap-but-potent-thrills/",
-      "normalizedUrl": "https://nystagereview.com/2026/08/25/paranormal-activity-cheap-but-potent-thrills",
-      "candidates": [
-        {
-          "showId": "paranormal-activity-2026",
-          "file": "nysr--frank-scheck.json",
-          "publishDate": "2026-08-25T20:51:56-04:00",
-          "openingDate": "2026-08-25",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nysr"
-        },
-        {
-          "showId": "paranormal-activity-2026",
-          "file": "nysr--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-08-25",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
-        },
-        {
-          "showId": "paranormal-activity-boston-regional-2026",
-          "file": "nysr--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-07-15",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
-        }
-      ],
-      "suggestedWinner": "paranormal-activity-2026",
-      "reason": "publishDate 2026-08-25T20:51:56-04:00 is 0 days from paranormal-activity-2026 opening (2026-08-25)",
-      "confidence": "high"
-    },
-    {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
       "normalizedUrl": "https://thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
       "candidates": [
@@ -231,42 +222,6 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
-    },
-    {
-      "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
-      "normalizedUrl": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting",
-      "candidates": [
-        {
-          "showId": "two-strangers-bway-2025",
-          "file": "nysr--frank-scheck.json",
-          "publishDate": "November 20, 2025",
-          "openingDate": "2025-11-20",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nysr"
-        },
-        {
-          "showId": "two-strangers-bway-2025",
-          "file": "nysr--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-11-20",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
-        },
-        {
-          "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
-          "file": "nysr--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-06-02",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
-        }
-      ],
-      "suggestedWinner": "two-strangers-bway-2025",
-      "reason": "publishDate November 20, 2025 is 0 days from two-strangers-bway-2025 opening (2025-11-20)",
-      "confidence": "high"
     }
   ]
 }
