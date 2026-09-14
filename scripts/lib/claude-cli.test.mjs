@@ -210,6 +210,20 @@ test('addUsage accumulates across assistant events, starting from null', () => {
   assert.equal(t.cache_read_input_tokens, 100);
 });
 
+test('addUsage accumulates the nested cache_creation ephemeral 1h/5m split (BRO-3100)', () => {
+  let t = addUsage(null, {
+    input_tokens: 1, cache_creation_input_tokens: 300,
+    cache_creation: { ephemeral_1h_input_tokens: 200, ephemeral_5m_input_tokens: 100 },
+  });
+  t = addUsage(t, {
+    input_tokens: 1, cache_creation_input_tokens: 30,
+    cache_creation: { ephemeral_1h_input_tokens: 20, ephemeral_5m_input_tokens: 10 },
+  });
+  assert.equal(t.cache_creation_input_tokens, 330, 'flat sum still accumulates for older-transcript fallback');
+  assert.equal(t.cache_creation.ephemeral_1h_input_tokens, 220);
+  assert.equal(t.cache_creation.ephemeral_5m_input_tokens, 110);
+});
+
 test('estimateCostUSD: null without usage; opus > sonnet; unknown model estimates as sonnet', () => {
   assert.equal(estimateCostUSD(null, 'sonnet'), null);
   const usage = { input_tokens: 1_000_000, output_tokens: 100_000 };
@@ -218,6 +232,29 @@ test('estimateCostUSD: null without usage; opus > sonnet; unknown model estimate
   assert.ok(sonnet > 0);
   assert.ok(opus > sonnet, 'opus rate must exceed sonnet');
   assert.equal(estimateCostUSD(usage, 'mystery-model'), sonnet, 'unknown model falls back to sonnet rates');
+});
+
+test('estimateCostUSD: 1h cache writes price at 2x, 5m at 1.25x, flat fallback unchanged (BRO-3100)', () => {
+  // Acceptance case from the Linear issue: flat-only field is unaffected.
+  assert.equal(estimateCostUSD({ cache_creation_input_tokens: 1_000_000 }, 'claude-opus-5'), 18.75);
+  // Same 1M tokens, but supplied as a 1h-TTL write via the nested breakdown: 2x not 1.25x.
+  assert.equal(
+    estimateCostUSD({ cache_creation: { ephemeral_1h_input_tokens: 1_000_000 } }, 'claude-opus-5'),
+    30,
+  );
+  // 5m-TTL writes keep the 1.25x rate.
+  assert.equal(
+    estimateCostUSD({ cache_creation: { ephemeral_5m_input_tokens: 1_000_000 } }, 'claude-opus-5'),
+    18.75,
+  );
+  // Mixed split prices each duration separately, not just the larger one.
+  assert.equal(
+    estimateCostUSD(
+      { cache_creation: { ephemeral_1h_input_tokens: 1_000_000, ephemeral_5m_input_tokens: 1_000_000 } },
+      'claude-opus-5',
+    ),
+    48.75,
+  );
 });
 
 // ---------------------------------------------------------------------------
