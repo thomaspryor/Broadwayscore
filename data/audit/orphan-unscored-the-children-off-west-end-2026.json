@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "the-children-off-west-end-2026",
   "openingDate": "2026-09-10",
-  "detectedAt": "2026-09-14T17:33:34.360Z",
+  "detectedAt": "2026-09-14T17:44:13.206Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -13,23 +13,6 @@
       "fullTextLen": 4825,
       "dispatchActionable": false,
       "skipReason": "no_scorable_text",
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
-      "file": "plays-to-see--lennon-hu.json",
-      "outletId": "plays-to-see",
-      "criticName": "Lennon Hu",
-      "url": "https://playstosee.com/reviews/the-children/",
-      "fullTextLen": 4051,
-      "dispatchActionable": true,
-      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -57,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
