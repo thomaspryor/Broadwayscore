@@ -92,15 +92,86 @@ test('refuse-then-still-report: a sync-refused snapshot renders the "Launchd syn
 // NOT also let its mutating side effects (runAutofix/runAutofixCanary —
 // real Linear card filing + real headless dispatch) run off untrusted code.
 // autofixShouldDryRun is the single guard main() relies on for that.
-test('autofixShouldDryRun: syncRefused forces dryRun even when --dry-run was not passed', () => {
+test('autofixShouldDryRun: the digest\'s OWN refusal forces dryRun even when --dry-run was not passed', () => {
   assert.equal(autofixShouldDryRun({ dryRun: false, syncRefused: null }), false);
   assert.equal(
-    autofixShouldDryRun({ dryRun: false, syncRefused: { count: 1, bannerText: 'x', items: [] } }),
+    autofixShouldDryRun({ dryRun: false, syncRefused: { count: 1, tags: ['digest'], unreadable: 0 } }),
     true,
   );
   assert.equal(autofixShouldDryRun({ dryRun: true, syncRefused: null }), true);
   assert.equal(
-    autofixShouldDryRun({ dryRun: true, syncRefused: { count: 1, bannerText: 'x', items: [] } }),
+    autofixShouldDryRun({ dryRun: true, syncRefused: { count: 1, tags: ['digest'], unreadable: 0 } }),
     true,
   );
+});
+
+// BRO-3393 — the bug this whole guard had. readSyncRefused() globs
+// data/audit/sync-refused-*.json across EVERY launchd tag, while
+// sync-audit-checkout.sh's clear_refused_snapshot() removes only its OWN
+// tag's file. With the old `!!syncRefused`, one chronically-failing sibling
+// job disabled the digest's auto-fix indefinitely: 6 auto-dispatch rows in
+// data/audit/digest-autofix-ledger.jsonl across 31 days, on 2 days, while the
+// digest itself sent on all 34.
+test('autofixShouldDryRun: a SIBLING job\'s refusal must NOT disable the digest\'s auto-fix', () => {
+  assert.equal(
+    autofixShouldDryRun({
+      dryRun: false,
+      syncRefused: { count: 2, tags: ['linear-drain-parked', 'predispatch-queue-audit'], unreadable: 0 },
+    }),
+    false,
+    "a sibling's stale snapshot says nothing about whether THIS process's checkout is current",
+  );
+  assert.equal(
+    autofixShouldDryRun({
+      dryRun: false,
+      syncRefused: { count: 3, tags: ['linear-drain-parked', 'digest', 'predispatch-queue-audit'], unreadable: 0 },
+    }),
+    true,
+    'own tag among siblings still forces dry-run',
+  );
+});
+
+test('autofixShouldDryRun: fails CLOSED when it cannot tell whose refusal it is', () => {
+  // An unparseable / tagless snapshot may be our own, and readSyncRefused
+  // counts it rather than dropping it — dropping it is how a truncated
+  // sync-refused-digest.json would have read as "nobody refused" and let real
+  // card filing and headless dispatch run against an untrusted checkout.
+  assert.equal(
+    autofixShouldDryRun({ dryRun: false, syncRefused: { count: 0, tags: [], unreadable: 1 } }),
+    true,
+  );
+  // A caller that predates the `tags` field cannot answer the question at all.
+  assert.equal(
+    autofixShouldDryRun({ dryRun: false, syncRefused: { count: 1, bannerText: 'x', items: [] } }),
+    true,
+  );
+});
+
+test('the tag the plist EXPORTS is the tag autofixShouldDryRun defaults to', () => {
+  // sync-audit-decision.js:24-27's rule, applied here: the plist is the single
+  // source of truth for this job's SYNC_TAG, so the digest must read it rather
+  // than carry a second copy that can drift. `export` (not a bare VAR=val
+  // prefix) is what makes it visible to the node process; without it the
+  // literal fallback in autofixShouldDryRun is what keeps the deployed
+  // behaviour correct, and this test pins that the two agree either way.
+  const raw = fs.readFileSync(path.join(LAUNCHD_DIR, 'com.broadwayscore.morning-digest.plist'), 'utf8');
+  const decoded = raw.replace(/&amp;/g, '&');
+  const cmdMatch = decoded.match(/<string>-c<\/string>\s*<string>([^<]*)<\/string>/);
+  assert.ok(cmdMatch, 'could not find the bash -c command string');
+  const tagMatch = cmdMatch[1].match(/export SYNC_TAG=([A-Za-z0-9_-]+)/);
+  assert.ok(tagMatch, `morning-digest.plist must EXPORT SYNC_TAG so send-morning-digest.js can read it: ${cmdMatch[1]}`);
+  assert.equal(tagMatch[1], 'digest');
+  // And the code's fallback must equal it, so an un-redeployed plist behaves
+  // identically to the deployed one.
+  const prev = process.env.SYNC_TAG;
+  delete process.env.SYNC_TAG;
+  try {
+    assert.equal(
+      autofixShouldDryRun({ dryRun: false, syncRefused: { count: 1, tags: [tagMatch[1]], unreadable: 0 } }),
+      true,
+      `autofixShouldDryRun's default ownTag must match the plist's SYNC_TAG (${tagMatch[1]})`,
+    );
+  } finally {
+    if (prev === undefined) delete process.env.SYNC_TAG; else process.env.SYNC_TAG = prev;
+  }
 });

@@ -334,8 +334,43 @@ function httpsJson(method, url, headers, body) {
 // thing, so the email body is unaffected. Extracted (CLAUDE.md rule 15) so
 // this safety property has a real regression test instead of living only as
 // an inline `||`.
-function autofixShouldDryRun({ dryRun = false, syncRefused = null } = {}) {
-  return !!dryRun || !!syncRefused;
+//
+// BRO-3393: this used to be `!!dryRun || !!syncRefused`, and that single `||`
+// cost the owner ~29 days of auto-fix. `readSyncRefused()` globs
+// data/audit/sync-refused-*.json across EVERY launchd tag, while
+// sync-audit-checkout.sh's clear_refused_snapshot() removes only its OWN
+// tag's file. So one chronically-failing sibling job (linear-drain-parked,
+// predispatch-queue-audit) left a snapshot on disk indefinitely and forced
+// the digest into dry-run every morning - no cards filed, no dispatches -
+// even on mornings the digest's own gate fast-forwarded cleanly. The ledger
+// shows the damage: 6 auto-dispatch rows in 31 days, on 2 days.
+//
+// The property task #1818 actually wanted is "is THIS checkout trustworthy
+// right now". Only the digest's OWN tag answers that, and it answers it
+// well: the plist runs `SYNC_TAG=digest bash sync-audit-checkout.sh`
+// seconds before this process starts, so sync-refused-digest.json is either
+// freshly written or freshly deleted. A sibling's snapshot from 22:30 last
+// night is strictly worse evidence about the tree this process is reading.
+// Sibling refusals still render in the email (renderNamedDigestBlock below)
+// - they are real alerts, they just must not disable auto-fix.
+//
+// ownTag defaults to SYNC_TAG so the plist stays the single source of truth
+// (sync-audit-decision.js:24-27's "membership is not a hardcoded list"
+// rule). The literal fallback keeps an un-redeployed plist - which passes
+// SYNC_TAG only as a prefix to the sync command, not exported to this
+// process - behaving exactly as the deployed one does.
+//
+// Fails CLOSED on ambiguity, which is the whole safety property:
+//   * `unreadable > 0`  - a refusal snapshot exists but could not be parsed
+//     or carried no tag, so it may be our own. Dry-run.
+//   * no `tags` array   - a caller (or an older snapshot reader) that cannot
+//     say whose refusal it is. Dry-run.
+function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = process.env.SYNC_TAG || 'digest' } = {}) {
+  if (dryRun) return true;
+  if (!syncRefused) return false;
+  if (Number(syncRefused.unreadable) > 0) return true;
+  if (!Array.isArray(syncRefused.tags)) return true;
+  return syncRefused.tags.some((t) => String(t) === String(ownTag));
 }
 
 // Subject contract: MUST match SCHEDULED_SENDERS['morning-digest'].pattern in

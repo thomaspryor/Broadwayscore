@@ -52,7 +52,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=digest bash scripts/lib/sync-audit-checkout.sh; exec node scripts/send-morning-digest.js --send-to-owner</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; export SYNC_TAG=digest &amp;&amp; bash scripts/lib/sync-audit-checkout.sh; exec node scripts/send-morning-digest.js --send-to-owner</string>
     </array>
     <key>StartCalendarInterval</key>
     <dict>

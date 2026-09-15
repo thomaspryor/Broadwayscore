@@ -303,24 +303,48 @@ function summarizeClosingSoon(report, { maxItems = 8, urgentDays = 14 } = {}) {
 // checkout being current. "Refused to run" would be false for that caller,
 // so the copy below says "blocked git sync" instead, which is accurate
 // for every caller regardless of what it does afterward.
+//
+// RETURN SHAPE (BRO-3393). Everything except `tags`/`unreadable` is a VIEW
+// MODEL - bannerText/items/moreCount exist to be rendered, and `items` is
+// capped at maxItems. `tags` and `unreadable` are DECISION data: uncapped,
+// and read by autofixShouldDryRun() to answer "did MY OWN launchd job's
+// sync refuse?" - a question the capped render list cannot answer (tag 9 of
+// 9 would be invisible to it). Keep the two roles labelled: a future change
+// that starts slicing `tags` for display silently re-breaks the decision.
+//
+// `unreadable` counts refusal files that exist but could not be parsed, or
+// that carry no `tag`. Those used to be skipped outright, so a truncated
+// snapshot for the digest's OWN tag read as "nobody refused" and would let
+// real card-filing/dispatch run against an untrusted checkout. The count is
+// surfaced so the dry-run decision can fail CLOSED on it (second-opinion
+// finding, BRO-3393).
 function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
   let names;
   try { names = fs.readdirSync(auditDir); } catch { return null; }
   const rows = [];
+  let unreadable = 0;
   for (const name of names) {
     if (!/^sync-refused-.+\.json$/.test(name)) continue;
     let snap;
     try { snap = JSON.parse(fs.readFileSync(path.join(auditDir, name), 'utf8')); }
-    catch { continue; }
-    if (!snap || typeof snap !== 'object' || !snap.tag) continue;
+    catch { unreadable += 1; continue; }
+    if (!snap || typeof snap !== 'object' || !snap.tag) { unreadable += 1; continue; }
     rows.push(snap);
   }
-  if (!rows.length) return null;
+  // A file that exists but cannot be read is still evidence that SOME job
+  // refused - returning null there would hide it from the email as well as
+  // from the dry-run decision.
+  if (!rows.length && !unreadable) return null;
   rows.sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')));
   return {
-    generatedAt: rows[0].at,
+    generatedAt: rows.length ? rows[0].at : null,
     count: rows.length,
-    bannerText: `${rows.length} launchd sync job(s) hit a blocked git sync (stale/dirty checkout): ${rows.map((r) => r.tag).join(', ')}`,
+    tags: rows.map((r) => String(r.tag)),
+    unreadable,
+    bannerText: rows.length
+      ? `${rows.length} launchd sync job(s) hit a blocked git sync (stale/dirty checkout): ${rows.map((r) => r.tag).join(', ')}`
+        + (unreadable ? ` (+${unreadable} unreadable refusal snapshot(s))` : '')
+      : `${unreadable} unreadable sync-refusal snapshot(s) - a launchd sync job refused and its snapshot could not be parsed`,
     items: rows.slice(0, maxItems).map((r) => ({
       title: r.tag,
       // blockingFiles (BRO-2314) is the subset of dirtyFiles that origin/main

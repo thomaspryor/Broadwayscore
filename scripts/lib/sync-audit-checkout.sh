@@ -362,6 +362,11 @@ REMAINING_DIRTY=$(git status --porcelain --untracked-files=all 2>/dev/null | cut
 # case test.sh case 7 covers, so the intersection stays complete.
 ORIGIN_CHANGED=$(git diff --name-only HEAD origin/main 2>/dev/null)
 AHEAD_COUNT=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+# BRO-3393: classifyBlock needs BOTH sides to tell "diverged and recoverable
+# by a plain merge" from "ahead with an unreadable/unmoved origin ref", which
+# must still refuse. write_refused_snapshot already computes the same number
+# for its own payload; this is the decision copy, taken at decision time.
+BEHIND_COUNT=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
 
 # Which of the blocking paths are safe to reconcile by concatenation?
 # .gitattributes is the single source of truth — `merge=union` is already
@@ -403,7 +408,7 @@ fi
 
 # One node call returns the whole decision; the logic lives in
 # scripts/lib/sync-audit-decision.js so it is unit-testable (CLAUDE.md r15).
-DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" UNION="$UNION_PATHS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
+DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" BEHIND="$BEHIND_COUNT" UNION="$UNION_PATHS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
   const { ffBlockingPaths, classifyBlock } = require(process.env.DECISION_LIB);
   const split = (v) => (v || "").split("\n").map((s) => s.trim()).filter(Boolean);
   const blockingPaths = ffBlockingPaths({
@@ -413,6 +418,7 @@ DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUN
   const d = classifyBlock({
     blockingPaths,
     aheadCount: Number(process.env.AHEAD || 0),
+    behindCount: Number(process.env.BEHIND || 0),
     unionMergePaths: split(process.env.UNION),
   });
   process.stdout.write([d.action, d.reason, d.blockingPaths.join("|"), d.unionPaths.join("|")].join("\n"));
@@ -587,6 +593,44 @@ EOF
     echo "::error::[$TAG] could not commit the ledger(s) for rebase recovery"
   fi
   REASON="dirty-unresolved"
+fi
+
+# BRO-3393. Diverged (a local commit origin lacks) with ZERO paths blocking
+# the fast-forward. Before this branch that was terminal, and it is the state
+# BRO-3212's own commit-and-rebase recovery leaves behind whenever its rebase
+# fails ("ledger commit preserved locally for the next run to carry forward"
+# — nothing carried it forward). On 2026-09-14 that stranded a single ledger
+# commit on the shared main checkout and every sync-gated launchd job refused
+# for the next 17.5 hours, which forced the 07:30 morning digest's auto-fix
+# into dry-run and dispatched nothing.
+#
+# MERGE, NOT REBASE. `git rebase origin/main` here would rewrite arbitrary
+# local commits — including an unpushed session merge commit, verified
+# empirically to be DESTROYED by the rebase (its side commits survive with
+# fresh SHAs, the merge itself does not). That is the loss class global
+# CLAUDE.md records for 2026-07-26. A merge never rewrites local history, and
+# unlike `--ff-only` it performs a real 3-way merge, so `.gitattributes`
+# merge=union drivers apply exactly as they do in the commit-and-rebase path.
+# The existing rebase at the commit-and-rebase branch above is NOT a
+# precedent for rebasing here: it replays a commit this script made moments
+# earlier, of union ledgers only.
+#
+# --autostash: `git merge` refuses to start against a tree with staged or
+# modified tracked content even when the merge would not touch those paths.
+# --autostash is git-native and restores the content on both the success and
+# the failure path. It does NOT stash untracked files — which is safe here
+# precisely because this branch only runs when $BLOCKING is empty, i.e. no
+# dirty path (tracked or untracked) overlaps what origin/main moves.
+if [ "$ACTION" = "merge-origin" ]; then
+  echo "[$TAG] diverged with nothing blocking the fast-forward ($AHEAD_COUNT ahead, $BEHIND_COUNT behind) — reconciling with a 3-way merge of origin/main"
+  if git merge --autostash --no-edit origin/main --quiet 2>/dev/null; then
+    echo "[$TAG] recovered — merged origin/main into the local checkout"
+    clear_refused_snapshot
+    exit 0
+  fi
+  echo "::error::[$TAG] merge of origin/main failed — aborting and refusing rather than leaving a half-merged shared checkout"
+  git merge --abort 2>/dev/null || echo "::error::[$TAG] git merge --abort itself failed — checkout may be mid-merge, investigate by hand"
+  REASON="diverged"
 fi
 
 echo "::error::[$TAG] ff-only merge still blocked after snapshot reset — real divergence or dirty files outside data/audit/. Refusing to run on stale code."
