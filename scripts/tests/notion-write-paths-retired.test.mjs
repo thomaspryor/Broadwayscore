@@ -107,6 +107,57 @@ describe('(b) audit-opening-dates.js asserts the child exit rather than swallowi
     `;
     assert.equal(swallowsChildExit(fixture), false);
   });
+
+  test('a swallowed failure hidden behind a NESTED brace is still caught (non-greedy regex would truncate at the first inner "}")', () => {
+    const fixture = `
+      const create = spawnSync('node', [brain, 'create', title], { encoding: 'utf8' });
+      if (create.status !== 0) {
+        if (verbose) {
+          console.error('debug: create failed');
+        }
+        console.warn('real problem, still swallowed');
+      }
+    `;
+    assert.equal(swallowsChildExit(fixture), true);
+  });
+
+  test('a throw behind a nested brace is correctly recognized as handled', () => {
+    const fixture = `
+      const create = spawnSync('node', [brain, 'create', title], { encoding: 'utf8' });
+      if (create.status !== 0) {
+        if (someCondition) {
+          logExtra();
+        }
+        throw new Error('create failed: ' + create.stderr);
+      }
+    `;
+    assert.equal(swallowsChildExit(fixture), false);
+  });
+
+  test('a file with multiple guards flags a violation even if a later guard is fine', () => {
+    const fixture = `
+      if (dedup.status !== 0) {
+        throw new Error('dedup failed');
+      }
+      if (create.status !== 0) {
+        console.warn('create failed, oh well');
+      }
+    `;
+    assert.equal(swallowsChildExit(fixture), true);
+  });
+});
+
+describe('audit-closing-dates.js — the sibling job with the identical bug (found during BRO-3430 review)', () => {
+  const source = readFileSync(join(ROOT, 'scripts/audit-closing-dates.js'), 'utf8');
+
+  test('files through linear-brain.js, not notion-brain.js', () => {
+    assert.match(source, /linear-brain\.js/);
+    assert.doesNotMatch(source, /notion-brain\.js/);
+  });
+
+  test('every spawnSync .status guard in the file throws on failure', () => {
+    assert.equal(swallowsChildExit(source), false);
+  });
 });
 
 describe('(c) notion-brain.js update either refuses or documents its exemption', () => {

@@ -377,6 +377,16 @@ async function main() {
   // Fetch existing open friction issues for context + dedup
   console.log('Fetching existing friction issues from Linear...');
   const existingIssues = await getExistingFrictionIssues();
+  // listOpenIssuesWithDescriptions() turns a malformed GraphQL response into
+  // an empty list by design (linear-client.js), so "board has zero open
+  // issues" and "the read failed" are the same value. The BRO board carries
+  // 1,000+ open issues and has never legitimately been empty (same guard
+  // scripts/ux-walkthrough.mjs applies to its own dedup read) — treat a zero
+  // read as a failed read and refuse to file rather than dedup against a
+  // false-empty set and spam duplicate issues every week.
+  if (existingIssues.length === 0) {
+    throw new Error('getExistingFrictionIssues: Linear returned ZERO open issues — treating as a failed read, not an empty board. Refusing to file without real dedup coverage.');
+  }
   const existingHashes = extractHashes(existingIssues);
   const existingTitles = extractTitles(existingIssues);
   console.log(`Found ${existingIssues.length} existing open friction issues`);

@@ -82,8 +82,11 @@ function isWithinWindow(dateStr, today, days) {
 async function notifyLinear(flagged, todayStr) {
   if (flagged.length === 0) return;
   if (!process.env.LINEAR_API_KEY) {
-    console.log('LINEAR_API_KEY not set — skipping Linear issue creation');
-    return;
+    // A missing secret here is exactly the failure mode this fix (BRO-3430)
+    // exists to close: real findings exist (flagged.length > 0 above) and
+    // nobody would be told. Fail the job instead of silently no-oping —
+    // the old NOTION_API_KEY check made this same mistake.
+    throw new Error('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
   }
   const { spawnSync } = require('child_process');
   const brain = path.join(__dirname, 'linear-brain.js');

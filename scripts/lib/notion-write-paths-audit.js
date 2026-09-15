@@ -34,6 +34,26 @@ function createsNotionPagesDirectly(source) {
   return /\.pages\.create\s*\(/.test(stripped);
 }
 
+// Returns the source between a `{` at `openIdx` and its matching `}`
+// (brace-depth counted, so nested blocks inside don't truncate the capture —
+// a naive non-greedy regex like `\{([\s\S]*?)\}` stops at the FIRST closing
+// brace it sees, silently truncating any block containing a nested if/loop),
+// plus the index immediately after the closing `}`. Ignores braces inside
+// string/template literals well enough for this repo's plain control-flow
+// shape (not a full parser — good enough for the two known call sites this
+// guards, same tradeoff as audit-linear-issuecreate-chokepoint.js).
+function matchBalancedBrace(source, openIdx) {
+  let depth = 0;
+  for (let i = openIdx; i < source.length; i++) {
+    if (source[i] === '{') depth++;
+    else if (source[i] === '}') {
+      depth--;
+      if (depth === 0) return { body: source.slice(openIdx + 1, i), endIdx: i + 1 };
+    }
+  }
+  return null;
+}
+
 // (2) — does any `.status`-checked child-process result get swallowed, i.e.
 // its failure branch only logs instead of throwing / exiting non-zero?
 // Handles both shapes seen in this repo:
@@ -43,15 +63,28 @@ function createsNotionPagesDirectly(source) {
 // and returns true (a violation) if ANY of them swallows its failure.
 // Returns null when no such `.status` guard is present at all.
 function swallowsChildExit(source) {
-  const re = /if\s*\(\s*(\w+)\.status\s*(===|!==)\s*0\s*\)\s*\{([\s\S]*?)\n\s*\}(?:\s*else\s*\{([\s\S]*?)\n\s*\})?/g;
+  const ifRe = /if\s*\(\s*\w+\.status\s*(===|!==)\s*0\s*\)\s*\{/g;
   let m;
   let sawGuard = false;
-  while ((m = re.exec(source))) {
+  while ((m = ifRe.exec(source))) {
+    const openIdx = m.index + m[0].length - 1;
+    const ifMatch = matchBalancedBrace(source, openIdx);
+    if (!ifMatch) continue; // unbalanced source — nothing sane to check
     sawGuard = true;
-    const [, , op, ifBlock, elseBlock] = m;
-    const failBlock = op === '===' ? (elseBlock || '') : ifBlock;
+    const op = m[1];
+    let elseBlock = '';
+    const afterIf = source.slice(ifMatch.endIdx, ifMatch.endIdx + 200);
+    const elseMatch = /^\s*else\s*\{/.exec(afterIf);
+    if (elseMatch) {
+      const elseOpenIdx = ifMatch.endIdx + elseMatch[0].length - 1;
+      const elseBraceMatch = matchBalancedBrace(source, elseOpenIdx);
+      if (elseBraceMatch) elseBlock = elseBraceMatch.body;
+    }
+    const failBlock = op === '===' ? elseBlock : ifMatch.body;
     const failHandled = /\bthrow\b/.test(failBlock) || /process\.exit\(\s*[1-9]/.test(failBlock);
     if (!failHandled) return true;
+    // Advance past this if/else so the next search doesn't re-scan inside it.
+    ifRe.lastIndex = Math.max(ifRe.lastIndex, ifMatch.endIdx);
   }
   return sawGuard ? false : null;
 }
