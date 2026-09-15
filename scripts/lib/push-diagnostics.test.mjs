@@ -102,6 +102,24 @@ test('redactCurlTrace: strips compound token query params', () => {
   assert.ok(out.includes('ok=1'), 'non-credential params must survive');
 });
 
+test('redactCurlTrace: strips CLI-flag-shaped credentials in child argv (BRO-3358)', () => {
+  // Adversarial review (Codex, BRO-3358 ship-check) caught that the pre-3358
+  // denylist covers URLs/headers/query-params but not a credential passed as
+  // a bare argv to some OTHER child tool — the shape a trace2 child_start's
+  // argv column can carry.
+  // Real trace2 argv is one single space-separated string per child (verified
+  // against a live capture: argv:['/opt/homebrew/bin/gh auth git-credential
+  // store']), not a comma-separated array of quoted tokens.
+  const out = redactCurlTrace("argv:['some-tool --password SECRET123']");
+  assert.ok(!out.includes('SECRET123'));
+  const outEq = redactCurlTrace("argv:['some-tool --api-token=SECRET456']");
+  assert.ok(!outEq.includes('SECRET456'));
+  // A bare short flag like -p is too ambiguous with non-credential options
+  // (port, path, ...) to redact on sight — must survive untouched.
+  const outShort = redactCurlTrace('some-tool -p 5432 --host db.internal');
+  assert.ok(outShort.includes('-p 5432'), 'a bare short flag must not be treated as a credential marker');
+});
+
 // ---------------------------------------------------------------------------
 // parseTraceClock / parseTraceRecords (BRO-2839)
 // ---------------------------------------------------------------------------
@@ -459,7 +477,7 @@ test('formatTrace2Timeline: names the in-flight child in the CI-log line', () =>
   const timeline = extractTrace2Timeline({ traceText: t, killedAt: '10:00:28.000000' });
   const children = summarizeTrace2Children(t);
   const out = formatTrace2Timeline(timeline, children);
-  assert.match(out, /IN-FLIGHT CHILD AT KILL/);
+  assert.match(out, /NO child_exit OBSERVED FOR/);
   assert.match(out, /gh auth git-credential store/);
 });
 
