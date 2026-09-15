@@ -4,14 +4,23 @@
     "armedCount": 6
   },
   "invalidRegistryFields": [],
-  "generatedAt": "2026-09-13T17:21:06.535Z",
+  "generatedAt": "2026-09-15T15:54:35.733Z",
   "summary": {
-    "totalOutletsInReviews": 703,
-    "inRegistry": 703,
-    "missing": 0,
-    "unused": 475
+    "totalOutletsInReviews": 688,
+    "inRegistry": 687,
+    "missing": 1,
+    "unused": 492
   },
-  "missingOutlets": [],
+  "missingOutlets": [
+    {
+      "outletId": "stratfordeast",
+      "count": 1,
+      "shows": [
+        "bloodsport-after-helen-of-troy-off-west-end-2026"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/bloodsport-after-helen-of-troy-off-west-end-2026/stratfordeast--unknown.json"
+    }
+  ],
   "unusedInRegistry": [
     {
       "outletId": "westendtheatre",
@@ -214,6 +223,10 @@
       "displayName": "Matinee Radio"
     },
     {
+      "outletId": "leicester-times",
+      "displayName": "Leicester Times"
+    },
+    {
       "outletId": "city-am",
       "displayName": "City A.M."
     },
@@ -350,6 +363,14 @@
       "displayName": "The Berkshire Eagle"
     },
     {
+      "outletId": "berkshire-edge",
+      "displayName": "The Berkshire Edge"
+    },
+    {
+      "outletId": "albany-times-union",
+      "displayName": "Albany Times-Union"
+    },
+    {
       "outletId": "onstage-blog",
       "displayName": "OnStage Blog"
     },
@@ -418,6 +439,14 @@
       "displayName": "Canberra Times"
     },
     {
+      "outletId": "3news",
+      "displayName": "3 News"
+    },
+    {
+      "outletId": "tap-into",
+      "displayName": "TAPinto"
+    },
+    {
       "outletId": "berkshire-on-stage",
       "displayName": "Berkshire on Stage"
     },
@@ -426,12 +455,24 @@
       "displayName": "Clevelands Star 102"
     },
     {
+      "outletId": "columbus-underground",
+      "displayName": "Columbus Underground"
+    },
+    {
+      "outletId": "dayton-local",
+      "displayName": "Dayton Local"
+    },
+    {
       "outletId": "gephardt-daily",
       "displayName": "Gephardt Daily"
     },
     {
       "outletId": "houston-chronicle",
       "displayName": "Houston Chronicle"
+    },
+    {
+      "outletId": "motif",
+      "displayName": "Motif"
     },
     {
       "outletId": "new-city-stage",
@@ -462,8 +503,16 @@
       "displayName": "The Oakland Press"
     },
     {
+      "outletId": "whats-up-newp",
+      "displayName": "Whats Up Newp"
+    },
+    {
       "outletId": "apt-613",
       "displayName": "Apt 613"
+    },
+    {
+      "outletId": "arts-knoxville",
+      "displayName": "Arts Knoxville"
     },
     {
       "outletId": "attractions",
@@ -572,6 +621,10 @@
     {
       "outletId": "south-pasadenan",
       "displayName": "South Pasadenan"
+    },
+    {
+      "outletId": "city-pulse",
+      "displayName": "City Pulse"
     },
     {
       "outletId": "daily-pilot",
@@ -716,6 +769,10 @@
     {
       "outletId": "keep-things-speeding-along",
       "displayName": "Keep Things Speeding Along"
+    },
+    {
+      "outletId": "chicago-critic",
+      "displayName": "Chicago Critic"
     },
     {
       "outletId": "chicago-splash",
@@ -1026,6 +1083,10 @@
       "displayName": "Harpersbazaar"
     },
     {
+      "outletId": "titled",
+      "displayName": "Titled"
+    },
+    {
       "outletId": "americajr",
       "displayName": "Americajr"
     },
@@ -1122,6 +1183,10 @@
       "displayName": "Interaksyon.com"
     },
     {
+      "outletId": "spotph",
+      "displayName": "Spotph"
+    },
+    {
       "outletId": "rnal",
       "displayName": "Rnal"
     },
@@ -1160,6 +1225,10 @@
     {
       "outletId": "eden-prairie-local-news",
       "displayName": "Eden Prairie Local News"
+    },
+    {
+      "outletId": "fanbolt",
+      "displayName": "Fanbolt"
     },
     {
       "outletId": "latin-life-denver",
@@ -1658,6 +1727,10 @@
       "displayName": "Lincoln Journal Star"
     },
     {
+      "outletId": "break-point",
+      "displayName": "BreakPoint"
+    },
+    {
       "outletId": "b1039",
       "displayName": "B103.9"
     },
@@ -1822,6 +1895,10 @@
       "displayName": "Northern Arts Review"
     },
     {
+      "outletId": "the-daily-texan",
+      "displayName": "The Daily Texan"
+    },
+    {
       "outletId": "show-score",
       "displayName": "show-score"
     },
@@ -1914,7 +1991,17 @@
       "displayName": "Southern Arts Reviews"
     }
   ],
-  "suggestedAdditions": [],
+  "suggestedAdditions": [
+    {
+      "outletId": "stratfordeast",
+      "displayName": "stratfordeast",
+      "tier": 3,
+      "aliases": [
+        "stratfordeast"
+      ],
+      "domain": "stratfordeast.com"
+    }
+  ],
   "displayNameMismatches": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -1966,7 +2053,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/diana-the-musical-2021/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/disaster-2016/front-row-center--kathleen-campion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/disgraced-2014/front-row-center--tulis-mccall.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/english-2025/front-row-center--sarah-downs.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/eureka-day-2024/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/farinelli-and-the-king-2017/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/floyd-collins-2025/front-row-center--tulis-mccall.json",
@@ -2069,7 +2155,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-great-society-2019/front-row-center--kathleen-campion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-heidi-chronicles-2015/front-row-center--kathleen-campion.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-hills-of-california-2024/front-row-center--david-walters.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-humans-2016/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-last-ship-2014/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-lifespan-of-a-fact-2018/front-row-center--tulis-mccall.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-lightning-thief-2019/front-row-center--sarah-downs.json",
@@ -2379,8 +2464,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/thewrap--thom-geier.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/frozen-2018/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/fully-committed-2016/thewrap--robert-hofler.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/fun-home-2015/thewrap--robert-hofler.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/funny-girl-2022/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/gary-a-sequel-to-titus-andronicus-2019/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/gigi-2015/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/good-night-and-good-luck-2025/thewrap--robert-hofler.json",
@@ -2401,7 +2484,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/in-transit-2016/thewrap--robert-hoffler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/in-transit-2016/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/ink-2019/thewrap--robert-hofler.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/is-this-a-room-2021/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/it-shoulda-been-you-2015/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/its-only-a-play-2014/thewrap--robert-hofler.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/jagged-little-pill-2019/thewrap--robert-hofler.json",
@@ -3100,7 +3182,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/the-realistic-joneses-2014/nytimes--charles-isherwood.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-robber-bridegroom-1976/nytimes--ben-brantley.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-scottsboro-boys-2010/nytimes--charles-isherwood.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-seafarer-2007/nytimes--ben-brantley.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-snow-geese-2013/nytimes--ben-brantley.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-thanksgiving-play-2023/nytimes--jesse-green.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-waverly-gallery-2018/nytimes--ben-brantley.json",
@@ -3227,7 +3308,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/mother-play-2024/new-york-sun--elysa-gardner.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mother-russia-off-broadway-2026/new-york-sun--elysa-gardner.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/new-york-sun--elysa-gardner.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/once-upon-a-mattress-2024/new-york-sun--elysa-gardner.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/pictures-from-home-2023/new-york-sun--elysa-gardner.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/purpose-2025/new-york-sun--elysa-gardner.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/real-women-have-curves-2025/new-york-sun--elyssa-garner.json",
@@ -3332,7 +3412,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/tina-2019/wsj--terry-teachout.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/to-kill-a-mockingbird-2018/wsj--terry-teachout.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/torch-song-2018/wsj--matt-windman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/torch-song-2018/wsj--terry-teachout.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/true-west-2019/wsj--terry-teachout.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/wsj--terry-teachout.json"
       ]
@@ -3775,8 +3854,7 @@
       "canonicalId": "theatre-arts-daily",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/a-dolls-house-part-2-2017/theatre-arts-daily--mark-johnson.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/choir-boy-2019/theatre-arts-daily--mark-johnson.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/dear-evan-hansen-2016/theatre-arts-daily--mark-johnson.json"
+        "/Users/tompryor/Broadwayscore/data/review-texts/choir-boy-2019/theatre-arts-daily--mark-johnson.json"
       ]
     },
     {
@@ -3988,6 +4066,7 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/pride-west-end-2026/whatsonstage--sarah-crompton.json",
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-children-off-west-end-2026/whatsonstage--sarah-crompton.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--theo-bosanquet.json"
       ]
     },
@@ -4313,16 +4392,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/nypost--johnny-oleksinski.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/true-west-2019/nypost--paul-dziemianowicz.json"
-      ]
-    },
-    {
-      "showId": "airline-highway-2015",
-      "outletId": "chicago-critic",
-      "currentDisplayName": "chicago-critic",
-      "expectedDisplayName": "Chicago Critic",
-      "canonicalId": "chicago-critic",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/airline-highway-2015/chicago-critic--jacob-davis.json"
       ]
     },
     {
@@ -4834,16 +4903,6 @@
     },
     {
       "showId": "amazing-grace-2015",
-      "outletId": "break-point",
-      "currentDisplayName": "break-point",
-      "expectedDisplayName": "BreakPoint",
-      "canonicalId": "break-point",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/amazing-grace-2015/break-point--eric-metaxas.json"
-      ]
-    },
-    {
-      "showId": "amazing-grace-2015",
       "outletId": "breathe-cast",
       "currentDisplayName": "breathe-cast",
       "expectedDisplayName": "Breathe Cast",
@@ -5330,7 +5389,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/evita-west-end-2025/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/good-night-and-good-luck-2025/times-uk--susie-goldsbrough.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-west-end-2021/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/times-uk--ann-treneman.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/jesus-christ-superstar-2012/times-uk--dominic-maxwell.json",
@@ -5431,16 +5489,6 @@
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/bandstand-2017/pop-dust--thomas-burns-scully.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-little-foxes-2017/pop-dust--thomas-burns-scully.json"
-      ]
-    },
-    {
-      "showId": "bandstand-2017",
-      "outletId": "tap-into",
-      "currentDisplayName": "Tap Into",
-      "expectedDisplayName": "TAPinto",
-      "canonicalId": "tap-into",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/bandstand-2017/tap-into--liz-keill.json"
       ]
     },
     {
@@ -5573,6 +5621,16 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/bernhardthamlet-2018/scene-on-stage--philip-dorian.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/come-from-away-2017/scene-on-stage--philip-dorian.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/sylvia-2015/scene-on-stage--philip-dorian.json"
+      ]
+    },
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "outletId": "theqr",
+      "currentDisplayName": "theqr",
+      "expectedDisplayName": "Theqr",
+      "canonicalId": "theqr",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/bloodsport-after-helen-of-troy-off-west-end-2026/theqr--unknown.json"
       ]
     },
     {
@@ -6068,16 +6126,6 @@
       "canonicalId": "nitelifeexchange-com",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/celebrity-autobiography-2026/nitelifeexchange-com--marilyn-lester.json"
-      ]
-    },
-    {
-      "showId": "children-of-a-lesser-god-2018",
-      "outletId": "albany-times-union",
-      "currentDisplayName": "Albany Times Union",
-      "expectedDisplayName": "Albany Times-Union",
-      "canonicalId": "albany-times-union",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/children-of-a-lesser-god-2018/albany-times-union--steve-barnes.json"
       ]
     },
     {
@@ -6938,7 +6986,6 @@
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-west-end-2024/financialtimes--financial-times.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/mj-the-musical-west-end-2024/financialtimes--financial-times.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/my-neighbour-totoro-west-end-2025/financialtimes--financial-times.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json"
       ]
     },
@@ -7253,17 +7300,6 @@
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/here-lies-love-2023/washpost--unknown.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/i-need-that-2023/washpost--peter-marks.json"
-      ]
-    },
-    {
-      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-      "outletId": "broadstreetreview",
-      "currentDisplayName": "broad-street-review",
-      "expectedDisplayName": "Broad Street Review",
-      "canonicalId": "broadstreetreview",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/broadstreetreview--steve-cohen.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-father-2016/broadstreetreview--carol-rocamora.json"
       ]
     },
     {
@@ -7601,7 +7637,6 @@
       "canonicalId": "adriandimanlig",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/junk-2017/adriandimanlig--adrian-dimanlig.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/meteor-shower-2017/adriandimanlig--adrian-dimanlig.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/once-on-this-island-2017/adriandimanlig--adrian-dimanlig.json"
       ]
     },
@@ -7613,16 +7648,6 @@
       "canonicalId": "matttrueman",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/king-charles-iii-2015/matttrueman--matt-trueman.json"
-      ]
-    },
-    {
-      "showId": "king-kong-2018",
-      "outletId": "3news",
-      "currentDisplayName": "3News",
-      "expectedDisplayName": "3 News",
-      "canonicalId": "3news",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/king-kong-2018/3news--unknown.json"
       ]
     },
     {
@@ -7708,16 +7733,6 @@
       ]
     },
     {
-      "showId": "life-of-pi-2023",
-      "outletId": "whats-up-newp",
-      "currentDisplayName": "What's Up Newp",
-      "expectedDisplayName": "Whats Up Newp",
-      "canonicalId": "whats-up-newp",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/life-of-pi-2023/whats-up-newp--ken-abrams.json"
-      ]
-    },
-    {
       "showId": "little-bear-ridge-road-2025",
       "outletId": "la-voce-di-new-york",
       "currentDisplayName": "la-voce-di-new-york",
@@ -7747,17 +7762,6 @@
         "/Users/tompryor/Broadwayscore/data/review-texts/long-days-journey-into-night-2016/plays-to-see--paul-meltzer.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/oslo-2017/plays-to-see--jim-pascale.json",
         "/Users/tompryor/Broadwayscore/data/review-texts/the-father-2016/plays-to-see--paul-meltzer.json"
-      ]
-    },
-    {
-      "showId": "magic-mike-live-west-end-2021",
-      "outletId": "express-uk",
-      "currentDisplayName": "Daily Express",
-      "expectedDisplayName": "Express  (UK)",
-      "canonicalId": "express-uk",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/magic-mike-live-west-end-2021/express-uk--neil-norman.json",
-        "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/express-uk--neil-norman.json"
       ]
     },
     {
@@ -8059,16 +8063,6 @@
     },
     {
       "showId": "next-to-normal-2009",
-      "outletId": "examiner",
-      "currentDisplayName": "The Examiner",
-      "expectedDisplayName": "Examiner",
-      "canonicalId": "examiner",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/next-to-normal-2009/examiner--deb-flomberg.json"
-      ]
-    },
-    {
-      "showId": "next-to-normal-2009",
       "outletId": "neontommy",
       "currentDisplayName": "NeonTommy",
       "expectedDisplayName": "Neontommy",
@@ -8167,16 +8161,6 @@
       "canonicalId": "royberkinfo",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/once-on-this-island-2017/royberkinfo--roy-berko.json"
-      ]
-    },
-    {
-      "showId": "one-man-two-guvnors-2012",
-      "outletId": "titled",
-      "currentDisplayName": "titled",
-      "expectedDisplayName": "Titled",
-      "canonicalId": "titled",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/one-man-two-guvnors-2012/titled--two-masters.json"
       ]
     },
     {
@@ -8404,16 +8388,6 @@
       "canonicalId": "newsbreak",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/newsbreak--samantha-genzer.json"
-      ]
-    },
-    {
-      "showId": "rock-of-ages-2009",
-      "outletId": "spotph",
-      "currentDisplayName": "spotph",
-      "expectedDisplayName": "Spotph",
-      "canonicalId": "spotph",
-      "files": [
-        "/Users/tompryor/Broadwayscore/data/review-texts/rock-of-ages-2009/spotph--paul-daza.json"
       ]
     },
     {
@@ -8903,6 +8877,16 @@
       ]
     },
     {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outletId": "express-uk",
+      "currentDisplayName": "Daily Express",
+      "expectedDisplayName": "Express  (UK)",
+      "canonicalId": "express-uk",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-devil-wears-prada-west-end-2024/express-uk--neil-norman.json"
+      ]
+    },
+    {
       "showId": "the-family-album-regional-2026",
       "outletId": "behindtheencore",
       "currentDisplayName": "behindtheencore",
@@ -8920,6 +8904,16 @@
       "canonicalId": "makaylahoppe",
       "files": [
         "/Users/tompryor/Broadwayscore/data/review-texts/the-family-album-regional-2026/makaylahoppe--unknown.json"
+      ]
+    },
+    {
+      "showId": "the-father-2016",
+      "outletId": "broadstreetreview",
+      "currentDisplayName": "broad-street-review",
+      "expectedDisplayName": "Broad Street Review",
+      "canonicalId": "broadstreetreview",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-father-2016/broadstreetreview--carol-rocamora.json"
       ]
     },
     {

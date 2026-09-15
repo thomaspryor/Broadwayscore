@@ -1051,3 +1051,20 @@ Two lessons:
    So: when rebuild-fast is failing, DO NOT conclude "the review cannot land." Check
    `git log origin/main -- reviews.json` for a poller inline-rebuild commit before escalating,
    and re-check it every pass — the escalation may already have self-resolved.
+
+## Gate: outlet has a score-extractor but NO article-extractor PATTERNS entry (2026-09-14, BRO-3368)
+**Symptom:** `ingest-review-from-url.js` fetches HTTP 200, exits without error, and writes a
+review-texts file whose body is a few hundred chars of site furniture (ad copy, newsletter
+promo). `contentTier` lands `truncated`/`stub`, so the review is silently non-scoreable —
+it looks like a bad fetch, but the fetch was fine.
+**Case:** Radio Times / Olivia Garrett on bloodsport-after-helen-of-troy-off-west-end-2026.
+`scripts/lib/score-extractors.js` HAS radiotimes handlers (`radiotimes-page-json`,
+`radiotimes-svg-stars`) — that presence is a false reassurance: the two extractors are
+independent. Body extraction fell through to a generic container → 392 chars.
+**Diagnostic:** char-count the extracted body before trusting a 200. Under ~1000 chars for a
+national outlet's review = extractor gap, not a paywall.
+**Fix tonight:** hand-extract the body from the fetched HTML, ingest via
+`ingest-manual-review.js` (it auto-detects the star rating → `humanReviewScore` LOCKED).
+**Systemic fix:** add the outlet's PATTERNS entry + a golden fixture test.
+**Check before assuming coverage:** `grep -n '<domain>' scripts/lib/article-extractor.js` —
+a hit in `score-extractors.js` proves nothing about the body path.
