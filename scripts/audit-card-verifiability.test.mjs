@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   evaluateCard, buildReport, evaluateLinearIssue, attachMissingCheckPaths,
   reconcileMissingCheckPathsWithComments,
+  reconcileVacuousChecksWithComments,
 } = require('./audit-card-verifiability.js');
 
 test('evaluateCard: armed card carries no reason', () => {
@@ -201,4 +202,80 @@ test('buildReport works unchanged over evaluateLinearIssue output (shared shape)
   assert.equal(report.armedCount, 1);
   assert.equal(report.refusedCount, 1);
   assert.deepEqual(report.refused.map(r => r.id), ['BRO-2']);
+});
+
+// ── BRO-3378: vacuous-check bucket wiring ───────────────────────────────────
+
+test('reconcileVacuousChecksWithComments: a comment correcting to a real test clears the vacuous flag', async () => {
+  // The bulk sweep evaluates DESCRIPTIONS ONLY (evaluateLinearIssue passes no
+  // comments), and BRO-2796 established a comment is the only way a Linear
+  // description's command is ever corrected — so without this pass, an
+  // already-fixed card would be reported as vacuous forever.
+  const flagged = [{
+    id: 'BRO-1', name: 'Vacuous', url: 'u1',
+    cmd: 'test -f scripts/existing.js', kind: 'test-f-satisfied',
+  }];
+  const getIssue = async (id) => ({
+    identifier: id,
+    description: '## Acceptance criteria\n`test -f scripts/existing.js`',
+    comments: { nodes: [{ body: 'VERIFY: node --test tests/unit/real.test.mjs', createdAt: '2026-09-01T00:00:00.000Z' }] },
+  });
+  const stillFlagged = await reconcileVacuousChecksWithComments(flagged, {
+    getIssue, pathExistsOnOriginMain: () => true,
+  });
+  assert.deepEqual(stillFlagged, []);
+});
+
+test('reconcileVacuousChecksWithComments: an uncorrected vacuous card stays flagged', async () => {
+  const flagged = [{
+    id: 'BRO-2', name: 'Still vacuous', url: 'u2',
+    cmd: 'test -f scripts/existing.js', kind: 'test-f-satisfied',
+  }];
+  const getIssue = async (id) => ({
+    identifier: id,
+    description: '## Acceptance criteria\n`test -f scripts/existing.js`',
+    comments: { nodes: [] },
+  });
+  const stillFlagged = await reconcileVacuousChecksWithComments(flagged, {
+    getIssue, pathExistsOnOriginMain: () => true,
+  });
+  assert.equal(stillFlagged.length, 1);
+  assert.equal(stillFlagged[0].id, 'BRO-2');
+  assert.equal(stillFlagged[0].kind, 'test-f-satisfied');
+});
+
+test('reconcileVacuousChecksWithComments: a getIssue failure fails toward reporting, not silence', async () => {
+  const flagged = [{ id: 'BRO-3', name: 'x', url: 'u3', cmd: 'test -f scripts/existing.js', kind: 'test-f-satisfied' }];
+  const getIssue = async () => { throw new Error('network'); };
+  const stillFlagged = await reconcileVacuousChecksWithComments(flagged, { getIssue, log: () => {} });
+  assert.equal(stillFlagged.length, 1);
+});
+
+test('reconcileVacuousChecksWithComments: a comment correcting to a to-be-created file clears the flag', async () => {
+  // The correction a worker is actually told to make: point the check at the
+  // artifact the work will produce. That path is absent, so it is falsifiable.
+  const flagged = [{
+    id: 'BRO-4', name: 'Vacuous', url: 'u4',
+    cmd: 'test -f scripts/existing.js', kind: 'test-f-satisfied',
+  }];
+  const getIssue = async (id) => ({
+    identifier: id,
+    description: '## Acceptance criteria\n`test -f scripts/existing.js`',
+    comments: { nodes: [{ body: 'VERIFY: test -f docs/new-runbook.md', createdAt: '2026-09-02T00:00:00.000Z' }] },
+  });
+  const stillFlagged = await reconcileVacuousChecksWithComments(flagged, {
+    getIssue, pathExistsOnOriginMain: (p) => p === 'scripts/existing.js',
+  });
+  assert.deepEqual(stillFlagged, []);
+});
+
+test('attachMissingCheckPaths: populates BOTH buckets and never leaves vacuousChecks undefined', () => {
+  // No file-naming candidates => no fetch, but the key must still exist, or
+  // every downstream reader has to guard for undefined.
+  const report = {};
+  attachMissingCheckPaths(report, [
+    { id: 'BRO-1', name: 'tsc', url: 'u1', cmd: 'npx tsc --noEmit', armed: true },
+  ], { log: () => {} });
+  assert.deepEqual(report.missingCheckPaths, []);
+  assert.deepEqual(report.vacuousChecks, []);
 });

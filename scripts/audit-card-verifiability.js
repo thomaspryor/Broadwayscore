@@ -41,7 +41,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
-const { findCardsWithMissingCheckPaths, isCheckPathCommand, auditCardCheckPaths, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
+const { findCardsWithMissingCheckPaths, findCardCheckPathDefects, isCheckPathCommand, auditCardCheckPaths, auditVacuousChecks, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
@@ -199,8 +199,18 @@ async function fetchLinearOpenIssuesWithDescriptions() {
 // buildReport rather than folded into armed/refused: a card with a
 // confirmed-missing check path is still "armed" by the dispatch gate's own
 // definition, just unable to ever pass its own acceptance check.
+// BRO-3378 attaches the opposite-polarity bucket in the same pass: a card whose
+// check path is PRESENT can be just as undispatchable-in-spirit as one whose
+// path is absent, because a `test -f` on an existing file is green before the
+// work starts and therefore proves nothing when re-run at Done time. The two
+// are mutually exclusive per card (see the auditor's own complementary-buckets
+// test), so a reader can always tell which case they are looking at. One call,
+// one origin/main fetch, one existence cache — never two sweeps that could
+// disagree about a path that landed upstream between them.
 function attachMissingCheckPaths(report, evaluated, opts) {
-  report.missingCheckPaths = findCardsWithMissingCheckPaths(evaluated, opts);
+  const { missing, vacuous } = findCardCheckPathDefects(evaluated, opts);
+  report.missingCheckPaths = missing;
+  report.vacuousChecks = vacuous;
   return report;
 }
 
@@ -214,7 +224,13 @@ function attachMissingCheckPaths(report, evaluated, opts) {
 // just the already-flagged subset — the same one-round-trip-per-card cost
 // runNotionAudit's fetchCard() loop already pays for its ENTIRE sweep, not
 // just a flagged subset — so this is comparatively cheap.
-async function reconcileMissingCheckPathsWithComments(flagged, opts = {}) {
+// BRO-3378: the re-fetch loop is identical for both check-path buckets — only
+// the classifier applied to the corrected command differs — so it is
+// parameterized here rather than copy-pasted. `auditFn` is any
+// (cards, existsFn) => flagged[] from card-premises-auditor.js. Copying the
+// loop instead would be exactly the drift CLAUDE.md §15 exists to prevent: a
+// fix to the fail-toward-reporting contract below would have to be made twice.
+async function reconcileCheckDefectsWithComments(flagged, auditFn, opts = {}) {
   // Injectable (opts.getIssue) so tests never make a live Linear API call —
   // same DI convention linear-next.js's tests rely on (noopLinearDeps()).
   const getIssue = opts.getIssue || require('./lib/linear-client.js').getIssue;
@@ -225,23 +241,39 @@ async function reconcileMissingCheckPathsWithComments(flagged, opts = {}) {
     if (!cache.has(p)) cache.set(p, existsOnOriginMain(p, opts));
     return cache.get(p);
   };
-  const stillMissing = [];
+  const stillFlagged = [];
   for (const card of flagged) {
     let issue;
     try {
       issue = await getIssue(card.id);
     } catch (err) {
       log(`[audit-card-verifiability] WARN could not re-fetch ${card.id} with comments: ${String(err.message).slice(0, 120)}`);
-      stillMissing.push(card); // fail toward reporting, never toward silently clearing
+      stillFlagged.push(card); // fail toward reporting, never toward silently clearing
       continue;
     }
-    if (!issue) { stillMissing.push(card); continue; }
+    if (!issue) { stillFlagged.push(card); continue; }
     const gate = evaluateVerifiability(issue.description || '', sortedCommentBodies(issue));
     if (!gate.armed || !isCheckPathCommand(gate.cmd)) continue; // corrected away from a file-naming claim entirely
-    const recheck = auditCardCheckPaths([{ id: card.id, name: card.name, url: card.url, cmd: gate.cmd }], existsFn);
-    if (recheck.length) stillMissing.push(recheck[0]);
+    const recheck = auditFn([{ id: card.id, name: card.name, url: card.url, cmd: gate.cmd }], existsFn);
+    if (recheck.length) stillFlagged.push(recheck[0]);
   }
-  return stillMissing;
+  return stillFlagged;
+}
+
+// The two public reconcilers. Signatures unchanged from before BRO-3378 for
+// the missing-path one (five existing tests pin it).
+function reconcileMissingCheckPathsWithComments(flagged, opts = {}) {
+  return reconcileCheckDefectsWithComments(flagged, auditCardCheckPaths, opts);
+}
+
+// BRO-3378: a vacuous command gets the same correction path. The bulk sweep
+// evaluates descriptions ONLY (evaluateLinearIssue passes no comments, to keep
+// a ~1000-issue fetch cheap), so without this a card whose weak `test -f` was
+// already corrected by a later comment — the only way a Linear description's
+// command can be fixed after filing, per BRO-2796 — would be reported as
+// vacuous forever, and any repair sweep would act on a card that is already fine.
+function reconcileVacuousChecksWithComments(flagged, opts = {}) {
+  return reconcileCheckDefectsWithComments(flagged, auditVacuousChecks, opts);
 }
 
 async function runLinearAudit(limit) {
@@ -249,11 +281,15 @@ async function runLinearAudit(limit) {
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
   const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
   const report = buildReport(evaluated);
-  const initialFlagged = findCardsWithMissingCheckPaths(evaluated, { log: console.error });
+  const { missing: initialFlagged, vacuous } = findCardCheckPathDefects(evaluated, { log: console.error });
   if (initialFlagged.length) {
     console.error(`[audit-card-verifiability] linear: re-checking ${initialFlagged.length} flagged card(s) against their own comments (BRO-2796 correction path)`);
   }
   report.missingCheckPaths = await reconcileMissingCheckPathsWithComments(initialFlagged, { log: console.error });
+  if (vacuous.length) {
+    console.error(`[audit-card-verifiability] linear: re-checking ${vacuous.length} vacuous-check card(s) against their own comments (BRO-3378)`);
+  }
+  report.vacuousChecks = await reconcileVacuousChecksWithComments(vacuous, { log: console.error });
   writeReport(report, LINEAR_REPORT_PATH);
   return report;
 }
@@ -296,6 +332,18 @@ function printReport(label, report, reportPath) {
     console.log(`whose file hasn't been written yet; a reader should judge each before acting:`);
     missingCheckPaths.forEach(c => console.log(`  ${c.id} ${c.name} — ${c.cmd} (missing: ${c.missingPaths.join(', ')})`));
   }
+  // BRO-3378. Worded to be unmistakable from the bucket above: that one is
+  // "the check can never PASS", this one is "the check can never FAIL". Both
+  // can be true of a `test -f` card and only one ever is, so saying which
+  // is what makes the pair readable instead of looking like two scoldings of
+  // every test -f card.
+  const vacuousChecks = report.vacuousChecks || [];
+  console.log(`${label} armed but carrying a check that cannot fail (test -f on a file already on origin/main): ${vacuousChecks.length}`);
+  if (vacuousChecks.length) {
+    console.log(`\n${label} cards whose acceptance check is already green before the work starts — re-running it`);
+    console.log(`at Done time cannot tell finished work from untouched work (the BRO-423 false-Done class):`);
+    vacuousChecks.forEach(c => console.log(`  ${c.id} [${c.kind}] ${c.name} — ${c.cmd}`));
+  }
   console.log(`Report written: ${path.relative(REPO, reportPath)}\n`);
 }
 
@@ -328,7 +376,8 @@ async function main() {
       `| Total checked | ${report.total} |`,
       `| Armed (dispatchable) | ${report.armedCount} |`,
       `| Refused (undispatchable) | ${report.refusedCount} |`,
-      `| Armed but check path absent from origin/main | ${(report.missingCheckPaths || []).length} |`,
+      `| Armed but check path absent from origin/main (can never pass) | ${(report.missingCheckPaths || []).length} |`,
+      `| Armed but check cannot fail (vacuous \`test -f\`) | ${(report.vacuousChecks || []).length} |`,
       '',
       ...(kindEntries.length ? [
         '### Refused by kind',
@@ -352,4 +401,6 @@ module.exports = {
   evaluateLinearIssue, fetchLinearOpenIssuesWithDescriptions, runLinearAudit, LINEAR_REPORT_PATH,
   // BRO-2977/BRO-3076: exported for unit coverage.
   attachMissingCheckPaths, reconcileMissingCheckPathsWithComments,
+  // BRO-3378: vacuous-check bucket — exported for unit coverage.
+  reconcileVacuousChecksWithComments, reconcileCheckDefectsWithComments,
 };
