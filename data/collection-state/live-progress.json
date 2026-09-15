@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-14T23:41:57.244Z",
-  "processed": 10,
-  "failed": 22,
-  "successRate": "31.3%",
+  "updatedAt": "2026-09-15T01:10:49.311Z",
+  "processed": 12,
+  "failed": 24,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 9,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-09-14T23:34:42.979Z",
@@ -59,6 +59,17 @@
       "t": "2026-09-14T23:39:51.020Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-15T01:08:40.691Z",
+      "event": "bb-session",
+      "session": "e5b8e900",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-15T01:08:41.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
