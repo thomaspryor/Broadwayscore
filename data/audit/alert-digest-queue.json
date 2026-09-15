@@ -701,5 +701,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-14T23:04:28.324Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-pre-existing-condition-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on Pre-Existing Condition",
+    "description": "pre-existing-condition-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=pre-existing-condition-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T01:33:19.240Z"
   }
 ]
