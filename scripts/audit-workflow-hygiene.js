@@ -257,6 +257,26 @@ function findUnescapedApostrophesInSingleQuotedEval(raw) {
 const DEFAULT_PUSH_DEADLINE_SEC = 240; // push-with-retry.sh's own PUSH_DEADLINE_SEC default
 
 /**
+ * The last step of a job has no next sibling step to bound its body slice —
+ * `lines.length` was used instead, which bleeds the NEXT job's preamble
+ * (its `needs:`/`if:`/`runs-on:`/`timeout-minutes:` job-level keys, which sit
+ * between that job's own header and its first `- name:` step) into the
+ * PRECEDING job's last step. That falsely attributed an unrelated job's
+ * `timeout-minutes:` to a push-with-retry.sh step in a different job
+ * entirely (BRO-3389 ship-check finding — caught a real false positive on
+ * update-show-status.yml's catchup-zero-review-shows job). Job keys sit at
+ * 2-space indent (`  job-name:`), one level shallower than a step's 6-space
+ * `      - name:`, so the first such line at or after a step's start caps
+ * the slice.
+ */
+function capEndAtNextJobBoundary(lines, startLine, endLine) {
+  for (let i = startLine + 1; i < endLine; i++) {
+    if (/^ {2}\S.*:\s*$/.test(lines[i]) || /^ {2}\S.*:\s+\S/.test(lines[i])) return i;
+  }
+  return endLine;
+}
+
+/**
  * Rule (i): a step whose `run:` block calls push-with-retry.sh but declares
  * `timeout-minutes:` at or below the script's own internal push deadline —
  * zero buffer for the step to be killed BEFORE the script's own graceful
@@ -278,7 +298,8 @@ function findShortPushTimeoutSteps(raw) {
 
   for (let idx = 0; idx < stepStarts.length; idx++) {
     const { name, startLine } = stepStarts[idx];
-    const endLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const rawEndLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const endLine = capEndAtNextJobBoundary(lines, startLine, rawEndLine);
     const bodyLines = lines.slice(startLine, endLine);
     const bodyText = bodyLines.join('\n');
 
@@ -339,7 +360,8 @@ function findShortBatchPollTimeoutSteps(raw) {
 
   for (let idx = 0; idx < stepStarts.length; idx++) {
     const { name, startLine } = stepStarts[idx];
-    const endLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const rawEndLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const endLine = capEndAtNextJobBoundary(lines, startLine, rawEndLine);
     const bodyLines = lines.slice(startLine, endLine).filter((l) => !l.trimStart().startsWith('#'));
     const bodyText = bodyLines.join('\n');
 
