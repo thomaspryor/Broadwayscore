@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-15T01:57:38.276Z",
+  "timestamp": "2026-09-15T02:21:34.343Z",
   "stats": {
-    "totalReviews": 43277,
-    "alreadyFlagged": 17962,
+    "totalReviews": 43296,
+    "alreadyFlagged": 17970,
     "dateGuardCatches": 236,
     "directorMismatch": 1044,
-    "tvFilmSignals": 1269,
-    "londonSignals": 1060,
+    "tvFilmSignals": 1270,
+    "londonSignals": 1063,
     "offBroadwaySignals": 504,
     "yearMismatch": 91,
-    "noPublishDate": 3714
+    "noPublishDate": 3718
   },
   "findings": [
     {
@@ -13705,6 +13705,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "file": "nytg--unknown.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.newyorktheatreguide.com/reviews/in-honor-of-jean-michel-basquiat-off-broadway-review-roger-guenveur-smith",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -40484,6 +40497,19 @@
       ]
     },
     {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "anothermag--another.json",
+      "publishDate": "2026-09-08",
+      "url": "https://www.anothermag.com/design-living/17447/josh-oconnor-golden-boy-sam-yates-interview-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "good-people-2011",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 81,
@@ -44382,6 +44408,20 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": null,
+      "publishDate": "2026-09-15",
+      "url": "https://www.dailymail.com/tvshowbiz/article-16131281/PATRICK-MARMION-reviews-Man-Man-Royal-Court-Theatre.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "guardian--mark-lawson.json",
       "score": 82,
       "publishDate": "2026-09-11",
@@ -46542,6 +46582,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "pre-existing-condition-off-broadway-2026",
+      "file": "culturesauce--unknown.json",
+      "publishDate": null,
+      "url": "https://culturesauce.com/pre-existing-condition-lupita-nyongo-off-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
