@@ -185,7 +185,7 @@ async function fetchPosthogDailyClicks(days, opts = {}) {
       AND timestamp >= toDateTime('${start.toISOString()}')
       AND timestamp <= toDateTime('${now.toISOString()}')
       AND coalesce(JSONExtractString(person.properties, 'is_owner'), '') != 'true'
-      AND properties.$geoip_country_code NOT IN ('SG', 'CN', 'VN')
+      AND properties.$geoip_country_code NOT IN ('SG', 'CN', 'VN', 'HK')
     GROUP BY d ORDER BY d
   `;
   const { ok, status, data } = await fetchWithTimeout(

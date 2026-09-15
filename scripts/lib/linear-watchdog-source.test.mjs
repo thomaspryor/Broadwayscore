@@ -245,3 +245,36 @@ test('detectWriteBackLeak is report-only and total', () => {
   // Degenerate inputs must not throw.
   assert.deepEqual(src.detectWriteBackLeak(null, null, Date.now()), []);
 });
+
+// BRO-3424: started (In Progress) Linear issues need a task-mirror entry too
+// — planSweep's unlandedDone gate is isTaskOpen(tasks.get(id)), and without
+// this a headless job's still-"In Progress" card (the exact state a job that
+// finished without merging is in) silently dropped its own unlanded finding.
+test('mapStartedToTask: maps a started-issue entry to an OPEN task-mirror row, never a queueable one', () => {
+  const task = src.mapStartedToTask('linear:BRO-3388', { identifier: 'BRO-3388', title: 'gather-reviews dispatch', stateName: 'In Progress' });
+  assert.equal(task.id, 'linear:BRO-3388');
+  assert.equal(task.subject, 'gather-reviews dispatch');
+  assert.equal(task.status, 'in_progress');
+  assert.ok(core.taskPriority(task) === null, 'no P0/P1 line — must never enter p01Queue (which only re-queues status pending anyway)');
+});
+
+test('BRO-3424 end-to-end: a started Linear card (mapped via mapStartedToTask) makes its unlandedDone finding visible to planSweep', () => {
+  const task = src.mapStartedToTask('linear:BRO-3388', { identifier: 'BRO-3388', title: 'gather-reviews dispatch', stateName: 'In Progress' });
+  const tasks = new Map([[task.id, task]]);
+  const unlandedJobDone = [{ taskId: 'linear:BRO-3388', jobId: 'job-abc', cwd: '/tmp/job-linear-BRO-3388', sha: 'deadbeef' }];
+  const plan = core.planSweep([], tasks, { now: Date.now(), liveTitles: new Map([['workspace:1', '🤖 x']]), unlandedJobDone });
+  assert.equal(plan.unlandedDone.length, 1, 'before the mapStartedToTask fix, tasks.get(id) was undefined for a started card and this finding was silently dropped');
+  assert.equal(plan.unlandedDone[0].taskId, 'linear:BRO-3388');
+  assert.ok(!plan.toDispatch.some((d) => d.taskId === 'linear:BRO-3388'), 'still never auto-redispatched');
+});
+
+test('mapStartedToTask: degenerate inputs return null rather than a half-built row', () => {
+  assert.equal(src.mapStartedToTask(null, { identifier: 'BRO-1' }), null);
+  assert.equal(src.mapStartedToTask('linear:BRO-1', null), null);
+});
+
+test('linearStartedTasksForPlan: a started Linear card is OPEN per isTaskOpen, so unlandedDone can see it', () => {
+  const wd = require('../dispatch-watchdog.js');
+  // Never fetched => empty, same contract as linearTasksForPlan's own test.
+  assert.equal(wd.linearStartedTasksForPlan(Date.now()).size, 0);
+});

@@ -240,7 +240,10 @@ async function phDaily(expr, { startDate, endDate }, extraWhere = '') {
   }
   return rows.map(([d, k, sessions, users]) => ({
     date: String(d).slice(0, 10), key: k === null || k === '' ? '(none)' : String(k), sessions, users,
-  }));
+  }))
+    // A session with no $start_timestamp dates to the epoch (seen live: two
+    // rows in "1969-12-29"); anything outside the window is not ours to bucket.
+    .filter((r) => r.date >= startDate && r.date <= endDate);
 }
 
 async function fetchPostHog(range) {
@@ -270,14 +273,26 @@ async function fetchPostHog(range) {
 
 // ---------- report ----------
 
-function seriesFor(rows, metric) {
-  return bucketWeekly(rows.map((r) => ({ date: r.date, key: r.key, value: r[metric] })));
+function seriesFor(rows, normalizedRows, metric) {
+  return bucketWeekly((normalizedRows || rows).map((r) => ({ date: r.date, key: r.key, value: r[metric] })));
+}
+
+/**
+ * Newsletter campaigns are date-stamped (weekly-2026-07-12, we-weekly-…,
+ * opening-<show>-2026), so every send would read as a brand-new source.
+ * Collapse them to their family so the campaign table shows the channel's
+ * real trend and only genuinely new campaign families get flagged.
+ */
+function normalizeCampaign(key) {
+  return String(key)
+    .replace(/^(we-)?weekly-\d{4}-\d{2}-\d{2}$/, '$1weekly-(dated sends)')
+    .replace(/^opening-.+-\d{4}$/, 'opening-(dated sends)');
 }
 
 /** One report section: weekly matrix + spike table. Returns md plus the spikes for the summary. */
 function sectionFor({ tool, title, rows, metric, weeks, currentWeek, opts = {} }) {
-  if (!rows || !rows.length) return { md: `### ${title}\n_No data_\n\n`, spikes: [], series: {} };
-  const series = seriesFor(rows, metric);
+  if (!rows || !rows.length) return { md: `### ${title}\n_No data_\n\n`, spikes: [], series: {}, tool, metric };
+  const series = seriesFor(rows, opts.normalizeKey ? rows.map((r) => ({ ...r, key: opts.normalizeKey(r.key) })) : null, metric);
   const spikes = detectSpikes(series, weeks, { currentWeek, ...opts });
   const minAbs = opts.minAbs || 30;
   const ratio = opts.ratio || 3;
@@ -290,7 +305,7 @@ function sectionFor({ tool, title, rows, metric, weeks, currentWeek, opts = {} }
   } else {
     md += '_No spikes detected._\n';
   }
-  return { md, spikes: spikes.map((s) => ({ ...s, tool, dimension: title, metric })), series };
+  return { md, spikes: spikes.map((s) => ({ ...s, tool, dimension: title, metric })), series, tool, metric };
 }
 
 /** Last full week vs the average of the 4 full weeks before it, per key. */
@@ -327,7 +342,7 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
     sections.ga.push(S('GA4', 'Channel group', ga.channel, 'engagedSessions'));
     sections.ga.push(S('GA4', 'Channel group (raw sessions, includes bots)', ga.channel, 'sessions'));
     sections.ga.push(S('GA4', 'Source / medium', ga.sourceMedium, 'engagedSessions', { topN: 20, minAbs: 20 }));
-    sections.ga.push(S('GA4', 'Campaign', ga.campaign, 'sessions', { minAbs: 10, ratio: 2.5 }));
+    sections.ga.push(S('GA4', 'Campaign', ga.campaign, 'sessions', { minAbs: 10, ratio: 2.5, normalizeKey: normalizeCampaign }));
     sections.ga.push(S('GA4', 'Country', ga.country, 'engagedSessions', { topN: 15 }));
     sections.ga.push(S('GA4', 'Landing page', ga.landing, 'engagedSessions', { topN: 20, minAbs: 25 }));
   }
@@ -347,9 +362,17 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
   const allSpikes = [...sections.ph, ...sections.ga].flatMap((s) => s.spikes)
     .filter((s) => !/raw sessions/.test(s.dimension))
     .sort((a, b) => (b.value - b.priorMedian) - (a.value - a.priorMedian));
-  if (allSpikes.length) {
+  // One line per source per tool: its biggest jump above baseline (allSpikes is
+  // sorted by excess). Repeat weeks show in the section tables.
+  const seen = new Set();
+  const headline = allSpikes.filter((s) => {
+    const id = `${s.tool}|${s.dimension}|${s.key}`;
+    if (seen.has(id)) return false;
+    seen.add(id); return true;
+  });
+  if (headline.length) {
     md += `Biggest jumps in the window, across both tools (each is a source that did at least 3x its usual weekly volume, or appeared from nothing):\n\n`;
-    for (const s of allSpikes.slice(0, 10)) md += `- ${plainSpike(s)}\n`;
+    for (const s of headline.slice(0, 12)) md += `- ${plainSpike(s)}\n`;
     md += `\n`;
   } else {
     md += `No source spiked in the window.\n\n`;
@@ -367,7 +390,7 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
 
   md += `## How to read this\n\n`;
   md += `- Weeks start on Monday. The current week (from ${fmtDate(currentWeek)}) is not finished, so it is shown but never counted as a spike.\n`;
-  md += `- **PostHog** is the trustworthy count: it uses the Real Users lens (owner and the Singapore/China/Vietnam bot geos excluded) and counts each visit once, by the referrer and page it arrived through.\n`;
+  md += `- **PostHog** is the trustworthy count: it uses the Real Users lens (owner and the Singapore/China/Vietnam/Hong Kong bot geos excluded) and counts each visit once, by the referrer and page it arrived through.\n`;
   md += `- **GA4** counts are inflated by bots in Direct; the GA4 tables use "engaged sessions" (visits that stayed 10s+, viewed 2+ pages or converted), which drops most of that. One table shows raw sessions so the bot share is visible.\n`;
   md += `- "Usual per week" is the median of the earlier full weeks; "times usual" is this week divided by that.\n`;
   md += `- Vercel Web Analytics has no query API, so it is not included; check its dashboard by hand if a spike needs a third opinion.\n`;
@@ -424,7 +447,7 @@ async function main() {
   }
 }
 
-module.exports = { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell };
+module.exports = { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell, normalizeCampaign };
 
 if (require.main === module) {
   main().catch((e) => { console.error(e); process.exit(1); });

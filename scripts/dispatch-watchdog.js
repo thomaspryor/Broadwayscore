@@ -45,6 +45,7 @@ const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 const core = require('./lib/dispatch-watchdog-core.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { findUnlandedJobDoneEntries } = require('./lib/headless-unlanded-detection.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
@@ -68,6 +69,16 @@ const HEARTBEAT_STALE_MS = 10 * 60 * 1000;      // ensure-tab resurrection bar
 const HEALTH_STALE_MS = 30 * 60 * 1000;         // launchd paging bar
 const DISPATCH_TIMEOUT_MS = 15 * 60 * 1000;     // bsc-next slow-boot worst case + margin
 const RECHECK_WINDOW_MS = 48 * 3600 * 1000;
+// BRO-3424: how far back findUnlandedJobDoneEntries re-checks job-done
+// ancestry each sweep. Unbounded would re-walk every job-done the ledger has
+// ever recorded (most worktrees long gone — a fast existsSync-false, but
+// still O(all-time jobs) per 90s sweep). This is a visibility window only —
+// this signal drives no auto-redispatch (see planSweep's own comment), so it
+// has no REDISPATCH_REARM_MS-style self-heal to line up with. The real
+// backstop for anything older is gc-merged-worktrees.sh's independent
+// stale_unmerged digest (it reports, never deletes, an unmerged worktree); a
+// week just keeps this sweep's own git-subprocess cost bounded.
+const UNLANDED_CHECK_WINDOW_MS = 7 * 24 * 3600 * 1000;
 
 const USAGE = `dispatch-watchdog.js — durable owner of dispatched-work outcomes
 
@@ -274,18 +285,46 @@ function linearTasksForPlan(now = Date.now()) {
   return linearTaskCache.tasks;
 }
 
+// BRO-3424 (ship-check catch, Codex): fetchLinearWatchdogTasks() deliberately
+// keeps 'started' (In Progress / In Review) issues OUT of linearTaskCache.tasks
+// — isWatchdogEligible() excludes them so they're never re-queued — but that
+// means a started Linear card has NO entry at all in the `tasks` map planSweep
+// reads. unlandedDone's gate is `isTaskOpen(tasks.get(id))`, so for exactly
+// the case this whole card exists to catch (a headless job whose Linear card
+// is still "In Progress" because the worker never merged and reported Done),
+// tasks.get(id) was undefined and the finding was silently dropped — the
+// PRIMARY real-world case (BRO-3388 in the card's own incident writeup) would
+// never have surfaced. Mapped with status 'in_progress' (isTaskOpen's other
+// accepted value) so unlandedDone sees it as open; p01Queue is unaffected
+// (it only re-queues status 'pending').
+function linearStartedTasksForPlan(now = Date.now()) {
+  if (!linearTaskCache.ts || now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return new Map();
+  const source = require('./lib/linear-watchdog-source.js');
+  const out = new Map();
+  for (const [id, meta] of linearTaskCache.started || new Map()) {
+    const task = source.mapStartedToTask(id, meta);
+    if (task) out.set(id, task);
+  }
+  return out;
+}
+
 function buildPlan(now) {
   const entries = readLedgerCached();
   const tasks = loadTasksUnioned();
   // Union, never mutate the loader's own map semantics: Linear ids are
   // "linear:BRO-N" and Notion ids are bare digits, so the two namespaces
   // cannot collide and neither can shadow the other.
+  for (const [id, task] of linearStartedTasksForPlan(now)) tasks.set(id, task);
   for (const [id, task] of linearTasksForPlan(now)) tasks.set(id, task);
   return core.planSweep(entries, tasks, {
     now,
     liveTitles: liveTitleMap(),
     recheckFailures: recentRecheckFailures(now),
     dispatchEnabled: dispatchEnabled(),
+    unlandedJobDone: findUnlandedJobDoneEntries(entries, {
+      sinceMs: now - UNLANDED_CHECK_WINDOW_MS,
+      mainRepoCwd: require('./lib/bsc-runner.js').REPO,
+    }),
   });
 }
 
@@ -895,7 +934,7 @@ module.exports = {
   // rather than a copy of its regex (CLAUDE.md rule 15). LINEAR_CACHE_TTL_MS
   // and linearTasksForPlan go with it so the cache's staleness contract is
   // testable without a network call.
-  dispatchArgvFor, linearTasksForPlan, LINEAR_CACHE_TTL_MS,
+  dispatchArgvFor, linearTasksForPlan, linearStartedTasksForPlan, LINEAR_CACHE_TTL_MS,
   // BRO-3429: same rationale — tested against the real function, not a copy.
   reArmHintFor,
 };

@@ -146,8 +146,37 @@ test('allowed: PR-EVIDENCE recorded in a past comment (not the description or th
       },
       updateShouldBeCalled: true,
     });
-    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+    // The verifier is stubbed: this test is about WHERE the evidence is read
+    // from, not whether PR #1001 is real. done-evidence-verify.test.mjs owns that.
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+      { verifyEvidence: () => ({ verified: true, reason: 'stub: on origin/main' }) }
+    );
     assert.match(h.getLogs(), /"doneGateRefused":false/);
+  });
+});
+
+test('refused: PR-EVIDENCE whose commit is not on origin/main — report posts the comment but the state does not move', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Fixed the thing, looks good.',
+        commentBodies: ['PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/deadbeefcafe)'],
+      },
+      updateShouldBeCalled: false,
+    });
+    await assert.rejects(
+      () => cmdReport(
+        { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+        { verifyEvidence: () => ({ verified: false, reason: 'stub: commit is NOT on origin/main' }) }
+      ),
+      /EXIT/
+    );
+    assert.equal(h.getExitCode(), 5);
+    assert.match(h.getErrors(), /REFUSED \(pr-evidence-not-on-main\)/);
+    assert.match(h.getErrors(), /NOT on origin\/main/);
+    // The outcome comment still posts — only the state move is refused.
+    assert.match(h.getLogs(), /"doneGateRefused":true/);
   });
 });
 

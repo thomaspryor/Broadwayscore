@@ -24,10 +24,18 @@ function run(show, context) {
     details: {
       showId: show.id,
       tags: show.tags,
-      // Self-declared remediation (task #1132, extending #389). kind:'alert', not
-      // 'workflow' — fix-stale-upcoming-tags.js has no workflow_dispatch wrapper,
-      // and a tag-only fix on the shows.json write-guard path doesn't warrant
-      // standing up new CI just to auto-run it (owner review gate, rule 18).
+      // Self-declared remediation (task #1132, extending #389). Originally
+      // kind:'alert', not 'workflow' — "a tag-only fix on the shows.json
+      // write-guard path doesn't warrant standing up new CI just to auto-run
+      // it" (owner review gate, rule 18). BRO-3428 superseded that call once
+      // the alert backlog itself became the cost: 14 rows were 16% of the
+      // daily digest queue, ~$84/day in auto-dispatched sessions re-doing what
+      // one cron step now does for free. update-show-status.yml now runs the
+      // bulk `fix-stale-upcoming-tags.js --apply` daily, immediately after the
+      // previews->open transition that causes this — kind stays 'alert' here
+      // (not 'workflow') because that cron already covers it; this check's
+      // remaining job is a staleness detector — a persistent alert past 24h
+      // now means the automated fixer itself broke, not that it never ran.
       remediation: {
         kind: 'alert',
         key: `stale-upcoming-tag:${show.id}`,
