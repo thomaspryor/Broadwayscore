@@ -123,3 +123,23 @@ describe('silent-failure-logging — end-to-end: rejection reaches the audit tra
     fs.rmSync(tmpDir, { recursive: true });
   });
 });
+
+describe('silent-failure-logging — second createReviewFile caller is also covered', () => {
+  it('TC6: opening-night-poller.js routes its createReviewFile rejections through the same shared logger (adversarial ship-check finding)', () => {
+    // gather-reviews.js is not the only caller of createReviewFile —
+    // opening-night-poller.js calls it too, and originally only fed a blind
+    // `rejected++` counter with no per-reason breakdown: the same silent-
+    // failure pattern this whole fix exists to close, just a second,
+    // uncovered call site of the same function. Static-source check (not a
+    // full poller run, which needs heavy fs/network mocking) proving the
+    // wiring exists: shouldLogRejection gates a logExclusion call in the
+    // same branch that increments `rejected`.
+    const src = fs.readFileSync(path.resolve(__dirname, '../../scripts/opening-night-poller.js'), 'utf8');
+    const rejectedIdx = src.indexOf('rejected++');
+    assert.ok(rejectedIdx !== -1, 'opening-night-poller.js should still increment a rejected counter');
+    const nearby = src.slice(Math.max(0, rejectedIdx - 400), rejectedIdx + 900);
+    assert.ok(nearby.includes('shouldLogRejection'), 'the rejected++ branch must be gated by shouldLogRejection');
+    assert.ok(nearby.includes('logExclusion({'), 'the rejected++ branch must call the shared logExclusion');
+    assert.ok(nearby.includes("script: 'opening-night-poller'"), 'the log record must identify its own script name, not borrow gather-reviews\' identity');
+  });
+});
