@@ -71,7 +71,7 @@ function makeSharedMainWithTwoBranches() {
 
 test('ACCEPTANCE: UI-files-changed diff for a push includes ONLY the pushing branch\'s commits', (t) => {
   const repo = makeSharedMainWithTwoBranches();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const base = resolveBase(repo);
   const { files } = scopedChangedFiles(repo, base, 'HEAD', UI_PATTERN);
   assert.deepEqual(files, [], 'sessionB touched no UI files — must not see sessionA\'s Widget.tsx');
@@ -79,7 +79,7 @@ test('ACCEPTANCE: UI-files-changed diff for a push includes ONLY the pushing bra
 
 test('without own-merge scoping the naive diff would have wrongly flagged UI files (sanity check on fixture)', (t) => {
   const repo = makeSharedMainWithTwoBranches();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const base = resolveBase(repo);
   const naive = execFileSync('git', ['-C', repo, 'diff', '--name-only', `${base}...HEAD`], { encoding: 'utf8' })
     .split('\n').filter(Boolean);
@@ -89,7 +89,7 @@ test('without own-merge scoping the naive diff would have wrongly flagged UI fil
 
 test('a push that genuinely touches a UI file is still detected (fix does not disable the gate)', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   git(repo, 'checkout', '-q', '-b', 'other-session-branch');
   commitFile(repo, 'scripts/other.js', 'module.exports = () => 2;\n', 'other session, unrelated');
   git(repo, 'checkout', '-q', 'main');
@@ -107,7 +107,7 @@ test('a push that genuinely touches a UI file is still detected (fix does not di
 
 test('REGRESSION: scoping survives a trailing non-merge commit on top of the merge (e.g. an auto-commit)', (t) => {
   const repo = makeSharedMainWithTwoBranches();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitFile(repo, 'scripts/followup.js', 'module.exports = () => 3;\n', 'small trailing commit after the merge');
 
   const base = resolveBase(repo);

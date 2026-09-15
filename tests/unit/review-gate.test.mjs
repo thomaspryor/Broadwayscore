@@ -61,7 +61,7 @@ function commitLines(repo, relPath, nLines, msg = 'change') {
 
 test('under-budget diff is not gated', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/small.js', GATE_LINE_BUDGET - 5, 'small');
   const r = queryPushAllowed({ repoRoot: repo });
   assert.equal(r.allowed, true);
@@ -75,7 +75,7 @@ test('a plan-phase verdict NEVER satisfies the push gate (task #1079)', (t) => {
   // those fields, a pre-implementation review would silently rubber-stamp an
   // unreviewed push — the exact thing this gate exists to prevent.
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/monitor.js', 60, 'unreviewed code');
   // 'second-opinion' is a LIGHT reviewer, so it clears the reviewer filter and
   // reaches the hash/ancestor arms — the strongest form of this test.
@@ -93,7 +93,7 @@ test('a plan-phase verdict NEVER satisfies the push gate (task #1079)', (t) => {
 
 test('recordPlanVerdict requires a session id (an unattributed verdict covers nothing)', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const r = recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'pass' });
   assert.equal(r.recorded, false);
   assert.match(r.reason, /session-id/);
@@ -101,7 +101,7 @@ test('recordPlanVerdict requires a session id (an unattributed verdict covers no
 
 test('ACCEPTANCE: >30-line scripts/ diff with no verdict is BLOCKED', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/monitor.js', 60, 'gate-ab monitor');
   const r = queryPushAllowed({ repoRoot: repo });
   assert.equal(r.gated, true);
@@ -112,7 +112,7 @@ test('ACCEPTANCE: >30-line scripts/ diff with no verdict is BLOCKED', (t) => {
 
 test('ACCEPTANCE: same push after ship-check verdict is allowed (exact hash)', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/monitor.js', 60, 'gate-ab monitor');
   const rec = recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'pass' });
   assert.equal(rec.recorded, true);
@@ -123,7 +123,7 @@ test('ACCEPTANCE: same push after ship-check verdict is allowed (exact hash)', (
 
 test('fail verdict does not unlock the push', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/monitor.js', 60, 'monitor');
   recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'fail' });
   const r = queryPushAllowed({ repoRoot: repo });
@@ -132,7 +132,7 @@ test('fail verdict does not unlock the push', (t) => {
 
 test('post-review fixups within drift budget still pass', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/monitor.js', 60, 'monitor');
   recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'pass' });
   commitLines(repo, 'scripts/monitor.js', 70, 'fixup after review'); // rewrites file: 60 del + 70 add = 130 ≤ 150
@@ -144,7 +144,7 @@ test('post-review fixups within drift budget still pass', (t) => {
 
 test('drift beyond budget re-blocks (fixups themselves need review)', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/monitor.js', 60, 'monitor');
   recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'pass' });
   commitLines(repo, 'scripts/other.js', DRIFT_BUDGET_LINES + 50, 'big new work');
@@ -155,14 +155,14 @@ test('drift beyond budget re-blocks (fixups themselves need review)', (t) => {
 
 test('second-opinion verdict only counts for small diffs', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/big.js', SECOND_OPINION_MAX_LINES + 50, 'big');
   recordVerdict({ repoRoot: repo, reviewer: 'second-opinion', result: 'pass' });
   const big = queryPushAllowed({ repoRoot: repo });
   assert.equal(big.allowed, false, 'light review must not rubber-stamp a big diff');
 
   const repo2 = makeRepo();
-  t.after(() => rmSync(repo2, { recursive: true, force: true }));
+  t.after(() => rmSync(repo2, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo2, 'scripts/mid.js', 50, 'mid');
   recordVerdict({ repoRoot: repo2, reviewer: 'second-opinion', result: 'pass' });
   const mid = queryPushAllowed({ repoRoot: repo2 });
@@ -171,7 +171,7 @@ test('second-opinion verdict only counts for small diffs', (t) => {
 
 test('non-code paths (data/, docs) never gate', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'data/scratch-fixture.json', 500, 'data churn');
   writeFileSync(join(repo, 'README.md'), 'x\n'.repeat(200));
   git(repo, 'add', '-A');
@@ -183,7 +183,7 @@ test('non-code paths (data/, docs) never gate', (t) => {
 
 test('src/ TypeScript and workflow yml are gated paths; css is not', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'src/lib/engine.ts', 40, 'logic');
   commitLines(repo, '.github/workflows/deploy.yml', 40, 'wf');
   writeFileSync(join(repo, 'src', 'styles.css'), 'a{}\n'.repeat(100));
@@ -198,7 +198,7 @@ test('src/ TypeScript and workflow yml are gated paths; css is not', (t) => {
 
 test('diffHash is content-addressed: merge commit with identical diff keeps the verdict', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   git(repo, 'checkout', '-q', '-b', 'feature');
   commitLines(repo, 'scripts/feature.js', 60, 'feature work');
   const rec = recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'pass' });
@@ -213,7 +213,7 @@ test('diffHash is content-addressed: merge commit with identical diff keeps the 
 
 test('renamed gated file still counts toward the budget', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/old-name.js', 60, 'v1');
   git(repo, 'mv', 'scripts/old-name.js', 'scripts/new-name.js');
   git(repo, 'commit', '-q', '-m', 'rename');
@@ -224,7 +224,7 @@ test('renamed gated file still counts toward the budget', (t) => {
 
 test('no-base scratch clone fails open (never wedges)', (t) => {
   const repo = mkdtempSync(join(tmpdir(), 'review-gate-nobase-'));
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   git(repo, 'init', '-q', '-b', 'trunk'); // no main, no origin/main
   git(repo, 'config', 'user.email', 't@e.com');
   git(repo, 'config', 'user.name', 'T');
@@ -249,7 +249,7 @@ function tmpClaimsPath() {
 
 test('gatedDiffPatchText: contains gated-file content, excludes non-gated paths', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/monitor.js', 5, 'shouldShowSentiment fix');
   writeFileSync(join(repo, 'data', 'scratch.json'), '{"shouldShowSentiment": true}\n'.repeat(5));
   git(repo, 'add', '-A');
@@ -262,7 +262,7 @@ test('gatedDiffPatchText: contains gated-file content, excludes non-gated paths'
 
 test('queryCiRedClaimConflict: no claims file — not blocked (fail open)', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/fix.js', 3, 'shouldShowSentiment fix');
   const r = queryCiRedClaimConflict({ repoRoot: repo, claimsPath: '/nonexistent/ci-red-claims.jsonl' });
   assert.equal(r.blocked, false);
@@ -270,7 +270,7 @@ test('queryCiRedClaimConflict: no claims file — not blocked (fail open)', (t) 
 
 test('queryCiRedClaimConflict: diff matches another in_progress claim — blocked', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const claimsPath = tmpClaimsPath();
   appendClaim({ taskId: '563', symbol: 'shouldShowSentiment' }, claimsPath);
   commitLines(repo, 'scripts/fix.js', 3, 'shouldShowSentiment ReferenceError fix');
@@ -281,7 +281,7 @@ test('queryCiRedClaimConflict: diff matches another in_progress claim — blocke
 
 test('queryCiRedClaimConflict: own claim excluded via ownTaskId — not blocked', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const claimsPath = tmpClaimsPath();
   appendClaim({ taskId: '584', symbol: 'shouldShowSentiment' }, claimsPath);
   commitLines(repo, 'scripts/fix.js', 3, 'shouldShowSentiment ReferenceError fix');
@@ -291,7 +291,7 @@ test('queryCiRedClaimConflict: own claim excluded via ownTaskId — not blocked'
 
 test('queryCiRedClaimConflict: diff does not reference the claimed symbol — not blocked', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const claimsPath = tmpClaimsPath();
   appendClaim({ taskId: '563', symbol: 'shouldShowSentiment' }, claimsPath);
   commitLines(repo, 'scripts/unrelated.js', 5, 'unrelated typo fix');
@@ -301,7 +301,7 @@ test('queryCiRedClaimConflict: diff does not reference the claimed symbol — no
 
 test('queryCiRedClaimConflict: expired claim (past TTL) does not block', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const claimsPath = tmpClaimsPath();
   appendClaim({ taskId: '563', symbol: 'shouldShowSentiment' }, claimsPath);
   commitLines(repo, 'scripts/fix.js', 3, 'shouldShowSentiment ReferenceError fix');
@@ -312,7 +312,7 @@ test('queryCiRedClaimConflict: expired claim (past TTL) does not block', (t) => 
 
 test('queryCiRedClaimConflict: matches on runId too', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const claimsPath = tmpClaimsPath();
   appendClaim({ taskId: '9', runId: '30120249897' }, claimsPath);
   commitLines(repo, 'scripts/fix.js', 3, 'fix flake in CI run 30120249897');
@@ -325,7 +325,7 @@ test('queryCiRedClaimConflict: matches on runId too', (t) => {
 // silently passed through. Both fields must be checked independently.
 test('queryCiRedClaimConflict: claim has both symbol+runId, diff matches only runId — still blocked', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const claimsPath = tmpClaimsPath();
   appendClaim({ taskId: '9', symbol: 'shouldShowSentiment', runId: '30120249897' }, claimsPath);
   commitLines(repo, 'scripts/fix.js', 3, 'fix flake in CI run 30120249897');
@@ -338,7 +338,7 @@ test('queryCiRedClaimConflict: claim has both symbol+runId, diff matches only ru
 // the heuristic from firing on unrelated pushes.
 test('queryCiRedClaimConflict: short generic symbol below MIN_NEEDLE_LEN does not block', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const claimsPath = tmpClaimsPath();
   appendClaim({ taskId: '9', symbol: 'run' }, claimsPath);
   commitLines(repo, 'scripts/unrelated.js', 5, 'totally unrelated change to run the pipeline');

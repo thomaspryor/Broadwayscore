@@ -403,9 +403,12 @@ test.describe('My Shows — Watchlist', () => {
 
   test('watchlist cards have a rate-strip of five stars', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Grid cards carry a 5-star rate strip at the poster bottom (replaced the
-    // text "Rate" pill + centered hover stars, 2026-07-19).
-    const strips = page.locator('[class*="group/wl"] [role="radiogroup"]');
+    // Past-dated entries route to ToBeRatedCard's inline StarRating (no
+    // group/wl wrapper — that class only applies to WatchlistCard's flat
+    // alphabetical-list-view poster strip, per MyShowsClient.tsx's
+    // canRate/isFutureDated split). Scope to the tabpanel instead so this
+    // matches whichever card variant is actually rendering the rate control.
+    const strips = page.locator('[role="tabpanel"] [role="radiogroup"]');
     expect(await strips.count()).toBeGreaterThan(0);
     await expect(strips.first().getByRole('button', { name: '5 stars' })).toBeAttached();
   });

@@ -67,9 +67,18 @@ jobs:
       - run: node scripts/validate-data.js
 `;
 
+// POSITIVE CONTROL, and it is not optional (second-opinion warning). Test 1
+// asserts an ABSENCE, so it passes vacuously if the harness silently scans the
+// wrong tree — e.g. if os.tmpdir() ever sits inside a git repo, the guard's
+// `cd "$(git rev-parse --show-toplevel)"` lands on that outer root, the
+// .github/workflows glob stays literal, BODY is empty and the guard prints
+// "all clean". Pairing the comment-only file with a sentinel that MUST be
+// flagged makes that failure mode loud instead of green.
 test('a core-data writer named only in a YAML comment is not flagged', () => {
-  const { code, out } = runGuard({ 'comment-only.yml': COMMENT_ONLY });
-  assert.equal(code, 0, `expected pass, got exit ${code}:\n${out}`);
+  const { code, out } = runGuard({ 'comment-only.yml': COMMENT_ONLY, 'sentinel.yml': REAL_INVOKE });
+  assert.match(out, /sentinel\.yml\(validate-data\.js\)/,
+    'positive control: the harness must actually be scanning the fixtures');
+  assert.equal(code, 1, `expected failure from the sentinel alone, got exit ${code}:\n${out}`);
   assert.doesNotMatch(out, /comment-only\.yml/,
     'a script named in a comment is not an invocation — flagging it blocks unrelated pushes');
 });
@@ -86,4 +95,32 @@ test('with both present, only the real invocation is named', () => {
   assert.equal(code, 1, `expected the guard to FAIL, got exit ${code}:\n${out}`);
   assert.match(out, /real-invoke\.yml/);
   assert.doesNotMatch(out, /comment-only\.yml/);
+});
+
+// A LARGE workflow still gets flagged. This pins the fail-OPEN regression the
+// first version of this fix shipped: it matched with `printf '%s\n' "$BODY" |
+// grep -q`, and `grep -q` exits at the first hit, so printf took SIGPIPE and
+// the pipeline status was 141. Under `set -uo pipefail` that made the `if`
+// FALSE, so a workflow that genuinely invokes validate-data.js was reported
+// clean. Measured: MATCHED at 20/40 KB, MISSED(141) at 70/100/300 KB.
+//
+// 200 KB is deliberately well past the ~64 KB pipe-buffer threshold, and the
+// invocation is the FIRST line so grep matches immediately — the earlier the
+// match, the more unwritten input is left to trigger SIGPIPE. Real workflows
+// are already in this range: data-health-check.yml is 73 KB with no
+// push-core-data, so it sat on the failing side.
+// The padding MUST NOT be comment lines. The guard strips full-line comments
+// before matching, so '# padding' x N collapses to N empty lines (~1 byte
+// each) and the post-sed body never reaches the pipe buffer at all — a
+// comment-padded 200KB fixture passes against the broken pipe form too, which
+// is exactly the false-confidence this test exists to prevent. Pad with real
+// run: lines so the body stays large AFTER stripping.
+test('a LARGE workflow (200KB, past the pipe-buffer threshold) is still flagged', () => {
+  const pad = '      - run: echo padding-line-to-keep-this-body-large\n';
+  const big = REAL_INVOKE + pad.repeat(Math.ceil(200 * 1024 / pad.length));
+  assert.ok(big.length > 64 * 1024, 'fixture must exceed the pipe buffer to be meaningful');
+  const { code, out } = runGuard({ 'big.yml': big });
+  assert.equal(code, 1, `a 200KB workflow that invokes validate-data.js must FAIL, got exit ${code}:\n${out.slice(0, 400)}`);
+  assert.match(out, /big\.yml\(validate-data\.js\)/,
+    'the gate must not fail open on large files — this is the SIGPIPE/pipefail regression');
 });

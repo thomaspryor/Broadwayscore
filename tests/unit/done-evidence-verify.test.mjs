@@ -188,7 +188,7 @@ function makeRepo() {
 
 test('makeIsCommitOnMain: landed / not landed / never seen / rebase-rewritten SHA', (t) => {
   const { root, git, commit, work } = makeRepo();
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 
   const base = commit('a.txt');
   git('push', '-q', 'origin', 'main');
@@ -220,7 +220,7 @@ test('makeIsCommitOnMain: landed / not landed / never seen / rebase-rewritten SH
 
 test('makeIsCommitOnMain: offline — nothing is confirmed OR denied, even a commit on the stale local origin/main (main can be rewritten)', (t) => {
   const { root, git, commit, work } = makeRepo();
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const sha = commit('a.txt');
   git('push', '-q', 'origin', 'main');
   git('checkout', '-q', '-b', 'feature');
@@ -233,7 +233,7 @@ test('makeIsCommitOnMain: offline — nothing is confirmed OR denied, even a com
 
 test('makeIsCommitOnMain: after a history rewrite that dropped a commit, the refreshed check denies it (stale local ref must not approve)', (t) => {
   const { root, git, commit, work } = makeRepo();
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const keep = commit('a.txt');
   const dropped = commit('b.txt');
   git('push', '-q', 'origin', 'main');
@@ -254,7 +254,7 @@ test('evaluateEvidence: a foreign URL on the same line does not soften a definit
 
 test('makeMentionsIssue: merge subjects like "Merge branch \'job/linear-BRO-14-x\'" attribute; a bare merge does NOT attribute through its parents (a sync merge of main would attribute to everything)', (t) => {
   const { root, git, work } = makeRepo();
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const { makeMentionsIssue } = require('../../scripts/lib/done-evidence-verify.js');
   const mentions = makeMentionsIssue({ cwd: work, log: () => {} });
   fs.writeFileSync(path.join(work, 'a.txt'), 'a\n'); git('add', 'a.txt'); git('commit', '-q', '-m', 'base');
@@ -310,7 +310,7 @@ test('gate: a PROVEN-false PR claim next to a valid VERIFY: command is allowed b
 
 test('makeMentionsIssue: reads the landed commit message; BRO-14 does not match BRO-1', (t) => {
   const { root, git, work } = makeRepo();
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const { makeMentionsIssue } = require('../../scripts/lib/done-evidence-verify.js');
   fs.writeFileSync(path.join(work, 'x.txt'), 'x\n'); git('add', 'x.txt'); git('commit', '-q', '-m', 'fix(BRO-14): thing');
   const sha = git('rev-parse', 'HEAD');
@@ -322,7 +322,7 @@ test('makeMentionsIssue: reads the landed commit message; BRO-14 does not match 
 
 test('detectOriginRepo parses owner/repo from https and ssh remotes', (t) => {
   const { root, git, work } = makeRepo();
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   git('remote', 'set-url', 'origin', 'https://github.com/thomaspryor/Broadwayscore.git');
   assert.equal(detectOriginRepo(work), 'thomaspryor/Broadwayscore');
   git('remote', 'set-url', 'origin', 'git@github.com:thomaspryor/Broadwayscore.git');

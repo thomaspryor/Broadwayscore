@@ -84,7 +84,7 @@ test('store: create, append, single-commit branch, main untouched', () => {
     assert.equal(originBranchCommitCount(originDir, 'main'), '1',
       'ledger writes must never add commits to main');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -107,7 +107,7 @@ test('store: stale expected tip is rejected (CAS holds under a lost race)', () =
     const finalState = readLedger(cloneDir);
     assert.equal(finalState.content, 'writer-A\nwriter-B\n', 'the lost race must not clobber the winner');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -125,7 +125,7 @@ test('readLedger distinguishes branch-absent (fetchFailed=false) from fetch fail
     assert.equal(broken.fetchFailed, true, 'unreachable remote must set fetchFailed');
     assert.equal(broken.tip, '');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -144,7 +144,7 @@ test('record-push-ledger.js end-to-end: entry recorded on push-ledger branch, ma
     assert.equal(originBranchCommitCount(originDir, 'main'), '1',
       'record-push-ledger must not commit to main');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -162,7 +162,7 @@ test('record-push-ledger.js respects PUSH_SKIP_LEDGER=1 and missing --sha (fail 
       /unknown revision|bad revision|fatal/i,
       'no ledger branch should exist after kill-switch/no-sha runs');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -182,6 +182,6 @@ test('record-push-ledger.js canonical-repo gate: non-Broadwayscore origins are N
       /unknown revision|bad revision|fatal/i,
       'no ledger branch may be created on a non-canonical origin');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

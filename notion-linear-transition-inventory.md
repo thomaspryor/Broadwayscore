@@ -19,8 +19,11 @@ Disposition values used below:
 - `pending:BRO-NNN` — not yet actioned, tracked under a named Linear issue
 - `keep` — unaffected by the migration, no action needed
 
-Last verified: 2026-08-17/18 (grep/launchctl/Linear API checks run directly,
-not copied from the original issue body).
+Last verified: 2026-09-15 (grep/launchctl/Linear API checks run directly,
+not copied from the original issue body). Intake-channel rows re-verified and
+corrected under BRO-277 — the 2026-08-17/18 pass had both marked `pending`,
+which had gone stale by BRO-377 (email worker repoint) and BRO-384 (poller
+retirement) without this doc being updated.
 
 ## BSC Daily email
 
@@ -32,22 +35,22 @@ not copied from the original issue body).
 
 | Component | Disposition | Evidence |
 | --- | --- | --- |
-| Email worker (`~/.claude-email-worker/poll.py`, launchd `com.broadwayscore.claude-email-worker`) | pending:BRO-277 | `grep -li notion ~/.claude-email-worker/poll.py` still matches; `grep -li linear` matches nothing. Not repointed. Carry-over backlog items tracked in BRO-277. |
-| Notion action poller (`scripts/notion-action-poll.js`, launchd `com.bwsc.action-dispatcher`) | pending | 52 Notion references (`grep -c -i notion scripts/notion-action-poll.js`); `launchctl list | grep com.bwsc.action-dispatcher` shows it still loaded. Not yet repointed or retired. |
+| Email worker (`~/.claude-email-worker/poll.py`, launchd `com.broadwayscore.claude-email-worker`) | migrated | `escalate_to_dispatch()` (the only card-creation path — `em-*` markers are minted there) files via `node scripts/linear-brain.js create` and dispatches via `linear-next.js`, not Notion (BRO-377, verified `grep -c -i linear ~/.claude-email-worker/poll.py` = 23 matching lines at the live call sites). The 13 remaining `notion`-matching lines (`grep -c -i notion`) are comments/legacy-status-lookup code (`notion-brain.js get` for any straggler pre-BRO-377 card IDs still in `pending-dispatches.json` — currently empty, `{}`), not new-card creation. BRO-277 closed the 6 carried-over open `em-*` cards this repoint had stranded in Notion. |
+| Notion action poller (`scripts/notion-action-poll.js`, launchd `com.bwsc.action-dispatcher`) | retired | BRO-384: guard at the top of `main()` exits 7 before any Notion API call (bare invocation, `--card`, every flag) — pinned by `scripts/notion-action-poll-retired.test.mjs`. launchd job disabled (`com.bwsc.action-dispatcher.plist.disabled-2026-08-30`), not loaded (`launchctl list | grep com.bwsc.action-dispatcher` returns nothing). The 63 Notion references are dead code below the guard. |
 | Alert router `dispatchCard()` (`scripts/lib/owner-alert-router.js`) | migrated | Files a Linear issue via `linear-brain.js`, not `notion-brain.js` (verified: `grep -n "linear-brain.js" scripts/lib/owner-alert-router.js` matches at the `execFileSync` call inside `dispatchCard()`). Tracked BRO-286, state In Review. |
 
 ## Background jobs
 
 | Component | Disposition | Evidence |
 | --- | --- | --- |
-| `com.bwsc.action-dispatcher` (notion-action-poll.js) | pending | See intake channels above — same job. |
+| `com.bwsc.action-dispatcher` (notion-action-poll.js) | retired | See intake channels above — same job. |
 | `com.broadwayscore.bsc-reconcile` | pending | Still loaded (`launchctl list`); Notion-writing, not yet rewritten against Linear. |
 | `com.broadwayscore.reconcile-dead-completions` | pending | Still loaded; Notion-writing, not yet rewritten. |
 | `com.broadwayscore.newsletter-sunday-review` (autonomous-run.js) | retired | Autonomous loop retired 2026-07-27 per `autonomous-loop-schedule` memory; job body is a no-op guard even though the launchd plist is still loaded. |
-| `com.broadwayscore.backlog-drain` | pending | Still loaded; Notion-writing, queue now lives in Linear per plan but job not yet retired. |
+| `com.broadwayscore.backlog-drain` | pending | Found stale under BRO-277's what-else sweep 2026-09-15: doc said "still loaded", but the plist is `com.broadwayscore.backlog-drain.plist.disabled-2026-08-31` and NOT loaded (`launchctl list` returns nothing). `scripts/backlog-drain.js` is still actively maintained (BRO-3321, BRO-2542 recent commits) and still Notion-writing (12 Notion refs vs 2 Linear) — unlike the retired Notion action poller it has no code-level guard against being manually re-enabled, so `pending` (not `retired`) until it's either repointed or given one. Why it's currently disabled is not established by this doc — do not assume it's a deliberate migration retirement. |
 | `com.broadwayscore.bsc-autoprune` | pending | Still loaded; Notion-writing, not yet retired. |
 | `com.broadwayscore.morning-digest` | keep | See BSC Daily email above — 2 Notion refs are link-target only, repointed alongside `dispatchCard()`. |
-| `com.broadwayscore.dispatch-watchdog-health` | pending | Currently disarmed via `~/.claude/state/dispatch-watchdog-off`; decision deferred to Phase 3 of the sprint plan. |
+| `com.broadwayscore.dispatch-watchdog-health` | pending | Found stale under BRO-277's what-else sweep 2026-09-15: doc claimed "currently disarmed via `~/.claude/state/dispatch-watchdog-off`", but that kill-file does not exist on this machine (`ls` — no such file) — the watchdog's actual armed/disarmed state as of this edit is NOT what the doc claims. Disposition unchanged (still deferred to Phase 3) since this only corrects the evidence, not the underlying repoint decision. |
 | `com.broadwayscore.task-store-archive` | keep | No Notion references; unaffected by the board switch. |
 | 16 other unaffected jobs (deploy heartbeat, hook liveness, cookie refresh, opening-night monitor, worktree GC, …) | keep | Bucketed per BRO-280 §4 — none reference Notion; grepping the full launchd job list for `notion` returns only the 9 rows enumerated above. |
 | Stale plists (`.bak-20260628`, `.disabled-*`) | pending | Cleanup deferred to Phase 3 per BRO-280 §4 — not yet removed. |
