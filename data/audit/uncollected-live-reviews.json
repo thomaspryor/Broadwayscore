@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-15T14:11:30.400Z",
+  "generatedAt": "2026-09-15T18:50:10.781Z",
   "maxAgeHours": 12,
-  "showsAffected": 18,
-  "strandedFiles": 19,
+  "showsAffected": 22,
+  "strandedFiles": 26,
   "blackoutShows": [
     "matilda-the-musical-theatre-row-off-broadway-2026"
   ],
@@ -17,32 +17,16 @@
       "totalBlackout": true
     },
     {
-      "showId": "the-lost-boys-2026",
-      "title": "The Lost Boys",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "bloomberg--unknown.json",
-          "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
-          "outlet": "Bloomberg",
-          "ageHours": 1031.0919280555556
-        },
-        {
-          "file": "philadelphia-edge--unknown.json",
-          "url": "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Previews/13",
-          "outlet": "Philadelphia Edge",
-          "ageHours": null
-        }
-      ],
-      "usable": 47,
-      "discovered": 55,
-      "totalBlackout": false
-    },
-    {
       "showId": "the-producers-west-end-2025",
       "title": "The Producers",
       "status": "open",
       "stranded": [
+        {
+          "file": "thestage--unknown.json",
+          "url": "https://www.thestage.co.uk/reviews/the-producers-reviews-at-the-menier-chocolate-factory-london-directed-by-patrick-marber-with-andy-nyman-marc-antolin-and-trevor-ashley",
+          "outlet": "The Stage",
+          "ageHours": null
+        },
         {
           "file": "timeout--only-andrzej-lukowski.json",
           "url": "https://www.timeout.com/london/theatre/the-producers-3-review-2",
@@ -56,7 +40,73 @@
           "ageHours": null
         }
       ],
-      "usable": 31,
+      "usable": 32,
+      "discovered": 43,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-lost-boys-2026",
+      "title": "The Lost Boys",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "bloomberg--unknown.json",
+          "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
+          "outlet": "Bloomberg",
+          "ageHours": 1035.7364783333333
+        },
+        {
+          "file": "philadelphia-edge--unknown.json",
+          "url": "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Previews/13",
+          "outlet": "Philadelphia Edge",
+          "ageHours": null
+        }
+      ],
+      "usable": 47,
+      "discovered": 55,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "title": "The Play That Goes Wrong",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "broadwayworld--unknown.json",
+          "url": "https://www.broadwayworld.com/westend/article/Review-CHRISTMAS-CAROL-GOES-WRONG-Apollo-Theatre-20251216",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "thestage--unknown.json",
+          "url": "https://www.thestage.co.uk/reviews/christmas-carol-goes-wrong-review-apollo-theatre-london-apollo-theatre-london",
+          "outlet": "The Stage",
+          "ageHours": null
+        }
+      ],
+      "usable": 42,
+      "discovered": 46,
+      "totalBlackout": false
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "title": "Paranormal Activity",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "standard--unknown.json",
+          "url": "https://standard.co.uk/culture/theatre/paranormal-activity-ambassadors-theatre-review-b1262616.html",
+          "outlet": "Evening Standard",
+          "ageHours": null
+        },
+        {
+          "file": "whatsonstage--unknown.json",
+          "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
+          "outlet": "WhatsOnStage",
+          "ageHours": null
+        }
+      ],
+      "usable": 25,
       "discovered": 40,
       "totalBlackout": false
     },
@@ -69,7 +119,7 @@
           "file": "theatermania--unknown.json",
           "url": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/",
           "outlet": "TheaterMania",
-          "ageHours": 44.1485325
+          "ageHours": 48.79308277777778
         }
       ],
       "usable": 46,
@@ -85,7 +135,7 @@
           "file": "londontheatredirect--unknown.json",
           "url": "https://www.londontheatredirect.com/musical/operation-mincemeat-tickets?srsltid=AfmBOopqWn5X2urH_T_Hz9GwTJM8i1dpD9JO1oThOWl6728AThvffVun",
           "outlet": "Londontheatredirect",
-          "ageHours": 72.28850888888888
+          "ageHours": 76.93305916666667
         }
       ],
       "usable": 35,
@@ -101,7 +151,7 @@
           "file": "radio-times--unknown.json",
           "url": "https://www.radiotimes.com/going-out/oh-mary-hbo-streaming-newsupdate/",
           "outlet": "Radio Times",
-          "ageHours": 21.411581388888887
+          "ageHours": 26.056131666666666
         }
       ],
       "usable": 69,
@@ -117,7 +167,7 @@
           "file": "all-that-dazzles-uk--unknown.json",
           "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
           "outlet": "All That Dazzles  (UK)",
-          "ageHours": 449.31131111111114
+          "ageHours": 453.9558613888889
         }
       ],
       "usable": 45,
@@ -125,35 +175,19 @@
       "totalBlackout": false
     },
     {
-      "showId": "aladdin-2014",
-      "title": "Aladdin",
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
       "status": "open",
       "stranded": [
         {
-          "file": "chicagotribune--unknown.json",
-          "url": "https://www.chicagotribune.com/2026/09/08/sherri-shepherd-broadway-aladdin/",
-          "outlet": "Chicago Tribune",
-          "ageHours": 21.399605277777777
+          "file": "artsdesk--unknown.json",
+          "url": "https://theartsdesk.com/theatre/hadestown-national-theatre-review-new-folk-musical-hotter-hell",
+          "outlet": "The Arts Desk",
+          "ageHours": null
         }
       ],
-      "usable": 41,
-      "discovered": 45,
-      "totalBlackout": false
-    },
-    {
-      "showId": "book-of-mormon-2011",
-      "title": "The Book of Mormon",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "washpost--unknown.json",
-          "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restores-faith-in-musicals/2013/07/11/f965037a-ea68-11e2-818e-aa29e855f3ab_story.html",
-          "outlet": "The Washington Post",
-          "ageHours": 28.881764166666667
-        }
-      ],
-      "usable": 38,
-      "discovered": 49,
+      "usable": 49,
+      "discovered": 110,
       "totalBlackout": false
     },
     {
@@ -169,39 +203,23 @@
         }
       ],
       "usable": 55,
-      "discovered": 78,
+      "discovered": 79,
       "totalBlackout": false
     },
     {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "title": "The Play That Goes Wrong",
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "title": "The Devil Wears Prada",
       "status": "open",
       "stranded": [
         {
-          "file": "broadwayworld--unknown.json",
-          "url": "https://www.broadwayworld.com/westend/article/Review-CHRISTMAS-CAROL-GOES-WRONG-Apollo-Theatre-20251216",
-          "outlet": "BroadwayWorld",
+          "file": "standard--unknown.json",
+          "url": "https://www.standard.co.uk/culture/theatre/the-devil-wears-prada-dominion-theatre-review-b1198350.html",
+          "outlet": "The Standard",
           "ageHours": null
         }
       ],
-      "usable": 42,
-      "discovered": 45,
-      "totalBlackout": false
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "title": "Mamma Mia!",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "londontheatredirect--unknown.json",
-          "url": "https://www.londontheatredirect.com/musical/mamma-mia-photo-op-tickets?srsltid=AfmBOopAIRsrxmCpBQCpLCV86Ih3p0ZXwTvMpsMs6RDcV1fvci73em0T",
-          "outlet": "Londontheatredirect",
-          "ageHours": 21.407923611111112
-        }
-      ],
-      "usable": 28,
-      "discovered": 54,
+      "usable": 44,
+      "discovered": 51,
       "totalBlackout": false
     },
     {
@@ -217,7 +235,7 @@
         }
       ],
       "usable": 41,
-      "discovered": 49,
+      "discovered": 51,
       "totalBlackout": false
     },
     {
@@ -229,7 +247,7 @@
           "file": "nytimes--unknown.json",
           "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
           "outlet": "The New York Times",
-          "ageHours": 383.03123694444446
+          "ageHours": 387.6757872222222
         }
       ],
       "usable": 29,
@@ -249,7 +267,7 @@
         }
       ],
       "usable": 41,
-      "discovered": 51,
+      "discovered": 52,
       "totalBlackout": false
     },
     {
@@ -261,11 +279,11 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/the-mousetrap-the-alexandra-birmingham-3/",
           "outlet": "The Reviews Hub",
-          "ageHours": 119.45756055555556
+          "ageHours": 124.10211083333333
         }
       ],
       "usable": 27,
-      "discovered": 34,
+      "discovered": 35,
       "totalBlackout": false
     },
     {
@@ -277,11 +295,27 @@
           "file": "london-theatre--unknown.json",
           "url": "https://www.londontheatre.co.uk/reviews/review-agatha-christies-witness-for-the-prosecution-at-london-county-hall",
           "outlet": "London Theatre",
-          "ageHours": 24.347176666666666
+          "ageHours": 28.991726944444444
         }
       ],
       "usable": 24,
       "discovered": 26,
+      "totalBlackout": false
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "title": "Man to Man",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "whatsonstage--sarah-crompton.json",
+          "url": "https://www.whatsonstage.com/news/man-to-man-with-tilda-swinton-at-the-royal-court-review_1731550/",
+          "outlet": "WhatsOnStage",
+          "ageHours": null
+        }
+      ],
+      "usable": 38,
+      "discovered": 48,
       "totalBlackout": false
     },
     {
@@ -293,11 +327,59 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/burlesque-the-musical-regent-theatre/",
           "outlet": "North West End",
-          "ageHours": 311.3462102777778
+          "ageHours": 315.99076055555554
         }
       ],
       "usable": 22,
-      "discovered": 31,
+      "discovered": 32,
+      "totalBlackout": false
+    },
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "standard--unknown.json",
+          "url": "https://standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
+          "outlet": "The Standard",
+          "ageHours": null
+        }
+      ],
+      "usable": 32,
+      "discovered": 30,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "title": "The Comedy About Spies",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "whatsonstage--unknown.json",
+          "url": "https://www.whatsonstage.com/news/the-comedy-about-spies-review-mischiefs-cold-war-caper-has-japes-aplenty_1677753/",
+          "outlet": "WhatsOnStage",
+          "ageHours": null
+        }
+      ],
+      "usable": 61,
+      "discovered": 63,
+      "totalBlackout": false
+    },
+    {
+      "showId": "kimberly-akimbo-off-west-end-2026",
+      "title": "Kimberly Akimbo",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "standard--unknown.json",
+          "url": "https://standard.co.uk/culture/theatre/kimberly-akimbo-at-hampstead-theatre-b1296444.html",
+          "outlet": "The Standard",
+          "ageHours": null
+        }
+      ],
+      "usable": 40,
+      "discovered": 39,
       "totalBlackout": false
     }
   ]

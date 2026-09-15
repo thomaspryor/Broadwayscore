@@ -169,8 +169,14 @@ elif [ "$head5" = "$origin_head5" ]; then
   echo "FAIL[5]: expected local commit to be preserved (not discarded), HEAD moved anyway"; fail=1
 elif ! grep -q '"reason": "diverged"' "$snap5"; then
   echo "FAIL[5]: expected reason=diverged in $snap5, got:"; cat "$snap5" 2>&1; fail=1
+elif ! echo "$out5" | grep -q "3-way merge of origin/main"; then
+  echo "FAIL[5]: BRO-3393 recovery should have been ATTEMPTED here (clean tree, ahead AND behind) before refusing. Output:"; echo "$out5"; fail=1
+elif ! echo "$out5" | grep -q "merge of origin/main failed"; then
+  echo "FAIL[5]: expected the attempted merge to conflict and abort, leaving the refusal intact. Output:"; echo "$out5"; fail=1
+elif [ -n "$(git -C "$C5" ls-files -u)" ]; then
+  echo "FAIL[5]: checkout left mid-merge with unresolved paths — the abort did not clean up"; fail=1
 else
-  echo "PASS[5]: real divergence (local commit ahead) is refused, not silently swallowed, alert snapshot written ($rc5)"
+  echo "PASS[5]: real content divergence attempts the merge, conflicts, aborts cleanly, and still refuses ($rc5)"
 fi
 
 # --- Case 6: UNTRACKED colliding file blocks ff-only → git diff can't see
@@ -239,6 +245,156 @@ elif ! grep -q "brand-new.txt" "$snap7"; then
   echo "FAIL[7]: expected the blocking untracked file to be named in $snap7, got:"; cat "$snap7"; fail=1
 else
   echo "PASS[7]: untracked file outside data/audit/ correctly classified (not misreported as diverged), never discarded ($rc7)"
+fi
+
+# ── case 8 (BRO-3393): diverged with a CLEAN tree — recover, do not refuse ──
+# A local commit origin lacks, origin has moved, and NOTHING dirty overlaps
+# what origin moves. This was terminal before BRO-3393 ("no file to blame and
+# no union to attempt"), and it is the state BRO-3212's own commit-and-rebase
+# recovery leaves behind when its rebase fails. On the real machine that
+# stranded one ledger commit at 2026-09-14 18:30 and every sync-gated launchd
+# job refused for 17.5 hours, forcing the morning digest's auto-fix into
+# dry-run. The gate must reconcile it with a 3-way merge and exit 0.
+#
+# The local commit here is a MERGE COMMIT on purpose: a rebase recovery would
+# destroy it (verified empirically — the side commits survive with fresh SHAs,
+# the merge does not), which is why the recovery is `git merge`, not rebase.
+O8="$TMP/origin8"; C8="$TMP/clone8"
+setup_pair "$O8" "$C8"
+git -C "$C8" checkout -q -b side
+echo "session work that never reached origin" > "$C8/session-work.txt"
+git -C "$C8" add -A
+git -C "$C8" commit -q -m "session: local work"
+git -C "$C8" checkout -q main
+git -C "$C8" merge -q --no-ff side -m "merge session work"
+advance_origin "$O8" "$TMP/via8"
+out8=$(SYNC_TAG=case8 bash "$LIB" "$C8" 2>&1); rc8=$?
+snap8="$C8/data/audit/sync-refused-case8.json"
+if [ "$rc8" -ne 0 ]; then
+  echo "FAIL[8]: expected exit 0 — a diverged checkout with nothing blocking the ff is recoverable. Output:"; echo "$out8"; fail=1
+elif [ -f "$snap8" ]; then
+  echo "FAIL[8]: a recovered run must leave no refusal snapshot, found $snap8:"; cat "$snap8"; fail=1
+elif [ ! -f "$C8/session-work.txt" ]; then
+  echo "FAIL[8]: the unpushed local commit's content was LOST by the recovery"; fail=1
+elif ! git -C "$C8" log --format=%s | grep -q "^merge session work$"; then
+  echo "FAIL[8]: the unpushed MERGE COMMIT was rewritten away — recovery must merge, never rebase. Log:"; git -C "$C8" log --oneline | head -5; fail=1
+elif [ "$(git -C "$C8" rev-list --count HEAD..origin/main)" != "0" ]; then
+  echo "FAIL[8]: checkout is still behind origin/main after recovery"; fail=1
+else
+  echo "PASS[8]: clean-tree divergence reconciled by merge; local merge commit and its content both intact ($rc8)"
+fi
+
+# ── case 9 (BRO-3393): ahead but NOT behind must still be left alone ────────
+# classifyBlock's no-blocker branch also catches a fetch/ref problem, where
+# origin/main is unreadable or has not moved. `git merge --ff-only origin/main`
+# reports "Already up to date" and exits 0 in that state, so the gate must
+# never reach the merge recovery at all.
+O9="$TMP/origin9"; C9="$TMP/clone9"
+setup_pair "$O9" "$C9"
+echo "local only" > "$C9/local-only.txt"
+git -C "$C9" add -A
+git -C "$C9" commit -q -m "local: ahead of origin, origin has not moved"
+out9=$(SYNC_TAG=case9 bash "$LIB" "$C9" 2>&1); rc9=$?
+snap9="$C9/data/audit/sync-refused-case9.json"
+if [ "$rc9" -ne 0 ]; then
+  echo "FAIL[9]: ahead-but-not-behind must exit 0 via ff-only 'Already up to date'. Output:"; echo "$out9"; fail=1
+elif [ -f "$snap9" ]; then
+  echo "FAIL[9]: no refusal snapshot should be written, found $snap9:"; cat "$snap9"; fail=1
+elif echo "$out9" | grep -q "3-way merge of origin/main"; then
+  echo "FAIL[9]: the merge recovery fired on a checkout that was not behind. Output:"; echo "$out9"; fail=1
+else
+  echo "PASS[9]: ahead-but-not-behind short-circuits at ff-only, recovery never reached ($rc9)"
+fi
+
+# ── case 10 (BRO-3393 ship-check): merge exits 0 but the autostash POP ──────
+# conflicts. Verified empirically: git prints "Applying autostash resulted in
+# conflicts", EXITS 0, removes MERGE_HEAD, and leaves `UU` unmerged paths plus
+# a stranded stash. A bare `if git merge --autostash ...; then recovered` would
+# report success and hand every downstream launchd job a checkout with conflict
+# markers in a tracked file. The gate must detect it, resolve the paths back to
+# the merged commit, keep the content in the stash, and REFUSE.
+#
+# The race this models: `blockingPaths` is computed before the merge, so a
+# concurrent session can dirty an origin-moved file in the window between.
+O10="$TMP/origin10"; C10="$TMP/clone10"
+setup_pair "$O10" "$C10"
+git -C "$C10" commit -q --allow-empty -m "local-only commit (makes us ahead)"
+advance_origin "$O10" "$TMP/via10"
+# Dirty `other.txt` — which advance_origin also moved on origin — only AFTER
+# the decision would have been taken, so the autostash pop is what conflicts.
+# The gate itself re-reads the tree, so emulate the race by making the file
+# dirty in a way that does not block ff (same content as HEAD until the merge
+# rewrites it is impossible here, so instead assert on the OUTCOME contract:
+# whatever the gate decides, it must never exit 0 with unmerged paths).
+echo "concurrent session edit" > "$C10/other.txt"
+out10=$(SYNC_TAG=case10 bash "$LIB" "$C10" 2>&1); rc10=$?
+unmerged10=$(git -C "$C10" ls-files -u)
+if [ -n "$unmerged10" ]; then
+  echo "FAIL[10]: gate left UNMERGED paths in the shared checkout:"; echo "$unmerged10"; echo "$out10"; fail=1
+elif [ "$rc10" -eq 0 ] && [ -n "$(git -C "$C10" ls-files -u)" ]; then
+  echo "FAIL[10]: exited 0 with a conflicted tree"; fail=1
+elif grep -rqs '^<<<<<<< ' "$C10/other.txt"; then
+  echo "FAIL[10]: conflict markers left in a tracked file"; fail=1
+else
+  echo "PASS[10]: gate never exits with unmerged paths or conflict markers in the shared checkout ($rc10)"
+fi
+
+# ── case 11 (BRO-3393 ship-check): a failed fetch must leave a refusal ──────
+# snapshot. morning-digest.plist runs the digest with `;` even when this script
+# fails, so a silent fetch-failure exit meant the digest saw "nobody refused"
+# and dispatched real headless sessions against a checkout whose freshness had
+# just proven unverifiable. Real occurrence: 2026-09-15 10:30, Xcode license
+# failure broke git for every launchd job on this machine.
+C11="$TMP/clone11"
+git init -q -b main "$C11"
+git -C "$C11" config user.email t@t.t
+git -C "$C11" config user.name t
+mkdir -p "$C11/data/audit"
+echo hello > "$C11/other.txt"
+git -C "$C11" add -A
+git -C "$C11" commit -q -m init
+git -C "$C11" remote add origin "$TMP/no-such-origin-at-all"
+out11=$(SYNC_TAG=case11 bash "$LIB" "$C11" 2>&1); rc11=$?
+snap11="$C11/data/audit/sync-refused-case11.json"
+if [ "$rc11" -eq 0 ]; then
+  echo "FAIL[11]: an unreachable origin must not exit 0. Output:"; echo "$out11"; fail=1
+elif [ ! -f "$snap11" ]; then
+  echo "FAIL[11]: a failed fetch must still write $snap11 — otherwise the digest reads 'nobody refused'. Output:"; echo "$out11"; fail=1
+elif ! grep -q '"reason": "fetch-failed"' "$snap11"; then
+  echo "FAIL[11]: expected reason=fetch-failed in $snap11, got:"; cat "$snap11"; fail=1
+else
+  echo "PASS[11]: a failed fetch writes a refusal snapshot instead of exiting silently ($rc11)"
+fi
+
+# ── case 12 (BRO-3393 ship-check P0): a merge left mid-flight self-heals ────
+# The merge-origin recovery can be killed by a launchd timeout between
+# `git merge` and `git merge --abort`, and its own abort can fail. Either way
+# MERGE_HEAD survives. Without a self-heal the recovery's MERGE_HEAD guard
+# REFUSES on every subsequent run — "refuses forever", the exact failure mode
+# BRO-3212 wrote the rebase self-heal for, reintroduced through the merge path.
+# It also breaks EVERY other session sharing the checkout, not just this job
+# ("Committing is not possible because you have unmerged files").
+O12="$TMP/origin12"; C12="$TMP/clone12"
+setup_pair "$O12" "$C12"
+advance_origin "$O12" "$TMP/via12"
+# Leave a real conflicting merge mid-flight, exactly as a killed run would.
+printf 'local side\n' > "$C12/other.txt"
+git -C "$C12" commit -q -am "local edit to other.txt"
+git -C "$C12" fetch -q origin main
+git -C "$C12" merge --no-commit origin/main >/dev/null 2>&1
+if ! git -C "$C12" rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+  echo "FAIL[12]: test setup did not leave a MERGE_HEAD to heal"; fail=1
+else
+  out12=$(SYNC_TAG=case12 bash "$LIB" "$C12" 2>&1); rc12=$?
+  if git -C "$C12" rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+    echo "FAIL[12]: MERGE_HEAD survived the run — the checkout stays blocked for every session. Output:"; echo "$out12"; fail=1
+  elif [ -n "$(git -C "$C12" ls-files -u)" ]; then
+    echo "FAIL[12]: unmerged index entries survived the run"; fail=1
+  elif ! echo "$out12" | grep -q "merge left mid-flight"; then
+    echo "FAIL[12]: expected the self-heal to announce itself. Output:"; echo "$out12"; fail=1
+  else
+    echo "PASS[12]: a merge left mid-flight by an interrupted run is aborted and self-healed ($rc12)"
+  fi
 fi
 
 if [ "$fail" -ne 0 ]; then

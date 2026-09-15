@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-15T13:38:38.416Z",
+  "generatedAt": "2026-09-15T18:16:33.153Z",
   "date": "2026-09-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 239418,
+  "entryCount": 245991,
   "shows": [
     {
       "showId": "cats-west-end-2026",
@@ -210,7 +210,7 @@
     },
     {
       "showId": "just-in-time-2025",
-      "reviewCount": 34,
+      "reviewCount": 33,
       "median_e2e_ms": 3295779495,
       "p90_e2e_ms": 3295779495,
       "per_stage_median_ms": {
@@ -381,7 +381,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 62450418,
-        "scored-to-rebuilt": 4278242,
+        "scored-to-rebuilt": 2604582,
         "rebuilt-to-deployed": 2961509483
       },
       "reviews_over_15min": 0,
@@ -1283,13 +1283,13 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 849036,
+        "scored-to-rebuilt": 1279273,
         "rebuilt-to-deployed": 3104327821
       },
       "reviews_over_15min": 0,
@@ -1391,7 +1391,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 349346,
+        "scored-to-rebuilt": 352198,
         "rebuilt-to-deployed": 3006893275
       },
       "reviews_over_15min": 0,
@@ -1492,7 +1492,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2263947,
+        "scored-to-rebuilt": 520630,
         "rebuilt-to-deployed": 1102792748
       },
       "reviews_over_15min": 9,
@@ -1533,7 +1533,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 564554,
+        "scored-to-rebuilt": 524215,
         "rebuilt-to-deployed": 1102792749
       },
       "reviews_over_15min": 7,
@@ -1613,13 +1613,13 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3905639,
+        "scored-to-rebuilt": 2406714,
         "rebuilt-to-deployed": 2355310789
       },
       "reviews_over_15min": 0,
@@ -1634,7 +1634,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3678076,
+        "scored-to-rebuilt": 2120259,
         "rebuilt-to-deployed": 2942428855
       },
       "reviews_over_15min": 0,
@@ -1938,13 +1938,13 @@
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 720373,
+        "scored-to-rebuilt": 1037025,
         "rebuilt-to-deployed": 2763803777
       },
       "reviews_over_15min": 0,
@@ -2220,7 +2220,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 458542,
         "rebuilt-to-deployed": 1102792750
       },
       "reviews_over_15min": 6,
@@ -2255,13 +2255,13 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "reviewCount": 27,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 11745902,
+        "scored-to-rebuilt": 447730,
         "rebuilt-to-deployed": 1442053389
       },
       "reviews_over_15min": 0,
@@ -3599,13 +3599,13 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": 1106414043,
       "p90_e2e_ms": 1106414056,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3057919,
+        "scored-to-rebuilt": 1195284,
         "rebuilt-to-deployed": 1102792749
       },
       "reviews_over_15min": 8,
@@ -3805,13 +3805,13 @@
     },
     {
       "showId": "six-the-musical-west-end-2021",
-      "reviewCount": 16,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 383756,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3850,7 +3850,7 @@
     },
     {
       "showId": "witness-for-the-prosecution-west-end-2022",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4182,7 +4182,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 427864,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -4488,7 +4488,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 351435,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -4587,13 +4587,13 @@
     },
     {
       "showId": "the-children-off-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 33564568,
-        "scored-to-rebuilt": 6763834,
+        "scored-to-rebuilt": 6760915,
         "rebuilt-to-deployed": 298988425
       },
       "reviews_over_15min": 0,
@@ -4602,13 +4602,13 @@
     },
     {
       "showId": "pre-existing-condition-off-broadway-2026",
-      "reviewCount": 6,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 83542,
+        "scored-to-rebuilt": 191053,
         "rebuilt-to-deployed": 37085665
       },
       "reviews_over_15min": 0,
@@ -4623,7 +4623,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 538705,
         "rebuilt-to-deployed": 1102792749
       },
       "reviews_over_15min": 9,
@@ -4889,7 +4889,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 10084568,
+        "scored-to-rebuilt": 8771302,
         "rebuilt-to-deployed": 1601137997
       },
       "reviews_over_15min": 0,
@@ -4898,13 +4898,13 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "reviewCount": 24,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 13829805,
+        "scored-to-rebuilt": 409290,
         "rebuilt-to-deployed": 1617598435
       },
       "reviews_over_15min": 0,
@@ -5221,7 +5221,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 6002523,
+        "scored-to-rebuilt": 5798056,
         "rebuilt-to-deployed": 1122052778
       },
       "reviews_over_15min": 7,
@@ -6234,7 +6234,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 530878,
         "rebuilt-to-deployed": 1099914535
       },
       "reviews_over_15min": 6,
@@ -6438,7 +6438,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2236273,
+        "scored-to-rebuilt": 2001674,
         "rebuilt-to-deployed": 909294067
       },
       "reviews_over_15min": 6,
@@ -7988,13 +7988,13 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 4852117,
+        "scored-to-rebuilt": 4173706,
         "rebuilt-to-deployed": 160911567
       },
       "reviews_over_15min": 0,
@@ -8039,7 +8039,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3454357,
+        "scored-to-rebuilt": 3451084,
         "rebuilt-to-deployed": 79788000
       },
       "reviews_over_15min": 0,
@@ -8093,13 +8093,13 @@
     },
     {
       "showId": "tartuffe-remixed-off-west-end-2026",
-      "reviewCount": 21,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2639717,
+        "scored-to-rebuilt": 2636873,
         "rebuilt-to-deployed": 79787999
       },
       "reviews_over_15min": 0,
@@ -8603,18 +8603,44 @@
     },
     {
       "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "reviewCount": 26,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "reviewCount": 27,
+      "median_e2e_ms": 67103763,
+      "p90_e2e_ms": 70067655,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 712459,
-        "rebuilt-to-deployed": 73687740
+        "scored-to-rebuilt": 717396,
+        "rebuilt-to-deployed": 69752479
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 5,
+      "reviews_over_60min": 5,
+      "slowest_reviews": [
+        {
+          "reviewKey": "theqr:unknown:https://theqr.co.uk/2026/09/14/review-bloodsport-after-helen-of-troy-stratford-east/",
+          "e2e_ms": 70067655,
+          "stuck_at_stage": "rebuilt"
+        },
+        {
+          "reviewKey": "west-end-best-friend:unknown:https://www.westendbestfriend.co.uk/news/review-bloodsport-after-helen-of-troy-stratford-east",
+          "e2e_ms": 68550099,
+          "stuck_at_stage": "rebuilt"
+        },
+        {
+          "reviewKey": "firstnightmagazine:unknown:https://firstnightmagazine.com/2026/09/14/review-of-bloodsport-modern-day-iliad-screams-loud-but-it-has-no-stentorian-voice/",
+          "e2e_ms": 67103763,
+          "stuck_at_stage": "rebuilt"
+        },
+        {
+          "reviewKey": "the-spy-in-the-stalls:thespyinthestalls:https://thespyinthestalls.com/2026/09/bloodsport/",
+          "e2e_ms": 65490992,
+          "stuck_at_stage": "rebuilt"
+        },
+        {
+          "reviewKey": "radio-times:olivia-garrett:https://www.radiotimes.com/going-out/going-out-reviews/bloodsport-after-helen-of-troy-review/",
+          "e2e_ms": 59620315,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -8633,7 +8659,7 @@
     },
     {
       "showId": "safe-house-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8693,13 +8719,13 @@
     },
     {
       "showId": "titanique-west-end-2024",
-      "reviewCount": 17,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1536604,
+        "scored-to-rebuilt": 470802,
         "rebuilt-to-deployed": 72782126
       },
       "reviews_over_15min": 0,
@@ -8731,6 +8757,111 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 3456819,
         "rebuilt-to-deployed": 2245109
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "magic-mike-live-west-end-2021",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1290860,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1030021,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 999360,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 994948,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "camping-off-broadway-2026",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "marilyn-exposed-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 838717,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "she-loves-me-1994",
+      "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,

@@ -262,6 +262,15 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // wrongly ingested for.
   { host: /(^|\.)schwarzmancentre\.ox\.ac\.uk$/, reason: 'venue-production-page' },
   { host: /(^|\.)culturecity\.london$/, reason: 'event-listings-page' },
+  // BRO-3374 sweep added these three to domain-filters.js's VENUE_DOMAINS
+  // without mirroring them here — the parity test in
+  // non-review-url-patterns.test.mjs caught the drift (found live during a
+  // ship-check review of an unrelated fix, BRO-3373). Whole-host, matching
+  // domain-filters.js's own scope; see that file's VENUE_DOMAINS comments for
+  // why each is a venue listing/marketing page, never a review.
+  { host: /(^|\.)stratfordeast\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)ntlive\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)royalcourttheatre\.com$/, reason: 'venue-production-page' },
 ];
 
 /**

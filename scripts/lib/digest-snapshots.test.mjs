@@ -501,12 +501,45 @@ test('readSyncRefused: multiple tags refused -> all named, newest sorts first', 
   assert.deepEqual(summary.items.map((i) => i.title).sort(), ['digest', 'shadow']);
 });
 
-test('readSyncRefused: unrelated/garbage files ignored, never throw', () => {
+test('readSyncRefused: unrelated files ignored, never throw', () => {
+  const dir = tmpAudit();
+  write(dir, 'health-digest-snapshot.json', { generatedAt: '2026-08-19T00:00:00Z' });
+  assert.equal(readSyncRefused({ auditDir: dir }), null);
+});
+
+// BRO-3393: these used to be silently dropped, which made a TRUNCATED
+// sync-refused-digest.json read as "nobody refused" — and autofixShouldDryRun
+// would then let real Linear card filing and real headless dispatch run
+// against an untrusted checkout. They are counted now so the decision can
+// fail closed on them, and so the email still shows that SOMETHING refused.
+test('readSyncRefused: an unparseable or tagless refusal snapshot is COUNTED, not dropped', () => {
   const dir = tmpAudit();
   write(dir, 'health-digest-snapshot.json', { generatedAt: '2026-08-19T00:00:00Z' });
   write(dir, 'sync-refused-broken.json', '{not json');
   write(dir, 'sync-refused-no-tag.json', { at: '2026-08-19T00:00:00Z', reason: 'diverged' });
-  assert.equal(readSyncRefused({ auditDir: dir }), null);
+  const summary = readSyncRefused({ auditDir: dir });
+  assert.ok(summary, 'a refusal file that exists but cannot be read is still evidence of a refusal');
+  assert.equal(summary.unreadable, 2);
+  assert.equal(summary.count, 0);
+  assert.deepEqual(summary.tags, []);
+  // Named by FILENAME, not by the unreadable body — that is what lets the
+  // dry-run decision fail closed on OUR OWN corrupt snapshot without a corrupt
+  // SIBLING snapshot suppressing us forever (ship-check finding, BRO-3393).
+  assert.deepEqual(summary.unreadableTags.slice().sort(), ['broken', 'no-tag']);
+  assert.match(summary.bannerText, /unreadable sync-refusal snapshot/);
+});
+
+test('readSyncRefused: tags is uncapped decision data, unlike the maxItems-capped items view', () => {
+  const dir = tmpAudit();
+  const tags = ['shadow', 'digest', 'backlog-drain', 'predispatch-queue-audit'];
+  tags.forEach((tag, i) => write(dir, `sync-refused-${tag}.json`, {
+    tag, at: `2026-08-19T0${i}:00:00.000Z`, reason: 'diverged', behindCount: i,
+  }));
+  const summary = readSyncRefused({ auditDir: dir, maxItems: 2 });
+  assert.equal(summary.items.length, 2, 'items stays capped for rendering');
+  assert.deepEqual(summary.tags.slice().sort(), tags.slice().sort(),
+    'tags must list EVERY refusing job — autofixShouldDryRun asks "is my own tag here?", and a capped list would answer wrong');
+  assert.equal(summary.unreadable, 0);
 });
 
 test('readSyncRefused: maxItems truncates, moreCount reflects the rest', () => {

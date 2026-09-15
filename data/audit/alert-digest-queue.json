@@ -48,18 +48,6 @@
     "queuedAt": "2026-09-15T13:38:36.378Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "11/130 show(s) differ between internal state and what prod serves.\nscore-drift: 11\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nDeath Note: The Musical: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T14:11:40.298Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
     "description": "3 T1/T2 outlet(s) still missing >24h after they became measurable.",
@@ -85,18 +73,6 @@
     "queuedAt": "2026-09-15T14:11:40.405Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.3% (379/497)\noff-broadway: 42.4% (132/311)\nwest-end: 75.4% (419/556)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (772h)\nA Midsummer Night's Dream — observer (772h)\nA Midsummer Night's Dream — standard (772h)\nABBA Voyage — independent (772h)\nAladdin — ew (772h)\n… 169 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (772h)\nThe Book of Mormon — usatoday (772h)\nBuena Vista Social Club — broadwaynews (772h)\nBuena Vista Social Club — nydailynews (772h)\nHadestown — nydailynews (772h)\n… 20 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T14:11:40.498Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-3030",
     "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -120,5 +96,77 @@
       }
     ],
     "queuedAt": "2026-09-15T16:10:22.386Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-pre-existing-condition-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on Pre-Existing Condition",
+    "description": "nysr/Michael Sommers (nysr--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This review evaluates the 2024 Connelly Theater produ — https://nystagereview.com/2026/09/14/pre-existing-condition-cold-comfort/\nnytg/Kyle Turner (nytg--kyle-turner.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate theater review with substantive  — https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-lupita-nyongo",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:16:29.863Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-in-honor-of-jean-michel-basquiat-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on IN HONOR OF JEAN-MICHEL BASQUIAT",
+    "description": "in-honor-of-jean-michel-basquiat-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:16:32.582Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-golden-boy-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Golden Boy",
+    "description": "golden-boy-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=golden-boy-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:16:32.586Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
+    "description": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:16:32.588Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/129 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nPre-Existing Condition: missing-from-prod",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:50:21.394Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.1% (378/497)\noff-broadway: 43.5% (136/313)\nwest-end: 76.9% (432/562)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (777h)\nA Midsummer Night's Dream — observer (777h)\nA Midsummer Night's Dream — standard (777h)\nABBA Voyage — independent (777h)\nAladdin — ew (777h)\n… 163 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (777h)\nThe Book of Mormon — usatoday (777h)\nBuena Vista Social Club — broadwaynews (777h)\nBuena Vista Social Club — nydailynews (777h)\nHadestown — nydailynews (777h)\n… 20 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:50:21.575Z"
   }
 ]

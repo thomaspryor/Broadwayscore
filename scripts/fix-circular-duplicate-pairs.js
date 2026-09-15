@@ -99,6 +99,7 @@ function _defaultCriticFor(outletId) {
 }
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { isBylineAttestedInText, normalizeForAttestation } = require('./lib/byline-attestation');
 
 const USAGE = `fix-circular-duplicate-pairs.js — Repairs the circular-duplicateOf class: fileA.duplicateOf=fileB AND.
 
@@ -263,6 +264,51 @@ function chooseCanonical(aName, aData, bName, bData) {
     }
   }
 
+  // 2c. Byline attestation — is the name actually printed as a byline?
+  // Two genuinely-different named bylines on ONE url means at least one was
+  // invented by a scraper, and the article itself says which. Ranked above
+  // score richness and age because those measure how much PROCESSING a record
+  // received, not whether its byline is real: on Safe House the phantom
+  // "Scott Bennett" record was scored just as richly as the true "Victor Gluck"
+  // one, so everything below tied and filename order crowned the phantom
+  // (BRO-3247).
+  //
+  // TWO CONDITIONS, deliberately asymmetric — the loser here gets duplicateOf
+  // written on it by dedupe-same-url-bylines.js and DISAPPEARS from the site,
+  // so the bar to demote is higher than the bar to promote:
+  //   WIN:  the winner's byline is printed in its OWN text.
+  //   LOSE: the loser's byline appears in NEITHER text, not even as a bare
+  //         mention.
+  // The second condition is what makes a truncated real review safe (Codex
+  // adversarial review, 2026-09-15). Extraction regularly drops the header of
+  // one copy while the sibling keeps the full article — dedupe accepts such
+  // truncated subsets as cohesive (dedupe-same-url-bylines.js:188). Without it,
+  // a real critic whose own copy lost its byline line would be demoted in
+  // favour of a site-wide editor credit ("by <Editor>, Editor-in-Chief") that
+  // theaterscene.net and others print on pages someone else wrote. Requiring
+  // the loser to be absent from BOTH texts means a byline that is real — and
+  // therefore printed in the fuller copy — can never be suppressed this way.
+  // Absent from both copies of the same article is the only state that
+  // actually evidences invention.
+  const _aText = (aData && aData.fullText) || '';
+  const _bText = (bData && bData.fullText) || '';
+  const _bothTexts = `${_aText}\n${_bText}`;
+  // Promotion evidence: judged per-file. A shared blob would let one file's
+  // editor credit attest the OTHER file's invented byline, and would make the
+  // pairwise fold order-dependent for 3+ member groups.
+  const aAttested = isBylineAttestedInText(aData && aData.criticName, _aText);
+  const bAttested = isBylineAttestedInText(bData && bData.criticName, _bText);
+  // Demotion evidence: a plain mention anywhere in either copy is enough to
+  // spare a record, so this uses raw containment, NOT the byline-marker test.
+  const aNameSeen = _nameAppearsAnywhere(aData && aData.criticName, _bothTexts);
+  const bNameSeen = _nameAppearsAnywhere(bData && bData.criticName, _bothTexts);
+  if (aAttested && !bAttested && !bNameSeen) {
+    return pick(aName, bName, 'byline: only this byline is printed in the article text');
+  }
+  if (bAttested && !aAttested && !aNameSeen) {
+    return pick(bName, aName, 'byline: only this byline is printed in the article text');
+  }
+
   // 3. Score richness.
   const aRich = scoreSignals(aData).length, bRich = scoreSignals(bData).length;
   if (aRich !== bRich) {
@@ -283,6 +329,23 @@ function chooseCanonical(aName, aData, bName, bData) {
   return aName < bName
     ? pick(aName, bName, 'tiebreak: filename order')
     : pick(bName, aName, 'tiebreak: filename order');
+}
+
+/**
+ * Loose containment used ONLY as a reprieve: does this name appear anywhere in
+ * the supplied text at all? Token-boundary aware (so "John Mackin" does not
+ * match inside "Joshua John Mackin") but, unlike isBylineAttestedInText, it
+ * does NOT require a byline marker — any mention is enough to spare a record
+ * from attestation-based demotion. Single-token names always count as seen,
+ * which keeps them out of the demotion path entirely.
+ */
+function _nameAppearsAnywhere(criticName, text) {
+  const n = normalizeForAttestation(criticName);
+  if (!n) return true;                       // unknown -> never demote on this basis
+  if (n.split(' ').length < 2) return true;  // single token -> too weak either way
+  const body = normalizeForAttestation(text);
+  if (!body) return true;
+  return ` ${body} `.includes(` ${n} `);
 }
 
 function pick(canonical, loser, reason) {
@@ -326,7 +389,7 @@ function _showById(showId) {
 let _siblingOpeningsCache; // undefined = not built; Map once attempted
 function _siblingOpenings(showId) {
   if (_siblingOpeningsCache === undefined) {
-    _showById(' ensure-loaded'); // force _showByIdCache population
+    _showById('\0ensure-loaded'); // force _showByIdCache population
     _siblingOpeningsCache = buildSiblingOpeningsMap([..._showByIdCache.values()], parseDate);
   }
   return _siblingOpeningsCache.get(showId) || [];
@@ -589,5 +652,5 @@ if (require.main === module) main();
 module.exports = {
   bylineSlug, outletSlug, isUnknownByline, levenshtein, scoreSignals,
   isScoreable, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
-  isClassAContaminated, audit, fix,
+  isClassAContaminated, audit, fix, showsDataAvailable,
 };

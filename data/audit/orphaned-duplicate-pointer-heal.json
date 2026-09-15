@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-15T16:02:05.530Z",
+  "generated": "2026-09-15T19:07:26.660Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 84,
+  "count": 82,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -99,13 +99,6 @@
       "loserFile": "nytimes--maya-phillips.json",
       "targetFile": "nytimes--jesse-green.json",
       "reason": "orphaned-duplicate-heal: nytimes--jesse-green.json was flagged invalid after nytimes--maya-phillips.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
-      "loserFile": "theater-life--david-sheward.json",
-      "targetFile": "theater-life--paulanne-simmons.json",
-      "reason": "orphaned-duplicate-heal: theater-life--paulanne-simmons.json was flagged invalid after theater-life--david-sheward.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -309,13 +302,6 @@
       "loserFile": "variety--naveen-kumar.json",
       "targetFile": "variety--aramide-tinubu.json",
       "reason": "orphaned-duplicate-heal: variety--aramide-tinubu.json was flagged invalid after variety--naveen-kumar.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "old-times-2015",
-      "loserFile": "timeout--david-cote.json",
-      "targetFile": "timeout--adam-feldman.json",
-      "reason": "orphaned-duplicate-heal: timeout--adam-feldman.json was flagged invalid after timeout--david-cote.json was pointed at it",
       "field": "duplicateOf"
     },
     {

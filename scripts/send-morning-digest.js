@@ -54,7 +54,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
   break;
 }
 
-const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('./lib/digest-snapshots.js');
 const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
 const {
   esc,
@@ -334,8 +334,53 @@ function httpsJson(method, url, headers, body) {
 // thing, so the email body is unaffected. Extracted (CLAUDE.md rule 15) so
 // this safety property has a real regression test instead of living only as
 // an inline `||`.
-function autofixShouldDryRun({ dryRun = false, syncRefused = null } = {}) {
-  return !!dryRun || !!syncRefused;
+//
+// BRO-3393: this used to be `!!dryRun || !!syncRefused`, and that single `||`
+// cost the owner ~29 days of auto-fix. `readSyncRefused()` globs
+// data/audit/sync-refused-*.json across EVERY launchd tag, while
+// sync-audit-checkout.sh's clear_refused_snapshot() removes only its OWN
+// tag's file. So one chronically-failing sibling job (linear-drain-parked,
+// predispatch-queue-audit) left a snapshot on disk indefinitely and forced
+// the digest into dry-run every morning - no cards filed, no dispatches -
+// even on mornings the digest's own gate fast-forwarded cleanly. The ledger
+// shows the damage: 6 auto-dispatch rows in 31 days, on 2 days.
+//
+// The property task #1818 actually wanted is "is THIS checkout trustworthy
+// right now". Only the digest's OWN tag answers that, and it answers it
+// well: the plist runs `SYNC_TAG=digest bash sync-audit-checkout.sh`
+// seconds before this process starts, so sync-refused-digest.json is either
+// freshly written or freshly deleted. A sibling's snapshot from 22:30 last
+// night is strictly worse evidence about the tree this process is reading.
+// Sibling refusals still render in the email (renderNamedDigestBlock below)
+// - they are real alerts, they just must not disable auto-fix.
+//
+// ownTag is a CONSTANT, deliberately NOT process.env.SYNC_TAG (ship-check
+// finding, BRO-3393). Reading it from the environment would make the answer
+// to "is THIS checkout trustworthy" settable by anything that can set an env
+// var - a manual invocation, a wrapper script, an inherited shell, the repo's
+// own .env loader. `SYNC_TAG=shadow node scripts/send-morning-digest.js`
+// would then ignore a real, live digest refusal and dispatch anyway. The
+// no-drift property the plist gives us is preserved where it costs nothing:
+// a test pins that the plist's exported SYNC_TAG equals this constant, so the
+// two can never disagree without CI saying so.
+const DIGEST_SYNC_TAG = 'digest';
+
+// Fails CLOSED on ambiguity, which is the whole safety property:
+//   * our tag among `unreadableTags` - a refusal snapshot named for US exists
+//     but could not be parsed. It may say we refused. Dry-run.
+//   * no `tags` array - a caller (or an older snapshot reader) that cannot say
+//     whose refusal it is at all. Dry-run.
+// It deliberately does NOT fail closed on a SIBLING's unreadable snapshot:
+// only the owning job ever clears its own file, so one corrupt sibling file
+// would otherwise suppress the digest's auto-fix forever - the exact bug this
+// function is being changed to fix.
+function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGEST_SYNC_TAG } = {}) {
+  if (dryRun) return true;
+  if (!syncRefused) return false;
+  const mine = (t) => String(t) === String(ownTag);
+  if (Array.isArray(syncRefused.unreadableTags) && syncRefused.unreadableTags.some(mine)) return true;
+  if (!Array.isArray(syncRefused.tags)) return true;
+  return syncRefused.tags.some(mine);
 }
 
 // Subject contract: MUST match SCHEDULED_SENDERS['morning-digest'].pattern in
@@ -519,6 +564,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // above (session-scoped cmux state, dies with the tab): this is
   // issue-scoped and survives the originating session closing.
   if (sections.awaitingOwner) blocks.push(renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner));
+  // Parked in review (BRO-282's residual half, BRO-3376) — Linear issues in
+  // the `In Review` state, which is where linear-dispatch.js's seed prompt
+  // tells every finished session to park. The two blocks above only fire when
+  // a session opts in (a ❓ tab mark, an awaiting-owner label); this one needs
+  // no opt-in, which is why it is the block that would have caught the actual
+  // leak: 120 finished items, 100 of them 14+ days old, were sitting here
+  // unread on 2026-09-15 — including BRO-282 itself, for 28 days.
+  if (sections.inReviewBacklog) blocks.push(renderNamedDigestBlock('Review queue', sections.inReviewBacklog));
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
   // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
   // moreCount} shape, no new render code.
@@ -712,7 +765,14 @@ async function main() {
   try {
     sections.syncRefused = readSyncRefused();
   } catch (err) {
-    console.error(`[digest] WARN sync-refused snapshot read failed: ${String(err.message).slice(0, 120)}`);
+    // Fail CLOSED (ship-check finding, BRO-3393). This catch used to leave
+    // sections.syncRefused undefined, which autofixShouldDryRun reads as
+    // "nobody refused" — so a thrown read, the single most ambiguous state
+    // there is, was the one path that let real card filing and real headless
+    // dispatch run without ANY freshness evidence. The sentinel's `tags: null`
+    // is what makes the guard hold.
+    console.error(`[digest] WARN sync-refused snapshot read failed — holding auto-fix in dry-run: ${String(err.message).slice(0, 120)}`);
+    sections.syncRefused = SYNC_REFUSED_READ_FAILED;
   }
 
   const autofixDryRun = autofixShouldDryRun({ dryRun, syncRefused: sections.syncRefused });
@@ -739,11 +799,18 @@ async function main() {
   // by minutes; ship-check finding, BRO-282). The race is local to this call
   // site, not a change to listOpenIssues()'s shared retry defaults, which
   // other callers (linear-next.js --list) still want in full.
+  // Hoisted out of the try below so the "Parked in review" block can reuse
+  // this exact fetch instead of making a second identical round trip —
+  // buildOpenIssuesQuery() already returns state/priority/updatedAt/url, every
+  // field in-review-backlog.js needs. Stays null if the fetch failed, and that
+  // block then omits itself, same fail-soft contract as every other section.
+  let openIssues = null;
   try {
     const linear = require('./lib/linear-client.js');
     const { buildAwaitingOwnerSection, isAwaitingOwner, enrichWithComments } = require('./lib/owner-approval-channel.js');
     const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
     const issues = await Promise.race([linear.listOpenIssues(), timeout(15_000)]);
+    openIssues = issues;
     const awaiting = (issues || []).filter(isAwaitingOwner);
     // BRO-420: "waiting since" is derived from linear-attach-approval.js's
     // summary comment, not issue.updatedAt (see owner-approval-channel.js's
@@ -770,6 +837,22 @@ async function main() {
     if (section) sections.awaitingOwner = section;
   } catch (err) {
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // Parked in review (BRO-3376) — the passive half of BRO-282. See
+  // scripts/lib/in-review-backlog.js's header for why this is a separate
+  // block from the awaiting-owner one above rather than folded into it.
+  // Pure shaping over the fetch already made above; fail-soft like every
+  // other section, and it omits itself entirely when nothing has been
+  // sitting past the idle threshold.
+  try {
+    if (openIssues && openIssues.length) {
+      const { buildInReviewSection } = require('./lib/in-review-backlog.js');
+      const section = buildInReviewSection(openIssues);
+      if (section) sections.inReviewBacklog = section;
+    }
+  } catch (err) {
+    console.error(`[digest] WARN in-review backlog section failed: ${String(err.message).slice(0, 120)}`);
   }
 
   // Backlog inflow ratio (BRO-3017, owner decision 2026-09-08 "B then A").
@@ -1027,4 +1110,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, localDispatchWatchdogLeakMessage };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };

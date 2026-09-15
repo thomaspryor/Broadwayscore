@@ -212,9 +212,75 @@ function recentRecheckFailures(now) {
   return out;
 }
 
+// ── Linear as a second task source (BRO-3390) ──────────────────────────────
+//
+// loadTasksUnioned() reads ONLY ~/.claude/tasks/<list>/<digits>.json — the
+// Notion mirror, frozen at task id 1285 since 2026-08-20. Measured 2026-09-15:
+// all 180 watchdog-redispatch rows since 2026-09-01 carry Notion ids and none
+// carry a linear: id, while 684 armed Linear issues sat with no continuous
+// drain at all. This is the seam that fixes that.
+//
+// The fetch is ASYNC but buildPlan() is SYNC and called from four places
+// (sweepOnce, the dashboard loop, the flow-health check, --status), two of
+// them inside sync contexts. Rather than ripple async through all four, the
+// fetch refreshes a module-level cache and buildPlan reads it synchronously.
+// Fail-safe in both directions: a Linear outage leaves the cache untouched and
+// the Notion-sourced half of the sweep keeps working, and a cache older than
+// LINEAR_CACHE_TTL_MS is dropped rather than dispatched from, so a long outage
+// degrades to "no Linear work" instead of to stale work. A mildly stale entry
+// is safe anyway — linear-next.js re-checks state at dispatch time and refuses
+// anything that has since started or closed.
+const LINEAR_CACHE_TTL_MS = 10 * 60 * 1000;
+let linearTaskCache = { tasks: new Map(), started: new Map(), ts: 0, ok: false, reason: 'not-fetched', scanned: 0 };
+
+async function refreshLinearTasks() {
+  try {
+    const source = require('./lib/linear-watchdog-source.js');
+    const client = require('./lib/linear-client.js');
+    const res = await source.fetchLinearWatchdogTasks(client, {});
+    if (res.ok) {
+      linearTaskCache = {
+        tasks: res.tasks, started: res.started || new Map(),
+        ts: Date.now(), ok: true, reason: null, scanned: res.scanned,
+      };
+    } else {
+      // Keep the previous cache (if still fresh) rather than blanking the
+      // queue on one bad fetch; record why for the narrative.
+      linearTaskCache = { ...linearTaskCache, ok: false, reason: res.reason };
+      console.error(`[watchdog] Linear source unavailable (${res.reason}) — Notion-sourced sweep continues`);
+    }
+  } catch (e) {
+    linearTaskCache = { ...linearTaskCache, ok: false, reason: `linear-source-error: ${e.message}` };
+    console.error(`[watchdog] Linear source error (${e.message}) — Notion-sourced sweep continues`);
+  }
+  return linearTaskCache;
+}
+
+// BRO-3390: the write-back leak, computed from the SAME scan the queue came
+// from (no extra API call). Surfaced rather than acted on: moving someone
+// else's card is not this process's job, and BRO-3376 owns triaging the
+// existing pile. What this ends is the SILENCE.
+function linearWriteBackLeak(now = Date.now()) {
+  try {
+    if (!linearTaskCache.ts || now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return [];
+    const source = require('./lib/linear-watchdog-source.js');
+    return source.detectWriteBackLeak(readLedgerCached(), linearTaskCache.started, now);
+  } catch { return []; }
+}
+
+function linearTasksForPlan(now = Date.now()) {
+  if (!linearTaskCache.ts) return new Map();
+  if (now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return new Map();
+  return linearTaskCache.tasks;
+}
+
 function buildPlan(now) {
   const entries = readLedgerCached();
   const tasks = loadTasksUnioned();
+  // Union, never mutate the loader's own map semantics: Linear ids are
+  // "linear:BRO-N" and Notion ids are bare digits, so the two namespaces
+  // cannot collide and neither can shadow the other.
+  for (const [id, task] of linearTasksForPlan(now)) tasks.set(id, task);
   return core.planSweep(entries, tasks, {
     now,
     liveTitles: liveTitleMap(),
@@ -236,12 +302,48 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 // launch legitimately takes minutes (slow-boot verify), and a silent
 // heartbeat that long would let a concurrent --ensure-tab call a healthy
 // dashboard dead (plan-review P0).
+// Which dispatcher owns this taskId (BRO-3390). Same fork digest-autofix.js
+// already makes at its own spawn site — matched on the id namespace, never on
+// subject text.
+//
+// The Linear lane is dispatched --headless deliberately, and this is the one
+// place the two lanes genuinely differ:
+//   - headless needs no cmux terminal runtime, so the LAUNCH itself sidesteps
+//     BRO-2709 (cmux at its runtime ceiling, where auto-dispatch fails
+//     SILENTLY at launch). NOTE the limit of that claim, found by ship-check:
+//     planSweep's holds are still global, so `cmux unobservable`, the
+//     global auto-tab ceiling, a launcher outage or a launcher leak all stop
+//     this lane too even though none of them can affect a headless child.
+//     Headless is therefore more RELIABLE once launched, but it is not yet
+//     ISOLATED from cmux's health. Tracked in BRO-3404;
+//   - measured on data/audit/dispatch-ledger.jsonl since 2026-08-16, the
+//     headless lane reaches job-done 83.0% of the time (460 jobs, 17.0%
+//     trouble) against 30.5% dead/vanished for the cmux workspace lane
+//     (462 launches). Raising concurrency onto the worse lane would have
+//     spent the increase on launches that never run.
+// The Notion lane keeps its existing cmux behaviour untouched — this change
+// adds a lane, it does not re-point the old one.
+function dispatchArgvFor(taskId) {
+  const m = /^linear:([A-Z][A-Z0-9]*-\d+)$/.exec(String(taskId));
+  // --detach is NOT optional here (ship-check P0). `--headless` alone AWAITS
+  // runJob for the job's entire life, and runBscNext SIGKILLs the process
+  // group at DISPATCH_TIMEOUT_MS = 15 minutes. Measured on the real ledger:
+  // median headless job 21.9 min, and 277 of 424 (65.3%) run past 15 minutes —
+  // so two out of every three paid jobs would have been killed mid-flight,
+  // money spent and work discarded, with no terminal row written. That would
+  // have FED the very write-back leak this change surfaces. With --detach,
+  // linear-next re-execs in its own session and returns immediately, which is
+  // exactly what digest-autofix.js's own spawn site does.
+  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless', '--detach'];
+  return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
+}
+
 function runBscNext(taskId, { onTick } = {}) {
   return new Promise(resolve => {
     // detached: bsc-next spawns its own helpers (cmux calls, sleep loops) —
     // a timeout must kill the whole PROCESS GROUP, or the node child dies
     // while its wrapper keeps launching unjournaled (ship-check P1).
-    const child = spawn('node', [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)], {
+    const child = spawn('node', dispatchArgvFor(taskId), {
       cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'], detached: true,
     });
     let out = '';
@@ -334,6 +436,11 @@ function summarize(plan) {
     inFlight: plan.inFlight.length,
     needsYou: plan.needsYou,
     p01Queued: plan.p01Queue.length,
+    // BRO-3390: the write-back leak in the same machine-readable surface as
+    // everything else, so "it fails loudly" is true for --status --json and
+    // the heartbeat, not just for the crowned tab's narrative.
+    writeBackLeak: linearWriteBackLeak().length,
+    linearSource: { ok: linearTaskCache.ok, reason: linearTaskCache.reason, eligible: linearTaskCache.tasks.size },
     // #1564: suppressed cards are subtracted from p01Queued, so without this
     // the heartbeat and --status --json show a backlog that silently shrank.
     // Every machine-readable surface must carry the population the filter
@@ -467,10 +574,30 @@ function ensureTab() {
 
 // ── modes ──────────────────────────────────────────────────────────────────
 
+// BRO-3390: render the write-back leak under the narrative. Capped at 8 lines
+// — this is a nudge on a dashboard, not the triage list (BRO-3376 owns that).
+function renderWriteBackLeak(now = Date.now()) {
+  const leak = linearWriteBackLeak(now);
+  if (!leak.length) return '';
+  const lines = [
+    '',
+    `WRITE-BACK LEAK: ${leak.length} card(s) finished (job-done) but never left their started state:`,
+  ];
+  for (const l of leak.slice(0, 8)) {
+    lines.push(`  • ${l.identifier} "${String(l.title).slice(0, 56)}" — done ${l.ageHours}h ago, still ${l.stateName}`);
+  }
+  if (leak.length > 8) lines.push(`  …and ${leak.length - 8} more`);
+  lines.push('  close one: node scripts/linear-brain.js update <BRO-N> --state Done   (needs PR-EVIDENCE or a VERIFY: line)');
+  return lines.join('\n');
+}
+
 async function sweepOnce({ dryRun }) {
+  await refreshLinearTasks();          // BRO-3390: Linear is a task source now
   const now = Date.now();
   const plan = buildPlan(now);
   console.log(core.renderNarrative(plan));
+  const leakText = renderWriteBackLeak(now);
+  if (leakText) console.log(leakText);
   if (dryRun) { console.log('\n(dry-run: no actions taken, no heartbeat written)'); return 0; }
   if (!acquireLock()) { console.log('watchdog: lock held by another process — skipping actions'); return 0; }
   try {
@@ -487,6 +614,10 @@ async function dashboardLoop() {
   process.on('SIGTERM', () => { releaseLock(); process.exit(0); });
   process.on('SIGINT', () => { releaseLock(); process.exit(0); });
   for (;;) {
+    // BRO-3390: refresh the Linear source before each sweep. Awaited inside
+    // the try so a Linear failure takes the same guarded path as a plan-build
+    // failure and can never kill the loop.
+    await refreshLinearTasks();
     const now = Date.now();
     let plan;
     try {
@@ -503,6 +634,8 @@ async function dashboardLoop() {
         writeHeartbeat({ mode: 'dashboard', ...summarize(plan) });
         console.clear();
         console.log(core.renderNarrative(plan));
+        const leakText = renderWriteBackLeak(now);
+        if (leakText) console.log(leakText);
         // Rename own tab (freshness cue lives in the title). The tab is
         // located by TITLE in the current listing, never by the stored ref
         // alone (ship-check P0: cmux recycles refs across restarts — a
@@ -699,6 +832,10 @@ async function main() {
   if (argv.includes('--dashboard')) return dashboardLoop();
   if (argv.includes('--health')) return health();
   if (argv.includes('--status')) {
+    // Refresh before reporting: --status is the owner's read-only view, and a
+    // status that silently omitted the Linear half of the queue would be the
+    // same blind spot BRO-3390 exists to close.
+    await refreshLinearTasks();
     const plan = buildPlan(Date.now());
     if (argv.includes('--json')) console.log(JSON.stringify({ ...summarize(plan), heartbeatAgeMs: heartbeatAgeMs(), tab: readJson(TAB_STATE_PATH) }, null, 2));
     else console.log(core.renderNarrative(plan));
@@ -715,4 +852,9 @@ if (require.main === module) {
 module.exports = {
   main, ensureTab, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
   pageIfKillSwitchStale,
+  // BRO-3390: exported so the lane fork is tested against the REAL function
+  // rather than a copy of its regex (CLAUDE.md rule 15). LINEAR_CACHE_TTL_MS
+  // and linearTasksForPlan go with it so the cache's staleness contract is
+  // testable without a network call.
+  dispatchArgvFor, linearTasksForPlan, LINEAR_CACHE_TTL_MS,
 };

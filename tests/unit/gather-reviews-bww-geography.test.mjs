@@ -99,3 +99,44 @@ test("region:'us' outlets are still non-local for a West End roundup", () => {
   assert.ok(!result.some(r => r.outletId === 'frontmezzjunkies'),
     'a US outlet must still be filtered out of a West End roundup');
 });
+
+/**
+ * isDualMarket regression (2026-09-15, Pre-Existing Condition incident).
+ *
+ * isDualMarket is a SEPARATE signal from region:'dual'. An outlet can carry a
+ * single primary `region` (e.g. The Guardian: region:'london') while also
+ * being isDualMarket:true to flag that it legitimately covers the other
+ * market too. Before this fix, only `region` was read here, so an
+ * isDualMarket:true outlet whose primary region wasn't already 'dual' was
+ * still filtered out as non-local — confirmed live: The Guardian's real NYC
+ * review in a BWW Review Roundup for "Pre-Existing Condition" was stripped
+ * as "non-NYC" despite carrying isDualMarket:true. Mirrors
+ * cross-market-guard.js's classifyReverseCrossMarket(), which already treats
+ * isDualMarket as an unconditional "skip, legit by definition".
+ */
+test("precondition: guardian is still region:'london' + isDualMarket:true", () => {
+  assert.equal(REGISTRY.guardian?.region, 'london');
+  assert.equal(REGISTRY.guardian?.isDualMarket, true,
+    'guardian was retagged — this is the fixture the isDualMarket regression tests below need');
+});
+
+test('isDualMarket outlet (guardian, region:london) is NOT filtered from a Broadway roundup', () => {
+  const reviews = [
+    { outletId: 'nytimes', excerpt: 'a Broadway review' },
+    { outletId: 'variety', excerpt: 'another Broadway review' },
+    { outletId: 'guardian', excerpt: 'a Guardian NYC review' },
+  ];
+  const result = validateBWWRoundupGeography(reviews, '', 'some-broadway-show-2026', false);
+  assert.equal(result.length, 3, 'no review should be dropped');
+  assert.ok(result.some(r => r.outletId === 'guardian'),
+    'isDualMarket:true outlet must survive the Broadway geography filter regardless of its primary region');
+});
+
+test('isDualMarket outlet (guardian) is also NOT filtered from a West End roundup', () => {
+  const reviews = [
+    { outletId: 'thestage', excerpt: 'a London review' },
+    { outletId: 'guardian', excerpt: 'a Guardian London review' },
+  ];
+  const result = validateBWWRoundupGeography(reviews, '', 'some-west-end-show-2026', true);
+  assert.equal(result.length, 2, 'no review should be dropped');
+});

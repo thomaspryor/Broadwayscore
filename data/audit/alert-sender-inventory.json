@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-14T19:43:45.290Z",
+  "generatedAt": "2026-09-15T18:41:14.906Z",
   "counts": {
-    "router": 125,
+    "router": 129,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -58,21 +58,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 3570,
+      "line": 3621,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 5964,
+      "line": 6015,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 5987,
+      "line": 6038,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -463,6 +463,34 @@
       "disposition": "digest"
     },
     {
+      "file": "scripts/check-xcode-toolchain.js",
+      "line": 64,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/check-xcode-toolchain.js",
+      "line": 117,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
+    },
+    {
+      "file": "scripts/check-xcode-toolchain.js",
+      "line": 157,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
+    },
+    {
+      "file": "scripts/check-xcode-toolchain.js",
+      "line": 195,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
       "file": "scripts/dispatch-drift-watch.js",
       "line": 156,
       "kind": "routeAlert",
@@ -485,49 +513,49 @@
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 231,
+      "line": 297,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 285,
+      "line": 387,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 310,
+      "line": 412,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 321,
+      "line": 423,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 552,
+      "line": 685,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 659,
+      "line": 792,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 676,
+      "line": 809,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"

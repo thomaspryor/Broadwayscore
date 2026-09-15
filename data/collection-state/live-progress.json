@@ -1,134 +1,36 @@
 {
-  "updatedAt": "2026-09-15T16:11:39.441Z",
-  "processed": 158,
-  "failed": 1014,
-  "successRate": "13.5%",
+  "updatedAt": "2026-09-15T17:57:03.331Z",
+  "processed": 192,
+  "failed": 1186,
+  "successRate": "13.9%",
   "tierBreakdown": {
-    "playwright": 91,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 4,
-    "directCookies": 4,
-    "scrapingbee": 27,
-    "brightdata": 13,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 4,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 26
+    "archive": 5
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-09-15T14:18:23.760Z",
+      "t": "2026-09-15T17:40:48.192Z",
       "event": "bb-session",
-      "session": "7d9c0a1c",
-      "url": "https://www.whatsonstage.com/news/ben-platt-lin-manuel-miranda-and-harry-potter-"
+      "session": "4ae8f553",
+      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about"
     },
     {
-      "t": "2026-09-15T14:22:41.461Z",
-      "event": "bb-session",
-      "session": "fa929ed6",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-15T14:22:45.516Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-15T14:23:03.623Z",
-      "event": "bb-session",
-      "session": "98d66acb",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-15T14:23:07.710Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-15T14:30:12.100Z",
-      "event": "bb-session",
-      "session": "4d835eda",
-      "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
-    },
-    {
-      "t": "2026-09-15T14:30:21.021Z",
-      "event": "bb-session",
-      "session": "c40104b7",
-      "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
-    },
-    {
-      "t": "2026-09-15T14:32:26.538Z",
-      "event": "bb-session",
-      "session": "d04e8694",
-      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
-    },
-    {
-      "t": "2026-09-15T14:32:27.210Z",
+      "t": "2026-09-15T17:40:49.154Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-09-15T14:35:09.591Z",
+      "t": "2026-09-15T17:44:44.656Z",
       "event": "bb-session",
-      "session": "fa6a47f4",
-      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-london-old-vic-stephen-mang"
-    },
-    {
-      "t": "2026-09-15T14:35:10.240Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-15T14:36:38.841Z",
-      "event": "bb-session",
-      "session": "d97aa36d",
-      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-londo"
-    },
-    {
-      "t": "2026-09-15T14:36:39.461Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-15T14:38:42.732Z",
-      "event": "bb-session",
-      "session": "6d3a186f",
-      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
-    },
-    {
-      "t": "2026-09-15T14:38:55.089Z",
-      "event": "bb-session",
-      "session": "c3ca49e6",
-      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
-    },
-    {
-      "t": "2026-09-15T14:53:30.555Z",
-      "event": "bb-session",
-      "session": "1e4f9219",
-      "url": "http://www.publictheater.org/"
-    },
-    {
-      "t": "2026-09-15T14:53:40.730Z",
-      "event": "bb-session",
-      "session": "9a70df98",
-      "url": "http://www.publictheater.org/"
-    },
-    {
-      "t": "2026-09-15T14:56:19.547Z",
-      "event": "bb-session",
-      "session": "9da76340",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-09-15T14:56:40.244Z",
-      "event": "bb-session",
-      "session": "969a2037",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-09-15T15:46:39.169Z",
-      "event": "bb-session",
-      "session": "e4425ec6",
-      "url": "https://www.westendtheatre.com/41281/news/reviews/reviews-round-up-cats-at-the-l"
+      "session": "5f6cde11",
+      "url": "https://deadline.com/2026/01/music-city-off-broadway-j-t-harding-1236690521/"
     }
   ]
 }
