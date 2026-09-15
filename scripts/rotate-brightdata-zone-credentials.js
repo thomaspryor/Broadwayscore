@@ -112,7 +112,7 @@ function redact(body) {
 function generatePassword() {
   let out = '';
   while (out.length < 20) {
-    out += crypto.randomBytes(18).toString('base64').replace(/[^a-zA-Z0-9]/g, '');
+    out += crypto.randomBytes(18).toString('base64').replace(/[^a-zA-Z0-9]/g, ''); // diacritic-guard-ok: stripping base64 punctuation from a random password, not a title/name matcher
   }
   return out.slice(0, 20);
 }
