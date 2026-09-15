@@ -95,7 +95,14 @@ function checkLinearDoneTransition({ targetStateType, description = '', commentT
       // otherwise the refusal below would tell the operator to add a VERIFY:
       // line that this same branch would then never look at.
       const viaCmd = evaluateDoneTransition({ prRef: null, notes: description, comments });
-      if (viaCmd.allowed) return { gated: true, ...viaCmd, verification };
+      if (viaCmd.allowed) {
+        // Allowed on the command's strength — but a PROVEN-false PR claim
+        // sitting next to it is worth saying out loud, not swallowing.
+        const warning = verification && verification.verified === false
+          ? `PR-EVIDENCE on this issue was checked and is NOT on origin/main (${verification.reason}); Done is allowed only because a VERIFY: command is recorded (${viaCmd.cmd}).`
+          : null;
+        return { gated: true, ...viaCmd, verification, ...(warning ? { warning } : {}) };
+      }
       const definite = verification && verification.verified === false;
       return {
         gated: true,

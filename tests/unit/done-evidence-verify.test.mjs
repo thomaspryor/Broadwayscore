@@ -48,9 +48,9 @@ test('extractEvidenceRefs: with the origin unidentified, every GitHub URL is for
   assert.deepEqual(refs.commits, ['c447589a576'], 'a bare SHA is still checked against whatever origin/main is here');
 });
 
-test('extractEvidenceRefs: English hex words and pure-digit runs are not SHAs', () => {
-  const refs = extractEvidenceRefs('merged deployed checked — defaced deadbeef 20260915 1234567', { originRepo: LOCAL });
-  assert.deepEqual(refs.commits, []);
+test('extractEvidenceRefs: English hex words, pure-digit runs and short id fragments are not SHAs', () => {
+  const refs = extractEvidenceRefs('merged deployed checked — defaced deadbeef 20260915 1234567 face2face 3f2b8c1a build 3f2b8c1a9d', { originRepo: LOCAL });
+  assert.deepEqual(refs.commits, [], 'nothing under 11 hex chars is taken as a bare SHA');
 });
 
 // ── decision ───────────────────────────────────────────────────────────────
@@ -199,7 +199,7 @@ test('makeIsCommitOnMain: landed / not landed / never seen / rebase-rewritten SH
   git('checkout', '-q', '-b', 'feature');
   const tip = commit('b.txt');
   assert.equal(isOnMain(tip), false, 'unpushed branch tip is definitively not on origin/main');
-  assert.equal(isOnMain('deadbeefcafe'), false, 'a SHA this clone has never seen is not evidence');
+  assert.equal(isOnMain('deadbeefcafe'), null, 'a SHA this clone cannot resolve is unknown, never an accusation (it may live in a branch never fetched here)');
 
   // Rebase-style landing: the same patch reaches main under a NEW sha.
   git('checkout', '-q', 'main');
@@ -218,14 +218,63 @@ test('makeIsCommitOnMain: landed / not landed / never seen / rebase-rewritten SH
   assert.equal(fresh(mergeSha), false, 'an unlanded merge commit gets no patch-equivalence shortcut');
 });
 
-test('makeIsCommitOnMain: when origin/main cannot be refreshed, nothing is confirmed OR denied (fail closed, not stale)', (t) => {
+test('makeIsCommitOnMain: offline — a commit already on the LOCAL origin/main is confirmed without a fetch; anything else is unknown, never denied', (t) => {
   const { root, git, commit, work } = makeRepo();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const sha = commit('a.txt');
   git('push', '-q', 'origin', 'main');
+  git('checkout', '-q', '-b', 'feature');
+  const tip = commit('b.txt');
   git('remote', 'set-url', 'origin', path.join(root, 'does-not-exist.git'));
   const isOnMain = makeIsCommitOnMain({ cwd: work, log: () => {} });
-  assert.equal(isOnMain(sha), null, 'a commit that IS on the stale origin/main is still unknown when the refresh failed');
+  assert.equal(isOnMain(sha), true, 'main cannot be force-pushed, so local ancestry is proof');
+  assert.equal(isOnMain(tip), null, 'not locally provable and no refresh possible -> unknown (the remote may have advanced)');
+});
+
+test('evaluateEvidence: a foreign URL on the same line does not soften a definitive NOT-on-main verdict', () => {
+  const r = evaluateEvidence({ commits: ['bbbbbbb'], prs: [], foreign: ['https://github.com/x/y/commit/abcdef1234567'] }, { isCommitOnMain: onMain });
+  assert.equal(r.verified, false);
+  assert.match(r.reason, /bbbbbbb is NOT on origin\/main/);
+});
+
+test('makeMentionsIssue: merge subjects like "Merge branch \'job/linear-BRO-14-x\'" attribute, and a bare merge attributes through its second-parent range', (t) => {
+  const { root, git, work } = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const { makeMentionsIssue } = require('../../scripts/lib/done-evidence-verify.js');
+  const mentions = makeMentionsIssue({ cwd: work, log: () => {} });
+  fs.writeFileSync(path.join(work, 'a.txt'), 'a\n'); git('add', 'a.txt'); git('commit', '-q', '-m', 'base');
+  git('checkout', '-q', '-b', 'job/linear-BRO-14-x');
+  fs.writeFileSync(path.join(work, 'b.txt'), 'b\n'); git('add', 'b.txt'); git('commit', '-q', '-m', 'fix(BRO-14): the thing');
+  git('checkout', '-q', 'main');
+  git('merge', '-q', '--no-ff', '-m', "Merge branch 'job/linear-BRO-14-x'", 'job/linear-BRO-14-x');
+  const named = git('rev-parse', 'HEAD');
+  assert.equal(mentions({ sha: named, prNumber: null, issueIdentifier: 'BRO-14' }), true, 'hyphen before the id must not block the match');
+  git('checkout', '-q', '-b', 'worktree-thing');
+  fs.writeFileSync(path.join(work, 'c.txt'), 'c\n'); git('add', 'c.txt'); git('commit', '-q', '-m', 'feat(BRO-15): other');
+  git('checkout', '-q', 'main');
+  git('merge', '-q', '--no-ff', '-m', 'Merge branch worktree-thing', 'worktree-thing');
+  const bare = git('rev-parse', 'HEAD');
+  assert.equal(mentions({ sha: bare, prNumber: null, issueIdentifier: 'BRO-15' }), true, 'attributed through the merged side');
+  assert.equal(mentions({ sha: bare, prNumber: null, issueIdentifier: 'BRO-1' }), false, 'BRO-15 does not match BRO-1');
+});
+
+test('gate: a PROVEN-false PR claim next to a valid VERIFY: command is allowed but carries a warning', () => {
+  const r = checkLinearDoneTransition({
+    targetStateType: 'completed',
+    description: EVIDENCE,
+    existingComments: ['VERIFY: node --test tests/unit/some-fixture.test.mjs'],
+    verifyEvidence: () => ({ verified: false, reason: 'commit aaaaaaa is NOT on origin/main' }),
+  });
+  assert.equal(r.allowed, true);
+  assert.match(r.warning, /NOT on origin\/main/);
+  const unknown = checkLinearDoneTransition({
+    targetStateType: 'completed',
+    description: EVIDENCE,
+    existingComments: ['VERIFY: node --test tests/unit/some-fixture.test.mjs'],
+    verifyEvidence: () => ({ verified: null, reason: 'shallow' }),
+  });
+  assert.equal(unknown.allowed, true);
+  assert.equal(unknown.warning, undefined, 'unknown is not an accusation — no warning');
 });
 
 test('makeMentionsIssue: reads the landed commit message; BRO-14 does not match BRO-1', (t) => {
