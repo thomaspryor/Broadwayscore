@@ -320,8 +320,54 @@ const HEALTH_ROW_NAME = 'Dispatch: board targeting';
  * Status is 'error' only when something is CURRENTLY wrong. 'ok' still carries
  * a message so an on-demand run says what it checked.
  */
+// How stale the primary ledger's newest row can be before the audit is treated
+// as blind rather than as "a quiet week". The fleet writes ledger rows
+// continuously when it is alive at all (measured: thousands per week), so a
+// primary ledger whose freshest row is over a day old means the writer stopped,
+// not that the fleet had nothing to do.
+const STALE_LEDGER_HOURS = 24;
+
 function summarizeBoardTargeting(opts) {
-  const { writerAudit, coverage, now = Date.now(), blind = false, primaryLedger = null } = opts || {};
+  const {
+    writerAudit, coverage, now = Date.now(),
+    blind = false, primaryLedger = null, primaryLastRowTs = null,
+    staleLedgerHours = STALE_LEDGER_HOURS,
+  } = opts || {};
+
+  // Three ways to have NO EVIDENCE, all of which used to render as a pass:
+  //   1. blind        — the primary ledger is absent or empty
+  //   2. stale        — it exists but nothing has been written to it for a day
+  //   3. no writers   — it has history, but nothing inside the audit window
+  //
+  // (2) and (3) were a ship-check finding: with every dispatcher dead, paused
+  // or its launchd job unloaded, `writers` comes back empty, `parts` is empty,
+  // and the old `parts.length ? 'error' : 'ok'` returned a confident "All 0
+  // audited dispatch writer(s) are targeting the live linear board" — a clean
+  // bill of health computed from nothing, which is the exact failure this
+  // module exists to end and which its own header calls out.
+  const ledgerAgeHours = primaryLastRowTs
+    ? (now - Date.parse(primaryLastRowTs)) / 3600e3 : null;
+  const stale = Number.isFinite(ledgerAgeHours) && ledgerAgeHours > staleLedgerHours;
+  const noWriters = !writerAudit || writerAudit.auditedEvents === 0;
+
+  if (blind || stale || noWriters) {
+    const why = blind
+      ? `could not read ${primaryLedger || 'the dispatch ledger'}`
+      : stale
+        ? `${primaryLedger || 'the dispatch ledger'} has had no new rows for ${Math.round(ledgerAgeHours)}h`
+        : `no dispatch activity at all in the last ${writerAudit ? writerAudit.windowDays : '?'}d`;
+    return {
+      status: 'error',
+      name: HEALTH_ROW_NAME,
+      message: `Board-targeting check has no evidence to judge on — ${why}. This is blind, not clean: no verdict was produced.`,
+      hint: 'node scripts/audit-board-targeting.js   # on the Mac that owns the ledger',
+      generatedAt: new Date(now).toISOString(),
+      details: {
+        blind: true, reason: why, primaryLedger, primaryLastRowTs,
+        writers: [], exemptEvents: [], coverage: coverage || null,
+      },
+    };
+  }
 
   // A blind audit is reported as blind. The first run of this check, from a
   // worktree where the gitignored Mac-local ledger does not exist, read zero
@@ -395,6 +441,7 @@ function summarizeBoardTargeting(opts) {
 
 module.exports = {
   HEALTH_ROW_NAME,
+  STALE_LEDGER_HOURS,
   PURE_RETIRED_MIN_ROWS,
   DEFAULT_MIN_NEVER_TOUCHED,
   DEFAULT_WINDOW_DAYS,

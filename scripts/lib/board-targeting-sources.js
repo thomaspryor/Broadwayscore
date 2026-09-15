@@ -120,7 +120,19 @@ function readDispatchLedgers(opts) {
   const primary = sources.find((s) => s.file === PRIMARY_LEDGER);
   const blind = !primary || !primary.present || primary.rows === 0;
 
-  return { rows, everTouchedIds, problems, sources, blind, primaryLedger: PRIMARY_LEDGER };
+  return {
+    rows,
+    everTouchedIds,
+    problems,
+    sources,
+    blind,
+    primaryLedger: PRIMARY_LEDGER,
+    // The freshest row in the primary ledger. The caller uses it to tell
+    // "the fleet dispatched nothing this week" from "this ledger stopped being
+    // written to days ago" — the second is a blind audit wearing the first's
+    // clothes (ship-check finding).
+    primaryLastRowTs: (primary && primary.lastRowTs) || null,
+  };
 }
 
 /**

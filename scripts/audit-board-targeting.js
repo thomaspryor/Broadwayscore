@@ -84,7 +84,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const now = Date.now();
 
-  const { rows, everTouchedIds, problems, sources, blind, primaryLedger } = readDispatchLedgers({});
+  const { rows, everTouchedIds, problems, sources, blind, primaryLedger, primaryLastRowTs } = readDispatchLedgers({});
 
   const writerAudit = auditWriterBoards({ rows, now, windowDays: args.windowDays });
 
@@ -99,14 +99,14 @@ async function main() {
     });
   }
 
-  const row = summarizeBoardTargeting({ writerAudit, coverage, now, blind, primaryLedger });
+  const row = summarizeBoardTargeting({ writerAudit, coverage, now, blind, primaryLedger, primaryLastRowTs });
 
   if (args.json) {
     console.log(JSON.stringify({ ...row, ledgers: sources, ledgerProblems: problems }, null, 2));
     return row.status === 'error' ? 1 : 0;
   }
 
-  console.log(`Board targeting — ${blind ? 'BLIND' : row.status === 'error' ? 'MIS-TARGETED' : 'OK'} (${args.windowDays}d window)`);
+  console.log(`Board targeting — ${row.details && row.details.blind ? 'NO EVIDENCE' : row.status === 'error' ? 'MIS-TARGETED' : 'OK'} (${args.windowDays}d window)`);
   console.log('');
   console.log(row.message);
   console.log('');

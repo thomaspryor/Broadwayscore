@@ -92,6 +92,14 @@ on:
       # in shows.json when two signals agree, so a solo edit to the apply path
       # deserves CI even though its decision logic lives in scripts/lib/.
       - 'scripts/detect-ob-closings.js'
+      # Same gap shape (BRO-3423): a top-level CLI outside scripts/lib/**. Its
+      # decision logic does live in scripts/lib/board-targeting-audit.js and
+      # board-targeting-sources.js (both globbed above), but it owns the exit
+      # contract (0 healthy / 1 mis-targeted / 2 could not run) and the
+      # no-evidence print, and a solo edit to it would otherwise trigger ZERO
+      # CI — the exact gap memory/feedback_test_yml_push_path_allowlist.md
+      # documents three recurrences of.
+      - 'scripts/audit-board-targeting.js'
       - 'vercel.json'
       # scripts/lib/freeze-ledgers.test.mjs requires ../freeze-ledgers.js (a
       # top-level scripts/ file, outside the glob above) — same gap shape as

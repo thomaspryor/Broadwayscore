@@ -882,7 +882,7 @@ async function main() {
     // `Date.now()` inline, NOT the `now` binding — that const is declared ~100
     // lines below this block (see the TDZ note in the inflow block above).
     const auditNow = Date.now();
-    const { rows, everTouchedIds, blind, primaryLedger } = readDispatchLedgers({});
+    const { rows, everTouchedIds, blind, primaryLedger, primaryLastRowTs, problems } = readDispatchLedgers({});
     const writerAudit = auditWriterBoards({ rows, now: auditNow });
     const live = await fetchLiveBoardArmed({});
     const coverage = auditLiveBoardCoverage({
@@ -896,7 +896,14 @@ async function main() {
       // raw count alongside makes that collapse a visible number.
       openIssueCount: openIssues ? openIssues.length : null,
     });
-    const row = summarizeBoardTargeting({ writerAudit, coverage, now: auditNow, blind, primaryLedger });
+    const row = summarizeBoardTargeting({ writerAudit, coverage, now: auditNow, blind, primaryLedger, primaryLastRowTs });
+    // An unreadable SECONDARY ledger shrinks everTouchedIds, which inflates the
+    // coverage arm's never-touched count and can manufacture a false FAIL. Say
+    // so in the row rather than letting it read as a clean measurement
+    // (ship-check finding).
+    if (problems.length && row.status === 'error') {
+      row.message += ` (note: ${problems.join('; ')})`;
+    }
     if (row.status === 'error') {
       if (!sections.health) sections.health = {};
       if (!Array.isArray(sections.health.errors)) sections.health.errors = [];

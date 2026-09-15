@@ -35,6 +35,7 @@ import {
   DEFAULT_MIN_BOARD_ROWS,
   DEFAULT_RECENCY_HOURS,
   DEFAULT_MIN_ELIGIBLE,
+  STALE_LEDGER_HOURS,
 } from './board-targeting-audit.js';
 
 const NOW = Date.parse('2026-09-15T20:00:00Z');
@@ -347,9 +348,64 @@ test('a failing coverage arm reports the raw open-issue count beside the eligibl
   // what makes that collapse visible instead of a silent exoneration.
   const eligibleIds = Array.from({ length: 137 }, (_, i) => `linear:BRO-${i}`);
   const row = summarizeBoardTargeting({
-    writerAudit: auditWriterBoards({ rows: [], now: NOW }),
+    // Real writer rows: an empty audit is now (correctly) short-circuited by
+    // the no-evidence guard before any coverage message is built.
+    writerAudit: auditWriterBoards({ rows: rows('launch', { live: 104 }), now: NOW }),
     coverage: auditLiveBoardCoverage({ eligibleIds, everTouchedIds: new Set(), openIssueCount: 1002 }),
     now: NOW,
+    primaryLastRowTs: hoursAgo(1),
   });
   assert.match(row.message, /1002 open issues/);
+});
+
+test('no evidence NEVER renders as a pass — the three ways to be blind', () => {
+  const ids = Array.from({ length: 100 }, (_, i) => `linear:BRO-${i}`);
+  const healthyCoverage = auditLiveBoardCoverage({ eligibleIds: ids, everTouchedIds: new Set(ids) });
+  const emptyAudit = auditWriterBoards({ rows: [], now: NOW });
+
+  // 1. primary ledger absent or empty
+  const a = summarizeBoardTargeting({
+    writerAudit: emptyAudit, coverage: healthyCoverage, now: NOW,
+    blind: true, primaryLedger: 'data/audit/dispatch-ledger.jsonl',
+  });
+  assert.equal(a.status, 'error');
+  assert.match(a.message, /could not read/);
+
+  // 2. ledger present but nothing written to it for over a day — the writer
+  //    stopped; that is blindness wearing a quiet week's clothes.
+  const b = summarizeBoardTargeting({
+    writerAudit: emptyAudit, coverage: healthyCoverage, now: NOW,
+    primaryLedger: 'data/audit/dispatch-ledger.jsonl',
+    primaryLastRowTs: hoursAgo(STALE_LEDGER_HOURS + 5),
+  });
+  assert.equal(b.status, 'error');
+  assert.match(b.message, /no new rows/);
+
+  // 3. ledger fresh, but zero dispatch writers inside the window. This is the
+  //    one that used to return a confident "All 0 audited dispatch writer(s)
+  //    are targeting the live linear board" — a verdict computed from nothing.
+  const c = summarizeBoardTargeting({
+    writerAudit: emptyAudit, coverage: healthyCoverage, now: NOW,
+    primaryLedger: 'data/audit/dispatch-ledger.jsonl',
+    primaryLastRowTs: hoursAgo(1),
+  });
+  assert.equal(c.status, 'error');
+  assert.match(c.message, /no dispatch activity at all/);
+  assert.ok(!/All 0 audited/.test(c.message));
+
+  // ...and the worst case: no writers AND the live board unreachable.
+  const d = summarizeBoardTargeting({
+    writerAudit: emptyAudit,
+    coverage: auditLiveBoardCoverage({ ok: false, reason: 'linear outage' }),
+    now: NOW, primaryLastRowTs: hoursAgo(1),
+  });
+  assert.equal(d.status, 'error');
+});
+
+test('a fresh ledger with real writers is still judged normally', () => {
+  const row = summarizeBoardTargeting({
+    writerAudit: auditWriterBoards({ rows: rows('launch', { live: 104 }), now: NOW }),
+    coverage: null, now: NOW, primaryLastRowTs: hoursAgo(1),
+  });
+  assert.equal(row.status, 'ok', 'the no-evidence guard must not swallow a genuine pass');
 });
