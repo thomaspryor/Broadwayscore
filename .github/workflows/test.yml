@@ -65,6 +65,15 @@ on:
       # listed above.
       - 'scripts/check-vercel-build-guard.js'
       - 'scripts/check-corpus-drift.js'
+      # BRO-3375: same gap shape — a top-level scripts/ file outside the
+      # scripts/lib/** glob, so a solo edit would trigger ZERO CI. Its decision
+      # logic deliberately lives OUTSIDE this repo, in
+      # ~/.claude/hooks/lib/xcode-toolchain-guard.js (the outage it guards
+      # against breaks the very git that would refresh a repo checkout, so the
+      # guard must not depend on one). That lib is tested by
+      # ~/.claude/hooks/tests/xcode-toolchain-guard/run.sh, which claude-sync
+      # push runs as a pre-push gate; this entry covers the wrapper itself.
+      - 'scripts/check-xcode-toolchain.js'
       # scripts/audit-doubled-market-ids.js is a top-level CLI whose exit contract
       # (0 clean / 1 flagged / 2 could-not-run) is covered by the colocated
       # scripts/lib/doubled-market-ids.test.mjs subprocess test. That test runs
