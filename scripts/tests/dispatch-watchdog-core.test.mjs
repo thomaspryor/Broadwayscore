@@ -674,3 +674,69 @@ test('BRO-3442: a job-blocked task already watchdog-parked is not surfaced again
   const plan = core.planSweep(entries, new Map([task(93, 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.jobBlocked.length, 0);
 });
+
+// ── BRO-3404: cmux-lane holds must not gate the headless lane ─────────────
+
+function p01(id, pri = 'P1 Now') {
+  const isLinear = String(id).startsWith('linear:');
+  const tag = isLinear ? `[linear:${String(id).slice(7)}]` : `[notion:abc-${id}]`;
+  return [String(id), {
+    id: String(id), subject: `Fix thing ${id}`, status: 'pending',
+    description: `${tag} ${pri} · Not started · no-category\nbody`,
+  }];
+}
+
+test('BRO-3404: the auto-tab ceiling stops cmux work but NOT headless work', () => {
+  // 15 auto-dispatched cmux tabs against a ceiling of 12 — the exact state
+  // that halted the drain live on 2026-09-15, while every card it could not
+  // dispatch was headless and creates no tab at all.
+  const liveTitles = new Map();
+  for (let i = 0; i < 15; i++) liveTitles.set(`workspace:${100 + i}`, `🤖 auto ${i}`);
+
+  const tasks = new Map([p01('linear:BRO-500'), p01('1849')]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles });
+
+  assert.ok(plan.budgets.holds.some((h) => /auto-tab ceiling/.test(h)),
+    'the ceiling must still be REPORTED so the narrative is honest');
+  assert.ok(plan.budgets.cmuxHolds.some((h) => /auto-tab ceiling/.test(h)),
+    'and classified as a cmux-lane hold');
+  assert.equal(plan.budgets.globalHolds.length, 0, 'it must not be a global hold');
+
+  const ids = plan.toDispatch.map((t) => t.taskId);
+  assert.ok(ids.includes('linear:BRO-500'), `headless work must still dispatch, got ${JSON.stringify(ids)}`);
+  assert.ok(!ids.includes('1849'), 'cmux-lane work must be suppressed while the ceiling is hit');
+});
+
+test('BRO-3404: cmux being unobservable does not stop headless dispatch', () => {
+  // liveTitles empty => cmuxObserved false. Headless needs no cmux at all.
+  const tasks = new Map([p01('linear:BRO-501'), p01('1850')]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles: new Map() });
+  assert.ok(plan.budgets.cmuxHolds.some((h) => /cmux unobservable/.test(h)));
+  assert.equal(plan.budgets.globalHolds.length, 0);
+  const ids = plan.toDispatch.map((t) => t.taskId);
+  assert.ok(ids.includes('linear:BRO-501'));
+  assert.ok(!ids.includes('1850'));
+});
+
+test('BRO-3404: a GLOBAL hold still stops both lanes', () => {
+  // Day budget exhausted is a real money bound — it must gate everything.
+  const entries = [];
+  for (let i = 0; i < core.CAPS.perDay; i++) {
+    entries.push({ ts: new Date(NOW - i * 1000).toISOString(), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: String(900 + i) });
+  }
+  const tasks = new Map([p01('linear:BRO-502'), p01('1851')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.ok(plan.budgets.globalHolds.some((h) => /day budget/.test(h)));
+  assert.equal(plan.toDispatch.length, 0, 'a global hold must stop the headless lane too');
+});
+
+test('BRO-3404: with no holds at all, both lanes dispatch', () => {
+  const tasks = new Map([p01('linear:BRO-503'), p01('1852')]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.cmuxHolds.length, 0);
+  assert.equal(plan.budgets.globalHolds.length, 0);
+  const ids = plan.toDispatch.map((t) => t.taskId);
+  assert.ok(ids.includes('linear:BRO-503'));
+  // perSweep is 2, and Linear sorts first, so the Notion card rides along.
+  assert.ok(ids.includes('1852'));
+});

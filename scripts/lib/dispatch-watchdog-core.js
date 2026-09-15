@@ -686,18 +686,38 @@ function planSweep(entries, tasks, opts) {
   const liveNow = watchdogLiveCount(entries);
   const autoTabs = cmuxObserved
     ? [...liveTitles.values()].filter(t => AUTO_TAB_RE.test(String(t))).length : null;
-  const holds = [];
-  if (!dispatchEnabled) holds.push('dispatch kill-switch set');
-  if (!cmuxObserved) holds.push('cmux unobservable — report-only');
-  if (outage.outage) holds.push(`launcher outage detected (${outage.count} injection deaths, tasks ${outage.taskIds.join('/')})`);
-  if (failureRate.leaking) holds.push(`${LAUNCHER_LEAK_HOLD_PREFIX} (${failureRate.failureCount}/${failureRate.totalLaunches} = ${Math.round(failureRate.rate * 100)}% injection deaths in the last ${Math.round(FAILURE_RATE_LOOKBACK_MS / 3600000)}h, even though the launcher looks "recovered")`);
-  if (claimOutage) holds.push(`${awaitingClaim.length} dispatch claims produced no launch and NOTHING has launched fleet-wide in ${Math.round(CLAIM_OUTAGE_WINDOW_MS / 3600000)}h — the launcher itself looks wedged, not the cards`);
-  if (usedToday >= CAPS.perDay) holds.push(`day budget spent (${usedToday}/${CAPS.perDay})`);
+  // Lane-aware holds (BRO-3404, forced live 2026-09-15).
+  //
+  // Every hold used to be global: budget was computed only when holds was
+  // EMPTY, so a cmux problem stopped the headless lane too. That went from
+  // theoretical to blocking within an hour of lifting the day budget — the
+  // drain halted on `global auto-tab ceiling (15/12)`, a count of cmux TABS,
+  // while the work it could not dispatch was headless and creates no tab at
+  // all. A ceiling on a resource the lane does not consume must not gate it.
+  //
+  // cmuxHolds suppress only cmux-lane candidates. globalHolds (kill switch,
+  // day budget, hourly pacing, concurrency, and the fleet-wide claim outage,
+  // which is a genuine "nothing launches anywhere" wedge) still stop
+  // everything. holds stays the union so the narrative and every existing
+  // consumer read exactly as before.
+  const globalHolds = [];
+  const cmuxHolds = [];
+  if (!dispatchEnabled) globalHolds.push('dispatch kill-switch set');
+  if (!cmuxObserved) cmuxHolds.push('cmux unobservable — report-only (cmux lane only; headless still dispatches)');
+  if (outage.outage) cmuxHolds.push(`launcher outage detected (${outage.count} injection deaths, tasks ${outage.taskIds.join('/')})`);
+  if (failureRate.leaking) cmuxHolds.push(`${LAUNCHER_LEAK_HOLD_PREFIX} (${failureRate.failureCount}/${failureRate.totalLaunches} = ${Math.round(failureRate.rate * 100)}% injection deaths in the last ${Math.round(FAILURE_RATE_LOOKBACK_MS / 3600000)}h, even though the launcher looks "recovered")`);
+  if (claimOutage) globalHolds.push(`${awaitingClaim.length} dispatch claims produced no launch and NOTHING has launched fleet-wide in ${Math.round(CLAIM_OUTAGE_WINDOW_MS / 3600000)}h — the launcher itself looks wedged, not the cards`);
+  if (usedToday >= CAPS.perDay) globalHolds.push(`day budget spent (${usedToday}/${CAPS.perDay})`);
   // Pacing, not a failure: say so, so the dashboard narrative doesn't read
   // like an outage when the drain is simply spreading its budget out.
-  if (usedThisHour >= CAPS.perHour) holds.push(`hourly pacing (${usedThisHour}/${CAPS.perHour} in the last 60m — spreading ${CAPS.perDay}/day instead of bursting)`);
-  if (liveNow >= CAPS.watchdogConcurrent) holds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
-  if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) holds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs})`);
+  if (usedThisHour >= CAPS.perHour) globalHolds.push(`hourly pacing (${usedThisHour}/${CAPS.perHour} in the last 60m — spreading ${CAPS.perDay}/day instead of bursting)`);
+  if (liveNow >= CAPS.watchdogConcurrent) globalHolds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
+  if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) cmuxHolds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs}) — cmux lane only; headless still dispatches`);
+  // Union — a NEW array, never an alias of globalHolds (an alias made every
+  // cmux hold a global one again, which is the exact bug this split removes).
+  // The narrative and every existing reader see the same list they always did;
+  // only the BUDGET GATE below distinguishes the two.
+  const holds = [...globalHolds, ...cmuxHolds];
 
   // BRO-2462: `holds` mixes deliberate/mundane pauses (kill-switch, budget,
   // concurrency, tab ceiling) with failure-DETECTION signals (outage,
@@ -716,7 +736,7 @@ function planSweep(entries, tasks, opts) {
     (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs);
 
   let budget = 0;
-  if (!holds.length) {
+  if (!globalHolds.length) {
     budget = Math.min(
       CAPS.perSweep,
       CAPS.perDay - usedToday,
@@ -725,7 +745,12 @@ function planSweep(entries, tasks, opts) {
     );
   }
   // Retries of already-attempted work outrank fresh P0/P1 dispatches.
-  const toDispatch = [...retryable, ...p01Queue].slice(0, Math.max(0, budget));
+  // When only cmux-lane holds are active, headless-capable work still flows —
+  // that is the whole point of the split above.
+  const eligibleForLane = cmuxHolds.length
+    ? [...retryable, ...p01Queue].filter(item => taskSourceRank(item.taskId) === 0)
+    : [...retryable, ...p01Queue];
+  const toDispatch = eligibleForLane.slice(0, Math.max(0, budget));
 
   // ── needs-you ──
   const deadCrownTabs = [];
@@ -748,7 +773,7 @@ function planSweep(entries, tasks, opts) {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim, noLaunchPark,
     unlandedDone, jobBlocked,
-    budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
+    budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, globalHolds, cmuxHolds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
