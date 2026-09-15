@@ -194,9 +194,23 @@ jobs:
         # disqualifier and strip the Git Data API fallback from this commit.
         # data-health-check.yml already establishes
         # multiple push-with-retry.sh calls per job as a supported pattern
-        # (see its stranded-commit-cascade test). Not continue-on-error —
-        # a failed breaker-state push is exactly the bug this step exists to
-        # surface, unlike the billing-API-blip checks above it.
+        # (see its stranded-commit-cascade test).
+        # BRO-2524 (2026-09-15): the push line below is now soft-failed
+        # (`|| echo "::warning::..."`), not job-fatal — was chronic-staling
+        # this cron 2026-09-11->14 (20 consecutive hourly job failures) purely
+        # from this push losing a transient race on a high-churn main branch,
+        # while every other step in the same runs (poll, auto-apply, the 3
+        # breaker checks, the LATER "Commit data changes" push, core-data
+        # push, deploy) succeeded every single time — proof the contention is
+        # transient and self-clearing within the same job, not a real bug.
+        # routeAlert() already fired synchronously inside the 3 checks above
+        # BEFORE this step runs, so no alert is lost if this git push alone
+        # fails; only alert-ledger/breaker-transitions.jsonl's persistence to
+        # main is delayed ~1h. Scoped to the push-with-retry.sh call only
+        # (matches check-push-ledger.yml's "Commit alert state" step, which
+        # commits this same alert-ledger.json the same way) — git-add/git
+        # commit failures above stay job-fatal, since those would be a real
+        # script/data bug, not push contention.
         if: always() && inputs.dry_run != true
         # BRO-335 (2026-09-08): this step ran on the script's default 240s
         # PUSH_DEADLINE_SEC/fundable=2-attempt budget until run 34195321965
@@ -239,7 +253,7 @@ jobs:
             git commit -m "data: hourly poll — BD/SD breaker state
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-            bash scripts/lib/push-with-retry.sh
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Breaker-state push failed after retries — next run re-derives BD/SD verdicts from billing APIs; alert-ledger/breaker-transitions state persists to main on the next successful push."
           fi
 
       - name: Commit data changes
