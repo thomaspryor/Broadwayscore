@@ -318,6 +318,22 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-09-08 (BRO-3008 S0-T6): same writer/workflow/concurrency-group as its two siblings above (check-provider-spend.js, data-health-check.yml git-add block) — never rotated, appended once/day with idempotent day-replace.',
   },
+  {
+    file: 'audit/notion-schedule-coupling.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    // BRO-3431 reopen: without this entry, staging this file alongside its
+    // siblings in "Commit health check audit snapshots (apiFallbackSafe)"
+    // would leave it unregistered — push-with-retry.sh's disqualifier check
+    // refuses the Git Data API fallback for the WHOLE outgoing diff when any
+    // staged data/audit/ path lacks apiFallbackSafe/apiFallbackMerge
+    // registration, so an unregistered new file degrades the fallback
+    // protection for every OTHER file in that same commit step, not just its
+    // own (adversarial Codex review caught this before it shipped).
+    verifiedBy: '2026-09-15: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
   // NOT registered: audit/digest-history.json. findWritingWorkflows()'s regex
   // match on data-health-check.yml's `git add data/audit/digest-history.json`
   // line initially looked like a 15th single-writer candidate, but a deeper
