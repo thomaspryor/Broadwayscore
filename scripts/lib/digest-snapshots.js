@@ -327,9 +327,29 @@ function summarizeClosingSoon(report, { maxItems = 8, urgentDays = 14 } = {}) {
 // own file.
 const SYNC_REFUSED_NAME_RE = /^sync-refused-(.+)\.json$/;
 
+// SYNC_REFUSED_READ_FAILED: the sentinel a caller gets when the refusal
+// directory itself could not be listed for any reason OTHER than "it does not
+// exist". `tags: null` is the important field — autofixShouldDryRun treats a
+// missing tags array as "cannot tell whose refusal this is" and fails closed,
+// which is the correct answer when the evidence is unreadable (ship-check
+// finding, BRO-3393). A genuinely absent directory still returns null: that is
+// a fresh checkout with no refusals, not an unreadable one.
+const SYNC_REFUSED_READ_FAILED = Object.freeze({
+  generatedAt: null,
+  count: 0,
+  tags: null,
+  unreadable: 0,
+  unreadableTags: [],
+  readFailed: true,
+  bannerText: 'sync-refusal snapshots could not be read — treating the checkout as untrusted',
+  items: [],
+  moreCount: 0,
+});
+
 function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
   let names;
-  try { names = fs.readdirSync(auditDir); } catch { return null; }
+  try { names = fs.readdirSync(auditDir); }
+  catch (err) { return err && err.code === 'ENOENT' ? null : SYNC_REFUSED_READ_FAILED; }
   const rows = [];
   const unreadableTags = [];
   for (const name of names) {
@@ -378,4 +398,5 @@ module.exports = {
   SNAPSHOTS, readSnapshot, readAllSnapshots, describeProblems, DEFAULT_AUDIT_DIR,
   DEFAULT_DATA_DIR, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon,
   readSyncRefused,
+  SYNC_REFUSED_READ_FAILED,
 };

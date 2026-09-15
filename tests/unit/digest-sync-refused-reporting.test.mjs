@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { readSyncRefused } = require('../../scripts/lib/digest-snapshots.js');
+const { readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('../../scripts/lib/digest-snapshots.js');
 const { buildHtml, autofixShouldDryRun, DIGEST_SYNC_TAG } = require('../../scripts/send-morning-digest.js');
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -187,6 +187,23 @@ test('autofixShouldDryRun: SYNC_TAG in the environment cannot talk the guard out
   } finally {
     if (prev === undefined) delete process.env.SYNC_TAG; else process.env.SYNC_TAG = prev;
   }
+});
+
+// Ship-check finding, BRO-3393: the catch around readSyncRefused() used to
+// leave sections.syncRefused undefined, which autofixShouldDryRun read as
+// "nobody refused" — so a thrown read, the single most ambiguous state there
+// is, was the one path that let real card filing and headless dispatch run
+// with NO freshness evidence at all.
+test('autofixShouldDryRun: an unreadable refusal DIRECTORY holds auto-fix in dry-run', () => {
+  assert.equal(SYNC_REFUSED_READ_FAILED.tags, null, 'tags: null is what makes the guard hold');
+  assert.equal(autofixShouldDryRun({ dryRun: false, syncRefused: SYNC_REFUSED_READ_FAILED }), true);
+});
+
+test('readSyncRefused: a missing audit dir is still "no refusals", only an unreadable one fails closed', () => {
+  // A genuinely absent directory is a fresh checkout with nothing to report —
+  // failing closed on it would permanently dry-run any clone that has not run
+  // a sync job yet.
+  assert.equal(readSyncRefused({ auditDir: '/no/such/dir/at/all' }), null);
 });
 
 test('the tag the plist EXPORTS is the constant autofixShouldDryRun defaults to', () => {

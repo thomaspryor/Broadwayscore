@@ -54,7 +54,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
   break;
 }
 
-const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('./lib/digest-snapshots.js');
 const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
 const {
   esc,
@@ -765,7 +765,14 @@ async function main() {
   try {
     sections.syncRefused = readSyncRefused();
   } catch (err) {
-    console.error(`[digest] WARN sync-refused snapshot read failed: ${String(err.message).slice(0, 120)}`);
+    // Fail CLOSED (ship-check finding, BRO-3393). This catch used to leave
+    // sections.syncRefused undefined, which autofixShouldDryRun reads as
+    // "nobody refused" — so a thrown read, the single most ambiguous state
+    // there is, was the one path that let real card filing and real headless
+    // dispatch run without ANY freshness evidence. The sentinel's `tags: null`
+    // is what makes the guard hold.
+    console.error(`[digest] WARN sync-refused snapshot read failed — holding auto-fix in dry-run: ${String(err.message).slice(0, 120)}`);
+    sections.syncRefused = SYNC_REFUSED_READ_FAILED;
   }
 
   const autofixDryRun = autofixShouldDryRun({ dryRun, syncRefused: sections.syncRefused });

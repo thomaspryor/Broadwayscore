@@ -366,6 +366,37 @@ else
   echo "PASS[11]: a failed fetch writes a refusal snapshot instead of exiting silently ($rc11)"
 fi
 
+# ── case 12 (BRO-3393 ship-check P0): a merge left mid-flight self-heals ────
+# The merge-origin recovery can be killed by a launchd timeout between
+# `git merge` and `git merge --abort`, and its own abort can fail. Either way
+# MERGE_HEAD survives. Without a self-heal the recovery's MERGE_HEAD guard
+# REFUSES on every subsequent run — "refuses forever", the exact failure mode
+# BRO-3212 wrote the rebase self-heal for, reintroduced through the merge path.
+# It also breaks EVERY other session sharing the checkout, not just this job
+# ("Committing is not possible because you have unmerged files").
+O12="$TMP/origin12"; C12="$TMP/clone12"
+setup_pair "$O12" "$C12"
+advance_origin "$O12" "$TMP/via12"
+# Leave a real conflicting merge mid-flight, exactly as a killed run would.
+printf 'local side\n' > "$C12/other.txt"
+git -C "$C12" commit -q -am "local edit to other.txt"
+git -C "$C12" fetch -q origin main
+git -C "$C12" merge --no-commit origin/main >/dev/null 2>&1
+if ! git -C "$C12" rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+  echo "FAIL[12]: test setup did not leave a MERGE_HEAD to heal"; fail=1
+else
+  out12=$(SYNC_TAG=case12 bash "$LIB" "$C12" 2>&1); rc12=$?
+  if git -C "$C12" rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+    echo "FAIL[12]: MERGE_HEAD survived the run — the checkout stays blocked for every session. Output:"; echo "$out12"; fail=1
+  elif [ -n "$(git -C "$C12" ls-files -u)" ]; then
+    echo "FAIL[12]: unmerged index entries survived the run"; fail=1
+  elif ! echo "$out12" | grep -q "merge left mid-flight"; then
+    echo "FAIL[12]: expected the self-heal to announce itself. Output:"; echo "$out12"; fail=1
+  else
+    echo "PASS[12]: a merge left mid-flight by an interrupted run is aborted and self-healed ($rc12)"
+  fi
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo "sync-audit-checkout test: FAILED"; exit 1
 fi
