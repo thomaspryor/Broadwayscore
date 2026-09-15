@@ -61,8 +61,20 @@ const {
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 const { fetchDoneEvidenceCandidates, selectCandidates, DONE_WINDOW_DAYS } = require('./lib/done-evidence-source.js');
 const { resolveEvidenceUrl, parseEvidenceUrl, pathPredatesCard, pathNeverExisted } = require('./lib/done-evidence-remote.js');
-const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, VERDICTS } = require('./lib/done-evidence-audit.js');
-const { extractCheckFilePaths } = require('./lib/card-premises-auditor.js');
+const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, adjudicateMisArmed, VERDICTS } = require('./lib/done-evidence-audit.js');
+// extractCheckPaths, NOT card-premises-auditor's extractCheckFilePaths. The
+// latter is deliberately narrowed to the two forms BRO-3076's vacuous-check
+// rule covers (`node --test`, `test -f`), so a card armed with the generic
+// `node scripts/audit-<x>.js` form extracted NOTHING and could never reach the
+// mis-armed branch below — which is precisely how BRO-3335 was reported FAILED
+// for naming a script that has never existed (BRO-3476). extractCheckPaths is
+// the same parser isSafeCheckCommand validates the shape with, so it covers
+// every SAFE_CHECK_FORM that carries a pathsGroup and can never drift from the
+// set of commands the enricher is allowed to write in the first place.
+const { extractCheckPaths } = require('./lib/autonomous-triage-core.js');
+// Reused, not rewritten: this repo already had three `git check-ignore`
+// call sites and did not need a fourth (review finding).
+const { isGitIgnored } = require('./lib/observable-before-absence.js');
 
 const REPO = path.join(__dirname, '..');
 const AUDIT_DIR = path.join(REPO, 'data', 'audit');
@@ -369,10 +381,43 @@ async function main(argv = process.argv.slice(2)) {
       // extra call, on ~17 cards a night.
       let misArmed = null;
       if (card.state === 'Done' && runResult && runResult.status === 'fail') {
-        const paths = extractCheckFilePaths(cmd);
-        if (paths.length === 1 && existsFn(paths[0]) === false && pathNeverExisted(paths[0]) === true) {
-          misArmed = { path: paths[0] };
+        // Resolve the facts; adjudicateMisArmed (pure, tested) applies the rule.
+        // Only CONFIRMED-absent paths cost a history lookup, so this stays at
+        // roughly one GitHub call per failing Done card, as before.
+        const paths = extractCheckPaths(cmd);
+        const facts = {};
+        for (const p of paths) {
+          const presentOnMain = existsFn(p);
+          if (presentOnMain !== false) {
+            // Present, or unresolvable. Either way the command did not fail
+            // for want of the file, so arming is not in question here.
+            facts[p] = { presentOnMain, everExisted: null, gitignored: false };
+            continue;
+          }
+          // Asked against the repo root, which always exists — unlike
+          // `checkout`, which is null whenever makeFreshCheckout failed
+          // (review finding). .gitignore is tracked on origin/main, so in CI
+          // (itself a main checkout) this is the same file the sweep's own
+          // sandbox carries. A `check-ignore` that cannot answer reports false,
+          // which is safe in this direction ONLY: it declines the gitignored
+          // wording and falls through to the history oracle below, and can
+          // never manufacture a mis-armed verdict by itself.
+          const gitignored = isGitIgnored(p, { cwd: REPO });
+          if (gitignored) {
+            facts[p] = { presentOnMain: false, everExisted: false, gitignored: true };
+            continue;
+          }
+          // true = zero commits ever, false = it existed and is now gone (a
+          // real regression), null = the probe failed and absolves nothing.
+          const never = pathNeverExisted(p);
+          if (never === null) unresolvedProbes++;
+          facts[p] = {
+            presentOnMain: false,
+            everExisted: never === null ? null : !never,
+            gitignored: false,
+          };
         }
+        misArmed = adjudicateMisArmed(paths, facts);
       }
 
       const verdict = classifyCard({

@@ -216,6 +216,84 @@ function tidyDetail(detail, { maxChars = DIGEST_DETAIL_CHARS } = {}) {
 }
 
 /**
+ * Why a card's acceptance command can never have judged its own work.
+ *
+ * Both kinds mean the same thing operationally — the command was wrong the day
+ * it was written and would have failed identically before, during and after
+ * the work — but they need DIFFERENT words, because saying the wrong one is
+ * itself a false statement to the reader. BRO-10 is armed
+ * `test -f memory/cyrus-decision.txt`; that file is 1.5KB on the owner's disk
+ * right now. Telling them it "has never existed in this repo" is not a
+ * harmless imprecision, it is the sweep being confidently wrong in exactly the
+ * way it exists to catch — memory/ is gitignored (.gitignore `/memory/`), so
+ * it is invisible to the origin/main checkout and to nothing else.
+ */
+const MIS_ARMED = Object.freeze({
+  // Zero commits ever touched this path, anywhere in history.
+  NEVER_EXISTED: 'never-existed',
+  // The path is gitignored, so no checkout built from origin/main can see it,
+  // whether or not it exists on the machine that wrote the card.
+  GITIGNORED: 'gitignored',
+});
+
+/**
+ * Given the already-resolved facts about every path a failing command names,
+ * is the CARD mis-armed rather than the WORK broken?
+ *
+ * Pure by construction: the runner does the git/GitHub I/O and hands the
+ * answers in, exactly as with `ancestry` and `runResult`. Keeping the
+ * adjudication here rather than inline in the runner is what makes it
+ * testable at all (CLAUDE.md rule 15) — the rule below is the whole safety
+ * argument of this change and must not live somewhere no test can reach it.
+ *
+ * THE RULE, and why each clause is load-bearing:
+ *
+ *   - Only CONFIRMED-ABSENT paths are adjudicated. A path that is present on
+ *     main, or whose presence could not be resolved, says nothing about
+ *     arming: the command failed on its CONTENTS, which is a real regression.
+ *   - If nothing is confirmed absent, never mis-armed. This is what keeps
+ *     BRO-472 (`node scripts/check-health-row-absent.js …`, a script that is
+ *     right there on main and genuinely reports a still-present health row)
+ *     reported as FAILED, where it belongs.
+ *   - EVERY confirmed-absent path must be mis-armed, not merely one. A
+ *     command naming four test files, one a typo and one genuinely DELETED,
+ *     is a real regression wearing a typo as camouflage; requiring unanimity
+ *     is what stops this branch from laundering it. Fail-closed on purpose:
+ *     when in doubt the card stays accused, because the cost of a missed
+ *     regression is bounded and the cost of a false accusation is the reader
+ *     learning to ignore the whole block.
+ *   - An UNRESOLVED history answer (null — the GitHub probe failed) is not
+ *     mis-armed. It is not evidence of anything, and treating "we could not
+ *     ask" as "the card is fine" would let one rate-limited night quietly
+ *     absolve every genuinely broken card on the board.
+ *
+ * @param {string[]} paths every path the failing command names
+ * @param {Object<string,{presentOnMain:boolean|null, everExisted:boolean|null,
+ *   gitignored:boolean}>} facts resolved per path by the runner
+ * @returns {{path:string, kind:string, paths:string[]}|null}
+ */
+function adjudicateMisArmed(paths, facts) {
+  const list = Array.isArray(paths) ? paths.filter(Boolean) : [];
+  if (!list.length) return null;
+  const f = facts || {};
+  const absent = list.filter((p) => f[p] && f[p].presentOnMain === false);
+  if (!absent.length) return null;
+
+  const kinds = absent.map((p) => {
+    // Gitignored is checked FIRST and wins. A gitignored path also has zero
+    // commits, so the history oracle would answer `never existed` for it and
+    // print the one sentence that is demonstrably false about the file the
+    // owner can see on disk. Ordering these the other way round is the bug.
+    if (f[p].gitignored === true) return MIS_ARMED.GITIGNORED;
+    if (f[p].everExisted === false) return MIS_ARMED.NEVER_EXISTED;
+    return null;
+  });
+  if (kinds.some((k) => k === null)) return null;
+
+  return { path: absent[0], kind: kinds[0], paths: absent };
+}
+
+/**
  * Re-prove a PR-EVIDENCE line's commit/PR reference.
  *
  * Takes the ALREADY-RESOLVED ancestry answer (the runner asks GitHub; see
@@ -429,11 +507,22 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
   // criterion means nothing can ever verify it — so it is reported, just as
   // the honest thing rather than as a false alarm.
   if (misArmed && evidence.state === EVIDENCE.BROKEN) {
+    const why = misArmed.kind === MIS_ARMED.GITIGNORED
+      ? 'which is gitignored, so the fresh origin/main checkout this sweep builds can never see it — the file may well exist on the machine that wrote the card'
+      : 'which has never existed in this repo';
+    const alsoNames = misArmed.paths && misArmed.paths.length > 1
+      ? ` (and ${misArmed.paths.length - 1} more path${misArmed.paths.length === 2 ? '' : 's'} in the same command)`
+      : '';
     return {
       ...base,
       verdict: VERDICTS.UNVERIFIABLE,
       evidence: EVIDENCE.UNKNOWN,
-      detail: `its own check names ${misArmed.path}, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way`,
+      // Stamped HERE and nowhere else. Spreading it into `base` would mark
+      // every card in the report mis-armed (review finding); this flag is the
+      // one thing that tells the owner WHICH cards need re-arming, so a
+      // blanket true would be worse than not having it.
+      misArmed: true,
+      detail: `its own check names ${misArmed.path}, ${why}${alsoNames} — the acceptance criterion is wrong, so nothing can verify this card either way`,
       channels: [],
     };
   }
@@ -550,9 +639,19 @@ function buildDigestSnapshot(report, { maxItems = MAX_DIGEST_ITEMS } = {}) {
   const unresolved = Number(report && report.unresolvedProbes) || 0;
   if (unresolved > 0) gaps.push(`${unresolved} GitHub lookup${unresolved === 1 ? '' : 's'} failed`);
 
+  // Mis-armed cards are UNVERIFIABLE, and UNVERIFIABLE is deliberately not in
+  // REPORTABLE — so without this count they are fixed silently, i.e. not at
+  // all. They are the one flavour of unverifiable that names a SPECIFIC,
+  // cheap, one-line repair (correct the card's acceptance command), as
+  // opposed to the general backlog-quality problem audit-card-verifiability.js
+  // owns. Counted in the banner rather than given rows, because the action is
+  // "go re-arm these" and not "read eight of them over breakfast".
+  const misArmedCount = results.filter((r) => r && r.misArmed === true).length;
+
   const bannerText =
     `${verified}/${done} Done(14d) verified on main · ` +
     `${counts.FAILED} FAILED · ${counts.VACUOUS} vacuous · ${counts.STUCK} stuck-but-done` +
+    (misArmedCount ? ` · ${misArmedCount} mis-armed (wrong acceptance command, needs re-arming)` : '') +
     (gaps.length ? ` — PARTIAL RUN: ${gaps.join(', ')}, so these numbers understate the board` : '');
 
   if (!rows.length) {
@@ -591,6 +690,8 @@ module.exports = {
   isNonProbativeCommand,
   isEnvironmentFailure,
   tidyDetail,
+  MIS_ARMED,
+  adjudicateMisArmed,
   evaluatePrEvidence,
   evaluateVerifyRun,
   combineEvidence,

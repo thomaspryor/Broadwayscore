@@ -36,6 +36,8 @@ const {
   isEnvironmentFailure,
   tidyDetail,
   scrubSandboxPaths,
+  adjudicateMisArmed,
+  MIS_ARMED,
 } = require('../../scripts/lib/done-evidence-audit.js');
 const {
   cleanUrl,
@@ -541,4 +543,155 @@ test('items are capped and the rest roll into moreCount', () => {
   const snap = buildDigestSnapshot(many, { maxItems: 8 });
   assert.equal(snap.items.length, 8);
   assert.equal(snap.moreCount, 4);
+});
+
+// ── BRO-3476: the mis-armed adjudication must be keyed on the PATH, not on the
+// ── command's SHAPE.
+//
+// BRO-3426 shipped the mis-armed rule wired to card-premises-auditor's
+// extractCheckFilePaths, which only recognises `node --test` and `test -f`.
+// The owner hand-checked the first live sweep and 2 of its 5 FAILED verdicts
+// were false accusations against finished work. Both were this same hole seen
+// from different sides, which is why these tests assert on all three shapes at
+// once: a rule that is right for one command shape and silent for the next is
+// how the sweep learned to lie in the first place.
+
+test('BRO-3476: the phantom-path rule reaches EVERY command shape, not just `node --test` and `test -f`', () => {
+  const { extractCheckPaths } = require('../../scripts/lib/autonomous-triage-core.js');
+  const { extractCheckFilePaths } = require('../../scripts/lib/card-premises-auditor.js');
+
+  // THE REGRESSION. BRO-3335 is armed `node scripts/audit-worktree-unpushed.js`
+  // — a script with zero commits in this repo's entire history. The narrow
+  // extractor returns nothing for it, so the mis-armed branch never ran and a
+  // finished card was reported as broken work.
+  const bro3335 = 'node scripts/audit-worktree-unpushed.js';
+  assert.deepEqual(extractCheckFilePaths(bro3335), [], 'the old extractor is why this shape leaked through');
+  assert.deepEqual(extractCheckPaths(bro3335), ['scripts/audit-worktree-unpushed.js']);
+
+  // The two shapes that already worked must keep working — this change is a
+  // widening, and a widening that drops an old case is a regression.
+  assert.deepEqual(extractCheckPaths('test -f memory/cyrus-decision.txt'), ['memory/cyrus-decision.txt']);
+  assert.deepEqual(extractCheckPaths('node --test scripts/lib/gate-cold-start-rules.test.mjs'), ['scripts/lib/gate-cold-start-rules.test.mjs']);
+
+  // A command whose failure is about DATA, not about a missing file, must keep
+  // extracting nothing — BRO-472 (`check-health-row-absent`) is a genuinely
+  // FAILED card and widening the extractor must not absolve it.
+  assert.deepEqual(extractCheckPaths('node scripts/check-health-row-absent.js --row-b64 RGF0YQ'), []);
+  assert.deepEqual(extractCheckPaths('node scripts/validate-data.js'), []);
+});
+
+test('BRO-3476: an ignored path is unverifiable, and is never described as "never existed"', () => {
+  // FALSE ACCUSATION 1, from the owner's hand-check. BRO-10 is armed
+  // `test -f memory/cyrus-decision.txt`. That file is on the owner's disk;
+  // memory/ is excluded by .gitignore, so the fresh origin/main checkout this
+  // sweep builds can never see it. Reporting FAILED accuses finished work, and
+  // reporting "has never existed in this repo" tells the owner something
+  // demonstrably false about a file they can open.
+  const facts = { 'memory/cyrus-decision.txt': { presentOnMain: false, everExisted: false, gitignored: true } };
+  const m = adjudicateMisArmed(['memory/cyrus-decision.txt'], facts);
+  assert.equal(m.kind, MIS_ARMED.GITIGNORED);
+
+  const r = classifyCard({
+    card: { id: 'BRO-10', name: 'Decide: keep Cyrus after free trial', state: 'Done' },
+    cmd: 'test -f memory/cyrus-decision.txt',
+    runResult: { status: 'fail', detail: 'Command failed: test -f memory/cyrus-decision.txt' },
+    misArmed: m,
+  });
+  assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
+  assert.notEqual(r.verdict, VERDICTS.FAILED);
+  assert.match(r.detail, /ignored/);
+  assert.doesNotMatch(r.detail, /never existed/, 'the file exists on disk — saying otherwise is the sweep being confidently wrong');
+  assert.equal(r.misArmed, true);
+});
+
+test('BRO-3476: a phantom script is unverifiable, and keeps the "never existed" wording', () => {
+  // FALSE ACCUSATION 2. scripts/audit-worktree-unpushed.js: 0 hits on
+  // origin/main, 0 commits in all of history. A mis-armed card, not broken work.
+  const facts = { 'scripts/audit-worktree-unpushed.js': { presentOnMain: false, everExisted: false, gitignored: false } };
+  const m = adjudicateMisArmed(['scripts/audit-worktree-unpushed.js'], facts);
+  assert.equal(m.kind, MIS_ARMED.NEVER_EXISTED);
+
+  const r = classifyCard({
+    card: { id: 'BRO-3335', name: 'OWNER WATCH 2026-09-14', state: 'Done' },
+    cmd: 'node scripts/audit-worktree-unpushed.js',
+    runResult: { status: 'fail', detail: "Error: Cannot find module '<checkout>/scripts/audit-worktree-unpushed.js'" },
+    misArmed: m,
+  });
+  assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
+  assert.match(r.detail, /never existed/);
+  assert.equal(r.misArmed, true);
+});
+
+test('BRO-3476: a DELETED path is still a real regression — the rule must not launder one', () => {
+  // The whole safety argument. BRO-2952 names
+  // scripts/lib/gate-cold-start-rules.test.mjs, which is absent from main now
+  // but has 3 commits in history: it existed and went away. The owner
+  // hand-adjudicated this one as a genuine finding and it must stay FAILED.
+  const gone = { 'scripts/lib/gate-cold-start-rules.test.mjs': { presentOnMain: false, everExisted: true, gitignored: false } };
+  assert.equal(adjudicateMisArmed(['scripts/lib/gate-cold-start-rules.test.mjs'], gone), null);
+
+  const r = classifyCard({
+    card: { id: 'BRO-2952', name: 'gate-cold-start A/B split drift', state: 'Done' },
+    cmd: 'node --test scripts/lib/gate-cold-start-rules.test.mjs',
+    runResult: { status: 'fail', detail: "Could not find 'scripts/lib/gate-cold-start-rules.test.mjs'" },
+    misArmed: adjudicateMisArmed(['scripts/lib/gate-cold-start-rules.test.mjs'], gone),
+  });
+  assert.equal(r.verdict, VERDICTS.FAILED);
+  assert.notEqual(r.misArmed, true);
+});
+
+test('BRO-3476: multi-path commands are adjudicated unanimously, so a typo cannot camouflage a deletion', () => {
+  // The corpus really does contain these, e.g.
+  // `node --test scripts/lib/provider-spend-core.test.mjs scripts/lib/provider-billing.test.mjs`.
+  const paths = ['tests/unit/real.test.mjs', 'tests/unit/typo.test.mjs'];
+
+  // One present, one phantom: the command was wrong the day it was written.
+  assert.equal(adjudicateMisArmed(paths, {
+    'tests/unit/real.test.mjs': { presentOnMain: true, everExisted: null, gitignored: false },
+    'tests/unit/typo.test.mjs': { presentOnMain: false, everExisted: false, gitignored: false },
+  }).kind, MIS_ARMED.NEVER_EXISTED);
+
+  // One genuinely DELETED, one phantom: a regression wearing a typo as
+  // camouflage. Fail closed — the card stays accused.
+  assert.equal(adjudicateMisArmed(paths, {
+    'tests/unit/real.test.mjs': { presentOnMain: false, everExisted: true, gitignored: false },
+    'tests/unit/typo.test.mjs': { presentOnMain: false, everExisted: false, gitignored: false },
+  }), null, 'a deleted file bundled with a phantom one must still accuse');
+
+  // Nothing absent at all: the command failed on CONTENTS, which is the real
+  // regression this sweep exists to catch. Never mis-armed.
+  assert.equal(adjudicateMisArmed(paths, {
+    'tests/unit/real.test.mjs': { presentOnMain: true, everExisted: null, gitignored: false },
+    'tests/unit/typo.test.mjs': { presentOnMain: true, everExisted: null, gitignored: false },
+  }), null);
+
+  // No extractable path (BRO-472's shape) — nothing to adjudicate.
+  assert.equal(adjudicateMisArmed([], {}), null);
+});
+
+test('BRO-3476: an unresolved history probe absolves nothing', () => {
+  // A rate-limited night must not quietly clear the whole board. `null` is the
+  // absence of an answer, not a finding of innocence — the same fail-open
+  // direction every other uncertainty in this module takes, pointed the other
+  // way because here "fail open" would mean dropping real accusations.
+  assert.equal(adjudicateMisArmed(['scripts/x.js'], {
+    'scripts/x.js': { presentOnMain: false, everExisted: null, gitignored: false },
+  }), null);
+});
+
+test('BRO-3476: mis-armed cards are surfaced in the banner, since UNVERIFIABLE is never given rows', () => {
+  const misArmedCard = classifyCard({
+    card: { id: 'BRO-3335', name: 'phantom', state: 'Done' },
+    cmd: 'node scripts/audit-worktree-unpushed.js',
+    runResult: { status: 'fail', detail: 'Cannot find module' },
+    misArmed: { path: 'scripts/audit-worktree-unpushed.js', kind: MIS_ARMED.NEVER_EXISTED, paths: ['scripts/audit-worktree-unpushed.js'] },
+  });
+  const snap = buildDigestSnapshot({ generatedAt: 'x', results: [misArmedCard] });
+  assert.match(snap.bannerText, /1 mis-armed/);
+  // It stays out of the rows — the action is "re-arm these", not "read them".
+  assert.equal(snap.items.length, 0);
+
+  // And a board with none must not grow a "0 mis-armed" clause.
+  const clean = buildDigestSnapshot({ generatedAt: 'x', results: [] });
+  assert.doesNotMatch(clean.bannerText, /mis-armed/);
 });
