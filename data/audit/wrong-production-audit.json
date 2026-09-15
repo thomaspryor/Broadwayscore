@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-15T19:11:08.078Z",
+  "timestamp": "2026-09-15T22:12:15.008Z",
   "stats": {
-    "totalReviews": 43460,
-    "alreadyFlagged": 17986,
+    "totalReviews": 43470,
+    "alreadyFlagged": 17993,
     "dateGuardCatches": 237,
     "directorMismatch": 1044,
-    "tvFilmSignals": 1273,
-    "londonSignals": 1065,
-    "offBroadwaySignals": 504,
+    "tvFilmSignals": 1275,
+    "londonSignals": 1067,
+    "offBroadwaySignals": 505,
     "yearMismatch": 91,
-    "noPublishDate": 3826
+    "noPublishDate": 3823
   },
   "findings": [
     {
@@ -13749,6 +13749,19 @@
       ]
     },
     {
+      "showId": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "file": "timeout--tim-teeman.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "in-the-heights-2008",
       "file": "nypost--unknown.json",
       "score": 49,
@@ -22116,6 +22129,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
+      "showId": "pre-existing-condition-off-broadway-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "publishDate": "2026-09-15",
+      "url": "https://t2conline.com/pre-existing-condition-lupita-nyongo-gives-voice-to-what-the-play-leaves-unsaid/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -40571,6 +40602,19 @@
       ]
     },
     {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "nationaltheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "good-people-2011",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 81,
@@ -45564,6 +45608,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "night-city-off-west-end-2026",
+      "file": "bestoftheatre--arthur-fisher.json",
+      "publishDate": "2026-09-15",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-night-city-southwark-playhouse-borough",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

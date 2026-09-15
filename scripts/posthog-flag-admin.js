@@ -20,8 +20,9 @@
  * Env: POSTHOG_PERSONAL_API_KEY (set via .github/workflows/manual-posthog-flag-archive.yml's secret).
  */
 
-const { buildSearchUrl, buildFlagUrl, findExactFlagMatch, buildPatchRequest, parseArgs } = require('./lib/posthog-flag-admin-core');
+const { buildSearchUrl, buildFlagUrl, findExactFlagMatch, buildPatchRequest, parseArgs, checkRegistryConflict } = require('./lib/posthog-flag-admin-core');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { REGISTERED_FLAGS } = require('./lib/flag-registry.js');
 
 const USAGE = 'Usage: node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run]\n' +
   '  node scripts/posthog-flag-admin.js --help, -h   print this usage and exit — no network calls';
@@ -88,6 +89,9 @@ async function main() {
     : await findFlagByKey(apiKey, identifier);
 
   console.log(`Found flag: key='${flag.key}' id=${flag.id} active=${flag.active}`);
+
+  const registryWarning = checkRegistryConflict(flag.key, desiredActive, REGISTERED_FLAGS);
+  if (registryWarning) console.warn(`WARNING: ${registryWarning}`);
 
   if (flag.active === desiredActive) {
     console.log(`Already active=${desiredActive} — nothing to do.`);
