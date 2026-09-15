@@ -96,6 +96,24 @@ function killSwitchStaleness(offFileMtimeMs, now) {
 //   asked for. Derived from perDay rather than set independently so the
 //   owner keeps ONE money dial: raising perDay widens the hourly allowance
 //   proportionally, and the two can never contradict each other.
+// 24 -> 400 on the owner's explicit instruction, 2026-09-15 ("Get all the P1s
+// and P0s dispatched now"), with 135 eligible P0/P1 cards in the queue.
+//
+// 400 is deliberately ABOVE anything the drain can physically reach, which
+// makes watchdogConcurrent (6) the real governor instead of an artificial day
+// cap: at a median job of 22 minutes, six slots produce roughly 16/hour, so
+// the day budget stops binding and the queue drains continuously until it is
+// empty. That is what "dispatch them all now" means on a machine that cannot
+// run 135 sessions at once (measured at the time: swap 94.5%, 681MB physical
+// free, 44 live claude processes at 7.9GB — 135 concurrent would OOM the box,
+// not drain the backlog).
+//
+// perDay is STILL the money dial and still bounds a runaway: a crash loop
+// cannot exceed 400 claims/day. Lower it back to ~24 once the backlog is
+// drained; the drain self-tapers anyway, because an empty queue dispatches
+// nothing (toDispatch slices an empty p01Queue).
+//
+// Previous note, kept because the arithmetic still applies:
 // 12 -> 24 on the owner's explicit approval, 2026-09-15 ("24/day sounds good"),
 // after being shown the arithmetic: mean $7.47/job (median $6.16, p90 $16.92)
 // across 382 completed jobs since 2026-08-16, so ~$180/day against ~$90/day.
@@ -104,7 +122,7 @@ function killSwitchStaleness(offFileMtimeMs, now) {
 // day and perDay — not concurrency — was the thing actually throttling the
 // drain. THIS IS THE MONEY DIAL: it bounds claims per local day and nothing
 // else does. Lower it first if spend needs to come down.
-const PER_DAY_DEFAULT = 24;
+const PER_DAY_DEFAULT = 400;
 const PACING_HOURS = 8;              // spread the day budget over a working day, not 24h of dribble
 const CAPS = Object.freeze({
   perSweep: 2,
