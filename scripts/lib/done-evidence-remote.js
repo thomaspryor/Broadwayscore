@@ -74,25 +74,8 @@ function cleanUrl(url) {
  * Split a PR-EVIDENCE url into what it actually references.
  * @returns {{kind:'commit',sha:string}|{kind:'pull',number:string}|{kind:'other'}}
  */
-function parseEvidenceUrl(url, { repo = REPO_SLUG } = {}) {
+function parseEvidenceUrl(url) {
   const u = cleanUrl(url);
-  // The owner/repo in the URL must be OURS. Every lookup below is made against
-  // the hardcoded REPO_SLUG, so a commit or PR number copied from a different
-  // GitHub repository would otherwise be resolved against this one — and PR
-  // numbers especially collide freely across repos, so `…/other-repo/pull/827`
-  // would silently be answered by OUR PR 827 and reported as that card's
-  // evidence (Codex adversarial finding). A foreign URL is 'other', i.e.
-  // UNKNOWN, which is the honest answer: we cannot re-prove it from here.
-  // ALLOW-LIST, not a deny-list: the url must positively be a github.com url
-  // naming OUR owner/repo before any commit/PR shape is read off it. An
-  // earlier version only rejected a FOREIGN github.com repo, which left a
-  // non-GitHub host (a GitLab or self-hosted mirror ending in /commit/<sha>)
-  // falling straight through to the commit parser and being resolved against
-  // REPO_SLUG — the same misattribution, one host over. Caught by this
-  // module's own test, not in review.
-  const host = /^https?:\/\/github\.com\/([^/]+\/[^/]+)\//i.exec(u);
-  if (!host) return { kind: 'other' };
-  if (host[1].toLowerCase() !== String(repo).toLowerCase()) return { kind: 'other', foreignRepo: host[1] };
   const commit = /\/commit\/([0-9a-f]{7,40})$/i.exec(u);
   if (commit) return { kind: 'commit', sha: commit[1] };
   const pull = /\/pull\/(\d+)$/.exec(u);
@@ -151,7 +134,7 @@ function pullIsOnMain(number, { runGh = defaultRunGh, repo = REPO_SLUG } = {}) {
  * @returns {'holds'|'broken'|'unknown'}
  */
 function resolveEvidenceUrl(url, opts = {}) {
-  const ref = parseEvidenceUrl(url, opts);
+  const ref = parseEvidenceUrl(url);
   if (ref.kind === 'commit') return commitIsOnMain(ref.sha, opts);
   if (ref.kind === 'pull') return pullIsOnMain(ref.number, opts);
   return 'unknown';
@@ -192,52 +175,8 @@ function pathPredatesCard(path, createdAt, { runGh = defaultRunGh, repo = REPO_S
   return n > 0;
 }
 
-/**
- * Has this path EVER existed in the repo, at any point in its history?
- *
- * The discriminator that stops this sweep from accusing finished work, found
- * by an adversarial pre-ship review against the first live report. Two Done
- * cards were reported FAILED for the same superficial reason — their `node
- * --test` / `test -f` path is absent from main — but the cause was opposite:
- *
- *   BRO-2304  `test -f scripts/push-with-retry.sh`
- *             The real file is scripts/lib/push-with-retry.sh and always was.
- *             The WORK is fine; the card's acceptance criterion has a wrong
- *             path in it and could never have passed, on any day, before or
- *             after the work. Calling that FAILED accuses finished work.
- *   BRO-2421  `node --test tests/unit/bsc-runner.test.mjs`
- *             Same shape — the real file is scripts/lib/bsc-runner.test.mjs.
- *
- * "Absent from main now" cannot tell those two apart from a path that existed
- * and was deleted or reverted, which IS a real regression. Only history can,
- * and a depth-1 CI checkout has none — so, like every other history question
- * in this module, it goes to the remote. Zero commits EVER touching the path
- * means it never existed, i.e. the card is MIS-ARMED rather than broken.
- *
- * This is the same defect class card-premises-auditor.js's auditCardCheckPaths
- * (BRO-2977/BRO-3076) already reports for OPEN cards — "this card can never
- * pass its own check". That function is not reused directly here because it
- * answers existence-now against origin/main, which is the question that cannot
- * separate these two cases; this adds the missing time dimension.
- *
- * Costs one call per Done card that failed — 17 on the first live sweep.
- *
- * @returns {boolean|null} true = never existed (mis-armed), false = it existed
- *   at some point, null = unresolved (never scored either way).
- */
-function pathNeverExisted(path, opts = {}) {
-  if (!path) return null;
-  const { runGh = defaultRunGh, repo = REPO_SLUG } = opts;
-  const out = runGh(['api', `repos/${repo}/commits?path=${encodeURIComponent(path)}&per_page=1`, '--jq', 'length']);
-  if (out === null || out === '') return null;
-  const n = Number(out.trim());
-  if (!Number.isFinite(n)) return null;
-  return n === 0;
-}
-
 module.exports = {
   REPO_SLUG,
-  pathNeverExisted,
   GH_TIMEOUT_MS,
   defaultRunGh,
   cleanUrl,

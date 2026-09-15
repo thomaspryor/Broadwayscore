@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-09-15T21:29:01.641Z",
-  "bannerText": "124/163 Done(14d) verified on main · 3 FAILED · 16 vacuous · 84 stuck-but-done — PARTIAL RUN: 1 GitHub lookup failed, so these numbers understate the board",
+  "generatedAt": "2026-09-15T20:57:48.654Z",
+  "bannerText": "119/161 Done(14d) verified on main · 17 FAILED · 16 vacuous · 84 stuck-but-done",
   "items": [
     {
+      "title": "FAILED BRO-3382 — P1: feedback route claims success without checking Formspree's actual response status",
+      "detail": "Could not find 'tests/unit/feedback-formspree-status-check.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3382/p1-feedback-route-claims-success-without-checking-formsprees-actual"
+    },
+    {
       "title": "FAILED BRO-3335 — OWNER WATCH 2026-09-14: own the in-flight P0/P1 fleet (BRO-2839, BRO-3071, BRO-3092, BRO-3211, BRO-3250, BRO-3218) to verified completion",
-      "detail": "node:internal/modules/cjs/loader:1478 throw err; ^ Error: Cannot find module '<checkout>/scripts/audit-worktree-unpushed.js' at Module._resolveFilename (node:internal/modules/cjs/…",
+      "detail": "node:internal/modules/cjs/loader:1478 throw err; ^ Error: Cannot find module '/private/var/folders/__/n5f8n1yj2wnch4lpmz1138840000gn/T/done-evidence-9HYDGn/main/scripts/audit-work…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3335/owner-watch-2026-09-14-own-the-in-flight-p0p1-fleet-bro-2839-bro-3071"
     },
     {
-      "title": "FAILED BRO-2952 — P1: gate-cold-start A/B impression split drifted toward parity (208:75, expected ~10:1)",
-      "detail": "Could not find 'scripts/lib/gate-cold-start-rules.test.mjs'",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2952/p1-gate-cold-start-ab-impression-split-drifted-toward-parity-20875"
+      "title": "FAILED BRO-3237 — P1: 148 orphan show IDs fail test.yml's Data Validation gate (audit-orphan-show-ids.js) — main red",
+      "detail": "Could not find 'scripts/audit-orphan-show-ids.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3237/p1-148-orphan-show-ids-fail-testymls-data-validation-gate-audit-orphan"
     },
     {
-      "title": "FAILED BRO-472 — BSC Daily: Data quality: fulltext-mentions-show lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-09-15T12:12:36.755Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-472/bsc-daily-data-quality-fulltext-mentions-show-lifetime-sweep"
+      "title": "FAILED BRO-3182 — P1: ingest-review-from-url.js writes into the wrong same-outlet slot and reports success when the write is silently dropped",
+      "detail": "Could not find 'scripts/tests/ingest-review-from-url-slot.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3182/p1-ingest-review-from-urljs-writes-into-the-wrong-same-outlet-slot-and"
     },
     {
-      "title": "STUCK BRO-205 — P1: 6 scraper callers treat conflict skips as benign — the silent-veto class beyond the gap audit",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-205/p1-6-scraper-callers-treat-conflict-skips-as-benign-the-silent-veto"
+      "title": "FAILED BRO-3068 — Apply GIT_NET_TIMEOUT_SEC=30 push-timeout fix to 11 remaining push-with-retry.sh cousins",
+      "detail": "Could not find 'tests/unit/push-timeout-cousins.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3068/apply-git-net-timeout-sec30-push-timeout-fix-to-11-remaining-push-with"
     },
     {
-      "title": "STUCK BRO-199 — Newsletter closing lede announced a future final performance as present-tense news",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-199/newsletter-closing-lede-announced-a-future-final-performance-as"
+      "title": "FAILED BRO-3025 — P0: Opening-night subscriber emails never delivered for 3 shows (Electra/Persona, The Story, Abigail's Party) — alert repeating since 2026-09-07 21:41",
+      "detail": "Could not find 'scripts/lib/opening-night-broadcast-delivery.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3025/p0-opening-night-subscriber-emails-never-delivered-for-3-shows"
     },
     {
-      "title": "STUCK BRO-187 — Review-coverage systemic fixes: junk census candidates, extraction rot, babysitter remediation loop (Pass/Disruption/Vessel)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-187/review-coverage-systemic-fixes-junk-census-candidates-extraction-rot"
+      "title": "FAILED BRO-2941 — Opening-night poller re-renders JS site-search outlets every tick for outlets that will never cover the show",
+      "detail": "Could not find 'tests/unit/opening-night-poller-site-search.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2941/opening-night-poller-re-renders-js-site-search-outlets-every-tick-for"
     },
     {
-      "title": "STUCK BRO-178 — Image fetch: run cleanup on the throw path (try/finally in processOneShow)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-178/image-fetch-run-cleanup-on-the-throw-path-tryfinally-in-processoneshow"
-    },
-    {
-      "title": "STUCK BRO-177 — Broadway edition has the same subject/card-order mismatch class fixed for WE: broadwayOpenings renders shows.json order",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-177/broadway-edition-has-the-same-subjectcard-order-mismatch-class-fixed"
+      "title": "FAILED BRO-2875 — P1: 13 worktrees hold REVIEW-PASSED work that never landed on main — roughly 4,600 gated lines of finished code sitting unmerged, oldest from 2026-08-20",
+      "detail": "Could not find 'scripts/review-verdicts-unlanded-work-check.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2875/p1-13-worktrees-hold-review-passed-work-that-never-landed-on-main"
     }
   ],
-  "moreCount": 95
+  "moreCount": 109
 }
