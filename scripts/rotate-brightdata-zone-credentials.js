@@ -14,11 +14,18 @@
  * (verified: /customer/api_token, /customer/api_tokens, /user/api_token,
  * /api_token all 404 with a valid Bearer token). It must be regenerated from
  * the Bright Data dashboard (Account Settings -> API Tokens), which requires
- * an interactive login. The zone `password` field rotated here is a separate,
- * legacy credential for the raw proxy protocol (host:port + zone-user:pass)
- * that this codebase does not use (grep confirms no `superproxy`/direct-proxy
- * usage — scraper.js only calls the REST /request endpoint with the Bearer
- * token), so rotating it is zero-risk to live scraping.
+ * an interactive login.
+ *
+ * The zone `password` field rotated here is a separate credential for the raw
+ * proxy protocol (host:port + zone-user:pass). scraper.js (this codebase's
+ * only in-app BD caller) never uses it — it only calls the REST /request
+ * endpoint with the Bearer token. One workflow, .github/workflows/archive-
+ * aggregator-pages.yml, DOES speak the raw proxy protocol (brd.superproxy.io:
+ * 33335), but its `auth.password` is BRIGHTDATA_TOKEN, not this zone
+ * `password` field (confirmed by reading the workflow — it never reads
+ * zone/passwords). So rotating this field is zero-risk to both call paths;
+ * verified live post-rotation by dispatching that workflow for one show
+ * (BRO-643 report has the run URL).
  *
  * IP allowlist (--ip-allowlist) is report-only by default. Bright Data's own
  * docs state that adding ANY ip to a zone's allowlist blocks every other IP
@@ -87,56 +94,83 @@ function parseJson(body) {
   }
 }
 
+// BD's zone-info/add/remove response bodies can echo back the `password`
+// (and `compromised_password`) array verbatim. A rotation script that then
+// stringifies that body into a thrown Error — which main() prints to
+// stdout/CI logs on any failure — would leak the very credential it exists
+// to protect. Redact anything that looks like a password field before it
+// ever reaches an Error message or console output.
+function redact(body) {
+  if (typeof body !== 'string') return String(body);
+  return body.replace(/"(compromised_password|password)"\s*:\s*(\[[^\]]*\]|"[^"]*")/g, '"$1":"[redacted]"');
+}
+
 // BD accepts arbitrary password strings; keep it alnum so it needs no
 // shell/JSON escaping anywhere downstream (GH secret set, .env, curl).
+// Loop rather than trust a single slice: filtering non-alnum chars out of a
+// base64 string can (rarely) leave fewer than 20 usable characters.
 function generatePassword() {
-  return crypto.randomBytes(18).toString('base64').replace(/[^a-zA-Z0-9]/g, '').slice(0, 20);
+  let out = '';
+  while (out.length < 20) {
+    out += crypto.randomBytes(18).toString('base64').replace(/[^a-zA-Z0-9]/g, '');
+  }
+  return out.slice(0, 20);
 }
 
 async function getZoneInfo(zone) {
   const res = await bdRequest('GET', `/zone?zone=${encodeURIComponent(zone)}`);
-  if (res.status !== 200) throw new Error(`GET /zone?zone=${zone} -> ${res.status}: ${res.body}`);
+  if (res.status !== 200) throw new Error(`GET /zone?zone=${zone} -> ${res.status}: ${redact(res.body)}`);
   const data = parseJson(res.body);
-  if (!data) throw new Error(`GET /zone?zone=${zone} returned unparseable body: ${res.body}`);
+  if (!data) throw new Error(`GET /zone?zone=${zone} returned unparseable body (redacted): ${redact(res.body)}`);
+  if (!Array.isArray(data.password)) {
+    throw new Error(`GET /zone?zone=${zone} response missing a "password" array — unexpected schema, refusing to proceed`);
+  }
   return data;
 }
 
 async function rotateZonePassword(zone) {
   console.log(`\n=== ${zone} ===`);
   const before = await getZoneInfo(zone);
-  const oldPasswords = before.password || [];
   const compromised = before.compromised_password || [];
-  console.log(`  current passwords: ${oldPasswords.length} (compromised: ${compromised.length})`);
+  console.log(`  current passwords: ${before.password.length} (compromised: ${compromised.length})`);
   if (compromised.length === 0) {
     console.log('  no compromised_password flagged — rotating anyway per incident response, but noting this.');
   }
 
   const newPassword = generatePassword();
-  const addRes = await bdRequest('POST', '/zone/add_password', { zone, password: newPassword });
+  const addRes = await bdRequest('POST', '/zone/add_password', { zone, password: [newPassword] });
   if (addRes.status < 200 || addRes.status >= 300) {
-    throw new Error(`add_password failed (${addRes.status}): ${addRes.body}`);
+    throw new Error(`add_password failed (${addRes.status}): ${redact(addRes.body)}`);
   }
 
   const afterAdd = await getZoneInfo(zone);
-  if (!(afterAdd.password || []).includes(newPassword)) {
-    throw new Error(`new password not present after add_password — refusing to remove old password. Zone: ${zone}`);
+  if (!afterAdd.password.includes(newPassword)) {
+    throw new Error(`new password not present after add_password — refusing to remove old password(s). Zone: ${zone}`);
   }
   console.log('  added new password, verified present.');
 
-  if (oldPasswords.length > 0) {
-    const removeRes = await bdRequest('POST', '/zone/remove_password', { zone, password: oldPasswords });
+  // Re-read right before removing rather than reusing the `before` snapshot:
+  // makes a rerun (e.g. after a transient failure mid-rotation) idempotent —
+  // it removes whatever is on the zone MINUS the password just added, never
+  // a stale list that could include a previous run's replacement.
+  const toRemove = afterAdd.password.filter((p) => p !== newPassword);
+  if (toRemove.length > 0) {
+    const removeRes = await bdRequest('POST', '/zone/remove_password', { zone, password: toRemove });
     if (removeRes.status < 200 || removeRes.status >= 300) {
-      throw new Error(`remove_password failed (${removeRes.status}): ${removeRes.body} — new password IS active, old password was NOT removed`);
+      throw new Error(`remove_password failed (${removeRes.status}): ${redact(removeRes.body)} — new password IS active, old password(s) NOT removed`);
     }
     const afterRemove = await getZoneInfo(zone);
-    const stillPresent = oldPasswords.filter((p) => (afterRemove.password || []).includes(p));
+    const stillPresent = toRemove.filter((p) => afterRemove.password.includes(p));
     if (stillPresent.length > 0) {
       throw new Error(`old password(s) still present after remove_password: ${stillPresent.length} remaining`);
     }
-    console.log(`  removed ${oldPasswords.length} old password(s), verified gone.`);
+    if (!afterRemove.password.includes(newPassword)) {
+      throw new Error(`new password missing from final zone state after remove_password — zone may be left in an unexpected state. Zone: ${zone}`);
+    }
+    console.log(`  removed ${toRemove.length} old password(s), verified gone; new password confirmed active.`);
   }
 
-  return { zone, newPassword, rotatedOld: oldPasswords.length, wasCompromised: compromised.length > 0 };
+  return { zone, newPassword, rotatedOld: toRemove.length, wasCompromised: compromised.length > 0 };
 }
 
 async function reportIpAllowlist(zones, extraIps, apply) {
@@ -165,8 +199,17 @@ async function reportIpAllowlist(zones, extraIps, apply) {
   const results = [];
   for (const zone of zones) {
     const res = await bdRequest('POST', '/zone/whitelist', { zone, ip: extraIps });
-    results.push({ zone, status: res.status, body: res.body });
-    console.log(`  ${zone}: whitelist POST -> ${res.status}`);
+    if (res.status < 200 || res.status >= 300) {
+      throw new Error(`zone/whitelist POST failed for ${zone} (${res.status}): ${res.body}`);
+    }
+    const verify = parseJson((await bdRequest('GET', '/zone/whitelist')).body) || {};
+    const applied = verify[zone] || [];
+    const missing = extraIps.filter((ip) => !applied.includes(ip));
+    if (missing.length > 0) {
+      throw new Error(`zone/whitelist for ${zone} does not include all requested IPs after apply — missing: ${missing.join(', ')}`);
+    }
+    results.push({ zone, status: res.status });
+    console.log(`  ${zone}: whitelist applied and verified (${applied.length} entries).`);
   }
   return { applied: true, results };
 }
@@ -206,6 +249,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error('\nFAILED:', err.message);
+  console.error('\nFAILED:', redact(err.message));
   process.exit(1);
 });
