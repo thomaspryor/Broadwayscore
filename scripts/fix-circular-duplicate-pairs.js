@@ -652,5 +652,5 @@ if (require.main === module) main();
 module.exports = {
   bylineSlug, outletSlug, isUnknownByline, levenshtein, scoreSignals,
   isScoreable, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
-  isClassAContaminated, audit, fix,
+  isClassAContaminated, audit, fix, showsDataAvailable,
 };
