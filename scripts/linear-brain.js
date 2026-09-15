@@ -25,6 +25,7 @@ const { createLinearIssue } = require('./lib/linear-issue-create');
 const { hasHelpFlag } = require('./lib/cli-help');
 const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
+const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 
 const USAGE = `linear-brain.js — file a Linear issue through the one creation chokepoint.
@@ -310,11 +311,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           // createdAt, and Linear's comments connection is not
           // createdAt-ascending by default (see that helper's own header).
           const existingComments = sortedCommentBodies(issue);
+          // Real verifier by default (git ancestry / gh merge commit); tests
+          // inject a stub through deps so no unit test ever shells out.
+          const verifyEvidence = deps.verifyEvidence
+            || makeVerifyEvidence({ cwd: process.cwd(), log: (m) => console.error(m) });
           const gate = checkLinearDoneTransition({
             targetStateType: target.type,
             description: issue.description || '',
             commentText,
             existingComments,
+            verifyEvidence,
           });
           if (gate.gated && !gate.allowed) {
             console.error(`\n❌ REFUSED (${gate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);

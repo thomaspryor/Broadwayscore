@@ -60,6 +60,9 @@ function extractPrRef(text) {
     deployed: /\bdeployed\b/i.test(body),
     checked: /\bchecked\b/i.test(body),
     url: urlMatch ? urlMatch[0] : null,
+    // The raw line body, so done-evidence-verify.js can find EVERY commit /
+    // PR reference on it (a bare SHA, a second URL) — `url` is only the first.
+    body,
   };
 }
 

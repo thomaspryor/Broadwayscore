@@ -56,24 +56,57 @@
 
 'use strict';
 
-const { evaluateDoneTransition } = require('./done-semantics-gate.js');
+const { evaluateDoneTransition, isMergedDeployedChecked } = require('./done-semantics-gate.js');
 const { extractPrRef } = require('./linear-pr-evidence.js');
 
 /**
- * @param {{targetStateType:string, description?:string, commentText?:string, existingComments?:string[]}} args
+ * @param {{targetStateType:string, description?:string, commentText?:string, existingComments?:string[],
+ *          verifyEvidence?: (prRef:object) => {verified:boolean|null, reason:string}}} args
  *   existingComments must be oldest-first (see file header).
- * @returns {{gated:false}|({gated:true}&ReturnType<typeof evaluateDoneTransition>)}
+ *   verifyEvidence: does the cited commit/PR actually sit on origin/main?
+ *   Built by done-evidence-verify.js makeVerifyEvidence() and wired in by
+ *   BOTH CLIs (linear-brain.js update, linear-session.js report). This file
+ *   stays pure: with no verifier injected, a full PR-EVIDENCE claim is
+ *   UNVERIFIED and refused — never silently trusted. Before this existed the
+ *   three words "merged deployed checked" closed an issue on their own, and
+ *   dozens of Done cards whose work never landed were found by hand (2026-09).
+ * @returns {{gated:false}|({gated:true}&ReturnType<typeof evaluateDoneTransition>&{verification?:object})}
  *   gated:false means this call is not moving into a completed-type state at
  *   all, so the gate has nothing to say — evaluateDoneTransition is not even
  *   called. When gated:true, the rest of the object is exactly
- *   evaluateDoneTransition's return shape (allowed/verdict/cmd/reason).
+ *   evaluateDoneTransition's return shape (allowed/verdict/cmd/reason), plus
+ *   `verification` (the verifier's own result) when PR evidence was checked.
  */
-function checkLinearDoneTransition({ targetStateType, description = '', commentText = '', existingComments = [] } = {}) {
+function checkLinearDoneTransition({ targetStateType, description = '', commentText = '', existingComments = [], verifyEvidence } = {}) {
   if (targetStateType !== 'completed') return { gated: false };
 
   const comments = [...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean);
   const combinedText = [description, ...comments].filter(Boolean).join('\n');
   const prRef = extractPrRef(combinedText);
+
+  if (isMergedDeployedChecked(prRef)) {
+    const verification = typeof verifyEvidence === 'function'
+      ? verifyEvidence(prRef)
+      : { verified: null, reason: 'no evidence verifier wired into this call, so the cited commit/PR cannot be checked against origin/main' };
+    if (!verification || verification.verified !== true) {
+      const definite = verification && verification.verified === false;
+      return {
+        gated: true,
+        allowed: false,
+        verdict: definite ? 'pr-evidence-not-on-main' : 'pr-evidence-unverified',
+        cmd: null,
+        reason:
+          `PR-EVIDENCE was not confirmed on origin/main: ${verification ? verification.reason : 'verifier returned nothing'}. ` +
+          'Cite the merge commit that is actually on origin/main — e.g. ' +
+          '`PR-EVIDENCE: merged deployed checked (https://github.com/<owner>/<repo>/commit/<sha>)` — ' +
+          'or record a safe-form VERIFY: command, or --force "<reason>" as the owner.',
+        verification,
+      };
+    }
+    const result = evaluateDoneTransition({ prRef, notes: description, comments });
+    return { gated: true, ...result, verification };
+  }
+
   const result = evaluateDoneTransition({ prRef, notes: description, comments });
   return { gated: true, ...result };
 }
