@@ -429,9 +429,14 @@ function isTaskOpen(task) {
  *   - recheckFailures: [{taskSubject, notionId, ts}] recent verifyCmd
  *     failures from the nightly acceptance-recheck ledger (surfaced, not run)
  *   - dispatchEnabled: false = visibility only (kill-switch file)
+ *   - unlandedJobDone: [{taskId, jobId, cwd, sha}] from
+ *     headless-unlanded-detection.js's findUnlandedJobDoneEntries() — jobs
+ *     the ledger already marked job-done whose commits never reached
+ *     origin/main (BRO-3424). Computed by the CLI (git ancestry checks —
+ *     I/O), same injection pattern as liveTitles, so this stays pure.
  */
 function planSweep(entries, tasks, opts) {
-  const { now, liveTitles = null, recheckFailures = [], dispatchEnabled = true } = opts || {};
+  const { now, liveTitles = null, recheckFailures = [], dispatchEnabled = true, unlandedJobDone = [] } = opts || {};
   if (!Number.isFinite(now)) throw new Error('planSweep requires now (ms epoch)');
   const cmuxObserved = liveTitles instanceof Map && liveTitles.size > 0;
 
@@ -504,6 +509,27 @@ function planSweep(entries, tasks, opts) {
     else retryable.push(item);
   }
   retryable.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
+
+  // ── job-done tasks whose work never reached origin/main (BRO-3424) ──
+  // Report-only, deliberately NOT added to toDispatch: dispatchCapDecision/
+  // REDISPATCH_REARM_MS bound the DEAD-launch retry loop above, but nothing
+  // yet bounds an UNLANDED-retry loop — a redispatch whose new session hits
+  // the exact same "reported done, never landed" pattern would spin forever
+  // with no existing counter to catch it (a job-done job is, by definition,
+  // not `isDeadlikeEvent`). Auto-redispatch-with-a-cap is a follow-up; this
+  // surfaces the problem to the owner instead, same treatment `toPark` and
+  // `awaitingClaim` already get.
+  const unlandedDone = [];
+  for (const item of unlandedJobDone) {
+    if (!item || item.taskId == null) continue;
+    const id = String(item.taskId);
+    const task = tasks.get(id);
+    if (!isTaskOpen(task)) continue;          // card already closed — reconcile-landed-but-open's territory, not ours
+    if (open.has(id)) continue;               // a newer launch is already running — its own outcome will resolve this
+    if (ownerParked.has(id) || wdParked.has(id)) continue;
+    unlandedDone.push({ taskId: id, subject: task.subject, jobId: item.jobId, cwd: item.cwd, sha: item.sha });
+  }
+  unlandedDone.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
 
   // ── undispatched P0/P1 backlog (standing owner rule 2026-07-24) ──
   const p01Queue = [];
@@ -599,11 +625,13 @@ function planSweep(entries, tasks, opts) {
   // title read "0 need you" while the P0/P1 count silently shrank by the same
   // number — the backlog looked drained (ship-check P1).
   const needsYou = toPark.length + wdParked.size + recheckFailures.length +
-    (outage.outage ? 1 : 0) + (failureRate.leaking ? 1 : 0) + awaitingClaim.length;
+    (outage.outage ? 1 : 0) + (failureRate.leaking ? 1 : 0) + awaitingClaim.length +
+    unlandedDone.length;
 
   return {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim,
+    unlandedDone,
     budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
@@ -665,10 +693,11 @@ function renderNarrative(plan) {
     }
     if (plan.awaitingClaim.length > 6) lines.push(`  • …and ${plan.awaitingClaim.length - 6} more`);
   }
-  if (plan.toPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length) {
+  if (plan.toPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length || plan.unlandedDone.length) {
     lines.push('');
     lines.push('Needs you:');
     for (const p of plan.toPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.reason === 'infra' ? `${p.deaths} infra dead-launches in a row (cmux itself looks wedged)` : `${p.deaths} dead attempts`}, parked (won't retry)`);
+    for (const u of plan.unlandedDone) lines.push(`  • #${u.taskId} "${(u.subject || '').slice(0, 60)}" — session reported done but its work never reached origin/main (job ${u.jobId}, ${u.cwd}); check git log there and land it, or bsc-next.js --id ${u.taskId} --force to redispatch`);
     for (const r of plan.recheckFailures.slice(0, 8)) lines.push(`  • acceptance recheck FAILED: "${(r.taskSubject || r.notionId || '').slice(0, 60)}"`);
     for (const c of plan.crownSessionTabs) lines.push(`  • crowned session tab ${c.ref} ("${String(c.title).slice(0, 50)}") — check it's still alive`);
   }
