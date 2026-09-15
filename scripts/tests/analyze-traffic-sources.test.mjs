@@ -118,9 +118,9 @@ test('buildReport surfaces failures at the top and still renders the working too
 });
 
 test('normalizeCampaign folds dated newsletter sends into one family', () => {
-  assert.equal(normalizeCampaign('weekly-2026-07-12'), 'weekly-*');
-  assert.equal(normalizeCampaign('we-weekly-2026-07-12'), 'we-weekly-*');
-  assert.equal(normalizeCampaign('opening-paranormal-activity-2026'), 'opening-*');
+  assert.equal(normalizeCampaign('weekly-2026-07-12'), 'weekly-(dated sends)');
+  assert.equal(normalizeCampaign('we-weekly-2026-07-12'), 'we-weekly-(dated sends)');
+  assert.equal(normalizeCampaign('opening-paranormal-activity-2026'), 'opening-(dated sends)');
   assert.equal(normalizeCampaign('(direct)'), '(direct)');
 });
 

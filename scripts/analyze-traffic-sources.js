@@ -285,8 +285,8 @@ function seriesFor(rows, normalizedRows, metric) {
  */
 function normalizeCampaign(key) {
   return String(key)
-    .replace(/^(we-)?weekly-\d{4}-\d{2}-\d{2}$/, '$1weekly-*')
-    .replace(/^opening-.+-\d{4}$/, 'opening-*');
+    .replace(/^(we-)?weekly-\d{4}-\d{2}-\d{2}$/, '$1weekly-(dated sends)')
+    .replace(/^opening-.+-\d{4}$/, 'opening-(dated sends)');
 }
 
 /** One report section: weekly matrix + spike table. Returns md plus the spikes for the summary. */
@@ -362,7 +362,8 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
   const allSpikes = [...sections.ph, ...sections.ga].flatMap((s) => s.spikes)
     .filter((s) => !/raw sessions/.test(s.dimension))
     .sort((a, b) => (b.value - b.priorMedian) - (a.value - a.priorMedian));
-  // One line per source per tool: its biggest week. Repeat weeks show in the section tables.
+  // One line per source per tool: its biggest jump above baseline (allSpikes is
+  // sorted by excess). Repeat weeks show in the section tables.
   const seen = new Set();
   const headline = allSpikes.filter((s) => {
     const id = `${s.tool}|${s.dimension}|${s.key}`;
@@ -389,7 +390,7 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
 
   md += `## How to read this\n\n`;
   md += `- Weeks start on Monday. The current week (from ${fmtDate(currentWeek)}) is not finished, so it is shown but never counted as a spike.\n`;
-  md += `- **PostHog** is the trustworthy count: it uses the Real Users lens (owner and the Singapore/China/Vietnam bot geos excluded) and counts each visit once, by the referrer and page it arrived through.\n`;
+  md += `- **PostHog** is the trustworthy count: it uses the Real Users lens (owner and the Singapore/China/Vietnam/Hong Kong bot geos excluded) and counts each visit once, by the referrer and page it arrived through.\n`;
   md += `- **GA4** counts are inflated by bots in Direct; the GA4 tables use "engaged sessions" (visits that stayed 10s+, viewed 2+ pages or converted), which drops most of that. One table shows raw sessions so the bot share is visible.\n`;
   md += `- "Usual per week" is the median of the earlier full weeks; "times usual" is this week divided by that.\n`;
   md += `- Vercel Web Analytics has no query API, so it is not included; check its dashboard by hand if a spike needs a third opinion.\n`;
