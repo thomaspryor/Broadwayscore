@@ -99,6 +99,7 @@ function _defaultCriticFor(outletId) {
 }
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { isBylineAttestedInText } = require('./lib/byline-attestation');
 
 const USAGE = `fix-circular-duplicate-pairs.js — Repairs the circular-duplicateOf class: fileA.duplicateOf=fileB AND.
 
@@ -263,6 +264,23 @@ function chooseCanonical(aName, aData, bName, bData) {
     }
   }
 
+  // 2c. Byline attestation — is the name actually printed in the article?
+  // Two genuinely-different named bylines on ONE url means at least one was
+  // invented by a scraper, and the article itself says which. Ranked above
+  // score richness and age because those measure how much processing a record
+  // received, not whether its byline is real: on Safe House the phantom
+  // "Scott Bennett" record was scored just as richly as the true "Victor Gluck"
+  // one, so everything below tied and filename order crowned the phantom
+  // (BRO-3247). Only fires when exactly ONE side is attested; if both or
+  // neither are, this is silent and the old chain still decides.
+  // Both texts are searched as one blob: the pair shares a url, so a truncated
+  // copy missing the byline line should not make the true byline look invented.
+  const _attestText = `${(aData && aData.fullText) || ''} ${(bData && bData.fullText) || ''}`;
+  const aAttested = isBylineAttestedInText(aData && aData.criticName, _attestText);
+  const bAttested = isBylineAttestedInText(bData && bData.criticName, _attestText);
+  if (aAttested && !bAttested) return pick(aName, bName, 'byline: only this byline is printed in the article text');
+  if (bAttested && !aAttested) return pick(bName, aName, 'byline: only this byline is printed in the article text');
+
   // 3. Score richness.
   const aRich = scoreSignals(aData).length, bRich = scoreSignals(bData).length;
   if (aRich !== bRich) {
@@ -326,7 +344,7 @@ function _showById(showId) {
 let _siblingOpeningsCache; // undefined = not built; Map once attempted
 function _siblingOpenings(showId) {
   if (_siblingOpeningsCache === undefined) {
-    _showById(' ensure-loaded'); // force _showByIdCache population
+    _showById('\0ensure-loaded'); // force _showByIdCache population
     _siblingOpeningsCache = buildSiblingOpeningsMap([..._showByIdCache.values()], parseDate);
   }
   return _siblingOpeningsCache.get(showId) || [];

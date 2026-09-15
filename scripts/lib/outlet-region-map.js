@@ -135,4 +135,67 @@ function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMar
   return backfilled;
 }
 
-module.exports = { buildOutletMaps, inferOutletRegionFromCategories, backfillMissingOutletRegions };
+/**
+ * Region sets — the single source of truth for "is this outlet's region local
+ * to this market?" (BRO-3247, 2026-09-15).
+ *
+ * WHY A UK DENYLIST AND NOT A US ALLOWLIST — read before "simplifying" this.
+ * The Broadway-local test used to be an allowlist of US-ish region values.
+ * That shape failed twice in 24h because the allowlist is OPEN: every time
+ * someone tags an outlet with a new city, the allowlist silently starts
+ * excluding it from Broadway roundups as "non-local".
+ *   - 2026-09-14 (BRO-3247): the set was {nyc, national} and Front Mezz
+ *     Junkies (region:'us') was dropped from Safe House's BWW roundup.
+ *   - the follow-up fix widened it to {nyc, national, us} and STILL missed
+ *     region:'dual' (observer, nytg, musical-theatre-review) — caught by
+ *     /second-opinion before it could drop those live.
+ * A live audit of data/outlet-registry.json on 2026-09-15 then showed the
+ * allowlist was wrong in a third way: 'nyc' and 'national' match ZERO outlets
+ * in the registry, while 'new-york' (broadwaypodcastnetwork), 'baltimore',
+ * 'washington-dc', 'dc', 'nj', 'pittsburgh' and 'nashville' are all real
+ * values that no allowlist version ever covered.
+ *
+ * The UK set is CLOSED and stable (we cover exactly one foreign market), so
+ * defining non-local by what is foreign — rather than enumerating everything
+ * domestic — cannot rot the same way. Outlets with NO region are already
+ * treated as local by buildOutletMaps (they never enter outletRegionMap), so
+ * the denylist preserves that default.
+ */
+const UK_REGIONS = new Set(['london', 'uk', 'national-uk']);
+
+/**
+ * SERP-DISCOVERY whitelist — deliberately NARROW, and deliberately NOT the
+ * same thing as isBroadwayLocalRegion(). This one answers "should we spend
+ * paid SERP credit enumerating this outlet for a US show?", where the ~863
+ * region-less outlets are a long tail of blogs we do not want to query. Do
+ * not merge the two sets: widening this one costs money, widening the other
+ * one drops real reviews. They are different questions with different
+ * failure modes.
+ */
+const US_SERP_REGIONS = new Set(['us', 'chicago', 'los-angeles', 'philadelphia', 'boston', 'san-francisco', 'dual']);
+
+/**
+ * True when an outlet's registry region is local to the Broadway / off-Broadway
+ * market. A missing/unknown region is LOCAL (the permissive default that
+ * buildOutletMaps already implies) — only an explicitly foreign region is not.
+ * @param {string|null|undefined} region
+ * @returns {boolean}
+ */
+function isBroadwayLocalRegion(region) {
+  if (!region) return true;
+  return !UK_REGIONS.has(String(region).toLowerCase());
+}
+
+/**
+ * True when an outlet's registry region is local to the West End / off-West-End
+ * market. Mirrors the long-standing inline test in gather-reviews.js.
+ * @param {string|null|undefined} region
+ * @returns {boolean}
+ */
+function isWestEndLocalRegion(region) {
+  if (!region) return false;
+  const r = String(region).toLowerCase();
+  return r === 'london' || r === 'national-uk' || r === 'national' || r === 'uk';
+}
+
+module.exports = { buildOutletMaps, inferOutletRegionFromCategories, backfillMissingOutletRegions, UK_REGIONS, US_SERP_REGIONS, isBroadwayLocalRegion, isWestEndLocalRegion };
