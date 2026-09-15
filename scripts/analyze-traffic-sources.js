@@ -238,7 +238,12 @@ async function withRetry(fn, { attempts = 2, delayMs = 20000, isRetryable = isTr
 }
 
 function isTransientPostHogError(e) {
-  return /PostHog API (5\d\d|429)|time-?out|ECONNRESET|fetch failed/i.test(String(e && e.message));
+  const msg = String(e && e.message);
+  // An HTTP status decides first: a 400 whose body says "timeout exceeded" is a
+  // HogQL execution-limit error that fails identically on retry.
+  const m = msg.match(/PostHog API (\d{3})/);
+  if (m) { const st = +m[1]; return st >= 500 || st === 429 || st === 408; }
+  return /time-?out|ECONNRESET|fetch failed/i.test(msg);
 }
 
 /**

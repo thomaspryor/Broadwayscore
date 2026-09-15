@@ -162,4 +162,6 @@ test('withRetry retries a transient PostHog error once and rethrows non-transien
 
   assert.equal(isTransientPostHogError(new Error('PostHog API 429: rate limited')), true);
   assert.equal(isTransientPostHogError(new Error('PostHog API 401: nope')), false);
+  assert.equal(isTransientPostHogError(new Error('PostHog API 400: Timeout exceeded: estimated query execution time too long')), false);
+  assert.equal(isTransientPostHogError(new TypeError('fetch failed')), true);
 });

@@ -20,7 +20,9 @@ concurrency:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # A healthy run finishes the queries in ~6s (GHA 35020178309), but a PostHog
+    # 504 takes ~5 min to come back (35021340158) and the script retries once.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-node
