@@ -101,6 +101,9 @@ function sourcesForReview(data) {
     data.nycTheatreExcerpt,
     data.stagedoorExcerpt,
     data.dtliExcerpt,
+    data.theatreReviewsExcerpt,
+    data.westEndTheatreExcerpt,
+    data.lboRoundupExcerpt,
   ].filter(t => typeof t === 'string' && t);
 }
 
