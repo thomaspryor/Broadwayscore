@@ -795,6 +795,71 @@ async function scrapeLBORoundups() {
     }
   }
 
+  // SERP fallback for INDIVIDUAL byline reviews (targeted mode only).
+  //
+  // LBO first-party reviews (Stuart King + colleagues) are only discoverable
+  // via news-sitemap.xml, which per the Google News sitemap protocol holds
+  // only ~48h of URLs. A byline review not swept within that window is
+  // otherwise LOST — the curated map is roundups-only, the roundup SERP above
+  // searches "review round up", and the opening-night poller feeds pages to
+  // the roundup extractor. So Stuart King reviews of shows we polled a few days
+  // late silently never appeared (Avenue Q + 1536, reported 2026-06-28).
+  //
+  // For a targeted show with no sitemap-matched individual review, ask SERP for
+  // the byline review directly and accept a result ONLY when its slug matches
+  // THIS show as the WINNER against the full weShows pool — identical to the
+  // sitemap path (line ~630). Matching against a single-show pool would be a
+  // strictly weaker guard: it returns "high" whenever this show's tokens appear
+  // in the slug even if the URL is really about a different show that would
+  // out-score it across the pool (e.g. "avenue-verte" slug matching Avenue Q on
+  // the bare "avenue" token). The full-pool + id-equality check prevents that
+  // wrong-show contamination (the Stuart King mis-attribution failure mode this
+  // file has hit before).
+  if (targetShowIds && SCRAPINGBEE_KEY) {
+    const matchedIndivIds = new Set(matchedIndividual.map(r => r.show.id));
+    const unmatchedIndivTargets = targetShowIds.filter(id => !matchedIndivIds.has(id));
+
+    for (const showId of unmatchedIndivTargets) {
+      const show = weShows.find(s => s.id === showId);
+      if (!show) continue;
+
+      console.log(`[SERP] Searching for ${show.title} individual LBO review...`);
+      try {
+        const query = `site:londonboxoffice.co.uk "${show.title}" review`;
+        const results = await serpQuery(query, { nbResults: 8 });
+        const candidateUrls = (results || [])
+          .map(r => r.url)
+          .filter(Boolean)
+          .map(u => u.split(/[?#]/)[0])
+          .filter(u => u.includes('londonboxoffice.co.uk') && /\/news\/post\//i.test(u))
+          // Individual-review shape only — never a roundup listing.
+          .filter(u => !/review-round-?up/i.test(u))
+          .filter(u => /\/news\/post\/review-.+/i.test(u) || /-review\/?$/i.test(u));
+
+        let picked = null;
+        for (const u of candidateUrls) {
+          const postSlug = u
+            .replace(/^https?:\/\/[^/]+/, '')
+            .replace(/^\/news\/post\//, '')
+            .replace(/\/$/, '');
+          const m = matchSlugToShow(postSlug, weShows);
+          if (m && m.show && m.show.id === show.id && m.confidence === 'high') { picked = u; break; }
+        }
+
+        if (picked) {
+          console.log(`  Found individual via SERP: ${picked}`);
+          matchedIndividual.push({ url: picked, show, extractedTitle: show.title, via: 'serp' });
+          stats.matchedIndividual = (stats.matchedIndividual || 0) + 1;
+        } else {
+          console.log(`  No LBO individual review found for ${show.title}`);
+        }
+        await sleep(2000);
+      } catch (err) {
+        console.log(`  SERP (individual) error: ${err.message}`);
+      }
+    }
+  }
+
   // Process each matched roundup
   for (const { url, show } of matchedRoundups) {
     const showId = show.id;
