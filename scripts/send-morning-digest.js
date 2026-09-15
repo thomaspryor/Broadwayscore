@@ -855,6 +855,65 @@ async function main() {
     console.error(`[digest] WARN in-review backlog section failed: ${String(err.message).slice(0, 120)}`);
   }
 
+  // Board targeting (BRO-3423) — is the fleet's always-on automation actually
+  // dispatching off the LIVE board, or off one we declared retired?
+  //
+  // WHY THIS IS FOLDED INTO sections.health.errors RATHER THAN GIVEN ITS OWN
+  // DIGEST BLOCK. The failure it catches ran for two weeks unnoticed: the
+  // crowned dispatch watchdog spent its entire day budget re-dispatching
+  // retired-board Notion ids while 122 of 137 armed Linear issues had never
+  // been touched. A quiet line in a block of its own would have reproduced
+  // that exactly — `backlogDrain` is registered bannerOnly + optionalIfMissing
+  // and its producer has been dead since 2026-08-31 without anyone noticing.
+  // sections.health.errors is the one field the subject line and top verdict
+  // both read, so a mis-targeted fleet is loud on the first morning.
+  //
+  // For the same reason there is no launchd plist and no snapshot file: a
+  // separate Mac-local producer is one more thing that can die silently. The
+  // digest reads the ledgers itself, here, at send time.
+  //
+  // Fail-soft like every other section — but note that "could not read the
+  // ledger" comes back as status 'error' (blind), NOT as a pass. A check that
+  // reports healthy because it cannot see its evidence is the exact failure
+  // this card is about.
+  try {
+    const { readDispatchLedgers, fetchLiveBoardArmed } = require('./lib/board-targeting-sources.js');
+    const { auditWriterBoards, auditLiveBoardCoverage, summarizeBoardTargeting } = require('./lib/board-targeting-audit.js');
+    // `Date.now()` inline, NOT the `now` binding — that const is declared ~100
+    // lines below this block (see the TDZ note in the inflow block above).
+    const auditNow = Date.now();
+    const { rows, everTouchedIds, blind, primaryLedger, primaryLastRowTs, problems } = readDispatchLedgers({});
+    const writerAudit = auditWriterBoards({ rows, now: auditNow });
+    const live = await fetchLiveBoardArmed({});
+    const coverage = auditLiveBoardCoverage({
+      eligibleIds: live.eligibleIds,
+      everTouchedIds,
+      ok: live.ok,
+      reason: live.reason,
+      // The eligible set comes from the dispatcher's OWN eligibility rules, so
+      // a bug that collapsed it would shrink the denominator and silently
+      // exonerate the fleet. openIssues is already fetched above; carrying the
+      // raw count alongside makes that collapse a visible number.
+      openIssueCount: openIssues ? openIssues.length : null,
+    });
+    const row = summarizeBoardTargeting({ writerAudit, coverage, now: auditNow, blind, primaryLedger, primaryLastRowTs });
+    // An unreadable SECONDARY ledger shrinks everTouchedIds, which inflates the
+    // coverage arm's never-touched count and can manufacture a false FAIL. Say
+    // so in the row rather than letting it read as a clean measurement
+    // (ship-check finding).
+    if (problems.length && row.status === 'error') {
+      row.message += ` (note: ${problems.join('; ')})`;
+    }
+    if (row.status === 'error') {
+      if (!sections.health) sections.health = {};
+      if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+      sections.health.errors.push({ name: row.name, message: row.message, hint: row.hint });
+    }
+    console.log(`[digest] board-targeting: ${row.status} — ${row.message}`);
+  } catch (err) {
+    console.error(`[digest] WARN board-targeting check failed: ${String(err.message).slice(0, 120)}`);
+  }
+
   // Backlog inflow ratio (BRO-3017, owner decision 2026-09-08 "B then A").
   // Live fetch, fail-soft, raced against a 20s timeout — the same shape as the
   // awaiting-owner section above and for the same reason: a degraded Linear
