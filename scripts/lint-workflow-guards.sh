@@ -90,22 +90,35 @@ check_core_data_pairing() {
     # Match against the file with FULL-LINE comments stripped. The search
     # below is plain text, so a script merely NAMED in a YAML comment (a
     # rationale block, a runbook note) read as an invocation. This is not
-    # hypothetical twice over: it is why opening-night-stage-alert.yml is in
-    # EXEMPT above ("mentions rebuild in alert runbook TEXT, not an
-    # invocation"), and on 2026-09-15 it blocked every push on the owner's
-    # machine for ~2h when BRO-3426 added a comment reading "`node
-    # scripts/validate-data.js`-class commands" to data-health-check.yml --
-    # a workflow that never invokes validate-data.js at all.
+    # real: on 2026-09-15 it blocked every push on the owner's machine for ~2h
+    # when BRO-3426 added a comment reading "`node scripts/validate-data.js`-class
+    # commands" to data-health-check.yml -- a workflow whose ONLY mention of
+    # validate-data.js is that comment.
     #
     # Stripping full-line comments can NEVER mask a real invocation: a
     # commented-out line does not execute. Trailing comments are deliberately
     # NOT stripped -- '#' is legal inside quoted strings and URL fragments in
     # both YAML and shell, so cutting at the first '#' would corrupt real
     # run: lines and could hide a genuine invocation.
+    #
+    # NOT covered, and the EXEMPT list above still carries it: a script named in
+    # HEREDOC BODY TEXT. opening-night-stage-alert.yml:70 reads "Manually run
+    # `node scripts/rebuild-all-reviews.js` locally and push" inside a `cat
+    # <<EOF` that builds a gh issue body -- that is data, not a comment, so
+    # sed leaves it and the exemption is LOAD-BEARING. Do not delete it.
+    #
+    # The match is a HERESTRING, not `printf | grep`. `grep -q` exits at the
+    # first hit, so the writer takes SIGPIPE and the pipeline's status is 141;
+    # under `set -uo pipefail` (top of this file) that made the `if` FALSE and
+    # the gate fail OPEN -- a real invocation silently not flagged. Measured:
+    # MATCHED at 20/40 KB, MISSED(141) at 70/100/300 KB, 20/20 reproducible.
+    # data-health-check.yml is 73 KB and has no push-core-data, so it was on the
+    # failing side of that threshold. -F because these are literal filenames
+    # ('.' would otherwise be a wildcard).
     local BODY
     BODY=$(sed -E 's/^[[:space:]]*#.*$//' "$f")
     for s in $CORE_WRITER_SCRIPTS; do
-      if printf '%s\n' "$BODY" | grep -q "scripts/$s"; then
+      if grep -qF "scripts/$s" <<<"$BODY"; then
         MISSING="$MISSING $name($s)"
         break
       fi
