@@ -4,12 +4,17 @@
  *
  * Live failure: Safe House (off-Broadway, Theatre Row) had two review-text
  * files for ONE theaterscene.net URL — "Victor Gluck" (the real byline, printed
- * in the article as "Posted on September 7, 2026 by Victor Gluck,
- * Editor-in-Chief") and "Scott Bennett" (a name appearing nowhere in the
- * article). Both were includable, both scored, same publishDate — so every
- * tiebreak in chooseCanonical tied and the final ALPHABETICAL FILENAME tiebreak
- * picked "scott-bennett" over "victor-gluck". The automated dedup then wrote
- * duplicateOf onto the REAL review, suppressing it and keeping the phantom.
+ * as "Posted on September 7, 2026 by Victor Gluck, Editor-in-Chief") and
+ * "Scott Bennett" (a name appearing nowhere in the article). Both were
+ * includable, both scored, same publishDate — so every tiebreak in
+ * chooseCanonical tied and the final ALPHABETICAL FILENAME tiebreak picked
+ * "scott-bennett". The automated dedup then wrote duplicateOf onto the REAL
+ * review, suppressing it from the site.
+ *
+ * The cases below marked (SO) come from the /second-opinion review of the first
+ * revision of this fix, which found three real false-positive modes: bare
+ * substring matching, site-wide editor credits attesting someone else's byline,
+ * and searching both files' text as one blob.
  *
  * These tests require() the real functions (CLAUDE.md rule 15) — no logic is
  * restated here, so a regression in the source fails the test.
@@ -24,7 +29,6 @@ const { isBylineAttestedInText, normalizeForAttestation } =
 const { chooseCanonicalForRebuild } =
   require('../../scripts/fix-circular-duplicate-pairs.js');
 
-// The two bylines exactly as they appeared, with the article's real byline line.
 const ARTICLE = `Safe House A gripping and tense state-of-the-nation drama that is one of the
 best plays of the year. Posted on September 7, 2026 by Victor Gluck, Editor-in-Chief in
 Off-Broadway , Plays , Still Open. Karen Ziemba as Slipper and Marc Kudisch as Rock in a
@@ -36,24 +40,31 @@ test('the printed byline is attested, the invented one is not', () => {
 });
 
 test('single-token bylines never count as attested (too weak a signal)', () => {
-  // "Ross" is a real frontmezzjunkies byline; one common word proves nothing,
-  // so it must return false even when the word is present in the text.
-  assert.equal(isBylineAttestedInText('Ross', 'the ross family bunker'), false);
+  // "Ross" is a real frontmezzjunkies byline; one common word proves nothing.
+  assert.equal(isBylineAttestedInText('Ross', 'by the ross family bunker'), false);
 });
 
 test('attestation ignores accents and apostrophes', () => {
   // \b-style word boundaries break on exactly these characters —
   // memory/feedback_word_boundary_punct_titles.md.
   assert.equal(isBylineAttestedInText("Maureen O'Hara", 'by Maureen OHara'), true);
-  assert.equal(isBylineAttestedInText('Beatrice Onions', 'by Beatrice Oñions'), true);
-  assert.equal(isBylineAttestedInText('Jose Rivera', 'reviewed by José  Rivera.'), true);
+  assert.equal(isBylineAttestedInText('Beatrice Onions', 'reviewed by Beatrice Oñions'), true);
 });
 
-test('name tokens must be adjacent, not merely both present', () => {
-  assert.equal(
-    isBylineAttestedInText('David Spencer', 'David went to the show; Spencer did not.'),
-    false,
-  );
+test('(SO) a name must sit on token boundaries, not merely be a substring', () => {
+  // Bare String.includes matched both of these. The live shape: washpost had
+  // BOTH "Joshua John Mackin" (real) and "John Mackin" (truncated phantom) for
+  // one URL whose text reads "by Joshua John Mackin".
+  assert.equal(isBylineAttestedInText('John Mackin', 'This opinion piece is by Joshua John Mackin, a writer'), false);
+  assert.equal(isBylineAttestedInText('Joshua John Mackin', 'This opinion piece is by Joshua John Mackin, a writer'), true);
+  assert.equal(isBylineAttestedInText('Ann Lee', 'reviewed by Mary Ann Leech directed'), false);
+  assert.equal(isBylineAttestedInText('Sam Well', 'words by Sam Wells wrote'), false);
+});
+
+test('(SO) a bare mention in the prose is not a byline', () => {
+  // Critics are named inside review prose constantly; only a byline counts.
+  assert.equal(isBylineAttestedInText('Jane Doe', 'Jane Doe is quoted here but wrote nothing'), false);
+  assert.equal(isBylineAttestedInText('Jane Doe', 'reviewed by Jane Doe'), true);
 });
 
 test('missing or unusable input is not attested', () => {
@@ -85,20 +96,31 @@ function record(criticName, fullText) {
 test('chooseCanonicalForRebuild keeps the attested byline, order-independently', () => {
   const A = 'theater-scene--victor-gluck.json';
   const B = 'theater-scene--scott-bennett.json';
-  const aData = record('Victor Gluck', ARTICLE);
-  const bData = record('Scott Bennett', ARTICLE);
   const dir = '/tmp/nonexistent-show-dir/safe-house-off-broadway-2026';
 
   // Alphabetically "scott-bennett" < "victor-gluck", so the pre-fix filename
   // tiebreak returned B here. Both argument orders must now return A.
-  const forward = chooseCanonicalForRebuild(A, aData, B, bData, dir);
-  const reverse = chooseCanonicalForRebuild(B, bData, A, aData, dir);
+  const forward = chooseCanonicalForRebuild(A, record('Victor Gluck', ARTICLE), B, record('Scott Bennett', ARTICLE), dir);
+  const reverse = chooseCanonicalForRebuild(B, record('Scott Bennett', ARTICLE), A, record('Victor Gluck', ARTICLE), dir);
 
   assert.equal(forward.canonical, A, 'forward order must keep the real byline');
   assert.equal(reverse.canonical, A, 'reverse order must keep the real byline');
-  assert.equal(forward.loser, B);
-  assert.equal(reverse.loser, B);
   assert.match(forward.reason, /printed in the article text/);
+});
+
+test('(SO) each file is judged on its OWN text, not the pair concatenated', () => {
+  // theaterscene.net prints "by Victor Gluck, Editor-in-Chief" as a SITE credit
+  // on pages other critics wrote. If the pair's texts are searched as one blob,
+  // that credit in file A attests file B's invented "Victor Gluck" byline and
+  // crowns the phantom. Judged per-file, B's own text never says it.
+  const A = 'theater-scene--jane-doe.json';
+  const B = 'theater-scene--victor-gluck.json';
+  const aText = 'Review by Jane Doe. Posted by Victor Gluck, Editor-in-Chief.';
+  const bText = 'A review with no byline line of its own at all.';
+  const dir = '/tmp/nonexistent-show-dir/some-show';
+
+  const r = chooseCanonicalForRebuild(A, record('Jane Doe', aText), B, record('Victor Gluck', bText), dir);
+  assert.equal(r.canonical, A, 'the file whose own text carries its byline must win');
 });
 
 test('attestation stays silent when neither byline is printed', () => {

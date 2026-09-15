@@ -119,6 +119,9 @@ const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/sc
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence, validateRoundupPageTitle } = require('./lib/show-matching');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
+const {
+  isBroadwayLocalRegion, isWestEndLocalRegion, UK_SERP_REGIONS, US_SERP_REGIONS,
+} = require('./lib/outlet-region-map');
 const { detectIngestCollision } = require('./lib/manual-review-fields');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
@@ -383,8 +386,12 @@ function loadOutlets(opts = {}) {
   // tier 3 to US-marked outlets keeps the per-show SERP count from 20× to
   // ~50% larger than the legacy critic-outlets.json list (42 → 63) while
   // gaining the registry's broader US tier-1/2 coverage.
-  const UK_REGIONS = new Set(['london', 'uk']);
-  const US_REGIONS = new Set(['us', 'chicago', 'los-angeles', 'philadelphia', 'boston', 'san-francisco', 'dual']);
+  // Sourced from lib/outlet-region-map.js so this discovery whitelist and the
+  // roundup-locality predicates cannot drift apart again — they are different
+  // questions (see that file), but both must be edited in one place. Hand-rolled
+  // copies of this exact map are what BRO-3247 was.
+  const UK_REGIONS = UK_SERP_REGIONS;
+  const US_REGIONS = US_SERP_REGIONS;
   // (The TIER3_US_WHITELIST parity bridge from the original ship-check fix
   // was removed once the 8 tier-3 US outlets — cititour, frontmezzjunkies,
   // culturesauce, nbcnews, forward, one-minute-critic, stageandcinema,
@@ -2751,7 +2758,6 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
   // out of sync with the registry twice in 24h and dropped real reviews from BWW
   // roundups (BRO-3247 — Front Mezz Junkies, then region:'dual' outlets). See the
   // long comment on UK_REGIONS in outlet-region-map.js before changing this.
-  const { isBroadwayLocalRegion, isWestEndLocalRegion } = require('./lib/outlet-region-map');
   const NON_LOCAL_OUTLET_IDS = new Set();
   for (const [key, region] of Object.entries(__outletRegionMap)) {
     const isLocal = isWestEnd

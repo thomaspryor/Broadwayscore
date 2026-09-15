@@ -1013,6 +1013,9 @@ on:
       # Test lives in tests/unit/ (node --test batch via unit-test-manifest.txt);
       # path-listed so a solo lib edit triggers CI.
       - 'scripts/lib/byline-attestation.js'
+      # The per-show URL blocklist lib that makes an operator deletion stick —
+      # now consulted by ingest-review-from-url.js too (BRO-3247).
+      - 'scripts/lib/poller-blocklist.js'
       # Region locality single-source (BRO-3247) — a wrong verdict here silently
       # drops real reviews from BWW roundups as "non-local".
       - 'scripts/lib/outlet-region-map.js'

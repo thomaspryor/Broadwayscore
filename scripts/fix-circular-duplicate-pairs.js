@@ -273,11 +273,13 @@ function chooseCanonical(aName, aData, bName, bData) {
   // one, so everything below tied and filename order crowned the phantom
   // (BRO-3247). Only fires when exactly ONE side is attested; if both or
   // neither are, this is silent and the old chain still decides.
-  // Both texts are searched as one blob: the pair shares a url, so a truncated
-  // copy missing the byline line should not make the true byline look invented.
-  const _attestText = `${(aData && aData.fullText) || ''} ${(bData && bData.fullText) || ''}`;
-  const aAttested = isBylineAttestedInText(aData && aData.criticName, _attestText);
-  const bAttested = isBylineAttestedInText(bData && bData.criticName, _attestText);
+  // Each file is judged on ITS OWN text, never the pair's texts concatenated.
+  // A shared blob let one file's site-wide editor credit (theaterscene.net
+  // prints "by Victor Gluck, Editor-in-Chief" on pages other people wrote)
+  // attest the OTHER file's invented byline, and made this pairwise fold
+  // order-dependent for groups of 3+ (dedupe-same-url-bylines.js:350).
+  const aAttested = isBylineAttestedInText(aData && aData.criticName, aData && aData.fullText);
+  const bAttested = isBylineAttestedInText(bData && bData.criticName, bData && bData.fullText);
   if (aAttested && !bAttested) return pick(aName, bName, 'byline: only this byline is printed in the article text');
   if (bAttested && !aAttested) return pick(bName, aName, 'byline: only this byline is printed in the article text');
 
