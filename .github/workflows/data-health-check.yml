@@ -311,15 +311,31 @@ jobs:
       - name: Acceptance recheck (shadow mode)
         if: always()
         continue-on-error: true
-        # 3min budget + 5min step timeout backstop (task #695 ship-check
-        # finding): the script's own internal deadline is a soft check inside
-        # its loop — a single hung/non-timing-out check command wouldn't hit
-        # it until the NEXT loop iteration. The step timeout is the hard stop
-        # that guarantees this step dies with time for the commit step after
-        # it, instead of the whole job hitting its 15min ceiling.
-        timeout-minutes: 5
+        # 3min verify budget + 8min step timeout backstop (task #695
+        # ship-check finding, widened 5->8min for BRO-3373): the script's own
+        # internal deadline is a soft check inside its verify loop — a single
+        # hung/non-timing-out check command wouldn't hit it until the NEXT
+        # loop iteration. The step timeout is the hard stop that guarantees
+        # this step dies with time for the commit step after it, instead of
+        # the whole job hitting its 15min ceiling. Widened because BRO-3373
+        # added a Linear candidate fetch (its own internal 60s deadline,
+        # linear-recheck-source.js DEADLINE_MS) ON TOP of the existing 3min
+        # verify budget + Notion listing/hydration — a ship-check review
+        # measured worst case at ~260-300s, leaving the old 5min (300s) step
+        # timeout with near-zero margin; a hard step-timeout kill (unlike the
+        # script's own internal deadline) drops mid-run with no ledger write
+        # at all, silently losing that night's coverage instead of reporting
+        # it truncated.
+        timeout-minutes: 8
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          # BRO-3373: without this, fetchLinearRecheckCandidates's every call
+          # fails auth (linear-client.js's getApiKey() throws with no key set)
+          # — a ship-check review caught this BEFORE it shipped: the step
+          # would have stayed green forever while silently checking zero
+          # Linear candidates, reproducing the exact "silently unverified"
+          # failure this whole change exists to fix, for a different reason.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           # Emergency kill switch (Codex finding): `gh variable set
           # ACCEPTANCE_RECHECK_KILL_SWITCH --body true` disables this step's
           # work without a code change, same pattern as BROWSERBASE_KILL_SWITCH.
