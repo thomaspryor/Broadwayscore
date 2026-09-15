@@ -698,11 +698,28 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
   // accented Ú leaving a meaningless fragment) and downstream slug matching
   // fails silently. Same bug class as operaTitleWords in site-search-discovery.js
   // (fixed 2026-05-17); applies to every non-opera SERP/site-search caller.
+  //
+  // Hyphens are KEPT inside a word (not stripped, not turned into a space) —
+  // deliberately, so word count/match-ratio math below is unaffected. This
+  // function doubles as an article-title prose matcher (urlOrTitleLooksLikeReview
+  // calls urlLooksLikeReview(articleTitle, showTitle), treating prose as if it
+  // were a "URL"), where splitting "Night-Time" into two separate words would
+  // inflate titleWords.length and silently raise the match-ratio threshold —
+  // confirmed: doing that broke the existing "Curious Incident ... Night-Time"
+  // long-title test. Keeping the hyphen IN the word instead needs no such
+  // split: wordMatch() below already treats '-' as a boundary character, so
+  // "pre-existing" matches literally inside a hyphen-delimited URL slug like
+  // ".../pre-existing-condition-review..." as one bounded token. Before this
+  // fix, the hyphen was stripped entirely ("pre-existing" -> "preexisting"),
+  // which could never match either a split URL segment or the raw slug text —
+  // confirmed live 2026-09-15: the New York Theatre Guide review of
+  // "Pre-Existing Condition" was rejected here ("URL slug doesn't match") even
+  // though the SERP result was the correct, real review URL.
   const titleWords = showTitle
     .toLowerCase()
     .normalize('NFD')
     .replace(/\p{Diacritic}/gu, '')
-    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
     .split(/\s+/)
     .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
 
@@ -752,7 +769,7 @@ function urlLooksLikeReview(url, showTitle) {
       .toLowerCase()
       .normalize('NFD')
       .replace(/\p{Diacritic}/gu, '')
-      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
       .split(/\s+/)
       .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
     if (shortMeaningfulWords.length > 0 && urlTitleWordsPass(lower, shortTitle)) return true;

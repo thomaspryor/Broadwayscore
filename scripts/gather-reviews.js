@@ -2751,15 +2751,26 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
   // lib/outlet-region-map.js single source of truth (BRO-254 follow-up: this used
   // to re-derive its own id->region map inline, the exact duplication shape that
   // let cross-market-guard.js's copy ship with a missed-alias-lowercasing bug once).
-  const { outletRegionMap: __outletRegionMap } = require('./lib/outlet-region-map').buildOutletMaps({ outlets: outletRegistry });
+  const { outletRegionMap: __outletRegionMap, dualMarket: __dualMarket } = require('./lib/outlet-region-map').buildOutletMaps({ outlets: outletRegistry });
   // Region locality is decided by lib/outlet-region-map.js (isBroadwayLocalRegion /
   // isWestEndLocalRegion) — NOT by a list maintained here. This call site is the
   // reason that helper exists: it hand-rolled its own US allowlist, which drifted
   // out of sync with the registry twice in 24h and dropped real reviews from BWW
   // roundups (BRO-3247 — Front Mezz Junkies, then region:'dual' outlets). See the
   // long comment on UK_REGIONS in outlet-region-map.js before changing this.
+  //
+  // isDualMarket is a SEPARATE signal from region:'dual' — an outlet can have a
+  // single primary region (e.g. The Guardian: region:'london') AND isDualMarket:
+  // true to flag that it also legitimately covers the other market. Before this
+  // fix, only `region` was consulted here, so isDualMarket outlets whose primary
+  // region wasn't already 'dual' were still filtered out as non-local — the same
+  // bug class as cross-market-guard.js's classifyReverseCrossMarket, which treats
+  // isDualMarket as an unconditional "skip, legit by definition" (see that file).
+  // Confirmed live 2026-09-15: The Guardian's real NYC review of a Pre-Existing
+  // Condition BWW roundup was stripped as "non-NYC" despite isDualMarket:true.
   const NON_LOCAL_OUTLET_IDS = new Set();
   for (const [key, region] of Object.entries(__outletRegionMap)) {
+    if (__dualMarket.has(key)) continue;
     const isLocal = isWestEnd
       ? isWestEndLocalRegion(region)
       : isBroadwayLocalRegion(region);
@@ -2767,6 +2778,7 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
   }
 
   function isNonLocalOutlet(outletId) {
+    if (__dualMarket.has(outletId)) return false;
     if (NON_LOCAL_OUTLET_IDS.has(outletId)) return true;
     if (isWestEnd) {
       // For WE: flag outlets that are clearly US-only
