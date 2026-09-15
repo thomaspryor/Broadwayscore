@@ -45,6 +45,7 @@ const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 const core = require('./lib/dispatch-watchdog-core.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { findUnlandedJobDoneEntries } = require('./lib/headless-unlanded-detection.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
@@ -68,6 +69,12 @@ const HEARTBEAT_STALE_MS = 10 * 60 * 1000;      // ensure-tab resurrection bar
 const HEALTH_STALE_MS = 30 * 60 * 1000;         // launchd paging bar
 const DISPATCH_TIMEOUT_MS = 15 * 60 * 1000;     // bsc-next slow-boot worst case + margin
 const RECHECK_WINDOW_MS = 48 * 3600 * 1000;
+// BRO-3424: how far back findUnlandedJobDoneEntries re-checks job-done
+// ancestry each sweep. Unbounded would re-walk every job-done the ledger has
+// ever recorded (most worktrees long gone — a fast existsSync-false, but
+// still O(all-time jobs) per 90s sweep). A week comfortably covers the
+// REDISPATCH_REARM_MS=24h self-heal window this surfacing feeds into.
+const UNLANDED_CHECK_WINDOW_MS = 7 * 24 * 3600 * 1000;
 
 const USAGE = `dispatch-watchdog.js — durable owner of dispatched-work outcomes
 
@@ -286,6 +293,7 @@ function buildPlan(now) {
     liveTitles: liveTitleMap(),
     recheckFailures: recentRecheckFailures(now),
     dispatchEnabled: dispatchEnabled(),
+    unlandedJobDone: findUnlandedJobDoneEntries(entries, { sinceMs: now - UNLANDED_CHECK_WINDOW_MS }),
   });
 }
 

@@ -509,3 +509,42 @@ test('the cmux lane still counts as open (no regression from the union)', () => 
   assert.ok(core.openTasksAnyLane(entries).has('55'));
   assert.equal(core.watchdogLiveCount(entries), 1);
 });
+
+// BRO-3424: unlandedJobDone is injected (same convention as liveTitles) —
+// planSweep itself never touches git. Report-only: must surface in
+// needsYou/renderNarrative but never appear in toDispatch (no cap exists yet
+// on redispatching an unlanded-retry loop — see the comment at its call site
+// in planSweep).
+test('BRO-3424: an unlanded job-done surfaces in needsYou and the narrative, but is never auto-redispatched', () => {
+  const entries = [];
+  const unlandedJobDone = [{ taskId: '80', jobId: '80-abc', cwd: '/tmp/job-80', sha: 'deadbeef' }];
+  const plan = core.planSweep(entries, new Map([task(80, 'in_progress')]), {
+    now: NOW, liveTitles: LIVE, unlandedJobDone,
+  });
+  assert.equal(plan.unlandedDone.length, 1);
+  assert.equal(plan.unlandedDone[0].taskId, '80');
+  assert.ok(plan.needsYou >= 1);
+  assert.ok(!plan.toDispatch.some((d) => d.taskId === '80'), 'must never be auto-redispatched');
+  assert.match(core.renderNarrative(plan), /never reached origin\/main/);
+});
+
+test('BRO-3424: an unlanded job-done for an already-completed task is not surfaced', () => {
+  const unlandedJobDone = [{ taskId: '81', jobId: '81-abc', cwd: '/tmp/job-81', sha: 'deadbeef' }];
+  const plan = core.planSweep([], new Map([task(81, 'completed')]), { now: NOW, liveTitles: LIVE, unlandedJobDone });
+  assert.equal(plan.unlandedDone.length, 0);
+});
+
+test('BRO-3424: an unlanded job-done is suppressed once a NEWER launch for the same task is already open', () => {
+  const entries = [
+    { ts: T(1), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: '82' },
+    { ts: T(1), event: 'job-spawned', taskId: '82', jobId: '82-new' },
+  ];
+  const unlandedJobDone = [{ taskId: '82', jobId: '82-old', cwd: '/tmp/job-82', sha: 'deadbeef' }];
+  const plan = core.planSweep(entries, new Map([task(82, 'in_progress')]), { now: NOW, liveTitles: LIVE, unlandedJobDone });
+  assert.equal(plan.unlandedDone.length, 0, 'a live newer job for the task supersedes the stale unlanded flag');
+});
+
+test('BRO-3424: omitting unlandedJobDone entirely is backward compatible (defaults to none)', () => {
+  const plan = core.planSweep([], new Map([task(83, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.unlandedDone, []);
+});
