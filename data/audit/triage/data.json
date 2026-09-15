@@ -1,20 +1,20 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-09-05T02:22:00.875Z",
+  "lastChecked": "2026-09-15T12:12:12.034Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Data: OB closing candidates awaiting review",
-      "status": "warn",
-      "message": "10 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+      "status": "error",
+      "message": "4 open Off-Broadway show(s) look closed per the weekly detector. Oldest: drunk-shakespeare-off-broadway-2022 (missing 65d)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "2 discovered review(s) not reaching the composite score (1 T1). First: disruption-off-broadway-2026 — wsj (empty-body)"
+      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: benevolent-off-broadway-2026 — talkinbroadway (rejected-unscoreable)"
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -23,8 +23,8 @@
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "status": "warn",
-      "message": "2 aggregator-reviewed show(s) not in the catalogue. First: \"Who Killed Marilyn\" (wet-roundup)"
+      "status": "error",
+      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 35d) — 2 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     },
     {
       "name": "Data: undispatchable backlog cards",
