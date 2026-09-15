@@ -1,5 +1,7 @@
 // Send the week's newsletter to thomas.pryor@gmail.com as a transactional email
 // (NOT broadcast — per CLAUDE.md rule 16, never use broadcast API for test sends).
+// Also CC's the +claude email-worker alias (BRO-40 Phase 2) so the owner can
+// Reply-All with edits + "ship it" and have the worker see them.
 //
 // The generator emits {{{RESEND_UNSUBSCRIBE_URL}}} as the unsubscribe link —
 // that macro is substituted by Resend during BROADCAST sends. Transactional
@@ -22,12 +24,15 @@ import { createRequire } from 'node:module';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
-const { buildUnsubscribeUrl, buildFromAddress, buildReplyToAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { buildUnsubscribeUrl, buildFromAddress, buildReplyToAddress, resolveNewsletterEdition, buildDraftPreviewRecipients } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 
 const KEY = process.env.RESEND_API_KEY;
 if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
 
 const RECIPIENT = process.env.NEWSLETTER_TEST_RECIPIENT || 'thomas.pryor@gmail.com';
+// Also CC the email-worker's +claude alias (BRO-40 Phase 2) so a Reply-All on
+// this preview reaches thomas.pryor+claude@gmail.com with edits + "ship it".
+const RECIPIENTS = buildDraftPreviewRecipients(RECIPIENT);
 // Edition drives the sender name + unsubscribe market so the WE preview looks
 // exactly like the WE broadcast (from "West End Scorecard", WE unsubscribe).
 const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // throws on typos/unknown editions
@@ -82,7 +87,7 @@ const ALLOW_SEND = process.env.CI === 'true'
   || process.env.NEWSLETTER_SEND === '1'
   || process.argv.includes('--force');
 if (!ALLOW_SEND) {
-  console.log('[DRY RUN] Would send to:', RECIPIENT);
+  console.log('[DRY RUN] Would send to:', RECIPIENTS.join(', '));
   console.log('[DRY RUN] From:', FROM_EMAIL);
   console.log('[DRY RUN] Reply-To:', REPLY_TO);
   console.log('[DRY RUN] Subject:', subject);
@@ -93,7 +98,7 @@ if (!ALLOW_SEND) {
 const body = {
   from: FROM_EMAIL,
   reply_to: REPLY_TO,
-  to: [RECIPIENT],
+  to: RECIPIENTS,
   subject,
   html,
 };
