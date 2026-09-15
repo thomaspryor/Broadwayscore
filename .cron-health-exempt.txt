@@ -240,3 +240,8 @@ check-linear-drain-health.yml
 # failures surface via notify-failure (warning severity) and the daily
 # digest. Digest-only, not real-time-paging material.
 drain-self-contradictory-clears.yml
+
+# analyze-traffic-sources.yml (BRO-3419): weekly Monday traffic-source report,
+# owner-facing on the run Summary page only. A missed week costs a report, not
+# a user-facing page; failures surface via notify-failure + the daily digest.
+analyze-traffic-sources.yml
