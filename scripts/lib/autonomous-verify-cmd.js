@@ -35,6 +35,16 @@
 
 'use strict';
 
+// Specificity of a runnable command, lowest wins. A card that lists both
+// `node --test tests/unit/thing.test.mjs` and `npx tsc --noEmit` was having
+// the tsc line captured purely because it appeared first — and "tsc still
+// passes" says nothing about whether THAT card's work survived (ship-check
+// finding). Module-level (not local to extractVerifyCmd) and exported so
+// autonomous-recheck-core.js can rank a comment-posted correction against a
+// dispatch-ledger snapshot the same way (BRO-3446) — CLAUDE.md §15: this is
+// the one copy, never re-implement the ranking elsewhere.
+const rank = c => (/^node --test/.test(c) || /^npx tsx --test/.test(c) ? 0 : /^test -f/.test(c) ? 1 : 2);
+
 // Where a runnable command legitimately lives on a card. Both are conventions
 // this repo's cards already follow (see the plan-tasks skill output format).
 const SECTION_RE = /##\s*Acceptance criteria\s*\n([\s\S]*?)(?=\n##|$)/i;
@@ -88,12 +98,8 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
     .filter(Boolean);
   if (!candidates.length) return { cmd: null, reason: 'acceptance criteria names no runnable command (prose only)', kind: 'no-command' };
 
-  // Prefer the SPECIFIC command over the generic one. A card that lists both
-  // `node --test tests/unit/thing.test.mjs` and `npx tsc --noEmit` was having
-  // the tsc line captured purely because it appeared first — and "tsc still
-  // passes" says nothing about whether THAT card's work survived (ship-check
-  // finding). Ranked, not reordered: order within a rank is still card order.
-  const rank = c => (/^node --test/.test(c) || /^npx tsx --test/.test(c) ? 0 : /^test -f/.test(c) ? 1 : 2);
+  // Prefer the SPECIFIC command over the generic one, via the module-level
+  // rank() above. Ranked, not reordered: order within a rank is still card order.
   const safe = candidates.filter(c => isSafeCheckCommand(c));
   if (safe.length) {
     const best = safe.slice().sort((a, b) => rank(a) - rank(b))[0];
@@ -109,4 +115,4 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
   };
 }
 
-module.exports = { extractVerifyCmd, candidatesFrom, SECTION_RE };
+module.exports = { extractVerifyCmd, candidatesFrom, SECTION_RE, rank };
