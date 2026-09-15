@@ -67,7 +67,7 @@ jobs:
     name: Auto-fix Friction Cards → Draft PRs
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    # Only run when analyzer succeeded — don't act on stale Notion backlog from failed runs
+    # Only run when analyzer succeeded — don't act on stale Linear backlog from failed runs
     needs: friction-analyzer
     if: needs.friction-analyzer.result == 'success'
     permissions:
@@ -88,7 +88,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Auto-fix friction cards
         env:
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/auto-fix-friction-card.js
