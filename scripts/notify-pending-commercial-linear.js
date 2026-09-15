@@ -122,8 +122,12 @@ function buildTitle(slug) {
   return `commercial-pending-${slug} — recoupment claim needs review`;
 }
 
-function findExistingIssue(stableKey) {
-  const res = runLinearBrain(['find', stableKey]);
+// Exact-title match (linear-brain.js's --exact-title mode), not a substring
+// search on `stableKey` — a slug like "hamlet" would otherwise substring-
+// match an unrelated "hamlet-revival" issue's title (ship-check finding).
+// buildTitle() is a pure function of item.slug, so it's a stable, unique key.
+function findExistingIssue(title) {
+  const res = runLinearBrain(['find', title, '--exact-title']);
   if (res.status !== 0) {
     throw new Error(`linear-brain find failed (exit ${res.status}): ${res.stderr.slice(0, 500)}`);
   }
@@ -148,7 +152,7 @@ function notifyOne(item) {
 
   let issue;
   try {
-    issue = findExistingIssue(stableKey);
+    issue = findExistingIssue(title);
   } catch (err) {
     console.error(`  ✗ ${item.slug}: find failed — ${err.message.slice(0, 200)}`);
     return { slug: item.slug, action: 'error', error: 'find-failed' };
@@ -204,6 +208,11 @@ function main() {
   }
   console.log(`\nSweep summary: created=${results.created} updated=${results.updated} errors=${results.error}` +
               (overflow > 0 ? ` overflow=${overflow}` : ''));
+  // A batch that's all errors used to still exit 0 (ship-check finding) —
+  // the workflow step wraps this in continue-on-error, so a nonzero exit
+  // doesn't fail the job, but it does mark the step red in the Actions UI
+  // instead of masking every failure behind a green checkmark.
+  if (results.error > 0) process.exit(1);
 }
 
 main();
