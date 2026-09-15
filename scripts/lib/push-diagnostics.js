@@ -470,6 +470,202 @@ function formatTimeline(timeline) {
   return `${secs}s in phase "${g.phase}" — ${where}${attribution}${caveat}`;
 }
 
+// ---------------------------------------------------------------------------
+// BRO-3358: GIT_TRACE2_PERF diagnostics — extractPhaseTimeline above answers
+// "how far did the CONNECT phase get" from GIT_TRACE_CURL, but GIT_TRACE_CURL
+// is a WIRE trace: it logs handshake/header lines only, so it has nothing to
+// say about what git itself is doing BETWEEN them — e.g. a blocking
+// credential-helper child process. GIT_TRACE_PERFORMANCE (the more
+// obvious-looking instrument) is worse than useless here: it logs a region
+// only on LEAVE, so the one phase still running when a 90s kill hits is
+// precisely the phase that NEVER PRINTS (verified: GIT_TRACE_PERFORMANCE=1 +
+// a 3s kill on a real push produced rc=124 and ZERO performance lines, while
+// GIT_TRACE2_PERF on the identical command produced 36 lines including
+// region_enter/child_start naming the in-flight work). GIT_TRACE2_PERF logs
+// child_start as it HAPPENS, so a child process still running at kill time
+// shows up as a child_start with no matching child_exit — exactly the shape
+// needed to test the credential-helper hypothesis (see push-with-retry.sh's
+// PUSH_TRACE2_DIAGNOSTICS comment for the concrete lead this exists to
+// chase).
+//
+// Line format verified against a real local capture (`GIT_TRACE2_PERF=1 git
+// ls-remote https://...`): "HH:MM:SS.ffffff file:line | dN | thread | event |
+// repo | t_abs | t_rel | category | data". Unlike GIT_TRACE_CURL, git's own
+// trace2 output already redacts URL userinfo NATIVELY (prints "<REDACTED>"
+// inline, verified live against a fake embedded token) and trace2 never logs
+// HTTP headers/cookies/bodies the way GIT_TRACE_CURL does — the credential-
+// leak surface here is structurally much smaller. Callers still route
+// everything through redactCurlTrace's denylist as defense-in-depth (its
+// patterns are generic string matches, not curl-specific) via the redactTrace2
+// export below. This remains a denylist, not a formal allowlist parser — a
+// credential passed as a bare positional argv to some OTHER child tool (not a
+// URL, header, or key=value query param) would not be caught by either.
+//
+// These functions reuse clockToMs()/forwardDelta() directly (declared above,
+// same file) rather than re-deriving HH:MM:SS.frac math — that math has three
+// rounds of adversarial-review bug fixes baked into it (symmetric clamp,
+// null-not-0, midnight-wrap-vs-jitter distinction) and a second copy would
+// risk silently reintroducing a fixed bug.
+const TRACE2_LINE_RE =
+  /^(\d{2}):(\d{2}):(\d{2})\.(\d+)\s+\S+\s*\|\s*d(\d+)\s*\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|(.*)$/;
+
+/**
+ * @param {string} traceText raw or redacted GIT_TRACE2_PERF output
+ * @returns {Array<{tsMs:number, stamp:string, depth:number, thread:string,
+ *   event:string, tAbs:string, tRel:string, category:string, data:string}>}
+ */
+function parseTrace2Records(traceText) {
+  if (typeof traceText !== 'string' || !traceText) return [];
+  const records = [];
+  for (const line of traceText.split('\n')) {
+    const m = TRACE2_LINE_RE.exec(line);
+    if (!m) continue;
+    const [, hh, mm, ss, frac, depth, thread, event, , tAbs, tRel, category, data] = m;
+    records.push({
+      tsMs: clockToMs(hh, mm, ss, frac),
+      stamp: `${hh}:${mm}:${ss}.${frac}`,
+      depth: Number(depth),
+      thread: thread.trim(),
+      event: event.trim(),
+      tAbs: tAbs.trim(),
+      tRel: tRel.trim(),
+      category: category.trim(),
+      data: data.trim(),
+    });
+  }
+  return records;
+}
+
+// A trace2 child is identified by its [chN] marker, scoped to the DEPTH it
+// was started at — child ids are only unique within one process's own
+// children, so a bare [ch0] legitimately recurs at multiple depths for
+// unrelated children (verified in a live capture where d1 and d2 each had
+// their own [ch0]).
+const CHILD_ID_RE = /\[ch(\d+)\]/;
+
+/**
+ * Pairs child_start/child_exit trace2 records to answer "was any child
+ * process still running when the capture stopped" — the signal that tells us
+ * whether a blocking credential helper (or anything else) was in flight at
+ * kill time. A child_start with NO matching child_exit anywhere in the file
+ * is flagged inFlightAtEnd: true.
+ *
+ * @param {string} traceText
+ * @returns {Array<{id:string, depth:number, argv:string, startMs:number,
+ *   durationMs:(number|null), inFlightAtEnd:boolean}>}
+ */
+function summarizeTrace2Children(traceText) {
+  const records = parseTrace2Records(traceText);
+  const started = new Map(); // key: `${depth}:${chId}` -> entry
+  const children = [];
+  for (const r of records) {
+    const m = CHILD_ID_RE.exec(r.data);
+    if (!m) continue;
+    const key = `${r.depth}:${m[1]}`;
+    if (r.event === 'child_start') {
+      const entry = {
+        id: `ch${m[1]}`,
+        depth: r.depth,
+        argv: r.data,
+        startMs: r.tsMs,
+        durationMs: null,
+        inFlightAtEnd: true,
+      };
+      started.set(key, entry);
+      children.push(entry);
+    } else if (r.event === 'child_exit') {
+      const entry = started.get(key);
+      if (!entry) continue;
+      // Prefer trace2's OWN t_rel column (git's authoritative elapsed time
+      // for the child, printed on its exit line) over re-deriving it from
+      // two tsMs values — one fewer place for the day-wrap edge case to bite.
+      const tRelSec = parseFloat(r.tRel);
+      entry.durationMs = Number.isFinite(tRelSec)
+        ? Math.round(tRelSec * 1000)
+        : r.tsMs - entry.startMs;
+      entry.inFlightAtEnd = false;
+    }
+  }
+  return children;
+}
+
+/**
+ * Same "terminal silence dominates" model as extractPhaseTimeline above (see
+ * its header comment for why the interval from the last trace line to the
+ * kill must be a first-class candidate), generalized to trace2 records:
+ * trace2 has no fixed HTTP-phase vocabulary, so every record boundary is a
+ * candidate gap, and the terminal gap's "phase" is just the last event's own
+ * name + data rather than a curl-stage label.
+ *
+ * @param {object} opts
+ * @param {string} opts.traceText GIT_TRACE2_PERF output for ONE attempt.
+ * @param {string} [opts.killedAt] wall clock "HH:MM:SS.frac" — the SAME kill
+ *   timestamp already captured for the curl trace (git_push_traced() takes
+ *   exactly one `date` call per attempt and passes it to both diagnostics, so
+ *   they can never disagree about when the process died).
+ * @returns {{records:number, gaps:Array, dominantGap:(object|null), reason:(string|undefined)}}
+ */
+function extractTrace2Timeline({ traceText, killedAt } = {}) {
+  const records = parseTrace2Records(traceText);
+  if (records.length === 0) {
+    return { records: 0, gaps: [], dominantGap: null, reason: 'no-trace' };
+  }
+
+  const mkGap = (raw, rest) => ({ ...rest, ms: raw === null ? 0 : raw, implausible: raw === null });
+  const gaps = [];
+  for (let i = 1; i < records.length; i++) {
+    gaps.push(mkGap(forwardDelta(records[i - 1].tsMs, records[i].tsMs), {
+      event: records[i - 1].event,
+      data: records[i - 1].data,
+      from: records[i - 1].stamp,
+      to: records[i].stamp,
+      terminal: false,
+    }));
+  }
+
+  const last = records[records.length - 1];
+  const killMs = parseTraceClock(killedAt);
+  if (killMs !== null) {
+    gaps.push(mkGap(forwardDelta(last.tsMs, killMs), {
+      event: last.event,
+      data: last.data,
+      from: last.stamp,
+      to: killedAt.trim(),
+      terminal: true,
+    }));
+  }
+
+  const measurable = gaps.filter((g) => !g.implausible);
+  let dominantGap = null;
+  for (const g of measurable) {
+    if (!dominantGap || g.ms > dominantGap.ms) dominantGap = g;
+  }
+  if (!dominantGap && gaps.length > 0) {
+    return { records: records.length, gaps, dominantGap: null, reason: 'timestamps-implausible' };
+  }
+  return { records: records.length, gaps, dominantGap };
+}
+
+/** One-line human summary of a trace2 timeline + child census, for the CI log. */
+function formatTrace2Timeline(timeline, children) {
+  if (timeline && timeline.reason === 'timestamps-implausible') {
+    return `cannot locate the time — every interval in this trace2 capture is implausible (clock skew or corrupt timestamps); records=${timeline.records}`;
+  }
+  if (!timeline || !timeline.dominantGap) {
+    return `no-timeline (records=${timeline ? timeline.records : 0})`;
+  }
+  const g = timeline.dominantGap;
+  const secs = (g.ms / 1000).toFixed(1);
+  const where = g.terminal
+    ? `SILENCE AFTER last trace2 line (last event: "${g.event}" — ${g.data})`
+    : `between trace2 lines (last event: "${g.event}")`;
+  const inFlight = (children || []).filter((c) => c.inFlightAtEnd);
+  const inFlightNote = inFlight.length
+    ? ` — IN-FLIGHT CHILD AT KILL: ${inFlight.map((c) => c.argv).join('; ')}`
+    : '';
+  return `${secs}s ${where}${inFlightNote}`;
+}
+
 module.exports = {
   redactCurlTrace,
   classifyStallPhase,
@@ -479,4 +675,10 @@ module.exports = {
   formatTimeline,
   parseTraceRecords,
   parseTraceClock,
+  // BRO-3358 (GIT_TRACE2_PERF)
+  redactTrace2: redactCurlTrace,
+  parseTrace2Records,
+  summarizeTrace2Children,
+  extractTrace2Timeline,
+  formatTrace2Timeline,
 };
