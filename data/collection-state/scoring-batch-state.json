@@ -1,0 +1,29 @@
+{
+  "submittedAt": "2026-09-15T09:53:54.836Z",
+  "itemCount": 2,
+  "claudeBatchId": "msgbatch_01YFHU58sKbLacDuMubuLkYg",
+  "openaiBatchId": "batch_6aa915af92348190800efc63f305a5f9",
+  "geminiBatchId": "batches/todlzmwpujuay77p3vfkvd6t5v6a2pgseuot",
+  "manifest": [
+    {
+      "index": 0,
+      "showId": "avenue-q-west-end-2026",
+      "outletId": "independent",
+      "filePath": "data/review-texts/avenue-q-west-end-2026/independent--louis-chilton.json",
+      "inputHash": "630a4320e30e3edc9c5309b75781d6a9"
+    },
+    {
+      "index": 1,
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "outletId": "broadwayworld",
+      "filePath": "data/review-texts/trainspotting-the-musical-west-end-2026/broadwayworld--team-bww.json",
+      "inputHash": "20c06fcbe5f24a726ebb8c290ce91c64"
+    }
+  ],
+  "models": {
+    "claude": "claude-sonnet-4-6",
+    "openai": "gpt-4o",
+    "gemini": "gemini-2.5-flash"
+  },
+  "promptVersion": "5.4.0"
+}
