@@ -99,6 +99,62 @@ test('feedback route returns 2xx when NOTION_API_KEY is entirely absent', async 
   }
 });
 
+test('feedback route returns an error when Formspree rejects the submission, even if Notion succeeds (BRO-3382)', async () => {
+  process.env.NOTION_API_KEY = 'test-key';
+  let notionCalled = false;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.includes('api.notion.com')) {
+      notionCalled = true;
+      return new Response(JSON.stringify({ id: 'fake-page' }), { status: 200 });
+    }
+    if (u.includes('formspree.io')) {
+      return new Response(JSON.stringify({ errors: [{ message: 'rate limited' }] }), { status: 429 });
+    }
+    throw new Error(`unexpected fetch in test: ${u}`);
+  };
+  try {
+    const { POST } = await import('./../feedback/route.ts');
+    const { NextRequest } = await import('next/server');
+    const req = new NextRequest('http://localhost/api/feedback', {
+      method: 'POST',
+      body: feedbackFormData(),
+      headers: { 'x-forwarded-for': '10.0.0.4' },
+    });
+    const res = await POST(req);
+    assert.equal(res.status, 502, `expected 502 when the real consumer (Formspree) rejects, got ${res.status}`);
+    const body = await res.json();
+    assert.ok(body.errors?.[0]?.message, 'error response must include a user-visible message');
+    assert.equal(notionCalled, true, 'Notion should still be attempted as a best-effort fallback');
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test('feedback route returns an error when Formspree is unreachable', async () => {
+  delete process.env.NOTION_API_KEY;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.includes('formspree.io')) {
+      throw new Error('simulated network failure');
+    }
+    throw new Error(`unexpected fetch in test: ${u}`);
+  };
+  try {
+    const { POST } = await import('./../feedback/route.ts');
+    const { NextRequest } = await import('next/server');
+    const req = new NextRequest('http://localhost/api/feedback', {
+      method: 'POST',
+      body: feedbackFormData(),
+      headers: { 'x-forwarded-for': '10.0.0.5' },
+    });
+    const res = await POST(req);
+    assert.equal(res.status, 502, `expected 502 when Formspree is unreachable, got ${res.status}`);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
 test('submit-review route returns 2xx and keeps the GitHub issue when Notion throws', async () => {
   process.env.NOTION_API_KEY = 'test-key';
   process.env.GH_DISPATCH_TOKEN = 'test-gh-token';
