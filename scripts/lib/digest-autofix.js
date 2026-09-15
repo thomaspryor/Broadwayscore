@@ -123,6 +123,34 @@ function rowFamilyKey(name) {
   return familyDisplayName(name).toLowerCase().replace(/\s+/g, ' ');
 }
 
+// BRO-3427: mirror-image of the prefix rule above — every one of this repo's
+// per-show opening-night checks self-declares its remediation title as
+// "<condition> on ${show.title || show.id}" (scripts/lib/opening-night-
+// checks/*.check.js, grepped: stale-upcoming-tag, placeholder-synopsis,
+// cv-wrongproduction-unhandled, publish-date-pre-opening, fulltext-mentions-
+// show, etc. — all the SAME literal separator). Splitting on the FIRST
+// " on " is correct even when a show title itself contains " on " (e.g.
+// "Once on This Island"): the condition text is a fixed phrase that never
+// contains " on ", so the first occurrence is always the condition/show
+// boundary. Operates on the prefix-stripped name so a row carrying BOTH a
+// known prefix and an "on show" suffix still resolves to the right
+// condition. Rows with no " on " at all (most non-per-show conditions)
+// return null and are never folded — see planAutofix's foldable check below.
+const ON_SHOW_SUFFIX_RE = /^(.+?) on (.+)$/;
+
+function splitOnShowSuffix(name) {
+  const m = ON_SHOW_SUFFIX_RE.exec(familyDisplayName(name));
+  return m ? { condition: m[1].trim(), show: m[2].trim() } : null;
+}
+
+// "a condition matching 60 shows should not produce one card with 60 shows
+// in it" (BRO-3427 suggested approach) — real-world max observed is 14
+// (Stale 'upcoming' tag), so this comfortably covers today's data while
+// still bounding a single card's blast radius. A condition exceeding the cap
+// spills into additional cards ("BSC Daily: <condition> (batch 2)", etc.),
+// each independently filed/dispatched/verified.
+const MAX_FOLD_PER_CONDITION = 20;
+
 const OPEN_TASK_SUBJECT_RE = /^(?:Fix: )?BSC Daily: (.+)$/;
 
 // Which open task (pending/in_progress) already covers this health issue?
@@ -175,11 +203,89 @@ function normalizeQueuedRows(queued) {
   }));
 }
 
+// Builds one plan row for a single raw health/queued row `r`. Extracted from
+// planAutofix (BRO-3427) so the same row-shaping logic works for an unfolded
+// row and for a folded group's ANCHOR row — `titleOverride` lets the caller
+// substitute the condition-only title ("BSC Daily: <condition>") and key
+// matchOpenTask off the condition text instead of the raw per-show name, so
+// one open "BSC Daily: <condition>" task/issue is recognised as already
+// covering EVERY show under that condition, the same way a prefix-family
+// match already covers every prefix variant (matchOpenTask's own doc comment).
+function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
+  const rawMessage = String(r.message || '');
+  const message = rawMessage.slice(0, 400);
+  // Family-collapsed (BRO-232 S4): two rows naming the SAME condition two
+  // ways ("Cron failed: X" / "Workflow repeat-failure: X") now compute the
+  // identical title, so fileCard's exact-title Linear dedup — and, for any
+  // residual Notion-mirror task, matchOpenTask below — converge them onto
+  // ONE card instead of filing/tracking a duplicate per name variant. The
+  // raw r.name (never family-collapsed) still drives buildCardNotes' prose
+  // and its check-health-row-absent.js verify command, which must keep
+  // checking the SPECIFIC health-check row that was actually seen.
+  // Built from the shared constant (code-review finding, BRO-2499) so this
+  // producer and autofix-filed-marker.js's title matcher cannot drift.
+  const title = titleOverride || `${BSC_DAILY_TITLE_PREFIX}${familyDisplayName(r.name)}`;
+  const conditionKey = r.conditionKey || null;
+
+  // Decision items (owner-alert-router callers that opted in via
+  // `decision: true`) are a genuine judgment call, not a fix — they never
+  // get a card filed or a session dispatched by this module. The digest
+  // renders these with a button instead (send-morning-digest.js keeps
+  // them in sections.health.queued by matching on conditionKey).
+  if (r.decision) {
+    return { name: r.name, message, title, state: 'decision', taskId: null, conditionKey, model: null, decisionPrompt: r.decisionPrompt || null };
+  }
+
+  const existing = matchOpenTask(tasks, titleOverride ? titleOverride.slice(BSC_DAILY_TITLE_PREFIX.length) : r.name);
+  // Check the ack marker against the FULL text first — 400-char truncation
+  // could otherwise sever a long reason's trailing "[expires ...]" token
+  // and silently revert an acknowledged row to needs-card (ship-check P2).
+  const acknowledged = !existing && isRowAcknowledged(rawMessage, today);
+  if (acknowledged) {
+    return { name: r.name, message, title, state: 'acknowledged', taskId: null, conditionKey, model: null, wasNew: false };
+  }
+  const state = existing ? (existing.status === 'in_progress' ? 'in-progress' : 'queued') : 'needs-card';
+  return {
+    name: r.name,
+    message,
+    title,
+    state,
+    taskId: existing ? existing.id : null,
+    conditionKey,
+    model: r.model || null,
+    // Plan-time guess (BRO-232 S4 digest-subject split, send-morning-
+    // digest.js's buildSubject): true only when NOTHING already tracked
+    // this row's family. runAutofix overrides this for 'needs-card' rows
+    // once it knows the REAL answer from fileCard's live Linear lookup —
+    // matchOpenTask only sees the Notion-mirror task list, which
+    // digest-autofix's own Linear-filed cards never populate post-BRO-286
+    // (no mirror-sync path exists for them), so this default is a fallback
+    // for dry-run/degraded runs where fileCard never executes, not the
+    // final answer for a real send.
+    wasNew: state === 'needs-card',
+  };
+}
+
 /**
  * Pure planner (CLAUDE.md §15): health rows + extra issues + queued
  * "Needs your attention" rows + current tasks → per-issue action plan. No
  * I/O so the digest tests can exercise the real decision table.
- * @returns {Array<{name, message, title, state, taskId, conditionKey, model}>}
+ *
+ * BRO-3427: a "<condition> on <show>" row sharing its condition with ANOTHER
+ * row in this same batch is folded onto ONE plan row per condition (capped
+ * at MAX_FOLD_PER_CONDITION) instead of emitting one row per show — measured
+ * at 35 of 88 daily health rows, 40% of the digest queue, each independently
+ * minting its own card AND dispatch for a fix that one remediation run
+ * typically clears for every affected show at once. A row that never matches
+ * the "<condition> on <show>" shape, or whose condition appears only ONCE in
+ * this batch, is completely unaffected — same title, same single-row plan
+ * entry as before this change. A folded row carries `affected`: the raw
+ * {name, message} of every show it stands in for, so buildCardNotes can list
+ * (and emit a verify check for) each one — see that function's own comment
+ * for why only folding, never the verify semantics, can be solved generically
+ * here (SAFE_CHECK_FORMS' check-health-row-absent.js form takes exactly one
+ * row).
+ * @returns {Array<{name, message, title, state, taskId, conditionKey, model, affected?}>}
  *   state: 'in-progress' | 'queued' | 'needs-card' | 'acknowledged' | 'decision' | 'parked'
  *   ('parked' is only ever set by runAutofix, never by planAutofix.)
  */
@@ -190,60 +296,52 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     ...extraIssues,
     ...normalizeQueuedRows(queued),
   ].filter(r => r && r.name);
-  return rows.map(r => {
-    const rawMessage = String(r.message || '');
-    const message = rawMessage.slice(0, 400);
-    // Family-collapsed (BRO-232 S4): two rows naming the SAME condition two
-    // ways ("Cron failed: X" / "Workflow repeat-failure: X") now compute the
-    // identical title, so fileCard's exact-title Linear dedup — and, for any
-    // residual Notion-mirror task, matchOpenTask below — converge them onto
-    // ONE card instead of filing/tracking a duplicate per name variant. The
-    // raw r.name (never family-collapsed) still drives buildCardNotes' prose
-    // and its check-health-row-absent.js verify command, which must keep
-    // checking the SPECIFIC health-check row that was actually seen.
-    // Built from the shared constant (code-review finding, BRO-2499) so this
-    // producer and autofix-filed-marker.js's title matcher cannot drift.
-    const title = `${BSC_DAILY_TITLE_PREFIX}${familyDisplayName(r.name)}`;
-    const conditionKey = r.conditionKey || null;
 
-    // Decision items (owner-alert-router callers that opted in via
-    // `decision: true`) are a genuine judgment call, not a fix — they never
-    // get a card filed or a session dispatched by this module. The digest
-    // renders these with a button instead (send-morning-digest.js keeps
-    // them in sections.health.queued by matching on conditionKey).
-    if (r.decision) {
-      return { name: r.name, message, title, state: 'decision', taskId: null, conditionKey, model: null, decisionPrompt: r.decisionPrompt || null };
+  // Pass 1: how many rows in this batch share each foldable condition?
+  // Decision rows are never candidates — they're a judgment call, not a fix.
+  const conditionCounts = new Map();
+  for (const r of rows) {
+    if (r.decision) continue;
+    const split = splitOnShowSuffix(r.name);
+    if (!split) continue;
+    const key = split.condition.toLowerCase();
+    conditionCounts.set(key, (conditionCounts.get(key) || 0) + 1);
+  }
+
+  // Pass 2: build the plan, folding rows whose condition occurs 2+ times.
+  // Each condition's ANCHOR is the plan row at the position of its first
+  // occurrence — later same-condition rows append to the anchor's `affected`
+  // list instead of pushing a new plan entry, which is the actual mechanism
+  // that turns 35 rows into 7 (runAutofix iterates `plan`, so fewer plan rows
+  // is fewer cards filed AND fewer dispatches spent, with no changes needed
+  // there). Once an anchor's `affected` hits MAX_FOLD_PER_CONDITION, the next
+  // row for that condition starts a NEW anchor ("... (batch 2)") instead of
+  // growing the first past the cap.
+  const openAnchor = new Map(); // condition key -> {row, batch}
+  const planRows = [];
+  for (const r of rows) {
+    const split = r.decision ? null : splitOnShowSuffix(r.name);
+    const key = split ? split.condition.toLowerCase() : null;
+    const foldable = key !== null && conditionCounts.get(key) > 1;
+
+    if (!foldable) {
+      planRows.push(buildPlanRow(r, { tasks, today }));
+      continue;
     }
 
-    const existing = matchOpenTask(tasks, r.name);
-    // Check the ack marker against the FULL text first — 400-char truncation
-    // could otherwise sever a long reason's trailing "[expires ...]" token
-    // and silently revert an acknowledged row to needs-card (ship-check P2).
-    const acknowledged = !existing && isRowAcknowledged(rawMessage, today);
-    if (acknowledged) {
-      return { name: r.name, message, title, state: 'acknowledged', taskId: null, conditionKey, model: null, wasNew: false };
+    const open = openAnchor.get(key);
+    if (open && open.row.affected.length < MAX_FOLD_PER_CONDITION) {
+      open.row.affected.push({ name: r.name, message: String(r.message || '').slice(0, 400) });
+      continue;
     }
-    const state = existing ? (existing.status === 'in_progress' ? 'in-progress' : 'queued') : 'needs-card';
-    return {
-      name: r.name,
-      message,
-      title,
-      state,
-      taskId: existing ? existing.id : null,
-      conditionKey,
-      model: r.model || null,
-      // Plan-time guess (BRO-232 S4 digest-subject split, send-morning-
-      // digest.js's buildSubject): true only when NOTHING already tracked
-      // this row's family. runAutofix overrides this for 'needs-card' rows
-      // once it knows the REAL answer from fileCard's live Linear lookup —
-      // matchOpenTask only sees the Notion-mirror task list, which
-      // digest-autofix's own Linear-filed cards never populate post-BRO-286
-      // (no mirror-sync path exists for them), so this default is a fallback
-      // for dry-run/degraded runs where fileCard never executes, not the
-      // final answer for a real send.
-      wasNew: state === 'needs-card',
-    };
-  });
+    const batch = open ? open.batch + 1 : 1;
+    const titleOverride = `${BSC_DAILY_TITLE_PREFIX}${split.condition}${batch > 1 ? ` (batch ${batch})` : ''}`;
+    const row = buildPlanRow(r, { tasks, today, titleOverride });
+    row.affected = [{ name: r.name, message: String(r.message || '').slice(0, 400) }];
+    openAnchor.set(key, { row, batch });
+    planRows.push(row);
+  }
+  return planRows;
 }
 
 // Row text comes from health-check output (semi-trusted: workflow names and
@@ -264,29 +362,75 @@ function sanitizeRowText(s) {
 // row name to the same bound (120 chars ≈ ≤160 b64 chars even for multi-byte).
 const ROW_NAME_MATCH_LIMIT = 120;
 
+// Encodes one row's raw name into the check-health-row-absent.js safe-form
+// token — shared by the single-row and folded-row buildCardNotes branches so
+// they can never diverge on the encoding (round-tripped by the existing
+// "acceptance command passes the REAL safe-form gate" test).
+function rowAbsentCheckCmd(name) {
+  return `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(String(name).trim().slice(0, ROW_NAME_MATCH_LIMIT), 'utf8').toString('base64url')}`;
+}
+
 // Card notes must pass notion-brain's card-quality gate for "Not started"
 // cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections
 // and >=300 chars (the gate rejected the first live send's shorter format).
+//
+// BRO-3427: a FOLDED row (row.affected.length > 1, set by planAutofix) gets a
+// different body — one Problem/Evidence/Acceptance entry per affected show
+// instead of one row's worth. The raw per-show name/message for every folded
+// show flows in via `row.affected`, unchanged from planAutofix, so nothing
+// here re-derives or truncates the show list. Acceptance criteria lists a
+// `check-health-row-absent.js --row-b64` line PER affected show — every line
+// is a real backticked safe-form command, so ALL of them arm as candidates
+// (autonomous-verify-cmd.js's candidatesFrom is a `matchAll` over every
+// backticked span in the section), but extractVerifyCmd's rank-then-first
+// selection only ever RUNS the first one automatically — SAFE_CHECK_FORMS'
+// check-health-row-absent.js form takes exactly one row, and widening it to
+// take N rows is a `scripts/lib/` review-gate change (CLAUDE.md §18), out of
+// scope here. The prose says so explicitly, so a card is never read as
+// "Done" once the first show clears while the rest are still flagged — the
+// single-row branch below (row.affected absent/length<=1) is BYTE-IDENTICAL
+// to before this change.
 function buildCardNotes(row) {
+  const affected = Array.isArray(row.affected) && row.affected.length > 1 ? row.affected : null;
   const name = sanitizeRowText(row.name);
   const message = sanitizeRowText(row.message);
+
+  if (!affected) {
+    return [
+      '## Problem',
+      `The daily health check (\`node scripts/health-check.js\`) reports an issue named "${name}": ${message || '(no detail message — reproduce locally for specifics)'}`,
+      '',
+      '## Evidence',
+      `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). The row appeared in today's health-check errors/warnings; the message above is the check's own output.`,
+      '',
+      '## Suggested approach',
+      `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js for the check that emits "${row.name}" to find the underlying data source or workflow. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
+      '',
+      '## Acceptance criteria',
+      // The backticked command is the machine-checkable proof bsc-next's verify
+      // gate arms and the nightly acceptance recheck re-runs. base64url keeps
+      // the row name a single token (SAFE_CHECK_FORMS + quote-free argv split).
+      // Encode the RAW name (the checker compares against raw snapshot names);
+      // only prose gets sanitized. Slice matches the checker's own bound.
+      `\`${rowAbsentCheckCmd(row.name)}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
+    ].join('\n');
+  }
+
+  const condition = sanitizeRowText(row.title.startsWith(BSC_DAILY_TITLE_PREFIX) ? row.title.slice(BSC_DAILY_TITLE_PREFIX.length) : row.title);
   return [
     '## Problem',
-    `The daily health check (\`node scripts/health-check.js\`) reports an issue named "${name}": ${message || '(no detail message — reproduce locally for specifics)'}`,
+    `The daily health check (\`node scripts/health-check.js\`) reports "${condition}" on ${affected.length} shows:`,
+    ...affected.map(a => `- ${sanitizeRowText(a.name)}: ${sanitizeRowText(a.message) || '(no detail message)'}`),
     '',
     '## Evidence',
-    `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). The row appeared in today's health-check errors/warnings; the message above is the check's own output.`,
+    `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask; BRO-3427 row-family fold). These ${affected.length} rows shared one condition and were folded onto this ONE card instead of ${affected.length} near-duplicate cards.`,
     '',
     '## Suggested approach',
-    `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js for the check that emits "${row.name}" to find the underlying data source or workflow. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
+    `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js (or scripts/lib/opening-night-checks/) for the check that emits "${condition}" to find the underlying data source or workflow. Several of these checks self-document a BULK remediation command (one run, no --show=, fixes every affected show) in their message above — prefer that over fixing one show at a time. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
     '',
     '## Acceptance criteria',
-    // The backticked command is the machine-checkable proof bsc-next's verify
-    // gate arms and the nightly acceptance recheck re-runs. base64url keeps
-    // the row name a single token (SAFE_CHECK_FORMS + quote-free argv split).
-    // Encode the RAW name (the checker compares against raw snapshot names);
-    // only prose gets sanitized. Slice matches the checker's own bound.
-    `\`node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(String(row.name).trim().slice(0, ROW_NAME_MATCH_LIMIT), 'utf8').toString('base64url')}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
+    `ALL of the following must pass — this card is NOT done while any show below is still flagged (only the first line is auto-verified by the dispatch gate; confirm the rest by hand or via --live before closing):`,
+    ...affected.map(a => `\`${rowAbsentCheckCmd(a.name)}\` passes — i.e. the daily health check no longer lists "${sanitizeRowText(a.name)}" among errors or warnings.`),
   ].join('\n');
 }
 
@@ -713,4 +857,5 @@ module.exports = {
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   fileCard, syncTasks, dispatchDetached, familyDisplayName, rowFamilyKey,
+  splitOnShowSuffix, MAX_FOLD_PER_CONDITION,
 };

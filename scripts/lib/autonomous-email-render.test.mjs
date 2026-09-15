@@ -901,6 +901,23 @@ test('renderAutofixBlock: "Cron failed:" and "Workflow repeat-failure:" for the 
   assert.match(out, /×2/, 'must show the ×2 dup count so the owner knows two checks fired on this one issue');
 });
 
+test('renderAutofixBlock: a BRO-3427 folded row shows the condition + fold count, not one arbitrary show', () => {
+  const rows = [{
+    name: "Stale 'upcoming' tag on Show A",
+    title: "BSC Daily: Stale 'upcoming' tag",
+    state: 'dispatched',
+    taskId: 'linear:BRO-600',
+    affected: [
+      { name: "Stale 'upcoming' tag on Show A", message: 'a' },
+      { name: "Stale 'upcoming' tag on Show B", message: 'b' },
+      { name: "Stale 'upcoming' tag on Show C", message: 'c' },
+    ],
+  }];
+  const out = renderAutofixBlock(rows);
+  assert.match(out, /\(3 shows\)/, 'must show the fold count');
+  assert.doesNotMatch(out, /on Show A/, 'must not single out the first folded show by name');
+});
+
 test('renderAutofixBlock: dead-loop message overrides the "filed and launched" header with an honest warning', () => {
   const rows = [{ name: 'Some issue', state: 'dispatched', taskId: 1 }];
   const normal = renderAutofixBlock(rows);

@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey, reconcileDigestOutcomes, isDispatchResolved } = require('./digest-autofix.js');
+const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey, reconcileDigestOutcomes, isDispatchResolved, splitOnShowSuffix, MAX_FOLD_PER_CONDITION } = require('./digest-autofix.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
@@ -157,6 +157,116 @@ test('matchOpenTask: cross-prefix family match — a task filed under one prefix
   const tasks = [{ id: 9, status: 'pending', subject: 'BSC Daily: Test Suite' }];
   assert.equal(matchOpenTask(tasks, 'Cron failed: Test Suite')?.id, 9);
   assert.equal(matchOpenTask(tasks, 'Workflow repeat-failure: Test Suite')?.id, 9);
+});
+
+// ── BRO-3427: "<condition> on <show>" rows fold onto ONE plan row per condition ──
+
+test('splitOnShowSuffix: splits condition/show on the FIRST " on ", including when the show title itself contains " on "', () => {
+  assert.deepEqual(splitOnShowSuffix("Stale 'upcoming' tag on Waiting for Godot"), { condition: "Stale 'upcoming' tag", show: 'Waiting for Godot' });
+  assert.deepEqual(splitOnShowSuffix('Placeholder synopsis on Once on This Island'), { condition: 'Placeholder synopsis', show: 'Once on This Island' });
+  assert.equal(splitOnShowSuffix('Placeholder synopsis'), null); // no suffix at all
+  assert.equal(splitOnShowSuffix('Credits: ScrapingBee'), null);
+});
+
+test('planAutofix: two "<condition> on <show>" rows for the SAME condition collapse to ONE plan row', () => {
+  const health = { warns: [
+    { name: "Stale 'upcoming' tag on Show A", message: 'a is stale' },
+    { name: "Stale 'upcoming' tag on Show B", message: 'b is stale' },
+  ] };
+  const plan = planAutofix({ health, tasks: [] });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].title, "BSC Daily: Stale 'upcoming' tag");
+  assert.equal(plan[0].state, 'needs-card');
+  assert.deepEqual(plan[0].affected, [
+    { name: "Stale 'upcoming' tag on Show A", message: 'a is stale' },
+    { name: "Stale 'upcoming' tag on Show B", message: 'b is stale' },
+  ]);
+});
+
+test('planAutofix: the raw per-show name (both rows) still reaches buildCardNotes via `affected`', () => {
+  const health = { warns: [
+    { name: 'Placeholder synopsis on Show A', message: 'synopsis is a placeholder' },
+    { name: 'Placeholder synopsis on Show B', message: 'synopsis is also a placeholder' },
+  ] };
+  const plan = planAutofix({ health, tasks: [] });
+  const notes = buildCardNotes(plan[0]);
+  assert.ok(notes.includes('Placeholder synopsis on Show A'), 'Show A raw name missing from card notes');
+  assert.ok(notes.includes('Placeholder synopsis on Show B'), 'Show B raw name missing from card notes');
+  // Two independent check-health-row-absent commands, one per show.
+  const tokens = [...notes.matchAll(/--row-b64 ([A-Za-z0-9_-]+)/g)].map(m => Buffer.from(m[1], 'base64url').toString('utf8'));
+  assert.deepEqual(tokens, ['Placeholder synopsis on Show A', 'Placeholder synopsis on Show B']);
+});
+
+test('planAutofix: a row with no " on <show>" suffix is byte-identical to today (unaffected by folding)', () => {
+  const health = { errors: [{ name: 'Credits: ScrapingDog', message: 'over budget' }] };
+  const plan = planAutofix({ health, tasks: [] });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].title, 'BSC Daily: Credits: ScrapingDog');
+  assert.equal(plan[0].affected, undefined);
+  // buildCardNotes output for a non-folded row matches the single-row shape exactly.
+  const notes = buildCardNotes(plan[0]);
+  assert.ok(notes.includes('reports an issue named "Credits: ScrapingDog"'));
+  assert.ok(!notes.includes('reports "'), 'folded-row prose leaked into the single-row path');
+});
+
+test('planAutofix: a condition seen only ONCE in this batch is never folded — title keeps the show name', () => {
+  const health = { warns: [{ name: "Stale 'upcoming' tag on Only Show", message: 'x' }] };
+  const plan = planAutofix({ health, tasks: [] });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].title, "BSC Daily: Stale 'upcoming' tag on Only Show");
+  assert.equal(plan[0].affected, undefined);
+});
+
+test('planAutofix: a folded condition matching an open task collapses to "in-progress", covering every show', () => {
+  const tasks = [{ id: 42, status: 'in_progress', subject: "BSC Daily: Stale 'upcoming' tag" }];
+  const health = { warns: [
+    { name: "Stale 'upcoming' tag on Show A", message: 'a' },
+    { name: "Stale 'upcoming' tag on Show B", message: 'b' },
+  ] };
+  const plan = planAutofix({ health, tasks });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].state, 'in-progress');
+  assert.equal(plan[0].taskId, 42);
+});
+
+test('planAutofix: decision rows are never fold candidates even when they share a suffix shape', () => {
+  const queued = [
+    { title: 'Budget review on Show A', description: 'd1', decision: true },
+    { title: 'Budget review on Show B', description: 'd2', decision: true },
+  ];
+  const plan = planAutofix({ health: {}, tasks: [], queued });
+  assert.equal(plan.length, 2);
+  assert.ok(plan.every(r => r.state === 'decision'));
+  assert.ok(plan.every(r => r.affected === undefined));
+});
+
+test('planAutofix: fold caps at MAX_FOLD_PER_CONDITION, spilling into a second batch card', () => {
+  const n = MAX_FOLD_PER_CONDITION + 3;
+  const health = { warns: Array.from({ length: n }, (_, i) => ({ name: `Placeholder synopsis on Show ${i}`, message: `m${i}` })) };
+  const plan = planAutofix({ health, tasks: [] });
+  assert.equal(plan.length, 2, 'expected exactly 2 batch cards for a condition exceeding the cap');
+  assert.equal(plan[0].title, 'BSC Daily: Placeholder synopsis');
+  assert.equal(plan[0].affected.length, MAX_FOLD_PER_CONDITION);
+  assert.equal(plan[1].title, 'BSC Daily: Placeholder synopsis (batch 2)');
+  assert.equal(plan[1].affected.length, n - MAX_FOLD_PER_CONDITION);
+});
+
+test('buildCardNotes: a folded row still passes the notion-brain card-quality gate and arms extractVerifyCmd on the FIRST show', () => {
+  const health = { warns: [
+    { name: 'Unhandled CV.wrongProduction on Show A', message: 'a' },
+    { name: 'Unhandled CV.wrongProduction on Show B', message: 'b' },
+  ] };
+  const plan = planAutofix({ health, tasks: [] });
+  const notes = buildCardNotes(plan[0]);
+  for (const section of ['## Problem', '## Evidence', '## Suggested approach', '## Acceptance criteria']) {
+    assert.ok(notes.includes(section), `missing ${section}`);
+  }
+  assert.ok(notes.length >= 300, `folded notes too short: ${notes.length}`);
+  const verify = extractVerifyCmd(notes, isSafeCheckCommand);
+  assert.ok(verify.cmd, `verify not armed: ${verify.reason}`);
+  const token = verify.cmd.split(' ').pop();
+  assert.equal(Buffer.from(token, 'base64url').toString('utf8'), 'Unhandled CV.wrongProduction on Show A');
+  assert.ok(notes.includes('ALL of the following must pass'), 'multi-show verify caveat missing from prose');
 });
 
 test('runAutofix dry-run: never spawns, caps dispatches at DISPATCH_CAP', () => {
