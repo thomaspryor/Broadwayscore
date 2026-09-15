@@ -595,3 +595,124 @@ test('isZeroScoreImpactFix returns false for null/undefined inputs', () => {
   assert.equal(isZeroScoreImpactFix(null, {}), false);
   assert.equal(isZeroScoreImpactFix({}, null), false);
 });
+
+// --- BRO-3416: isRoundupArticle is exempt when the URL is itself a roundup ---
+//
+// Fixture URLs are the real ones from the corpus, not invented shapes — four
+// of them are the exact rows cv-flag-contradiction-baseline.json had frozen on
+// 2026-09-05, which is the evidence that the baseline was absorbing this class
+// one row per ingested roundup rather than the detector declining to fire.
+
+const CV_HIGH_BRO3416 = { isValid: true, confidence: 'high' };
+
+const ROUNDUP_URLS_BRO3416 = [
+  ['BWW Review-Roundup (new, garry-starr)', 'broadwayworld', 'https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909'],
+  ['BWW Review-Roundup (new, pre-existing-condition)', 'broadwayworld', 'https://www.broadwayworld.com/article/Review-Roundup-PRE-EXISTING-CONDITION-Opens-at-Greenwich-House-Theater-20260914'],
+  ['BWW Review-Roundup (baselined, winters-tale)', 'broadwayworld', 'https://www.broadwayworld.com/article/Review-Roundup-THE-WINTERS-TALE-Opens-as-Part-of-Free-Shakespeare'],
+  ['Playbill critics-think-of (baselined, paranormal-activity)', 'playbill', 'https://playbill.com/article/reviews-what-do-the-critics-think-of-paranormal-activity-on-broadway'],
+  ['bestoftheatre review-roundup (baselined, the-story)', 'bestoftheatre', 'https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-story-national-theatre'],
+  ['WET *-reviews/ (baselined, electra-persona)', 'westendtheatre', 'https://www.westendtheatre.com/364740/news/electra-persona-reviews/'],
+];
+
+for (const [label, outletId, url] of ROUNDUP_URLS_BRO3416) {
+  test(`detectCvFlagContradiction: the roundup page under its OWN outlet is not a contradiction — ${label}`, () => {
+    const f = {
+      isRoundupArticle: true,
+      outletId,
+      url,
+      textWordCount: 900,
+      contentVerification: CV_HIGH_BRO3416,
+    };
+    assert.equal(detectCvFlagContradiction(f), null);
+  });
+}
+
+// The exemption is gated on outletId as well as URL. These six are real corpus
+// records: a WET roundup URL stored under the QUOTED outlet's id, carrying the
+// WET compiler's byline. They are an unresolved attribution problem, not a
+// settled roundup, so the audit must keep surfacing them. A URL-only gate
+// silenced all six — the blind spot this test locks out.
+const MISATTRIBUTED_ROUNDUPS_BRO3416 = [
+  ['beetlejuice-west-end-2026', 'timeout', 'https://www.westendtheatre.com/356598/news/reviews/beetlejuice-the-musical-review/'],
+  ['equus-west-end-2026', 'timeout', 'https://www.westendtheatre.com/355440/news/reviews/equus-reviews-2/'],
+  ['glengarry-glen-ross-west-end-2026', 'telegraph', 'https://www.westendtheatre.com/358451/news/reviews/glengarry-glen-ross-reviews/'],
+  ['mother-courage-and-her-children-globe-west-end-2026', 'timeout', 'https://www.westendtheatre.com/355184/news/reviews/mother-courage-reviews/'],
+  ['one-flew-over-the-cuckoos-nest-west-end-2026', 'standard', 'https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-review/'],
+  ['the-price-off-west-end-2026', 'telegraph', 'https://www.westendtheatre.com/351724/news/reviews/the-price-reviews/'],
+];
+
+for (const [show, outletId, url] of MISATTRIBUTED_ROUNDUPS_BRO3416) {
+  test(`detectCvFlagContradiction: roundup URL under a DIFFERENT outlet still fires — ${show} (${outletId})`, () => {
+    const f = {
+      isRoundupArticle: true,
+      outletId,
+      url,
+      textWordCount: 900,
+      contentVerification: CV_HIGH_BRO3416,
+    };
+    assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+  });
+}
+
+test('detectCvFlagContradiction: a roundup URL buried in a query param does not exempt an unrelated review', () => {
+  // isRoundupPageAsReview parses the hostname; a substring match on the whole
+  // URL would have exempted this one.
+  const f = {
+    isRoundupArticle: true,
+    outletId: 'timeout',
+    url: 'https://www.timeout.com/london/theatre/some-show-review?ref=https://playbill.com/article/reviews-what-do-the-critics-think-of-some-show',
+    textWordCount: 900,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
+
+test('detectCvFlagContradiction: a re-flagged record carrying a prior clear note still fires', () => {
+  // shouldSkipRoundupAudit sees roundupArticleClearedNote, so isRoundupPageAsReview
+  // returns false: a flag re-applied after a human clear is exactly what triage wants.
+  const f = {
+    isRoundupArticle: true,
+    outletId: 'broadwayworld',
+    roundupArticleClearedNote: '[2026-04-25 cleared stale isRoundupArticle]',
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909',
+    textWordCount: 900,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
+
+test('detectCvFlagContradiction: isRoundupArticle on a NON-roundup URL still fires — the real FP this audit exists to catch', () => {
+  // bloodsport-after-helen-of-troy-off-west-end-2026/london-box-office--stuart-king.json:
+  // a genuine 520-word single-production review wrongly carrying the roundup
+  // flag. LBO's actual roundups live at /news/post/review-round-up-*; this URL
+  // ends in -review and must NOT be exempted even though the outlet matches
+  // the host.
+  const f = {
+    isRoundupArticle: true,
+    outletId: 'london-box-office',
+    url: 'https://www.londonboxoffice.co.uk/news/post/bloodsport-after-helen-of-troy-theatre-royal-stratford-east-review',
+    textWordCount: 520,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
+
+test('detectCvFlagContradiction: roundup exemption falls through to a co-occurring wrongShow rather than aborting', () => {
+  // Mirrors the wrongProductionExempt fall-through contract documented beside
+  // it: exempting one flag says nothing about whether another flag on the same
+  // record is legitimate.
+  const f = {
+    isRoundupArticle: true,
+    wrongShow: true,
+    outletId: 'broadwayworld',
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909',
+    textWordCount: 900,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+test('detectCvFlagContradiction: isRoundupArticle with no URL at all still fires (nothing to exempt on)', () => {
+  const f = { isRoundupArticle: true, textWordCount: 900, contentVerification: CV_HIGH_BRO3416 };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
