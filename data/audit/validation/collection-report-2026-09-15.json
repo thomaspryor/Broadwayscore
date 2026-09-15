@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-15T16:47:44.520Z",
+  "runDate": "2026-09-15T17:57:23.950Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 188,
-    "failed": 1184,
+    "processed": 192,
+    "failed": 1186,
     "skipped": 0,
-    "successRate": "13.7%"
+    "successRate": "13.9%"
   },
   "tierBreakdown": {
-    "playwright": 110,
+    "playwright": 112,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 5,
-    "scrapingbee": 33,
-    "brightdata": 15,
+    "scrapingbee": 34,
+    "brightdata": 17,
     "archiveToday": 0,
     "archive": 29
   },
   "statistics": {
-    "tier1Attempts": 75,
-    "tier1Success": 51,
+    "tier1Attempts": 15,
+    "tier1Success": 6,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 0,
-    "tier2Attempts": 31,
-    "tier2Success": 17,
-    "tier3Attempts": 11,
-    "tier3Success": 4,
-    "tier3_6Attempts": 7,
+    "tier1_5Attempts": 7,
+    "tier1_5Success": 2,
+    "tier2Attempts": 11,
+    "tier2Success": 4,
+    "tier3Attempts": 7,
+    "tier3Success": 3,
+    "tier3_6Attempts": 5,
     "tier3_6Success": 0,
-    "tier4Attempts": 44,
-    "tier4Success": 4,
-    "totalFailed": 228,
-    "scrapingBeePageCredits": 82,
+    "tier4Attempts": 11,
+    "tier4Success": 3,
+    "totalFailed": 295,
+    "scrapingBeePageCredits": 62,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 3.2,
-    "urlDiscoveryAttempts": 212,
-    "urlDiscoverySuccess": 8,
+    "browserbaseSessionsUsed": 7,
+    "browserbaseMinutesUsed": 1.6,
+    "urlDiscoveryAttempts": 279,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -238,7 +238,11 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
     "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
     "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
-    "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    "camping-off-broadway-2026/talkinbroadway--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytg--kyle-turner.json",
+    "pre-existing-condition-off-broadway-2026/vulture--jackson-mchenry.json",
+    "pre-existing-condition-off-broadway-2026/nysr--unknown.json",
+    "the-children-off-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -272,7 +276,6 @@
     "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
     "the-children-off-west-end-2026/london-box-office--stuart-king.json",
     "the-children-off-west-end-2026/stagebuddy--elyse-trevers.json",
-    "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
     "the-children-off-west-end-2026/times-uk--unknown.json",
     "garry-starr-classic-penguins-off-broadway-2026/theatermania--unknown.json",
     "jane-eyre-off-west-end-2026/guardian--holly-omahony.json",
@@ -492,7 +495,6 @@
     "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
     "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
     "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
-    "pre-existing-condition-off-broadway-2026/nysr--unknown.json",
     "pre-existing-condition-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--unknown.json",
@@ -1424,7 +1426,11 @@
     "glengarry-glen-ross-west-end-2026/amny--matt-windman.json",
     "glengarry-glen-ross-west-end-2026/bloomberg--jeremy-gerard.json",
     "glengarry-glen-ross-west-end-2026/british-theatre--susan-novak.json",
-    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json"
+    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
+    "cats-west-end-2026/standard--west-end-theatre.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/theater-life--isa-goldberg.json",
+    "paranormal-activity-west-end-2025/theater-life--samuel-l-leiter.json",
+    "masquerade-off-broadway-2025/theater-life--david-sheward.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1537,7 +1543,9 @@
       "birthright-off-broadway-2026/the-recs--unknown.json",
       "relics-west-end-2026/rhombus-rota--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+      "pre-existing-condition-off-broadway-2026/nytg--kyle-turner.json",
+      "pre-existing-condition-off-broadway-2026/nysr--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1586,7 +1594,8 @@
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
       "pride-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-      "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+      "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+      "the-children-off-west-end-2026/telegraph--fiona-mountford.json"
     ],
     "brightdata": [
       "truly-howard-hughes-off-broadway-2026/cititour--unknown.json",
@@ -1603,7 +1612,9 @@
       "benevolent-off-broadway-2026/talkinbroadway--unknown.json",
       "midnight-off-broadway-2026/cititour--unknown.json",
       "pride-west-end-2026/whatsonstage--editorial-staff.json",
-      "camping-off-broadway-2026/talkinbroadway--unknown.json"
+      "camping-off-broadway-2026/talkinbroadway--unknown.json",
+      "pre-existing-condition-off-broadway-2026/vulture--jackson-mchenry.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/theater-life--isa-goldberg.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1639,20 +1650,6 @@
     ]
   },
   "failuresByOutlet": {
-    "ntlive": {
-      "count": 1,
-      "domain": "ntlive.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Guardian": {
       "count": 1,
       "domain": "theguardian.com",
@@ -1660,44 +1657,30 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Click Liverpool": {
-      "count": 1,
-      "domain": "facebook.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Daily Echo": {
-      "count": 1,
-      "domain": "facebook.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "khambayswordswordswords": {
-      "count": 1,
-      "domain": "khambayswordswordswords.blog",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Stage": {
-      "count": 3,
+      "count": 1,
       "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Reviews Hub": {
+      "count": 1,
+      "domain": "thereviewshub.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "BroadwayWorld": {
       "count": 1,
-      "domain": "broadwayworld.com",
+      "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Herald (Glasgow)": {
+    "Times": {
       "count": 1,
-      "domain": "facebook.com",
+      "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1705,44 +1688,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "the-producers-west-end-2025/broadwayworld--unknown.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-THE-PRODUCERS-Menier-Chocolate-Factory-20241211",
-      "newUrl": "https://www.broadwayworld.com/westend/article/Review-Roundup-Did-THE-PRODUCERS-Go-Right-in-the-West-End-20250916"
-    },
-    {
-      "reviewId": "my-neighbour-totoro-west-end-2025/timeout-london--tom-wicker.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/wendy-peter-pan-review",
-      "newUrl": "https://www.timeout.com/london/theatre/my-neighbour-totoro-review"
-    },
-    {
-      "reviewId": "the-vessel-off-broadway-2026/nytg--unknown.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/show/47427-the-vessel",
-      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-VESSEL-Opens-at-59E59-Theaters-Off-Broadway-20260807"
-    },
-    {
-      "reviewId": "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/les-miserables-the-arena-concert-spectacular-begins-radio-city-music-hall-engagement-july-23",
-      "newUrl": "https://playbill.com/article/watch-cast-of-les-miserables-the-arena-concert-spectacular-perform-one-day-more-on-the-tonight-show"
-    },
-    {
-      "reviewId": "heathers-the-musical-off-west-end-2026/broadwayworld--jade-kops.json",
-      "oldUrl": "https://www.broadwayworld.com/article/HEATHERS-THE-MUSICAL-to-Play-Final-Performance-in-October-20260910",
-      "newUrl": "https://www.broadwayworld.com/sydney/article/REVIEW-The-Cult-Classic-Coming-Of-Age-Story-HEATHERS-THE-MUSICAL-Captivates-A-New-Generation-20260904"
-    },
-    {
-      "reviewId": "heathers-the-musical-off-west-end-2026/whatsonstage--sarah-crompton.json",
-      "oldUrl": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/heathers-the-musical_1721713/",
-      "newUrl": "https://www.whatsonstage.com/news/heathers-the-musical-casts-across-the-world-unite-for-candy-store-performance_1730490/"
-    },
-    {
-      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--alex-wood.json",
-      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-to-tour-in-2027_1725680/",
-      "newUrl": "https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/"
-    },
-    {
-      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
-      "oldUrl": "https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/",
-      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jesus-christ-superstar-theatre-royal-drury-lane_1721464/"
+      "reviewId": "pre-existing-condition-off-broadway-2026/nysr--unknown.json",
+      "oldUrl": "https://nystagereview.com/2024/06/18/pre-existing-condition-confessional-challenging-and-curative/",
+      "newUrl": "https://nystagereview.com/2026/09/14/pre-existing-condition-cold-comfort/"
     }
   ]
 }

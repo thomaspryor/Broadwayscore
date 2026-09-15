@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -10,6 +11,7 @@ import {
 } from './flag-registry.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = path.join(__dirname, '..', '..');
 const FIXTURE_DIR = path.join(__dirname, '__fixtures__', 'fake-flag-src');
 const AMBIGUOUS_FIXTURE_DIR = path.join(__dirname, '__fixtures__', 'ambiguous-const-src');
 
@@ -116,6 +118,35 @@ test('evaluateFlagHealth: expected-absent flag that now exists is flagged (regis
 // Per-flag expected value lives in the registry so sessions stop
 // flip-flopping on whether sticky-off is "a bug" (it is NOT for
 // anonymous-only experiments — see the REGISTERED_FLAGS comment).
+
+// BRO-3456: ticket-single-button ran for 5 months (2026-04-11 restart to
+// 2026-09-15) with ownerDoc: null and no pre-registration/audit doc — the
+// docs/experiments/README.md contract (step c) says to write one, but
+// nothing enforced it. This catches the next experiment from repeating the
+// gap: a genuinely LIVE split (exists, active, 2+ variants each with
+// pct > 0 — excludes pinned-winner entries like ticket-primary-platform's
+// todaytix:100/stubhub:0, which isn't a running comparison) must declare a
+// non-null ownerDoc pointing to a file that actually exists on disk.
+test('schema: every live split entry has a non-null ownerDoc pointing to a real file', () => {
+  for (const entry of REGISTERED_FLAGS) {
+    const { expected } = entry;
+    const isLiveSplit = expected.exists && expected.active
+      && Array.isArray(expected.variants) && expected.variants.length >= 2
+      && expected.variants.every((v) => (v.pct || 0) > 0);
+    if (!isLiveSplit) continue;
+    assert.ok(
+      entry.ownerDoc,
+      `REGISTERED_FLAGS['${entry.key}'] is a live running split with ownerDoc: null — ` +
+      `write docs/experiments/${entry.key}.md per docs/experiments/README.md step (c) ` +
+      `before this experiment goes another week undocumented (BRO-3456).`
+    );
+    const docPath = path.join(REPO_ROOT, entry.ownerDoc);
+    assert.ok(
+      fs.existsSync(docPath),
+      `REGISTERED_FLAGS['${entry.key}'].ownerDoc points to '${entry.ownerDoc}', which doesn't exist on disk.`
+    );
+  }
+});
 
 test('schema: every exists:true entry declares boolean ensure_experience_continuity', () => {
   for (const entry of REGISTERED_FLAGS) {

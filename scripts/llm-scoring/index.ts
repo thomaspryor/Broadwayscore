@@ -2438,8 +2438,8 @@ async function main(): Promise<void> {
           await routeAlert({
             conditionKey: breach.conditionKey,
             title: 'LLM scoring spend over budget',
-            description: `GitHub run ${summary.runId}: cumulative LLM scoring cost $${breach.totalUsd.toFixed(2)} exceeds the $${breach.thresholdUsd.toFixed(2)} alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts invocations. This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.`,
-            hint: 'Check data/llm-scoring-runs.json entries for this runId to see which invocation (main pass vs drain) drove the spend; comparative-rescore.ts is not yet instrumented and can add unmeasured cost on top.',
+            description: `GitHub run ${summary.runId}: cumulative LLM scoring cost $${breach.totalUsd.toFixed(2)} exceeds the $${breach.thresholdUsd.toFixed(2)} alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.`,
+            hint: 'Check data/llm-scoring-runs.json entries for this runId to see which invocation (main pass, drain, or comparative-rescore) drove the spend.',
             severity: 'warning',
             disposition: 'digest',
             cooldownHours: 20,

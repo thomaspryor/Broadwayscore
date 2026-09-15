@@ -208,6 +208,13 @@ async function cmdReport(args, deps = {}) {
     status: args.status,
   });
   await linear.createComment(issue.id, body);
+  // Marker IMMEDIATELY after the comment lands — before getTeam()'s network
+  // round-trip and before the (now git/gh-heavy) Done gate. The Stop-hook
+  // sentinel keys on this marker to know the comment was posted; anything
+  // that dies between the post and the marker forces a retry that would
+  // double-post it. A later gate refusal or state-move failure is reported by
+  // the JSON line / exit code, as before.
+  console.log(lsr.buildIssueIdMarker(issue.id));
 
   const team = await linear.getTeam();
   const completion = lsr.planCompletion({ status: args.status, states: team.states });
@@ -222,11 +229,6 @@ async function cmdReport(args, deps = {}) {
   // without adding a type field to that return shape.
   let stateMoved = false;
   let refusal = null;
-  // Marker FIRST: the outcome comment above is already posted, and the Done
-  // gate below now does real git/gh I/O (fetch + ancestry, tens of seconds).
-  // If this process is killed mid-gate, the Stop-hook sentinel must already
-  // know the comment landed — otherwise the mandated retry double-posts it.
-  console.log(lsr.buildIssueIdMarker(issue.id));
   if (completion.stateId) {
     if (args.status === 'done') {
       const bypassReason =

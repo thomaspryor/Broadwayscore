@@ -19,7 +19,14 @@
     "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
     "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
-    "medea-off-broadway-2026/timeout--adam-feldman.json"
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/standard--unknown.json",
+    "night-city-off-west-end-2026/bestoftheatre--unknown.json",
+    "night-city-off-west-end-2026/londonbornandbred--russell.json",
+    "night-city-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
+    "night-city-off-west-end-2026/londonpubtheatres--unknown.json",
+    "man-to-man-west-end-2026/liamodell--liam-odell.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -443,9 +450,21 @@
     "glengarry-glen-ross-west-end-2026/british-theatre--susan-novak.json",
     "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
     "cats-west-end-2026/standard--west-end-theatre.json",
-    "cat-cohen-broad-strokes-off-broadway-2026/theater-life--isa-goldberg.json",
     "paranormal-activity-west-end-2025/theater-life--samuel-l-leiter.json",
-    "masquerade-off-broadway-2025/theater-life--david-sheward.json"
+    "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--unknown.json",
+    "night-city-off-west-end-2026/reviewsgate--william-russell.json",
+    "night-city-off-west-end-2026/southwarkplayhouse--unknown.json",
+    "night-city-off-west-end-2026/thestage--unknown.json",
+    "man-to-man-west-end-2026/deadline--pete-hammond.json",
+    "man-to-man-west-end-2026/deadline--unknown.json",
+    "man-to-man-west-end-2026/airmail--air-mail.json",
+    "man-to-man-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "man-to-man-west-end-2026/financialtimes--unknown.json",
+    "man-to-man-west-end-2026/huffpost--carly-ledbetter.json",
+    "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
+    "man-to-man-west-end-2026/the-recs--unknown.json",
+    "man-to-man-west-end-2026/theatremonkey--unknown.json",
+    "man-to-man-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -459,12 +478,18 @@
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "medea-off-broadway-2026/timeout--adam-feldman.json"
+      "medea-off-broadway-2026/timeout--adam-feldman.json",
+      "night-city-off-west-end-2026/bestoftheatre--unknown.json",
+      "night-city-off-west-end-2026/londonbornandbred--russell.json",
+      "night-city-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
+      "night-city-off-west-end-2026/londonpubtheatres--unknown.json",
+      "man-to-man-west-end-2026/liamodell--liam-odell.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/man-to-man-west-end-2026/httpsroyalcourttheatrecom--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -474,7 +499,8 @@
       "tosca-off-broadway-2026/broadwayworld--roger-catlin.json"
     ],
     "brightdata": [
-      "truly-howard-hughes-off-broadway-2026/cititour--unknown.json"
+      "truly-howard-hughes-off-broadway-2026/cititour--unknown.json",
+      "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -482,11 +508,12 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "aida-off-broadway-2027/times-uk--kevin-ng.json",
       "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
-      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json"
+      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+      "bloodsport-after-helen-of-troy-off-west-end-2026/standard--unknown.json"
     ]
   },
   "startTime": "2026-09-15T08:21:57.905Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/washpost--peter-marks.json",
+  "lastProcessed": "man-to-man-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-09-15T17:40:48.192Z",
@@ -504,6 +531,24 @@
       "event": "bb-session",
       "session": "5f6cde11",
       "url": "https://deadline.com/2026/01/music-city-off-broadway-j-t-harding-1236690521/"
+    },
+    {
+      "t": "2026-09-15T21:37:57.903Z",
+      "event": "bb-session",
+      "session": "b4a98a80",
+      "url": "https://royalcourttheatre.com/"
+    },
+    {
+      "t": "2026-09-15T21:39:27.470Z",
+      "event": "bb-session",
+      "session": "adba2018",
+      "url": "https://therecs.co.uk/man-to-man/"
+    },
+    {
+      "t": "2026-09-15T21:39:37.354Z",
+      "event": "bb-session",
+      "session": "80c0df75",
+      "url": "https://therecs.co.uk/man-to-man/"
     }
   ]
 }

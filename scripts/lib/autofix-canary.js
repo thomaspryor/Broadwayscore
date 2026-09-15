@@ -144,7 +144,15 @@ function foldCanaryStage({ dateStr, canaryLedgerEntries, dispatchLedgerEntries, 
     return { stage: 'job-done', taskId: filed.taskId, jobId: job.jobId };
   }
   if (job.event === dispatchLedger.JOB_EVENTS.FAILED || job.event === dispatchLedger.JOB_EVENTS.ORPHANED
-    || job.event === dispatchLedger.JOB_EVENTS.ABANDONED) {
+    || job.event === dispatchLedger.JOB_EVENTS.ABANDONED
+    // BRO-3442: a canary job that ended BLOCKED/STOPPED_SHORT/STRANDED is
+    // just as terminally-not-done as FAILED/ORPHANED/ABANDONED — without
+    // these, it fell through to the 'dispatched' (still-running) stage
+    // below, which is wrong for a check that only ever looks at YESTERDAY's
+    // canary (it should have reached a real terminal state long ago).
+    || job.event === dispatchLedger.JOB_EVENTS.BLOCKED
+    || job.event === dispatchLedger.JOB_EVENTS.STOPPED_SHORT
+    || job.event === dispatchLedger.JOB_EVENTS.STRANDED) {
     return { stage: 'job-failed', taskId: filed.taskId, jobId: job.jobId };
   }
   return { stage: 'dispatched', taskId: filed.taskId, jobId: job.jobId };

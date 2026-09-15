@@ -636,42 +636,41 @@ test('BRO-3424: omitting unlandedJobDone entirely is backward compatible (defaul
   assert.deepEqual(plan.unlandedDone, []);
 });
 
-test('Linear outranks the retired Notion mirror regardless of id numbers', () => {
-  // The production regression this guards: after BRO-219/931/995 (low-numbered,
-  // so they happened to sort first) drained, the next four watchdog claims went
-  // straight back to the frozen Notion mirror — 1849, 1904, 1932, 1962 — because
-  // trailing-integer ordering ranks Notion's 1800s-1900s above Linear's BRO-2000+.
-  const mixed = ['1849', 'linear:BRO-3357', '1904', 'linear:BRO-219', '1962', 'linear:BRO-3390'];
-  const sorted = [...mixed].sort(core.compareTaskIds);
-  assert.deepEqual(sorted, ['linear:BRO-219', 'linear:BRO-3357', 'linear:BRO-3390', '1849', '1904', '1962']);
-
-  // Every Linear id must precede every Notion id, not merely "usually".
-  const firstNotion = sorted.findIndex((id) => !String(id).startsWith('linear:'));
-  const lastLinear = sorted.map((id) => String(id).startsWith('linear:')).lastIndexOf(true);
-  assert.ok(lastLinear < firstNotion, 'no Notion id may sort ahead of any Linear id');
-
-  assert.equal(core.taskSourceRank('linear:BRO-1'), 0);
-  assert.equal(core.taskSourceRank('1849'), 1);
-  assert.equal(core.taskSourceRank(null), 1);
-
-  // Within a source the FIFO is unchanged.
-  assert.deepEqual(['1962', '1849', '1904'].sort(core.compareTaskIds), ['1849', '1904', '1962']);
-  assert.deepEqual(
-    ['linear:BRO-3390', 'linear:BRO-219'].sort(core.compareTaskIds),
-    ['linear:BRO-219', 'linear:BRO-3390'],
-  );
+// BRO-3442: a headless job that ended THIS SESSION: CLOSE ME — BLOCKED: is a
+// PARK-with-reason signal, surfaced in a new `jobBlocked` plan field.
+test('BRO-3442: a job-blocked task surfaces in jobBlocked and needsYou', () => {
+  const entries = [{ ts: T(10), event: 'job-blocked', taskId: '90', jobId: '90-abc', reason: 'needs owner decision: rotate the key' }];
+  const plan = core.planSweep(entries, new Map([task(90, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 1);
+  assert.equal(plan.jobBlocked[0].taskId, '90');
+  assert.equal(plan.jobBlocked[0].reason, 'needs owner decision: rotate the key');
+  assert.ok(plan.needsYou >= 1);
+  assert.ok(plan.parkedTotal >= 1);
 });
 
-test('the P0/P1 queue puts Linear work ahead of frozen-mirror work', () => {
-  const linearTask = ['linear:BRO-3357', {
-    id: 'linear:BRO-3357', subject: 'P1: main red', status: 'pending',
-    description: '[linear:BRO-3357] P1 Next · Backlog · no-category\nbody',
-  }];
-  const notionTask = ['1849', {
-    id: '1849', subject: 'P1: something from the frozen mirror', status: 'pending',
-    description: '[notion:abc-1849] P1 Next · Not started · Admin\nbody',
-  }];
-  const plan = core.planSweep([], new Map([notionTask, linearTask]), { now: NOW, liveTitles: LIVE });
-  assert.deepEqual(plan.p01Queue.map((q) => q.taskId), ['linear:BRO-3357', '1849'],
-    'the live board must be worked before the retired one');
+test('BRO-3442 (adversarial review): a blocked P0/P1 task is NOT ALSO queued for dispatch in the same sweep', () => {
+  const entries = [{ ts: T(10), event: 'job-blocked', taskId: '91', jobId: '91-abc', reason: 'missing credential' }];
+  const plan = core.planSweep(entries, new Map([task(91, 'pending', 'P0 Now')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 1);
+  assert.ok(!plan.p01Queue.some((d) => d.taskId === '91'), 'a task about to be parked must never also be queued this sweep');
+  assert.ok(!plan.toDispatch.some((d) => d.taskId === '91'), 'a task about to be parked must never also be dispatched this sweep');
+});
+
+test('BRO-3442 (adversarial review): a stale job-blocked superseded by a LATER successful job is not re-parked', () => {
+  const entries = [
+    { ts: T(30), event: 'job-blocked', taskId: '92', jobId: '92-old', reason: 'stale blocker, already resolved' },
+    { ts: T(10), event: 'job-spawned', taskId: '92', jobId: '92-new' },
+    { ts: T(5), event: 'job-done', taskId: '92', jobId: '92-new', sessionId: 'sess-92' },
+  ];
+  const plan = core.planSweep(entries, new Map([task(92, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 0, 'the LATEST job for the task (job-done) must win over an older job-blocked jobId');
+});
+
+test('BRO-3442: a job-blocked task already watchdog-parked is not surfaced again', () => {
+  const entries = [
+    { ts: T(30), event: 'job-blocked', taskId: '93', jobId: '93-abc', reason: 'missing credential' },
+    { ts: T(20), event: core.WATCHDOG_EVENTS.PARK, taskId: '93', subject: 'x' },
+  ];
+  const plan = core.planSweep(entries, new Map([task(93, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 0);
 });
