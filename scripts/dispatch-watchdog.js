@@ -362,7 +362,16 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 //     spent the increase on launches that never run.
 // The Notion lane keeps its existing cmux behaviour untouched — this change
 // adds a lane, it does not re-point the old one.
-const LINEAR_TASK_ID_RE = /^linear:([A-Z][A-Z0-9]*-\d+)$/;
+// BRO-3423 (/what-else cousin sweep): this was a FOURTH private copy of the
+// live-board id shape, in the very file whose mis-targeting the card was filed
+// over. It happened to be byte-identical to the shared one, so there was no
+// live bug — but two of the other three copies HAD already drifted apart
+// (digest-autofix.js rejected team keys containing a digit while
+// linear-watchdog-source.js accepted them), which is how a fleet ends up with
+// two different answers to "is this the live board?". Declared once, in
+// scripts/lib/task-id-namespace.js, alongside which board is live and which is
+// retired.
+const { LINEAR_TASK_ID_RE } = require('./lib/task-id-namespace.js');
 
 function dispatchArgvFor(taskId) {
   const m = LINEAR_TASK_ID_RE.exec(String(taskId));
