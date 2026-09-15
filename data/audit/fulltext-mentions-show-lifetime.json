@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-09-15T12:13:59.006Z",
-  "scanned": 2078,
-  "showsWithViolations": 326,
-  "totalViolations": 639,
+  "updatedAt": "2026-09-15T20:59:41.911Z",
+  "scanned": 2081,
+  "showsWithViolations": 327,
+  "totalViolations": 640,
   "newSinceLastRun": 1,
   "newViolationKeys": [
-    "titanique-2026::theatermania--zachary-stewart.json"
+    "man-to-man-west-end-2026::financialtimes--tim-bano.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -591,6 +591,7 @@
     "john-proctor-is-the-villain-west-end-2026::londontheatre1--chris-omaweng.json",
     "arcadia-west-end-2026::the-jewish-chronicle--john-nathan.json",
     "arcadia-west-end-2026::thestage--dave-fargnoli.json",
+    "man-to-man-west-end-2026::financialtimes--tim-bano.json",
     "titanique-west-end-2024::artsdesk--gary-naylor.json",
     "titanique-west-end-2024::broadwayworld--aliya-al-hassan.json",
     "titanique-west-end-2024::i-paper--fiona-mountford.json",
@@ -7686,6 +7687,22 @@
           "criticName": "Dave Fargnoli",
           "haystackLength": 3141,
           "textIssuesFlag": true
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "title": "Man to Man",
+      "openingDate": "2026-09-11",
+      "message": "financialtimes/Tim Bano (financialtimes--tim-bano.json) SHIPPED but fullText never mentions 'Man to Man' (3410 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  financialtimes/Unknown (financialtimes--unknown.json) also too short to assess (0 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton\n⚠️  whatsonstage/Sarah Crompton (whatsonstage--sarah-crompton.json) also too short to assess (0 chars): https://www.whatsonstage.com/news/man-to-man-with-tilda-swinton-at-the-royal-court-review_1731550/",
+      "violations": [
+        {
+          "filename": "financialtimes--tim-bano.json",
+          "url": "https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c",
+          "outletId": "financialtimes",
+          "criticName": "Tim Bano",
+          "haystackLength": 3410,
+          "textIssuesFlag": false
         }
       ]
     },

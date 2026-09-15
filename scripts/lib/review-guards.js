@@ -3173,6 +3173,35 @@ function buildMultiProdYearGuard(shows) {
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
 
+  // BRO-931 #3 — preview-period scraping poisons opening night dedup.
+  // isPreviewPlaceholder is stamped by gather-reviews.js (while show.status is
+  // 'previews' or openingDate is future) and by opening-night-poller.js's
+  // pre-wipe pass, but until this check existed nothing in the rebuild
+  // INCLUSION gate ever read it — mergeReviews()/the URL-rediscovery bypass
+  // consumed it, but a placeholder that happens to carry an aggregator signal
+  // (ShowScore/DTLI/BWW rating picked up during previews) passed the generic
+  // hasText/hasAggregatorSignal check below and could ship into reviews.json
+  // permanently unless a post-opening write happened to land on the exact
+  // same outlet+critic dedupKey. As of this fix, is-scoreable.ts (which
+  // delegates to isIncludableForRebuild) also stops scoring these files going
+  // forward — a deliberate, desirable side effect, not an accident.
+  // Escape hatch mirrors the wpCleared pattern used by every other
+  // categorical "content is wrong" check in this function (see wrongProduction
+  // below) rather than inventing a new field: a human who has verified a
+  // preview-period file is genuinely correct content, or an ensemble score
+  // that already landed on it (legacy files scored before this fix shipped —
+  // see clear-failure-flags.js's isPreviewPlaceholder rule for the auto-clear
+  // going forward), both override the placeholder flag.
+  if (data.isPreviewPlaceholder === true) {
+    const placeholderCleared =
+      data.wrongProductionManualClear === true ||
+      data.wrongProductionOverride === true ||
+      data.humanReviewedWrongProduction === false ||
+      data.humanReviewScore != null ||
+      !!(data.llmScore && data.llmScore.score != null);
+    if (!placeholderCleared) return 'previewPlaceholder';
+  }
+
   // Freshness-bounded auto-clear check, shared by the 3 wpCleared sites below.
   // review-write-guard.js's own use of this stamp (isFreshWrongProductionAutoClear)
   // is deliberately freshness-gated: a years-old stamp on a file that was

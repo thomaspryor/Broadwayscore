@@ -49,8 +49,10 @@ const { serpNegativeCacheTtlMs } = require('./lib/serp-negative-cache-policy');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtractIfNeeded } = require('./lib/llm-extractor');
-const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical, generateReviewFilename } = require('./lib/review-normalization');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
+const { logExclusion } = require('./lib/exclusion-logger');
+const { shouldLogRejection } = require('./lib/gather-review-stats');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 const { matchTitleToShow } = require('./lib/show-matching');
@@ -1399,8 +1401,21 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
     if (result === true) {
       created++;
       knownUrls.add(review.url);
-    } else if (typeof result === 'string') {
+    } else if (shouldLogRejection(result)) {
       rejected++;
+      // BRO-931 #1 follow-up (adversarial ship-check finding): this caller's
+      // createReviewFile rejections only ever fed a blind `rejected++` total
+      // with no per-reason breakdown — the exact "silent failure" pattern the
+      // gather-reviews.js caller was fixed for, just a second, uncovered call
+      // site of the same function. Routes through the same shared audit
+      // trail rebuild-all-reviews.js and gather-reviews.js already use.
+      logExclusion({
+        script: 'opening-night-poller',
+        showId,
+        file: generateReviewFilename(review.outletId || review.outlet, review.criticName),
+        reason: result,
+        details: { url: review.url, outletId: review.outletId || review.outlet, criticName: review.criticName, publishDate: review.publishDate },
+      });
     } else {
       skipped++; // Already exists
     }

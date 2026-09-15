@@ -811,6 +811,11 @@ function vanishedBreadcrumbs(liveRefs, entries, opts = {}) {
       subject: launch.subject,
       workspaceRef: ref,
       notionId: launch.notionId || null,
+      // BRO-3431: linear-next.js's own 'launch' entries already carry this
+      // (issue.identifier) — copied through so a vanished Linear-dispatched
+      // tab can be parked on its real board, not silently dropped the way it
+      // was before (bsc-prune.js's park loop only ever checked notionId).
+      linearId: launch.linearId || null,
     });
   }
   return out;

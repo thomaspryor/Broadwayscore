@@ -189,6 +189,36 @@ describe('clearFailureFlags — never clears wrongShow / wrongProduction', () =>
   });
 });
 
+// BRO-931 #3 — isPreviewPlaceholder is stamped by gather-reviews.js/
+// opening-night-poller.js while a show is still in previews. Once
+// review-guards.js's explainExclusion() started excluding
+// isPreviewPlaceholder files (companion fix), a file can only reach
+// hasLlmScore()===true here if it was legitimately scored before that guard
+// shipped — real content, not a stub — so the stale bookkeeping flag must
+// clear instead of silently re-excluding the file on the next rebuild.
+describe('clearFailureFlags — isPreviewPlaceholder stale placeholder (BRO-931 #3)', () => {
+  it('clears isPreviewPlaceholder when llmScore is present', () => {
+    const data = { isPreviewPlaceholder: true, llmScore: { score: 71 } };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.isPreviewPlaceholder, null);
+    assert.ok(cleared.includes('isPreviewPlaceholder'));
+  });
+
+  it('does NOT clear isPreviewPlaceholder when llmScore is absent', () => {
+    const data = { isPreviewPlaceholder: true };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.isPreviewPlaceholder, true);
+    assert.ok(!cleared.includes('isPreviewPlaceholder'));
+  });
+
+  it('does NOT clear isPreviewPlaceholder when llmScore exists but score is null', () => {
+    const data = { isPreviewPlaceholder: true, llmScore: { score: null } };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.isPreviewPlaceholder, true);
+    assert.ok(!cleared.includes('isPreviewPlaceholder'));
+  });
+});
+
 // Notion 351637c5-416f-81f2 — Stuart King email 2026-04-27 surfaced this on Flyby.
 // scoreStatus='TO_BE_CALCULATED' is set by score-all-unscored.js / mark-uncalculated-reviews.js
 // when a review is unscoreable at write-time. When the LLM ensemble subsequently scores it,

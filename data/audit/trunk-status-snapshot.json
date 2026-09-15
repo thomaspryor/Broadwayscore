@@ -1,36 +1,29 @@
 {
-  "generatedAt": "2026-09-15T12:14:09.101Z",
+  "generatedAt": "2026-09-15T20:59:52.452Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "8f796895f25381a52011ea4e79bd52ecc4efc1ca",
+  "latestRunHeadSha": "b36808f907fa7e509302ec3143179facb8a78a8d",
   "state": "RED",
-  "consecutiveFailures": 44,
+  "consecutiveFailures": 6,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-13T22:41:00Z",
-  "redForHours": 37.552528055555555,
+  "redSince": "2026-03-19T07:01:41Z",
+  "redForHours": 4333.969847777777,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-13T22:10:46Z",
-  "latestFailedRunId": "34962594650",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34962594650",
-  "decidedRuns": 100,
+  "lastSuccessAt": "2026-03-19T01:35:38Z",
+  "latestFailedRunId": "23332496476",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/23332496476",
+  "decidedRuns": 80,
   "failingJobs": [
     {
       "name": "Data Validation",
-      "steps": [
-        "Run data validation",
-        "Audit flag-vs-CV contradictions",
-        "Audit outlet-registry gaps",
-        "Audit orphan slim show files"
-      ]
+      "steps": []
     },
     {
       "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
+      "steps": []
     }
   ],
   "failingPaths": [],

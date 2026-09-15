@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-15T12:13:55.865Z",
+  "generatedAt": "2026-09-15T20:59:38.784Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3036,
+  "scannedShows": 3038,
   "flaggedShows": 52,
   "flaggedFiles": 198,
   "readmissionRiskFiles": 0,
@@ -867,7 +867,7 @@
         "count": 11,
         "distinctYears": [
           2014,
-          2015,
+          2020,
           2023
         ],
         "spanDays": 3131,
@@ -987,8 +987,8 @@
           "afterReason": "wrongProduction",
           "outletId": "timeout",
           "criticName": "Adam Feldman",
-          "publishDate": "2015-01-23",
-          "url": "https://www.timeout.com/newyork/theater/another-medea",
+          "publishDate": "2020-01-31",
+          "url": "https://www.timeout.com/newyork/theater/medea-2",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2779,48 +2779,49 @@
       ]
     },
     {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
+      "showId": "aida-off-broadway-2027",
+      "title": "Aida",
       "market": "broadway",
       "status": "upcoming",
       "venue": "Metropolitan Opera House",
-      "previewsStartDate": "2026-11-01",
-      "openingDate": "2026-11-01",
+      "previewsStartDate": null,
+      "openingDate": "2027-03-09",
       "verdict": "likely-contamination",
       "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
-          2026
+          2022,
+          2025
         ],
-        "spanDays": 0,
+        "spanDays": 830,
         "flaggedCount": 2,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
       "reviews": [
         {
-          "file": "broadwayworld--aliya-al-hassan.json",
+          "file": "financialtimes--george-grella.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Alexandre Diaconu",
-          "publishDate": "2026-07-02",
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-La-Monnaie-20260702",
+          "outletId": "financialtimes",
+          "criticName": "George Grella",
+          "publishDate": "2025-01-03",
+          "url": "https://www.ft.com/content/152651f3-758e-4742-ae99-7197699ca7ce",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
-          "file": "broadwayworld--roger-catlin.json",
+          "file": "times-uk--kevin-ng.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Alexandre Diaconu",
-          "publishDate": "2026-07-02",
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-La-Monnaie-20260702",
+          "outletId": "times-uk",
+          "criticName": "Kevin Ng",
+          "publishDate": "2022-09-26",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/aida-review-robert-carsens-new-production-misses-the-point-2dhm9d52m",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3192,42 +3193,6 @@
       ]
     },
     {
-      "showId": "aida-off-broadway-2027",
-      "title": "Aida",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": null,
-      "openingDate": "2027-03-09",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "financialtimes--george-grella.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "financialtimes",
-          "criticName": "George Grella",
-          "publishDate": "2025-01-03",
-          "url": "https://www.ft.com/content/152651f3-758e-4742-ae99-7197699ca7ce",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "title": "Così fan tutte",
       "market": "broadway",
@@ -3257,6 +3222,42 @@
           "criticName": "Virginia Webb",
           "publishDate": "2018-03-17",
           "url": "https://www.ft.com/content/df0e8380-290f-11e8-9274-2b13fccdc744",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Metropolitan Opera House",
+      "previewsStartDate": "2026-11-01",
+      "openingDate": "2026-11-01",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2026
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "broadwayworld--aliya-al-hassan.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "broadwayworld",
+          "criticName": "Alexandre Diaconu",
+          "publishDate": "2026-07-02",
+          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-La-Monnaie-20260702",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

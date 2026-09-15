@@ -110,42 +110,6 @@
     "queuedAt": "2026-09-15T18:16:29.863Z"
   },
   {
-    "conditionKey": "opening-night-stale-upcoming-tag-in-honor-of-jean-michel-basquiat-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on IN HONOR OF JEAN-MICHEL BASQUIAT",
-    "description": "in-honor-of-jean-michel-basquiat-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T18:16:32.582Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-golden-boy-off-west-end-2026",
-    "title": "Stale 'upcoming' tag on Golden Boy",
-    "description": "golden-boy-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=golden-boy-off-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T18:16:32.586Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
-    "description": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T18:16:32.588Z"
-  },
-  {
     "conditionKey": "deployed-coverage:stale",
     "title": "Deployed coverage — the site is serving stale coverage",
     "description": "1/129 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nPre-Existing Condition: missing-from-prod",
