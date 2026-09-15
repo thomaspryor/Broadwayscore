@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T18:16:07.640Z",
+  "generatedAt": "2026-09-15T18:28:18.492Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -935,23 +935,23 @@
       "status": "open",
       "slug": "pre-existing-condition-off-broadway",
       "thumbnail": "/images/shows/pre-existing-condition-off-broadway-2026/thumbnail.webp",
-      "siteScore": 76.11,
+      "siteScore": 75.99,
       "liveScore": 76,
-      "scoreDrift": -0.10999999999999943,
+      "scoreDrift": 0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 11,
       "t1": 3,
       "t2": 4,
-      "t3": 3,
+      "t3": 4,
       "positive": 6,
-      "mixed": 4,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "10/12 total",
+          "11/12 total",
           "hi-conf:2/8"
         ],
         "highConfidence": 2,
@@ -1364,6 +1364,18 @@
           "t3": 3,
           "p": 6,
           "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-15T18:28:18.492Z",
+          "rc": 11,
+          "s": 75.99,
+          "t1": 3,
+          "t2": 4,
+          "t3": 4,
+          "p": 6,
+          "m": 5,
           "n": 0,
           "bc": "waiting"
         }
