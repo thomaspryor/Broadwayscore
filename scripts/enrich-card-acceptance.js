@@ -25,6 +25,19 @@
  *     "to be created" when its parent directory already exists on disk,
  *     same rule the nightly triage enforces.
  *
+ * BRO-3378: that path check asks whether the drafted command can ever PASS.
+ * It never asked whether it can ever FAIL — and `test -f <file already on
+ * origin/main>` satisfies every shape, prefix, traversal and phantom-path
+ * check while being green before the work starts, so re-running it at Done
+ * time proves nothing. That is the drafting model's weakest-command
+ * attractor: asked for a command that passes validation, a cheap model picks
+ * the cheapest shape that validates. 19 of this script's own 85 logged
+ * `test -f` drafts named a path already in the repo when it drafted them, and
+ * nothing downstream could catch it (extractVerifyCmd's rank() only helps
+ * when a card offers several candidates; here the enricher authors the only
+ * one). Guardrail 2b now rejects those into the existing one-retry loop with
+ * a verdict naming the real cause, and the prompt states the rule up front.
+ *
  * Every write is re-checked against verify-gate BEFORE it's sent to Notion —
  * an LLM that ignored instructions must never slip a bad or mutating command
  * into a card. A card that fails this final check is left untouched and
@@ -77,6 +90,17 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } 
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { isTerminalStateType } = require('./lib/linear-state-types.js');
 const { resolveCheckPaths, explainUnsafeCheckCommand, SAFE_CHECK_DESCRIPTION } = require('./lib/autonomous-triage-core.js');
+// BRO-3378: the "can this command ever FAIL?" predicate, and the origin/main
+// oracle it must be asked against. Deliberately NOT the local fs probe
+// resolveCheckPaths uses: this script runs from worktrees and from CI shallow
+// checkouts, where a file's local presence says nothing about whether it is
+// really in the tree the card's work will land on — see card-premises-
+// auditor.js's header for the incident that settled this.
+const {
+  classifyVacuousCheck,
+  pathExistsOnOriginMain,
+  fetchOriginMain,
+} = require('./lib/card-premises-auditor.js');
 const audit = require('./audit-card-verifiability.js');
 const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
 // task #1830: the ONE chokepoint for Linear reads/writes — never a second,
@@ -486,19 +510,55 @@ function repairDraftedCommand(cmd) {
   return stripped || original;
 }
 
+// BRO-3378: origin/main existence, fetched at most once per process and cached
+// per path. Lazy on purpose — a run that drafts no `test -f` never pays for the
+// fetch at all, matching findCardCheckPathDefects' own skip-the-fetch-when-
+// there-are-no-candidates behaviour.
+//
+// Fail-open on every uncertainty, the same contract pathExistsOnOriginMain
+// itself keeps: if the fetch fails we return null for every path, and
+// classifyVacuousCheck treats null as "not proven vacuous". A network blip
+// therefore degrades this guardrail to its pre-BRO-3378 behaviour rather than
+// rejecting every draft a model produces — the failure mode that would
+// otherwise starve the card pool.
+let originMainFetchState = null; // null = not attempted, true/false = outcome
+const originMainExistsCache = new Map();
+function defaultExistsOnOriginMain(relPath) {
+  if (originMainFetchState === null) {
+    originMainFetchState = fetchOriginMain({ repo: REPO, log: console.error });
+  }
+  if (!originMainFetchState) return null;
+  if (!originMainExistsCache.has(relPath)) {
+    originMainExistsCache.set(relPath, pathExistsOnOriginMain(relPath, { repo: REPO, log: console.error }));
+  }
+  return originMainExistsCache.get(relPath);
+}
+
 // The one retry (BRO-2546 defect 2). Same shape as triageCard's retry in
 // autonomous-triage-core.js: echo the ACTUAL validator verdict back to the
 // model exactly once, then take whatever comes back or fail for good. The
 // verdict text is the same string the refusal would have been logged with,
 // so a model that reads it is told the real cause — "the path is not under an
 // allowed directory", not "your shape is wrong" (defect 1).
-function buildEnrichRetryPrompt(card, rejectedCommand, rejectionReason) {
+function buildEnrichRetryPrompt(card, rejectedCommand, rejectionReason, rejectionKind) {
+  // BRO-3378: a vacuous rejection needs its OWN instruction, not the generic
+  // safe-form advice below. The generic text is all about shapes and directory
+  // allowlists, and the model's command was already correctly shaped — being
+  // told to fix its shape is what sent BRO-2311/BRO-2538 round the loop twice
+  // (defect 1). The fix here is a different FILE, not a different form.
+  const vacuousGuidance = rejectionKind === 'test-f-satisfied' ? `
+That file already exists, so the check passes right now, before any work is done — it can never fail, so it proves nothing.
+Name a check that is RED today and only goes green once this card's work lands. In order of preference:
+  1. \`node --test <path>.test.mjs\` naming a NEW colocated test this work would add (this repo's convention, CLAUDE.md §15) — best, because it tests the card's actual claim rather than the presence of a file.
+  2. \`test -f <path>\` naming a file that does NOT exist yet and that this work would CREATE.
+Do NOT name any file that already exists in the repository.
+` : '';
   return `${buildEnrichPrompt(card)}
 
 YOUR PREVIOUS ANSWER WAS REJECTED BY THE VALIDATOR.
 Rejected command: ${String(rejectedCommand).slice(0, 200)}
 Validator verdict: ${String(rejectionReason).slice(0, 400)}
-
+${vacuousGuidance}
 Fix exactly that. The complete list of accepted forms is: ${SAFE_CHECK_DESCRIPTION}
 Note the directory allowlists differ per form: \`test -f\` accepts docs/, memory/, tests/, src/ and scripts/; \`node --test\` and \`npx tsx --test\` accept only tests/, scripts/ and src/. If the file you want to assert on is outside the relevant list, do NOT force that form — name a \`node --test tests/unit/<name>.test.mjs\` test that asserts the same thing, or fall back to \`npx tsc --noEmit\`.
 Name EXACTLY ONE command anywhere in acceptanceCriteria. A second backticked command, even a safe one, can outrank the one you named and become the command that actually runs.
@@ -520,6 +580,7 @@ Draft ONE "## Acceptance criteria" section ending in exactly one backticked comm
   - test -f <path under docs/, memory/, tests/, src/, or scripts/>
 
 Rules:
+  - THE COMMAND MUST BE ABLE TO FAIL TODAY. It is re-run later to prove the work happened, so a command that already passes on the current repository proves nothing and will be rejected. In particular: NEVER write \`test -f <path>\` for a file that already exists — that check is green before anyone starts, so it cannot tell finished work from untouched work. Use \`test -f\` only for a file this work would CREATE.
   - NEVER name a command that runs a script which writes/mutates data (rebuild-all-reviews.js, gather-reviews.js, collect-review-texts.js, or anything starting with push- or send-).
   - If the card's Problem describes a bug in EXISTING code, prefer naming a NEW colocated test that would prove the fix (this repo's convention — see CLAUDE.md §15) — do not claim an existing test already covers it unless the notes explicitly name that test file.
   - If you genuinely cannot infer what to test, fall back to \`npx tsc --noEmit\` — it is always a valid, safe, real check.
@@ -944,7 +1005,7 @@ async function enrichOneCard(card, opts = {}) {
   for (let attempt = 0; attempt < MAX_DRAFT_ATTEMPTS; attempt++) {
     const prompt = attempt === 0
       ? buildEnrichPrompt(card)
-      : buildEnrichRetryPrompt(card, lastRejection.command, lastRejection.reason);
+      : buildEnrichRetryPrompt(card, lastRejection.command, lastRejection.reason, lastRejection.kind);
     if (attempt > 0) retried = true;
 
     let raw;
@@ -1004,6 +1065,34 @@ async function enrichOneCard(card, opts = {}) {
     pathCheck = resolveCheckPaths(bareCommand, { repoRoot: REPO });
     if (!pathCheck.ok) {
       lastRejection = { command: bareCommand, reason: pathCheck.reason, kind: 'phantom-path' };
+      continue;
+    }
+
+    // Guardrail 2b (BRO-3378): guardrail 2 asks whether the command can ever
+    // PASS. This asks whether it can ever FAIL. `test -f <file already on
+    // origin/main>` satisfies every check above — shape, prefix, traversal,
+    // phantom-path — and is still worthless, because it is green before the
+    // work starts and therefore proves nothing when re-run at Done time.
+    //
+    // This is the drafting model's weakest-command attractor: asked for
+    // something that passes SAFE_CHECK_FORMS validation, a cheap model
+    // gravitates to the cheapest shape that validates. 19 of this script's own
+    // 85 logged `test -f` drafts named a path that was already in the repo when
+    // it drafted them (data/audit/card-enrichment-log.jsonl; BRO-2837's by
+    // seven months). Nothing downstream could catch it: extractVerifyCmd's
+    // rank() only helps when a card offers MULTIPLE candidates to choose
+    // between, and here the enricher is authoring the only one.
+    //
+    // Rejected into the SAME lastRejection/continue retry that every other
+    // guardrail uses, so the model is told the real verdict and gets its one
+    // re-prompt — no new loop, no extra LLM call beyond the retry that already
+    // exists. On exhaustion this falls through to the existing
+    // action:'failed' path: a card left unarmed is honest and already listed
+    // by audit-card-verifiability.js, whereas a vacuous command is a silent
+    // false green, which is strictly worse.
+    const vacuous = classifyVacuousCheck(bareCommand, opts.existsOnOriginMain || defaultExistsOnOriginMain);
+    if (vacuous) {
+      lastRejection = { command: bareCommand, reason: vacuous.reason, kind: vacuous.kind };
       continue;
     }
 
