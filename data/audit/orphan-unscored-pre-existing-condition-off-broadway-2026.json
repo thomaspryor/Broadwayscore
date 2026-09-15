@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "pre-existing-condition-off-broadway-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-15T16:56:03.705Z",
+  "detectedAt": "2026-09-15T17:04:12.961Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,46 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "nytg--kyle-turner.json",
-      "outletId": "nytg",
-      "criticName": "Kyle Turner",
-      "url": "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-lupita-nyongo",
-      "fullTextLen": 0,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "excerpt",
-      "eligibilityReason": null
-    },
-    {
-      "file": "vulture--jackson-mchenry.json",
-      "outletId": "vulture",
-      "criticName": "Jackson McHenry",
-      "url": "https://www.vulture.com/article/good-news-pre-existing-condition-has-recurred.html",
-      "fullTextLen": 0,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "excerpt",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
