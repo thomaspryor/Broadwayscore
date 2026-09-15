@@ -1,7 +1,9 @@
 // Send the week's newsletter to thomas.pryor@gmail.com as a transactional email
 // (NOT broadcast — per CLAUDE.md rule 16, never use broadcast API for test sends).
-// Also CC's the +claude email-worker alias (BRO-40 Phase 2) so the owner can
-// Reply-All with edits + "ship it" and have the worker see them.
+// Also sends to the +claude email-worker alias (BRO-40 Phase 2) so its
+// mailbox holds the [DRAFT] before the owner forwards it with edits + "ship
+// it" — see the note on buildClaudeAliasAddress in email-templates.js for why
+// this is a forward, not a Reply-All.
 //
 // The generator emits {{{RESEND_UNSUBSCRIBE_URL}}} as the unsubscribe link —
 // that macro is substituted by Resend during BROADCAST sends. Transactional
@@ -30,8 +32,9 @@ const KEY = process.env.RESEND_API_KEY;
 if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
 
 const RECIPIENT = process.env.NEWSLETTER_TEST_RECIPIENT || 'thomas.pryor@gmail.com';
-// Also CC the email-worker's +claude alias (BRO-40 Phase 2) so a Reply-All on
-// this preview reaches thomas.pryor+claude@gmail.com with edits + "ship it".
+// Also sends to the email-worker's +claude alias (BRO-40 Phase 2) — see the
+// header comment above for why this seeds the alias's mailbox rather than
+// relying on Reply-All.
 const RECIPIENTS = buildDraftPreviewRecipients(RECIPIENT);
 // Edition drives the sender name + unsubscribe market so the WE preview looks
 // exactly like the WE broadcast (from "West End Scorecard", WE unsubscribe).

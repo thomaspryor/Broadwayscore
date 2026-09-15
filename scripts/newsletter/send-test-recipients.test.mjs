@@ -1,6 +1,7 @@
 // BRO-40 Phase 2: the [DRAFT] preview sent by send-test.mjs must also reach
-// the email-worker's +claude alias, so a Reply-All carries edits + "ship it"
-// back to the worker without the owner typing the alias by hand.
+// the email-worker's +claude alias, so its mailbox already holds the draft
+// before the owner forwards it there with edits + "ship it" (Reply-All does
+// NOT deliver to a +alias of your own Gmail account — verified 2026-09-15).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
