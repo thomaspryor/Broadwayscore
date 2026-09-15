@@ -124,14 +124,41 @@ async function getOpenIssuesForFrictionScan() {
 // the analyzer's own PRIORITY_MAP: 'P0 Now' -> 1, 'P1 Next' -> 2 — the two
 // tiers the old Notion filter (`P0 Now`/`P1 Next`) admitted.
 const ELIGIBLE_PRIORITIES = [1, 2];
+// createMissingShowIssue (posthog-friction-analyzer.js) also stamps
+// `fhash:`/'friction' and files at P1 — but its notes are explicitly
+// "Next step (manual — do NOT auto-add)" (CLAUDE.md Rule 3: a human must
+// validate venue/date before any shows.json entry). Excluded here by its own
+// `missing-show` marker rather than trusting Claude's canFix:false to always
+// catch it (ship-check finding).
+const MISSING_SHOW_RE = /\bmissing-show\b/i;
 
+// `[auto-fix-attempted:...]` used to live on the issue DESCRIPTION (see git
+// history), but that overwrote the description with a stale in-memory
+// snapshot fetched before the Claude calls + tsc/lint + git operations below
+// — tens of seconds to minutes during which a human edit or a second run's
+// marker would get silently clobbered by this script's own read-modify-write
+// (ship-check finding). Comments are append-only, so eligibility now needs a
+// per-candidate getIssue() (which fetches comments) rather than trusting the
+// bulk scan above — cheap, since the priority+fhash+missing-show filter has
+// already narrowed the candidate set to a handful.
 async function getPendingFrictionIssues() {
   const all = await getOpenIssuesForFrictionScan();
-  return all.filter((issue) => (
+  const candidates = all.filter((issue) => (
     ELIGIBLE_PRIORITIES.includes(Number(issue.priority)) &&
     FHASH_RE.test(issue.description || '') &&
-    !ATTEMPTED_RE.test(issue.description || '')
+    !MISSING_SHOW_RE.test(issue.description || '')
   ));
+  const eligible = [];
+  for (const candidate of candidates) {
+    const full = await linearClient.getIssue(candidate.identifier);
+    if (full && !hasAttemptedComment(full)) eligible.push(full);
+  }
+  return eligible;
+}
+
+function hasAttemptedComment(issue) {
+  const comments = (issue.comments && issue.comments.nodes) || [];
+  return comments.some((c) => ATTEMPTED_RE.test(c.body || ''));
 }
 
 function getIssueFhash(issue) {
@@ -139,12 +166,13 @@ function getIssueFhash(issue) {
   return m ? m[1] : null;
 }
 
-// Appends a marker (and, for the pr-open outcome, the PR link) directly onto
-// the issue's description — the same idiom the analyzer already established
-// for fhash:, since Linear has no card-tag property to set instead.
+// Posts the outcome marker (and, for the pr-open outcome, the PR link) as a
+// COMMENT rather than mutating the issue's description — see
+// getPendingFrictionIssues' header for why. Matches the analyzer's own
+// fhash: text-marker idiom (Linear has no card-tag property), just append-only.
 async function markIssueAttempted(issue, outcome, extra) {
-  const suffix = [`\n\n[auto-fix-attempted:${outcome}]`, extra].filter(Boolean).join('\n');
-  await linearClient.updateIssue(issue.id, { description: `${issue.description || ''}${suffix}` });
+  const body = [`[auto-fix-attempted:${outcome}]`, extra].filter(Boolean).join('\n\n');
+  await linearClient.createComment(issue.id, body);
 }
 
 // --- Patch generation via Claude ---
@@ -293,6 +321,14 @@ async function main() {
   }
   if (ISSUE_ARG_RAW && !ISSUE_ARG) {
     console.error('--issue requires a value, e.g. --issue=BRO-123');
+    process.exit(1);
+  }
+  // The Notion-era flag was --card-id=<notion-page-uuid>. Silently ignoring
+  // it here would fall through to the full pending-issues sweep instead of
+  // scoping to one issue — exactly the "malformed --issue" bug class
+  // ISSUE_ARG_RAW above already guards against (ship-check finding).
+  if (process.argv.some(a => a.startsWith('--card-id'))) {
+    console.error('--card-id was the Notion-era flag (a page UUID) and no longer applies — use --issue=BRO-123.');
     process.exit(1);
   }
 
