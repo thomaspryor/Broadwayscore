@@ -40,6 +40,14 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `sync-pending-review-to-linear.js — surface data/commercial-pending-review.json as a Linear issue.
+
+Usage:
+  node scripts/sync-pending-review-to-linear.js [--dry-run] [--file=PATH]
+  node scripts/sync-pending-review-to-linear.js --help
+`;
 
 const LINEAR_BRAIN = path.join(__dirname, 'linear-brain.js');
 const DEFAULT_FILE = path.join(__dirname, '..', 'data', 'commercial-pending-review.json');
@@ -261,6 +269,10 @@ function findExistingIssue() {
 // ── Main ────────────────────────────────────────────────────────────────
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    process.stdout.write(USAGE);
+    process.exit(0);
+  }
   const args = parseArgs(process.argv.slice(2));
 
   const entries = loadEntries(args.file);
