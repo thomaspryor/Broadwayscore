@@ -16,6 +16,7 @@ const {
   buildInReviewRows,
   buildInReviewSection,
   IDLE_AFTER_MS,
+  MAX_TITLE_CHARS,
 } = require('../../scripts/lib/in-review-backlog.js');
 
 const NOW = new Date('2026-09-15T12:00:00.000Z');
@@ -44,13 +45,41 @@ describe('isRealInReview', () => {
     }
   });
 
-  test('drops the two automated producers that legitimately live in In Review', () => {
+  test('drops the automated producers that legitimately live in In Review', () => {
     assert.equal(isRealInReview(issue({ title: 'BSC Daily: Workflow repeat-failure: Test Suite' })), false);
-    assert.equal(isRealInReview(issue({ title: 'CANARY: autofix probe' })), false);
+    assert.equal(isRealInReview(issue({ title: 'CANARY: touch probe' })), false);
   });
 
-  test('a title that merely CONTAINS the noise words is real work', () => {
-    assert.equal(isRealInReview(issue({ title: 'Fix: BSC Daily: Workflow repeat-failure' })), true);
+  // Both ship-check reviewers caught this independently. An earlier draft
+  // hand-rolled /^(CANARY:|BSC Daily:)/ and this test asserted the "Fix: "
+  // variant was owner work. It is not: that is the email-worker's own title
+  // for a pipeline-filed row, and every other layer in the repo treats it as
+  // pipeline-owned. Live example on the board when this was written: BRO-212.
+  // The fix was to stop restating the predicate and import
+  // autofix-filed-marker.js's isAutofixFiledIssue instead.
+  test('the email-worker "Fix: BSC Daily:" variant is pipeline noise, not owner work', () => {
+    assert.equal(isRealInReview(issue({ title: 'Fix: BSC Daily: Workflow repeat-failure: Test Suite' })), false);
+  });
+
+  test('a title that merely mentions the words later on is real work', () => {
+    assert.equal(isRealInReview(issue({ title: 'Audit why BSC Daily: rows double-file' })), true);
+  });
+
+  test('the autofix provenance marker in the description is noise even with a clean title', () => {
+    const { AUTOFIX_FILED_MARKER } = require('../../scripts/lib/autofix-filed-marker.js');
+    // The real shape linear-issue-create.js writes: a leading PARKED: line.
+    assert.equal(
+      isRealInReview(issue({ title: 'An ordinary looking title', description: `PARKED: ${AUTOFIX_FILED_MARKER} for row X` })),
+      false
+    );
+  });
+
+  test('an issue that merely QUOTES the marker while discussing the pipeline is real work', () => {
+    const { AUTOFIX_FILED_MARKER } = require('../../scripts/lib/autofix-filed-marker.js');
+    assert.equal(
+      isRealInReview(issue({ title: 'Audit the autofix filer', description: `the filer stamps "${AUTOFIX_FILED_MARKER}"` })),
+      true
+    );
   });
 
   test('survives a malformed issue rather than throwing', () => {
@@ -98,7 +127,7 @@ describe('buildInReviewRows ranking', () => {
   test('a garbage updatedAt is treated as undateable, not as age zero', () => {
     const [row] = buildInReviewRows([issue({ updatedAt: 'not-a-date' })], { now: NOW });
     assert.equal(row.idleMs, null);
-    assert.equal(row.detail, 'finished, unreviewed');
+    assert.equal(row.detail, 'finished; idle in review');
   });
 
   test('an updatedAt in the future clamps to zero rather than going negative', () => {
@@ -111,7 +140,7 @@ describe('buildInReviewRows ranking', () => {
     const [row] = buildInReviewRows([issue({ identifier: 'BRO-282', title: 'No channel tells the owner' })], { now: NOW });
     assert.equal(row.title, 'BRO-282: No channel tells the owner');
     assert.match(row.url, /^https:\/\//);
-    assert.match(row.detail, /finished, unreviewed 20d/);
+    assert.match(row.detail, /finished; idle in review 20d/);
   });
 });
 
@@ -132,7 +161,7 @@ describe('buildInReviewSection', () => {
       issue({ identifier: `BRO-${i}`, updatedAt: daysAgo(20 + i) })
     );
     const s = buildInReviewSection(many, { now: NOW });
-    assert.match(s.bannerText, /^30 finished items nobody has reviewed/);
+    assert.match(s.bannerText, /^30 finished items waiting for your review/);
     assert.equal(s.items.length, 6);
     assert.equal(s.moreCount, 24);
   });
@@ -146,12 +175,12 @@ describe('buildInReviewSection', () => {
       ],
       { now: NOW }
     );
-    assert.equal(s.bannerText, '3 finished items nobody has reviewed · 1 urgent · 2 idle 14d+');
+    assert.equal(s.bannerText, '3 finished items waiting for your review · 1 urgent · oldest 28d · 2 idle 14d+');
   });
 
   test('singular reads correctly', () => {
     const s = buildInReviewSection([issue({ updatedAt: daysAgo(10) })], { now: NOW });
-    assert.match(s.bannerText, /^1 finished item nobody has reviewed/);
+    assert.match(s.bannerText, /^1 finished item waiting for your review/);
     assert.equal(s.moreCount, 0);
   });
 
@@ -159,7 +188,7 @@ describe('buildInReviewSection', () => {
     const s = buildInReviewSection(
       [
         issue({ identifier: 'BRO-real', updatedAt: daysAgo(20) }),
-        issue({ identifier: 'BRO-noise', title: 'CANARY: probe', updatedAt: daysAgo(20) }),
+        issue({ identifier: 'BRO-noise', title: 'CANARY: touch probe', updatedAt: daysAgo(20) }),
         issue({ identifier: 'BRO-prog', state: { name: 'In Progress', type: 'started' }, updatedAt: daysAgo(20) }),
       ],
       { now: NOW }
@@ -191,9 +220,38 @@ describe('buildInReviewSection', () => {
     for (let i = 0; i < 20; i++) issues.push(issue({ identifier: `BRO-f${i}`, priority: 2, updatedAt: daysAgo(6) }));
     for (let i = 0; i < 5; i++) issues.push(issue({ identifier: `BRO-n${i}`, title: 'BSC Daily: noise', updatedAt: daysAgo(20) }));
     const s = buildInReviewSection(issues, { now: NOW });
-    assert.equal(s.bannerText, '120 finished items nobody has reviewed · 8 urgent · 100 idle 14d+');
+    assert.equal(s.bannerText, '120 finished items waiting for your review · 8 urgent · oldest 20d · 100 idle 14d+');
     assert.equal(s.moreCount, 114);
-    // Every printed row is one of the urgent ones — that is the whole point.
-    assert.ok(s.items.every((r) => r.urgent));
+    // Urgent leads, but does NOT own the whole list: with 8 urgent items the
+    // cap hands the last 2 slots to the oldest non-urgent rows. Without this,
+    // a standing urgent set monopolises every email forever and the ageing
+    // tail — the actual leak — is never seen again.
+    assert.equal(s.items.filter((r) => r.urgent).length, 4);
+    assert.equal(s.items.filter((r) => !r.urgent).length, 2);
+    assert.ok(s.items.slice(0, 4).every((r) => r.urgent), 'urgent still sorts first');
+  });
+
+  test('the urgent cap never exceeds the row budget when maxRows is small', () => {
+    const many = Array.from({ length: 10 }, (_, i) =>
+      issue({ identifier: `BRO-u${i}`, priority: 1, updatedAt: daysAgo(20) })
+    );
+    const s = buildInReviewSection(many, { now: NOW, maxRows: 2 });
+    assert.equal(s.items.length, 2);
+    assert.equal(s.moreCount, 8);
+  });
+
+  test('a long title is truncated so one row cannot swallow the email', () => {
+    const [row] = buildInReviewRows([issue({ title: 'x'.repeat(600) })], { now: NOW });
+    assert.ok(row.title.length <= MAX_TITLE_CHARS + 'BRO-1: '.length, row.title.length);
+    assert.ok(row.title.endsWith('…'));
+  });
+
+  test('a missing identifier or title never renders "undefined" into the inbox', () => {
+    const [row] = buildInReviewRows(
+      [{ url: 'https://linear.app/x', priority: 2, updatedAt: daysAgo(20), state: { name: 'In Review' } }],
+      { now: NOW }
+    );
+    assert.equal(row.title, '(no id): (untitled)');
+    assert.doesNotMatch(row.title, /undefined/);
   });
 });

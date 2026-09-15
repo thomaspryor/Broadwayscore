@@ -34,14 +34,21 @@
  */
 'use strict';
 
-const IN_REVIEW_STATE = 'In Review';
+// The digest-autofix / canary pipeline files its own recurring rows as issues
+// and dispatches them itself. They legitimately live in In Review and are not
+// work the owner reviews, so counting them would inflate every number here.
+//
+// This predicate is IMPORTED, never restated. autofix-filed-marker.js's own
+// header exists for exactly this reason ("A rename would silently stop the
+// title check matching"), and the sibling owner-approval-channel.js imports
+// its predicate rather than inlining one. A hand-rolled
+// /^(CANARY:|BSC Daily:)/ was tried first and was measurably wrong: it let
+// the email-worker's "Fix: BSC Daily: ..." title variant through as owner
+// work, which every other layer in the repo treats as pipeline-owned (live
+// example, BRO-212). Both ship-check reviewers found that independently.
+const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 
-// Automation files its own recurring rows as issues (the daily health digest
-// autofix and the canary). They legitimately live in In Review and are not
-// work the owner reviews, so counting them would inflate every number this
-// block reports. Matched on the title prefixes those two producers use —
-// digest-autofix.js's "BSC Daily: " rows and autofix-canary.js's "CANARY: ".
-const NOISE_TITLE_RE = /^\s*(CANARY:|BSC Daily:)/;
+const IN_REVIEW_STATE = 'In Review';
 
 // An item younger than this is not yet a leak — a session that finished an
 // hour ago is supposed to be sitting in In Review waiting for the next
@@ -50,18 +57,35 @@ const NOISE_TITLE_RE = /^\s*(CANARY:|BSC Daily:)/;
 // across at least two digests.
 const IDLE_AFTER_MS = 3 * 24 * 60 * 60 * 1000;
 
+// The age at which a row stops being a queue and starts being a leak. Only
+// used for the banner's escalation count; named rather than inlined so it
+// reads next to IDLE_AFTER_MS above.
+const STALE_AFTER_MS = 14 * 24 * 60 * 60 * 1000;
+
 // Rows printed in the email. The rest become "+N more" — see header.
 const MAX_ROWS = 6;
+
+// At most this many of the printed rows may be urgent. Without the cap, a
+// standing set of 6 urgent items monopolises every single email forever and
+// the oldest rows — the actual leak this block exists to show — are never
+// seen again (ship-check/Codex finding). Urgent still sorts first and still
+// drives the banner count; it just cannot own the whole list.
+const MAX_URGENT_ROWS = 4;
 
 // Linear's priority scale: 0 = none, 1 = Urgent, 2 = High, 3 = Medium,
 // 4 = Low. Only 1 is escalated here; "High" is the board's default for most
 // filed work and would put ~80 rows in the escalated tier.
 const URGENT_PRIORITY = 1;
 
+// A Linear title has no length limit; needs-you-snapshot.js truncates at 220
+// for the same reason — one 400-character title otherwise emits a single
+// unreadable line into the owner's inbox.
+const MAX_TITLE_CHARS = 220;
+
 function isRealInReview(issue) {
   if (!issue || !issue.state) return false;
   if (issue.state.name !== IN_REVIEW_STATE) return false;
-  return !NOISE_TITLE_RE.test(String(issue.title || ''));
+  return !isAutofixFiledIssue(issue);
 }
 
 function isUrgent(issue) {
@@ -75,6 +99,13 @@ function isUrgent(issue) {
 // "has anyone touched this at all?" — and any activity, including a comment,
 // is genuine evidence that it is not abandoned. So updatedAt is the right
 // clock for this block and the wrong one for that one.
+//
+// What updatedAt CANNOT support, and what the wording below is careful not to
+// claim (ship-check/Codex finding): it does not prove nobody looked. A bot
+// relabelling an issue bumps it, and a human reading an issue without
+// touching it does not. So every string this module emits says "idle" — an
+// observable fact about the timestamp — and never "unreviewed" or "nobody has
+// reviewed", which would be asserting something this data cannot show.
 function idleMs(issue, now) {
   const raw = issue && issue.updatedAt;
   if (!raw) return null;
@@ -103,11 +134,21 @@ function buildInReviewRows(issues, { now = new Date() } = {}) {
       const ms = idleMs(issue, now);
       const urgent = isUrgent(issue);
       const label = formatIdle(ms);
+      // Guard both halves: a Linear issue missing either field would
+      // otherwise render the literal row "undefined: undefined" into the
+      // owner's inbox (ship-check finding).
+      const id = issue.identifier || '(no id)';
+      const rawTitle = issue.title ? String(issue.title) : '(untitled)';
+      const title = rawTitle.length > MAX_TITLE_CHARS
+        ? `${rawTitle.slice(0, MAX_TITLE_CHARS - 1)}…`
+        : rawTitle;
       return {
-        title: `${issue.identifier}: ${issue.title}`,
+        title: `${id}: ${title}`,
+        // "idle", never "unreviewed" — see idleMs()'s header for why this
+        // data cannot support the stronger claim.
         detail:
           (urgent ? '⚠ Urgent — ' : '') +
-          (label ? `finished, unreviewed ${label}` : 'finished, unreviewed'),
+          (label ? `finished; idle in review ${label}` : 'finished; idle in review'),
         url: issue.url,
         idleMs: ms,
         urgent,
@@ -136,17 +177,38 @@ function buildInReviewRows(issues, { now = new Date() } = {}) {
  */
 function buildInReviewSection(
   issues,
-  { now = new Date(), idleAfterMs = IDLE_AFTER_MS, maxRows = MAX_ROWS } = {}
+  { now = new Date(), idleAfterMs = IDLE_AFTER_MS, maxRows = MAX_ROWS, maxUrgentRows = MAX_URGENT_ROWS } = {}
 ) {
   const all = buildInReviewRows(issues, { now });
   const idle = all.filter((r) => r.idleMs !== null && r.idleMs >= idleAfterMs);
   if (!idle.length) return null;
-  const urgentCount = idle.filter((r) => r.urgent).length;
-  const stale14 = idle.filter((r) => r.idleMs >= 14 * 24 * 60 * 60 * 1000).length;
-  const items = idle.slice(0, maxRows);
-  const parts = [`${idle.length} finished item${idle.length === 1 ? '' : 's'} nobody has reviewed`];
-  if (urgentCount) parts.push(`${urgentCount} urgent`);
-  if (stale14) parts.push(`${stale14} idle 14d+`);
+
+  const urgent = idle.filter((r) => r.urgent);
+  const rest = idle.filter((r) => !r.urgent);
+  // Urgent first, but capped (see MAX_URGENT_ROWS) so a standing urgent set
+  // cannot own every row forever. Any unused urgent budget is spent on the
+  // oldest rows instead — `rest` is already oldest-first from
+  // buildInReviewRows, so slicing preserves that order.
+  const items = [...urgent.slice(0, Math.min(maxUrgentRows, maxRows)), ...rest].slice(0, maxRows);
+
+  // Reduce, not Math.max(...spread): `idle` is unbounded (400+ rows is a real
+  // scenario this block is meant to survive) and spreading a large array into
+  // an argument list is the classic stack-overflow shape.
+  const oldestMs = idle.reduce((max, r) => (r.idleMs > max ? r.idleMs : max), 0);
+  const oldestLabel = formatIdle(oldestMs);
+  const stale = idle.filter((r) => r.idleMs >= STALE_AFTER_MS).length;
+
+  // Says what the owner is being asked to DO, not just what state things are
+  // in: "Parked in review: 60 finished items nobody has reviewed" reads as a
+  // status line and got skimmed past in review ("It sounds like a status, not
+  // an action"). The oldest age is carried in the banner because the COUNT
+  // alone goes stale — it can sit at 60 for weeks and become wallpaper, while
+  // the oldest age always moves.
+  const parts = [`${idle.length} finished item${idle.length === 1 ? '' : 's'} waiting for your review`];
+  if (urgent.length) parts.push(`${urgent.length} urgent`);
+  if (oldestLabel) parts.push(`oldest ${oldestLabel}`);
+  if (stale) parts.push(`${stale} idle 14d+`);
+
   return {
     generatedAt: now.toISOString(),
     bannerText: parts.join(' · '),
@@ -157,9 +219,11 @@ function buildInReviewSection(
 
 module.exports = {
   IN_REVIEW_STATE,
-  NOISE_TITLE_RE,
   IDLE_AFTER_MS,
+  STALE_AFTER_MS,
   MAX_ROWS,
+  MAX_URGENT_ROWS,
+  MAX_TITLE_CHARS,
   URGENT_PRIORITY,
   isRealInReview,
   buildInReviewRows,

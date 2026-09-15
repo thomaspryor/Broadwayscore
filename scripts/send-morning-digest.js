@@ -526,7 +526,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // no opt-in, which is why it is the block that would have caught the actual
   // leak: 120 finished items, 100 of them 14+ days old, were sitting here
   // unread on 2026-09-15 — including BRO-282 itself, for 28 days.
-  if (sections.inReviewBacklog) blocks.push(renderNamedDigestBlock('Parked in review', sections.inReviewBacklog));
+  if (sections.inReviewBacklog) blocks.push(renderNamedDigestBlock('Review queue', sections.inReviewBacklog));
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
   // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
   // moreCount} shape, no new render code.
