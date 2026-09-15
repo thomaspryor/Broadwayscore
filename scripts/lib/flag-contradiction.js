@@ -52,7 +52,7 @@
 
 'use strict';
 
-const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale, isIncludableForRebuild, isRoundupUrl } = require('./review-guards');
+const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale, isIncludableForRebuild, isRoundupPageAsReview } = require('./review-guards');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
 const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
 const { getBestScore } = require('./rebuild-helpers');
@@ -216,28 +216,40 @@ function detectCvFlagContradiction(file) {
     && DATE_ONLY_AUTO_REASONS.has(file.wrongProductionReason);
 
   // Same posture as wrongProductionExempt above, for the roundup flag: when the
-  // URL is itself a recognised multi-outlet roundup page (isRoundupUrl — the
-  // same predicate rebuild-helpers.js uses to deny the LBO roundup exemption),
-  // isRoundupArticle is structurally correct and a CV verdict cannot contradict
-  // it. CV reads ONE document's text and judges "is this a substantial, valid
-  // review of this show" — and a roundup passes that test by construction: it is
-  // long, on-topic, high-confidence prose about exactly this production. It is
+  // record IS the roundup page ingested as a review, isRoundupArticle is
+  // structurally correct and a CV verdict cannot contradict it. CV reads ONE
+  // document's text and judges "is this a substantial, valid review of this
+  // show" — and a roundup passes that test by construction: it is long,
+  // on-topic, high-confidence prose about exactly this production. It is
   // excluded for being someone ELSE's criticism relayed by a compiler, which is
   // a provenance fact CV never assesses (BRO-3416). Left unexempted, every new
   // roundup ingested becomes a permanent baseline row: all 5 isRoundupArticle
   // hits frozen in cv-flag-contradiction-baseline.json on 2026-09-05 are
-  // genuine roundups by URL (BWW Review-Roundup-*, Playbill
-  // reviews-what-do-the-critics-think-of-*, bestoftheatre review-roundup-*,
-  // WET *-reviews/), i.e. the baseline was absorbing this class one row at a
-  // time rather than the detector declining to fire.
+  // genuine roundup pages, i.e. the baseline was absorbing this class one row
+  // at a time rather than the detector declining to fire.
   //
-  // Deliberately keyed on the URL, NOT on isRoundupArticle alone: a roundup
-  // flag set on a non-roundup URL is exactly the false positive this audit
-  // exists to surface (bloodsport-after-helen-of-troy-off-west-end-2026's
+  // Gated on isRoundupPageAsReview (URL *and* outletId), NOT on isRoundupUrl
+  // alone. Per the ROUNDUP_HOST_OUTLETS note in review-guards.js, a file whose
+  // own outletId belongs to the roundup URL's host IS the roundup page; a file
+  // with a DIFFERENT outletId (times-uk / timeout / telegraph carrying a
+  // westendtheatre.com roundup URL) is a distinct, unresolved problem —
+  // typically a WET roundup mis-stored under the quoted outlet's id, with the
+  // WET compiler's byline — and must stay visible to triage. A URL-only gate
+  // silenced 6 such records in the corpus (beetlejuice-west-end-2026,
+  // equus-west-end-2026, glengarry-glen-ross-west-end-2026,
+  // mother-courage-and-her-children-globe-west-end-2026,
+  // one-flew-over-the-cuckoos-nest-west-end-2026, the-price-off-west-end-2026),
+  // which is exactly the blind spot this audit exists to prevent. Using the
+  // canonical predicate also parses the hostname rather than substring-matching
+  // the whole URL, so a roundup URL appearing in a query param can't exempt an
+  // unrelated review.
+  //
+  // The flag on a NON-roundup record still fires — that false positive is the
+  // audit's whole point (bloodsport-after-helen-of-troy-off-west-end-2026's
   // londonboxoffice.co.uk/news/post/...-review — a genuine 520-word Stuart King
   // review that was wrongly flagged, found by this same run and hand-cleared).
   const roundupUrlExempt = file.isRoundupArticle === true
-    && isRoundupUrl(file.url || '').isRoundup;
+    && isRoundupPageAsReview(file);
 
   const flag = (file.wrongProduction === true && !wrongProductionExempt) ? 'wrongProduction'
     : file.wrongShow === true ? 'wrongShow'

@@ -1117,8 +1117,34 @@ async function searchShowScore(show) {
   }
 
   // Try Playwright first if available (to get ALL reviews via carousel scrolling)
+  // Drop any guessed slug whose URL another show already OWNS in the curated
+  // map (BRO-3416). Show Score keeps one page per title — the current or most
+  // recent production — so a same-title sibling's guessed slug collapses onto
+  // the other production's page and ingests its notices under this show's id.
+  // she-loves-me-1994 accumulated the entire 2016 Roundabout revival that way:
+  // the bare `she-loves-me` variation below resolves to she-loves-me-2016's
+  // curated page, and nothing downstream rejects it (the venue check at
+  // :1192 only logs [VENUE WARN], and openingDate/closingDate are passed in
+  // but never used to reject). Mirrors the "already cached for another show"
+  // skip in scrape-show-score-audience.js:550 and the same guard in
+  // merge-show-score-shards.js. The curated branch above is untouched — an
+  // explicit entry for THIS show still wins.
+  const ownedByOtherShow = new Set(
+    Object.entries(urlMap)
+      .filter(([id, u]) => id !== show.id && typeof u === 'string' && u)
+      .map(([, u]) => u.toLowerCase().replace(/\/+$/, ''))
+  );
+  const candidateSlugs = [...new Set(variations)].filter((slug) => {
+    const url = `${showScoreBase}/${slug}`.toLowerCase().replace(/\/+$/, '');
+    if (ownedByOtherShow.has(url)) {
+      console.log(`    Skip: ${showScoreBase}/${slug} (curated page of another production)`);
+      return false;
+    }
+    return true;
+  });
+
   if (chromium) {
-    for (const slug of [...new Set(variations)]) {
+    for (const slug of candidateSlugs) {
       const url = `${showScoreBase}/${slug}`;
       const result = await scrapeShowScoreWithPlaywright(url, { isOffBroadway, expectedVenue: show.venue, showId: show.id, openingDate: show.openingDate, closingDate: show.closingDate });
       if (result) {
@@ -1129,7 +1155,7 @@ async function searchShowScore(show) {
     }
   } else {
     // Fall back to HTTP scraping if Playwright not available
-    for (const slug of [...new Set(variations)]) {
+    for (const slug of candidateSlugs) {
       const url = `${showScoreBase}/${slug}`;
       const result = await searchAggregator('ShowScore', url);
 
