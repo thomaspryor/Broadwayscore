@@ -70,7 +70,14 @@ const { checkPark, computeContentHash } = require('./attempt-memory.js');
 // recognises. Defined in the leaf so the writer and the recogniser cannot
 // drift apart.
 const { AUTOFIX_FILED_MARKER, BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
-const { LINEAR_TASK_ID_RE } = require('./task-id-namespace.js');
+const { LINEAR_TASK_ID_RE, LINEAR_IDENTIFIER_RE } = require('./task-id-namespace.js');
+
+// Pulling a Linear identifier out of linear-issue-create.js's JSON output.
+// Built from the shared identifier shape rather than a third hand-written
+// `[A-Z]+-\d+` — ship-check (Codex) caught these two parsers still rejecting
+// the digit-bearing team keys that LINEAR_TASK_ID_RE above now accepts, which
+// would have left a card created-but-unparseable.
+const LINEAR_IDENTIFIER_IN_JSON_RE = new RegExp(`"identifier":\\s*"(${LINEAR_IDENTIFIER_RE.source})"`);
 
 const REPO = path.join(__dirname, '..', '..');
 const LOG_DIR = path.join(REPO, 'data', 'audit', 'digest-autofix-logs');
@@ -322,7 +329,7 @@ function fileCard(title, notes, { log = () => {} } = {}) {
   try {
     const found = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', title, '--exact-title'],
       { cwd: REPO, encoding: 'utf8', timeout: 30000 });
-    const fm = found.match(/"identifier":\s*"([A-Z]+-\d+)"/);
+    const fm = found.match(LINEAR_IDENTIFIER_IN_JSON_RE);
     if (fm) {
       log(`[digest-autofix] row already tracked as ${fm[1]} — reattaching instead of filing a duplicate`);
       return { ok: true, identifier: fm[1], existing: true };
@@ -344,7 +351,7 @@ function fileCard(title, notes, { log = () => {} } = {}) {
     ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
     // linear-brain prints the issue JSON then a PARKED: line — the field is
     // `.identifier` (NOT `.id`, which is the opaque UUID).
-    const m = out.match(/"identifier":\s*"([A-Z]+-\d+)"/);
+    const m = out.match(LINEAR_IDENTIFIER_IN_JSON_RE);
     if (!m) {
       log(`[digest-autofix] WARN issue created but identifier not found in output for "${title}"`);
       return { ok: false, identifier: null };

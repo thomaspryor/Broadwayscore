@@ -149,9 +149,18 @@ async function fetchLiveBoardArmed(opts) {
     return { ok: false, reason: `module load failed: ${String(err.message).slice(0, 120)}`, eligibleIds: [] };
   }
 
+  // The timer is captured, cleared and unref()'d. Ship-check (Codex): a bare
+  // setTimeout inside Promise.race bounds how long we WAIT, not how long the
+  // process lives — an uncleared 20s timer keeps the node event loop alive
+  // after the digest has already sent, delaying exit by up to the full
+  // timeout. unref() means it can never hold the process open; the explicit
+  // clear in `finally` means it does not even fire.
+  let timer = null;
   try {
-    const timeout = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error(`timed out after ${timeoutMs}ms`)), timeoutMs));
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(`timed out after ${timeoutMs}ms`)), timeoutMs);
+      if (typeof timer.unref === 'function') timer.unref();
+    });
     const res = await Promise.race([src.fetchLinearWatchdogTasks(linear, {}), timeout]);
     if (!res || !res.ok) {
       return { ok: false, reason: (res && res.reason) || 'live-board fetch returned no result', eligibleIds: [] };
@@ -161,6 +170,8 @@ async function fetchLiveBoardArmed(opts) {
     return { ok: true, reason: null, eligibleIds, scanned: res.scanned };
   } catch (err) {
     return { ok: false, reason: String(err.message).slice(0, 120), eligibleIds: [] };
+  } finally {
+    if (timer) clearTimeout(timer);
   }
 }
 

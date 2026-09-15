@@ -87,6 +87,14 @@ const DEFAULT_WINDOW_DAYS = 7;
 // offender by a wide margin (86 board rows in 7 days).
 const DEFAULT_MIN_BOARD_ROWS = 8;
 
+// ...but a writer that is ENTIRELY retired-board still fails below that bar, on
+// a much smaller absolute count. Ship-check (Codex) found the hole: a broken
+// dispatcher emitting one retired dispatch a day produces 7 rows a week, never
+// reaches 8, and stays invisible forever — a slow version of the exact
+// two-week outage this module exists to catch. A mixed writer needs volume
+// before its ratio means anything; a 100%-retired one does not.
+const PURE_RETIRED_MIN_ROWS = 3;
+
 // Retired share that counts as mis-targeted. Measured 2026-09-15 over 7 days:
 // the broken writer sat at 98%, and EVERY healthy writer sat at exactly 0%
 // (launch 0/99, job-spawned 0/45, job-done 0/40). There is no observed middle
@@ -107,6 +115,13 @@ const DEFAULT_MIN_ELIGIBLE = 20;
 // still-armed against recently-touched is structurally near-empty even in a
 // perfectly healthy fleet (measured: 3/137) and would fire constantly.
 const DEFAULT_NEVER_TOUCHED_THRESHOLD = 0.75;
+
+// ...AND this many issues in absolute terms. Ship-check (Codex) scenario: a
+// healthy dispatcher whose next tick has not come yet, with ~20 freshly armed
+// issues in the pool, is 100% untouched and would page every time the backlog
+// briefly shrank. The real incident was 122 untouched, so an absolute floor
+// costs nothing against it and removes the whole small-pool false positive.
+const DEFAULT_MIN_NEVER_TOUCHED = 25;
 
 /**
  * Events exempt from the writer arm: reconciliation, cleanup and bookkeeping
@@ -196,7 +211,10 @@ function auditWriterBoards(opts) {
 
     let verdict = 'ok';
     let reason = null;
-    if (boardRows < minBoardRows) {
+    if (retiredFraction === 1 && acc.retired >= PURE_RETIRED_MIN_ROWS && currentlyEmitting) {
+      verdict = 'fail';
+      reason = `every one of its ${acc.retired} board ids in ${windowDays}d is on a retired board, most recently ${retiredAgeHours < 1 ? '<1' : Math.round(retiredAgeHours)}h ago`;
+    } else if (boardRows < minBoardRows) {
       verdict = 'insufficient-data';
       reason = `only ${boardRows} board row(s) in ${windowDays}d (need ${minBoardRows})`;
     } else if (retiredFraction >= retiredFractionThreshold && currentlyEmitting) {
@@ -247,6 +265,7 @@ function auditLiveBoardCoverage(opts) {
     reason = null,
     minEligible = DEFAULT_MIN_ELIGIBLE,
     neverTouchedThreshold = DEFAULT_NEVER_TOUCHED_THRESHOLD,
+    minNeverTouched = DEFAULT_MIN_NEVER_TOUCHED,
   } = opts || {};
 
   // The live-board fetch reports ok:false both for a genuine outage AND for
@@ -269,7 +288,7 @@ function auditLiveBoardCoverage(opts) {
   if (eligibleCount < minEligible) {
     verdict = 'insufficient-data';
     why = `only ${eligibleCount} armed issue(s) on the live board (need ${minEligible})`;
-  } else if (neverTouchedFraction >= neverTouchedThreshold) {
+  } else if (neverTouchedFraction >= neverTouchedThreshold && neverTouched >= minNeverTouched) {
     verdict = 'fail';
     why = `${neverTouched} of ${eligibleCount} armed live-board issues (${Math.round(neverTouchedFraction * 100)}%) have never appeared in the dispatch ledger`;
   }
@@ -332,7 +351,12 @@ function summarizeBoardTargeting(opts) {
   }
 
   if (coverage && coverage.verdict === 'fail') {
-    parts.push(coverage.reason);
+    // openIssueCount rides along so an eligibility COLLAPSE (the known cost of
+    // reusing the dispatcher's own eligibility rules) is a visible number in
+    // the owner's email rather than a silent shrinking denominator.
+    parts.push(coverage.openIssueCount != null
+      ? `${coverage.reason} (of ${coverage.openIssueCount} open issues)`
+      : coverage.reason);
     hints.push('node scripts/linear-next.js --list   # the live board the fleet should be draining');
   }
 
@@ -346,7 +370,7 @@ function summarizeBoardTargeting(opts) {
     const audited = writerAudit ? writerAudit.auditedEvents : 0;
     const clearing = ((writerAudit && writerAudit.writers) || []).filter((w) => w.verdict === 'clearing');
     const cov = coverage && coverage.verdict !== 'unknown' && coverage.eligibleCount != null
-      ? `, ${coverage.eligibleCount} armed live-board issue(s) with ${coverage.neverTouched} never dispatched`
+      ? `, ${coverage.eligibleCount} armed live-board issue(s)${coverage.openIssueCount != null ? ` of ${coverage.openIssueCount} open` : ''} with ${coverage.neverTouched} never dispatched`
       : (coverage && coverage.verdict === 'unknown' ? `, live-board coverage UNKNOWN (${coverage.reason})` : '');
     message = `All ${audited} audited dispatch writer(s) are targeting the live ${LIVE_BOARD} board${cov}.`;
     if (clearing.length) {
@@ -371,6 +395,8 @@ function summarizeBoardTargeting(opts) {
 
 module.exports = {
   HEALTH_ROW_NAME,
+  PURE_RETIRED_MIN_ROWS,
+  DEFAULT_MIN_NEVER_TOUCHED,
   DEFAULT_WINDOW_DAYS,
   DEFAULT_MIN_BOARD_ROWS,
   DEFAULT_RETIRED_FRACTION_THRESHOLD,

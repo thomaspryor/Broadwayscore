@@ -16,6 +16,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  BOARD_LINEAR,
   classifyTaskIdBoard,
   isRetiredBoardTaskId,
   isLiveBoardTaskId,
@@ -29,8 +30,11 @@ import {
   summarizeBoardTargeting,
   EXEMPT_EVENTS,
   HEALTH_ROW_NAME,
+  PURE_RETIRED_MIN_ROWS,
+  DEFAULT_MIN_NEVER_TOUCHED,
   DEFAULT_MIN_BOARD_ROWS,
   DEFAULT_RECENCY_HOURS,
+  DEFAULT_MIN_ELIGIBLE,
 } from './board-targeting-audit.js';
 
 const NOW = Date.parse('2026-09-15T20:00:00Z');
@@ -291,4 +295,61 @@ test('the exempt list stays small and every entry carries a justification', () =
     assert.equal(typeof why, 'string');
     assert.ok(why.length > 15, `exemption "${name}" needs a real justification, got "${why}"`);
   }
+});
+
+// ── ship-check regressions (Codex findings, 2026-09-15) ────────────────────
+
+test('classifyTaskIdBoard reports ORIGIN, not the current live-board policy', () => {
+  // It used to `return LIVE_BOARD` for a Linear id. That reads fine while
+  // LIVE_BOARD === 'linear', but the next migration moves that constant — and
+  // every historical linear: row in the ledger would have been relabelled as
+  // live-board work, reporting a fleet draining a retired board as healthy.
+  assert.equal(classifyTaskIdBoard('linear:BRO-1'), BOARD_LINEAR);
+  assert.equal(BOARD_LINEAR, 'linear', 'origin identity is a fixed fact, not a policy knob');
+});
+
+test('a low-volume but 100%-retired writer fails despite being under minBoardRows', () => {
+  // One retired dispatch a day = 7 rows a week, never reaches minBoardRows of
+  // 8, and would stay invisible forever — a slow-motion version of the exact
+  // two-week outage this module exists to catch.
+  const r = auditWriterBoards({
+    rows: rows('slow-broken-dispatcher', { retired: PURE_RETIRED_MIN_ROWS, ageHours: 2 }),
+    now: NOW,
+  });
+  const w = r.writers.find((x) => x.event === 'slow-broken-dispatcher');
+  assert.ok(w.boardRows < DEFAULT_MIN_BOARD_ROWS, 'precondition: under the mixed-writer volume bar');
+  assert.equal(w.verdict, 'fail');
+  assert.match(w.reason, /every one of its/);
+});
+
+test('...but a single stale retired row is still not enough to page', () => {
+  const r = auditWriterBoards({ rows: rows('rare', { retired: 1, ageHours: 2 }), now: NOW });
+  assert.equal(r.failing.length, 0);
+});
+
+test('coverage needs an absolute floor, not just a fraction', () => {
+  // A healthy dispatcher whose next tick has not come yet, with a briefly
+  // small armed pool, is 100% untouched and must not page.
+  const small = Array.from({ length: DEFAULT_MIN_ELIGIBLE + 2 }, (_, i) => `linear:BRO-${i}`);
+  const c = auditLiveBoardCoverage({ eligibleIds: small, everTouchedIds: new Set() });
+  assert.ok(small.length < DEFAULT_MIN_NEVER_TOUCHED, 'precondition: pool below the absolute floor');
+  assert.equal(c.verdict, 'ok', 'a small freshly-armed pool is backlog depth, not mis-targeting');
+
+  // The real incident (122 untouched of 137) still fails.
+  const real = Array.from({ length: 137 }, (_, i) => `linear:BRO-${i}`);
+  const c2 = auditLiveBoardCoverage({ eligibleIds: real, everTouchedIds: new Set(real.slice(0, 15)) });
+  assert.equal(c2.verdict, 'fail');
+});
+
+test('a failing coverage arm reports the raw open-issue count beside the eligible one', () => {
+  // The known cost of reusing the dispatcher's own eligibility rules is that a
+  // bug shrinking eligibility shrinks the denominator too. The open count is
+  // what makes that collapse visible instead of a silent exoneration.
+  const eligibleIds = Array.from({ length: 137 }, (_, i) => `linear:BRO-${i}`);
+  const row = summarizeBoardTargeting({
+    writerAudit: auditWriterBoards({ rows: [], now: NOW }),
+    coverage: auditLiveBoardCoverage({ eligibleIds, everTouchedIds: new Set(), openIssueCount: 1002 }),
+    now: NOW,
+  });
+  assert.match(row.message, /1002 open issues/);
 });

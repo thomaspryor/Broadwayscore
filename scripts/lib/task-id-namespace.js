@@ -52,6 +52,12 @@ const NON_BOARD = 'non-board';
 // alphanumeric-plus-hyphen only, so callers interpolating the captured
 // identifier into a shell command stay injection-safe (the property
 // digest-autofix.js:397 depends on).
+// The bare identifier shape ('BRO-3423'), unanchored, so callers that need to
+// find one inside a larger string (digest-autofix.js parsing linear-issue-
+// create.js's JSON output) build their pattern from this rather than writing a
+// third divergent copy.
+const LINEAR_IDENTIFIER_RE = /[A-Z][A-Z0-9]*-\d+/;
+
 const LINEAR_TASK_ID_RE = /^linear:([A-Z][A-Z0-9]*-\d+)$/;
 
 // The retired Notion mirror addressed work by bare positive integer.
@@ -59,14 +65,30 @@ const NOTION_TASK_ID_RE = /^\d+$/;
 
 const LINEAR_TASK_PREFIX = 'linear:';
 
+// Board ORIGIN identities. These are facts about an id's shape and never
+// change; LIVE_BOARD / RETIRED_BOARDS above are the separate POLICY layer that
+// says which of them we currently work.
+//
+// Keeping the two apart is load-bearing (ship-check, Codex). classifyTaskIdBoard
+// used to `return LIVE_BOARD` for a Linear id, which reads fine today because
+// LIVE_BOARD === 'linear' — but the whole point of this module is that the next
+// migration moves that constant. The moment it became 'jira', every historical
+// `linear:` row in the ledger would have been relabelled as live-board work and
+// the audit would have reported a fleet draining a retired board as perfectly
+// healthy. An id's origin must be reported as what it IS, and compared against
+// policy separately.
+const BOARD_LINEAR = 'linear';
+const BOARD_NOTION = 'notion';
+
 /**
- * PURE. Which board does this taskId belong to?
+ * PURE. Which board does this taskId ORIGINATE from? Independent of which
+ * board is currently live — see the note above.
  * @returns {'linear'|'notion'|'non-board'}
  */
 function classifyTaskIdBoard(taskId) {
   const id = String(taskId == null ? '' : taskId);
-  if (LINEAR_TASK_ID_RE.test(id)) return LIVE_BOARD;
-  if (NOTION_TASK_ID_RE.test(id)) return 'notion';
+  if (LINEAR_TASK_ID_RE.test(id)) return BOARD_LINEAR;
+  if (NOTION_TASK_ID_RE.test(id)) return BOARD_NOTION;
   return NON_BOARD;
 }
 
@@ -103,8 +125,11 @@ function linearTaskId(identifier) {
 module.exports = {
   LIVE_BOARD,
   RETIRED_BOARDS,
+  BOARD_LINEAR,
+  BOARD_NOTION,
   NON_BOARD,
   LINEAR_TASK_ID_RE,
+  LINEAR_IDENTIFIER_RE,
   NOTION_TASK_ID_RE,
   LINEAR_TASK_PREFIX,
   classifyTaskIdBoard,
