@@ -517,6 +517,17 @@ jobs:
       # follow, exactly like the recheck step above.
       - name: Done-evidence audit (shadow mode)
         if: always()
+        # lint-allow-swallow: shadow-mode telemetry whose failure is NOT signal-less.
+        # The guard's concern (a swallowed data/audit/ writer discarding its
+        # writes with nothing to notice) is answered by the digest itself: the
+        # doneEvidence row in scripts/lib/digest-snapshots.js carries
+        # maxAgeH: 36, so a crashed or wedged run shows up as an explicit
+        # "didn't update overnight: done-evidence audit" line in the owner's
+        # morning email within 36h. continue-on-error is load-bearing here for
+        # the same reason it is on the acceptance-recheck step above: this step
+        # sits BEFORE several commit+push steps in a 180-minute job, and a crash
+        # in shadow-mode reporting must never block the health snapshot commit
+        # that follows it.
         continue-on-error: true
         timeout-minutes: 14
         env:
