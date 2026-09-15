@@ -100,6 +100,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
     parkCard: parkCardFn = parkCard,
+    parkLinearCard: parkLinearCardFn = parkLinearCard,
     acquireRunLock: acquireRunLockFn = acquireRunLock,
     releaseRunLock: releaseRunLockFn = releaseRunLock,
     readScreen: readScreenFn = (ref) => cmuxRun(['read-screen', '--workspace', ref]),
@@ -135,7 +136,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     lockHeld = acquired === true;
   }
   try {
-    mainLocked({ dryRun, deps: { listWorkspacesFn, listWorkspacesWithCwdFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } });
+    mainLocked({ dryRun, deps: { listWorkspacesFn, listWorkspacesWithCwdFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, parkLinearCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } });
   } finally {
     if (lockHeld) releaseRunLockFn();
   }
@@ -168,7 +169,7 @@ function releaseRunLock(lockDir = LOCK_DIR) {
 }
 
 function mainLocked({ dryRun, deps }) {
-  const { listWorkspacesFn, listWorkspacesWithCwdFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } = deps;
+  const { listWorkspacesFn, listWorkspacesWithCwdFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, parkLinearCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, makeWrapperAliveProbeFn } = deps;
 
   const all = listWorkspacesFn();
 
@@ -440,7 +441,7 @@ function mainLocked({ dryRun, deps }) {
     readLedgerEntriesFn, appendLedgerEntryFn,
   });
 
-  sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, makeWrapperAliveProbeFn });
+  sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, parkLinearCardFn, makeWrapperAliveProbeFn });
 }
 
 // Machine-local state (never git-tracked — same convention as
@@ -784,7 +785,7 @@ function pageZombieSweep({ corpses, revive, guarded = [], reclaimed = [] }) {
 
 // Task #578: reconcile launches whose workspace the owner CLOSED. Split out
 // of main() so the epoch/park rules are testable without a live cmux.
-function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, makeWrapperAliveProbeFn = makeSeedProcessProbe, now = Date.now() }) {
+function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, parkLinearCardFn, makeWrapperAliveProbeFn = makeSeedProcessProbe, now = Date.now() }) {
   let entries;
   try { entries = readLedgerEntriesFn(); } catch { entries = []; }
 
@@ -954,9 +955,18 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
     // owner-visible mirror of it.
     try { appendLedgerEntryFn(v); }
     catch (e) { console.error(`[bsc-prune] WARN vanished write failed for ${v.workspaceRef}: ${e.message}`); continue; }
-    if (!v.notionId) continue;
-    try { parkCardFn(v); }
-    catch (e) { console.error(`[bsc-prune] WARN Notion park failed for #${v.taskId} (ledger park still holds): ${e.message}`); }
+    if (v.notionId) {
+      try { parkCardFn(v); }
+      catch (e) { console.error(`[bsc-prune] WARN Notion park failed for #${v.taskId} (ledger park still holds): ${e.message}`); }
+    } else if (v.linearId) {
+      // BRO-3431: a Linear-dispatched task has no notionId, but its 'launch'
+      // ledger entry carries linearId (vanishedBreadcrumbs copies it through)
+      // — without this branch the Linear issue stayed "In Progress" forever
+      // with no comment explaining why, even though the ledger park above
+      // already stops bsc-next from redispatching it.
+      try { parkLinearCardFn(v); }
+      catch (e) { console.error(`[bsc-prune] WARN Linear park failed for ${v.linearId} (ledger park still holds): ${e.message}`); }
+    }
   }
   console.log(`\nTo resume any of them: node scripts/bsc-next.js --id <task#> --force`);
 }
@@ -979,6 +989,30 @@ function parkCard(vanished) {
   if (res.status !== 0) throw new Error((res.stderr || res.stdout || 'notion-brain update failed').trim().split('\n').slice(-1)[0]);
 }
 
+// Linear side-effect for a vanished Linear-dispatched task (BRO-3431). Not a
+// straight reuse of parkCard()/formatParkOutcome(): this team's Linear board
+// has no "Paused" state (linear-state-resolve.test.mjs, linear-recheck-
+// source.js header — pausing lands in Backlog), and formatParkOutcome()'s
+// resume command hardcodes bsc-next.js's `--id <notion-numeric-id>` syntax,
+// which is wrong for a Linear id ("linear:BRO-123") — the real resume path is
+// linear-next.js --id <BRO-N> --force. `--comment`, not `--state Done` gate
+// territory: this only ever MOVES OUT of a completed-type state (or leaves it
+// in Backlog), so linear-brain.js's done-evidence gate (state IN, not out)
+// never applies here.
+function parkLinearCard(vanished) {
+  const { spawnSync } = require('child_process');
+  const identifier = String(vanished.linearId).replace(/^linear:/, '');
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const comment = `Parked ${dateStr}: its cmux tab (${vanished.workspaceRef}) vanished — treating as closed-by-you so nothing re-dispatches it. `
+    + `Resume with: node scripts/linear-next.js --id ${identifier} --force`;
+  const res = spawnSync('node', [
+    `${__dirname}/linear-brain.js`, 'update', identifier,
+    '--state', 'Backlog',
+    '--comment', comment,
+  ], { encoding: 'utf8', timeout: 60_000 });
+  if (res.status !== 0) throw new Error((res.stderr || res.stdout || 'linear-brain update failed').trim().split('\n').slice(-1)[0]);
+}
+
 if (require.main === module) main();
 
-module.exports = { main, USAGE, sweepVanished, parkCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH, sweepZombieTabs, taskStatusById };
+module.exports = { main, USAGE, sweepVanished, parkCard, parkLinearCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH, sweepZombieTabs, taskStatusById };
