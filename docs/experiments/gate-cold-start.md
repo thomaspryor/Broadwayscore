@@ -14,7 +14,10 @@ arm)?
   (`src/lib/gate-logic.ts`)
 - **Registry entry**: `scripts/lib/flag-registry.js` (`REGISTERED_FLAGS`)
 - **Experiment start**: 2026-07-21 — do not backdate when reading results
-- **Canonical readout**: `node scripts/analyze-gate-cold-start.js`
+- **Canonical readout**: `node scripts/analyze-gate-cold-start.js` — DELETED
+  at teardown (see "Conclusion" below); retrieve via `git show
+  <pre-teardown-sha>:scripts/analyze-gate-cold-start.js` if the historical
+  methodology needs re-checking.
 - **Weekly automated monitor**: `scripts/monitor-gate-cold-start.js`
   (guardrails only — never judges the primary; see `monitor-gate-ab.yml`)
 - **Weekly flag-parity guardrail**: `scripts/monitor-flag-parity.js` (card
@@ -186,20 +189,28 @@ power-calculation note below).
   (11/10,705) — cold-start is directionally BEHIND on its own pre-registered
   primary, not ahead. n=15 vs n=11 is not a statistically meaningful
   difference either way.
-- **Power check:** detecting that small a gap at 80% power (two-proportion
-  test) needs ~5,600 shown/arm. At the traffic observed over these 56 days,
-  that's ~119 more days for control's shown-rate and ~297 more days
-  (cold-start is the binding constraint, ~241 more days from today) —
-  multiple months, not weeks. Waiting longer was never going to resolve
-  this on the primary metric.
-- **What actually justifies the decision:** absolute weekly interruption
-  volume (dismissals), not the impression-rate math above. Cumulative:
-  control ≈200 dismissals/wk (1,598/55.77 days), cold-start ≈102/wk
-  (811/55.77 days) — roughly HALF the interruptions, for a capture count
-  that is a statistical wash. That is a real, measured reduction in how
-  often the site interrupts visitors who were never going to convert, which
-  was the original 2026-07-20 motivation (60-66% dismissal, zero conversion
-  gain from two prior fixes).
+- **Power check (corrected — on the actual primary metric, captures/exposed,
+  not a captures/shown proxy that an earlier draft of this note used by
+  mistake):** the exposed populations are ~equal size (control and
+  cold-start each get ~190/day, since the flag splits ALL traffic 50/50
+  before either arm's gate logic even runs) but the rate gap is tiny
+  (0.142% vs 0.103%, a 0.039-point difference). Detecting that at 80% power
+  needs ~126,000 exposed/arm — roughly **666 days (~1.8 years)** at
+  current traffic. This is even less reachable than a captures/shown-based
+  calc would suggest; waiting longer was never going to resolve this on the
+  declared primary metric, by a wide margin.
+- **What actually justifies the decision:** absolute weekly count of UNIQUE
+  PEOPLE who dismissed the modal at least once (not raw dismissal events —
+  the underlying analyzer deduped per-person before counting:
+  "People counts, not event counts" per its own comment). Cumulative:
+  control ≈200 unique dismissers/wk (1,598/55.77 days), cold-start ≈102/wk
+  (811/55.77 days) — roughly HALF as many distinct people got interrupted,
+  for a capture count that is a statistical wash. This does NOT prove total
+  raw interruption *events* fell by the same ratio (a person can dismiss,
+  wait out the 14-day cooldown, and be re-shown — that repeat-event rate
+  isn't captured here), but distinct-people-interrupted is itself a
+  reasonable proxy for the thing the original 2026-07-20 motivation cared
+  about (60-66% dismissal, zero conversion gain from two prior fixes).
 - **Open, unresolved caveat:** per-shown dismissal rate is WORSE for
   cold-start (77.0% vs control's 60.9%) — the visitors who do still get
   shown the modal in the cold-start arm dismiss it more often, not less.
@@ -229,3 +240,13 @@ in PostHog, not deleted, for reproducibility — no session had
 this is a follow-up hygiene item, not a functional blocker (nothing in
 `src/` reads this flag anymore). This document is kept in place as the
 reproducibility record.
+
+**Rollback:** flipping the PostHog flag does NOTHING now — enforcement is
+unconditional in code, not flag-gated. Reverting to pre-teardown (arm-split)
+behavior requires a code change (restore `getColdStartArm`/
+`coldStartCheckApplies`/`COLD_START_FLAG` from git history, e.g. `git show
+<pre-teardown-sha>:src/lib/gate-logic.ts`) plus a normal deploy via
+`.github/workflows/vercel-deploy.yml`. Reverting to pre-2026-07-20 (no
+minimum at all, for everyone) just means deleting the unconditional
+`hasSeenEnoughPages` guard in `ProGateContext.triggerGate` — no flag
+involved either way.

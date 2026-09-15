@@ -132,9 +132,19 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       sessionStorage.setItem(SESSION_PAGEVIEWS_KEY, String(next));
       sessionPageViewsRef.current = next;
     } catch {
-      // sessionStorage unavailable (private mode) — fail open with a
-      // per-mount-only count so the gate isn't permanently silenced.
-      sessionPageViewsRef.current += 1;
+      // sessionStorage unavailable (private mode, or blocked). Was
+      // `+= 1` — harmless for SPA navigation (the ref survives across
+      // pathname changes within one JS load), but a full-document reload on
+      // every navigation re-runs the whole component from a fresh ref at 0,
+      // so this counter would relatch at 1 forever and permanently block
+      // every passive gate for that visitor (2026-09-15 review, gate-cold-
+      // start teardown: this is now a 100%-of-traffic guard, not one arm of
+      // an A/B, so the failure mode affects everyone, not half). Fail OPEN
+      // like every other guard in this gate (shouldSuppressPassiveGate does
+      // the same on a corrupt localStorage read) — treat storage failure as
+      // "can't verify engagement, so don't block on it" rather than
+      // "assume zero engagement forever."
+      sessionPageViewsRef.current = emailCaptureConfig.minPageViewsForPassiveGate;
     }
   }, [pathname]);
 
