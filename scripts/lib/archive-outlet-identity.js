@@ -73,6 +73,7 @@ function resolveArchiveRowOutletId({ url, outletLabel, cachedOutletId, sourceOut
 // exactly how a "false positive fix" silently turns into a dead gate.
 const RAW_OUTLET_ID_INGEST_RE = /outletId\s*[:=]\s*(?:r|review|lboReview)\.outletId\s*\|\|/g;
 const AUDIT_ONLY_RE = /\/\/\s*audit-only:\s*\S/;
+const COMMENT_ONLY_RE = /^\s*\/\//;
 
 /**
  * findRawOutletIdIngestLines(contents) -> [{ line, text }]
@@ -92,9 +93,16 @@ function findRawOutletIdIngestLines(contents) {
   while ((m = RAW_OUTLET_ID_INGEST_RE.exec(contents)) !== null) {
     const startLine = contents.slice(0, m.index).split('\n').length - 1;
     const endLine = startLine + (m[0].split('\n').length - 1);
-    // The annotation may sit on any line the match spans, or the line above it.
-    const scope = lines.slice(Math.max(0, startLine - 1), endLine + 1);
-    if (scope.some((l) => AUDIT_ONLY_RE.test(l))) continue;
+    // The annotation may sit on any line the match spans, or on the line above
+    // it -- but only if that line is a COMMENT line. Without the comment-only
+    // restriction, an unrelated trailing `// audit-only:` on the preceding line
+    // of real code silently exempts the match below it, which is how a source
+    // lint quietly goes dead.
+    const spanned = lines.slice(startLine, endLine + 1);
+    const above = startLine > 0 ? lines[startLine - 1] : '';
+    const exempt = spanned.some((l) => AUDIT_ONLY_RE.test(l))
+      || (COMMENT_ONLY_RE.test(above) && AUDIT_ONLY_RE.test(above));
+    if (exempt) continue;
     findings.push({ line: startLine + 1, text: lines[startLine].trim() });
   }
   return findings;

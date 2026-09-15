@@ -173,6 +173,41 @@ describe('raw outletId ingest guard (positive control)', () => {
       `outletId: r.outletId || 'unknown', // audit-only: fixture`).length, 0);
   });
 
+  // ship-check reproduced both of these against the shipped module: an
+  // unrelated trailing marker on the PRECEDING LINE OF CODE used to exempt the
+  // real ingest site below it. That is how a source lint goes dead quietly.
+  test('an unrelated trailing marker on a preceding CODE line does NOT exempt', () => {
+    assert.strictEqual(findRawOutletIdIngestLines(
+      `const a = 1; // audit-only: something unrelated\n${HISTORICAL_SHAPES[1]}`).length, 1);
+  });
+
+  test('a comment-only marker line above still exempts', () => {
+    assert.strictEqual(findRawOutletIdIngestLines(
+      `  // audit-only: rejected-review telemetry\n${HISTORICAL_SHAPES[1]}`).length, 0);
+  });
+
+  test('a blank line between marker and match does not exempt', () => {
+    assert.strictEqual(findRawOutletIdIngestLines(
+      `// audit-only: too far away\n\n${HISTORICAL_SHAPES[1]}`).length, 1);
+  });
+
+  // The two shipped exemptions are the only ones. A third has to be added
+  // deliberately, in a diff that changes this number.
+  test('exactly two audit-only exemptions exist across the guarded files', () => {
+    const files = [
+      'scripts/gather-reviews.js',
+      'scripts/opening-night-poller.js',
+      'scripts/scrape-theatre-reviews.js',
+      'scripts/scrape-thestage-roundups.js',
+    ];
+    const total = files.reduce((n, f) => {
+      const c = readFileSync(resolve(ROOT, f), 'utf8').match(/\/\/\s*audit-only:/g) || [];
+      return n + c.length;
+    }, 0);
+    assert.strictEqual(total, 2,
+      'a new `// audit-only:` exemption was added to a guarded file — confirm it really is not row ingest, then update this count');
+  });
+
   test('clean routed code produces no findings', () => {
     assert.deepStrictEqual(findRawOutletIdIngestLines(
       `outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId }),`), []);
