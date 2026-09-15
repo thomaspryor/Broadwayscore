@@ -435,6 +435,35 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-31 (BRO-2588): grepped every .github/workflows/*.yml AND all of scripts/ for the literal filename. Sole WRITER: scripts/autonomous-acceptance-recheck.js (appends through scripts/lib/autonomous-ledger.js:48 fs.appendFileSync), invoked only by data-health-check.yml\'s "Acceptance recheck (shadow mode)" step; data-health-check.yml is also the only workflow that git-adds the path. Every other reference is a READER or a non-writing mention: scripts/autonomous-email.js:435 (ledger.readEntries) and scripts/dispatch-watchdog.js:195 (fs.readFileSync) read it; scripts/freeze-ledgers.js:86 only names it inside a freeze record; scripts/lib/audit-ledger-merge-attrs.js:150 does not write it either, but it is NOT a throwaway mention: it deliberately EXCLUDES this file from the union-merge .gitattributes because autonomous-acceptance-recheck.js:199 enforcementState() reads rechecks[0].ts as the OLDEST recheck (trusting file order as chronological) and counts rechecks.length with no dedup key, and both feed shouldExitShadow() (scripts/lib/autonomous-recheck-core.js:294), which arms automatic card reopening. That workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs of it queue rather than race. RESIDUAL RISK, accepted knowingly and NOT eliminated by this entry: apiFallbackSafe routes this path through scripts/lib/push-via-git-api.sh, whose semantics are ours-wins-outright (see its header, line ~41 \u2014 our version replaces whatever the current remote tip has for that path). The concurrency group serializes CI against CI, but NOT CI against a local run: if the owner runs `node scripts/autonomous-acceptance-recheck.js` on their own machine and pushes appended rows, the next CI run\'s Git Data API fallback can overwrite that path with its checkout-time copy plus its own rows, silently dropping the locally-appended ones and shifting both rechecks[0] and rechecks.length \u2014 the exact two inputs the merge-attrs exclusion above protects. This is the same order/count hazard, reached by a different route, so registering the file apiFallbackSafe trades a push-reliability win for a narrow CI-vs-local clobber window; it is safe only for the CI-only write pattern that is in place today.',
     note: 'shadow-mode RECHECK-AFTER verdict ledger written by scripts/autonomous-acceptance-recheck.js — append-only JSONL, one line per recheck run',
   },
+  // BRO-3426 (2026-09-15): registering these two is NOT merely about making
+  // their own push fast — it is about not BREAKING the steps after them.
+  // push-with-retry.sh:2312 disqualifies the Git Data API fallback when the
+  // outgoing diff contains ANY data/audit/ path that is not registered here,
+  // and a continue-on-error commit step that fails to push leaves its commit
+  // on local HEAD, where every LATER step's SCRIPT_ENTRY_HEAD diff picks it
+  // up. That is exactly the poisoning BRO-2588 documents for
+  // audit/autonomous-recheck-ledger.jsonl above — so shipping these two
+  // unregistered would have silently forced every subsequent commit+push step
+  // in data-health-check.yml onto the slow local rebase path. Caught by a
+  // Codex adversarial review before it shipped, not after.
+  {
+    file: 'audit/done-evidence-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-15 (BRO-3426): grepped every .github/workflows/*.yml, all of scripts/ and all of tests/ for the literal filename. Sole WRITER: scripts/audit-done-evidence.js:68 (writeJson, tmp-file + rename), invoked only by data-health-check.yml\'s "Done-evidence audit (shadow mode)" step; that same workflow is also the only one that git-adds the path (its "Commit done-evidence audit" step). There are NO readers of this file anywhere — the digest reads the SEPARATE snapshot file below, not this one; the only other references are the script\'s own USAGE text and a comment in scripts/lib/done-evidence-audit.js explaining why sandbox paths are scrubbed (precisely so this nightly-committed file does not diff on a random temp dir). data-health-check.yml declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race. Full-overwrite snapshot, never append-only: each run rewrites the whole document, so the ours-wins-outright semantics of push-via-git-api.sh cannot drop accumulated history the way it could for an append-only ledger. RESIDUAL RISK, same class knowingly accepted for audit/stale-announced-shows.json and audit/autonomous-recheck-ledger.jsonl above: the CLI writer can also be run locally by a human, and the concurrency group serializes CI against CI but not CI against a local run. Accepted on the same grounds — this is disposable telemetry regenerated in full by the next nightly run, not state that can lose history.',
+    note: 'full shadow-mode verdict report written by scripts/audit-done-evidence.js — one entry per Done(14d)/In Review/In Progress card, rewritten whole each run',
+  },
+  {
+    file: 'audit/done-evidence-digest-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-15 (BRO-3426): same writer (scripts/audit-done-evidence.js:69), same invoking step and same `git add` line as audit/done-evidence-audit.json above — both files are written by the same run and staged together. One READER: scripts/lib/digest-snapshots.js:128 registers it as the `doneEvidence` SNAPSHOTS row, which scripts/send-morning-digest.js renders; reading never conflicts with the API fallback\'s ours-wins semantics. Same full-overwrite (not append-only) shape and the same residual local-vs-CI clobber risk accepted for the same reason.',
+    note: 'the {generatedAt, bannerText, items, moreCount} view model send-morning-digest.js renders as the "Done-evidence audit" block',
+  },
   // BRO-2699 (2026-09-07): outlet-registry-baseline-maintenance.yml's daily
   // cron exists specifically to keep these two baseline files current so
   // test.yml's "Audit outlet-registry gaps" --strict gate doesn't flap red

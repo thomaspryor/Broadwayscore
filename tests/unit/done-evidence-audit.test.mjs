@@ -121,7 +121,7 @@ test('a vacuous check on an OPEN card is still VACUOUS, not silently dropped lik
 test('an independent PR-EVIDENCE proof outranks a vacuous command — that channel is untainted by the weak check', () => {
   const r = classifyCard({
     card: doneCard(),
-    prRef: { merged: true, deployed: true, checked: true, url: 'https://github.com/o/r/commit/abc1234' },
+    prRef: { merged: true, deployed: true, checked: true, url: 'https://github.com/thomaspryor/Broadwayscore/commit/abc1234' },
     ancestry: EVIDENCE.HOLDS,
     cmd: 'test -f scripts/lib/old.js',
     vacuous: VACUOUS,
@@ -150,14 +150,14 @@ test('a PR-EVIDENCE line with no URL is UNKNOWN — there was never anything to 
 });
 
 test('unresolvable ancestry is UNKNOWN, never BROKEN — landing-verify.js s tri-state, for the same reason', () => {
-  assert.equal(evaluatePrEvidence({ url: 'https://github.com/o/r/commit/abc1234' }, EVIDENCE.UNKNOWN).state, EVIDENCE.UNKNOWN);
-  assert.equal(evaluatePrEvidence({ url: 'https://github.com/o/r/commit/abc1234' }, EVIDENCE.BROKEN).state, EVIDENCE.BROKEN);
+  assert.equal(evaluatePrEvidence({ url: 'https://github.com/thomaspryor/Broadwayscore/commit/abc1234' }, EVIDENCE.UNKNOWN).state, EVIDENCE.UNKNOWN);
+  assert.equal(evaluatePrEvidence({ url: 'https://github.com/thomaspryor/Broadwayscore/commit/abc1234' }, EVIDENCE.BROKEN).state, EVIDENCE.BROKEN);
 });
 
 test('a broken PR-EVIDENCE url never overrides a passing check — a typo must not accuse working code', () => {
   const r = classifyCard({
     card: doneCard(),
-    prRef: { merged: true, url: 'https://github.com/o/r/commit/deadbee' },
+    prRef: { merged: true, url: 'https://github.com/thomaspryor/Broadwayscore/commit/deadbee' },
     ancestry: EVIDENCE.BROKEN,
     cmd: 'node --test tests/unit/x.test.mjs',
     runResult: PASS,
@@ -199,6 +199,15 @@ test('a failure caused by the missing PRIVATE review corpus is never a FAILED ve
   assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
   assert.notEqual(r.verdict, VERDICTS.FAILED);
   assert.match(r.detail, /private review-texts corpus/);
+});
+
+test('a check cut short by this sweep s own time cap is never FAILED — observed live on BRO-258', () => {
+  for (const detail of ['spawnSync node ETIMEDOUT', 'check killed by SIGTERM after 60000ms (timeout — no verdict)']) {
+    assert.equal(isEnvironmentFailure(detail), true, detail);
+    const r = classifyCard({ card: doneCard(), cmd: 'node scripts/slow-audit.js', runResult: { status: 'fail', detail } });
+    assert.equal(r.verdict, VERDICTS.UNVERIFIABLE, detail);
+    assert.match(r.detail, /time limit|cut short/);
+  }
 });
 
 test('an ordinary assertion failure that merely mentions a filename is still a real FAILED', () => {
@@ -243,12 +252,133 @@ test('a scrubbed path reaches the verdict detail, not just the digest', () => {
   assert.ok(r.detail.includes('<checkout>/scripts/x.js'));
 });
 
+// ── the four defects the adversarial pre-ship review caught ───────────────
+
+test('REVERTED work is FAILED, not VERIFIED: a revert preserves ancestry, so the command must win', () => {
+  // `git revert` leaves the original commit reachable from main forever, so the
+  // compare API keeps answering "behind" long after the change was undone. An
+  // earlier version returned VERIFIED here — laundering the exact regression
+  // this sweep exists to catch.
+  const r = classifyCard({
+    card: doneCard(),
+    prRef: { merged: true, url: 'https://github.com/thomaspryor/Broadwayscore/commit/abc1234' },
+    ancestry: EVIDENCE.HOLDS,
+    cmd: 'node --test tests/unit/x.test.mjs',
+    runResult: FAIL,
+  });
+  assert.equal(r.verdict, VERDICTS.FAILED);
+  assert.deepEqual(r.channels, ['verify-command']);
+});
+
+test('...but the asymmetry does not invert: a broken ancestry still loses to a passing command', () => {
+  const r = classifyCard({
+    card: doneCard(),
+    prRef: { merged: true, url: 'https://github.com/thomaspryor/Broadwayscore/commit/deadbee' },
+    ancestry: EVIDENCE.BROKEN,
+    cmd: 'node --test tests/unit/x.test.mjs',
+    runResult: PASS,
+  });
+  assert.equal(r.verdict, VERDICTS.VERIFIED, 'a typo in a hand-typed URL must not accuse working code');
+});
+
+test('an unresolvable path-age is UNVERIFIABLE, never VERIFIED — an outage must not upgrade the weakest evidence', () => {
+  const unresolved = { ...VACUOUS, unresolvedAge: true, reason: 'could not be resolved this run' };
+  const r = classifyCard({ card: doneCard(), cmd: 'test -f scripts/lib/old.js', runResult: PASS, vacuous: unresolved });
+  assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
+  assert.notEqual(r.verdict, VERDICTS.VERIFIED);
+  // A RESOLVED vacuous verdict still reports as VACUOUS — the two must stay distinguishable.
+  assert.equal(classifyCard({ card: doneCard(), cmd: 'test -f scripts/lib/old.js', runResult: PASS, vacuous: VACUOUS }).verdict, VERDICTS.VACUOUS);
+});
+
+test('a partial run SAYS SO in the banner — an incomplete inventory must never read as a clean board', () => {
+  const clean = buildDigestSnapshot(REPORT);
+  assert.ok(!clean.bannerText.includes('PARTIAL RUN'), 'a complete run must not cry wolf');
+
+  for (const [field, value, expected] of [
+    ['truncated', true, /listing was cut short/],
+    ['fetchError', 'linear 500', /fetch failed partway/],
+    ['notReRun', 12, /12 checks not re-run/],
+    ['unresolvedProbes', 3, /3 GitHub lookups failed/],
+  ]) {
+    const snap = buildDigestSnapshot({ ...REPORT, [field]: value });
+    assert.match(snap.bannerText, /PARTIAL RUN/, field);
+    assert.match(snap.bannerText, expected, field);
+    assert.match(snap.bannerText, /understate the board/, field);
+  }
+});
+
+test('a foreign-repo PR url is never resolved against our own repo — PR numbers collide across repos', () => {
+  const foreign = 'https://github.com/someone/other-repo/pull/827';
+  assert.equal(parseEvidenceUrl(foreign).kind, 'other');
+  assert.equal(parseEvidenceUrl(foreign).foreignRepo, 'someone/other-repo');
+  // Must not make ANY api call for a foreign url.
+  assert.equal(resolveEvidenceUrl(foreign, { runGh: () => { throw new Error('must not be called'); } }), 'unknown');
+  // Our own repo still resolves normally.
+  assert.equal(parseEvidenceUrl('https://github.com/thomaspryor/Broadwayscore/pull/827').kind, 'pull');
+});
+
+test('a MIS-ARMED card is not accused: a check naming a path that never existed is UNVERIFIABLE, not FAILED', () => {
+  // The live P0. BRO-2304 is armed `test -f scripts/push-with-retry.sh`; the
+  // real file is scripts/lib/push-with-retry.sh and always was, so the command
+  // could never have passed on any day. BRO-2421 is the same shape. Both were
+  // reported FAILED in the first live run — accusing finished work.
+  const r = classifyCard({
+    card: doneCard({ id: 'BRO-2304' }),
+    cmd: 'test -f scripts/push-with-retry.sh',
+    runResult: { status: 'fail', detail: 'Command failed: test -f scripts/push-with-retry.sh' },
+    misArmed: { path: 'scripts/push-with-retry.sh' },
+  });
+  assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
+  assert.notEqual(r.verdict, VERDICTS.FAILED);
+  assert.match(r.detail, /never existed/);
+  // A path that DID exist and is now gone is still a real regression.
+  assert.equal(classifyCard({ card: doneCard(), cmd: 'node --test a.mjs', runResult: FAIL, misArmed: null }).verdict, VERDICTS.FAILED);
+});
+
+test('refineVacuous: the Done-card createdAt refinement, end to end', () => {
+  const runner = require('../../scripts/audit-done-evidence.js');
+  const { refineVacuous } = runner;
+  const exists = () => true; // the path is on main
+  const done = { id: 'BRO-1', state: 'Done', createdAt: '2026-09-01T00:00:00Z' };
+  const open = { id: 'BRO-2', state: 'In Progress', createdAt: '2026-09-01T00:00:00Z' };
+  const cmd = 'test -f scripts/lib/thing.js';
+
+  // OPEN card: work unfinished + check already green = vacuous, no date needed.
+  const o = refineVacuous(open, cmd, exists, { remoteOpts: { runGh: () => { throw new Error('no call needed'); } } });
+  assert.equal(o.kind, 'test-f-satisfied');
+  assert.ok(!o.unresolvedAge);
+
+  // DONE card whose work CREATED the file (no commit before it was filed) -> legitimate.
+  assert.equal(refineVacuous(done, cmd, exists, { remoteOpts: { runGh: () => '0' } }), null);
+
+  // DONE card whose path predates the card -> genuinely vacuous.
+  const v = refineVacuous(done, cmd, exists, { remoteOpts: { runGh: () => '1' } });
+  assert.match(v.reason, /already in the repo before this card was filed/);
+  assert.ok(!v.unresolvedAge);
+
+  // DONE card whose path age could NOT be resolved -> unresolved, never verified.
+  const u = refineVacuous(done, cmd, exists, { remoteOpts: { runGh: () => null } });
+  assert.equal(u.unresolvedAge, true);
+  assert.equal(classifyCard({ card: doneCard(), cmd, runResult: PASS, vacuous: u }).verdict, VERDICTS.UNVERIFIABLE);
+
+  // A non-`test -f` command is never in scope at all.
+  assert.equal(refineVacuous(done, 'node --test a.mjs', exists, {}), null);
+});
+
+test('pathNeverExisted distinguishes "wrong path" from "deleted path", and fails open', () => {
+  const { pathNeverExisted } = require('../../scripts/lib/done-evidence-remote.js');
+  assert.equal(pathNeverExisted('scripts/typo.sh', { runGh: () => '0' }), true, 'no commit ever = mis-armed');
+  assert.equal(pathNeverExisted('scripts/real.sh', { runGh: () => '1' }), false, 'had commits = genuinely removed');
+  assert.equal(pathNeverExisted('scripts/x.sh', { runGh: () => null }), null, 'unresolved is never a verdict');
+  assert.equal(pathNeverExisted(null, { runGh: () => '0' }), null);
+});
+
 // ── remote evidence resolution ─────────────────────────────────────────────
 
 test('cleanUrl strips the markdown trailing paren — 13 of 16 live PR-EVIDENCE urls end in ")"', () => {
-  assert.equal(cleanUrl('https://github.com/o/r/commit/abc1234)'), 'https://github.com/o/r/commit/abc1234');
-  assert.equal(parseEvidenceUrl('https://github.com/o/r/commit/abc1234)').sha, 'abc1234');
-  assert.equal(parseEvidenceUrl('https://github.com/o/r/pull/827)').number, '827');
+  assert.equal(cleanUrl('https://github.com/thomaspryor/Broadwayscore/commit/abc1234)'), 'https://github.com/thomaspryor/Broadwayscore/commit/abc1234');
+  assert.equal(parseEvidenceUrl('https://github.com/thomaspryor/Broadwayscore/commit/abc1234)').sha, 'abc1234');
+  assert.equal(parseEvidenceUrl('https://github.com/thomaspryor/Broadwayscore/pull/827)').number, '827');
 });
 
 test('a non-git evidence url (a prod data JSON, like BRO-3247) resolves UNKNOWN, never BROKEN', () => {

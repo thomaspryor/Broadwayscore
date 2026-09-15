@@ -137,10 +137,10 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (123 as of 2026-09-15: the BRO-3071 124 minus the frozen gate-cold-start-monitor-state entry -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (126 as of BRO-3426 2026-09-15, which added the two done-evidence audit files written by data-health-check.yml; 124 as of BRO-3071 2026-09-14 what-else sweep -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 123); // 124 (BRO-3071) minus audit/gate-cold-start-monitor-state.json, frozen 2026-09-15 when BRO-3422 removed its only writer
+  assert.equal(publicSafe.length, 126);
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
     'audit/affiliate-link-probe.json',
@@ -183,6 +183,8 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/discovery-source-coverage.json',
     'audit/dmarc-report-ledger.jsonl',
     'audit/dmarc-summary.json',
+    'audit/done-evidence-audit.json',
+    'audit/done-evidence-digest-snapshot.json',
     'audit/drift-state.json',
     'audit/email-gate-funnel-monitor-state.json',
     'audit/enrich-off-broadway-dates-aborted.json',
