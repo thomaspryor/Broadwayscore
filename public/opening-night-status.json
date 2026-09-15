@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T10:14:19.506Z",
+  "generatedAt": "2026-09-15T12:30:21.009Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,25 +12,24 @@
       "status": "previews",
       "slug": "in-honor-of-jean-michel-basquiat-off-broadway",
       "thumbnail": "/images/shows/in-honor-of-jean-michel-basquiat-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 79.82,
-      "liveScore": 80,
-      "scoreDrift": 0.18000000000000682,
+      "siteScore": 79.03,
+      "liveScore": 79,
+      "scoreDrift": -0.030000000000001137,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 1,
-      "positive": 3,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "4/12 total",
           "T1:0/3",
-          "T2:2/3",
           "hi-conf:1/8"
         ],
         "highConfidence": 1,
@@ -398,6 +397,18 @@
           "t2": 2,
           "t3": 1,
           "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-15T12:30:21.009Z",
+          "rc": 4,
+          "s": 79.03,
+          "t1": 0,
+          "t2": 3,
+          "t3": 1,
+          "p": 4,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -898,23 +909,23 @@
       "status": "open",
       "slug": "pre-existing-condition-off-broadway",
       "thumbnail": "/images/shows/pre-existing-condition-off-broadway-2026/thumbnail.webp",
-      "siteScore": 75.51,
+      "siteScore": 75.64,
       "liveScore": 76,
-      "scoreDrift": 0.4899999999999949,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 1,
       "t2": 3,
-      "t3": 1,
-      "positive": 3,
+      "t3": 2,
+      "positive": 4,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "6/12 total",
           "T1:1/3",
           "hi-conf:0/8"
         ],
@@ -1002,10 +1013,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -1038,6 +1045,10 @@
           "isDualMarket": false
         },
         {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
           "name": "Theatrely",
           "isDualMarket": false
         },
@@ -1055,6 +1066,10 @@
         },
         {
           "name": "Lighting & Sound America",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -1282,6 +1297,18 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-15T12:30:21.009Z",
+          "rc": 6,
+          "s": 75.64,
+          "t1": 1,
+          "t2": 3,
+          "t3": 2,
+          "p": 4,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1295,9 +1322,9 @@
       "status": "open",
       "slug": "bloodsport-after-helen-of-troy-off-west-end",
       "thumbnail": "/images/shows/bloodsport-after-helen-of-troy-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 73.11,
+      "siteScore": 73.46,
       "liveScore": 73,
-      "scoreDrift": -0.10999999999999943,
+      "scoreDrift": -0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1305,13 +1332,13 @@
       "t1": 7,
       "t2": 8,
       "t3": 11,
-      "positive": 16,
-      "mixed": 7,
+      "positive": 17,
+      "mixed": 6,
       "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1469,6 +1496,18 @@
           "t3": 11,
           "p": 16,
           "m": 7,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-15T12:30:21.009Z",
+          "rc": 26,
+          "s": 73.46,
+          "t1": 7,
+          "t2": 8,
+          "t3": 11,
+          "p": 17,
+          "m": 6,
           "n": 3,
           "bc": "waiting"
         }
