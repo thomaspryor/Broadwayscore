@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T17:11:58.505Z",
+  "generatedAt": "2026-09-15T17:45:44.572Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -935,27 +935,26 @@
       "status": "open",
       "slug": "pre-existing-condition-off-broadway",
       "thumbnail": "/images/shows/pre-existing-condition-off-broadway-2026/thumbnail.webp",
-      "siteScore": 76.62,
-      "liveScore": 77,
-      "scoreDrift": 0.37999999999999545,
+      "siteScore": 76.11,
+      "liveScore": 76,
+      "scoreDrift": -0.10999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 2,
+      "total": 10,
+      "t1": 3,
       "t2": 4,
       "t3": 3,
-      "positive": 5,
+      "positive": 6,
       "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
-          "T1:2/3",
-          "hi-conf:1/8"
+          "10/12 total",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -971,10 +970,6 @@
         {
           "name": "The New York Times",
           "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
         },
         {
           "name": "Variety",
@@ -1360,6 +1355,18 @@
           "t2": 4,
           "t3": 3,
           "p": 5,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-15T17:45:44.572Z",
+          "rc": 10,
+          "s": 76.11,
+          "t1": 3,
+          "t2": 4,
+          "t3": 3,
+          "p": 6,
           "m": 4,
           "n": 0,
           "bc": "waiting"
