@@ -490,6 +490,55 @@ test('BRO-3434: the fallback is additive only — a non-null snapshot still wins
     'the dispatch snapshot must not be overridden when it is present');
 });
 
+// KNOWN-OPEN, pinned as CURRENT behaviour rather than desired behaviour, so
+// the gap is visible instead of forgotten. BRO-3382 was dispatched with
+// --allow-phantom-path, freezing a verifyCmd that names a test file its
+// session never created (the real test landed at
+// src/app/api/__tests__/notion-write-is-non-fatal.test.mjs). Safe-form
+// validation passes the phantom because it checks command SHAPE, not file
+// existence, so the nightly run will execute it and report `fail` for a fix
+// that is correct and live on main. Preferring the card outright would fix
+// this but would also let a GENERIC card command (`npx next lint`) displace a
+// SPECIFIC snapshot (`node --test ...`) — the degradation
+// autonomous-verify-cmd.js's rank() comment warns about, and the case the
+// "launch entry still takes priority" test above fixtures exactly. The safe
+// fix is specificity-ranked preference, tracked on its own card.
+test('BRO-3434 KNOWN-OPEN: a phantom-path snapshot still outlives the correction (BRO-3382 shape)', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({
+      notes: '## Acceptance criteria\nVERIFY: node --test tests/unit/feedback-formspree-status-check.test.mjs',
+      comments: ['VERIFY: node --test src/app/api/__tests__/notion-write-is-non-fatal.test.mjs'],
+    })],
+    launchEntries: [launch({ verifyCmd: 'node --test tests/unit/feedback-formspree-status-check.test.mjs' })],
+  });
+  assert.equal(out[0].verifyCmd, 'node --test tests/unit/feedback-formspree-status-check.test.mjs',
+    'documents the still-open wrong-snapshot gap — flip this assertion when specificity-ranked preference lands');
+});
+
+test('BRO-3434: the snapshot is still used when the card arms nothing', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({ notes: 'the criteria section was emptied, only prose now' })],
+    launchEntries: [launch({ verifyCmd: 'node --test tests/unit/a.test.mjs' })],
+  });
+  assert.equal(out[0].verifyCmd, 'node --test tests/unit/a.test.mjs',
+    'a card that arms nothing today must keep using what dispatch captured');
+  assert.equal(out[0].reason, null);
+});
+
+// Pins the case BOTH ship-check reviewers flagged as correct-but-unpinned:
+// evaluateVerifiability returns {armed:true, cmd:null} for an owner-judgment
+// marker. That must NOT become an executed command, and must NOT crash on
+// the null reason. A future edit making verifiabilityForCard early-return on
+// `armed` instead of `cmd` would break this silently.
+test('BRO-3434: an owner-judgment marker arms nothing executable on the launch path', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({ comments: ['This one needs the owner to eyeball it — OWNER JUDGMENT required.'] })],
+    launchEntries: [launch({ verifyCmd: null, verifyReason: 'captured refusal' })],
+  });
+  assert.equal(out[0].verifyCmd, null, 'an owner-judgment marker must never become a runnable command');
+  assert.equal(typeof out[0].reason, 'string', 'a null gate reason must not leak through as the reported reason');
+});
+
 test('BRO-3434: a card unverifiable BOTH ways reports the identical pre-fix string', () => {
   const captured = 'acceptance criteria names no runnable command (prose only)';
   const out = selectRecheckTargets({
@@ -498,6 +547,23 @@ test('BRO-3434: a card unverifiable BOTH ways reports the identical pre-fix stri
   });
   assert.equal(out[0].verifyCmd, null);
   assert.equal(out[0].reason, captured, 'the dispatch-captured reason must still win when nothing new arms');
+});
+
+// Regression guard for a bug the other tests could not see: the reason
+// expression is only EVALUATED when the command is falsy AND the launch row
+// carried no reason either, so a stale identifier in it survived a green
+// suite and only surfaced on a live --dry-run ("ReferenceError: gate is not
+// defined"). CLAUDE.md rule 12.4 in miniature — a passing unit suite is not a
+// run against real data.
+test('BRO-3434: a launch row with NEITHER verifyCmd NOR verifyReason falls through to the gate reason', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({ notes: 'no criteria here at all, pure prose' })],
+    launchEntries: [launch({ verifyCmd: null, verifyReason: null })],
+  });
+  assert.equal(out[0].verifyCmd, null);
+  assert.equal(typeof out[0].reason, 'string');
+  assert.match(out[0].reason, /acceptance-criteria|no verify command/,
+    'must report a real refusal string, not throw and not report undefined');
 });
 
 test('BRO-3434: an unsafe command on the card cannot arm the recheck through the fallback', () => {

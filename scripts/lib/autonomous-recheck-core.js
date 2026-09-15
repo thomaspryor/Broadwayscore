@@ -262,12 +262,24 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
     // 06:45Z run: 3 of the 31 due cards (BRO-3030, BRO-2983, BRO-2795) were
     // armed on the card and dead here.
     //
-    // Deliberately a FALLBACK, not an override: only consulted when the
+    // Deliberately a FALLBACK, not an override: consulted only when the
     // snapshot is empty, so a card that is unverifiable both ways reports
-    // exactly as it did before and no working card can be downgraded. The
-    // inverse (card-current always wins over a non-null snapshot) was
-    // measured against the same live board and changed ZERO cards, so the
-    // stricter, strictly-additive form costs nothing today.
+    // exactly as it did before and no working card can be downgraded.
+    //
+    // The inverse — card-current always wins — was implemented, tested and
+    // then backed out on purpose. It does fix a second, real bug (a non-null
+    // but WRONG snapshot, which --allow-phantom-path manufactures: BRO-3382's
+    // snapshot froze a test path its session never created), but it also
+    // reverses a contract this suite pins by name, "a dispatch-ledger launch
+    // entry still takes priority over the notes fallback", and that test's
+    // own fixture is the degradation case — card notes naming `npx next lint`
+    // against a snapshot naming a specific `node --test`. Letting the generic
+    // command win would make those rechecks meaningless in exactly the way
+    // autonomous-verify-cmd.js's rank() comment already warns about ("tsc
+    // still passes" says nothing about whether THAT card's work survived).
+    // Fixing the wrong-snapshot case safely needs specificity-ranked
+    // preference, not raw precedence; that is tracked separately rather than
+    // smuggled in here.
     const fallback = launch.verifyCmd ? null : verifiabilityForCard(card);
     const verifyCmd = launch.verifyCmd || (fallback && fallback.cmd) || null;
     out.push({
