@@ -2405,6 +2405,13 @@ on:
       # (registered in tests/unit-test-manifest.txt, not globbed), so it's
       # path-listed here so a solo edit to just the test still triggers CI.
       - 'scripts/tests/recheck-ledger-persistence.test.mjs'
+      # BRO-3373: the recheck's Linear candidate source. scripts/lib/linear-
+      # recheck-source.js and its edits to autonomous-recheck-core.js /
+      # recheck-stamp.js all ride the 'scripts/lib/**' glob above; this test
+      # lives in scripts/tests/ (registered in tests/unit-test-manifest.txt,
+      # not globbed), so it's path-listed here so a solo edit to just the
+      # test still triggers CI.
+      - 'scripts/tests/autonomous-acceptance-recheck-linear.test.mjs'
       # BRO-3317: same shape as the BRO-386 note directly above — the
       # provider-spend ledger's commit is its own step in data-health-check.yml
       # (already covered by the '.github/workflows/**' glob), but this

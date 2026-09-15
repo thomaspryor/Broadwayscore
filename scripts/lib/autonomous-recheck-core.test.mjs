@@ -385,6 +385,30 @@ test('notes still win over outcome for the command', () => {
   assert.equal(verifiabilityForCard(null).cmd, null);
 });
 
+// ── card.comments (BRO-3373): a Linear card's acceptance command usually
+// lives in a wrap-up comment, not the description. card.comments is
+// undefined for every pre-BRO-3373 (Notion) card, so this is purely additive.
+
+test('an acceptance command in card.comments arms verifiabilityForCard when notes/outcome have none', () => {
+  const card = {
+    id: 'linear-card', name: 'Linear-sourced fix', status: 'Backlog',
+    notes: '## Problem\nprose only, no criteria',
+    comments: ['Dispatched.', 'Paused.\n\n## Acceptance criteria\n`node --test scripts/lib/linear.test.mjs` passes'],
+  };
+  assert.equal(verifiabilityForCard(card).cmd, 'node --test scripts/lib/linear.test.mjs');
+});
+
+test('a LATER comment correcting the acceptance command wins over an earlier one', () => {
+  const card = {
+    id: 'linear-card-2', name: 'Corrected fix', status: 'Backlog', notes: 'prose only',
+    comments: [
+      '## Acceptance criteria\n`node --test scripts/lib/old.test.mjs` passes',
+      'Correction: ## Acceptance criteria\n`node --test scripts/lib/new.test.mjs` passes',
+    ],
+  };
+  assert.equal(verifiabilityForCard(card).cmd, 'node --test scripts/lib/new.test.mjs');
+});
+
 // Outcome is scanned by extractVerifyCmd's rules, not scraped for backticks:
 // a wrap-up full of backticked file paths must not become an executed command.
 test('a backtick in a prose outcome is not mistaken for an acceptance command', () => {
