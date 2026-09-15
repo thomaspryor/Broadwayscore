@@ -390,8 +390,14 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                   )}
 
                   {/* Ticket links — single row at bottom. "Get Tickets" first, others visible on desktop only.
-                      Previews/upcoming shows sell tickets too — the upcoming guide's whole pitch is "book early". */}
-                  {(show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (ticketLinks.length > 0 || Boolean(show.officialUrl)) && (
+                      Previews/upcoming shows sell tickets too — the upcoming guide's whole pitch is "book early".
+                      Announced shows appear in this guide too (guide-pages.ts/browse-pages.ts admit them) but
+                      may not be on sale yet — only let the officialUrl fallback through for them, never a bare
+                      "Get Tickets" off a priceless ticketLinks entry (BRO-166 follow-up, same overpromise this
+                      page's sibling in TicketButtonsAB already guards against for card #228). */}
+                  {(show.status === 'open' || show.status === 'previews' || show.status === 'upcoming' ||
+                    (show.status === 'announced' && ticketLinks.length === 0)) &&
+                    (ticketLinks.length > 0 || Boolean(show.officialUrl)) && (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {/* Primary CTA — always visible. Falls back to Official Site
                           when there's no affiliate-able ticketLinks entry at all
