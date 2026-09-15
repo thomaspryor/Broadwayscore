@@ -56,11 +56,13 @@ async function main(argv = process.argv.slice(2)) {
   try {
     guard = require(GUARD_LIB);
   } catch (e) {
-    // Fail SOFT, loudly. A missing guard lib is a real problem worth seeing in
-    // the log, but it must not make this job look like a toolchain outage.
     log(`guard library unavailable at ${GUARD_LIB}: ${e.message}`);
-    log('nothing to do — the machine-level guard is not installed here.');
-    return;
+    // Do NOT return 0 here. A missing guard means this machine has no
+    // protection at all, and in a launchd log that is indistinguishable from a
+    // clean run — exactly the "detector exists but nobody gets told" shape this
+    // whole card is about.
+    await routeMissingGuard(e);
+    process.exit(1);
   }
 
   const report = guard.ensureToolchain({ log, repair: !dryRun });
@@ -88,6 +90,11 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   for (const p of report.problems) log(`PROBLEM: ${p}`);
+  if (dryRun) {
+    // A dry run reports; it does not alert, and it does not claim a failed run.
+    log('(dry run — no alert routed, nothing changed)');
+    return;
+  }
   await routeIfPossible(report, guard);
   process.exit(1);
 }
@@ -104,12 +111,64 @@ function resolveIfPossible(conditionKey) {
   } catch { /* alerting is optional here; the repair is the deliverable */ }
 }
 
+async function routeMissingGuard(err) {
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router.js');
+    await routeAlert({
+      conditionKey: 'toolchain:guard-missing',
+      title: 'Xcode toolchain guard is not installed on this Mac',
+      description:
+        `check-xcode-toolchain.js could not load ${GUARD_LIB}: ${err.message}. ` +
+        'Nothing is maintaining the managed git shim, so PATH `git` may be back on Apple\'s license-gated stub. ' +
+        'Restore it from the claude-config repo (~/.claude/hooks/lib/).',
+      severity: 'error',
+      disposition: 'digest',
+      hint: 'ls -la ~/.claude/hooks/lib/xcode-toolchain-guard.js',
+    });
+  } catch (e) {
+    log(`could not route the missing-guard alert: ${e.message}`);
+  }
+}
+
 async function routeIfPossible(report, guard) {
   let routeAlert;
   try {
     ({ routeAlert } = require('./lib/owner-alert-router.js'));
   } catch (e) {
     log(`could not load the alert router (${e.message}) — repair already attempted, continuing`);
+    return;
+  }
+
+  // Whether git is actually protected is a FACT to check, not a reassurance to
+  // recite. The first draft asserted "git is protected" in every alert body,
+  // including the case where installing the shim had just failed — i.e. it was
+  // most confidently wrong exactly when the machine was most broken.
+  // 'not-applicable' (the directory does not exist on this machine) is neither
+  // protection nor a problem, so it is ignored on both sides. 'blocked' IS a
+  // problem: it covers a symlinked git, which fails every single invocation.
+  const gitProtected =
+    report.shims.some(s => ['current', 'repaired', 'left-alone'].includes(s.state)) &&
+    !report.shims.some(s => ['failed', 'broken', 'blocked'].includes(s.state));
+
+  if (!gitProtected) {
+    // The 2026-09-15 shape: one bad OS update away from every session and every
+    // launchd job losing git at once, with nothing able to fix it unattended.
+    try {
+      const res = await routeAlert({
+        conditionKey: 'toolchain:git-unprotected',
+        title: 'git is NOT protected on the Mac — the toolchain guard could not hold its invariant',
+        description:
+          `${report.problems.join(' | ')}. ` +
+          'PATH `git` is not guaranteed to resolve to a real git binary, so the next Xcode license revocation will take it out across every session and every launchd job, as it did on 2026-09-15. ' +
+          'Repair: run `node scripts/check-xcode-toolchain.js` and read why the shim install failed.',
+        severity: 'error',
+        disposition: 'digest',
+        hint: 'node scripts/check-xcode-toolchain.js',
+      });
+      log(`alert routed: ${res.action}`);
+    } catch (e) {
+      log(`alert failed to route: ${e.message}`);
+    }
     return;
   }
 
