@@ -71,10 +71,32 @@ function parseArgs(argv) {
   return { identifier: positional[0], desiredActive, dryRun };
 }
 
+// Warns (never blocks) when archiving/restoring a key that's still a
+// scripts/lib/flag-registry.js REGISTERED_FLAGS entry expecting a DIFFERENT
+// active state — otherwise monitor-flag-parity.js's next weekly run reports
+// it as unhealthy drift with no obvious cause (BRO-3459 what-else finding).
+// Only flags exists:true entries (per flag-registry.js's own convention, an
+// exists:false entry means "deliberately not live" and isn't a real flag to
+// warn about here).
+function checkRegistryConflict(key, desiredActive, registeredFlags) {
+  const entry = (registeredFlags || []).find((f) => f.key === key);
+  // Every current REGISTERED_FLAGS entry has `expected`, but this is a
+  // warn-only helper (never blocks): a future entry missing `expected`
+  // must be treated as "nothing to check" (null), not fall through to a
+  // nonsensical "expecting active:undefined" warning — a real bug an
+  // earlier version of this fix had (caught: `!entry.expected` wasn't
+  // checked, so `undefined === false` and `undefined === desiredActive`
+  // both evaluated false and fell through to the return string below).
+  if (!entry || !entry.expected || entry.expected.exists === false) return null;
+  if (entry.expected.active === desiredActive) return null;
+  return `'${key}' is a scripts/lib/flag-registry.js REGISTERED_FLAGS entry expecting active:${entry.expected.active} — monitor-flag-parity.js's next run will report this as drift. If this flag's code is fully retired, remove its registry entry too.`;
+}
+
 module.exports = {
   buildSearchUrl,
   buildFlagUrl,
   findExactFlagMatch,
   buildPatchRequest,
   parseArgs,
+  checkRegistryConflict,
 };

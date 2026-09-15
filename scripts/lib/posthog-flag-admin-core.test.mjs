@@ -6,6 +6,7 @@ import {
   findExactFlagMatch,
   buildPatchRequest,
   parseArgs,
+  checkRegistryConflict,
 } from './posthog-flag-admin-core.js';
 
 test('buildSearchUrl encodes the key into the ?search= query param', () => {
@@ -101,4 +102,30 @@ test('parseArgs rejects an unrecognized flag instead of silently ignoring it', (
 
 test('parseArgs rejects --active passed more than once', () => {
   assert.throws(() => parseArgs(['gate-cold-start', '--active=true', '--active=false']), /more than once/);
+});
+
+test('checkRegistryConflict warns when the target key is still REGISTERED_FLAGS with a conflicting expected active state', () => {
+  const registry = [{ key: 'ticket-single-button', expected: { exists: true, active: true } }];
+  const warning = checkRegistryConflict('ticket-single-button', false, registry);
+  assert.match(warning, /ticket-single-button.*expecting active:true/);
+});
+
+test('checkRegistryConflict is null when desiredActive matches the registry expectation', () => {
+  const registry = [{ key: 'ticket-single-button', expected: { exists: true, active: true } }];
+  assert.equal(checkRegistryConflict('ticket-single-button', true, registry), null);
+});
+
+test('checkRegistryConflict is null when the key has no registry entry', () => {
+  assert.equal(checkRegistryConflict('gate-cold-start', false, [{ key: 'ticket-single-button', expected: { exists: true, active: true } }]), null);
+});
+
+test('checkRegistryConflict is null for an exists:false entry (deliberately non-live, not a real flag to warn about)', () => {
+  const registry = [{ key: 'mobile-gate-timing', expected: { exists: false } }];
+  assert.equal(checkRegistryConflict('mobile-gate-timing', false, registry), null);
+});
+
+test('checkRegistryConflict returns null (not a nonsensical warning) on a malformed entry missing `expected`', () => {
+  const registry = [{ key: 'ticket-single-button' }];
+  assert.doesNotThrow(() => checkRegistryConflict('ticket-single-button', false, registry));
+  assert.equal(checkRegistryConflict('ticket-single-button', false, registry), null);
 });
