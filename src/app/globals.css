@@ -1,3 +1,63 @@
+/*
+ * Inter — self-hosted, NOT next/font/google.
+ *
+ * Why self-hosted: next/font/google derives its generated class name from
+ * sha1(the CSS Google returns at build time) — see next-font-loader/index.js.
+ * Google's response for Inter drifts (font revision, unicode-range edits), so
+ * two loader runs can produce two different hashes. With `.next/cache`
+ * persisted across deploys (vercel-deploy.yml), the JS side and the emitted
+ * CSS asset can come from *different* runs: the HTML then ships
+ * `class="__variable_<A>"` while the stylesheet only defines
+ * `.__variable_<B>{--font-inter:...}`. `--font-inter` resolves to nothing,
+ * which makes the whole `font-family: var(--font-inter), ...` declaration
+ * invalid at computed-value time — so it falls back to the *initial* value
+ * (Times New Roman), not to the sans-serif stack. That shipped to production
+ * on 2026-08-16 and rendered the entire site in serif.
+ *
+ * Self-hosting removes the build-time network dependency: these @font-face
+ * names are literal and stable, so no hash can ever drift out of sync. Files
+ * are content-hashed in public/fonts/ and served immutable (vercel.json).
+ * Regenerate with: node scripts/update-inter-font.js
+ *
+ * Files + unicode-ranges are Google's own Inter v20 variable subsets.
+ */
+@font-face {
+  font-family: 'InterVariable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-latin-var.3100e775.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'InterVariable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-latin-ext-var.34b9c504.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/*
+ * Metric-matched Arial, so the swap from fallback to Inter doesn't shift
+ * layout. Overrides are the ones next/font computed for this exact file
+ * (getFallbackMetricsFromFontFile, sans-serif) — kept so the fix is
+ * CLS-neutral vs. what production served before it broke.
+ */
+@font-face {
+  font-family: 'InterVariable Fallback';
+  src: local('Arial');
+  ascent-override: 89.79%;
+  descent-override: 22.36%;
+  line-gap-override: 0%;
+  size-adjust: 107.89%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
