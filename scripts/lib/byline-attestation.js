@@ -56,7 +56,27 @@ const BYLINE_MARKERS = [
   'reviewed by',
   'words by',
   'reporting by',
-  'photographs by',
+];
+
+// Words that turn a following "by" into a PRODUCTION CREDIT rather than a
+// byline: "directed by", "music by", "photographs by", "book and lyrics by".
+// Without this, a name lifted from a show's credits block attests as though it
+// were the article's author — verified live: isBylineAttestedInText('Enda
+// Walsh', '...Written by Enda Walsh...') returned true, and 11 of 130 one-sided
+// attestations in the live corpus matched a credits/bio phrase rather than a
+// byline (ship-check, 2026-09-15). The failure that makes this matter: a
+// scraper lifts criticName from "Directed by ..." while the sibling file holds
+// the REAL review whose byline came from an aggregator listing and is not
+// printed in the body — the real review would then be demoted and vanish.
+// 'written by' is deliberately NOT here: it is a legitimate article byline form
+// AND a playwright credit, so it stays a marker and is disambiguated by
+// position (a playwright credit is almost never the first thing on the page).
+const CREDIT_VERBS = [
+  'directed', 'direction', 'adapted', 'produced', 'composed', 'choreographed',
+  'designed', 'design', 'music', 'lyrics', 'book', 'photo', 'photos',
+  'photograph', 'photographs', 'photography', 'translated', 'orchestrated',
+  'conceived', 'staged', 'costumes', 'lighting', 'sound', 'scenic', 'starring',
+  'presented', 'performed', 'edited', 'illustrated',
 ];
 
 /**
@@ -99,9 +119,32 @@ function isBylineAttestedInText(criticName, text) {
   // whole-token run, never "...by victor gluckman...".
   const padded = ` ${body} `;
   for (const marker of BYLINE_MARKERS) {
-    if (padded.includes(` ${marker} ${name} `)) return true;
+    const needle = ` ${marker} ${name} `;
+    let from = 0;
+    for (;;) {
+      const at = padded.indexOf(needle, from);
+      if (at === -1) break;
+      if (!_precededByCreditVerb(padded, at, marker)) return true;
+      from = at + 1;
+    }
   }
   return false;
 }
 
-module.exports = { normalizeForAttestation, isBylineAttestedInText, BYLINE_MARKERS };
+/**
+ * Is the marker at `at` part of a production credit ("directed by", "music by")
+ * rather than a byline? Looks at the single token before the marker.
+ * @param {string} padded - space-padded normalized body
+ * @param {number} at - index of the leading space before the marker
+ * @param {string} marker
+ * @returns {boolean}
+ */
+function _precededByCreditVerb(padded, at, marker) {
+  if (marker !== 'by') return false;   // "reviewed by"/"words by" are unambiguous
+  const before = padded.slice(0, at).trimEnd();
+  if (!before) return false;
+  const prev = before.slice(before.lastIndexOf(' ') + 1);
+  return CREDIT_VERBS.includes(prev);
+}
+
+module.exports = { normalizeForAttestation, isBylineAttestedInText, BYLINE_MARKERS, CREDIT_VERBS };

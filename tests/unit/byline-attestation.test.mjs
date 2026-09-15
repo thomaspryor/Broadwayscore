@@ -159,3 +159,25 @@ test('(CODEX) demotion still fires when the byline is in NEITHER copy', () => {
   assert.equal(r.canonical, A);
   assert.match(r.reason, /printed in the article text/);
 });
+
+test('(SHIPCHECK) production credits are not bylines', () => {
+  // A bare "by" also introduces every production credit on the page. Without
+  // this, a criticName scraper-lifted from "Directed by ..." attests as though
+  // it authored the article — and could then demote the real review, whose own
+  // byline came from an aggregator listing and is not printed in the body.
+  // Verified live: 11 of 130 one-sided attestations in the corpus matched a
+  // credits/bio phrase (ship-check, 2026-09-15).
+  assert.equal(isBylineAttestedInText('Benjamin Viertel', 'Tightly directed by Benjamin Viertel and making its premiere'), false);
+  assert.equal(isBylineAttestedInText('Some Composer', 'with music by Some Composer and lyrics'), false);
+  assert.equal(isBylineAttestedInText('Viktorija Mickute', 'Photographs by Viktorija Mickute for the Times'), false);
+  assert.equal(isBylineAttestedInText('Viktorija Mickute', '(Photo credit: Viktorija Mickute) The play opens'), false);
+});
+
+test('(SHIPCHECK) a real byline still attests alongside credit lines', () => {
+  // The discriminator is the token before "by", not the presence of credits.
+  const text = 'Directed by Bob Smith. Review by Jane Doe.';
+  assert.equal(isBylineAttestedInText('Jane Doe', text), true);
+  assert.equal(isBylineAttestedInText('Bob Smith', text), false);
+  // "written by" stays a marker — it is a legitimate article byline form.
+  assert.equal(isBylineAttestedInText('Enda Walsh', 'A new play. Written by Enda Walsh.'), true);
+});
