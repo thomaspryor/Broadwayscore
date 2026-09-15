@@ -1,573 +1,68 @@
 [
   {
-    "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget",
-    "description": "Day 2026-09-04. Over budget: browserbase $6.3 > $4 (63 sessions); brightdata $4.94 > $2.5 (2386 serp + 906 unlocker reqs). 2026-09-04 · Browserbase: $6.3 (63 sessions) · 2026-09-04 · Bright Data: $4.94 (2386 serp / 906 unlocker) · ScrapingBee: baseline day (cycle 1000010) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 126737) — day figure starts tomorrow · Browserbase attribution: 92% attributed — top: test-caller 56, collect-review-texts.js 2 · Bright Data attribution: 16% attributed — top: opening-night-poller.js 302, validate-show-venue.js 107, gather-reviews.js 58, unknown 24, extract-theatre-record.js 15. Verification streak reset to 0.",
-    "severity": "error",
-    "url": null,
-    "decision": true,
-    "decisionPrompt": "Scraping spend over budget: browserbase $6.3 > $4 (63 sessions); brightdata $4.94 > $2.5 (2386 serp + 906 unlocker reqs). Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T02:22:20.323Z"
-  },
-  {
-    "conditionKey": "time-to-publish-sla:missed",
-    "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
-    "description": "Scope: 2 opening window(s): the-story-west-end-2026 (2026-09-03), a-month-in-the-country-west-end-2026 (2026-09-02)\nEvaluated 6 review(s), p90 245m.\nSlowest:\n• the-story-west-end-2026 / standard — 245m\n• the-story-west-end-2026 / london-theatre — 221m\n• the-story-west-end-2026 / broadwayworld — 144m\n• the-story-west-end-2026 / whatsonstage — 106m\n• the-story-west-end-2026 / telegraph — 44.3m\n• the-story-west-end-2026 / guardian — 27.5m",
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): in-honor-of-jean-michel-basquiat-off-broadway-2026 (2026-09-15), golden-boy-off-west-end-2026 (2026-09-15)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-08T07:07:43.000Z.\nThis is NOT a pass — the SLA had too little to judge.",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-05T02:23:04.226Z"
+    "queuedAt": "2026-09-15T12:14:18.297Z"
   },
   {
-    "conditionKey": "on-monitor-launched-on-monitor-2026-09-04",
-    "title": "Opening-night monitor pass complete: holy-fool-off-west-end-2026",
-    "description": "Pass 1, model opus, 11min, $1.09. Pass 1 complete — exited cleanly inside the 15-min budget, no report sent (parity not reached, window open until 22:59Z).\n\n**Holy Fool (Park Theatre, off-West-End) — press night 2026-09-04**\n\nLive on prod: **1 review** — WhatsOnStage / Miriam Sallon, score 38 (Negative). No composite score yet (1 review is below display threshold). Show status is already `open`.\n\nIndependent census found **9 outlets**, so the gap is large:\n- 6 never seen by the pipeline at all: The Stage, Everything Theatre, The Spy in the Stalls (4★), West End Best Friend, Jewish News, Theatre and Tonic\n- 2 discovered but text never collected (0-byte stubs): The Reviews Hub, readaboutstuff\n- 1 duplicate artifact: `whatsonstage--unknown.json` is a 0-byte stub of the same URL as the live WhatsOnStage file\n\nCaveat I recorded",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T12:31:04.933Z"
-  },
-  {
-    "conditionKey": "opening-night-slug-mismatch-the-story-west-end-2026",
-    "title": "Review URL cross-show mismatch on The Story",
-    "description": "Review URL for financialtimes/Sarah Hemming does not mention show slug (checked: the-story-west-end, the-story, story): https://www.ft.com/content/ce137235-1a5a-4eef-b82a-d6f9e7f6a244?syn-25a6b1a6=1",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T15:24:59.110Z"
-  },
-  {
-    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-story-west-end-2026:timeout-london",
-    "title": "Auto-remediation gave up on the-story-west-end-2026",
-    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-05T15:24:59.114Z"
+    "queuedAt": "2026-09-15T13:38:36.374Z"
   },
   {
-    "conditionKey": "opening-night-fulltext-mentions-show:short:holy-fool-off-west-end-2026",
-    "title": "Shipped review too short to verify on Holy Fool",
-    "description": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:pre-existing-condition-off-broadway-2026",
+    "title": "Auto-remediation gave up on pre-existing-condition-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"pre-existing-condition-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-05T16:52:24.664Z"
+    "queuedAt": "2026-09-15T13:38:36.376Z"
   },
   {
-    "conditionKey": "opening-night-publish-date-pre-opening:missing:holy-fool-off-west-end-2026",
-    "title": "Shipped review missing publishDate on Holy Fool",
-    "description": "thestage/Holly O'Mahony SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:pre-existing-condition-off-broadway-2026",
+    "title": "Shipped review missing publishDate on Pre-Existing Condition",
+    "description": "pages-on-stages/Mason Pilevsky SHIPPED with no publishDate — cannot confirm post-opening: https://pagesonstages.com/2026/09/14/pre-existing-condition/",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-05T16:52:24.666Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-holy-fool-off-west-end-2026",
-    "title": "Stale 'upcoming' tag on Holy Fool",
-    "description": "holy-fool-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=holy-fool-off-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T16:52:24.668Z"
-  },
-  {
-    "conditionKey": "cmux-launch:auth-preflight-failed",
-    "title": "cmux launch refused — claude auth preflight failed",
-    "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-05T23:00:06.190Z"
-  },
-  {
-    "conditionKey": "dispatch-flow-dead",
-    "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
-    "description": "Only 8 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 197). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-06T04:32:22.232Z"
-  },
-  {
-    "conditionKey": "sd-circuit-breaker",
-    "title": "Scrapingdog daily breaker TRIPPED: 35560/21000 credits",
-    "description": "Scrapingdog billed 35560 credits today against a ceiling of 21000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n5 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (717), collect-review-texts.js (300), collect-outlet-reviews.js (276).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-06T09:46:22.710Z"
-  },
-  {
-    "conditionKey": "watchdog-heartbeat-stale",
-    "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches",
-    "description": "The 👑 OWNER watchdog heartbeat is 1490 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-07T12:51:57.071Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026",
-    "title": "Placeholder synopsis on Kimberly Akimbo",
-    "description": "synopsis for kimberly-akimbo-off-west-end-2026 is too thin (119 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-07T20:38:47.994Z"
-  },
-  {
-    "conditionKey": "opening-night-publish-date-pre-opening:kimberly-akimbo-off-west-end-2026",
-    "title": "Pre-opening publishDate on Kimberly Akimbo",
-    "description": "monstagigz/Unknown SHIPPED with publishDate 2026-08-30 (10d before openingDate 2026-09-09): https://monstagigz.com/2026/08/30/theatre-review-kimberly-akimbo-starring-maria-friedman-at-hampstead-theatre/comment-page-1/",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-07T20:38:47.997Z"
-  },
-  {
-    "conditionKey": "bsc-prune:zombie-sweep:workspace:87:linear:BRO-2654",
-    "title": "Zombie-tab sweep closed workspace:87",
-    "description": "closed workspace:87 \"🤖⚡ Data·BRO-2569 No dispatcher path-checks the command it\" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-07T22:06:55.537Z"
-  },
-  {
-    "conditionKey": "feedback-outcomes:2026-09-08T12:26:05.880168+00:00",
-    "title": "Feedback: 1 submission(s), all handled automatically",
-    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nSpellbound — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Spellbound closed on september 6\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/809",
-    "severity": "info",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34232807906",
-    "decision": true,
-    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
-    "model": null,
-    "fields": [
-      {
-        "name": "Submissions",
-        "value": "1"
-      },
-      {
-        "name": "Need you",
-        "value": "0"
-      },
-      {
-        "name": "Pipeline status",
-        "value": "success"
-      }
-    ],
-    "queuedAt": "2026-09-08T13:36:53.336Z"
-  },
-  {
-    "conditionKey": "opening-night-remediation-exhausted-empty-cast:kimberly-akimbo-off-west-end-2026",
-    "title": "Auto-remediation gave up on kimberly-akimbo-off-west-end-2026",
-    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"kimberly-akimbo-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-08T14:37:07.815Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-kimberly-akimbo-off-west-end-2026",
-    "title": "Stale 'upcoming' tag on Kimberly Akimbo",
-    "description": "kimberly-akimbo-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=kimberly-akimbo-off-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-08T14:37:07.819Z"
-  },
-  {
-    "conditionKey": "opening-night-remediation-exhausted-empty-cast:jane-eyre-off-west-end-2026",
-    "title": "Auto-remediation gave up on jane-eyre-off-west-end-2026",
-    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jane-eyre-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-08T14:37:07.820Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-jane-eyre-off-west-end-2026",
-    "title": "Stale 'upcoming' tag on Jane Eyre",
-    "description": "jane-eyre-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=jane-eyre-off-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-08T14:37:07.822Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 40.9% of shows changed coverage state",
-    "description": "review-gap blast radius 40.9% (9/22 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bigfoot-off-broadway-2026, bughouse-off-broadway-2026, chess-2025, data-off-broadway-2026, indian-princesses-off-broadway-2025, the-dinosaurs-off-broadway-2026, the-monsters-off-broadway-2026, well-ill-let-you-go-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nPARTIAL write: the other 22 show(s) audited this run were NOT risky and were persisted normally. Only the 9 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-08T15:05:36.829Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-america-who-hurt-you-off-broadway-2026",
-    "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
-    "description": "synopsis for america-who-hurt-you-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-09T11:30:02.094Z"
-  },
-  {
-    "conditionKey": "opening-night-cv-wrongproduction-unhandled-jane-eyre-off-west-end-2026",
-    "title": "Unhandled CV.wrongProduction on Jane Eyre",
-    "description": "guardian/Holly O Mahony (guardian--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical adaptation of 'Jane Ey — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\nguardian/Holly O'Mahony (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical adaptation of 'Jane Ey — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\ntheatreboard/Unknown (theatreboard--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate review of Jane Eyre at Southwark — https://theatreboard.com/thread/14928/jane-eyre-musical-southwark-playhouse?page=3",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-09T22:36:59.912Z"
-  },
-  {
-    "conditionKey": "opening-night-fulltext-mentions-show:short:jane-eyre-off-west-end-2026",
-    "title": "Shipped review too short to verify on Jane Eyre",
-    "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhouse-elephant-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-09T22:37:00.073Z"
-  },
-  {
-    "conditionKey": "opening-night-publish-date-pre-opening:missing:jane-eyre-off-west-end-2026",
-    "title": "Shipped review missing publishDate on Jane Eyre",
-    "description": "thestage/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhouse-elephant-london\ntheatreboard/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://theatreboard.com/thread/14928/jane-eyre-musical-southwark-playhouse?page=3",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-09T22:37:00.075Z"
-  },
-  {
-    "conditionKey": "on-monitor-launched-on-monitor-2026-09-10",
-    "title": "Opening-night monitor pass complete: day-of-the-hog-off-broadway-2026, lean-to-off-broadway-2026",
-    "description": "Pass 47, model opus, 2min, $1.01. Pass 47 complete, exited clean inside the 15-min budget.\n\n**No gap tonight — both shows are pre-review.** Nothing to fix.\n\n1. **Standing check (Kimberly Akimbo):** prod cs 83.61 vs pass-46 baseline 83.53 — no drop, no clobber regression. Show stays closed at parity.\n2. **Census (Google News RSS, both OB shows):** zero review items. Day of the Hog returns only off-domain noise; Lean-To returns only the BWW Sheffer *interview* plus reviews of five *different* 59E59 productions. Matches passes 43–46.\n3. **Prod state:** both slim files, `cov.state = no-census-yet`, liveCount 0. No `review-texts/` dir and no `_pending/` byline strand for either show — nothing stuck.\n4. **Resolved pass-46's open item:** the orchestrator run sitting `in_progress` since 20:07Z is **not** hung. `opening-night-orche",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-10T23:16:28.281Z"
-  },
-  {
-    "conditionKey": "opening-night-publish-date-pre-opening:missing:man-to-man-west-end-2026",
-    "title": "Shipped review missing publishDate on Man to Man",
-    "description": "london-theatre/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://www.londontheatre.co.uk/show/45676-man-to-man",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:55.392Z"
-  },
-  {
-    "conditionKey": "opening-night-revival-unverified-man-to-man-west-end-2026",
-    "title": "Unverified revival on Man to Man",
-    "description": "man-to-man-west-end-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:55.394Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-man-to-man-west-end-2026",
-    "title": "Stale 'upcoming' tag on Man to Man",
-    "description": "man-to-man-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=man-to-man-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:55.395Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-lean-to-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on Lean-To",
-    "description": "lean-to-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=lean-to-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:55.396Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-day-of-the-hog-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on Day of the Hog",
-    "description": "day-of-the-hog-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=day-of-the-hog-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:55.398Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-the-human-voice-the-seven-deadly-sins-west-end-2026",
-    "title": "Placeholder synopsis on The Human Voice / The Seven Deadly Sins",
-    "description": "synopsis for the-human-voice-the-seven-deadly-sins-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:55.827Z"
-  },
-  {
-    "conditionKey": "opening-night-publish-date-pre-opening:missing:mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-    "title": "Shipped review missing publishDate on Mrs. Stern Wanders the Prussian State Library (Luna Stage)",
-    "description": "adriandimanlig/Adrian Dimanlig SHIPPED with no publishDate — cannot confirm post-opening: https://www.adriandimanlig.com/viewpoints-strong-women-at-the-helm-amy-berrymans-walden-and-jenny-lyn-baders-mrs-stern-wanders-the-prussian-state-library/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:57.030Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-the-children-off-west-end-2026",
-    "title": "Stale 'upcoming' tag on The Children",
-    "description": "the-children-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-children-off-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:58.267Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-america-who-hurt-you-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on AMERICA, WHO HURT YOU?",
-    "description": "america-who-hurt-you-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=america-who-hurt-you-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:33:59.338Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-becoming-hamlet-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on Becoming Hamlet",
-    "description": "becoming-hamlet-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=becoming-hamlet-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T16:34:00.406Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1048/250 reqs)",
-    "description": "Zone web_unlocker2 billed 1048 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n22 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (430), fetch-show-images-auto.js (189), collect-outlet-reviews.js (66).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T21:24:26.766Z"
-  },
-  {
-    "conditionKey": "bd-circuit-breaker-serp_api1",
-    "title": "Bright Data daily breaker TRIPPED: serp_api1 (252/250 reqs)",
-    "description": "Zone serp_api1 billed 252 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n22 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (430), fetch-show-images-auto.js (189), collect-outlet-reviews.js (66).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-11T21:24:26.814Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-the-human-voice-the-seven-deadly-sins-west-end-2026",
-    "title": "Stale 'upcoming' tag on The Human Voice / The Seven Deadly Sins",
-    "description": "the-human-voice-the-seven-deadly-sins-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T16:24:07.982Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on Mrs. Stern Wanders the Prussian State Library (Luna Stage)",
-    "description": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T16:24:09.224Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-golden-boy-off-west-end-2026",
-    "title": "Placeholder synopsis on Golden Boy",
-    "description": "synopsis for golden-boy-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T16:24:10.984Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-night-city-off-west-end-2026",
-    "title": "Placeholder synopsis on Night City",
-    "description": "synopsis for night-city-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T16:24:11.240Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-night-city-off-west-end-2026",
-    "title": "Stale 'upcoming' tag on Night City",
-    "description": "night-city-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=night-city-off-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T16:24:11.242Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
-    "title": "Placeholder synopsis on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
-    "description": "synopsis for the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T16:24:13.023Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 75.1% (373/497)\noff-broadway: 40.1% (129/322)\nwest-end: 73.8% (399/541)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (729h)\nA Midsummer Night's Dream — observer (729h)\nA Midsummer Night's Dream — standard (729h)\nA Midsummer Night's Dream — times-uk (729h)\nABBA Voyage — independent (729h)\n… 191 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (729h)\nBuena Vista Social Club — nydailynews (729h)\nHadestown — nydailynews (729h)\nJust in Time — nydailynews (729h)\nMasquerade — nydailynews (729h)\n… 11 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-13T18:43:20.658Z"
+    "queuedAt": "2026-09-15T13:38:36.378Z"
   },
   {
     "conditionKey": "deployed-coverage:stale",
     "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "9/125 show(s) differ between internal state and what prod serves.\nscore-drift: 9\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nDeath Note: The Musical: score-drift",
+    "description": "11/130 show(s) differ between internal state and what prod serves.\nscore-drift: 11\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nDeath Note: The Musical: score-drift",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-13T18:43:23.650Z"
+    "queuedAt": "2026-09-15T14:11:40.298Z"
   },
   {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
-    "description": "54 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "description": "3 T1/T2 outlet(s) still missing >24h after they became measurable.",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -575,83 +70,30 @@
     "model": null,
     "fields": [
       {
-        "name": "Just in Time — broadwaynews (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"just-in-time-2025\" -f max_tier=3 -f aggregators_only=false"
+        "name": "Witness for the Prosecution — standard (772h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
       },
       {
-        "name": "Othello — broadwaynews (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"othello-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+        "name": "Witness for the Prosecution — thestage (772h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
       },
       {
-        "name": "Stranger Things: The First Shadow — times-uk (69h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The 25th Annual Putnam County Spelling Bee — dailybeast (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-25th-annual-putnam-county-spelling-bee-off-broadway-2025\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Importance of Being Oscar — times-uk (685h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-importance-of-being-oscar-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lion King — ew (124h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-1997\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lion King — i-paper (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lion King — thestage (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Lion King — whatsonstage (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-lion-king-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Misanthrope — thestage (729h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-misanthrope-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+        "name": "Witness for the Prosecution — timeout (772h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
       }
     ],
-    "queuedAt": "2026-09-13T18:43:23.760Z"
+    "queuedAt": "2026-09-15T14:11:40.405Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34841623686",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34841623686)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34841003770)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "4"
-      }
-    ],
-    "queuedAt": "2026-09-14T12:17:46.595Z"
-  },
-  {
-    "conditionKey": "on-monitor-report-on-monitor-2026-09-13-final-parity-pass12",
-    "title": "Opening night report: BLOODSPORT: After Helen of Troy — 25 reviews live, Critic Score 73 (FINAL)",
-    "description": "PARITY REACHED. BLOODSPORT: After Helen of Troy (Theatre Royal Stratford East, off-West-End, opened 2026-09-13) has all 25 published reviews live and scored on broadwayscorecard.com. This supersedes the earlier 24-review report.\n\nFINAL STATE\n25 of 25 census entries live. Critic Score 73. Status open. Two verified exclusions (duplicate review-text files for British Theatre Guide and Financial Times; the scored copies are live at 62 and 82).\n\nSCORES: West End Wilma 96, The Spy in the Stalls 95, London Unattached 93, The Stage 91, WhatsOnStage 91, West End Best Friend 87, Financial Times 82, Time Out London 82, London Theatre 82, Evening Standard 80, The Reviews Hub 80, Plays International 80, The Guardian 77, Theatre Weekly 77, Liamodell 77, London Box Office 74, The Telegraph 67, The QR 63, British Theatre Guide 62, BroadwayWorld 60, Radio Times 60, All That Dazzles UK 56, The Times UK 49, Everything Theatre 45, First Night Magazine 39.\n\nTIMELINE\nFirst review seen 2026-09-13 19:04Z (London Box Office / Stuart King). 14 live 09-14 16:55Z, 20 live 17:37Z, 21 live 18:03Z, 22 live 18:28Z, 23 live 18:52Z, 24 live ~19:40Z, 25 live ~20:45Z. Parity 20:45Z, verified on prod 20:58Z. About 25 hours first review to parity. The last six reviews were monitor recoveries, not pipeline finds.\n\nFIXES BY FAILURE-MODE CLASS\n1. Missed discovery — The Spy in the Stalls. Pass 6 had written the outlet off as a likely phantom after DNS probes inside a scraper path failed; the domain resolves fine and serves 200. Found by a homepage href scan, ingested, live at 95.\n2. Missed discovery plus extractor gap — Radio Times (Olivia Garrett). Quoted in the WestEndTheatre roundup, never discovered; triage-review-gap.js returned true-missed-discovery. Direct-URL ingest fetched 200, but scripts/lib/article-extractor.js has no radiotimes.com PATTERNS entry, so it returned 392 characters of pension-advert boilerplate. Body hand-extracted (3372 chars, 14 paragraphs) and ingested via ingest-manual-review.js, which auto-detected the 3 of 5 stars and locked humanReviewScore 60. Committed to review-texts as 3878554efa4, rebuilt by run 34893758386 (success 20:42Z), live ~20:45Z.\n3. Wrong URL shape — the bestoftheatre roundup lives at /blog/post/review-roundup-<slug>, not /reviews/<slug>.\n4. Stale local clones — verify-review-recovery.js reported three phantom failures purely because local review-texts and core-data were 10-11 commits behind; fast-forwarding cleared them.\n\nNEW FAILURE MODE CARDED\nBRO-3368 (P1, parked): article-extractor has no radiotimes.com entry, so ingest returns 392 chars of ad copy. The trap: score-extractors.js DOES have radiotimes handlers, which gave false reassurance, because body extraction and score extraction are independent paths. Same class as BRO-3356 (whatsonstage). Parked because a bounded 15-minute pass cannot do a worktree code fix plus a golden fixture test. Acceptance: node --test scripts/lib/article-extractor.radiotimes.test.mjs. Appended to memory/feedback_discovery_pipeline_silent_gates.md so the next opening night char-counts the extracted body before trusting a 200.\n\nWORKFLOWS DISPATCHED\nPass 11: rebuild-reviews run 34893758386, completed success. None this pass.\n\nBROADCAST GATE\n25 scored reviews against a threshold of 8: OPEN. The monitor sent nothing and called no Resend endpoint, per rule 17. The broadcast workflow owns the send.\n\nSPEND\nAbout 0.12 USD this pass, about 3.10 USD across 12 passes.\n\nSTATE FILE\ndata/opening-night-monitor/session-state-on-monitor-2026-09-13.json\nLedger: data/audit/stage-latency.jsonl\n",
-    "severity": "error",
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.3% (379/497)\noff-broadway: 42.4% (132/311)\nwest-end: 75.4% (419/556)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (772h)\nA Midsummer Night's Dream — observer (772h)\nA Midsummer Night's Dream — standard (772h)\nABBA Voyage — independent (772h)\nAladdin — ew (772h)\n… 169 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (772h)\nThe Book of Mormon — usatoday (772h)\nBuena Vista Social Club — broadwaynews (772h)\nBuena Vista Social Club — nydailynews (772h)\nHadestown — nydailynews (772h)\n… 20 more circuit-open cell(s)",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-14T21:00:10.285Z"
+    "queuedAt": "2026-09-15T14:11:40.498Z"
   }
 ]

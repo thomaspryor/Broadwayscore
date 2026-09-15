@@ -57,12 +57,16 @@ const TITLE_STOP_WORDS = new Set(['the', 'and', 'for', 'from', 'with', 'that', '
 // SERP prefilter applied in url-discovery.js (Schmigadoon 2026 Bug #8).
 
 /**
- * Normalize a show title into matchable words: lowercase, strip punctuation, remove stop words.
+ * Normalize a show title into matchable words: lowercase, split on hyphens (BWW slugs
+ * split on hyphens too — "Pre-Existing Condition" must become ["pre","existing",
+ * "condition"] to match slug segments ["pre","existing","condition",...], not collapse
+ * into "preexisting"), strip remaining punctuation, remove stop words.
  * Mirrors the logic in findBWWRoundupLinkOnHomepage (gather-reviews.js).
  */
 function normalizeTitleWords(title) {
   return foldDiacritics(title)
     .toLowerCase()
+    .replace(/[-_]/g, ' ')
     .replace(/[^a-z0-9\s]/g, '')
     .split(/\s+/)
     .filter(w => w.length > 0 && !TITLE_STOP_WORDS.has(w));

@@ -1,43 +1,8 @@
 {
-  "generatedAt": "2026-09-13T18:43:10.493Z",
+  "generatedAt": "2026-09-15T14:11:30.260Z",
   "windowDays": 45,
-  "showsScanned": 65,
+  "showsScanned": 67,
   "gaps": [
-    {
-      "showId": "the-story-west-end-2026",
-      "title": "The Story",
-      "openingDate": "2026-09-03",
-      "file": "the-spectator-uk--unknown.json",
-      "outletId": "the-spectator-uk",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.spectator.co.uk/submit/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
-      "firstSeen": "2026-09-06T13:54:56.426Z",
-      "fileAgeHours": 172.76900694444444,
-      "gapSeenAt": "2026-09-08T15:05:38.757Z",
-      "nonTerminalAgeHours": 123.62548194444445
-    },
-    {
-      "showId": "the-children-off-west-end-2026",
-      "title": "The Children",
-      "openingDate": "2026-09-10",
-      "file": "times-uk--the-times.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flourish-age-ai-daniel-susskind-review-lvn8wnjjv?srsltid=AfmBOorLl-6BuJtStFda45pYksoU9j1lnY_XEamA5jNltlVUvNym8JxQ",
-      "recovery": null,
-      "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-children-off-west-end-2026 --url=https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flourish-age-ai-daniel-susskind-review-lvn8wnjjv?srsltid=AfmBOorLl-6BuJtStFda45pYksoU9j1lnY_XEamA5jNltlVUvNym8JxQ --outlet=times-uk --critic=\"The Times\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-13T10:13:20.118Z",
-      "fileAgeHours": 8.462569444444444,
-      "gapSeenAt": "2026-09-13T18:43:10.492Z",
-      "nonTerminalAgeHours": 0
-    },
     {
       "showId": "benevolent-off-broadway-2026",
       "title": "Benevolent",
@@ -51,9 +16,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 385.4413725,
+      "fileAgeHours": 428.9135238888889,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 347.03231166666666
+      "nonTerminalAgeHours": 390.50446944444445
     }
   ],
   "contradictions": []

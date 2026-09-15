@@ -1,20 +1,20 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-09-05T02:22:00.874Z",
+  "lastChecked": "2026-09-15T12:12:12.031Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "warn",
-      "message": "6 NEW review(s) whose explicit rating contradicts the score (worst: follies-2011 Time Out New York 1/5→20 vs LLM 88, gap 68); 1 star-won-hiding"
+      "status": "pass",
+      "message": "No new star/score contradictions (50 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.3% scored (20183/20532)"
+      "message": "98.5% scored (20651/20972)"
     },
     {
       "name": "Quality: corpus drift",
@@ -24,7 +24,7 @@
     {
       "name": "Quality: DMARC deliverability",
       "status": "warn",
-      "message": "Newest DMARC report is 6d old (reporters send daily)"
+      "message": "Newest DMARC report is 17d old (reporters send daily)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -33,18 +33,18 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "warn",
-      "message": "Unknown-outlet census is 2d old (>48h)"
+      "status": "pass",
+      "message": "No probable domain moves in 224 unregistered host(s)"
     },
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1163 outlet(s), 42580 review(s)"
+      "message": "No broken-extractor signature in 1206 outlet(s), 43673 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
-      "status": "warn",
-      "message": "1 outlet(s) show a broken-extractor signature (worst: plays-to-see — 4/7 recent invalid, 57% vs 8% baseline)"
+      "status": "pass",
+      "message": "No broken-extractor signature in 1206 outlet(s), 43673 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -53,13 +53,13 @@
     },
     {
       "name": "Quality: coverageExpectation drift",
-      "status": "warn",
-      "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
+      "status": "pass",
+      "message": "No coverageExpectation re-probes needed"
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "109 outlet×market rows checked, none NEW silent 2+ consecutive weeks (25 known/baselined, 4d ago)"
+      "message": "109 outlet×market rows checked, none NEW silent 2+ consecutive weeks (38 known/baselined, 20h ago)"
     }
   ]
 }

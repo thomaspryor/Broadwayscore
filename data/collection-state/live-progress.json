@@ -1,30 +1,134 @@
 {
-  "updatedAt": "2026-09-14T17:24:26.178Z",
-  "processed": 41,
-  "failed": 109,
-  "successRate": "27.3%",
+  "updatedAt": "2026-09-15T14:59:43.079Z",
+  "processed": 118,
+  "failed": 954,
+  "successRate": "11.0%",
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 68,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
-    "scrapingbee": 10,
-    "brightdata": 1,
+    "browserbase": 4,
+    "directCookies": 2,
+    "scrapingbee": 20,
+    "brightdata": 12,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 18
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 26,
   "recentActivity": [
     {
-      "t": "2026-09-14T17:16:48.481Z",
+      "t": "2026-09-15T14:18:11.411Z",
       "event": "bb-session",
-      "session": "4866e808",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+      "session": "ec26fec5",
+      "url": "https://www.whatsonstage.com/news/ben-platt-lin-manuel-miranda-and-harry-potter-"
     },
     {
-      "t": "2026-09-14T17:16:49.375Z",
+      "t": "2026-09-15T14:18:23.760Z",
+      "event": "bb-session",
+      "session": "7d9c0a1c",
+      "url": "https://www.whatsonstage.com/news/ben-platt-lin-manuel-miranda-and-harry-potter-"
+    },
+    {
+      "t": "2026-09-15T14:22:41.461Z",
+      "event": "bb-session",
+      "session": "fa929ed6",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-15T14:22:45.516Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-15T14:23:03.623Z",
+      "event": "bb-session",
+      "session": "98d66acb",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-15T14:23:07.710Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-15T14:30:12.100Z",
+      "event": "bb-session",
+      "session": "4d835eda",
+      "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+    },
+    {
+      "t": "2026-09-15T14:30:21.021Z",
+      "event": "bb-session",
+      "session": "c40104b7",
+      "url": "https://www.broadwayworld.com/shows/Miles-for-Mary-332307.html"
+    },
+    {
+      "t": "2026-09-15T14:32:26.538Z",
+      "event": "bb-session",
+      "session": "d04e8694",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--"
+    },
+    {
+      "t": "2026-09-15T14:32:27.210Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-15T14:35:09.591Z",
+      "event": "bb-session",
+      "session": "fa6a47f4",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-london-old-vic-stephen-mang"
+    },
+    {
+      "t": "2026-09-15T14:35:10.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-15T14:36:38.841Z",
+      "event": "bb-session",
+      "session": "d97aa36d",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-londo"
+    },
+    {
+      "t": "2026-09-15T14:36:39.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-15T14:38:42.732Z",
+      "event": "bb-session",
+      "session": "6d3a186f",
+      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
+    },
+    {
+      "t": "2026-09-15T14:38:55.089Z",
+      "event": "bb-session",
+      "session": "c3ca49e6",
+      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
+    },
+    {
+      "t": "2026-09-15T14:53:30.555Z",
+      "event": "bb-session",
+      "session": "1e4f9219",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-09-15T14:53:40.730Z",
+      "event": "bb-session",
+      "session": "9a70df98",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-09-15T14:56:19.547Z",
+      "event": "bb-session",
+      "session": "9da76340",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-15T14:56:40.244Z",
+      "event": "bb-session",
+      "session": "969a2037",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
     }
   ]
 }

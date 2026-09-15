@@ -1,45 +1,55 @@
 {
   "system": "data quality",
   "status": "error",
-  "lastChecked": "2026-09-05T02:22:00.874Z",
+  "lastChecked": "2026-09-15T12:12:12.031Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
-      "name": "Data quality: cross-outlet attribution drift",
+      "name": "Data quality: provider spend ledger",
       "status": "error",
-      "message": "Drift-check snapshot is 4d old (>48h) — the daily check itself has stopped running"
+      "message": "Provider spend ledger's newest entry (day=2026-09-13) is 3d old (>48h) — the daily reconciliation itself has stopped landing"
+    },
+    {
+      "name": "Data quality: cross-outlet attribution drift",
+      "status": "warn",
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (20h ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "status": "error",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
+      "status": "warn",
+      "message": "17 NEW unhandled CV.wrongProduction review(s) since last run (910 total across 424 show(s), 20h ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "status": "error",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
+      "status": "warn",
+      "message": "3 NEW unmatched review(s) since last run (640 total across 327 show(s), 20h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "status": "error",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
+      "status": "warn",
+      "message": "1 NEW cross-show URL mismatch(es) since last run (1621 total across 720 show(s), 20h ago)"
     },
     {
       "name": "Data quality: roundup-url-mismatch lifetime sweep",
-      "status": "error",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
+      "status": "pass",
+      "message": "No new violations since last run (51 known baseline across 2076 show(s), 20h ago)"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "status": "error",
-      "message": "Lifetime-sweep snapshot is 4d old (>48h) — the daily sweep itself has stopped running"
+      "status": "pass",
+      "message": "No new violations since last run (42 known baseline across 2076 show(s), 20h ago)"
+    },
+    {
+      "name": "Data quality: missed opening-night broadcasts",
+      "status": "warn",
+      "message": "6 show(s) opened and qualified but never emailed subscribers (0 still alertable, 6 aged out past the paging window, 20h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
       "status": "pass",
-      "message": "No stale 'announced' shows (22 silenced by contamination, 23h ago)"
+      "message": "No stale 'announced' shows (23 silenced by contamination, 20h ago)"
     }
   ]
 }

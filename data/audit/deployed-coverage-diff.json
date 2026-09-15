@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-13T18:43:23.637Z",
+  "generatedAt": "2026-09-15T14:11:40.282Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 125,
-  "clean": 116,
-  "defective": 9,
+  "checked": 130,
+  "clean": 119,
+  "defective": 11,
   "byType": {
-    "score-drift": 9
+    "score-drift": 11
   },
   "shows": [
     {
@@ -18,12 +18,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.19 vs local 73.42 (Δ0.23)"
+          "detail": "deployed cs 76.07 vs local 76.28 (Δ0.21)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 11
+      "localCount": 19,
+      "deployedCount": 19
     },
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
@@ -33,12 +33,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.43 vs local 81.31 (Δ0.12)"
+          "detail": "deployed cs 80.73 vs local 80.67 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 26
+      "localCount": 27,
+      "deployedCount": 27
     },
     {
       "showId": "a-month-in-the-country-west-end-2026",
@@ -48,12 +48,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.01 vs local 79.07 (Δ0.06)"
+          "detail": "deployed cs 78.82 vs local 79 (Δ0.18)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
+      "localCount": 28,
+      "deployedCount": 28
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -63,7 +63,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.16 vs local 77.22 (Δ0.06)"
+          "detail": "deployed cs 77.22 vs local 77.16 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
@@ -78,7 +78,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.79 vs local 72.92 (Δ0.13)"
+          "detail": "deployed cs 72.94 vs local 72.81 (Δ0.13)"
         }
       ],
       "missingFromProd": [],
@@ -86,34 +86,34 @@
       "deployedCount": 35
     },
     {
-      "showId": "the-producers-west-end-2025",
-      "title": "The Producers",
-      "openingDate": "2025-09-13",
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-06-20",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 87.05 vs local 87.36 (Δ0.31)"
+          "detail": "deployed cs 78.4 vs local 78.69 (Δ0.29)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 21
+      "localCount": 23,
+      "deployedCount": 23
     },
     {
-      "showId": "come-alive-the-greatest-showman-circus-spectacular-off-west-end-2024",
-      "title": "Come Alive! The Greatest Showman Circus Spectacular",
-      "openingDate": "2024-10-17",
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 68.67 vs local 66.79 (Δ1.88)"
+          "detail": "deployed cs 75.76 vs local 75.7 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9
+      "localCount": 28,
+      "deployedCount": 28
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -123,7 +123,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.95 vs local 73.77 (Δ0.18)"
+          "detail": "deployed cs 73.99 vs local 73.92 (Δ0.07)"
         }
       ],
       "missingFromProd": [],
@@ -131,19 +131,49 @@
       "deployedCount": 21
     },
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
+      "showId": "operation-mincemeat-west-end-2024",
+      "title": "Operation Mincemeat",
+      "openingDate": "2023-05-09",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.21 vs local 81.11 (Δ0.1)"
+          "detail": "deployed cs 87.91 vs local 88.02 (Δ0.11)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25
+      "localCount": 23,
+      "deployedCount": 23
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "title": "Moulin Rouge! The Musical",
+      "openingDate": "2022-01-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.61 vs local 69.71 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 20
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "title": "SIX the Musical",
+      "openingDate": "2019-01-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.13 vs local 81.01 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14
     }
   ]
 }
