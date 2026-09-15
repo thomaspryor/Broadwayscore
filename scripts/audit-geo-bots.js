@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+const { getGaClient } = require('./lib/ga4-client');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { fetchEngagedSessionsSummary } = require('./lib/ga4-engaged-sessions');
 
@@ -36,16 +36,7 @@ const BOT_THRESHOLDS = {
   maxPagesPerSession: 1.1, // bots hit one URL; real users click around
 };
 
-function getClient() {
-  if (process.env.GA_SERVICE_ACCOUNT_KEY) {
-    const decoded = Buffer.from(process.env.GA_SERVICE_ACCOUNT_KEY, 'base64').toString('utf8');
-    return new BetaAnalyticsDataClient({ credentials: JSON.parse(decoded) });
-  }
-  if (process.env.GA_KEY_FILE) {
-    return new BetaAnalyticsDataClient({ keyFilename: process.env.GA_KEY_FILE });
-  }
-  return new BetaAnalyticsDataClient();
-}
+const getClient = getGaClient;
 
 async function fetchGeoStats(client, propertyId, days = 7) {
   const [res] = await client.runReport({
