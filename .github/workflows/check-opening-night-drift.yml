@@ -156,16 +156,28 @@ jobs:
         if: steps.drift.outputs.exit_code == '1'
         env:
           ALERT_SHOWS: ${{ steps.drift.outputs.alert_shows }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         uses: actions/github-script@v7
         with:
           script: |
             const { sendAlert } = require('./scripts/lib/discord-notify.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const alertShows = (process.env.ALERT_SHOWS || '').trim();
+            // BRO-931 #4: severity was 'warning' with no `email: true` — sendAlert()
+            // silently no-ops (console.log only, returns false) unless BOTH the
+            // severity is in EMAILABLE_SEVERITIES ('critical'|'error') AND email:true
+            // is passed. This alert existed but delivered nothing beyond a CI run
+            // log line for as long as the workflow has run — exactly the "silent for
+            // hours" gap named in the Fear of 13 postmortem. 'error' (not 'critical')
+            // matches this repo's severity governance: only vercel-deploy,
+            // opening-night-broadcast, opening-night-poller, and data-health-check
+            // use 'critical' (see .github/workflows/CLAUDE.md "Notification Severity").
             await sendAlert({
               title: 'Opening Night Drift Detected',
               description: 'Review count mismatch between local review-texts, reviews.json aggregate, and live production data. Grace window passed — investigate now.',
-              severity: 'warning',
+              severity: 'error',
+              email: true,
               fields: [
                 { name: 'Shows with Drift', value: alertShows.slice(0, 1024) || '(none)', inline: false },
                 { name: 'Fix', value: 'Run `node scripts/verify-review-recovery.js --show=SHOW_ID --production`', inline: false },

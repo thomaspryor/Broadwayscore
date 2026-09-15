@@ -26,7 +26,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { countLocalIncluded, countAggregate, fetchLiveRc, countLocalPerShowJson, computeDrift, isLiveRcMissingField } = require('./lib/review-count-probe');
+const { countLocalIncluded, countAggregate, fetchLiveRc, countLocalPerShowJson, computeDrift, isLiveRcMissingField, makeFingerprint } = require('./lib/review-count-probe');
 
 // ── Args ─────────────────────────────────────────────────────────────────────
 
@@ -121,10 +121,9 @@ function getTargetShows() {
 }
 
 // ── Fingerprint logic ─────────────────────────────────────────────────────────
-
-function makeFingerprint(local, agg, localJson, live) {
-  return `${local}:${agg}:${localJson ?? 'null'}:${live ?? 'null'}`;
-}
+// makeFingerprint (BRO-931 #4) lives in ./lib/review-count-probe — see its
+// doc comment for why the fingerprint is keyed on `live` alone rather than
+// all four stage counts.
 
 /**
  * Returns the age in minutes of public/data/shows/{showId}.json, or null if
@@ -235,7 +234,7 @@ async function main() {
     const liveRcMissing = isLiveRcMissingField(live) && localJson != null && localJson.rc != null;
     const effectiveDrift = liveRcMissing ? Math.max(drift.drift, THRESHOLD + 1) : drift.drift;
 
-    const fingerprint = makeFingerprint(local.included, agg, localJsonCount, liveRcMissing ? 'rc-missing' : live.rc);
+    const fingerprint = makeFingerprint(liveRcMissing ? 'rc-missing' : live.rc);
 
     // Check allowlist before shouldAlert so suppressed shows don't consume grace slots
     const allowEntry = allowlist[showId];

@@ -148,6 +148,32 @@ function computeDrift({ local, aggregate, localJson, live }) {
   return { min, max, drift: max - min };
 }
 
+/**
+ * BRO-931 #4 — "local 21 vs live 13" went unexplained for hours during the
+ * Fear of 13 (2026-04-15) opening night. check-opening-night-drift.js's
+ * grace-window logic (shouldAlert: only fire once the SAME fingerprint has
+ * persisted across 2+ consecutive runs) previously built its fingerprint
+ * from ALL FOUR stage counts (local, agg, localJson, live). During exactly
+ * that incident shape — local/agg/localJson climbing every ~30min as new
+ * reviews are gathered and rebuilt while live stays frozen — the fingerprint
+ * changed on every single run, so `consecutiveCount` never reached the grace
+ * threshold and the alert never fired for as long as local kept growing:
+ * backwards, since a growing gap while live is stuck is the incident getting
+ * WORSE, not resolving.
+ *
+ * The signal that must stay unchanged to prove "genuinely stuck, not just
+ * mid-cascade" is whether LIVE has moved, not whether the whole tuple is
+ * identical — the other three stages are expected to advance while the
+ * pipeline is actively catching up; only a frozen live count means nothing
+ * reached production. Keying the fingerprint on `live` alone lets the grace
+ * window accumulate correctly in the exact scenario it exists to catch, and
+ * still resets appropriately the moment live actually advances (even
+ * slowly), since that's real progress, not a stuck state.
+ */
+function makeFingerprint(live) {
+  return `${live ?? 'null'}`;
+}
+
 module.exports = {
   countLocalIncluded,
   countAggregate,
@@ -156,4 +182,5 @@ module.exports = {
   computeDrift,
   classifyLiveRcPayload,
   isLiveRcMissingField,
+  makeFingerprint,
 };
