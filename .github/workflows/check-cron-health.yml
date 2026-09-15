@@ -110,6 +110,11 @@ jobs:
             # memory/feedback_github_cron_delays.md, plus retries).
             "enrich-west-end-dates.yml|110|Enrich West End Dates"
             "enrich-off-broadway-dates.yml|110|Enrich Off-Broadway Dates"
+            # BRO-873 cousin: Mon+Thu 6 UTC, same cadence as the two enrich-*
+            # entries above. Broken/missing show images are user-facing;
+            # wasn't in this list at all before, so a dead cron here had NO
+            # backstop (staleness OR real-time) until now.
+            "fetch-all-image-formats.yml|110|Fetch All Image Formats"
             "refresh-show-score-opening-night.yml|50|Refresh Show Score (opening-night)"
             "scrape-westendtheatre.yml|192|Scrape WestEndTheatre"
             # User-facing data refresh workflows. Stale data hits /lotteries,
