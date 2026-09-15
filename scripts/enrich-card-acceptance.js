@@ -521,15 +521,31 @@ function repairDraftedCommand(cmd) {
 // therefore degrades this guardrail to its pre-BRO-3378 behaviour rather than
 // rejecting every draft a model produces — the failure mode that would
 // otherwise starve the card pool.
-let originMainFetchState = null; // null = not attempted, true/false = outcome
+let originMainRef = undefined; // undefined = not attempted, string = pinned SHA, null = unavailable
 const originMainExistsCache = new Map();
-function defaultExistsOnOriginMain(relPath) {
-  if (originMainFetchState === null) {
-    originMainFetchState = fetchOriginMain({ repo: REPO, log: console.error });
+function resolveOriginMainRef() {
+  if (!fetchOriginMain({ repo: REPO, log: console.error })) return null;
+  // Pin the SHA the fetch just landed, and ask every subsequent question against
+  // THAT commit rather than the moving `origin/main` ref. This machine runs many
+  // parallel sessions sharing one clone, so another worktree's fetch can advance
+  // origin/main mid-run — leaving early cards judged against one tree and later
+  // cards against another, with a warm cache still serving the first tree's
+  // answers. Pinning makes the whole run one consistent snapshot (ship-check
+  // finding: "one fetch/cache is not a snapshot").
+  try {
+    return execFileSync('git', ['rev-parse', 'origin/main'], {
+      cwd: REPO, timeout: 10000, stdio: 'pipe', encoding: 'utf8',
+    }).trim() || null;
+  } catch (e) {
+    console.error(`[enrich-card-acceptance] WARN could not pin origin/main: ${String(e.message).slice(0, 120)}`);
+    return null;
   }
-  if (!originMainFetchState) return null;
+}
+function defaultExistsOnOriginMain(relPath) {
+  if (originMainRef === undefined) originMainRef = resolveOriginMainRef();
+  if (!originMainRef) return null;
   if (!originMainExistsCache.has(relPath)) {
-    originMainExistsCache.set(relPath, pathExistsOnOriginMain(relPath, { repo: REPO, log: console.error }));
+    originMainExistsCache.set(relPath, pathExistsOnOriginMain(relPath, { repo: REPO, ref: originMainRef, log: console.error }));
   }
   return originMainExistsCache.get(relPath);
 }
@@ -546,6 +562,10 @@ function buildEnrichRetryPrompt(card, rejectedCommand, rejectionReason, rejectio
   // allowlists, and the model's command was already correctly shaped — being
   // told to fix its shape is what sent BRO-2311/BRO-2538 round the loop twice
   // (defect 1). The fix here is a different FILE, not a different form.
+  const arityGuidance = rejectionKind === 'test-f-arity' ? `
+\`test -f\` takes exactly ONE file. Naming several is a shell error (exit 2), so that check can never pass at all.
+Name exactly one file — or, if you need to assert on several, name a \`node --test <path>.test.mjs\` test that checks them.
+` : '';
   const vacuousGuidance = rejectionKind === 'test-f-satisfied' ? `
 That file already exists, so the check passes right now, before any work is done — it can never fail, so it proves nothing.
 Name a check that is RED today and only goes green once this card's work lands. In order of preference:
@@ -558,7 +578,7 @@ Do NOT name any file that already exists in the repository.
 YOUR PREVIOUS ANSWER WAS REJECTED BY THE VALIDATOR.
 Rejected command: ${String(rejectedCommand).slice(0, 200)}
 Validator verdict: ${String(rejectionReason).slice(0, 400)}
-${vacuousGuidance}
+${vacuousGuidance}${arityGuidance}
 Fix exactly that. The complete list of accepted forms is: ${SAFE_CHECK_DESCRIPTION}
 Note the directory allowlists differ per form: \`test -f\` accepts docs/, memory/, tests/, src/ and scripts/; \`node --test\` and \`npx tsx --test\` accept only tests/, scripts/ and src/. If the file you want to assert on is outside the relevant list, do NOT force that form — name a \`node --test tests/unit/<name>.test.mjs\` test that asserts the same thing, or fall back to \`npx tsc --noEmit\`.
 Name EXACTLY ONE command anywhere in acceptanceCriteria. A second backticked command, even a safe one, can outrank the one you named and become the command that actually runs.
@@ -1090,9 +1110,25 @@ async function enrichOneCard(card, opts = {}) {
     // action:'failed' path: a card left unarmed is honest and already listed
     // by audit-card-verifiability.js, whereas a vacuous command is a silent
     // false green, which is strictly worse.
-    const vacuous = classifyVacuousCheck(bareCommand, opts.existsOnOriginMain || defaultExistsOnOriginMain);
+    // Classified on pathCheck.checkableDone, NOT bareCommand: resolveCheckPaths
+    // may REWRITE the command it just validated (its near-match correction maps
+    // `tests/x.test.mjs` onto an existing `tests/unit/x.test.mjs`), and
+    // buildDraftSection writes that corrected string to the card. Checking the
+    // pre-correction string let the correction itself manufacture a vacuous
+    // command: the drafted path was absent, so 2b cleared it, and the card
+    // received the corrected path, which exists. Proven against the real
+    // resolver before this line was changed (ship-check finding) — always judge
+    // the string that actually gets written.
+    const finalCommand = pathCheck.checkableDone || bareCommand;
+    const vacuous = classifyVacuousCheck(finalCommand, opts.existsOnOriginMain || defaultExistsOnOriginMain);
     if (vacuous) {
-      lastRejection = { command: bareCommand, reason: vacuous.reason, kind: vacuous.kind };
+      // An unresolved oracle is NOT a vacuous command — but it is also not a
+      // validated one, and this branch is about to WRITE. Deferring costs the
+      // card one nightly run; accepting on faith is how an oracle outage
+      // silently authorizes the exact weak checks this guardrail exists to
+      // stop. The read-only audit makes the opposite call on the same verdict
+      // (auditVacuousChecks drops it) because a report is an accusation.
+      lastRejection = { command: finalCommand, reason: vacuous.reason, kind: vacuous.kind };
       continue;
     }
 

@@ -159,9 +159,20 @@ const {
   classifyVacuousCheck,
   auditVacuousChecks,
   findCardCheckPathDefects,
+  pathExistsOnOriginMain,
   VACUOUS_TEST_F_SATISFIED,
   VACUOUS_TEST_F_ARITY,
+  VACUOUS_TEST_F_UNRESOLVED,
 } = require('../../scripts/lib/card-premises-auditor.js');
+
+test('pathExistsOnOriginMain: a DIRECTORY is not "present" — test -f on a dir always exits 1', () => {
+  // `git cat-file -e` answers "is there an object here", which is true for a
+  // tree. Counting a directory as present would report an unpassable check as
+  // satisfied, and call a check that can only ever FAIL one that can never fail.
+  // Uses this repo's own origin/main, so it exercises the real git probe.
+  assert.equal(pathExistsOnOriginMain('scripts/lib', { log: () => {} }), false);
+  assert.equal(pathExistsOnOriginMain('scripts/health-check.js', { log: () => {} }), true);
+});
 
 const EXISTS = () => true;
 const ABSENT = () => false;
@@ -182,10 +193,19 @@ test('classifyVacuousCheck: test -f naming a to-be-created file is NOT vacuous (
   assert.equal(classifyVacuousCheck('test -f docs/new-runbook.md', ABSENT), null);
 });
 
-test('classifyVacuousCheck: an unresolvable path fails open, never vacuous', () => {
-  // Mirrors pathExistsOnOriginMain's null-on-transient-failure contract: a
-  // fetch blip must never manufacture a verdict against a good card.
-  assert.equal(classifyVacuousCheck('test -f scripts/whatever.js', UNRESOLVED), null);
+test('classifyVacuousCheck: an unresolvable path is reported as unresolved, NOT as healthy', () => {
+  // "I could not check" and "I checked and it is fine" must be distinguishable,
+  // because the two consumers make opposite calls on them: the audit drops the
+  // unresolved verdict (never accuse), the enricher defers on it (never write
+  // an unvalidated command).
+  const v = classifyVacuousCheck('test -f scripts/whatever.js', UNRESOLVED);
+  assert.equal(v.kind, VACUOUS_TEST_F_UNRESOLVED);
+  assert.equal(v.polarity, 'unknown');
+});
+
+test('auditVacuousChecks: an unresolved probe is never reported as a defect', () => {
+  const cards = [{ id: 'BRO-U', name: 'unknowable', url: 'u', cmd: 'test -f scripts/whatever.js' }];
+  assert.deepEqual(auditVacuousChecks(cards, UNRESOLVED), []);
 });
 
 test('classifyVacuousCheck: node --test is never vacuous, even when the file exists', () => {
@@ -249,6 +269,29 @@ test('auditVacuousChecks: the two buckets are complementary, never contradictory
   assert.deepEqual(vacuous, ['BRO-A']);
   assert.deepEqual(missing, ['BRO-B']);
   assert.equal(vacuous.filter((id) => missing.includes(id)).length, 0);
+});
+
+test('a multi-operand test -f lands in the arity bucket ONLY, never in both', () => {
+  // The case that broke the disjointness claim: the arity branch returns before
+  // consulting existsFn, so a command naming one absent and one present path
+  // was reported as BOTH a missing path and an arity error — two contradictory
+  // rows for one card, and a duplicate re-fetch in reconciliation.
+  const cards = [{ id: 'BRO-C', name: 'arity', url: 'c', cmd: 'test -f docs/absent.md docs/present.md' }];
+  const existsFn = (p) => p === 'docs/present.md';
+  const vacuous = auditVacuousChecks(cards, existsFn);
+  const missing = auditCardCheckPaths(cards, existsFn);
+  assert.equal(vacuous.length, 1);
+  assert.equal(vacuous[0].kind, VACUOUS_TEST_F_ARITY);
+  assert.deepEqual(missing, [], 'a syntax error must not also be diagnosed as a missing path');
+});
+
+test('a multi-operand node --test is still a normal missing-path check', () => {
+  // The arity rule is about `test -f` semantics alone — `node --test a b` is a
+  // perfectly valid two-file invocation and must keep its existing treatment.
+  const cards = [{ id: 'BRO-D', name: 'two tests', url: 'd', cmd: 'node --test tests/unit/a.test.mjs tests/unit/b.test.mjs' }];
+  const missing = auditCardCheckPaths(cards, (p) => p === 'tests/unit/a.test.mjs');
+  assert.equal(missing.length, 1);
+  assert.deepEqual(missing[0].missingPaths, ['tests/unit/b.test.mjs']);
 });
 
 test('findCardCheckPathDefects: returns both buckets and skips the fetch when nothing is file-naming-shaped', () => {

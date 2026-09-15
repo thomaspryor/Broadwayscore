@@ -91,13 +91,23 @@ function extractCheckFilePaths(cmd) {
  * @returns {boolean|null} true=present, false=CONFIRMED absent, null=could
  *   not resolve this run (fetch/git failure) — never scored as "missing".
  */
-function pathExistsOnOriginMain(relPath, { repo = REPO, log = () => {} } = {}) {
+function pathExistsOnOriginMain(relPath, { repo = REPO, ref = 'origin/main', log = () => {} } = {}) {
   try {
-    execFileSync('git', ['cat-file', '-e', `origin/main:${relPath}`], { cwd: repo, timeout: 10000, stdio: 'pipe' });
-    return true;
+    // `cat-file -t`, not `-e`: -e answers "is there an object here", which is
+    // TRUE for a directory (a tree) as well as a file (a blob). Both commands
+    // this module judges are file assertions — `test -f <dir>` always exits 1,
+    // and `node --test <dir>` does not run a dir as a test file — so counting a
+    // tree as "present" would report an unpassable check as satisfied and, for
+    // the vacuous bucket, call a check that can only ever FAIL one that can
+    // never fail (ship-check finding). resolveCheckPaths already makes exactly
+    // this distinction with statSync().isFile() — autonomous-triage-core.js:469.
+    const type = execFileSync('git', ['cat-file', '-t', `${ref}:${relPath}`], {
+      cwd: repo, timeout: 10000, stdio: 'pipe', encoding: 'utf8',
+    }).trim();
+    return type === 'blob';
   } catch (err) {
     if (isPathAbsentFromTreeError(err)) return false;
-    log(`[card-premises-auditor] WARN could not check origin/main for ${relPath}: ${String(err.message).slice(0, 120)}`);
+    log(`[card-premises-auditor] WARN could not check ${ref} for ${relPath}: ${String(err.message).slice(0, 120)}`);
     return null;
   }
 }
@@ -155,6 +165,14 @@ function fetchOriginMain({ repo = REPO, log = () => {} } = {}) {
 //     (a real audit can go red), so sweeping it in with tsc would be wrong.
 const VACUOUS_TEST_F_SATISFIED = 'test-f-satisfied';
 const VACUOUS_TEST_F_ARITY = 'test-f-arity';
+// Not a defect — the absence of an answer. Returned so the two consumers can
+// make OPPOSITE calls on it, which they must: a read-only audit must never
+// accuse a card on an unresolved probe (auditVacuousChecks drops these), while
+// the enricher is about to WRITE a command and cannot honestly claim it
+// validated one (guardrail 2b defers the card to the next run instead). Folding
+// this into a plain `null` is what made an oracle outage silently authorize new
+// weak checks for the rest of a run — ship-check finding.
+const VACUOUS_TEST_F_UNRESOLVED = 'test-f-unresolved';
 
 /**
  * Is this command incapable of testing the claim it is attached to?
@@ -191,9 +209,18 @@ function classifyVacuousCheck(cmd, existsFn) {
   }
 
   const p = paths[0];
-  // true only. false = a to-be-created artifact (correct, and the NEW-ARTIFACT
-  // ALLOWANCE protects it); null = unresolved this run (fail open).
-  if (existsFn(p) !== true) return null;
+  const present = existsFn(p);
+  // false = a to-be-created artifact. Correct, and the NEW-ARTIFACT ALLOWANCE
+  // exists to protect exactly this — the only verdict that means "healthy".
+  if (present === false) return null;
+  if (present === null) {
+    return {
+      kind: VACUOUS_TEST_F_UNRESOLVED,
+      polarity: 'unknown',
+      paths,
+      reason: `could not resolve \`${p}\` against origin/main this run, so whether \`test -f ${p}\` can ever fail is unknown`,
+    };
+  }
   return {
     kind: VACUOUS_TEST_F_SATISFIED,
     polarity: 'never-fails',
@@ -215,6 +242,10 @@ function auditVacuousChecks(cards, existsFn) {
   for (const card of Array.isArray(cards) ? cards : []) {
     const verdict = classifyVacuousCheck(card && card.cmd, existsFn);
     if (!verdict) continue;
+    // A report is an accusation, so an unresolved probe is dropped here — same
+    // fail-open contract auditCardCheckPaths keeps for a null existsFn result.
+    // The enricher deliberately does the opposite with the same verdict.
+    if (verdict.kind === VACUOUS_TEST_F_UNRESOLVED) continue;
     flagged.push({ id: card.id, name: card.name, url: card.url, cmd: card.cmd, ...verdict });
   }
   return flagged;
@@ -237,6 +268,13 @@ function auditCardCheckPaths(cards, existsFn) {
   for (const card of Array.isArray(cards) ? cards : []) {
     const paths = extractCheckFilePaths(card && card.cmd);
     if (!paths.length) continue;
+    // A multi-operand `test -f` is a SYNTAX error, not a missing-path problem:
+    // `test -f a b` exits 2 whatever a and b are. Reporting "missing: a" for it
+    // would be a misleading diagnosis AND would double-report the card, since
+    // classifyVacuousCheck's arity branch already owns it — which is what made
+    // the two buckets overlap instead of partitioning (ship-check finding).
+    // Skipping here keeps arity in exactly one bucket, with the right cause.
+    if (isTestFCommand(card.cmd) && paths.length > 1) continue;
     const missingPaths = paths.filter((p) => existsFn(p) === false);
     if (missingPaths.length) {
       flagged.push({ id: card.id, name: card.name, url: card.url, cmd: card.cmd, missingPaths });
@@ -299,5 +337,6 @@ module.exports = {
   findCardCheckPathDefects,
   VACUOUS_TEST_F_SATISFIED,
   VACUOUS_TEST_F_ARITY,
+  VACUOUS_TEST_F_UNRESOLVED,
   REPO,
 };

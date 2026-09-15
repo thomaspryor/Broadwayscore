@@ -41,7 +41,10 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
-const { findCardsWithMissingCheckPaths, findCardCheckPathDefects, isCheckPathCommand, auditCardCheckPaths, auditVacuousChecks, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
+// findCardsWithMissingCheckPaths is deliberately NOT imported: findCardCheckPathDefects
+// supersedes it here (both buckets, one fetch). The wrapper stays exported from the lib
+// for any other caller.
+const { findCardCheckPathDefects, isCheckPathCommand, auditCardCheckPaths, auditVacuousChecks, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
@@ -276,20 +279,50 @@ function reconcileVacuousChecksWithComments(flagged, opts = {}) {
   return reconcileCheckDefectsWithComments(flagged, auditVacuousChecks, opts);
 }
 
+/**
+ * Reconcile BOTH buckets in one pass over the union of flagged cards.
+ *
+ * Running the two reconcilers independently loses defects that MOVE between
+ * buckets (ship-check finding): a card flagged missing-path whose comment
+ * corrects it to `test -f <file that exists>` clears the missing check and is
+ * never offered to the vacuous classifier, so it vanishes from both reports
+ * while being exactly the defect this card was filed about. The two initial
+ * buckets are disjoint, so the union is just a concatenation, and each card is
+ * re-fetched once — the same one-round-trip-per-flagged-card cost as before,
+ * not twice.
+ */
+async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {}) {
+  const union = [...missing, ...vacuous];
+  if (!union.length) return { missing: [], vacuous: [] };
+  // Memoize getIssue across BOTH passes so the union costs one round trip per
+  // card in total, not one per bucket. Rejections are memoized too — a card
+  // whose re-fetch failed must fail the same way for both classifiers, or the
+  // two reports would disagree about the same card in the same run.
+  const baseGetIssue = opts.getIssue || require('./lib/linear-client.js').getIssue;
+  const issueCache = new Map();
+  const getIssue = (id) => {
+    if (!issueCache.has(id)) issueCache.set(id, Promise.resolve().then(() => baseGetIssue(id)));
+    return issueCache.get(id);
+  };
+  const sharedOpts = { ...opts, getIssue };
+  const stillMissing = await reconcileCheckDefectsWithComments(union, auditCardCheckPaths, sharedOpts);
+  const stillVacuous = await reconcileCheckDefectsWithComments(union, auditVacuousChecks, sharedOpts);
+  return { missing: stillMissing, vacuous: stillVacuous };
+}
+
 async function runLinearAudit(limit) {
   const issues = await fetchLinearOpenIssuesWithDescriptions();
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
   const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
   const report = buildReport(evaluated);
-  const { missing: initialFlagged, vacuous } = findCardCheckPathDefects(evaluated, { log: console.error });
-  if (initialFlagged.length) {
-    console.error(`[audit-card-verifiability] linear: re-checking ${initialFlagged.length} flagged card(s) against their own comments (BRO-2796 correction path)`);
+  const initial = findCardCheckPathDefects(evaluated, { log: console.error });
+  const flaggedCount = initial.missing.length + initial.vacuous.length;
+  if (flaggedCount) {
+    console.error(`[audit-card-verifiability] linear: re-checking ${flaggedCount} flagged card(s) against their own comments (BRO-2796 correction path; ${initial.missing.length} missing-path, ${initial.vacuous.length} vacuous)`);
   }
-  report.missingCheckPaths = await reconcileMissingCheckPathsWithComments(initialFlagged, { log: console.error });
-  if (vacuous.length) {
-    console.error(`[audit-card-verifiability] linear: re-checking ${vacuous.length} vacuous-check card(s) against their own comments (BRO-3378)`);
-  }
-  report.vacuousChecks = await reconcileVacuousChecksWithComments(vacuous, { log: console.error });
+  const reconciled = await reconcileCheckDefectsBothBuckets(initial, { log: console.error });
+  report.missingCheckPaths = reconciled.missing;
+  report.vacuousChecks = reconciled.vacuous;
   writeReport(report, LINEAR_REPORT_PATH);
   return report;
 }
@@ -338,11 +371,20 @@ function printReport(label, report, reportPath) {
   // is what makes the pair readable instead of looking like two scoldings of
   // every test -f card.
   const vacuousChecks = report.vacuousChecks || [];
-  console.log(`${label} armed but carrying a check that cannot fail (test -f on a file already on origin/main): ${vacuousChecks.length}`);
-  if (vacuousChecks.length) {
+  // Split by polarity in the OUTPUT too, not just in the data: an arity error
+  // can never PASS, so printing it under a "cannot fail" heading would state
+  // the opposite of the truth about that card (ship-check finding).
+  const cannotFail = vacuousChecks.filter(c => c.polarity === 'never-fails');
+  const cannotPass = vacuousChecks.filter(c => c.polarity === 'never-passes');
+  console.log(`${label} armed but carrying a check that cannot fail (test -f on a file already on origin/main): ${cannotFail.length}`);
+  if (cannotFail.length) {
     console.log(`\n${label} cards whose acceptance check is already green before the work starts — re-running it`);
     console.log(`at Done time cannot tell finished work from untouched work (the BRO-423 false-Done class):`);
-    vacuousChecks.forEach(c => console.log(`  ${c.id} [${c.kind}] ${c.name} — ${c.cmd}`));
+    cannotFail.forEach(c => console.log(`  ${c.id} [${c.kind}] ${c.name} — ${c.cmd}`));
+  }
+  if (cannotPass.length) {
+    console.log(`\n${label} cards whose acceptance check is malformed and can never pass: ${cannotPass.length}`);
+    cannotPass.forEach(c => console.log(`  ${c.id} [${c.kind}] ${c.name} — ${c.cmd} (${c.reason})`));
   }
   console.log(`Report written: ${path.relative(REPO, reportPath)}\n`);
 }
@@ -402,5 +444,5 @@ module.exports = {
   // BRO-2977/BRO-3076: exported for unit coverage.
   attachMissingCheckPaths, reconcileMissingCheckPathsWithComments,
   // BRO-3378: vacuous-check bucket — exported for unit coverage.
-  reconcileVacuousChecksWithComments, reconcileCheckDefectsWithComments,
+  reconcileVacuousChecksWithComments, reconcileCheckDefectsWithComments, reconcileCheckDefectsBothBuckets,
 };

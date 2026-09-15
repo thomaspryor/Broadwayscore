@@ -992,9 +992,12 @@ test('guardrail 2b: node --test on an existing file is NOT rejected as vacuous',
   assert.equal(calls.length, 1);
 });
 
-test('guardrail 2b: an unresolvable origin/main fails OPEN, never rejecting the draft', async () => {
-  // A fetch blip must degrade this guardrail to its pre-BRO-3378 behaviour
-  // rather than rejecting every draft and starving the card pool.
+test('guardrail 2b: an unresolvable origin/main DEFERS the test -f card, never writes it unvalidated', async () => {
+  // The enricher is about to WRITE, so "I could not check" must not be treated
+  // as "I checked and it is fine" — that is how an oracle outage silently
+  // authorizes exactly the weak checks this guardrail exists to stop. Deferring
+  // costs the card one nightly run. The read-only audit makes the opposite call
+  // on the same verdict, which tests/unit/card-premises-auditor.test.mjs pins.
   const calls = [];
   const card = { id: 'v6', name: 'Fix the thing', category: 'Product', tags: [], notes: '## Problem\nBug.' };
   const r = await enrichOneCard(card, {
@@ -1006,6 +1009,49 @@ test('guardrail 2b: an unresolvable origin/main fails OPEN, never rejecting the 
     logPath: SCRATCH_LOG_PATH,
     existsOnOriginMain: () => null,
   });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /test-f-unresolved/);
+  assert.equal(calls.length, 0);
+});
+
+test('guardrail 2b: an unresolvable oracle does NOT block a non-test -f draft', async () => {
+  // The deferral above must be scoped to the only form it can judge. An oracle
+  // outage must not stop the enricher drafting `node --test` commands.
+  const calls = [];
+  const card = { id: 'v7', name: 'Fix the thing', category: 'Product', tags: [], notes: '## Problem\nBug.' };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'node --test tests/unit/whatever-new.test.mjs',
+      acceptanceCriteria: '## Acceptance criteria\n`node --test tests/unit/whatever-new.test.mjs` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+    existsOnOriginMain: () => null,
+  });
   assert.equal(r.action, 'llm-enriched');
   assert.equal(calls.length, 1);
+});
+
+test('guardrail 2b: judges the CORRECTED command, so a path correction cannot smuggle a vacuous check through', async () => {
+  // resolveCheckPaths rewrites `tests/x.test.mjs` onto an existing
+  // `tests/unit/x.test.mjs`, and buildDraftSection writes that corrected
+  // string. Judging the pre-correction string let the correction itself
+  // manufacture a vacuous command: the drafted path was absent, so the
+  // guardrail cleared it, and the card received the path that exists.
+  const calls = [];
+  const card = { id: 'v8', name: 'Fix the thing', category: 'Product', tags: [], notes: '## Problem\nBug.' };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'test -f tests/card-premises-auditor.test.mjs',
+      acceptanceCriteria: '## Acceptance criteria\n`test -f tests/card-premises-auditor.test.mjs` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+    // Only the CORRECTED path exists — exactly the near-match the resolver
+    // rewrites onto. The drafted path does not.
+    existsOnOriginMain: (p) => p === 'tests/unit/card-premises-auditor.test.mjs',
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /test-f-satisfied/);
+  assert.equal(calls.length, 0, 'the corrected-and-vacuous command must never reach the card');
 });

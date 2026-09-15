@@ -7,6 +7,7 @@ const {
   evaluateCard, buildReport, evaluateLinearIssue, attachMissingCheckPaths,
   reconcileMissingCheckPathsWithComments,
   reconcileVacuousChecksWithComments,
+  reconcileCheckDefectsBothBuckets,
 } = require('./audit-card-verifiability.js');
 
 test('evaluateCard: armed card carries no reason', () => {
@@ -267,6 +268,50 @@ test('reconcileVacuousChecksWithComments: a comment correcting to a to-be-create
     getIssue, pathExistsOnOriginMain: (p) => p === 'scripts/existing.js',
   });
   assert.deepEqual(stillFlagged, []);
+});
+
+test('reconcileCheckDefectsBothBuckets: a comment that moves a card BETWEEN buckets does not lose it', async () => {
+  // The defect this exists to stop: a missing-path card whose comment corrects
+  // it to a `test -f` on a file that EXISTS clears the missing check, and if
+  // each bucket were reconciled independently it would never be offered to the
+  // vacuous classifier — vanishing from both reports while being exactly the
+  // defect this card was filed about.
+  const initial = {
+    missing: [{ id: 'BRO-9', name: 'Phantom', url: 'u9', cmd: 'test -f docs/phantom.md', missingPaths: ['docs/phantom.md'] }],
+    vacuous: [],
+  };
+  const getIssue = async (id) => ({
+    identifier: id,
+    description: '## Acceptance criteria\n`test -f docs/phantom.md`',
+    comments: { nodes: [{ body: 'VERIFY: test -f scripts/health-check.js', createdAt: '2026-09-03T00:00:00.000Z' }] },
+  });
+  const out = await reconcileCheckDefectsBothBuckets(initial, {
+    getIssue, pathExistsOnOriginMain: (p) => p === 'scripts/health-check.js',
+  });
+  assert.deepEqual(out.missing, [], 'the phantom path was genuinely corrected');
+  assert.equal(out.vacuous.length, 1, 'but the correction is vacuous and must be caught');
+  assert.equal(out.vacuous[0].id, 'BRO-9');
+});
+
+test('reconcileCheckDefectsBothBuckets: each card is re-fetched exactly once across both passes', async () => {
+  const fetches = [];
+  const initial = {
+    missing: [{ id: 'BRO-1', name: 'a', url: 'u1', cmd: 'test -f docs/phantom.md', missingPaths: ['docs/phantom.md'] }],
+    vacuous: [{ id: 'BRO-2', name: 'b', url: 'u2', cmd: 'test -f scripts/health-check.js', kind: 'test-f-satisfied' }],
+  };
+  const getIssue = async (id) => {
+    fetches.push(id);
+    return { identifier: id, description: '## Acceptance criteria\n`npx tsc --noEmit`', comments: { nodes: [] } };
+  };
+  await reconcileCheckDefectsBothBuckets(initial, { getIssue, pathExistsOnOriginMain: () => true });
+  assert.deepEqual(fetches.sort(), ['BRO-1', 'BRO-2'], 'two cards, two fetches — not four');
+});
+
+test('reconcileCheckDefectsBothBuckets: empty input short-circuits without fetching', async () => {
+  const out = await reconcileCheckDefectsBothBuckets({ missing: [], vacuous: [] }, {
+    getIssue: async () => { throw new Error('must not fetch'); },
+  });
+  assert.deepEqual(out, { missing: [], vacuous: [] });
 });
 
 test('attachMissingCheckPaths: populates BOTH buckets and never leaves vacuousChecks undefined', () => {
