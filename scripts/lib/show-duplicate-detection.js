@@ -232,7 +232,7 @@ function findSharedTicketIdentityDupes(shows) {
         if (a.id === b.id) continue;
         if (isDeclaredTransferPair(a, b)) continue;
         if (!titlesAgree(a, b)) continue; // recycled listing id, not one production
-        const pairKey = [a.id, b.id].sort().join(' ');
+        const pairKey = [a.id, b.id].sort().join('\0');
         if (seen.has(pairKey)) continue;
         seen.add(pairKey);
         dupes.push({

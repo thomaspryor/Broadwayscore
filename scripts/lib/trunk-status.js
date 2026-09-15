@@ -243,7 +243,7 @@ function extractFailingPaths(logText, { maxPaths = 40, markerWindow = MARKER_WIN
     // mentions get attributed to a failure they had nothing to do with —
     // blocking innocent cards, the one thing this gate must never do
     // (ship-check finding).
-    const scope = `${entry.job || ''} ${entry.step || ''}`;
+    const scope = `${entry.job || ''}\0${entry.step || ''}`;
     if (entry.job !== null && scope !== prevScope) {
       inTapFailure = false;
       markerCountdown = 0;
