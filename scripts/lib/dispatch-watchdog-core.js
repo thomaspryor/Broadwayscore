@@ -528,6 +528,13 @@ function planSweep(entries, tasks, opts) {
   for (const [id, claimMs] of claimPending) {
     const task = tasks.get(id);
     if (!isTaskOpen(task) || open.has(id)) continue;
+    // BRO-3429 ship-check: once noLaunchPark (below) has actually parked this
+    // id, it belongs to the "Needs you: parked" section, not this one — an id
+    // in both would double-count in needsYou and print two contradictory
+    // messages ("I'll retry in 24h" next to "parked, won't retry"). A fresh
+    // launch clears wdParked (watchdogParkedIds), which re-admits the id here
+    // if it ever gets re-claimed and stalls again.
+    if (wdParked.has(id)) continue;
     if (now - claimMs < CLAIM_LABEL_GRACE_MS) continue;   // still plausibly booting
     awaitingClaim.push({ taskId: id, subject: task.subject, claimedAt: new Date(claimMs).toISOString() });
   }
@@ -537,6 +544,40 @@ function planSweep(entries, tasks, opts) {
   const lastLaunchAny = lastLaunchAnywhereMs(entries);
   const claimOutage = awaitingClaim.length >= CLAIM_OUTAGE_MIN &&
     (lastLaunchAny == null || now - lastLaunchAny > CLAIM_OUTAGE_WINDOW_MS);
+
+  // BRO-3429: awaitingClaim above is a LABEL only — before this it self-healed
+  // silently after REDISPATCH_REARM_MS (24h) and never told the owner. Live
+  // evidence: 84 watchdog-redispatch claims over 7 days, 0 launches, 0 parks —
+  // every one just sat here and re-armed itself the next day forever.
+  // noLaunchPark is the actionable subset dispatch-watchdog.js turns into a
+  // real WATCHDOG_EVENTS.PARK row + an owner page: every item already past
+  // CLAIM_LABEL_GRACE_MS (same list as awaitingClaim, which already excludes
+  // wdParked above, so nothing here re-parks something already parked).
+  //
+  // Suppressed during a proven fleet-wide launcher outage (outage.outage from
+  // detectLauncherOutage, or claimOutage just above): those signals mean the
+  // LAUNCHER is wedged, not that these particular cards are bad, and parking
+  // N individually-fine cards would misattribute a systemic failure and page
+  // the owner N times about the wrong thing. Once the outage clears, the next
+  // sweep re-evaluates and parks normally.
+  //
+  // Two known edge cases this does NOT fully solve (codex adversarial review,
+  // BRO-3429): (1) if a suppressed claim stays suppressed for the full
+  // REDISPATCH_REARM_MS (24h) — an outage that never clears — watchdogClaimPending
+  // drops it and it quietly re-arms as dispatchable instead of ever being
+  // parked. Not a regression (pre-fix, EVERY claim behaved this way, always),
+  // and the separate outage/failureRate pageOwner calls elsewhere in this file
+  // already re-page every few hours for as long as that outage lasts, so the
+  // owner is not left uninformed even though this specific card isn't parked.
+  // (2) claimOutage requires CLAIM_OUTAGE_MIN (3) claims stuck at once; if
+  // claims from the same root cause cross CLAIM_LABEL_GRACE_MS staggered in
+  // time rather than together, each can get individually parked before a
+  // third accumulates, so the fleet-wide signal never fires and the owner
+  // gets N separate "this card failed" pages instead of one "the launcher is
+  // down" page. Worse diagnostics, not silence — per-card paging still tells
+  // the owner something is wrong, which is the property this ticket exists to
+  // restore.
+  const noLaunchPark = (outage.outage || claimOutage) ? [] : awaitingClaim;
 
   // ── budgets ──
   const usedToday = watchdogClaimsToday(entries, now).length;
@@ -603,14 +644,14 @@ function planSweep(entries, tasks, opts) {
 
   return {
     now, cmuxObserved,
-    inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim,
+    inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim, noLaunchPark,
     budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
     recheckFailures,
     needsYou,
-    parkedTotal: wdParked.size + toPark.length,
+    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length,
   };
 }
 
@@ -655,20 +696,29 @@ function renderNarrative(plan) {
     lines.push('');
     lines.push(`Holding dispatches: ${plan.budgets.holds.join('; ')}`);
   }
-  if (plan.awaitingClaim && plan.awaitingClaim.length) {
+  // BRO-3429: awaitingClaim items past grace are, on a normal tick, the exact
+  // same items as noLaunchPark (which this sweep is about to park) — showing
+  // both would print "I'll retry in 24h" right next to "parked, won't retry"
+  // for the same card. Only the ones noLaunchPark is NOT acting on this tick
+  // (a proven fleet-wide outage suppressed parking — see noLaunchPark above)
+  // still get the passive "self-heals" framing here.
+  const noLaunchParkIds = new Set(plan.noLaunchPark.map(p => p.taskId));
+  const stillAwaitingLabel = plan.awaitingClaim.filter(a => !noLaunchParkIds.has(a.taskId));
+  if (stillAwaitingLabel.length) {
     lines.push('');
-    lines.push(`${plan.awaitingClaim.length} card(s) I already tried and could not start — I won't try again for 24h from that attempt:`);
-    for (const a of plan.awaitingClaim.slice(0, 6)) {
+    lines.push(`${stillAwaitingLabel.length} card(s) I already tried and could not start — I won't try again for 24h from that attempt:`);
+    for (const a of stillAwaitingLabel.slice(0, 6)) {
       lines.push(`  • #${a.taskId} "${(a.subject || '').slice(0, 60)}"`);
       lines.push(`      why: node scripts/predispatch-check.js --id ${a.taskId}`);
       lines.push(`      re-arm now (after fixing the card): node scripts/bsc-next.js --id ${a.taskId} --force`);
     }
-    if (plan.awaitingClaim.length > 6) lines.push(`  • …and ${plan.awaitingClaim.length - 6} more`);
+    if (stillAwaitingLabel.length > 6) lines.push(`  • …and ${stillAwaitingLabel.length - 6} more`);
   }
-  if (plan.toPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length) {
+  if (plan.toPark.length || plan.noLaunchPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length) {
     lines.push('');
     lines.push('Needs you:');
     for (const p of plan.toPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.reason === 'infra' ? `${p.deaths} infra dead-launches in a row (cmux itself looks wedged)` : `${p.deaths} dead attempts`}, parked (won't retry)`);
+    for (const p of plan.noLaunchPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — claimed but never produced a launch, parked (won't retry)`);
     for (const r of plan.recheckFailures.slice(0, 8)) lines.push(`  • acceptance recheck FAILED: "${(r.taskSubject || r.notionId || '').slice(0, 60)}"`);
     for (const c of plan.crownSessionTabs) lines.push(`  • crowned session tab ${c.ref} ("${String(c.title).slice(0, 50)}") — check it's still alive`);
   }

@@ -323,8 +323,10 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 //     spent the increase on launches that never run.
 // The Notion lane keeps its existing cmux behaviour untouched — this change
 // adds a lane, it does not re-point the old one.
+const LINEAR_TASK_ID_RE = /^linear:([A-Z][A-Z0-9]*-\d+)$/;
+
 function dispatchArgvFor(taskId) {
-  const m = /^linear:([A-Z][A-Z0-9]*-\d+)$/.exec(String(taskId));
+  const m = LINEAR_TASK_ID_RE.exec(String(taskId));
   // --detach is NOT optional here (ship-check P0). `--headless` alone AWAITS
   // runJob for the job's entire life, and runBscNext SIGKILLs the process
   // group at DISPATCH_TIMEOUT_MS = 15 minutes. Measured on the real ledger:
@@ -336,6 +338,16 @@ function dispatchArgvFor(taskId) {
   // exactly what digest-autofix.js's own spawn site does.
   if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless', '--detach'];
   return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
+}
+
+// BRO-3429: the owner-facing re-arm command in a park page must match the
+// lane the task actually dispatches through — sharing LINEAR_TASK_ID_RE with
+// dispatchArgvFor keeps that guaranteed rather than hand-copied.
+function reArmHintFor(taskId) {
+  const m = LINEAR_TASK_ID_RE.exec(String(taskId));
+  return m
+    ? `node scripts/linear-next.js --id ${m[1]} --force`
+    : `node scripts/bsc-next.js --id ${taskId} --force`;
 }
 
 function runBscNext(taskId, { onTick } = {}) {
@@ -394,6 +406,27 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     results.parked.push(item.taskId);
   }
 
+  // BRO-3429: a claim that never produced a launch was previously invisible —
+  // it just sat in the dashboard's "awaiting claim" label and quietly
+  // re-armed itself after 24h, forever, with no ledger park and no page. Live
+  // evidence: 84 redispatches / 0 launches / 0 parks over 7 days for stuck
+  // pre-freeze Notion cards. planSweep() already suppresses this list during
+  // a proven fleet-wide launcher outage (see noLaunchPark's own comment in
+  // dispatch-watchdog-core.js) so this loop never misattributes a systemic
+  // cmux failure to individually-fine cards.
+  for (const item of plan.noLaunchPark) {
+    dispatchLedger.appendEntry({
+      event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject,
+      reason: `claimed at ${item.claimedAt} but produced no launch — retries exhausted`,
+    });
+    pageOwner({
+      conditionKey: `watchdog-park:${item.taskId}`,
+      title: `Watchdog parked #${item.taskId} — redispatch never produced a launch`,
+      description: `Watchdog: card "${item.subject}" was claimed for redispatch at ${item.claimedAt} but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id ${item.taskId}), then re-arm with ${reArmHintFor(item.taskId)} once fixed.`,
+    });
+    results.parked.push(item.taskId);
+  }
+
   for (const item of plan.toDispatch) {
     // Claim BEFORE the spawn: the day budget must survive a crash mid-dispatch
     // (plan-review: a durable claimed attempt precedes every dispatch).
@@ -446,6 +479,12 @@ function summarize(plan) {
     // Every machine-readable surface must carry the population the filter
     // removed, or the "not silent" claim only holds for the crowned tab.
     awaitingClaim: plan.awaitingClaim.map(a => a.taskId),
+    // BRO-3429: the cards this sweep is actually parking (or already parked
+    // on a prior tick) — omitting this from --status --json would leave the
+    // exact escalation this ticket added invisible to anything reading the
+    // machine-readable surface instead of the narrative (codex review catch).
+    noLaunchPark: plan.noLaunchPark.map(p => p.taskId),
+    parkedTotal: plan.parkedTotal,
     dispatchedToday: plan.budgets.usedToday,
     holds: plan.budgets.holds,
     // BRO-2462: `holds` mixes policy pauses with failure-detection signals
@@ -857,4 +896,6 @@ module.exports = {
   // and linearTasksForPlan go with it so the cache's staleness contract is
   // testable without a network call.
   dispatchArgvFor, linearTasksForPlan, LINEAR_CACHE_TTL_MS,
+  // BRO-3429: same rationale — tested against the real function, not a copy.
+  reArmHintFor,
 };
