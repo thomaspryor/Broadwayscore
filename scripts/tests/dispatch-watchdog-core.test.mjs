@@ -521,8 +521,12 @@ test('a Linear-sourced task is queued, ordered and dispatched like any other', (
   const plan = core.planSweep([], new Map([linearTask, task(9, 'pending', 'P1 Now')]), { now: NOW, liveTitles: LIVE });
   const ids = plan.p01Queue.map(q => q.taskId);
   assert.ok(ids.includes('linear:BRO-77'), `Linear task missing from p01Queue: ${JSON.stringify(ids)}`);
-  // Same priority => FIFO on the trailing number, so task 9 precedes BRO-77.
-  assert.deepEqual(ids, ['9', 'linear:BRO-77']);
+  // Same priority => Linear outranks the retired Notion mirror, THEN FIFO
+  // within each source. This expectation was ['9', 'linear:BRO-77'] until the
+  // production regression documented on taskSourceRank: trailing-integer
+  // ordering alone sent the drain straight back to the frozen board once the
+  // low-numbered Linear ids were consumed.
+  assert.deepEqual(ids, ['linear:BRO-77', '9']);
 });
 
 test('ship-check P0: a HEADLESS job counts as open (concurrency + no re-dispatch)', () => {
@@ -630,4 +634,44 @@ test('BRO-3424: an unlanded job-done is suppressed once a NEWER launch for the s
 test('BRO-3424: omitting unlandedJobDone entirely is backward compatible (defaults to none)', () => {
   const plan = core.planSweep([], new Map([task(83, 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.deepEqual(plan.unlandedDone, []);
+});
+
+test('Linear outranks the retired Notion mirror regardless of id numbers', () => {
+  // The production regression this guards: after BRO-219/931/995 (low-numbered,
+  // so they happened to sort first) drained, the next four watchdog claims went
+  // straight back to the frozen Notion mirror — 1849, 1904, 1932, 1962 — because
+  // trailing-integer ordering ranks Notion's 1800s-1900s above Linear's BRO-2000+.
+  const mixed = ['1849', 'linear:BRO-3357', '1904', 'linear:BRO-219', '1962', 'linear:BRO-3390'];
+  const sorted = [...mixed].sort(core.compareTaskIds);
+  assert.deepEqual(sorted, ['linear:BRO-219', 'linear:BRO-3357', 'linear:BRO-3390', '1849', '1904', '1962']);
+
+  // Every Linear id must precede every Notion id, not merely "usually".
+  const firstNotion = sorted.findIndex((id) => !String(id).startsWith('linear:'));
+  const lastLinear = sorted.map((id) => String(id).startsWith('linear:')).lastIndexOf(true);
+  assert.ok(lastLinear < firstNotion, 'no Notion id may sort ahead of any Linear id');
+
+  assert.equal(core.taskSourceRank('linear:BRO-1'), 0);
+  assert.equal(core.taskSourceRank('1849'), 1);
+  assert.equal(core.taskSourceRank(null), 1);
+
+  // Within a source the FIFO is unchanged.
+  assert.deepEqual(['1962', '1849', '1904'].sort(core.compareTaskIds), ['1849', '1904', '1962']);
+  assert.deepEqual(
+    ['linear:BRO-3390', 'linear:BRO-219'].sort(core.compareTaskIds),
+    ['linear:BRO-219', 'linear:BRO-3390'],
+  );
+});
+
+test('the P0/P1 queue puts Linear work ahead of frozen-mirror work', () => {
+  const linearTask = ['linear:BRO-3357', {
+    id: 'linear:BRO-3357', subject: 'P1: main red', status: 'pending',
+    description: '[linear:BRO-3357] P1 Next · Backlog · no-category\nbody',
+  }];
+  const notionTask = ['1849', {
+    id: '1849', subject: 'P1: something from the frozen mirror', status: 'pending',
+    description: '[notion:abc-1849] P1 Next · Not started · Admin\nbody',
+  }];
+  const plan = core.planSweep([], new Map([notionTask, linearTask]), { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.p01Queue.map((q) => q.taskId), ['linear:BRO-3357', '1849'],
+    'the live board must be worked before the retired one');
 });

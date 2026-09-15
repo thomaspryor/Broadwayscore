@@ -178,7 +178,28 @@ function taskSortKey(taskId) {
   return { n: m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER, s };
 }
 
+// Source rank: Linear before Notion, ALWAYS (BRO-3390 follow-up).
+//
+// Found by watching production, not by reading: after the first three Linear
+// cards drained (BRO-219/931/995, all low-numbered), the next four claims went
+// straight back to the Notion mirror (1849, 1904, 1932, 1962). Sorting on the
+// trailing integer alone silently ranks Notion's 1800s-1900s ids AHEAD of
+// Linear's BRO-2000+, so the drain works the RETIRED board until it exhausts
+// four weeks of stale cards. The pre-implementation review flagged this class
+// and my own measurement appeared to falsify it — it didn't, it was just
+// masked by a handful of low-numbered Linear ids at the head of the queue.
+//
+// Linear is the live board (CLAUDE.md section 6: "Linear is the source of
+// truth — do NOT create Notion cards"). A frozen mirror must never outrank it.
+// Within a source the trailing-integer FIFO still applies.
+function taskSourceRank(taskId) {
+  return /^linear:/.test(String(taskId == null ? '' : taskId)) ? 0 : 1;
+}
+
 function compareTaskIds(a, b) {
+  const ra = taskSourceRank(a);
+  const rb = taskSourceRank(b);
+  if (ra !== rb) return ra - rb;
   const ka = taskSortKey(a);
   const kb = taskSortKey(b);
   if (ka.n !== kb.n) return ka.n - kb.n;
@@ -779,7 +800,7 @@ module.exports = {
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,
   watchdogClaimPending, lastLaunchAnywhereMs,
-  taskPriority, notionIdOf, taskSortKey, compareTaskIds,
+  taskPriority, notionIdOf, taskSortKey, compareTaskIds, taskSourceRank,
   openHeadlessJobTasks, openTasksAnyLane,
   PACING_WINDOW_MS, PACING_HOURS, watchdogClaimsInWindow,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,
