@@ -1,11 +1,12 @@
 {
-  "updatedAt": "2026-09-14T15:48:49.558Z",
-  "scanned": 2076,
-  "showsWithViolations": 720,
-  "totalViolations": 1621,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-09-15T12:13:59.964Z",
+  "scanned": 2078,
+  "showsWithViolations": 721,
+  "totalViolations": 1623,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "good-people-2011::http://theater.nytimes.com/2011/03/04/theater/reviews/04good.html"
+    "race-2009::http://www.nytimes.com/2010/07/01/theater/reviews/01race.html?th&emc=th",
+    "jane-eyre-off-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28993"
   ],
   "violationKeys": [
     "joe-turners-come-and-gone-2026::https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
@@ -1024,6 +1025,7 @@
     "a-little-night-music-2009::http://www.variety.com/review/VE1117943265.html?categoryid=4034&cs=1&nid=2562&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+variety/headlines+(Variety+-+Latest+News)&utm_content=Google+Reader",
     "race-2009::http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2009/12/06/entertainment/e160253S20.DTL",
     "race-2009::http://articles.chicagotribune.com/2009-12-07/entertainment/0912060192_1_mametian-play-character",
+    "race-2009::http://www.nytimes.com/2010/07/01/theater/reviews/01race.html?th&emc=th",
     "race-2009::https://www.washingtonpost.com/wp-dyn/content/article/2009/12/06/AR2009120602641.html",
     "race-2009::https://www.usatoday.com/life/theater/reviews/2009-12-07-racereview07_st_N.htm",
     "race-2009::https://www.variety.com/review/VE1117941738.html?categoryid=33&cs=1&ref=ssp",
@@ -1626,6 +1628,7 @@
     "les-miserables-arena-concert-spectacular-off-broadway-2026::https://www.amny.com/entertainment/theater/review-les-miz-sounds-glorious-radio-city/",
     "space-dogs-off-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28520",
     "brainiac-live-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28533",
+    "jane-eyre-off-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28993",
     "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025::https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
     "barcelona-west-end-2024::https://www.thetimes.com/culture/theatre-dance/article/steve-coogan-dr-strangelove-gamble-255kzj6ss",
     "starstruck-regional-2026::https://www.theatermania.com/news/review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767/"
@@ -10751,7 +10754,7 @@
       "showId": "race-2009",
       "title": "Race",
       "openingDate": "2009-12-06",
-      "message": "Review URL for ap/Michael Kuchwara does not mention show slug (checked: race-2009, race): http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2009/12/06/entertainment/e160253S20.DTL\nReview URL for chicagotribune/Chris Jones does not mention show slug (checked: race-2009, race): http://articles.chicagotribune.com/2009-12-07/entertainment/0912060192_1_mametian-play-character\nReview URL for washpost/Peter Marks does not mention show slug (checked: race-2009, race): https://www.washingtonpost.com/wp-dyn/content/article/2009/12/06/AR2009120602641.html\nReview URL for usatoday/Elysa Gardner does not mention show slug (checked: race-2009, race): https://www.usatoday.com/life/theater/reviews/2009-12-07-racereview07_st_N.htm\nReview URL for variety/David Rooney does not mention show slug (checked: race-2009, race): https://www.variety.com/review/VE1117941738.html?categoryid=33&cs=1&ref=ssp",
+      "message": "Review URL for ap/Michael Kuchwara does not mention show slug (checked: race-2009, race): http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2009/12/06/entertainment/e160253S20.DTL\nReview URL for chicagotribune/Chris Jones does not mention show slug (checked: race-2009, race): http://articles.chicagotribune.com/2009-12-07/entertainment/0912060192_1_mametian-play-character\nReview URL for nytimes/Ben Brantley does not mention show slug (checked: race-2009, race): http://www.nytimes.com/2010/07/01/theater/reviews/01race.html?th&emc=th\nReview URL for washpost/Peter Marks does not mention show slug (checked: race-2009, race): https://www.washingtonpost.com/wp-dyn/content/article/2009/12/06/AR2009120602641.html\nReview URL for usatoday/Elysa Gardner does not mention show slug (checked: race-2009, race): https://www.usatoday.com/life/theater/reviews/2009-12-07-racereview07_st_N.htm\nReview URL for variety/David Rooney does not mention show slug (checked: race-2009, race): https://www.variety.com/review/VE1117941738.html?categoryid=33&cs=1&ref=ssp",
       "violations": [
         {
           "outletId": "ap",
@@ -10764,6 +10767,12 @@
           "criticName": "Chris Jones",
           "url": "http://articles.chicagotribune.com/2009-12-07/entertainment/0912060192_1_mametian-play-character",
           "urlSlug": "2009-12-07 entertainment 0912060192_1_mametian-play-character"
+        },
+        {
+          "outletId": "nytimes",
+          "criticName": "Ben Brantley",
+          "url": "http://www.nytimes.com/2010/07/01/theater/reviews/01race.html?th&emc=th",
+          "urlSlug": "2010 07 01 theater reviews 01race"
         },
         {
           "outletId": "washpost",
@@ -17071,6 +17080,20 @@
           "outletId": "london-theatre-reviews",
           "criticName": "Unknown",
           "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=28533",
+          "urlSlug": "post.cfm"
+        }
+      ]
+    },
+    {
+      "showId": "jane-eyre-off-west-end-2026",
+      "title": "Jane Eyre",
+      "openingDate": "2026-09-08",
+      "message": "Review URL for london-theatre-reviews/Unknown does not mention show slug (checked: jane-eyre-off-west-end, jane-eyre, jane, eyre, janeeyre): https://www.londontheatrereviews.co.uk/post.cfm?p=28993",
+      "violations": [
+        {
+          "outletId": "london-theatre-reviews",
+          "criticName": "Unknown",
+          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=28993",
           "urlSlug": "post.cfm"
         }
       ]
