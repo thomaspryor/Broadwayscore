@@ -593,6 +593,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // new render code. Same producer/plist as predispatchQueue, so it also
   // appears every morning.
   if (sections.dispatchGuardQueue) blocks.push(renderNamedDigestBlock('Dispatch guard queue backlog', sections.dispatchGuardQueue));
+  // Done-evidence audit (BRO-3426) — scripts/audit-done-evidence.js re-proves
+  // every Done(14d)/In Review/In Progress card's OWN claimed evidence against
+  // a fresh origin/main and names what no longer holds. Same {generatedAt,
+  // bannerText, items, moreCount} shape, no new render code. Placed after the
+  // dispatch/queue blocks because it is about the board's own honesty rather
+  // than about work waiting to start. SHADOW MODE: the producer never changes
+  // a Linear state, so every row here is a report, not an action already taken.
+  if (sections.doneEvidence) blocks.push(renderNamedDigestBlock('Done-evidence audit', sections.doneEvidence));
   // launchd blocked git syncs (task #1563) — same {generatedAt, bannerText,
   // items, moreCount} shape, no new render code. Only appears when a job's
   // sync actually got blocked (see readSyncRefused's header — not every

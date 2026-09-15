@@ -280,6 +280,15 @@ on:
       # would trigger zero CI without this entry (task #1581, same gap class
       # as scripts/check-orphan-commits.js above).
       - 'scripts/audit-workflow-concurrency.js'
+      # scripts/audit-done-evidence.js (BRO-3426) is the I/O runner for
+      # scripts/lib/done-evidence-{audit,source,remote}.js (all covered by the
+      # scripts/lib/** glob above). Its own tests/unit/done-evidence-audit.test.mjs
+      # is covered by the tests/** glob — but this top-level wrapper is outside
+      # both, so a solo edit to it would trigger ZERO CI, the exact gap
+      # task #1745 documents. The wrapper is where the sweep's fail-open
+      # ordering lives (an unresolved probe must never become an accusation),
+      # so that is not a cosmetic risk.
+      - 'scripts/audit-done-evidence.js'
       # scripts/audit-push-retry-budgets.js (card #1910, 2026-08-26): same
       # thin-CLI-wrapper-outside-scripts/lib/ gap shape as
       # scripts/audit-workflow-concurrency.js above — its logic lives in

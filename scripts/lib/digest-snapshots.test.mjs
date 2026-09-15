@@ -92,8 +92,8 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
   assert.match(note, /^didn't update overnight:/);
 });
 
-test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; backlogDrain REMOVED BRO-3390 when its producer was retired)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'health', 'p1RelevanceAudit', 'predispatchQueue', 'providerSpend', 'redditDigest', 'trunk']);
+test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; doneEvidence added BRO-3426; backlogDrain REMOVED BRO-3390 when its producer was retired)', () => {
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'doneEvidence', 'health', 'p1RelevanceAudit', 'predispatchQueue', 'providerSpend', 'redditDigest', 'trunk']);
   assert.ok(!SNAPSHOTS.some((s) => s.key === 'backlogDrain'),
     'backlog-drain-metric.json froze on 2026-08-31 when scripts/backlog-drain.js was decommissioned; re-registering it would resume a permanent daily "stale" warning in the owner digest');
 });

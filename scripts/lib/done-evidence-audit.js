@@ -1,0 +1,519 @@
+/**
+ * done-evidence-audit.js — pure classification for the daily evidence
+ * re-verification sweep (BRO-3426).
+ *
+ * THE PROBLEM. Every completion claim on this board is self-certified. Over
+ * 2026-09-13/15 the Linear Migration owner tab closed 26+ cards BY HAND whose
+ * state was wrong, in three distinct shapes:
+ *   (a) work fully merged, state stuck In Progress/In Review for weeks
+ *       (BRO-374, BRO-2649, BRO-2174, BRO-2095, BRO-2209, BRO-2109 …);
+ *   (b) 'Done' cards whose new test file was never registered in
+ *       tests/unit-test-manifest.txt, so CI never ran it (BRO-423, BRO-2446);
+ *   (c) cards armed with a VACUOUS check — `test -f <path already on main>` —
+ *       green before the work starts (BRO-3378 measured 31 such cards).
+ * A hand sweep is heroic and unrepeatable. This module is the judgement half
+ * of the mechanical version.
+ *
+ * SHADOW MODE, structurally. Nothing here writes anywhere: these are pure
+ * functions over already-gathered facts. The runner
+ * (scripts/audit-done-evidence.js) never calls a Linear mutation. A later
+ * card can add auto-flip of STUCK -> Done once the report has been right for
+ * a week — deliberately not this one.
+ *
+ * WHY A `fail` MEANS NOTHING ON AN OPEN CARD — the measurement that shaped
+ * every verdict below. Hand-run of 75 live cards (25 per state) against a
+ * fresh origin/main checkout, 2026-09-15:
+ *
+ *   Done         23 pass /  2 fail
+ *   In Review    14 pass / 11 fail
+ *   In Progress   8 pass / 17 fail      (75 cards, 61s wall)
+ *
+ * Every single one of those 28 open-card failures was "Could not find
+ * <the test file this card is going to write>". That is not a defect, it is
+ * what unfinished work looks like — the NEW-ARTIFACT ALLOWANCE in
+ * autonomous-triage-core.js says so explicitly. So an open card's FAIL is
+ * dropped as uninformative and only its PASS is reported (as STUCK). The
+ * polarity inverts for a Done card, where the same failure means the work
+ * never landed: both Done failures in that run were real (BRO-3237's own test
+ * file is absent from origin/main; BRO-3335 names a script that does not
+ * exist there).
+ *
+ * That measurement also killed the per-night card cap this was first planned
+ * with: 75 cards in 61s means the whole ~370-card board sweeps in ~5 minutes,
+ * so there is no starvation problem to solve and no starvation sort to copy
+ * from selectRecheckTargets. Every candidate is judged every night.
+ *
+ * Pure module — no fs, no git, no network (CLAUDE.md rule 15: the test
+ * require()s these functions, it does not restate them). Everything that
+ * touches the world is injected as an already-resolved fact by the runner.
+ */
+
+'use strict';
+
+// ── verdicts ────────────────────────────────────────────────────────────────
+// Ordered by how much they demand of a reader: the two that accuse come
+// first, then the two that merely note, then the absence of an answer.
+const VERDICTS = Object.freeze({
+  // Done, and its own evidence does NOT hold against fresh origin/main.
+  FAILED: 'FAILED',
+  // Not Done, but its own evidence DOES hold — a Done candidate nobody moved.
+  STUCK: 'STUCK',
+  // Armed with a check that cannot distinguish finished work from untouched
+  // work, so whatever it says proves nothing either way.
+  VACUOUS: 'VACUOUS',
+  // Done, and its own evidence holds. The quiet, common, correct case.
+  VERIFIED: 'VERIFIED',
+  // No evidence to re-prove, or the probe could not resolve this run. NEVER an
+  // accusation — see the fail-open contract below.
+  UNVERIFIABLE: 'UNVERIFIABLE',
+});
+
+// The states a card can be in when this sweep looks at it. Kept as data rather
+// than string literals sprinkled through the branches so the runner's Linear
+// query and this classifier cannot drift about which bucket is which.
+const DONE_STATE = 'Done';
+const OPEN_STATES = Object.freeze(['In Review', 'In Progress']);
+
+/**
+ * Tri-state outcome of re-proving one piece of evidence.
+ *
+ * HOLDS / BROKEN / UNKNOWN, never a bare boolean — copied deliberately from
+ * scripts/lib/landing-verify.js's checkLanded() contract (LANDED /
+ * NOT_LANDED / UNKNOWN), which exists because a two-state answer forces a
+ * failed probe to masquerade as a negative result. That exact collapse caused
+ * the 2026-08-14 incident that module's header documents: a shallow checkout
+ * reported genuinely-landed commits as "not landed" and nearly triggered a
+ * force-push "recovery". Here the same collapse would print "your finished
+ * work is broken" at a card whose evidence nobody could reach.
+ */
+const EVIDENCE = Object.freeze({ HOLDS: 'holds', BROKEN: 'broken', UNKNOWN: 'unknown' });
+
+/**
+ * Commands that are green on origin/main BY CONSTRUCTION and therefore say
+ * nothing about any particular card.
+ *
+ * `npx tsc --noEmit` and `npx next lint` pass on main whenever main is
+ * healthy, for every card simultaneously — so a card armed with one cannot be
+ * distinguished from a card whose work was never done. That is the same
+ * "vacuous in spirit" property card-premises-auditor.js's header names for
+ * these two commands, and the same reason it declines to treat them as proof.
+ *
+ * Measured on the first live sweep (2026-09-15, 371 cards): 16 candidates are
+ * armed this way, and running them produced 6 VERIFIED and 10 STUCK verdicts —
+ * every one of them false confidence, since main being type-clean says nothing
+ * about the 16 unrelated claims attached to it. They are now reported as
+ * unverifiable instead, which is the honest answer, and not executed at all,
+ * which also removed ~4 minutes from a 7m38s run (`npx tsc --noEmit` alone
+ * costs ~15s a time).
+ *
+ * Deliberately NOT rejected as vacuous: the enricher's own prompt names tsc as
+ * the honest "cannot infer a better command" fallback, so a card armed this
+ * way is under-specified, not defective — a distinction audit-card-
+ * verifiability.js already owns and this sweep should not re-litigate.
+ */
+const NON_PROBATIVE_RE = /^\s*npx\s+(tsc|next\s+lint)\b/;
+
+function isNonProbativeCommand(cmd) {
+  return NON_PROBATIVE_RE.test(String(cmd || ''));
+}
+
+/**
+ * Did this check fail because the SANDBOX lacks something, rather than because
+ * the card's work is broken?
+ *
+ * acceptance-check-core.js already folds the three environment failures it can
+ * see into 'unverifiable' — no node_modules (prepared:false), the repo's
+ * exit-3 convention, and spawn/timeout errors — and its own comment states the
+ * residual it cannot: "a checkout can be prepared:true and still be missing a
+ * data file a command needs — that residual case still reads as FAIL".
+ *
+ * That residual is not hypothetical here. The fresh checkout has no
+ * data/review-texts (a separate PRIVATE repo, CLAUDE.md §11, cloned by a
+ * dedicated CI step and never by `git worktree add`), and on the first live
+ * sweep three Done cards — BRO-2200, BRO-2050, BRO-2044 — were reported FAILED
+ * purely because of it. All three are gates that scan the review corpus and
+ * say so in plain words before exiting 1.
+ *
+ * Accusing three finished P0 fixes of being broken is the single worst output
+ * this sweep could produce: it is precisely the kind of false alarm that
+ * teaches the owner to stop reading the block, which costs more than the stale
+ * Done ever did. So a failure whose own message names a missing data
+ * dependency is downgraded to "cannot verify" — the same fail-open direction
+ * every other uncertainty in this module takes.
+ *
+ * Matched on the checks' OWN wording rather than on a path prefix in the
+ * command: these gates are invoked as ordinary `node scripts/audit-*.js`
+ * commands that name no data path at all, so there is nothing in the command
+ * string to match. The patterns are anchored on the explicit "I could not
+ * read the corpus" sentences these scripts print, not on a bare keyword, so an
+ * ordinary assertion failure that merely mentions a filename cannot trip them.
+ */
+const ENVIRONMENT_FAILURE_PATTERNS = Object.freeze([
+  // scripts/lib/review-corpus gates: "FAIL: scanned 0 review files —
+  // data/review-texts is missing or empty. The gate cannot pass vacuously."
+  /scanned 0 review files/i,
+  /data\/review-texts is missing or empty/i,
+  /review-texts.{0,40}(not checked out|missing|unavailable)/i,
+]);
+
+function isEnvironmentFailure(detail) {
+  const s = String(detail || '');
+  if (!s) return false;
+  return ENVIRONMENT_FAILURE_PATTERNS.some((re) => re.test(s));
+}
+
+/**
+ * Replace the disposable checkout's path with a stable placeholder.
+ *
+ * makeFreshCheckout builds its worktree under an mkdtemp directory, so every
+ * absolute path in a failure message contains a random component that differs
+ * on every single run (`…/T/done-evidence-9HYDGn/main/…`). Two reasons that
+ * matters, and the second is the load-bearing one:
+ *
+ *   1. It is noise in the owner's email — the reader needs the repo-relative
+ *      path, never the sandbox it happened to be checked out into.
+ *   2. data/audit/done-evidence-audit.json is COMMITTED by CI every night. A
+ *      path that changes each run makes the file diff every night even when
+ *      every verdict is identical, which turns a genuinely-changed report into
+ *      something nobody can spot in a diff — and quietly adds a commit a day
+ *      to the data/audit push contention this job already documents at length.
+ */
+// The intervening directories are OPTIONAL, which is the whole point: macOS
+// mkdtemp yields /private/var/folders/__/<hash>/T/<prefix>-XXXX/main/, while a
+// Linux CI runner — the host this actually ships to — yields the flat
+// /tmp/<prefix>-XXXX/main/. An earlier version required at least one
+// intermediate segment and so scrubbed only the developer's laptop output,
+// leaving the committed CI report churning nightly (caught by this module's
+// own test, not in review).
+const SANDBOX_PATH_RE = /(?:\/private)?\/(?:var|tmp)(?:\/[^\s'"]*?)?\/(?:done-evidence|acceptance-check|auto-recheck)-[A-Za-z0-9]+\/main\//g;
+
+function scrubSandboxPaths(text) {
+  return String(text == null ? '' : text).replace(SANDBOX_PATH_RE, '<checkout>/');
+}
+
+// Command output goes into an HTML email. A `node --test` failure is a
+// multi-line stack trace carrying an absolute /private/var/folders/... temp
+// path, and the first live sweep put exactly that into the digest (BRO-3335's
+// row). Collapse to one line and clip: the full text stays in the JSON report,
+// which is where someone debugging should be looking anyway.
+const DIGEST_DETAIL_CHARS = 180;
+
+function tidyDetail(detail, { maxChars = DIGEST_DETAIL_CHARS } = {}) {
+  if (!detail) return null;
+  const one = String(detail).replace(/\s+/g, ' ').trim();
+  if (!one) return null;
+  return one.length > maxChars ? `${one.slice(0, maxChars - 1)}…` : one;
+}
+
+/**
+ * Re-prove a PR-EVIDENCE line's commit/PR reference.
+ *
+ * Takes the ALREADY-RESOLVED ancestry answer (the runner asks GitHub; see
+ * scripts/audit-done-evidence.js for why the check must be remote-side rather
+ * than `git merge-base --is-ancestor`), so this stays pure and testable.
+ *
+ * @param {{merged:boolean,deployed:boolean,checked:boolean,url:string|null}|null} prRef
+ *   linear-pr-evidence.js's extractPrRef() output — null when the card has no
+ *   PR-EVIDENCE line at all.
+ * @param {'holds'|'broken'|'unknown'|null} ancestry - did the referenced
+ *   commit/PR actually land on main? null when there was nothing to resolve.
+ * @returns {{state:string, detail:string|null}}
+ */
+function evaluatePrEvidence(prRef, ancestry) {
+  if (!prRef) return { state: EVIDENCE.UNKNOWN, detail: null };
+  // A PR-EVIDENCE line with no URL is a bare claim ("PR-EVIDENCE: merged
+  // deployed checked") with nothing to re-prove. It is not evidence that
+  // BROKE — there was never anything there to check — so it must not
+  // manufacture a FAILED. Measured live: 3 of the 19 PR-EVIDENCE lines on the
+  // board carry no URL, and one (BRO-3247) points at a production data JSON
+  // rather than a commit, which is a legitimate deploy proof this sweep
+  // simply has no way to re-run.
+  if (!prRef.url) return { state: EVIDENCE.UNKNOWN, detail: 'PR-EVIDENCE line names no commit or PR to re-check' };
+  if (ancestry === EVIDENCE.HOLDS) return { state: EVIDENCE.HOLDS, detail: null };
+  if (ancestry === EVIDENCE.BROKEN) {
+    return { state: EVIDENCE.BROKEN, detail: `PR-EVIDENCE names ${prRef.url}, which is not on main` };
+  }
+  return { state: EVIDENCE.UNKNOWN, detail: `could not resolve ${prRef.url} against main this run` };
+}
+
+/**
+ * Re-prove the card's own acceptance command.
+ *
+ * @param {{status:'pass'|'fail'|'unverifiable', detail:string|null}|null} runResult
+ *   acceptance-check-core.js's runVerify() output, or null when the command
+ *   was not re-run this sweep.
+ * @param {string|null} cmd
+ * @returns {{state:string, detail:string|null}}
+ */
+function evaluateVerifyRun(runResult, cmd) {
+  if (!cmd) return { state: EVIDENCE.UNKNOWN, detail: null };
+  // Checked BEFORE the missing-result branch: a non-probative command is
+  // deliberately never executed, so it always arrives here with runResult
+  // null, and it must report WHY it proves nothing rather than the generic
+  // "was not re-run this sweep".
+  if (isNonProbativeCommand(cmd)) {
+    return { state: EVIDENCE.UNKNOWN, detail: `\`${String(cmd).trim()}\` is green on main for every card at once — it cannot show whether THIS work was done` };
+  }
+  if (!runResult) return { state: EVIDENCE.UNKNOWN, detail: 'its check was not re-run this sweep' };
+  // runVerify already folds every "the environment, not the card, is wrong"
+  // case into 'unverifiable' for us: a checkout with no node_modules
+  // (prepared:false), the repo's exit-3 "cannot verify" convention, and
+  // spawn/timeout errors. Honouring that verbatim is what keeps a missing
+  // private-repo dependency or a cold checkout from being reported as broken
+  // work.
+  if (runResult.status === 'unverifiable') return { state: EVIDENCE.UNKNOWN, detail: runResult.detail || null };
+  if (runResult.status === 'pass') return { state: EVIDENCE.HOLDS, detail: null };
+  // The residual environment failure acceptance-check-core.js cannot classify
+  // for itself — a prepared checkout still missing the private review corpus.
+  if (isEnvironmentFailure(runResult.detail)) {
+    return { state: EVIDENCE.UNKNOWN, detail: 'its check needs the private review-texts corpus, which this sandbox does not have — cannot verify either way' };
+  }
+  return { state: EVIDENCE.BROKEN, detail: scrubSandboxPaths(runResult.detail) || `\`${cmd}\` does not pass on main` };
+}
+
+/**
+ * Combine the two evidence channels into one verdict for one card.
+ *
+ * A card can carry a PR-EVIDENCE line, an acceptance command, both, or
+ * neither. HOLDS from EITHER channel is enough to say the evidence holds —
+ * they are independent proofs of the same claim, not two halves of one. But
+ * BROKEN from either is NOT symmetric: it only counts when nothing else
+ * holds, so a card whose test passes on main is never accused because a
+ * hand-typed commit URL in its PR-EVIDENCE line has a typo in it.
+ *
+ * @param {{state:string,detail:string|null}} pr
+ * @param {{state:string,detail:string|null}} verify
+ * @returns {{state:string, detail:string|null, channels:string[]}}
+ */
+function combineEvidence(pr, verify) {
+  const holds = [pr, verify].filter((e) => e.state === EVIDENCE.HOLDS);
+  if (holds.length) {
+    return {
+      state: EVIDENCE.HOLDS,
+      detail: null,
+      channels: [pr.state === EVIDENCE.HOLDS ? 'pr-evidence' : null, verify.state === EVIDENCE.HOLDS ? 'verify-command' : null].filter(Boolean),
+    };
+  }
+  const broken = [pr, verify].filter((e) => e.state === EVIDENCE.BROKEN);
+  if (broken.length) {
+    return {
+      state: EVIDENCE.BROKEN,
+      detail: broken.map((e) => e.detail).filter(Boolean).join('; ') || null,
+      channels: [pr.state === EVIDENCE.BROKEN ? 'pr-evidence' : null, verify.state === EVIDENCE.BROKEN ? 'verify-command' : null].filter(Boolean),
+    };
+  }
+  return {
+    state: EVIDENCE.UNKNOWN,
+    detail: [pr.detail, verify.detail].filter(Boolean).join('; ') || null,
+    channels: [],
+  };
+}
+
+/**
+ * The verdict for one card.
+ *
+ * @param {object} o
+ * @param {{id:string,name:string,url?:string,state:string}} o.card
+ * @param {{merged,deployed,checked,url}|null} [o.prRef] extractPrRef() output
+ * @param {'holds'|'broken'|'unknown'|null} [o.ancestry] resolved by the runner
+ * @param {string|null} [o.cmd] the card's own acceptance command
+ * @param {{status,detail}|null} [o.runResult] runVerify() output, or null
+ * @param {{kind:string,reason:string,paths:string[]}|null} [o.vacuous]
+ *   card-premises-auditor.js's classifyVacuousCheck() output, REFINED by the
+ *   runner against the card's createdAt — see classifyCard's VACUOUS branch.
+ * @returns {{id,name,url,state,verdict,evidence,detail,cmd,channels}}
+ */
+function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResult = null, vacuous = null } = {}) {
+  const id = (card && card.id) || null;
+  const base = {
+    id,
+    name: (card && card.name) || '(untitled)',
+    url: (card && card.url) || null,
+    state: (card && card.state) || null,
+    cmd: cmd || null,
+  };
+
+  const pr = evaluatePrEvidence(prRef, ancestry);
+  const verify = evaluateVerifyRun(runResult, cmd);
+  const evidence = combineEvidence(pr, verify);
+
+  // VACUOUS FIRST, and it outranks a passing check on purpose. The whole
+  // point of the class is that the check's verdict carries no information: a
+  // `test -f` on a path that predates the card is green whether or not anyone
+  // did the work, so counting its pass as VERIFIED (or, on an open card, as
+  // STUCK) would launder exactly the false confidence BRO-423 shipped with.
+  // It does NOT outrank an independent PR-EVIDENCE proof — that channel is
+  // untainted by the weak command, so a card with both is judged on the half
+  // that actually proves something.
+  if (vacuous && pr.state !== EVIDENCE.HOLDS) {
+    return {
+      ...base,
+      verdict: VERDICTS.VACUOUS,
+      evidence: EVIDENCE.UNKNOWN,
+      detail: vacuous.reason,
+      channels: [],
+    };
+  }
+
+  const isDone = base.state === DONE_STATE;
+
+  if (evidence.state === EVIDENCE.HOLDS) {
+    return {
+      ...base,
+      // A Done card whose evidence holds is the system working. An OPEN card
+      // whose evidence holds is the (a) class this sweep was filed for: the
+      // work is provably on main and nobody moved the card. Reported as a
+      // candidate, never flipped — shadow mode.
+      verdict: isDone ? VERDICTS.VERIFIED : VERDICTS.STUCK,
+      evidence: evidence.state,
+      detail: isDone ? null : 'its own evidence holds on main — looks finished',
+      channels: evidence.channels,
+    };
+  }
+
+  if (evidence.state === EVIDENCE.BROKEN) {
+    // THE ASYMMETRY, and the single most important line in this file. On an
+    // open card a broken check is overwhelmingly "the test file this card is
+    // going to write does not exist yet" — 28 of 28 such failures in the
+    // 2026-09-15 hand run. Reporting those would bury the two real Done
+    // failures under 28 rows of ordinary unfinished work and teach the reader
+    // to skip the block, which is the same failure as having no block at all
+    // (in-review-backlog.js's header makes the identical argument about a
+    // 120-row digest section).
+    if (!isDone) {
+      return {
+        ...base,
+        verdict: VERDICTS.UNVERIFIABLE,
+        evidence: EVIDENCE.UNKNOWN,
+        detail: 'still open and its check does not pass yet — expected for unfinished work, not a defect',
+        channels: [],
+      };
+    }
+    return {
+      ...base,
+      verdict: VERDICTS.FAILED,
+      evidence: evidence.state,
+      detail: evidence.detail,
+      channels: evidence.channels,
+    };
+  }
+
+  return {
+    ...base,
+    verdict: VERDICTS.UNVERIFIABLE,
+    evidence: EVIDENCE.UNKNOWN,
+    detail: evidence.detail || 'no PR-EVIDENCE line and no runnable acceptance command',
+    channels: [],
+  };
+}
+
+/** Tally by verdict. Every key is always present, so a quiet night reports
+ *  zeros rather than a missing field the digest would render as "undefined". */
+function summarize(results) {
+  const counts = { VERIFIED: 0, FAILED: 0, STUCK: 0, VACUOUS: 0, UNVERIFIABLE: 0, total: 0 };
+  for (const r of Array.isArray(results) ? results : []) {
+    if (!r || !r.verdict) continue;
+    counts.total++;
+    if (counts[r.verdict] !== undefined) counts[r.verdict]++;
+  }
+  return counts;
+}
+
+/** Done-only denominator for the headline ("41/47 Done(14d) verified"). */
+function doneTally(results) {
+  let done = 0;
+  let verified = 0;
+  for (const r of Array.isArray(results) ? results : []) {
+    if (!r || r.state !== DONE_STATE) continue;
+    done++;
+    if (r.verdict === VERDICTS.VERIFIED) verified++;
+  }
+  return { done, verified };
+}
+
+// How many rows the digest block may print. The board runs ~370 candidates and
+// a block the eye learns to skip is the same failure as no block — same cap
+// and same reasoning as in-review-backlog.js. Everything past this rolls into
+// moreCount and lives in the JSON report.
+const MAX_DIGEST_ITEMS = 8;
+
+// Only the verdicts that ask the reader to DO something get a row. VERIFIED is
+// the quiet majority and belongs in the headline count, not in eight lines of
+// "still fine". UNVERIFIABLE is counted but never listed: it is the absence of
+// evidence, which is a backlog-quality problem audit-card-verifiability.js
+// already owns, not a claim that went bad overnight.
+const REPORTABLE = Object.freeze([VERDICTS.FAILED, VERDICTS.STUCK, VERDICTS.VACUOUS]);
+
+/**
+ * Flatten a report into the {generatedAt, bannerText, items, moreCount} shape
+ * renderNamedDigestBlock (scripts/lib/autonomous-email-render.js:496) already
+ * knows how to render — so wiring this into the morning digest needs a
+ * registry row and one render line, and no new render code at all.
+ *
+ * Returns null on a genuinely quiet night (nothing to act on), which
+ * send-morning-digest.js reads as "print no block".
+ *
+ * @param {{generatedAt:string, results:Array}} report
+ */
+function buildDigestSnapshot(report, { maxItems = MAX_DIGEST_ITEMS } = {}) {
+  const results = (report && Array.isArray(report.results)) ? report.results : [];
+  const counts = summarize(results);
+  const { done, verified } = doneTally(results);
+
+  const rows = results.filter((r) => r && REPORTABLE.includes(r.verdict));
+  // FAILED first — a Done card whose evidence no longer holds is the only
+  // verdict here that says something the board currently claims is TRUE is
+  // false. STUCK next (work sitting finished), VACUOUS last (a check to
+  // strengthen, no claim in dispute).
+  const rank = (r) => REPORTABLE.indexOf(r.verdict);
+  rows.sort((a, b) => rank(a) - rank(b));
+
+  const bannerText =
+    `${verified}/${done} Done(14d) verified on main · ` +
+    `${counts.FAILED} FAILED · ${counts.VACUOUS} vacuous · ${counts.STUCK} stuck-but-done`;
+
+  if (!rows.length) {
+    // Still emit a snapshot rather than null: this is a STANDING line, for the
+    // same reason trunk status and backlog inflow are (send-morning-digest.js
+    // renders both green when healthy). A block that only appears when it is
+    // angry teaches the reader that silence means "fine", which is
+    // indistinguishable from a dead producer — and a dead producer is the
+    // exact failure mode this sweep exists to catch in other people's work.
+    return { generatedAt: report && report.generatedAt, bannerText, items: [], moreCount: 0 };
+  }
+
+  return {
+    generatedAt: report && report.generatedAt,
+    bannerText,
+    items: rows.slice(0, maxItems).map((r) => ({
+      title: `${r.verdict} ${r.id} — ${r.name}`,
+      detail: tidyDetail(r.detail),
+      url: r.url || null,
+    })),
+    moreCount: Math.max(0, rows.length - maxItems),
+  };
+}
+
+module.exports = {
+  VERDICTS,
+  EVIDENCE,
+  DONE_STATE,
+  OPEN_STATES,
+  MAX_DIGEST_ITEMS,
+  REPORTABLE,
+  NON_PROBATIVE_RE,
+  SANDBOX_PATH_RE,
+  scrubSandboxPaths,
+  ENVIRONMENT_FAILURE_PATTERNS,
+  DIGEST_DETAIL_CHARS,
+  isNonProbativeCommand,
+  isEnvironmentFailure,
+  tidyDetail,
+  evaluatePrEvidence,
+  evaluateVerifyRun,
+  combineEvidence,
+  classifyCard,
+  summarize,
+  doneTally,
+  buildDigestSnapshot,
+};

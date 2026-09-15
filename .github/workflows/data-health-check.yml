@@ -472,6 +472,90 @@ jobs:
             bash scripts/lib/push-with-retry.sh 25 main
           fi
 
+      # ── Done-evidence audit (BRO-3426) ───────────────────────────────────
+      # Re-proves every Done(14d) / In Review / In Progress card's OWN claimed
+      # evidence — a PR-EVIDENCE commit/PR, or its acceptance command — against
+      # a fresh origin/main, and reports what no longer holds.
+      #
+      # WHY IT IS A SEPARATE STEP from the acceptance recheck above, which also
+      # re-runs card commands against fresh main: that one answers "did the ~10
+      # cards that PROMISED a recheck (a RECHECK-AFTER stamp, or a Done inside
+      # 24h) still hold", and is deliberately budget-capped to protect the
+      # morning email behind it. This one sweeps the WHOLE board every night to
+      # answer a different question — "is the board's own record of what is
+      # finished true at all" — after a hand sweep on 2026-09-13/15 found 26+
+      # cards whose state was simply wrong. They share every primitive that
+      # matters (acceptance-check-core.js's sandboxed runner, verify-gate.js,
+      # card-premises-auditor.js) and differ only in selection.
+      #
+      # SHADOW MODE: it writes two files under data/audit and nothing else. It
+      # never calls a Linear mutation, so no issue's state can move because of
+      # it. Auto-flipping STUCK -> Done is explicitly a LATER card, once this
+      # report has been right for a week.
+      #
+      # 10min soft budget inside a 14min step timeout. Measured live on
+      # 2026-09-15: 374 cards in ~9min wall, dominated not by the 251 fast
+      # `node --test` checks (~0.3s each) but by ~30 corpus-scanning
+      # `node scripts/validate-data.js`-class commands. The script's own
+      # deadline is a soft check between cards, so it cannot stop a single hung
+      # command — the step timeout is the hard backstop, set above the budget
+      # for the same reason the recheck step's 8min sits above its 3min budget.
+      # A run that hits the budget records the remaining cards as not-re-run
+      # rather than dropping them, and the report names its own slowest checks
+      # so the next budget change is made from data.
+      #
+      # GH_TOKEN is REQUIRED, not optional: PR-EVIDENCE ancestry is resolved
+      # through the GitHub compare API rather than `git merge-base
+      # --is-ancestor`, because this job checks out at depth 1 and
+      # scripts/lib/landing-verify.js hard-SKIPS its unshallow under
+      # GITHUB_ACTIONS (BRO-3320 — an unshallow must move ~1.8 GB here and
+      # cannot finish). Without the token every ancestry probe answers UNKNOWN,
+      # which never accuses anyone — so the step would stay green forever while
+      # silently checking nothing, the same invisible-failure shape BRO-3373
+      # had to fix for a different reason.
+      # continue-on-error: a crash here must never block the commit steps that
+      # follow, exactly like the recheck step above.
+      - name: Done-evidence audit (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 14
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Emergency kill switch, same pattern as
+          # ACCEPTANCE_RECHECK_KILL_SWITCH: `gh variable set
+          # DONE_EVIDENCE_AUDIT_KILL_SWITCH --body true` stops this instantly
+          # without a code change or a revert.
+          DONE_EVIDENCE_AUDIT_KILL_SWITCH: ${{ vars.DONE_EVIDENCE_AUDIT_KILL_SWITCH }}
+        run: node scripts/audit-done-evidence.js --time-budget-min 10
+
+      # Committed in its OWN small commit+push, immediately after the step that
+      # writes it — the BRO-386/BRO-471 pattern the recheck ledger above uses,
+      # and for the same measured reason: bundling a file with 15 other
+      # data/audit/* files into one commit means one lost push-with-retry race
+      # discards ALL of them, and the runner filesystem is ephemeral, so there
+      # is no second chance. The digest snapshot is the half that matters —
+      # send-morning-digest.js reads it off main, so a snapshot that never
+      # lands is a digest line that never appears.
+      - name: Commit done-evidence audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/done-evidence-audit.json data/audit/done-evidence-digest-snapshot.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No done-evidence audit changes"
+          else
+            git commit -m "data: Update done-evidence audit [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
       # Cross-outlet attribution drift check (card #1550, Notion 3bd637c5-416f-81b0):
       # audit-cross-outlet-attributions.test.mjs's four acceptance assertions were
       # only CI-gated when someone edited the audited script itself (test.yml
