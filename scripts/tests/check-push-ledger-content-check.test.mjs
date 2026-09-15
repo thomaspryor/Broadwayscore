@@ -88,7 +88,7 @@ test('checkContentSurvived: genuine revert (branch reset back to pre-edit base) 
     const result = checkContentSurvived(checkerDir, { sha: entrySha, branch: 'feature' });
     assert.equal(result, false, 'a genuine revert to pre-edit base must not be suppressed');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -116,7 +116,7 @@ test('checkContentSurvived: content carried forward byte-identical under a new s
     const result = checkContentSurvived(checkerDir, { sha: entrySha, branch: 'feature' });
     assert.equal(result, true, 'byte-identical content carried forward under a new sha must be suppressed');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -144,7 +144,7 @@ test('checkContentSurvived: content carried forward as a pure superset (later co
     const result = checkContentSurvived(checkerDir, { sha: entrySha, branch: 'feature' });
     assert.equal(result, true, 'our added lines surviving inside a later superset commit must be suppressed');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -159,7 +159,7 @@ test('checkContentSurvived: entry sha was never pushed anywhere (unfetchable) ->
     const result = checkContentSurvived(checkerDir, { sha: fakeSha, branch: 'feature' });
     assert.equal(result, false, 'an unfetchable/never-pushed sha must not be suppressed');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -192,6 +192,6 @@ test('checkContentSurvived: our own added lines genuinely clobbered by a concurr
     const result = checkContentSurvived(checkerDir, { sha: entrySha, branch: 'feature' });
     assert.equal(result, false, 'a clobbered addition inside an otherwise-changed file must not be suppressed');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

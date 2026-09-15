@@ -117,7 +117,7 @@ test('push-via-git-api.sh replays our own diff onto a tip that moved after our b
     const concurrentTip = sh('git rev-parse HEAD', concurrentDir).trim();
     assert.equal(parentSha, concurrentTip);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -145,7 +145,7 @@ test('push-via-git-api.sh handles delete + rename correctly (no orphaned old pat
     assert.deepEqual(fs.readdirSync(path.join(verifyDir, 'data')).sort(), ['renamed.json']);
     assert.equal(fs.readFileSync(path.join(verifyDir, 'data', 'renamed.json'), 'utf8'), '{"a":1}\n');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -209,7 +209,7 @@ test('two concurrent push-via-git-api.sh invocations racing the SAME origin: bot
       'origin must hold exactly the seed plus one commit per runner',
     );
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -271,7 +271,7 @@ test('push-via-git-api.sh does not shallow-graft the caller\'s local repo when t
       `expected the original 3-commit ancestry to remain traversable. Log:\n${postRunLog}`);
     assert.match(postRunLog, /commit1/, `commit1 no longer traversable — ancestry truncated. Log:\n${postRunLog}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -330,7 +330,7 @@ test('BRO-2413: apiFallbackMerge reconciles a genuinely multi-writer file (data/
       'both writers\' lines AND the base line must survive — a plain "ours wins" overlay would have dropped concurrent-writer\'s line entirely',
     );
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -378,7 +378,7 @@ test('BRO-2413 round-2 (Codex adversarial ship-check P0): a deliberate local del
     // wasn't a whole-file "ours wins" that happened to also drop the queue).
     assert.equal(fs.readFileSync(path.join(verifyDir, 'data', 'unrelated.json'), 'utf8'), '{"b":2}\n');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -394,7 +394,7 @@ test('push-via-git-api.sh fails loudly (exit 1) with no push attempted when base
 
     assert.throws(() => runScript(['main', 'not-a-real-sha', '3'], runnerDir));
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -481,7 +481,7 @@ exec "$@"
     const landed = sh('git show main:data/ours.json', originDir);
     assert.equal(landed.trim(), '{"c":3}');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -537,7 +537,7 @@ exec "$@"
     const originTip = sh('git rev-parse main', originDir).trim();
     assert.equal(res.stdout, originTip, 'script reported a sha that is not the origin tip');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -587,7 +587,7 @@ exec "$@"
     // that stops timing out cannot leave this test passing vacuously.
     assert.match(res.stderr, /push TIMED OUT after \d+s \(rc=124/, 'the timeout path was never exercised');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -646,7 +646,7 @@ exec "$@"
     assert.ok(backoffs[1] > backoffs[0], `backoff must escalate across consecutive timeouts, got: ${backoffs}`);
     assert.match(res.stderr, /no attempts remain, skipping backoff/, 'the last attempt must not compute/log a backoff it will never sleep');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -692,7 +692,7 @@ exec "$@"
     assert.ok(fs.existsSync(marker), 'the shim never intercepted a push — the script died before reaching it');
     assert.doesNotMatch(res.stderr, /unbound variable|integer expression expected/, 'garbage config reached raw bash arithmetic/comparison instead of being coerced to the default');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -736,7 +736,7 @@ exec "$@"
     assert.ok(fs.existsSync(marker), 'the shim never intercepted a push');
     assert.doesNotMatch(res.stderr, /sleep: invalid|negative/i, 'a negative value reached sleep unclamped');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -843,7 +843,7 @@ test('the accepting fixture produces the compare-and-swap text the script\'s rac
       'this fixture must fail on the ref lock, NOT on a hook decline — otherwise it is testing the wrong branch',
     );
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -887,7 +887,7 @@ test('push-via-git-api.sh recovers from a genuinely lost compare-and-swap: repla
       'the landed commit must sit directly on the interloper commit, not beside it',
     );
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -914,7 +914,7 @@ test('a pre-receive DECLINE that also moved the tip is retried as a race, not tr
       'the declined attempt must not have cost us the interloper commit or our own file',
     );
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -965,6 +965,6 @@ test('NEGATIVE CONTROL: with a retry budget of 1 the same lost CAS is fatal, and
       'our own content must NOT be on origin: the single attempt was supposed to fail',
     );
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

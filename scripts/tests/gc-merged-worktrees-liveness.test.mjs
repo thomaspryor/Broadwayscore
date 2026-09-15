@@ -61,7 +61,7 @@ const liveProc = spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], 
 
 after(() => {
   liveProc.kill('SIGKILL');
-  fs.rmSync(root, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // Give the child a moment to actually start and register its cwd with the

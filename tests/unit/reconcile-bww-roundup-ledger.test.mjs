@@ -116,6 +116,6 @@ test('PUSH_RECONCILE_MERGED_JSON=1 survives two concurrent poller runs appending
     assert.deepEqual(finalShowIds, ['base-show', 'show-a-ours', 'show-b-concurrent'].sort(),
       'both concurrent runs\' misses must survive on origin/main');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
