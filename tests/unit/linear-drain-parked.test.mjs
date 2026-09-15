@@ -536,6 +536,10 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
         dispatchFn: (taskId, _log, _delay, _model, opts) => { dispatchedTaskIds.push(taskId); dispatchOpts.push(opts); },
         readLedger: () => [],
         appendLedger: (entry) => journaled.push(entry),
+        // BRO-3454: explicit, not the real-shared-ledger fallback — keeps
+        // this test's assertions independent of production ledger content
+        // (ship-check/Codex finding).
+        dispatchLedgerEntries: () => [],
         log: () => {},
       });
       assert.deepStrictEqual(result.dispatched, ['BRO-1', 'BRO-2']);
@@ -588,6 +592,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => [],
       appendLedger: () => {},
+      dispatchLedgerEntries: () => [], // BRO-3454: explicit, not the real-shared-ledger fallback
       log: () => {},
     });
     assert.deepStrictEqual(result.dispatched, ['BRO-1']);
@@ -605,6 +610,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
         dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
         readLedger: () => [],
         appendLedger: () => {},
+        dispatchLedgerEntries: () => [], // BRO-3454: explicit, not the real-shared-ledger fallback
         log: (m) => warnings.push(m),
         // BRO-3454: this test is about --cap parsing/fallback, not the new
         // concurrency ceiling — held well above DISPATCH_CAP so it can't
@@ -870,11 +876,20 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
     const fs = require('node:fs');
     const os = require('node:os');
 
-    function withLedger(lines, fn) {
+    // Ship-check (Codex adversarial review, BRO-3454): the sync version of
+    // this helper did `try { return fn(file); } finally { rmSync(...) }` —
+    // for an ASYNC fn, `return fn(file)` hands back a still-pending promise
+    // immediately, so `finally`'s rmSync ran (deleting the ledger file)
+    // BEFORE main()'s internal `await` for the issue fetch ever resolved and
+    // its real read of `file` happened. The dedup test below "passed"
+    // vacuously: it was reading an ENOENT'd file (→ []), not the seeded
+    // duplicate rows. Fixed by awaiting fn(file) inside the try before
+    // cleanup runs.
+    async function withLedger(lines, fn) {
       const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'drain-guard-'));
       const file = path.join(dir, 'ledger.jsonl');
       if (lines !== null) fs.writeFileSync(file, lines.join('\n') + '\n');
-      try { return fn(file); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+      try { return await fn(file); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
     }
 
     test('a real ledger file with a union-merge-duplicated costly failure is deduped before the breaker sums it (stays under threshold)', async () => {
@@ -894,6 +909,30 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
           log: () => {},
         });
         assert.deepStrictEqual(result.dispatched, ['BRO-1'], 'a deduped single half-threshold spend must not trip the breaker');
+      });
+    });
+
+    // Positive control (Codex adversarial review, BRO-3454): the test above
+    // only proves "didn't trip" — that alone would also pass if the real
+    // file were never read at all (the exact bug this control catches: it
+    // was caught live by the ENOENT/premature-cleanup bug fixed above).
+    // A genuinely-over-threshold real-file spend, with NO duplication in
+    // play, must still halt dispatch through the same real readLedgerStrict
+    // path — proving the file really is being read and summed.
+    test('a real ledger file with a genuinely over-threshold failure DOES trip the breaker (control for the dedup test above)', async () => {
+      delete process.env.LINEAR_NEXT_DISABLED;
+      const row = JSON.stringify({ ts: new Date().toISOString(), event: 'card-fail', cardId: 'BRO-9', usd: DEFAULT_SPEND_THRESHOLD_USD + 1 });
+      await withLedger([row], async (file) => {
+        const dispatchedTaskIds = [];
+        const result = await main([], {
+          listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+          dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+          appendLedger: () => {},
+          dispatchLedgerEntries: () => [],
+          ledgerPath: file,
+          log: () => {},
+        });
+        assert.deepStrictEqual(result.dispatched, [], 'a real over-threshold spend read from disk must halt dispatch');
       });
     });
 

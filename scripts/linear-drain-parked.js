@@ -338,6 +338,15 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
     // shared lib must stop the pass rather than be silently treated as
     // terminal and dereference a job that may be null.
     if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
+    // KNOWN LIMITATION (BRO-3445, filed for digest-autofix.js's identical
+    // shape and now also true here): job-done only proves the headless
+    // session EXITED cleanly, not that the issue actually closed — the board
+    // Done-audit verifies that separately, out-of-band. A session that exits
+    // clean without resolving anything still counts as a `card-pass`
+    // completion for computeSpendCircuitBreaker below, which can mask
+    // ongoing spend and keep the breaker from tripping. Same tradeoff
+    // BRO-3412/BRO-3445 accepted for digest-autofix.js — out of scope for
+    // this wiring-only card.
     const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
     newEntries.push({
       // usd (BRO-3454): what this dispatch actually cost, so
