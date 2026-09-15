@@ -104,6 +104,31 @@ jobs:
 
       - name: Commit and push
         if: always() && steps.git-check.outputs.changes == 'true'
+        # BRO-427: this step was the confirmed failure point on 5 straight
+        # runs in 24h (all "Commit and push", all a git-push transport HANG
+        # at push-with-retry.sh's 90s GIT_NET_TIMEOUT_SEC cap — not a
+        # rejection). It ran on the shared MAX_RETRIES=5/PUSH_DEADLINE_SEC=240
+        # defaults, which `node scripts/audit-push-retry-budgets.js` flags as
+        # retries-undersized-vs-deadline + deadline-cannot-fund-retries +
+        # fallback-early-trigger-unreachable (fundableAttempts=2 vs the
+        # Git Data API fallback's own default trigger of 3). Same defect
+        # class as BRO-2811 (weekly-integrity.yml, 2026-09-08): raising
+        # MAX_RETRIES alone pushes the fallback's default trigger threshold
+        # (floor((retries+1)/2)) further out of reach, so
+        # PUSH_API_FALLBACK_AFTER_ATTEMPTS must be pinned low too. 25/900/3
+        # matches that exact precedent and clears all three flags (verified
+        # via the audit tool). Job's 60-min timeout has ample headroom — the
+        # actual backfill work completes in under 2 minutes. Note (Codex
+        # adversarial review, BRO-427): the Git Data API fallback runs ON TOP
+        # of PUSH_DEADLINE_SEC, not inside it, so this step's true worst case
+        # is ~900s local (3 attempts, early-fallback trigger) + up to ~400s
+        # fallback ≈ 16-18min, not a flat 15min ceiling — still leaves ~40min
+        # of the 60-min job timeout for the always() steps below (push-core-
+        # data, ledger commit, notify-failure), each of which normally
+        # completes in well under a minute.
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -116,7 +141,7 @@ jobs:
 
           CAST_COUNT=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
           git commit -m "data: Backfill cast via web search${CAT_MSG} [${CAST_COUNT} files]"
-          bash scripts/lib/push-with-retry.sh 5
+          bash scripts/lib/push-with-retry.sh 25 main
 
       - name: Push core data to private repo
         if: always()
