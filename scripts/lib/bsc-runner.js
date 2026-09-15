@@ -405,13 +405,20 @@ async function runJob(opts) {
     });
 
     if (res.sessionId) updateLease(taskId, { sessionId: res.sessionId });
+    // Ledger truth and the runner's own return value must agree (ship-check
+    // catch): a caller reading `out.ok`/`out.stage` alone used to see a
+    // plain success even when the ledger recorded BLOCKED/STOPPED_SHORT/
+    // STRANDED — this rides the classified outcome on `out` too (see below).
+    let headlessOutcome = null;
     if (res.ok) {
       // BRO-3442: an exit-0 job is not automatically job-done — classify what
       // the session's own final text actually said before trusting it.
       const classified = classifyHeadlessResult(res.resultText);
       if (classified.outcome === 'blocked') {
+        headlessOutcome = 'blocked';
         ledger.appendEntry({ event: ledger.JOB_EVENTS.BLOCKED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason });
       } else if (classified.outcome === 'stopped-short') {
+        headlessOutcome = 'stopped-short';
         ledger.appendEntry({ event: ledger.JOB_EVENTS.STOPPED_SHORT, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason });
       } else {
         // 'clean' — a THIS SESSION: CLOSE ME|IDLE with no BLOCKED reason.
@@ -427,8 +434,10 @@ async function runJob(opts) {
         // per-job cwd reach this branch with a real, job-specific `cwd`.
         const landing = (cwd && cwd !== REPO) ? detectJobLanding({ cwd }) : { status: 'unknown' };
         if (landing.status === 'unlanded') {
+          headlessOutcome = 'stranded';
           ledger.appendEntry({ event: ledger.JOB_EVENTS.STRANDED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, sha: landing.sha });
         } else {
+          headlessOutcome = 'done';
           ledger.appendEntry({ event: ledger.JOB_EVENTS.DONE, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD });
         }
       }
@@ -453,7 +462,7 @@ async function runJob(opts) {
         detail: (res.errorDetail || '').slice(0, 300),
       });
     }
-    out = { ok: res.ok, jobId, stage: res.stage, exitSignal: res.exitSignal || null, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
+    out = { ok: res.ok, jobId, stage: res.stage, headlessOutcome, exitSignal: res.exitSignal || null, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
     return out;
   } finally {
     // finally runs after the return expression is evaluated but before the

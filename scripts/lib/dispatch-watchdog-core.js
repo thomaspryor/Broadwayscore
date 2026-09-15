@@ -466,6 +466,40 @@ function planSweep(entries, tasks, opts) {
   // window's newest event is a success). This is a separate signal that
   // does not require the newest event to be a failure to alarm.
   const failureRate = detectLauncherFailureRate(entries, { now });
+
+  // ── headless jobs that ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: (BRO-3442) ──
+  // Computed HERE (before retryable/p01Queue below) so both can exclude a
+  // task this sweep is about to park — without that, the SAME sweep both
+  // parks a task (with "not retried automatically" in the reason/comment)
+  // and dispatches it via the P0/P1 backlog queue, since planSweep computes
+  // toDispatch independently of jobBlocked (adversarial review catch).
+  //
+  // Grouped by LATEST job per task (by ts), not "any folded job with a
+  // BLOCKED event": foldJobs() is keyed by jobId, and a task can accumulate
+  // several jobIds over time (retries/resumes). Filtering on "any job ever
+  // BLOCKED" would re-park a task whose blocker was already resolved and
+  // superseded by a later, successful jobId (adversarial review catch) —
+  // only the task's most recent job's own verdict is the current one.
+  const latestJobByTask = new Map();
+  for (const job of foldJobs(entries).values()) {
+    if (!job || job.taskId == null) continue;
+    const id = String(job.taskId);
+    const ts = Date.parse(job.ts || '') || 0;
+    const cur = latestJobByTask.get(id);
+    if (!cur || ts >= cur.ts) latestJobByTask.set(id, { ...job, ts });
+  }
+  const jobBlocked = [];
+  for (const [id, job] of latestJobByTask) {
+    if (job.event !== JOB_EVENTS.BLOCKED) continue;
+    const task = tasks.get(id);
+    if (!isTaskOpen(task)) continue;          // card already closed
+    if (open.has(id)) continue;               // a newer launch superseded this
+    if (ownerParked.has(id) || wdParked.has(id)) continue;
+    jobBlocked.push({ taskId: id, subject: task.subject, jobId: job.jobId, reason: job.reason || null });
+  }
+  jobBlocked.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
+  const blockedTaskIds = new Set(jobBlocked.map((j) => j.taskId));
+
   const retryable = [];
   const toPark = [];
   const seen = new Set();
@@ -478,6 +512,7 @@ function planSweep(entries, tasks, opts) {
     if (!isTaskOpen(task)) continue;
     if (open.has(id)) continue;                    // a newer launch is running
     if (ownerParked.has(id) || wdParked.has(id)) continue;
+    if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: claimed, never landed — don't re-claim every sweep
     // Human-territory cards are excluded here too, not just in the P0/P1
     // backlog sweep below (ship-check catch on task #1154). Retry only needs a
@@ -531,26 +566,6 @@ function planSweep(entries, tasks, opts) {
   }
   unlandedDone.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
 
-  // ── headless jobs that ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: (BRO-3442) ──
-  // Same derivation shape as unlandedDone just above: fold the ledger, keep
-  // still-open tasks not already superseded by a newer launch or parked.
-  // Unlike unlandedDone this IS acted on (see dispatch-watchdog.js's
-  // executeSweep): a BLOCKED job did its job correctly — it hit something
-  // only the owner can resolve and said so — so this is a PARK-with-reason,
-  // not a redispatch candidate. Never fed by isDeadlikeEvent/dead-attempt
-  // strikes (see JOB_EVENTS.BLOCKED's own comment in dispatch-ledger.js).
-  const jobBlocked = [];
-  for (const job of foldJobs(entries).values()) {
-    if (!job || job.event !== JOB_EVENTS.BLOCKED || job.taskId == null) continue;
-    const id = String(job.taskId);
-    const task = tasks.get(id);
-    if (!isTaskOpen(task)) continue;          // card already closed
-    if (open.has(id)) continue;               // a newer launch superseded this
-    if (ownerParked.has(id) || wdParked.has(id)) continue;
-    jobBlocked.push({ taskId: id, subject: task.subject, jobId: job.jobId, reason: job.reason || null });
-  }
-  jobBlocked.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
-
   // ── undispatched P0/P1 backlog (standing owner rule 2026-07-24) ──
   const p01Queue = [];
   for (const task of tasks.values()) {
@@ -560,6 +575,7 @@ function planSweep(entries, tasks, opts) {
     if (isExcludedCategory(task)) continue;        // human-territory cards
     const id = String(task.id);
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
+    if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: same suppression as the retry path above
     if (dispatchCapDecision(id, entries).blocked) continue;
     p01Queue.push({ taskId: id, subject: task.subject, priority: pri });
