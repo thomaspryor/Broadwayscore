@@ -373,6 +373,14 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
         open.row.state = existing ? (existing.status === 'in_progress' ? 'in-progress' : 'queued') : 'needs-card';
         open.row.taskId = existing ? existing.id : null;
         open.row.wasNew = open.row.state === 'needs-card';
+        // Codex finding: buildPlanRow's 'acknowledged' branch always returns
+        // model:null (acknowledged rows never dispatch, so there was never a
+        // reason to carry one) — by the time we're here, open.row.model is
+        // already that discarded null, not the anchor's real hint. Recover
+        // it from openAnchor's own anchorModel (captured at anchor-creation
+        // time below, before buildPlanRow could drop it), falling back to
+        // this newly-active member's own hint.
+        open.row.model = open.anchorModel || r.model || null;
       }
       continue;
     }
@@ -380,7 +388,10 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const titleOverride = `${BSC_DAILY_TITLE_PREFIX}${split.condition}${batch > 1 ? ` (batch ${batch})` : ''}`;
     const row = buildPlanRow(r, { tasks, today, titleOverride });
     row.affected = [{ name: r.name, message: String(r.message || '').slice(0, 400) }];
-    openAnchor.set(key, { row, batch });
+    // anchorModel: the anchor's raw model hint, captured HERE (not read back
+    // off `row` later) because buildPlanRow's 'acknowledged' branch discards
+    // it to null — see the reactivation branch above for why this matters.
+    openAnchor.set(key, { row, batch, anchorModel: r.model || null });
     planRows.push(row);
   }
   return planRows;

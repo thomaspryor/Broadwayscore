@@ -290,6 +290,26 @@ test('planAutofix: a fold whose ANCHOR is acknowledged but a LATER member is not
   assert.equal(plan[0].affected.length, 2);
 });
 
+test('planAutofix: reactivating an acknowledged fold preserves the ANCHOR\'s model hint, not just the reactivating member\'s (Codex finding)', () => {
+  const queued = [
+    { title: 'Credits low on Show A', description: 'acknowledged: tracked [expires 2026-08-05]', model: 'opus' },
+    { title: 'Credits low on Show B', description: '0 credits, no acknowledgment recorded' },
+  ];
+  const plan = planAutofix({ health: {}, tasks: [], queued, today: '2026-08-02' });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].state, 'needs-card');
+  assert.equal(plan[0].model, 'opus', 'the anchor\'s model hint must survive reactivation, not be silently dropped to null');
+});
+
+test('planAutofix: reactivating an acknowledged fold falls back to the reactivating member\'s model hint when the anchor had none', () => {
+  const queued = [
+    { title: 'Credits low on Show A', description: 'acknowledged: tracked [expires 2026-08-05]' },
+    { title: 'Credits low on Show B', description: '0 credits, no acknowledgment recorded', model: 'opus' },
+  ];
+  const plan = planAutofix({ health: {}, tasks: [], queued, today: '2026-08-02' });
+  assert.equal(plan[0].model, 'opus');
+});
+
 test('planAutofix: a fold where EVERY member is acknowledged stays acknowledged', () => {
   const health = { warns: [
     { name: 'Credits low on Show A', message: 'acknowledged: tracked [expires 2026-08-05]' },
