@@ -24,6 +24,7 @@ const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { OUTLET_VERIFIED_SOURCES, OUTLET_STAR_AUTHORITATIVE } = require('./lib/score-extractors');
 
 const USAGE = `flag-aggregator-band-mismatch.js — Flag reviews anchored to a stale aggregatorStars-derived band (BRO-866).
 
@@ -50,9 +51,19 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   const stampedBand = d.llmScore && d.llmScore.band;
   if (!stampedBand) continue; // never anchored — flag-late-star-reanchor.js's job, not this one
   // Manual/adjudicated verdicts win at read time regardless of the stamped
-  // band — rescoring them is wasted spend.
-  if (d.humanReviewScore != null) continue;
-  if (d.adjudicatedScore != null) continue;
+  // band — rescoring them is wasted spend. Mirror rebuild-helpers.js's exact
+  // P0/P0a gating (not just field presence): a provisional humanReviewScore
+  // falls through to the band (rebuild-helpers.js:373-378), and adjudicatedScore
+  // is itself skipped at read time when the file has a verified star from an
+  // authoritative outlet (rebuild-helpers.js:385-393) — those two cases DO
+  // depend on the stamped band and must not be skipped here.
+  if (d.humanReviewScore != null && d.humanReviewScoreProvisional !== true) continue;
+  if (d.adjudicatedScore != null) {
+    const hasVerifiedStarScore = d.originalScore
+      && OUTLET_VERIFIED_SOURCES.has(d.scoreSource)
+      && OUTLET_STAR_AUTHORITATIVE.has(d.outletId);
+    if (!hasVerifiedStarScore) continue;
+  }
   // Recompute with the FIXED priority (originalScore before aggregatorStars).
   const correct = detectBandFromReviewFile(d);
   if (!correct || !correct.band) continue;
