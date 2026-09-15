@@ -293,10 +293,11 @@ jobs:
           # that form prints "skip (absent)" when git add itself FAILS, which is the
           # exact misdiagnosis memory/feedback_silent_git_add_failures.md exists to
           # prevent (2026-06-06).
-          bash scripts/lib/git-add-existing.sh \
-            data/audit/drift-state.json \
-            data/audit/alert-ledger.json \
-            data/audit/alert-router-attempts.jsonl
+          # One line, deliberately: scripts/lib/api-fallback-writer-drift.js:94
+          # matches the staging command and the path on the SAME line
+          # ([^\n]*), so a backslash continuation makes drift-state.json look
+          # like it has no writer at all and fails that guard.
+          bash scripts/lib/git-add-existing.sh data/audit/drift-state.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
           if git diff --cached --quiet; then
             echo "No state changes to commit."
           else
