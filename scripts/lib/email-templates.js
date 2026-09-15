@@ -187,10 +187,18 @@ function buildReplyToAddress() {
 
 // Derives the email-worker's +claude alias from any address by inserting
 // "+claude" before the "@" (standard plus-addressing — same mailbox, distinct
-// recipient the IMAP worker's `to:` search can match). Used so the [DRAFT]
-// newsletter preview also reaches thomas.pryor+claude@gmail.com: a Reply-All
-// on that preview then naturally CCs the alias with edits + "ship it" (BRO-40
-// Phase 2), without the owner having to type the alias address by hand.
+// recipient the IMAP worker's search can match).
+//
+// NOTE (BRO-40 Phase 2, verified 2026-09-15): the owner still has to
+// explicitly forward the [DRAFT] preview to this alias with edits + "ship
+// it" — a "Reply-All" does NOT do it for them. Gmail treats a +alias of your
+// own account as receive-only and deliberately excludes it from Reply-All's
+// recipient list (it's YOUR address, not a third party's), so CC'ing +claude
+// on the original send does not make it ride along on a reply. What this
+// DOES buy: the alias's mailbox already holds the original [DRAFT] message
+// (Message-ID + full content) before the owner ever forwards anything, so a
+// later forward references a message the worker can already see in-thread
+// rather than depending entirely on quoted text.
 function buildClaudeAliasAddress(email) {
   const at = email.indexOf('@');
   if (at === -1) throw new Error(`Invalid email address: ${email}`);
