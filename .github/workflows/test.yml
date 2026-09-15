@@ -2181,6 +2181,22 @@ on:
       # colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/bsc-needs-you.js'
+      # bsc-in-review (BRO-282 residual half / BRO-3376) — the issue-scoped
+      # sibling of bsc-needs-you above. `In Review` is where finished work
+      # actually piles up (120 items, 100 idle 14d+, measured 2026-09-15) and,
+      # unlike a cmux tab mark, it survives the session that made it. Pure
+      # logic lives in scripts/lib/in-review-backlog.js so the test runs in the
+      # lib glob; path-listed here so a solo edit to the CLI triggers CI at all
+      # (feedback_test_yml_push_path_allowlist).
+      # This hand-listing is load-bearing and permanently un-enforced: BOTH
+      # audit-toplevel-script-test-yml-coverage.js and
+      # audit-test-yml-manifest-paths.js key off manifest-registered tests and
+      # their required sources, and tests/unit/in-review-backlog.test.mjs
+      # requires only scripts/lib/in-review-backlog.js (already covered by
+      # scripts/lib/**) — so neither audit will ever put this CLI in its gap
+      # set. Same shape as the ux-walkthrough.mjs note below. Delete this line
+      # and nothing fails; CI just silently stops running on it.
+      - 'scripts/bsc-in-review.js'
       # Autopilot v5 headless runner (task #459) — colocated tests in the main
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/bsc-reconcile.js'
