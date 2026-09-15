@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-15T01:10:49.311Z",
-  "processed": 12,
-  "failed": 24,
-  "successRate": "33.3%",
+  "updatedAt": "2026-09-15T01:56:35.645Z",
+  "processed": 21,
+  "failed": 40,
+  "successRate": "34.4%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 14,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
+    "scrapingbee": 4,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-14T23:34:42.979Z",
@@ -70,6 +70,24 @@
       "t": "2026-09-15T01:08:41.414Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-15T01:53:46.227Z",
+      "event": "bb-session",
+      "session": "37681da6",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-15T01:54:02.005Z",
+      "event": "bb-session",
+      "session": "c8218ac5",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-15T01:55:17.212Z",
+      "event": "bb-session",
+      "session": "39d0faec",
+      "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
     }
   ]
 }
