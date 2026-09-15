@@ -176,13 +176,22 @@ export default function TicketButtonsAB({
   // Don't render anything until flags load (or fallback fires after 5s)
   // This eliminates the multi-default flicker that biased early clicks to control.
   if (!flagsLoaded) return null;
+  // No affiliate-able ticketLinks at all — an unmonetized officialUrl link
+  // (a show's own site, not a "buy now" promise) is exempt from the
+  // not-yet-on-sale suppression below (BRO-166).
+  const noTicketLinks = visibleLinks.length === 0;
   // `announced` shows with no priceFrom on any link haven't gone on sale yet — the
   // ticket record exists (we found the future TodayTix listing) but there's nothing
   // bookable behind it. Rendering the same bold "Get Tickets" primary CTA used for
   // live shows overpromises and dead-ends; suppress until a price appears (rage-click
-  // root cause on the-visitors-off-broadway-2026, CLAUDE.md card #228).
-  const notYetOnSale = showStatus === 'announced' && !sorted.some(l => l.priceFrom != null);
-  if (showStatus === 'closed' || notYetOnSale || visibleLinks.length === 0) return null;
+  // root cause on the-visitors-off-broadway-2026, CLAUDE.md card #228). Doesn't
+  // apply to the officialUrl-only case: "Visit Official Site" never promised
+  // a purchase, so there's nothing to overpromise.
+  const notYetOnSale = showStatus === 'announced' && !noTicketLinks && !sorted.some(l => l.priceFrom != null);
+  // A show with no affiliate-able ticketLinks but a populated officialUrl must
+  // still render a buy button (BRO-166) — officialUrl alone used to fall
+  // through this guard and dead-end with no CTA at all.
+  if (showStatus === 'closed' || notYetOnSale || (noTicketLinks && !officialUrl)) return null;
 
   // Helpers — same TicketLink shape used by both modes; only the wrapper layout differs.
   // `withArrow` adds a trailing `→` (split-variant primary CTA emphasis only).
@@ -263,13 +272,37 @@ export default function TicketButtonsAB({
     </TicketLink>
   ) : null;
 
+  // noTicketLinks (declared above, before the early-return guard) — officialUrl
+  // is the ONLY buy button available, so it takes over the primary-CTA slot
+  // instead of the small secondary pill used when it's riding alongside a
+  // real ticket link (BRO-166: never dead-end).
+  const renderOfficialPrimary = (totalLinks: number, className: string, withArrow = false) => officialUrl ? (
+    <TicketLink
+      showName={showName}
+      showId={showId}
+      showSlug={showSlug}
+      showStatus={showStatus}
+      showCategory={showCategory}
+      showScore={showScore}
+      platform="Official Site"
+      url={officialUrl}
+      pageType={pageType}
+      linkPosition={0}
+      totalLinks={totalLinks}
+      className={className}
+    >
+      Visit Official Site
+      {withArrow && <span aria-hidden="true">→</span>}
+    </TicketLink>
+  ) : null;
+
   // splitVariant: primary CTA on its own row + secondary pills wrapped below.
   // Single-button A/B variant collapses to just the primary in either mode.
   if (splitVariant) {
-    const totalLinksInRow = visibleLinks.length + (!isSingleButton && officialUrl ? 1 : 0);
+    const totalLinksInRow = visibleLinks.length + (!isSingleButton && !noTicketLinks && officialUrl ? 1 : 0);
     const primaryLink = visibleLinks[0];
     const secondaryLinks = visibleLinks.slice(1);
-    const hasSecondary = !isSingleButton && (secondaryLinks.length > 0 || Boolean(officialUrl));
+    const hasSecondary = !isSingleButton && !noTicketLinks && (secondaryLinks.length > 0 || Boolean(officialUrl));
     // secondaryAfter (Lottery/Rush) ignores the single-button A/B — matches legacy
     // page.tsx behavior where the discount-tickets pill always rendered alongside
     // the primary CTA regardless of the multi/single bucket.
@@ -278,11 +311,13 @@ export default function TicketButtonsAB({
       // Mobile (< lg): primary CTA full-width on its own row, secondary scrolls below.
       // Desktop (lg+): primary CTA + secondary pills share one flex row, all inline.
       <div className="space-y-2 lg:space-y-0 lg:flex lg:flex-wrap lg:items-center lg:gap-2">
-        {primaryLink && renderPrimary(primaryLink, 0, totalLinksInRow, primaryButtonClassName, /* withArrow */ true)}
+        {primaryLink
+          ? renderPrimary(primaryLink, 0, totalLinksInRow, primaryButtonClassName, /* withArrow */ true)
+          : renderOfficialPrimary(1, primaryButtonClassName, /* withArrow */ true)}
         {showSecondaryRow && (
           <div className="flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1 lg:mx-0 lg:px-0 lg:pb-0 lg:overflow-visible">
             {!isSingleButton && secondaryLinks.map((link, idx) => renderSecondary(link, idx + 1, totalLinksInRow))}
-            {!isSingleButton && renderOfficial(visibleLinks.length, totalLinksInRow)}
+            {!isSingleButton && !noTicketLinks && renderOfficial(visibleLinks.length, totalLinksInRow)}
             {/* Lottery/Rush always renders, regardless of single-button A/B variant */}
             {secondaryAfter}
           </div>
@@ -293,6 +328,9 @@ export default function TicketButtonsAB({
 
   // Default inline mode (existing behavior — all callers other than ShowHeroRedesign).
   // Primary uses buttonClassName (same as secondary), no arrow — matches pre-split rendering.
+  if (noTicketLinks) {
+    return renderOfficialPrimary(1, buttonClassName);
+  }
   const inlineTotalLinks = visibleLinks.length + (!isSingleButton && officialUrl ? 1 : 0);
   return (
     <>
