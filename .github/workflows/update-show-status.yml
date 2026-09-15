@@ -1661,31 +1661,30 @@ jobs:
       - name: Find open shows with zero reviews
         id: find-gaps
         run: |
-          GAPS=$(node -e "
-            const shows = require('./data/shows.json').shows;
-            const reviews = require('./data/reviews.json').reviews;
-            const rc = {};
-            for (const r of reviews) rc[r.showId] = (rc[r.showId] || 0) + 1;
-
-            // Open shows with 0 reviews that opened 3+ days ago (give initial pipeline time)
-            const cutoff = new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10);
-            const gaps = shows.filter(s =>
-              s.status === 'open' &&
-              !rc[s.id] &&
-              s.openingDate && s.openingDate <= cutoff
-            );
-
-            // Limit to 10 per day to avoid overloading
-            const batch = gaps.slice(0, 10).map(s => s.id);
-            console.log(batch.join(','));
-          ")
-
+          # Selection logic lives in scripts/lib/zero-review-catchup.js
+          # (BRO-3389 — the previous inline node -e had no age bound and no
+          # attempt memory, so it re-dispatched the same handful of long-open
+          # zero-review shows every day forever). This also stamps
+          # data/audit/zero-review-catchup-attempts.json for the batch it
+          # returns, which the next step commits.
+          OUTPUT=$(node scripts/find-zero-review-catchup-gaps.js)
+          echo "$OUTPUT"
+          GAPS=$(echo "$OUTPUT" | tail -1)
           echo "gap_shows=$GAPS" >> $GITHUB_OUTPUT
-          if [ -n "$GAPS" ]; then
-            COUNT=$(echo "$GAPS" | tr ',' '\n' | wc -l | tr -d ' ')
-            echo "Found $COUNT open shows with 0 reviews needing collection"
+
+      - name: Commit zero-review catch-up attempt memory
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/zero-review-catchup-attempts.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No attempt-memory changes to commit"
           else
-            echo "No zero-review gap shows found"
+            git commit -m "audit: zero-review catch-up attempt memory
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Dispatch gather-reviews for gap shows
