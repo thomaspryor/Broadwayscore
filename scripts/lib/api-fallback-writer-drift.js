@@ -91,7 +91,12 @@ function loopStagesBasename(text, basename) {
  */
 function findWritingWorkflows(dataPath, workflowTexts) {
   const basename = dataPath.replace(/^data\//, '');
-  const re = new RegExp(`(?:git add|git-add-existing\\.sh)[^\\n]*\\bdata/${escapeRegExp(basename)}\\b`);
+  // `(?:[^\n]|\\\n)*` — the command may continue across backslash-newline
+  // line continuations (`git-add-existing.sh \` + one pathspec per line), the
+  // shape check-opening-night-drift.yml adopted in BRO-3455 (2026-09-15); the
+  // single-line scan then reported its drift-state.json writer as missing
+  // and reddened main on this very guard.
+  const re = new RegExp(`(?:git add|git-add-existing\\.sh)(?:[^\\n]|\\\\\\n)*\\bdata/${escapeRegExp(basename)}\\b`);
   const writers = [];
   for (const [wfFile, text] of Object.entries(workflowTexts || {})) {
     if (re.test(text) || loopStagesBasename(text, basename)) writers.push(wfFile);
