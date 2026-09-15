@@ -20,6 +20,13 @@
  * forms only). A card whose acceptance is `test -f docs/hallucinated.md` is
  * just as armed and just as unpassable, so it gets the same treatment here.
  *
+ * BRO-3378: the same module now also answers the OPPOSITE-polarity question —
+ * "can this command ever FAIL?" — because a check that is already green before
+ * the work starts proves nothing when it is re-run afterwards. See the
+ * vacuous-check section below. It lives here rather than in a new module
+ * because it is answered from the identical existence facts, through the
+ * identical injected existsFn, against the identical origin/main oracle.
+ *
  * MUST resolve against origin/main, not the caller's local checkout: a
  * worktree legitimately lacks gitignored paths, and a naive fs.existsSync
  * would report those as "missing" — the same class of mistake an earlier
@@ -110,6 +117,109 @@ function fetchOriginMain({ repo = REPO, log = () => {} } = {}) {
   }
 }
 
+// ── Vacuous-check detection (BRO-3378) ──────────────────────────────────────
+// Everything above asks "can this command ever PASS?". This asks the opposite-
+// polarity question nothing else in the pipeline asks: "can it ever FAIL?"
+//
+// A command that is already green on the pre-work tree cannot distinguish done
+// from not-done, so re-running it at Done time proves nothing. That is the
+// mechanism behind the recurring false-Done pattern: BRO-423 was armed with
+// `test -f scripts/lib/check-merge-history.test.mjs` and sat "verified" for
+// weeks while the checkout-speed fix it actually claimed was never re-proved.
+// Measured on the 2026-09-15 live sweep: 124 open armed Linear cards name a
+// `test -f`, and 40 of those name a path that already exists — and 19 of the
+// enricher's own 85 logged `test -f` drafts named a path that was already in
+// the repo when it drafted them (BRO-2837's by seven months).
+//
+// This is a rule about `test -f` ONLY, and the repo's own design intent is why
+// it can be stated so flatly: autonomous-triage-core.js's NEW-ARTIFACT
+// ALLOWANCE says the `test -f <path>` safe form "is by definition an assertion
+// about a file the work is supposed to CREATE". A `test -f` naming a file that
+// already exists therefore contradicts the documented purpose of the form it
+// is written in. That same allowance is why an ABSENT path is emphatically not
+// flagged here — naming the test you are about to write is correct, and
+// vetoing it killed 3 in-scope cards in the 2026-07-26 live run.
+//
+// Deliberately NOT extended to the other safe forms, and none of them is
+// silently declared healthy:
+//   - `node --test`/`npx tsx --test` — NOT vacuous even when the file exists.
+//     The file's CONTENTS change with the work, so the command's verdict can
+//     change with it; that is the whole point of naming a colocated test.
+//   - `npx tsc --noEmit`, `npx next lint` — green on main by construction, so
+//     vacuous in spirit. Left out on purpose: the enricher's own prompt names
+//     tsc as the honest "cannot infer" fallback, root tsconfig.json excludes
+//     scripts/ entirely (so it says nothing at all about most cards), and
+//     banning it converts weak-armed cards into unarmed ones with no telemetry
+//     gain. Reported, not rejected — tracked as a follow-up.
+//   - the generic `node scripts/audit-*.js` form — genuinely falsifiable
+//     (a real audit can go red), so sweeping it in with tsc would be wrong.
+const VACUOUS_TEST_F_SATISFIED = 'test-f-satisfied';
+const VACUOUS_TEST_F_ARITY = 'test-f-arity';
+
+/**
+ * Is this command incapable of testing the claim it is attached to?
+ *
+ * Fail-open on every uncertainty, matching pathExistsOnOriginMain's own
+ * null-on-transient-failure contract: a path `existsFn` cannot resolve this
+ * run is never scored as vacuous, so a fetch blip can never manufacture a
+ * "your acceptance criteria is worthless" verdict against a good card.
+ *
+ * @param {string} cmd
+ * @param {(relPath:string)=>boolean|null} existsFn
+ * @returns {{kind:string, polarity:string, paths:string[], reason:string}|null}
+ */
+function classifyVacuousCheck(cmd, existsFn) {
+  const s = String(cmd || '').trim();
+  if (!isTestFCommand(s)) return null;
+  const paths = extractCheckFilePaths(s);
+  if (!paths.length) return null;
+
+  // SAFE_CHECK_FORMS' `test -f` regex is `((?: [\w@./-]+)+)` — it accepts more
+  // than one operand, but `test -f a b` is a shell ARITY error ("too many
+  // arguments", exit 2), not a two-file assertion. Such a command can never
+  // pass, which makes it the mirror of the defect above rather than a vacuous
+  // one; it is caught here because it is the same family ("this command does
+  // not test the claim") and because nothing else in the pipeline looks for
+  // it. `polarity` keeps the two apart for any reader or report that cares.
+  if (paths.length > 1) {
+    return {
+      kind: VACUOUS_TEST_F_ARITY,
+      polarity: 'never-passes',
+      paths,
+      reason: `\`test -f\` takes exactly one operand, but this names ${paths.length} (${paths.join(', ')}) — a shell arity error (exit 2), so the check can never pass`,
+    };
+  }
+
+  const p = paths[0];
+  // true only. false = a to-be-created artifact (correct, and the NEW-ARTIFACT
+  // ALLOWANCE protects it); null = unresolved this run (fail open).
+  if (existsFn(p) !== true) return null;
+  return {
+    kind: VACUOUS_TEST_F_SATISFIED,
+    polarity: 'never-fails',
+    paths,
+    reason: `\`test -f ${p}\` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work`,
+  };
+}
+
+/**
+ * Pure core, mirroring auditCardCheckPaths: which of these armed cards carry a
+ * check that cannot test their claim?
+ *
+ * @param {Array<{id,name,url,cmd}>} cards
+ * @param {(relPath:string)=>boolean|null} existsFn
+ * @returns {Array<{id,name,url,cmd,kind,polarity,paths,reason}>}
+ */
+function auditVacuousChecks(cards, existsFn) {
+  const flagged = [];
+  for (const card of Array.isArray(cards) ? cards : []) {
+    const verdict = classifyVacuousCheck(card && card.cmd, existsFn);
+    if (!verdict) continue;
+    flagged.push({ id: card.id, name: card.name, url: card.url, cmd: card.cmd, ...verdict });
+  }
+  return flagged;
+}
+
 /**
  * Pure core: which of these armed cards name a `node --test`/`npx tsx
  * --test`/`test -f` file that `existsFn` reports as confirmed-missing?
@@ -149,17 +259,30 @@ function auditCardCheckPaths(cards, existsFn) {
  * Same fail-open contract as autofix-canary.js's markerExistsOnOriginMain:
  * "could not resolve this run" is never scored as a defect.
  */
-function findCardsWithMissingCheckPaths(evaluatedCards, opts = {}) {
+function findCardCheckPathDefects(evaluatedCards, opts = {}) {
   const candidates = (Array.isArray(evaluatedCards) ? evaluatedCards : [])
     .filter((c) => c && c.armed && isCheckPathCommand(c.cmd));
-  if (!candidates.length) return [];
-  if (!fetchOriginMain(opts)) return [];
+  if (!candidates.length) return { missing: [], vacuous: [] };
+  if (!fetchOriginMain(opts)) return { missing: [], vacuous: [] };
   const cache = new Map();
   const existsFn = (p) => {
     if (!cache.has(p)) cache.set(p, pathExistsOnOriginMain(p, opts));
     return cache.get(p);
   };
-  return auditCardCheckPaths(candidates, existsFn);
+  // One fetch, one cache, both polarities (BRO-3378). Kept in a single pass on
+  // purpose: the two questions are answered from the SAME existence facts, and
+  // running them as two independent sweeps would double the fetch and let the
+  // two reports disagree about a path that landed upstream between them.
+  return {
+    missing: auditCardCheckPaths(candidates, existsFn),
+    vacuous: auditVacuousChecks(candidates, existsFn),
+  };
+}
+
+// Back-compat wrapper: unchanged signature and return shape for the callers
+// that only ever wanted the missing-path bucket.
+function findCardsWithMissingCheckPaths(evaluatedCards, opts = {}) {
+  return findCardCheckPathDefects(evaluatedCards, opts).missing;
 }
 
 module.exports = {
@@ -171,5 +294,10 @@ module.exports = {
   fetchOriginMain,
   auditCardCheckPaths,
   findCardsWithMissingCheckPaths,
+  classifyVacuousCheck,
+  auditVacuousChecks,
+  findCardCheckPathDefects,
+  VACUOUS_TEST_F_SATISFIED,
+  VACUOUS_TEST_F_ARITY,
   REPO,
 };
