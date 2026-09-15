@@ -1,29 +1,35 @@
 {
-  "generatedAt": "2026-09-15T20:59:52.452Z",
+  "generatedAt": "2026-09-15T21:15:27.956Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "b36808f907fa7e509302ec3143179facb8a78a8d",
+  "latestRunHeadSha": "d50529d2c138415ded7bd5b9df8aa10a7b1e1860",
   "state": "RED",
-  "consecutiveFailures": 6,
+  "consecutiveFailures": 75,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-03-19T07:01:41Z",
-  "redForHours": 4333.969847777777,
+  "redSince": "2026-09-13T22:41:00Z",
+  "redForHours": 46.57443222222222,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-03-19T01:35:38Z",
-  "latestFailedRunId": "23332496476",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/23332496476",
-  "decidedRuns": 80,
+  "lastSuccessAt": "2026-09-13T22:10:46Z",
+  "latestFailedRunId": "35022834967",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35022834967",
+  "decidedRuns": 91,
   "failingJobs": [
     {
       "name": "Data Validation",
-      "steps": []
+      "steps": [
+        "Audit sibling-title misroute (strict)",
+        "Audit flag-vs-CV contradictions",
+        "Audit duplicateOf + stale _duplicateOfCleared contradiction (#1655)"
+      ]
     },
     {
       "name": "Test Summary",
-      "steps": []
+      "steps": [
+        "Check results"
+      ]
     }
   ],
   "failingPaths": [],
