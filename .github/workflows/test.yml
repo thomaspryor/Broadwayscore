@@ -2315,6 +2315,18 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist). notion-brain.js
       # was never path-listed before — its bsc-next/tasks-sync consumers were.
       - 'scripts/notion-brain.js'
+      # BRO-3430: posthog-friction-analyzer.js and audit-opening-dates.js were
+      # the two remaining scheduled jobs still writing to the retired Notion
+      # board (one via a direct @notionhq/client bypass, the other via a
+      # notion-brain.js child whose refused exit was logged and swallowed).
+      # scripts/lib/notion-write-paths-audit.js is covered by scripts/lib/**
+      # above; its colocated acceptance test lives in scripts/tests/ (NOT
+      # globbed — registered in tests/unit-test-manifest.txt), so it and the
+      # two repointed callers need explicit entries or a solo edit triggers
+      # ZERO CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/posthog-friction-analyzer.js'
+      - 'scripts/audit-opening-dates.js'
+      - 'scripts/tests/notion-write-paths-retired.test.mjs'
       # Notion corpus export (Sprint 2, notion→linear cutover). notion-corpus.js
       # holds the overflow-reassembly that notion-brain.js ALSO reads through —
       # 2,183 cards keep most of their text in the page body, so a break here

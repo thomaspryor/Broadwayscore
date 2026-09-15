@@ -2,7 +2,7 @@ name: Audit Opening Dates
 
 # Daily LLM press-cluster audit for openingDate + previewsStartDate drift.
 # Suggestion-only — no auto-mutation of shows.json. Findings route to a
-# Notion card; human verifies + updates the private repo.
+# Linear issue; human verifies + updates the private repo.
 #
 # Why a separate workflow from audit-closing-dates: different field-types,
 # different cost profile (~$2/run vs ~$0.50), and we want to stagger the
@@ -15,12 +15,12 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run (no Notion card)'
+        description: 'Dry run (no Linear issue)'
         required: false
         default: 'false'
 
 # Read-only on shows.json — no concurrency group needed, but match the
-# closing-date audit pattern so both audits share a Notion card slot.
+# closing-date audit pattern so both audits share a Linear issue slot.
 concurrency:
   group: opening-date-audit
   cancel-in-progress: false
@@ -60,7 +60,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
