@@ -23,12 +23,13 @@
 
 'use strict';
 
-const { evaluateVerifiability } = require('./verify-gate.js');
+const { evaluateVerifiability, isSafeCheckCommand } = require('./verify-gate.js');
 // The single specificity ranking (node --test/npx tsx --test = 0, test -f =
-// 1, everything else = 2) — exported from autonomous-verify-cmd.js so it is
-// used here identically to how extractVerifyCmd ranks a card's own
-// candidates against each other (BRO-3446; CLAUDE.md §15, never a second copy).
-const { rank } = require('./autonomous-verify-cmd.js');
+// 1, everything else = 2) and the single candidate-extraction regex glue —
+// exported from autonomous-verify-cmd.js so they're used here identically to
+// how extractVerifyCmd ranks a card's own candidates against each other
+// (BRO-3446; CLAUDE.md §15, never a second copy of either).
+const { rank, rawCandidates } = require('./autonomous-verify-cmd.js');
 // Stamp parsing lives in a zero-dependency leaf so stuck-work.js (daily
 // health digest) can share the exact predicate without dragging in this
 // module's verify-gate dependency chain. Re-exported below unchanged.
@@ -39,18 +40,29 @@ const { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard } = requi
 const { cardHasOverflow } = require('./overflow-marker.js');
 
 /**
- * The newest comment that arms with a command AT LEAST AS SPECIFIC as
- * `snapshotCmd` — used to correct a dispatch-ledger snapshot (BRO-3446).
+ * The best correction for `snapshotCmd` found in `comments` — used to fix a
+ * dispatch-ledger snapshot after the fact (BRO-3446).
  *
- * Deliberately NOT evaluateVerifiability(notes, comments)'s own newest-wins
- * rule: that rule stops at the first document (scanning notes then comments,
- * newest first) that arms AT ALL, which is right for arming a fresh dispatch
- * but wrong here — an unrelated LATER comment that happens to also arm (a
- * wrap-up note with its own `VERIFY: npx next lint` boilerplate, say) would
- * shadow an earlier, genuinely specific correction, and the phantom-path
- * snapshot this exists to fix would never get corrected (ship-check finding,
- * Codex). This scans comments newest-first and skips any that arm but don't
- * meet the bar, rather than stopping at the first one that arms.
+ * Two things evaluateVerifiability(notes, comments)'s own newest-wins rule
+ * gets wrong for THIS use case, both found by testing against the real
+ * BRO-3382 comment thread this ticket exists for, not fixtures:
+ *
+ * 1. That rule stops at the first document (scanning newest-first) that
+ *    arms AT ALL. An unrelated LATER comment that happens to also arm (a
+ *    wrap-up note with its own `VERIFY: npx next lint` boilerplate, say)
+ *    would shadow an earlier, genuinely specific correction, and the
+ *    phantom-path snapshot would never get corrected (ship-check finding,
+ *    Codex). Fixed by scanning comments newest-first and skipping any that
+ *    arm but don't meet the specificity bar, rather than stopping at the
+ *    first one that arms at all.
+ * 2. Within ONE comment, extractVerifyCmd's own first-at-best-rank tie-break
+ *    picks the WRONG candidate for a correction comment specifically: the
+ *    real BRO-3382 correction reads "The acceptance comment says: VERIFY:
+ *    <phantom> ... So the correct command is: VERIFY: <real>" — both rank 0,
+ *    phantom first. A correction restates the wrong path for context before
+ *    the right one, so this needs the LAST safe candidate at the best rank
+ *    within a comment, not the first — hence rawCandidates() + its own
+ *    scan here instead of delegating to extractVerifyCmd's policy.
  * @param {string[]|undefined} comments - oldest-first, same contract as evaluateVerifiability
  * @param {string} snapshotCmd
  * @returns {string|null}
@@ -59,8 +71,14 @@ function findCommentCorrection(comments, snapshotCmd) {
   const list = Array.isArray(comments) ? comments : [];
   const snapshotRank = rank(snapshotCmd);
   for (let i = list.length - 1; i >= 0; i--) {
-    const { cmd } = evaluateVerifiability(String(list[i] || ''), []);
-    if (cmd && rank(cmd) <= snapshotRank) return cmd;
+    let best = null;
+    for (const c of rawCandidates(String(list[i] || ''))) {
+      if (!isSafeCheckCommand(c)) continue;
+      const r = rank(c);
+      if (r > snapshotRank) continue;
+      if (!best || r <= rank(best)) best = c; // <=: among ties, the LAST one in the comment wins
+    }
+    if (best) return best;
   }
   return null;
 }
