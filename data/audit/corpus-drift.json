@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-15T12:19:37.341Z",
+    "generatedAt": "2026-09-15T12:37:37.994Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -81,7 +81,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 1 flagged, 33 exempt, 17 covered\n  ⚠️    64  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 1 flagged, 34 exempt, 17 covered\n  ⚠️    65  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -117,7 +117,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 36761 scored reviews\nAlready rejected: 590\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 36762 scored reviews\nAlready rejected: 590\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
     },
     {
       "name": "review-texts",
@@ -171,7 +171,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[stuck-rescore] 3 stuck needsRescore flag(s) (non-scoreable) of 149 flagged; threshold --max=25\n     3  late-star-anchor\n    - im-sorry-prime-minister-west-end-2026/independent--alice-saville.json  [late-star-anchor]\n    - into-the-woods-west-end-2025/whatsonstage--sarah-crompton.json  [late-star-anchor]\n    - the-inheritance-2019/broadwayworld--michael-dale.json  [late-star-anchor]"
+      "detail": "[stuck-rescore] 0 stuck needsRescore flag(s) (non-scoreable) of 149 flagged; threshold --max=25"
     },
     {
       "name": "stale-score-input",
@@ -180,7 +180,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[stale-score-input] 605 candidate(s): 349 fixable, 256 unscoreable; threshold --max=25\n    - 700-sundays-2013/ew--jessica-shaw.json\n    - a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json\n    - a-behanding-in-spokane-2010/wsj--terry-teachout.json\n    - a-christmas-story-the-musical-2012/theatermania--charles-isherwood.json\n    - a-delicate-balance-2014/amny--matt-windman.json\n    - a-dolls-house-2023/front-row-center--tulis-mccall.json\n    - a-dolls-house-2023/hollywood-reporter--david-rooney.json\n    - a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json\n    - a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json\n    - a-soldiers-play-2020/theatermania--jesse-green.json\n    - a-soldiers-play-2020/timeout--adam-feldman.json\n    - a-view-from-the-bridge-2015/wsj--terry-teachout.json\n    - act-one-2014/newsday--linda-winer.json\n    - act-one-2014/wsj--terry-teachout.json\n    - after-midnight-2013/nyt-theater--david-nounou.json\n    - after-midnight-2013/wsj--terry-teachout.json\n    - airline-highway-2015/ny1--roma-torre.json\n    - aladdin-2014/ap--mark-kennedy.json\n    - all-my-sons-2019/gotham-playgoer--robert-sholiton.json\n    - all-my-sons-west-end-2025/times-uk--dominic-maxwell.json\n    … +329 more fixable"
+      "detail": "[stale-score-input] 606 candidate(s): 349 fixable, 257 unscoreable; threshold --max=25\n    - 700-sundays-2013/ew--jessica-shaw.json\n    - a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json\n    - a-behanding-in-spokane-2010/wsj--terry-teachout.json\n    - a-christmas-story-the-musical-2012/theatermania--charles-isherwood.json\n    - a-delicate-balance-2014/amny--matt-windman.json\n    - a-dolls-house-2023/front-row-center--tulis-mccall.json\n    - a-dolls-house-2023/hollywood-reporter--david-rooney.json\n    - a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json\n    - a-raisin-in-the-sun-2014/ew--lisa-schwarzbaum.json\n    - a-soldiers-play-2020/theatermania--jesse-green.json\n    - a-soldiers-play-2020/timeout--adam-feldman.json\n    - a-view-from-the-bridge-2015/wsj--terry-teachout.json\n    - act-one-2014/newsday--linda-winer.json\n    - act-one-2014/wsj--terry-teachout.json\n    - after-midnight-2013/nyt-theater--david-nounou.json\n    - after-midnight-2013/wsj--terry-teachout.json\n    - airline-highway-2015/ny1--roma-torre.json\n    - aladdin-2014/ap--mark-kennedy.json\n    - all-my-sons-2019/gotham-playgoer--robert-sholiton.json\n    - all-my-sons-west-end-2025/times-uk--dominic-maxwell.json\n    … +329 more fixable"
     },
     {
       "name": "false-balance-framing",
