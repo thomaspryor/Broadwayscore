@@ -44,11 +44,9 @@ const JSON_OUT = process.argv.includes('--json');
 const API_KEY = process.env.POSTHOG_PERSONAL_API_KEY;
 if (!API_KEY) { console.error('POSTHOG_PERSONAL_API_KEY not set'); process.exit(1); }
 
-// Shared real-users predicate (owner + bot-heavy geos excluded) — same lens as analyze-email-gate-funnel.js
-const REAL_USERS = `
-  (JSONExtractString(properties,'$geoip_country_code') NOT IN ('SG','CN','VN')
-   OR JSONExtractString(properties,'$geoip_country_code') = '')
-  AND coalesce(JSONExtractString(person.properties,'is_owner'),'') != 'true'`;
+// Shared Real Users predicate (owner + bot-heavy geos excluded) — the one
+// definition lives in scripts/lib/posthog-query.js so a new bot geo is added once.
+const { REAL_USERS_WHERE: REAL_USERS } = require('./lib/posthog-query');
 
 // Window: never earlier than the experiment start, even if --days reaches back further.
 const WINDOW = `timestamp > greatest(now() - INTERVAL ${DAYS} DAY, toDateTime('${EXPERIMENT_START} 00:00:00'))`;

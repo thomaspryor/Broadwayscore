@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell } = require('../analyze-traffic-sources.js');
+const { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell, normalizeCampaign } = require('../analyze-traffic-sources.js');
 
 test('weekStart maps any day to its ISO Monday, for both GA4 and ISO date formats', () => {
   assert.equal(weekStart('20260915'), '2026-09-14'); // Tue → Mon
@@ -114,4 +114,31 @@ test('buildReport surfaces failures at the top and still renders the working too
   assert.equal(spikes[0].key, 'Referral');
   assert.match(md, /\*\*Referral\*\* \(PostHog channel type\): new source, 90 sessions in the week of Sep 7/);
   assert.match(md, /\| Organic Search \| 120 \| 100 \| \+20% \|/);
+  assert.match(md, /PostHog sessions:\n/); // section label, not "undefined undefined"
+});
+
+test('normalizeCampaign folds dated newsletter sends into one family', () => {
+  assert.equal(normalizeCampaign('weekly-2026-07-12'), 'weekly-*');
+  assert.equal(normalizeCampaign('we-weekly-2026-07-12'), 'we-weekly-*');
+  assert.equal(normalizeCampaign('opening-paranormal-activity-2026'), 'opening-*');
+  assert.equal(normalizeCampaign('(direct)'), '(direct)');
+});
+
+test('buildReport lists each spiking source once in the summary, at its biggest week', () => {
+  const weeks = ['w1', 'w2', 'w3', 'w4', 'w5'];
+  const ph = {
+    errors: {},
+    channelType: [], referringDomain: [], utmSource: [], landing: [],
+    country: [
+      { date: '2026-08-03', key: 'Hong Kong', sessions: 5, users: 5 },
+      { date: '2026-08-10', key: 'Hong Kong', sessions: 5, users: 5 },
+      { date: '2026-08-17', key: 'Hong Kong', sessions: 500, users: 400 },
+      { date: '2026-08-24', key: 'Hong Kong', sessions: 700, users: 500 },
+    ],
+  };
+  const wk = ['2026-08-03', '2026-08-10', '2026-08-17', '2026-08-24', '2026-08-31'];
+  const { md, spikes } = buildReport({ ga: { skipped: 'x' }, ph, startDate: wk[0], endDate: '2026-09-01', weeks: wk, currentWeek: wk[4] });
+  assert.equal(spikes.length, 2); // two spiking weeks in the section table
+  assert.equal((md.match(/\*\*Hong Kong\*\* \(PostHog country\)/g) || []).length, 1); // one summary line
+  assert.match(md, /700 sessions in the week of Aug 24/);
 });

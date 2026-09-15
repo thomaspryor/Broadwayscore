@@ -31,11 +31,16 @@ async function phQuery(hogql) {
 }
 
 // Real Users lens (memory/feedback_analytics_real_users_lens.md): drop the
-// owner (is_owner super-property, set via ?bwsc-owner=1) and the three geos
-// that are almost entirely bot traffic. Same predicate analyze-gate-cold-start.js
-// and analyze-email-gate-funnel.js use; append to a WHERE clause on `events`.
+// owner (is_owner super-property, set via ?bwsc-owner=1) and the geos that are
+// almost entirely bot traffic. The ONE definition — analyze-gate-cold-start.js,
+// analyze-email-gate-funnel.js and analyze-traffic-sources.js import it; append
+// to a WHERE clause on `events`. Keep data/audit/known-bot-geos.json in step.
+//   SG/CN/VN: original lens (2026-04).
+//   HK: added 2026-09-15 (BRO-3419) — 100-741 sessions/week since Jun 29 with
+//       sessions == users every week (one page per visitor, zero repeats) while
+//       GA4 saw ~5 HK sessions/week; PostHog-only bots that GA4 filters out.
 const REAL_USERS_WHERE = `
-  (JSONExtractString(properties,'$geoip_country_code') NOT IN ('SG','CN','VN')
+  (JSONExtractString(properties,'$geoip_country_code') NOT IN ('SG','CN','VN','HK')
    OR JSONExtractString(properties,'$geoip_country_code') = '')
   AND coalesce(JSONExtractString(person.properties,'is_owner'),'') != 'true'`;
 
