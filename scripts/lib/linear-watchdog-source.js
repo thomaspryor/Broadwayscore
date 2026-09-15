@@ -63,7 +63,8 @@
 
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
-const { isTerminalStateType } = require('./linear-state-types.js');
+const { isTerminalStateType, TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
+const { classifyHeadlessDispatchability } = require('./headless-dispatchability.js');
 
 // The id namespace planSweep and the shared dispatch ledger already speak:
 // digest-autofix.js:415 forks on exactly this shape to choose linear-next.js
@@ -109,7 +110,10 @@ function buildWatchdogBacklogQuery(pageLimit = DEFAULT_PAGE_LIMIT) {
     issues(
       first: ${limit}
       after: $after
-      filter: { team: { key: { eq: $teamKey } } }
+      filter: {
+        team: { key: { eq: $teamKey } }
+        state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } }
+      }
     ) {
       nodes {
         identifier
@@ -124,11 +128,22 @@ function buildWatchdogBacklogQuery(pageLimit = DEFAULT_PAGE_LIMIT) {
   }`;
 }
 
-/** PURE. Linear priority field first, title prefix second, else null. */
+/**
+ * PURE. Linear's numeric priority field is authoritative. The "P0:"/"P1:"
+ * title prefix is consulted ONLY when the field is unset (0 / null).
+ *
+ * Ship-check (Codex) caught the earlier version falling back to the title for
+ * Medium and Low too: an issue somebody had DELIBERATELY downgraded to Low
+ * while its title still read "P0: ..." would have been queued as urgent and
+ * spent the day budget on work the owner had just deprioritised. An explicit
+ * priority is a decision; the title is only a guess at one.
+ */
 function priorityOf(issue) {
   if (!issue) return null;
   const fromField = LINEAR_PRIORITY_TO_LABEL[issue.priority];
   if (fromField) return fromField;
+  const explicitlyRanked = Number.isFinite(issue.priority) && issue.priority > 0;
+  if (explicitlyRanked) return null;     // Medium/Low: a real decision, don't override it
   const m = TITLE_PRIORITY_RE.exec(String(issue.title || ''));
   return m ? m[1] : null;
 }
@@ -158,7 +173,18 @@ function ineligibleReason(issue) {
   if (stateType === 'started') return 'already-started';
   if (!priorityOf(issue)) return 'not-p0-p1';
   if (isAutofixFiledIssue(issue)) return 'autofix-filed-tracker';
-  if (!hasSafeVerifyCommand(issue)) return 'unarmed';
+  const gate = evaluateVerifiability(String(issue.description || ''));
+  if (!gate.cmd) return 'unarmed';
+  // Ship-check (Codex): being ARMED is necessary but not sufficient. linear-next
+  // refuses a headless dispatch for several further reasons (the PARKED
+  // sentinel, visual-QA and other human gates). The day budget counts CLAIMS,
+  // not successes, so queueing one of those spends real allowance on a
+  // guaranteed refusal whose only trace is the detached child's own log. Reuse
+  // the SAME predicate the dispatcher enforces (backlog-drain.js:547 already
+  // calls it at its own queue-build), rather than a second copy of the rules.
+  const headless = classifyHeadlessDispatchability(
+    { subject: issue.title, notes: issue.description }, { verifyCmd: gate.cmd });
+  if (!headless.dispatchable) return `headless-blocked: ${headless.blockers.map(b => b.code).join(',')}`;
   return null;
 }
 
@@ -239,6 +265,17 @@ async function fetchLinearWatchdogTasks(client, opts = {}) {
       }
       if (!pageInfo.hasNextPage) break;
       after = pageInfo.endCursor;
+      if (page === maxPages - 1) {
+        // Ship-check (Codex): stopping at the page cap while hasNextPage is
+        // still true used to return ok:true with a silently truncated queue —
+        // indistinguishable from a small backlog. Report it as an outage
+        // instead; an understated queue is how a drain quietly idles.
+        return {
+          ok: false,
+          reason: `linear-scan-truncated: hit maxPages=${maxPages} with more pages remaining`,
+          tasks: new Map(), started: new Map(), scanned, eligible: 0,
+        };
+      }
     }
   } catch (e) {
     // Partial pages already collected are DISCARDED, not returned: a truncated

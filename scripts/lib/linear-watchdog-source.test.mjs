@@ -184,3 +184,62 @@ test('linearTasksForPlan drops a cache older than its TTL instead of dispatching
   // Never fetched => empty, and crucially not a throw.
   assert.equal(wd.linearTasksForPlan(Date.now()).size, 0);
 });
+
+// ── ship-check (Codex) regressions ────────────────────────────────────────
+
+test('an explicitly deprioritised issue is NOT resurrected by its title', () => {
+  // The dangerous shape: somebody downgraded it to Low, but the title still
+  // says P0. Queueing that spends the day budget on work just deprioritised.
+  assert.equal(src.priorityOf(issue({ priority: 4, title: 'P0: sneaky' })), null);
+  assert.equal(src.priorityOf(issue({ priority: 3, title: 'P1: also sneaky' })), null);
+  // Unset (0) is not a decision, so the title is still allowed to speak.
+  assert.equal(src.priorityOf(issue({ priority: 0, title: 'P0: legit' })), 'P0');
+});
+
+test('the backlog query excludes terminal states server-side', () => {
+  const q = src.buildWatchdogBacklogQuery();
+  assert.match(q, /nin:\s*\["completed","canceled","duplicate"\]/);
+});
+
+test('headless-blocked cards are refused at queue-build, not at spend time', () => {
+  // Armed, but carrying the PARKED do-not-dispatch sentinel: linear-next would
+  // refuse it inside the detached child AFTER the claim was already counted.
+  const parked = issue({ description: `PARKED: an owner parked this deliberately\n\n${ARMED}` });
+  const reason = src.ineligibleReason(parked);
+  assert.match(String(reason), /^headless-blocked:/,
+    `expected a headless-blocked refusal, got ${reason}`);
+});
+
+test('a truncated scan is reported as an outage, not as a small backlog', async () => {
+  // Every page says hasNextPage:true, so the cap is hit with work remaining.
+  const client = {
+    graphql: async () => ({
+      issues: { nodes: [issue({ identifier: 'BRO-99', priority: 1 })], pageInfo: { hasNextPage: true, endCursor: 'c' } },
+    }),
+  };
+  const res = await src.fetchLinearWatchdogTasks(client, { maxPages: 3 });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /linear-scan-truncated/);
+  assert.equal(res.tasks.size, 0);
+});
+
+test('detectWriteBackLeak is report-only and total', () => {
+  const started = new Map([['linear:BRO-5', { identifier: 'BRO-5', title: 't', stateName: 'In Progress' }]]);
+  const entries = [
+    { event: 'job-done', taskId: 'linear:BRO-5', ts: new Date(Date.now() - 48 * 3600e3).toISOString() },
+    { event: 'job-done', taskId: 'linear:BRO-404', ts: new Date(Date.now() - 48 * 3600e3).toISOString() },
+    { event: 'job-done', taskId: 'linear:BRO-5', ts: 'not-a-date' },
+    null,
+  ];
+  const before = JSON.stringify([...started]);
+  const leak = src.detectWriteBackLeak(entries, started, Date.now());
+  assert.equal(leak.length, 1);
+  assert.equal(leak[0].identifier, 'BRO-5');
+  assert.ok(leak[0].ageHours >= 47);
+  assert.equal(JSON.stringify([...started]), before, 'must not mutate its inputs');
+  // Inside the grace window => not yet a leak.
+  const fresh = [{ event: 'job-done', taskId: 'linear:BRO-5', ts: new Date().toISOString() }];
+  assert.deepEqual(src.detectWriteBackLeak(fresh, started, Date.now()), []);
+  // Degenerate inputs must not throw.
+  assert.deepEqual(src.detectWriteBackLeak(null, null, Date.now()), []);
+});
