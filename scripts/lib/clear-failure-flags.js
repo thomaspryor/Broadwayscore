@@ -175,6 +175,21 @@ function clearFailureFlags(data, opts = {}) {
     cleared.push('scoreStatus');
   }
 
+  // isPreviewPlaceholder (BRO-931 #3): stamped by gather-reviews.js/
+  // opening-night-poller.js while a show is still in previews. Since
+  // review-guards.js's explainExclusion() now excludes isPreviewPlaceholder
+  // files from rebuild (and is-scoreable.ts delegates to the same predicate),
+  // a file only reaches hasLlmScore(data)===true here if it was legitimately
+  // scored BEFORE that guard shipped (an already-real review, not a stub) —
+  // an ensemble score is proof of real content, so the stale bookkeeping flag
+  // is safe to clear rather than leaving it to silently re-exclude the file
+  // on the next rebuild. Same "clear stale flag on success" shape as the
+  // scoreStatus rule above.
+  if (data.isPreviewPlaceholder === true && hasLlmScore(data)) {
+    data.isPreviewPlaceholder = null;
+    cleared.push('isPreviewPlaceholder');
+  }
+
   // manualClearFallback*: recorded when a human-cleared (wrongProduction/wrongShow
   // manual clear) file's Haiku rescue fails to produce a score, so the next run
   // can back off instead of re-attempting immediately (P1 352637c5-416f-81ab).
