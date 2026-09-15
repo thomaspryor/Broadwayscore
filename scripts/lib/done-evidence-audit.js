@@ -273,20 +273,34 @@ const MIS_ARMED = Object.freeze({
  * @returns {{path:string, kind:string, paths:string[]}|null}
  */
 function adjudicateMisArmed(paths, facts) {
-  const list = Array.isArray(paths) ? paths.filter(Boolean) : [];
+  // Deduplicated: `node --test a.mjs a.mjs` is a legal command and the
+  // extractor preserves both tokens, which would otherwise probe the same path
+  // twice and inflate the "and N more paths" count in the detail line.
+  const list = [...new Set(Array.isArray(paths) ? paths.filter(Boolean) : [])];
   if (!list.length) return null;
   const f = facts || {};
-  const absent = list.filter((p) => f[p] && f[p].presentOnMain === false);
+  // Fail closed on an incomplete fact set. A path with NO entry was never
+  // resolved, and "we did not look" must not read as "nothing to see" — a
+  // future caller that resolves only some of the paths would otherwise get a
+  // card absolved on the subset it happened to check (ship-check finding).
+  if (list.some((p) => !f[p])) return null;
+  const absent = list.filter((p) => f[p].presentOnMain === false);
   if (!absent.length) return null;
 
   const kinds = absent.map((p) => {
-    // Gitignored is checked FIRST and wins. A gitignored path also has zero
-    // commits, so the history oracle would answer `never existed` for it and
-    // print the one sentence that is demonstrably false about the file the
-    // owner can see on disk. Ordering these the other way round is the bug.
-    if (f[p].gitignored === true) return MIS_ARMED.GITIGNORED;
-    if (f[p].everExisted === false) return MIS_ARMED.NEVER_EXISTED;
-    return null;
+    // HISTORY DECIDES, AND ONLY A POSITIVE `never existed` ABSOLVES.
+    // `everExisted: true` means the path was tracked and is now gone, which is
+    // a real regression and is exactly what this sweep exists to catch; no
+    // ignore rule may override it. `null` means the probe could not answer,
+    // which is not evidence of innocence. Enforced here as well as in the
+    // runner so that no future caller can absolve a card by asserting
+    // `gitignored` alone (Codex adversarial review: an ignore rule says
+    // nothing about whether a path was tracked yesterday, and `check-ignore`
+    // also honours .git/info/exclude and the global excludesFile, neither of
+    // which exists on origin/main).
+    if (f[p].everExisted !== false) return null;
+    // Only the WORDING is chosen here: both kinds are mis-armed.
+    return f[p].gitignored === true ? MIS_ARMED.GITIGNORED : MIS_ARMED.NEVER_EXISTED;
   });
   if (kinds.some((k) => k === null)) return null;
 
@@ -510,8 +524,13 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
     const why = misArmed.kind === MIS_ARMED.GITIGNORED
       ? 'which is gitignored, so the fresh origin/main checkout this sweep builds can never see it — the file may well exist on the machine that wrote the card'
       : 'which has never existed in this repo';
+    // A command can name several paths, and only the CONFIRMED-ABSENT ones are
+    // adjudicated. Say so rather than implying the whole command was cleared:
+    // a sibling path that is present on main was never run on its own, so its
+    // health is genuinely unknown and the reader should not infer otherwise
+    // (Codex adversarial review).
     const alsoNames = misArmed.paths && misArmed.paths.length > 1
-      ? ` (and ${misArmed.paths.length - 1} more path${misArmed.paths.length === 2 ? '' : 's'} in the same command)`
+      ? ` (and ${misArmed.paths.length - 1} more absent path${misArmed.paths.length === 2 ? '' : 's'} in the same command)`
       : '';
     return {
       ...base,
@@ -646,12 +665,21 @@ function buildDigestSnapshot(report, { maxItems = MAX_DIGEST_ITEMS } = {}) {
   // opposed to the general backlog-quality problem audit-card-verifiability.js
   // owns. Counted in the banner rather than given rows, because the action is
   // "go re-arm these" and not "read eight of them over breakfast".
-  const misArmedCount = results.filter((r) => r && r.misArmed === true).length;
+  const misArmedCards = results.filter((r) => r && r.misArmed === true);
+  const misArmedCount = misArmedCards.length;
+  // NAME them. A bare count asks the reader to do something ("re-arm these")
+  // while withholding the only thing they need to do it, and these cards get
+  // no rows of their own because UNVERIFIABLE is not REPORTABLE (Codex
+  // adversarial review). Three ids is enough to start; the rest are in the
+  // JSON report, which is where someone fixing fourteen of them is working
+  // anyway.
+  const misArmedNamed = misArmedCards.slice(0, 3).map((r) => r.id).filter(Boolean).join(', ');
+  const misArmedMore = misArmedCount > 3 ? `, +${misArmedCount - 3} more` : '';
 
   const bannerText =
     `${verified}/${done} Done(14d) verified on main · ` +
     `${counts.FAILED} FAILED · ${counts.VACUOUS} vacuous · ${counts.STUCK} stuck-but-done` +
-    (misArmedCount ? ` · ${misArmedCount} mis-armed (wrong acceptance command, needs re-arming)` : '') +
+    (misArmedCount ? ` · ${misArmedCount} mis-armed, needs re-arming (${misArmedNamed}${misArmedMore})` : '') +
     (gaps.length ? ` — PARTIAL RUN: ${gaps.join(', ')}, so these numbers understate the board` : '');
 
   if (!rows.length) {

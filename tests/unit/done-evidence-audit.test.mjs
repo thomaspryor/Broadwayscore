@@ -695,3 +695,84 @@ test('BRO-3476: mis-armed cards are surfaced in the banner, since UNVERIFIABLE i
   const clean = buildDigestSnapshot({ generatedAt: 'x', results: [] });
   assert.doesNotMatch(clean.bannerText, /mis-armed/);
 });
+
+test('BRO-3476: an ignore rule can never absolve a path that WAS tracked (the laundering hole)', () => {
+  // Codex adversarial review, pre-ship. The first cut asked `check-ignore`
+  // first and fabricated everExisted:false from a true answer, so a file that
+  // was tracked, DELETED by a regression, and separately covered by an ignore
+  // rule came out mis-armed — the sweep absolving the exact thing it exists to
+  // catch. Being ignored today says nothing about what was tracked yesterday.
+  assert.equal(adjudicateMisArmed(['scripts/lib/deleted-and-now-ignored.js'], {
+    'scripts/lib/deleted-and-now-ignored.js': { presentOnMain: false, everExisted: true, gitignored: true },
+  }), null, 'history says it existed — no ignore rule may override that');
+
+  // Same guard for the unresolved case: `check-ignore` consults
+  // .git/info/exclude and the global excludesFile, neither of which exists on
+  // origin/main, so one developer's personal ignore rule must not be able to
+  // clear a card on its own.
+  assert.equal(adjudicateMisArmed(['scripts/x.js'], {
+    'scripts/x.js': { presentOnMain: false, everExisted: null, gitignored: true },
+  }), null, 'only a positive "never existed" absolves; gitignored alone must not');
+
+  // And the legitimate case still works: never tracked AND ignored.
+  assert.equal(adjudicateMisArmed(['memory/notes.txt'], {
+    'memory/notes.txt': { presentOnMain: false, everExisted: false, gitignored: true },
+  }).kind, MIS_ARMED.GITIGNORED);
+});
+
+test('BRO-3476: duplicate paths are collapsed, so the detail line cannot inflate its own count', () => {
+  // `node --test a.mjs a.mjs` is a legal command and extractCheckPaths
+  // preserves both tokens (Codex adversarial review).
+  const m = adjudicateMisArmed(['tests/unit/a.test.mjs', 'tests/unit/a.test.mjs'], {
+    'tests/unit/a.test.mjs': { presentOnMain: false, everExisted: false, gitignored: false },
+  });
+  assert.deepEqual(m.paths, ['tests/unit/a.test.mjs']);
+
+  const r = classifyCard({
+    card: { id: 'BRO-1', name: 'dupe', state: 'Done' },
+    cmd: 'node --test tests/unit/a.test.mjs tests/unit/a.test.mjs',
+    runResult: { status: 'fail', detail: 'x' },
+    misArmed: m,
+  });
+  assert.doesNotMatch(r.detail, /more absent path/, 'one path named twice is still one path');
+});
+
+test('BRO-3476: a path missing from facts is not treated as absent', () => {
+  // The pure function must not absolve a card on incomplete input: a path the
+  // runner never resolved has no entry, and "no entry" is not "confirmed
+  // absent" (Codex adversarial review).
+  assert.equal(adjudicateMisArmed(['scripts/unresolved.js'], {}), null);
+  // b.js has no facts entry at all. "We did not look" must not read as
+  // "nothing to see": absolving on the subset that happened to be resolved is
+  // how a partial run would clear a card it never checked.
+  assert.equal(adjudicateMisArmed(['a.js', 'b.js'], {
+    'a.js': { presentOnMain: false, everExisted: false, gitignored: false },
+  }), null, 'fail closed on an incomplete fact set');
+});
+
+test('BRO-3476: an unresolvable origin/main fetch absolves nothing either', () => {
+  // presentOnMain === null means the tree could not be read this run. A future
+  // `=== false` -> `!== true` slip would turn one fetch blip into a clean bill
+  // of health for every card on the board (ship-check finding).
+  assert.equal(adjudicateMisArmed(['scripts/x.js'], {
+    'scripts/x.js': { presentOnMain: null, everExisted: false, gitignored: false },
+  }), null);
+});
+
+test('BRO-3476: the banner names the mis-armed cards, not just how many', () => {
+  // A count that asks the reader to re-arm cards while withholding which cards
+  // is not actionable, and these rows are invisible otherwise (UNVERIFIABLE is
+  // not REPORTABLE) — Codex adversarial review.
+  const mk = (id) => classifyCard({
+    card: { id, name: id, state: 'Done' },
+    cmd: 'node scripts/audit-phantom.js',
+    runResult: { status: 'fail', detail: 'Cannot find module' },
+    misArmed: { path: 'scripts/audit-phantom.js', kind: MIS_ARMED.NEVER_EXISTED, paths: ['scripts/audit-phantom.js'] },
+  });
+  const few = buildDigestSnapshot({ generatedAt: 'x', results: [mk('BRO-10'), mk('BRO-3335')] });
+  assert.match(few.bannerText, /2 mis-armed, needs re-arming \(BRO-10, BRO-3335\)/);
+  assert.doesNotMatch(few.bannerText, /more/);
+
+  const many = buildDigestSnapshot({ generatedAt: 'x', results: ['a', 'b', 'c', 'd', 'e'].map(mk) });
+  assert.match(many.bannerText, /5 mis-armed, needs re-arming \(a, b, c, \+2 more\)/);
+});

@@ -382,10 +382,20 @@ async function main(argv = process.argv.slice(2)) {
       let misArmed = null;
       if (card.state === 'Done' && runResult && runResult.status === 'fail') {
         // Resolve the facts; adjudicateMisArmed (pure, tested) applies the rule.
-        // Only CONFIRMED-absent paths cost a history lookup, so this stays at
-        // roughly one GitHub call per failing Done card, as before.
-        const paths = extractCheckPaths(cmd);
-        const facts = {};
+        // Only CONFIRMED-absent paths cost a history lookup — one per absent
+        // path, so a four-file `node --test` naming four missing files costs
+        // four calls, not one (ship-check finding: the earlier "one call per
+        // failing card" claim stopped being true when the ignore short-circuit
+        // was removed).
+        //
+        // Deduped at the SOURCE, not just inside adjudicateMisArmed:
+        // `node --test a.mjs a.mjs` is a legal command and the extractor keeps
+        // both tokens, which would otherwise spend a second GitHub call on the
+        // same path and, when that call failed, increment unresolvedProbes
+        // twice for one probe — overstating "N GitHub lookups failed" in the
+        // owner's banner (ship-check finding).
+        const paths = [...new Set(extractCheckPaths(cmd))];
+        const facts = Object.create(null);
         for (const p of paths) {
           const presentOnMain = existsFn(p);
           if (presentOnMain !== false) {
@@ -394,27 +404,37 @@ async function main(argv = process.argv.slice(2)) {
             facts[p] = { presentOnMain, everExisted: null, gitignored: false };
             continue;
           }
-          // Asked against the repo root, which always exists — unlike
-          // `checkout`, which is null whenever makeFreshCheckout failed
-          // (review finding). .gitignore is tracked on origin/main, so in CI
-          // (itself a main checkout) this is the same file the sweep's own
-          // sandbox carries. A `check-ignore` that cannot answer reports false,
-          // which is safe in this direction ONLY: it declines the gitignored
-          // wording and falls through to the history oracle below, and can
-          // never manufacture a mis-armed verdict by itself.
-          const gitignored = isGitIgnored(p, { cwd: REPO });
-          if (gitignored) {
-            facts[p] = { presentOnMain: false, everExisted: false, gitignored: true };
-            continue;
-          }
+          // HISTORY IS ASKED FIRST, AND ALWAYS. An earlier version short-
+          // circuited on the ignore answer and fabricated `everExisted: false`
+          // from it, which is unsound twice over (Codex adversarial review):
+          // being ignored today says nothing about whether the path was
+          // tracked yesterday, so a file that was tracked, DELETED by a
+          // regression, and separately covered by an ignore rule would have
+          // been absolved; and `check-ignore` also honours .git/info/exclude
+          // and the user's global excludesFile, neither of which exists on
+          // origin/main, so one developer's personal ignore rule could quietly
+          // clear cards for everybody. History decides the verdict now; the
+          // ignore answer only chooses the WORDING.
+          //
           // true = zero commits ever, false = it existed and is now gone (a
-          // real regression), null = the probe failed and absolves nothing.
+          // real regression, and no ignore rule may override that), null = the
+          // probe failed and absolves nothing.
           const never = pathNeverExisted(p);
           if (never === null) unresolvedProbes++;
+          // Asked in the fresh checkout when there is one, so the answer comes
+          // from origin/main's OWN .gitignore rather than whatever this machine
+          // happens to have; REPO is the fallback. Reaching this line at all
+          // requires runResult, which requires a prepared checkout, so the
+          // fallback is belt-and-braces (ship-check finding: an earlier comment
+          // here claimed `checkout` could be null at this point, which is not
+          // true). Chooses only between two wordings for a card that is
+          // mis-armed either way, so a `check-ignore` that cannot answer (it
+          // reports false) costs nothing but a less specific sentence.
+          const gitignored = never === true ? isGitIgnored(p, { cwd: (checkout && checkout.wt) || REPO }) : false;
           facts[p] = {
             presentOnMain: false,
             everExisted: never === null ? null : !never,
-            gitignored: false,
+            gitignored,
           };
         }
         misArmed = adjudicateMisArmed(paths, facts);
