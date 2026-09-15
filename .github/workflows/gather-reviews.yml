@@ -240,16 +240,21 @@ jobs:
       - name: Setup Playwright
         uses: ./.github/actions/setup-playwright
 
-      # Restore 24h SERP cache (scripts/lib/serp-cache.js), same key prefix as
-      # the outlet-serp job above. Without this the gather job always missed
-      # the cache, so a same-day retry (budget deferral or the old
-      # timeout-and-redispatch cycle) re-paid every SERP query it already
-      # answered (BRO-3388).
+      # Restore 24h SERP cache (scripts/lib/serp-cache.js), same restore-key
+      # prefix as the outlet-serp job above. Without this the gather job
+      # always missed the cache, so a same-day retry (budget deferral or the
+      # old timeout-and-redispatch cycle) re-paid every SERP query it already
+      # answered (BRO-3388). Save KEY is per-matrix-batch (unlike outlet-serp,
+      # which runs once) — actions/cache silently skips the save on an exact
+      # key hit, and outlet-serp already saves under plain
+      # bd-serp-cache-${{ github.run_id }} earlier in this same run, so reusing
+      # that exact key here would make every gather-reviews matrix job's own
+      # new SERP discoveries a no-op save (adversarial review finding).
       - name: Restore SERP cache
         uses: actions/cache@v5
         with:
           path: /tmp/bd-serp-cache
-          key: bd-serp-cache-${{ github.run_id }}
+          key: bd-serp-cache-${{ github.run_id }}-gather-${{ matrix.batch_id }}
           restore-keys: |
             bd-serp-cache-
 
@@ -311,11 +316,15 @@ jobs:
             echo "ℹ️ Opening-night mode: aggregators forced fresh, SERP hits with a mismatched embedded year rejected (BRO-736)"
           fi
           if [ -f scripts/gather-reviews.js ]; then
-            # BRO-3388: stop starting new shows at 40min so the script exits 0
+            # BRO-3388: stop starting new shows at 35min so the script exits 0
             # well inside the 55min job timeout below — a graceful exit lets
             # the if: always() push steps run, instead of a timeout SIGKILL
-            # skipping them and discarding this run's SERP discovery.
-            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG $VALIDATE_FLAG $OPENING_NIGHT_FLAG --time-budget-min=40
+            # skipping them and discarding this run's SERP discovery. 20min
+            # margin (not just setup+push overhead) because gather-reviews.js
+            # itself calls the unbounded rebuildReviewsJson() after the loop
+            # when any show produced files — that inline rebuild isn't covered
+            # by the time budget (adversarial review finding).
+            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG $VALIDATE_FLAG $OPENING_NIGHT_FLAG --time-budget-min=35
           else
             echo "Note: scripts/gather-reviews.js not found"
             echo "Review data will need to be gathered manually"
