@@ -70,6 +70,7 @@ const { checkPark, computeContentHash } = require('./attempt-memory.js');
 // recognises. Defined in the leaf so the writer and the recogniser cannot
 // drift apart.
 const { AUTOFIX_FILED_MARKER, BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
+const { LINEAR_TASK_ID_RE } = require('./task-id-namespace.js');
 
 const REPO = path.join(__dirname, '..', '..');
 const LOG_DIR = path.join(REPO, 'data', 'audit', 'digest-autofix-logs');
@@ -394,7 +395,13 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   // numeric ids keep the bsc-next.js path (rows resolved against the old
   // Notion mirror during the parallel run). Both regexes make the sh -c
   // interpolation injection-safe — anything else throws.
-  const linearMatch = /^linear:([A-Z]+-\d+)$/.exec(String(taskId));
+  // BRO-3423: was a private /^linear:([A-Z]+-\d+)$/ here, which rejected any
+  // Linear team key containing a digit while linear-watchdog-source.js's copy
+  // accepted it — two divergent answers to "is this a live-board id?", one of
+  // them guarding this sh -c interpolation. Both now come from the shared
+  // declaration. LINEAR_TASK_ID_RE is anchored and alphanumeric-plus-hyphen
+  // only, so the injection-safety property this line depends on is preserved.
+  const linearMatch = LINEAR_TASK_ID_RE.exec(String(taskId));
   const idNumEarly = Number(taskId);
   if (!linearMatch && (!Number.isSafeInteger(idNumEarly) || idNumEarly <= 0)) {
     throw new Error(`invalid taskId for dispatch: ${String(taskId).slice(0, 40)}`);

@@ -71,8 +71,15 @@ const { classifyHeadlessDispatchability } = require('./headless-dispatchability.
 // over bsc-next.js, and every `launch`/`job-*` row written for a Linear card
 // since the migration carries it. Reusing it means no ledger correlation,
 // park bookkeeping or concurrency fold needs to learn a new id format.
-const LINEAR_TASK_PREFIX = 'linear:';
-const LINEAR_TASK_ID_RE = /^linear:([A-Z][A-Z0-9]*-\d+)$/;
+// BRO-3423: this shape used to be declared here AND, differently, in
+// digest-autofix.js (/^linear:([A-Z]+-\d+)$/, which rejects a team key with a
+// digit in it). Both now come from the one module that declares which board is
+// live and which is retired — re-exported here so this module's own consumers
+// and tests keep importing it from the same place they always have.
+const {
+  LINEAR_TASK_PREFIX,
+  LINEAR_TASK_ID_RE,
+} = require('./task-id-namespace.js');
 
 // Linear's numeric priority field. 0 = No priority, 1 = Urgent, 2 = High,
 // 3 = Medium, 4 = Low. Only the top two map onto the watchdog's P0/P1 mandate.
