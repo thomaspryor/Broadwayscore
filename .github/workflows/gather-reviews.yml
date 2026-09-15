@@ -240,6 +240,19 @@ jobs:
       - name: Setup Playwright
         uses: ./.github/actions/setup-playwright
 
+      # Restore 24h SERP cache (scripts/lib/serp-cache.js), same key prefix as
+      # the outlet-serp job above. Without this the gather job always missed
+      # the cache, so a same-day retry (budget deferral or the old
+      # timeout-and-redispatch cycle) re-paid every SERP query it already
+      # answered (BRO-3388).
+      - name: Restore SERP cache
+        uses: actions/cache@v5
+        with:
+          path: /tmp/bd-serp-cache
+          key: bd-serp-cache-${{ github.run_id }}
+          restore-keys: |
+            bd-serp-cache-
+
       - name: Stagger start to avoid rate limiting
         if: matrix.delay > 0
         run: |
@@ -298,7 +311,11 @@ jobs:
             echo "ℹ️ Opening-night mode: aggregators forced fresh, SERP hits with a mismatched embedded year rejected (BRO-736)"
           fi
           if [ -f scripts/gather-reviews.js ]; then
-            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG $VALIDATE_FLAG $OPENING_NIGHT_FLAG
+            # BRO-3388: stop starting new shows at 40min so the script exits 0
+            # well inside the 55min job timeout below — a graceful exit lets
+            # the if: always() push steps run, instead of a timeout SIGKILL
+            # skipping them and discarding this run's SERP discovery.
+            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG $VALIDATE_FLAG $OPENING_NIGHT_FLAG --time-budget-min=40
           else
             echo "Note: scripts/gather-reviews.js not found"
             echo "Review data will need to be gathered manually"

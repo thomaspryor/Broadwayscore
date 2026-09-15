@@ -233,10 +233,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           GATHER_SHOWS="${{ steps.guard.outputs.needed_full }}"
-          echo "Triggering FULL gather-reviews (SERP) for: $GATHER_SHOWS"
+          # BRO-3388: 4+ shows in one sequential batch reliably blew the
+          # gather job's 40-min script budget. Splitting across 2 parallel
+          # matrix jobs halves the shows-per-job so each is more likely to
+          # finish within budget instead of deferring shows to the next tick.
+          IFS=',' read -ra GATHER_SHOWS_ARR <<< "$GATHER_SHOWS"
+          JOBS=1
+          if [ "${#GATHER_SHOWS_ARR[@]}" -ge 4 ]; then
+            JOBS=2
+          fi
+          echo "Triggering FULL gather-reviews (SERP) for: $GATHER_SHOWS (parallel_jobs=$JOBS)"
           gh workflow run gather-reviews.yml \
             -f shows="$GATHER_SHOWS" \
-            -f parallel_jobs=1 \
+            -f parallel_jobs=$JOBS \
             -f max_tier=3 \
             -f aggregators_only=false \
             -f validate_urls=true \
@@ -252,10 +261,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           GATHER_SHOWS="${{ steps.guard.outputs.needed_agg }}"
-          echo "Triggering aggregators-only gather-reviews for: $GATHER_SHOWS"
+          # BRO-3388: see FULL-gather step above for rationale.
+          IFS=',' read -ra GATHER_SHOWS_ARR <<< "$GATHER_SHOWS"
+          JOBS=1
+          if [ "${#GATHER_SHOWS_ARR[@]}" -ge 4 ]; then
+            JOBS=2
+          fi
+          echo "Triggering aggregators-only gather-reviews for: $GATHER_SHOWS (parallel_jobs=$JOBS)"
           gh workflow run gather-reviews.yml \
             -f shows="$GATHER_SHOWS" \
-            -f parallel_jobs=1 \
+            -f parallel_jobs=$JOBS \
             -f max_tier=3 \
             -f aggregators_only=true \
             -f validate_urls=true \

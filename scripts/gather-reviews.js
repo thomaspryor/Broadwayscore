@@ -82,6 +82,7 @@ const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger')
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
@@ -5476,6 +5477,16 @@ async function main() {
   const args = process.argv.slice(2);
 
   const flags = parseGatherReviewsFlags(args);
+  // Multi-show batches (opening-night dispatch) were hitting the 55-min GHA
+  // job timeout mid-script — a SIGKILL that skips the if: always() push
+  // steps and discards every review this run found (BRO-3388). A wall-clock
+  // budget lets the loop below stop starting NEW shows and exit 0 cleanly
+  // instead, so the workflow's push steps actually run. Only the
+  // start-a-new-show decision is gated — a show already in flight always
+  // finishes; an unlucky very slow single show can still exceed the budget
+  // (same residual risk accepted elsewhere in this repo, e.g.
+  // audit-opening-dates.js's 5-min margin).
+  const timeBudget = createRunBudget(parseTimeBudgetMin(args));
   if (!flags.showIds) {
     console.log('Usage: node scripts/gather-reviews.js --shows=show-id-1,show-id-2');
     console.log('Example: node scripts/gather-reviews.js --shows=all-out-2025');
@@ -5533,7 +5544,13 @@ async function main() {
 
   const results = [];
 
-  for (const showId of showIds) {
+  for (let i = 0; i < showIds.length; i++) {
+    if (timeBudget.exceeded()) {
+      const remaining = showIds.slice(i);
+      console.log(`\n⏱ Time budget (${timeBudget.minutes}min) exceeded after ${timeBudget.elapsedMin()}min — deferring ${remaining.length} show(s) to next run: ${remaining.join(', ')}`);
+      break;
+    }
+    const showId = showIds[i];
     let result;
     try {
       result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical, openingNight });
