@@ -652,6 +652,15 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, OPENROUTER_API_KEY, SCRAPINGBEE_API_KEY, SCRAPINGDOG_API_KEY, BRIGHTDATA_TOKEN, REVIEW_TEXTS_TOKEN, VERCEL_TOKEN, SENTRY_AUTH_TOKEN, RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS, OWNER_EMAIL
 - **Manual trigger:** `gh workflow run "Check Secrets Health"`
 
+## `analyze-traffic-sources.yml`
+- **Runs:** Weekly Monday 09:30 UTC (after `posthog-monday.yml` at 08:00), or manually (`gh workflow run analyze-traffic-sources.yml -f days=91`)
+- **Does:** Pulls the last N days from GA4 (channel group, source/medium, campaign, landing page, country) and PostHog (session-entry channel type, referring domain, UTM, country, landing page; Real Users lens), buckets by ISO week, flags any source ≥3x its prior weekly median or brand new, and renders a plain-English "What changed" report on the run **Summary** page (raw JSON as an artifact, 14 days). No commits, no pushes. Vercel Web Analytics has no query API and is not included.
+- **Script:** `scripts/analyze-traffic-sources.js` (`--days`, `--out`); pure helpers unit-tested in `scripts/tests/analyze-traffic-sources.test.mjs`
+- **Failure semantics:** any failed query is listed in an "Incomplete report" banner and the job exits 1 (never a green half-report). PostHog 5xx/429 are retried once after 20s — a 504 takes ~5 min to come back, hence `timeout-minutes: 20`.
+- **Requires:** `GA4_PROPERTY_ID`, `GA_SERVICE_ACCOUNT_KEY`, `POSTHOG_PERSONAL_API_KEY` (all CI-only; local `.env` has none, which is why this is a workflow)
+- **Cron health:** digest-only (`.cron-health-exempt.txt`), not in `CRITICAL_CRONS`
+- **Origin:** BRO-3419 (2026-09-15). First run found Hong Kong as a PostHog-only bot geo (added to `REAL_USERS_WHERE` + `data/audit/known-bot-geos.json`); BRO-3432 tracks teaching `audit-geo-bots.js` to read PostHog too.
+
 ## `check-seo-health.yml`
 - **Runs:** Weekly on Sundays at 8 AM UTC, or manually
 - **Does:** Comprehensive SEO health monitoring via Google Search Console APIs. 5 features: (1) search performance tracking (clicks, impressions, CTR, position vs prior week + top queries/pages), (2) index coverage sampling (URL Inspection API on 50 random show URLs), (3) sitemap status verification, (4) new page indexing (auto-resubmits shows opened 2-7 days ago if not indexed), (5) stale page detection (resubmits pages with lastCrawlTime >30 days, capped at 50/week)
