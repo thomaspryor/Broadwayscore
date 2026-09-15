@@ -36,6 +36,7 @@ const {
 } = require(path.join(REPO, 'scripts', 'linear-drain-parked.js'));
 
 const { JOB_EVENTS } = require(path.join(REPO, 'scripts', 'lib', 'dispatch-ledger.js'));
+const { DEFAULT_CONCURRENCY_CAP, DEFAULT_SPEND_THRESHOLD_USD } = require(path.join(REPO, 'scripts', 'lib', 'backlog-drain.js'));
 
 const SAFE_CMD = '`node --test tests/unit/some-check.test.mjs`';
 const PARKED_BODY = `PARKED: Auto-filed by owner-alert-router (condition: some:condition); parked for triage.\n\n## Problem\nSomething broke.\n\n## Acceptance criteria\n${SAFE_CMD} passes.`;
@@ -605,6 +606,12 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
         readLedger: () => [],
         appendLedger: () => {},
         log: (m) => warnings.push(m),
+        // BRO-3454: this test is about --cap parsing/fallback, not the new
+        // concurrency ceiling — held well above DISPATCH_CAP so it can't
+        // become the limiting factor here (DEFAULT_CONCURRENCY_CAP=2 would
+        // otherwise cap dispatch at 2, below the DISPATCH_CAP=3 this test
+        // asserts on).
+        concurrencyCap: DISPATCH_CAP + 1,
       });
       assert.strictEqual(result.dispatched.length, DISPATCH_CAP, `argv=${JSON.stringify(argv)}`);
       assert.strictEqual(dispatchedTaskIds.length, DISPATCH_CAP, `argv=${JSON.stringify(argv)}`);
@@ -700,6 +707,210 @@ describe('readLedger dedupes exact-duplicate lines (merge=union safety)', () => 
     const second = JSON.stringify({ ts: '2026-09-08T12:48:34.217Z', event: 'card-fail', cardId: 'BRO-1', contentHash: 'h1', note: 'fail: y' });
     withLedger([FAIL, second], (file) => {
       assert.equal(checkPark(readLedger(file), 'BRO-1', 'h1').parked, true, 'two real failures must still park');
+    });
+  });
+});
+
+// ── BRO-3454: spend circuit breaker + concurrency ceiling ───────────────────
+// This drain had neither guard its siblings scripts/backlog-drain.js and
+// scripts/lib/digest-autofix.js (BRO-3412) have. Wired at the SAME shared
+// default thresholds (DEFAULT_SPEND_THRESHOLD_USD=$12, DEFAULT_CONCURRENCY_CAP=2)
+// — never new numbers — via scripts/lib/backlog-drain.js's existing
+// computeSpendCircuitBreaker/computeConcurrency.
+describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () => {
+  test('spend breaker tripped — dispatches ZERO even with dispatch-count budget and concurrency headroom available', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    // $12+ spent with zero completions (card-pass) tips
+    // computeSpendCircuitBreaker into halt — same shape
+    // scripts/backlog-drain.js's own breaker trips on.
+    const ledgerEntries = [
+      { event: 'card-fail', cardId: 'BRO-9', usd: DEFAULT_SPEND_THRESHOLD_USD + 1, ts: new Date().toISOString() },
+    ];
+    const dispatchedTaskIds = [];
+    const result = await main([], {
+      listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => ledgerEntries,
+      appendLedger: () => {},
+      dispatchLedgerEntries: () => [], // no alive jobs — concurrency is NOT the limiter here
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, [], 'spend breaker must block every dispatch, not just reduce budget');
+    assert.deepStrictEqual(dispatchedTaskIds, []);
+  });
+
+  test('concurrency at cap — stops dispatching regardless of remaining dispatch-count budget', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    // This drain's own ledger recorded a prior dispatch onto BRO-9 — the
+    // population computeConcurrency scopes its ceiling to.
+    const ledgerEntries = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-9', contentHash: 'h1', ts: new Date().toISOString() },
+    ];
+    // That dispatch's job is still alive (spawned, no terminal event) in the
+    // SHARED dispatch-ledger — at concurrencyCap=1 this alone saturates it.
+    const dispatchLedgerEntries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-9', jobId: 'job-alive', ts: new Date().toISOString() },
+    ];
+    const dispatchedTaskIds = [];
+    // A DIFFERENT, otherwise fully-eligible issue — cap (dispatch-count
+    // budget) is DISPATCH_CAP, plenty of room; only the concurrency ceiling
+    // should stop it.
+    const result = await main([], {
+      listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-10' })],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => ledgerEntries,
+      appendLedger: () => {},
+      dispatchLedgerEntries: () => dispatchLedgerEntries,
+      concurrencyCap: 1,
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, [], 'at concurrency cap, no dispatch budget is available however high the dispatch-count cap is');
+    assert.deepStrictEqual(dispatchedTaskIds, []);
+  });
+
+  test('guard computation failure fails CLOSED — zero dispatches, never silently open', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const dispatchedTaskIds = [];
+    // A throwing dispatchLedgerEntries reader: step 4's fail-soft reconcile
+    // swallows it (park checks skipped), but the guard's OWN try/catch below
+    // must be what actually stops dispatch — a double-fault, same shape
+    // digest-autofix.test.mjs's BRO-3412 test documents for its sibling.
+    const result = await main([], {
+      listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => [],
+      appendLedger: () => {},
+      dispatchLedgerEntries: () => { throw new Error('ledger read exploded'); },
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, [], 'a broken guard computation must never fail open into unlimited dispatch');
+    assert.deepStrictEqual(dispatchedTaskIds, []);
+  });
+
+  // BRO-3412 (Codex adversarial-review finding, ported here so this drain
+  // doesn't rediscover the same bug): a dispatch reconciled to a costly
+  // failure THIS SAME RUN must be visible to the spend breaker THIS SAME
+  // RUN, not just the next one. Driven through the SAME live-array
+  // readLedger/appendLedger pattern the pre-existing 'end-to-end' park test
+  // above uses (a real file/read-after-write isn't this file's test
+  // convention) — the guard calling `deps.readLedger()` again after step 4's
+  // `appendLedgerFn` pushed into the SAME live array is what proves it: a
+  // stale/aliased snapshot would miss the newly-pushed row.
+  test('a dispatch reconciled to a costly failure THIS SAME RUN still trips the spend breaker THIS SAME RUN', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const priorTarget = issue({ identifier: 'BRO-9' });
+    const hash = computeIssueContentHash(priorTarget);
+    // Prior dispatch attempt on an UNRELATED issue — its outcome is what
+    // gets reconciled (and costed) during THIS call.
+    const ledger = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-9', contentHash: hash, ts: '2026-09-01T12:00:00Z' },
+    ];
+    // JOB_EVENTS.FAILED (not DONE): reconcileOutcomes' TERMINAL branch maps
+    // job.event === DONE to 'card-pass' unconditionally for this
+    // Linear-only drain (unlike digest-autofix.js's dual Linear/Notion
+    // population, this file has no separate "task completed" check to force
+    // a card-fail out of a DONE job) — a real costly FAILURE needs FAILED.
+    const dispatchLedgerEntries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-9', jobId: 'job-costly', ts: '2026-09-01T12:00:05Z' },
+      { event: JOB_EVENTS.FAILED, taskId: 'linear:BRO-9', jobId: 'job-costly', ts: new Date().toISOString(), costUSD: DEFAULT_SPEND_THRESHOLD_USD + 1 },
+    ];
+    const dispatchedTaskIds = [];
+    // A DIFFERENT, otherwise fully-eligible issue — nothing pre-seeds spend
+    // against IT specifically; the freshly-reconciled cost from BRO-9 must
+    // still halt the whole run's dispatch budget.
+    const result = await main([], {
+      listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-10' })],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => ledger.slice(),
+      appendLedger: (entry) => ledger.push({ ts: new Date().toISOString(), ...entry }),
+      dispatchLedgerEntries: () => dispatchLedgerEntries,
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, [], 'spend reconciled during THIS run must be visible to the breaker in the SAME run');
+    assert.deepStrictEqual(dispatchedTaskIds, []);
+    assert.ok(ledger.some((e) => e.event === 'card-fail' && e.cardId === 'BRO-9' && e.usd === DEFAULT_SPEND_THRESHOLD_USD + 1),
+      'reconcile must have recorded the cost on the own ledger (usd field wiring)');
+  });
+
+  test('neither guard tripped — dispatches normally up to min(DISPATCH_CAP, DEFAULT_CONCURRENCY_CAP)', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const dispatchedTaskIds = [];
+    const result = await main([], {
+      listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+      readLedger: () => [],
+      appendLedger: () => {},
+      dispatchLedgerEntries: () => [],
+      log: () => {},
+    });
+    assert.deepStrictEqual(result.dispatched, ['BRO-1'], 'healthy state (no spend, no alive jobs) must still dispatch');
+    assert.deepStrictEqual(dispatchedTaskIds, ['linear:BRO-1']);
+  });
+
+  test('--dry-run never touches the guard (no real ledger read attempted)', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    let guardReadAttempted = false;
+    const result = await main(['--dry-run'], {
+      listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      dispatchFn: () => { throw new Error('must not dispatch'); },
+      readLedger: () => { guardReadAttempted = true; return []; },
+      appendLedger: () => {},
+      log: () => {},
+    });
+    // readLedger IS still called once by step 4's own (unrelated,
+    // pre-existing) attempt-memory read — this only proves dry-run doesn't
+    // ALSO run the new guard block redundantly; see the real fs-isolation
+    // assertion below for the property that actually matters (no real file
+    // touched on dry-run for an ENOENT ledger path).
+    assert.deepStrictEqual(result.dispatched, []);
+    assert.ok(guardReadAttempted);
+  });
+
+  describe('real strict readers (no deps override — production code path)', () => {
+    const fs = require('node:fs');
+    const os = require('node:os');
+
+    function withLedger(lines, fn) {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'drain-guard-'));
+      const file = path.join(dir, 'ledger.jsonl');
+      if (lines !== null) fs.writeFileSync(file, lines.join('\n') + '\n');
+      try { return fn(file); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    }
+
+    test('a real ledger file with a union-merge-duplicated costly failure is deduped before the breaker sums it (stays under threshold)', async () => {
+      delete process.env.LINEAR_NEXT_DISABLED;
+      // Half the threshold, duplicated: if dedup were skipped, the strict
+      // reader would double-count this to over threshold and wrongly halt.
+      const half = DEFAULT_SPEND_THRESHOLD_USD / 2 + 1;
+      const row = JSON.stringify({ ts: new Date().toISOString(), event: 'card-fail', cardId: 'BRO-9', usd: half });
+      await withLedger([row, row], async (file) => {
+        const dispatchedTaskIds = [];
+        const result = await main([], {
+          listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+          dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+          appendLedger: () => {},
+          dispatchLedgerEntries: () => [],
+          ledgerPath: file,
+          log: () => {},
+        });
+        assert.deepStrictEqual(result.dispatched, ['BRO-1'], 'a deduped single half-threshold spend must not trip the breaker');
+      });
+    });
+
+    test('no ledger file yet (ENOENT) does not fail closed — dispatches normally', async () => {
+      delete process.env.LINEAR_NEXT_DISABLED;
+      await withLedger(null, async (file) => {
+        const dispatchedTaskIds = [];
+        const result = await main([], {
+          listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+          dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
+          appendLedger: () => {},
+          dispatchLedgerEntries: () => [],
+          ledgerPath: file, // never written — ENOENT is the healthy first-run state
+          log: () => {},
+        });
+        assert.deepStrictEqual(result.dispatched, ['BRO-1'], 'ENOENT must not be treated as a guard-computation failure');
+      });
     });
   });
 });
