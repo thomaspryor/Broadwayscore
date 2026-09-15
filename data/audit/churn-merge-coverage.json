@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-15T17:52:47.761Z",
+    "generatedAt": "2026-09-15T21:57:47.544Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,45 +16,45 @@
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 77
+      "churn": 86
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 40
+      "churn": 45
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 126
+      "churn": 163
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 104
+      "churn": 114
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 104
+      "churn": 114
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 102
+      "churn": 112
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 98
+      "churn": 102
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 82
+      "churn": 88
     },
     {
       "path": "public/data/shows/man-to-man-west-end-2026.json",
-      "churn": 73
+      "churn": 75
     },
     {
       "path": "public/data/shows/kimberly-akimbo-off-west-end-2026.json",
-      "churn": 58
+      "churn": 59
     },
     {
       "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
@@ -85,6 +85,10 @@
       "churn": 54
     },
     {
+      "path": "public/data/shows/night-city-off-west-end-2026.json",
+      "churn": 54
+    },
+    {
       "path": "public/data/shows/mass-west-end-2026.json",
       "churn": 53
     },
@@ -109,27 +113,23 @@
       "churn": 51
     },
     {
-      "path": "public/data/shows/night-city-off-west-end-2026.json",
-      "churn": 51
-    },
-    {
       "path": "public/data/shows/romeo-and-juliet-west-end-2026.json",
       "churn": 51
     },
     {
-      "path": "public/data/shows/bloodsport-after-helen-of-troy-off-west-end-2026.json",
-      "churn": 45
-    },
-    {
-      "path": "public/data/shows/equus-west-end-2026.json",
-      "churn": 45
+      "path": "public/opening-night-status.json",
+      "churn": 50
     },
     {
       "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
-      "churn": 45
+      "churn": 47
     },
     {
-      "path": "public/opening-night-status.json",
+      "path": "public/data/shows/bloodsport-after-helen-of-troy-off-west-end-2026.json",
+      "churn": 46
+    },
+    {
+      "path": "public/data/shows/equus-west-end-2026.json",
       "churn": 45
     },
     {
@@ -141,11 +141,11 @@
       "churn": 39
     },
     {
-      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
+      "path": "public/data/shows/tartuffe-remixed-off-west-end-2026.json",
       "churn": 39
     },
     {
-      "path": "public/data/shows/tartuffe-remixed-off-west-end-2026.json",
+      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
       "churn": 38
     },
     {
@@ -161,8 +161,12 @@
       "churn": 35
     },
     {
+      "path": "public/data/shows/pre-existing-condition-off-broadway-2026.json",
+      "churn": 33
+    },
+    {
       "path": "public/data/shows/safe-house-off-broadway-2026.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
@@ -171,96 +175,92 @@
     {
       "path": "public/data/shows/operation-mincemeat-west-end-2024.json",
       "churn": 31
-    },
-    {
-      "path": "public/data/shows/pre-existing-condition-off-broadway-2026.json",
-      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 237,
+      "churn": 260,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 208,
+      "churn": 224,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 186,
+      "churn": 202,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 162,
+      "churn": 178,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 162,
+      "churn": 178,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 162,
+      "churn": 178,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 150,
+      "churn": 154,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 115,
+      "churn": 127,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-children-off-west-end-2026.json",
-      "churn": 102,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 102,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 93,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 91,
+      "churn": 92,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 60,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 46,
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 46,
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 45,
+      "churn": 50,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 43,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
@@ -274,9 +274,9 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/orphan-unscored-pre-existing-condition-off-broadway-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
+      "path": "tests/unit-test-manifest.txt",
+      "churn": 31,
+      "mergeAttr": "union"
     }
   ]
 }
