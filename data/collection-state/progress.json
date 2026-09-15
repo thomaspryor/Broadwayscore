@@ -9,7 +9,9 @@
     "man-to-man-west-end-2026/liamodell--liam-odell.json",
     "the-children-off-west-end-2026/revstanstheatreblog--unknown.json",
     "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
-    "the-children-off-west-end-2026/theatreboard--unknown.json"
+    "the-children-off-west-end-2026/theatreboard--unknown.json",
+    "kimberly-akimbo-off-west-end-2026/ground--unknown.json",
+    "kimberly-akimbo-off-west-end-2026/londonlivinglarge--london-living-large.json"
   ],
   "failed": [
     "night-city-off-west-end-2026/reviewsgate--william-russell.json",
@@ -33,7 +35,9 @@
     "the-children-off-west-end-2026/london-box-office--phil-willmott.json",
     "the-children-off-west-end-2026/london-box-office--stuart-king.json",
     "the-children-off-west-end-2026/stagebuddy--elyse-trevers.json",
-    "the-children-off-west-end-2026/thestage--unknown.json"
+    "the-children-off-west-end-2026/thestage--unknown.json",
+    "the-children-off-west-end-2026/times-uk--the-times.json",
+    "the-children-off-west-end-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -45,12 +49,17 @@
       "night-city-off-west-end-2026/londonpubtheatres--unknown.json",
       "man-to-man-west-end-2026/liamodell--liam-odell.json",
       "the-children-off-west-end-2026/revstanstheatreblog--unknown.json",
-      "the-children-off-west-end-2026/theatreboard--unknown.json"
+      "the-children-off-west-end-2026/theatreboard--unknown.json",
+      "kimberly-akimbo-off-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-children-off-west-end-2026/times-uk--the-times.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "kimberly-akimbo-off-west-end-2026/ground--unknown.json"
+    ],
     "brightdata": [
       "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json"
     ],
@@ -60,7 +69,7 @@
     ]
   },
   "startTime": "2026-09-14T23:27:10.695Z",
-  "lastProcessed": "the-children-off-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "kimberly-akimbo-off-west-end-2026/londonlivinglarge--london-living-large.json",
   "log": [
     {
       "t": "2026-09-14T23:34:42.979Z",
@@ -106,6 +115,17 @@
       "t": "2026-09-14T23:39:51.020Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-15T01:08:40.691Z",
+      "event": "bb-session",
+      "session": "e5b8e900",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-15T01:08:41.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
