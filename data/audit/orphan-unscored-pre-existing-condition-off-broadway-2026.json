@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "pre-existing-condition-off-broadway-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-15T18:49:07.907Z",
+  "detectedAt": "2026-09-15T18:55:57.589Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "outgoing--unknown.json",
+      "outletId": "outgoing",
+      "criticName": "Unknown",
+      "url": "https://www.outgoing.world/activity/pre-existing-condition-314835d432c1",
+      "fullTextLen": 3333,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
