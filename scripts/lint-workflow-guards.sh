@@ -87,8 +87,25 @@ check_core_data_pairing() {
     # Require an actual `uses: .../push-core-data` step, not a mere text
     # mention in a comment or heredoc.
     if grep -qE '^[[:space:]]*uses:.*push-core-data' "$f"; then continue; fi
+    # Match against the file with FULL-LINE comments stripped. The search
+    # below is plain text, so a script merely NAMED in a YAML comment (a
+    # rationale block, a runbook note) read as an invocation. This is not
+    # hypothetical twice over: it is why opening-night-stage-alert.yml is in
+    # EXEMPT above ("mentions rebuild in alert runbook TEXT, not an
+    # invocation"), and on 2026-09-15 it blocked every push on the owner's
+    # machine for ~2h when BRO-3426 added a comment reading "`node
+    # scripts/validate-data.js`-class commands" to data-health-check.yml --
+    # a workflow that never invokes validate-data.js at all.
+    #
+    # Stripping full-line comments can NEVER mask a real invocation: a
+    # commented-out line does not execute. Trailing comments are deliberately
+    # NOT stripped -- '#' is legal inside quoted strings and URL fragments in
+    # both YAML and shell, so cutting at the first '#' would corrupt real
+    # run: lines and could hide a genuine invocation.
+    local BODY
+    BODY=$(sed -E 's/^[[:space:]]*#.*$//' "$f")
     for s in $CORE_WRITER_SCRIPTS; do
-      if grep -q "scripts/$s" "$f"; then
+      if printf '%s\n' "$BODY" | grep -q "scripts/$s"; then
         MISSING="$MISSING $name($s)"
         break
       fi
