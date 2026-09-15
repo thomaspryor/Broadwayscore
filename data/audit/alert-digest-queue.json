@@ -10,5 +10,41 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-15T12:14:18.297Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T13:38:36.374Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:pre-existing-condition-off-broadway-2026",
+    "title": "Auto-remediation gave up on pre-existing-condition-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"pre-existing-condition-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T13:38:36.376Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:pre-existing-condition-off-broadway-2026",
+    "title": "Shipped review missing publishDate on Pre-Existing Condition",
+    "description": "pages-on-stages/Mason Pilevsky SHIPPED with no publishDate — cannot confirm post-opening: https://pagesonstages.com/2026/09/14/pre-existing-condition/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T13:38:36.378Z"
   }
 ]
