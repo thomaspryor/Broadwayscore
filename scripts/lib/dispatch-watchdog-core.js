@@ -30,7 +30,7 @@
 'use strict';
 
 const {
-  TERMINAL_LAUNCH_EVENTS,
+  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs,
   openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage, detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS,
 } = require('./dispatch-ledger.js');
@@ -159,6 +159,45 @@ function compareTaskIds(a, b) {
   return ka.s < kb.s ? -1 : ka.s > kb.s ? 1 : 0;
 }
 
+// Open work in EITHER lane (BRO-3390, ship-check P0).
+//
+// openTaskWorkspaceLaunches only sees the cmux lane: it requires
+// isWorkspaceRef(e.workspaceRef), and dispatch-ledger.js's WORKSPACE_REF_RE is
+// /^workspace:\d+$/. A headless dispatch writes workspaceRef
+// "headless:linear:BRO-N", which that regex rejects — measured on the real
+// ledger, 391 of 618 linear: launch rows are headless. So before this, EVERY
+// headless job was invisible here, with two consequences, both silent:
+//
+//   1. watchdogLiveCount returned 0 for the entire Linear lane, so
+//      CAPS.watchdogConcurrent was inert on it — raising 3->6 would have
+//      bought nothing because there was no ceiling being enforced at all.
+//   2. planSweep's `open` set never contained a running headless task, so a
+//      card whose ~22-minute job was still going re-entered the P0/P1 queue
+//      and got claimed again. The day budget counts claims, so a single card
+//      could eat the day re-dispatching itself.
+//
+// The headless lane journals its lifecycle by jobId (job-spawned/job-done/...)
+// rather than by workspaceRef, so fold THAT and treat a job whose latest event
+// is non-terminal as open. Same fold backlog-drain.js's computeConcurrency
+// already uses, on the same single ledger.
+function openHeadlessJobTasks(entries) {
+  const open = new Map();
+  for (const job of foldJobs(entries || []).values()) {
+    if (!job || job.taskId == null) continue;
+    if (TERMINAL_JOB_EVENTS.has(job.event)) continue;
+    open.set(String(job.taskId), { workspaceRef: job.workspaceRef || null, subject: job.subject || null, ts: job.ts });
+  }
+  return open;
+}
+
+// Union of both lanes. cmux entries win on collision: their launch row carries
+// the workspaceRef the narrative prints.
+function openTasksAnyLane(entries) {
+  const merged = openHeadlessJobTasks(entries);
+  for (const [taskId, launch] of openTaskWorkspaceLaunches(entries || [])) merged.set(taskId, launch);
+  return merged;
+}
+
 function notionIdOf(task) {
   const m = /^\[notion:([^\]]+)\]/.exec(String((task && task.description) || ''));
   return m ? m[1] : null;
@@ -205,7 +244,7 @@ function watchdogLiveCount(entries) {
     .map(e => String(e.taskId)));
   if (!claimed.size) return 0;
   let n = 0;
-  for (const [taskId] of openTaskWorkspaceLaunches(entries)) {
+  for (const [taskId] of openTasksAnyLane(entries)) {
     if (claimed.has(taskId)) n++;
   }
   return n;
@@ -389,7 +428,7 @@ function planSweep(entries, tasks, opts) {
   const cmuxObserved = liveTitles instanceof Map && liveTitles.size > 0;
 
   // ── classify open launches ──
-  const open = openTaskWorkspaceLaunches(entries);
+  const open = openTasksAnyLane(entries);
   const inFlight = [];
   for (const [taskId, launch] of open) {
     const task = tasks.get(taskId);
@@ -636,6 +675,7 @@ module.exports = {
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,
   watchdogClaimPending, lastLaunchAnywhereMs,
   taskPriority, notionIdOf, taskSortKey, compareTaskIds,
+  openHeadlessJobTasks, openTasksAnyLane,
   PACING_WINDOW_MS, PACING_HOURS, watchdogClaimsInWindow,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,
   lastTerminalEventForTask, planSweep, tabTitle, renderNarrative,

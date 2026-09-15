@@ -308,8 +308,14 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 //
 // The Linear lane is dispatched --headless deliberately, and this is the one
 // place the two lanes genuinely differ:
-//   - headless needs no cmux terminal runtime, so it sidesteps BRO-2709 (cmux
-//     at its runtime ceiling, where auto-dispatch fails SILENTLY at launch);
+//   - headless needs no cmux terminal runtime, so the LAUNCH itself sidesteps
+//     BRO-2709 (cmux at its runtime ceiling, where auto-dispatch fails
+//     SILENTLY at launch). NOTE the limit of that claim, found by ship-check:
+//     planSweep's holds are still global, so `cmux unobservable`, the
+//     global auto-tab ceiling, a launcher outage or a launcher leak all stop
+//     this lane too even though none of them can affect a headless child.
+//     Headless is therefore more RELIABLE once launched, but it is not yet
+//     ISOLATED from cmux's health. Tracked in BRO-3392;
 //   - measured on data/audit/dispatch-ledger.jsonl since 2026-08-16, the
 //     headless lane reaches job-done 83.0% of the time (460 jobs, 17.0%
 //     trouble) against 30.5% dead/vanished for the cmux workspace lane
@@ -319,7 +325,16 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 // adds a lane, it does not re-point the old one.
 function dispatchArgvFor(taskId) {
   const m = /^linear:([A-Z][A-Z0-9]*-\d+)$/.exec(String(taskId));
-  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless'];
+  // --detach is NOT optional here (ship-check P0). `--headless` alone AWAITS
+  // runJob for the job's entire life, and runBscNext SIGKILLs the process
+  // group at DISPATCH_TIMEOUT_MS = 15 minutes. Measured on the real ledger:
+  // median headless job 21.9 min, and 277 of 424 (65.3%) run past 15 minutes —
+  // so two out of every three paid jobs would have been killed mid-flight,
+  // money spent and work discarded, with no terminal row written. That would
+  // have FED the very write-back leak this change surfaces. With --detach,
+  // linear-next re-execs in its own session and returns immediately, which is
+  // exactly what digest-autofix.js's own spawn site does.
+  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless', '--detach'];
   return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
 }
 

@@ -464,3 +464,48 @@ test('a Linear-sourced task is queued, ordered and dispatched like any other', (
   // Same priority => FIFO on the trailing number, so task 9 precedes BRO-77.
   assert.deepEqual(ids, ['9', 'linear:BRO-77']);
 });
+
+test('ship-check P0: a HEADLESS job counts as open (concurrency + no re-dispatch)', () => {
+  // A headless dispatch journals by jobId and writes workspaceRef
+  // "headless:linear:BRO-N", which dispatch-ledger's workspace-ref regex
+  // rejects. Before the fix this task was invisible: liveNow stayed 0 (so the
+  // concurrency cap was inert on the whole Linear lane) and the card re-entered
+  // the P0/P1 queue while its ~22-minute job was still running.
+  const entries = [
+    { ts: T(30), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: 'linear:BRO-77' },
+    { ts: T(29), event: 'launch', taskId: 'linear:BRO-77', subject: 's', workspaceRef: 'headless:linear:BRO-77' },
+    { ts: T(28), event: 'job-spawned', taskId: 'linear:BRO-77', jobId: 'linear:BRO-77-abc', subject: 's' },
+  ];
+  assert.ok(core.openHeadlessJobTasks(entries).has('linear:BRO-77'));
+  assert.ok(core.openTasksAnyLane(entries).has('linear:BRO-77'));
+  assert.equal(core.watchdogLiveCount(entries), 1, 'a live headless job must occupy a concurrency slot');
+
+  const linearTask = ['linear:BRO-77', {
+    id: 'linear:BRO-77', subject: 'P1: fix the thing', status: 'pending',
+    description: '[linear:BRO-77] P1 Next · Backlog · no-category\nbody',
+  }];
+  const plan = core.planSweep(entries, new Map([linearTask]), { now: NOW, liveTitles: LIVE });
+  assert.ok(!plan.p01Queue.some(q => q.taskId === 'linear:BRO-77'),
+    'a task with a live headless job must not be re-queued');
+  assert.ok(plan.inFlight.some(f => f.taskId === 'linear:BRO-77'),
+    'and it must show as in-flight rather than vanishing from the narrative');
+});
+
+test('ship-check P0: a FINISHED headless job frees its slot again', () => {
+  const entries = [
+    { ts: T(30), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: 'linear:BRO-78' },
+    { ts: T(29), event: 'job-spawned', taskId: 'linear:BRO-78', jobId: 'linear:BRO-78-abc' },
+    { ts: T(5), event: 'job-done', taskId: 'linear:BRO-78', jobId: 'linear:BRO-78-abc' },
+  ];
+  assert.equal(core.openHeadlessJobTasks(entries).size, 0, 'job-done is terminal - the slot must free');
+  assert.equal(core.watchdogLiveCount(entries), 0);
+});
+
+test('the cmux lane still counts as open (no regression from the union)', () => {
+  const entries = [
+    { ts: T(30), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: '55' },
+    { ts: T(29), event: 'launch', taskId: '55', subject: 's', workspaceRef: 'workspace:7' },
+  ];
+  assert.ok(core.openTasksAnyLane(entries).has('55'));
+  assert.equal(core.watchdogLiveCount(entries), 1);
+});
