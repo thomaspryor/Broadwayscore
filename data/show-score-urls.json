@@ -4,7 +4,10 @@
     "source": "Show Score Broadway section",
     "needsManualFetch": [],
     "needsManualFetchNote": "URLs auto-updated by fetch script",
-    "lastListingsDiscovery": "2026-09-15T20:34:01.548Z"
+    "lastListingsDiscovery": "2026-09-15T20:34:01.548Z",
+    "notes": [
+      "BRO-3416 (2026-09-15): removed she-loves-me-1994 -> show-score.com/broadway-shows/she-loves-me. Show Score launched in 2015 and has exactly one She Loves Me page, the 2016 Roundabout revival; mapping it to the 1993-94 production too made every show-score pass ingest 2016 reviews into she-loves-me-1994 (21 of that dir's 22 files were 2016 reviews). Five other Show Score URLs are still mapped to two shows each - tracked separately."
+    ]
   },
   "shows": {
     "two-strangers-bway-2025": "https://www.show-score.com/broadway-shows/two-strangers-carry-a-cake-across-new-york-broadway",
@@ -636,7 +639,6 @@
     "stereophonic-off-broadway-2023": "https://www.show-score.com/off-broadway-shows/stereophonic",
     "titanique-off-broadway-2022": "https://www.show-score.com/off-broadway-shows/titanique",
     "oh-mary-off-broadway-2024": "https://www.show-score.com/off-broadway-shows/oh-mary",
-    "she-loves-me-1994": "https://www.show-score.com/broadway-shows/she-loves-me",
     "sexual-misconduct-of-the-middle-classes-off-broadway-2026": "https://www.show-score.com/off-broadway-shows/sexual-misconduct-of-the-middle-classes",
     "heavenly-baba-off-broadway-2026": "https://www.show-score.com/off-broadway-shows/heavenly-baba",
     "nicole-travolta-is-doing-alright-off-broadway-2026": "https://www.show-score.com/off-broadway-shows/nicole-travolta-is-doing-alright",

@@ -595,3 +595,66 @@ test('isZeroScoreImpactFix returns false for null/undefined inputs', () => {
   assert.equal(isZeroScoreImpactFix(null, {}), false);
   assert.equal(isZeroScoreImpactFix({}, null), false);
 });
+
+// --- BRO-3416: isRoundupArticle is exempt when the URL is itself a roundup ---
+//
+// Fixture URLs are the real ones from the corpus, not invented shapes — four
+// of them are the exact rows cv-flag-contradiction-baseline.json had frozen on
+// 2026-09-05, which is the evidence that the baseline was absorbing this class
+// one row per ingested roundup rather than the detector declining to fire.
+
+const CV_HIGH_BRO3416 = { isValid: true, confidence: 'high' };
+
+const ROUNDUP_URLS_BRO3416 = [
+  ['BWW Review-Roundup (new, garry-starr)', 'https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909'],
+  ['BWW Review-Roundup (new, pre-existing-condition)', 'https://www.broadwayworld.com/article/Review-Roundup-PRE-EXISTING-CONDITION-Opens-at-Greenwich-House-Theater-20260914'],
+  ['BWW Review-Roundup (baselined, winters-tale)', 'https://www.broadwayworld.com/article/Review-Roundup-THE-WINTERS-TALE-Opens-as-Part-of-Free-Shakespeare'],
+  ['Playbill critics-think-of (baselined, paranormal-activity)', 'https://playbill.com/article/reviews-what-do-the-critics-think-of-paranormal-activity-on-broadway'],
+  ['bestoftheatre review-roundup (baselined, the-story)', 'https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-story-national-theatre'],
+  ['WET *-reviews/ (baselined, electra-persona)', 'https://www.westendtheatre.com/364740/news/electra-persona-reviews/'],
+];
+
+for (const [label, url] of ROUNDUP_URLS_BRO3416) {
+  test(`detectCvFlagContradiction: isRoundupArticle on a roundup URL is not a contradiction — ${label}`, () => {
+    const f = {
+      isRoundupArticle: true,
+      url,
+      textWordCount: 900,
+      contentVerification: CV_HIGH_BRO3416,
+    };
+    assert.equal(detectCvFlagContradiction(f), null);
+  });
+}
+
+test('detectCvFlagContradiction: isRoundupArticle on a NON-roundup URL still fires — the real FP this audit exists to catch', () => {
+  // bloodsport-after-helen-of-troy-off-west-end-2026/london-box-office--stuart-king.json:
+  // a genuine 520-word single-production review wrongly carrying the roundup
+  // flag. LBO's actual roundups live at /news/post/review-round-up-*, which
+  // isRoundupUrl matches; this URL ends in -review and must NOT be exempted.
+  const f = {
+    isRoundupArticle: true,
+    url: 'https://www.londonboxoffice.co.uk/news/post/bloodsport-after-helen-of-troy-theatre-royal-stratford-east-review',
+    textWordCount: 520,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
+
+test('detectCvFlagContradiction: roundup-URL exemption falls through to a co-occurring wrongShow rather than aborting', () => {
+  // Mirrors the wrongProductionExempt fall-through contract documented beside
+  // it: exempting one flag says nothing about whether another flag on the same
+  // record is legitimate.
+  const f = {
+    isRoundupArticle: true,
+    wrongShow: true,
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909',
+    textWordCount: 900,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+test('detectCvFlagContradiction: isRoundupArticle with no URL at all still fires (nothing to exempt on)', () => {
+  const f = { isRoundupArticle: true, textWordCount: 900, contentVerification: CV_HIGH_BRO3416 };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
