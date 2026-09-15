@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-15T16:54:06.109Z",
+    "generatedAt": "2026-09-15T17:03:53.413Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,33 +16,33 @@
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 72
+      "churn": 73
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 36
+      "churn": 37
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 118
+      "churn": 119
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 99
+      "churn": 100
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 99
+      "churn": 100
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 97
+      "churn": 98
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 96
+      "churn": 97
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -134,7 +134,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/six-the-musical-west-end-2021.json",
@@ -176,52 +176,52 @@
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 228,
+      "churn": 231,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 203,
+      "churn": 204,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 182,
+      "churn": 183,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 156,
+      "churn": 157,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 156,
+      "churn": 157,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 156,
+      "churn": 157,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 148,
+      "churn": 149,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 110,
+      "churn": 111,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-children-off-west-end-2026.json",
-      "churn": 97,
+      "churn": 98,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 97,
+      "churn": 98,
       "mergeAttr": "ours"
     },
     {
@@ -241,17 +241,17 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 42,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 42,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 41,
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {
@@ -261,12 +261,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     }
   ]
