@@ -236,6 +236,43 @@ if [ -n "$REBASE_STATE_DIR" ] && [ -d "$REBASE_STATE_DIR" ]; then
     || echo "::error::[$TAG] git rebase --abort failed while self-healing a stuck rebase at $REBASE_STATE_DIR — investigate by hand"
 fi
 
+# The same self-heal for a MERGE left mid-flight (ship-check finding,
+# BRO-3393). The merge-origin recovery at the bottom of this script can be
+# killed by a launchd timeout between `git merge` and `git merge --abort`, and
+# its own abort can fail — either way `MERGE_HEAD` survives on disk. Without
+# this, the recovery's own MERGE_HEAD guard REFUSES on every subsequent run
+# instead of healing, which is the "refuses forever" failure mode BRO-3212
+# wrote the rebase self-heal above for, reintroduced through the merge path.
+# Reproduced against this script: after a killed merge, three consecutive runs
+# all ended with MERGE_HEAD still present and a refusal snapshot.
+#
+# The blast radius is why this is worth its own stage: a checkout stuck
+# mid-merge breaks EVERY other session sharing it ("Committing is not possible
+# because you have unmerged files"), not just this job.
+#
+# `git ls-files -u` is checked as well as MERGE_HEAD: the autostash-pop
+# conflict case leaves unmerged index entries with NO MERGE_HEAD at all, and
+# `git merge --abort` cannot help there — those paths get resolved back to
+# HEAD, with whatever was in them preserved in the stash entry the merge made.
+if git rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+  echo "[$TAG] found a merge left mid-flight by an interrupted run — aborting to self-heal"
+  git merge --abort 2>/dev/null \
+    || echo "::error::[$TAG] git merge --abort failed while self-healing a stuck merge — investigate by hand"
+fi
+STALE_UNMERGED=$(git ls-files -u | cut -f2- | sort -u)
+if [ -n "$STALE_UNMERGED" ]; then
+  echo "::error::[$TAG] found unmerged index entries with no merge in progress (interrupted autostash restore) — resolving to HEAD to unblock every session sharing this checkout:"
+  echo "$STALE_UNMERGED" | sed "s/^/[$TAG]   /"
+  while IFS= read -r U; do
+    [ -n "$U" ] || continue
+    git checkout HEAD -- "$U" 2>/dev/null \
+      || echo "::error::[$TAG] could not resolve $U — investigate by hand"
+  done <<EOF
+$STALE_UNMERGED
+EOF
+  echo "::error::[$TAG] if any of that content was a live edit it is in a stash entry: git stash list; git stash show -p stash@{0}"
+fi
+
 # Stage 0: a previous run that was killed between "clean the ledger" and
 # "union the local rows back in" leaves its local rows ONLY in its backup.
 # Drain those before touching anything else. Unioning into the live file never
@@ -302,7 +339,15 @@ fi
 # the waiver is deliberate, not a bypass — if a workflow ever calls this, take
 # the flags from scripts/lib/shallow-fetch-args.js and delete this comment.
 if ! git fetch origin main --quiet; then
+  # Must leave a refusal snapshot (ship-check finding, BRO-3393). This exit
+  # used to be silent, and morning-digest.plist runs the digest with `;` even
+  # when this script fails - so a failed fetch produced NO sync-refused-digest
+  # .json, the digest saw "nobody refused", and it filed cards and dispatched
+  # headless sessions against a checkout whose freshness had just proven
+  # unverifiable. That is exactly the state this machine was in at 10:30 on
+  # 2026-09-15, when an Xcode license failure broke git for every job.
   echo "::error::[$TAG] git fetch origin main failed"
+  write_refused_snapshot "fetch-failed" "" ""
   exit 1
 fi
 
@@ -362,6 +407,11 @@ REMAINING_DIRTY=$(git status --porcelain --untracked-files=all 2>/dev/null | cut
 # case test.sh case 7 covers, so the intersection stays complete.
 ORIGIN_CHANGED=$(git diff --name-only HEAD origin/main 2>/dev/null)
 AHEAD_COUNT=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+# BRO-3393: classifyBlock needs BOTH sides to tell "diverged and recoverable
+# by a plain merge" from "ahead with an unreadable/unmoved origin ref", which
+# must still refuse. write_refused_snapshot already computes the same number
+# for its own payload; this is the decision copy, taken at decision time.
+BEHIND_COUNT=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
 
 # Which of the blocking paths are safe to reconcile by concatenation?
 # .gitattributes is the single source of truth — `merge=union` is already
@@ -403,7 +453,7 @@ fi
 
 # One node call returns the whole decision; the logic lives in
 # scripts/lib/sync-audit-decision.js so it is unit-testable (CLAUDE.md r15).
-DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" UNION="$UNION_PATHS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
+DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" BEHIND="$BEHIND_COUNT" UNION="$UNION_PATHS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
   const { ffBlockingPaths, classifyBlock } = require(process.env.DECISION_LIB);
   const split = (v) => (v || "").split("\n").map((s) => s.trim()).filter(Boolean);
   const blockingPaths = ffBlockingPaths({
@@ -413,6 +463,7 @@ DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUN
   const d = classifyBlock({
     blockingPaths,
     aheadCount: Number(process.env.AHEAD || 0),
+    behindCount: Number(process.env.BEHIND || 0),
     unionMergePaths: split(process.env.UNION),
   });
   process.stdout.write([d.action, d.reason, d.blockingPaths.join("|"), d.unionPaths.join("|")].join("\n"));
@@ -587,6 +638,105 @@ EOF
     echo "::error::[$TAG] could not commit the ledger(s) for rebase recovery"
   fi
   REASON="dirty-unresolved"
+fi
+
+# BRO-3393. Diverged (a local commit origin lacks) with ZERO paths blocking
+# the fast-forward. Before this branch that was terminal, and it is the state
+# BRO-3212's own commit-and-rebase recovery leaves behind whenever its rebase
+# fails ("ledger commit preserved locally for the next run to carry forward"
+# — nothing carried it forward). On 2026-09-14 that stranded a single ledger
+# commit on the shared main checkout and every sync-gated launchd job refused
+# for the next 17.5 hours, which forced the 07:30 morning digest's auto-fix
+# into dry-run and dispatched nothing.
+#
+# MERGE, NOT REBASE. `git rebase origin/main` here would rewrite arbitrary
+# local commits — including an unpushed session merge commit, verified
+# empirically to be DESTROYED by the rebase (its side commits survive with
+# fresh SHAs, the merge itself does not). That is the loss class global
+# CLAUDE.md records for 2026-07-26. A merge never rewrites local history, and
+# unlike `--ff-only` it performs a real 3-way merge, so `.gitattributes`
+# merge=union drivers apply exactly as they do in the commit-and-rebase path.
+# The existing rebase at the commit-and-rebase branch above is not a precedent
+# for rebasing here either. It is reached only when every ff-blocking path is a
+# union ledger, i.e. the narrow case where the divergence is known to be
+# ledger-shaped; it still replays whatever other local commits exist, which is
+# a hazard that branch carries and this one must not copy (ship-check finding).
+#
+# --autostash: `git merge` refuses to start against a tree with staged or
+# modified tracked content even when the merge would not touch those paths.
+# --autostash is git-native and restores the content on both the success and
+# the failure path. It does NOT stash untracked files — safe here because this
+# branch only runs when $BLOCKING is empty, i.e. no dirty TRACKED-or-UNTRACKED
+# path overlaps what origin/main moves. IGNORED paths are the one gap: they
+# never appear in `git status --porcelain -uall` and so never reach
+# blockingPaths, so a gitignored local file at a path origin/main adds is
+# overwritten silently. That is pre-existing for the plain ff-only merge at the
+# top of this script, not new here, and it is tracked separately.
+if [ "$ACTION" = "merge-origin" ]; then
+  # GUARD 1 - exclusive ownership. push_mutex_acquire FAILS OPEN on timeout
+  # (push-mutex.sh:153-157 returns success with PUSH_MUTEX_HELD=0), so without
+  # this check two instances could run this branch at once, and the loser's
+  # unconditional `git merge --abort` would abort the WINNER's merge
+  # (ship-check finding, BRO-3393). Recovery mutates shared history; it is the
+  # one thing in this script that must not proceed fail-open.
+  if [ "${PUSH_MUTEX_HELD:-0}" != "1" ]; then
+    echo "::error::[$TAG] diverged and recoverable, but the push mutex was not exclusively held (fail-open timeout) — refusing to mutate the shared checkout"
+    REASON="diverged"
+  # GUARD 2 - somebody else is already mid-merge. `git merge --abort` below
+  # must only ever undo OUR merge, so establish that there is no merge in
+  # progress before we start one.
+  elif git rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+    echo "::error::[$TAG] a merge is already in progress in this checkout (MERGE_HEAD present) — refusing to touch it"
+    REASON="diverged"
+  else
+    echo "[$TAG] diverged with nothing blocking the fast-forward ($AHEAD_COUNT ahead, $BEHIND_COUNT behind) — reconciling with a 3-way merge of origin/main"
+    if git merge --autostash --no-edit origin/main --quiet 2>/dev/null; then
+      # GUARD 3 - a 0 exit is NOT proof the tree is clean. Verified
+      # empirically: when the merge itself succeeds but restoring the
+      # --autostash CONFLICTS, git prints "Applying autostash resulted in
+      # conflicts", exits 0, removes MERGE_HEAD, and leaves the working tree
+      # with `UU` unmerged paths plus a stranded `autostash` stash entry.
+      # Reporting that as "recovered" would hand every downstream launchd job
+      # a checkout with conflict markers in tracked files (ship-check finding,
+      # BRO-3393). Resolve the paths back to the merged commit - the local
+      # content is not lost, it is in the stash entry named below - and refuse,
+      # because the tree is no longer the one the caller expected.
+      # `cut -f2-`, not `awk '{print $4}'` (ship-check finding): ls-files -u
+      # prints `<mode> <sha> <stage>\t<path>`, so awk's whitespace split
+      # truncates `data/foo bar.json` to `data/foo`. The checkout below would
+      # then fail, the unmerged entry would survive, and the checkout would be
+      # left in exactly the permanently-blocked state the self-heal above
+      # exists to prevent.
+      UNMERGED=$(git ls-files -u | cut -f2- | sort -u)
+      if [ -n "$UNMERGED" ]; then
+        echo "::error::[$TAG] merge landed but restoring the autostash conflicted — resolving these paths back to the merged commit:"
+        echo "$UNMERGED" | sed "s/^/[$TAG]   /"
+        while IFS= read -r U; do
+          [ -n "$U" ] || continue
+          git checkout HEAD -- "$U" 2>/dev/null \
+            || echo "::error::[$TAG] could not restore $U to the merged commit — resolve by hand"
+        done <<EOF
+$UNMERGED
+EOF
+        echo "::error::[$TAG] the working-tree content that conflicted is SAFE in the most recent 'autostash' entry — inspect with: git stash list; git stash show -p stash@{0}"
+        # Its own reason, not "diverged" (ship-check finding): the merge DID
+        # land, so behindCount is 0 by now and a snapshot saying
+        # `diverged — 0 commit(s) behind` reads as a contradiction in the
+        # owner's morning email.
+        REASON="autostash-conflict"
+      else
+        echo "[$TAG] recovered — merged origin/main into the local checkout"
+        clear_refused_snapshot
+        exit 0
+      fi
+    else
+      echo "::error::[$TAG] merge of origin/main failed — aborting and refusing rather than leaving a half-merged shared checkout"
+      if git rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+        git merge --abort 2>/dev/null || echo "::error::[$TAG] git merge --abort itself failed — checkout may be mid-merge, investigate by hand"
+      fi
+      REASON="diverged"
+    fi
+  fi
 fi
 
 echo "::error::[$TAG] ff-only merge still blocked after snapshot reset — real divergence or dirty files outside data/audit/. Refusing to run on stale code."
