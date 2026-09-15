@@ -200,6 +200,29 @@ git_push() {
 # a revert+redeploy (adversarial review finding: the ledger-only
 # PUSH_SKIP_FAILURE_LEDGER switch doesn't touch trace collection itself).
 #
+# BRO-3358: GIT_TRACE_CURL above answers "how far did the CONNECT phase get"
+# but is a WIRE trace — it has nothing to say about what git itself is doing
+# BETWEEN wire events, e.g. a blocking credential-helper child process
+# spawned mid-transport (measured locally: `gh auth git-credential store`
+# costing 0.18-0.35s). CI resolves credentials through a DIFFERENT path
+# (http.extraheader from actions/checkout) than a local credential helper, so
+# whether something analogous blocks there is unknown until a real failure is
+# captured. GIT_TRACE2_PERF is the right instrument for that (see
+# push-diagnostics.js's header comment for why GIT_TRACE_PERFORMANCE, the
+# more obvious-looking option, cannot work here: it only logs a region on
+# LEAVE, so the phase that's still running at kill time never prints).
+#
+# PUSH_TRACE2_DIAGNOSTICS=1 (DEFAULT OFF, unlike the always-on curl trace
+# above) additionally captures a GIT_TRACE2_PERF trace for this call and, on
+# a timeout failure, prints which child process (if any) was still running
+# when the kill hit. Default off because this is diagnostic instrumentation
+# for one unsolved incident, not a permanent feature — enabled per-workflow
+# via that workflow's own env: block (currently: process-feedback.yml only,
+# BRO-3358's highest-frequency/fastest-signal call site) rather than
+# repo-wide, so a bug in this NEW path can only ever affect the one enabled
+# workflow while a real CI failure is captured and the credential-helper
+# hypothesis is confirmed or ruled out.
+#
 # Sets $_LAST_STALL_PHASE as a side effect (bare assignment — this runs at
 # the same non-function retry-loop scope as pre_push_rc/post_push_rc, see
 # BRO-2732's identical note above), RESET at the top of every call so a
@@ -219,7 +242,14 @@ _LAST_STALL_PHASE="unknown"
 # must not inherit an earlier attempt's classification into the ledger row).
 _LAST_STALL_SERVICE="unknown"
 git_push_traced() {
-  local trace_file rc kill_ts
+  # trace2_file is declared (and left "") even when PUSH_TRACE2_DIAGNOSTICS is
+  # unset, NOT left to spring into existence only inside the `if` below: this
+  # file runs under `set -euo pipefail`, and the RETURN trap below
+  # unconditionally expands "$trace2_file" on EVERY call — an undeclared local
+  # would be an unbound-variable error under `set -u` on every push in all
+  # ~157 call sites, not just the ones that opt in (caught in review before
+  # this ever ran for real).
+  local trace_file rc kill_ts trace2_file=""
   _LAST_STALL_PHASE="unknown"
   _LAST_STALL_SERVICE="unknown"
   if [ "${PUSH_SKIP_STALL_DIAGNOSTICS:-}" = "1" ]; then
@@ -235,6 +265,15 @@ git_push_traced() {
   # not running at all.
   trace_file=$(mktemp 2>/dev/null) || { git_push "$@"; return $?; }
   chmod 600 "$trace_file" 2>/dev/null || true
+  # BRO-3358: a second, independent temp file for the GIT_TRACE2_PERF capture
+  # — never shared with trace_file above, so a future format change to either
+  # trace can't corrupt the other. Same fail-open rule: if mktemp fails here,
+  # trace2_file simply stays "" and the push runs with curl-trace diagnostics
+  # only, never blocked on the second capture.
+  if [ "${PUSH_TRACE2_DIAGNOSTICS:-}" = "1" ]; then
+    trace2_file=$(mktemp 2>/dev/null) || true
+    [ -n "$trace2_file" ] && chmod 600 "$trace2_file" 2>/dev/null || true
+  fi
   # RETURN trap (not a manual `rm -f` at the bottom): covers every exit from
   # this function, including one this file's own future edits might add
   # (adversarial review finding — cleanup must not depend on control flow
@@ -252,8 +291,17 @@ git_push_traced() {
   # dependence on that non-obvious, easy-to-get-wrong behavior and guarantees
   # this function never silently clobbers a RETURN trap some future caller or
   # sourced file relies on.
-  trap 'rm -f "$trace_file" 2>/dev/null || true; trap - RETURN' RETURN
-  GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" git_push "$@"
+  #
+  # `rm -f "$trace_file" "$trace2_file"` is always safe here even when
+  # trace2_file="" — `rm -f` on an empty-string argument is a silent no-op,
+  # not an error, and the variable is always DECLARED (see the `local` line
+  # above) so this never hits the unbound-variable case under `set -u`.
+  trap 'rm -f "$trace_file" "$trace2_file" 2>/dev/null || true; trap - RETURN' RETURN
+  if [ -n "$trace2_file" ]; then
+    GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" GIT_TRACE2_PERF="$trace2_file" git_push "$@"
+  else
+    GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" git_push "$@"
+  fi
   rc=$?
   # BRO-2839: kill wall-clock, captured on the SAME clock the trace's own lines
   # use, immediately after the timeout wrapper returns. The stall this card is
@@ -295,6 +343,16 @@ git_push_traced() {
         # enough to contain one request line on the runs that prompted this card.
         node "$SCRIPT_DIR/../push-diagnostics-cli.js" redact-tail "$trace_file" 8000 2>/dev/null \
           | sed 's/^/    curl-trace: /' || true
+        # BRO-3358: same kill_ts as above (one `date` call per attempt,
+        # shared by both diagnostics — two separate kill timestamps could
+        # disagree by the gap between the two `date` forks and make the two
+        # traces describe slightly different "now"s).
+        if [ -n "$trace2_file" ]; then
+          node "$SCRIPT_DIR/../push-diagnostics-cli.js" trace2-summary "$trace2_file" "$kill_ts" 2>/dev/null \
+            | sed 's/^/    trace2: /' || true
+          node "$SCRIPT_DIR/../push-diagnostics-cli.js" redact-tail "$trace2_file" 8000 2>/dev/null \
+            | sed 's/^/    trace2-raw: /' || true
+        fi
         ;;
     esac
   fi
