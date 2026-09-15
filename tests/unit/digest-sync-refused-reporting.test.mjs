@@ -23,7 +23,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { readSyncRefused } = require('../../scripts/lib/digest-snapshots.js');
-const { buildHtml, autofixShouldDryRun } = require('../../scripts/send-morning-digest.js');
+const { buildHtml, autofixShouldDryRun, DIGEST_SYNC_TAG } = require('../../scripts/send-morning-digest.js');
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const LAUNCHD_DIR = path.join(REPO_ROOT, 'scripts', 'launchd');
@@ -131,13 +131,13 @@ test('autofixShouldDryRun: a SIBLING job\'s refusal must NOT disable the digest\
   );
 });
 
-test('autofixShouldDryRun: fails CLOSED when it cannot tell whose refusal it is', () => {
-  // An unparseable / tagless snapshot may be our own, and readSyncRefused
-  // counts it rather than dropping it — dropping it is how a truncated
-  // sync-refused-digest.json would have read as "nobody refused" and let real
-  // card filing and headless dispatch run against an untrusted checkout.
+test('autofixShouldDryRun: fails CLOSED when OUR OWN refusal snapshot is unreadable', () => {
+  // A truncated sync-refused-digest.json may say we refused, and readSyncRefused
+  // names it by FILENAME rather than dropping it — dropping it is how it would
+  // have read as "nobody refused" and let real card filing and headless
+  // dispatch run against an untrusted checkout.
   assert.equal(
-    autofixShouldDryRun({ dryRun: false, syncRefused: { count: 0, tags: [], unreadable: 1 } }),
+    autofixShouldDryRun({ dryRun: false, syncRefused: { count: 0, tags: [], unreadable: 1, unreadableTags: ['digest'] } }),
     true,
   );
   // A caller that predates the `tags` field cannot answer the question at all.
@@ -147,31 +147,65 @@ test('autofixShouldDryRun: fails CLOSED when it cannot tell whose refusal it is'
   );
 });
 
-test('the tag the plist EXPORTS is the tag autofixShouldDryRun defaults to', () => {
-  // sync-audit-decision.js:24-27's rule, applied here: the plist is the single
-  // source of truth for this job's SYNC_TAG, so the digest must read it rather
-  // than carry a second copy that can drift. `export` (not a bare VAR=val
-  // prefix) is what makes it visible to the node process; without it the
-  // literal fallback in autofixShouldDryRun is what keeps the deployed
-  // behaviour correct, and this test pins that the two agree either way.
+// Ship-check finding, BRO-3393: a single global "something was unreadable"
+// counter would have re-created the very bug this change fixes. Only the
+// owning job ever clears its own snapshot file, so one corrupt SIBLING file
+// would suppress the digest's auto-fix indefinitely. The unreadable set is
+// keyed by the tag in the FILENAME so a sibling's garbage stays a sibling's
+// problem.
+test('autofixShouldDryRun: a corrupt SIBLING snapshot must not suppress the digest forever', () => {
+  assert.equal(
+    autofixShouldDryRun({
+      dryRun: false,
+      syncRefused: { count: 0, tags: [], unreadable: 1, unreadableTags: ['linear-drain-parked'] },
+    }),
+    false,
+  );
+  assert.equal(
+    autofixShouldDryRun({
+      dryRun: false,
+      syncRefused: { count: 1, tags: ['predispatch-queue-audit'], unreadable: 1, unreadableTags: ['digest'] },
+    }),
+    true,
+    'our own unreadable snapshot still wins over a readable sibling',
+  );
+});
+
+// Ship-check finding, BRO-3393: ownTag must not be readable from the
+// environment. "Is THIS checkout trustworthy" cannot be a question whose
+// answer any caller can set — `SYNC_TAG=shadow node scripts/send-morning-
+// digest.js` would otherwise ignore a live digest refusal and dispatch anyway.
+test('autofixShouldDryRun: SYNC_TAG in the environment cannot talk the guard out of a real refusal', () => {
+  const prev = process.env.SYNC_TAG;
+  process.env.SYNC_TAG = 'shadow';
+  try {
+    assert.equal(
+      autofixShouldDryRun({ dryRun: false, syncRefused: { count: 1, tags: ['digest'], unreadable: 0, unreadableTags: [] } }),
+      true,
+      'a hostile or stale SYNC_TAG must not disable the guard',
+    );
+  } finally {
+    if (prev === undefined) delete process.env.SYNC_TAG; else process.env.SYNC_TAG = prev;
+  }
+});
+
+test('the tag the plist EXPORTS is the constant autofixShouldDryRun defaults to', () => {
+  // sync-audit-decision.js:24-27's anti-drift rule, applied WITHOUT letting the
+  // environment decide a security question (ship-check finding, BRO-3393):
+  // DIGEST_SYNC_TAG is a constant, and this test is what stops it drifting from
+  // the tag the plist actually runs the gate under. The plist `export` is the
+  // machine-readable declaration this assertion reads.
   const raw = fs.readFileSync(path.join(LAUNCHD_DIR, 'com.broadwayscore.morning-digest.plist'), 'utf8');
   const decoded = raw.replace(/&amp;/g, '&');
   const cmdMatch = decoded.match(/<string>-c<\/string>\s*<string>([^<]*)<\/string>/);
   assert.ok(cmdMatch, 'could not find the bash -c command string');
   const tagMatch = cmdMatch[1].match(/export SYNC_TAG=([A-Za-z0-9_-]+)/);
   assert.ok(tagMatch, `morning-digest.plist must EXPORT SYNC_TAG so send-morning-digest.js can read it: ${cmdMatch[1]}`);
-  assert.equal(tagMatch[1], 'digest');
-  // And the code's fallback must equal it, so an un-redeployed plist behaves
-  // identically to the deployed one.
-  const prev = process.env.SYNC_TAG;
-  delete process.env.SYNC_TAG;
-  try {
-    assert.equal(
-      autofixShouldDryRun({ dryRun: false, syncRefused: { count: 1, tags: [tagMatch[1]], unreadable: 0 } }),
-      true,
-      `autofixShouldDryRun's default ownTag must match the plist's SYNC_TAG (${tagMatch[1]})`,
-    );
-  } finally {
-    if (prev === undefined) delete process.env.SYNC_TAG; else process.env.SYNC_TAG = prev;
-  }
+  assert.equal(tagMatch[1], DIGEST_SYNC_TAG,
+    `the plist runs the sync gate as SYNC_TAG=${tagMatch[1]}, but the digest checks for refusals under '${DIGEST_SYNC_TAG}' — they must be the same string`);
+  assert.equal(
+    autofixShouldDryRun({ dryRun: false, syncRefused: { count: 1, tags: [tagMatch[1]], unreadable: 0, unreadableTags: [] } }),
+    true,
+    'a refusal written under the plist\'s own tag must force dry-run',
+  );
 });

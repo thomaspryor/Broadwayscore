@@ -302,7 +302,15 @@ fi
 # the waiver is deliberate, not a bypass — if a workflow ever calls this, take
 # the flags from scripts/lib/shallow-fetch-args.js and delete this comment.
 if ! git fetch origin main --quiet; then
+  # Must leave a refusal snapshot (ship-check finding, BRO-3393). This exit
+  # used to be silent, and morning-digest.plist runs the digest with `;` even
+  # when this script fails - so a failed fetch produced NO sync-refused-digest
+  # .json, the digest saw "nobody refused", and it filed cards and dispatched
+  # headless sessions against a checkout whose freshness had just proven
+  # unverifiable. That is exactly the state this machine was in at 10:30 on
+  # 2026-09-15, when an Xcode license failure broke git for every job.
   echo "::error::[$TAG] git fetch origin main failed"
+  write_refused_snapshot "fetch-failed" "" ""
   exit 1
 fi
 
@@ -611,9 +619,11 @@ fi
 # CLAUDE.md records for 2026-07-26. A merge never rewrites local history, and
 # unlike `--ff-only` it performs a real 3-way merge, so `.gitattributes`
 # merge=union drivers apply exactly as they do in the commit-and-rebase path.
-# The existing rebase at the commit-and-rebase branch above is NOT a
-# precedent for rebasing here: it replays a commit this script made moments
-# earlier, of union ledgers only.
+# The existing rebase at the commit-and-rebase branch above is not a precedent
+# for rebasing here either. It is reached only when every ff-blocking path is a
+# union ledger, i.e. the narrow case where the divergence is known to be
+# ledger-shaped; it still replays whatever other local commits exist, which is
+# a hazard that branch carries and this one must not copy (ship-check finding).
 #
 # --autostash: `git merge` refuses to start against a tree with staged or
 # modified tracked content even when the merge would not touch those paths.
@@ -622,15 +632,60 @@ fi
 # precisely because this branch only runs when $BLOCKING is empty, i.e. no
 # dirty path (tracked or untracked) overlaps what origin/main moves.
 if [ "$ACTION" = "merge-origin" ]; then
-  echo "[$TAG] diverged with nothing blocking the fast-forward ($AHEAD_COUNT ahead, $BEHIND_COUNT behind) — reconciling with a 3-way merge of origin/main"
-  if git merge --autostash --no-edit origin/main --quiet 2>/dev/null; then
-    echo "[$TAG] recovered — merged origin/main into the local checkout"
-    clear_refused_snapshot
-    exit 0
+  # GUARD 1 - exclusive ownership. push_mutex_acquire FAILS OPEN on timeout
+  # (push-mutex.sh:153-157 returns success with PUSH_MUTEX_HELD=0), so without
+  # this check two instances could run this branch at once, and the loser's
+  # unconditional `git merge --abort` would abort the WINNER's merge
+  # (ship-check finding, BRO-3393). Recovery mutates shared history; it is the
+  # one thing in this script that must not proceed fail-open.
+  if [ "${PUSH_MUTEX_HELD:-0}" != "1" ]; then
+    echo "::error::[$TAG] diverged and recoverable, but the push mutex was not exclusively held (fail-open timeout) — refusing to mutate the shared checkout"
+    REASON="diverged"
+  # GUARD 2 - somebody else is already mid-merge. `git merge --abort` below
+  # must only ever undo OUR merge, so establish that there is no merge in
+  # progress before we start one.
+  elif git rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+    echo "::error::[$TAG] a merge is already in progress in this checkout (MERGE_HEAD present) — refusing to touch it"
+    REASON="diverged"
+  else
+    echo "[$TAG] diverged with nothing blocking the fast-forward ($AHEAD_COUNT ahead, $BEHIND_COUNT behind) — reconciling with a 3-way merge of origin/main"
+    if git merge --autostash --no-edit origin/main --quiet 2>/dev/null; then
+      # GUARD 3 - a 0 exit is NOT proof the tree is clean. Verified
+      # empirically: when the merge itself succeeds but restoring the
+      # --autostash CONFLICTS, git prints "Applying autostash resulted in
+      # conflicts", exits 0, removes MERGE_HEAD, and leaves the working tree
+      # with `UU` unmerged paths plus a stranded `autostash` stash entry.
+      # Reporting that as "recovered" would hand every downstream launchd job
+      # a checkout with conflict markers in tracked files (ship-check finding,
+      # BRO-3393). Resolve the paths back to the merged commit - the local
+      # content is not lost, it is in the stash entry named below - and refuse,
+      # because the tree is no longer the one the caller expected.
+      UNMERGED=$(git ls-files -u | awk '{print $4}' | sort -u)
+      if [ -n "$UNMERGED" ]; then
+        echo "::error::[$TAG] merge landed but restoring the autostash conflicted — resolving these paths back to the merged commit:"
+        echo "$UNMERGED" | sed "s/^/[$TAG]   /"
+        while IFS= read -r U; do
+          [ -n "$U" ] || continue
+          git checkout HEAD -- "$U" 2>/dev/null \
+            || echo "::error::[$TAG] could not restore $U to the merged commit — resolve by hand"
+        done <<EOF
+$UNMERGED
+EOF
+        echo "::error::[$TAG] the working-tree content that conflicted is SAFE in the most recent 'autostash' entry — inspect with: git stash list; git stash show -p stash@{0}"
+        REASON="diverged"
+      else
+        echo "[$TAG] recovered — merged origin/main into the local checkout"
+        clear_refused_snapshot
+        exit 0
+      fi
+    else
+      echo "::error::[$TAG] merge of origin/main failed — aborting and refusing rather than leaving a half-merged shared checkout"
+      if git rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+        git merge --abort 2>/dev/null || echo "::error::[$TAG] git merge --abort itself failed — checkout may be mid-merge, investigate by hand"
+      fi
+      REASON="diverged"
+    fi
   fi
-  echo "::error::[$TAG] merge of origin/main failed — aborting and refusing rather than leaving a half-merged shared checkout"
-  git merge --abort 2>/dev/null || echo "::error::[$TAG] git merge --abort itself failed — checkout may be mid-merge, investigate by hand"
-  REASON="diverged"
 fi
 
 echo "::error::[$TAG] ff-only merge still blocked after snapshot reset — real divergence or dirty files outside data/audit/. Refusing to run on stale code."

@@ -312,25 +312,36 @@ function summarizeClosingSoon(report, { maxItems = 8, urgentDays = 14 } = {}) {
 // 9 would be invisible to it). Keep the two roles labelled: a future change
 // that starts slicing `tags` for display silently re-breaks the decision.
 //
-// `unreadable` counts refusal files that exist but could not be parsed, or
-// that carry no `tag`. Those used to be skipped outright, so a truncated
-// snapshot for the digest's OWN tag read as "nobody refused" and would let
-// real card-filing/dispatch run against an untrusted checkout. The count is
-// surfaced so the dry-run decision can fail CLOSED on it (second-opinion
-// finding, BRO-3393).
+// `unreadableTags` names refusal files that exist but could not be parsed, or
+// that carry no usable `tag` field. Those used to be skipped outright, so a
+// truncated snapshot for the digest's OWN tag read as "nobody refused" and
+// would let real card-filing/dispatch run against an untrusted checkout.
+//
+// The tag comes from the FILENAME, not the body (ship-check finding,
+// BRO-3393): sync-audit-checkout.sh:111 writes exactly
+// `sync-refused-${TAG}.json`, so the filename still identifies the owner of a
+// file whose contents are garbage. Keying on the filename is what keeps a
+// corrupt SIBLING snapshot from re-creating the very bug this change fixes —
+// a single global "something was unreadable" counter would suppress the
+// digest's auto-fix indefinitely, since only the owning job ever clears its
+// own file.
+const SYNC_REFUSED_NAME_RE = /^sync-refused-(.+)\.json$/;
+
 function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
   let names;
   try { names = fs.readdirSync(auditDir); } catch { return null; }
   const rows = [];
-  let unreadable = 0;
+  const unreadableTags = [];
   for (const name of names) {
-    if (!/^sync-refused-.+\.json$/.test(name)) continue;
+    const nameMatch = SYNC_REFUSED_NAME_RE.exec(name);
+    if (!nameMatch) continue;
     let snap;
     try { snap = JSON.parse(fs.readFileSync(path.join(auditDir, name), 'utf8')); }
-    catch { unreadable += 1; continue; }
-    if (!snap || typeof snap !== 'object' || !snap.tag) { unreadable += 1; continue; }
+    catch { unreadableTags.push(nameMatch[1]); continue; }
+    if (!snap || typeof snap !== 'object' || !snap.tag) { unreadableTags.push(nameMatch[1]); continue; }
     rows.push(snap);
   }
+  const unreadable = unreadableTags.length;
   // A file that exists but cannot be read is still evidence that SOME job
   // refused - returning null there would hide it from the email as well as
   // from the dry-run decision.
@@ -341,10 +352,11 @@ function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
     count: rows.length,
     tags: rows.map((r) => String(r.tag)),
     unreadable,
+    unreadableTags,
     bannerText: rows.length
       ? `${rows.length} launchd sync job(s) hit a blocked git sync (stale/dirty checkout): ${rows.map((r) => r.tag).join(', ')}`
-        + (unreadable ? ` (+${unreadable} unreadable refusal snapshot(s))` : '')
-      : `${unreadable} unreadable sync-refusal snapshot(s) - a launchd sync job refused and its snapshot could not be parsed`,
+        + (unreadable ? ` (+${unreadable} unreadable refusal snapshot(s): ${unreadableTags.join(', ')})` : '')
+      : `${unreadable} unreadable sync-refusal snapshot(s) (${unreadableTags.join(', ')}) - a launchd sync job refused and its snapshot could not be parsed`,
     items: rows.slice(0, maxItems).map((r) => ({
       title: r.tag,
       // blockingFiles (BRO-2314) is the subset of dirtyFiles that origin/main

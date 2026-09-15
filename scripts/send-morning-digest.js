@@ -354,23 +354,33 @@ function httpsJson(method, url, headers, body) {
 // Sibling refusals still render in the email (renderNamedDigestBlock below)
 // - they are real alerts, they just must not disable auto-fix.
 //
-// ownTag defaults to SYNC_TAG so the plist stays the single source of truth
-// (sync-audit-decision.js:24-27's "membership is not a hardcoded list"
-// rule). The literal fallback keeps an un-redeployed plist - which passes
-// SYNC_TAG only as a prefix to the sync command, not exported to this
-// process - behaving exactly as the deployed one does.
-//
+// ownTag is a CONSTANT, deliberately NOT process.env.SYNC_TAG (ship-check
+// finding, BRO-3393). Reading it from the environment would make the answer
+// to "is THIS checkout trustworthy" settable by anything that can set an env
+// var - a manual invocation, a wrapper script, an inherited shell, the repo's
+// own .env loader. `SYNC_TAG=shadow node scripts/send-morning-digest.js`
+// would then ignore a real, live digest refusal and dispatch anyway. The
+// no-drift property the plist gives us is preserved where it costs nothing:
+// a test pins that the plist's exported SYNC_TAG equals this constant, so the
+// two can never disagree without CI saying so.
+const DIGEST_SYNC_TAG = 'digest';
+
 // Fails CLOSED on ambiguity, which is the whole safety property:
-//   * `unreadable > 0`  - a refusal snapshot exists but could not be parsed
-//     or carried no tag, so it may be our own. Dry-run.
-//   * no `tags` array   - a caller (or an older snapshot reader) that cannot
-//     say whose refusal it is. Dry-run.
-function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = process.env.SYNC_TAG || 'digest' } = {}) {
+//   * our tag among `unreadableTags` - a refusal snapshot named for US exists
+//     but could not be parsed. It may say we refused. Dry-run.
+//   * no `tags` array - a caller (or an older snapshot reader) that cannot say
+//     whose refusal it is at all. Dry-run.
+// It deliberately does NOT fail closed on a SIBLING's unreadable snapshot:
+// only the owning job ever clears its own file, so one corrupt sibling file
+// would otherwise suppress the digest's auto-fix forever - the exact bug this
+// function is being changed to fix.
+function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGEST_SYNC_TAG } = {}) {
   if (dryRun) return true;
   if (!syncRefused) return false;
-  if (Number(syncRefused.unreadable) > 0) return true;
+  const mine = (t) => String(t) === String(ownTag);
+  if (Array.isArray(syncRefused.unreadableTags) && syncRefused.unreadableTags.some(mine)) return true;
   if (!Array.isArray(syncRefused.tags)) return true;
-  return syncRefused.tags.some((t) => String(t) === String(ownTag));
+  return syncRefused.tags.some(mine);
 }
 
 // Subject contract: MUST match SCHEDULED_SENDERS['morning-digest'].pattern in
@@ -1093,4 +1103,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, localDispatchWatchdogLeakMessage };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };

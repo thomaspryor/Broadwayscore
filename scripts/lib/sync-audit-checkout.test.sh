@@ -306,6 +306,66 @@ else
   echo "PASS[9]: ahead-but-not-behind short-circuits at ff-only, recovery never reached ($rc9)"
 fi
 
+# ── case 10 (BRO-3393 ship-check): merge exits 0 but the autostash POP ──────
+# conflicts. Verified empirically: git prints "Applying autostash resulted in
+# conflicts", EXITS 0, removes MERGE_HEAD, and leaves `UU` unmerged paths plus
+# a stranded stash. A bare `if git merge --autostash ...; then recovered` would
+# report success and hand every downstream launchd job a checkout with conflict
+# markers in a tracked file. The gate must detect it, resolve the paths back to
+# the merged commit, keep the content in the stash, and REFUSE.
+#
+# The race this models: `blockingPaths` is computed before the merge, so a
+# concurrent session can dirty an origin-moved file in the window between.
+O10="$TMP/origin10"; C10="$TMP/clone10"
+setup_pair "$O10" "$C10"
+git -C "$C10" commit -q --allow-empty -m "local-only commit (makes us ahead)"
+advance_origin "$O10" "$TMP/via10"
+# Dirty `other.txt` — which advance_origin also moved on origin — only AFTER
+# the decision would have been taken, so the autostash pop is what conflicts.
+# The gate itself re-reads the tree, so emulate the race by making the file
+# dirty in a way that does not block ff (same content as HEAD until the merge
+# rewrites it is impossible here, so instead assert on the OUTCOME contract:
+# whatever the gate decides, it must never exit 0 with unmerged paths).
+echo "concurrent session edit" > "$C10/other.txt"
+out10=$(SYNC_TAG=case10 bash "$LIB" "$C10" 2>&1); rc10=$?
+unmerged10=$(git -C "$C10" ls-files -u)
+if [ -n "$unmerged10" ]; then
+  echo "FAIL[10]: gate left UNMERGED paths in the shared checkout:"; echo "$unmerged10"; echo "$out10"; fail=1
+elif [ "$rc10" -eq 0 ] && [ -n "$(git -C "$C10" ls-files -u)" ]; then
+  echo "FAIL[10]: exited 0 with a conflicted tree"; fail=1
+elif grep -rqs '^<<<<<<< ' "$C10/other.txt"; then
+  echo "FAIL[10]: conflict markers left in a tracked file"; fail=1
+else
+  echo "PASS[10]: gate never exits with unmerged paths or conflict markers in the shared checkout ($rc10)"
+fi
+
+# ── case 11 (BRO-3393 ship-check): a failed fetch must leave a refusal ──────
+# snapshot. morning-digest.plist runs the digest with `;` even when this script
+# fails, so a silent fetch-failure exit meant the digest saw "nobody refused"
+# and dispatched real headless sessions against a checkout whose freshness had
+# just proven unverifiable. Real occurrence: 2026-09-15 10:30, Xcode license
+# failure broke git for every launchd job on this machine.
+C11="$TMP/clone11"
+git init -q -b main "$C11"
+git -C "$C11" config user.email t@t.t
+git -C "$C11" config user.name t
+mkdir -p "$C11/data/audit"
+echo hello > "$C11/other.txt"
+git -C "$C11" add -A
+git -C "$C11" commit -q -m init
+git -C "$C11" remote add origin "$TMP/no-such-origin-at-all"
+out11=$(SYNC_TAG=case11 bash "$LIB" "$C11" 2>&1); rc11=$?
+snap11="$C11/data/audit/sync-refused-case11.json"
+if [ "$rc11" -eq 0 ]; then
+  echo "FAIL[11]: an unreachable origin must not exit 0. Output:"; echo "$out11"; fail=1
+elif [ ! -f "$snap11" ]; then
+  echo "FAIL[11]: a failed fetch must still write $snap11 — otherwise the digest reads 'nobody refused'. Output:"; echo "$out11"; fail=1
+elif ! grep -q '"reason": "fetch-failed"' "$snap11"; then
+  echo "FAIL[11]: expected reason=fetch-failed in $snap11, got:"; cat "$snap11"; fail=1
+else
+  echo "PASS[11]: a failed fetch writes a refusal snapshot instead of exiting silently ($rc11)"
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo "sync-audit-checkout test: FAILED"; exit 1
 fi

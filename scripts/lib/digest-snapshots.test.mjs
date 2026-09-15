@@ -522,6 +522,10 @@ test('readSyncRefused: an unparseable or tagless refusal snapshot is COUNTED, no
   assert.equal(summary.unreadable, 2);
   assert.equal(summary.count, 0);
   assert.deepEqual(summary.tags, []);
+  // Named by FILENAME, not by the unreadable body — that is what lets the
+  // dry-run decision fail closed on OUR OWN corrupt snapshot without a corrupt
+  // SIBLING snapshot suppressing us forever (ship-check finding, BRO-3393).
+  assert.deepEqual(summary.unreadableTags.slice().sort(), ['broken', 'no-tag']);
   assert.match(summary.bannerText, /unreadable sync-refusal snapshot/);
 });
 
