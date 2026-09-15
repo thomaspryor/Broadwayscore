@@ -30,6 +30,15 @@ async function phQuery(hogql) {
   return data.results || [];
 }
 
+// Real Users lens (memory/feedback_analytics_real_users_lens.md): drop the
+// owner (is_owner super-property, set via ?bwsc-owner=1) and the three geos
+// that are almost entirely bot traffic. Same predicate analyze-gate-cold-start.js
+// and analyze-email-gate-funnel.js use; append to a WHERE clause on `events`.
+const REAL_USERS_WHERE = `
+  (JSONExtractString(properties,'$geoip_country_code') NOT IN ('SG','CN','VN')
+   OR JSONExtractString(properties,'$geoip_country_code') = '')
+  AND coalesce(JSONExtractString(person.properties,'is_owner'),'') != 'true'`;
+
 async function authCheck() {
   const res = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/`, {
     headers: { 'Authorization': `Bearer ${getApiKey()}` },
@@ -192,6 +201,8 @@ async function getPromoClicks() {
 }
 
 module.exports = {
+  phQuery,
+  REAL_USERS_WHERE,
   authCheck,
   tracked,
   getTopPages,

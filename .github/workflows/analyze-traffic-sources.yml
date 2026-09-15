@@ -1,0 +1,59 @@
+name: Analyze Traffic Sources
+
+# Manual-only: weekly traffic-source comparison across GA4 and PostHog with
+# spike detection (BRO-3419). PostHog/GA4 credentials exist only as repo
+# secrets, so the owner's local sessions dispatch this instead of querying
+# directly. The markdown report renders on the run's Summary page; the raw
+# JSON is an artifact. No commits, no pushes.
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Lookback window in days (bucketed into ISO weeks)'
+        required: false
+        default: '91'
+
+concurrency:
+  group: analyze-traffic-sources
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-node
+
+      - name: Query GA4 + PostHog and build the report
+        env:
+          DAYS: ${{ inputs.days }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+        run: node scripts/analyze-traffic-sources.js --days="$DAYS" --out=traffic-analysis
+
+      - name: Render report on the run summary
+        if: always()
+        run: |
+          if [ -f traffic-analysis/traffic-sources-report.md ]; then
+            cat traffic-analysis/traffic-sources-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No report produced — see the query step log." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload report + raw data
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: traffic-sources-${{ github.run_id }}
+          path: traffic-analysis/
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Analyze Traffic Sources Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

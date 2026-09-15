@@ -459,3 +459,6 @@ data/audit/autonomous-ui/
 # jobs on scratch files that were never meant to be committed in the first place.
 /scratchpad_a.txt
 /census_tmp_script*.js
+
+# analyze-traffic-sources.js local output (CI uploads it as an artifact)
+traffic-analysis/
