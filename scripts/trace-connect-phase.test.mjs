@@ -215,7 +215,7 @@ test('real trace2 capture, KILLED mid-credential-helper: the in-flight child is 
   assert.ok(timeline.dominantGap.ms > 29000 && timeline.dominantGap.ms < 31000, `expected ~30s, got ${timeline.dominantGap.ms}ms`);
 
   const out = formatTrace2Timeline(timeline, children);
-  assert.match(out, /IN-FLIGHT CHILD AT KILL/);
+  assert.match(out, /NO child_exit OBSERVED FOR/);
   assert.match(out, /git-credential store/);
   assert.ok(!out.includes('FAKETOKEN'), 'no unredacted credential text may reach the formatted summary');
 });

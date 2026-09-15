@@ -73,7 +73,17 @@ if (cmd === 'classify') {
   // One shellout covering both halves of the answer: which child process (if
   // any) was still running when the kill hit, and where the terminal silence
   // falls relative to the last logged trace2 line.
-  const traceText = readTraceFile(file);
+  //
+  // redactCurlTrace runs on the RAW text BEFORE parsing, not just on the
+  // separate redact-tail dump below — every downstream field (child argv,
+  // event data) is derived from this same string, so redacting once here is
+  // what actually makes the "route everything through the redactor as
+  // defense-in-depth" comment on push-diagnostics.js's redactTrace2 export
+  // true, rather than just documented intent. Adversarial review (Codex,
+  // BRO-3358 ship-check) caught an earlier draft that redacted the tail dump
+  // but printed unredacted argv here — git's own native URL-userinfo
+  // redaction is real but only covers ONE credential shape.
+  const traceText = redactCurlTrace(readTraceFile(file));
   const children = summarizeTrace2Children(traceText);
   const timeline = extractTrace2Timeline({ traceText, killedAt: maxBytesArg });
   const lines = [formatTrace2Timeline(timeline, children)];
@@ -81,7 +91,7 @@ if (cmd === 'classify') {
     lines.push(
       `  child [${c.id}] depth=${c.depth}: ${c.argv}` +
         (c.inFlightAtEnd
-          ? ' — STILL RUNNING AT KILL (no child_exit in capture)'
+          ? ' — NO child_exit OBSERVED (still running, or its exit landed past a truncated capture)'
           : ` (${(c.durationMs / 1000).toFixed(3)}s)`)
     );
   }

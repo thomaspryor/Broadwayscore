@@ -50,7 +50,16 @@ function redactCurlTrace(text) {
     // missed compound names like api_key=, client_secret=, oauth_token=
     // because none of them are an exact "key"/"secret"/"token" match
     // immediately after ? or & (follow-up adversarial review).
-    .replace(/([?&][a-z0-9_]*(?:token|key|secret|auth|password)[a-z0-9_]*=)[^&\s]+/gi, '$1[REDACTED]');
+    .replace(/([?&][a-z0-9_]*(?:token|key|secret|auth|password)[a-z0-9_]*=)[^&\s]+/gi, '$1[REDACTED]')
+    // BRO-3358 (adversarial review, ship-check): a CLI-flag-shaped credential
+    // passed as a bare argv to some child TOOL (not a URL, header, or `key=`
+    // query param) is a shape none of the passes above cover — e.g. a
+    // credential helper invoked as `some-tool --password SECRET`. Only
+    // matches a LONG flag whose own NAME contains a credential keyword
+    // (mirrors the query-param pass's substring-on-name approach), not bare
+    // short flags like `-p`, which are too ambiguous with legitimate options
+    // (port, path, ...) to redact on sight.
+    .replace(/(--[a-z-]*(?:password|token|secret|api[-_]?key)[a-z-]*)([ =])(?!\[REDACTED\])\S+/gi, '$1$2[REDACTED]');
 }
 
 // Ordered, monotonically-increasing checkpoints a SINGLE git-over-HTTP
@@ -659,9 +668,15 @@ function formatTrace2Timeline(timeline, children) {
   const where = g.terminal
     ? `SILENCE AFTER last trace2 line (last event: "${g.event}" — ${g.data})`
     : `between trace2 lines (last event: "${g.event}")`;
+  // "NO child_exit OBSERVED", not "still running" — a child that exited a
+  // moment before the kill but whose child_exit line landed just past a
+  // truncated capture would look identical to one genuinely still running.
+  // Overclaiming certainty here would be the same failure mode
+  // formatTimeline's "unrecognized vs pre-connect" comment already warns
+  // against for the curl trace (adversarial review, BRO-3358 ship-check).
   const inFlight = (children || []).filter((c) => c.inFlightAtEnd);
   const inFlightNote = inFlight.length
-    ? ` — IN-FLIGHT CHILD AT KILL: ${inFlight.map((c) => c.argv).join('; ')}`
+    ? ` — NO child_exit OBSERVED FOR: ${inFlight.map((c) => c.argv).join('; ')}`
     : '';
   return `${secs}s ${where}${inFlightNote}`;
 }
