@@ -1,8 +1,24 @@
 #!/usr/bin/env node
 
 /**
- * auto-fix-friction-card.js — Reads P0/P1 Notion friction cards, applies safe
- * single-file UI fixes as draft GitHub PRs.
+ * auto-fix-friction-card.js — Reads P0/P1 friction issues from Linear,
+ * applies safe single-file UI fixes as draft GitHub PRs.
+ *
+ * BRO-3487: was Notion-backed (@notionhq/client against BRAIN_DATABASE_ID),
+ * reading cards scripts/posthog-friction-analyzer.js used to file onto the
+ * retired board. BRO-3430 already repointed the analyzer at Linear
+ * (createLinearIssue), which left this script reading a board the analyzer
+ * had stopped writing to — every weekly run found zero eligible cards.
+ * Migrated to read/write the SAME Linear issues the analyzer now creates.
+ *
+ * Linear has no multi_select "Tags" property, so — matching the analyzer's
+ * own fhash: convention (posthog-friction-analyzer.js) — both eligibility
+ * signals live as plain text in the issue's description:
+ *   - `fhash:XXXXXXXX` (written by the analyzer) marks an analyzer-generated
+ *     friction issue.
+ *   - `[auto-fix-attempted:<outcome>]` (appended by this script) marks an
+ *     issue this pipeline has already processed, so a stalled Claude call or
+ *     a re-run of the same weekly job never double-processes it.
  *
  * Safety model: code-level file allowlist, NOT LLM classification. Claude generates
  * the patch (old_string → new_string); we validate it fits within allowed paths and
@@ -11,38 +27,39 @@
  * Outputs one of: fixed | skipped | error (per card, to stdout and GITHUB_STEP_SUMMARY)
  *
  * Env vars:
- *   NOTION_API_KEY      - Notion integration token
+ *   LINEAR_API_KEY      - Linear API token (see scripts/lib/linear-client.js)
  *   ANTHROPIC_API_KEY   - Claude API key
  *   GITHUB_TOKEN        - For gh pr create (must have pull-requests: write)
  *
  * Usage:
  *   node scripts/auto-fix-friction-card.js                  # live run (up to 3 cards)
- *   node scripts/auto-fix-friction-card.js --dry-run         # print proposed patches, no git/PR/Notion writes
- *   node scripts/auto-fix-friction-card.js --card-id=<id>    # scope to one card (still real writes unless --dry-run)
+ *   node scripts/auto-fix-friction-card.js --dry-run         # print proposed patches, no git/PR/Linear writes
+ *   node scripts/auto-fix-friction-card.js --issue=BRO-123   # scope to one issue (still real writes unless --dry-run)
  */
 
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { Client: NotionClient } = require('@notionhq/client');
 const Anthropic = require('@anthropic-ai/sdk');
 const { CLAUDE_SONNET } = require('./lib/models');
-const { updatePage } = require('./lib/notion-writes');
+const linearClient = require('./lib/linear-client');
+const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 
 // Load .env
 require('./lib/load-env').loadEnv();
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_VALIDATION = process.argv.includes('--skip-validation');
-// A malformed --card-id (e.g. '--card-id=' with an empty value) must NOT
-// silently fall through to the full pending-cards sweep — that's the exact
+// A malformed --issue (e.g. '--issue=' with an empty value) must NOT
+// silently fall through to the full pending-issues sweep — that's the exact
 // bug class caught in notion-action-poll.js's --card flag (task #725):
-// CARD_ID_ARG_RAW tracks flag presence separately from the parsed value so
+// ISSUE_ARG_RAW tracks flag presence separately from the parsed value so
 // main() can fail closed instead of scoping wider than the operator intended.
-const CARD_ID_ARG_RAW = process.argv.find(a => a.startsWith('--card-id='));
-const CARD_ID_ARG = CARD_ID_ARG_RAW ? CARD_ID_ARG_RAW.slice('--card-id='.length) || null : null;
+const ISSUE_ARG_RAW = process.argv.find(a => a.startsWith('--issue='));
+const ISSUE_ARG = ISSUE_ARG_RAW ? ISSUE_ARG_RAW.slice('--issue='.length) || null : null;
 const CARDS_PER_RUN_CAP = 3;
-const { BRAIN_DATABASE_ID: NOTION_DATABASE_ID } = require('./lib/notion-constants');
+const FHASH_RE = /fhash:([0-9a-f]{8})/;
+const ATTEMPTED_RE = /\[auto-fix-attempted:/i;
 const ROOT = path.join(__dirname, '..');
 
 // --- Safety rails (code-level, not LLM) ---
@@ -65,85 +82,69 @@ function isAllowedFile(filePath) {
   return ALLOWED_FILE_PREFIXES.some(prefix => normalized.startsWith(prefix));
 }
 
-// --- Notion helpers ---
+// --- Linear helpers ---
 
-async function getPendingFrictionCards(notion) {
-  const cards = [];
-  let cursor;
-  do {
-    const res = await notion.dataSources.query({
-      data_source_id: NOTION_DATABASE_ID,
-      start_cursor: cursor,
-      page_size: 50,
-      filter: {
-        and: [
-          { property: 'Tags', multi_select: { contains: 'friction' } },
-          { property: 'Status', status: { equals: 'Not started' } },
-          {
-            or: [
-              { property: 'Priority', select: { equals: 'P0 Now' } },
-              { property: 'Priority', select: { equals: 'P1 Next' } },
-            ],
-          },
-        ],
-      },
-    });
-    cards.push(...res.results);
-    cursor = res.has_more ? res.next_cursor : null;
-  } while (cursor);
-
-  // Only cards with fhash: tags (analyzer-generated) and without auto-fix-attempted
-  return cards.filter(card => {
-    const tags = (card.properties?.Tags?.multi_select || []).map(t => t.name);
-    return tags.some(t => t.startsWith('fhash:')) && !tags.includes('auto-fix-attempted');
-  });
-}
-
-function getCardFhash(card) {
-  const tags = card.properties?.Tags?.multi_select || [];
-  const fhashTag = tags.find(t => t.name.startsWith('fhash:'));
-  return fhashTag ? fhashTag.name.slice(6) : null;
-}
-
-function getCardTitle(card) {
-  return card.properties?.Name?.title?.[0]?.plain_text || '(untitled)';
-}
-
-function getCardNotes(card) {
-  return card.properties?.Notes?.rich_text?.map(t => t.plain_text).join('') || '';
-}
-
-function getCardPriority(card) {
-  return card.properties?.Priority?.select?.name || 'P2 Later';
-}
-
-async function tagCardAttempted(notion, cardId, extraTag) {
-  // Read current tags first to avoid clobbering existing ones
-  const page = await notion.pages.retrieve({ page_id: cardId });
-  const currentTags = (page.properties?.Tags?.multi_select || []).map(t => ({ name: t.name }));
-  const newTags = [...currentTags];
-  if (!newTags.find(t => t.name === 'auto-fix-attempted')) {
-    newTags.push({ name: 'auto-fix-attempted' });
+// Fetches every open (non-terminal) issue's id/description/priority in one
+// paginated pass — cheap enough to filter client-side rather than lean on
+// Linear's filter DSL for `fhash:`/priority substring matching (same
+// client-side-filter convention as linear-client.js's own searchIssues()).
+// Not added to scripts/lib/linear-dispatch.js's shared query builders
+// (CLAUDE.md rule 18: dispatch-layer changes need a review pass first) —
+// this query is scoped to this one pipeline, same as linear-brain.js's own
+// inline --probe query.
+async function getOpenIssuesForFrictionScan() {
+  const team = await linearClient.getTeam();
+  const issues = [];
+  let after = null;
+  for (;;) {
+    const data = await linearClient.graphql(
+      `query($teamId: String!, $after: String) {
+        team(id: $teamId) {
+          issues(
+            first: 100
+            after: $after
+            filter: { state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } } }
+          ) {
+            nodes { id identifier title description url priority }
+            pageInfo { hasNextPage endCursor }
+          }
+        }
+      }`,
+      { teamId: team.id, after }
+    );
+    const { nodes, pageInfo } = data.team.issues;
+    issues.push(...nodes);
+    if (!pageInfo || !pageInfo.hasNextPage) break;
+    after = pageInfo.endCursor;
   }
-  if (extraTag && !newTags.find(t => t.name === extraTag)) {
-    newTags.push({ name: extraTag });
-  }
-  await updatePage(notion, {
-    page_id: cardId,
-    properties: { Tags: { multi_select: newTags } },
-  });
+  return issues;
 }
 
-async function addPrUrlToCard(notion, cardId, prUrl) {
-  const page = await notion.pages.retrieve({ page_id: cardId });
-  const existing = page.properties?.Notes?.rich_text?.map(t => t.plain_text).join('') || '';
-  const updated = existing + `\n\n## Auto-fix PR\n${prUrl}`;
-  await updatePage(notion, {
-    page_id: cardId,
-    properties: {
-      Notes: { rich_text: [{ text: { content: updated.slice(0, 1800) } }] },
-    },
-  });
+// Linear's raw priority ints: 0 = No priority, 1 = Urgent, 2 = High. Mirrors
+// the analyzer's own PRIORITY_MAP: 'P0 Now' -> 1, 'P1 Next' -> 2 — the two
+// tiers the old Notion filter (`P0 Now`/`P1 Next`) admitted.
+const ELIGIBLE_PRIORITIES = [1, 2];
+
+async function getPendingFrictionIssues() {
+  const all = await getOpenIssuesForFrictionScan();
+  return all.filter((issue) => (
+    ELIGIBLE_PRIORITIES.includes(Number(issue.priority)) &&
+    FHASH_RE.test(issue.description || '') &&
+    !ATTEMPTED_RE.test(issue.description || '')
+  ));
+}
+
+function getIssueFhash(issue) {
+  const m = FHASH_RE.exec(issue.description || '');
+  return m ? m[1] : null;
+}
+
+// Appends a marker (and, for the pr-open outcome, the PR link) directly onto
+// the issue's description — the same idiom the analyzer already established
+// for fhash:, since Linear has no card-tag property to set instead.
+async function markIssueAttempted(issue, outcome, extra) {
+  const suffix = [`\n\n[auto-fix-attempted:${outcome}]`, extra].filter(Boolean).join('\n');
+  await linearClient.updateIssue(issue.id, { description: `${issue.description || ''}${suffix}` });
 }
 
 // --- Patch generation via Claude ---
@@ -280,7 +281,7 @@ function returnToMain() {
 // --- Main ---
 
 async function main() {
-  const missing = ['NOTION_API_KEY', 'ANTHROPIC_API_KEY']
+  const missing = ['LINEAR_API_KEY', 'ANTHROPIC_API_KEY']
     .filter(k => !process.env[k]);
   if (missing.length) {
     console.error(`Missing env vars: ${missing.join(', ')}`);
@@ -290,39 +291,41 @@ async function main() {
     console.error('Missing GITHUB_TOKEN — required for PR creation');
     process.exit(1);
   }
-  if (CARD_ID_ARG_RAW && !CARD_ID_ARG) {
-    console.error('--card-id requires a value, e.g. --card-id=3af637c5-416f-8199-810c-e68f50c33b8d');
+  if (ISSUE_ARG_RAW && !ISSUE_ARG) {
+    console.error('--issue requires a value, e.g. --issue=BRO-123');
     process.exit(1);
   }
 
-  if (DRY_RUN) console.log('[dry-run] No git/PR/Notion writes will happen.\n');
+  if (DRY_RUN) console.log('[dry-run] No git/PR/Linear writes will happen.\n');
 
-  const notion = new NotionClient({ auth: process.env.NOTION_API_KEY });
   const anthropic = new Anthropic.default({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  let cards;
-  if (CARD_ID_ARG) {
-    console.log(`Fetching specific card: ${CARD_ID_ARG}`);
-    const page = await notion.pages.retrieve({ page_id: CARD_ID_ARG });
-    cards = [page];
-    console.log(`Card: ${getCardTitle(page)}`);
+  let issues;
+  if (ISSUE_ARG) {
+    console.log(`Fetching specific issue: ${ISSUE_ARG}`);
+    const issue = await linearClient.getIssue(ISSUE_ARG);
+    if (!issue) {
+      console.error(`FATAL: no such issue: ${ISSUE_ARG}`);
+      process.exit(1);
+    }
+    issues = [issue];
+    console.log(`Issue: ${issue.title}`);
   } else {
-    console.log('Fetching pending friction cards from Notion...');
-    cards = await getPendingFrictionCards(notion);
-    console.log(`Found ${cards.length} eligible card(s) (cap: ${CARDS_PER_RUN_CAP})`);
+    console.log('Fetching pending friction issues from Linear...');
+    issues = await getPendingFrictionIssues();
+    console.log(`Found ${issues.length} eligible issue(s) (cap: ${CARDS_PER_RUN_CAP})`);
   }
 
-  const toProcess = cards.slice(0, CARDS_PER_RUN_CAP);
+  const toProcess = issues.slice(0, CARDS_PER_RUN_CAP);
   const results = [];
 
-  for (const card of toProcess) {
-    const fhash = getCardFhash(card) || require('crypto').createHash('sha256').update(card.id).digest('hex').slice(0, 8);
-    const title = getCardTitle(card);
-    const notes = getCardNotes(card);
-    const priority = getCardPriority(card);
-    const cardUrl = card.url;
+  for (const issue of toProcess) {
+    const fhash = getIssueFhash(issue) || require('crypto').createHash('sha256').update(issue.id).digest('hex').slice(0, 8);
+    const title = issue.title;
+    const notes = issue.description || '';
+    const issueUrl = issue.url;
 
-    console.log(`\n--- Processing: ${title} (${priority}, fhash:${fhash}) ---`);
+    console.log(`\n--- Processing: ${title} (${issue.identifier}, fhash:${fhash}) ---`);
 
     // Step 1: First pass — ask Claude with notes only (no file yet) to identify target file
     let patch;
@@ -331,14 +334,14 @@ async function main() {
     } catch (e) {
       console.error(`  Claude error: ${e.message}`);
       results.push({ title, fhash, outcome: 'error', reason: e.message });
-      if (!DRY_RUN) await tagCardAttempted(notion, card.id, 'auto-fix-failed');
+      if (!DRY_RUN) await markIssueAttempted(issue, 'failed', e.message.slice(0, 300));
       continue;
     }
 
     if (!patch.canFix) {
       console.log(`  Skipped: ${patch.reason}`);
       results.push({ title, fhash, outcome: 'skipped', reason: patch.reason });
-      if (!DRY_RUN) await tagCardAttempted(notion, card.id, 'auto-fix-skipped');
+      if (!DRY_RUN) await markIssueAttempted(issue, 'skipped', patch.reason);
       continue;
     }
 
@@ -348,7 +351,7 @@ async function main() {
       const reason = `target_file "${targetFile}" is outside allowed paths (src/components/)`;
       console.log(`  Blocked: ${reason}`);
       results.push({ title, fhash, outcome: 'skipped', reason });
-      if (!DRY_RUN) await tagCardAttempted(notion, card.id, 'auto-fix-skipped');
+      if (!DRY_RUN) await markIssueAttempted(issue, 'skipped', reason);
       continue;
     }
 
@@ -357,7 +360,7 @@ async function main() {
       const reason = `target_file "${targetFile}" does not exist`;
       console.log(`  Skipped: ${reason}`);
       results.push({ title, fhash, outcome: 'skipped', reason });
-      if (!DRY_RUN) await tagCardAttempted(notion, card.id, 'auto-fix-skipped');
+      if (!DRY_RUN) await markIssueAttempted(issue, 'skipped', reason);
       continue;
     }
 
@@ -368,7 +371,7 @@ async function main() {
     } catch (e) {
       console.error(`  Claude error (file pass): ${e.message}`);
       results.push({ title, fhash, outcome: 'error', reason: e.message });
-      if (!DRY_RUN) await tagCardAttempted(notion, card.id, 'auto-fix-failed');
+      if (!DRY_RUN) await markIssueAttempted(issue, 'failed', e.message.slice(0, 300));
       continue;
     }
 
@@ -376,7 +379,7 @@ async function main() {
       const reason = patch.reason || 'no changes generated';
       console.log(`  Skipped after file read: ${reason}`);
       results.push({ title, fhash, outcome: 'skipped', reason });
-      if (!DRY_RUN) await tagCardAttempted(notion, card.id, 'auto-fix-skipped');
+      if (!DRY_RUN) await markIssueAttempted(issue, 'skipped', reason);
       continue;
     }
 
@@ -385,7 +388,7 @@ async function main() {
       const reason = `target_file "${patch.target_file}" blocked after file-read pass`;
       console.log(`  Blocked: ${reason}`);
       results.push({ title, fhash, outcome: 'skipped', reason });
-      if (!DRY_RUN) await tagCardAttempted(notion, card.id, 'auto-fix-skipped');
+      if (!DRY_RUN) await markIssueAttempted(issue, 'skipped', reason);
       continue;
     }
 
@@ -406,7 +409,7 @@ async function main() {
     if (branchExists(branchName)) {
       console.log(`  Branch ${branchName} already exists — skipping (PR may already be open)`);
       results.push({ title, fhash, outcome: 'skipped', reason: 'branch already exists' });
-      if (!DRY_RUN) await tagCardAttempted(notion, card.id, 'auto-fix-attempted');
+      await markIssueAttempted(issue, 'attempted', 'branch already exists');
       continue;
     }
 
@@ -426,7 +429,7 @@ async function main() {
       revertFile(patch.target_file);
       console.log(`  Apply failed: ${applyError}`);
       results.push({ title, fhash, outcome: 'error', reason: applyError });
-      await tagCardAttempted(notion, card.id, 'auto-fix-failed');
+      await markIssueAttempted(issue, 'failed', applyError.slice(0, 300));
       continue;
     }
 
@@ -441,7 +444,7 @@ async function main() {
         const reason = `tsc/lint failed: ${(validation.error || '').slice(0, 200)}`;
         console.log(`  Validation failed — reverted`);
         results.push({ title, fhash, outcome: 'validation-failed', reason });
-        await tagCardAttempted(notion, card.id, 'auto-fix-failed');
+        await markIssueAttempted(issue, 'failed', reason);
         continue;
       }
       console.log('  Validation passed');
@@ -451,22 +454,21 @@ async function main() {
     // SKIP-VISUAL-CHECK: auto-fix creates draft PRs that require human review before merge.
     // Visual verification happens at PR review time, not at automated commit time.
     const commitMsg = `SKIP-VISUAL-CHECK: auto-fix draft PR — fix(auto-fix/${fhash}): ${title.slice(0, 60)}`;
-    const prBody = `Closes Notion card: ${cardUrl}\n\n${patch.changes.map(c => c.explanation).join('\n\n')}\n\n> Auto-generated by posthog-friction-fixer`;
+    const prBody = `Closes Linear issue: ${issueUrl}\n\n${patch.changes.map(c => c.explanation).join('\n\n')}\n\n> Auto-generated by posthog-friction-fixer`;
 
     try {
       createAndPushBranch(branchName, patch.target_file, commitMsg);
       const prUrl = createDraftPr(`auto-fix: ${title.slice(0, 60)}`, prBody);
       console.log(`  PR created: ${prUrl}`);
 
-      // Step 8: Update Notion card — only after PR is successfully created
-      await addPrUrlToCard(notion, card.id, prUrl);
-      await tagCardAttempted(notion, card.id, 'auto-fix-pr-open');
+      // Step 8: Update Linear issue — only after PR is successfully created
+      await markIssueAttempted(issue, 'pr-open', `## Auto-fix PR\n${prUrl}`);
       results.push({ title, fhash, outcome: 'fixed', prUrl });
     } catch (e) {
       revertFile(patch.target_file);
       console.error(`  PR creation failed: ${e.message}`);
       results.push({ title, fhash, outcome: 'error', reason: e.message });
-      await tagCardAttempted(notion, card.id, 'auto-fix-failed');
+      await markIssueAttempted(issue, 'failed', e.message.slice(0, 300));
     } finally {
       returnToMain();
     }
