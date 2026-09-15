@@ -72,10 +72,37 @@ function killSwitchStaleness(offFileMtimeMs, now) {
 // budget, bounded watchdog-origin concurrency, and a global ceiling on
 // auto-dispatched tabs so the watchdog can never be the thing that floods
 // the owner's sidebar. All surfaced in every sweep result — never silent.
+//
+// BRO-3390 — two changes, both driven by the owner's 2026-09-15 mandate
+// ("six at a time; whenever one is done another should start"):
+//
+//   watchdogConcurrent 3 -> 6. This is the owner's literal "six at a time".
+//   It is SPEND-NEUTRAL: perDay counts claims and remains the binding term,
+//   so the same bounded number of jobs simply runs six-wide instead of
+//   three-wide and clears sooner. What it does cost is RAM — six concurrent
+//   headless sessions rather than three. Measured on this Mac 2026-09-15:
+//   44 live claude processes totalling 6.9GB (mean 162MB), swap 85% used.
+//   The marginal ~0.5GB of three extra headless jobs is small next to the
+//   tab count, and headless needs no cmux terminal runtime, so it also
+//   sidesteps the BRO-2709 ceiling that the cmux lane hits.
+//
+//   perHour is NEW, and it is what actually makes the drain continuous.
+//   perSweep=2 on a 90-second --dashboard loop drains the ENTIRE perDay
+//   budget in about nine minutes, after which the watchdog idles for 23+
+//   hours. That is a once-a-day burst wearing a continuous drain's clothes,
+//   and it is a large part of why the owner perceives no progress: whatever
+//   the drain does, it does at 4am in one clump. Pacing the same budget
+//   across the day turns it into the visible trickle that was actually
+//   asked for. Derived from perDay rather than set independently so the
+//   owner keeps ONE money dial: raising perDay widens the hourly allowance
+//   proportionally, and the two can never contradict each other.
+const PER_DAY_DEFAULT = 12;
+const PACING_HOURS = 8;              // spread the day budget over a working day, not 24h of dribble
 const CAPS = Object.freeze({
   perSweep: 2,
-  watchdogConcurrent: 3,
-  perDay: 12,
+  watchdogConcurrent: 6,
+  perDay: PER_DAY_DEFAULT,
+  perHour: Math.max(1, Math.ceil(PER_DAY_DEFAULT / PACING_HOURS)),
   globalAutoTabs: 12,
 });
 
@@ -93,13 +120,43 @@ const WATCHDOG_TAB_MARKER = 'watchdog';
 // Priority parse from the task-mirror description's first line, which
 // notion-tasks-sync writes as "[notion:<id>] P1 Now · In progress · <cat>".
 // Subject fallback catches native tasks titled "P1: ...".
+//
+// BRO-3390: the source tag is now (notion|linear). scripts/lib/
+// linear-watchdog-source.js's mapIssueToTask deliberately emits the SAME
+// first-line shape with a "[linear:BRO-N]" tag, so pointing the watchdog at
+// the live Linear board costs one widened alternation here rather than a
+// second parallel code path. Everything downstream of this function already
+// treats taskId as an opaque string.
 function taskPriority(task) {
   const desc = String((task && task.description) || '');
   const firstLine = desc.split('\n', 1)[0];
-  let m = /^\[notion:[^\]]*\]\s*(P[0-3])\b/.exec(firstLine);
+  let m = /^\[(?:notion|linear):[^\]]*\]\s*(P[0-3])\b/.exec(firstLine);
   if (m) return m[1];
   m = /^(P[0-3])\b/.exec(String((task && task.subject) || ''));
   return m ? m[1] : null;
+}
+
+// Stable FIFO ordering across BOTH id namespaces (BRO-3390).
+//
+// The three queues below used to sort with `parseInt(a.taskId, 10) -
+// parseInt(b.taskId, 10)`. That is correct for Notion's bare numeric ids and
+// silently WRONG for "linear:BRO-3373": parseInt returns NaN, every NaN
+// comparison is false, so the comparator reports "equal" for every pair and
+// the queue degrades to arbitrary input order — no crash, no warning, just a
+// FIFO that stops being a FIFO. Sort on the trailing integer (the part that
+// actually increases monotonically in both namespaces) and fall back to a
+// string compare so the comparator is always total.
+function taskSortKey(taskId) {
+  const s = String(taskId == null ? '' : taskId);
+  const m = /(\d+)\s*$/.exec(s);
+  return { n: m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER, s };
+}
+
+function compareTaskIds(a, b) {
+  const ka = taskSortKey(a);
+  const kb = taskSortKey(b);
+  if (ka.n !== kb.n) return ka.n - kb.n;
+  return ka.s < kb.s ? -1 : ka.s > kb.s ? 1 : 0;
 }
 
 function notionIdOf(task) {
@@ -123,6 +180,20 @@ function watchdogClaimsToday(entries, now) {
   const today = localDay(now);
   return entries.filter(e => e && e.event === WATCHDOG_EVENTS.REDISPATCH &&
     e.ts && localDay(e.ts) === today);
+}
+
+// Rolling-hour sibling of watchdogClaimsToday (BRO-3390). Deliberately a
+// ROLLING 60-minute window rather than a clock-hour bucket: a clock bucket
+// lets the drain spend its whole hourly allowance at :59 and the next one at
+// :01, which reproduces the burst this pacing exists to remove.
+const PACING_WINDOW_MS = 3600 * 1000;
+function watchdogClaimsInWindow(entries, now, windowMs = PACING_WINDOW_MS) {
+  const cutoff = new Date(now).getTime() - windowMs;
+  return (entries || []).filter((e) => {
+    if (!e || e.event !== WATCHDOG_EVENTS.REDISPATCH || !e.ts) return false;
+    const t = new Date(e.ts).getTime();
+    return Number.isFinite(t) && t >= cutoff;
+  });
 }
 
 // Watchdog-origin live concurrency: tasks the watchdog claimed whose latest
@@ -385,7 +456,7 @@ function planSweep(entries, tasks, opts) {
     if (cap.blocked) toPark.push(item);
     else retryable.push(item);
   }
-  retryable.sort((a, b) => parseInt(a.taskId, 10) - parseInt(b.taskId, 10));
+  retryable.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
 
   // ── undispatched P0/P1 backlog (standing owner rule 2026-07-24) ──
   const p01Queue = [];
@@ -401,7 +472,7 @@ function planSweep(entries, tasks, opts) {
     p01Queue.push({ taskId: id, subject: task.subject, priority: pri });
   }
   p01Queue.sort((a, b) => (a.priority < b.priority ? -1 : a.priority > b.priority ? 1 :
-    parseInt(a.taskId, 10) - parseInt(b.taskId, 10)));
+    compareTaskIds(a.taskId, b.taskId)));
 
   // Surfaced, never silent (ship-check doctrine: a cap that hides what it
   // dropped reads as "covered everything"). Only still-open tasks are worth
@@ -413,7 +484,7 @@ function planSweep(entries, tasks, opts) {
     if (now - claimMs < CLAIM_LABEL_GRACE_MS) continue;   // still plausibly booting
     awaitingClaim.push({ taskId: id, subject: task.subject, claimedAt: new Date(claimMs).toISOString() });
   }
-  awaitingClaim.sort((a, b) => parseInt(a.taskId, 10) - parseInt(b.taskId, 10));
+  awaitingClaim.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
 
   // Wedged-launcher check — see CLAIM_OUTAGE_MIN above.
   const lastLaunchAny = lastLaunchAnywhereMs(entries);
@@ -422,6 +493,7 @@ function planSweep(entries, tasks, opts) {
 
   // ── budgets ──
   const usedToday = watchdogClaimsToday(entries, now).length;
+  const usedThisHour = watchdogClaimsInWindow(entries, now).length;
   const liveNow = watchdogLiveCount(entries);
   const autoTabs = cmuxObserved
     ? [...liveTitles.values()].filter(t => AUTO_TAB_RE.test(String(t))).length : null;
@@ -432,6 +504,9 @@ function planSweep(entries, tasks, opts) {
   if (failureRate.leaking) holds.push(`${LAUNCHER_LEAK_HOLD_PREFIX} (${failureRate.failureCount}/${failureRate.totalLaunches} = ${Math.round(failureRate.rate * 100)}% injection deaths in the last ${Math.round(FAILURE_RATE_LOOKBACK_MS / 3600000)}h, even though the launcher looks "recovered")`);
   if (claimOutage) holds.push(`${awaitingClaim.length} dispatch claims produced no launch and NOTHING has launched fleet-wide in ${Math.round(CLAIM_OUTAGE_WINDOW_MS / 3600000)}h — the launcher itself looks wedged, not the cards`);
   if (usedToday >= CAPS.perDay) holds.push(`day budget spent (${usedToday}/${CAPS.perDay})`);
+  // Pacing, not a failure: say so, so the dashboard narrative doesn't read
+  // like an outage when the drain is simply spreading its budget out.
+  if (usedThisHour >= CAPS.perHour) holds.push(`hourly pacing (${usedThisHour}/${CAPS.perHour} in the last 60m — spreading ${CAPS.perDay}/day instead of bursting)`);
   if (liveNow >= CAPS.watchdogConcurrent) holds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
   if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) holds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs})`);
 
@@ -447,6 +522,7 @@ function planSweep(entries, tasks, opts) {
   // covers both categories.
   const pausedByPolicy = !dispatchEnabled ||
     usedToday >= CAPS.perDay ||
+    usedThisHour >= CAPS.perHour ||
     liveNow >= CAPS.watchdogConcurrent ||
     (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs);
 
@@ -455,6 +531,7 @@ function planSweep(entries, tasks, opts) {
     budget = Math.min(
       CAPS.perSweep,
       CAPS.perDay - usedToday,
+      CAPS.perHour - usedThisHour,
       CAPS.watchdogConcurrent - liveNow,
     );
   }
@@ -480,7 +557,7 @@ function planSweep(entries, tasks, opts) {
   return {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim,
-    budgets: { usedToday, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
+    budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
@@ -549,7 +626,7 @@ function renderNarrative(plan) {
     for (const c of plan.crownSessionTabs) lines.push(`  • crowned session tab ${c.ref} ("${String(c.title).slice(0, 50)}") — check it's still alive`);
   }
   lines.push('');
-  lines.push(`Budget: ${plan.budgets.usedToday}/${plan.budgets.caps.perDay} dispatches today · ${plan.budgets.liveNow}/${plan.budgets.caps.watchdogConcurrent} watchdog sessions live`);
+  lines.push(`Budget: ${plan.budgets.usedToday}/${plan.budgets.caps.perDay} dispatches today · ${plan.budgets.usedThisHour}/${plan.budgets.caps.perHour} this hour · ${plan.budgets.liveNow}/${plan.budgets.caps.watchdogConcurrent} watchdog sessions live`);
   return lines.join('\n');
 }
 
@@ -558,7 +635,8 @@ module.exports = {
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,
   watchdogClaimPending, lastLaunchAnywhereMs,
-  taskPriority, notionIdOf,
+  taskPriority, notionIdOf, taskSortKey, compareTaskIds,
+  PACING_WINDOW_MS, PACING_HOURS, watchdogClaimsInWindow,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,
   lastTerminalEventForTask, planSweep, tabTitle, renderNarrative,
 };
