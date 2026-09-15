@@ -138,6 +138,24 @@ function rowFamilyKey(name) {
 // return null and are never folded — see planAutofix's foldable check below.
 const ON_SHOW_SUFFIX_RE = /^(.+?) on (.+)$/;
 
+// KNOWN LANDMINE (ship-check finding — accepted, not fixed, see rationale):
+// this applies to EVERY row this module sees, not just per-show opening-
+// night-check remediations — anything whose raw name happens to contain
+// literal " on " gets split the same way. Grepped repo-wide (2026-09-15):
+// today's non-per-show producers each emit a FIXED, unique string containing
+// " on " (health-check.js:3761 "...zero critic reviews on site",
+// claude-auth-health.js's "...unusable on the Mac" /"...running on pay-per-
+// token, not the subscription") — none collide with each other or with a
+// real per-show condition, so folding just gives them a slightly blunter
+// title, never a wrong merge. The unguarded risk is a FUTURE addition: two
+// unrelated conditions that happen to share an identical prefix before
+// " on " (e.g. "Failure on deploy" / "Failure on scoring") WOULD fold
+// together incorrectly — there is no producer-identity signal (no
+// isPerShow flag) for this function to check. Restricting folding to known
+// per-show producers would need that signal threaded through
+// normalizeQueuedRows/queueDigestLine — a real architecture change, left
+// for if/when a real collision is observed rather than spent on a landmine
+// that has never actually gone off.
 function splitOnShowSuffix(name) {
   const m = ON_SHOW_SUFFIX_RE.exec(familyDisplayName(name));
   return m ? { condition: m[1].trim(), show: m[2].trim() } : null;
@@ -338,6 +356,24 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const open = openAnchor.get(key);
     if (open && open.row.affected.length < MAX_FOLD_PER_CONDITION) {
       open.row.affected.push({ name: r.name, message: String(r.message || '').slice(0, 400) });
+      // BRO-3427 ship-check finding: isRowAcknowledged only ever runs on the
+      // ANCHOR (inside buildPlanRow) — a later-joining member here never
+      // goes through that check at all. If the anchor happened to be
+      // acknowledged (its own message carried a live "acknowledged: ...
+      // [expires ...]" marker) but THIS member is not, silently leaving the
+      // group 'acknowledged' would suppress real, actionable work for this
+      // show. Flip back to active whenever a non-acknowledged member joins
+      // an acknowledged group — biased toward filing the card, the same
+      // fail-safe direction isRowAcknowledged's own header comment argues
+      // for (skip-filing is the exception, not the default). The reverse
+      // (an acknowledged member joining an active group) needs no special
+      // handling: the group is already active and correctly stays that way.
+      if (open.row.state === 'acknowledged' && !isRowAcknowledged(String(r.message || ''), today)) {
+        const existing = matchOpenTask(tasks, open.row.title.slice(BSC_DAILY_TITLE_PREFIX.length));
+        open.row.state = existing ? (existing.status === 'in_progress' ? 'in-progress' : 'queued') : 'needs-card';
+        open.row.taskId = existing ? existing.id : null;
+        open.row.wasNew = open.row.state === 'needs-card';
+      }
       continue;
     }
     const batch = open ? open.batch + 1 : 1;

@@ -278,6 +278,28 @@ test('planAutofix: a folded condition matching an open task collapses to "in-pro
   assert.equal(plan[0].taskId, 42);
 });
 
+test('planAutofix: a fold whose ANCHOR is acknowledged but a LATER member is not flips the group back to active (BRO-3427 ship-check finding)', () => {
+  const health = { warns: [
+    { name: 'Credits low on Show A', message: '0 credits — acknowledged: tracked [expires 2026-08-05]' },
+    { name: 'Credits low on Show B', message: '0 credits, no acknowledgment recorded' },
+  ] };
+  const plan = planAutofix({ health, tasks: [], today: '2026-08-02' });
+  assert.equal(plan.length, 1);
+  assert.notEqual(plan[0].state, 'acknowledged', 'a real, non-acknowledged show must never be hidden behind the anchor\'s acknowledgment');
+  assert.equal(plan[0].state, 'needs-card');
+  assert.equal(plan[0].affected.length, 2);
+});
+
+test('planAutofix: a fold where EVERY member is acknowledged stays acknowledged', () => {
+  const health = { warns: [
+    { name: 'Credits low on Show A', message: 'acknowledged: tracked [expires 2026-08-05]' },
+    { name: 'Credits low on Show B', message: 'acknowledged: tracked [expires 2026-08-06]' },
+  ] };
+  const plan = planAutofix({ health, tasks: [], today: '2026-08-02' });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].state, 'acknowledged');
+});
+
 test('planAutofix: decision rows are never fold candidates even when they share a suffix shape', () => {
   const queued = [
     { title: 'Budget review on Show A', description: 'd1', decision: true },
@@ -391,6 +413,29 @@ test('check-health-row-absent.js: absent row exits 0, present row exits 1 (real 
   assert.equal(absentCode, fresh ? 0 : 3);
   const realRow = [...(snap.errors || []), ...(snap.warns || [])].find(r => r && r.name);
   if (realRow && fresh) assert.equal(run(realRow.name), 1);
+});
+
+test('check-health-row-absent.js: a queued-sourced row (BSC Daily per-show cards) is checked too, not just errors/warns (BRO-3427 — confirmed pre-existing bug, verify command was a no-op for every such card)', () => {
+  const script = path.join(__dirname, '..', 'check-health-row-absent.js');
+  const tmpSnap = path.join(os.tmpdir(), `check-health-row-absent-queued-test-${process.pid}-${Math.random().toString(36).slice(2)}.json`);
+  fs.writeFileSync(tmpSnap, JSON.stringify({
+    generatedAt: new Date().toISOString(),
+    errors: [], warns: [],
+    queued: [{ title: "Stale 'upcoming' tag on Show A", description: 'x' }],
+  }));
+  const run = (rowName) => {
+    try {
+      execFileSync('node', [script, '--row-b64', Buffer.from(rowName, 'utf8').toString('base64url')],
+        { encoding: 'utf8', env: { ...process.env, HEALTH_SNAPSHOT_OVERRIDE: tmpSnap } });
+      return 0;
+    } catch (err) { return err.status; }
+  };
+  try {
+    assert.equal(run("Stale 'upcoming' tag on Show A"), 1, 'a row still present in the queue must FAIL, not silently pass');
+    assert.equal(run("Stale 'upcoming' tag on Show B"), 0, 'a row genuinely absent from both errors/warns AND queued must still pass');
+  } finally {
+    fs.unlinkSync(tmpSnap);
+  }
 });
 
 test('check-health-row-absent.js: --help and missing args exit 2 without touching anything', () => {
