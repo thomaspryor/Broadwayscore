@@ -19,11 +19,12 @@
  * parse.
  *
  * Reused, not reinvented:
- *   - landing-verify.js checkLanded(): tri-state, shallow-aware ancestry. A raw
+ *   - landing-verify.js isAncestor() (tri-state) + isShallowRepo(): a raw
  *     `merge-base --is-ancestor` silently answers "not an ancestor" on a
- *     truncated graph — its header records the incident.
- *   - card-premises-auditor.js fetchOriginMain(): depth-bounded fetch, so the
- *     gate never runs an unbounded `git fetch` inside a synchronous CLI.
+ *     truncated graph (its header records the incident), so a shallow clone
+ *     short-circuits to unknown instead of attempting a multi-GB unshallow.
+ *   - card-premises-auditor.js fetchOriginMain(): ONE depth-bounded fetch per
+ *     factory, before any ancestry check; never an unbounded `git fetch`.
  *
  * Rebase-aware: autonomous-merge.js rebases a branch onto origin/main before
  * fast-forwarding, and merge-worktree-to-main.sh is the documented human flow
@@ -85,9 +86,13 @@ function extractEvidenceRefs(body, { originRepo = null } = {}) {
     if (want && normalizeRepo(m[1]) === want) push(prs, Number(m[2]));
     else push(foreign, m[0]);
   }
-  // Strip every URL before scanning for bare SHAs so a Linear/Vercel/GitHub
-  // path segment can never read as a commit.
-  const stripped = s.replace(/https?:\/\/\S+/g, ' ');
+  // Strip every URL, then every UUID, before scanning for bare SHAs: a
+  // Linear/Vercel/GitHub path segment must never read as a commit, and a
+  // UUID's 12-hex tail (hyphen is a \b boundary) would otherwise pass the
+  // 11-char floor as a phantom ref.
+  const stripped = s
+    .replace(/https?:\/\/\S+/g, ' ')
+    .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, ' ');
   for (const m of stripped.matchAll(BARE_SHA_RE)) push(commits, m[0].toLowerCase());
 
   return { commits, prs, foreign };
@@ -191,13 +196,15 @@ function makeMentionsIssue({ cwd = process.cwd(), originRepo = null, timeoutMs =
   return function mentionsIssue({ sha, prNumber, issueIdentifier }) {
     const re = idRe(issueIdentifier);
     try {
+      // The cited commit's OWN message only. A merge commit's parent range is
+      // deliberately NOT scanned: for a sync merge ("Merge remote-tracking
+      // branch 'origin/main'") that range is main's own history and would
+      // attribute to every issue mentioned in it — the exact "cite main's
+      // HEAD" hole this check exists to close (verified live: one such SHA
+      // attributed to 35 issues). A merge whose subject names the branch
+      // ("Merge branch 'job/linear-BRO-N-x'") still attributes; otherwise cite
+      // the fix commit itself, which the refusal text says.
       if (re.test(git(['log', '-1', '--format=%B', sha]))) return true;
-      // A merge commit made by merge-worktree-to-main.sh / a plain `git merge`
-      // carries only the branch name. Its second-parent side holds the real
-      // work — attribute through that range.
-      let isMerge = false;
-      try { git(['rev-parse', '--verify', '--quiet', `${sha}^2`]); isMerge = true; } catch { /* not a merge */ }
-      if (isMerge && re.test(git(['log', '--format=%B', `${sha}^1..${sha}`]))) return true;
     } catch (err) {
       log(`[done-evidence-verify] could not read commit ${sha}: ${String(err.message).slice(0, 120)}`);
       return null;
@@ -230,10 +237,11 @@ function detectOriginRepo(cwd = process.cwd()) {
 }
 
 /**
- * Real isCommitOnMain: one depth-bounded fetch per factory, then
- * checkLanded() (LANDED -> true, UNKNOWN -> null), with a patch-equivalence
- * fallback for NOT_LANDED so a rebase-rewritten SHA still counts, and a
- * definitive false for a SHA this clone has never seen.
+ * Real isCommitOnMain: one depth-bounded fetch per factory (a failed fetch
+ * makes every answer unknown), then tri-state ancestry against origin/main;
+ * a SHA git cannot resolve (never fetched, ambiguous prefix) is unknown, never
+ * false; an existing non-ancestor gets a patch-equivalence check so a
+ * rebase-rewritten SHA still counts; a merge commit gets no such shortcut.
  */
 function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
   const { isAncestor, isShallowRepo } = require('./landing-verify.js');
@@ -242,8 +250,8 @@ function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
   // Decided ONCE per factory: a shallow clone can neither confirm nor deny
   // ancestry (merge-base is fooled by the graft — landing-verify.js header),
   // and unshallowing is a multi-GB fetch that has no place inside a CLI gate.
-  let shallow;
-  try { shallow = isShallowRepo(cwd); } catch { shallow = true; }
+  // isShallowRepo never throws (it answers false on any git failure).
+  const shallow = isShallowRepo(cwd);
   let fetchState = null; // null = not tried, true = refreshed, false = refresh failed
   const refresh = () => { if (fetchState === null) fetchState = fetchOriginMain({ repo: cwd, log }) === true; return fetchState; };
 
@@ -252,12 +260,11 @@ function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
       log(`[done-evidence-verify] shallow clone — ${sha} cannot be verified from here`);
       return null;
     }
-    // Local first. main cannot be force-pushed (branch protection), so a
-    // commit that is an ancestor of the LOCAL origin/main is an ancestor of
-    // the remote one too — no network needed, no shared-ref lock contended.
-    if (isAncestor(sha, 'origin/main', cwd) === true) return true;
-    // Not locally provable: refresh once, then decide. A failed refresh leaves
-    // origin/main possibly behind the truth, so nothing below is a verdict.
+    // Refresh FIRST, once per factory. main is not force-push-proof here:
+    // enforce_admins is off and purge-archives-history.yml rewrites it by
+    // design, so a stale local origin/main can contain a commit the remote no
+    // longer has. Ancestry against an un-refreshed ref is not a verdict in
+    // either direction — a failed refresh yields unknown, never true or false.
     if (!refresh()) {
       log(`[done-evidence-verify] origin/main could not be refreshed — ${sha} cannot be verified this run`);
       return null;
