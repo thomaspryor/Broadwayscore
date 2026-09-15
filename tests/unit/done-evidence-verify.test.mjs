@@ -41,10 +41,16 @@ test('extractEvidenceRefs: URL path segments, dates and run ids never read as SH
   assert.deepEqual(refs, { commits: [], prs: [], foreign: [] });
 });
 
-test('extractEvidenceRefs: with no originRepo every GitHub URL counts as local', () => {
-  const refs = extractEvidenceRefs('https://github.com/x/y/pull/7', {});
-  assert.deepEqual(refs.prs, [7]);
-  assert.deepEqual(refs.foreign, []);
+test('extractEvidenceRefs: with the origin unidentified, every GitHub URL is foreign — an unknown checkout never claims someone else\'s PR #7', () => {
+  const refs = extractEvidenceRefs('https://github.com/x/y/pull/7 c447589a576', {});
+  assert.deepEqual(refs.prs, []);
+  assert.deepEqual(refs.foreign, ['https://github.com/x/y/pull/7']);
+  assert.deepEqual(refs.commits, ['c447589a576'], 'a bare SHA is still checked against whatever origin/main is here');
+});
+
+test('extractEvidenceRefs: English hex words and pure-digit runs are not SHAs', () => {
+  const refs = extractEvidenceRefs('merged deployed checked — defaced deadbeef 20260915 1234567', { originRepo: LOCAL });
+  assert.deepEqual(refs.commits, []);
 });
 
 // ── decision ───────────────────────────────────────────────────────────────
@@ -113,6 +119,19 @@ test('gate: with no verifier wired, PR-EVIDENCE alone no longer closes anything 
   assert.match(r.reason, /no evidence verifier/);
 });
 
+test('gate: when the PR claim fails, a runnable VERIFY: command on the issue is still evaluated (the refusal\'s own advice must work)', () => {
+  const r = checkLinearDoneTransition({
+    targetStateType: 'completed',
+    description: EVIDENCE,
+    existingComments: ['VERIFY: node --test tests/unit/some-fixture.test.mjs'],
+    verifyEvidence: () => ({ verified: false, reason: 'commit aaaaaaa is NOT on origin/main' }),
+  });
+  assert.equal(r.allowed, true, r.reason);
+  assert.equal(r.verdict, 'verify-cmd-recorded');
+  assert.equal(r.cmd, 'node --test tests/unit/some-fixture.test.mjs');
+  assert.equal(r.verification.verified, false, 'the rejected PR verification is still reported alongside');
+});
+
 test('gate: a partial PR-EVIDENCE line (not deployed) never reaches the verifier', () => {
   let called = 0;
   const r = checkLinearDoneTransition({
@@ -177,6 +196,25 @@ test('makeIsCommitOnMain: landed / not landed / never seen / rebase-rewritten SH
   git('push', '-q', 'origin', 'main');
   const fresh = makeIsCommitOnMain({ cwd: work, log: () => {} });
   assert.equal(fresh(tip), true, 'the original branch-tip SHA is accepted via patch equivalence after a rebase/cherry-pick landing');
+
+  // A merge commit that is not itself on main has no single patch to match —
+  // it must stay NOT on main rather than borrowing equivalence from one side.
+  git('checkout', '-q', '-b', 'side');
+  commit('c.txt');
+  git('checkout', '-q', 'feature');
+  git('merge', '-q', '--no-ff', '-m', 'merge side', 'side');
+  const mergeSha = git('rev-parse', 'HEAD');
+  assert.equal(fresh(mergeSha), false, 'an unlanded merge commit gets no patch-equivalence shortcut');
+});
+
+test('makeIsCommitOnMain: when origin/main cannot be refreshed, nothing is confirmed OR denied (fail closed, not stale)', (t) => {
+  const { root, git, commit, work } = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const sha = commit('a.txt');
+  git('push', '-q', 'origin', 'main');
+  git('remote', 'set-url', 'origin', path.join(root, 'does-not-exist.git'));
+  const isOnMain = makeIsCommitOnMain({ cwd: work, log: () => {} });
+  assert.equal(isOnMain(sha), null, 'a commit that IS on the stale origin/main is still unknown when the refresh failed');
 });
 
 test('detectOriginRepo parses owner/repo from https and ssh remotes', (t) => {

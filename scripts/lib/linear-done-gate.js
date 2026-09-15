@@ -89,6 +89,13 @@ function checkLinearDoneTransition({ targetStateType, description = '', commentT
       ? verifyEvidence(prRef)
       : { verified: null, reason: 'no evidence verifier wired into this call, so the cited commit/PR cannot be checked against origin/main' };
     if (!verification || verification.verified !== true) {
+      // The PR claim is out. A runnable acceptance command is still real
+      // evidence in its own right (the nightly recheck re-runs it against a
+      // fresh main), so evaluate that path with the rejected claim EXCLUDED —
+      // otherwise the refusal below would tell the operator to add a VERIFY:
+      // line that this same branch would then never look at.
+      const viaCmd = evaluateDoneTransition({ prRef: null, notes: description, comments });
+      if (viaCmd.allowed) return { gated: true, ...viaCmd, verification };
       const definite = verification && verification.verified === false;
       return {
         gated: true,
@@ -97,9 +104,11 @@ function checkLinearDoneTransition({ targetStateType, description = '', commentT
         cmd: null,
         reason:
           `PR-EVIDENCE was not confirmed on origin/main: ${verification ? verification.reason : 'verifier returned nothing'}. ` +
-          'Cite the merge commit that is actually on origin/main — e.g. ' +
-          '`PR-EVIDENCE: merged deployed checked (https://github.com/<owner>/<repo>/commit/<sha>)` — ' +
-          'or record a safe-form VERIFY: command, or --force "<reason>" as the owner.',
+          'Post a new comment citing the commit that is actually on origin/main, exactly like this: ' +
+          'PR-EVIDENCE: merged deployed checked (https://github.com/<owner>/<repo>/commit/<sha>) ' +
+          '— a bare SHA or a merged PR URL also works. ' +
+          'Or add a line `VERIFY: node --test <the test file this work added>`. ' +
+          'Or, as the owner, --force "<reason>".',
         verification,
       };
     }

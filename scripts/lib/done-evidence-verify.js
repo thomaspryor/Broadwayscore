@@ -45,9 +45,12 @@ const { execFileSync } = require('node:child_process');
 
 const COMMIT_URL_RE = /https?:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/commit\/([0-9a-f]{7,40})\b/gi;
 const PR_URL_RE = /https?:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/pull\/(\d+)\b/gi;
-// A bare SHA is 7-40 hex with at least one letter — pure-digit runs are dates,
-// run ids and issue numbers, never how anyone cites a commit.
-const BARE_SHA_RE = /\b(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b/gi;
+// A bare SHA is 7-40 hex containing BOTH a letter and a digit. Pure-digit runs
+// are dates, run ids and issue numbers; pure-letter runs are English words
+// ("defaced", "deadbeef") — either would otherwise become a definitive "NOT on
+// origin/main" verdict against an honest closer. Abbreviated SHAs that happen
+// to be all-digit are the accepted cost (cite the URL or a longer SHA).
+const BARE_SHA_RE = /\b(?=[0-9a-f]*[a-f])(?=[0-9a-f]*[0-9])[0-9a-f]{7,40}\b/gi;
 
 function normalizeRepo(s) {
   return String(s || '').replace(/\.git$/, '').toLowerCase();
@@ -58,8 +61,10 @@ function normalizeRepo(s) {
  * @param {string} body - the text after "PR-EVIDENCE:" (linear-pr-evidence.js's prRef.body)
  * @param {{originRepo?: string|null}} [opts] - "owner/repo" of the checkout the
  *   gate runs in. URLs for any other repo are returned as `foreign`: they can
- *   be neither confirmed nor denied from here. When null, every GitHub URL is
- *   taken as local.
+ *   be neither confirmed nor denied from here. When the origin could not be
+ *   identified (null), EVERY GitHub URL is foreign — an unknown checkout must
+ *   not silently claim someone else's PR number as its own (fail closed).
+ *   Bare SHAs are still checked against whatever origin/main is here.
  * @returns {{commits: string[], prs: number[], foreign: string[]}}
  */
 function extractEvidenceRefs(body, { originRepo = null } = {}) {
@@ -71,11 +76,11 @@ function extractEvidenceRefs(body, { originRepo = null } = {}) {
   const push = (arr, v) => { if (!arr.includes(v)) arr.push(v); };
 
   for (const m of s.matchAll(COMMIT_URL_RE)) {
-    if (!want || normalizeRepo(m[1]) === want) push(commits, m[2].toLowerCase());
+    if (want && normalizeRepo(m[1]) === want) push(commits, m[2].toLowerCase());
     else push(foreign, m[0]);
   }
   for (const m of s.matchAll(PR_URL_RE)) {
-    if (!want || normalizeRepo(m[1]) === want) push(prs, Number(m[2]));
+    if (want && normalizeRepo(m[1]) === want) push(prs, Number(m[2]));
     else push(foreign, m[0]);
   }
   // Strip every URL before scanning for bare SHAs so a Linear/Vercel/GitHub
@@ -161,11 +166,18 @@ function detectOriginRepo(cwd = process.cwd()) {
 function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
   const { checkLanded } = require('./landing-verify.js');
   const { fetchOriginMain } = require('./card-premises-auditor.js');
-  let fetched = false;
+  let fetchState = null; // null = not yet tried, true = refreshed, false = refresh failed
   const git = (args, timeout = 15000) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout }).trim();
 
   return function isCommitOnMain(sha) {
-    if (!fetched) { fetched = true; fetchOriginMain({ repo: cwd, log }); }
+    if (fetchState === null) fetchState = fetchOriginMain({ repo: cwd, log }) === true;
+    // A refresh that failed leaves origin/main wherever it was — possibly
+    // behind (would wrongly refuse) or, after a history rewrite, ahead of the
+    // truth (would wrongly approve). Neither direction is a verdict.
+    if (!fetchState) {
+      log(`[done-evidence-verify] origin/main could not be refreshed — ${sha} cannot be verified this run`);
+      return null;
+    }
     let landed;
     try {
       landed = checkLanded({ sha, cwd, log });
@@ -175,27 +187,42 @@ function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
     }
     if (landed.landed === true) return true;
     if (landed.verdict === 'UNKNOWN') {
-      // A SHA this clone has never seen is not "unknown", it is not evidence.
+      // A shallow clone may simply not HAVE the object yet — that stays
+      // unknown. In a full clone, a SHA git has never seen is not "unknown",
+      // it is not evidence.
+      if (landed.shallow) return null;
       try { git(['cat-file', '-e', `${sha}^{commit}`]); } catch { return false; }
       return null;
     }
-    // NOT_LANDED — the commit exists but is not an ancestor. Rebased? Ask
-    // git cherry: "- <sha>" means an equivalent patch is already upstream.
+    // NOT_LANDED — the commit exists but is not an ancestor. Rebased? For a
+    // NON-merge commit, ask git cherry whether that one patch is already
+    // upstream ("- <sha>"). A merge commit has no single patch to compare, so
+    // it stays NOT_LANDED — cite the merge commit that is on main instead.
     try {
-      const out = git(['cherry', 'origin/main', sha, `${sha}^`]);
-      return out.split('\n').some(line => line.startsWith('- ')) ? true : false;
+      git(['rev-parse', '--verify', '--quiet', `${sha}^2`]);
+      return false; // merge commit: no patch-equivalence shortcut
+    } catch { /* not a merge — fall through */ }
+    try {
+      const lines = git(['cherry', 'origin/main', sha, `${sha}^`]).split('\n').filter(Boolean);
+      return lines.length === 1 && lines[0].startsWith('- ');
     } catch (err) {
       log(`[done-evidence-verify] cherry check errored for ${sha}: ${String(err.message).slice(0, 120)}`);
-      return false;
+      return null;
     }
   };
 }
 
-/** Real getPrMergeCommit via `gh pr view` — one bounded call, null on any failure. */
-function makeGetPrMergeCommit({ cwd = process.cwd(), timeoutMs = 15000, log = () => {} } = {}) {
+/**
+ * Real getPrMergeCommit via `gh pr view` — one bounded call, pinned to
+ * `--repo <originRepo>` so PR #7 can never resolve to some other repo's #7
+ * through gh's default-repo config. Null on any failure (unauthenticated,
+ * rate-limited, no such PR) — the gate then refuses as unverified.
+ */
+function makeGetPrMergeCommit({ cwd = process.cwd(), originRepo = null, timeoutMs = 15000, log = () => {} } = {}) {
   return function getPrMergeCommit(n) {
+    if (!originRepo) return null;
     try {
-      const out = execFileSync('gh', ['pr', 'view', String(n), '--json', 'state,mergeCommit'], {
+      const out = execFileSync('gh', ['pr', 'view', String(n), '--repo', originRepo, '--json', 'state,mergeCommit'], {
         cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs,
       });
       const j = JSON.parse(out);
@@ -215,7 +242,7 @@ function makeGetPrMergeCommit({ cwd = process.cwd(), timeoutMs = 15000, log = ()
 function makeVerifyEvidence({ cwd = process.cwd(), log = () => {} } = {}) {
   const originRepo = detectOriginRepo(cwd);
   const isCommitOnMain = makeIsCommitOnMain({ cwd, log });
-  const getPrMergeCommit = makeGetPrMergeCommit({ cwd, log });
+  const getPrMergeCommit = makeGetPrMergeCommit({ cwd, originRepo, log });
   return function verifyEvidence(prRef) {
     const refs = extractEvidenceRefs(prRef && prRef.body, { originRepo });
     return evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit });
