@@ -17,7 +17,7 @@ test('extractReferencedFlagKeys finds every real flag key currently used in src/
   const { keys, unresolved } = extractReferencedFlagKeys();
   const found = new Set(keys.map((k) => k.key));
   assert.equal(unresolved.length, 0, `unresolved getFeatureFlag() args (scanner can't statically resolve): ${JSON.stringify(unresolved)}`);
-  for (const expectedKey of ['gate-cold-start', 'mobile-gate-timing', 'ticket-single-button', 'ticket-primary-platform']) {
+  for (const expectedKey of ['mobile-gate-timing', 'ticket-single-button', 'ticket-primary-platform']) {
     assert.ok(found.has(expectedKey), `expected src/ to still reference '${expectedKey}' — if this flag's code was removed, delete its REGISTERED_FLAGS entry too`);
   }
 });
@@ -59,7 +59,7 @@ test('extractReferencedFlagKeys treats an ambiguous identifier (2+ distinct defi
 });
 
 test('checkFlagParity: a registered key is never reported missing', () => {
-  const referenced = [{ key: 'gate-cold-start', files: ['src/fake.tsx'] }];
+  const referenced = [{ key: 'ticket-single-button', files: ['src/fake.tsx'] }];
   const { missing } = checkFlagParity(referenced, REGISTERED_FLAGS);
   assert.deepEqual(missing, []);
 });
@@ -130,25 +130,37 @@ test('schema: every exists:true entry declares boolean ensure_experience_continu
   }
 });
 
+// These three tests exercise evaluateFlagHealth's generic sticky-bucketing
+// check against a SYNTHETIC expected fixture (not a live REGISTERED_FLAGS
+// entry) — gate-cold-start's entry was removed 2026-09-15 when its A/B
+// concluded, and no other registered flag has ensure_experience_continuity:
+// false (both ticket-single-button and ticket-primary-platform are true), so
+// repointing to a live entry would test the wrong sticky semantics.
+const ANONYMOUS_EXPERIMENT_FIXTURE = {
+  exists: true,
+  active: true,
+  variants: [{ key: 'control', pct: 50 }, { key: 'treatment', pct: 50 }],
+  rollout: 100,
+  ensure_experience_continuity: false, // anonymous-only experiment convention
+};
+
 test('evaluateFlagHealth: sticky drift is flagged (live-shape fixture)', () => {
-  // Live shape mirrors monitor-flag-parity.js fetchLiveFlag / the
-  // analyze-gate-cold-start.js mapping — NOT a hand-built expected object.
+  // Live shape mirrors monitor-flag-parity.js fetchLiveFlag's mapping — NOT
+  // a hand-built expected object.
   const live = {
     active: true,
-    variants: [{ key: 'control', pct: 50 }, { key: 'cold-start', pct: 50 }],
+    variants: [{ key: 'control', pct: 50 }, { key: 'treatment', pct: 50 }],
     rollout: 100,
     ensure_experience_continuity: true, // ← someone flipped it ON
   };
-  const entry = REGISTERED_FLAGS.find((e) => e.key === 'gate-cold-start');
-  const { ok, problem } = evaluateFlagHealth(live, entry.expected);
+  const { ok, problem } = evaluateFlagHealth(live, ANONYMOUS_EXPERIMENT_FIXTURE);
   assert.equal(ok, false);
   assert.match(problem, /ensure_experience_continuity is true/);
 });
 
 test('evaluateFlagHealth: unmapped sticky field from the fetcher fails loudly (three-way-sync guard)', () => {
-  const live = { active: true, variants: [{ key: 'control', pct: 50 }, { key: 'cold-start', pct: 50 }], rollout: 100 };
-  const entry = REGISTERED_FLAGS.find((e) => e.key === 'gate-cold-start');
-  const { ok, problem } = evaluateFlagHealth(live, entry.expected);
+  const live = { active: true, variants: [{ key: 'control', pct: 50 }, { key: 'treatment', pct: 50 }], rollout: 100 };
+  const { ok, problem } = evaluateFlagHealth(live, ANONYMOUS_EXPERIMENT_FIXTURE);
   assert.equal(ok, false);
   assert.match(problem, /fetcher did not supply the field/);
 });
@@ -156,12 +168,11 @@ test('evaluateFlagHealth: unmapped sticky field from the fetcher fails loudly (t
 test('evaluateFlagHealth: matching sticky value passes', () => {
   const live = {
     active: true,
-    variants: [{ key: 'control', pct: 50 }, { key: 'cold-start', pct: 50 }],
+    variants: [{ key: 'control', pct: 50 }, { key: 'treatment', pct: 50 }],
     rollout: 100,
     ensure_experience_continuity: false,
   };
-  const entry = REGISTERED_FLAGS.find((e) => e.key === 'gate-cold-start');
-  const { ok, problem } = evaluateFlagHealth(live, entry.expected);
+  const { ok, problem } = evaluateFlagHealth(live, ANONYMOUS_EXPERIMENT_FIXTURE);
   assert.equal(ok, true);
   assert.equal(problem, null);
 });

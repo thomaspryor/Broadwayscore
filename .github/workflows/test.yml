@@ -1972,10 +1972,6 @@ on:
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/monitor-email-gate-funnel.js'
       - 'scripts/analyze-email-gate-funnel.js'
-      # gate-cold-start A/B weekly monitor (card #247) — pure rules + runner +
-      # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
-      - 'scripts/monitor-gate-cold-start.js'
-      - 'scripts/analyze-gate-cold-start.js'
       # Flag-parity guardrail (card #250) — registry + static scanner + CI
       # gate + weekly live-PostHog monitor; colocated tests run in the
       # scripts/lib/*.test.mjs glob step.
