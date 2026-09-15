@@ -1,29 +1,11 @@
 {
-  "generatedAt": "2026-09-14T23:04:28.108Z",
+  "generatedAt": "2026-09-15T02:14:40.053Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 126,
-  "clean": 125,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "man-to-man-west-end-2026",
-      "title": "Man to Man",
-      "openingDate": "2026-09-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.32 vs local 75.42 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17
-    }
-  ]
+  "checked": 127,
+  "clean": 127,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-14T23:04:18.502Z",
+  "generatedAt": "2026-09-15T02:14:30.420Z",
   "windowDays": 45,
-  "showsScanned": 70,
+  "showsScanned": 67,
   "gaps": [
     {
       "showId": "the-story-west-end-2026",
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
       "firstSeen": "2026-09-06T13:54:56.426Z",
-      "fileAgeHours": 201.1558325,
+      "fileAgeHours": 204.32222416666667,
       "gapSeenAt": "2026-09-08T15:05:38.757Z",
-      "nonTerminalAgeHours": 151.97770694444444
+      "nonTerminalAgeHours": 155.14768416666666
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -34,9 +34,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 413.79359694444446,
+      "fileAgeHours": 416.95995,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 375.3845366666667
+      "nonTerminalAgeHours": 378.5545138888889
     }
   ],
   "contradictions": []
