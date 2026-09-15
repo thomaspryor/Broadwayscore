@@ -271,21 +271,39 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
  * "Needs your attention" rows + current tasks → per-issue action plan. No
  * I/O so the digest tests can exercise the real decision table.
  *
- * BRO-3427: a "<condition> on <show>" row sharing its condition with ANOTHER
- * row in this same batch is folded onto ONE plan row per condition (capped
- * at MAX_FOLD_PER_CONDITION) instead of emitting one row per show — measured
- * at 35 of 88 daily health rows, 40% of the digest queue, each independently
- * minting its own card AND dispatch for a fix that one remediation run
- * typically clears for every affected show at once. A row that never matches
- * the "<condition> on <show>" shape, or whose condition appears only ONCE in
- * this batch, is completely unaffected — same title, same single-row plan
- * entry as before this change. A folded row carries `affected`: the raw
- * {name, message} of every show it stands in for, so buildCardNotes can list
- * (and emit a verify check for) each one — see that function's own comment
- * for why only folding, never the verify semantics, can be solved generically
- * here (SAFE_CHECK_FORMS' check-health-row-absent.js form takes exactly one
- * row).
- * @returns {Array<{name, message, title, state, taskId, conditionKey, model, affected?}>}
+ * BRO-3427: every "<condition> on <show>" row folds onto ONE plan row per
+ * condition (capped at MAX_FOLD_PER_CONDITION, overflow spills to "(batch
+ * N)") instead of emitting one row per show — measured at 35 of 88 daily
+ * health rows, 40% of the digest queue, each independently minting its own
+ * card AND dispatch for a fix that one remediation run typically clears for
+ * every affected show at once.
+ *
+ * UNCONDITIONAL, not "fold only when 2+ rows share a condition today" (the
+ * first version of this fix, reverted in review): a condition's occurrence
+ * count varies day to day as shows open/close/get fixed, so gating folding
+ * on TODAY's count made the card TITLE itself flip between "BSC Daily:
+ * <condition>" and "BSC Daily: <condition> on <show>" depending on how many
+ * shows happened to have the issue that morning. matchOpenTask/fileCard's
+ * dedup is an EXACT title match — a flipping title breaks it across the
+ * exact day boundary that matters (a condition shrinking from 2 shows to 1,
+ * or growing from 1 to 2), silently filing a genuine duplicate card instead
+ * of reattaching to the one already open (ship-check finding, 2026-09-15).
+ * Folding unconditionally — mirroring familyDisplayName's prefix rule above,
+ * which ALWAYS strips a matching prefix regardless of whether a sibling
+ * variant exists today — keeps the title, and therefore the card identity,
+ * stable across every day regardless of how many shows currently share it.
+ * A single-show occurrence still gets an `affected` array of length 1; that
+ * degenerates to buildCardNotes' single-row rendering (row.affected.length
+ * <= 1), so nothing downstream needs to special-case "was this ever folded".
+ *
+ * A row that never matches the "<condition> on <show>" shape is completely
+ * unaffected — same title, same rendering as before this change. Every
+ * folded row carries `affected`: the raw {name, message} of every show it
+ * stands in for, so buildCardNotes can list (and emit a verify check for)
+ * each one — see that function's own comment for why only folding, never
+ * the verify semantics, can be solved generically here (SAFE_CHECK_FORMS'
+ * check-health-row-absent.js form takes exactly one row).
+ * @returns {Array<{name, message, title, state, taskId, conditionKey, model, affected}>}
  *   state: 'in-progress' | 'queued' | 'needs-card' | 'acknowledged' | 'decision' | 'parked'
  *   ('parked' is only ever set by runAutofix, never by planAutofix.)
  */
@@ -297,37 +315,25 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     ...normalizeQueuedRows(queued),
   ].filter(r => r && r.name);
 
-  // Pass 1: how many rows in this batch share each foldable condition?
-  // Decision rows are never candidates — they're a judgment call, not a fix.
-  const conditionCounts = new Map();
-  for (const r of rows) {
-    if (r.decision) continue;
-    const split = splitOnShowSuffix(r.name);
-    if (!split) continue;
-    const key = split.condition.toLowerCase();
-    conditionCounts.set(key, (conditionCounts.get(key) || 0) + 1);
-  }
-
-  // Pass 2: build the plan, folding rows whose condition occurs 2+ times.
-  // Each condition's ANCHOR is the plan row at the position of its first
-  // occurrence — later same-condition rows append to the anchor's `affected`
-  // list instead of pushing a new plan entry, which is the actual mechanism
-  // that turns 35 rows into 7 (runAutofix iterates `plan`, so fewer plan rows
-  // is fewer cards filed AND fewer dispatches spent, with no changes needed
-  // there). Once an anchor's `affected` hits MAX_FOLD_PER_CONDITION, the next
-  // row for that condition starts a NEW anchor ("... (batch 2)") instead of
-  // growing the first past the cap.
+  // Every "<condition> on <show>" row's ANCHOR is the plan row at the
+  // position of its first occurrence in this batch — a later same-condition
+  // row appends to the anchor's `affected` list instead of pushing a new
+  // plan entry, which is the actual mechanism that turns 35 rows into 7
+  // (runAutofix iterates `plan`, so fewer plan rows is fewer cards filed AND
+  // fewer dispatches spent, with no changes needed there). Once an anchor's
+  // `affected` hits MAX_FOLD_PER_CONDITION, the next row for that condition
+  // starts a NEW anchor ("... (batch 2)") instead of growing the first past
+  // the cap. Decision rows are never candidates — they're a judgment call,
+  // not a fix — and never match the suffix pattern's fold path.
   const openAnchor = new Map(); // condition key -> {row, batch}
   const planRows = [];
   for (const r of rows) {
     const split = r.decision ? null : splitOnShowSuffix(r.name);
-    const key = split ? split.condition.toLowerCase() : null;
-    const foldable = key !== null && conditionCounts.get(key) > 1;
-
-    if (!foldable) {
+    if (!split) {
       planRows.push(buildPlanRow(r, { tasks, today }));
       continue;
     }
+    const key = split.condition.toLowerCase();
 
     const open = openAnchor.get(key);
     if (open && open.row.affected.length < MAX_FOLD_PER_CONDITION) {
@@ -460,7 +466,7 @@ function buildCardNotes(row) {
 // is the human id ("BRO-287") the caller threads straight onto its row as
 // `linear:BRO-287`, REPLACING the old file→syncTasks→matchOpenTask numeric-
 // task resolution dance (there is no Notion mirror card to resolve anymore).
-function fileCard(title, notes, { log = () => {} } = {}) {
+function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false } = {}) {
   // Dedup BEFORE filing (BRO-286 merge-review P0): a persistent health row
   // hits this every morning, and the Notion-mirror dedup (matchOpenTask in
   // planAutofix) can't see Linear issues — without this check the same row
@@ -476,6 +482,29 @@ function fileCard(title, notes, { log = () => {} } = {}) {
     const fm = found.match(LINEAR_IDENTIFIER_IN_JSON_RE);
     if (fm) {
       log(`[digest-autofix] row already tracked as ${fm[1]} — reattaching instead of filing a duplicate`);
+      // BRO-3427 ship-check finding: a folded row's affected-show SET can
+      // change day to day (one show fixed, a new one joins) while the title
+      // (and therefore this dedup match) stays the same — the issue's
+      // DESCRIPTION is fixed at creation and never rewritten by a plain
+      // reattach, so a stale card would keep listing yesterday's shows and
+      // never mention today's. Posting the freshly-built notes as a COMMENT
+      // fixes this without touching the description: verify-gate.js's
+      // evaluateVerifiability already reads comments newest-first and lets
+      // the latest one supersede the original acceptance criteria (built for
+      // exactly this "correct a stale VERIFY command after dispatch"
+      // problem, BRO-2796) — so the auto-armed check always tracks the
+      // CURRENT membership, not day-1's. Only opted into by folded-row
+      // callers (runAutofix below); a plain single-issue row's notes never
+      // change day to day, so refreshing here would just be daily spam.
+      if (refreshNotesOnReattach) {
+        try {
+          execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'update', fm[1], '--comment', notes],
+            { cwd: REPO, encoding: 'utf8', timeout: 30000 });
+          log(`[digest-autofix] refreshed ${fm[1]}'s acceptance criteria via comment (fold membership may have changed)`);
+        } catch (err) {
+          log(`[digest-autofix] WARN could not refresh ${fm[1]}'s notes comment (fold membership may be stale): ${String(err.message).slice(0, 120)}`);
+        }
+      }
       return { ok: true, identifier: fm[1], existing: true };
     }
   } catch (err) {
@@ -741,7 +770,12 @@ function runAutofix({
   //    contract the Notion verify gate had (#480).
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
-    const filed = fileCard(row.title, buildCardNotes(row), { log });
+    // BRO-3427: a folded row's affected-show list can change day to day
+    // while the (now-unconditional) condition-only title stays the same —
+    // refresh the reattached card's acceptance criteria via comment so a
+    // membership change is never silently invisible. See fileCard's own
+    // comment for why this is scoped to folded rows only.
+    const filed = fileCard(row.title, buildCardNotes(row), { log, refreshNotesOnReattach: Array.isArray(row.affected) });
     if (filed.ok) {
       row.state = 'card-filed';
       row.taskId = `linear:${filed.identifier}`;
@@ -811,6 +845,21 @@ function runAutofix({
     // attempt-memory/park state. title is already family-collapsed (see
     // planAutofix) and stable run over run for the same condition — the same
     // stability assumption fileCard's own exact-title dedup already relies on.
+    // BRO-3427: this ALSO means a folded row's contentHash never reflects
+    // WHICH shows are in row.affected — two consecutive failures on
+    // completely disjoint show sets (day 1: A/B/C fail; day 3, A/B/C fixed
+    // elsewhere, D/E/F newly broken) still park as "the same content",
+    // blocking D/E/F from a fresh attempt. That's the same title-only-hash
+    // policy this module already shipped for prefix-collapsed conditions
+    // (BRO-232 S4, comment above) — accepted here rather than widened,
+    // deliberately: hashing in the affected-show set would make ANY
+    // day-to-day membership drift reset the failure streak, which defeats
+    // park's actual purpose (catching a remediation that is structurally
+    // broken, not show-specific). A condition that's genuinely parked this
+    // way is visible in the digest email ("kept failing the same way —
+    // parked, needs a manual look") — a human looking at the card's comment
+    // history (see fileCard's refreshNotesOnReattach) sees which shows are
+    // CURRENTLY affected and can unpark by hand if the new shows warrant it.
     const contentHash = computeContentHash({ name: row.title });
     const park = checkPark(digestLedgerEntries, String(row.taskId), contentHash);
     if (park.parked) {

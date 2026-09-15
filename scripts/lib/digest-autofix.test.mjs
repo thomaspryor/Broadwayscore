@@ -161,6 +161,31 @@ test('matchOpenTask: cross-prefix family match — a task filed under one prefix
 
 // ── BRO-3427: "<condition> on <show>" rows fold onto ONE plan row per condition ──
 
+test('splitOnShowSuffix: every REAL "<condition> on <show>" title template in opening-night-checks/ has a condition phrase without " on " (regression guard — ship-check finding, 2026-09-15)', () => {
+  // splitOnShowSuffix's first-occurrence split is only correct because no
+  // condition phrase contains the literal " on " — a future check author
+  // writing e.g. "Flag active on <show>"-style text with an internal "on"
+  // clause would misparse silently (condition/show boundary lands in the
+  // wrong place) with no test ever failing. This scans the REAL title
+  // templates so a new violation fails CI instead of shipping quietly.
+  const dir = path.join(__dirname, 'opening-night-checks');
+  const files = fs.readdirSync(dir).filter(f => f.endsWith('.check.js'));
+  assert.ok(files.length >= 10, `expected many check files, found ${files.length} — did the directory move?`);
+  const titleRe = /title:\s*`([^$`]*)\$\{show\.title \|\| show\.id\}`/g;
+  let checked = 0;
+  for (const f of files) {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    for (const m of src.matchAll(titleRe)) {
+      const conditionPrefix = m[1]; // everything before "${show.title...}", e.g. "Stale 'upcoming' tag on "
+      assert.ok(conditionPrefix.endsWith(' on '), `${f}: title template doesn't end in " on " as expected: ${JSON.stringify(conditionPrefix)}`);
+      const condition = conditionPrefix.slice(0, -' on '.length);
+      assert.ok(!/ on /i.test(condition), `${f}: condition phrase "${condition}" itself contains " on " — splitOnShowSuffix would misparse this`);
+      checked++;
+    }
+  }
+  assert.ok(checked >= 10, `expected to check many "<condition> on <show>" templates, only found ${checked}`);
+});
+
 test('splitOnShowSuffix: splits condition/show on the FIRST " on ", including when the show title itself contains " on "', () => {
   assert.deepEqual(splitOnShowSuffix("Stale 'upcoming' tag on Waiting for Godot"), { condition: "Stale 'upcoming' tag", show: 'Waiting for Godot' });
   assert.deepEqual(splitOnShowSuffix('Placeholder synopsis on Once on This Island'), { condition: 'Placeholder synopsis', show: 'Once on This Island' });
@@ -209,12 +234,36 @@ test('planAutofix: a row with no " on <show>" suffix is byte-identical to today 
   assert.ok(!notes.includes('reports "'), 'folded-row prose leaked into the single-row path');
 });
 
-test('planAutofix: a condition seen only ONCE in this batch is never folded — title keeps the show name', () => {
+test('planAutofix: a condition seen only ONCE in this batch still gets the condition-only title (stable identity across fold/unfold day boundaries)', () => {
   const health = { warns: [{ name: "Stale 'upcoming' tag on Only Show", message: 'x' }] };
   const plan = planAutofix({ health, tasks: [] });
   assert.equal(plan.length, 1);
-  assert.equal(plan[0].title, "BSC Daily: Stale 'upcoming' tag on Only Show");
-  assert.equal(plan[0].affected, undefined);
+  assert.equal(plan[0].title, "BSC Daily: Stale 'upcoming' tag");
+  assert.deepEqual(plan[0].affected, [{ name: "Stale 'upcoming' tag on Only Show", message: 'x' }]);
+  // A singleton fold renders exactly like an unfolded row — buildCardNotes
+  // only switches to the multi-show branch above length 1.
+  const notes = buildCardNotes(plan[0]);
+  assert.ok(notes.includes('reports an issue named "Stale \'upcoming\' tag on Only Show"'));
+});
+
+test('planAutofix: title identity is STABLE across a fold/unfold day boundary (BRO-3427 ship-check finding — duplicate-card regression guard)', () => {
+  // Day 1: two shows share the condition — folds.
+  const day1 = planAutofix({ health: { warns: [
+    { name: "Stale 'upcoming' tag on Show A", message: 'a' },
+    { name: "Stale 'upcoming' tag on Show B", message: 'b' },
+  ] }, tasks: [] });
+  assert.equal(day1.length, 1);
+  const openTask = { id: 99, status: 'pending', subject: day1[0].title };
+
+  // Day 2: Show A got fixed, only Show B remains — MUST resolve to the SAME
+  // title and be recognised as the SAME open task, not filed as a duplicate.
+  const day2 = planAutofix({ health: { warns: [
+    { name: "Stale 'upcoming' tag on Show B", message: 'b' },
+  ] }, tasks: [openTask] });
+  assert.equal(day2.length, 1);
+  assert.equal(day2[0].title, day1[0].title);
+  assert.equal(day2[0].taskId, 99, 'day-2 singleton row must match the day-1 folded open task, not file a duplicate');
+  assert.equal(day2[0].state, 'queued');
 });
 
 test('planAutofix: a folded condition matching an open task collapses to "in-progress", covering every show', () => {
@@ -606,6 +655,62 @@ test('fileCard: reattaches to an EXISTING open issue instead of filing a daily d
     const res = mod.fileCard('Cron failed: X', 'notes', { log: () => {} });
     assert.deepEqual(res, { ok: true, identifier: 'BRO-77', existing: true });
     assert.equal(calls.execFileSync.length, 1, 'find only — no create');
+  });
+});
+
+test('fileCard: refreshNotesOnReattach posts the fresh notes as a comment on an EXISTING issue (BRO-3427 — fold membership can drift day to day)', () => {
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => {
+    if (argv.includes('find')) return JSON.stringify({ identifier: 'BRO-88', title: "BSC Daily: Stale 'upcoming' tag", url: 'u' }, null, 2);
+    if (argv.includes('update')) {
+      assert.equal(argv[argv.indexOf('update') + 1], 'BRO-88');
+      assert.ok(argv.includes('--comment'));
+      assert.equal(argv[argv.indexOf('--comment') + 1], 'today\'s fresh notes');
+      return 'ok';
+    }
+    throw new Error('create must NOT be called when an open issue already matches');
+  } }, (calls, mod) => {
+    const res = mod.fileCard("BSC Daily: Stale 'upcoming' tag", "today's fresh notes", { log: () => {}, refreshNotesOnReattach: true });
+    assert.deepEqual(res, { ok: true, identifier: 'BRO-88', existing: true });
+    assert.equal(calls.execFileSync.length, 2, 'find + update --comment');
+  });
+});
+
+test('fileCard: refreshNotesOnReattach defaults OFF — a plain (non-folded) reattach never posts a comment', () => {
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => {
+    if (argv.includes('find')) return JSON.stringify({ identifier: 'BRO-77', title: 'Cron failed: X', url: 'u' }, null, 2);
+    throw new Error('update must NOT be called — refreshNotesOnReattach was not requested');
+  } }, (calls, mod) => {
+    const res = mod.fileCard('Cron failed: X', 'notes', { log: () => {} });
+    assert.deepEqual(res, { ok: true, identifier: 'BRO-77', existing: true });
+    assert.equal(calls.execFileSync.length, 1, 'find only — no update');
+  });
+});
+
+test('fileCard: refreshNotesOnReattach fails soft — an update error still returns the reattach result', () => {
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => {
+    if (argv.includes('find')) return JSON.stringify({ identifier: 'BRO-88', title: 'X', url: 'u' }, null, 2);
+    if (argv.includes('update')) throw new Error('LINEAR_API_KEY not set');
+    throw new Error('unexpected call');
+  } }, (calls, mod) => {
+    const res = mod.fileCard('X', 'notes', { log: () => {}, refreshNotesOnReattach: true });
+    assert.deepEqual(res, { ok: true, identifier: 'BRO-88', existing: true });
+  });
+});
+
+test('runAutofix: a folded row reattaching to an existing card refreshes its notes; a non-folded row does not', () => {
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => {
+    if (argv.includes('find')) return JSON.stringify({ identifier: 'BRO-99', title: 'whatever', url: 'u' }, null, 2);
+    if (argv.includes('update')) return 'ok';
+    throw new Error('create must NOT be called on a dedup hit');
+  } }, (calls, mod) => {
+    const ledgerPath = path.join(os.tmpdir(), `da-bro3427-refresh-${Date.now()}.jsonl`);
+    const plan = [
+      { name: "Stale 'upcoming' tag on Show A", title: "BSC Daily: Stale 'upcoming' tag", message: 'm', state: 'needs-card', taskId: null, conditionKey: null, affected: [{ name: "Stale 'upcoming' tag on Show A", message: 'm' }] },
+      { name: 'Credits: ScrapingDog', title: 'BSC Daily: Credits: ScrapingDog', message: 'm', state: 'needs-card', taskId: null, conditionKey: null },
+    ];
+    mod.runAutofix({ plan, cap: 0, log: () => {}, ledgerPath, loadTasksFn: () => [] });
+    const updateCalls = calls.execFileSync.filter(c => c[1].includes('update'));
+    assert.equal(updateCalls.length, 1, 'exactly one update --comment call, for the folded row only');
   });
 });
 
