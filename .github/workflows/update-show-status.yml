@@ -143,6 +143,40 @@ jobs:
           fi
           node scripts/update-show-status.js $SS_FLAG
 
+      # BRO-3428: the previews->open transition the step above just applied is
+      # exactly what leaves a show status=open while its tags array still
+      # carries 'upcoming' from before it opened. stale-upcoming-tag.check.js
+      # (opening-night-checklist.js, ±2-day window only) detects this daily and
+      # prints the remediation command, but nothing had ever run it — 36 shows
+      # had accumulated with the stale tag (some well outside that ±2-day
+      # window, since the digest only surfaces the windowed subset) before this
+      # step was added, cleared by hand once (data: Drop stale 'upcoming' tag
+      # from 36 open shows). Running the bulk (unwindowed) form here, right
+      # after the transition that causes it, bounds recurrence to at most ~48h
+      # instead of accumulating indefinitely — not <24h: "Validate data" later
+      # in this same job (line ~373) can ALSO flip previews->open on its own
+      # (validate-data.js's own stale-status auto-fix), after this step has
+      # already run, so a tag created that way waits for tomorrow's run of
+      # THIS step rather than being caught same-run (Codex adversarial review,
+      # BRO-3428). Deliberately not reordered to run later and catch that case
+      # same-run: that would put this step's own write past every validation
+      # step in the job, so a hypothetical bug here would ship completely
+      # unvalidated. Early placement — same spot as "Self-heal shared
+      # ibdbUrls" below — keeps it inside that day's validate-data.js coverage
+      # at the cost of the extra day on that one edge case. Supersedes the
+      # kind:'alert'-only decision recorded on that check's own remediation
+      # stanza (owner review gate, rule 18, task #1132) — that decision
+      # predates this cost evidence (BRO-3427: 14 stale-tag rows were 16% of
+      # the daily digest's card queue, ~$84/day in auto-dispatched sessions to
+      # do what this no-op-when-clean step now does for free). continue-on-
+      # error: true — a lock/read hiccup on this purely cosmetic tag cleanup
+      # must not fail the whole daily status-update job, matching "Regenerate
+      # Off-Broadway venue allowlist" below (same idempotent-fixer shape:
+      # no-op when nothing to fix).
+      - name: Fix stale upcoming tags
+        continue-on-error: true
+        run: node scripts/fix-stale-upcoming-tags.js --apply
+
       # Self-heal shared ibdbUrls BEFORE validation. A revival stub that
       # inherited the original production's ibdbUrl hard-fails validate-data
       # ("Shared ibdbUrl ... null the stale url on the revival entry") and
