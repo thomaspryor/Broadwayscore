@@ -103,7 +103,7 @@ test('every hook command resolves to an existing file when cwd is NOT the repo r
       assert.ok(resolvedPath.startsWith(REPO_ROOT), `resolver for ${entry.rawPath} escaped the repo root: ${resolvedPath}`);
     }
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -136,7 +136,7 @@ test('every hook command FAILS LOUDLY with exit 2 (not a silent allow) when it c
       assert.doesNotMatch(r.stdout, /^RESOLVED:/, `must not resolve to allowed for ${entry.rawPath}`);
     }
   } finally {
-    fs.rmSync(outsideAnyRepo, { recursive: true, force: true });
+    fs.rmSync(outsideAnyRepo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -151,6 +151,6 @@ test('sanity: os.tmpdir() truly sits outside this git repo (GIT_CEILING_DIRECTOR
     });
     assert.notEqual(r.status, 0, 'test precondition broken: tmpdir resolves to a real git repo even with GIT_CEILING_DIRECTORIES set');
   } finally {
-    fs.rmSync(outside, { recursive: true, force: true });
+    fs.rmSync(outside, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

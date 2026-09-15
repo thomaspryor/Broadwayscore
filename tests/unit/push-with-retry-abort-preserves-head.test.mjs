@@ -133,7 +133,7 @@ test('#466 shallow-ancestry-unrecoverable abort leaves local HEAD byte-identical
     assert.equal(postRunHead, preRunHead, `HEAD moved from ${preRunHead} to ${postRunHead} during the abort — local commits at risk`);
     assert.equal(postRunLog, preRunLog, 'local commit log changed during the abort');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -221,7 +221,7 @@ test('an uncontrolled set -e crash right after a successful rebase still restore
     assert.notEqual(code, 0, `expected non-zero exit (stubbed restore-protected-fields.js always fails); got 0. Output:\n${stdout}`);
     assert.equal(postRunHead, preRunHead, `HEAD moved from ${preRunHead} to ${postRunHead} and was NOT restored — the EXIT trap backstop did not fire. Output:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -399,7 +399,7 @@ test('task #1793: a genuine no-op rebase does not block sync_restore_base_head b
       `the commit landed DURING the push was dropped (task #1793 regression). Log:\n${postRunLog}\nOutput:\n${stdout}`);
     assert.match(postRunLog, /payload commit/, `the entry payload commit vanished. Log:\n${postRunLog}\nOutput:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -470,7 +470,7 @@ test('#769: abort-restore preserves commits made DURING the run when HEAD only a
     assert.equal(sh(`git merge-base --is-ancestor ${entryHead} HEAD && echo yes`, runnerDir).trim(), 'yes',
       'entry HEAD must remain an ancestor of the preserved HEAD');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -552,7 +552,7 @@ test('reset+cherry-pick fallback replays ALL outgoing commits, not just the tip'
     const originLog = sh(`git --git-dir="${originDir}" log --oneline main`).trim();
     assert.match(originLog, /first commit/, `origin/main is missing "first commit" — it was pushed without the earlier local commit. Log:\n${originLog}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -688,7 +688,7 @@ test('BRO-259 (recurrence of #769): a commit-dropped-post-push reset preserves a
       `the commit landed DURING the push was dropped by the commit-dropped-post-push reset (BRO-259 regression). Log:\n${postRunLog}\nOutput:\n${stdout}`);
     assert.match(postRunLog, /payload commit/, `the entry payload commit vanished. Log:\n${postRunLog}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -807,6 +807,6 @@ test('BRO-259 (Codex adversarial finding): a poisoned concurrent commit is NOT a
     assert.match(stdout, /NOT adopting as the restore point/,
       `expected sync_restore_base_head to explicitly refuse the poisoned candidate. Output:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

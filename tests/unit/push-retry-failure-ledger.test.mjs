@@ -100,7 +100,7 @@ test('generalized store: a second branch/file pair works independently of push-l
     assert.equal(branchCommitCount(originDir, 'main'), '1',
       'push-retry-failures writes must never add commits to main');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -138,7 +138,7 @@ test('record-push-retry-failure.js end-to-end: entry recorded on push-retry-fail
     assert.equal(branchCommitCount(originDir, 'main'), '1',
       'record-push-retry-failure must not commit to main');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -162,9 +162,9 @@ test('record-push-retry-failure.js has its OWN kill switch, separate from PUSH_S
     });
     assert.equal(branchExists(originDir2, FAILURE_BRANCH), false,
       'PUSH_SKIP_FAILURE_LEDGER must disable this recorder');
-    fs.rmSync(tmp2, { recursive: true, force: true });
+    fs.rmSync(tmp2, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -180,7 +180,7 @@ test('record-push-retry-failure.js canonical-repo gate: non-Broadwayscore origin
     assert.equal(branchExists(originDir, FAILURE_BRANCH), false,
       'no failure-ledger branch may be created on a non-canonical origin');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -231,6 +231,6 @@ test('CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, bran
     assert.equal(branchCommitCount(originDir, FAILURE_BRANCH), '1',
       'the branch must still converge to exactly one commit after concurrent writes');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

@@ -155,7 +155,7 @@ function runGate(lastAssistantMessage, extraEnv = {}) {
     });
     return { status: result.status, stderr: result.stderr || '' };
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }
 
@@ -174,7 +174,7 @@ test('Gate P BLOCKS a DISPATCHED: line whose quoted title matches no live cmux w
     assert.equal(status, 2, `expected block (exit 2), got ${status}\nstderr:\n${stderr}`);
     assert.match(stderr, /no live cmux workspace title matches/i);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -202,7 +202,7 @@ test('Gate P PASSES a claim quoting the GLYPH-PREFIXED tab title, as Gate W requ
     const { status, stderr } = runGate(msg, { CMUX_BIN: cmuxBin });
     assert.equal(status, 0, `expected pass (exit 0), got ${status}\nstderr:\n${stderr}`);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -221,7 +221,7 @@ test('Gate P PASSES the same claim once a live workspace title actually overlaps
     const { status, stderr } = runGate(msg, { CMUX_BIN: cmuxBin });
     assert.equal(status, 0, `expected pass (exit 0), got ${status}\nstderr:\n${stderr}`);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -237,7 +237,7 @@ test('Gate P ignores DEFERRED: lines (they never claim a workspace launched)', {
     const { status } = runGate(msg, { CMUX_BIN: cmuxBin });
     assert.equal(status, 0);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -256,6 +256,6 @@ test('Gate P BLOCKS a DISPATCHED: claim when cmux is reachable but reports ZERO 
     assert.equal(status, 2, `expected block (exit 2), got ${status}\nstderr:\n${stderr}`);
     assert.match(stderr, /no live cmux workspace title matches/i);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

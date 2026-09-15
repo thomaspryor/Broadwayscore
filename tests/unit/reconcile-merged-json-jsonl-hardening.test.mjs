@@ -86,7 +86,7 @@ test('a corrupt local line fails OPEN (skips reconciliation) instead of silently
     assert.equal(out.trim(), '', 'a corrupt-line file must never be reported as reconciled/changed');
     assert.equal(after, before, 'the file on disk must be byte-identical — corrupt line preserved, not silently dropped');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -133,6 +133,6 @@ test('reconcile-merged-json.js resolves MANAGED paths correctly even when invoke
     // Also confirm nothing leaked into a phantom data/data/audit/ path.
     assert.equal(fs.existsSync(path.join(runnerDir, 'data', 'data')), false);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
