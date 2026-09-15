@@ -130,7 +130,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { parseDate, parseHistoricalDate } = require('./lib/date-utils');
 const { getFoundOutletIds } = require('./lib/found-outlet-ids');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { shouldLogRejection } = require('./lib/gather-review-stats');
+const { shouldLogRejection, shouldStampPreviewPlaceholder } = require('./lib/gather-review-stats');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 let chromium, playwright;
 try {
@@ -3881,15 +3881,26 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // Mark file as a preview-period placeholder when the show hasn't opened yet.
   // mergeReviews() respects this flag: post-opening discoveries replace the file
-  // wholesale rather than merging into stale preview data.
+  // wholesale rather than merging into stale preview data. As of BRO-931 #3,
+  // review-guards.js's explainExclusion() also excludes placeholder-stamped
+  // files from rebuild — which makes a WRONG stamp actively harmful (a real
+  // post-opening review silently vanishes) instead of merely cosmetic.
   // _showMeta is already loaded above — no second disk read needed.
-  if (_showMeta) {
-    const isPreviewsStatus = _showMeta.status === 'previews';
-    const hasNotOpenedYet = _showMeta.openingDate
-      && new Date(_showMeta.openingDate) > new Date();
-    if (isPreviewsStatus || hasNotOpenedYet) {
-      review.isPreviewPlaceholder = true;
-    }
+  //
+  // Two self-heals against shows.json status lag (update-show-status.yml runs
+  // once daily; a show can sit at status:'previews' for hours after it has
+  // genuinely opened — adversarial ship-check finding, task #931 follow-up):
+  //   1. options.fromPostOpening: true is an explicit caller assertion — the
+  //      opening-night poller always passes it (opening-night-poller.js's own
+  //      dispatch filter already restricts targets to open/effectively-open
+  //      shows), so trust it over a possibly-stale status field.
+  //   2. hasOpenedByDate: even without that signal, a status still reading
+  //      'previews' must not override an openingDate that has already
+  //      passed — mirrors the "Auto-detect post-opening context" block a few
+  //      dozen lines below, which already treats openingDate <= now as an
+  //      override for exactly this same staleness.
+  if (shouldStampPreviewPlaceholder(_showMeta, options)) {
+    review.isPreviewPlaceholder = true;
   }
 
   // Pattern Card #4: route --unknown.json files with a URL to _pending/ instead of

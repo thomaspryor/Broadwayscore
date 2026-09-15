@@ -174,6 +174,77 @@ function makeFingerprint(live) {
   return `${live ?? 'null'}`;
 }
 
+// Re-alert only after 6h if the same stuck state persists.
+const SAME_FP_COOLDOWN_MS = 6 * 60 * 60 * 1000;
+// Only alert once the SAME stuck state has been observed on 2+ consecutive runs.
+const GRACE_CONSECUTIVE = 2;
+
+/**
+ * Returns true if we should fire an alert for this show given the current
+ * fingerprint and state entry.
+ *
+ * Adversarial ship-check finding (BRO-931 #4 follow-up): `updateState` runs
+ * every check, including healthy (non-drifting) runs, so `consecutiveCount`
+ * was accumulating regardless of drift status. If live happened to hold the
+ * same value through a healthy stretch and THEN a real drift appeared with
+ * that same live value (a common shape — live freezes, then local/agg start
+ * climbing on top of it), the fingerprint already matched the prior entry on
+ * the very FIRST drifting run, so the grace window was pre-armed and alerted
+ * immediately instead of waiting for 2 CONFIRMED-DRIFTING consecutive runs.
+ * `aboveThreshold` closes this: a run only continues the grace window when
+ * the PREVIOUS entry was also above threshold with the same fingerprint: a
+ * healthy→drifting transition always restarts the count at 1, even when the
+ * live value itself didn't change.
+ *
+ * Alert fires when:
+ *   - Same fingerprint AND both runs above threshold AND 2+ consecutive runs
+ *   - AND (never alerted before, OR >6h since the last alert)
+ */
+function shouldAlert(showId, fingerprint, drift, threshold, state) {
+  if (drift <= threshold) return false;
+
+  const entry = state[showId];
+  if (!entry || entry.fingerprint !== fingerprint || !entry.aboveThreshold) {
+    // New/changed fingerprint, or the previous run wasn't drifting — start (or restart) the grace window.
+    return false; // Wait for next run to confirm
+  }
+
+  // Same fingerprint AND previous run was also above threshold.
+  const consecutiveCount = (entry.consecutiveCount || 1) + 1;
+  if (consecutiveCount < GRACE_CONSECUTIVE) return false;
+
+  const now = Date.now();
+  if (!entry.lastAlertTs) return true;
+  return (now - entry.lastAlertTs) >= SAME_FP_COOLDOWN_MS;
+}
+
+/**
+ * @param {boolean} aboveThreshold whether THIS run's drift exceeds the
+ *   configured threshold — see shouldAlert's doc comment for why this must
+ *   gate continuation of the grace window, not just fingerprint equality.
+ */
+function updateState(state, showId, fingerprint, didAlert, aboveThreshold) {
+  const entry = state[showId];
+  const now = Date.now();
+
+  if (!entry || entry.fingerprint !== fingerprint || !entry.aboveThreshold) {
+    state[showId] = {
+      fingerprint,
+      firstSeen: now,
+      consecutiveCount: 1,
+      lastAlertTs: didAlert ? now : null,
+      aboveThreshold,
+    };
+  } else {
+    state[showId] = {
+      ...entry,
+      consecutiveCount: (entry.consecutiveCount || 1) + 1,
+      lastAlertTs: didAlert ? now : entry.lastAlertTs,
+      aboveThreshold,
+    };
+  }
+}
+
 module.exports = {
   countLocalIncluded,
   countAggregate,
@@ -183,4 +254,6 @@ module.exports = {
   classifyLiveRcPayload,
   isLiveRcMissingField,
   makeFingerprint,
+  shouldAlert,
+  updateState,
 };
