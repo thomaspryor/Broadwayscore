@@ -222,6 +222,11 @@ async function cmdReport(args, deps = {}) {
   // without adding a type field to that return shape.
   let stateMoved = false;
   let refusal = null;
+  // Marker FIRST: the outcome comment above is already posted, and the Done
+  // gate below now does real git/gh I/O (fetch + ancestry, tens of seconds).
+  // If this process is killed mid-gate, the Stop-hook sentinel must already
+  // know the comment landed — otherwise the mandated retry double-posts it.
+  console.log(lsr.buildIssueIdMarker(issue.id));
   if (completion.stateId) {
     if (args.status === 'done') {
       const bypassReason =
@@ -247,6 +252,7 @@ async function cmdReport(args, deps = {}) {
           existingComments,
           verifyEvidence,
         });
+        if (gate.warning) console.error(`⚠️  ${gate.warning}`);
         if (gate.gated && !gate.allowed) refusal = gate;
       }
     }
@@ -256,11 +262,9 @@ async function cmdReport(args, deps = {}) {
     }
   }
 
-  // Marker printed regardless of refusal — the outcome comment above IS the
-  // report the Stop-hook "reported" sentinel tracks (see file header); a
-  // refused Done still means this session communicated status honestly, it
-  // just didn't get to change the issue's state.
-  console.log(lsr.buildIssueIdMarker(issue.id));
+  // (Marker was printed before the gate — see above.) A refused Done still
+  // means this session communicated status honestly; it just didn't get to
+  // change the issue's state.
   console.log(
     JSON.stringify({
       id: issue.id,
