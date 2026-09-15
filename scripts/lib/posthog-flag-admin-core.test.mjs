@@ -5,6 +5,7 @@ import {
   buildFlagUrl,
   findExactFlagMatch,
   buildPatchRequest,
+  parseArgs,
 } from './posthog-flag-admin-core.js';
 
 test('buildSearchUrl encodes the key into the ?search= query param', () => {
@@ -68,4 +69,36 @@ test('buildPatchRequest builds a PATCH to the flag URL with the active body', ()
 test('buildPatchRequest supports re-activating a flag (active: true)', () => {
   const req = buildPatchRequest('332742', 772232, true);
   assert.deepEqual(JSON.parse(req.body), { active: true });
+});
+
+test('parseArgs defaults to archive (active:false) with no --active flag', () => {
+  const { identifier, desiredActive, dryRun } = parseArgs(['gate-cold-start']);
+  assert.equal(identifier, 'gate-cold-start');
+  assert.equal(desiredActive, false);
+  assert.equal(dryRun, false);
+});
+
+test('parseArgs accepts --active=true and --dry-run', () => {
+  const { identifier, desiredActive, dryRun } = parseArgs(['772232', '--active=true', '--dry-run']);
+  assert.equal(identifier, '772232');
+  assert.equal(desiredActive, true);
+  assert.equal(dryRun, true);
+});
+
+test('parseArgs rejects zero or multiple positional identifiers', () => {
+  assert.throws(() => parseArgs([]), /Usage:/);
+  assert.throws(() => parseArgs(['a', 'b']), /Usage:/);
+});
+
+test('parseArgs rejects a malformed --active value instead of silently archiving (e.g. a typo like --active=True)', () => {
+  assert.throws(() => parseArgs(['gate-cold-start', '--active=True']), /must be exactly 'true' or 'false'/);
+  assert.throws(() => parseArgs(['gate-cold-start', '--active=1']), /must be exactly 'true' or 'false'/);
+});
+
+test('parseArgs rejects an unrecognized flag instead of silently ignoring it', () => {
+  assert.throws(() => parseArgs(['gate-cold-start', '--dryrun']), /Unrecognized flag/);
+});
+
+test('parseArgs rejects --active passed more than once', () => {
+  assert.throws(() => parseArgs(['gate-cold-start', '--active=true', '--active=false']), /more than once/);
 });

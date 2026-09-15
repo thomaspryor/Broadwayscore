@@ -20,7 +20,7 @@
  * Env: POSTHOG_PERSONAL_API_KEY (set via .github/workflows/manual-posthog-flag-archive.yml's secret).
  */
 
-const { buildSearchUrl, buildFlagUrl, findExactFlagMatch, buildPatchRequest } = require('./lib/posthog-flag-admin-core');
+const { buildSearchUrl, buildFlagUrl, findExactFlagMatch, buildPatchRequest, parseArgs } = require('./lib/posthog-flag-admin-core');
 
 const PROJECT_ID = '332742';
 
@@ -28,17 +28,6 @@ function getApiKey() {
   const key = process.env.POSTHOG_PERSONAL_API_KEY;
   if (!key) throw new Error('POSTHOG_PERSONAL_API_KEY not set');
   return key;
-}
-
-function parseArgs(argv) {
-  const positional = argv.filter((a) => !a.startsWith('--'));
-  if (positional.length !== 1) {
-    throw new Error('Usage: node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run]');
-  }
-  const activeArg = argv.find((a) => a.startsWith('--active='));
-  const desiredActive = activeArg ? activeArg.slice('--active='.length) === 'true' : false;
-  const dryRun = argv.includes('--dry-run');
-  return { identifier: positional[0], desiredActive, dryRun };
 }
 
 async function fetchFlagById(apiKey, id) {
@@ -110,5 +99,3 @@ if (require.main === module) {
     process.exit(1);
   });
 }
-
-module.exports = { parseArgs };
