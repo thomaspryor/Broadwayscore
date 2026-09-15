@@ -116,6 +116,7 @@ scripts/lib/venue-date-compare.test.mjs
 scripts/lib/workspace-naming.test.mjs
 scripts/lib/zombie-tab-sweep.test.mjs
 scripts/llm-scoring/batch-mode.test.mjs
+scripts/llm-scoring/cost-recording.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
 scripts/newsletter/bw-quiet-week-fallback.test.mjs
 scripts/newsletter/featured-state-persist-order.test.mjs
@@ -278,6 +279,7 @@ tests/unit/bww-roundup-multi-critic.test.mjs
 tests/unit/bww-roundup-persistence.test.mjs
 tests/unit/bww-roundup-thumbs-and-urls.test.mjs
 tests/unit/bww-rr-discover.test.mjs
+tests/unit/byline-attestation.test.mjs
 tests/unit/byline-normalization.test.mjs
 tests/unit/bylines-unknown-recovery.test.mjs
 tests/unit/canonical-duplicate-pointers.test.mjs
@@ -461,11 +463,13 @@ tests/unit/human-review-score-provisional.test.mjs
 tests/unit/image-optimizer-exposure.test.mjs
 tests/unit/import-ledger-checkpoint.test.mjs
 tests/unit/import-ledger.test.mjs
+tests/unit/in-review-backlog.test.mjs
 tests/unit/ingest-bulk-drop-detection.test.mjs
 tests/unit/ingest-manual-review-collision.test.mjs
 tests/unit/ingest-manual-review-fields.test.mjs
 tests/unit/ingest-manual-review-merge.test.mjs
 tests/unit/ingest-review-nytimes-an-american-daughter.test.mjs
+tests/unit/ingest-review-url-blocklist.test.mjs
 tests/unit/initialize-commercial-stub.test.mjs
 tests/unit/input-builder-market-label.test.mjs
 tests/unit/intentional-clear-breadcrumb.test.mjs

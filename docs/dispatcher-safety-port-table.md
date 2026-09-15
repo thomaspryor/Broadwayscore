@@ -100,7 +100,7 @@ PORT — TODO rows are not yet — so this table cannot silently drift from the 
 
 | # | Safety behaviour | Lives today (file : function) | Port or Delete | Rationale / target |
 |---|---|---|---|---|
-| H1 | **Nightly acceptance recheck** — re-run the `verifyCmd` captured at dispatch against fresh main days later; shadow-mode, never auto-reopens until the shadow record clears the bar | `scripts/autonomous-acceptance-recheck.js` (reads the dispatch ledger + Notion Done/Paused board) | **PORT — TODO** | The dispatcher's *raison d'être* for the verify gate (B1). `linear-next.js` already **captures** `verifyCmd` into the ledger, but the recheck only walks the **Notion** board, so Linear-dispatched Done work is never re-verified. Port target: a Linear-issue recheck pass that lists Done Linear issues and re-runs their ledger-captured `verifyCmd` (the ledger already carries `linearId`). Real gap — arguably the most load-bearing TODO here. |
+| H1 | **Nightly acceptance recheck** — re-run the `verifyCmd` captured at dispatch against fresh main days later; shadow-mode, never auto-reopens until the shadow record clears the bar | `scripts/autonomous-acceptance-recheck.js` + `scripts/lib/linear-recheck-source.js` (reads the dispatch ledger + Notion Done/Paused board + non-terminal Linear issues) | **PORT — done** (BRO-3373) | Was the dispatcher's most load-bearing TODO: `linear-next.js` **captures** `verifyCmd`+`linearId` into the ledger, but the recheck used to walk only the **Notion** board — every Linear card's RECHECK-AFTER stamp (usually posted in a wrap-up comment, since Linear has no "Paused" state) went silently unverified after the Notion mirror froze 2026-08-20. Fixed: `fetchLinearRecheckCandidates` fetches non-terminal Linear issues and folds them into the same candidate pool; `parseRecheckAfterFromCard`/`verifiabilityForCard` now also scan `card.comments`. Verified live against BRO-3015/BRO-3320. |
 | H2 | **Push mutex** — serialize concurrent pushes (flock) so parallel sessions/CI can't clobber each other | `scripts/lib/push-mutex.sh` (sourced by `push-with-retry.sh`) | **N/A — inherited** | Repo-global, session-side; every dispatched session inherits it regardless of dispatcher. Nothing to port. |
 | H3 | **Push retry / rebase / deadline / deadman / content-survival** — bounded retry with auto-conflict-resolution, an overall deadline, a conflict-marker guard, a content-drop guard, and a failure ledger | `push-with-retry.sh` + `push-retry-deadman.js` + `push-content-survival.js` | **N/A — inherited** | Repo-global push primitive; dispatcher-agnostic. Inherited unchanged. |
 | H4 | **Infra plan-review gate** — first edit to shared infra (dispatch layer, spend guards, workflows, hooks) is blocked until a `/second-opinion` or `/plan-review` verdict is recorded | `scripts/lib/review-gate.mjs` (`record-plan` / pass / fail / owner-override) + `infra-plan-review-gate.sh` hook | **N/A — inherited** | Session/hook-side gate over *editing* dispatcher code; not a runtime dispatch behaviour. Applies to whoever edits `linear-next.js` too. Nothing to port. |
@@ -112,22 +112,20 @@ PORT — TODO rows are not yet — so this table cannot silently drift from the 
 
 | Decision | Count | Rows |
 |---|---|---|
-| **PORT — done** (already shared + used by `linear-next.js`) | 16 | A1–A5, A7, B1, B2, B4, C1–C5, E2, F2, G1–G5 |
-| **PORT — TODO** (bsc-next-only; needs a Linear equivalent) | 6 | C6, D1–D3, E1, E3, H1 |
+| **PORT — done** (already shared + used by `linear-next.js`) | 17 | A1–A5, A7, B1, B2, B4, C1–C5, E2, F2, G1–G5, H1 |
+| **PORT — TODO** (bsc-next-only; needs a Linear equivalent) | 5 | C6, D1–D3, E1, E3 |
 | **DELETE** (Notion/native-shaped; Linear has a native analog or it's moot post-cutover) | 5 | A6, B3, B5, F1, F3 (`BSC_RUNNER_DISABLED`) |
 | **N/A — inherited** (repo-global / session-side, not dispatcher-owned) | 5 | H2–H5 (+ push family) |
 
 **The load-bearing PORT — TODO items**, ranked:
 
-1. **H1 — Linear acceptance recheck.** `linear-next.js` already arms the verify gate and writes
-   `verifyCmd`+`linearId` to the ledger, but nothing re-runs it for Linear issues
-   (`autonomous-acceptance-recheck.js` walks only the Notion board). Without this the whole
-   verify-gate contract is half-wired on the Linear side.
-2. **C6 — launcher-outage detector.** Shared/pure already; the only gap is that `linear-next.js`
+1. **C6 — launcher-outage detector.** Shared/pure already; the only gap is that `linear-next.js`
    doesn't *call* it. Cheap, high-value. (A5 is done — see above.)
-3. **D1–D3 — succession.** A policy call: is context-limit succession in scope for the Linear cutover,
+2. **D1–D3 — succession.** A policy call: is context-limit succession in scope for the Linear cutover,
    or deferred? If deferred, Linear sessions simply have no succession (state the gap explicitly).
-4. **E1 (amend), E3 (CI-red claim).** Genuine but niche; safe to defer.
+3. **E1 (amend), E3 (CI-red claim).** Genuine but niche; safe to defer.
+
+(H1 — Linear acceptance recheck — was ranked #1 here; closed by BRO-3373, see the H1 row above.)
 
 **The DELETE items are safe** because each is coupled to a Notion-only data shape (the Outcome
 property, the native `task.status`, the Notion category, the mirror task directory, or the

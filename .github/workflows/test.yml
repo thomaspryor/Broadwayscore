@@ -65,6 +65,15 @@ on:
       # listed above.
       - 'scripts/check-vercel-build-guard.js'
       - 'scripts/check-corpus-drift.js'
+      # BRO-3375: same gap shape — a top-level scripts/ file outside the
+      # scripts/lib/** glob, so a solo edit would trigger ZERO CI. Its decision
+      # logic deliberately lives OUTSIDE this repo, in
+      # ~/.claude/hooks/lib/xcode-toolchain-guard.js (the outage it guards
+      # against breaks the very git that would refresh a repo checkout, so the
+      # guard must not depend on one). That lib is tested by
+      # ~/.claude/hooks/tests/xcode-toolchain-guard/run.sh, which claude-sync
+      # push runs as a pre-push gate; this entry covers the wrapper itself.
+      - 'scripts/check-xcode-toolchain.js'
       # scripts/audit-doubled-market-ids.js is a top-level CLI whose exit contract
       # (0 clean / 1 flagged / 2 could-not-run) is covered by the colocated
       # scripts/lib/doubled-market-ids.test.mjs subprocess test. That test runs
@@ -1008,6 +1017,17 @@ on:
       # edit triggers CI.
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
+      # Byline-attestation tiebreak (BRO-3247): decides which of two same-URL
+      # bylines is real by checking which one the article actually prints.
+      # Test lives in tests/unit/ (node --test batch via unit-test-manifest.txt);
+      # path-listed so a solo lib edit triggers CI.
+      - 'scripts/lib/byline-attestation.js'
+      # The per-show URL blocklist lib that makes an operator deletion stick —
+      # now consulted by ingest-review-from-url.js too (BRO-3247).
+      - 'scripts/lib/poller-blocklist.js'
+      # Region locality single-source (BRO-3247) — a wrong verdict here silently
+      # drops real reviews from BWW roundups as "non-local".
+      - 'scripts/lib/outlet-region-map.js'
       # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
       # colocated scripts/lib/churn-merge-coverage.test.mjs runs in the lib-test
       # step; without these path entries a solo edit triggers ZERO CI.
@@ -2181,6 +2201,22 @@ on:
       # colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/bsc-needs-you.js'
+      # bsc-in-review (BRO-282 residual half / BRO-3376) — the issue-scoped
+      # sibling of bsc-needs-you above. `In Review` is where finished work
+      # actually piles up (120 items, 100 idle 14d+, measured 2026-09-15) and,
+      # unlike a cmux tab mark, it survives the session that made it. Pure
+      # logic lives in scripts/lib/in-review-backlog.js so the test runs in the
+      # lib glob; path-listed here so a solo edit to the CLI triggers CI at all
+      # (feedback_test_yml_push_path_allowlist).
+      # This hand-listing is load-bearing and permanently un-enforced: BOTH
+      # audit-toplevel-script-test-yml-coverage.js and
+      # audit-test-yml-manifest-paths.js key off manifest-registered tests and
+      # their required sources, and tests/unit/in-review-backlog.test.mjs
+      # requires only scripts/lib/in-review-backlog.js (already covered by
+      # scripts/lib/**) — so neither audit will ever put this CLI in its gap
+      # set. Same shape as the ux-walkthrough.mjs note below. Delete this line
+      # and nothing fails; CI just silently stops running on it.
+      - 'scripts/bsc-in-review.js'
       # Autopilot v5 headless runner (task #459) — colocated tests in the main
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/bsc-reconcile.js'
@@ -2558,6 +2594,14 @@ on:
       # here so a solo edit to any of these files triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/llm-scoring/batch-mode.test.mjs'
+      # BRO-3381: costUsd recording + cost-breach alarm. Colocated
+      # cost-recording.test.mjs lives in scripts/llm-scoring/ (not
+      # scripts/lib/), so same gap shape as batch-mode.test.mjs above —
+      # explicitly listed in tests/unit-test-manifest.txt AND path-listed
+      # here so a solo edit to any of these triggers CI. The recording lib
+      # itself (scripts/lib/llm-scoring-cost-recording.js) is covered by the
+      # scripts/lib/** glob already.
+      - 'scripts/llm-scoring/cost-recording.test.mjs'
       - 'scripts/llm-scoring/batch-clients.ts'
       - 'scripts/llm-scoring/cost.ts'
       - 'scripts/llm-scoring/scorer.ts'
