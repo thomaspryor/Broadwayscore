@@ -713,5 +713,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-15T02:14:40.255Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:golden-boy-off-west-end-2026",
+    "title": "Auto-remediation gave up on golden-boy-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"golden-boy-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T07:50:19.617Z"
   }
 ]
