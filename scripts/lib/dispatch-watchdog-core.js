@@ -96,7 +96,15 @@ function killSwitchStaleness(offFileMtimeMs, now) {
 //   asked for. Derived from perDay rather than set independently so the
 //   owner keeps ONE money dial: raising perDay widens the hourly allowance
 //   proportionally, and the two can never contradict each other.
-const PER_DAY_DEFAULT = 12;
+// 12 -> 24 on the owner's explicit approval, 2026-09-15 ("24/day sounds good"),
+// after being shown the arithmetic: mean $7.47/job (median $6.16, p90 $16.92)
+// across 382 completed jobs since 2026-08-16, so ~$180/day against ~$90/day.
+// The old 12 was sized for a 3-wide cmux lane; with watchdogConcurrent now 6
+// and a median job of 22 minutes, 12/day left the six slots empty most of the
+// day and perDay — not concurrency — was the thing actually throttling the
+// drain. THIS IS THE MONEY DIAL: it bounds claims per local day and nothing
+// else does. Lower it first if spend needs to come down.
+const PER_DAY_DEFAULT = 24;
 const PACING_HOURS = 8;              // spread the day budget over a working day, not 24h of dribble
 const CAPS = Object.freeze({
   perSweep: 2,
