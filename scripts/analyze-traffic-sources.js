@@ -217,6 +217,31 @@ async function fetchGa4(dateRange) {
 // ---------- PostHog ----------
 
 /**
+ * Run `fn` again once if it fails with a transient PostHog error. The second
+ * live run (GHA 35021340158) lost its first query to a bare "504 Gateway
+ * Time-out" that succeeded on the next dispatch; one retry after a pause is
+ * cheaper than a red run. Non-transient errors (400 bad HogQL, 401/403) are
+ * rethrown immediately.
+ */
+async function withRetry(fn, { attempts = 2, delayMs = 20000, isRetryable = isTransientPostHogError, sleep = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+  let lastErr;
+  for (let i = 1; i <= attempts; i++) {
+    try { return await fn(); }
+    catch (e) {
+      lastErr = e;
+      if (i === attempts || !isRetryable(e)) throw e;
+      console.error(`retrying after transient error (attempt ${i}/${attempts}): ${String(e.message).split('\n')[0].slice(0, 120)}`);
+      await sleep(delayMs);
+    }
+  }
+  throw lastErr;
+}
+
+function isTransientPostHogError(e) {
+  return /PostHog API (5\d\d|429)|time-?out|ECONNRESET|fetch failed/i.test(String(e && e.message));
+}
+
+/**
  * Sessions per day keyed by `expr`, attributed by session ENTRY properties and
  * bucketed by session start. `extraWhere` is appended after the Real Users lens.
  */
@@ -262,7 +287,7 @@ async function fetchPostHog(range) {
   // Sequential on purpose: each query joins sessions + persons over the whole
   // window; five in parallel is how HogQL query timeouts happen.
   for (const [name, [expr, where]] of Object.entries(specs)) {
-    try { out[name] = await phDaily(expr, range, where); }
+    try { out[name] = await withRetry(() => phDaily(expr, range, where)); }
     catch (e) { out[name] = []; out.errors[name] = e.message; }
   }
   if (Object.keys(out.errors).length === Object.keys(specs).length) {
@@ -447,7 +472,7 @@ async function main() {
   }
 }
 
-module.exports = { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell, normalizeCampaign };
+module.exports = { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError };
 
 if (require.main === module) {
   main().catch((e) => { console.error(e); process.exit(1); });

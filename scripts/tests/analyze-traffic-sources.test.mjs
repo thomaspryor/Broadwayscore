@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell, normalizeCampaign } = require('../analyze-traffic-sources.js');
+const { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError } = require('../analyze-traffic-sources.js');
 
 test('weekStart maps any day to its ISO Monday, for both GA4 and ISO date formats', () => {
   assert.equal(weekStart('20260915'), '2026-09-14'); // Tue → Mon
@@ -141,4 +141,25 @@ test('buildReport lists each spiking source once in the summary, at its biggest 
   assert.equal(spikes.length, 2); // two spiking weeks in the section table
   assert.equal((md.match(/\*\*Hong Kong\*\* \(PostHog country\)/g) || []).length, 1); // one summary line
   assert.match(md, /700 sessions in the week of Aug 24/);
+});
+
+test('withRetry retries a transient PostHog error once and rethrows non-transient errors immediately', async () => {
+  const sleep = async () => {};
+  let calls = 0;
+  const flaky = async () => { calls++; if (calls === 1) throw new Error('PostHog API 504: <html>504 Gateway Time-out'); return 'ok'; };
+  assert.equal(await withRetry(flaky, { sleep }), 'ok');
+  assert.equal(calls, 2);
+
+  calls = 0;
+  const bad = async () => { calls++; throw new Error('PostHog API 400: bad hogql'); };
+  await assert.rejects(() => withRetry(bad, { sleep }), /400/);
+  assert.equal(calls, 1);
+
+  calls = 0;
+  const dead = async () => { calls++; throw new Error('PostHog API 503: down'); };
+  await assert.rejects(() => withRetry(dead, { sleep }), /503/);
+  assert.equal(calls, 2); // gives up after the single retry
+
+  assert.equal(isTransientPostHogError(new Error('PostHog API 429: rate limited')), true);
+  assert.equal(isTransientPostHogError(new Error('PostHog API 401: nope')), false);
 });
