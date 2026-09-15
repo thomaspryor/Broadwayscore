@@ -51,19 +51,17 @@ const SNAPSHOTS = [
   { key: 'health', label: 'site health', file: 'health-digest-snapshot.json', maxAgeH: 36 },
   { key: 'dailyDigest', label: 'score-drift digest', file: 'daily-digest-snapshot.json', maxAgeH: 36, bannerOnly: true },
   { key: 'redditDigest', label: 'Reddit engagement', file: 'reddit-digest-snapshot.json', maxAgeH: 36, bannerOnly: true },
-  // scripts/backlog-drain.js (task #654) — Mac-local, NOT committed (unlike
-  // the three above, which are CI-produced and pulled via git): both the
-  // producer and this consumer run on the same Mac via launchd, so there is
-  // no cross-machine gap to bridge with a git commit.
-  //
-  // optionalIfMissing (ship-check adversarial finding): the launchd plist
-  // ships DISABLED by default — until the owner enables it, this file never
-  // exists, and a plain "missing" would show up as a permanent false
-  // "didn't update overnight" banner line on every single morning digest.
-  // 'missing' is suppressed for this entry only; 'stale'/'invalid' still
-  // report — those mean the producer EXISTED and then broke, which is real
-  // signal worth flagging.
-  { key: 'backlogDrain', label: 'backlog drain', file: 'backlog-drain-metric.json', maxAgeH: 36, optionalIfMissing: true, bannerOnly: true },
+  // backlogDrain REMOVED 2026-09-15 (BRO-3390). Its producer,
+  // scripts/backlog-drain.js, was deliberately decommissioned on 2026-08-31
+  // when the board moved to Linear — so data/audit/backlog-drain-metric.json
+  // froze that day and this entry has been emitting a "backlog drain snapshot
+  // is stale" line into the owner's morning digest every day since. 'stale'
+  // is supposed to mean "the producer existed and then broke", which is real
+  // signal; here the producer was retired on purpose, so the warning was
+  // permanent, unactionable and exactly the kind of chronic false alarm that
+  // teaches an owner to stop reading the digest. The continuous drain now
+  // lives in dispatch-watchdog.js; surfacing ITS numbers here is tracked in
+  // BRO-3431 along with the other Notion-sourced digest blocks.
   // scripts/check-provider-spend.js (Scraping Cost System v2 Sprint 0) —
   // daily billing-API spend vs owner thresholds + 7-day verification streak.
   // CI-produced in data-health-check.yml and committed, like health above.

@@ -53,28 +53,32 @@ test('readAllSnapshots: fresh sections render, everything else lands in problems
   const freshAt = new Date(NOW - 1 * 3600e3).toISOString();
   write(dir, 'health-digest-snapshot.json', { generatedAt: freshAt, errors: [], warns: [] });
   write(dir, 'daily-digest-snapshot.json', { generatedAt: new Date(NOW - 50 * 3600e3).toISOString() });
-  // reddit + backlog-drain snapshots absent on purpose
+  // reddit + provider-spend snapshots absent on purpose
 
   const { sections, problems } = readAllSnapshots({ auditDir: dir, now: NOW });
   assert.ok(sections.health);
   assert.equal(sections.dailyDigest, null);
   assert.equal(sections.redditDigest, null);
-  assert.equal(sections.backlogDrain, null);
-  // backlogDrain is optionalIfMissing (disabled-by-default launchd plist) —
-  // its absence must NOT land in problems, only reddit's genuine gap does.
+  assert.equal(sections.providerSpend, null);
+  // providerSpend is optionalIfMissing (no file until the first daily run
+  // lands it) — its absence must NOT land in problems, only reddit's genuine
+  // gap does. (This assertion used to be keyed on backlogDrain, whose
+  // registry entry was removed in BRO-3390 when its producer was retired;
+  // the INVARIANT it guards is about optionalIfMissing, not about that one
+  // snapshot, so it is re-pointed rather than deleted.)
   assert.equal(problems.length, 2);
   assert.deepEqual(problems.map((p) => p.status).sort(), ['missing', 'stale']);
-  assert.ok(!problems.some((p) => p.key === 'backlogDrain'));
+  assert.ok(!problems.some((p) => p.key === 'providerSpend'));
 });
 
 test('readAllSnapshots: an optionalIfMissing snapshot that EXISTS and goes stale still reports (producer broke, not just never-enabled)', () => {
   const dir = tmpAudit();
-  write(dir, 'backlog-drain-metric.json', { generatedAt: new Date(NOW - 50 * 3600e3).toISOString() });
+  write(dir, 'provider-spend-snapshot.json', { generatedAt: new Date(NOW - 50 * 3600e3).toISOString() });
 
   const { problems } = readAllSnapshots({ auditDir: dir, now: NOW });
-  const backlogProblem = problems.find((p) => p.key === 'backlogDrain');
-  assert.ok(backlogProblem, 'a stale (not missing) optionalIfMissing snapshot must still be reported');
-  assert.equal(backlogProblem.status, 'stale');
+  const spendProblem = problems.find((p) => p.key === 'providerSpend');
+  assert.ok(spendProblem, 'a stale (not missing) optionalIfMissing snapshot must still be reported');
+  assert.equal(spendProblem.status, 'stale');
 });
 
 test('describeProblems names every non-fresh source; null when all fresh', () => {
@@ -88,8 +92,10 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
   assert.match(note, /^didn't update overnight:/);
 });
 
-test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; backlogDrain added #654; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['backlogDrain', 'coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'health', 'p1RelevanceAudit', 'predispatchQueue', 'providerSpend', 'redditDigest', 'trunk']);
+test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; backlogDrain REMOVED BRO-3390 when its producer was retired)', () => {
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'health', 'p1RelevanceAudit', 'predispatchQueue', 'providerSpend', 'redditDigest', 'trunk']);
+  assert.ok(!SNAPSHOTS.some((s) => s.key === 'backlogDrain'),
+    'backlog-drain-metric.json froze on 2026-08-31 when scripts/backlog-drain.js was decommissioned; re-registering it would resume a permanent daily "stale" warning in the owner digest');
 });
 
 // The half-wired case the #1003 pre-mortem named: a SNAPSHOTS row lands, the
