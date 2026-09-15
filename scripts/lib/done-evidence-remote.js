@@ -30,6 +30,20 @@
  * needs history a depth-1 checkout does not have either — so it is asked of
  * the same remote.
  *
+ * TODO (BRO-3426, consolidation): the Linear Migration owner tab is adding
+ * scripts/lib/pr-evidence-verify.js — a git-ancestry verifier for PR-EVIDENCE
+ * at CLOSE time, i.e. the same question commitIsOnMain/pullIsOnMain answer
+ * here, asked at the moment a card is marked Done rather than the morning
+ * after. It was NOT on origin/main when this shipped (checked with
+ * `git ls-tree origin/main scripts/lib/`), so the check is implemented inline
+ * here per that card's own instruction. When it lands, this module should
+ * import it rather than keep a second copy — and note that
+ * scripts/lib/linear-done-gate.js:85 currently calls extractPrRef and TRUSTS
+ * the marker text without re-proving it, which is precisely the gap that
+ * makes this sweep necessary after the fact; whichever module wins should be
+ * wired into that gate too. Do not edit linear-done-gate.js from here: that
+ * tab owns it concurrently.
+ *
  * `gh` is injected (runGh) so every function here is unit-testable with a stub
  * and makes zero network calls in tests.
  */
