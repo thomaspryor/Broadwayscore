@@ -120,5 +120,53 @@
       }
     ],
     "queuedAt": "2026-09-15T16:10:22.386Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-pre-existing-condition-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on Pre-Existing Condition",
+    "description": "nysr/Michael Sommers (nysr--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This review evaluates the 2024 Connelly Theater produ — https://nystagereview.com/2026/09/14/pre-existing-condition-cold-comfort/\nnytg/Kyle Turner (nytg--kyle-turner.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate theater review with substantive  — https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-lupita-nyongo",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:16:29.863Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-in-honor-of-jean-michel-basquiat-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on IN HONOR OF JEAN-MICHEL BASQUIAT",
+    "description": "in-honor-of-jean-michel-basquiat-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:16:32.582Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-golden-boy-off-west-end-2026",
+    "title": "Stale 'upcoming' tag on Golden Boy",
+    "description": "golden-boy-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=golden-boy-off-west-end-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:16:32.586Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
+    "description": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T18:16:32.588Z"
   }
 ]

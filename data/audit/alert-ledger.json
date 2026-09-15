@@ -2558,12 +2558,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
       "firstSeen": "2026-09-09T11:30:02.094Z",
-      "lastSeen": "2026-09-15T13:38:37.713Z",
+      "lastSeen": "2026-09-15T18:16:32.580Z",
       "lastNotifiedAt": "2026-09-09T11:30:02.094Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "cron-health:Audit Aggregator Review Gap": {
       "status": "resolved",
@@ -2774,12 +2774,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Golden Boy",
       "firstSeen": "2026-09-13T16:24:10.983Z",
-      "lastSeen": "2026-09-15T13:38:37.718Z",
+      "lastSeen": "2026-09-15T18:16:32.584Z",
       "lastNotifiedAt": "2026-09-13T16:24:10.983Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-placeholder-synopsis-night-city-off-west-end-2026": {
       "status": "open",
@@ -2808,12 +2808,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
       "firstSeen": "2026-09-13T16:24:13.022Z",
-      "lastSeen": "2026-09-15T13:38:37.721Z",
+      "lastSeen": "2026-09-15T18:16:32.587Z",
       "lastNotifiedAt": "2026-09-13T16:24:13.022Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "gap:the-children-off-west-end-2026/times-uk--the-times.json": {
       "status": "resolved",
@@ -2896,26 +2896,26 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Pre-Existing Condition",
       "firstSeen": "2026-09-15T01:33:19.239Z",
-      "lastSeen": "2026-09-15T13:38:36.380Z",
+      "lastSeen": "2026-09-15T18:16:29.934Z",
       "lastNotifiedAt": "2026-09-15T01:33:19.239Z",
       "lastSurfacedAt": "2026-09-15T01:33:19.239Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-empty-cast:golden-boy-off-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-15T07:50:19.616Z",
-      "lastSeen": "2026-09-15T13:38:37.716Z",
+      "lastSeen": "2026-09-15T18:16:32.583Z",
       "lastNotifiedAt": "2026-09-15T07:50:19.616Z",
       "lastSurfacedAt": "2026-09-15T07:50:19.616Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Data quality: provider spend ledger": {
       "status": "open",
@@ -2958,33 +2958,84 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "firstSeen": "2026-09-15T13:38:36.374Z",
-      "lastSeen": "2026-09-15T13:38:36.374Z",
+      "lastSeen": "2026-09-15T18:16:29.854Z",
       "lastNotifiedAt": "2026-09-15T13:38:36.374Z",
       "lastSurfacedAt": "2026-09-15T13:38:36.374Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-empty-cast:pre-existing-condition-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on pre-existing-condition-off-broadway-2026",
       "firstSeen": "2026-09-15T13:38:36.376Z",
-      "lastSeen": "2026-09-15T13:38:36.376Z",
+      "lastSeen": "2026-09-15T18:16:29.865Z",
       "lastNotifiedAt": "2026-09-15T13:38:36.376Z",
       "lastSurfacedAt": "2026-09-15T13:38:36.376Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:pre-existing-condition-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Pre-Existing Condition",
       "firstSeen": "2026-09-15T13:38:36.378Z",
-      "lastSeen": "2026-09-15T13:38:36.378Z",
+      "lastSeen": "2026-09-15T18:16:29.883Z",
       "lastNotifiedAt": "2026-09-15T13:38:36.378Z",
       "lastSurfacedAt": "2026-09-15T13:38:36.378Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "opening-night-cv-wrongproduction-unhandled-pre-existing-condition-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on Pre-Existing Condition",
+      "firstSeen": "2026-09-15T18:16:29.863Z",
+      "lastSeen": "2026-09-15T18:16:29.863Z",
+      "lastNotifiedAt": "2026-09-15T18:16:29.863Z",
+      "lastSurfacedAt": "2026-09-15T18:16:29.863Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on IN HONOR OF JEAN-MICHEL BASQUIAT",
+      "firstSeen": "2026-09-15T18:16:32.581Z",
+      "lastSeen": "2026-09-15T18:16:32.581Z",
+      "lastNotifiedAt": "2026-09-15T18:16:32.581Z",
+      "lastSurfacedAt": "2026-09-15T18:16:32.581Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-golden-boy-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on Golden Boy",
+      "firstSeen": "2026-09-15T18:16:32.586Z",
+      "lastSeen": "2026-09-15T18:16:32.586Z",
+      "lastNotifiedAt": "2026-09-15T18:16:32.586Z",
+      "lastSurfacedAt": "2026-09-15T18:16:32.586Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-stale-upcoming-tag-the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Stale 'upcoming' tag on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
+      "firstSeen": "2026-09-15T18:16:32.588Z",
+      "lastSeen": "2026-09-15T18:16:32.588Z",
+      "lastNotifiedAt": "2026-09-15T18:16:32.588Z",
+      "lastSurfacedAt": "2026-09-15T18:16:32.588Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
