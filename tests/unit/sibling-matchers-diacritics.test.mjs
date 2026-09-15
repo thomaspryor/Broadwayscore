@@ -316,6 +316,10 @@ const UNFOLDED_BASELINE_ROOT = new Set([
   'rebuild-all-reviews.js',
   'research-theater-scores.js',
   'reset-adjudication.js',
+  // generatePassword()'s replace strips non-alnum chars out of a base64-
+  // encoded random byte string (crypto.randomBytes), not a show title —
+  // base64 output is ASCII by construction, so there is nothing to fold.
+  'rotate-brightdata-zone-credentials.js',
   'scrape-broadway-com-audience.js',
   'scrape-bww-reviews.js',
   'scrape-dtli.js',
