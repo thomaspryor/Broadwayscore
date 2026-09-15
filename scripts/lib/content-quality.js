@@ -2717,7 +2717,10 @@ function extractAuthorFromHtml(html, text, options = {}) {
   // inline byline at all. Resolve via data/critic-registry.json instead of
   // a hardcoded name — self-disarming the moment a 2nd critic accumulates
   // reviews for this outlet, same as resolveTheaterManiaByline() below.
-  if (options && options.url && /(^|\/\/|\.)culturesauce\.com/i.test(String(options.url))) {
+  // Anchored so a lookalike host (culturesauce.com.evil.net) can't match —
+  // require end-of-string or a path/port/query/fragment separator right
+  // after ".com" (adversarial review, 2026-09-15).
+  if (options && options.url && /(^|\/\/|\.)culturesauce\.com(?:[/:?#]|$)/i.test(String(options.url))) {
     const single = resolveSingleCriticOutletByline('culturesauce');
     if (single) return single;
   }
@@ -2758,9 +2761,17 @@ function loadTheaterManiaCritics() {
  * the top critic to have >=10x the next candidate's count, AND that next
  * candidate to have <=2 reviews, treats that kind of noise as not-a-second-
  * critic while still refusing to guess when a real second critic exists.
+ *
+ * MIN_REVIEWS_FOR_DOMINANCE also gates the single-candidate case (no other
+ * critic on record at all) — a lone 1-review candidate is one observation,
+ * not dominance, and offers no protection against a brand-new outlet whose
+ * real second critic just hasn't accumulated enough reviews to appear in
+ * this generated registry yet (adversarial review, 2026-09-15).
  * @param {string} outletId
  * @returns {string | null}
  */
+const MIN_REVIEWS_FOR_DOMINANCE = 5;
+
 function resolveSingleCriticOutletByline(outletId) {
   if (!outletId) return null;
   try {
@@ -2772,8 +2783,10 @@ function resolveSingleCriticOutletByline(outletId) {
       .map((c) => ({ name: c.displayName, count: c.outletCounts[outletId] }))
       .sort((a, b) => b.count - a.count);
     if (matches.length === 0) return null;
-    if (matches.length === 1) return matches[0].name;
-    const [top, second] = matches;
+    const top = matches[0];
+    if (top.count < MIN_REVIEWS_FOR_DOMINANCE) return null;
+    if (matches.length === 1) return top.name;
+    const second = matches[1];
     if (second.count <= 2 && top.count >= 10 * second.count) return top.name;
     return null;
   } catch {
