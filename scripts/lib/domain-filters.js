@@ -158,6 +158,14 @@ const VENUE_DOMAINS = new Set([
   // other way to green the outlet-registry gate) would have put an Oxford
   // venue in the critic-outlet registry under a two-letter id.
   'schwarzmancentre.ox.ac.uk',
+  // BRO-3374: stratfordeast.com/whats-on/all-shows/<show> is Theatre Royal
+  // Stratford East's own box-office listing ("Running Time ... Content
+  // warning ... Access performances ... Members Offer"), identical shape to
+  // the southbank/schwarzmancentre hosts above. Arrived via /submit-review
+  // for bloodsport-after-helen-of-troy-off-west-end-2026, outletId
+  // `stratfordeast`, and tripped audit-outlet-registry.js --strict as a new
+  // unregistered outlet before contentVerification caught it on rebuild.
+  'stratfordeast.com',
 ]);
 
 // Theatre PR firms AND institutional press offices — announcements, not
