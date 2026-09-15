@@ -391,28 +391,52 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
 
                   {/* Ticket links — single row at bottom. "Get Tickets" first, others visible on desktop only.
                       Previews/upcoming shows sell tickets too — the upcoming guide's whole pitch is "book early". */}
-                  {(show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && ticketLinks.length > 0 && (
+                  {(show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (ticketLinks.length > 0 || Boolean(show.officialUrl)) && (
                     <div className="mt-3 flex flex-wrap gap-2">
-                      {/* Primary CTA — always visible */}
-                      <TicketLink
-                        showName={show.title}
-                        showId={show.id}
-                        showSlug={show.slug}
-                        showStatus={show.status}
-                        showCategory={show.category}
-                        showScore={show.criticScore?.score ?? null}
-                        platform={ticketLinks[0].platform}
-                        url={ticketLinks[0].url}
-                        pageType="guide"
-                        linkPosition={0}
-                        totalLinks={ticketLinks.length}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                        </svg>
-                        Get Tickets{ticketLinks[0].priceFrom ? ` from ${isLondonMarket(show.category) ? '£' : '$'}${ticketLinks[0].priceFrom}` : ''}
-                      </TicketLink>
+                      {/* Primary CTA — always visible. Falls back to Official Site
+                          when there's no affiliate-able ticketLinks entry at all
+                          (BRO-166) instead of rendering nothing. */}
+                      {ticketLinks.length > 0 ? (
+                        <TicketLink
+                          showName={show.title}
+                          showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
+                          platform={ticketLinks[0].platform}
+                          url={ticketLinks[0].url}
+                          pageType="guide"
+                          linkPosition={0}
+                          totalLinks={ticketLinks.length}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                          </svg>
+                          Get Tickets{ticketLinks[0].priceFrom ? ` from ${isLondonMarket(show.category) ? '£' : '$'}${ticketLinks[0].priceFrom}` : ''}
+                        </TicketLink>
+                      ) : show.officialUrl ? (
+                        <TicketLink
+                          showName={show.title}
+                          showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
+                          platform="Official Site"
+                          url={show.officialUrl}
+                          pageType="guide"
+                          linkPosition={0}
+                          totalLinks={1}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                          Visit Official Site
+                        </TicketLink>
+                      ) : null}
                       {/* Other platforms — desktop only */}
                       {ticketLinks.slice(1, 4).map((link, i) => (
                         <TicketLink
@@ -436,7 +460,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           {link.platform}
                         </TicketLink>
                       ))}
-                      {show.officialUrl && (
+                      {ticketLinks.length > 0 && show.officialUrl && (
                         <TicketLink
                           showName={show.title}
                           showId={show.id}

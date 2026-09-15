@@ -88,3 +88,9 @@ test('venueFallbackUrl: no matching config returns null', () => {
   const url = venueFallbackUrl(show({ venue: 'Some Random Church Basement' }), VENUE_CONFIGS);
   assert.equal(url, null);
 });
+
+test('venueFallbackUrl: normalizes to the domain root, never a season-specific path', () => {
+  const configs = [{ name: 'MCC Theater', url: 'https://mcctheater.org/our-2025-26-season/' }];
+  const url = venueFallbackUrl(show({ venue: 'MCC Theater' }), configs);
+  assert.equal(url, 'https://mcctheater.org/');
+});

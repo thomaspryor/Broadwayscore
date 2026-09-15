@@ -176,16 +176,22 @@ export default function TicketButtonsAB({
   // Don't render anything until flags load (or fallback fires after 5s)
   // This eliminates the multi-default flicker that biased early clicks to control.
   if (!flagsLoaded) return null;
+  // No affiliate-able ticketLinks at all — an unmonetized officialUrl link
+  // (a show's own site, not a "buy now" promise) is exempt from the
+  // not-yet-on-sale suppression below (BRO-166).
+  const noTicketLinks = visibleLinks.length === 0;
   // `announced` shows with no priceFrom on any link haven't gone on sale yet — the
   // ticket record exists (we found the future TodayTix listing) but there's nothing
   // bookable behind it. Rendering the same bold "Get Tickets" primary CTA used for
   // live shows overpromises and dead-ends; suppress until a price appears (rage-click
-  // root cause on the-visitors-off-broadway-2026, CLAUDE.md card #228).
-  const notYetOnSale = showStatus === 'announced' && !sorted.some(l => l.priceFrom != null);
+  // root cause on the-visitors-off-broadway-2026, CLAUDE.md card #228). Doesn't
+  // apply to the officialUrl-only case: "Visit Official Site" never promised
+  // a purchase, so there's nothing to overpromise.
+  const notYetOnSale = showStatus === 'announced' && !noTicketLinks && !sorted.some(l => l.priceFrom != null);
   // A show with no affiliate-able ticketLinks but a populated officialUrl must
   // still render a buy button (BRO-166) — officialUrl alone used to fall
   // through this guard and dead-end with no CTA at all.
-  if (showStatus === 'closed' || notYetOnSale || (visibleLinks.length === 0 && !officialUrl)) return null;
+  if (showStatus === 'closed' || notYetOnSale || (noTicketLinks && !officialUrl)) return null;
 
   // Helpers — same TicketLink shape used by both modes; only the wrapper layout differs.
   // `withArrow` adds a trailing `→` (split-variant primary CTA emphasis only).
@@ -266,11 +272,10 @@ export default function TicketButtonsAB({
     </TicketLink>
   ) : null;
 
-  // No affiliate-able ticketLinks at all — officialUrl (an unmonetized "visit
-  // the show's own site" link) is the ONLY buy button available, so it takes
-  // over the primary-CTA slot instead of the small secondary pill used when
-  // it's riding alongside a real ticket link (BRO-166: never dead-end).
-  const noTicketLinks = visibleLinks.length === 0;
+  // noTicketLinks (declared above, before the early-return guard) — officialUrl
+  // is the ONLY buy button available, so it takes over the primary-CTA slot
+  // instead of the small secondary pill used when it's riding alongside a
+  // real ticket link (BRO-166: never dead-end).
   const renderOfficialPrimary = (totalLinks: number, className: string, withArrow = false) => officialUrl ? (
     <TicketLink
       showName={showName}

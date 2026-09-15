@@ -193,10 +193,13 @@ async function discoverOfficialUrl(show) {
       if (isBlockedDomain(url)) continue;
 
       const s = scoreCandidate(url, r.title || '', show.title);
-      // Off-Broadway shows need higher threshold — many don't have dedicated
-      // websites, so SERP returns listing/review sites as false positives
+      // Off-Broadway/off-west-end shows need a higher threshold — most fringe
+      // productions don't have a dedicated website, so a lower bar lets SERP's
+      // listing/review-site noise through as false "official sites" (BRO-166
+      // widened this script's callers beyond Broadway/West End, where the
+      // looser threshold was originally tuned and is safe to keep).
       const cat = show.category || 'broadway';
-      const threshold = cat === 'off-broadway' ? 5 : 3;
+      const threshold = (cat === 'off-broadway' || cat === 'off-west-end') ? 5 : 3;
       if (s >= threshold) {
         candidates.push({ url, title: r.title, score: s });
       }
@@ -214,8 +217,16 @@ async function discoverOfficialUrl(show) {
       return best.url;
     }
 
+    console.log(`  ⚠ Best candidate for "${show.id || show.title}" returned HTTP ${status}: ${best.url}`);
     return null;
   } catch (e) {
+    // Surface real provider/network failures — distinct from the routine
+    // "SERP returned nothing high-confidence" case above, which is silent by
+    // design. Without this, a SCRAPINGBEE outage looks identical to genuine
+    // absence of an official site, and a caller (ob-discovery-ticket-links.js)
+    // could persist a lower-confidence venue fallback during the outage
+    // instead of retrying SERP discovery on the next run.
+    console.log(`  ⚠ SERP error for "${show.id || show.title}": ${e.message}`);
     return null;
   }
 }

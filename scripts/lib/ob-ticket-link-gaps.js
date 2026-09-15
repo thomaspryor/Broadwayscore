@@ -73,7 +73,18 @@ function venueFallbackUrl(show, venueConfigs) {
       venueTokens.some((vt) => vt.startsWith(ct) || ct.startsWith(vt))
     );
   });
-  return match ? match.url : null;
+  if (!match) return null;
+  // officialUrl is set once and never re-verified (same as every other
+  // enricher), so persisting OB_VENUE_CONFIGS' listing-page URL verbatim
+  // risks freezing a season-specific path forever — e.g. MCC Theater's
+  // config URL embeds the season ("our-2025-26-season") and is documented
+  // there as needing a manual bump every year. Normalize to the venue's
+  // domain root, which is still a genuine, stable "Official Site" link.
+  try {
+    return new URL(match.url).origin + '/';
+  } catch {
+    return match.url;
+  }
 }
 
 module.exports = {
