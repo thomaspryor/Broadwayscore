@@ -102,19 +102,15 @@ export async function POST(req: NextRequest) {
 
     // Forward to Formspree FIRST and unconditionally. Before this route
     // existed the form posted straight to Formspree, and process-feedback.yml
-    // polls it for the AI bug-diagnosis pipeline. Doing the Notion write first
-    // meant a Notion outage (502) or a missing NOTION_API_KEY (503) dropped
-    // submissions that would have reached Formspree before — a regression in
-    // the path that actually has a consumer. Notion is purely additive now.
+    // polls it for the AI bug-diagnosis pipeline. Notion is purely additive
+    // now — a missing key or a failed write must never fail a request whose
+    // submission already reached Formspree (BRO-3379).
     await forwardToFormspree(formData);
 
     const notionKey = process.env.NOTION_API_KEY;
     if (!notionKey) {
-      console.error('NOTION_API_KEY not configured');
-      return NextResponse.json(
-        { errors: [{ message: 'Feedback service unavailable. Please try again later.' }] },
-        { status: 503 }
-      );
+      console.error('NOTION_API_KEY not configured (non-fatal, Formspree already has the submission)');
+      return NextResponse.json({ ok: true });
     }
 
     const properties = buildFeedbackNotionProperties({
@@ -125,11 +121,7 @@ export async function POST(req: NextRequest) {
     try {
       await createNotionPage(properties, notionKey);
     } catch (err) {
-      console.error('Notion feedback create failed:', (err as Error).message);
-      return NextResponse.json(
-        { errors: [{ message: 'Failed to record feedback. Please try again.' }] },
-        { status: 502 }
-      );
+      console.error('Notion feedback create failed (non-fatal):', (err as Error).message);
     }
 
     return NextResponse.json({ ok: true });
