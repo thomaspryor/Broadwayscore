@@ -60,8 +60,9 @@ const {
 } = require('./lib/card-premises-auditor.js');
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 const { fetchDoneEvidenceCandidates, selectCandidates, DONE_WINDOW_DAYS } = require('./lib/done-evidence-source.js');
-const { resolveEvidenceUrl, pathPredatesCard } = require('./lib/done-evidence-remote.js');
+const { resolveEvidenceUrl, parseEvidenceUrl, pathPredatesCard, pathNeverExisted } = require('./lib/done-evidence-remote.js');
 const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, VERDICTS } = require('./lib/done-evidence-audit.js');
+const { extractCheckFilePaths } = require('./lib/card-premises-auditor.js');
 
 const REPO = path.join(__dirname, '..');
 const AUDIT_DIR = path.join(REPO, 'data', 'audit');
@@ -161,8 +162,18 @@ function refineVacuous(card, cmd, existsFn, { remoteOpts = {}, log = () => {} } 
   const p = (verdict.paths || [])[0];
   const predates = pathPredatesCard(p, card.createdAt, remoteOpts);
   if (predates === null) {
-    log(`[done-evidence] could not date ${p} for ${card.id} — not scoring it vacuous`);
-    return null;
+    // NOT `return null`. Returning null would drop the finding, the `test -f`
+    // would then be executed, it would pass (the path demonstrably exists),
+    // and the card would be reported VERIFIED — so a GitHub outage would
+    // silently convert the board's weakest evidence into its cleanest result.
+    // Hand it back marked unresolved instead: classifyCard reports it as
+    // unverifiable, which is what "we could not tell" actually means.
+    log(`[done-evidence] could not date ${p} for ${card.id} — reporting its check as unverifiable, not vacuous and not verified`);
+    return {
+      ...verdict,
+      unresolvedAge: true,
+      reason: `\`${cmd}\` names ${p}, which already exists on main; whether it predates this card could not be resolved this run, so the check proves nothing either way`,
+    };
   }
   if (!predates) return null; // the card's own work created it — legitimate
   return {
@@ -198,6 +209,13 @@ async function main(argv = process.argv.slice(2)) {
     timeBudgetMs = parsed * 60000;
   }
 
+  // The clock starts HERE, before the Linear fetch / origin fetch / checkout,
+  // not after them. Those cost up to ~3.5min of network worst-case, and the
+  // budget exists to keep the whole STEP inside its timeout-minutes — a budget
+  // that only starts counting after setup can overrun the step, and a step
+  // killed by its hard timeout writes nothing at all, losing the whole night
+  // (review finding).
+  const startedAt = Date.now();
   const generatedAt = new Date().toISOString();
   const fetched = await fetchDoneEvidenceCandidates(undefined, {});
   if (fetched.error) {
@@ -205,11 +223,32 @@ async function main(argv = process.argv.slice(2)) {
     // No report is written on a hard fetch failure. The digest's own 36h
     // staleness banner (digest-snapshots.js) is what surfaces this — writing a
     // report full of zeros would look exactly like a clean board.
-    if (!fetched.cards.length) return;
+    if (!fetched.cards.length) {
+      // Exit NON-ZERO. The step is continue-on-error, so this does not fail the
+      // job — but a silent exit 0 that writes nothing is indistinguishable from
+      // a clean night in the Actions UI, and the only other signal is the
+      // digest's 36h staleness banner a day and a half later. A missing
+      // LINEAR_API_KEY in CI hiding behind a green step is the exact shape
+      // BRO-3373's ship-check caught once already (review finding).
+      process.exitCode = 1;
+      return;
+    }
   }
   if (fetched.truncated) console.error('[done-evidence] WARN the Linear listing was truncated — coverage may be incomplete');
 
-  const candidates = selectCandidates(fetched.cards).slice(0, limit);
+  // DAILY ROTATION (Codex adversarial finding). The sweep normally finishes
+  // inside its budget, but when it does not, the cards that get dropped are
+  // whatever sits at the end of Linear's stable creation-order listing — the
+  // SAME tail every night, forever unchecked, which is the starvation
+  // selectRecheckTargets' own guard exists to prevent for the nightly recheck.
+  // Rotating the start offset by day-of-year costs nothing, needs no per-card
+  // history, and guarantees every card reaches the front within a bounded
+  // number of days. Deterministic within a day, so re-running the sweep twice
+  // on the same day sweeps the same order.
+  const ordered = selectCandidates(fetched.cards);
+  const dayOfYear = Math.floor((Date.now() - Date.UTC(new Date().getUTCFullYear(), 0, 0)) / 86400000);
+  const offset = ordered.length ? (dayOfYear % ordered.length) : 0;
+  const candidates = [...ordered.slice(offset), ...ordered.slice(0, offset)].slice(0, limit);
   console.error(`[done-evidence] ${candidates.length} candidate card(s) (Done ${DONE_WINDOW_DAYS}d + In Review + In Progress)`);
 
   // Evidence extraction is pure and cheap — do it for every card up front so
@@ -256,9 +295,14 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   const results = [];
-  const startedAt = Date.now();
   const deadline = startedAt + timeBudgetMs;
   let notRun = 0;
+  // Every GitHub probe that could not be answered. Surfaced in the digest
+  // banner, because a rate-limited run reaches the same verdicts a clean board
+  // does (UNKNOWN never accuses) and would otherwise be indistinguishable from
+  // one — the exact "incomplete inventory looks complete" failure this sweep
+  // is built to catch elsewhere (Codex adversarial finding).
+  let unresolvedProbes = 0;
   // Per-card wall time, kept in the report. Measured live 2026-09-15: 374
   // cards in ~9min, but the distribution is extremely skewed — a `node --test`
   // is ~0.3s while a corpus-scanning `node scripts/validate-data.js` or
@@ -275,11 +319,30 @@ async function main(argv = process.argv.slice(2)) {
       // (19 board-wide, measured). Skipped past the deadline like everything
       // else — it is a network call, not a free one.
       let ancestry = null;
-      if (prRef && prRef.url && !outOfTime) ancestry = resolveEvidenceUrl(prRef.url);
+      if (prRef && prRef.url && !outOfTime) {
+        ancestry = resolveEvidenceUrl(prRef.url);
+        // Only a GIT-shaped url that failed to resolve counts as a failed
+        // probe: a prod-data URL or a foreign-repo link is 'unknown' by
+        // design, not by failure, and must not inflate the coverage warning.
+        if (ancestry === 'unknown' && ['commit', 'pull'].includes(parseEvidenceUrl(prRef.url).kind)) unresolvedProbes++;
+      }
 
-      const vacuous = cmd && !outOfTime
+      let vacuous = cmd && !outOfTime
         ? refineVacuous(card, cmd, existsFn, { log: (m) => console.error(m) })
         : null;
+      // If origin/main could not be fetched, existsFn answers null for
+      // EVERYTHING, so classifyVacuousCheck finds nothing and every `test -f`
+      // would instead be EXECUTED, pass (the file is right there in the
+      // checkout) and be reported VERIFIED. One fetch blip would convert ~40
+      // of the board's weakest checks into its cleanest results. Mark them
+      // unresolved instead (review finding).
+      if (!fetchedMain && cmd && /^\s*test -f\b/.test(cmd) && !vacuous) {
+        vacuous = {
+          unresolvedAge: true,
+          reason: `\`${cmd}\` could not be judged this run — origin/main was unreachable, so whether this check can ever fail is unknown`,
+        };
+      }
+      if (vacuous && vacuous.unresolvedAge) unresolvedProbes++;
 
       // A vacuous command is not worth executing: its verdict is known to
       // carry no information, and running it would spend the budget to learn
@@ -300,6 +363,18 @@ async function main(argv = process.argv.slice(2)) {
         notRun++;
       }
 
+      // Only for a Done card whose check actually FAILED: is the path it names
+      // one that has never existed at all (a wrong acceptance criterion), as
+      // opposed to one that existed and is now gone (a real regression)? One
+      // extra call, on ~17 cards a night.
+      let misArmed = null;
+      if (card.state === 'Done' && runResult && runResult.status === 'fail') {
+        const paths = extractCheckFilePaths(cmd);
+        if (paths.length === 1 && existsFn(paths[0]) === false && pathNeverExisted(paths[0]) === true) {
+          misArmed = { path: paths[0] };
+        }
+      }
+
       const verdict = classifyCard({
         card: { id: card.id, name: card.name, url: card.url, state: card.state },
         prRef,
@@ -307,6 +382,7 @@ async function main(argv = process.argv.slice(2)) {
         cmd,
         runResult,
         vacuous,
+        misArmed,
       });
       const ms = Date.now() - cardStart;
       if (runResult) durations.push({ id: card.id, cmd, ms });
@@ -332,6 +408,8 @@ async function main(argv = process.argv.slice(2)) {
     fetchError: fetched.error || null,
     checkoutSha: checkout ? checkout.sha : null,
     notReRun: notRun,
+    unresolvedProbes,
+    sweepOffset: offset,
     elapsedMs: Date.now() - startedAt,
     timeBudgetMs,
     slowestChecks: slowest,

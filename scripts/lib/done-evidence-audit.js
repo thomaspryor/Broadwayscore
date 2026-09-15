@@ -154,6 +154,16 @@ const ENVIRONMENT_FAILURE_PATTERNS = Object.freeze([
   /scanned 0 review files/i,
   /data\/review-texts is missing or empty/i,
   /review-texts.{0,40}(not checked out|missing|unavailable)/i,
+  // A check killed by this sweep's own per-command cap. acceptance-check-core.js
+  // already maps a timeout to 'unverifiable' via two guards (`err.signal &&
+  // err.status == null`, and the spawn-error branch), but a `spawnSync <bin>
+  // ETIMEDOUT` reaches neither and lands in the generic `fail` tail — observed
+  // live on BRO-258, which was reported FAILED purely for exceeding the 60s
+  // ceiling this sweep imposes (runVerify's own default is 5 minutes). A
+  // command the sweep cut short produced no verdict, and "no verdict" must
+  // never render as "your finished work is broken".
+  /\bETIMEDOUT\b/,
+  /killed by SIG[A-Z]+ after \d+ms/i,
 ]);
 
 function isEnvironmentFailure(detail) {
@@ -266,7 +276,13 @@ function evaluateVerifyRun(runResult, cmd) {
   // The residual environment failure acceptance-check-core.js cannot classify
   // for itself — a prepared checkout still missing the private review corpus.
   if (isEnvironmentFailure(runResult.detail)) {
-    return { state: EVIDENCE.UNKNOWN, detail: 'its check needs the private review-texts corpus, which this sandbox does not have — cannot verify either way' };
+    const timedOut = /\bETIMEDOUT\b|killed by SIG/i.test(String(runResult.detail || ''));
+    return {
+      state: EVIDENCE.UNKNOWN,
+      detail: timedOut
+        ? 'its check ran past this sweep\'s time limit and was cut short — no verdict either way'
+        : 'its check needs the private review-texts corpus, which this sandbox does not have — cannot verify either way',
+    };
   }
   return { state: EVIDENCE.BROKEN, detail: scrubSandboxPaths(runResult.detail) || `\`${cmd}\` does not pass on main` };
 }
@@ -286,6 +302,26 @@ function evaluateVerifyRun(runResult, cmd) {
  * @returns {{state:string, detail:string|null, channels:string[]}}
  */
 function combineEvidence(pr, verify) {
+  // A BROKEN acceptance command is never overridden by a holding PR-EVIDENCE
+  // line, and this precedence is the difference between catching a regression
+  // and laundering it (Codex adversarial finding, pre-ship).
+  //
+  // The two channels do not prove the same thing over time. Ancestry is a
+  // HISTORICAL fact — "this commit is reachable from main" — and an ordinary
+  // `git revert` PRESERVES it: the original commit stays in history forever, so
+  // done-evidence-remote.js's compare call keeps answering `behind` long after
+  // the change itself was undone. The acceptance command, by contrast, is a
+  // statement about main RIGHT NOW. So when they disagree in this direction,
+  // the command is the one telling the truth, and an earlier version of this
+  // function returned VERIFIED for exactly the case this sweep exists to
+  // catch: work that landed, got reverted, and still reads as finished.
+  //
+  // The asymmetry is deliberate and does not invert: a BROKEN ancestry result
+  // still loses to a passing command (below), because a hand-typed commit URL
+  // with a typo in it must never accuse code that demonstrably works.
+  if (verify.state === EVIDENCE.BROKEN) {
+    return { state: EVIDENCE.BROKEN, detail: verify.detail, channels: ['verify-command'] };
+  }
   const holds = [pr, verify].filter((e) => e.state === EVIDENCE.HOLDS);
   if (holds.length) {
     return {
@@ -318,12 +354,14 @@ function combineEvidence(pr, verify) {
  * @param {'holds'|'broken'|'unknown'|null} [o.ancestry] resolved by the runner
  * @param {string|null} [o.cmd] the card's own acceptance command
  * @param {{status,detail}|null} [o.runResult] runVerify() output, or null
+ * @param {{path:string}|null} [o.misArmed] set when the command names a path that
+ *   has NEVER existed in the repo — see the mis-armed branch below.
  * @param {{kind:string,reason:string,paths:string[]}|null} [o.vacuous]
  *   card-premises-auditor.js's classifyVacuousCheck() output, REFINED by the
  *   runner against the card's createdAt — see classifyCard's VACUOUS branch.
  * @returns {{id,name,url,state,verdict,evidence,detail,cmd,channels}}
  */
-function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResult = null, vacuous = null } = {}) {
+function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResult = null, vacuous = null, misArmed = null } = {}) {
   const id = (card && card.id) || null;
   const base = {
     id,
@@ -348,7 +386,15 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
   if (vacuous && pr.state !== EVIDENCE.HOLDS) {
     return {
       ...base,
-      verdict: VERDICTS.VACUOUS,
+      // `unresolvedAge` means the oracle could not date the path, so we cannot
+      // tell a vacuous check from an honest one. Reporting VACUOUS there would
+      // accuse on an outage; reporting nothing would be worse — the command
+      // would then be RUN, pass (it is a `test -f` on a file that exists), and
+      // the card would come out VERIFIED. A GitHub blip must not be able to
+      // upgrade the weakest evidence on the board into a clean bill of health
+      // (Codex adversarial finding, pre-ship). Both branches agree the command
+      // proves nothing; only the label differs.
+      verdict: vacuous.unresolvedAge ? VERDICTS.UNVERIFIABLE : VERDICTS.VACUOUS,
       evidence: EVIDENCE.UNKNOWN,
       detail: vacuous.reason,
       channels: [],
@@ -368,6 +414,27 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
       evidence: evidence.state,
       detail: isDone ? null : 'its own evidence holds on main — looks finished',
       channels: evidence.channels,
+    };
+  }
+
+  // MIS-ARMED beats FAILED. A card whose acceptance command names a path that
+  // has never existed in this repo cannot have its work judged by that
+  // command — the command was wrong the day it was written and would have
+  // failed identically before, during and after the work. Reporting it as
+  // FAILED accuses finished work of being broken, which is the worst output
+  // this sweep can produce. Two of the 17 FAILED rows in the first live run
+  // were exactly this (BRO-2304, BRO-2421: both name scripts/<x> where the
+  // real file is scripts/lib/<x>), found by an adversarial review of the
+  // report itself. The card still deserves a fix — a wrong acceptance
+  // criterion means nothing can ever verify it — so it is reported, just as
+  // the honest thing rather than as a false alarm.
+  if (misArmed && evidence.state === EVIDENCE.BROKEN) {
+    return {
+      ...base,
+      verdict: VERDICTS.UNVERIFIABLE,
+      evidence: EVIDENCE.UNKNOWN,
+      detail: `its own check names ${misArmed.path}, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way`,
+      channels: [],
     };
   }
 
@@ -468,9 +535,25 @@ function buildDigestSnapshot(report, { maxItems = MAX_DIGEST_ITEMS } = {}) {
   const rank = (r) => REPORTABLE.indexOf(r.verdict);
   rows.sort((a, b) => rank(a) - rank(b));
 
+  // COVERAGE HONESTY (Codex adversarial finding, pre-ship). Without this, a run
+  // that fetched two of five Linear pages, or ran out of budget with 200 cards
+  // unchecked, prints the same confident "119/161 verified · 0 FAILED" as a
+  // complete one — an incomplete inventory reading as a clean board is the
+  // precise failure this whole sweep was built to detect in other people's
+  // work, and it would be embarrassing to ship it here. Anything that shrank
+  // coverage is named in the banner itself, not buried in the JSON.
+  const gaps = [];
+  if (report && report.truncated) gaps.push('the card listing was cut short');
+  if (report && report.fetchError) gaps.push('the board fetch failed partway');
+  const notReRun = Number(report && report.notReRun) || 0;
+  if (notReRun > 0) gaps.push(`${notReRun} check${notReRun === 1 ? '' : 's'} not re-run (ran out of time)`);
+  const unresolved = Number(report && report.unresolvedProbes) || 0;
+  if (unresolved > 0) gaps.push(`${unresolved} GitHub lookup${unresolved === 1 ? '' : 's'} failed`);
+
   const bannerText =
     `${verified}/${done} Done(14d) verified on main · ` +
-    `${counts.FAILED} FAILED · ${counts.VACUOUS} vacuous · ${counts.STUCK} stuck-but-done`;
+    `${counts.FAILED} FAILED · ${counts.VACUOUS} vacuous · ${counts.STUCK} stuck-but-done` +
+    (gaps.length ? ` — PARTIAL RUN: ${gaps.join(', ')}, so these numbers understate the board` : '');
 
   if (!rows.length) {
     // Still emit a snapshot rather than null: this is a STANDING line, for the
@@ -502,7 +585,6 @@ module.exports = {
   MAX_DIGEST_ITEMS,
   REPORTABLE,
   NON_PROBATIVE_RE,
-  SANDBOX_PATH_RE,
   scrubSandboxPaths,
   ENVIRONMENT_FAILURE_PATTERNS,
   DIGEST_DETAIL_CHARS,
