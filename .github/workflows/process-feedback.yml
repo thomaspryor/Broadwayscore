@@ -538,6 +538,17 @@ jobs:
           # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
           # inside the 600s deadline above. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
+          # BRO-3358: this step is this workflow's own push-retry hot spot
+          # (600s deadline, lowered 30s per-attempt cap — the two symptoms of
+          # a chronically-hard-killed push) and this workflow's 10-minute
+          # cadence gives the fastest possible shot at capturing a REAL CI
+          # trace2 failure to test the credential-helper hypothesis against.
+          # Default-off elsewhere (see push-with-retry.sh's PUSH_TRACE2_
+          # DIAGNOSTICS comment) — enabled here ONLY, not repo-wide, so a bug
+          # in this new diagnostic path can only ever affect this one step
+          # while a real failure is captured. Remove once BRO-3358 either
+          # confirms or rules out the credential-helper hypothesis.
+          PUSH_TRACE2_DIAGNOSTICS: '1'
         run: |
           git add data/audit/processed-feedback.json
           git add data/audit/pending-bug-diagnoses.json 2>/dev/null || true
