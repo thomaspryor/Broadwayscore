@@ -38,6 +38,33 @@ const { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard } = requi
 // of it — see needsOverflowHydration below.
 const { cardHasOverflow } = require('./overflow-marker.js');
 
+/**
+ * The newest comment that arms with a command AT LEAST AS SPECIFIC as
+ * `snapshotCmd` — used to correct a dispatch-ledger snapshot (BRO-3446).
+ *
+ * Deliberately NOT evaluateVerifiability(notes, comments)'s own newest-wins
+ * rule: that rule stops at the first document (scanning notes then comments,
+ * newest first) that arms AT ALL, which is right for arming a fresh dispatch
+ * but wrong here — an unrelated LATER comment that happens to also arm (a
+ * wrap-up note with its own `VERIFY: npx next lint` boilerplate, say) would
+ * shadow an earlier, genuinely specific correction, and the phantom-path
+ * snapshot this exists to fix would never get corrected (ship-check finding,
+ * Codex). This scans comments newest-first and skips any that arm but don't
+ * meet the bar, rather than stopping at the first one that arms.
+ * @param {string[]|undefined} comments - oldest-first, same contract as evaluateVerifiability
+ * @param {string} snapshotCmd
+ * @returns {string|null}
+ */
+function findCommentCorrection(comments, snapshotCmd) {
+  const list = Array.isArray(comments) ? comments : [];
+  const snapshotRank = rank(snapshotCmd);
+  for (let i = list.length - 1; i >= 0; i--) {
+    const { cmd } = evaluateVerifiability(String(list[i] || ''), []);
+    if (cmd && rank(cmd) <= snapshotRank) return cmd;
+  }
+  return null;
+}
+
 // A card only recently marked Done is worth re-checking; anything older was
 // either already re-checked or has been true for long enough that a nightly
 // re-run adds nothing. Superseded per-card by an explicit RECHECK-AFTER stamp
@@ -279,17 +306,31 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
     // code. Notes can't be edited after dispatch on a Linear card (BRO-2796
     // again), so a same-or-BETTER-specificity command posted in a COMMENT is
     // the one signal worth trusting over the snapshot — ranked via rank()
-    // above, not raw precedence, so a comment naming a GENERIC command
-    // (`npx next lint`, rank 2) can never displace a SPECIFIC snapshot
-    // (`node --test ...`, rank 0). That is exactly the degradation "a
-    // dispatch-ledger launch entry still takes priority over the notes
-    // fallback" pins by name below, and why plain notes (not a comment) are
-    // deliberately NOT compared this way here — see "the fallback is
-    // additive only" below, still pinned.
+    // above (findCommentCorrection), not raw precedence, so a comment naming
+    // a GENERIC command (`npx next lint`, rank 2) can never displace a
+    // SPECIFIC snapshot (`node --test ...`, rank 0). That is exactly the
+    // degradation "a dispatch-ledger launch entry still takes priority over
+    // the notes fallback" pins by name below, and why plain notes (not a
+    // comment) are deliberately NOT compared this way here — see "the
+    // fallback is additive only" below, still pinned.
+    //
+    // KNOWN RESIDUAL (not fixed here, tracked in BRO-3453): rank() only
+    // measures command SHAPE, not what a specific command actually re-verifies
+    // — a single-file `node --test a.test.mjs` correction ties in rank with
+    // and can therefore displace a multi-file snapshot covering `a.test.mjs
+    // b.test.mjs`, and a bespoke `node scripts/audit-*.js` snapshot (rank 2,
+    // same bucket as everything not node --test/test -f) can be displaced by
+    // a bare `test -f` comment even though the audit script is the stronger
+    // check. Also no timestamp guard against a stale pre-redispatch comment
+    // tying with a freshly-corrected snapshot. Fixing either needs either a
+    // richer rank() (repo-wide, CLAUDE.md §15 — one canonical copy, so that
+    // change is not local to this file) or comment createdAt threaded through
+    // linear-recheck-source.js's card.comments (currently plain strings) —
+    // both bigger than this ticket's stated fix.
     let verifyCmd = launch.verifyCmd || null;
     if (verifyCmd) {
-      const correction = evaluateVerifiability('', card.comments);
-      if (correction.cmd && rank(correction.cmd) <= rank(verifyCmd)) verifyCmd = correction.cmd;
+      const correction = findCommentCorrection(card.comments, verifyCmd);
+      if (correction) verifyCmd = correction;
     }
     const fallback = verifyCmd ? null : verifiabilityForCard(card);
     verifyCmd = verifyCmd || (fallback && fallback.cmd) || null;
