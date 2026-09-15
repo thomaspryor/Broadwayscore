@@ -30,7 +30,7 @@
 'use strict';
 
 const {
-  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs,
+  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs, JOB_EVENTS,
   openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage, detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS,
 } = require('./dispatch-ledger.js');
@@ -531,6 +531,26 @@ function planSweep(entries, tasks, opts) {
   }
   unlandedDone.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
 
+  // ── headless jobs that ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: (BRO-3442) ──
+  // Same derivation shape as unlandedDone just above: fold the ledger, keep
+  // still-open tasks not already superseded by a newer launch or parked.
+  // Unlike unlandedDone this IS acted on (see dispatch-watchdog.js's
+  // executeSweep): a BLOCKED job did its job correctly — it hit something
+  // only the owner can resolve and said so — so this is a PARK-with-reason,
+  // not a redispatch candidate. Never fed by isDeadlikeEvent/dead-attempt
+  // strikes (see JOB_EVENTS.BLOCKED's own comment in dispatch-ledger.js).
+  const jobBlocked = [];
+  for (const job of foldJobs(entries).values()) {
+    if (!job || job.event !== JOB_EVENTS.BLOCKED || job.taskId == null) continue;
+    const id = String(job.taskId);
+    const task = tasks.get(id);
+    if (!isTaskOpen(task)) continue;          // card already closed
+    if (open.has(id)) continue;               // a newer launch superseded this
+    if (ownerParked.has(id) || wdParked.has(id)) continue;
+    jobBlocked.push({ taskId: id, subject: task.subject, jobId: job.jobId, reason: job.reason || null });
+  }
+  jobBlocked.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
+
   // ── undispatched P0/P1 backlog (standing owner rule 2026-07-24) ──
   const p01Queue = [];
   for (const task of tasks.values()) {
@@ -667,19 +687,19 @@ function planSweep(entries, tasks, opts) {
   // number — the backlog looked drained (ship-check P1).
   const needsYou = toPark.length + wdParked.size + recheckFailures.length +
     (outage.outage ? 1 : 0) + (failureRate.leaking ? 1 : 0) + awaitingClaim.length +
-    unlandedDone.length;
+    unlandedDone.length + jobBlocked.length;
 
   return {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim, noLaunchPark,
-    unlandedDone,
+    unlandedDone, jobBlocked,
     budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
     recheckFailures,
     needsYou,
-    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length,
+    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length + jobBlocked.length,
   };
 }
 
