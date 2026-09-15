@@ -36,6 +36,19 @@
 const https = require('https');
 const crypto = require('crypto');
 const { readEnvKeys } = require('./lib/load-env');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `Usage: node scripts/rotate-brightdata-zone-credentials.js [options]
+
+Rotates a Bright Data zone's proxy password (add new, verify, remove old).
+
+Options:
+  --zones=a,b            Comma-separated zone names (default: web_unlocker2,serp_api1)
+  --ip-allowlist          Report current IP allowlist state (dry run, no changes)
+  --apply-ip-allowlist    Actually restrict the zone(s) to --ip (DANGEROUS, see file header)
+  --ip="1.2.3.4,5.6.7.0/24"  IPs/CIDRs to allowlist, required with --apply-ip-allowlist
+  --help, -h              Show this message
+`;
 
 const _env = readEnvKeys(['BRIGHTDATA_TOKEN']);
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN || _env.BRIGHTDATA_TOKEN;
@@ -159,6 +172,10 @@ async function reportIpAllowlist(zones, extraIps, apply) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    return;
+  }
   if (!BRIGHTDATA_TOKEN) {
     console.error('BRIGHTDATA_TOKEN not set (env or .env) — cannot call Bright Data API.');
     process.exit(1);
