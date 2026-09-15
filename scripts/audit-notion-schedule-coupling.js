@@ -98,6 +98,7 @@ const NOTION_COUPLING_ALLOWLIST = {
   'scripts/linear-drain-parked.js': "Linear's own parked-card drain — same cross-board collision-guard reasoning as linear-next.js",
   'scripts/bsc-prune.js': 'legacy-mirror housekeeping (parks straggler Notion cards) — already carries the BRO-3431 fix that also parks the Linear twin when one exists',
   'scripts/bsc-reconcile.js': 'legacy-mirror housekeeping/reconciliation of straggler Notion cards, not dispatch of current work from them',
+  'scripts/audit-notion-schedule-coupling.js': 'is this detector itself — its own COUPLING_SIGNALS regexes and this allowlist\'s comments literally contain the 4 signal strings as pattern definitions, which self-matches once data-health-check.yml (its own host workflow) is correctly recognized as scheduled',
 };
 
 function isAllowlisted(scriptRelPath) {
@@ -183,10 +184,25 @@ function readScriptWithLocalDeps(absScriptPath) {
 /** Does this workflow file have an active (uncommented) top-level `schedule:` cron trigger? */
 function hasActiveScheduleTrigger(lines) {
   for (let i = 0; i < lines.length; i++) {
-    if (!/^\s*schedule:\s*$/.test(lines[i])) continue;
-    for (let j = i + 1; j < Math.min(i + 6, lines.length); j++) {
-      if (/^\s*-\s*cron:/.test(lines[j])) return true;
-      if (/^\S/.test(lines[j])) break; // dedented past the schedule: block
+    const header = /^(\s*)schedule:\s*$/.exec(lines[i]);
+    if (!header) continue;
+    const baseIndent = header[1].length;
+    // Scan forward with NO fixed line limit — this repo's own workflows
+    // routinely carry long why-comments between `schedule:` and its
+    // `- cron:` line (data-health-check.yml itself, the workflow that hosts
+    // this very audit, has 13 comment lines between the two — an earlier
+    // fixed 6-line lookahead made the scanner blind to its own host
+    // workflow, confirmed via an adversarial Codex review before this
+    // shipped). Blank/comment lines are skipped indefinitely; the block ends
+    // only at the first real line, judged by indentation relative to
+    // `schedule:` itself rather than a line count.
+    for (let j = i + 1; j < lines.length; j++) {
+      const line = lines[j];
+      const trimmed = line.trim();
+      if (trimmed === '' || trimmed.startsWith('#')) continue;
+      const indent = line.length - line.trimStart().length;
+      if (indent <= baseIndent) break; // dedented past the schedule: block — no cron found
+      if (/^-\s*cron:/.test(trimmed)) return true;
     }
   }
   return false;

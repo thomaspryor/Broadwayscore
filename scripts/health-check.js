@@ -3741,6 +3741,34 @@ function worktreeGcFreshnessResults(lastLineTimestamp, nowMs) {
   }];
 }
 
+// Digest surfacing for data/audit/notion-schedule-coupling.json (BRO-3431
+// reopen prevention requirement) — written by data-health-check.yml's
+// "Notion-schedule-coupling audit (shadow mode)" step. Report-only, same
+// non-blocking contract as every sibling shadow-mode sweep this function's
+// neighbors surface: a finding here is a candidate for a human to look at
+// (see the script's own NOTION_COUPLING_ALLOWLIST), not an accusation, and
+// this check is what makes "is the Linear migration actually done" a
+// digest line instead of a raw JSON file nobody reads.
+function notionScheduleCouplingResults(snap) {
+  const name = 'Infra: notion-schedule-coupling audit';
+  if (!snap) {
+    return [{ name, status: 'warn', message: 'No notion-schedule-coupling snapshot yet (cron not yet run)', hint: 'node scripts/audit-notion-schedule-coupling.js' }];
+  }
+  const age = snap.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
+  if (age > 48) {
+    return [{ name, status: 'error', message: `notion-schedule-coupling snapshot is ${formatAge(age)} old (>48h) — the daily sweep itself has stopped running`, hint: 'Check the "Notion-schedule-coupling audit (shadow mode)" step in data-health-check.yml' }];
+  }
+  const workflowFailed = snap.workflowHalf && snap.workflowHalf.ok === false;
+  if (workflowFailed) {
+    return [{ name, status: 'error', message: `Workflow-schedule scan itself failed: ${snap.workflowHalf.reason}`, hint: 'node scripts/audit-notion-schedule-coupling.js — investigate the scan failure, not just the finding count' }];
+  }
+  const total = snap.totalFindings || 0;
+  if (total > 0) {
+    return [{ name, status: 'warn', message: `${total} live schedule(s) still reference the frozen Notion mirror (${formatAge(age)} ago)`, hint: 'node scripts/audit-notion-schedule-coupling.js --dry-run to see which; port to Linear or add to NOTION_COUPLING_ALLOWLIST if intentional' }];
+  }
+  return [{ name, status: 'pass', message: `No live schedules coupled to the frozen Notion mirror (${formatAge(age)} ago)` }];
+}
+
 // Daily-digest surfacing for uncollected-live-review strands (data/audit/
 // uncollected-live-reviews.json, written hourly by
 // audit-uncollected-live-reviews.js — card #1408). That script's own --alert
@@ -4907,6 +4935,13 @@ async function main() {
     } catch { /* log absent — nothing to surface */ }
 
     try {
+      const couplingSnap = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/notion-schedule-coupling.json'), 'utf8'));
+      allResults.push(...notionScheduleCouplingResults(couplingSnap));
+    } catch {
+      allResults.push(...notionScheduleCouplingResults(null));
+    }
+
+    try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       // firstSeen lives in the STATE file, not the candidates report — without
       // it every candidate looks brand new and nothing can ever escalate.
@@ -5047,4 +5082,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
+module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
