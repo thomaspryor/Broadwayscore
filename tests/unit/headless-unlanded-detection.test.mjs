@@ -156,6 +156,43 @@ test('findUnlandedJobDoneEntries: a task with no job-done event at all is never 
   assert.deepEqual(findUnlandedJobDoneEntries(entries), []);
 });
 
+test('findUnlandedJobDoneEntries: uncommitted (dirty) changes are unlanded even though HEAD never moved off origin/main', () => {
+  const { root, origin } = makeFixture();
+  try {
+    const jobCwd = cloneJobCwd(origin, root, 'job7'); // no commits — HEAD == origin/main
+    fs.writeFileSync(path.join(jobCwd, 'edited-but-not-committed.txt'), 'wip\n'); // "KEEP OPEN" shape: edited, never committed
+
+    const entries = jobDoneLedger({ taskId: 'linear:BRO-7', jobId: 'job7-abc', cwd: jobCwd });
+    const result = findUnlandedJobDoneEntries(entries);
+
+    assert.equal(result.length, 1, 'a dirty worktree must count as unlanded even with HEAD at origin/main');
+    assert.equal(result[0].taskId, 'linear:BRO-7');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('findUnlandedJobDoneEntries: never runs an ancestry check against mainRepoCwd', () => {
+  const { root, origin } = makeFixture();
+  try {
+    const jobCwd = cloneJobCwd(origin, root, 'job8');
+    addUnpushedCommit(jobCwd, 'would-be-unlanded');
+    const entries = jobDoneLedger({ taskId: 'linear:BRO-8', jobId: 'job8-abc', cwd: jobCwd });
+
+    assert.equal(findUnlandedJobDoneEntries(entries, { mainRepoCwd: jobCwd }).length, 0,
+      'the guard must suppress the check entirely when cwd matches mainRepoCwd, regardless of what it would have found');
+    assert.equal(findUnlandedJobDoneEntries(entries, { mainRepoCwd: '/some/other/repo' }).length, 1,
+      'a non-matching mainRepoCwd must not suppress unrelated jobs');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('classifyJobDoneLanding: dirty always wins over a LANDED verdict', () => {
+  assert.equal(classifyJobDoneLanding({ cwdExists: true, landedVerdict: 'LANDED', dirty: true }), 'unlanded');
+  assert.equal(classifyJobDoneLanding({ cwdExists: true, landedVerdict: 'LANDED', dirty: false }), 'landed');
+});
+
 test('findUnlandedJobDoneEntries: sinceMs excludes job-done events older than the cutoff', () => {
   const { root, origin } = makeFixture();
   try {

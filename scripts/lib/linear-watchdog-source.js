@@ -203,6 +203,32 @@ function isWatchdogEligible(issue) {
  * preserved verbatim underneath, because isExcludedCategory() reads it for the
  * owner-judgment marker and verify-gate.js reads it for the acceptance command.
  */
+/**
+ * PURE. Map a `started` map entry (identifier/title/stateName — the shape
+ * fetchLinearWatchdogTasks() stores for In Progress / In Review issues) onto
+ * the same task-mirror shape planSweep() consumes.
+ *
+ * BRO-3424 (ship-check catch, Codex): started issues are deliberately kept
+ * OUT of the queue-eligible `tasks` map above (isWatchdogEligible excludes
+ * them — they're already being worked and must never be re-queued), but that
+ * left them with NO entry anywhere dispatch-watchdog-core.js's planSweep()
+ * could see — so a headless job whose Linear card was still "In Progress"
+ * (exactly the state of a job that finished without merging) had
+ * `tasks.get(id)` return undefined, and its unlandedDone finding was silently
+ * dropped for the card's own primary real-world case. status:'in_progress'
+ * is deliberate — it's the other value isTaskOpen() accepts besides
+ * 'pending', and p01Queue only re-queues 'pending', so this can never cause
+ * a started card to be redispatched.
+ */
+function mapStartedToTask(id, meta) {
+  if (!id || !meta) return null;
+  return {
+    id, subject: meta.title || meta.identifier || id,
+    description: `[linear:${meta.identifier}] · ${meta.stateName || 'Unknown'} · no-category\n`,
+    status: 'in_progress',
+  };
+}
+
 function mapIssueToTask(issue) {
   if (!issue || !issue.identifier) return null;
   const priority = priorityOf(issue);
@@ -361,5 +387,6 @@ module.exports = {
   ineligibleReason,
   isWatchdogEligible,
   mapIssueToTask,
+  mapStartedToTask,
   fetchLinearWatchdogTasks,
 };

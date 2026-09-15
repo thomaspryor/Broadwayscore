@@ -52,10 +52,18 @@ const { JOB_EVENTS, foldJobs } = require('./dispatch-ledger.js');
  * @param {object} opts
  * @param {boolean} opts.cwdExists
  * @param {'LANDED'|'NOT_LANDED'|'UNKNOWN'|null} opts.landedVerdict
+ * @param {boolean} [opts.dirty] uncommitted changes sitting in the worktree
  * @returns {'landed'|'unlanded'|'unknown'}
  */
-function classifyJobDoneLanding({ cwdExists, landedVerdict }) {
+function classifyJobDoneLanding({ cwdExists, landedVerdict, dirty = false }) {
   if (!cwdExists) return 'unknown'; // worktree already gone — cannot check, never claim unlanded on nothing
+  // A dirty worktree means real, uncommitted work is sitting there — that is
+  // never "landed" regardless of what HEAD's own ancestry says (ship-check
+  // catch: a "THIS SESSION: KEEP OPEN" job that edited files but committed
+  // nothing would otherwise read as trivially landed, since HEAD never moved
+  // off origin/main). bsc-runner.js's teardownJobWorktree already treats
+  // `dirty` as reason enough to keep the worktree around — same signal here.
+  if (dirty) return 'unlanded';
   if (landedVerdict === 'LANDED') return 'landed';
   if (landedVerdict === 'NOT_LANDED') return 'unlanded';
   return 'unknown'; // UNKNOWN (shallow/ancestor-check-error/no HEAD) — never a definitive unlanded verdict
@@ -67,12 +75,19 @@ function classifyJobDoneLanding({ cwdExists, landedVerdict }) {
  * this is what makes resumed jobs resolve correctly).
  * @param {object} opts
  * @param {string} opts.cwd
- * @returns {{status:'landed'|'unlanded'|'unknown', sha:string|null, verdict:string|null}}
+ * @returns {{status:'landed'|'unlanded'|'unknown', sha:string|null, verdict:string|null, dirty:boolean}}
  */
 function detectJobLanding({ cwd } = {}) {
   if (!cwd || !fs.existsSync(cwd)) {
-    return { status: classifyJobDoneLanding({ cwdExists: false, landedVerdict: null }), sha: null, verdict: null };
+    return { status: classifyJobDoneLanding({ cwdExists: false, landedVerdict: null }), sha: null, verdict: null, dirty: false };
   }
+  let dirty = false;
+  try {
+    const porcelain = execFileSync('git', ['-C', cwd, 'status', '--porcelain'], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    dirty = porcelain.trim().length > 0;
+  } catch { dirty = false; }
   let sha = null;
   try {
     sha = execFileSync('git', ['-C', cwd, 'rev-parse', 'HEAD'], {
@@ -80,10 +95,10 @@ function detectJobLanding({ cwd } = {}) {
     }).trim() || null;
   } catch { sha = null; }
   if (!sha) {
-    return { status: classifyJobDoneLanding({ cwdExists: true, landedVerdict: null }), sha: null, verdict: null };
+    return { status: classifyJobDoneLanding({ cwdExists: true, landedVerdict: null, dirty }), sha: null, verdict: null, dirty };
   }
   const { verdict } = checkLanded({ sha, cwd, ref: 'origin/main' });
-  return { status: classifyJobDoneLanding({ cwdExists: true, landedVerdict: verdict }), sha, verdict };
+  return { status: classifyJobDoneLanding({ cwdExists: true, landedVerdict: verdict, dirty }), sha, verdict, dirty };
 }
 
 /**
@@ -99,9 +114,18 @@ function detectJobLanding({ cwd } = {}) {
  *   accumulates every job-done ever recorded, and most of their worktrees
  *   are long gone (fast fs.existsSync-false, but still O(all-time jobs)
  *   without a window).
+ * @param {string} [opts.mainRepoCwd] never run an ancestry check against this
+ *   path. bsc-runner.js's runJob() only records `cwd: REPO` (the shared main
+ *   checkout, not a per-job worktree) when isolate:false AND the caller omits
+ *   its own `cwd` — today's two isolate:false callers (bsc-reconcile.js,
+ *   resume-headless-job.js) always pass one, so this path is currently dead,
+ *   but a future caller regressing it must never turn into live git ancestry
+ *   checks against the machine's shared checkout, nor a narrative line
+ *   telling the owner to "check git log" in their own main repo (ship-check
+ *   catch).
  * @returns {Array<{taskId:string, jobId:string, cwd:string, sessionId:string|null, sha:string|null, verdict:string|null}>}
  */
-function findUnlandedJobDoneEntries(entries, { sinceMs = null } = {}) {
+function findUnlandedJobDoneEntries(entries, { sinceMs = null, mainRepoCwd = null } = {}) {
   const out = [];
   for (const job of foldJobs(entries || []).values()) {
     if (!job || job.event !== JOB_EVENTS.DONE || job.taskId == null) continue;
@@ -110,6 +134,7 @@ function findUnlandedJobDoneEntries(entries, { sinceMs = null } = {}) {
       if (!Number.isFinite(ms) || ms < sinceMs) continue;
     }
     if (!job.cwd) continue; // no recorded cwd — cannot check, never false-positive
+    if (mainRepoCwd && job.cwd === mainRepoCwd) continue; // never the shared checkout
     const landing = detectJobLanding({ cwd: job.cwd });
     if (landing.status === 'unlanded') {
       out.push({
