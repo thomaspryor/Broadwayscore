@@ -52,6 +52,7 @@ function resolveArchiveRowOutletId({ url, outletLabel, cachedOutletId, sourceOut
 // removed three variants of it, all of which re-introduced stale/divergent
 // outletIds because they trusted a scrape-era cached ID instead of recomputing
 // identity:
+// diacritic-guard-ok: the next line QUOTES the legacy shred this lint exists to ban — live code below calls normalizeOutlet(). See scripts/lib/diacritic-fold-guard.js.
 //     outletId: r.outletId || r.outlet?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'unknown',
 //     outletId: r.outletId || 'unknown',
 //     outletId: r.outletId || normalizeOutlet(r.outlet || ''),
