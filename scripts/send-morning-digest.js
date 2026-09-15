@@ -519,6 +519,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // above (session-scoped cmux state, dies with the tab): this is
   // issue-scoped and survives the originating session closing.
   if (sections.awaitingOwner) blocks.push(renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner));
+  // Parked in review (BRO-282's residual half, BRO-3376) — Linear issues in
+  // the `In Review` state, which is where linear-dispatch.js's seed prompt
+  // tells every finished session to park. The two blocks above only fire when
+  // a session opts in (a ❓ tab mark, an awaiting-owner label); this one needs
+  // no opt-in, which is why it is the block that would have caught the actual
+  // leak: 120 finished items, 100 of them 14+ days old, were sitting here
+  // unread on 2026-09-15 — including BRO-282 itself, for 28 days.
+  if (sections.inReviewBacklog) blocks.push(renderNamedDigestBlock('Parked in review', sections.inReviewBacklog));
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
   // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
   // moreCount} shape, no new render code.
@@ -739,11 +747,18 @@ async function main() {
   // by minutes; ship-check finding, BRO-282). The race is local to this call
   // site, not a change to listOpenIssues()'s shared retry defaults, which
   // other callers (linear-next.js --list) still want in full.
+  // Hoisted out of the try below so the "Parked in review" block can reuse
+  // this exact fetch instead of making a second identical round trip —
+  // buildOpenIssuesQuery() already returns state/priority/updatedAt/url, every
+  // field in-review-backlog.js needs. Stays null if the fetch failed, and that
+  // block then omits itself, same fail-soft contract as every other section.
+  let openIssues = null;
   try {
     const linear = require('./lib/linear-client.js');
     const { buildAwaitingOwnerSection, isAwaitingOwner, enrichWithComments } = require('./lib/owner-approval-channel.js');
     const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
     const issues = await Promise.race([linear.listOpenIssues(), timeout(15_000)]);
+    openIssues = issues;
     const awaiting = (issues || []).filter(isAwaitingOwner);
     // BRO-420: "waiting since" is derived from linear-attach-approval.js's
     // summary comment, not issue.updatedAt (see owner-approval-channel.js's
@@ -770,6 +785,22 @@ async function main() {
     if (section) sections.awaitingOwner = section;
   } catch (err) {
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // Parked in review (BRO-3376) — the passive half of BRO-282. See
+  // scripts/lib/in-review-backlog.js's header for why this is a separate
+  // block from the awaiting-owner one above rather than folded into it.
+  // Pure shaping over the fetch already made above; fail-soft like every
+  // other section, and it omits itself entirely when nothing has been
+  // sitting past the idle threshold.
+  try {
+    if (openIssues && openIssues.length) {
+      const { buildInReviewSection } = require('./lib/in-review-backlog.js');
+      const section = buildInReviewSection(openIssues);
+      if (section) sections.inReviewBacklog = section;
+    }
+  } catch (err) {
+    console.error(`[digest] WARN in-review backlog section failed: ${String(err.message).slice(0, 120)}`);
   }
 
   // Backlog inflow ratio (BRO-3017, owner decision 2026-09-08 "B then A").
