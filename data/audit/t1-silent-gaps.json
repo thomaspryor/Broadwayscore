@@ -1,26 +1,8 @@
 {
-  "generatedAt": "2026-09-15T02:14:30.420Z",
+  "generatedAt": "2026-09-15T08:21:16.143Z",
   "windowDays": 45,
   "showsScanned": 67,
   "gaps": [
-    {
-      "showId": "the-story-west-end-2026",
-      "title": "The Story",
-      "openingDate": "2026-09-03",
-      "file": "the-spectator-uk--unknown.json",
-      "outletId": "the-spectator-uk",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.spectator.co.uk/submit/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
-      "firstSeen": "2026-09-06T13:54:56.426Z",
-      "fileAgeHours": 204.32222416666667,
-      "gapSeenAt": "2026-09-08T15:05:38.757Z",
-      "nonTerminalAgeHours": 155.14768416666666
-    },
     {
       "showId": "benevolent-off-broadway-2026",
       "title": "Benevolent",
@@ -34,9 +16,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 416.95995,
+      "fileAgeHours": 423.07626555555555,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 378.5545138888889
+      "nonTerminalAgeHours": 384.66721472222224
     }
   ],
   "contradictions": []
