@@ -166,6 +166,21 @@ const VENUE_DOMAINS = new Set([
   // `stratfordeast`, and tripped audit-outlet-registry.js --strict as a new
   // unregistered outlet before contentVerification caught it on rebuild.
   'stratfordeast.com',
+  // BRO-3374 what-else sweep: same shape found alongside the stratfordeast
+  // fix, both currently reddening audit-outlet-registry.js --strict as NEW
+  // unregistered outlets (neither had a rejectionReason/wrongShow flag yet,
+  // unlike a sibling royalcourttheatre--unknown.json file that ensemble-
+  // scoreability-check had already rejected as not_a_review).
+  // ntlive.com/plays/<show> is National Theatre Live's own marketing copy
+  // for its streaming service ("Join over 2,500 venues worldwide offering
+  // ... immersive experience of filmed theatre"), not a critic review.
+  'ntlive.com',
+  // royalcourttheatre.com/ and /events/<show> are the venue's own event
+  // pages ("Current tab: The show / The company / Booking information /
+  // Access / Dates & times"). Reached the corpus twice under two different
+  // outletIds (`royalcourttheatre` and the URL-mangled
+  // `httpsroyalcourttheatrecom`) via /submit-review.
+  'royalcourttheatre.com',
 ]);
 
 // Theatre PR firms AND institutional press offices — announcements, not
