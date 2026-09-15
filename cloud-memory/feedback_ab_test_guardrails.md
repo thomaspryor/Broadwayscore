@@ -3,7 +3,7 @@ name: A/B test guardrails — never kill, never unilaterally change rollout
 description: "Never kill running tests or PATCH rollouts without approval."
 type: feedback
 originSessionId: ba2676a0-1232-4de7-b090-d7af31195aa2
-modified: 2026-07-24T04:15:53.019Z
+modified: 2026-09-15T21:33:28.678Z
 ---
 **Hard rules for A/B tests. Violate these and you're wasting real traffic and invalidating weeks of data.**
 
@@ -83,6 +83,12 @@ Before citing "live A/B test, needs user approval" as a reason to defer a fix, c
 - `scripts/validate-ab-test.js` — end-to-end validator (distribution + sticky + DOM + click tracking)
 - PostHog flag key: `ticket-single-button` (project 332742, flag id 637535)
 - PostHog flag key: `ticket-primary-platform` (project 332742, flag id 631794) — locked 100% todaytix, don't touch
+
+## 9. Power-calculation must use the PRE-REGISTERED primary metric's exact denominator — not a plausible-looking substitute
+
+While concluding `gate-cold-start` (BRO-3422, 2026-09-15), a power calculation was first run on captures/SHOWN (the modal-impression rate) to justify "waiting longer won't resolve this," then had to be corrected mid-session to captures/EXPOSED (the actual pre-registered ITT primary in `docs/experiments/gate-cold-start.md`). The two denominators gave very different required-wait numbers (~241 days vs ~666 days) — both supported the same final decision here, but they didn't have to, and the first number was wrong. **Before running any two-proportion power calc, find the experiment's own stated primary metric definition and use that exact numerator/denominator — never substitute "the rate I have numbers for."**
+
+**Also found:** `data/audit/ticket-ab-monitor-state.json` shows `ticket-single-button` restarted `2026-08-31` — a DIFFERENT, more recent restart than the 2026-04-11 one documented below, with no record here of why. It also hit a one-time significance alert on 2026-07-27 that isn't explained either. This file is stale on that point — see BRO-3456 (filed 2026-09-15) for the investigation. Don't assume "restarted 2026-04-11" is still the operative baseline without checking the monitor state file's `startDate` first.
 
 ## What happened 2026-04-11 (why this file exists)
 
