@@ -71,6 +71,7 @@ const {
 const { routeAlert } = require('./lib/owner-alert-router');
 const { maybeAlertSerpBurstTripwire } = require('./lib/serp-burst-tripwire');
 const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
+const { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses } = require('./lib/js-outlet-giveup');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -95,9 +96,13 @@ const SERP_SESSION_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-session-ledg
  */
 function loadBackoffState(showId) {
   const p = path.join(BACKOFF_DIR, `${showId}.json`);
-  if (!fs.existsSync(p)) return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0 };
-  try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
-  catch { return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0 }; }
+  if (!fs.existsSync(p)) return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0, jsOutletMisses: {} };
+  try {
+    const state = JSON.parse(fs.readFileSync(p, 'utf8'));
+    state.jsOutletMisses = state.jsOutletMisses || {};
+    return state;
+  }
+  catch { return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0, jsOutletMisses: {} }; }
 }
 
 function saveBackoffState(showId, state) {
@@ -1504,13 +1509,35 @@ async function pollCycle() {
 
   // JS-rendered site-search: only for outlets still missing after parallel phase.
   // Prevents burning SB credits on outlets aggregators/RSS already found.
+  // BRO-2941: also suppresses outlets that have been attempted-and-missing
+  // DEFAULT_GIVEUP_THRESHOLD ticks in a row for THIS show — a market-agnostic
+  // outlet (vulture, THR, deadline, timeout, ew, telegraph-search) that will
+  // never cover a given show (e.g. THR on an Off-Broadway transfer) would
+  // otherwise re-render at 5 SB credits on every single poll tick forever.
+  //
+  // Two carve-outs (ship-check/Codex review) keep this from misfiring:
+  //   - Aggressive opening window: misses still ACCUMULATE (so suppression can
+  //     kick in promptly once the window ends), but the SKIP filter itself is
+  //     bypassed — same rationale as the show-level backoff carve-out above,
+  //     T2/T3 reviews routinely land on day 2-3 of the window and a give-up
+  //     mid-window would drop exactly the outlets this window exists to catch.
+  //   - No SCRAPINGBEE_API_KEY: searchOutletSites sets skipJs and never
+  //     actually renders anything, so "not found" isn't evidence of anything —
+  //     counting it would exhaust every outlet's budget with zero real attempts.
   let jsSiteSearchResults = [];
+  let jsOutletMisses = { ...(backoff.jsOutletMisses || {}) };
   if (!SKIP_SITE_SEARCH) {
     const foundAfterParallel = getFoundOutletIds(SHOW_ID, { show, market });
     for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults]) {
       if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
     }
-    const missingJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
+    // A find via ANY channel clears stale misses — otherwise an outlet found
+    // here, later rejected as wrongProduction/not-a-review and reopened by
+    // getFoundOutletIds, would inherit a give-up count from before it was ever
+    // actually found and get re-suppressed with no fresh attempts.
+    for (const id of foundAfterParallel) delete jsOutletMisses[id];
+
+    const allJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
       const ep = SITE_SEARCH_ENDPOINTS[id];
       // Missing-check keyed on the EFFECTIVE outlet id: a sibling entry
       // ('telegraph-search' → 'telegraph') must not re-fire a paid JS render
@@ -1521,8 +1548,26 @@ async function pollCycle() {
         && (!ep.applies || ep.applies(show))
         && !foundAfterParallel.has(effectiveId);
     });
+    const inOpeningWindow = isInOpeningWindow(show);
+    const givenUpIds = allJsIds.filter(id => {
+      const ep = SITE_SEARCH_ENDPOINTS[id];
+      const effectiveId = (ep.outletIdOverride || id).toLowerCase();
+      return isOutletGivenUp(jsOutletMisses, effectiveId);
+    });
+    const skipGivenUp = !FORCE_SERP && !inOpeningWindow;
+    const missingJsIds = skipGivenUp ? allJsIds.filter(id => !givenUpIds.includes(id)) : allJsIds;
+    if (skipGivenUp && givenUpIds.length > 0) {
+      console.log(`  [JS outlet give-up] skipping ${givenUpIds.length} outlet(s) with ${DEFAULT_GIVEUP_THRESHOLD}+ consecutive misses: ${givenUpIds.join(', ')} (pass --force-serp to retry)`);
+    } else if (!skipGivenUp && givenUpIds.length > 0) {
+      console.log(`  [JS outlet give-up] ${givenUpIds.length} outlet(s) past the miss threshold but still attempted (${FORCE_SERP ? '--force-serp' : 'inside opening window'}): ${givenUpIds.join(', ')}`);
+    }
     if (missingJsIds.length > 0) {
       jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null, show);
+      if (process.env.SCRAPINGBEE_API_KEY) {
+        const foundEffectiveIds = new Set(jsSiteSearchResults.filter(r => r.outletId).map(r => r.outletId.toLowerCase()));
+        const attemptedEffectiveIds = missingJsIds.map(id => (SITE_SEARCH_ENDPOINTS[id].outletIdOverride || id).toLowerCase());
+        jsOutletMisses = updateOutletMisses(jsOutletMisses, attemptedEffectiveIds, foundEffectiveIds);
+      }
     }
   }
 
@@ -1821,6 +1866,7 @@ async function pollCycle() {
       lastNewReviewAt: created > 0 ? new Date().toISOString() : backoff.lastNewReviewAt || null,
       lastRunAt: new Date().toISOString(),
       nextRunAfter: 0,
+      jsOutletMisses,
     };
     nextBackoff.nextRunAfter = Date.now() + computeNextBackoffDelayMs(nextBackoff.consecutiveNoOp);
     saveBackoffState(SHOW_ID, nextBackoff);
