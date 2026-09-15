@@ -197,7 +197,7 @@ test('merge-worktree-to-main.sh does NOT report "pushed" when the push never act
       `script printed its final success banner despite origin never advancing. stdout:\n${result.stdout}`
     );
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -268,7 +268,7 @@ test('merge-worktree-to-main.sh: a conflicted stash from a prior failed run is s
       );
     }
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -345,6 +345,6 @@ test('merge-worktree-to-main.sh: daemon re-dirties a tracked file during the pus
       );
     }
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

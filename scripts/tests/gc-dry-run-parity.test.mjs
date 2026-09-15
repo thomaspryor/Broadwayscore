@@ -35,7 +35,7 @@ const REPOS_HELPER = fileURLToPath(new URL('../lib/worktree-gc-repos.js', import
  *  wrong shape for it). Mirrors scripts/tests/gc-merged-worktrees-liveness.test.mjs. */
 const FIXTURE_ROOTS = [];
 after(() => {
-  for (const root of FIXTURE_ROOTS) fs.rmSync(root, { recursive: true, force: true });
+  for (const root of FIXTURE_ROOTS) fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 function git(cwd, ...args) {

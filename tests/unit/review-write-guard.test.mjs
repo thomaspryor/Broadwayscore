@@ -16,7 +16,7 @@ beforeEach(() => {
   tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'review-guard-'));
 });
 afterEach(() => {
-  fs.rmSync(tmpDir, { recursive: true, force: true });
+  fs.rmSync(tmpDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 describe('safeWriteReview', () => {
@@ -180,7 +180,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, 'nytimes--jesse-green.json');
       assert.equal(written.duplicateReason, 'url-collision-detected-at-write');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -197,7 +197,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const written = JSON.parse(fs.readFileSync(newPath, 'utf8'));
       assert.equal(written.duplicateOf, undefined);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -225,7 +225,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateReason, null);
       assert.match(written.duplicateClearReason || '', /URL .* no longer matches sibling/);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -251,7 +251,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateReason, null);
       assert.match(written.duplicateClearReason || '', /sibling .* no longer exists/);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -272,7 +272,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, 'a.json');
       assert.equal(written.duplicateReason, 'url-collision-detected-at-write');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -302,7 +302,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       // stays pointed at the sibling instead of being wrongly self-healed away.
       assert.equal(written.duplicateOf, 'nytimes--jesse-green.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -323,7 +323,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, undefined);
       assert.equal(written._duplicateOfCleared, 'auto:2026-04-12 different critics');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -347,7 +347,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, 'christopher-bonanos.json');
       assert.equal('_duplicateOfCleared' in written, false);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -373,7 +373,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, 'nysr--bernardo.json');
       assert.equal(written.duplicateReason, 'url-collision-detected-at-write');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -395,7 +395,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
       assert.equal(written.duplicateOf, undefined);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -406,7 +406,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/b' });
       assert.equal(result, null);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -417,7 +417,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/same' });
       assert.equal(result, 'a.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -432,7 +432,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       });
       assert.equal(result, 'nytimes--helen-shaw.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -443,7 +443,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/article' });
       assert.equal(result, 'a.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -453,7 +453,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const result = checkUrlCollision(path.join(dir, 'b.json'), { url: { nested: 'object' } });
       assert.equal(result, null);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -473,7 +473,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       });
       assert.equal(result, 'metro-uk--brooke-ivey-johnson.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -488,7 +488,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       });
       assert.equal(result, 'a.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -505,7 +505,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       });
       assert.equal(result, null, 'mid-path /amp/ should not collide with canonical');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 });
@@ -1232,7 +1232,7 @@ describe('protectStagedDeletions (BRO-2559)', () => {
     git(['config', 'user.name', 'Test']);
   });
   afterEach(() => {
-    fs.rmSync(repoDir, { recursive: true, force: true });
+    fs.rmSync(repoDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 
   test('reverses a staged deletion of a file that carries a real protected field at HEAD', () => {

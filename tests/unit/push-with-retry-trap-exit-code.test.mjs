@@ -95,7 +95,7 @@ test('the stale-marker refusal exits 1, not 127 — the trap must not die on an 
       `the stale-marker refusal must exit 1. Got ${res.status}.\n${output.slice(0, 1500)}`
     );
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 

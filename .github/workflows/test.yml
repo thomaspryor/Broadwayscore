@@ -1506,6 +1506,11 @@ on:
       # tests/unit-test-manifest.txt and path-listed here so a solo edit
       # triggers CI.
       - 'scripts/audit-pull-quotes.test.mjs'
+      # BRO-767: scoped pullQuote backfill (touches only the pullQuote field,
+      # not a full rebuild). Exercised by tests/unit/review-pullquotes.test.mjs
+      # (tests/** already globbed) but this source file itself wasn't listed —
+      # flagged by scripts/audit-toplevel-script-test-yml-coverage.js.
+      - 'scripts/backfill-missing-pullquotes.js'
       # Card re-armed 2026-08-16 (#727/#728): the LLM extraction side of the
       # same bug class — a too-short/too-long candidate gave up after one try
       # and fell through to the raw-fullText scrape instead of retrying with a

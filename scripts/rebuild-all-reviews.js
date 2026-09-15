@@ -576,7 +576,8 @@ function extractExcerptFromFullText(fullText, showTitle) {
  * Aggregator editors hand-pick evaluative quotes.
  *
  * Priority: llmPullQuote > LLM keyPhrases > showScoreExcerpt > bwwExcerpt >
- *           nycTheatreExcerpt > stagedoorExcerpt > dtliExcerpt > fullText extract > existing pullQuote
+ *           nycTheatreExcerpt > stagedoorExcerpt > dtliExcerpt > theatreReviewsExcerpt >
+ *           westEndTheatreExcerpt > lboRoundupExcerpt > fullText extract > existing pullQuote
  */
 // Cross-show validation: dry-run by default (log but don't suppress)
 const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
@@ -625,6 +626,9 @@ function selectBestExcerpt(data, showTitle) {
     data.nycTheatreExcerpt,
     data.stagedoorExcerpt,
     data.dtliExcerpt,
+    data.theatreReviewsExcerpt,
+    data.westEndTheatreExcerpt,
+    data.lboRoundupExcerpt,
   ].filter(t => typeof t === 'string' && t);
 
   /**
@@ -879,6 +883,33 @@ function selectBestExcerpt(data, showTitle) {
     if (cleaned && cleaned.length > 40) {
       const validated = validateExcerpt(cleaned, 'dtliExcerpt');
       if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.dtliExcerpt, excerpt: validated });
+    }
+  }
+
+  // 5b. Try theatreReviewsExcerpt (aggregator-curated, theatre.reviews)
+  if (data.theatreReviewsExcerpt) {
+    const cleaned = cleanExcerpt(data.theatreReviewsExcerpt);
+    if (cleaned && cleaned.length > 40) {
+      const validated = validateExcerpt(cleaned, 'theatreReviewsExcerpt');
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.theatreReviewsExcerpt, excerpt: validated });
+    }
+  }
+
+  // 5c. Try westEndTheatreExcerpt (aggregator-curated, West End Theatre)
+  if (data.westEndTheatreExcerpt) {
+    const cleaned = cleanExcerpt(data.westEndTheatreExcerpt);
+    if (cleaned && cleaned.length > 40) {
+      const validated = validateExcerpt(cleaned, 'westEndTheatreExcerpt');
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.westEndTheatreExcerpt, excerpt: validated });
+    }
+  }
+
+  // 5d. Try lboRoundupExcerpt (aggregator-curated, London Box Office)
+  if (data.lboRoundupExcerpt) {
+    const cleaned = cleanExcerpt(data.lboRoundupExcerpt);
+    if (cleaned && cleaned.length > 40) {
+      const validated = validateExcerpt(cleaned, 'lboRoundupExcerpt');
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.lboRoundupExcerpt, excerpt: validated });
     }
   }
 

@@ -84,7 +84,7 @@ test('findUnlandedJobDoneEntries: a job-done with commits not reachable from ori
     assert.equal(result[0].jobId, 'job1-abc');
     assert.equal(result[0].verdict, 'NOT_LANDED');
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -104,7 +104,7 @@ test('findUnlandedJobDoneEntries: a job whose branch was merged into origin/main
 
     assert.deepEqual(result, []);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -116,7 +116,7 @@ test('findUnlandedJobDoneEntries: a job-done worktree with zero unique commits i
     const result = findUnlandedJobDoneEntries(entries);
     assert.deepEqual(result, []);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -144,7 +144,7 @@ test('findUnlandedJobDoneEntries: a resumed job (new jobId, reused worktree) is 
     assert.equal(result[0].jobId, 'job4-resumed', 'must classify the DONE job, not the superseded RETRIED one');
     assert.equal(result[0].cwd, jobCwd);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -168,7 +168,7 @@ test('findUnlandedJobDoneEntries: uncommitted (dirty) changes are unlanded even 
     assert.equal(result.length, 1, 'a dirty worktree must count as unlanded even with HEAD at origin/main');
     assert.equal(result[0].taskId, 'linear:BRO-7');
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -184,7 +184,7 @@ test('findUnlandedJobDoneEntries: never runs an ancestry check against mainRepoC
     assert.equal(findUnlandedJobDoneEntries(entries, { mainRepoCwd: '/some/other/repo' }).length, 1,
       'a non-matching mainRepoCwd must not suppress unrelated jobs');
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -206,6 +206,6 @@ test('findUnlandedJobDoneEntries: sinceMs excludes job-done events older than th
     const cutoffBeforeJob = Date.parse('2026-09-15T09:00:00.000Z');
     assert.equal(findUnlandedJobDoneEntries(entries, { sinceMs: cutoffBeforeJob }).length, 1);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
