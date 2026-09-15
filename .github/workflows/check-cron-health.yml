@@ -116,7 +116,13 @@ jobs:
             # /rush, /standing-room, /discount-tickets, /box-office — pages
             # Reddit users screenshot. Added 2026-04-14 after
             # update-lottery-rush silently failed 5 days in a row.
-            "update-lottery-rush.yml|192|Update Lottery/Rush"
+            # BRO-873: was 192h (the once-a-week cushion value used elsewhere
+            # in this file) even though this cron runs TWICE weekly (Mon+Thu,
+            # true max gap ~96h) — looser than the 5-day incident being
+            # guarded against, so this backstop wouldn't have caught it even
+            # with the threshold as originally set. 110h matches the same
+            # cadence/cushion used for enrich-west-end-dates.yml below.
+            "update-lottery-rush.yml|110|Update Lottery/Rush"
             "weekly-grosses.yml|192|Weekly Grosses"
             "weekly-video-reviews.yml|192|Weekly Video Reviews"
             "weekly-nyt-critics-picks.yml|72|NYT Critics Picks"
