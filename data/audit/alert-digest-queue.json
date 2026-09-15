@@ -650,71 +650,6 @@
     "queuedAt": "2026-09-15T01:33:19.240Z"
   },
   {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "23 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "The Producers — i-paper (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-producers-west-end-2025\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Producers — independent (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-producers-west-end-2025\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "The Saviors — talkinbroadway (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-saviors-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Titanique — thewrap (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"titanique-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Titanique — telegraph (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"titanique-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Titanique — whatsonstage (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"titanique-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "To Kill a Mockingbird — telegraph (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"to-kill-a-mockingbird-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Twelfth Night — guardian (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Twelfth Night — independent (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Twelfth Night — observer (760h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-15T02:14:40.164Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (378/497)\noff-broadway: 42.5% (131/308)\nwest-end: 75.5% (420/556)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (760h)\nA Midsummer Night's Dream — observer (760h)\nA Midsummer Night's Dream — standard (760h)\nABBA Voyage — independent (760h)\nAladdin — ew (760h)\n… 169 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (760h)\nThe Book of Mormon — usatoday (760h)\nBuena Vista Social Club — broadwaynews (760h)\nBuena Vista Social Club — nydailynews (760h)\nHadestown — nydailynews (760h)\n… 20 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T02:14:40.255Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:golden-boy-off-west-end-2026",
     "title": "Auto-remediation gave up on golden-boy-off-west-end-2026",
     "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"golden-boy-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
@@ -725,5 +660,70 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-15T07:50:19.617Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "13 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Twelfth Night — standard (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Twelfth Night — telegraph (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Twelfth Night — timeout (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Twelfth Night — whatsonstage (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Wicked — financialtimes (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Wicked — telegraph (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Wicked — timeout (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Wicked — times-uk (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Wicked — whatsonstage (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Witness for the Prosecution — london-theatre (766h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-15T08:21:26.295Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.3% (379/497)\noff-broadway: 42.5% (131/308)\nwest-end: 75.5% (420/556)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (766h)\nA Midsummer Night's Dream — observer (766h)\nA Midsummer Night's Dream — standard (766h)\nABBA Voyage — independent (766h)\nAladdin — ew (766h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (766h)\nThe Book of Mormon — usatoday (766h)\nBuena Vista Social Club — broadwaynews (766h)\nBuena Vista Social Club — nydailynews (766h)\nHadestown — nydailynews (766h)\n… 20 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T08:21:26.390Z"
   }
 ]
