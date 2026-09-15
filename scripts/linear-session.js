@@ -33,6 +33,7 @@ const linear = require('./lib/linear-client');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
+const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 
 const USAGE = `Usage:
@@ -180,7 +181,9 @@ async function cmdClaim(args) {
   );
 }
 
-async function cmdReport(args) {
+// deps.verifyEvidence: tests inject a stub; the CLI gets the real git/gh-backed
+// verifier from done-evidence-verify.js (see the gate call below).
+async function cmdReport(args, deps = {}) {
   if (!args.issue) throw new Error(`report requires --issue=<id-or-identifier>\n\n${USAGE}`);
   if (!args.status) throw new Error(`report requires --status=<done|in-review|paused|blocked>\n\n${USAGE}`);
   if (!args.summary) throw new Error(`report requires --summary="..."\n\n${USAGE}`);
@@ -235,11 +238,14 @@ async function cmdReport(args) {
         // linear-done-gate.js's header (BRO-3155) for why raw connection
         // order is not safe to treat as chronological.
         const existingComments = sortedCommentBodies(issue);
+        const verifyEvidence = deps.verifyEvidence
+          || makeVerifyEvidence({ cwd: process.cwd(), issueIdentifier: issue.identifier, log: (m) => console.error(m) });
         const gate = checkLinearDoneTransition({
           targetStateType: 'completed',
           description: issue.description || '',
           commentText: body,
           existingComments,
+          verifyEvidence,
         });
         if (gate.gated && !gate.allowed) refusal = gate;
       }

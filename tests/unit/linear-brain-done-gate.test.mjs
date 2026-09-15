@@ -44,11 +44,20 @@ function makeIssue(description, commentBodies = []) {
 
 // Builds a runnable fixture script that requires the real linear-brain.js,
 // injects stub I/O via main()'s deps param, and calls it with the given argv.
-function runUpdate({ argv, description, comments = [], updateShouldBeCalled }) {
+// `verify` stubs the origin/main evidence check (done-evidence-verify.js):
+// 'ok' = the cited commit is on origin/main, 'not-on-main' = definitively
+// not, anything else = could not be determined. No test ever shells out.
+function runUpdate({ argv, description, comments = [], updateShouldBeCalled, verify }) {
+  const verifier = verify === 'ok'
+    ? "() => ({ verified: true, reason: 'stub: on origin/main' })"
+    : verify === 'not-on-main'
+      ? "() => ({ verified: false, reason: 'stub: commit is NOT on origin/main' })"
+      : "() => ({ verified: null, reason: 'stub: unknown' })";
   const script = `
     const { main } = require('./scripts/linear-brain.js');
     const issue = ${JSON.stringify(makeIssue(description, comments))};
     main(${JSON.stringify(argv)}, {
+      verifyEvidence: ${verifier},
       getIssue: async () => issue,
       getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
       updateIssue: async () => {
@@ -91,6 +100,7 @@ test('allowed: a PR-EVIDENCE marker recording merged+deployed+checked', () => {
     argv: ['update', 'BRO-9457', '--state', 'Done'],
     description: 'PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/pull/999)',
     updateShouldBeCalled: true,
+    verify: 'ok',
   });
   assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
   assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
@@ -102,6 +112,7 @@ test('allowed: PR-EVIDENCE arrives via the --comment posted in the same call, no
     argv: ['update', 'BRO-9457', '--state', 'Done', '--comment', 'PR-EVIDENCE: merged deployed checked'],
     description: 'Fixed the thing, looks good.',
     updateShouldBeCalled: true,
+    verify: 'ok',
   });
   assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
   assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
@@ -114,10 +125,34 @@ test('allowed: PR-EVIDENCE recorded in a PAST comment (no --comment on this call
     description: 'Fixed the thing, looks good.',
     comments: ['Started work.', 'PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/pull/1000)'],
     updateShouldBeCalled: true,
+    verify: 'ok',
   });
   assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
   assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
   assert.doesNotMatch(res.stderr, /REFUSED/);
+});
+
+test('refused: a complete PR-EVIDENCE line whose commit is NOT on origin/main — the words alone no longer close an issue', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9457', '--state', 'Done'],
+    description: 'PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/deadbeefcafe)',
+    updateShouldBeCalled: false,
+    verify: 'not-on-main',
+  });
+  assert.equal(res.status, 5, `expected exit 5, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /REFUSED \(pr-evidence-not-on-main\)/);
+  assert.match(res.stderr, /NOT on origin\/main/);
+});
+
+test('refused: a complete PR-EVIDENCE line that cannot be verified (shallow clone, gh down) fails CLOSED', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9457', '--state', 'Done'],
+    description: 'PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/pull/999)',
+    updateShouldBeCalled: false,
+    verify: 'unknown',
+  });
+  assert.equal(res.status, 5, `expected exit 5, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /REFUSED \(pr-evidence-unverified\)/);
 });
 
 test('refused: a PR-EVIDENCE marker present but only partially true (not deployed)', () => {
