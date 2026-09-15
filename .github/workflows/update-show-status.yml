@@ -1677,12 +1677,24 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo "Dispatching gather-reviews for: ${{ steps.find-gaps.outputs.gap_shows }}"
-          if gh workflow run gather-reviews.yml -f shows="${{ steps.find-gaps.outputs.gap_shows }}"; then
+          GAPS="${{ steps.find-gaps.outputs.gap_shows }}"
+          # Drop shows already covered by an in-flight gather-reviews run
+          # (scripts/lib/gather-idempotency.js, ship-check finding: this job
+          # used to dispatch its whole batch unconditionally, so a show whose
+          # first attempt was still running could get a second overlapping
+          # dispatch).
+          NEEDING=$(node scripts/filter-active-gather-shows.js "$GAPS")
+          if [ -z "$NEEDING" ]; then
+            echo "All of [$GAPS] already covered by an active gather-reviews run — skipping dispatch"
             echo "dispatched=true" >> $GITHUB_OUTPUT
           else
-            echo "::warning::gather-reviews dispatch failed — NOT recording a catch-up attempt for this batch (retried tomorrow, doesn't count against the give-up budget)"
-            echo "dispatched=false" >> $GITHUB_OUTPUT
+            echo "Dispatching gather-reviews for: $NEEDING"
+            if gh workflow run gather-reviews.yml -f shows="$NEEDING"; then
+              echo "dispatched=true" >> $GITHUB_OUTPUT
+            else
+              echo "::warning::gather-reviews dispatch failed — NOT recording a catch-up attempt for this batch (retried tomorrow, doesn't count against the give-up budget)"
+              echo "dispatched=false" >> $GITHUB_OUTPUT
+            fi
           fi
 
       # Attempt is recorded only after a CONFIRMED successful dispatch (BRO-3389
