@@ -46,5 +46,54 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-15T13:38:36.378Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "11/130 show(s) differ between internal state and what prod serves.\nscore-drift: 11\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nDeath Note: The Musical: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T14:11:40.298Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "3 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Witness for the Prosecution — standard (772h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Witness for the Prosecution — thestage (772h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Witness for the Prosecution — timeout (772h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-15T14:11:40.405Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.3% (379/497)\noff-broadway: 42.4% (132/311)\nwest-end: 75.4% (419/556)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (772h)\nA Midsummer Night's Dream — observer (772h)\nA Midsummer Night's Dream — standard (772h)\nABBA Voyage — independent (772h)\nAladdin — ew (772h)\n… 169 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (772h)\nThe Book of Mormon — usatoday (772h)\nBuena Vista Social Club — broadwaynews (772h)\nBuena Vista Social Club — nydailynews (772h)\nHadestown — nydailynews (772h)\n… 20 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-15T14:11:40.498Z"
   }
 ]
