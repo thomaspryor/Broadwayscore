@@ -1,0 +1,174 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const {
+  classifyJobDoneLanding, detectJobLanding, findUnlandedJobDoneEntries,
+} = require('../../scripts/lib/headless-unlanded-detection.js');
+
+// Same fixture shape as scripts/lib/landing-verify.test.mjs: a bare origin
+// plus a real working checkout, so the ancestry check runs against real git
+// state rather than a mock.
+function makeFixture() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'headless-unlanded-'));
+  const origin = path.join(root, 'origin.git');
+  const seed = path.join(root, 'seed');
+  execFileSync('git', ['init', '-q', '--bare', '-b', 'main', origin]);
+  execFileSync('git', ['init', '-q', '-b', 'main', seed]);
+  const seedGit = (...a) => execFileSync('git', a, { cwd: seed, encoding: 'utf8' });
+  seedGit('config', 'user.email', 'test@example.com');
+  seedGit('config', 'user.name', 'test');
+  seedGit('remote', 'add', 'origin', origin);
+  fs.writeFileSync(path.join(seed, 'base.txt'), 'base\n');
+  seedGit('add', '-A');
+  seedGit('commit', '-qm', 'base');
+  seedGit('push', '-q', 'origin', 'main');
+  return { root, origin };
+}
+
+// A fresh clone of origin, standing in for a job's worktree (bsc-runner.js
+// provisions job worktrees off origin/main the same way).
+function cloneJobCwd(origin, root, name) {
+  const cwd = path.join(root, name);
+  execFileSync('git', ['clone', '-q', origin, cwd]);
+  execFileSync('git', ['config', 'user.email', 'test@example.com'], { cwd });
+  execFileSync('git', ['config', 'user.name', 'test'], { cwd });
+  return cwd;
+}
+
+function addUnpushedCommit(cwd, name) {
+  const git = (...a) => execFileSync('git', a, { cwd, encoding: 'utf8' });
+  fs.writeFileSync(path.join(cwd, `${name}.txt`), `${name}\n`);
+  git('add', '-A');
+  git('commit', '-qm', name);
+  return git('rev-parse', 'HEAD').trim();
+}
+
+function jobDoneLedger({ taskId, jobId, cwd, extra = {} }) {
+  return [
+    { event: 'job-spawned', taskId, jobId, subject: 'test job', cwd, logFile: null, model: null, ts: '2026-09-15T10:00:00.000Z' },
+    { event: 'job-done', taskId, jobId, sessionId: 'sess-1', costUSD: 1.2, ts: '2026-09-15T10:20:00.000Z', ...extra },
+  ];
+}
+
+test('classifyJobDoneLanding: pure fail-safe classification', () => {
+  assert.equal(classifyJobDoneLanding({ cwdExists: false, landedVerdict: null }), 'unknown');
+  assert.equal(classifyJobDoneLanding({ cwdExists: true, landedVerdict: 'LANDED' }), 'landed');
+  assert.equal(classifyJobDoneLanding({ cwdExists: true, landedVerdict: 'NOT_LANDED' }), 'unlanded');
+  assert.equal(classifyJobDoneLanding({ cwdExists: true, landedVerdict: 'UNKNOWN' }), 'unknown');
+  assert.equal(classifyJobDoneLanding({ cwdExists: true, landedVerdict: null }), 'unknown');
+});
+
+test('detectJobLanding: missing cwd never reports unlanded', () => {
+  const result = detectJobLanding({ cwd: '/tmp/does-not-exist-headless-unlanded-fixture' });
+  assert.equal(result.status, 'unknown');
+  assert.equal(result.sha, null);
+});
+
+test('findUnlandedJobDoneEntries: a job-done with commits not reachable from origin/main is unlanded', () => {
+  const { root, origin } = makeFixture();
+  try {
+    const jobCwd = cloneJobCwd(origin, root, 'job1');
+    addUnpushedCommit(jobCwd, 'unpushed-fix'); // "THIS SESSION: KEEP OPEN" shape — committed locally, never landed
+
+    const entries = jobDoneLedger({ taskId: 'linear:BRO-1', jobId: 'job1-abc', cwd: jobCwd });
+    const result = findUnlandedJobDoneEntries(entries);
+
+    assert.equal(result.length, 1);
+    assert.equal(result[0].taskId, 'linear:BRO-1');
+    assert.equal(result[0].jobId, 'job1-abc');
+    assert.equal(result[0].verdict, 'NOT_LANDED');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('findUnlandedJobDoneEntries: a job whose branch was merged into origin/main is NOT unlanded', () => {
+  const { root, origin } = makeFixture();
+  try {
+    const jobCwd = cloneJobCwd(origin, root, 'job2');
+    addUnpushedCommit(jobCwd, 'landed-fix');
+    // Simulate merge-worktree-to-main.sh: push the job's commits straight to
+    // origin/main (a real merge commit, never squash — see module header),
+    // then refresh the job worktree's own view of origin/main.
+    execFileSync('git', ['push', '-q', 'origin', 'HEAD:main'], { cwd: jobCwd });
+    execFileSync('git', ['fetch', '-q', 'origin', 'main'], { cwd: jobCwd });
+
+    const entries = jobDoneLedger({ taskId: 'linear:BRO-2', jobId: 'job2-abc', cwd: jobCwd });
+    const result = findUnlandedJobDoneEntries(entries);
+
+    assert.deepEqual(result, []);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('findUnlandedJobDoneEntries: a job-done worktree with zero unique commits is NOT unlanded', () => {
+  const { root, origin } = makeFixture();
+  try {
+    const jobCwd = cloneJobCwd(origin, root, 'job3'); // no extra commits at all
+    const entries = jobDoneLedger({ taskId: 'linear:BRO-3', jobId: 'job3-abc', cwd: jobCwd });
+    const result = findUnlandedJobDoneEntries(entries);
+    assert.deepEqual(result, []);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('findUnlandedJobDoneEntries: a resumed job (new jobId, reused worktree) is still detected via its own recorded cwd', () => {
+  const { root, origin } = makeFixture();
+  try {
+    const jobCwd = cloneJobCwd(origin, root, 'job4');
+    addUnpushedCommit(jobCwd, 'still-unlanded');
+
+    // The original job timed out (job-retried, terminal for the OLD jobId —
+    // see dispatch-ledger.js JOB_EVENTS.RETRIED), then bsc-reconcile/
+    // resume-headless-job.js spawned a NEW jobId with isolate:false against
+    // the SAME worktree. Neither ledger row for the new jobId names a branch
+    // — only its own cwd, which is what this detector must key off (not a
+    // branch name derived from the new jobId).
+    const entries = [
+      { event: 'job-spawned', taskId: 'linear:BRO-4', jobId: 'job4-orig', cwd: jobCwd, ts: '2026-09-15T09:00:00.000Z' },
+      { event: 'job-retried', taskId: 'linear:BRO-4', jobId: 'job4-orig', ts: '2026-09-15T09:30:00.000Z' },
+      { event: 'job-spawned', taskId: 'linear:BRO-4', jobId: 'job4-resumed', cwd: jobCwd, resumed: true, ts: '2026-09-15T09:31:00.000Z' },
+      { event: 'job-done', taskId: 'linear:BRO-4', jobId: 'job4-resumed', sessionId: 'sess-2', ts: '2026-09-15T10:00:00.000Z' },
+    ];
+
+    const result = findUnlandedJobDoneEntries(entries);
+    assert.equal(result.length, 1);
+    assert.equal(result[0].jobId, 'job4-resumed', 'must classify the DONE job, not the superseded RETRIED one');
+    assert.equal(result[0].cwd, jobCwd);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('findUnlandedJobDoneEntries: a task with no job-done event at all is never reported', () => {
+  const entries = [
+    { event: 'job-spawned', taskId: 'linear:BRO-5', jobId: 'job5-abc', cwd: '/tmp/whatever', ts: '2026-09-15T10:00:00.000Z' },
+    { event: 'job-failed', taskId: 'linear:BRO-5', jobId: 'job5-abc', ts: '2026-09-15T10:10:00.000Z' },
+  ];
+  assert.deepEqual(findUnlandedJobDoneEntries(entries), []);
+});
+
+test('findUnlandedJobDoneEntries: sinceMs excludes job-done events older than the cutoff', () => {
+  const { root, origin } = makeFixture();
+  try {
+    const jobCwd = cloneJobCwd(origin, root, 'job6');
+    addUnpushedCommit(jobCwd, 'old-unlanded-work');
+    const entries = jobDoneLedger({ taskId: 'linear:BRO-6', jobId: 'job6-abc', cwd: jobCwd });
+
+    const cutoffAfterJob = Date.parse('2026-09-15T11:00:00.000Z'); // after the job-done ts
+    assert.deepEqual(findUnlandedJobDoneEntries(entries, { sinceMs: cutoffAfterJob }), []);
+
+    const cutoffBeforeJob = Date.parse('2026-09-15T09:00:00.000Z');
+    assert.equal(findUnlandedJobDoneEntries(entries, { sinceMs: cutoffBeforeJob }).length, 1);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
