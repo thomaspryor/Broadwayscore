@@ -587,6 +587,12 @@ on:
       # scripts/lib/** (already globbed above) — path-listed so a solo edit
       # to this test alone still triggers CI.
       - 'scripts/tests/brightdata-daily-spend.test.mjs'
+      # BRO-3419: weekly traffic-source spike detection (GA4 + PostHog). The
+      # pure helpers (weekStart/bucketWeekly/detectSpikes) live in the script
+      # itself, so both the script and its test are path-listed — a solo edit
+      # to either would otherwise run in ZERO CI jobs.
+      - 'scripts/analyze-traffic-sources.js'
+      - 'scripts/tests/analyze-traffic-sources.test.mjs'
       # Task #692: summarizeBwwRoundupMisses() (in the file above) + its digest
       # formatter bwwRoundupMissBacklogResults() (scripts/health-check.js, already
       # path-listed elsewhere). Test lives in tests/unit/ (node --test batch, not
