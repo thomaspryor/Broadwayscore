@@ -5,11 +5,15 @@
  * CLI wrapper around scripts/lib/zero-review-catchup.js for
  * update-show-status.yml's catchup-zero-review-shows job (BRO-3389).
  *
- * Prints the comma-separated batch of show ids to dispatch gather-reviews
- * for on the LAST stdout line (the workflow captures it via $GITHUB_OUTPUT).
- * Every other line is diagnostic. Updates data/audit/zero-review-catchup-attempts.json
- * with a fresh attempt stamp for every id in the batch — the workflow commits
- * that file after this script runs.
+ * Selection only — does NOT record an attempt. Writes gap_shows directly to
+ * $GITHUB_OUTPUT (never via "the last stdout line": bash command
+ * substitution strips ALL trailing blank lines, so when the batch is empty
+ * `tail -1` picked up the preceding diagnostic sentence instead of an empty
+ * string and would have dispatched it as a show id — ship-check finding).
+ * The workflow records an attempt in a separate step, only after the
+ * dispatch step actually succeeds (see record-zero-review-catchup-attempt.js)
+ * — recording it here unconditionally would burn the give-up budget on
+ * transient gh-cli/API failures that never really attempted collection.
  *
  * Usage: node scripts/find-zero-review-catchup-gaps.js
  */
@@ -18,7 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { selectCatchupCandidates } = require('./lib/zero-review-catchup');
-const { loadAttempts, recordAttempts } = require('./lib/zero-review-catchup-attempts');
+const { loadAttempts } = require('./lib/zero-review-catchup-attempts');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -47,16 +51,18 @@ function main() {
   if (tooOld.length) {
     console.log(`::warning::catchup-zero-review-shows: ${tooOld.length} open zero-review show(s) older than the 90-day age bound will NOT be re-dispatched — this is a status/data problem, not a discovery gap: ${tooOld.join(', ')}`);
   }
+  console.log(batch.length
+    ? `Found ${batch.length} open show(s) with 0 reviews needing collection: ${batch.join(', ')}`
+    : 'No zero-review gap shows found');
 
-  if (batch.length) {
-    console.log(`Found ${batch.length} open show(s) with 0 reviews needing collection`);
-    recordAttempts(ATTEMPTS_PATH, batch, now);
+  const outputPath = process.env.GITHUB_OUTPUT;
+  if (outputPath) {
+    fs.appendFileSync(outputPath, `gap_shows=${batch.join(',')}\n`);
   } else {
-    console.log('No zero-review gap shows found');
+    // Local/manual run — no $GITHUB_OUTPUT to write to. Prefixed so a human
+    // or script can grep it unambiguously instead of guessing at "the last line".
+    console.log(`GAP_SHOWS=${batch.join(',')}`);
   }
-
-  // Last line: the batch for $GITHUB_OUTPUT to capture.
-  console.log(batch.join(','));
 }
 
 main();

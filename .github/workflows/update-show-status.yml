@@ -1664,13 +1664,34 @@ jobs:
           # Selection logic lives in scripts/lib/zero-review-catchup.js
           # (BRO-3389 — the previous inline node -e had no age bound and no
           # attempt memory, so it re-dispatched the same handful of long-open
-          # zero-review shows every day forever). This also stamps
-          # data/audit/zero-review-catchup-attempts.json for the batch it
-          # returns, which the next step commits.
-          OUTPUT=$(node scripts/find-zero-review-catchup-gaps.js)
-          echo "$OUTPUT"
-          GAPS=$(echo "$OUTPUT" | tail -1)
-          echo "gap_shows=$GAPS" >> $GITHUB_OUTPUT
+          # zero-review shows every day forever). Selection ONLY — writes
+          # gap_shows straight to $GITHUB_OUTPUT itself (never via "the last
+          # stdout line": command substitution strips trailing blank lines,
+          # which promoted a diagnostic sentence into the id list when the
+          # batch was empty — ship-check finding).
+          node scripts/find-zero-review-catchup-gaps.js
+
+      - name: Dispatch gather-reviews for gap shows
+        id: dispatch-gaps
+        if: steps.find-gaps.outputs.gap_shows != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Dispatching gather-reviews for: ${{ steps.find-gaps.outputs.gap_shows }}"
+          if gh workflow run gather-reviews.yml -f shows="${{ steps.find-gaps.outputs.gap_shows }}"; then
+            echo "dispatched=true" >> $GITHUB_OUTPUT
+          else
+            echo "::warning::gather-reviews dispatch failed — NOT recording a catch-up attempt for this batch (retried tomorrow, doesn't count against the give-up budget)"
+            echo "dispatched=false" >> $GITHUB_OUTPUT
+          fi
+
+      # Attempt is recorded only after a CONFIRMED successful dispatch (BRO-3389
+      # ship-check finding) — recording it unconditionally, as the first cut of
+      # this fix did, would burn the give-up budget on transient gh-cli/API
+      # failures that never actually attempted collection.
+      - name: Record zero-review catch-up attempt
+        if: steps.find-gaps.outputs.gap_shows != '' && steps.dispatch-gaps.outputs.dispatched == 'true'
+        run: node scripts/record-zero-review-catchup-attempt.js "${{ steps.find-gaps.outputs.gap_shows }}"
 
       - name: Commit zero-review catch-up attempt memory
         if: always()
@@ -1686,14 +1707,6 @@ jobs:
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
             bash scripts/lib/push-with-retry.sh
           fi
-
-      - name: Dispatch gather-reviews for gap shows
-        if: steps.find-gaps.outputs.gap_shows != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          echo "Dispatching gather-reviews for: ${{ steps.find-gaps.outputs.gap_shows }}"
-          gh workflow run gather-reviews.yml -f shows="${{ steps.find-gaps.outputs.gap_shows }}" || echo "Dispatch failed"
 
   # Auto-trigger opening night readiness check for shows opening tomorrow
   check-opening-night-readiness:
