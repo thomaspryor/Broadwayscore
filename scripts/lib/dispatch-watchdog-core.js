@@ -30,7 +30,7 @@
 'use strict';
 
 const {
-  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs,
+  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs, JOB_EVENTS,
   openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage, detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS,
 } = require('./dispatch-ledger.js');
@@ -178,7 +178,28 @@ function taskSortKey(taskId) {
   return { n: m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER, s };
 }
 
+// Source rank: Linear before Notion, ALWAYS (BRO-3390 follow-up).
+//
+// Found by watching production, not by reading: after the first three Linear
+// cards drained (BRO-219/931/995, all low-numbered), the next four claims went
+// straight back to the Notion mirror (1849, 1904, 1932, 1962). Sorting on the
+// trailing integer alone silently ranks Notion's 1800s-1900s ids AHEAD of
+// Linear's BRO-2000+, so the drain works the RETIRED board until it exhausts
+// four weeks of stale cards. The pre-implementation review flagged this class
+// and my own measurement appeared to falsify it — it didn't, it was just
+// masked by a handful of low-numbered Linear ids at the head of the queue.
+//
+// Linear is the live board (CLAUDE.md section 6: "Linear is the source of
+// truth — do NOT create Notion cards"). A frozen mirror must never outrank it.
+// Within a source the trailing-integer FIFO still applies.
+function taskSourceRank(taskId) {
+  return /^linear:/.test(String(taskId == null ? '' : taskId)) ? 0 : 1;
+}
+
 function compareTaskIds(a, b) {
+  const ra = taskSourceRank(a);
+  const rb = taskSourceRank(b);
+  if (ra !== rb) return ra - rb;
   const ka = taskSortKey(a);
   const kb = taskSortKey(b);
   if (ka.n !== kb.n) return ka.n - kb.n;
@@ -484,6 +505,40 @@ function planSweep(entries, tasks, opts) {
   // window's newest event is a success). This is a separate signal that
   // does not require the newest event to be a failure to alarm.
   const failureRate = detectLauncherFailureRate(entries, { now });
+
+  // ── headless jobs that ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: (BRO-3442) ──
+  // Computed HERE (before retryable/p01Queue below) so both can exclude a
+  // task this sweep is about to park — without that, the SAME sweep both
+  // parks a task (with "not retried automatically" in the reason/comment)
+  // and dispatches it via the P0/P1 backlog queue, since planSweep computes
+  // toDispatch independently of jobBlocked (adversarial review catch).
+  //
+  // Grouped by LATEST job per task (by ts), not "any folded job with a
+  // BLOCKED event": foldJobs() is keyed by jobId, and a task can accumulate
+  // several jobIds over time (retries/resumes). Filtering on "any job ever
+  // BLOCKED" would re-park a task whose blocker was already resolved and
+  // superseded by a later, successful jobId (adversarial review catch) —
+  // only the task's most recent job's own verdict is the current one.
+  const latestJobByTask = new Map();
+  for (const job of foldJobs(entries).values()) {
+    if (!job || job.taskId == null) continue;
+    const id = String(job.taskId);
+    const ts = Date.parse(job.ts || '') || 0;
+    const cur = latestJobByTask.get(id);
+    if (!cur || ts >= cur.ts) latestJobByTask.set(id, { ...job, ts });
+  }
+  const jobBlocked = [];
+  for (const [id, job] of latestJobByTask) {
+    if (job.event !== JOB_EVENTS.BLOCKED) continue;
+    const task = tasks.get(id);
+    if (!isTaskOpen(task)) continue;          // card already closed
+    if (open.has(id)) continue;               // a newer launch superseded this
+    if (ownerParked.has(id) || wdParked.has(id)) continue;
+    jobBlocked.push({ taskId: id, subject: task.subject, jobId: job.jobId, reason: job.reason || null });
+  }
+  jobBlocked.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
+  const blockedTaskIds = new Set(jobBlocked.map((j) => j.taskId));
+
   const retryable = [];
   const toPark = [];
   const seen = new Set();
@@ -496,6 +551,7 @@ function planSweep(entries, tasks, opts) {
     if (!isTaskOpen(task)) continue;
     if (open.has(id)) continue;                    // a newer launch is running
     if (ownerParked.has(id) || wdParked.has(id)) continue;
+    if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: claimed, never landed — don't re-claim every sweep
     // Human-territory cards are excluded here too, not just in the P0/P1
     // backlog sweep below (ship-check catch on task #1154). Retry only needs a
@@ -558,6 +614,7 @@ function planSweep(entries, tasks, opts) {
     if (isExcludedCategory(task)) continue;        // human-territory cards
     const id = String(task.id);
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
+    if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: same suppression as the retry path above
     if (dispatchCapDecision(id, entries).blocked) continue;
     p01Queue.push({ taskId: id, subject: task.subject, priority: pri });
@@ -685,19 +742,19 @@ function planSweep(entries, tasks, opts) {
   // number — the backlog looked drained (ship-check P1).
   const needsYou = toPark.length + wdParked.size + recheckFailures.length +
     (outage.outage ? 1 : 0) + (failureRate.leaking ? 1 : 0) + awaitingClaim.length +
-    unlandedDone.length;
+    unlandedDone.length + jobBlocked.length;
 
   return {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim, noLaunchPark,
-    unlandedDone,
+    unlandedDone, jobBlocked,
     budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
     recheckFailures,
     needsYou,
-    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length,
+    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length + jobBlocked.length,
   };
 }
 
@@ -779,7 +836,7 @@ module.exports = {
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,
   watchdogClaimPending, lastLaunchAnywhereMs,
-  taskPriority, notionIdOf, taskSortKey, compareTaskIds,
+  taskPriority, notionIdOf, taskSortKey, compareTaskIds, taskSourceRank,
   openHeadlessJobTasks, openTasksAnyLane,
   PACING_WINDOW_MS, PACING_HOURS, watchdogClaimsInWindow,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,

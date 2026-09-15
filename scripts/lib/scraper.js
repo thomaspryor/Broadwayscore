@@ -35,6 +35,7 @@ const {
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { readEnvKeys } = require('./load-env');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
+const { sdBilledCredits } = require('./provider-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');

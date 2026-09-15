@@ -528,6 +528,27 @@ test('BRO-3446: a GENERIC comment correction still cannot displace a SPECIFIC sn
     'a rank-2 comment must not displace a rank-0 snapshot, even a phantom one');
 });
 
+// ship-check finding (Codex): evaluateVerifiability's own newest-wins rule
+// stops at the first document that arms AT ALL. Applied naively here, an
+// unrelated LATER comment (a wrap-up note's own boilerplate VERIFY: line)
+// would shadow an earlier, genuinely specific correction, and the phantom
+// snapshot would never get fixed. findCommentCorrection must keep scanning
+// past a comment that arms but doesn't meet the specificity bar.
+test('BRO-3446: a later, unrelated generic comment does not shadow an earlier specific correction', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({
+      notes: '## Acceptance criteria\nVERIFY: node --test tests/unit/feedback-formspree-status-check.test.mjs',
+      comments: [
+        'VERIFY: node --test src/app/api/__tests__/notion-write-is-non-fatal.test.mjs',
+        'VERIFY: npx next lint',
+      ],
+    })],
+    launchEntries: [launch({ verifyCmd: 'node --test tests/unit/feedback-formspree-status-check.test.mjs' })],
+  });
+  assert.equal(out[0].verifyCmd, 'node --test src/app/api/__tests__/notion-write-is-non-fatal.test.mjs',
+    'the earlier specific correction must still be found even though a later comment also arms');
+});
+
 test('BRO-3434: the snapshot is still used when the card arms nothing', () => {
   const out = selectRecheckTargets({
     doneCards: [done({ notes: 'the criteria section was emptied, only prose now' })],

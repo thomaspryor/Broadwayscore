@@ -28,6 +28,11 @@ on:
       # scripts/audit-test-yml-lib-deps.js — advisory CI check that catches
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
+      # scripts/posthog-flag-admin.js is a thin CLI wrapper around
+      # scripts/lib/posthog-flag-admin-core.js (covered by the glob above) —
+      # no independent test of its own, but a solo edit here would otherwise
+      # trigger ZERO CI, the same gap task #1745 documents.
+      - 'scripts/posthog-flag-admin.js'
       # scripts/check-missed-broadcasts.js is the I/O wrapper for
       # scripts/lib/missed-broadcasts.js (globbed above). The predicate is
       # covered by scripts/lib/**, but a solo edit to the wrapper would
@@ -4294,6 +4299,24 @@ jobs:
         # test file.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.stall-diagnostics.test.sh
+
+      - name: Run push-with-retry trace2-diagnostics test (bash integration)
+        # BRO-3358: git_push_traced()'s PUSH_TRACE2_DIAGNOSTICS flag adds a
+        # SECOND temp file (trace2_file) inside the same RETURN trap the
+        # stall-diagnostics test above exercises for the original curl trace.
+        # That trap unconditionally expands "$trace2_file" on every call, even
+        # when the flag is off — an undeclared local there is an
+        # unbound-variable error under this file's `set -euo pipefail` on
+        # EVERY push in all ~157 call sites, not just the ones that opt in
+        # (caught in this card's pre-implementation review, before it ever ran
+        # for real). This test runs the real script, flag on and off, against
+        # both a killed push and a successful one, to pin that class of bug
+        # down directly rather than relying on the stall-diagnostics test
+        # above (which never sets PUSH_TRACE2_DIAGNOSTICS) to catch it.
+        # No path-allowlist entry needed — scripts/lib/** (line 22) already
+        # covers both the script and this test file.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.trace2-diagnostics.test.sh
 
       - name: Run github-remote-parse test (bash unit)
         # BRO-2951: the two parsers push-via-git-api.sh uses to decide whether a

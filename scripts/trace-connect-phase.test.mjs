@@ -47,12 +47,33 @@ const {
   classifyStallService,
   censusTrace,
   formatTimeline,
+  parseTrace2Records,
+  summarizeTrace2Children,
+  extractTrace2Timeline,
+  formatTrace2Timeline,
 } = require('./lib/push-diagnostics.js');
 
 const REPO_ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const FIXTURE = join(
   REPO_ROOT,
   'tests/fixtures/push-stall-trace-ci-34852355418.txt'
+);
+// BRO-3358: real GIT_TRACE2_PERF captures (not synthetic lines) — see that
+// module's header for why GIT_TRACE_CURL/GIT_TRACE_PERFORMANCE cannot answer
+// what these do. Both were captured by this session with `GIT_TRACE2_PERF=1
+// git ls-remote https://x-access-token:FAKETOKEN...@github.com/...` and
+// redacted via push-diagnostics-cli.js redact-tail before being committed —
+// FIXTURE2_KILLED is FIXTURE2_CLEAN truncated right after the credential-
+// helper's child_start line, i.e. before its child_exit, which is exactly
+// the shape a real git_push_traced() capture has when the process is
+// SIGKILLed while that child is still running.
+const FIXTURE2_CLEAN = join(
+  REPO_ROOT,
+  'tests/fixtures/push-stall-trace2-local-ls-remote.txt'
+);
+const FIXTURE2_KILLED = join(
+  REPO_ROOT,
+  'tests/fixtures/push-stall-trace2-killed-mid-credential-helper.txt'
 );
 
 // ---------------------------------------------------------------------------
@@ -145,6 +166,69 @@ test('real CI trace: census exposes that the logged tail is a truncated keyhole'
 });
 
 // ---------------------------------------------------------------------------
+// BRO-3358: real GIT_TRACE2_PERF captures.
+// ---------------------------------------------------------------------------
+
+test('real trace2 capture: a clean run pairs every child_start with a child_exit — nothing in-flight', () => {
+  const traceText = fs.readFileSync(FIXTURE2_CLEAN, 'utf8');
+  const records = parseTrace2Records(traceText);
+  assert.ok(records.length > 10, 'a real capture parses into more than a couple records');
+  const children = summarizeTrace2Children(traceText);
+  assert.ok(children.length >= 3, 'a real ls-remote spawns multiple nested children (remote-https, dashed, credential helper)');
+  assert.ok(
+    children.every((c) => c.inFlightAtEnd === false),
+    'a run that completed normally must have an exit for every child it started'
+  );
+  const helper = children.find((c) => /git-credential store/.test(c.argv));
+  assert.ok(helper, 'the credential-helper child must be present in a real capture');
+  assert.ok(helper.durationMs > 0 && helper.durationMs < 5000, `credential-helper duration should be a small positive number, got ${helper.durationMs}ms`);
+});
+
+test('real trace2 capture, KILLED mid-credential-helper: the in-flight child is identified — the exact signal this card exists to produce', () => {
+  // This fixture is FIXTURE2_CLEAN truncated right after the credential
+  // helper's child_start line — i.e. it has no child_exit for that child,
+  // the same shape a real git_push_traced() capture has when SIGKILL lands
+  // while that child is still running.
+  const traceText = fs.readFileSync(FIXTURE2_KILLED, 'utf8');
+  const children = summarizeTrace2Children(traceText);
+  // The truncation point sits inside a 3-deep nested chain (git ->
+  // remote-https -> git-remote-https -> credential helper) BEFORE any of
+  // their child_exit lines — so all 3 ancestors read as still in-flight too,
+  // which is correct: they genuinely are still running (waiting on their own
+  // child) at the moment this capture stops. The credential-helper child
+  // specifically being among them, at the DEEPEST nesting level, is the
+  // signal this test exists to pin down.
+  const inFlight = children.filter((c) => c.inFlightAtEnd);
+  assert.equal(inFlight.length, 3, 'every still-running ancestor in the nested chain must be flagged in-flight');
+  const helper = inFlight.find((c) => /git-credential store/.test(c.argv));
+  assert.ok(helper, 'the credential-helper child must be among the in-flight children');
+  assert.equal(helper.depth, Math.max(...inFlight.map((c) => c.depth)), 'the credential helper is the DEEPEST in-flight child — the one actually holding up the process');
+
+  const records = parseTrace2Records(traceText);
+  assert.equal(records[records.length - 1].event, 'child_start', 'the fixture must end ON the credential-helper child_start, with nothing logged after it');
+  // 30s after the last logged line — a real GIT_NET_TIMEOUT_SEC-class kill,
+  // not an instant one, so the terminal silence clearly dominates every real
+  // inter-record gap in this fixture (the largest of which is the ~111ms
+  // credential-helper spawn latency itself, already present in the capture).
+  const timeline = extractTrace2Timeline({ traceText, killedAt: '17:14:09.014142' });
+  assert.equal(timeline.dominantGap.terminal, true, 'the terminal silence (kill - last line) must dominate every real inter-record gap');
+  assert.ok(timeline.dominantGap.ms > 29000 && timeline.dominantGap.ms < 31000, `expected ~30s, got ${timeline.dominantGap.ms}ms`);
+
+  const out = formatTrace2Timeline(timeline, children);
+  assert.match(out, /NO child_exit OBSERVED FOR/);
+  assert.match(out, /git-credential store/);
+  assert.ok(!out.includes('FAKETOKEN'), 'no unredacted credential text may reach the formatted summary');
+});
+
+test('real trace2 capture: git already redacts URL userinfo natively — no raw credential survives even before redactTrace2 runs', () => {
+  const clean = fs.readFileSync(FIXTURE2_CLEAN, 'utf8');
+  const killed = fs.readFileSync(FIXTURE2_KILLED, 'utf8');
+  for (const text of [clean, killed]) {
+    assert.doesNotMatch(text, /x-access-token:[^*][^@]*@/, 'a raw (non-***) userinfo token must never appear in a committed fixture');
+  }
+});
+
+// ---------------------------------------------------------------------------
 // SECONDARY: live end-to-end — a REAL push, really killed, really parsed.
 // ---------------------------------------------------------------------------
 
@@ -172,6 +256,10 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
   const bare = join(tmp, 'remote.git');
   const work = join(tmp, 'work');
   const trace = join(tmp, 'push.trace');
+  // BRO-3358: a second, independent capture in the SAME live-killed run —
+  // mirrors git_push_traced() setting both GIT_TRACE_CURL and GIT_TRACE2_PERF
+  // on one `git push` invocation, on its own temp file.
+  const trace2 = join(tmp, 'push.trace2');
 
   // Setup runs under its own try: the temp dir already exists by this point,
   // and any git failure here (a restrictive core.hooksPath, a missing identity
@@ -271,6 +359,7 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
           ...process.env,
           GIT_TRACE_CURL: trace,
           GIT_TRACE_CURL_NO_DATA: '1',
+          GIT_TRACE2_PERF: trace2,
           GIT_TERMINAL_PROMPT: '0',
         },
         stdio: ['ignore', 'pipe', 'pipe'],
@@ -336,6 +425,24 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
       'response-received-then-stalled',
       'the live stall lands in the same phase CI reports, which is exactly why the phase label alone is not enough to locate the time'
     );
+
+    // BRO-3358: the trace2 capture, from the SAME killed process, on the
+    // SAME clock. GIT_TRACE2_PERF has no HTTP-phase vocabulary (that's what
+    // the curl trace above is for) — what it answers here is "did this
+    // capture work end-to-end against a REAL killed push", not phase
+    // identification, which the curl-trace assertions above already cover.
+    if (fs.existsSync(trace2)) {
+      const trace2Text = fs.readFileSync(trace2, 'utf8');
+      const records = parseTrace2Records(trace2Text);
+      assert.ok(records.length > 0, 'a real killed push must produce SOME trace2 records');
+      const trace2Timeline = extractTrace2Timeline({ traceText: trace2Text, killedAt });
+      assert.ok(trace2Timeline.dominantGap, 'a dominant gap must be identified in the trace2 capture too');
+      assert.equal(
+        trace2Timeline.dominantGap.terminal,
+        true,
+        'the trace2 capture must also identify the terminal silence as dominant, independently of the curl trace'
+      );
+    }
   } finally {
     server.close();
     fs.rmSync(tmp, { recursive: true, force: true });
