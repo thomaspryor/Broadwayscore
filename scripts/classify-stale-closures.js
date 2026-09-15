@@ -9,8 +9,8 @@
  *   - Updates data/commercial.json in place for shows classified as Fizzle.
  *     The merge-commercial-data.js reconciler ensures concurrent writers
  *     don't lose entries on push.
- *   - Logs human-review escalations to stdout JSON for downstream Notion
- *     surfacing (notify-pending-commercial-notion currently handles only
+ *   - Logs human-review escalations to stdout JSON for downstream Linear
+ *     surfacing (notify-pending-commercial-linear currently handles only
  *     recoupment claims; surfacing closure-review cases is follow-up work —
  *     log for now, surface manually).
  *
@@ -159,8 +159,8 @@ function main() {
     console.log('\nNo Fizzle classifications to apply.');
   }
 
-  // Surface human-review cases as JSON for downstream Notion processing.
-  // notify-pending-commercial-notion currently only handles recoupment claims;
+  // Surface human-review cases as JSON for downstream Linear processing.
+  // notify-pending-commercial-linear currently only handles recoupment claims;
   // wrapping closure-reviews into that contract is follow-up work (Codex
   // CDX-P0-3). For now, just log them prominently for manual handling.
   if (buckets['human-review'].length > 0) {
@@ -168,7 +168,7 @@ function main() {
     for (const it of buckets['human-review']) {
       console.log(`  - ${it.show.slug}: ${it.result.reason}`);
     }
-    console.log('\n::warning::stale-closure escalations need Notion surfacing (follow-up)');
+    console.log('\n::warning::stale-closure escalations need Linear surfacing (follow-up)');
   }
 }
 
