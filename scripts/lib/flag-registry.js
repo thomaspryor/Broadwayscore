@@ -76,7 +76,7 @@ const REGISTERED_FLAGS = [
       // can never re-bucket users again (guardrails memory rule 3).
       ensure_experience_continuity: true,
     },
-    ownerDoc: null,
+    ownerDoc: 'docs/experiments/ticket-single-button.md',
     note: 'Live A/B — TicketButtonsAB.tsx multi-button vs single-button CTA.',
   },
   {
