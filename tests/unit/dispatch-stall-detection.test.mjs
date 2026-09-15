@@ -23,6 +23,7 @@ const {
   CAPS,
   CLAIM_OUTAGE_MIN,
   CLAIM_LABEL_GRACE_MS,
+  PACING_WINDOW_MS,
   WATCHDOG_EVENTS,
 } = require('../../scripts/lib/dispatch-watchdog-core.js');
 
@@ -138,7 +139,11 @@ test('BRO-2462: day-budget-spent is a policy pause — pausedByPolicy true', () 
 
 test('BRO-2462: a claim-outage (wedged launcher) is NOT a policy pause — pausedByPolicy stays false even though holds is non-empty', () => {
   const now = Date.parse('2026-08-20T12:00:00.000Z');
-  const claimAgeMs = CLAIM_LABEL_GRACE_MS * 2; // past the boot-window grace, well under the 24h rearm
+  // BRO-3411: past the boot-window grace, past BRO-3390's 60min hourly-pacing
+  // window (so these claims don't ALSO trip usedThisHour >= CAPS.perHour —
+  // that would conflate this test's claim-outage signal with the separate
+  // hourly-pacing policy-pause path), and well under the 24h rearm.
+  const claimAgeMs = PACING_WINDOW_MS * 2;
   const tasks = new Map();
   const entries = [];
   for (let i = 0; i < CLAIM_OUTAGE_MIN; i++) {
