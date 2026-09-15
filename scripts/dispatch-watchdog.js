@@ -454,6 +454,41 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     results.parked.push(item.taskId);
   }
 
+  // BRO-3442: a headless job that ended `THIS SESSION: CLOSE ME|IDLE —
+  // BLOCKED: <reason>` did its job correctly — it hit something only the
+  // owner can resolve and said so, instead of silently stopping short
+  // (BRO-3424) or reading as job-done (BRO-3388). Park it (never
+  // auto-retried — see JOB_EVENTS.BLOCKED's own comment for why this must
+  // not burn a dead-attempt strike) and, for a Linear-backed task, post the
+  // reason as a comment on the card itself — a safety net for when the
+  // job's own self-report (the same `linear-session.js report --status=
+  // blocked` call its prompt already tells it to make before ending on
+  // BLOCKED:) didn't happen, e.g. it crashed or the call itself failed.
+  // In-process require (not a spawned child) — linear-session.js's cmdReport
+  // is a plain async function with no CLI-only side effect for
+  // --status=blocked (process.exit(5) only fires on the done-gate refusal
+  // path, gated on status==='done').
+  for (const item of plan.jobBlocked) {
+    const linearMatch = /^linear:(.+)$/.exec(item.taskId);
+    if (linearMatch) {
+      try {
+        const { cmdReport } = require('./linear-session.js');
+        await cmdReport({
+          issue: linearMatch[1],
+          status: 'blocked',
+          summary: `Watchdog safety net: headless job ${item.jobId} ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: ${item.reason || 'no reason given'}. Not retried automatically — resolve the blocker, then re-dispatch (node scripts/linear-next.js --id ${linearMatch[1]} --force once fixed).`,
+        }, {});
+      } catch (e) {
+        console.error(`[watchdog] failed to post BLOCKED reason to Linear ${item.taskId}: ${e.message}`);
+      }
+    }
+    dispatchLedger.appendEntry({
+      event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject,
+      reason: `headless job ${item.jobId} blocked: ${item.reason || 'no reason given'}`,
+    });
+    results.parked.push(item.taskId);
+  }
+
   // BRO-3429: a claim that never produced a launch was previously invisible —
   // it just sat in the dashboard's "awaiting claim" label and quietly
   // re-armed itself after 24h, forever, with no ledger park and no page. Live

@@ -1,0 +1,71 @@
+name: Manual PostHog Flag Archive
+
+# One-off admin dispatch (BRO-3459) — archives (active:false) or restores
+# (active:true) a PostHog feature flag by key or numeric id, via
+# scripts/posthog-flag-admin.js. workflow_dispatch only, mirrors the
+# now-deleted diagnose-gate-cold-start-join.yml's "manual one-off
+# diagnostic" pattern.
+#
+# Built because no local dev session has POSTHOG_PERSONAL_API_KEY (CI-only
+# secret) — every concluded experiment needs its flag archived (never
+# deleted, for reproducibility — see docs/experiments/gate-cold-start.md's
+# "Conclusion") and until now there was no way to do that without a local
+# key.
+#
+# No state is written/committed — this workflow's own run log IS the audit
+# trail, so `notify-failure` here (severity: warning, matching
+# check-flag-parity.yml) is a no-op per workflows/CLAUDE.md's "Notification
+# Severity" section; the real failure signal for a one-off dispatch is
+# `gh run view` on the run right after triggering it, not an alert.
+
+on:
+  workflow_dispatch:
+    inputs:
+      flag_key:
+        description: 'PostHog flag key or numeric id (e.g. gate-cold-start or 772232)'
+        required: true
+        type: string
+      active:
+        description: 'Desired active state (false = archive, true = restore)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-posthog-flag-archive-${{ inputs.flag_key }}
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      # FLAG_KEY/DESIRED_ACTIVE go through env:, not inline ${{ }} in run: —
+      # ${{ }} is substituted into the YAML before the shell parses it, so
+      # quoting a directly-interpolated value doesn't stop a flag_key like
+      # `"; <cmd>; echo "` from breaking out and running arbitrary shell with
+      # POSTHOG_PERSONAL_API_KEY in scope (ship-check + codex adversarial
+      # review both flagged this pattern independently).
+      - name: Set flag active state
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          FLAG_KEY: ${{ inputs.flag_key }}
+          DESIRED_ACTIVE: ${{ inputs.active }}
+        run: node scripts/posthog-flag-admin.js "$FLAG_KEY" --active="$DESIRED_ACTIVE"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Manual PostHog Flag Archive Failed'
+          severity: 'warning'
