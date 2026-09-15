@@ -21,6 +21,10 @@
  */
 
 const { buildSearchUrl, buildFlagUrl, findExactFlagMatch, buildPatchRequest, parseArgs } = require('./lib/posthog-flag-admin-core');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = 'Usage: node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run]\n' +
+  '  node scripts/posthog-flag-admin.js --help, -h   print this usage and exit — no network calls';
 
 const PROJECT_ID = '332742';
 
@@ -70,7 +74,13 @@ async function patchFlagActive(apiKey, id, active) {
 }
 
 async function main() {
-  const { identifier, desiredActive, dryRun } = parseArgs(process.argv.slice(2));
+  const argv = process.argv.slice(2);
+  // Checked against raw argv, before parseArgs/getApiKey/any network call —
+  // same placement as collect-review-texts.js and rebuild-all-reviews.js
+  // (task #498's established --help pattern).
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  const { identifier, desiredActive, dryRun } = parseArgs(argv);
   const apiKey = getApiKey();
 
   const flag = /^\d+$/.test(identifier)
