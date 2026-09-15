@@ -17,6 +17,9 @@ const {
   censusTrace,
   extractPhaseTimeline,
   formatTimeline,
+  summarizeTrace2Children,
+  extractTrace2Timeline,
+  formatTrace2Timeline,
 } = require('./lib/push-diagnostics.js');
 
 const [, , cmd, file, maxBytesArg] = process.argv;
@@ -59,12 +62,33 @@ if (cmd === 'classify') {
   });
   process.stdout.write(formatTimeline(timeline));
 } else if (cmd === 'redact-tail') {
+  // Format-agnostic (pure text redact+truncate), so this same command also
+  // serves GIT_TRACE2_PERF captures (BRO-3358) — no trace2-specific variant
+  // needed.
   const maxBytes = Number(maxBytesArg) || 2000;
   const redacted = redactCurlTrace(readTraceFile(file));
   process.stdout.write(redacted.length > maxBytes ? redacted.slice(-maxBytes) : redacted);
+} else if (cmd === 'trace2-summary') {
+  // BRO-3358. Usage: trace2-summary <trace2-file> [killedAt HH:MM:SS.frac]
+  // One shellout covering both halves of the answer: which child process (if
+  // any) was still running when the kill hit, and where the terminal silence
+  // falls relative to the last logged trace2 line.
+  const traceText = readTraceFile(file);
+  const children = summarizeTrace2Children(traceText);
+  const timeline = extractTrace2Timeline({ traceText, killedAt: maxBytesArg });
+  const lines = [formatTrace2Timeline(timeline, children)];
+  for (const c of children) {
+    lines.push(
+      `  child [${c.id}] depth=${c.depth}: ${c.argv}` +
+        (c.inFlightAtEnd
+          ? ' — STILL RUNNING AT KILL (no child_exit in capture)'
+          : ` (${(c.durationMs / 1000).toFixed(3)}s)`)
+    );
+  }
+  process.stdout.write(lines.join('\n'));
 } else {
   console.error(
-    'Usage: push-diagnostics-cli.js classify|service|census|timeline|redact-tail <trace-file> [maxBytes|killedAt]'
+    'Usage: push-diagnostics-cli.js classify|service|census|timeline|redact-tail|trace2-summary <trace-file> [maxBytes|killedAt]'
   );
   process.exit(2);
 }
