@@ -173,8 +173,7 @@ function extractByline(html) {
   // hours, twice, because deleting a file leaves nothing behind that this
   // entry point consults. Refuse before fetching so a blocked URL also stops
   // burning scraper credit on every audit cycle.
-  const _showDirForBlocklist = path.join(reviewTextsDir, showId);
-  const _blocked = findBlockedEntry(loadBlocklist(_showDirForBlocklist), url);
+  const _blocked = findBlockedEntry(loadBlocklist(path.join(reviewTextsDir, showId)), url);
   if (_blocked) {
     console.error(`Refusing to ingest — ${url} is blocklisted for ${showId}: ${_blocked.reason || 'no reason recorded'}. See ${path.join(reviewTextsDir, showId, '_blocklist.json')} (scripts/block-review.js manages it).`);
     process.exit(1);
@@ -321,7 +320,9 @@ function extractByline(html) {
   // file at the same outletId+criticName slug is the failure that bit issue
   // #309 (April 4 preview blocked May 1 review). Surface it here rather than
   // silently merging the new URL into the wrongProduction file.
-  const showDir = path.join(__dirname, '..', 'data', 'review-texts', showId);
+  // Honors --data-dir like every other corpus access in this script, so a test
+  // run against a temp corpus cannot force-write live review metadata.
+  const showDir = path.join(reviewTextsDir, showId);
 
   const collision = detectIngestCollision({
     showDir,

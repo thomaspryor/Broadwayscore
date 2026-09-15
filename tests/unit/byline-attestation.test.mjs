@@ -132,3 +132,30 @@ test('attestation stays silent when neither byline is printed', () => {
   assert.ok(r.canonical === A || r.canonical === B);
   assert.doesNotMatch(r.reason, /printed in the article text/);
 });
+
+test('(CODEX) a truncated real review is NOT demoted by an editor credit', () => {
+  // Codex adversarial review, 2026-09-15. Extraction regularly drops one copy's
+  // header while the sibling keeps the full article, and dedupe accepts such
+  // truncated subsets as cohesive. Jane Doe is the real critic but her own copy
+  // lost its byline line; the sibling carries theaterscene.net's site-wide
+  // "by Victor Gluck, Editor-in-Chief" credit. Demoting Jane here would delete a
+  // real review from the site. Her name still appears in the fuller copy, so the
+  // tiebreak must stay silent.
+  const A = 'theater-scene--jane-doe.json';
+  const B = 'theater-scene--victor-gluck.json';
+  const aText = 'The play opens in a bunker. (truncated — byline header lost)';
+  const bText = 'Review by Jane Doe. The play opens in a bunker. Posted by Victor Gluck, Editor-in-Chief.';
+  const r = chooseCanonicalForRebuild(A, record('Jane Doe', aText), B, record('Victor Gluck', bText), '/tmp/x/show');
+  assert.doesNotMatch(r.reason, /printed in the article text/,
+    'must not demote a byline that appears in the sibling copy');
+});
+
+test('(CODEX) demotion still fires when the byline is in NEITHER copy', () => {
+  // The Safe House shape: "Scott Bennett" appears nowhere in either copy.
+  const A = 'theater-scene--victor-gluck.json';
+  const B = 'theater-scene--scott-bennett.json';
+  const both = 'Posted on September 7, 2026 by Victor Gluck, Editor-in-Chief.';
+  const r = chooseCanonicalForRebuild(A, record('Victor Gluck', both), B, record('Scott Bennett', both), '/tmp/x/show');
+  assert.equal(r.canonical, A);
+  assert.match(r.reason, /printed in the article text/);
+});
