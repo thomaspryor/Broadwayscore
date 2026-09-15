@@ -129,11 +129,55 @@ test('classifyBlock still refuses a diverged checkout when even one blocker is N
   assert.equal(d.reason, 'diverged');
 });
 
-test('classifyBlock still refuses a diverged checkout with no dirty blockers at all', () => {
-  // No file to blame and no union to attempt — genuine, unresolvable divergence.
-  const d = classifyBlock({ blockingPaths: [], aheadCount: 1, unionMergePaths: [] });
+test('classifyBlock routes a diverged checkout with NO dirty blockers to merge-origin (BRO-3393)', () => {
+  // Was: refuse forever, on the reasoning "no file to blame and no union to
+  // attempt — genuine, unresolvable divergence". That reasoning was exactly
+  // backwards: nothing is in the way, so a plain 3-way merge of origin/main
+  // lands it. It is also the state BRO-3212's commit-and-rebase recovery
+  // LEAVES BEHIND when its rebase fails ("ledger commit preserved locally for
+  // the next run to carry forward" — nothing carried it forward). On this
+  // machine that stranded one ledger commit on 2026-09-14 18:30 and every
+  // sync-gated launchd job refused for the next 17.5 hours, forcing the 07:30
+  // morning digest's auto-fix into dry-run.
+  const d = classifyBlock({ blockingPaths: [], aheadCount: 1, behindCount: 391, unionMergePaths: [] });
+  assert.equal(d.action, 'merge-origin');
+  assert.equal(d.reason, 'diverged-clean-tree');
+});
+
+test('classifyBlock still refuses when ahead with NOTHING behind — a fetch/ref problem, not divergence', () => {
+  // The no-blocker branch also catches "origin/main unreadable or unmoved".
+  // Merging in that state would act on a ref there is no reason to trust, so
+  // behindCount > 0 is a required part of the merge-origin gate, not cosmetic.
+  const d = classifyBlock({ blockingPaths: [], aheadCount: 1, behindCount: 0, unionMergePaths: [] });
   assert.equal(d.action, 'refuse');
   assert.equal(d.reason, 'diverged');
+});
+
+test('classifyBlock still refuses a diverged checkout when a non-union path IS blocking, even with behindCount set', () => {
+  // merge-origin must never become a way around a real content conflict on a
+  // non-ledger file — that is the case the whole gate exists to stop.
+  const d = classifyBlock({
+    blockingPaths: ['data/audit/stage-latency.jsonl', 'scripts/lib/some-wip.js'],
+    aheadCount: 1,
+    behindCount: 12,
+    unionMergePaths: ['data/audit/stage-latency.jsonl'],
+  });
+  assert.equal(d.action, 'refuse');
+  assert.equal(d.reason, 'diverged');
+});
+
+test("the recovery label 'diverged-clean-tree' can never reach a refusal snapshot", () => {
+  // Same contract as the two union recovery labels below: the shell forces
+  // REASON=diverged if the merge fails, so this label is a RECOVERY marker
+  // only and the digest never has to render copy for it.
+  const d = classifyBlock({ blockingPaths: [], aheadCount: 1, behindCount: 4, unionMergePaths: [] });
+  assert.equal(d.reason, 'diverged-clean-tree');
+  assert.equal(d.action, 'merge-origin', 'that reason is a RECOVERY label, never a refusal');
+  assert.notEqual(
+    classifyBlock({ blockingPaths: [], aheadCount: 0, behindCount: 4, unionMergePaths: [] }).reason,
+    'diverged-clean-tree',
+    'a checkout that is not ahead is not diverged and must not borrow this label',
+  );
 });
 
 test('classifyBlock reports diverged when nothing dirty overlaps origin', () => {
