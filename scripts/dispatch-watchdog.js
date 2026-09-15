@@ -315,7 +315,7 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 //     global auto-tab ceiling, a launcher outage or a launcher leak all stop
 //     this lane too even though none of them can affect a headless child.
 //     Headless is therefore more RELIABLE once launched, but it is not yet
-//     ISOLATED from cmux's health. Tracked in BRO-3392;
+//     ISOLATED from cmux's health. Tracked in BRO-3404;
 //   - measured on data/audit/dispatch-ledger.jsonl since 2026-08-16, the
 //     headless lane reaches job-done 83.0% of the time (460 jobs, 17.0%
 //     trouble) against 30.5% dead/vanished for the cmux workspace lane
