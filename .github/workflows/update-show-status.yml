@@ -55,9 +55,10 @@ jobs:
     #      ~17-25 min per run for the full all-branches/tags fetch.
     # 130 gives real headroom over the corrected worst case: checkout + misc
     # setup ~40 min + discovery 45 min (hard step cap, see timeout-minutes on
-    # "Discover new shows" below) + enrichment ~10 min + StubHub 5 min (hard
-    # step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200 below) +
-    # setup-node/misc ~5 min ≈ 100-110 min, ~20-30 min margin to 130.
+    # "Discover new shows" below) + enrichment ~18 min (incl. BRO-166's
+    # "OB discovery S7" step, 8 min hard cap, continue-on-error) + StubHub
+    # 5 min (hard step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200
+    # below) + setup-node/misc ~5 min ≈ 108-118 min, ~12-22 min margin to 130.
     timeout-minutes: 130
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
@@ -317,6 +318,18 @@ jobs:
         run: node scripts/enrich-fallback-ticket-links.js --limit=10 --time-budget-min=8
         continue-on-error: true
         timeout-minutes: 10
+
+      # BRO-166: shows the step above still couldn't attach an affiliate-able
+      # ticketLinks entry to (no TodayTix/venue-site match) get an Official
+      # Site fallback instead — SERP-discovered dedicated site, or the show's
+      # own OB venue homepage — so they never dead-end with no buy button.
+      - name: OB discovery S7 — Official Site fallback for shows with no buy button
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/ob-discovery-ticket-links.js --limit=15 --time-budget-min=6
+        continue-on-error: true
+        timeout-minutes: 8
 
       - name: Enrich shows with Wikipedia synopses (Broadway/OB)
         if: ${{ inputs.skip_discovery != 'true' }}

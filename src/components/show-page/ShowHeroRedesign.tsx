@@ -700,7 +700,10 @@ function Inner({
           on mobile it pushed content too far down. Desktop keeps it next
           to the Get Tickets CTA where there's horizontal room. Full info
           for both viewports lives in the Discount Tickets card below. */}
-      {!isClosed && sortedTicketLinks.length > 0 && (
+      {/* BRO-166: also mount when the only thing we have is an officialUrl —
+          TicketButtonsAB itself now renders that as the primary CTA, but
+          only if it gets the chance to run at all. */}
+      {!isClosed && (sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && (
         <TicketButtonsAB
           showName={show.title}
           showId={show.id}
