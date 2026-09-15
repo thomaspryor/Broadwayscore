@@ -314,7 +314,7 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
     // comment) are deliberately NOT compared this way here — see "the
     // fallback is additive only" below, still pinned.
     //
-    // KNOWN RESIDUAL (not fixed here, tracked in BRO-3453): rank() only
+    // KNOWN RESIDUAL (not fixed here, tracked in BRO-3461): rank() only
     // measures command SHAPE, not what a specific command actually re-verifies
     // — a single-file `node --test a.test.mjs` correction ties in rank with
     // and can therefore displace a multi-file snapshot covering `a.test.mjs
