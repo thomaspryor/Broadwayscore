@@ -290,11 +290,14 @@ test('#1564: the retry path is suppressed too, not just the P0/P1 backlog', () =
   const plan = core.planSweep(entries, new Map([task(24, 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.toDispatch.length, 0, 'a retry claim that never landed must not re-fire every sweep');
   assert.equal(plan.awaitingClaim.length, 1, 'and it must be surfaced to the owner, not silently dropped');
-  assert.match(core.renderNarrative(plan), /could not start/);
+  // BRO-3429: past grace, with no fleet-wide outage in play, this is no
+  // longer a passive label — it is actively parked and paged.
+  assert.equal(plan.noLaunchPark.length, 1, 'and it must be escalated to an actual park, not just a label');
+  assert.equal(plan.noLaunchPark[0].taskId, '24');
+  assert.match(core.renderNarrative(plan), /#24 .*parked \(won't retry\)/);
   // Suppressed cards leave p01Queue/retryable, so if they did not also land in
   // needsYou the tab title would read "0 need you" over a shrinking backlog.
   assert.ok(plan.needsYou >= 1, 'a suppressed card must count toward needsYou');
-  assert.match(core.renderNarrative(plan), /bsc-next\.js --id 24 --force/, 'and must name the command that re-arms it');
 });
 
 test('#1564: a claim younger than the boot grace suppresses but is NOT labelled a failure', () => {
@@ -333,6 +336,12 @@ test('#1564: a wedged launcher (claims, and nothing launching fleet-wide) holds 
   assert.ok(plan.budgets.holds.some(h => /launcher itself looks wedged/.test(h)),
     'three claims and zero launches anywhere = the launcher, not the cards');
   assert.equal(plan.toDispatch.length, 0, 'and dispatching holds rather than burning more claims');
+  // BRO-3429: a proven fleet-wide outage must NOT park these three individual
+  // cards — that would misattribute the launcher's own failure to them and
+  // page the owner three times about the wrong thing. The label still shows
+  // (awaitingClaim above), just not the park action.
+  assert.equal(plan.noLaunchPark.length, 0,
+    'a wedged launcher must suppress per-card parking, not blame the cards');
 
   // Control: the SAME three stuck claims, but other work is still launching —
   // that is three genuinely refused cards, not an outage. Must not hold.
@@ -344,6 +353,57 @@ test('#1564: a wedged launcher (claims, and nothing launching fleet-wide) holds 
   assert.equal(plan2.awaitingClaim.length, 3);
   assert.ok(!plan2.budgets.holds.some(h => /launcher itself looks wedged/.test(h)),
     'a fresh launch elsewhere proves the launcher works');
+  assert.equal(plan2.noLaunchPark.length, 3,
+    'once it is clear the launcher works, genuinely refused cards DO get parked');
+});
+
+// ── BRO-3429: claimed-but-never-launched must actually escalate ────────────
+//
+// Before this, awaitingClaim was DISPLAY ONLY: it labelled a stale claim on
+// the dashboard, counted toward needsYou, and quietly re-armed itself after
+// REDISPATCH_REARM_MS (24h) — no ledger event, no page, forever. Live ledger
+// evidence: 84 watchdog-redispatch claims over 7 days, 0 launches, 0 parks.
+test('BRO-3429: a stale unlaunched claim is parked, not just labelled', () => {
+  const entries = [{ ts: T(60), event: 'watchdog-redispatch', taskId: '50', kind: 'p01-backlog' }];
+  const tasks = new Map([task(50, 'pending', 'P1 Now')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.noLaunchPark.length, 1);
+  assert.equal(plan.noLaunchPark[0].taskId, '50');
+  assert.equal(plan.parkedTotal, 1, 'parkedTotal must count a card about to be parked this tick');
+});
+
+test('BRO-3429: once actually parked, the card leaves awaitingClaim/noLaunchPark and does not double-count needsYou', () => {
+  const parked = [
+    { ts: T(60), event: 'watchdog-redispatch', taskId: '51', kind: 'p01-backlog' },
+    // The CLI appends this PARK row right after the sweep above computed
+    // noLaunchPark — simulating the NEXT sweep's view of the ledger.
+    { ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: '51', reason: 'no launch' },
+  ];
+  const tasks = new Map([task(51, 'pending', 'P1 Now')]);
+  const plan = core.planSweep(parked, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.awaitingClaim.length, 0, 'a parked id must not also sit in the passive label list');
+  assert.equal(plan.noLaunchPark.length, 0, 'and must not be re-parked every sweep');
+  // needsYou must count it exactly once (via wdParked), not twice (via
+  // wdParked AND awaitingClaim) — the bug ship-check caught pre-implementation.
+  assert.equal(plan.needsYou, 1);
+  assert.ok(!/could not start/.test(core.renderNarrative(plan)),
+    'a parked card must not also show the "I will retry in 24h" framing');
+});
+
+test('BRO-3429: a fresh launch after a park re-arms the card for the NEXT stall', () => {
+  const entries = [
+    { ts: T(120), event: 'watchdog-redispatch', taskId: '52', kind: 'p01-backlog' },
+    { ts: T(119), event: core.WATCHDOG_EVENTS.PARK, taskId: '52', reason: 'no launch' },
+    { ts: T(60), event: 'launch', taskId: '52', subject: 'Fix thing 52', workspaceRef: 'workspace:1' },
+    { ts: T(50), event: 'dead', taskId: '52', workspaceRef: 'workspace:1' },
+    { ts: T(10), event: 'watchdog-redispatch', taskId: '52', kind: 'retry' },
+  ];
+  const tasks = new Map([task(52, 'in_progress')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  // The retry claim at T(10) is only ~2.5 min old — still inside the boot
+  // grace, so it must not be parked YET (that would defeat the boot-window
+  // duplicate guard the SAME re-claim already relies on).
+  assert.equal(plan.noLaunchPark.length, 0, 'a freshly re-armed claim gets its own grace window, not an instant re-park');
 });
 
 test('#1564: out-of-order ledger appends are judged by timestamp, not file position', () => {
@@ -508,6 +568,29 @@ test('the cmux lane still counts as open (no regression from the union)', () => 
   ];
   assert.ok(core.openTasksAnyLane(entries).has('55'));
   assert.equal(core.watchdogLiveCount(entries), 1);
+});
+
+// ── BRO-3429 acceptance criterion (a): a Linear-identified task routes to
+// linear-next, never bsc-next. dispatchArgvFor lives in dispatch-watchdog.js
+// (the CLI shell, not this pure module) because it builds a real child-process
+// argv — required against the REAL function per CLAUDE.md rule 15, not a copy
+// of its regex. Already covered end-to-end in scripts/lib/
+// linear-watchdog-source.test.mjs ('dispatchArgvFor routes each id namespace
+// to its own dispatcher'); asserted again here because this is the file this
+// issue's acceptance criteria names.
+test('BRO-3429 (a): dispatchArgvFor routes linear: ids to linear-next.js, never bsc-next.js', () => {
+  const wd = require('../dispatch-watchdog.js');
+  const linear = wd.dispatchArgvFor('linear:BRO-3429');
+  assert.ok(linear[0].endsWith('scripts/linear-next.js'));
+  assert.ok(!linear[0].endsWith('scripts/bsc-next.js'));
+  const notion = wd.dispatchArgvFor('1842');
+  assert.ok(notion[0].endsWith('scripts/bsc-next.js'), 'the Notion lane is untouched by this change');
+});
+
+test('BRO-3429: reArmHintFor names the lane-correct re-arm command in a park page', () => {
+  const wd = require('../dispatch-watchdog.js');
+  assert.equal(wd.reArmHintFor('linear:BRO-77'), 'node scripts/linear-next.js --id BRO-77 --force');
+  assert.equal(wd.reArmHintFor('1842'), 'node scripts/bsc-next.js --id 1842 --force');
 });
 
 // BRO-3424: unlandedJobDone is injected (same convention as liveTitles) —
