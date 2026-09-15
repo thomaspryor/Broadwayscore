@@ -340,7 +340,19 @@ jobs:
           # ACCEPTANCE_RECHECK_KILL_SWITCH --body true` disables this step's
           # work without a code change, same pattern as BROWSERBASE_KILL_SWITCH.
           ACCEPTANCE_RECHECK_KILL_SWITCH: ${{ vars.ACCEPTANCE_RECHECK_KILL_SWITCH }}
-        run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 3
+        # 3 -> 5 (BRO-3434). Two changes made 3 too tight. The script now
+        # starts its deadline BEFORE makeFreshCheckout instead of after, so
+        # the checkout's git calls are charged to this budget rather than
+        # running outside it; and the verifyCmd fallback arms cards that used
+        # to cost zero runtime, so the budget is actually spent now. At 3 a
+        # slow-checkout night could defer EVERY card after paying the full
+        # checkout cost — zero coverage where it previously managed one card.
+        # Still inside the 8min step ceiling above: the ~260-300s worst case
+        # measured for this step already contained the old 3min verify budget,
+        # so the non-verify overhead is ~2min, and 2 + 5 = 7 < 8. The script's
+        # own deadline is the soft bound that keeps it there; the step timeout
+        # stays the hard backstop it was.
+        run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 5
 
       # Ledger artifact backup (BRO-386): uploaded BEFORE the isolated commit
       # below, so this run's recheck verdicts are recoverable from the Actions
