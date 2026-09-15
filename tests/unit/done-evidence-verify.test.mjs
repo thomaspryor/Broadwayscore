@@ -84,6 +84,17 @@ test('evaluateEvidence: a PR resolves through its merge commit; an open PR is no
   assert.equal(evaluateEvidence({ commits: [], prs: [3], foreign: [] }, { isCommitOnMain: onMain, getPrMergeCommit: getPr }).verified, null);
 });
 
+test('evaluateEvidence: a commit on main that does not mention the issue is NOT proof — citing HEAD of main cannot close a card', () => {
+  const mentions = ({ sha }) => (sha === 'aaaaaaa' ? false : null);
+  const r = evaluateEvidence({ commits: ['aaaaaaa'], prs: [], foreign: [] }, { isCommitOnMain: onMain, mentionsIssue: mentions, issueIdentifier: 'BRO-1' });
+  assert.equal(r.verified, null);
+  assert.match(r.reason, /on origin\/main but does not mention BRO-1/);
+  const ok = evaluateEvidence({ commits: ['aaaaaaa'], prs: [], foreign: [] }, { isCommitOnMain: onMain, mentionsIssue: () => true, issueIdentifier: 'BRO-1' });
+  assert.equal(ok.verified, true);
+  const noId = evaluateEvidence({ commits: ['aaaaaaa'], prs: [], foreign: [] }, { isCommitOnMain: onMain, mentionsIssue: () => false });
+  assert.equal(noId.verified, true, 'attribution is only enforced when the caller supplies the issue id');
+});
+
 test('evaluateEvidence: no refs at all, or only a foreign repo, is unknown with a reason that says so', () => {
   assert.match(evaluateEvidence({ commits: [], prs: [], foreign: [] }, { isCommitOnMain: onMain }).reason, /names no commit or PR URL/);
   const f = evaluateEvidence({ commits: [], prs: [], foreign: ['https://github.com/a/b/commit/abcdef1'] }, { isCommitOnMain: onMain });
@@ -215,6 +226,18 @@ test('makeIsCommitOnMain: when origin/main cannot be refreshed, nothing is confi
   git('remote', 'set-url', 'origin', path.join(root, 'does-not-exist.git'));
   const isOnMain = makeIsCommitOnMain({ cwd: work, log: () => {} });
   assert.equal(isOnMain(sha), null, 'a commit that IS on the stale origin/main is still unknown when the refresh failed');
+});
+
+test('makeMentionsIssue: reads the landed commit message; BRO-14 does not match BRO-1', (t) => {
+  const { root, git, work } = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const { makeMentionsIssue } = require('../../scripts/lib/done-evidence-verify.js');
+  fs.writeFileSync(path.join(work, 'x.txt'), 'x\n'); git('add', 'x.txt'); git('commit', '-q', '-m', 'fix(BRO-14): thing');
+  const sha = git('rev-parse', 'HEAD');
+  const mentions = makeMentionsIssue({ cwd: work, log: () => {} });
+  assert.equal(mentions({ sha, prNumber: null, issueIdentifier: 'BRO-14' }), true);
+  assert.equal(mentions({ sha, prNumber: null, issueIdentifier: 'BRO-1' }), false);
+  assert.equal(mentions({ sha: 'deadbeefcafe', prNumber: null, issueIdentifier: 'BRO-14' }), null);
 });
 
 test('detectOriginRepo parses owner/repo from https and ssh remotes', (t) => {

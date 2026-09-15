@@ -103,24 +103,43 @@ function extractEvidenceRefs(body, { originRepo = null } = {}) {
  *   verified:false — every cited ref was definitively NOT on origin/main.
  *   verified:null  — nothing could be confirmed (no refs, foreign repo, lookup error, shallow clone).
  */
-function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit }) {
+function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssue, issueIdentifier }) {
   const checked = [];
   const commits = (refs && refs.commits) || [];
   const prs = (refs && refs.prs) || [];
   const foreign = (refs && refs.foreign) || [];
 
+  // "On main" is necessary, not sufficient: the closers being policed write
+  // the evidence, and citing origin/main's HEAD would otherwise be the
+  // cheapest cheat. When the caller supplies the issue id and a way to read
+  // the commit (or PR) text, the landed commit/PR must name the issue.
+  const mustMention = typeof mentionsIssue === 'function' && issueIdentifier;
+  const attributed = (kind, ref, sha, prNumber) => {
+    if (!mustMention) return true;
+    const m = mentionsIssue({ sha, prNumber, issueIdentifier });
+    if (m === true) return true;
+    checked.push({ kind, ref, onMain: true, attributed: m, detail: m === false ? `does not mention ${issueIdentifier}` : 'attribution unreadable' });
+    return false;
+  };
+
   for (const sha of commits) {
     const r = typeof isCommitOnMain === 'function' ? isCommitOnMain(sha) : null;
-    checked.push({ kind: 'commit', ref: sha, onMain: r });
-    if (r === true) return { verified: true, reason: `commit ${sha} is on origin/main`, checked };
+    if (r === true && attributed('commit', sha, sha, null)) {
+      checked.push({ kind: 'commit', ref: sha, onMain: true });
+      return { verified: true, reason: `commit ${sha} is on origin/main`, checked };
+    }
+    if (r !== true) checked.push({ kind: 'commit', ref: sha, onMain: r });
   }
   for (const n of prs) {
     const pr = typeof getPrMergeCommit === 'function' ? getPrMergeCommit(n) : null;
     if (!pr) { checked.push({ kind: 'pr', ref: n, onMain: null, detail: 'lookup failed' }); continue; }
     if (!pr.sha) { checked.push({ kind: 'pr', ref: n, onMain: false, detail: `state ${pr.state || 'unknown'}, no merge commit` }); continue; }
     const r = isCommitOnMain(pr.sha);
-    checked.push({ kind: 'pr', ref: n, mergeCommit: pr.sha, onMain: r });
-    if (r === true) return { verified: true, reason: `PR #${n} merge commit ${pr.sha} is on origin/main`, checked };
+    if (r === true && attributed('pr', n, pr.sha, n)) {
+      checked.push({ kind: 'pr', ref: n, mergeCommit: pr.sha, onMain: true });
+      return { verified: true, reason: `PR #${n} merge commit ${pr.sha} is on origin/main`, checked };
+    }
+    if (r !== true) checked.push({ kind: 'pr', ref: n, mergeCommit: pr.sha, onMain: r });
   }
   for (const url of foreign) checked.push({ kind: 'foreign', ref: url, onMain: null });
 
@@ -133,9 +152,17 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit }) {
       checked,
     };
   }
-  const anyUnknown = checked.some(c => c.onMain === null);
+  const unattributed = checked.find(c => c.onMain === true && c.attributed === false);
+  if (unattributed) {
+    return {
+      verified: null,
+      reason: `${unattributed.kind} ${unattributed.ref} is on origin/main but ${unattributed.detail} — cite the commit or PR that carries this issue's work`,
+      checked,
+    };
+  }
+  const anyUnknown = checked.some(c => c.onMain === null || (c.onMain === true && c.attributed === null));
   if (anyUnknown) {
-    const u = checked.find(c => c.onMain === null);
+    const u = checked.find(c => c.onMain === null || (c.onMain === true && c.attributed === null));
     return { verified: null, reason: `could not confirm ${u.kind} ${u.ref} against origin/main${u.detail ? ` (${u.detail})` : ''}`, checked };
   }
   const bad = checked.find(c => c.onMain === false);
@@ -143,6 +170,38 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit }) {
     verified: false,
     reason: `${bad.kind} ${bad.ref} is NOT on origin/main${bad.detail ? ` (${bad.detail})` : ''}`,
     checked,
+  };
+}
+
+/**
+ * Real mentionsIssue: does the landed commit's message (or, for a PR, its
+ * title/body) name the issue? Commits in this repo carry `BRO-N` routinely.
+ * null when the text cannot be read — the gate then refuses as unverified.
+ */
+function makeMentionsIssue({ cwd = process.cwd(), originRepo = null, timeoutMs = 15000, log = () => {} } = {}) {
+  const idRe = (id) => new RegExp(`(^|[^A-Za-z0-9-])${String(id).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i');
+  return function mentionsIssue({ sha, prNumber, issueIdentifier }) {
+    const re = idRe(issueIdentifier);
+    try {
+      const msg = execFileSync('git', ['log', '-1', '--format=%B', sha], { cwd, encoding: 'utf8', stdio: 'pipe', timeout: timeoutMs });
+      if (re.test(msg)) return true;
+    } catch (err) {
+      log(`[done-evidence-verify] could not read commit ${sha}: ${String(err.message).slice(0, 120)}`);
+      return null;
+    }
+    if (prNumber && originRepo) {
+      try {
+        const out = execFileSync('gh', ['pr', 'view', String(prNumber), '--repo', originRepo, '--json', 'title,body'], {
+          cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs,
+        });
+        const j = JSON.parse(out);
+        return re.test(`${j.title || ''}\n${j.body || ''}`);
+      } catch (err) {
+        log(`[done-evidence-verify] could not read PR #${prNumber}: ${String(err.message).slice(0, 120)}`);
+        return null;
+      }
+    }
+    return false;
   };
 }
 
@@ -237,15 +296,19 @@ function makeGetPrMergeCommit({ cwd = process.cwd(), originRepo = null, timeoutM
 
 /**
  * The verifier the CLIs wire into checkLinearDoneTransition({verifyEvidence}).
+ * @param {{cwd?: string, issueIdentifier?: string|null, log?: Function}} opts
+ *   issueIdentifier (e.g. "BRO-3433"): when given, the landed commit/PR must
+ *   name it — see evaluateEvidence. The CLIs always pass it.
  * @returns {(prRef: {body?: string}) => {verified: boolean|null, reason: string, checked: object[]}}
  */
-function makeVerifyEvidence({ cwd = process.cwd(), log = () => {} } = {}) {
+function makeVerifyEvidence({ cwd = process.cwd(), issueIdentifier = null, log = () => {} } = {}) {
   const originRepo = detectOriginRepo(cwd);
   const isCommitOnMain = makeIsCommitOnMain({ cwd, log });
   const getPrMergeCommit = makeGetPrMergeCommit({ cwd, originRepo, log });
+  const mentionsIssue = makeMentionsIssue({ cwd, originRepo, log });
   return function verifyEvidence(prRef) {
     const refs = extractEvidenceRefs(prRef && prRef.body, { originRepo });
-    return evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit });
+    return evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssue, issueIdentifier });
   };
 }
 
@@ -255,5 +318,6 @@ module.exports = {
   detectOriginRepo,
   makeIsCommitOnMain,
   makeGetPrMergeCommit,
+  makeMentionsIssue,
   makeVerifyEvidence,
 };

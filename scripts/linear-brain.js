@@ -314,7 +314,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           // Real verifier by default (git ancestry / gh merge commit); tests
           // inject a stub through deps so no unit test ever shells out.
           const verifyEvidence = deps.verifyEvidence
-            || makeVerifyEvidence({ cwd: process.cwd(), log: (m) => console.error(m) });
+            || makeVerifyEvidence({ cwd: process.cwd(), issueIdentifier: issue.identifier, log: (m) => console.error(m) });
           const gate = checkLinearDoneTransition({
             targetStateType: target.type,
             description: issue.description || '',

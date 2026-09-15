@@ -239,7 +239,7 @@ async function cmdReport(args, deps = {}) {
         // order is not safe to treat as chronological.
         const existingComments = sortedCommentBodies(issue);
         const verifyEvidence = deps.verifyEvidence
-          || makeVerifyEvidence({ cwd: process.cwd(), log: (m) => console.error(m) });
+          || makeVerifyEvidence({ cwd: process.cwd(), issueIdentifier: issue.identifier, log: (m) => console.error(m) });
         const gate = checkLinearDoneTransition({
           targetStateType: 'completed',
           description: issue.description || '',
