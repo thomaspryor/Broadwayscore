@@ -130,6 +130,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { parseDate, parseHistoricalDate } = require('./lib/date-utils');
 const { getFoundOutletIds } = require('./lib/found-outlet-ids');
 const { logExclusion } = require('./lib/exclusion-logger');
+const { shouldLogRejection } = require('./lib/gather-review-stats');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 let chromium, playwright;
 try {
@@ -5228,8 +5229,20 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       if (result === true) {
         created++;
         reviewFilesTouched++;
-      } else if (typeof result === 'string' && health.rejections[result] !== undefined) {
-        health.rejections[result]++;
+      } else if (shouldLogRejection(result)) {
+        if (health.rejections[result] !== undefined) {
+          health.rejections[result]++;
+        }
+        // Always log regardless of enum membership — see gather-review-stats.js
+        // doc comment (BRO-931 #1): a skip reason missing from the hardcoded
+        // health.rejections enum must not go uncounted AND unlogged.
+        logExclusion({
+          script: 'gather-reviews',
+          showId,
+          file: generateReviewFilename(review.outletId || review.outlet, review.criticName),
+          reason: result,
+          details: { url: review.url, outletId: review.outletId || review.outlet, criticName: review.criticName, publishDate: review.publishDate },
+        });
       }
     }
   }
