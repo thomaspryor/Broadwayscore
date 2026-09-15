@@ -12,8 +12,15 @@
  * Scope (matches the BRO-767 audit query): T1/T2 reviews, critic-level dedup
  * winner, assignedScore >= 70, pullQuote null/empty/<30 chars.
  *
+ * --all widens scope to every review missing a pullQuote regardless of tier/
+ * score (found via a /what-else pass on this same fix: the wiring gap the fix
+ * closes isn't specific to T1/T2>=70, it's just where the BRO-767 audit query
+ * happened to look. 17 reviews corpus-wide are recoverable; 4 are the T1/T2
+ * ones the default scope already covers).
+ *
  * Run:
- *   node scripts/backfill-missing-pullquotes.js            # apply
+ *   node scripts/backfill-missing-pullquotes.js            # apply (BRO-767 scope)
+ *   node scripts/backfill-missing-pullquotes.js --all       # apply (every tier/score)
  *   node scripts/backfill-missing-pullquotes.js --dry-run   # report only
  */
 
@@ -52,15 +59,23 @@ function findTargetReviews(reviews, outlets) {
   return [...byCritic.values()].filter(r => !r.pullQuote || r.pullQuote.length < 30);
 }
 
+/** Every review missing a pullQuote, regardless of tier/score (--all mode). */
+function findAllMissingPullQuoteReviews(reviews) {
+  return reviews.filter(r => !r.pullQuote || r.pullQuote.length < 30);
+}
+
 function main() {
   const dryRun = process.argv.includes('--dry-run');
+  const allScope = process.argv.includes('--all');
 
   const reviewsData = readJson(REVIEWS_FILE);
   const shows = readJson(SHOWS_FILE).shows || [];
   const outlets = readJson(OUTLET_REGISTRY_FILE).outlets || {};
   const titleById = new Map(shows.map(s => [s.id, s.title]));
 
-  const targets = findTargetReviews(reviewsData.reviews, outlets);
+  const targets = allScope
+    ? findAllMissingPullQuoteReviews(reviewsData.reviews)
+    : findTargetReviews(reviewsData.reviews, outlets);
   console.log(`backfill-missing-pullquotes: ${targets.length} target review(s) missing pullQuote`);
 
   const textsByShow = new Map();
@@ -136,4 +151,4 @@ if (require.main === module) {
   process.exit(main());
 }
 
-module.exports = { findTargetReviews };
+module.exports = { findTargetReviews, findAllMissingPullQuoteReviews };
