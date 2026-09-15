@@ -620,7 +620,10 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
+  // SD bills only successful requests (A0 billing probe — see sdBilledCredits
+  // in provider-telemetry.js); booking creditCost here overstated SD spend in
+  // the ledger by ~9,900 credits/7d (BRO-3325 what-else, 2026-09-15).
+  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdBilledCredits(false, creditCost * attemptsMade), fallbackFrom: options.fallbackFrom || null });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
 
   // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400

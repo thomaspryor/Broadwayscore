@@ -20,9 +20,6 @@ import { emailCaptureConfig } from '@/config/email-capture';
 import {
   shouldSuppressPassiveGate,
   hasSeenEnoughPages,
-  getColdStartArm,
-  coldStartCheckApplies,
-  COLD_START_FLAG,
   getMobileGateParams,
   buildGateAbVariant,
   MOBILE_GATE_FLAG,
@@ -49,7 +46,7 @@ const GATE_DISMISSED_KEY = 'bsc_gate_dismissed_at';
 const SESSION_PAGEVIEWS_KEY = 'bsc_session_pageviews';
 
 /** Extra analytics props stamped at fire time (A/B variant + demixed source). */
-type GateFireMeta = { trigger_source?: string; ab_variant?: string; ab_cold_start?: string };
+type GateFireMeta = { trigger_source?: string; ab_variant?: string };
 
 interface ProGateContextValue {
   /** Whether the user has submitted their email */
@@ -135,44 +132,21 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       sessionStorage.setItem(SESSION_PAGEVIEWS_KEY, String(next));
       sessionPageViewsRef.current = next;
     } catch {
-      // sessionStorage unavailable (private mode) — fail open with a
-      // per-mount-only count so the gate isn't permanently silenced.
-      sessionPageViewsRef.current += 1;
+      // sessionStorage unavailable (private mode, or blocked). Was
+      // `+= 1` — harmless for SPA navigation (the ref survives across
+      // pathname changes within one JS load), but a full-document reload on
+      // every navigation re-runs the whole component from a fresh ref at 0,
+      // so this counter would relatch at 1 forever and permanently block
+      // every passive gate for that visitor (2026-09-15 review, gate-cold-
+      // start teardown: this is now a 100%-of-traffic guard, not one arm of
+      // an A/B, so the failure mode affects everyone, not half). Fail OPEN
+      // like every other guard in this gate (shouldSuppressPassiveGate does
+      // the same on a corrupt localStorage read) — treat storage failure as
+      // "can't verify engagement, so don't block on it" rather than
+      // "assume zero engagement forever."
+      sessionPageViewsRef.current = emailCaptureConfig.minPageViewsForPassiveGate;
     }
   }, [pathname]);
-
-  // ── gate-cold-start A/B flag resolution (all devices) ──────────────────────
-  // ⚠️ LIVE EXPERIMENT — see docs/experiments/gate-cold-start.md before
-  // editing. Resolves the arm once per provider mount (sticky per-visitor via
-  // PostHog's distinct_id hash). Same poll-then-fallback shape as the
-  // mobile-timing flag below but with a LONGER budget — 250ms x 40 (10s, vs
-  // the earliest possible passive trigger at 5s exit-intent dwell) — so the
-  // window where a trigger can fire before the arm resolves is as small as
-  // slow networks allow (2026-07-21 adversarial review: pre-resolution fires
-  // get control behavior + 'fallback' label; the canonical analyzer's
-  // person-level ITT attribution makes any residue attenuate toward null
-  // rather than bias an arm). Unresolved after 10s → null → 'fallback'
-  // (control BEHAVIOR, excluded from analysis). Stored in a REF because
-  // triggerGate reads it outside its dependency array (same pattern as
-  // sessionPageViewsRef above).
-  const coldStartFlagRef = useRef<string | boolean | null | undefined>(undefined);
-  useEffect(() => {
-    if (!isClient) return;
-    let tries = 0;
-    const poll = setInterval(() => {
-      tries++;
-      const ph = window.posthog;
-      const value = ph?.getFeatureFlag?.(COLD_START_FLAG);
-      if (typeof value === 'string' || value === true) {
-        coldStartFlagRef.current = value;
-        clearInterval(poll);
-      } else if (tries >= 40) {
-        coldStartFlagRef.current = null; // ad blocker / opt-out / flag missing → fallback
-        clearInterval(poll);
-      }
-    }, 250);
-    return () => clearInterval(poll);
-  }, [isClient]);
 
   // Load saved user data on mount
   useEffect(() => {
@@ -240,23 +214,16 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     // Don't trigger on excluded pages (feedback, submit-review, etc.)
     if (emailCaptureConfig.excludedPaths.some(p => window.location.pathname.startsWith(p))) return false;
     const blocking = BLOCKING_TRIGGERS.includes(trigger);
-    // ⚠️ LIVE EXPERIMENT 'gate-cold-start' (docs/experiments/gate-cold-start.md):
-    // the cold-start page-minimum below applies ONLY to the 'cold-start' arm;
-    // 'control' and 'fallback' reproduce the pre-2026-07-20 behavior (no
-    // minimum). Both arms share the dismissal cooldown (it predates the
-    // experiment and is part of the baseline in both arms). Do not change
-    // either branch mid-experiment — locked by tests/unit/gate-logic.test.mjs.
-    const coldStartArm = getColdStartArm(coldStartFlagRef.current);
     // Dismissal cooldown: every non-blocking ask (exit_intent, scroll_depth,
     // return_visitor, page_view_limit) stays quiet for passiveGateCooldownDays
     // after a dismissal. Blocking feature gates are exempt (user clicked the
     // gated action); recapture is already one-shot via RECAPTURED_KEY.
     if (!blocking && trigger !== 'recapture') {
-      // Cold-start guard (treatment arm only): don't ask before the visitor
-      // has shown real engagement this session (2026-07-20 audit — see
-      // gate-logic.ts).
-      if (coldStartCheckApplies(coldStartArm)
-        && !hasSeenEnoughPages(sessionPageViewsRef.current, emailCaptureConfig.minPageViewsForPassiveGate)) {
+      // Don't ask before the visitor has shown real engagement this session
+      // (2026-07-20 audit; ran as the 'gate-cold-start' A/B 2026-07-21 to
+      // 2026-09-15, concluded as the permanent default for all traffic — see
+      // docs/experiments/gate-cold-start.md "Conclusion").
+      if (!hasSeenEnoughPages(sessionPageViewsRef.current, emailCaptureConfig.minPageViewsForPassiveGate)) {
         return false;
       }
       try {
@@ -267,10 +234,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
         )) return false;
       } catch { /* localStorage unavailable — fail open, show the modal */ }
     }
-    // Stamp the arm on every fired modal's events (shown/dismissed/captured)
-    // so the analyzer can attribute — blocking triggers included, they exist
-    // in both arms identically and get 'fallback'/arm labels for free.
-    setGateFireMeta({ ...meta, ab_cold_start: coldStartArm });
+    setGateFireMeta(meta);
     setModalTrigger(trigger);
     setModalBlocking(blocking);
     setModalOpen(true);

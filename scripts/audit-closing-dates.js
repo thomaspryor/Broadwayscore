@@ -227,39 +227,37 @@ async function notifyDiscord(message) {
   }
 }
 
-// Route ambiguous flags into Notion (the user's source of truth per CLAUDE.md §6).
+// Route ambiguous flags into Linear (the board per CLAUDE.md §6 — repointed
+// from Notion during the BRO-3430 sweep, same shape as audit-opening-dates.js).
 // Discord alerts were silently ignored — Beaches stored=2026-09-06 was flagged
 // every day for >1 week before the actual close (2026-05-24) was caught manually.
-// One rollup card per audit run, deduped against existing open audit cards so
-// daily re-flagging of the same shows doesn't spam Notion.
-async function notifyNotion(ambiguous, todayStr) {
+// One rollup issue per audit run, deduped against existing open audit issues
+// so daily re-flagging of the same shows doesn't spam the board.
+async function notifyLinear(ambiguous, todayStr) {
   if (ambiguous.length === 0) return;
-  if (!process.env.NOTION_API_KEY) {
-    console.log('NOTION_API_KEY not set — skipping Notion card creation');
-    return;
+  if (!process.env.LINEAR_API_KEY) {
+    // A missing secret here would recreate the exact silent-drop bug
+    // BRO-3430 fixed in the sibling audit-opening-dates.js: real findings
+    // exist (ambiguous.length > 0 above) and nobody would be told. Fail
+    // loudly instead.
+    throw new Error('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
   }
 
   const { spawnSync } = require('child_process');
-  const brain = path.join(__dirname, 'notion-brain.js');
+  const brain = path.join(__dirname, 'linear-brain.js');
 
-  // Dedup: skip create if a prior closing-date audit card exists in ANY
-  // non-Done state (In progress / Paused / Not started). Searching only
-  // "In progress" let a user-Paused card slip through and the next run
-  // created a duplicate. Done = user has actioned it, fresh card OK.
-  // We do two searches (status=In progress + status=Paused) because the
-  // CLI doesn't take a "not Done" filter; cards in "Not started" are also
-  // checked since manual triage may set that status.
-  const dedupStatuses = ['In progress', 'Paused', 'Not started'];
-  let dedupHit = false;
-  for (const status of dedupStatuses) {
-    const search = spawnSync('node', [brain, 'search', '--text=Closing date audit', `--status=${status}`], { encoding: 'utf8' });
-    if (search.status === 0 && /Closing date audit/.test(search.stdout || '')) {
-      dedupHit = true;
-      console.log(`Notion: existing ${status} audit card found — skipping create (dedup)`);
-      break;
-    }
+  // Dedup: skip create if a prior closing-date audit issue is already OPEN.
+  // linear-brain.js's `find` searches title+body over open (non-completed,
+  // non-canceled) issues only — the same "not Done" scope the old
+  // multi-status Notion search covered with three separate calls.
+  const dedup = spawnSync('node', [brain, 'find', 'Closing date audit'], { encoding: 'utf8', timeout: 60_000 });
+  if (dedup.status !== 0) {
+    throw new Error(`notifyLinear: dedup search failed (exit ${dedup.status}): ${(dedup.stderr || dedup.stdout || '').slice(0, 500)}`);
   }
-  if (dedupHit) return;
+  if (dedup.stdout && dedup.stdout.trim() !== 'null') {
+    console.log('Linear: existing open closing-audit issue found — skipping create (dedup)');
+    return;
+  }
 
   const title = `Closing date audit: ${ambiguous.length} show${ambiguous.length > 1 ? 's' : ''} need review (${todayStr})`;
   // For each row, render the basic schedule discrepancy + (if present) the
@@ -324,19 +322,19 @@ async function notifyNotion(ambiguous, todayStr) {
 
   const create = spawnSync('node', [
     brain, 'create', title,
-    '--priority', 'P1 Next',
-    '--category', 'Data',
-    '--type', 'Bug',
-    '--tags', 'closing-date,audit,data-quality',
+    '--priority', '2',
     '--notes', notes,
-  ], { encoding: 'utf8' });
+    '--park', 'Daily closing-date audit finding — needs human verification against press sources before any shows.json edit',
+  ], { encoding: 'utf8', timeout: 60_000 });
 
-  if (create.status === 0) {
-    const match = (create.stderr || '').match(/__NOTION_CARD_ID__=([a-f0-9-]+)/);
-    console.log(`Notion: created card ${match ? match[1] : '(unknown id — check stdout)'}`);
-  } else {
-    console.warn('Notion: create failed:', (create.stderr || create.stdout || '').slice(0, 500));
+  // This assertion IS the fix (BRO-3430 class): a refused/failed create used
+  // to be logged as a warning and swallowed, so the audit ran, found real
+  // drift, and the job still went green with nobody ever seeing the finding.
+  if (create.status !== 0) {
+    throw new Error(`notifyLinear: create failed (exit ${create.status}): ${(create.stderr || create.stdout || '').slice(0, 500)}`);
   }
+  const match = (create.stderr || '').match(/__BOARD_CARD_ID__=([A-Z]+-\d+)/);
+  console.log(`Linear: created issue ${match ? match[1] : '(unknown id)'}`);
 }
 
 async function main() {
@@ -661,7 +659,7 @@ async function main() {
   if (ambiguous.length > 0) {
     const lines = ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n');
     await notifyDiscord(`⚠️ Closing-date audit found ${ambiguous.length} show(s) where stored closingDate is >30d after schedule end. Verify whether stored is correct (calendar window short) or stale.\n\n${lines}`);
-    await notifyNotion(ambiguous, TODAY);
+    await notifyLinear(ambiguous, TODAY);
   }
 
   await cleanup();

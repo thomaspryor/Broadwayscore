@@ -17,11 +17,11 @@
  * intentionally does not fabricate a pass/fail on data that doesn't exist yet.
  *
  * exit_intent's dwell timer was frozen at 5s by the live 'gate-cold-start'
- * experiment (docs/experiments/gate-cold-start.md, locked in
- * tests/unit/gate-logic.test.mjs "EXPERIMENT LOCK") until the experiment
+ * experiment (docs/experiments/gate-cold-start.md) until the experiment
  * cleared its pre-registered 28-day minimum runtime on 2026-08-18; BRO-1959
  * (2026-08-21) then raised it 5 -> 30 (shared across both arms, not the
- * treatment lever) — see the "Amendments" section of the experiment doc.
+ * treatment lever) — see the "Amendments" section of the experiment doc. The
+ * experiment concluded 2026-09-15 (see that doc's "Conclusion").
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -47,9 +47,10 @@ test('trigger timing: mobile scroll gate requires 30s dwell (or more)', () => {
 
 test('trigger timing: passive gates require a second page view this session (alternate path to "meaningful engagement")', () => {
   // Card #586 acceptance: "30s dwell OR second page view minimum." The
-  // page-view minimum already exists as the gate-cold-start treatment arm's
-  // mechanism (src/lib/gate-logic.ts hasSeenEnoughPages / coldStartCheckApplies)
-  // — locked at 2 by the running experiment, covered by gate-logic.test.mjs.
+  // page-view minimum mechanism (src/lib/gate-logic.ts hasSeenEnoughPages)
+  // now applies to all traffic — concluded gate-cold-start A/B, see
+  // docs/experiments/gate-cold-start.md "Conclusion" — covered directly by
+  // gate-logic.test.mjs.
   assert.ok(emailCaptureConfig.minPageViewsForPassiveGate >= 2,
     'passive gates must require at least a second page view this session');
 });

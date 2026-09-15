@@ -18,7 +18,10 @@
  *     has viewed a few pages THIS SESSION (2026-07-20 audit: two prior fixes
  *     to #1 above left conversion/dismissal unchanged 6 days later, because
  *     neither touched the real gap — a brand-new visitor's first page load
- *     was eligible for the gate the instant the dwell timer elapsed).
+ *     was eligible for the gate the instant the dwell timer elapsed). Ran as
+ *     the 'gate-cold-start' A/B (2026-07-21 to 2026-09-15), concluded in
+ *     favor of making this the permanent default — see
+ *     docs/experiments/gate-cold-start.md "Conclusion".
  */
 
 import { emailCaptureConfig } from '@/config/email-capture';
@@ -93,43 +96,6 @@ export function buildGateAbVariant(timing: MobileGateTiming): string {
  */
 export function hasSeenEnoughPages(pageViewCount: number, minPageViews: number): boolean {
   return pageViewCount >= minPageViews;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ⚠️  LIVE EXPERIMENT — 'gate-cold-start' (started 2026-07-21, PostHog flag)
-// Pre-registration: docs/experiments/gate-cold-start.md — read it BEFORE
-// touching this block, emailCaptureConfig.minPageViewsForPassiveGate, or the
-// cold-start branch in ProGateContext.triggerGate. Mid-experiment changes to
-// arm behavior invalidate the test (locked by tests/unit/gate-logic.test.mjs;
-// the 2026-07-12 mobile-gate-timing experiment died partly because its
-// conditions were never protected — this one is).
-// ─────────────────────────────────────────────────────────────────────────────
-
-export const COLD_START_FLAG = 'gate-cold-start';
-
-export type ColdStartArm = 'control' | 'cold-start' | 'fallback';
-
-/**
- * Map the PostHog flag value to an experiment arm. Follows the same
- * conventions as getMobileGateParams: `null`/`undefined` (flag never resolved
- * — ad blocker, opt-out, timeout, or the poll still in flight at fire time)
- * and unknown strings all collapse to 'fallback' — control BEHAVIOR, but
- * EXCLUDED from analysis, never silently merged into the control arm.
- */
-export function getColdStartArm(flagValue: string | boolean | null | undefined): ColdStartArm {
-  if (flagValue === 'cold-start') return 'cold-start';
-  if (flagValue === 'control') return 'control';
-  return 'fallback';
-}
-
-/**
- * Whether the cold-start page-minimum check applies for this arm.
- * Only the treatment arm gets the 2-page minimum; control and fallback get
- * the pre-2026-07-20 behavior (no minimum) so the control arm is a faithful
- * reproduction of the old funnel.
- */
-export function coldStartCheckApplies(arm: ColdStartArm): boolean {
-  return arm === 'cold-start';
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

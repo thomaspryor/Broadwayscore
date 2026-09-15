@@ -23,6 +23,7 @@ const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
+const { sdBilledCredits } = require('./provider-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 const { creditsFor } = require('./provider-credits');
@@ -491,7 +492,9 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   // probed on every single query once the first cooldown expired instead of
   // once per cooldown window.
   if (isProbe) _scrapingdogBreakerOpenedAt = _breakerNow;
-  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: SD_SERP_CREDITS_PER_CALL * attemptsMade });
+  // SD bills only successful requests (A0 billing probe, see sdBilledCredits) —
+  // booking failures at 5cr overstated SD SERP spend in the ledger (BRO-3325).
+  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: sdBilledCredits(false, SD_SERP_CREDITS_PER_CALL * attemptsMade) });
   log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${lastError.message} — falling back to BD/SB`);
   return null;
 }
