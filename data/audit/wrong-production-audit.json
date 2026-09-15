@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-14T23:37:11.424Z",
+  "timestamp": "2026-09-15T01:57:38.276Z",
   "stats": {
-    "totalReviews": 43271,
-    "alreadyFlagged": 17958,
+    "totalReviews": 43277,
+    "alreadyFlagged": 17962,
     "dateGuardCatches": 236,
     "directorMismatch": 1044,
     "tvFilmSignals": 1269,
-    "londonSignals": 1061,
+    "londonSignals": 1060,
     "offBroadwaySignals": 504,
     "yearMismatch": 91,
-    "noPublishDate": 3712
+    "noPublishDate": 3714
   },
   "findings": [
     {
@@ -44315,6 +44315,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
+      "score": 90,
       "publishDate": "2026-09-14",
       "url": "https://ayoungishperspective.co.uk/2026/09/14/review-man-to-man/",
       "findings": [
@@ -44355,7 +44356,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -44382,7 +44383,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "guardian--mark-lawson.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-09-11",
       "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
       "findings": [
@@ -44396,6 +44397,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
+      "score": 78,
       "publishDate": "2026-09-12",
       "url": "https://www.londontheatre.co.uk/reviews/man-to-man-review-royal-court",
       "findings": [
@@ -49286,6 +49288,7 @@
     {
       "showId": "tartuffe-remixed-off-west-end-2026",
       "file": "standard--nick-curtis.json",
+      "score": 59,
       "publishDate": "2026-09-14",
       "url": "https://www.standard.co.uk/culture/theatre/tartuffe-remixed-at-marylebone-theatre-review-b1296887.html",
       "findings": [
@@ -53055,19 +53058,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "file": "guardian--unknown.json",
-      "publishDate": "2026-09-11",
-      "url": "https://www.theguardian.com/stage/2026/sep/11/in-support-of-the-fourth-wall-proscenium-arch-theatres-surprisingly-radical-history",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
