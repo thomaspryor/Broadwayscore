@@ -95,5 +95,30 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-15T14:11:40.498Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-3030",
+    "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34991983192",
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34991983192)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34884167966)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      }
+    ],
+    "queuedAt": "2026-09-15T16:10:22.386Z"
   }
 ]

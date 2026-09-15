@@ -44,6 +44,10 @@ const BLOCKED = [
   // "what's on" page, ingested via /submit-review for the bloodsport-after-
   // helen-of-troy-off-west-end-2026 show under outletId `stratfordeast`.
   ['stratfordeast.com', 'https://www.stratfordeast.com/whats-on/all-shows/bloodsport-after-helen-of-troy'],
+  // BRO-3374 what-else sweep — same class, found alongside stratfordeast.
+  ['ntlive.com', 'https://www.ntlive.com/plays/golden-boy/'],
+  ['royalcourttheatre.com', 'https://royalcourttheatre.com/'],
+  ['royalcourttheatre.com', 'https://royalcourttheatre.com/events/man-to-man'],
 ];
 
 /**

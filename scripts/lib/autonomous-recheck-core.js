@@ -125,11 +125,18 @@ function needsOverflowHydration(card) {
  * looks inside an `## Acceptance criteria` section or a `VERIFY:` line, and
  * every candidate still has to pass isSafeCheckCommand. Prose in an Outcome
  * cannot become an executed command by being long.
+ *
+ * card.comments (oldest-first, BRO-3373) is threaded into both calls so a
+ * Linear card's acceptance command — usually posted in a comment, since the
+ * description is rarely edited after filing — is considered alongside
+ * notes/outcome, newest-first, per evaluateVerifiability's own contract.
+ * undefined for every pre-BRO-3373 (Notion) caller, so this is a no-op there.
  */
 function verifiabilityForCard(card) {
-  const fromNotes = evaluateVerifiability((card && card.notes) || '');
+  const comments = card && Array.isArray(card.comments) ? card.comments : undefined;
+  const fromNotes = evaluateVerifiability((card && card.notes) || '', comments);
   if (fromNotes.cmd) return { ...fromNotes, source: 'notes' };
-  const fromOutcome = evaluateVerifiability((card && card.outcome) || '');
+  const fromOutcome = evaluateVerifiability((card && card.outcome) || '', comments);
   if (fromOutcome.cmd) return { ...fromOutcome, source: 'outcome' };
   return { ...fromNotes, source: null };
 }

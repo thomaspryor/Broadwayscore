@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-15T15:34:19.597Z",
+  "timestamp": "2026-09-15T16:05:37.135Z",
   "stats": {
-    "totalReviews": 43452,
-    "alreadyFlagged": 17985,
-    "dateGuardCatches": 236,
+    "totalReviews": 43441,
+    "alreadyFlagged": 17987,
+    "dateGuardCatches": 237,
     "directorMismatch": 1044,
-    "tvFilmSignals": 1272,
-    "londonSignals": 1063,
+    "tvFilmSignals": 1273,
+    "londonSignals": 1064,
     "offBroadwaySignals": 504,
     "yearMismatch": 91,
-    "noPublishDate": 3838
+    "noPublishDate": 3818
   },
   "findings": [
     {
@@ -1058,7 +1058,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -2741,6 +2741,19 @@
       "showId": "beetlejuice-west-end-2026",
       "file": "timeout--ghenet-pinderhughes-randall.json",
       "score": 60,
+      "publishDate": "2026-05-29",
+      "url": "https://www.westendtheatre.com/356598/news/reviews/beetlejuice-the-musical-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "timeout--unknown.json",
       "publishDate": "2026-05-29",
       "url": "https://www.westendtheatre.com/356598/news/reviews/beetlejuice-the-musical-review/",
       "findings": [
@@ -6395,7 +6408,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6409,7 +6422,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6423,7 +6436,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -6939,6 +6952,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "times-uk--ghenet-pinderhughes-randall.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.westendtheatre.com/362659/news/death-note-musical-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -12510,25 +12541,6 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
-      "file": "culturesauce--unknown.json",
-      "score": 88,
-      "publishDate": "2025-07-10",
-      "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
       "file": "exeunt-magazine--lane-williamson.json",
       "score": 63,
       "publishDate": "2025-07-11",
@@ -14888,7 +14900,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -15812,7 +15824,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -19325,7 +19337,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -25544,7 +25556,7 @@
     },
     {
       "showId": "stereophonic-off-broadway-2023",
-      "file": "theater-life--unknown.json",
+      "file": "theater-life--david-sheward.json",
       "score": 88,
       "publishDate": "2023-11-24",
       "url": "https://theaterlife.com/scene-partners-stereophonic/",
@@ -28044,6 +28056,25 @@
       "score": 81,
       "publishDate": "2025-05-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "broadwayworld--unknown.json",
+      "score": 79,
+      "publishDate": "2025-05-13",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -34743,7 +34774,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -36143,7 +36174,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -36241,7 +36272,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -37510,7 +37541,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -37524,7 +37555,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-05-20",
       "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
       "findings": [
@@ -38799,7 +38830,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 82,
+      "score": 80,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -38813,7 +38844,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -40937,7 +40968,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -44411,7 +44442,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 77,
+      "score": 75,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -44742,7 +44773,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -45133,7 +45164,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
@@ -45996,7 +46027,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
-      "score": 99,
+      "score": 100,
       "publishDate": "2025-01-13",
       "url": "https://www.londontheatre.co.uk/reviews/oliver-review-gielgud-theatre",
       "findings": [
@@ -46429,7 +46460,7 @@
     },
     {
       "showId": "paranormal-activity-2026",
-      "file": "theater-life--unknown.json",
+      "file": "theater-life--david-sheward.json",
       "score": 84,
       "publishDate": "2026-08-26",
       "url": "https://theaterlife.com/paranormal-activity/",
@@ -46475,6 +46506,20 @@
       "score": 80,
       "publishDate": "2025-12-16",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz?gaa_at=eafs&gaa_n=AWEtsqc0hUH9KoQ4XW_xHQI3YlaYk3ddGSuPLhoNCgtRG27k_ugyuAd5eEuvyyNh0wM%3D&gaa_ts=695300de&gaa_sig=Xw4QOETBlXABAvt0TZvRowDWPHNVHFtiHbv5jxLzZUBFlPyacS1-6lLOzdOP0aw_Mje-9gNBXOYTL54R2ye1IQ%3D%3D&gearefresh=",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "score": 73,
+      "publishDate": "2025-12-16",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -46616,7 +46661,7 @@
     },
     {
       "showId": "pre-existing-condition-off-broadway-2026",
-      "file": "culturesauce--unknown.json",
+      "file": "culturesauce--thom-geier.json",
       "score": 89,
       "publishDate": "2026-09-14",
       "url": "https://culturesauce.com/pre-existing-condition-lupita-nyongo-off-broadway-review/",
@@ -47715,19 +47760,6 @@
       ]
     },
     {
-      "showId": "shifters-off-broadway-2026",
-      "file": "culturesauce--unknown.json",
-      "publishDate": "2026-07-16",
-      "url": "https://culturesauce.com/shifters-off-broadway-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
       "file": "thestage--paul-vale.json",
       "score": 74,
@@ -48107,7 +48139,7 @@
     },
     {
       "showId": "small-off-broadway-2026",
-      "file": "theater-life--unknown.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 92,
       "publishDate": "2026-05-29",
       "url": "https://theaterlife.com/small/",

@@ -42,6 +42,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile } = require('./lib/review-normalization');
@@ -65,6 +66,12 @@ const outletArg = getArg('outlet');
 const criticArg = getArg('critic');
 const publishDateArg = getArg('publish-date');
 const dryRun = hasFlag('dry-run');
+// --data-dir: override the review-texts root, same flag block-review.js already
+// exposes ("Override data/review-texts root (for tests)"). Flows to BOTH the
+// blocklist lookup below and the writer, so a test can exercise the real script
+// against a temp corpus instead of the live one.
+const reviewTextsDir = getArg('data-dir')
+  || path.join(__dirname, '..', 'data', 'review-texts');
 const forceClearStale = hasFlag('force-clear-stale-flag');
 // Provisional onboarding: use --outlet verbatim as a slug WITHOUT fuzzy alias
 // resolution. For aggregator-cited outlets not yet in the registry (the ctvoice /
@@ -79,7 +86,7 @@ const forceClearStale = hasFlag('force-clear-stale-flag');
 let provisional = hasFlag('provisional');
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH]');
   process.exit(1);
 }
 
@@ -151,6 +158,24 @@ function extractByline(html) {
   // the submitter; refusing at ingest is the cheaper, earlier stop.
   if (isBlockedReviewUrl(url)) {
     console.error(`Refusing to ingest — ${url} matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.`);
+    process.exit(1);
+  }
+
+  // Per-show blocklist — honor _blocklist.json, the sidecar whose WHOLE PURPOSE
+  // is making an operator's deletion stick (scripts/lib/poller-blocklist.js).
+  // gather-reviews.js has honored it since the Rocky Horror 2026-04-23 incident,
+  // but THIS path never did — and this is the path audit-aggregator-gap's
+  // auto-recovery drives (audit-t1-silent-gaps.js recoverFromOwnUrl execs this
+  // script) as well as the public /submit-review form. BRO-3247: a
+  // wrong-production Lighting & Sound America review of a DIFFERENT "Safe House"
+  // (the 2025 Enda Walsh production at St. Ann's Warehouse) was deleted from
+  // safe-house-off-broadway-2026 on 2026-09-14 and re-ingested here within
+  // hours, twice, because deleting a file leaves nothing behind that this
+  // entry point consults. Refuse before fetching so a blocked URL also stops
+  // burning scraper credit on every audit cycle.
+  const _blocked = findBlockedEntry(loadBlocklist(path.join(reviewTextsDir, showId)), url);
+  if (_blocked) {
+    console.error(`Refusing to ingest — ${url} is blocklisted for ${showId}: ${_blocked.reason || 'no reason recorded'}. See ${path.join(reviewTextsDir, showId, '_blocklist.json')} (scripts/block-review.js manages it).`);
     process.exit(1);
   }
 
@@ -295,7 +320,9 @@ function extractByline(html) {
   // file at the same outletId+criticName slug is the failure that bit issue
   // #309 (April 4 preview blocked May 1 review). Surface it here rather than
   // silently merging the new URL into the wrongProduction file.
-  const showDir = path.join(__dirname, '..', 'data', 'review-texts', showId);
+  // Honors --data-dir like every other corpus access in this script, so a test
+  // run against a temp corpus cannot force-write live review metadata.
+  const showDir = path.join(reviewTextsDir, showId);
 
   const collision = detectIngestCollision({
     showDir,
@@ -399,7 +426,7 @@ function extractByline(html) {
     url,
     source: 'submit-review-form',
     fields,
-  }, { dryRun });
+  }, { dryRun, reviewTextsDir });
 
   if (result.action === 'new') {
     console.log(`✅ Created: ${result.filepath}`);

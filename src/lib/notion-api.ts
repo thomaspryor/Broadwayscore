@@ -7,6 +7,10 @@
 
 const NOTION_BASE = 'https://api.notion.com/v1';
 const NOTION_VERSION = '2025-09-03';
+// Notion is purely additive from both callers now (BRO-3379) — a hang here
+// must not consume the whole Vercel function's request budget after the
+// real consumer (Formspree / a GitHub issue) already has the submission.
+const NOTION_TIMEOUT_MS = 5_000;
 
 // Must match scripts/lib/notion-constants.js's BRAIN_DATABASE_ID — duplicated
 // here rather than imported because API routes can't require a CommonJS file
@@ -33,6 +37,7 @@ export async function notionApi(
       'Content-Type': 'application/json',
     },
     body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(NOTION_TIMEOUT_MS),
   });
   let json: Record<string, unknown> = {};
   try {
