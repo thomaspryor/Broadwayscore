@@ -246,13 +246,44 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
       out.push({ cardId: card.id, name: card.name || launch.subject || '(untitled)', verifyCmd: null, reason: null, skip: 'someone is working this card right now' });
       continue;
     }
+    // A dispatch-ledger verifyCmd is a SNAPSHOT taken when the card was
+    // dispatched, and this branch used to treat it as the final word: a null
+    // snapshot became `reason: launch.verifyReason` and the card's own
+    // criteria were never consulted again. That makes every post-dispatch
+    // correction inert here — the exact defect verify-gate.js:30-42 already
+    // records and fixed for the DISPATCH gate under BRO-2796 ("a Linear
+    // card's description cannot be edited by linear-brain.js's update
+    // command, so the ONLY way to correct a broken or wrong VERIFY command
+    // after dispatch is a comment"). The dispatch gate learned to read
+    // comments; this path stayed pinned to the snapshot, so a session that
+    // discovers its real acceptance command mid-flight and posts it — which
+    // is what /wrap-up tells sessions to do — could never arm the nightly
+    // recheck. Measured on the live board 2026-09-15 for the 2026-09-16
+    // 06:45Z run: 3 of the 31 due cards (BRO-3030, BRO-2983, BRO-2795) were
+    // armed on the card and dead here.
+    //
+    // Deliberately a FALLBACK, not an override: only consulted when the
+    // snapshot is empty, so a card that is unverifiable both ways reports
+    // exactly as it did before and no working card can be downgraded. The
+    // inverse (card-current always wins over a non-null snapshot) was
+    // measured against the same live board and changed ZERO cards, so the
+    // stricter, strictly-additive form costs nothing today.
+    const fallback = launch.verifyCmd ? null : verifiabilityForCard(card);
+    const verifyCmd = launch.verifyCmd || (fallback && fallback.cmd) || null;
     out.push({
       cardId: card.id,
       name: card.name || launch.subject || '(untitled)',
-      verifyCmd: launch.verifyCmd || null,
+      verifyCmd,
       // "not machine-verifiable" is an honest, reportable outcome — the recheck
       // never invents a command for a card whose criteria was prose.
-      reason: launch.verifyCmd ? null : (launch.verifyReason || 'no verify command was captured at dispatch'),
+      // Reason precedence is unchanged from before this fix: the
+      // dispatch-captured verifyReason still wins whenever nothing new armed,
+      // so a card that was unverifiable before and is unverifiable now reports
+      // the identical string it always did. The gate's own reason is only a
+      // backstop for a launch row that recorded neither a command nor a reason.
+      reason: verifyCmd
+        ? null
+        : (launch.verifyReason || (fallback && fallback.reason) || 'no verify command was captured at dispatch'),
       skip: null,
     });
   }

