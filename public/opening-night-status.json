@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T15:34:26.715Z",
+  "generatedAt": "2026-09-15T16:05:44.800Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -426,22 +426,22 @@
       "slug": "golden-boy-off-west-end",
       "thumbnail": null,
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 100,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:0/6"
@@ -512,6 +512,20 @@
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-09-15T16:05:44.800Z",
+          "rc": 1,
+          "s": 100,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -976,10 +990,6 @@
         },
         {
           "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
           "isDualMarket": false
         },
         {

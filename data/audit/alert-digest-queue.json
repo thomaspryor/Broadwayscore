@@ -97,15 +97,28 @@
     "queuedAt": "2026-09-15T14:11:40.498Z"
   },
   {
-    "conditionKey": "on-monitor-launched-on-monitor-2026-09-14",
-    "title": "Opening-night monitor pass complete: pre-existing-condition-off-broadway-2026",
-    "description": "Pass 1, model opus, 4min, $1.42. Pass 1 complete, exiting inside the deadline. No report sent (parity not reached, window still open through 2026-09-16T03:59Z).\n\n**Found and fixed one real gap:** Time Out New York (Raven Snook, ★★★★, published 2026-09-14) was a confirmed `true-missed-discovery` — absent from review-texts, reviews.json local *and* origin/main, and prod. Ingested via direct URL, committed and pushed to the data repo (`26c76ce6e90`, verified on origin/main). It now rides the CI rebuild → score → rebuild → deploy chain.\n\n**Parity state:** local reviews.json and prod both show the same 6 reviews, composite 78.23, status `open` — the pipeline itself is internally consistent; the failure was purely discovery-side.\n\n**Six exclusions verified as CORRECT, not gaps** — the `_pending/` strand (4 files) plus the NYT a",
-    "severity": "info",
-    "url": null,
-    "decision": false,
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-3030",
+    "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34991983192",
+    "decision": true,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T15:59:28.032Z"
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34991983192)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34884167966)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      }
+    ],
+    "queuedAt": "2026-09-15T16:10:22.386Z"
   }
 ]
