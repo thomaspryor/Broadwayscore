@@ -24,6 +24,11 @@
 'use strict';
 
 const { evaluateVerifiability } = require('./verify-gate.js');
+// The single specificity ranking (node --test/npx tsx --test = 0, test -f =
+// 1, everything else = 2) — exported from autonomous-verify-cmd.js so it is
+// used here identically to how extractVerifyCmd ranks a card's own
+// candidates against each other (BRO-3446; CLAUDE.md §15, never a second copy).
+const { rank } = require('./autonomous-verify-cmd.js');
 // Stamp parsing lives in a zero-dependency leaf so stuck-work.js (daily
 // health digest) can share the exact predicate without dragging in this
 // module's verify-gate dependency chain. Re-exported below unchanged.
@@ -262,26 +267,32 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
     // 06:45Z run: 3 of the 31 due cards (BRO-3030, BRO-2983, BRO-2795) were
     // armed on the card and dead here.
     //
-    // Deliberately a FALLBACK, not an override: consulted only when the
-    // snapshot is empty, so a card that is unverifiable both ways reports
-    // exactly as it did before and no working card can be downgraded.
+    // Null-snapshot fallback: consulted whenever the snapshot is empty, so a
+    // card that is unverifiable both ways reports exactly as it did before
+    // and no working card can be downgraded.
     //
-    // The inverse — card-current always wins — was implemented, tested and
-    // then backed out on purpose. It does fix a second, real bug (a non-null
-    // but WRONG snapshot, which --allow-phantom-path manufactures: BRO-3382's
-    // snapshot froze a test path its session never created), but it also
-    // reverses a contract this suite pins by name, "a dispatch-ledger launch
-    // entry still takes priority over the notes fallback", and that test's
-    // own fixture is the degradation case — card notes naming `npx next lint`
-    // against a snapshot naming a specific `node --test`. Letting the generic
-    // command win would make those rechecks meaningless in exactly the way
-    // autonomous-verify-cmd.js's rank() comment already warns about ("tsc
-    // still passes" says nothing about whether THAT card's work survived).
-    // Fixing the wrong-snapshot case safely needs specificity-ranked
-    // preference, not raw precedence; that is tracked separately rather than
-    // smuggled in here.
-    const fallback = launch.verifyCmd ? null : verifiabilityForCard(card);
-    const verifyCmd = launch.verifyCmd || (fallback && fallback.cmd) || null;
+    // Non-null snapshot: BRO-3446. `--allow-phantom-path` lets a snapshot
+    // freeze a path the dispatching session only guessed (BRO-3382: the
+    // ledger named a test file its session never wrote; the real test landed
+    // elsewhere and the real fix is correct and live on main), so the
+    // nightly run would execute the phantom and report `fail` for working
+    // code. Notes can't be edited after dispatch on a Linear card (BRO-2796
+    // again), so a same-or-BETTER-specificity command posted in a COMMENT is
+    // the one signal worth trusting over the snapshot — ranked via rank()
+    // above, not raw precedence, so a comment naming a GENERIC command
+    // (`npx next lint`, rank 2) can never displace a SPECIFIC snapshot
+    // (`node --test ...`, rank 0). That is exactly the degradation "a
+    // dispatch-ledger launch entry still takes priority over the notes
+    // fallback" pins by name below, and why plain notes (not a comment) are
+    // deliberately NOT compared this way here — see "the fallback is
+    // additive only" below, still pinned.
+    let verifyCmd = launch.verifyCmd || null;
+    if (verifyCmd) {
+      const correction = evaluateVerifiability('', card.comments);
+      if (correction.cmd && rank(correction.cmd) <= rank(verifyCmd)) verifyCmd = correction.cmd;
+    }
+    const fallback = verifyCmd ? null : verifiabilityForCard(card);
+    verifyCmd = verifyCmd || (fallback && fallback.cmd) || null;
     out.push({
       cardId: card.id,
       name: card.name || launch.subject || '(untitled)',

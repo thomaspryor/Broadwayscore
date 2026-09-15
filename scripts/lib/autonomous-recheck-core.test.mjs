@@ -490,20 +490,21 @@ test('BRO-3434: the fallback is additive only — a non-null snapshot still wins
     'the dispatch snapshot must not be overridden when it is present');
 });
 
-// KNOWN-OPEN, pinned as CURRENT behaviour rather than desired behaviour, so
-// the gap is visible instead of forgotten. BRO-3382 was dispatched with
+// BRO-3446 (fixed the BRO-3434 KNOWN-OPEN gap): BRO-3382 was dispatched with
 // --allow-phantom-path, freezing a verifyCmd that names a test file its
 // session never created (the real test landed at
 // src/app/api/__tests__/notion-write-is-non-fatal.test.mjs). Safe-form
 // validation passes the phantom because it checks command SHAPE, not file
-// existence, so the nightly run will execute it and report `fail` for a fix
+// existence, so the nightly run would execute it and report `fail` for a fix
 // that is correct and live on main. Preferring the card outright would fix
 // this but would also let a GENERIC card command (`npx next lint`) displace a
 // SPECIFIC snapshot (`node --test ...`) — the degradation
 // autonomous-verify-cmd.js's rank() comment warns about, and the case the
-// "launch entry still takes priority" test above fixtures exactly. The safe
-// fix is specificity-ranked preference, tracked on its own card.
-test('BRO-3434 KNOWN-OPEN: a phantom-path snapshot still outlives the correction (BRO-3382 shape)', () => {
+// "launch entry still takes priority" test above fixtures exactly. The fix
+// is specificity-ranked preference (rank(correction) <= rank(snapshot)), not
+// raw precedence — both sides are rank 0 here, so the comment-posted
+// correction wins.
+test('BRO-3446: a phantom-path snapshot is corrected by a same-specificity comment (BRO-3382 shape)', () => {
   const out = selectRecheckTargets({
     doneCards: [done({
       notes: '## Acceptance criteria\nVERIFY: node --test tests/unit/feedback-formspree-status-check.test.mjs',
@@ -511,8 +512,20 @@ test('BRO-3434 KNOWN-OPEN: a phantom-path snapshot still outlives the correction
     })],
     launchEntries: [launch({ verifyCmd: 'node --test tests/unit/feedback-formspree-status-check.test.mjs' })],
   });
+  assert.equal(out[0].verifyCmd, 'node --test src/app/api/__tests__/notion-write-is-non-fatal.test.mjs',
+    'a same-or-better-specificity comment correction must displace a phantom-path snapshot');
+});
+
+test('BRO-3446: a GENERIC comment correction still cannot displace a SPECIFIC snapshot', () => {
+  const out = selectRecheckTargets({
+    doneCards: [done({
+      notes: '## Acceptance criteria\nVERIFY: node --test tests/unit/feedback-formspree-status-check.test.mjs',
+      comments: ['VERIFY: npx next lint'],
+    })],
+    launchEntries: [launch({ verifyCmd: 'node --test tests/unit/feedback-formspree-status-check.test.mjs' })],
+  });
   assert.equal(out[0].verifyCmd, 'node --test tests/unit/feedback-formspree-status-check.test.mjs',
-    'documents the still-open wrong-snapshot gap — flip this assertion when specificity-ranked preference lands');
+    'a rank-2 comment must not displace a rank-0 snapshot, even a phantom one');
 });
 
 test('BRO-3434: the snapshot is still used when the card arms nothing', () => {
