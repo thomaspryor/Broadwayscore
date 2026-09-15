@@ -503,6 +503,18 @@ function readJsonlLedgerStrict(p) {
   }
   return out;
 }
+// "Strict" above is deliberately scoped to FILE-level failure (unreadable,
+// EACCES, a throwing injected test reader) — a single malformed LINE within
+// an otherwise-healthy ledger is silently dropped, same as readJsonlLedger
+// and dispatch-ledger.js's own readEntries. That's not an oversight (BRO-3412
+// follow-up review, BRO-3453): a truncated line from a crash mid-append is a
+// routine, expected event in an append-only JSONL log — every ledger reader
+// in this codebase treats it that way. Escalating single-line corruption to
+// "fail the whole guard closed" would be a NEW, stricter policy than the rest
+// of the dispatch-ledger ecosystem uses, and its failure mode is worse: one
+// bit-flipped historical row could permanently wedge all future dispatch
+// until a human manually repairs the file, versus today's bounded, small
+// undercount from one dropped row. See BRO-3453 for the fuller tradeoff.
 
 // Same strict/ENOENT-tolerant contract as readJsonlLedgerStrict, for the
 // SHARED dispatch-ledger.jsonl (dispatch-ledger.js's own readEntries also
@@ -747,6 +759,18 @@ function runAutofix({
   // dispatch-watchdog-core.js scopes to its own claimed taskIds — each
   // engine's ceiling is independent, not a shared cross-drain budget (that
   // would be new infrastructure, out of scope for this wiring-only card).
+  //
+  // KNOWN LIMITATIONS (BRO-3412 post-ship review, tracked as BRO-3453, owner
+  // triage): this is a SNAPSHOT read, not a reservation — two overlapping
+  // runAutofix invocations could both see the same headroom. Rows are also
+  // only excluded by plan state ('in-progress'), not by concurrency.
+  // aliveTaskIds the way scripts/backlog-drain.js:497-500 excludes its own
+  // live candidates — a stale pending task could re-dispatch while its own
+  // prior job is still alive (downstream dispatch-time guards likely refuse
+  // the duplicate, but this budget slot still gets consumed reporting
+  // "dispatched"). Neither is new: both are properties of this module's
+  // existing fire-and-forget dispatch architecture, now inherited by a
+  // stricter consumer than attempt-memory ever needed.
   //
   // Deliberately does its OWN independent reads (readJsonlLedgerStrict /
   // readSharedDispatchLedgerStrict, or the injected dispatchLedgerEntriesFn
