@@ -119,7 +119,7 @@ describe('WE-aggregator ingestion wiring', () => {
       assert.deepStrictEqual(raw, [],
         `${w.file} has a row-ingest site trusting .outletId directly — route it through `
         + `resolveArchiveRowOutletId, or declare why it is not row ingest with an `
-        + `\`// audit-only: <reason>\` annotation:\n`
+        + `\`// audit-only: <reason>\` annotation ON the matching line or the line DIRECTLY above it:\n`
         + raw.map((f) => `  ${w.file}:${f.line}  ${f.text}`).join('\n'));
     });
   }

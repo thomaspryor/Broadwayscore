@@ -62,7 +62,7 @@ function resolveArchiveRowOutletId({ url, outletLabel, cachedOutletId, sourceOut
 // permitting the first two forever — the two most likely to recur, since
 // normalizeOutlet is what a developer reaches for when they ARE thinking about
 // outlet identity. A genuine non-ingest use DECLARES itself with a trailing
-// `// audit-only: <reason>` on, or directly above, the matching line — the same
+// `// audit-only: <reason>` on, or on the line DIRECTLY above, the match — the same
 // convention as the repo's `# hygiene-*-ok:` workflow markers and the
 // .alert-sender-baseline.json exemption ledgers. The reason is mandatory: a
 // bare `// audit-only:` does not exempt anything.

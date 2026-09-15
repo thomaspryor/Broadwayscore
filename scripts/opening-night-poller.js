@@ -1414,6 +1414,11 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
         showId,
         file: generateReviewFilename(review.outletId || review.outlet, review.criticName),
         reason: result,
+        // This review was REJECTED by createReviewFile() — the payload
+        // records what was actually seen so the skip can be diagnosed, it is not a
+        // row-ingest identity. resolveArchiveRowOutletId() takes archive-row shape,
+        // and canonicalizing a rejected row's id would make the audit trail lie.
+        // audit-only: rejected-review telemetry, not a row-ingest identity
         details: { url: review.url, outletId: review.outletId || review.outlet, criticName: review.criticName, publishDate: review.publishDate },
       });
     } else {
