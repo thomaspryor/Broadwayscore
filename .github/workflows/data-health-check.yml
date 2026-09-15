@@ -771,6 +771,22 @@ jobs:
         timeout-minutes: 3
         run: node scripts/audit-stale-announced-shows.js
 
+      # Notion-schedule-coupling audit (BRO-3431 reopen). The four schedules
+      # named in BRO-3431 all shared one shape: a LIVE schedule (a loaded
+      # launchd plist, or a schedule:-cron'd workflow) running a script that
+      # read the frozen Notion task mirror as if it were a current work
+      # source. The owner's real question was "are there other gaps like
+      # this?" — this sweeps every cron'd workflow in this repo (the launchd
+      # half is Mac-only and self-reports skipped here, same restriction as
+      # check-hook-liveness.js) so the answer is a command, not a four-hour
+      # manual audit. SHADOW MODE like every sweep above: report-only, never
+      # fails the step on a finding.
+      - name: Notion-schedule-coupling audit (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-notion-schedule-coupling.js
+
       # Trunk status snapshot (task #1003) — is test.yml green on main, for
       # how long has it been red, and which files are named in the failures.
       # Feeds the morning digest's standing trunk line AND the close-time
@@ -996,6 +1012,7 @@ jobs:
           # "Commit lifetime sweep snapshots (apiFallbackSafe)" step (BRO-472)
           # — no longer added here.
           git add data/audit/stale-announced-shows.json 2>/dev/null || true
+          git add data/audit/notion-schedule-coupling.json 2>/dev/null || true
           git add data/audit/missed-broadcasts.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check audit snapshot changes"

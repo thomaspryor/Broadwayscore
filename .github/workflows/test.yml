@@ -1239,6 +1239,10 @@ on:
       # shipped with ZERO CI — exactly the hole this allow-list exists to close.
       - 'scripts/audit-orphan-tests.js'
       - 'scripts/audit-orphan-tests.test.mjs'
+      # BRO-3431 reopen: root-level scripts/*.js + *.test.mjs pair, no
+      # scripts/** broad glob covers it.
+      - 'scripts/audit-notion-schedule-coupling.js'
+      - 'scripts/audit-notion-schedule-coupling.test.mjs'
       - 'scripts/validate-show-venue.js'
       # theatr-coverage.json flag builder (BRO-303, 2026-08-13): excludes
       # London-market shows from the candidate pool since Theatr's catalog is

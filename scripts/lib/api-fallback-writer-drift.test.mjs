@@ -137,10 +137,10 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (125 as of BRO-3426 2026-09-15: the BRO-3071 124, MINUS the gate-cold-start-monitor-state entry BRO-3422 froze, PLUS the two done-evidence audit files data-health-check.yml writes; 124 as of BRO-3071 2026-09-14 what-else sweep -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (126 as of BRO-3431 2026-09-15: the BRO-3426 125 PLUS notion-schedule-coupling.json (data-health-check.yml\'s new BRO-3431-reopen shadow audit); 125 as of BRO-3426 2026-09-15: the BRO-3071 124, MINUS the gate-cold-start-monitor-state entry BRO-3422 froze, PLUS the two done-evidence audit files data-health-check.yml writes; 124 as of BRO-3071 2026-09-14 what-else sweep -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 125); // 124 (BRO-3071) - gate-cold-start-monitor-state (BRO-3422 froze it) + 2 done-evidence files (BRO-3426)
+  assert.equal(publicSafe.length, 126); // 125 (BRO-3426) + notion-schedule-coupling.json (BRO-3431 reopen)
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
     'audit/affiliate-link-probe.json',
@@ -199,6 +199,7 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/missed-broadcasts.json',
     'audit/needs-human-review.json',
     'audit/non-review-audit.json',
+    'audit/notion-schedule-coupling.json',
     'audit/ob-closing-candidates.json',
     'audit/ob-todaytix-missing-state.json',
     'audit/ob-venue-counts.json',
