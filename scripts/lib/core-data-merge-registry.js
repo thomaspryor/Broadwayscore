@@ -1334,6 +1334,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'monitor-gate-ab',
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false).',
+    note: 'FROZEN as of 2026-09-15: the gate-cold-start A/B concluded and monitor-gate-ab.yml no longer writes this file (its write step was removed) — kept in the repo as the historical readout, not actively single-written anymore despite the status above.',
   },
   {
     file: 'audit/ticket-ab-monitor-state.json',

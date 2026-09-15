@@ -57,20 +57,14 @@ const SRC_DIR = path.join(__dirname, '..', '..', 'src');
 // entry omits the field — decide it at experiment design time, per
 // docs/experiments/README.md.
 const REGISTERED_FLAGS = [
-  {
-    key: 'gate-cold-start',
-    expected: {
-      exists: true,
-      active: true,
-      variants: [{ key: 'control', pct: 50 }, { key: 'cold-start', pct: 50 }],
-      rollout: 100,
-      // FALSE is correct: anonymous-only (the experiment lock forbids
-      // posthog.identify(); see launch commit c0884898794). Do not flip.
-      ensure_experience_continuity: false,
-    },
-    ownerDoc: 'docs/experiments/gate-cold-start.md',
-    note: 'Live A/B — email-gate 2-page minimum vs no minimum.',
-  },
+  // 'gate-cold-start' entry removed 2026-09-15: the A/B concluded and its
+  // client-side arm branching (getColdStartArm/coldStartCheckApplies/
+  // COLD_START_FLAG) was deleted from src/ — nothing references this flag
+  // key anymore, so per this file's own convention (an exists:false entry is
+  // ONLY for a key still referenced in src/, see mobile-gate-timing below)
+  // it's deleted outright, not marked exists:false. The PostHog flag (id
+  // 772232) itself is left live-but-unread in PostHog, not deleted, for
+  // reproducibility — see docs/experiments/gate-cold-start.md "Conclusion".
   {
     key: 'ticket-single-button',
     expected: {
@@ -134,7 +128,7 @@ function walkFiles(dir, exts, out = []) {
 }
 
 // A flag key is often passed as a string literal directly (TicketButtonsAB.tsx)
-// or as an imported UPPER_SNAKE constant (ProGateContext.tsx's COLD_START_FLAG /
+// or as an imported UPPER_SNAKE constant (ProGateContext.tsx's
 // MOBILE_GATE_FLAG, defined in src/lib/gate-logic.ts) — resolve constants by
 // searching all scanned files for their `const IDENT = 'value'` definition.
 // If two files define the SAME identifier name with DIFFERENT values, silently
