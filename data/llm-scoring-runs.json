@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-09-11T09:25:48.888Z",
-    "completedAt": "2026-09-11T09:29:07.316Z",
-    "totalReviews": 43057,
-    "processed": 2,
-    "skipped": 43050,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 31692,
-      "output": 1335,
-      "total": 81660
-    },
-    "errorDetails": [
-      {
-        "showId": "enchanted-april-2003",
-        "outletId": "variety",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-11T09:29:15.125Z",
     "completedAt": "2026-09-11T09:32:15.809Z",
     "totalReviews": 43057,
@@ -392847,6 +392827,26 @@
       "input": 50071,
       "output": 2548,
       "total": 132706
+    },
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-15T16:49:18.282Z",
+    "completedAt": "2026-09-15T16:49:43.428Z",
+    "totalReviews": 43854,
+    "processed": 2,
+    "skipped": 43846,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 30099,
+      "output": 1195,
+      "total": 84763
     },
     "errorDetails": [
       {

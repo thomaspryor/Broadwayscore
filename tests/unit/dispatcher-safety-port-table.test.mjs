@@ -155,12 +155,16 @@ test('PORT — TODO / DELETE rows are not yet wired into scripts/linear-next.js'
   }
 });
 
-// (4) H1 gap: the nightly acceptance recheck still walks only the Notion board.
-test('H1 gap holds: acceptance recheck is Notion-only, not Linear', () => {
+// (4) H1 gap CLOSED (BRO-3373): the nightly acceptance recheck now walks
+// Linear as well as Notion — linear-next.js's ledger-captured verifyCmd
+// (+linearId) is re-run via scripts/lib/linear-recheck-source.js. If this
+// regresses back to Notion-only, this test should be flipped back to
+// asserting the gap holds (see git history for the pre-BRO-3373 form).
+test('H1 gap closed: acceptance recheck now covers Linear as well as Notion', () => {
   const src = readSrc('scripts/autonomous-acceptance-recheck.js');
-  assert.match(src, /notion/i, 'recheck should reference the Notion board (H1 premise)');
-  assert.doesNotMatch(src, /\blinear\b/i,
-    'autonomous-acceptance-recheck.js now references Linear — H1 may be resolved; update the table');
+  assert.match(src, /notion/i, 'recheck should still reference the Notion board');
+  assert.match(src, /fetchLinearRecheckCandidates/,
+    'autonomous-acceptance-recheck.js no longer calls fetchLinearRecheckCandidates — H1 has regressed to Notion-only, update docs/dispatcher-safety-port-table.md');
 });
 
 // (5) The deliverable exists and every row id it tallies is present in the table.
