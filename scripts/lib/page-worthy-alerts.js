@@ -58,6 +58,14 @@ const PAGE_WORTHY_PREFIXES = [
   // owner noticed one show's email arriving and another's never had). Nothing
   // retries these automatically, so the page IS the recovery mechanism.
   'broadcast:never-sent:',
+  // check-opening-night-drift.yml: local review-texts, the reviews.json
+  // aggregate and live production disagree on a show's review count, past the
+  // grace window, during its opening-night window. This is NOT a new paging
+  // decision — c82cc427bdd's sendAlert(severity:'error', email:true) already
+  // emailed the owner on every occurrence, with no dedup at all. Listing it
+  // here preserves exactly that delivery while the router adds the per-show
+  // cooldown it never had. Suffix is the show id.
+  'opening-night-drift:',
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([

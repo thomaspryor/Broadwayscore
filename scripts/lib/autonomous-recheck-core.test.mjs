@@ -549,6 +549,37 @@ test('BRO-3446: a later, unrelated generic comment does not shadow an earlier sp
     'the earlier specific correction must still be found even though a later comment also arms');
 });
 
+// The actual BRO-3382 comment, verbatim in shape (fetched live from Linear
+// while validating this fix — not a fixture invented for the test). A
+// correction comment quotes the WRONG path for context before stating the
+// right one, both at rank 0, phantom first — extractVerifyCmd's own
+// first-at-best-rank tie-break would pick the phantom here. This is the
+// real-world case BRO-3446 exists to fix; a synthetic single-candidate
+// fixture cannot catch this class of bug.
+test('BRO-3446: within one comment, the LAST same-rank candidate wins (real BRO-3382 shape)', () => {
+  const ownerComment = [
+    'WHAT IS WRONG — this card\'s acceptance command names a file that does not exist.',
+    '',
+    'The acceptance comment says:',
+    '  VERIFY: node --test tests/unit/feedback-formspree-status-check.test.mjs',
+    '',
+    'That file was never created.',
+    '',
+    'So the correct command for this card is:',
+    '',
+    'VERIFY: node --test src/app/api/__tests__/notion-write-is-non-fatal.test.mjs',
+  ].join('\n');
+  const out = selectRecheckTargets({
+    doneCards: [done({
+      notes: '## Acceptance criteria\nVERIFY: node --test tests/unit/feedback-formspree-status-check.test.mjs',
+      comments: [ownerComment],
+    })],
+    launchEntries: [launch({ verifyCmd: 'node --test tests/unit/feedback-formspree-status-check.test.mjs' })],
+  });
+  assert.equal(out[0].verifyCmd, 'node --test src/app/api/__tests__/notion-write-is-non-fatal.test.mjs',
+    'the LAST VERIFY line in the comment is the actual correction; the first one is quoted context');
+});
+
 test('BRO-3434: the snapshot is still used when the card arms nothing', () => {
   const out = selectRecheckTargets({
     doneCards: [done({ notes: 'the criteria section was emptied, only prose now' })],
