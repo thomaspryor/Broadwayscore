@@ -495,25 +495,6 @@ async function fetchWithBrightData(url, opts = {}) {
  * "this specific request was refused, try the next tier" vs. other failure
  * modes (budget/quota/network) where escalating tiers wouldn't help.
  */
-/**
- * Does a Scrapingdog error carry the provider's own "You won't be charged for
- * this request" statement? Pure predicate (CLAUDE.md §15) so the ledger's
- * credit booking for SD failures is testable: the 400/500 "Oops! Something
- * went wrong. You won't be charged for this request" bodies are billed at 0
- * by SD, everything else keeps the conservative full-cost booking. Accepts the
- * thrown message and/or an axios response body (string or JSON).
- */
-function isScrapingdogUnchargedMessage(...parts) {
-  const text = parts
-    .filter((p) => p != null)
-    .map((p) => (typeof p === 'string' ? p : (() => { try { return JSON.stringify(p); } catch { return String(p); } })()))
-    .join(' ');
-  // "charg" not "charged": the ledger's status field is cut at 80 chars, and
-  // the 500-form message ends exactly at "…You won’t be charg" there — the
-  // predicate must agree with replays over recorded rows, not only live errors.
-  return /won[’']?t be charg/i.test(text);
-}
-
 async function fetchWithScrapingdog(url, options = {}) {
   // options.onSkip(reason) (BRO-3009 S1-T8) lets the caller learn WHY this
   // function declined to make the call, without changing what it RETURNS —
@@ -639,15 +620,10 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  // Scrapingdog's own 400/500 "Oops! Something went wrong. You won't be charged
-  // for this request" is billed at 0 by the provider; booking creditCost here
-  // overstated SD spend in the ledger (BRO-3325 what-else, 2026-09-15: 4,334
-  // phantom credits in 7 days on that one message, 7.8% of recorded SD spend),
-  // which skews the weekly cost report and the tier-skip drift audit's credit
-  // figures. Other failures (404s, timeouts, numeric SERP 400s) keep the
-  // conservative full-cost booking until the dashboard proves otherwise.
-  const sdSaysUncharged = isScrapingdogUnchargedMessage(lastError.message);
-  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdSaysUncharged ? 0 : creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
+  // SD bills only successful requests (A0 billing probe — see sdBilledCredits
+  // in provider-telemetry.js); booking creditCost here overstated SD spend in
+  // the ledger by ~9,900 credits/7d (BRO-3325 what-else, 2026-09-15).
+  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdBilledCredits(false, creditCost * attemptsMade), fallbackFrom: options.fallbackFrom || null });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
 
   // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400
@@ -1680,7 +1656,6 @@ function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
 }
 
 module.exports = {
-  isScrapingdogUnchargedMessage,
   fetchPage,
   pageChainOrder,
   fetchJSON,
