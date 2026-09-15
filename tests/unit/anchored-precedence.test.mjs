@@ -312,6 +312,20 @@ describe('detectBandFromReviewFile (star-reliability helper)', () => {
     assert.deepStrictEqual(result.band, { fraction: 0.8, floor: 71, ceiling: 90 });
   });
 
+  it('BRO-866: originalScore (outlet\'s own extraction) wins over a disagreeing aggregatorStars relay', () => {
+    // Real corpus case: NYSR "Data" review — unicode-stars extracted the
+    // critic's own "5/5 stars" into originalScore, but Show Score relayed a
+    // stale "4/5 stars" into aggregatorStars. The relay must not win the band.
+    const result = detectBandFromReviewFile({
+      originalScore: '5/5 stars',
+      originalScoreSource: 'unicode-stars',
+      aggregatorStars: '4/5 stars',
+      outletId: 'nysr',
+      scoreSource: 'unicode-stars',
+    });
+    assert.deepStrictEqual(result.band, { fraction: 1, floor: 91, ceiling: 100 });
+  });
+
   it('empty review file returns null', () => {
     assert.strictEqual(detectBandFromReviewFile(null), null);
     assert.strictEqual(detectBandFromReviewFile({}), null);
