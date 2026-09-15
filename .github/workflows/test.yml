@@ -2585,6 +2585,14 @@ on:
       # here so a solo edit to any of these files triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/llm-scoring/batch-mode.test.mjs'
+      # BRO-3381: costUsd recording + cost-breach alarm. Colocated
+      # cost-recording.test.mjs lives in scripts/llm-scoring/ (not
+      # scripts/lib/), so same gap shape as batch-mode.test.mjs above —
+      # explicitly listed in tests/unit-test-manifest.txt AND path-listed
+      # here so a solo edit to any of these triggers CI. The recording lib
+      # itself (scripts/lib/llm-scoring-cost-recording.js) is covered by the
+      # scripts/lib/** glob already.
+      - 'scripts/llm-scoring/cost-recording.test.mjs'
       - 'scripts/llm-scoring/batch-clients.ts'
       - 'scripts/llm-scoring/cost.ts'
       - 'scripts/llm-scoring/scorer.ts'

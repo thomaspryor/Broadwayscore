@@ -884,27 +884,13 @@ function recordManualClearFallbackFailure(filePath: string, fileData: any, reaso
 }
 
 /**
- * Save run summary
+ * Save run summary. Returns the updated run log (including this summary) so
+ * callers can check cumulative cost without re-reading the file — see
+ * scripts/lib/llm-scoring-cost-recording.js (BRO-3381).
  */
-function saveRunSummary(summary: PipelineRunSummary): void {
-  let runs: PipelineRunSummary[] = [];
-
-  if (fs.existsSync(RUNS_LOG_PATH)) {
-    try {
-      runs = JSON.parse(fs.readFileSync(RUNS_LOG_PATH, 'utf-8'));
-    } catch {
-      runs = [];
-    }
-  }
-
-  runs.push(summary);
-
-  // Keep only last 100 runs
-  if (runs.length > 100) {
-    runs = runs.slice(-100);
-  }
-
-  fs.writeFileSync(RUNS_LOG_PATH, JSON.stringify(runs, null, 2) + '\n');
+function saveRunSummary(summary: PipelineRunSummary): PipelineRunSummary[] {
+  const { appendRunSummary } = require('../lib/llm-scoring-cost-recording');
+  return appendRunSummary(summary, { runsLogPath: RUNS_LOG_PATH });
 }
 
 // ========================================
@@ -2337,6 +2323,10 @@ async function main(): Promise<void> {
   console.log(`Suspicious warnings: ${suspiciousWarnings}`);
   console.log(`Errors: ${errors}`);
 
+  // Estimated USD cost for this run — set in either branch below, persisted
+  // onto the run summary and checked against the cost-breach alarm (BRO-3381).
+  let costUsd = 0;
+
   // Handle both single and ensemble scorer token usage
   if ('claude' in tokenUsage) {
     // Ensemble scorer
@@ -2373,6 +2363,7 @@ async function main(): Promise<void> {
     // legs, so the printed figure is what the vendors actually bill for a
     // --batch run rather than the sync-rate equivalent.
     console.log(`Estimated cost${batchMode ? ' (batch-discounted)' : ''}: $${breakdown.total.toFixed(4)} (${costParts.join(', ')})`);
+    costUsd = breakdown.total;
   } else {
     // Single scorer
     const singleUsage = tokenUsage as { input: number; output: number; total: number };
@@ -2384,6 +2375,7 @@ async function main(): Promise<void> {
     const estimatedCost = (singleUsage.input / 1_000_000) * inputCostPer1M +
                           (singleUsage.output / 1_000_000) * outputCostPer1M;
     console.log(`Estimated cost: $${estimatedCost.toFixed(4)}`);
+    costUsd = estimatedCost;
   }
 
   // Save run summary
@@ -2405,6 +2397,8 @@ async function main(): Promise<void> {
       skipped: allFiles.length - validFiles.length,
       errors,
       tokensUsed: normalizedTokenUsage,
+      costUsd,
+      runId: process.env.GITHUB_RUN_ID || null,
       errorDetails
     };
 
@@ -2418,8 +2412,50 @@ async function main(): Promise<void> {
       summary.validation = runValidation(options.verbose);
     }
 
-    saveRunSummary(summary);
+    const runsAfterSave = saveRunSummary(summary);
     console.log(`\nRun summary saved to: ${RUNS_LOG_PATH}`);
+
+    // BRO-3381 — alarm (never abort) when this GitHub Actions run's
+    // cumulative LLM scoring spend crosses the configured line. Summed by
+    // runId, not just this process's costUsd, because a scheduled workflow
+    // invokes index.ts more than once (main pass + drain) under the same
+    // run id. No runId (local/manual run) means nothing to correlate
+    // against, so skip rather than alarm on an ungrounded number.
+    if (summary.runId) {
+      try {
+        const { loadCostThresholdUsd, checkCostBreach, COST_BREACH_CONDITION_KEY } = require('../lib/llm-scoring-cost-recording');
+        const thresholdUsd = loadCostThresholdUsd();
+        // ship-check catch: loadCostThresholdUsd() collapses "file missing",
+        // "malformed JSON", and "llmScoringRunUsd key renamed/removed" into a
+        // silent null — without this warning a future thresholds.json
+        // refactor would kill the alarm with zero visible signal in CI logs.
+        if (typeof thresholdUsd !== 'number' || !Number.isFinite(thresholdUsd)) {
+          console.warn(`[llm-scoring] cost-breach threshold unavailable (scripts/config/provider-spend-thresholds.json missing or missing llmScoringRunUsd) — cost alarm is a no-op this run`);
+        }
+        const breach = checkCostBreach(runsAfterSave, { runId: summary.runId, thresholdUsd });
+        if (breach?.breached) {
+          const { routeAlert } = require('../lib/owner-alert-router');
+          await routeAlert({
+            conditionKey: breach.conditionKey,
+            title: 'LLM scoring spend over budget',
+            description: `GitHub run ${summary.runId}: cumulative LLM scoring cost $${breach.totalUsd.toFixed(2)} exceeds the $${breach.thresholdUsd.toFixed(2)} alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts invocations. This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.`,
+            hint: 'Check data/llm-scoring-runs.json entries for this runId to see which invocation (main pass vs drain) drove the spend; comparative-rescore.ts is not yet instrumented and can add unmeasured cost on top.',
+            severity: 'warning',
+            disposition: 'digest',
+            cooldownHours: 20,
+            fields: [
+              { name: 'GitHub run', value: String(summary.runId) },
+              { name: 'Cost', value: `$${breach.totalUsd.toFixed(2)}` },
+              { name: 'Threshold', value: `$${breach.thresholdUsd.toFixed(2)}` },
+            ],
+          });
+          console.log(`\n⚠️  LLM scoring cost breach: $${breach.totalUsd.toFixed(2)} > $${breach.thresholdUsd.toFixed(2)} (routed via ${COST_BREACH_CONDITION_KEY})`);
+        }
+      } catch (err: any) {
+        // Alarm plumbing must never abort a scoring run.
+        console.error(`[llm-scoring] cost-breach check failed (non-fatal): ${err.message}`);
+      }
+    }
 
     // Save garbage skips if any
     if (garbageSkips.length > 0) {
