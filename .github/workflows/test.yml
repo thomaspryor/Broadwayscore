@@ -4287,6 +4287,24 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.stall-diagnostics.test.sh
 
+      - name: Run push-with-retry trace2-diagnostics test (bash integration)
+        # BRO-3358: git_push_traced()'s PUSH_TRACE2_DIAGNOSTICS flag adds a
+        # SECOND temp file (trace2_file) inside the same RETURN trap the
+        # stall-diagnostics test above exercises for the original curl trace.
+        # That trap unconditionally expands "$trace2_file" on every call, even
+        # when the flag is off — an undeclared local there is an
+        # unbound-variable error under this file's `set -euo pipefail` on
+        # EVERY push in all ~157 call sites, not just the ones that opt in
+        # (caught in this card's pre-implementation review, before it ever ran
+        # for real). This test runs the real script, flag on and off, against
+        # both a killed push and a successful one, to pin that class of bug
+        # down directly rather than relying on the stall-diagnostics test
+        # above (which never sets PUSH_TRACE2_DIAGNOSTICS) to catch it.
+        # No path-allowlist entry needed — scripts/lib/** (line 22) already
+        # covers both the script and this test file.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.trace2-diagnostics.test.sh
+
       - name: Run github-remote-parse test (bash unit)
         # BRO-2951: the two parsers push-via-git-api.sh uses to decide whether a
         # remote is really GitHub and to recover the credential actions/checkout
