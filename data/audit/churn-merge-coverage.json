@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-14T20:48:28.185Z",
+    "generatedAt": "2026-09-15T03:02:50.460Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,155 +10,160 @@
     "minChurn": 30,
     "flaggedCount": 1,
     "exemptCount": 32,
-    "coveredCount": 13,
-    "highChurnTracked": 46
+    "coveredCount": 12,
+    "highChurnTracked": 45
   },
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 34
+      "churn": 52
     }
   ],
   "exempt": [
     {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 102
+      "path": "data/audit/alert-ledger.json",
+      "churn": 101
     },
     {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 97
+      "path": "data/llm-scoring-runs.json",
+      "churn": 101
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 58
+      "churn": 71
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 58
+      "churn": 71
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 55
-    },
-    {
-      "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
-      "churn": 50
-    },
-    {
-      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
-      "churn": 50
-    },
-    {
-      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 49
+      "churn": 68
     },
     {
       "path": "public/data/shows/man-to-man-west-end-2026.json",
-      "churn": 49
-    },
-    {
-      "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
-      "churn": 49
-    },
-    {
-      "path": "public/data/shows/oh-mary-west-end-2025.json",
-      "churn": 49
-    },
-    {
-      "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 48
+      "churn": 59
     },
     {
       "path": "public/data/stats-reviews.json",
+      "churn": 57
+    },
+    {
+      "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
       "churn": 48
     },
     {
-      "path": "public/data/shows/into-the-woods-west-end-2025.json",
+      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
+      "churn": 48
+    },
+    {
+      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
       "churn": 47
+    },
+    {
+      "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
+      "churn": 47
+    },
+    {
+      "path": "public/data/shows/oh-mary-west-end-2025.json",
+      "churn": 47
+    },
+    {
+      "path": "public/data/shows/are-you-watching-west-end-2026.json",
+      "churn": 46
+    },
+    {
+      "path": "public/data/shows/into-the-woods-west-end-2025.json",
+      "churn": 45
     },
     {
       "path": "public/data/shows/mass-west-end-2026.json",
-      "churn": 47
+      "churn": 45
     },
     {
       "path": "public/data/shows/kimberly-akimbo-off-west-end-2026.json",
-      "churn": 46
+      "churn": 44
     },
     {
       "path": "public/data/shows/romeo-and-juliet-west-end-2026.json",
-      "churn": 46
+      "churn": 44
     },
     {
       "path": "public/data/shows/archduke-west-end-2026.json",
-      "churn": 45
-    },
-    {
-      "path": "public/data/shows/care-west-end-2026.json",
-      "churn": 45
-    },
-    {
-      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
-      "churn": 45
-    },
-    {
-      "path": "public/data/shows/manic-street-creature-west-end-2026.json",
-      "churn": 45
-    },
-    {
-      "path": "public/data/shows/hadestown-west-end-2024.json",
       "churn": 43
     },
     {
-      "path": "public/data/shows/equus-west-end-2026.json",
-      "churn": 41
+      "path": "public/data/shows/care-west-end-2026.json",
+      "churn": 43
     },
     {
-      "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 40
+      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
+      "churn": 43
+    },
+    {
+      "path": "public/data/shows/manic-street-creature-west-end-2026.json",
+      "churn": 43
+    },
+    {
+      "path": "public/data/shows/hadestown-west-end-2024.json",
+      "churn": 42
+    },
+    {
+      "path": "public/data/shows/equus-west-end-2026.json",
+      "churn": 39
     },
     {
       "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
-      "churn": 40
-    },
-    {
-      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
       "churn": 38
     },
     {
-      "path": "public/data/shows/the-children-off-west-end-2026.json",
+      "path": "public/data/shows/night-city-off-west-end-2026.json",
       "churn": 37
     },
     {
-      "path": "public/data/shows/six-the-musical-west-end-2021.json",
+      "path": "public/data/shows/all-my-sons-west-end-2025.json",
+      "churn": 36
+    },
+    {
+      "path": "public/data/shows/stranger-things-the-first-shadow-west-end-2023.json",
+      "churn": 36
+    },
+    {
+      "path": "public/data/shows/bloodsport-after-helen-of-troy-off-west-end-2026.json",
       "churn": 35
     },
     {
+      "path": "public/data/shows/six-the-musical-west-end-2021.json",
+      "churn": 34
+    },
+    {
       "path": "public/data/shows/hit-machine-off-west-end-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/operation-mincemeat-west-end-2024.json",
-      "churn": 32
-    },
-    {
-      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
       "churn": 31
     },
     {
-      "path": "public/data/shows/summerfolk-west-end-2026.json",
+      "path": "public/data/shows/the-children-off-west-end-2026.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/tartuffe-remixed-off-west-end-2026.json",
       "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 196,
+      "churn": 210,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 160,
+      "churn": 175,
       "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 157,
+      "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
@@ -166,53 +171,43 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 149,
-      "mergeAttr": "union"
-    },
-    {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 102,
+      "churn": 119,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 102,
+      "churn": 119,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 102,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/progress.json",
-      "churn": 89,
+      "churn": 119,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 88,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 59,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 58,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-children-off-west-end-2026.json",
-      "churn": 55,
+      "churn": 68,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 55,
+      "churn": 68,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 59,
       "mergeAttr": "ours"
     }
   ]
