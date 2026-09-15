@@ -173,7 +173,17 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-          bash scripts/lib/push-with-retry.sh 5 HEAD:$BRANCH
+          # BRO-2526: was `5`, capping the retry loop (`for i in $(seq 1
+          # "$MAX_RETRIES")` in push-with-retry.sh) well under the 900s
+          # PUSH_DEADLINE_SEC set above. Every recent failure (4 in the 3
+          # days before this fix) exhausted exactly 5/5 attempts in
+          # ~520-610s — each hitting the 90s per-attempt transport-stall cap
+          # on this step's large WebP binary pushes — leaving ~300-400s of
+          # the declared budget unused. Interleaved runs in the same window
+          # succeeded, so the stall is transient; 10 retries lets the loop
+          # actually spend the deadline it was given instead of giving up
+          # early, matching the "enormous headroom" intent documented above.
+          bash scripts/lib/push-with-retry.sh 10 HEAD:$BRANCH
 
       # Gated on the web-repo push: shows.json here carries /images/shows/...
       # paths whose files land in THAT commit. Pushing core data anyway when
