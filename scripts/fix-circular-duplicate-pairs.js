@@ -95,6 +95,7 @@ const { parseDate } = require('./lib/date-utils');
 const { classifyClassAContamination, buildSiblingOpeningsMap } = require('./lib/cross-market-contamination');
 const { isPlaceholderRecord } = require('./lib/placeholder-byline');
 const { loadOutletRegistry } = require('./lib/review-normalization');
+const { foldDiacritics } = require('./lib/title-match');
 
 /**
  * outlet-registry.json's outlets[outletId].defaultCritic, or null. Some solo
@@ -227,7 +228,7 @@ function isTruncatedPreviewOf(text, otherText) {
   const MAX_CHUNK = 500;
   const MIN_DISTINCT_WORDS = 8;
   const distinctWordCount = (s) => new Set(
-    s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length > 3),
+    foldDiacritics(s.toLowerCase()).replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length > 3),
   ).size;
   const cutoffRe = /\.{2,}|…+/g;
   let m;
