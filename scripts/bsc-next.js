@@ -199,6 +199,7 @@ const {
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
   dispatchClaimGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
+  resolveVacuousCheck, vacuousCheckGuard,
 } = require('./lib/dispatch-guards.js');
 // Shared atomic per-key claim primitive (task #1896) — also backs
 // acquireSuccessionLock/releaseSuccessionLock below. See its own header for
@@ -1501,6 +1502,39 @@ function main(argv = process.argv.slice(2), deps = {}) {
   const pathErr = pathVerifiabilityGuard(task, pathCheck, args);
   if (pathErr) { console.error(`[bsc-next] ${pathErr}`); process.exit(1); }
 
+  // Vacuous-check guard (BRO-3394): the phantom-path guard above asks "can
+  // this command ever PASS?" — this asks the opposite-polarity question
+  // (BRO-3378's classifyVacuousCheck) at the same dispatch boundary: "can it
+  // ever FAIL?" See dispatch-guards.js's vacuousCheckGuard header for the
+  // full rationale (BRO-3378 closed this for the enricher's own drafts only;
+  // every other path a card's acceptance command can arrive by never got the
+  // check until now). Same fullCardInHand/!args.force gating as the
+  // phantom-path guard immediately above, for the identical reason: a
+  // truncated Notion-mirror description shouldn't trigger a refusal on
+  // already-known-degraded data.
+  //
+  // Also skipped under --allow-vacuous-check (unlike the phantom-path guard's
+  // own gating, which only skips its own cheap local-fs check under --force):
+  // this guard's own I/O is a live `git fetch`, so a caller who has already
+  // decided to bypass the verdict shouldn't have to pay for it (adversarial
+  // review, Codex, BRO-3394).
+  //
+  // A fetch failure fails OPEN (resolveVacuousCheck returns null — see its
+  // own header) but is NOT silent: passing `log` here surfaces the WARN
+  // fetchOriginMain already emits on failure, so an operator watching this
+  // dispatch's own output can tell "the guard didn't fire because it
+  // couldn't reach origin/main" apart from "the guard didn't fire because
+  // the command is fine" (Codex finding: the guard previously disabled
+  // itself on a network blip with zero visible evidence).
+  const vacuousCheck = (fullCardInHand && !args.force && !args['allow-vacuous-check'])
+    ? resolveVacuousCheck(verifyGate, {
+        repo: resolveCanonicalRepoRoot(REPO, __dirname),
+        log: (msg) => console.error(`[bsc-next] ${msg}`),
+      })
+    : null;
+  const vacuousErr = vacuousCheckGuard(task, vacuousCheck, args);
+  if (vacuousErr) { console.error(`[bsc-next] ${vacuousErr}`); process.exit(1); }
+
   // CI-red claim auto-invocation (task #598): record a claim so another
   // in_progress task's pre-push-review-gate.sh check (task #584) sees it —
   // closes the gap where nothing ever called claim-ci-red.js automatically.
@@ -1595,7 +1629,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, allowVacuousCheck: args['allow-vacuous-check'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -1711,7 +1745,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, allowVacuousCheck: args['allow-vacuous-check'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
       // Task #1904: the live cmux terminal-runtime count at create time. Until
       // now the ceiling correlation could only be established by live
       // experiment on the machine — recording it makes every future dispatch a

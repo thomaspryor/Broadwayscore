@@ -111,6 +111,15 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // check-claude-auth-health.js (launchd, runs on the Mac — the token never
   // reaches CI).
   'claude-auth:revoked',
+  // BRO-2971: same launch-gate-dead severity as the entry above, but for the
+  // OS/jetsam resource-starvation shape (spawn ETIMEDOUT/ENOMEM/signal kill)
+  // that check-claude-auth-health.js used to misreport as 'claude-auth:revoked'
+  // — kept as its own key so the alert body's remediation (free memory / prune
+  // cmux sessions) never gets overwritten by the auth-revocation one's.
+  'claude-spawn-starved',
+  // BRO-2971: same rationale as the entry above, for the missing/unexecutable
+  // `claude` binary shape (spawn-error) — also NOT a credential problem.
+  'claude-spawn-error',
 
   // Not one of the 3 owner-approved categories above, but a deliberate
   // carve-out (BRO-1699 ship-check finding): this was a direct sendAlert()

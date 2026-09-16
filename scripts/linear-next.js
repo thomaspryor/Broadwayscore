@@ -99,6 +99,7 @@ const {
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS, isAutomationParked,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
   workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
+  resolveVacuousCheck, vacuousCheckGuard,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 // Cross-session work-branch collision guard (BRO-278, port of card #1281's
@@ -792,6 +793,24 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const pathErr = pathVerifiabilityGuard(pseudoTask, pathCheck, args);
   if (pathErr) { console.error(`[linear-next] ${pathErr}`); process.exit(1); }
 
+  // Vacuous-check guard (BRO-3394): opposite-polarity twin of the phantom-path
+  // guard just above — see dispatch-guards.js's vacuousCheckGuard header for
+  // the full rationale (BRO-3378 closed this for the enricher's own drafts
+  // only; every other path a Linear issue's description arrives by never got
+  // the check). Same skipPathCheck gating as the phantom-path guard above,
+  // for the identical reason, PLUS --allow-vacuous-check (unlike
+  // skipPathCheck's own fs-only I/O, this guard's I/O is a live `git fetch` —
+  // a caller who already decided to bypass the verdict shouldn't pay for it;
+  // adversarial review, Codex, BRO-3394). `log` surfaces a fetch failure
+  // instead of letting the guard disable itself silently on a network blip.
+  const skipVacuousCheck = skipPathCheck || args['allow-vacuous-check'];
+  const vacuousCheck = skipVacuousCheck ? null : resolveVacuousCheck(gate, {
+    repo: resolveCanonicalRepoRoot(REPO, __dirname),
+    log: (msg) => console.error(`[linear-next] ${msg}`),
+  });
+  const vacuousErr = vacuousCheckGuard(pseudoTask, vacuousCheck, args);
+  if (vacuousErr) { console.error(`[linear-next] ${vacuousErr}`); process.exit(1); }
+
   // Idempotency (task #1303 plan review item 4) — two independent "this
   // already looks dispatched" signals, checked before any launch attempt.
   // See linear-dispatch.js's findUnresolvedDispatchComment/hasLiveLedgerEntry
@@ -1013,6 +1032,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // guard's own refusal message promises this is "recorded in the
         // ledger" (ship-check finding: it wasn't, until this field existed).
         allowPhantomPath: args['allow-phantom-path'] || null,
+        // BRO-3394: journals a vacuous-check override the same way — same
+        // "recorded in the ledger" promise the refusal message makes.
+        allowVacuousCheck: args['allow-vacuous-check'] || null,
         // BRO-2499: the autofix-pipeline bypass is journaled the same way
         // --allow-unverifiable is, so a dispatch that only happened because
         // the guard was waived is auditable in the ledger rather than
@@ -1132,6 +1154,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
       // BRO-2569 — see the headless launch entry above for why this is journaled.
       allowPhantomPath: args['allow-phantom-path'] || null,
+      // BRO-3394 — see the headless launch entry above for why this is journaled.
+      allowVacuousCheck: args['allow-vacuous-check'] || null,
       // BRO-2499 — see the headless launch entry above for why the
       // autofix-pipeline bypass is journaled.
       allowAutofixFiled: args['allow-autofix-filed'] || null,
