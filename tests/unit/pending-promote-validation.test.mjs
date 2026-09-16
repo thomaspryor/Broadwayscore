@@ -11,6 +11,10 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { pendingPromoteRejectReason } = require('../../scripts/replay-pending-bylines.js');
@@ -112,5 +116,88 @@ describe('pendingPromoteRejectReason — temporal wrong-production gate', () => 
     const r = pendingPromoteRejectReason(
       TRENEMAN_URL, titledDated('Oresteia review', '2017-08-24'), show);
     assert.equal(r, null, `a declared priorRun window must exempt the date, got reject: ${r}`);
+  });
+});
+
+// BRO-1391 byline-explosion root cause: Times UK / WhatsOnStage article pages carry a
+// rotating "more from our critics" widget, so extractAuthorFromHtml/extractHighConfidenceAuthor
+// can return a DIFFERENT critic name for the SAME url on different fetches. Multiple _pending
+// stub files for that one url (one per discovery event: RSS, SERP, aggregator crosslink) each
+// promoted under a distinct {outlet}--{critic}.json filename, since the promotion guard only
+// checked "does this exact target filename already exist" — never "is this url already a
+// promoted primary under a different name". findExistingFileForUrl closes that gap by scanning
+// the show dir for an existing file (same outlet) whose canonicalReviewUrl matches, so a second
+// promotion attempt files itself as a duplicate instead of a sibling primary.
+describe('findExistingFileForUrl', () => {
+  // findExistingFileForUrl reads REVIEW_TEXTS_ROOT, computed from __dirname at module-load
+  // time as `<repo>/data/review-texts` (the real corpus is gitignored + machine-local, not
+  // present in CI). Load a throwaway copy of the script from a fixture tree so that path
+  // resolves into fixture data instead.
+  const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'find-existing-file-for-url-'));
+  const reviewTextsDir = path.join(fixtureRoot, 'data', 'review-texts');
+  fs.mkdirSync(reviewTextsDir, { recursive: true });
+
+  const realScriptsDir = path.dirname(fileURLToPath(new URL('../../scripts/replay-pending-bylines.js', import.meta.url)));
+  const fixtureScriptsDir = path.join(fixtureRoot, 'scripts');
+  fs.mkdirSync(fixtureScriptsDir, { recursive: true });
+  fs.symlinkSync(path.join(realScriptsDir, 'lib'), path.join(fixtureScriptsDir, 'lib'));
+  fs.copyFileSync(
+    path.join(realScriptsDir, 'replay-pending-bylines.js'),
+    path.join(fixtureScriptsDir, 'replay-pending-bylines.js'),
+  );
+  const { findExistingFileForUrl } = require(path.join(fixtureScriptsDir, 'replay-pending-bylines.js'));
+
+  const showDir = path.join(reviewTextsDir, 'test-show-2026');
+  fs.mkdirSync(showDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(showDir, 'times-uk--ann-treneman.json'),
+    JSON.stringify({ url: 'https://www.thetimes.com/article/some-review-abc123' }),
+  );
+  fs.writeFileSync(
+    path.join(showDir, 'financialtimes--sarah-hemming.json'),
+    JSON.stringify({ url: 'https://www.ft.com/some-other-review' }),
+  );
+
+  test('matches an exact URL under the same outlet', () => {
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.thetimes.com/article/some-review-abc123'),
+      'times-uk--ann-treneman.json',
+    );
+  });
+
+  test('matches through query-string/hash/trailing-slash scrape variants', () => {
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.thetimes.com/article/some-review-abc123?eafs_enabled=false'),
+      'times-uk--ann-treneman.json',
+    );
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.thetimes.com/article/some-review-abc123/#comments'),
+      'times-uk--ann-treneman.json',
+    );
+  });
+
+  test('does not cross-match a different outlet at the same show', () => {
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.ft.com/some-other-review'),
+      null,
+    );
+  });
+
+  test('returns null for a show with no review-texts dir', () => {
+    assert.equal(
+      findExistingFileForUrl('no-such-show-2099', 'times-uk', 'https://example.com/x'),
+      null,
+    );
+  });
+
+  test('returns null when the outlet exists but the URL does not match', () => {
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.thetimes.com/article/unrelated-review-xyz'),
+      null,
+    );
+  });
+
+  test.after(() => {
+    fs.rmSync(fixtureRoot, { recursive: true, force: true });
   });
 });

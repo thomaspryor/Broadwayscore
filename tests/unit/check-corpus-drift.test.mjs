@@ -13,7 +13,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildVerdict, decideExit } = require('../../scripts/check-corpus-drift.js');
+const { buildVerdict, decideExit, AUDITS, routePerAuditAlerts } = require('../../scripts/check-corpus-drift.js');
 
 const ok = (name) => ({ name, ok: true, crashed: false, exitCode: 0 });
 const drift = (name) => ({ name, ok: false, crashed: false, exitCode: 1 });
@@ -56,5 +56,56 @@ describe('check-corpus-drift verdict shape', () => {
     assert.equal(v.summary.crashCount, 1);
     assert.equal(v._meta.generatedAt, '2026-06-22T00:00:00Z');
     assert.equal(v.audits.length, 3);
+  });
+});
+
+describe('BRO-3535: gates moved from test.yml', () => {
+  // NOTE: audit-broadway-category-predicate.js was moved here in an earlier
+  // draft and reverted (ship-check catch, Codex): it scans only scripts/**
+  // source + its own committed baseline, zero corpus dependency, so a NEW
+  // hit can only come from a code push — it belongs in test.yml's blocking
+  // gate, not here. Kept out of this list on purpose.
+  const MOVED_NAMES = [
+    'sibling-title-misroute', 'duplicate-shows', 'show-score-urls',
+    'cv-flag-contradiction', 'self-contradictory-clears',
+    'aggregator-archive-integrity', 'critic-outlets', 'autoclear-vs-ensemble',
+    'contradicted-flag-basis', 'duplicate-of-cleared-contradiction',
+    'url-downgrade', 'orphan-show-ids', 'aggregator-url-latent',
+  ];
+
+  test('every moved audit is present, marked healPathRequired, and either has healExempt or is baseline-diff/scheduled-fix', () => {
+    const { hasBaselineDiffPath, hasScheduledFixWorkflow } = require('../../scripts/lib/data-gate-heal-paths.js');
+    const fs = require('node:fs');
+    const path = require('node:path');
+    const dirname = path.dirname(new URL(import.meta.url).pathname);
+    const workflowsDir = path.join(dirname, '../../.github/workflows');
+    const workflowFiles = fs
+      .readdirSync(workflowsDir)
+      .filter((f) => f.endsWith('.yml'))
+      .map((filename) => ({ filename, content: fs.readFileSync(path.join(workflowsDir, filename), 'utf8') }));
+
+    for (const name of MOVED_NAMES) {
+      const audit = AUDITS.find((a) => a.name === name);
+      assert.ok(audit, `expected AUDITS to contain a moved gate named "${name}"`);
+      assert.equal(audit.healPathRequired, true, `${name} must be marked healPathRequired (BRO-3535 ratchet scope)`);
+      const scriptName = audit.script.replace(/\.js$/, '');
+      const scriptSource = fs.readFileSync(path.join(dirname, '../../scripts', audit.script), 'utf8');
+      const healed = Boolean(
+        audit.healExempt || hasBaselineDiffPath(scriptSource) || hasScheduledFixWorkflow(scriptName, workflowFiles)
+      );
+      assert.ok(healed, `${name} (scripts/${audit.script}) has no heal path and no healExempt reason`);
+    }
+  });
+
+  test('routePerAuditAlerts resolves without throwing for an empty audit list', async () => {
+    await assert.doesNotReject(() => routePerAuditAlerts([]));
+  });
+
+  test('routePerAuditAlerts skips crashed audits (never calls the router for them)', async () => {
+    // crashed:true audits are handled by the separate audit-crash guard above
+    // main()'s per-audit loop — routePerAuditAlerts must not double-handle them.
+    // A crashed-only list resolving cleanly (no router call attempted) proves
+    // the `if (a.crashed) continue;` guard, without needing to mock the router.
+    await assert.doesNotReject(() => routePerAuditAlerts([crashed('only-crashed')]));
   });
 });

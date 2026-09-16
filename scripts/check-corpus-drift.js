@@ -306,6 +306,133 @@ const AUDITS = [
     args: [],
     crashCodes: [],            // 0 clean / 1 = flagged records found (drift). Corpus-missing throws → non-zero exit, shown as drift, same as aggregator-truth.
   },
+
+  // ── BRO-3535: baseline-diff / zero-adjudication audits MOVED here from
+  // test.yml's blocking data-validation job ────────────────────────────────
+  // These run the LIVE corpus fresh against a frozen baseline (or a
+  // zero-tolerance population with no adjudication mechanism) on EVERY
+  // push — so an unrelated bot commit landing between two pushes reddens
+  // main with no code change in the diff (the exact BRO-3471 incident:
+  // audit-show-score-urls.js --strict was a brand-new gate that found 6
+  // pre-existing duplicates and reddened main within 30 minutes of
+  // landing). Unlike the contamination-family entries above (already split:
+  // a narrow --gate catastrophe-floor stays blocking in test.yml, the FULL
+  // audit runs here), none of these have a narrower on-push-safe mode —
+  // --strict/--gate IS their only invocation. `healExempt` documents why no
+  // auto-heal workflow exists yet; read by
+  // scripts/lib/data-gate-heal-paths.js's auditCorpusDriftGates() (BRO-3535).
+  {
+    name: 'sibling-title-misroute',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'same-title-sibling review misrouted to the wrong production (baseline-diff)',
+    script: 'audit-sibling-title-misroute.js',
+    args: ['--strict'],
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined hit / 2 = corpus missing
+  },
+  {
+    name: 'duplicate-shows',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'duplicate SHOW entries in shows.json (baseline-diff)',
+    script: 'audit-duplicate-shows.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 under baseline / 1 = new un-baselined duplicate pair
+  },
+  {
+    name: 'show-score-urls',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'one Show Score URL mapped to 2+ showIds (baseline-diff)',
+    script: 'audit-show-score-urls.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 under baseline / 1 = new un-baselined URL collision
+  },
+  {
+    name: 'cv-flag-contradiction',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'exclusion flag contradicted by its own content-verification pass (baseline-diff)',
+    script: 'audit-cv-flag-contradiction.js',
+    args: ['--window=30', '--strict'],
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined (showId,file) hit / 2 = corpus missing
+  },
+  {
+    name: 'self-contradictory-clears',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'a review asserting an exclusion flag AND its own retraction breadcrumb at once (baseline-diff)',
+    script: 'audit-self-contradictory-clears.js',
+    args: ['--gate', '--baseline'],
+    crashCodes: [],            // 0 within band of committed baseline / 1 = materially worse than baseline
+  },
+  {
+    name: 'aggregator-archive-integrity',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)',
+    script: 'audit-aggregator-archive-integrity.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 under baseline / 1 = new un-baselined mismatch
+  },
+  {
+    name: 'critic-outlets',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)',
+    script: 'audit-critic-outlets.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 under baseline / 1 = new un-baselined (showId,file) flag
+  },
+  {
+    name: 'autoclear-vs-ensemble',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection',
+    // heal-exempt: --fix exists and is documented safe but no scheduled
+    // workflow runs it yet (BRO-3507 ratchet seed, carried over BRO-3535).
+    script: 'audit-autoclear-vs-ensemble.js',
+    args: ['--strict'],
+    healExempt: '--fix exists and is documented safe but no scheduled workflow runs it yet — tracked follow-up, not wired to a cron.',
+    crashCodes: [],            // 0 clean / 1 = hit found
+  },
+  {
+    name: 'contradicted-flag-basis',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)',
+    script: 'audit-contradicted-flag-basis.js',
+    args: ['--gate', '--max=0'],
+    healExempt: 'report-only by design — no --fix exists; a prior sweep of this shape auto-un-suppressed 8 wrong-production reviews the day after running unsupervised.',
+    crashCodes: [],            // 0 clean / 1 = hit found (live count is 0 by design; any hit is real signal)
+  },
+  {
+    name: 'duplicate-of-cleared-contradiction',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)',
+    script: 'audit-duplicate-of-cleared-contradiction.js',
+    args: ['--gate', '--max=0'],
+    healExempt: '--fix exists and is documented bulk-safe (see #1655) but no scheduled workflow runs it yet — tracked follow-up, not wired to a cron.',
+    crashCodes: [],            // 0 clean / 1 = hit found
+  },
+  {
+    name: 'url-downgrade',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)',
+    script: 'audit-url-downgrade.js',
+    args: ['--gate'],
+    healExempt: 'fixing requires picking the correct historical URL per hit (which prior production/run this review actually belongs to) — not mechanical.',
+    crashCodes: [],            // 0 clean / 1 = a live (unflagged) URL-swap regression found
+  },
+  {
+    name: 'orphan-show-ids',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'public/data/shows/{id}.json existing for an id no longer in shows.json',
+    script: 'audit-orphan-show-ids.js',
+    args: [],
+    healExempt: 'self-heal-orphan-show-files.yml already runs on a daily schedule and deletes anything past its 24h grace period, but via its own inline fs.unlink (not `--fix` — the script\'s exit code is captured BEFORE its own --fix would run, so that workflow deliberately avoids invoking it directly, see that workflow\'s header) — not detectable by the --fix-flag pattern match.',
+    crashCodes: [],            // 0 clean / 1 = orphan slim show file(s) found
+  },
+  {
+    name: 'aggregator-url-latent',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'aggregator LISTING urls stored under a real outletId (population must shrink, never grow)',
+    script: 'audit-aggregator-url-latent.js',
+    args: [],
+    healExempt: 'ratchet — fix the producer that wrote the bad outletId, not the ceiling; no mechanical --fix is safe (the class is discovered per-writer, not per-file).',
+    crashCodes: [],            // 0 clean/shrinking / 1 = population grew
+  },
 ];
 
 function runAudit(audit) {
@@ -365,6 +492,49 @@ function decideExit({ anyCrashed, anyDrift, strict }) {
   return 0;
 }
 
+// BRO-3535: per-audit digest routing, separate from the single shared
+// audit-crash guard above (which answers "is this monitor itself broken?").
+// This answers a different question per audit: "has THIS gate been drifting
+// long enough to deserve a ticket?" Deliberately reuses routeAlert's OWN
+// notifyCount/threshold escalation (owner-alert-router.js decideDigestEscalation,
+// ESCALATION_NOTIFY_THRESHOLD) instead of a new streak-tracking mechanism —
+// every routeAlert(disposition:'digest') call bumps a per-conditionKey counter
+// in the alert ledger and self-promotes to a real Linear card once it crosses
+// that threshold, so no new state file or guard-escalation generalization is
+// needed here. A crashed audit is skipped (its own guard above already covers
+// "could not run"); only ok:false/crashed:false ("drift") calls routeAlert,
+// and a clean run resolves any open condition for that gate. Best-effort: a
+// router failure here must never fail this non-blocking monitor.
+async function routePerAuditAlerts(audits) {
+  let routeAlert, resolveCondition;
+  try {
+    ({ routeAlert, resolveCondition } = require('./lib/owner-alert-router'));
+  } catch (e) {
+    console.error(`::warning::[check-corpus-drift] owner-alert-router unavailable, skipping per-audit digest routing: ${e.message}`);
+    return;
+  }
+  for (const a of audits) {
+    if (a.crashed) continue;
+    const conditionKey = `corpus-drift:${a.name}`;
+    try {
+      if (a.ok) {
+        resolveCondition(conditionKey);
+      } else {
+        await routeAlert({
+          conditionKey,
+          title: `Corpus drift: ${a.label}`,
+          description: `check-corpus-drift.js audit "${a.name}" (${a.command}) has been drifting. Latest output:\n\n${a.detail}`,
+          hint: `Run: ${a.command}`,
+          disposition: 'digest',
+          cooldownHours: 24,
+        });
+      }
+    } catch (e) {
+      console.error(`::warning::[check-corpus-drift] routeAlert/resolveCondition failed for "${conditionKey}" (${e.message}) — this run's digest data is still written to disk regardless.`);
+    }
+  }
+}
+
 async function main() {
   const argv = process.argv.slice(2);
   const strict = argv.includes('--strict');
@@ -382,6 +552,8 @@ async function main() {
     const status = a.crashed ? '💥 CRASHED' : a.ok ? '✅ ok' : '⚠️  drift';
     console.log(`  ${status}  ${a.name} (exit ${a.exitCode}) — ${a.label}`);
   }
+
+  await routePerAuditAlerts(audits);
 
   const code = decideExit({ ...verdict.summary, strict });
   if (code !== 3) {
@@ -481,4 +653,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { AUDITS, runAudit, buildVerdict, decideExit };
+module.exports = { AUDITS, runAudit, buildVerdict, decideExit, routePerAuditAlerts };

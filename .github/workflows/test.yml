@@ -2828,6 +2828,16 @@ on:
       # (tests/unit/linear-drain-parked.test.mjs) is registered in
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/linear-drain-parked.js'
+      # CI-side liveness verdict for that same drain (check-linear-drain-
+      # health.yml's gate). Replaced an inline YAML `-gt 3` threshold that
+      # could never fire, since the drain slices its candidate list to
+      # DISPATCH_CAP = 3 before printing the count the YAML compared. The
+      # decision logic is pure and colocated at scripts/lib/drain-ledger-
+      # health.js (covered by the scripts/lib/** glob above, test registered
+      # in tests/unit-test-manifest.txt); this top-level CLI wrapper is not
+      # covered by any glob, so it needs explicit listing
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/check-linear-drain-health.js'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.
@@ -5024,45 +5034,18 @@ jobs:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/lib/autoclear-vs-ensemble.test.mjs
 
-      - name: Autoclear-vs-ensemble audit (strict)
-        # Standalone re-runnable audit alongside the corpus test above —
-        # same defect class, gate reports the violating files directly
-        # (scripts/audit-autoclear-vs-ensemble.js --fix restores them).
-        # heal-exempt: --fix exists and is documented safe but no scheduled
-        # workflow runs it (BRO-3507 ratchet seed, 2026-09-16) — tracked
-        # follow-up, not wired to a cron yet.
-        if: always()
-        run: node scripts/audit-autoclear-vs-ensemble.js --strict
+      # "Autoclear-vs-ensemble audit (strict)" MOVED to check-corpus-drift.js
+      # (BRO-3535, 2026-09-16): audit-autoclear-vs-ensemble.js --strict scans
+      # the live corpus fresh on every push with no narrower on-push-safe
+      # mode and no heal path, so an unrelated bot commit landing between two
+      # pushes could redden main for no code reason. Non-blocking companion:
+      # scripts/check-corpus-drift.js AUDITS['autoclear-vs-ensemble'].
 
-      - name: Audit sibling-title misroute (strict)
-        # Task #1608: classifyMarketRouting() (scripts/lib/market-routing.js)
-        # prevents a same-title-sibling review (a regional/pre-Broadway run vs
-        # its Broadway transfer, linked via transferOf/transferredTo) landing
-        # under the wrong one of the pair — but only at WRITE time. Nothing
-        # ever re-checked already-written review-texts files against it until
-        # this audit. Found 2026-08-14:
-        # two-strangers-carry-a-cake-across-new-york-at-art-regional-2025
-        # carried 4 live reviews that were actually about its Broadway
-        # transfer, dated from before firstSeenAt stamping existed.
-        #
-        # --strict fails on a hit NOT in the frozen baseline
-        # (data/audit/sibling-title-misroute-baseline.json), not on a raw
-        # count — a plain --max ceiling would (a) mask a genuinely new
-        # misroute the same run one of the baseline's known FPs gets hand-
-        # fixed (count stays flat), and (b) give zero headroom for
-        # classifyMarketRouting's own documented heuristic disagreements to
-        # flap CI on an unrelated push. See the script's own header comment
-        # for the full rationale (mirrors audit-direct-provider-calls.js's
-        # baseline-file pattern). Baseline currently holds 4 known,
-        # deliberately-unfixed Tier-1 false positives (Notion 3bd637c5-416f-
-        # 8168) — mamma-mia-west-end-2021, oh-mary-2024,
-        # stranger-things-the-first-shadow-west-end-2023,
-        # titanique-west-end-2024. Update via
-        # `node scripts/audit-sibling-title-misroute.js --update-baseline`
-        # only after hand-verifying a new hit is a genuine FP, never to make
-        # a red build pass.
-        if: always()
-        run: node scripts/audit-sibling-title-misroute.js --strict
+      # "Audit sibling-title misroute (strict)" MOVED to check-corpus-drift.js
+      # (BRO-3535, 2026-09-16) — same baseline-diff-scans-live-corpus reasoning
+      # as above. Was task #1608's classifyMarketRouting() write-time guard's
+      # read-side sweep. Non-blocking companion:
+      # scripts/check-corpus-drift.js AUDITS['sibling-title-misroute'].
 
       - name: Run aggregator-domain TLD parity corpus scan (needs review-texts)
         # Same corpus-missing trap as explainExclusion above: the scripts/lib/*.test.mjs
@@ -5120,37 +5103,16 @@ jobs:
         if: always()
         run: node scripts/validate-data.js
 
-      - name: Audit duplicate shows
-        if: always()
-        # Whole-corpus duplicate-SHOW detector — the discovery-time guard only
-        # fires at add-time and missed the Much Ado 2026 dup (Shakespeare's Globe
-        # vs "Globe Theatre", opening dates 2 days apart). Baseline-diff (task
-        # #1675, mirrors #1665/#1666/#1668): pre-existing clusters are frozen in
-        # data/audit/duplicate-shows-baseline.json so a genuinely distinct
-        # same-title production at a different venue (e.g. the two markets'
-        # separate Christmas Carol 2026 productions) doesn't red the trunk —
-        # only a NEW (showId, showId) pair fails. Notion 38a637c5-416f-81a7.
-        run: node scripts/audit-duplicate-shows.js --strict
-
-      - name: Audit Show Score URL duplicates
-        if: always()
-        # Show Score serves ONE page per title, so a URL mapped to 2+ showIds
-        # in data/show-score-urls.json means at most one side is the page's
-        # real subject — the other silently ingests the wrong production's
-        # reviews (she-loves-me-1994 had 21/22 review files be the 2016
-        # revival before BRO-3416; beetlejuice-2025 currently carries 39/40
-        # files flagged wrongProduction from the same class of bug). The
-        # script (audit-show-score-urls.js) already detected this but ran in
-        # no workflow and always exited 0 — invisible to CI (BRO-3471).
-        #
-        # Baseline-diff (same posture as "Audit duplicate shows" above):
-        # which side of an existing collision is correct is a per-pair
-        # hand-verification judgment call this script cannot make
-        # automatically, so --strict does NOT try to resolve the 5 known
-        # pairs frozen in data/audit/show-score-urls-baseline.json — it only
-        # stops a NEW collision from landing invisibly. Identity + rationale:
-        # scripts/lib/show-score-urls-baseline.js.
-        run: node scripts/audit-show-score-urls.js --strict
+      # "Audit duplicate shows" and "Audit Show Score URL duplicates" MOVED to
+      # check-corpus-drift.js (BRO-3535, 2026-09-16). The latter is the
+      # literal trigger incident for this ticket: audit-show-score-urls.js
+      # --strict was a brand-new gate (BRO-3471) that found 6 pre-existing
+      # duplicates and reddened main within 30 minutes of landing — a
+      # baseline-diff audit still scans the LIVE corpus fresh on every push,
+      # so an unrelated bot commit between two pushes can still trip it with
+      # no code change in the diff. Non-blocking companions:
+      # scripts/check-corpus-drift.js AUDITS['duplicate-shows'] and
+      # AUDITS['show-score-urls'].
 
       - name: Audit cast-changes.json
         if: always()
@@ -5193,61 +5155,15 @@ jobs:
         # review-contamination audit), surfaced non-blocking in the digest. Decision
         # logic + tests: scripts/lib/contamination-gate.{js,test.mjs}.
 
-      - name: Audit flag-vs-CV contradictions
-        if: always()
-        run: node scripts/audit-cv-flag-contradiction.js --window=30 --strict
-        # Standing check for the signal #651's pipeline-health audit found by
-        # hand (Notion 3ad637c5): an exclusion flag (wrongProduction/wrongShow/
-        # isRoundupArticle) sitting on a file whose own most recent full-text
-        # contentVerification pass affirms it (isValid, high confidence, >300
-        # words) — bait for a human look, not proof of a false positive.
-        #
-        # Baseline-diff (task #1673, mirrors #1665/#1666/#1668): the manual
-        # "drain to <4, then --gate" plan (#676) stalled at ~24-29 hits for
-        # weeks. The pre-existing backlog is frozen in
-        # data/audit/cv-flag-contradiction-baseline.json and never fails CI —
-        # only a NEW (showId, file) pair not in that baseline fails the build.
-        # Identity is (showId, file), not the detected `flag` or `cvReasoning`
-        # — see scripts/lib/cv-flag-contradiction-baseline.js for why. Script:
-        # scripts/audit-cv-flag-contradiction.js; detector: scripts/lib/flag-
-        # contradiction.js.
-
-      - name: Audit self-contradictory clear breadcrumbs
-        if: always()
-        run: node scripts/audit-self-contradictory-clears.js --gate --baseline
-        # A review file asserting an exclusion flag AND its own retraction
-        # breadcrumb at the same time (wrongProduction + wrongProductionAutoCleared,
-        # wrongShow + a contentVerificationPromoted stamp its own CV now refutes,
-        # wrongAttribution + crossOutletVerified). Unlike the flag-vs-CV step above
-        # this needs no adjudication between two verdicts — the record is invalid
-        # on its face.
-        #
-        # BAND AROUND A COMMITTED BASELINE, not an absolute ceiling
-        # (data/audit/self-contradictory-clears-baseline.json).
-        #
-        # This step used to be `--gate --max=780` against a live count of
-        # ~772-776. The rebuild bots rewrite this corpus every ~30 min, so the
-        # SAME code failed at 20:27 and 20:31 and passed at 20:33 and 20:37 — a
-        # ceiling four records above the live count is a coin flip
-        # (memory/feedback_test_yml_data_gates_flap_and_shortcircuit.md).
-        #
-        # The old comment here prescribed "DRAIN THEN RATCHET" (run --fix, then
-        # lower --max). That was measured on 2026-08-14 and is UNSAFE, so it has
-        # been removed rather than left as standing advice. --fix deletes the
-        # clear breadcrumb but leaves the exclusion flag standing, and
-        # content-quality.js classifies `wrongProduction && !wrongProduction
-        # AutoCleared` as contentTier 'invalid' — so the "drain" EXCLUDES
-        # reviews: 563 of 772 records flip valid -> invalid, 438 of them carrying
-        # a live score signal (NYT, WSJ, The Stage, FT among them), and 0 become
-        # newly included. That is the same failure mode as the deleted
-        # audit-stale-flag-after-url-correction.js --fix remediation, in reverse.
-        #
-        # So the backlog is STRUCTURAL. The gate now asks "is this materially
-        # worse than the number we last agreed to?" — every run prints the delta,
-        # a real new contradiction writer still fails the build once it exceeds
-        # the tolerance, and one bot write no longer reddens main. Re-record with
-        # --record-baseline ONLY to capture a genuine improvement, never to make
-        # a red build pass. Pairs: scripts/lib/flag-contradiction.js SELF_CLEAR_PAIRS.
+      # "Audit flag-vs-CV contradictions" and "Audit self-contradictory clear
+      # breadcrumbs" MOVED to check-corpus-drift.js (BRO-3535, 2026-09-16).
+      # cv-flag-contradiction was the single worst offender in the 8-day
+      # diagnostic that motivated this ticket (40/40 red runs) — both are
+      # baseline-diff audits with no narrower on-push-safe mode, so they still
+      # scan the live corpus fresh on every push and can trip on an unrelated
+      # bot commit landing between two pushes. Non-blocking companions:
+      # scripts/check-corpus-drift.js AUDITS['cv-flag-contradiction'] and
+      # AUDITS['self-contradictory-clears'].
 
       - name: Run self-contradictory-clear drain acceptance test (needs review-texts)
         # BRO-185: same corpus-missing trap as explainExclusion above (search
@@ -5344,87 +5260,15 @@ jobs:
       # to name the writer, and fix the writer; the remedy for a RECORD is a
       # refetch, never a bulk flag-clear.
 
-      - name: Audit contradicted flag basis (stale exclusion flags)
-        if: always()
-        # heal-exempt: report-only by design — a prior sweep of this same
-        # shape auto-un-suppressed 8 wrong-production reviews the day after
-        # running unsupervised (see "There is no --fix on the audit for
-        # exactly that reason" below) (BRO-3507 ratchet seed, 2026-09-16).
-        run: node scripts/audit-contradicted-flag-basis.js --gate --max=0
-        # BLOCKING replacement for the retired #483 step above. Fires only on
-        # POSITIVE evidence that a flag's own stated basis is contradicted: the
-        # flag rests ONLY on a date-guard claim, that claim cites a date the
-        # record no longer carries, and the record's CURRENT publishDate sits
-        # inside the show's own run window. Detector (with the full derivation):
-        # scripts/lib/contradicted-flag-basis.js.
-        #
-        # All 13 records this gate found on 2026-08-14 were hand-adjudicated
-        # and cleared 2026-08-17 (card #1589) via
-        # scripts/clear-contradicted-flag-basis.js — a fixed, explicit
-        # allowlist re-verified against this same detector before each clear,
-        # never a predicate-driven drain. Live count is 0.
-        #
-        # --max=0, not a headroom ceiling like the original 16-vs-13, and
-        # unlike the sibling gates below (which moved to a committed-baseline
-        # diff on 2026-08-14 for large STABLE backlogs that legitimately churn
-        # every rebuild): this population has no expected steady-state
-        # backlog. A NEW hit here means some OTHER writer changed a record's
-        # publishDate after a date-guard already flagged it, without
-        # re-running or clearing that guard — a narrow, compound event, not
-        # routine corpus churn. Any hit is real signal. RATCHET DOWN as
-        # records are hand-adjudicated — never raise it to make a red build
-        # pass, and never clear a flag in bulk to reach a lower number. There
-        # is no --fix on the audit for exactly that reason.
-
-      - name: Audit duplicateOf + stale _duplicateOfCleared contradiction (#1655)
-        if: always()
-        # heal-exempt: --fix exists and is documented bulk-safe (see below) but
-        # no scheduled workflow runs it yet (BRO-3507 ratchet seed,
-        # 2026-09-16) — tracked follow-up, not wired to a cron.
-        run: node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0
-        # A record must never carry a live duplicateOf pointer AND a
-        # _duplicateOfCleared breadcrumb for the SAME url — the two verdicts
-        # directly contradict each other, and which one wins used to depend on
-        # incidental file-read ordering rather than a rule (the-authenticator-
-        # west-end-2026, 2026-08-15: both siblings landed in reviews.json and
-        # validate-data.js's duplicate-URL check went red). Detector (with the
-        # full derivation): scripts/lib/duplicate-of-cleared-contradiction.js.
-        #
-        # 154 records matched this shape on 2026-08-19 (task #1655) — all
-        # retracted via --fix in the same session that added this gate; live
-        # count is 0. _duplicateOfCleared is dead going forward (zero writers
-        # left in the codebase after the review-write-guard.js fix a few
-        # commits up), so this population has no expected steady-state
-        # backlog: any future hit means some writer reintroduced the exact
-        # contradictory shape. --max=0.
-        #
-        # --fix is safe to run in bulk here, UNLIKE audit-self-contradictory-
-        # clears.js's --fix (memory/feedback_audit_fix_remediation_untrusted.md)
-        # — _duplicateOfCleared has zero readers in the inclusion/scoring path
-        # and isn't a PROTECTED_FIELDS entry, so retracting it never moves which
-        # review lands in reviews.json. duplicateOf already governs that alone.
-
-      - name: Audit URL-swap regression (#1416)
-        if: always()
-        # heal-exempt: fixing requires picking the correct historical URL per
-        # hit (which prior production/run does this review actually belong
-        # to) — not mechanical (BRO-3507 ratchet seed, 2026-09-16).
-        run: node scripts/audit-url-downgrade.js --gate
-        # #1416: maybeUpgradeUrl() swapped a review's correct current-run url
-        # for a URL belonging to a PRIOR production of the same revived show
-        # (Equus 2026->2019 Stratford East, Romeo and Juliet 2026->2023
-        # Almeida, Cats: The Jellicle Ball 2026->2024, NYSR, Mexodus — 8/8
-        # corpus-verified true positives). Fixed going forward by
-        # scripts/lib/url-downgrade-guard.js (wired into maybeUpgradeUrl),
-        # which refuses a swap whose candidate url is dated outside the
-        # show's current-run window. This gate is the historical-damage
-        # sweep: it only fails on a LIVE match (a regressed url with NO
-        # wrongProduction/wrongShow flag — a real live-scoring exposure,
-        # e.g. a scoreable-via-aggregatorStars file with no fullText).
-        # Files where the swap corrupted the url but wrongProduction is
-        # already correctly true are reported, not gated — the #483 drain
-        # (audit-stale-flag-after-url-correction.js --fix) must never clear
-        # those; that misreading is the defect this card exists to stop.
+      # "Audit contradicted flag basis", "Audit duplicateOf + stale
+      # _duplicateOfCleared contradiction (#1655)", and "Audit URL-swap
+      # regression (#1416)" MOVED to check-corpus-drift.js (BRO-3535,
+      # 2026-09-16). All three are zero-tolerance/heal-exempt full-corpus
+      # scans with no narrower on-push-safe mode, so they still scan the live
+      # corpus fresh on every push and can trip on an unrelated bot commit
+      # landing between two pushes. Non-blocking companions:
+      # scripts/check-corpus-drift.js AUDITS['contradicted-flag-basis'],
+      # AUDITS['duplicate-of-cleared-contradiction'], AUDITS['url-downgrade'].
 
       - name: Audit cast contamination
         if: always()
@@ -5537,24 +5381,10 @@ jobs:
         # regen, so hard-blocking them would red the trunk at the worst moment —
         # they ride the full --strict run in check-corpus-drift.yml → digest.
 
-      - name: Audit aggregator-archive integrity
-        # Catches the Stuart King contamination class — cached aggregator HTML
-        # whose <title> doesn't match the showId in the filename. The bug
-        # silently mis-attributed reviews across ~14 LBO archives + 256 across
-        # other sources before being caught by a critic email (2026-04-25).
-        # Baseline: data/audit/aggregator-archive-integrity-baseline.json holds
-        # 1 known, deliberately-unfixed entry (Notion 34e637c5-416f-812c) —
-        # dtli/the-roast-1980, DTLI's own pun headline "The Roastmaster
-        # General..." for the legitimate show "The Roast" defeats whole-word
-        # title matching on real content, not poisoning (commit 3b45349a273).
-        # That commit's #1763 whole-word-matching fix also quarantined the
-        # ~283 genuinely-poisoned archives this gate used to see, from the
-        # private repo, which is why BLOCKING is now safe. Update via
-        # `node scripts/audit-aggregator-archive-integrity.js --update-baseline`
-        # only after hand-verifying a new hit is a genuine FP, never to make
-        # a red build pass.
-        if: always()
-        run: node scripts/audit-aggregator-archive-integrity.js --strict
+      # "Audit aggregator-archive integrity" MOVED to check-corpus-drift.js
+      # (BRO-3535, 2026-09-16) — baseline-diff audit with no narrower
+      # on-push-safe mode. Non-blocking companion:
+      # scripts/check-corpus-drift.js AUDITS['aggregator-archive-integrity'].
 
       - name: Validate market expansion
         if: always()
@@ -5590,27 +5420,10 @@ jobs:
         # the trunk — only a scraper flooding the corpus with truncated/unknown
         # bodies (e.g. a cookie-expiry) trips it. That's a real ship-blocker.
 
-      - name: Audit critic-outlet affinities
-        # if: always() for the same reason as "Audit outlet-registry gaps" below
-        # (2026-09-06): without it this step defaults to if: success() and any
-        # earlier failure in this 56-step job SKIPS it, so the run reports
-        # nothing about critic-outlet affinities and the silence reads as a
-        # pass. Read-only (--strict never writes), so running it after an
-        # earlier failure is always safe and strictly more informative. If the
-        # review-texts checkout is what failed, this step fails too, saying so
-        # explicitly — the same deliberate pairing as the six REQUIRE_REVIEW_CORPUS
-        # steps in this job.
-        if: always()
-        run: node scripts/audit-critic-outlets.js --strict
-        # Baseline-diff (task #1668, mirrors #1665/#1666): the pre-existing
-        # 43-flagged-review backlog is frozen in
-        # data/audit/critic-outlets-baseline.json and never fails CI; only a
-        # NEW un-baselined (showId, file) flag fails the build. --strict is
-        # inherently read-only (never regenerates data/critic-registry.json,
-        # the file validateCriticOutlet/review-guards.js consume in
-        # production) — that write only happens via the production pipelines
-        # (rebuild-fast.yml/rebuild-reviews.yml/opening-night-poller.yml)
-        # that call this script bare.
+      # "Audit critic-outlet affinities" MOVED to check-corpus-drift.js
+      # (BRO-3535, 2026-09-16) — baseline-diff audit with no narrower
+      # on-push-safe mode. Non-blocking companion:
+      # scripts/check-corpus-drift.js AUDITS['critic-outlets'].
 
       - name: Audit WE sweep verifier wiring
         if: always()
@@ -5639,6 +5452,16 @@ jobs:
         # un-baselined missing outlet fails the build.
 
       - name: Audit Broadway-category predicate re-derivations
+        # KEPT on push (BRO-3535 ship-check catch, Codex): unlike the other
+        # baseline-diff audits moved out of this job, this one scans ONLY
+        # scripts/** source + its own committed baseline JSON — zero
+        # dependency on data/review-texts or any bot-mutated corpus. A NEW
+        # hit here can only be introduced by a CODE push, so it is exactly
+        # the "tests CODE" category rule 1 says stays blocking, not "corpus
+        # drifted with no code change." Moving it would let a new
+        # reimplementation of `category === 'broadway'` ship undetected for
+        # up to 24h instead of failing its own push.
+        #
         # if: always() — same skip-on-earlier-failure shape as the 2026-09-06
         # outlet-registry incident documented above. This script reads only
         # scripts/** source plus its git-tracked baseline, so it has no
@@ -5706,14 +5529,12 @@ jobs:
         # scoring). Decision + tests: scripts/lib/duplicate-of-gate.{js,test.mjs}.
         # Full report-mode triage runs daily in check-corpus-drift.yml (→ digest).
 
-      - name: Audit orphan slim show files
-        if: always()
-        run: node scripts/audit-orphan-show-ids.js
-        # Fails when public/data/shows/{id}.json exists for an id that isn't
-        # in shows.json. Catches drift after show renames (Can I Be Frank,
-        # 2026-05-24). Also reports show-score / audience-buzz key drift as
-        # advisory (use --strict to also fail on those). Run with --fix locally
-        # to delete orphan slim files. See memory/feedback_orphan_slim_show_files.md.
+      # "Audit orphan slim show files" MOVED to check-corpus-drift.js
+      # (BRO-3535, 2026-09-16) — the #2 worst offender in the 8-day diagnostic
+      # that motivated this ticket (30/40 red runs), and its own header
+      # incident is literally "main went red with nobody having pushed a bad
+      # file." Non-blocking companion: scripts/check-corpus-drift.js
+      # AUDITS['orphan-show-ids'].
 
       # `audit-regex-patterns.js --full` MOVED to check-corpus-drift.yml
       # (2026-06-21). Its per-pattern FP counts drift as the corpus grows hourly
@@ -5724,28 +5545,11 @@ jobs:
       # to be run before pushing pattern-array changes (the real-FP guard for
       # the edit itself, which is the case that actually matters).
 
-      - name: Audit — latent aggregator-URL population must not grow
-        # Runs HERE, not in Lint Workflows, because it needs the review-texts
-        # corpus and only this job checks it out.
-        #
-        # On 2026-08-04 main went red with nobody having pushed a bad file.
-        # witness-for-the-prosecution-west-end-2022/artsdesk--unknown.json had
-        # stored the stagedoor.com LISTING url under outletId 'artsdesk' for
-        # months — the zero-tolerance aggregator_url_mismatch error checked by
-        # the step below, which never saw it: the validator skips every review
-        # carrying an exclusion flag, and that file was flagged wrongProduction.
-        # Task #1017's sweep auto-cleared the flag, the file joined the
-        # validated population, and a months-old defect became a trunk failure
-        # with no human in the loop. A corpus scan found 10 MORE files in
-        # exactly that state — 10 unexploded copies of the same incident.
-        # This step ratchets that latent population: it may shrink, never grow.
-        # Growth means a producer just wrote an aggregator listing URL under a
-        # real outletId — fix the producer, not the ceiling.
-        #
-        # if: always() so a preceding data gate failing does not mask it (the
-        # first-failure-masks-the-rest pattern this job has been bitten by).
-        if: always()
-        run: node scripts/audit-aggregator-url-latent.js
+      # "Audit — latent aggregator-URL population must not grow" MOVED to
+      # check-corpus-drift.js (BRO-3535, 2026-09-16) — its own motivating
+      # incident IS the failure mode this ticket exists to fix ("main went red
+      # with nobody having pushed a bad file"). Non-blocking companion:
+      # scripts/check-corpus-drift.js AUDITS['aggregator-url-latent'].
 
       - name: Validate review-text files
         if: always()
