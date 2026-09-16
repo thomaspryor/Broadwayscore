@@ -36,6 +36,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 // BRO-2423 (port of BRO-545/BRO-2424's guard-escalation pattern): a blocked
 // drift check is right to fail this DAILY cron loud on its first occurrence,
 // but the same block recurring run after run (a checkout that stays broken,
@@ -60,6 +61,13 @@ const GUARD_STATE_FILE = path.join(process.cwd(), 'data', 'audit', 'guard-escala
 const GUARD_ID = 'review-count-drift-strict-breach';
 const WORKFLOW_DISPLAY_NAME = 'Check Review-Count Drift';
 const ALERT_CONDITION_KEY = `guard-escalation:${GUARD_ID}`;
+
+const USAGE = `Usage: node scripts/check-review-count-drift-guard.js <args...>
+
+Guard-escalation wrapper around scripts/check-review-count-drift.js (see
+this file's header). Forwards <args...> verbatim (--show=ID, --strict,
+--single-show-delta=N, --json-only, --audit-out=PATH — see that script's
+own source; it has no --help of its own).`;
 
 function loadJSON(file, fallback = null) {
   try {
@@ -87,6 +95,7 @@ function saveGuardState(state) {
 
 async function main() {
   const passthroughArgs = process.argv.slice(2);
+  if (hasHelpFlag(passthroughArgs)) { console.log(USAGE); return; }
   const scriptPath = path.join(__dirname, 'check-review-count-drift.js');
   // check-review-count-drift.js writes its audit JSON (and any --show-scoped
   // variant) BEFORE deciding whether to process.exit(2) on a strict breach —

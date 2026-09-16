@@ -32,6 +32,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 // BRO-2423 (port of BRO-545/BRO-2424's guard-escalation pattern): a crashed
 // scoring run is right to fail this DAILY cron loud on its first occurrence,
 // but the same crash recurring run after run stalls the whole daily scoring
@@ -44,6 +45,12 @@ const {
   buildOverrideCommand,
   buildGuardBlockedAlert,
 } = require('./lib/guard-escalation');
+
+const USAGE = `Usage: node scripts/run-ensemble-scoring-guard.js <args...>
+
+Guard-escalation wrapper around scripts/llm-scoring/index.ts (see this
+file's header). Forwards <args...> verbatim; run
+'npx ts-node scripts/llm-scoring/index.ts --help' for its own flags.`;
 
 // Same state file check-rebuild-staleness.js / check-vercel-build-guard.js /
 // check-corpus-drift.js / check-scoring-queue-guard.js use — keyed per-guard
@@ -82,6 +89,7 @@ function saveGuardState(state) {
 
 async function main() {
   const scoringArgs = process.argv.slice(2);
+  if (hasHelpFlag(scoringArgs)) { console.log(USAGE); return; }
   const result = spawnSync(
     'npx',
     ['ts-node', '--project', 'scripts/tsconfig.json', 'scripts/llm-scoring/index.ts', ...scoringArgs],
