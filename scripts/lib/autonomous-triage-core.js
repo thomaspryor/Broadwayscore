@@ -141,6 +141,23 @@ const AUDIT_LINT_GENERIC_FORM_ALLOWED = new Set([
   'lint-wrongproduction-provenance.js',
 ]);
 
+// BRO-2208: `gh run list` value fragment — a quoted (single OR double) run of
+// characters, or a bare token with no whitespace. Needed because a workflow's
+// display name ("Deploy to Vercel") contains spaces and must be quoted; the
+// SAFE_CHECK_FORMS regex below matches the raw command string (quotes and
+// all), while cardCheckArgv's tokenizeCheckCommand (autonomous-checks.js)
+// separately dequotes it into argv at execution time — the two must agree on
+// what counts as one value, which is why this fragment exists as a single
+// source instead of being hand-duplicated into the regex.
+const GH_VALUE_RE = `(?:"[^"]*"|'[^']*'|[^\\s]+)`;
+// Read-only flags only (gh run list is itself a GET — no --cancel/--delete
+// shape exists on this subcommand at all, so there is nothing to exclude by
+// omission the way the audit-*.js forms above exclude --fix/--force).
+// `--flag=value` and `--flag value` both accepted, in any order, each flag
+// at most... not deduped (gh itself just takes the last one) — duplicate
+// flags are harmless for a read-only list command.
+const GH_RUN_LIST_FLAG_RE = `--(?:workflow|branch|limit|json|jq|status|event|actor)(?:=${GH_VALUE_RE}|\\s+${GH_VALUE_RE})`;
+
 const SAFE_CHECK_FORMS = [
   // .test.mjs/.test.js run via plain `node --test`. A file that imports a TS
   // module via the `@/` path alias (e.g. `@/lib/gate-logic`), or a plain TS
@@ -282,6 +299,24 @@ const SAFE_CHECK_FORMS = [
   // writes to the real repo tree. Adding another .test.sh here needs the
   // same read-the-whole-file verification first.
   { re: /^bash (scripts\/lib\/sync-audit-checkout\.test\.sh)$/, pathsGroup: 1, pathPrefix: ['scripts/'] },
+  // BRO-2208: `gh run list [flags]` — a read-only CI-status probe, the most
+  // common "shape 2" refusal shape in the current backlog (dozens of cards
+  // use it to verify a workflow run passed/failed). No pathsGroup: nothing
+  // here names a file, so there's no traversal/mutation surface to gate —
+  // the flag allowlist above IS the whole safety story, and gh run list has
+  // no flag that mutates anything regardless. See GH_RUN_LIST_FLAG_RE above
+  // for the quote-aware value grammar this shares with cardCheckArgv's
+  // tokenizer.
+  { re: new RegExp(`^gh run list(?:\\s+${GH_RUN_LIST_FLAG_RE})*$`) },
+  // BRO-2208: extract-show-score-reviews.js normally overwrites
+  // data/show-score.json + data/audit/show-score-extraction-gaps.json on
+  // every run (deliberately excluded from task #1713's widening for exactly
+  // that reason). --check (added alongside this form) runs the identical
+  // extraction pass read-only — skips both writes — so it is now safe for
+  // unattended re-verification the same way the audit-*.js bare forms above
+  // are. Required, not optional: bare `node scripts/extract-show-score-reviews.js`
+  // still mutates and must stay refused.
+  { re: /^node scripts\/extract-show-score-reviews\.js --check$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -393,7 +428,7 @@ function isSafeCheckCommand(cmd) {
   return explainUnsafeCheckCommand(cmd).ok;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js/*.test.ts files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module — via the `@/` alias, or a plain relative TS import whose own internal imports are extensionless; use a `.test.ts` file extension when the test itself is TypeScript), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), `node scripts/lib/check-sb-credits.js`, `node scripts/audit-review-contamination.js [--strict]`, `node scripts/lint-resend-calls.js`, `node scripts/audit-worktree-unpushed.js` (with at most ONE optional flag from --strict/--gate/--json/--dry-run/--window=N/--max=N — no OTHER audit-*.js/lint-*.js script is accepted this way; most of this repo\'s audit scripts write shared repo state on every run), or `bash scripts/lib/sync-audit-checkout.test.sh`';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js/*.test.ts files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module — via the `@/` alias, or a plain relative TS import whose own internal imports are extensionless; use a `.test.ts` file extension when the test itself is TypeScript), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), `node scripts/lib/check-sb-credits.js`, `node scripts/audit-review-contamination.js [--strict]`, `node scripts/lint-resend-calls.js`, `node scripts/audit-worktree-unpushed.js` (with at most ONE optional flag from --strict/--gate/--json/--dry-run/--window=N/--max=N — no OTHER audit-*.js/lint-*.js script is accepted this way; most of this repo\'s audit scripts write shared repo state on every run), `bash scripts/lib/sync-audit-checkout.test.sh`, `gh run list [--workflow=NAME] [--branch=NAME] [--limit=N] [--json=FIELDS] [--jq=EXPR] [--status=VALUE] [--event=VALUE] [--actor=VALUE]` (read-only; quote any value containing spaces), or `node scripts/extract-show-score-reviews.js --check` (read-only — --check required, bare form still mutates)';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test

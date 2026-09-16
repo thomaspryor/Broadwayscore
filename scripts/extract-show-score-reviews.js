@@ -2,12 +2,20 @@
 /**
  * Extract critic reviews and audience data from archived Show Score HTML pages
  *
- * Usage: node scripts/extract-show-score-reviews.js
+ * Usage: node scripts/extract-show-score-reviews.js [--check]
+ *
+ * --check: run the full extraction pass but skip both writeFileSync calls
+ * (data/show-score.json, data/audit/show-score-extraction-gaps.json) — a
+ * read-only re-verification mode (BRO-2208) for use as a card's acceptance
+ * check. Without it, every run overwrites those two files unconditionally,
+ * which is unsafe to re-run unattended just to confirm a fix held.
  */
 
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+
+const CHECK_MODE = process.argv.includes('--check');
 const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
@@ -379,22 +387,26 @@ function main() {
     }
   }
 
-  // Write main output
-  fs.writeFileSync(outputPath, JSON.stringify(showScoreData, null, 2));
-
-  // Write extraction-gap audit (always — empty file is a useful signal of "all good")
   const gapsPath = path.join(__dirname, '../data/audit/show-score-extraction-gaps.json');
-  fs.mkdirSync(path.dirname(gapsPath), { recursive: true });
-  fs.writeFileSync(gapsPath, JSON.stringify({
-    _meta: {
-      generatedAt: new Date().toISOString(),
-      description: 'Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic.',
-    },
-    totalGaps: extractionGaps.length,
-    errorSeverity: extractionGaps.filter(g => g.severity === 'error').length,
-    warningSeverity: extractionGaps.filter(g => g.severity === 'warning').length,
-    gaps: extractionGaps,
-  }, null, 2));
+  if (CHECK_MODE) {
+    console.log(`\n[--check] read-only — skipped writing ${outputPath} and ${gapsPath}`);
+  } else {
+    // Write main output
+    fs.writeFileSync(outputPath, JSON.stringify(showScoreData, null, 2));
+
+    // Write extraction-gap audit (always — empty file is a useful signal of "all good")
+    fs.mkdirSync(path.dirname(gapsPath), { recursive: true });
+    fs.writeFileSync(gapsPath, JSON.stringify({
+      _meta: {
+        generatedAt: new Date().toISOString(),
+        description: 'Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic.',
+      },
+      totalGaps: extractionGaps.length,
+      errorSeverity: extractionGaps.filter(g => g.severity === 'error').length,
+      warningSeverity: extractionGaps.filter(g => g.severity === 'warning').length,
+      gaps: extractionGaps,
+    }, null, 2));
+  }
 
   console.log(`\n=== Summary ===`);
   console.log(`Successful: ${successCount} (Broadway: ${categoryCounts.broadway}, Off-Broadway: ${categoryCounts['off-broadway']}, West End: ${categoryCounts['west-end']}, Off-West End: ${categoryCounts['off-west-end']})`);
@@ -403,8 +415,16 @@ function main() {
     console.log(`Critic-review extraction gaps: ${extractionGaps.length} shows (${extractionGaps.filter(g => g.severity === 'error').length} error, ${extractionGaps.filter(g => g.severity === 'warning').length} warning)`);
     console.log(`  Top 5 gaps: ${extractionGaps.slice().sort((a,b) => b.gap - a.gap).slice(0,5).map(g => `${g.showId} (${g.extracted}/${g.expected})`).join(', ')}`);
   }
-  console.log(`Output written to: ${outputPath}`);
-  console.log(`Extraction gaps written to: ${gapsPath}`);
+  if (!CHECK_MODE) {
+    console.log(`Output written to: ${outputPath}`);
+    console.log(`Extraction gaps written to: ${gapsPath}`);
+  }
+  // Deliberately no "zero successes" fatal check here: data/aggregator-archive
+  // is a private, gitignored repo (CLAUDE.md §11) — absent in a worktree or
+  // cloud session that hasn't cloned it, where every show legitimately SKIPs
+  // with "Archive file not found". A --check run must pass in that
+  // environment too, so the only pass/fail signal is an unhandled exception
+  // (the existing top-level try/catch below, unchanged).
 }
 
 try {
