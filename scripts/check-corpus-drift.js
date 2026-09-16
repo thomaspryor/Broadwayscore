@@ -505,6 +505,14 @@ function decideExit({ anyCrashed, anyDrift, strict }) {
 // "could not run"); only ok:false/crashed:false ("drift") calls routeAlert,
 // and a clean run resolves any open condition for that gate. Best-effort: a
 // router failure here must never fail this non-blocking monitor.
+//
+// Scoped to `healPathRequired: true` entries only (ship-check catch, codebase
+// review) — those are exactly the 14 gates BRO-3535 moved out of test.yml's
+// blocking gate, which is what this ticket's alerting requirement is about.
+// The ~20 pre-existing MONITOR-only entries (text-quality, aggregator-truth,
+// etc.) were never reviewed for "should a persistent drift here eventually
+// file a Linear card" — extending new alerting behavior to them would be an
+// unreviewed scope expansion, not a fix for the problem this ticket names.
 async function routePerAuditAlerts(audits) {
   let routeAlert, resolveCondition;
   try {
@@ -513,8 +521,10 @@ async function routePerAuditAlerts(audits) {
     console.error(`::warning::[check-corpus-drift] owner-alert-router unavailable, skipping per-audit digest routing: ${e.message}`);
     return;
   }
+  const scopedNames = new Set(AUDITS.filter((a) => a.healPathRequired).map((a) => a.name));
   for (const a of audits) {
     if (a.crashed) continue;
+    if (!scopedNames.has(a.name)) continue;
     const conditionKey = `corpus-drift:${a.name}`;
     try {
       if (a.ok) {
