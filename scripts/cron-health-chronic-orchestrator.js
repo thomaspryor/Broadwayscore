@@ -108,13 +108,28 @@ async function main() {
 
   console.log(`\n🔎 Diagnosing ${workflowFile} (last ${limit} runs)\n`);
 
+  // BRO-2530 what-else: `gh run list --limit=N` is the exact pattern
+  // scripts/lib/gh-runs-query.sh's header comment (BRO-2771/BRO-2767) warns
+  // never to use for run history on this repo — with 6,600+ test.yml runs on
+  // main it has returned arbitrary, sometimes months-stale result SETS (three
+  // identical invocations a minute apart returning three different date
+  // ranges). This diagnostic tool exists specifically to answer "what's this
+  // cron's real recent run history" for a human debugging a chronic-stale
+  // alert, so trusting that exact discouraged call here would risk the tool
+  // giving a confidently wrong answer. Query the REST endpoint directly
+  // instead (same per_page cap and field-mapping approach as gh-runs-query.sh,
+  // plus `event` since this tool prints it).
+  const repo = gh(['repo', 'view', '--json', 'nameWithOwner', '-q', '.nameWithOwner']).trim();
+  if (limit > 100) {
+    console.error(`--limit must be 1-100 (REST per_page cap), got ${limit}`);
+    process.exit(1);
+  }
   const runsRaw = gh([
-    'run', 'list',
-    `--workflow=${workflowFile}`,
-    `--limit=${limit}`,
-    '--json', 'databaseId,conclusion,createdAt,event',
+    'api', `repos/${repo}/actions/workflows/${workflowFile}/runs?per_page=${limit}`,
+    '--jq', '[.workflow_runs[] | {databaseId: .id, conclusion: .conclusion, createdAt: .created_at, event: .event}]',
   ]);
-  const runs = JSON.parse(runsRaw);
+  const runs = JSON.parse(runsRaw)
+    .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 
   if (runs.length === 0) {
     console.log('No runs found for this workflow.');
@@ -123,7 +138,7 @@ async function main() {
 
   const lastSuccess = runs.find((r) => r.conclusion === 'success');
   console.log(lastSuccess
-    ? `Last SUCCESSFUL run: ${lastSuccess.createdAt} (${lastSuccess.event}) — https://github.com/${runIdUrl()}`
+    ? `Last SUCCESSFUL run: ${lastSuccess.createdAt} (${lastSuccess.event}) — https://github.com/${repo}/actions/runs/${lastSuccess.databaseId}`
     : `⚠️  No successful run in the last ${limit} runs — this cron has been stale for a while.`);
 
   const shapeCounts = {};
@@ -159,15 +174,6 @@ async function main() {
           ? 'Fix: check whether the committed files are eligible for scripts/lib/push-with-retry.sh\'s Git Data API fallback — see scripts/lib/core-data-merge-registry.js\'s apiFallbackSafe/apiFallbackMerge entries and scripts/lib/api-fallback-writer-drift.js to verify single-writer status before adding one.'
           : 'Inspect the named failing step directly — this shape is not one of the two known silent-staleness patterns.'
     }`);
-  }
-
-  function runIdUrl() {
-    try {
-      const repo = gh(['repo', 'view', '--json', 'nameWithOwner', '-q', '.nameWithOwner']).trim();
-      return `${repo}/actions/runs/${lastSuccess.databaseId}`;
-    } catch {
-      return `actions/runs/${lastSuccess.databaseId}`;
-    }
   }
 }
 
