@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-16T06:42:10.897Z",
+  "timestamp": "2026-09-16T07:09:50.203Z",
   "stats": {
-    "totalReviews": 43477,
+    "totalReviews": 43486,
     "alreadyFlagged": 17995,
     "dateGuardCatches": 242,
     "directorMismatch": 1044,
     "tvFilmSignals": 1276,
-    "londonSignals": 1069,
+    "londonSignals": 1074,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3811
+    "noPublishDate": 3817
   },
   "findings": [
     {
@@ -40643,6 +40643,32 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
+      "file": "abouttheartists--unknown.json",
+      "publishDate": null,
+      "url": "https://www.abouttheartists.com/productions/199148-golden-boy-at-almeida-theatre-2026",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "airmail--air-mail.json",
+      "publishDate": null,
+      "url": "https://airmail.news/arts-intel/events/golden-boy",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 97,
       "publishDate": "2026-09-15",
@@ -40687,6 +40713,33 @@
       "file": "nationaltheatre--unknown.json",
       "publishDate": null,
       "url": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2026-09-15",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/golden-boy-review-boxing-tale-packs-some-punch-but-its-no-knockout-76ts9drmv",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "west-end-best-friend--unknown.json",
+      "publishDate": "2026-08-13",
+      "url": "https://www.westendbestfriend.co.uk/news/almeida-theatre-golden-boy-broadcast-cinemas-national-theatre-live",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -44608,6 +44661,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "british-theatre--keith-mckenna.json",
+      "publishDate": "2026-09-15",
+      "url": "https://www.britishtheatreguide.info/reviews/man-to-man-royal-court-the-26014",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },

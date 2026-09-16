@@ -58,6 +58,7 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
 
@@ -117,6 +118,11 @@ function findCandidates({ showsById, reviewTextsDir } = {}) {
 
       if (review.wrongProduction) continue;
       if (review.wrongProductionAuditCleared) continue;
+      // Manually cleared/overridden by a human via one of the shared
+      // breadcrumbs (or another setter) — surfacing it as an "unverified
+      // candidate" here would send an operator straight into applyFlag()'s
+      // guard throw for no reason.
+      if (shouldSkipWrongProductionAudit(review)) continue;
       // Already excluded from scoring via the sibling wrongShow flag — a
       // different guard already caught this file (not this audit's job to
       // re-flag it under a different name).
@@ -152,9 +158,39 @@ function resolveTargetPath(target, reviewTextsDir) {
   throw new Error(`No such review file: ${target}`);
 }
 
+// Deliberately guards on the shared shouldSkipWrongProductionAudit predicate
+// plus this script's OWN wrongProductionAuditCleared breadcrumb (applyClear,
+// below) — but NOT a bare `review.wrongProduction === false` (unlike
+// audit-sibling-title-misroute.js's isHumanCleared()). rebuild-all-reviews.js's
+// dateless-revival/priorRuns-window auto-clears also write wrongProduction=
+// false with none of the guard predicate's breadcrumbs — this audit exists
+// specifically to catch contamination those auto-clears miss, so treating a
+// bare false as untouchable would let a stale auto-clear block an operator's
+// fresh, manually-verified --flag=. wrongProductionAuditCleared is different:
+// it's only ever written by a human running THIS tool's own --clear on THIS
+// file, so honoring it here stops a later --flag= on the same path from
+// silently overwriting that decision.
 function applyFlag(target, note) {
   const full = resolveTargetPath(target);
   const review = JSON.parse(fs.readFileSync(full, 'utf8'));
+  if (review.wrongProductionAuditCleared) {
+    throw new Error(
+      `Refusing to flag ${full}: already cleared via this audit's --clear (wrongProductionAuditCleared=true, ` +
+      `note: ${review.wrongProductionAuditClearedNote || 'none'}). Investigate before overriding it directly.`
+    );
+  }
+  if (shouldSkipWrongProductionAudit(review)) {
+    const signals = [
+      review.humanReviewedWrongProduction === false && 'humanReviewedWrongProduction=false',
+      review.wrongProductionManualClear === true && 'wrongProductionManualClear=true',
+      review.wrongProductionOverride === true && 'wrongProductionOverride=true',
+      review.allowCrossMarket === true && 'allowCrossMarket=true',
+    ].filter(Boolean).join(', ') || 'shouldSkipWrongProductionAudit signal';
+    throw new Error(
+      `Refusing to flag ${full}: manually cleared/overridden (${signals}). ` +
+      `A human already made a decision on this file — investigate before overriding it directly.`
+    );
+  }
   review.wrongProduction = true;
   review.wrongProductionNote = note || `Audit (BRO-2271): SERP-discovered URL year mismatch, manually verified as wrong production`;
   fs.writeFileSync(full, JSON.stringify(review, null, 2) + '\n');
