@@ -99,6 +99,20 @@ function hasBaselineDiffPath(scriptSource) {
 /**
  * Does some OTHER (non-test.yml) workflow schedule this script with a fix flag?
  * `workflowFiles`: [{ filename, content }].
+ *
+ * Known limitation (/code-review catch): this checks that the file has A
+ * `schedule:` trigger and A fix-flag invocation ANYWHERE in the file — it
+ * does not verify the fix step is actually reachable FROM that schedule (a
+ * multi-job workflow could gate its schedule-triggered job on something
+ * unrelated and only run --fix on workflow_dispatch, e.g. `if:
+ * github.event_name == 'workflow_dispatch'` on the job containing the fix
+ * step). Verified this does not affect any of today's 24 gates — every
+ * scheduled-fix-workflow match is a workflow whose fix job runs
+ * unconditionally on its schedule trigger — but a future workflow with that
+ * split-job shape would be wrongly marked healed. Same class of accepted gap
+ * as the single-line RUN_LINE_RE limitation above: fixing it properly needs
+ * per-job trigger-reachability analysis, which this deliberately dependency-
+ * free line-scanner doesn't attempt.
  */
 function hasScheduledFixWorkflow(scriptName, workflowFiles) {
   return (workflowFiles || []).some(({ filename, content }) => {

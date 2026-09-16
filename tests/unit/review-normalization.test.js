@@ -1835,3 +1835,92 @@ describe('findExistingReviewFile — BRO-3182', () => {
     assert.strictEqual(isConfirmedNamedCriticMatch('Jesse Green', 'Mark Lawson'), false);
   });
 });
+
+// ============================================================================
+// findExistingReviewFile — Pass 2 year-suffix filename fallback (BRO-1031)
+//
+// Recurring critics get a year-suffixed filename slug for disambiguation
+// (e.g. amny--matt-windman-2026.json) whose stored criticName is the plain
+// display name ("Matt Windman"). Pass 1 skips the file because the filename
+// slug doesn't normalize to match the incoming criticName, and Pass 2 used
+// to skip it too — its "already checked above" guard assumed Pass 1 had
+// fully evaluated any file whose filename-outlet matched, which was false
+// whenever Pass 1 bailed out on the critic check first. Without this fix,
+// the next write for that outlet+critic created a duplicate file instead of
+// merging. Pass 2 now scans every file's internal outletId/criticName
+// fields (not just filename-outlet-mismatched ones), falling back to the
+// filename's critic slug only when the file has no criticName recorded.
+// ============================================================================
+
+describe('findExistingReviewFile — year-suffix filename fallback (BRO-1031)', () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const { findExistingReviewFile } = require('../../scripts/lib/review-normalization.js');
+
+  let showDir;
+  const writeReviewFile = (filename, data) => {
+    fs.writeFileSync(path.join(showDir, filename), JSON.stringify(data, null, 2));
+  };
+
+  it('matches a year-suffixed filename via internal outletId + criticName fields', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro1031-'));
+    writeReviewFile('amny--matt-windman-2026.json', {
+      outletId: 'amny',
+      criticName: 'Matt Windman',
+      url: 'https://www.amny.com/entertainment/some-review-2026/',
+    });
+    const result = findExistingReviewFile(showDir, 'amny', 'Matt Windman');
+    assert.strictEqual(result && result.filename, 'amny--matt-windman-2026.json',
+      'must find the existing year-suffixed file, not return null');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('still refuses to match a year-suffixed file naming a DIFFERENT critic at the same outlet', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro1031-'));
+    writeReviewFile('amny--matt-windman-2026.json', {
+      outletId: 'amny',
+      criticName: 'Matt Windman',
+      url: 'https://www.amny.com/entertainment/some-review-2026/',
+    });
+    const result = findExistingReviewFile(showDir, 'amny', 'Jane Critic');
+    assert.strictEqual(result, null, 'different named critic at same outlet must not merge');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('a flagged (rejectionReason) year-suffixed file with no confirmed critic match stays unmerged', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro1031-'));
+    writeReviewFile('chicagotribune--chris-jones-2026.json', {
+      outletId: 'chicagotribune',
+      criticName: 'Chris Jones',
+      rejectionReason: 'garbage_text',
+    });
+    const result = findExistingReviewFile(showDir, 'chicagotribune', null);
+    assert.strictEqual(result, null, 'unresolved incoming critic must not claim a flagged file naming a real critic');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('an UNFLAGGED year-suffixed file still refuses an unresolved incoming critic (BRO-3182 applies to Pass 2 too)', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro1031-'));
+    writeReviewFile('nyt-theater--jonathan-mandell-2026.json', {
+      outletId: 'nyt-theater',
+      criticName: 'Jonathan Mandell',
+    });
+    const result = findExistingReviewFile(showDir, 'nyt-theater', null);
+    assert.strictEqual(result, null, 'unresolved incoming critic must not claim a plain year-suffixed file naming a real critic');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+
+  it('a filename-only critic identity (no internal criticName recorded) still blocks a DIFFERENT named incoming critic', () => {
+    showDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro1031-'));
+    writeReviewFile('amny--jane-critic.json', {
+      outletId: 'amny',
+      // No criticName field at all — only the filename names "jane-critic".
+      url: 'https://www.amny.com/entertainment/some-other-review/',
+    });
+    const result = findExistingReviewFile(showDir, 'amny', 'Matt Windman');
+    assert.strictEqual(result, null,
+      'a blank internal criticName must not be treated as anonymous when the filename names a specific critic');
+    fs.rmSync(showDir, { recursive: true, force: true });
+  });
+});

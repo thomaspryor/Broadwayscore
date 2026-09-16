@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-16T01:42:08.155Z",
+  "generated": "2026-09-16T02:01:28.462Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 82,
+  "count": 83,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -127,6 +127,13 @@
       "loserFile": "theatermania--zachary-stewart.json",
       "targetFile": "theatermania--jesse-green.json",
       "reason": "orphaned-duplicate-heal: theatermania--jesse-green.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "loserFile": "artsdesk--unknown.json",
+      "targetFile": "artsdesk--marianka-swain.json",
+      "reason": "orphaned-duplicate-heal: artsdesk--marianka-swain.json was flagged invalid after artsdesk--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
