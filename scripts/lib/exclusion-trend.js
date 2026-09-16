@@ -59,6 +59,16 @@ const DEFAULT_NEW_FILE_THRESHOLD = 1;
  * count) when a knownFiles ledger is supplied, since that's what a
  * volume-based spike detector needs.
  */
+// exclusion-logger.js defaults `file` to '-' when a reason has no per-file
+// identity (e.g. show-level reasons like skippedUpcomingShows/skippedPreviewsShows,
+// and some callers of skippedBlockedUrl/skippedCrossShowUrl) — every event
+// from every rebuild pass looks like the identical "file". Treating '-' as a
+// real filename would mean the FIRST time a show logs a '-' reason, it goes
+// into the ledger as "known" and every later occurrence — including a
+// genuinely new one — reads as REPEATED_LOGGING forever after. '-' carries no
+// distinguishing information, so it must never be evidence either way.
+const NO_FILE_IDENTITY = '-';
+
 function categorizeGroup(entry, opts = {}) {
   const repeatThreshold = opts.repeatThreshold ?? DEFAULT_REPEAT_THRESHOLD;
   const distinctFileThreshold = opts.distinctFileThreshold ?? DEFAULT_DISTINCT_FILE_THRESHOLD;
@@ -67,13 +77,22 @@ function categorizeGroup(entry, opts = {}) {
   const distinctFiles = entry.fileCounts.size;
   const totalLines = [...entry.fileCounts.values()].reduce((a, b) => a + b, 0);
   const repeatMultiplier = distinctFiles > 0 ? totalLines / distinctFiles : 0;
+  const realFiles = [...entry.fileCounts.entries()].filter(([file]) => file !== NO_FILE_IDENTITY);
+  const hasFileIdentity = realFiles.length > 0;
+  // Sentinel-tagged lines (file:'-') carry zero repeat-vs-new evidence —
+  // never fold them into "repeated" volume, even when the SAME reason also
+  // has real-filed lines in this group (some callers of skippedBlockedUrl /
+  // skippedCrossShowUrl pass a real file, others pass '-' — see
+  // scripts/gather-reviews.js vs scripts/rebuild-all-reviews.js). Exposed so
+  // computeExclusionTrend can always attribute this volume as new.
+  const sentinelLineCount = entry.fileCounts.get(NO_FILE_IDENTITY) || 0;
 
   let newFileCount = null;
   let newLineCount = null;
-  if (opts.knownFiles instanceof Set) {
+  if (opts.knownFiles instanceof Set && hasFileIdentity) {
     newFileCount = 0;
     newLineCount = 0;
-    for (const [file, count] of entry.fileCounts) {
+    for (const [file, count] of realFiles) {
       if (!opts.knownFiles.has(file)) {
         newFileCount++;
         newLineCount += count;
@@ -100,6 +119,8 @@ function categorizeGroup(entry, opts = {}) {
     totalLines,
     distinctFiles,
     repeatMultiplier: Math.round(repeatMultiplier * 100) / 100,
+    hasFileIdentity,
+    sentinelLineCount,
     ...(newFileCount !== null ? { newFileCount, newLineCount } : {}),
     category,
   };
@@ -120,10 +141,17 @@ function analyzeExclusionLog(jsonlText, opts = {}) {
   for (const entry of groups.values()) {
     const perGroupOpts = { ...opts };
     delete perGroupOpts.knownFilesByReasonAndShow;
-    if (opts.knownFilesByReasonAndShow) {
+    if (opts.knownFilesByReasonAndShow && Object.prototype.hasOwnProperty.call(opts.knownFilesByReasonAndShow, entry.reason)) {
+      // A ledger entry exists for this REASON — an absent showId within it
+      // means "this show has never logged this reason before" (a real,
+      // definitively empty known-files set), not "no data available". Only
+      // an entirely-missing reason (never ledgered at all) falls through to
+      // the same-day ratio heuristic below. Getting this wrong would let a
+      // brand-new show's first-ever occurrence of a KNOWN reason fall back
+      // to the ratio heuristic and get misread as REPEATED_LOGGING.
       const byShow = opts.knownFilesByReasonAndShow[entry.reason];
-      const raw = byShow instanceof Map ? byShow.get(entry.showId) : byShow && byShow[entry.showId];
-      if (raw) perGroupOpts.knownFiles = raw instanceof Set ? raw : new Set(raw);
+      const raw = byShow instanceof Map ? byShow.get(entry.showId) : byShow[entry.showId];
+      perGroupOpts.knownFiles = raw instanceof Set ? raw : new Set(raw || []);
     }
     results.push(categorizeGroup(entry, perGroupOpts));
   }
@@ -150,7 +178,11 @@ function buildNextLedger(records, previousLedger = {}) {
     for (const showId of showIds) {
       const known = new Set(prevByShow[showId] || []);
       const entry = groups.get(`${reason}::${showId}`);
-      if (entry) for (const file of entry.fileCounts.keys()) known.add(file);
+      if (entry) {
+        for (const file of entry.fileCounts.keys()) {
+          if (file !== NO_FILE_IDENTITY) known.add(file);
+        }
+      }
       nextByShow[showId] = [...known].sort();
     }
     next[reason] = nextByShow;
@@ -227,13 +259,24 @@ function computeExclusionTrend(now, opts = {}) {
       breakdownByReason.set(g.reason, { newLines: 0, repeatedLines: 0, needsReviewShows: [] });
     }
     const b = breakdownByReason.get(g.reason);
-    if (g.category === 'NEEDS_REVIEW') {
+    // Sentinel-tagged lines (file:'-') carry zero repeat-vs-new evidence —
+    // always attribute them as new, even in a group that ALSO has real
+    // files (some callers of the same reason pass a real file, others
+    // pass '-' — see categorizeGroup's sentinelLineCount comment). Counting
+    // them as "new" rather than trusting a same-day-only ratio keeps raw
+    // mean/stdev spike detection intact (not sticky-suppressed) for volume
+    // this mechanism has no basis to call stale.
+    b.newLines += g.sentinelLineCount;
+    const realTotalLines = g.totalLines - g.sentinelLineCount;
+    if (realTotalLines === 0) {
+      // nothing else to categorize — this group was 100% sentinel-tagged
+    } else if (g.category === 'NEEDS_REVIEW') {
       b.needsReviewShows.push(g.showId);
-      const newLines = g.newLineCount ?? g.totalLines; // no ledger yet: trust the ratio heuristic fully
+      const newLines = g.newLineCount ?? realTotalLines; // no ledger yet: trust the ratio heuristic fully
       b.newLines += newLines;
-      b.repeatedLines += g.totalLines - newLines;
+      b.repeatedLines += realTotalLines - newLines;
     } else {
-      b.repeatedLines += g.totalLines;
+      b.repeatedLines += realTotalLines;
     }
   }
 
