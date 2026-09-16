@@ -1472,6 +1472,12 @@ on:
       - 'scripts/flag-wrong-production-by-url-date.js'
       - 'scripts/flag-wrong-production-by-url-date.test.mjs'
       - 'scripts/rebuild-all-reviews.js'
+      # BRO-925: per-file exclusion logging. Root-level scripts/*.test.mjs is
+      # NOT covered by any broad glob (only scripts/lib/*.test.mjs is — see the
+      # BRO-3127 comment on check-rebuild-staleness.test.mjs below) — path-listed
+      # so a solo edit to just the test file triggers CI. Registered in
+      # tests/unit-test-manifest.txt so it actually runs.
+      - 'scripts/rebuild-all-reviews.test.mjs'
       # Time-to-publish SLA (task #388): how long a review takes to go from
       # published by the outlet to live on the site, and the 90%-within-15-min
       # target. stage-latency.js gained readTrackedShowIds(), which decides

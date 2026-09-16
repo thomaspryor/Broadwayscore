@@ -362,6 +362,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # Structural #1 — daily exclusion logs (may contain URLs, not committed)
 /data/audit/exclusions-*.jsonl
 /data/audit/exclusion-summary-yesterday.json
+# BRO-925: per-show grouping of the same exclusion events above (may contain
+# URLs, not committed — same reasoning as exclusions-*.jsonl)
+/data/audit/rebuild-exclusions-*.json
 # BRO-75: cross-day seen-files ledger for wrong-production-exclusion-analysis.js
 # — local-only ad-hoc investigation state, same reasoning as exclusions-*.jsonl
 /data/audit/wrongproduction-seen-files.json
