@@ -1478,12 +1478,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-15T16:01:30.128Z",
+      "lastSeen": "2026-09-16T15:54:39.071Z",
       "lastNotifiedAt": "2026-09-13T15:26:03.760Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1600,12 +1600,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-15T16:01:30.123Z",
-      "lastNotifiedAt": "2026-09-09T15:43:50.768Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-09-16T15:54:33.667Z",
+      "lastNotifiedAt": "2026-09-16T15:54:33.667Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-2303",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-3656"
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -2404,13 +2404,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Scrape WestEndTheatre",
       "firstSeen": "2026-09-07T17:00:27.922Z",
-      "lastSeen": "2026-09-15T16:01:30.129Z",
+      "lastSeen": "2026-09-16T15:54:39.072Z",
       "lastNotifiedAt": "2026-09-14T17:23:02.673Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2931",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026": {
       "status": "open",
@@ -3151,6 +3151,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "cron-health-chronic:Check Opening Night Drift": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Check Opening Night Drift",
+      "firstSeen": "2026-09-16T15:54:29.513Z",
+      "lastSeen": "2026-09-16T15:54:29.513Z",
+      "lastNotifiedAt": "2026-09-16T15:54:29.513Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3655"
     }
   }
 }
