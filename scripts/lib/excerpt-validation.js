@@ -180,7 +180,7 @@ const MARKET_PHRASE_RE = /^(west end|off broadway|off west end|new york|east end
 // A candidate starting with a common function word is a title/phrase
 // fragment ("The Social Network", "A Few Good Men" — comparison titles
 // critics drop in passing), not a person's name.
-const LEADING_STOPWORD_RE = /^(the|a|an|and|or|but|of|in|on|at|to|for|with|from|by|as|is|was|are|were|this|that|these|those|its|so|if|when|while|where|what|who|which|how|why|there|here|now|then|yet|not|no)$/i;
+const LEADING_STOPWORD_RE = /^(the|a|an|and|or|but|of|in|on|at|to|for|with|from|by|as|is|was|are|were|has|have|had|this|that|these|those|its|so|if|when|while|where|what|who|which|how|why|there|here|now|then|yet|not|no)$/i;
 
 // A name immediately followed by "'s novel"/"estate"/etc (with up to a few
 // adjectives in between — "'s beloved book", "'s celebrated 1960 novel") is
@@ -240,6 +240,13 @@ function extractPersonNameCandidates(text) {
       words = candidate.split(/\s+/);
       if (LEADING_STOPWORD_RE.test(words[0])) continue;
     }
+    // A stopword ANYWHERE in the final candidate (not just leading) means
+    // it isn't a name — e.g. scraped ad-chrome "Advertisement" immediately
+    // followed by a capitalized sentence starter ("Advertisement The sound
+    // design...") matches the 2-word pattern with no leading stopword to
+    // catch it (illinoise-2024/slantmagazine, corpus sweep). A genuine
+    // name never contains a bare "the"/"was"/"has".
+    if (words.some(w => LEADING_STOPWORD_RE.test(w))) continue;
     if (INSTITUTIONAL_SUFFIX_RE.test(words[words.length - 1])) continue;
     if (MARKET_PHRASE_RE.test(candidate)) continue;
     const afterMatch = text.slice(index + candidate.length, index + candidate.length + LITERARY_SOURCE_SUFFIX_WINDOW);
@@ -287,16 +294,18 @@ function buildRoleTerms(show) {
   return terms;
 }
 
-// "Directed by NAME" / "Written by NAME" / "Developed & Directed by: NAME"
-// — creative-team credits inferred from prose when show.creativeTeam data
-// is incomplete (common for fringe/regional shows). Caught live on
-// the-enormous-crocodile-west-end-2026: creativeTeam is [], but its own
-// reviews credit "Developed & Directed by: Emily Lim" — without this,
-// she reads as an unrecognized name and gets flagged as former cast the
-// same way Rafe Spall does. Whoever created/directed a production
-// typically stays on for a returning run, the same reasoning as the
-// explicit show.creativeTeam exclusion in buildSafeNameTokens.
-const CREATIVE_ROLE_PHRASE_RE = /\b(?:directed|written|created|developed|choreographed|composed|designed|adapted)\s+(?:(?:&|and)\s+\w+\s+)?by:?\s+([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})/gi;
+// "Directed by NAME" / "Written by NAME" / "Developed & Directed by: NAME" /
+// "NAME's production/staging/direction/adaptation" — creative-team credits
+// inferred from prose when show.creativeTeam data is incomplete (common for
+// fringe/regional shows). Caught live sweeping all 34 priorRuns shows:
+// the-enormous-crocodile-west-end-2026 (creativeTeam: []) credits its
+// director two different ways across two review files — "Developed &
+// Directed by: Emily Lim" in one, "Emily Lim's production delivers..." in
+// another — both need to resolve to the same safe name. Whoever
+// created/directed a production typically stays on for a returning run,
+// the same reasoning as the explicit show.creativeTeam exclusion in
+// buildSafeNameTokens.
+const CREATIVE_ROLE_PHRASE_RE = /\b(?:directed|written|created|developed|choreographed|composed|designed|adapted)\s+(?:(?:&|and)\s+\w+\s+)?by:?\s+([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})|\b([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})['’]s\s+(?:production|staging|direction|adaptation)\b/gi;
 
 /**
  * Names inferred from "directed by X" style credit lines in a review's own
@@ -310,7 +319,7 @@ function extractCreativeRolePhraseNames(text) {
   const names = new Set();
   if (!text) return names;
   for (const m of text.matchAll(CREATIVE_ROLE_PHRASE_RE)) {
-    nameTokens(m[1]).forEach(t => names.add(t));
+    nameTokens(m[1] || m[2]).forEach(t => names.add(t));
   }
   return names;
 }
