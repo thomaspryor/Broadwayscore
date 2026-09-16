@@ -6228,6 +6228,16 @@ jobs:
       # today's FAILING_JOBS value. That is the tier BRO-3425 was actually
       # complaining about ("pure noise while the aggregate stays red"), so
       # that is the one worth clearing early.
+      #
+      # Known boundary (adversarial review): decideDigestEscalation() in
+      # owner-alert-router.js quiets a re-notify within its OWN resurface
+      # window once this conditionKey has been promoted to a tracked ('auto')
+      # incident (existing.linearIdentifier set, past ESCALATION_NOTIFY_THRESHOLD
+      # notifications) — resolving the ledger status here doesn't bypass that
+      # separate per-digest gate. In practice this only bites once main has
+      # stayed red long enough to cross 14+ escalation notifications (~2
+      # weeks at the 24h cooldown), a state with much bigger problems than a
+      # stale alert description; not worth deeper plumbing for this ticket.
       - name: Resolve escalation alert on failing-job-set change
         if: failure() && steps.stepset.outputs.changed == 'true'
         run: node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak-escalation')"

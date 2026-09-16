@@ -23,6 +23,15 @@
  * No external deps (js-yaml is not guaranteed installed when this runs before
  * `npm ci` finishes in CI) — same plain-text scan approach as
  * scripts/lib/ci-cancellation-guard.js.
+ *
+ * Known limitation (adversarial review, BRO-3507): RUN_LINE_RE only matches
+ * a single-line `run: node scripts/X.js --flag`, which is how all 23 gates
+ * in the data-validation job are written today. A future gate written as a
+ * multi-line `run: |` block, or with the flag on a folded/quoted line, would
+ * silently evade detection and ship with no heal path required. Matches this
+ * codebase's existing regex-scan convention for workflow parsing (see the
+ * module comment above) rather than adding a YAML parser; if gates start
+ * using multi-line run blocks, this scanner needs a matching update.
  */
 
 const FIX_FLAG_RE = /--fix\b|--update-baseline\b|--heal\b|--write\b/;
