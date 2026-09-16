@@ -183,11 +183,11 @@ function fetchWithScrapingBee(url, cookieHeader) {
       params.set('forward_headers', 'true');
     }
     const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
-    const options = { headers: {} };
+    const options = { headers: {}, timeout: 30000 };
     if (cookieHeader) {
       options.headers['Spb-Cookie'] = cookieHeader;
     }
-    https.get(apiUrl, options, (res) => {
+    const req = https.get(apiUrl, options, (res) => {
       let data = '';
       res.on('data', chunk => { data += chunk; });
       res.on('end', () => {
@@ -198,9 +198,15 @@ function fetchWithScrapingBee(url, cookieHeader) {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
-    }).on('error', (e) => {
+    });
+    req.on('error', (e) => {
       recordSbCall({ url, fn: 'render', success: false, status: 'error', credits: 0, purpose: 'score-recollect' });
       reject(e);
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      recordSbCall({ url, fn: 'render', success: false, status: 'timeout', credits: 0, purpose: 'score-recollect' });
+      reject(new Error('Request timeout'));
     });
   });
 }
