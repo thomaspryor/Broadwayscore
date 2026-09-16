@@ -110,6 +110,7 @@ const ANCHORED_EXTRACTOR_SOURCES = new Set([
   'radiotimes-svg-stars',
   'omc-alt-text',
   'omc-star-rating',
+  'guardian-star-svg',       // BRO-919: SVG star widget, class hash resolved via CSS custom property
   // Unicode glyphs (anchored; NYSR fallback position-gated 2026-04-24)
   'unicode-stars',
   'unicode-stars-fallthrough',
@@ -124,10 +125,10 @@ const ANCHORED_EXTRACTOR_SOURCES = new Set([
   'explicit-rating',        // fix-p0-score-corruption.js:104
   'original-star-rating',   // diagnostic-p0-score-audit.js:48
   // Removed 2026-04-25 (ship-check P2 audit): 'guardian-json-ld',
-  // 'guardian-svg-stars'. Never emitted — Guardian extractor returns 'json-ld'
-  // (P3 path) or falls through; recover-explicit-ratings.js only emits
-  // 'guardian-api'. Same class as prior audit's removals
-  // (timeout-star-widget, meta-itemprop, telegraph-svg).
+  // 'guardian-svg-stars'. Never emitted at the time — Guardian extractor
+  // returned 'json-ld' (P3 path) or fell through. BRO-919 (2026-09) added
+  // 'guardian-star-svg' above as a real emission (distinct name, not a
+  // revival of the removed 'guardian-svg-stars').
 ]);
 
 function outletHasReliableExtractor(outletId) {

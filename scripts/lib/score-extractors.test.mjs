@@ -117,3 +117,98 @@ test('reviews hub: colon form of the heading is read', () => {
   assert.equal(result.normalizedScore, 60);
   assert.equal(result.source, 'reviewshub-percentage');
 });
+
+// BRO-919: Guardian's star widget is rendered as 5 SVG <div>s whose class
+// names are Emotion (CSS-in-JS) hashes that rotate on every Guardian
+// frontend deploy — "dcr-1we7dfv" today, something else next deploy. The
+// old extractor only looked for class="rating-N"/"stars-N" or JSON-LD,
+// neither of which Guardian ever emits, so it always returned null for a
+// real Guardian review. The fix resolves which hash is "filled" vs "empty"
+// at read time via the CSS custom property each is bound to
+// (--star-rating-background / --star-rating-empty-background), which is
+// stable even though the hash isn't. Shape verified live against real
+// Guardian HTML (both a 2026 and a 2024 review URL) 2026-09-15.
+function guardianStarHtml(filledCount, emptyCount, { filledClass = 'dcr-1we7dfv', emptyClass = 'dcr-d88drm' } = {}) {
+  const css = `<style>.${filledClass}{display:flex;background-color:var(--star-rating-background);}` +
+    `.${emptyClass}{display:flex;background-color:var(--star-rating-empty-background);}</style>`;
+  const filled = `<div class="${filledClass}"><svg></svg></div>`.repeat(filledCount);
+  const empty = `<div class="${emptyClass}"><svg></svg></div>`.repeat(emptyCount);
+  return `${css}<h1>A Play</h1>${filled}${empty}`;
+}
+
+test('guardian: SVG star widget resolves filled/empty via CSS custom property, not a hardcoded hash', () => {
+  const html = guardianStarHtml(3, 2);
+  const result = extractScore(html, '', 'guardian');
+  assert.ok(result, 'should extract a score from the SVG star widget');
+  assert.equal(result.originalScore, '3/5 stars');
+  assert.equal(result.normalizedScore, 60);
+  assert.equal(result.source, 'guardian-star-svg');
+});
+
+test('guardian: SVG star widget with different generated hashes still resolves (next-deploy safety)', () => {
+  const html = guardianStarHtml(4, 1, { filledClass: 'dcr-zzq99x', emptyClass: 'dcr-abcd12' });
+  const result = extractScore(html, '', 'guardian');
+  assert.ok(result, 'must not depend on a specific hardcoded class hash');
+  assert.equal(result.originalScore, '4/5 stars');
+  assert.equal(result.normalizedScore, 80);
+});
+
+test('guardian: a non-review page (no star-rating CSS vars at all) does not false-positive', () => {
+  const html = '<style>.dcr-xyz{color:red;}</style><h1>Some unrelated news article</h1><p>Body text.</p>';
+  const result = extractScore(html, 'Some unrelated news article body text.', 'guardian');
+  assert.equal(result, null, 'articles without the star-rating component must not match');
+});
+
+test('guardian: OUTLET_VERIFIED_SOURCES includes the new source name (rebuild trust gate)', () => {
+  const { OUTLET_VERIFIED_SOURCES } = require('./score-extractors.js');
+  assert.ok(
+    OUTLET_VERIFIED_SOURCES.has('guardian-star-svg'),
+    'a source name extractGuardianScore emits but getBestScore() does not trust is a silent-discard bug'
+  );
+});
+
+// BRO-919: 1 Minute Critic changed its rating-image alt text at some point
+// in 2026 — old reviews use "1 minute critic N-star rating", but a review
+// collected 2026-04-16 (the-fear-of-13) used just "N star review" with no
+// outlet-name prefix, which the old extractor's single regex never matched.
+test('one-minute-critic: legacy alt-text template ("1 minute critic N-star rating") still works', () => {
+  const html = '<img alt="1 minute critic 3-star rating" src="rating.png">';
+  const result = extractScore(html, '', 'one-minute-critic');
+  assert.ok(result);
+  assert.equal(result.originalScore, '3/5');
+  assert.equal(result.source, 'omc-alt-text');
+});
+
+test('one-minute-critic: current alt-text template ("N star review") is now recognized', () => {
+  const html = '<img data-src="https://1minutecritic.com/wp-content/uploads/2026/04/3-stars.png" alt="3 star review" class="lazyload">';
+  const result = extractScore(html, '', 'one-minute-critic');
+  assert.ok(result, 'the 2026 template must not be missed');
+  assert.equal(result.originalScore, '3/5');
+  assert.equal(result.normalizedScore, 60);
+  assert.equal(result.source, 'omc-alt-text');
+});
+
+test('one-minute-critic: rating-image filename is a fallback when alt text is stripped', () => {
+  const html = '<img data-src="https://1minutecritic.com/wp-content/uploads/2026/04/4-stars.png" class="lazyload">';
+  const result = extractScore(html, '', 'one-minute-critic');
+  assert.ok(result);
+  assert.equal(result.originalScore, '4/5');
+  assert.equal(result.source, 'omc-star-rating');
+});
+
+// NY Post regression coverage: css-stars must count real DOM elements, not
+// CSS rule definitions that mention the same class names (e.g.
+// ".rating__star--filled svg{fill:...}" inside a <style> block).
+test('nypost: css-stars ignores <style> block rules and counts only real star elements', () => {
+  const html = '<style>.rating__star--filled svg{fill:red}.rating__star--empty svg{fill:grey}</style>' +
+    '<div class="rating__stars">' +
+    '<div class="rating__star rating__star--filled"></div>' +
+    '<div class="rating__star rating__star--filled"></div>' +
+    '<div class="rating__star rating__star--empty"></div>' +
+    '<div class="rating__star rating__star--empty"></div>' +
+    '</div>';
+  const result = extractScore(html, '', 'nypost');
+  assert.ok(result);
+  assert.equal(result.originalScore, '2/4 stars');
+  assert.equal(result.source, 'css-stars');
+});

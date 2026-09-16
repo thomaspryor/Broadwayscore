@@ -21,7 +21,7 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
-const EXTRACTOR_VERSION = 6;  // v6: Guardian class-attribute anchoring (UUID/URL false positives), Radio Times <use>-anchored SVG matching
+const EXTRACTOR_VERSION = 7;  // v7 (BRO-919): Guardian SVG star widget (hash-resolved via CSS custom property), OMC "N star review" alt-text template + filename fallback
 
 /**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
@@ -479,19 +479,44 @@ function extractNYSRScore(html, text) {
 
 /**
  * Extract score from Guardian review
- * Format: Star ratings — BUT ONLY AVAILABLE VIA CONTENT API, NOT HTML.
+ * Format: Star ratings, rendered client-side-hydrated SSR as a row of 5 SVG
+ * icon <div>s in the headline block — NOT as text, unicode stars, or JSON-LD.
  *
- * Guardian star ratings are NOT present in the HTML pages returned by their website.
- * Stars are only available via the Guardian Content API (guardianApi.starRating field).
- * To recover Guardian star ratings, run:
- *   node scripts/recover-explicit-ratings.js --outlet=guardian
- * This requires GUARDIAN_API_KEY set as a CI secret (currently not configured).
- * Until the API key is added, use humanReviewScore for manual per-file corrections.
+ * BRO-919: the star widget uses Emotion (CSS-in-JS) generated class names
+ * (e.g. "dcr-1we7dfv") that rotate on every Guardian frontend deploy, so a
+ * hardcoded class selector breaks the next time Guardian ships. Instead,
+ * resolve which class is "filled" vs "empty" at read time via the CSS custom
+ * property each one is bound to (--star-rating-background /
+ * --star-rating-empty-background) — that binding is stable even though the
+ * hash isn't. Verified live 2026-09-15 against both a 2026 and a 2024
+ * Guardian review URL: same resolution logic, different (but internally
+ * consistent) hashes, correct star count both times. A genuine non-review
+ * Guardian article carries neither CSS rule at all, so this cannot false-
+ * positive on regular news pages.
  *
- * The HTML patterns below (JSON-LD ratingValue, class="rating-N") do not appear
- * in Guardian HTML and will never match. They are retained as safety nets only.
+ * Guardian star ratings are also available via the Content API
+ * (guardianApi.starRating field): node scripts/recover-explicit-ratings.js
+ * --outlet=guardian (requires GUARDIAN_API_KEY). Use humanReviewScore for
+ * manual per-file corrections when both paths come up empty.
  */
 function extractGuardianScore(html, text) {
+  if (html) {
+    const filledClassMatch = html.match(/\.(dcr-[a-z0-9]+)\{[^}]*background-color:var\(--star-rating-background\)[^}]*\}/);
+    const emptyClassMatch = html.match(/\.(dcr-[a-z0-9]+)\{[^}]*background-color:var\(--star-rating-empty-background\)[^}]*\}/);
+    if (filledClassMatch && emptyClassMatch && filledClassMatch[1] !== emptyClassMatch[1]) {
+      const filledCount = (html.match(new RegExp(`class="${filledClassMatch[1]}"`, 'g')) || []).length;
+      const emptyCount = (html.match(new RegExp(`class="${emptyClassMatch[1]}"`, 'g')) || []).length;
+      const total = filledCount + emptyCount;
+      if (filledCount >= 1 && total >= 1 && total <= 5) {
+        return {
+          originalScore: `${filledCount}/${total} stars`,
+          normalizedScore: starsToNumeric(filledCount, total),
+          source: 'guardian-star-svg'
+        };
+      }
+    }
+  }
+
   // Try JSON-LD (not present in Guardian HTML — retained as safety net)
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+)"?/);
   if (jsonLdMatch) {
@@ -1114,11 +1139,34 @@ function extractOneMinuteCriticScore(html, text) {
       return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-alt-text' };
     }
   }
+  // 1b. BRO-919: OMC's rating-image alt text dropped the "1 minute critic"
+  // prefix at some point in 2026 — the current template is just
+  // alt="N star review" (verified live against a 2026-04 review; the older
+  // "1 minute critic N-star rating" template above still matches older
+  // archived reviews). Scoped to the alt="" attribute so ordinary prose
+  // mentioning "a 3 star review" elsewhere on the page can't match.
+  const altReviewMatch = html.match(/alt="(\d(?:\.\d)?)\s*-?\s*star\s+review"/i);
+  if (altReviewMatch) {
+    const rating = parseFloat(altReviewMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-alt-text' };
+    }
+  }
   // 2. Text pattern: "N out of 5 stars" (appears at end of review)
   const textMatch = text.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i)
                  || html.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i);
   if (textMatch) {
     const rating = parseFloat(textMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-star-rating' };
+    }
+  }
+  // 3. Rating-image filename fallback: OMC's own "N-stars.png" upload under
+  // its wp-content path (paired with the alt text above on the same <img>,
+  // but caught here if the alt attribute is ever stripped/lazy-swapped).
+  const filenameMatch = html.match(/1minutecritic\.com\/wp-content\/uploads\/[^"'\s]*?(\d(?:\.\d)?)-?stars?\.(?:png|jpe?g|webp)/i);
+  if (filenameMatch) {
+    const rating = parseFloat(filenameMatch[1]);
     if (rating >= 1 && rating <= 5) {
       return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-star-rating' };
     }
@@ -1487,7 +1535,7 @@ function scoreToThumb(score) {
 // 'guardian-svg-stars', 'telegraph-svg', 'timeout-star-widget'. Never emitted
 // by any extractor; safe to remove.
 const OUTLET_VERIFIED_SOURCES = new Set([
-  'json-ld', 'guardian-api',
+  'json-ld', 'guardian-api', 'guardian-star-svg',
   'wos-star-images', 'stage-star-svg',
   'telegraph-svg-stars', 'dailymail-rating-img', 'dailymail-css-stars', 'fivestar-widget',
   'star-class', 'unicode-stars', 'numeric-stars', 'original-star-rating',
