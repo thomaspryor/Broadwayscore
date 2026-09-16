@@ -51,6 +51,34 @@ const MIN_EXPECTED_WORKFLOWS = 50;
 const WORKFLOW_EXT_RE = /\.ya?ml$/i;
 
 /**
+ * Describe a thrown value without ever throwing itself (review finding).
+ *
+ * `err.message` is NOT safe here: a checker can `throw null` / `throw undefined`
+ * (property access on those throws), or throw an object whose `.message` is a
+ * GETTER that throws, or whose `toString` throws. Any of those made the CATCH
+ * HANDLER throw, which escaped scanWorkflows entirely — and since the CLI has no
+ * try/catch around the call, node exited 1: "violations found" from a checker
+ * that merely exploded. That is the same 2->1 collapse the Array.isArray guard
+ * closed one layer up, and it simply moved in here. Measured, not theorised.
+ *
+ * @param {unknown} err
+ * @returns {string}
+ */
+function describeError(err) {
+  try {
+    if (err instanceof Error && typeof err.message === 'string') return err.message;
+    if (err === null) return 'null';
+    if (err === undefined) return 'undefined';
+    const msg = err && err.message;
+    if (typeof msg === 'string') return msg;
+    return String(err);
+  } catch {
+    // Even String(err) can throw (Symbol, or a throwing toString/Symbol.toPrimitive).
+    return '<unprintable thrown value>';
+  }
+}
+
+/**
  * Scan a workflows directory. Pure-ish: does IO, but takes its directory and
  * checker as arguments and RETURNS the verdict instead of exiting, so tests can
  * drive every branch of the exit contract.
@@ -64,7 +92,7 @@ function scanWorkflows(dir, check) {
   try {
     entries = fs.readdirSync(dir, { withFileTypes: true });
   } catch (err) {
-    return { code: 2, violations: [], scanned: 0, error: `could not read ${dir}: ${err.message}` };
+    return { code: 2, violations: [], scanned: 0, error: `could not read ${dir}: ${describeError(err)}` };
   }
 
   // A symlink must be FOLLOWED to decide whether it is a file. Filtering on the
@@ -106,7 +134,7 @@ function scanWorkflows(dir, check) {
     try {
       text = fs.readFileSync(path.join(dir, file), 'utf8');
     } catch (err) {
-      return { code: 2, violations, scanned: files.length, error: `could not read ${file}: ${err.message}` };
+      return { code: 2, violations, scanned: files.length, error: `could not read ${file}: ${describeError(err)}` };
     }
     try {
       const found = check(text);
@@ -130,9 +158,23 @@ function scanWorkflows(dir, check) {
           error: `checker returned ${found === null ? 'null' : typeof found} (expected an array) for ${file}`,
         };
       }
+      // Elements must be non-empty STRINGS (review finding). An array of objects
+      // stringified to "[object Object]" and an array hole/undefined stringified
+      // to "undefined" — a fabricated verdict one layer inside the string bug
+      // above (measured: [{job:'x'}] produced 50 findings of "[object Object]",
+      // and a sparse [,,'x'] produced 150, two thirds of them "undefined").
+      const bad = found.findIndex((v) => typeof v !== 'string' || v === '');
+      if (bad !== -1) {
+        return {
+          code: 2,
+          violations,
+          scanned: files.length,
+          error: `checker returned a non-string violation at index ${bad} for ${file}`,
+        };
+      }
       for (const v of found) violations.push(`${file}: ${v}`);
     } catch (err) {
-      return { code: 2, violations, scanned: files.length, error: `checker threw on ${file}: ${err.message}` };
+      return { code: 2, violations, scanned: files.length, error: `checker threw on ${file}: ${describeError(err)}` };
     }
   }
 
@@ -147,7 +189,7 @@ if (require.main === module) {
   try {
     ({ findMissingLedgerCommits } = require('./alert-ledger-commit-check.js'));
   } catch (err) {
-    console.error(`could not load alert-ledger-commit-check.js: ${err.message}`);
+    console.error(`could not load alert-ledger-commit-check.js: ${describeError(err)}`);
     process.exitCode = 2;
     return;
   }
