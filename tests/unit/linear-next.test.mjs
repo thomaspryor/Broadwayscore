@@ -52,6 +52,7 @@ import {
   generateCorrelationId,
   findUnresolvedDispatchComment,
   hasLiveLedgerEntry,
+  dispatchCommentIsOurFinishedLaunch,
 } from '../../scripts/lib/linear-dispatch.js';
 import { parseArgs, ledgerTaskId, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
 
@@ -416,6 +417,114 @@ test('hasLiveLedgerEntry: false once a headless job finished (JOB_EVENTS.DONE is
 test('hasLiveLedgerEntry: ignores entries for other tasks', () => {
   const entries = [{ event: 'launch', taskId: 'linear:BRO-OTHER', workspaceRef: 'workspace:1', ts: '2026-08-12T10:00:00.000Z' }];
   assert.equal(hasLiveLedgerEntry('linear:BRO-4', entries), false);
+});
+
+// BRO-3481: a Linear issue that was dispatched HEADLESS, finished (job-done),
+// and later REOPENED could never be re-dispatched by the watchdog's own argv
+// (no --force) — the idempotency guard's "is this comment our own finished
+// launch" check (dispatchCommentIsOurFinishedLaunch) only recognized the
+// cmux-tab terminal vocabulary (terminalForLaunch's dead/vanished/
+// prune-closed/remapped, matched by workspaceRef), which a headless launch
+// never writes at all. Fixture below is shaped exactly like the BRO-3431
+// incident evidence quoted in the ticket: a 'launch' row for a headless
+// dispatch, its job-spawned/job-done pair, and the "Dispatched ..." comment
+// that same launch posted.
+test('dispatchCommentIsOurFinishedLaunch: recognizes a finished HEADLESS launch via JOB_EVENTS, not just the cmux-tab vocabulary', () => {
+  const taskId = 'linear:BRO-3431';
+  const entries = [
+    { event: 'launch', taskId, workspaceRef: 'headless:linear:BRO-3431', correlationId: '2f595adb', ts: '2026-09-15T20:34:40.000Z' },
+    { event: 'job-spawned', taskId, jobId: 'job1', ts: '2026-09-15T20:34:46.000Z' },
+    { event: 'job-done', taskId, jobId: 'job1', ts: '2026-09-15T21:07:40.000Z' },
+  ];
+  const comment = { body: 'Dispatched 2f595adb to linear:BRO-3431-mu34ri7q at 2026-09-15T21:07:44.458Z (headless)', createdAt: '2026-09-15T21:07:44.458Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, taskId, entries), true);
+});
+
+// Codex adversarial review (BRO-3481): JOB_EVENTS are only ever written by
+// the HEADLESS runner (bsc-runner.js) — headless has no visibility into a
+// live cmux tab for the same taskId (that gap is exactly what the sibling
+// "guard parity" test above exists to narrow, not close). Without a
+// launch-mode check, an unrelated LATER headless attempt on the same task
+// that fails at provisioning (job-failed) would wrongly read as proof a
+// still-running CMUX launch is "over", dismissing a genuinely live
+// cross-machine warning.
+test('dispatchCommentIsOurFinishedLaunch: a CMUX launch is never "finished" by an unrelated headless job event for the same taskId', () => {
+  const taskId = 'linear:BRO-7001';
+  const entries = [
+    { event: 'launch', taskId, workspaceRef: 'workspace:42', correlationId: 'cc11', ts: '2026-09-15T20:00:00.000Z' },
+    { event: 'job-failed', taskId, jobId: 'j9', ts: '2026-09-15T20:10:00.000Z', stage: 'worktree-error' },
+  ];
+  const comment = { body: 'Dispatched cc11 to workspace:42 at 2026-09-15T20:00:01.000Z (cmux)', createdAt: '2026-09-15T20:00:01.000Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, taskId, entries), false);
+});
+
+test('dispatchCommentIsOurFinishedLaunch: still false for a headless launch with no terminal job event (genuinely live)', () => {
+  const taskId = 'linear:BRO-9002';
+  const entries = [
+    { event: 'launch', taskId, workspaceRef: 'headless:linear:BRO-9002', correlationId: 'ab12cd34', ts: '2026-09-15T20:00:00.000Z' },
+    { event: 'job-spawned', taskId, jobId: 'job1', ts: '2026-09-15T20:00:05.000Z' },
+  ];
+  const comment = { body: 'Dispatched ab12cd34 to linear:BRO-9002-x at 2026-09-15T20:00:06.000Z (headless)', createdAt: '2026-09-15T20:00:06.000Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, taskId, entries), false);
+});
+
+// End-to-end regression, real main() (BRO-3481's own acceptance criterion:
+// dispatchable by the watchdog's own argv with no hand-added --force).
+test('BRO-3481: a reopened issue with a finished headless dispatch comment is dispatchable via the watchdog\'s own argv (no --force)', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const taskId = 'linear:BRO-3431';
+    const issue = {
+      id: 'issue-uuid-bro-3481', identifier: 'BRO-3431',
+      title: 'Reopened after a finished headless dispatch',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-3431/reopened',
+      priority: 2,
+      // Reopened: back to a non-terminal state, same as the real incident.
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: 'Dispatched 2f595adb to linear:BRO-3431-mu34ri7q at 2026-09-15T21:07:44.458Z (headless)', createdAt: '2026-09-15T21:07:44.458Z' },
+      ] },
+    };
+    const entries = [
+      { event: 'launch', taskId, workspaceRef: 'headless:linear:BRO-3431', correlationId: '2f595adb', ts: '2026-09-15T20:34:40.000Z' },
+      { event: 'job-spawned', taskId, jobId: 'job1', ts: '2026-09-15T20:34:46.000Z' },
+      { event: 'job-done', taskId, jobId: 'job1', ts: '2026-09-15T21:07:40.000Z' },
+    ];
+    // No --detach: that re-execs a real detached subprocess (see
+    // dispatchArgvFor's own comment on why it's required for the true
+    // watchdog dispatch) which ignores every injected dep below and hits the
+    // real Linear API/ledger — exactly like the sibling "guard parity" test
+    // above, --headless alone is enough to exercise the idempotency guard
+    // in-process against the fixture.
+    main(['--id', issue.identifier, '--headless'], {
+      getIssue: async () => issue,
+      readLedgerEntries: () => entries,
+      appendLedgerEntry: () => {},
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'job2', logFile: null }; },
+      cmuxAvailable: () => false,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      linear: {
+        createComment: async () => {},
+        getTeam: async () => ({ states: [] }),
+        getIssue: async () => issue,
+        updateIssue: async () => {},
+        TEAM_KEY: 'BRO',
+      },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.match(res.stderr, /RUNJOB_WAS_CALLED/, `expected the dispatch to reach runJob, not refuse. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.doesNotMatch(res.stderr, /already looks dispatched/, 'must not hit the stale idempotency refusal — this is the BRO-3481 regression');
 });
 
 // ── scripts/linear-next.js's own pure helpers ───────────────────────────────

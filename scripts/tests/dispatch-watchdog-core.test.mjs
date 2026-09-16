@@ -740,3 +740,68 @@ test('BRO-3404: with no holds at all, both lanes dispatch', () => {
   // perSweep is 2, and Linear sorts first, so the Notion card rides along.
   assert.ok(ids.includes('1852'));
 });
+
+// ── structuralGuardRefusal (BRO-3481) ───────────────────────────────────────
+//
+// A reopened Linear issue carrying an old "Dispatched ..." comment could
+// never be re-dispatched by the watchdog's own argv (no --force): the
+// idempotency guard refused it every retry, burning a REDISPATCH claim each
+// time before eventually parking with a generic "produced no launch" message
+// that named no reason. structuralGuardRefusal is the curated (not blanket)
+// detector that lets dispatch-watchdog.js park immediately, naming the
+// guard's own reason, for the refusal shapes that are genuinely permanent.
+
+test('structuralGuardRefusal: recognizes the exact BRO-3431 idempotency refusal, extracting just its own line', () => {
+  const out = [
+    '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.',
+    '  Linear comment: "Dispatched 2f595adb to linear:BRO-3431-mu34ri7q at 2026-09-15T21:07:44.458Z (headless)" (1.9h ago)',
+    '  Re-run with --force if you know this is stale.',
+  ].join('\n');
+  const reason = core.structuralGuardRefusal(out);
+  assert.equal(reason, '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.');
+});
+
+test('structuralGuardRefusal: recognizes the terminal-state guard refusal', () => {
+  const out = '[linear-next] BRO-99 is already in a terminal state ("Done") — refusing to re-dispatch. Re-run with --force if this is a deliberate re-open.';
+  assert.equal(core.structuralGuardRefusal(out), out);
+});
+
+test('structuralGuardRefusal: null for a transient lock/claim-race refusal (must keep retrying, not park forever)', () => {
+  const out = '[bsc-next] REFUSING succession dispatch: another succession dispatch for task #12 is already in flight (lock held, not stale). Wait for it to finish or fail before retrying — dispatching concurrently would let two successors both pass the depth cap.';
+  assert.equal(core.structuralGuardRefusal(out), null);
+});
+
+test('structuralGuardRefusal: null for a self-resolving "process is STILL ALIVE" refusal', () => {
+  const out = "[linear-next] REFUSING to dispatch BRO-5: its ledger record was closed by a 'prune-closed' breadcrumb at 2026-09-15T10:00:00Z, but a claude process is STILL ALIVE in workspace:9.";
+  assert.equal(core.structuralGuardRefusal(out), null);
+});
+
+test('structuralGuardRefusal: null for ordinary crash output, and tolerates empty/missing input', () => {
+  assert.equal(core.structuralGuardRefusal('TypeError: cannot read property foo of undefined\n  at bar (/x.js:1:1)'), null);
+  assert.equal(core.structuralGuardRefusal(''), null);
+  assert.equal(core.structuralGuardRefusal(undefined), null);
+});
+
+// Codex adversarial review (BRO-3481): "it already looks dispatched" is
+// printed for TWO different reasons (linear-next.js:842-858) — a stale
+// historical comment (permanent) or hasLiveLedgerEntry finding a genuinely
+// LIVE concurrent dispatch (NOT permanent — it resolves once that dispatch
+// finishes). Parking the live case would suppress legitimate future work,
+// since nothing but a new launch clears a watchdog-park row.
+test('structuralGuardRefusal: null when "it already looks dispatched" came from a LIVE ledger entry, not a stale comment', () => {
+  const out = [
+    '[linear-next] REFUSING to dispatch BRO-42: it already looks dispatched.',
+    "  Local dispatch ledger has a live (non-dead, non-finished) entry for linear:BRO-42 — latest attempt 'job-spawned' at 2026-09-15T20:00:00.000Z (5m ago).",
+    '  Re-run with --force if you know this is stale.',
+  ].join('\n');
+  assert.equal(core.structuralGuardRefusal(out), null);
+});
+
+test('structuralGuardRefusal: still recognizes "it already looks dispatched" when it is the stale-comment case (no live-ledger detail line)', () => {
+  const out = [
+    '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.',
+    '  Linear comment: "Dispatched 2f595adb to linear:BRO-3431-mu34ri7q at 2026-09-15T21:07:44.458Z (headless)" (1.9h ago)',
+    '  Re-run with --force if you know this is stale.',
+  ].join('\n');
+  assert.equal(core.structuralGuardRefusal(out), '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.');
+});
