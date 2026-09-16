@@ -327,8 +327,23 @@ function audit() {
       // so a re-set stale pointer self-heals on the next scheduled run instead
       // of waiting for a human to notice validate-data's NEW-duplicate-URL
       // gate go red and hand-run the other script.
+      // A member's link can be expressed via EITHER pointer field (mixed-field
+      // cycles are the documented corpus-wide norm — see canonical-duplicate-
+      // pointers.js's DUPLICATE_POINTER_FIELDS / duplicate-cycle.js's own
+      // "mixed-field 2-node cycle" test) — checking duplicateOf only missed
+      // the exact class this ticket is about: collect-review-texts.js's
+      // fingerprint dedup links a LOSER back at its canonical via
+      // duplicateTextOf, not duplicateOf (adversarial review, BRO-2391).
+      const pointsAt = (f, target) => {
+        const d = load(f);
+        return !!(d && (d.duplicateOf === target || d.duplicateTextOf === target));
+      };
       const linkedCanonicals = new Set(members
-        .map(f => { const d = load(f); return d && typeof d.duplicateOf === 'string' && set.has(d.duplicateOf) ? d.duplicateOf : null; })
+        .map(f => {
+          const d = load(f);
+          const t = d && (d.duplicateOf || d.duplicateTextOf);
+          return typeof t === 'string' && set.has(t) ? t : null;
+        })
         .filter(Boolean));
       if (linkedCanonicals.size) {
         for (const canonName of linkedCanonicals) {
@@ -336,7 +351,40 @@ function audit() {
           // Must actually BE the canonical (not itself pointing elsewhere) —
           // mirrors fix-canonical-duplicate-backpointer.js's own check.
           if (!canonData || canonData.duplicateOf) continue;
-          const losers = members.filter(f => f !== canonName);
+          // Never touch a human-reviewed or locked file — mirrors fix-
+          // canonical-duplicate-backpointer.js's own guard. fix() below writes
+          // with force:true, which BYPASSES protectedFields (only logs a
+          // warning), so this has to be enforced here rather than left to
+          // safeWriteReview (adversarial review, BRO-2391: an operator's
+          // "vouched independent, not a duplicate" call must never be
+          // silently overwritten by this daily-scheduled heal).
+          if (canonData.humanReviewScore != null || canonData._locked === true) continue;
+          // Only members with a LIVE pointer AT THIS canonical are its losers
+          // — never "every other member of the group." A same URL can hold
+          // TWO independent linked pairs (B->A and D->C); folding blindly
+          // through `members.filter(f => f !== canonName)` would merge them
+          // into one enumeration-order-dependent collapse, and would also
+          // sweep in a genuinely different, uncorroborated review that
+          // happens to share the URL by coincidence — neither is provably
+          // "this canonical's cluster" the way an existing pointer is
+          // (adversarial review, BRO-2391).
+          const losers = members.filter(f => f !== canonName && pointsAt(f, canonName));
+          if (!losers.length) continue;
+          if (losers.some(f => { const d = load(f); return d && (d.humanReviewScore != null || d._locked === true); })) continue;
+          // A TRUE, uncommitted mutual cycle — this canonical points at a
+          // loser that ALSO has no duplicateOf of its own (so it never
+          // committed to being anyone's loser) and, per `losers`, points back
+          // at us too — must be left alone, not force-collapsed from BOTH
+          // directions. Real corpus case (cats-1982, the-sunflower): A and B
+          // both carry duplicateOf:null with mutual duplicateTextOf at each
+          // other. Without this check, A would be queued as canonical-of-B in
+          // this same pass B gets queued as canonical-of-A, and fix()
+          // processing the second entry after the first has already rewritten
+          // the pair would silently REVERSE the first entry's collapse
+          // (adversarial review, BRO-2391). This is the exact "genuinely
+          // uncommitted cycle" case hasContestedCycleClear/the double-clear
+          // repair already own — leave it for that, or a human, to resolve.
+          if (losers.some(f => !load(f).duplicateOf && pointsAt(canonName, f))) continue;
           // No `siblings`: this whole group is already a same-URL cluster
           // (grouped by normalizeUrl above), which planCanonicalPointerClear's
           // own docs treat as sufficient proof a pointer into it is a cycle —

@@ -116,3 +116,138 @@ test('audit(): an already-linked group with NO stale canonical backpointer is le
   assert.equal(result.staleBackpointerCount, 0);
   assert.equal(result.cohesive.some((g) => g.showId === showId), false);
 });
+
+test('audit(): an unrelated third file sharing the URL is NEVER swept into the canonical\'s losers just for being in the group (adversarial review, BRO-2391)', () => {
+  const showId = 'three-member-show-2026';
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  fs.mkdirSync(showDir, { recursive: true });
+
+  const url = 'https://example.com/review-shared-url';
+  const canonName = 'outlet--critic-a.json';
+  const linkedLoserName = 'outlet--critic-b.json';
+  const unlinkedName = 'outlet--critic-c.json';
+
+  // Canonical carries a stale backpointer at its ACTUAL loser (linkedLoserName).
+  fs.writeFileSync(path.join(showDir, canonName), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic A', url, fullText: body(3000),
+    contentTier: 'complete', isFullReview: true,
+    duplicateOf: null, duplicateTextOf: linkedLoserName,
+  }));
+  fs.writeFileSync(path.join(showDir, linkedLoserName), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic B', url, fullText: body(2800),
+    contentTier: 'complete', isFullReview: true, duplicateOf: canonName,
+  }));
+  // Critic C shares the same URL by coincidence but has NO pointer at the
+  // canonical at all — must never be swept in as a loser.
+  fs.writeFileSync(path.join(showDir, unlinkedName), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic C', url, fullText: body(2600),
+    contentTier: 'complete', isFullReview: true, duplicateOf: null,
+  }));
+
+  const before = audit();
+  const hit = before.cohesive.find((g) => g.showId === showId && g.canonical === canonName);
+  assert.ok(hit, 'the linked stale-backpointer pair must still be detected');
+  assert.deepEqual(hit.losers, [linkedLoserName], 'the unlinked third file must NOT be included as a loser');
+
+  fix(before.cohesive);
+  const unlinkedData = JSON.parse(fs.readFileSync(path.join(showDir, unlinkedName), 'utf-8'));
+  assert.equal(unlinkedData.duplicateOf, null, 'the unrelated file must be left completely untouched');
+});
+
+test('audit(): two INDEPENDENT linked pairs sharing one URL are resolved separately, not merged into one contradictory collapse (adversarial review, BRO-2391)', () => {
+  const showId = 'two-pairs-one-url-2026';
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  fs.mkdirSync(showDir, { recursive: true });
+
+  const url = 'https://example.com/two-pairs-shared-url';
+  const canonA = 'outlet--critic-a.json';
+  const loserB = 'outlet--critic-b.json';
+  const canonC = 'outlet--critic-c.json';
+  const loserD = 'outlet--critic-d.json';
+
+  fs.writeFileSync(path.join(showDir, canonA), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic A', url, fullText: body(3000),
+    contentTier: 'complete', isFullReview: true, duplicateOf: null, duplicateTextOf: loserB,
+  }));
+  fs.writeFileSync(path.join(showDir, loserB), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic B', url, fullText: body(2800),
+    contentTier: 'complete', isFullReview: true, duplicateOf: canonA,
+  }));
+  fs.writeFileSync(path.join(showDir, canonC), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic C', url, fullText: body(2900),
+    contentTier: 'complete', isFullReview: true, duplicateOf: null, duplicateTextOf: loserD,
+  }));
+  fs.writeFileSync(path.join(showDir, loserD), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic D', url, fullText: body(2700),
+    contentTier: 'complete', isFullReview: true, duplicateOf: canonC,
+  }));
+
+  const before = audit();
+  const hitA = before.cohesive.find((g) => g.showId === showId && g.canonical === canonA);
+  const hitC = before.cohesive.find((g) => g.showId === showId && g.canonical === canonC);
+  assert.ok(hitA, 'pair A/B must be detected');
+  assert.ok(hitC, 'pair C/D must be detected');
+  assert.deepEqual(hitA.losers, [loserB], 'A\'s losers must be exactly B, never C or D');
+  assert.deepEqual(hitC.losers, [loserD], 'C\'s losers must be exactly D, never A or B');
+
+  fix(before.cohesive);
+  const a = JSON.parse(fs.readFileSync(path.join(showDir, canonA), 'utf-8'));
+  const c = JSON.parse(fs.readFileSync(path.join(showDir, canonC), 'utf-8'));
+  assert.equal(a.duplicateOf, null, 'A stays its own canonical');
+  assert.equal(c.duplicateOf, null, 'C stays its own canonical, never folded into A\'s cluster');
+});
+
+test('audit(): a human-reviewed canonical is never touched, even with a stale backpointer (adversarial review, BRO-2391)', () => {
+  const showId = 'human-reviewed-canonical-2026';
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  fs.mkdirSync(showDir, { recursive: true });
+
+  const url = 'https://example.com/human-reviewed';
+  const canonName = 'outlet--critic-a.json';
+  const loserName = 'outlet--critic-b.json';
+
+  fs.writeFileSync(path.join(showDir, canonName), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic A', url, fullText: body(3000),
+    contentTier: 'complete', isFullReview: true,
+    duplicateOf: null, duplicateTextOf: loserName, humanReviewScore: 85,
+  }));
+  fs.writeFileSync(path.join(showDir, loserName), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic B', url, fullText: body(2800),
+    contentTier: 'complete', isFullReview: true, duplicateOf: canonName,
+  }));
+
+  const result = audit();
+  assert.equal(result.cohesive.some((g) => g.showId === showId), false, 'a human-reviewed canonical must never be queued for a forced write');
+});
+
+test('audit(): a TRUE uncommitted mutual cycle (both sides duplicateOf:null, mutual duplicateTextOf) is left alone, not force-collapsed from both directions (live corpus case, cats-1982 the-sunflower)', () => {
+  const showId = 'cats-1982';
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  fs.mkdirSync(showDir, { recursive: true });
+
+  const url = 'https://thesunflower.com/45810/arts-and-culture/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/';
+  const nameA = 'the-sunflower--karen-galindo.json';
+  const nameB = 'the-sunflower--reviews-karen-galindo.json';
+
+  // Neither side has committed via duplicateOf — each only carries a
+  // duplicateTextOf pointing at the other. Both look like a valid canonical
+  // from the "duplicateOf falsy" test alone.
+  fs.writeFileSync(path.join(showDir, nameA), JSON.stringify({
+    showId, outletId: 'the-sunflower', criticName: 'Karen Galindo', url, fullText: body(3000),
+    contentTier: 'complete', isFullReview: true, duplicateOf: null, duplicateTextOf: nameB,
+  }));
+  fs.writeFileSync(path.join(showDir, nameB), JSON.stringify({
+    showId, outletId: 'the-sunflower', criticName: 'Karen Galindo', url, fullText: body(2900),
+    contentTier: 'complete', isFullReview: true, duplicateOf: null, duplicateTextOf: nameA,
+  }));
+
+  const before = audit();
+  assert.equal(before.cohesive.some((g) => g.showId === showId), false, 'a genuinely uncommitted mutual cycle must not be queued at all — not from either direction');
+
+  // fix() on an empty queue must leave both files completely untouched.
+  fix(before.cohesive.filter((g) => g.showId === showId));
+  const a = JSON.parse(fs.readFileSync(path.join(showDir, nameA), 'utf-8'));
+  const b = JSON.parse(fs.readFileSync(path.join(showDir, nameB), 'utf-8'));
+  assert.equal(a.duplicateTextOf, nameB, 'A must be untouched');
+  assert.equal(b.duplicateTextOf, nameA, 'B must be untouched');
+});
