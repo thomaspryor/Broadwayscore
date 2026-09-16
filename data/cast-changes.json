@@ -118,6 +118,26 @@
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-29",
           "incomplete": true
+        },
+        {
+          "type": "departure",
+          "name": "Olivia Holt",
+          "role": "Connie Francis",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/just-in-time-broadway-circle-in-the-square-theatre-2025",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
+          "incomplete": true
+        },
+        {
+          "type": "arrival",
+          "name": "Ariana Madix",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/just-in-time-broadway-circle-in-the-square-theatre-2025",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
+          "incomplete": true
         }
       ],
       "history": [
@@ -458,6 +478,16 @@
           "sourceUrl": "https://playbill.com/production/the-great-gatsby-broadway-broadway-theatre-2024",
           "sourceType": "playbill-cast",
           "addedDate": "2026-09-09",
+          "incomplete": true
+        },
+        {
+          "type": "arrival",
+          "name": "Justin Keats",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/the-great-gatsby-broadway-broadway-theatre-2024",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
           "incomplete": true
         }
       ],
@@ -1582,11 +1612,6 @@
           "since": "2026-02-27"
         },
         {
-          "name": "Meg Stalter",
-          "role": "Mary (Mary Todd Lincoln)",
-          "since": "2026-07-06"
-        },
-        {
           "name": "Jane Krakowski",
           "role": "Mary Todd Lincoln",
           "since": "2025-10-14"
@@ -1597,14 +1622,19 @@
           "since": "2026-04-28"
         },
         {
-          "name": "Ryo Kamibayashi",
-          "role": "Mary's Husband's Assistant",
-          "since": "2026-07-06"
-        },
-        {
           "name": "Barrett Foa",
           "role": "Mary's Tutor",
           "since": "2026-07-06"
+        },
+        {
+          "name": "Bowen Yang",
+          "role": "Mary Todd Lincoln",
+          "since": "2026-09-15"
+        },
+        {
+          "name": "Tony Macht",
+          "role": "Mary's Husband's Assistant",
+          "since": "2026-09-15"
         }
       ],
       "upcoming": [
@@ -1664,68 +1694,6 @@
           "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
           "sourceType": "playbill",
           "addedDate": "2026-06-17"
-        },
-        {
-          "type": "note",
-          "name": "Meg Stalter",
-          "role": "Mary (Mary Todd Lincoln)",
-          "date": "2026-09-12",
-          "note": "Casting for after Stalter's final bow to be announced",
-          "sourceUrl": "https://playbill.com/article/ryo-kamibayashi-barrett-foa-will-join-meg-stalter-on-broadway-in-oh-mary",
-          "sourceType": "playbill",
-          "addedDate": "2026-07-11"
-        },
-        {
-          "type": "departure",
-          "name": "Meg Stalter",
-          "role": "Mary Todd Lincoln",
-          "date": "2026-09-12",
-          "note": "Final performance as title star after run beginning July 6.",
-          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
-          "sourceType": "playbill",
-          "addedDate": "2026-08-08"
-        },
-        {
-          "type": "arrival",
-          "name": "Bowen Yang",
-          "role": "Mary Todd Lincoln",
-          "date": "2026-09-15",
-          "endDate": "2026-12-06",
-          "note": "12-week engagement as next title star at Lyceum Theatre; Broadway debut.",
-          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
-          "sourceType": "playbill",
-          "addedDate": "2026-08-08"
-        },
-        {
-          "type": "departure",
-          "name": "Ryo Kamibayashi",
-          "role": "Mary's Husband's Assistant",
-          "date": "2026-09-13",
-          "note": "Final bow in the play September 13.",
-          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
-          "sourceType": "playbill",
-          "addedDate": "2026-08-08"
-        },
-        {
-          "type": "arrival",
-          "name": "Tony Macht",
-          "role": "Mary's Husband's Assistant",
-          "date": "2026-09-15",
-          "endDate": "2026-12-06",
-          "note": "Original cast member re-joining the company alongside Bowen Yang.",
-          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
-          "sourceType": "playbill",
-          "addedDate": "2026-08-08"
-        },
-        {
-          "type": "note",
-          "name": "Mary Todd Lincoln",
-          "role": "Mary Todd Lincoln",
-          "date": "2026-09-13",
-          "note": "Casting after Stalter's final bow to be announced",
-          "sourceUrl": "https://playbill.com/article/ryo-kamibayashi-barrett-foa-will-join-meg-stalter-on-broadway-in-oh-mary",
-          "sourceType": "playbill",
-          "addedDate": "2026-08-08"
         },
         {
           "type": "departure",
@@ -1842,6 +1810,24 @@
           "until": "2025-08-02",
           "note": "Current star departing alongside original cast members",
           "sourceUrl": "https://playbill.com/article/get-ready-to-say-goodbye-to-oh-mary-s-original-cast",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Meg Stalter",
+          "role": "Mary (Mary Todd Lincoln)",
+          "since": "2026-07-06",
+          "until": "2026-09-12",
+          "note": "Final performance as title star after run beginning July 6.",
+          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Ryo Kamibayashi",
+          "role": "Mary's Husband's Assistant",
+          "since": "2026-07-06",
+          "until": "2026-09-13",
+          "note": "Final bow in the play September 13.",
+          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
           "sourceType": "playbill"
         }
       ]
@@ -3862,6 +3848,46 @@
           "sourceType": "playbill-cast",
           "addedDate": "2026-09-12",
           "incomplete": true
+        },
+        {
+          "type": "departure",
+          "name": "Chrissy Metz",
+          "role": "Angelique",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/juliet-broadway-stephen-sondheim-theatre-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
+          "incomplete": true
+        },
+        {
+          "type": "arrival",
+          "name": "Spencer Sutherland",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/juliet-broadway-stephen-sondheim-theatre-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
+          "incomplete": true
+        },
+        {
+          "type": "arrival",
+          "name": "Anthony Gargiula",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/juliet-broadway-stephen-sondheim-theatre-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
+          "incomplete": true
+        },
+        {
+          "type": "arrival",
+          "name": "Kenzie Ziegler",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/juliet-broadway-stephen-sondheim-theatre-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
+          "incomplete": true
         }
       ],
       "history": []
@@ -4228,6 +4254,36 @@
           "sourceUrl": "https://playbill.com/production/mj-the-musicalneil-simon-theatre-2021-2022",
           "sourceType": "playbill-cast",
           "addedDate": "2026-09-09",
+          "incomplete": true
+        },
+        {
+          "type": "departure",
+          "name": "Antoine L. Smith",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/mj-the-musicalneil-simon-theatre-2021-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
+          "incomplete": true
+        },
+        {
+          "type": "arrival",
+          "name": "Ilario Grant",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/mj-the-musicalneil-simon-theatre-2021-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
+          "incomplete": true
+        },
+        {
+          "type": "arrival",
+          "name": "Michael Andreaus",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/mj-the-musicalneil-simon-theatre-2021-2022",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
           "incomplete": true
         }
       ],
@@ -4844,8 +4900,6 @@
           "endDate": "2026-11-01",
           "note": "Not scheduled May 11–31, Aug 17–23, Sep 14–20, Oct 12–18",
           "dates": [
-            "2026-09-14",
-            "2026-09-15",
             "2026-09-16",
             "2026-09-17",
             "2026-09-18",
@@ -4991,6 +5045,16 @@
           "sourceUrl": "https://playbill.com/production/harry-potter-and-the-cursed-childlyric-theatre-2017-2018",
           "sourceType": "playbill-cast",
           "addedDate": "2026-09-05",
+          "incomplete": true
+        },
+        {
+          "type": "arrival",
+          "name": "Eleasha Gamble",
+          "role": "Unknown",
+          "note": "[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify",
+          "sourceUrl": "https://playbill.com/production/harry-potter-and-the-cursed-childlyric-theatre-2017-2018",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-09-16",
           "incomplete": true
         }
       ],
