@@ -40,6 +40,7 @@ const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
 const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
+const { isHumanClearedWrongProduction: _isHumanClearedWrongProduction, neutralizeStaleFlagsOnBodyReplacement } = require('./stale-flag-neutralization');
 const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
@@ -243,31 +244,8 @@ function _getShowById(showId) {
 }
 
 /**
- * Four signals that count as "a human already made a manual decision on this
- * file" for wrongProduction stamping — stamping over any of them would clobber
- * a verified-correct human call (the merge loop's `!existing.wrongProduction`
- * check treats an explicit `wrongProduction: false` as writable, so an
- * auto-guard re-stamping here is the exact bug this exists to prevent).
- * Single source of truth for this predicate: Guard A's ambiguous-production
- * flag (below) and Guard J's unknown-critic check used to each hand-roll
- * their own copy, and had drifted — Guard A checked 4 signals (including
- * wrongProductionOverride), Guard J only 3 (missing it) — so a file cleared
- * via wrongProductionOverride could still get re-flagged by Guard J. Guard K
- * (BRO-3502) reuses this same helper rather than adding a third copy.
- * @param {object|null|undefined} existingData
- * @returns {boolean}
- */
-function _isHumanClearedWrongProduction(existingData) {
-  return !!existingData && (
-    existingData.humanReviewedWrongProduction === false ||
-    existingData.wrongProductionManualClear === true ||
-    existingData.wrongProductionOverride === true ||
-    existingData.wrongProduction === false
-  );
-}
-
-/**
- * Shared existing-file lookup for the wrongProduction human-clear check above
+ * Shared existing-file lookup for the wrongProduction human-clear check
+ * (isHumanClearedWrongProduction, imported from stale-flag-neutralization.js)
  * — one read, reused by every URL-date guard instead of each guard hand-
  * rolling its own findExistingReviewFile call. `criticNameOrNull` is passed
  * through as-is (callers decide their own Unknown/Staff-to-null translation).
@@ -1303,6 +1281,16 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // locks (manualContentTier) always win; stale incompleteness metadata is
   // dropped only when the fresh body actually classifies as usable.
   if (existing.fullText && existing.fullText !== fullTextBefore && !existing.manualContentTier) {
+    // BRO-1431: neutralize stale exclusion state BEFORE reclassifying content
+    // tier below — classifyContentTier()'s T5/invalid check
+    // (isEffectivelyWrongProductionOrShow) reads wrongProduction/
+    // wrongProductionAutoCleared directly, so clearing the flag AFTER
+    // classification would classify against the stale flag and stay
+    // 'invalid' for one extra merge. See stale-flag-neutralization.js for
+    // the full reasoning and the guardrails against over-clearing.
+    const neutralized = neutralizeStaleFlagsOnBodyReplacement(existing, fullTextBefore);
+    if (neutralized.length > 0) changed = true;
+
     const tierResult = classifyContentTier(existing);
     const newTier = tierResult && tierResult.contentTier;
     if (newTier && newTier !== existing.contentTier) {

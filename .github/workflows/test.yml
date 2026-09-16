@@ -1584,6 +1584,13 @@ on:
       # helpers are covered via tests/unit/collect-review-texts-rename-helper.test.mjs
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
+      # BRO-1431: colocated test (stale-flag neutralization on body
+      # replacement — wrongProduction/contentVerification/contentTier).
+      # Root-level scripts/*.test.mjs files are NOT globbed — registered in
+      # tests/unit-test-manifest.txt and path-listed here so a solo edit
+      # triggers CI.
+      - 'scripts/ingest-urls.js'
+      - 'scripts/ingest-urls.test.mjs'
       - 'scripts/scoring-delta.js'
       # Colocated test (task #1163: mandated inclusion replay had zero coverage
       # of the wrongShow/wrongProduction auto-clear predicates). Root-level
