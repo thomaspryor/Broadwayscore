@@ -6288,7 +6288,11 @@ jobs:
       - name: Commit alert-router ledger changes
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/main-streak-failing-jobs.json 2>/dev/null || true
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/main-streak-failing-jobs.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"

@@ -25,6 +25,7 @@ jobs:
       - name: Commit other stuff
         run: |
           git add data/audit/some-other-file.json
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m 'x'
 `;
 
@@ -41,6 +42,7 @@ jobs:
       - name: Commit
         run: |
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m 'x'
 `;
 
@@ -59,7 +61,7 @@ jobs:
             await routeAlert({ conditionKey: 'x', title: 'y', disposition: 'digest' });
       - name: Commit
         run: |
-          for f in data/audit/foo.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do
+          for f in data/audit/foo.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           git commit -m 'x'
@@ -81,6 +83,7 @@ jobs:
       - name: Commit
         run: |
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m 'x'
 `;
 
@@ -115,7 +118,7 @@ jobs:
           node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
       - name: Commit
         run: |
-          for f in data/audit/foo.json data/audit/alert-ledger.json
+          for f in data/audit/foo.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
           do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
@@ -135,6 +138,7 @@ jobs:
       - name: Commit
         run: |
           # git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m 'x'
 `;
 
@@ -154,7 +158,8 @@ jobs:
             data/audit/dmarc-summary.json \\
             data/audit/dmarc-report-ledger.jsonl \\
             data/audit/alert-ledger.json \\
-            data/audit/alert-digest-queue.json
+            data/audit/alert-digest-queue.json \\
+            data/audit/alert-router-attempts.jsonl
           git commit -m 'x'
 `;
 
@@ -173,6 +178,7 @@ jobs:
           git add \\
             data/video-reviews.json \\
             data/audit/alert-ledger.json \\
+            data/audit/alert-router-attempts.jsonl \\
             public/images/video-reviews/
 
           git commit -m 'x'
@@ -192,7 +198,8 @@ jobs:
         run: |
           bash scripts/lib/git-add-existing.sh \\
             data/audit/some-other-file.json \\
-            data/audit/another-file.json
+            data/audit/another-file.json \\
+            data/audit/alert-router-attempts.jsonl
           git commit -m 'x'
 `;
 
@@ -274,8 +281,13 @@ test('flags a job whose only "staging" is a commented-out git add line', () => {
 
 test('flags routeAlert in one job when the commit happens in a DIFFERENT job', () => {
   const violations = findMissingLedgerCommits(OTHER_JOB_COMMIT_FIXTURE);
-  assert.equal(violations.length, 1);
-  assert.match(violations[0], /job 'alerter'/);
+  // Two rules fire, because the alerting job stages NEITHER file: the ledger
+  // and (BRO-3662) the router attempts log. Both must name the alerting job —
+  // the committer job's staging is in the wrong job and must not excuse it.
+  assert.equal(violations.length, 2);
+  for (const v of violations) assert.match(v, /job 'alerter'/);
+  assert.ok(violations.some(v => /alert-ledger\.json/.test(v)));
+  assert.ok(violations.some(v => /alert-router-attempts\.jsonl/.test(v)));
 });
 
 test('clean: git-add-existing.sh with args on separate continuation lines (finance-ingest.yml dmarc shape)', () => {
@@ -290,6 +302,43 @@ test('flags multi-line git-add-existing.sh whose continuation args do NOT includ
   const violations = findMissingLedgerCommits(MULTILINE_MISSING_TARGET_FIXTURE);
   assert.equal(violations.length, 1);
   assert.match(violations[0], /job 'broken'/);
+});
+
+// BRO-3662 regression: the shape that was live in 14 workflows — the ledger IS
+// staged, so the pre-existing rule reported clean, while alert-router-attempts
+// .jsonl (rewritten by logDispatchAttempt() on every dispatch attempt) was left
+// unstaged. A tracked file modified and left unstaged makes `git rebase` refuse
+// pre-flight, which silently forced push-with-retry.sh onto `merge -X ours` for
+// all 10 retry attempts of process-feedback.yml run 34852355418.
+const LEDGER_STAGED_ATTEMPTS_MISSING_FIXTURE = `name: Bad Example (ledger staged, attempts log not)
+on:
+  push:
+jobs:
+  broken:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert
+        run: |
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
+      - name: Commit
+        run: |
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git commit -m 'x'
+`;
+
+test('flags a job that stages the ledger but NOT alert-router-attempts.jsonl', () => {
+  const violations = findMissingLedgerCommits(LEDGER_STAGED_ATTEMPTS_MISSING_FIXTURE);
+  assert.equal(violations.length, 1);
+  assert.match(violations[0], /job 'broken'/);
+  assert.match(violations[0], /alert-router-attempts\.jsonl/);
+});
+
+test('clean once alert-router-attempts.jsonl is staged alongside the ledger', () => {
+  const fixed = LEDGER_STAGED_ATTEMPTS_MISSING_FIXTURE.replace(
+    "          git commit -m 'x'\n",
+    "          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true\n          git commit -m 'x'\n"
+  );
+  assert.deepEqual(findMissingLedgerCommits(fixed), []);
 });
 
 test('no violation when the workflow never calls routeAlert/resolveCondition', () => {

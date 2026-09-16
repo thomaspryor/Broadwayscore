@@ -35,6 +35,24 @@ const ROUTE_ALERT_CALL_RE = /\b(routeAlert|resolveCondition)\s*\(/;
 const DIGEST_DISPOSITION_RE = /disposition:\s*'digest'/;
 const LEDGER_FILE = 'alert-ledger.json';
 const DIGEST_QUEUE_FILE = 'alert-digest-queue.json';
+// BRO-3662: logDispatchAttempt() (owner-alert-router.js:344) REWRITES this
+// tracked file on every card-dispatch attempt, success or failure. A job that
+// calls routeAlert() but never stages it ends the run with a modified tracked
+// file sitting unstaged in the worktree — and an unstaged tracked modification
+// makes a rebase refuse OUTRIGHT ("cannot rebase: You have unstaged changes")
+// before it starts. push-with-retry.sh mislabels that refusal as a conflict
+// and falls through to `merge -X ours`, the path that resolves conflicting
+// hunks in OUR favour and can silently discard a concurrent writer's changes.
+// Observed live on process-feedback.yml run 34852355418: all 10 retry attempts
+// took the merge path with ZERO conflicted files.
+//
+// Gated on the same trigger as the ledger (any routeAlert/resolveCondition
+// caller) rather than a dispatch-specific marker, because dispatch is NOT
+// statically knowable: decideDigestEscalation() can promote 'human' -> 'auto'
+// at RUNTIME once notifyCount crosses its threshold, so a caller that never
+// dispatches today can start tomorrow with no YAML change. Staging a file the
+// run did not modify is a harmless no-op, so over-broad is the safe direction.
+const ATTEMPTS_LOG_FILE = 'alert-router-attempts.jsonl';
 
 // Matches a bash `for VAR in <list>; do` on one line. A separate check below
 // handles the `for VAR in <list>` / `do` split-across-two-lines form. Tolerates
@@ -148,6 +166,11 @@ function jobStagesFile(jobLines, fileName) {
  * Returns one human-readable reason per job that:
  *  - calls routeAlert()/resolveCondition() but has no step staging
  *    data/audit/alert-ledger.json for commit, and/or
+ *  - calls routeAlert()/resolveCondition() but has no step staging
+ *    data/audit/alert-router-attempts.jsonl for commit (logDispatchAttempt()
+ *    rewrites that tracked file on every dispatch attempt; leaving it unstaged
+ *    makes a rebase refuse pre-flight and silently forces push-with-retry.sh
+ *    onto the clobber-prone merge -X ours path — BRO-3662), and/or
  *  - uses disposition:'digest' but has no step staging
  *    data/audit/alert-digest-queue.json for commit (queueDigestLine() writes
  *    this file in addition to the ledger — found live-broken in
@@ -182,6 +205,12 @@ function findMissingLedgerCommits(workflowYamlText) {
     if (ROUTE_ALERT_CALL_RE.test(body) && !jobStagesFile(job.lines, LEDGER_FILE)) {
       violations.push(
         `job '${job.name}' calls routeAlert()/resolveCondition() but no step stages data/audit/${LEDGER_FILE} for commit in this job`
+      );
+    }
+
+    if (ROUTE_ALERT_CALL_RE.test(body) && !jobStagesFile(job.lines, ATTEMPTS_LOG_FILE)) {
+      violations.push(
+        `job '${job.name}' calls routeAlert()/resolveCondition() but no step stages data/audit/${ATTEMPTS_LOG_FILE} for commit in this job`
       );
     }
 
