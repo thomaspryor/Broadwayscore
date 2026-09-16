@@ -616,8 +616,12 @@ const SITE_SEARCH_ENDPOINTS = {
     applies: (show) => show.type === 'opera',
     // Operawire WP REST API — search by show title. Review URLs reliably contain
     // the show name in the slug (e.g. /metropolitan-opera-2025-26-review-{title}/).
-    // The reject-list in filterOperaUrls drops opera-australia/sydney/royal-opera
-    // mis-hits before they become wrong-production stubs.
+    // Three layers, in order below: review-slug filter, title-word validation
+    // (operawirePostMatchesShow — belt-and-suspenders with searchOutletSite's
+    // own urlLooksLikeReview() slug check, but validates the WP post TITLE
+    // too, which the slug-only check can't see), then filterOperaUrls' house
+    // reject-list + year window for anything that still names the right opera
+    // but is the wrong production (opera-australia/sydney/royal-opera/etc.).
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
       const q = encodeURIComponent(showTitle);
       const url = `https://operawire.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;

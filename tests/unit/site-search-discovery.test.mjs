@@ -115,6 +115,30 @@ test('operawirePostMatchesShow keeps a genuine Met review of the show', () => {
   assert.equal(operawirePostMatchesShow(post, titleWords), true);
 });
 
+test('operawirePostMatchesShow matches a single-word title (Math.min(2,1) threshold)', () => {
+  const titleWords = operaTitleWords('Turandot');
+  const post = {
+    title: { rendered: 'Metropolitan Opera 2025-26 Review: Turandot' },
+    link: 'https://operawire.com/metropolitan-opera-2025-26-review-turandot/',
+  };
+  assert.equal(operawirePostMatchesShow(post, titleWords), true);
+});
+
+test('operawirePostMatchesShow / parterrePostMatchesShow become no-ops when the title is all stopwords (pre-existing threshold behavior, not a regression)', () => {
+  // "Un Ballo in Maschera" tokenizes to [] — every word is <3 chars or a
+  // stopword ("un","in") except "ballo"/"maschera" which DO survive, so use
+  // a title that's entirely stopwords to hit the true edge case.
+  const titleWords = operaTitleWords('La La');
+  assert.deepEqual(titleWords, []);
+  // Math.min(2, 0) === 0, and hits >= 0 is always true — any post matches.
+  const unrelatedPost = {
+    title: { rendered: 'Completely Unrelated Recital Review' },
+    link: 'https://operawire.com/completely-unrelated-recital-review/',
+  };
+  assert.equal(operawirePostMatchesShow(unrelatedPost, titleWords), true);
+  assert.equal(parterrePostMatchesShow({ ...unrelatedPost, excerpt: { rendered: '' } }, titleWords), true);
+});
+
 test('filterOperaUrls rejects a same-opera Wolf Trap review (non-Met company found live 2026-09-15)', () => {
   const urls = ['https://operawire.com/wolf-trap-opera-2026-review-eugene-onegin/'];
   const filtered = filterOperaUrls(urls, 'operawire', 'eugene-onegin-off-broadway-2026', new Date().toISOString());
