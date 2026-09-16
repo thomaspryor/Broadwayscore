@@ -93,4 +93,5 @@ test('grid remove button is visible at rest (mobile) and only hover/focus-reveal
   assert.match(restState, /(?:^|\s)opacity-100(?:\s|$)/, 'must be visible (opacity-100) at rest for mobile, which has no hover');
   assert.match(restState, /sm:opacity-0/, 'must be hover-gated only at sm+ (desktop), not hidden outright');
   assert.match(restState, /sm:group-hover\/wl:opacity-100/, 'must reveal on desktop hover via the group/wl pattern used elsewhere on this card');
+  assert.match(restState, /focus-visible:opacity-100/, 'must also reveal on keyboard focus, not just mouse hover — a sm:opacity-0 button with no focus-visible fallback is unreachable via keyboard on desktop');
 });
