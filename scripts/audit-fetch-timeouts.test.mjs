@@ -227,6 +227,58 @@ test('.on(\'timeout\', function() { this.destroy(); }) — this.destroy() also c
   assert.deepEqual(checkSource('fixture.js', src), []);
 });
 
+test('a nested const-arrow helper declared AFTER the call does not truncate the outer function\'s scope (BRO-2383)', () => {
+  // Real false positive found live: audit-show-score-url-redirects.js's
+  // fetchTitle() declares `const req = https.get(...)`, then — after an
+  // unrelated `const finish = () => {...}` helper nested inside the same
+  // function — attaches `req.on('error', ...)` + `req.setTimeout(...destroy())`.
+  // The old point-boundary scope ended at `finish`'s head (any nested
+  // const-arrow counted as a NEW top-level boundary), cutting off before ever
+  // reaching the real destroy handler.
+  const src = `
+    function fetchTitle(url) {
+      return new Promise((resolve) => {
+        const req = https.get(url, {}, (res) => {
+          const finish = () => { resolve({ ok: true }); };
+          finish();
+        });
+        req.on('error', (err) => resolve({ error: err.message }));
+        req.setTimeout(15000, () => { req.destroy(); resolve({ error: 'timeout' }); });
+      });
+    }`;
+  assert.deepEqual(checkSource('fixture.js', src), []);
+});
+
+test('https.get() options passed as a pre-built variable (not inlined) still finds the timeout', () => {
+  // Real false positive found live: discover-dtli-slugs.js and
+  // fetch-images.js both do `const options = { timeout: N, ... };
+  // https.get(url, options, cb)` — the call's own argument text has no
+  // literal "timeout:", just the bare identifier `options`.
+  const src = `
+    function httpGet(url) {
+      return new Promise((resolve, reject) => {
+        const options = { timeout: 20000, headers: {} };
+        const req = https.get(url, options, (res) => { resolve(res); });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+      });
+    }`;
+  assert.deepEqual(checkSource('fixture.js', src), []);
+});
+
+test('an identifier options-lookalike with no matching { timeout } declaration does not false-negative', () => {
+  const src = `
+    function go(cb) {
+      const req = https.get(url, cb, (res) => {});
+      req.on('error', () => {});
+    }`;
+  // `cb` is a function parameter, never declared as `{ timeout: N, ... }` —
+  // must not be mistaken for a timeout-bearing options object, and this call
+  // has no destroy handler either, so it must still be flagged.
+  const findings = checkSource('fixture.js', src);
+  assert.equal(findings.length, 1);
+});
+
 // --- string/comment false-positive guards ---
 
 test('the literal text "fetch(" inside a string/template is never a call site', () => {

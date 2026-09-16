@@ -159,33 +159,64 @@ const FUNC_KEYWORD_HEAD_RE = /^[ \t]*(?:export\s+(?:default\s+)?)?(?:(?:async\s+
 const ARROW_HEAD_RE = /^[ \t]*(?:export\s+(?:default\s+)?)?(?:const|let|var)\s+[\w$]+\s*=\s*(?:async\s*)?\(/gm;
 const METHOD_SHORTHAND_HEAD_RE = /^[ \t]*(?:static\s+)?(?:async\s+)?(?:\*\s*)?(?!if\b|for\b|while\b|switch\b|catch\b|function\b|return\b)[\w$]+\s*\(/gm;
 
-function functionBoundaries(source) {
-  const boundaries = new Set();
+// Full [start, end) extent of each function found (start = head match index,
+// end = index just past its own matching closing brace), computed via real
+// brace-depth matching rather than "distance to the next head match". A
+// prior point-boundary version treated ANY nested `const x = (...) => {...}`
+// inside an outer function as ending the OUTER function's scope early — real
+// gap found live: audit-show-score-url-redirects.js's fetchTitle() declares
+// `const req = https.get(...)`, then LATER (after an unrelated nested
+// `const finish = () => {...}` helper) attaches `req.on('error', ...)` +
+// `req.setTimeout(...destroy())`. The point-boundary version cut
+// enclosingFunctionScope off at `finish`'s head, before ever reaching the
+// real destroy handler — a false positive on already-correct code. Brace
+// matching is immune: nesting depth, not head-match order, decides the
+// extent, so a helper declared anywhere inside the outer function can never
+// truncate it.
+function functionExtents(source) {
+  const extents = [];
+
+  // headBodyStart: index of the block body's opening `{` for a
+  // function-keyword or method-shorthand head (directly after the
+  // params/return-type, no `=>` in between).
+  function addExtentDirectBrace(headStart, openParenIdx) {
+    const closeParenIdx = findMatchingBracket(source, openParenIdx, '(', ')');
+    if (closeParenIdx == null) return;
+    const k = skipReturnTypeAnnotation(source, closeParenIdx + 1); // handles `async scoreReview(...): Promise<X> {`
+    if (source[k] !== '{') return;
+    const closeBraceIdx = findMatchingBracket(source, k, '{', '}');
+    if (closeBraceIdx == null) return;
+    extents.push({ start: headStart, end: closeBraceIdx + 1 });
+  }
+
+  // Arrow heads: params/return-type are followed by `=>` THEN the block body
+  // (or an expression body, which has no brace to bound and isn't tracked).
+  function addExtentArrow(headStart, openParenIdx) {
+    const closeParenIdx = findMatchingBracket(source, openParenIdx, '(', ')');
+    if (closeParenIdx == null) return;
+    const afterParams = skipReturnTypeAnnotation(source, closeParenIdx + 1); // handles `(x: string): Promise<void> => {`
+    if (source.slice(afterParams, afterParams + 2) !== '=>') return;
+    let k = afterParams + 2;
+    while (k < source.length && /\s/.test(source[k])) k++;
+    if (source[k] !== '{') return; // expression-bodied arrow — no block to bound
+    const closeBraceIdx = findMatchingBracket(source, k, '{', '}');
+    if (closeBraceIdx == null) return;
+    extents.push({ start: headStart, end: closeBraceIdx + 1 });
+  }
 
   for (const m of source.matchAll(new RegExp(FUNC_KEYWORD_HEAD_RE.source, 'gm'))) {
-    boundaries.add(m.index);
+    addExtentDirectBrace(m.index, m.index + m[0].length - 1);
   }
 
   for (const m of source.matchAll(new RegExp(ARROW_HEAD_RE.source, 'gm'))) {
-    const openParenIdx = m.index + m[0].length - 1;
-    const closeParenIdx = findMatchingBracket(source, openParenIdx, '(', ')');
-    if (closeParenIdx == null) continue;
-    const k = skipReturnTypeAnnotation(source, closeParenIdx + 1); // handles `(x: string): Promise<void> => {`
-    if (source.slice(k, k + 2) === '=>') boundaries.add(m.index);
+    addExtentArrow(m.index, m.index + m[0].length - 1);
   }
 
   for (const m of source.matchAll(new RegExp(METHOD_SHORTHAND_HEAD_RE.source, 'gm'))) {
-    const openParenIdx = m.index + m[0].length - 1;
-    const closeParenIdx = findMatchingBracket(source, openParenIdx, '(', ')');
-    if (closeParenIdx == null) continue;
-    const k = skipReturnTypeAnnotation(source, closeParenIdx + 1); // handles `async scoreReview(...): Promise<X> {`
-    // Must open a block body, and must NOT be followed by '=>' (that's a
-    // bare-identifier-typed arrow param list, not a method) or '=' (that's
-    // an assignment target, e.g. destructuring — not a call header at all).
-    if (source[k] === '{') boundaries.add(m.index);
+    addExtentDirectBrace(m.index, m.index + m[0].length - 1);
   }
 
-  return [...boundaries].sort((a, b) => a - b);
+  return extents.sort((a, b) => a.start - b.start);
 }
 
 // Whole enclosing function, not just "from the call forward" — a timeout
@@ -194,13 +225,21 @@ function functionBoundaries(source) {
 // is: controller/timer are created, then passed into fetch(...)), so
 // scanning only forward from the call site missed every one of the 15 files
 // using that shape (backfill-pv-critics.js: false positive, caught live).
-function enclosingFunctionScope(source, boundaries, index) {
-  let start = 0;
-  for (let i = boundaries.length - 1; i >= 0; i--) {
-    if (boundaries[i] <= index) { start = boundaries[i]; break; }
+//
+// Picks the INNERMOST extent (smallest span) that actually contains index —
+// extents nest (a named function containing a helper arrow further down is
+// two extents, one inside the other), and the innermost one containing the
+// call is always the function that lexically owns it. Falls back to "index
+// to end of source" only when no extent contains it at all (e.g. top-level
+// module code with no enclosing function head matched).
+function enclosingFunctionScope(source, extents, index) {
+  let best = null;
+  for (const e of extents) {
+    if (e.start <= index && index < e.end) {
+      if (!best || (e.end - e.start) < (best.end - best.start)) best = e;
+    }
   }
-  const next = boundaries.find((b) => b > index);
-  return source.slice(start, next === undefined ? source.length : next);
+  return best ? source.slice(best.start, best.end) : source.slice(index);
 }
 
 function isCommentLine(source, index) {
@@ -366,6 +405,26 @@ function assignedVarName(source, matchIndex) {
   return m ? m[1] : null;
 }
 
+// Real gap found live: discover-dtli-slugs.js and fetch-images.js both pass a
+// pre-built options object by reference — `const options = { timeout: N,
+// ... }; https.get(url, options, cb)` — instead of inlining `{ timeout: N }`
+// in the call. The call's own argument text then contains only the bare
+// identifier `options`, no literal "timeout:", so the inline check alone
+// treated fully-protected code as a gap. Ties the lookup to the SPECIFIC
+// identifier passed at this call site (same cross-call-contamination
+// discipline as every other check here): finds `ident`'s own `{...}`
+// declaration in the enclosing scope via brace matching, and only that
+// object's own contents count.
+function identifierOptionsHasTimeout(scope, ident) {
+  const identRe = ident.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const declMatch = new RegExp(`\\b(?:const|let|var)\\s+${identRe}\\s*=\\s*\\{`).exec(scope);
+  if (!declMatch) return false;
+  const openBraceIdx = declMatch.index + declMatch[0].length - 1;
+  const closeBraceIdx = findMatchingBracket(scope, openBraceIdx, '{', '}');
+  if (closeBraceIdx == null) return false;
+  return /\btimeout\s*:\s*[\w.]+/.test(scope.slice(openBraceIdx, closeBraceIdx + 1));
+}
+
 function checkSource(file, source) {
   if (source.includes(EXEMPTION)) return []; // checked on RAW source — a blanked comment can't hide the exemption from itself
 
@@ -374,7 +433,7 @@ function checkSource(file, source) {
   // different ones (strings blanked vs. strings intact).
   const scanSrc = blankStringsAndComments(source); // for finding call sites
   const scopeSrc = stripComments(source); // for reading protection patterns out of the enclosing function
-  const boundaries = functionBoundaries(scanSrc);
+  const extents = functionExtents(scanSrc);
   const findings = [];
   const shadowsFetch = LOCAL_FETCH_SHADOW_RE.test(scanSrc);
 
@@ -402,7 +461,7 @@ function checkSource(file, source) {
       const sigMatch = /signal\s*:\s*([\w$]+)/.exec(ownArgsText);
       if (sigMatch) {
         const ident = sigMatch[1];
-        const scope = enclosingFunctionScope(scopeSrc, boundaries, match.index);
+        const scope = enclosingFunctionScope(scopeSrc, extents, match.index);
         const identRe = ident.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const isSignalItself = new RegExp(`\\b${identRe}\\b\\s*=\\s*AbortSignal\\.timeout\\(`).test(scope);
         const isControllerTied = new RegExp(`\\b${identRe}\\b\\s*=\\s*new\\s+AbortController\\(\\)`).test(scope)
@@ -427,11 +486,18 @@ function checkSource(file, source) {
     const ownArgs = callArgSpan(scanSrc, openParenIdx);
     const ownArgsText = scopeSrc.slice(ownArgs.start, ownArgs.end);
 
-    // { timeout: N } is always part of THIS call's own options object in
-    // every real instance in this codebase — tying it to the call's own
-    // arguments (not the whole enclosing function) costs nothing and closes
-    // off any chance of a sibling call's option satisfying this one.
-    const hasTimeoutOption = /timeout\s*:\s*[\w.]+/.test(ownArgsText);
+    // { timeout: N } is usually part of THIS call's own options object —
+    // tying it to the call's own arguments (not the whole enclosing
+    // function) costs nothing and closes off any chance of a sibling call's
+    // option satisfying this one. When the options are passed as a bare
+    // identifier instead (`const options = {...}; https.get(url, options, cb)`),
+    // fall back to resolving that specific identifier's own declaration.
+    let hasTimeoutOption = /timeout\s*:\s*[\w.]+/.test(ownArgsText);
+    if (!hasTimeoutOption) {
+      const scope = enclosingFunctionScope(scopeSrc, extents, match.index);
+      const idents = [...new Set([...ownArgsText.matchAll(/\b([A-Za-z_$][\w$]*)\b/g)].map((m) => m[1]))];
+      hasTimeoutOption = idents.some((ident) => identifierOptionsHasTimeout(scope, ident));
+    }
 
     // Destroy-handler search is tied to the SPECIFIC request object: if the
     // call is assigned to a variable (`const req = https.get(...)`), the
@@ -447,7 +513,7 @@ function checkSource(file, source) {
     let destroySearchText;
     let destroyRe, setTimeoutRe;
     if (varName) {
-      destroySearchText = enclosingFunctionScope(scopeSrc, boundaries, match.index);
+      destroySearchText = enclosingFunctionScope(scopeSrc, extents, match.index);
       const identRe = varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       destroyRe = new RegExp(`\\b${identRe}\\b\\.on\\(\\s*['"]timeout['"]\\s*,[\\s\\S]*?\\.destroy\\(`);
       setTimeoutRe = new RegExp(`\\b${identRe}\\b\\.setTimeout\\(\\s*[\\w.]+[\\s\\S]*?\\.destroy\\(`);
@@ -545,7 +611,7 @@ if (require.main === module) main();
 module.exports = {
   checkSource,
   checkFile,
-  functionBoundaries,
+  functionExtents,
   enclosingFunctionScope,
   listScannableFiles,
   FETCH_RE,
