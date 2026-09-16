@@ -12,11 +12,15 @@
 # holds no project data — deleting it live-freed disk to 7.4Gi in the
 # original incident.
 #
-# Matches `*.code_sign_clone` generically, not just Chrome's: the same OS
-# bug hits any codesigned app's auto-update clone (confirmed live on this
-# machine — com.brave.Browser.code_sign_clone also present under the same
-# parent dir, at 448M as of 2026-09-16). One scanner for the whole class
-# instead of a second bespoke script per browser.
+# Matches `*.code_sign_clone` generically, not just Chrome's: `code_sign_clone`
+# is an OS-level Gatekeeper artifact name, not app-specific logic, so the same
+# GC failure plausibly hits any codesigned app's auto-update clone — and
+# com.brave.Browser.code_sign_clone is in fact present under the same parent
+# dir on this machine (448M as of 2026-09-16), though only Chrome's has been
+# incident-verified as safe-to-delete-and-regenerates. The staleness gate,
+# fail-open handling, /var/folders scope, and kill switch below all still
+# apply per-directory regardless of which app it belongs to, so the blast
+# radius of extending the match is bounded even without per-app verification.
 #
 # Usage:
 #   scripts/check-chrome-clone-cache.sh              # prune anything over the floor
