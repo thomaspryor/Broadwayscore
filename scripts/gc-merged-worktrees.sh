@@ -355,6 +355,24 @@ clean_unavailable_simulators() {
   fi
 }
 
+# Chrome/Chromium code-signing clone cache (BRO-2279): unlike DerivedData
+# et al below, this one runs UNCONDITIONALLY every pass, not gated on
+# DISK_FLOOR_GB. It grew to 45G and pushed the fleet to 483Mi free between
+# hourly floor checks during a dispatch loop (2026-08-21) — waiting for the
+# whole-disk floor to be breached before probing it would reproduce the
+# exact outage this exists to prevent. Standalone script (also runs as its
+# own session-start/cron check) so `scripts/check-chrome-clone-cache.sh` is
+# independently testable and callable outside this GC.
+check_chrome_clone_cache() {
+  local script="$SCRIPT_DIR/check-chrome-clone-cache.sh"
+  [ -x "$script" ] || return 0
+  local line dry_run_arg=()
+  [ "$DRY_RUN" = "1" ] && dry_run_arg=(--dry-run)
+  while IFS= read -r line; do
+    log "$line"
+  done < <("$script" "${dry_run_arg[@]}" 2>&1)
+}
+
 # Emergency cleanup, gated on the free-space floor. None of these touch
 # worktree state or unmerged work — DerivedData/scratchpad/sims are all
 # regenerable caches. Runs once for the whole machine (shared disk), not
@@ -376,6 +394,7 @@ check_disk_floor() {
   LAST_FLOOR_FREED_KB=$floor_freed
 }
 
+check_chrome_clone_cache
 check_disk_floor
 floor_freed_kb=$LAST_FLOOR_FREED_KB
 

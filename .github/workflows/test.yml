@@ -2014,6 +2014,16 @@ on:
       # Same orphan state as the lock suite above: edited by BRO-2607 and
       # wired into nothing. It guards the emergency disk-floor cleanup path.
       - 'scripts/gc-merged-worktrees.disk-floor-summary.test.sh'
+      # BRO-2279: same orphan state as the two GC test entries above — no
+      # paths entry, no run step, so this suite ran ZERO CI. It guards the
+      # com.google.Chrome.code_sign_clone pruner: that cache silently grew
+      # to 45G under /var/folders and pushed the fleet to 483Mi free
+      # mid-dispatch-loop (a different root cause than BRO-2258's bsc-jobs
+      # log growth). gc-merged-worktrees.sh calls it unconditionally every
+      # pass; that file is already path-listed above, but a solo edit to
+      # only the checker or its test needs its own entry here.
+      - 'scripts/check-chrome-clone-cache.sh'
+      - 'scripts/check-chrome-clone-cache.test.sh'
       # Digest v3 auto-dispatch (owner mandate 2026-08-02) — planner + card
       # filing + headless dispatch; colocated test runs in the
       # scripts/lib/*.test.mjs glob step. check-health-row-absent.js is the
@@ -4518,6 +4528,12 @@ jobs:
         # emergency-cleanup guard was invisible.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/gc-merged-worktrees.disk-floor-summary.test.sh
+
+      - name: Run check-chrome-clone-cache test (bash integration)
+        # BRO-2279: same orphan-suite risk as the two GC test steps above —
+        # without a run step this would sit in the repo passing zero CI.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/check-chrome-clone-cache.test.sh
 
       - name: Run sync-audit-checkout test (bash integration)
         # Task #1563: local main drifted 119 commits behind origin because
