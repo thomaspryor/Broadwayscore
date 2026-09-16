@@ -43,6 +43,7 @@ import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as forma
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
+import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import { getComparisonsForShow } from '@/config/comparisons';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
@@ -847,14 +848,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an
                   explicit note instead of leaving a silent gap where the ticket
                   button used to be — users hunting for a "Get Tickets" button
-                  rage-clicked the empty space (CLAUDE.md card #228). Checks raw
-                  show.ticketLinks, not the platform-filtered sortedTicketLinks,
-                  so a show whose only link is a HIDDEN_PLATFORMS entry (e.g.
-                  Telecharge) still gets the closed note. */}
-              {show.status === 'closed' && (show.ticketLinks?.length ?? 0) > 0 && (
+                  rage-clicked the empty space (CLAUDE.md card #228, task #90).
+                  See getTicketCtaNote for why 'closed' checks status alone. */}
+              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
                 <p className="w-full text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
               )}
-              {show.status === 'announced' && !sortedTicketLinks.some(l => l.priceFrom != null) && (show.ticketLinks?.length ?? 0) > 0 && (
+              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
                 <p className="w-full text-xs text-gray-500">Tickets not yet on sale — check back closer to opening.</p>
               )}
 
