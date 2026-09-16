@@ -1056,6 +1056,27 @@ function buildSiblingCategoriesByTitle(showById) {
   return siblingCategoriesById;
 }
 
+/**
+ * Convenience wrapper around buildSiblingCategoriesByTitle() for the common
+ * caller shape: an array of show objects (loadShows()'s return value) rather
+ * than a pre-built showId -> show map. Every aggregator scraper that wires up
+ * the archive-cache-guard's cross-market-sibling check (scrape-bww-reviews.js,
+ * scrape-dtli.js, scrape-playbill-verdict.js, scrape-nyc-theatre-roundups.js,
+ * scrape-london-box-office-roundups.js) needs this exact showById construction —
+ * centralized so a scraper can't drift from the audit's own indexing (the same
+ * failure mode buildSiblingCategoriesByTitle's own jsdoc warns about).
+ *
+ * @param {Array<{id:string,title:string,category:string}>} shows
+ * @returns {Object<string,string[]>} showId -> categories of same-title siblings
+ */
+function buildSiblingCategoriesFromShows(shows) {
+  const showById = {};
+  for (const s of shows) {
+    if (s && s.id) showById[s.id] = s;
+  }
+  return buildSiblingCategoriesByTitle(showById);
+}
+
 function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategories) {
   if (!html || typeof html !== 'string') {
     return { ok: false, reason: 'no-html', pageTitle: null };
@@ -1591,6 +1612,7 @@ module.exports = {
   titleWordsMatchWithConfidence,
   validateRoundupPageTitle,
   buildSiblingCategoriesByTitle,
+  buildSiblingCategoriesFromShows,
   detectPageMarketQualifier,
   isPunctuationFalsePositive,
   pageTitleConfirmsShow,

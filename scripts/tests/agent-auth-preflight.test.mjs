@@ -45,6 +45,20 @@ test('formatPreflightResult: missing detail still refuses clearly rather than th
   assert.match(r.stderrMessage, /no working credential/);
 });
 
+// BRO-2971: a spawn that never reached the auth handshake (ETIMEDOUT/ENOMEM,
+// or an OS/jetsam signal kill) used to print the SAME "claude auth login"
+// repair hint as a real revoked credential — telling whoever reads the
+// launchd log to re-login for a problem that fix cannot touch.
+test('formatPreflightResult: a spawn-starved failure (auth.reason) refuses WITHOUT the auth-login repair hint, and says so', () => {
+  const r = formatPreflightResult({ ok: false, mode: 'fail', reason: 'spawn-starved', detail: 'spawnSync claude ETIMEDOUT' });
+  assert.equal(r.exitCode, 1);
+  assert.match(r.stderrMessage, /REFUSING/);
+  assert.match(r.stderrMessage, /resource starvation/);
+  assert.doesNotMatch(r.stderrMessage, /Repair: claude auth logout/, 'must not print the auth-login REPAIR_STEPS for a resource-starvation failure');
+  assert.match(r.stderrMessage, /Do NOT run `claude auth login`/, 'must actively warn against the wrong fix');
+  assert.equal(r.stdoutLine, null);
+});
+
 test('main(): a deliberately revoked token makes the job abort loudly (exit 1), never runs blind', () => {
   let called = false;
   const exitCode = main([], {
