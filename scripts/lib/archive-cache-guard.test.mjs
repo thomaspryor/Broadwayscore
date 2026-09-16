@@ -282,23 +282,40 @@ test('scrape-dtli.js (BRO-2565): write-path guard runs before the fetched page i
   assert.match(between, /continue\s*;/, 'a failed category check must `continue` to the next URL variation');
 });
 
-test('scrape-dtli.js (BRO-2565): read-path guard purges a poisoned cache entry before it is trusted', () => {
+test('scrape-dtli.js (BRO-2565): read-path guard runs BOTH validatePageMatchesShow (year/LLM) and checkArchiveCategory, not a replacement', () => {
   const src = readScraperSource('../scrape-dtli.js');
 
-  const guardIdx = src.indexOf('const cacheValidation = checkArchiveCategory(archiveContent, show,');
-  assert.ok(guardIdx > 0, 'processShow() must re-validate the cached archive with checkArchiveCategory');
+  // Anchor on the validatePageMatchesShow call, which is unique to the read
+  // path (the write path's equivalent call, inside findDTLIPage(), uses a
+  // differently-shaped argument list). A prior version of this fix REPLACED
+  // this call with a bare checkArchiveCategory() — losing year-mismatch
+  // detection for a same-title, same-category stale revival, which the
+  // category-aware check cannot see. Flagged in review; both must now run.
+  const validateIdx = src.indexOf('const cacheValidation = await validatePageMatchesShow(archiveContent, show.title,');
+  assert.ok(validateIdx > 0, 'processShow() must still run the year/LLM identity check on the cached archive');
 
-  const scope = src.slice(guardIdx, guardIdx + 500);
-  assert.match(scope, /if\s*\(\s*!cacheValidation\.ok\s*\)/, 'the read-path check must be branched on');
+  const catIdx = src.indexOf('const catCheck = checkArchiveCategory(archiveContent, show,');
+  assert.ok(catIdx > validateIdx, 'processShow() must ALSO run checkArchiveCategory, after the identity check');
+
+  const scope = src.slice(validateIdx, catIdx + 500);
+  assert.match(scope, /if\s*\(\s*!cacheValidation\.valid\s*\|\|\s*!catCheck\.ok\s*\)/,
+    'the read-path check must require BOTH checks to pass, not just one');
   assert.match(scope, /fs\.unlinkSync\(archivePath\)/, 'a failed read-path check must delete the poisoned cache file');
 });
 
 test('scrape-playbill-verdict.js (BRO-2565): processShowViaGoogle write-path guard runs before the archive is written', () => {
   const src = readScraperSource('../scrape-playbill-verdict.js');
 
-  const guardIdx = src.indexOf('const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);');
+  // Anchor on the write path's own identity-check variable name
+  // (articleValidation) — checkArchiveCategory's call arguments are
+  // byte-identical between the read and write sites in this file, so
+  // anchoring on that call alone would silently match the wrong site.
+  const articleValidationIdx = src.indexOf('const articleValidation = await validatePageMatchesShow(html, show.title,');
+  assert.ok(articleValidationIdx > 0, 'processShowViaGoogle() must still run the identity check on the fetched article');
+
+  const guardIdx = src.indexOf('const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);', articleValidationIdx);
   const writeIdx = src.indexOf('fs.writeFileSync(existingArchive, html);');
-  assert.ok(guardIdx > 0, 'processShowViaGoogle() must call checkArchiveCategory on the fetched article');
+  assert.ok(guardIdx > articleValidationIdx, 'processShowViaGoogle() must call checkArchiveCategory on the fetched article');
   assert.ok(writeIdx > 0, 'processShowViaGoogle() must still write the archive');
   assert.ok(guardIdx < writeIdx,
     'the category guard must run BEFORE the cache write');
@@ -308,23 +325,37 @@ test('scrape-playbill-verdict.js (BRO-2565): processShowViaGoogle write-path gua
   assert.match(between, /continue\s*;/, 'a failed category check must `continue` to the next candidate URL');
 });
 
-test('scrape-playbill-verdict.js (BRO-2565): processShowViaGoogle read-path guard purges a poisoned cache entry', () => {
+test('scrape-playbill-verdict.js (BRO-2565): processShowViaGoogle read-path guard runs BOTH checks, not a replacement', () => {
   const src = readScraperSource('../scrape-playbill-verdict.js');
 
-  const guardIdx = src.indexOf('const cacheValidation = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);');
-  assert.ok(guardIdx > 0, 'processShowViaGoogle() must re-validate the cached archive with checkArchiveCategory');
+  // Anchor on the read path's own identity-check variable name
+  // (cacheValidation) to disambiguate from the write path's identical
+  // checkArchiveCategory() call arguments (see the write-path test above).
+  const cacheValidationIdx = src.indexOf('const cacheValidation = await validatePageMatchesShow(html, show.title,');
+  assert.ok(cacheValidationIdx > 0, 'processShowViaGoogle() must still run the year/category identity check on the cached HTML');
 
-  const scope = src.slice(guardIdx, guardIdx + 500);
-  assert.match(scope, /if\s*\(\s*!cacheValidation\.ok\s*\)/, 'the read-path check must be branched on');
+  const catIdx = src.indexOf('const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);', cacheValidationIdx);
+  assert.ok(catIdx > cacheValidationIdx, 'processShowViaGoogle() must ALSO run checkArchiveCategory, after the identity check');
+
+  const scope = src.slice(cacheValidationIdx, catIdx + 500);
+  assert.match(scope, /if\s*\(\s*!cacheValidation\.valid\s*\|\|\s*!catCheck\.ok\s*\)/,
+    'the read-path check must require BOTH checks to pass, not just one');
   assert.match(scope, /fs\.unlinkSync\(effectiveArchive\)/, 'a failed read-path check must delete the poisoned cache file');
 });
 
 test('scrape-nyc-theatre-roundups.js (BRO-2565): write-path guard runs before the archive is written', () => {
   const src = readScraperSource('../scrape-nyc-theatre-roundups.js');
 
-  const guardIdx = src.indexOf('const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);');
+  // Anchor on the write path's own identity-check call (openingYear-only
+  // options, no cacheValidation/catCheck naming ambiguity issue here since
+  // the read path uses the differently-named `cacheValidation` variable —
+  // see the read-path test below).
+  const validationIdx = src.indexOf('const validation = await validatePageMatchesShow(html, show.title,');
+  assert.ok(validationIdx > 0, 'the fresh-fetch path must still run the identity check on the fetched page');
+
+  const guardIdx = src.indexOf('const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);', validationIdx);
   const writeIdx = src.indexOf('fs.writeFileSync(archivePath, html);');
-  assert.ok(guardIdx > 0, 'the fresh-fetch path must call checkArchiveCategory on the fetched page');
+  assert.ok(guardIdx > validationIdx, 'the fresh-fetch path must call checkArchiveCategory on the fetched page');
   assert.ok(writeIdx > 0, 'the fresh-fetch path must still write the archive');
   assert.ok(guardIdx < writeIdx,
     'the category guard must run BEFORE the cache write');
@@ -334,14 +365,21 @@ test('scrape-nyc-theatre-roundups.js (BRO-2565): write-path guard runs before th
   assert.match(between, /continue\s*;/, 'a failed category check must `continue` to the next show');
 });
 
-test('scrape-nyc-theatre-roundups.js (BRO-2565): read-path guard purges a poisoned cache entry', () => {
+test('scrape-nyc-theatre-roundups.js (BRO-2565): read-path guard runs BOTH checks, not a replacement', () => {
   const src = readScraperSource('../scrape-nyc-theatre-roundups.js');
 
-  const guardIdx = src.indexOf('const validation = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);');
-  assert.ok(guardIdx > 0, 'the cache-hit branch must re-validate with checkArchiveCategory');
+  // Anchor on the read path's own identity-check variable name
+  // (cacheValidation, renamed from `validation` specifically to disambiguate
+  // from the write path's identically-named pre-existing variable).
+  const cacheValidationIdx = src.indexOf('const cacheValidation = await validatePageMatchesShow(html, show.title,');
+  assert.ok(cacheValidationIdx > 0, 'the cache-hit branch must still run the identity check on the cached HTML');
 
-  const scope = src.slice(guardIdx, guardIdx + 500);
-  assert.match(scope, /if\s*\(\s*!validation\.ok\s*\)/, 'the read-path check must be branched on');
+  const catIdx = src.indexOf('const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);', cacheValidationIdx);
+  assert.ok(catIdx > cacheValidationIdx, 'the cache-hit branch must ALSO run checkArchiveCategory, after the identity check');
+
+  const scope = src.slice(cacheValidationIdx, catIdx + 500);
+  assert.match(scope, /if\s*\(\s*!cacheValidation\.valid\s*\|\|\s*!catCheck\.ok\s*\)/,
+    'the read-path check must require BOTH checks to pass, not just one');
   assert.match(scope, /fs\.unlinkSync\(effectiveArchivePath\)/, 'a failed read-path check must delete the poisoned cache file');
 });
 
@@ -360,6 +398,6 @@ test('scrape-london-box-office-roundups.js (BRO-2565): the shared read/write val
 
   const between = src.slice(guardIdx, writeIdx);
   assert.match(between, /if\s*\(\s*!validation\.ok\s*\)/, 'the guard result must be branched on');
-  assert.match(between, /if\s*\(\s*archiveFresh\s*\)\s*fs\.unlinkSync\(archivePath\)/,
-    'a cache-hit that fails re-validation must purge the poisoned file (BRO-2549 read-path pattern), not just skip silently for up to 14 more days');
+  assert.match(between, /if\s*\(\s*archiveFresh\s*&&\s*!DRY_RUN\s*\)\s*fs\.unlinkSync\(archivePath\)/,
+    'a cache-hit that fails re-validation must purge the poisoned file (BRO-2549 read-path pattern), not just skip silently for up to 14 more days — but never during --dry-run, which promises to write nothing');
 });

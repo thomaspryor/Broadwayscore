@@ -855,8 +855,9 @@ async function scrapeLBORoundups() {
       // A cache-hit that now fails re-validation is purged so it doesn't sit
       // poisoned for up to 14 more days (BRO-2549's read-path pattern) — a
       // fresh fetch was never written to disk in the first place (guard runs
-      // before the write below).
-      if (archiveFresh) fs.unlinkSync(archivePath);
+      // before the write below). Gated on !DRY_RUN like every other write in
+      // this script — a diagnostic dry-run must not delete real archives.
+      if (archiveFresh && !DRY_RUN) fs.unlinkSync(archivePath);
       continue;
     }
 
