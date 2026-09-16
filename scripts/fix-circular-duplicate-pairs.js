@@ -113,7 +113,6 @@ function _defaultCriticFor(outletId) {
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isBylineAttestedInText, normalizeForAttestation } = require('./lib/byline-attestation');
-const { foldDiacritics } = require('./lib/title-match');
 
 const USAGE = `fix-circular-duplicate-pairs.js — Repairs the circular-duplicateOf class: fileA.duplicateOf=fileB AND.
 
