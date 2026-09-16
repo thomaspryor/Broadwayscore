@@ -243,6 +243,27 @@ describe('analyzeExclusionLog — end to end', () => {
     assert.equal(byShowId['some-show-2026'].category, 'NEEDS_REVIEW');
     assert.equal(byShowId['some-show-2026'].newFileCount, 2);
   });
+
+  it('a show ABSENT from a present ledger is treated as fully new (zero known files), not same-day ratio noise (BRO-2379 cousin fix)', () => {
+    // The ledger has history for 'known-show' only — 'brand-new-show' has
+    // never appeared under skippedWrongProduction before. A same-day ratio
+    // (20 lines / 10 distinct files = 2x >= 1.5 threshold) would misread
+    // this as REPEATED_LOGGING if a missing showId fell back to "no ledger
+    // data" instead of "definitively zero known files".
+    const knownFilesByShow = { 'known-show': ['x.json'] };
+    const lines = [exclusionLine({ showId: 'known-show', file: 'x.json' })];
+    for (let pass = 0; pass < 2; pass++) {
+      for (let i = 0; i < 10; i++) {
+        lines.push(exclusionLine({ showId: 'brand-new-show', file: `f${i}.json` }));
+      }
+    }
+
+    const results = analyzeExclusionLog(lines.join('\n'), { knownFilesByShow });
+    const byShowId = Object.fromEntries(results.map(r => [r.showId, r]));
+
+    assert.equal(byShowId['brand-new-show'].category, 'NEEDS_REVIEW');
+    assert.equal(byShowId['brand-new-show'].newFileCount, 10);
+  });
 });
 
 describe('buildNextLedger', () => {

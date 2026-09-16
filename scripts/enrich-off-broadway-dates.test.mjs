@@ -17,6 +17,7 @@ const {
   extractDatesFromProductionPage,
   validateOBProductionPageTitle,
   mergeSources,
+  isPreviewStrictlyAfterOpening,
 } = require('./enrich-off-broadway-dates.js');
 
 // Real Playbill production pages render First Preview / Opening Date as
@@ -168,4 +169,24 @@ test('extractDatesFromProductionPage — KNOWN LIMITATION: a label with no date 
   </body></html>`;
   const dates = extractDatesFromProductionPage(html);
   assert.deepEqual(dates, { firstPreview: '2026-04-26', opening: null });
+});
+
+// BRO-1108 regression: The Ford/Hill Project (BAM Fisher, opened 2026-09-08
+// with no preview period) was silently dropped by a `>=` bad-data guard that
+// treated "same date" as invalid. Only strictly-after is actually bad data.
+test('isPreviewStrictlyAfterOpening — same date (no previews) is NOT bad data', () => {
+  assert.equal(isPreviewStrictlyAfterOpening({ firstPreview: '2026-09-08', opening: '2026-09-08' }), false);
+});
+
+test('isPreviewStrictlyAfterOpening — preview before opening is NOT bad data', () => {
+  assert.equal(isPreviewStrictlyAfterOpening({ firstPreview: '2026-04-15', opening: '2026-04-26' }), false);
+});
+
+test('isPreviewStrictlyAfterOpening — preview after opening IS bad data', () => {
+  assert.equal(isPreviewStrictlyAfterOpening({ firstPreview: '2026-05-01', opening: '2026-04-26' }), true);
+});
+
+test('isPreviewStrictlyAfterOpening — missing either date is NOT bad data (nothing to compare)', () => {
+  assert.equal(isPreviewStrictlyAfterOpening({ firstPreview: null, opening: '2026-04-26' }), false);
+  assert.equal(isPreviewStrictlyAfterOpening({ firstPreview: '2026-04-15', opening: null }), false);
 });
