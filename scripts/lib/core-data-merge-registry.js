@@ -1389,9 +1389,16 @@ const CORE_DATA_MERGE_REGISTRY = [
     file: 'audit/ticket-ab-monitor-state.json',
     surface: 'public-repo',
     status: 'single-writer',
-    apiFallbackSafe: true,
+    // false, not true: same pattern as the gate-cold-start-monitor-state.json
+    // entry above — the writer-drift guard re-verifies every apiFallbackSafe:
+    // true entry against the live workflows and rightly found no writer once
+    // BRO-3456 (912f84e7d43) concluded the ticket-single-button A/B and
+    // removed its monitor-gate-ab.yml write step. main went red on
+    // 2026-09-16. A frozen file has no writer to be safe for.
+    apiFallbackSafe: false,
     concurrencyGroup: 'monitor-gate-ab',
-    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false).',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false). SUPERSEDED 2026-09-16: writer removed, see note.',
+    note: 'FROZEN as of 2026-09-16: the ticket-single-button A/B concluded (BRO-3456, card #392) and monitor-gate-ab.yml no longer writes this file (its write step was removed) — kept in the repo as the historical readout, not actively single-written anymore despite the status above.',
   },
   {
     file: 'audit/follow-send-checkpoint.json',
