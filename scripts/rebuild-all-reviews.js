@@ -6148,9 +6148,8 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
         console.log(`  + ${id}`);
       }
     }
-    console.log('  ⚠ IMPORTANT: Also update outlet-registry.json in the PRIVATE repo (~/broadway-scorecard-data/data/outlet-registry.json).');
-    console.log('    CI uses the private repo copy — reviews scored here won\'t appear in production until the private registry is updated.');
-    console.log('    Quick sync: cp data/outlet-registry.json ~/broadway-scorecard-data/data/ && cd ~/broadway-scorecard-data && git add data/outlet-registry.json && git commit -m "sync outlet registry" && git push');
+    console.log('  ⚠ IMPORTANT: Commit data/outlet-registry.json in THIS (public) repo (BRO-1084 — it is no longer private-repo-owned).');
+    console.log('    Quick commit: git add data/outlet-registry.json && git commit -m "data: register new outlet(s)" && git push');
   }
 
   if (skippedAliasCollisionOutlets.length > 0) {

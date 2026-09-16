@@ -240,9 +240,8 @@ function getCvStyle(outletId) {
 /**
  * resolveCvStyle(rawStyle, canonicalOutletId)
  * The registry-free decision behind getCvStyle, extracted so it is testable
- * without data/outlet-registry.json — that file is gitignored private core
- * data, so it is absent from every worktree and a registry-reading test cannot
- * run there.
+ * without reading data/outlet-registry.json at all — keeps this pure
+ * function's tests independent of the registry's current contents.
  *
  * NOT pure: it reads and mutates the module-level warn-once memo and calls
  * console.warn. Its RETURN value is a pure function of rawStyle; only the

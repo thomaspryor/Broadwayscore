@@ -1,9 +1,11 @@
 // TESTS-VS-DERIVED-DATA-EXEMPT: fixture files named awards.json/outlet-registry.json
 // are written under mkdtempSync() temp dirs — this never reads the real data/*.json.
 // Pins computeExclusions() from scripts/lib/core-data-public-stage-exclusions.js
-// — the fix for task #989 (outlet-registry lost-update). checkout-core-data
-// overwrites data/outlet-registry.json (and 2 other stray-tracked core files)
-// from the private repo's checkout-time snapshot regardless of whether the
+// — the fix for task #989 (outlet-registry lost-update, since resolved
+// architecturally by BRO-1084 — outlet-registry.json moved to public-repo
+// ownership entirely, so it's no longer in DUAL_TRACKED_FILES below).
+// checkout-core-data overwrites the remaining stray-tracked core files from
+// the private repo's checkout-time snapshot regardless of whether the
 // running workflow touches them; stage-data-changes.sh's blind `git add data/`
 // then committed that copy even when it reverted a public-repo-only fix. This
 // reuses push-core-data's snapshot-identity check in the opposite direction:
@@ -47,22 +49,22 @@ test('no snapshot dir (no checkout-core-data this run) fails open — nothing ex
 
 test('unchanged file (identical to snapshot) is excluded — the incident case', () => {
   withDirs(({ dataDir, snapshotDir }) => {
-    const content = JSON.stringify({ outlets: { foo: { multiAuthor: true } } });
-    writeFileSync(join(dataDir, 'outlet-registry.json'), content);
-    writeFileSync(join(snapshotDir, 'outlet-registry.json'), content);
+    const content = JSON.stringify({ shows: { foo: { recouped: true } } });
+    writeFileSync(join(dataDir, 'awards.json'), content);
+    writeFileSync(join(snapshotDir, 'awards.json'), content);
 
     const result = computeExclusions({ dataDir, snapshotDir });
-    assert.ok(result.includes(`${dataDir}/outlet-registry.json`));
+    assert.ok(result.includes(`${dataDir}/awards.json`));
   });
 });
 
 test('workflow-modified file (differs from snapshot) is NOT excluded — stages normally', () => {
   withDirs(({ dataDir, snapshotDir }) => {
-    writeFileSync(join(dataDir, 'outlet-registry.json'), JSON.stringify({ outlets: { foo: { multiAuthor: true } } }));
-    writeFileSync(join(snapshotDir, 'outlet-registry.json'), JSON.stringify({ outlets: { foo: {} } }));
+    writeFileSync(join(dataDir, 'awards.json'), JSON.stringify({ shows: { foo: { recouped: true } } }));
+    writeFileSync(join(snapshotDir, 'awards.json'), JSON.stringify({ shows: { foo: {} } }));
 
     const result = computeExclusions({ dataDir, snapshotDir });
-    assert.ok(!result.includes(`${dataDir}/outlet-registry.json`));
+    assert.ok(!result.includes(`${dataDir}/awards.json`));
   });
 });
 
@@ -86,10 +88,10 @@ test('missing working file is NOT excluded (git add naturally no-ops on it)', ()
   });
 });
 
-test('covers all three known dual-tracked files, and only those', () => {
+test('covers both known dual-tracked files, and only those (BRO-1084: outlet-registry.json is no longer dual-tracked)', () => {
   assert.deepEqual(
     [...DUAL_TRACKED_FILES].sort(),
-    ['audience-reviews-lbo.json', 'awards.json', 'outlet-registry.json'].sort(),
+    ['audience-reviews-lbo.json', 'awards.json'].sort(),
   );
 
   withDirs(({ dataDir, snapshotDir }) => {
