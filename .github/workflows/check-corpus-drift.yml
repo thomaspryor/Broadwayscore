@@ -47,7 +47,14 @@ jobs:
   drift:
     name: Run corpus-statistics audits (non-blocking)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15 -> 20 (BRO-3535, 2026-09-16): 14 more audits were added to AUDITS,
+    # moved out of test.yml's blocking data-validation job. This worktree has
+    # no review-texts checkout to measure real per-audit runtime against the
+    # live corpus, so this is a conservative buffer, not a measured number —
+    # confirm against the first few real runs' logged durations and adjust
+    # (see BRO-2706 for the measured-cost-model precedent this should follow
+    # if 20 turns out to be wrong in either direction).
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -101,6 +108,15 @@ jobs:
             || echo "::warning::history deepen failed — churn-merge-coverage will run degraded"
 
       - name: Run corpus-drift monitor
+        # LINEAR_API_KEY (BRO-3535): routePerAuditAlerts() in check-corpus-drift.js
+        # calls routeAlert(disposition:'digest') per audit, which self-promotes to
+        # disposition:'auto' (files a real Linear card via createLinearIssue) once
+        # a gate's notifyCount crosses owner-alert-router.js's escalation
+        # threshold. Without this secret, createLinearIssue() throws and the
+        # promotion silently degrades to a logged warning — see
+        # routePerAuditAlerts()'s catch block.
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           ARGS=""
           if [ "${{ inputs.strict }}" = "true" ]; then
