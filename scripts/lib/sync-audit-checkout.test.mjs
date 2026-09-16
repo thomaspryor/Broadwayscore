@@ -469,11 +469,42 @@ test('a staged rename FROM a .jsonl ledger onto a non-jsonl path is refused, not
 
     const { code, out } = trySync(clone, 'renamedledger');
     assert.equal(code, 1, `a rename-from-ledger must refuse, not silently recover:\n${out}`);
-    assert.match(out, /staged rename FROM a \.jsonl ledger/, 'the refusal must say why');
+    assert.match(out, /staged as deleted\/renamed/, 'the refusal must say why');
     assert.equal(fs.existsSync(path.join(clone, RENAMED)), true, 'the renamed ledger content must survive on disk');
     assert.equal(
       fs.readFileSync(path.join(clone, RENAMED), 'utf8'), 'a\nb\nc\n',
       'the ledger rows must be intact, not truncated or deleted, and not overwritten by origin\'s version either',
+    );
+  });
+});
+
+test('a staged rename FROM a .jsonl ledger ONTO a path that already exists at HEAD is refused, not silently overwritten (ship-check finding, BRO-2364)', () => {
+  withTmp((root) => {
+    // The ordering bug this closes: if the rename-guard check ran AFTER the
+    // "does HEAD have this path" branch, a destination that already existed
+    // at HEAD would hit `git checkout HEAD -- "$f"` FIRST and silently
+    // discard the renamed ledger's real content in favor of HEAD's stale
+    // snapshot — no refusal, no error, just quiet data loss. The guard must
+    // run before either branch.
+    const EXISTING = 'data/audit/fixture-existing-snapshot.json';
+    const { origin, clone } = setupPair(root, 'renameonhead');
+    fs.writeFileSync(path.join(clone, EXISTING), 'orig-head-content\n');
+    git(clone, 'add', '--', EXISTING);
+    git(clone, 'commit', '-q', '-m', 'add existing snapshot');
+    git(clone, 'push', '-q', 'origin', 'main');
+    advanceOrigin(root, origin, 'via-renameonhead', (via) => {
+      fs.mkdirSync(path.join(via, 'data', 'audit'), { recursive: true });
+      fs.writeFileSync(path.join(via, EXISTING), 'new-origin-content\n');
+    });
+    // Locally, rename the ledger ONTO the existing tracked path.
+    git(clone, 'mv', '-f', LEDGER, EXISTING);
+
+    const { code, out } = trySync(clone, 'renameonhead');
+    assert.equal(code, 1, `must refuse rather than silently resolve the collision:\n${out}`);
+    assert.match(out, /staged as deleted\/renamed/, 'the refusal must say why');
+    assert.equal(
+      fs.readFileSync(path.join(clone, EXISTING), 'utf8'), 'a\nb\nc\n',
+      'the renamed ledger content must survive — neither reset to old HEAD content nor overwritten by origin\'s',
     );
   });
 });
