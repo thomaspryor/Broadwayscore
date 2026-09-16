@@ -43,5 +43,9 @@ export function badgeImg({ tier, score, size, fontSize, radius, shadow }) {
   const url = buildBadgeUrl({ tier, score, size, fontSize, radius });
   const alt = tier ? `${score} — ${tier.label}` : 'TBD';
   const shadowStyle = shadow ? `box-shadow:${shadow};` : '';
-  return `<img src="${url}" width="${size}" height="${size}" alt="${alt}" style="display:block;width:${size}px;height:${size}px;border-radius:${radius}px;border:0;${shadowStyle}">`;
+  // display:inline-block (not block) — the old <div> this replaces was
+  // inline-block, and several callers center it via the parent <td>'s
+  // text-align:center (e.g. generate.mjs:677). A block-level image ignores
+  // that and left-aligns instead (ship-check/Codex catch).
+  return `<img src="${url}" width="${size}" height="${size}" alt="${alt}" style="display:inline-block;width:${size}px;height:${size}px;border-radius:${radius}px;border:0;${shadowStyle}">`;
 }
