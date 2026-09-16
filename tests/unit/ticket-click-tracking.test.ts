@@ -31,11 +31,16 @@ const showListCardSource = () => codeOnly(readFileSync(SHOW_LIST_CARD_PATH, 'utf
 function withMockedBrowser(distinctId: string | undefined, fn: () => void) {
   const sentBeacons: { url: string; body: string }[] = [];
   const originalWindow = (globalThis as Record<string, unknown>).window;
-  // Node's global `navigator` binding is a getter-only accessor (can't be
-  // reassigned), but the object it returns is a plain mutable object — stub
-  // the one method we need and restore it afterwards instead of replacing
-  // `navigator` itself.
-  const nav = globalThis.navigator as unknown as Record<string, unknown>;
+  // Node's global `navigator` binding is a getter-only accessor when present
+  // (can't be reassigned) — stub the one method we need on the existing
+  // object. But the binding itself is only stable Node 21+ (CI runs Node
+  // 20, which has no global `navigator` at all), so fall back to defining
+  // one for the duration of the test.
+  const hadNavigator = 'navigator' in globalThis;
+  const nav = (hadNavigator ? globalThis.navigator : {}) as Record<string, unknown>;
+  if (!hadNavigator) {
+    Object.defineProperty(globalThis, 'navigator', { value: nav, configurable: true });
+  }
   const originalSendBeacon = nav.sendBeacon;
   (globalThis as Record<string, unknown>).window = {
     posthog: distinctId !== undefined ? { get_distinct_id: () => distinctId } : undefined,
@@ -50,6 +55,9 @@ function withMockedBrowser(distinctId: string | undefined, fn: () => void) {
   } finally {
     (globalThis as Record<string, unknown>).window = originalWindow;
     nav.sendBeacon = originalSendBeacon;
+    if (!hadNavigator) {
+      delete (globalThis as Record<string, unknown>).navigator;
+    }
   }
   return sentBeacons;
 }
