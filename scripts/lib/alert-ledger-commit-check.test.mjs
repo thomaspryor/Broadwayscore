@@ -7,7 +7,39 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { findMissingLedgerCommits } = require('./alert-ledger-commit-check.js');
+const { findMissingLedgerCommits, ROUTE_ALERT_CALL_RE } = require('./alert-ledger-commit-check.js');
+
+// ROUTE_ALERT_CALL_RE — pinned because three separate prose descriptions of this
+// regex in the module header were wrong before these assertions existed (it is
+// NOT "the paren must be directly attached"; whitespace is fine). The header now
+// points here. A `require` of the router is not a CALL and must not count as a
+// coverage breadcrumb: that distinction is what silently evicted
+// process-feedback.yml from coverage (BRO-3662).
+test('ROUTE_ALERT_CALL_RE matches a call, with or without space before the paren', () => {
+  assert.ok(ROUTE_ALERT_CALL_RE.test("            routeAlert({"));
+  assert.ok(ROUTE_ALERT_CALL_RE.test('routeAlert ({'));
+  assert.ok(ROUTE_ALERT_CALL_RE.test("  await resolveCondition('x')"));
+});
+
+test('ROUTE_ALERT_CALL_RE does NOT match a bare require of the router', () => {
+  assert.equal(
+    ROUTE_ALERT_CALL_RE.test("const {routeAlert}=require('./scripts/lib/owner-alert-router.js');"),
+    false
+  );
+});
+
+test('ROUTE_ALERT_CALL_RE matches the real scrape-new-aggregators.yml call line, not its require line', () => {
+  const wf = fs.readFileSync(
+    path.join(__dirname, '..', '..', '.github', 'workflows', 'scrape-new-aggregators.yml'),
+    'utf8'
+  ).split('\n');
+  const requireLine = wf.findIndex(l => l.includes('}=require(') && l.includes('owner-alert-router'));
+  assert.ok(requireLine >= 0, 'expected a router require line in scrape-new-aggregators.yml');
+  assert.equal(ROUTE_ALERT_CALL_RE.test(wf[requireLine]), false);
+  // The call that actually provides coverage sits just below the require.
+  const callLine = wf.slice(requireLine).findIndex(l => /\brouteAlert\s*\(/.test(l));
+  assert.ok(callLine > 0, 'expected a routeAlert( call below the require');
+});
 
 const MISSING_COMMIT_FIXTURE = `name: Bad Example
 on:
