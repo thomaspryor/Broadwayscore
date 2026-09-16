@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-16T06:09:26.333Z",
+  "timestamp": "2026-09-16T06:19:49.132Z",
   "stats": {
     "totalReviews": 43476,
-    "alreadyFlagged": 17990,
-    "dateGuardCatches": 240,
+    "alreadyFlagged": 17995,
+    "dateGuardCatches": 242,
     "directorMismatch": 1044,
     "tvFilmSignals": 1276,
     "londonSignals": 1069,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3822
+    "noPublishDate": 3810
   },
   "findings": [
     {
@@ -8032,6 +8032,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "don-giovanni-off-broadway-2025",
+      "file": "financialtimes--clemency-burton-hill.json",
+      "publishDate": "2023-05-08",
+      "url": "https://www.ft.com/content/a9257154-cd50-405e-a4ff-41b6d4298f49",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 870d before show (2023-05-08 vs 2025-09-24)"
         }
       ]
     },
@@ -53818,6 +53831,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 222d before show (2025-08-15 vs 2026-03-25)"
+        }
+      ]
+    },
+    {
+      "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "everything-theatre--harry-conway.json",
+      "score": null,
+      "publishDate": "2025-08-29",
+      "url": "https://everything-theatre.co.uk/2025/08/review-this-is-not-about-me-edfringe/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 208d before show (2025-08-29 vs 2026-03-25)"
         }
       ]
     },
