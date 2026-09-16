@@ -153,11 +153,16 @@ const TRAILING_BACKSLASH_RE = /\\\s*$/;
 // opening-night-poller.js, then stages the ledger literally but relies on a
 // later `git add -A` (:483/561/594) for alert-router-attempts.jsonl — a
 // bare LEDGER_FILE substring search can't see that.
+// Requires `-A`/`.` to be the ONLY token — `git add -A src/` or `git add . public/`
+// scope the add to a pathspec and do NOT stage the whole tree, so treating
+// any line merely CONTAINING `-A` as covering everything would be a false
+// clean on a job that never touches data/audit/ at all. No real workflow in
+// this repo uses that scoped form for its data/audit commit step today.
 function lineIsBroadGitAdd(line) {
   const m = line.match(/\bgit add\b([^#]*)/);
   if (!m) return false;
   const tokens = m[1].trim().split(/\s+/).filter(Boolean);
-  return tokens.includes('-A') || tokens.includes('.');
+  return tokens.length === 1 && (tokens[0] === '-A' || tokens[0] === '.');
 }
 
 // True if `arg` (a path operand to `git add`/git-add-existing.sh) covers

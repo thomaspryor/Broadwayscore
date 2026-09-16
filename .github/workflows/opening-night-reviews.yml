@@ -366,14 +366,16 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
-          # alert-ledger.json / alert-router-attempts.jsonl (BRO-3671):
-          # audit-opening-night-coverage.js's --alert flag calls routeAlert()
-          # — its cooldown ledger and logDispatchAttempt()'s rewritten-every-
-          # attempt tracked file both only exist on this job's ephemeral
-          # runner disk otherwise (BRO-3662: unstaged, the attempts file makes
-          # a rebase refuse pre-flight and forces the clobber-prone merge path
-          # in push-with-retry.sh).
+          # alert-ledger.json / alert-digest-queue.json / alert-router-
+          # attempts.jsonl (BRO-3671): audit-opening-night-coverage.js's
+          # --alert flag calls routeAlert(disposition:'digest') at :689 — its
+          # cooldown ledger, queued digest line, and logDispatchAttempt()'s
+          # rewritten-every-attempt tracked file all only exist on this job's
+          # ephemeral runner disk otherwise (BRO-3662: unstaged, the attempts
+          # file makes a rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh).
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"

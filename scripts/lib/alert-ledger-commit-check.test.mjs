@@ -429,6 +429,33 @@ test('findRouterCallerScripts: does NOT flag a script that requires the router b
   );
 });
 
+// Regression (ship-check/Codex adversarial review): acorn allocates TWO
+// distinct Identifier node objects for a shorthand destructure like
+// `const { routeAlert } = require(...)` — `prop.key` and `prop.value` are
+// NOT the same object despite matching name/position. Excluding only
+// `prop.value` from "declaration site" left `prop.key` looking like a real
+// usage the moment the walk visited the declaration statement itself,
+// flagging EVERY script that merely imports routeAlert/resolveCondition —
+// even with zero further use — as a router caller.
+test('findRouterCallerScripts: does NOT flag a script that shorthand-destructures the router export but never uses it', () => {
+  withFixtureScripts(
+    {
+      'lib/owner-alert-router.js': `
+        function routeAlert(opts) { return opts; }
+        module.exports = { routeAlert };
+      `,
+      'imports-only.js': `#!/usr/bin/env node
+        const { routeAlert } = require('./lib/owner-alert-router.js');
+        console.log('imported but never called or referenced again');
+      `,
+    },
+    (dir) => {
+      const found = findRouterCallerScripts(dir);
+      assert.ok(!found.has('imports-only.js'));
+    }
+  );
+});
+
 test('findRouterCallerScripts: flags a script that reaches the router one hop through a lib wrapper', () => {
   withFixtureScripts(
     {
@@ -675,6 +702,31 @@ jobs:
       - name: Commit
         run: |
           git add data/audit/*.json 2>/dev/null || true
+          git commit -m 'x'
+`;
+  const violations = findMissingLedgerCommits(fixture);
+  assert.equal(violations.length, 2);
+});
+
+// Regression (ship-check/Codex adversarial review): `-A`/`.` must be the
+// ONLY token on the git add line. `git add -A src/` or `git add . public/`
+// scope the add to that pathspec — they do NOT stage the whole worktree —
+// so treating any line merely containing `-A`/`.` as broad coverage would
+// wrongly clear a job whose add never touches data/audit/ at all.
+test('still flags a job whose `git add -A <path>` is scoped to an unrelated pathspec', () => {
+  const fixture = `name: Scoped -A does not count as broad
+on:
+  push:
+jobs:
+  broken:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert
+        run: |
+          node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
+      - name: Commit
+        run: |
+          git add -A src/
           git commit -m 'x'
 `;
   const violations = findMissingLedgerCommits(fixture);

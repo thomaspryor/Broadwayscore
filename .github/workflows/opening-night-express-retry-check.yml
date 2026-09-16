@@ -62,7 +62,7 @@ jobs:
           # — without watching the alert ledger + dispatch-attempts log here too,
           # a run where ONLY the alert cooldown state changed (no queue change)
           # would skip the commit step entirely and lose that state.
-          if git status --porcelain data/audit/express-retry-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null | grep -q .; then
+          if git status --porcelain data/audit/express-retry-queue.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null | grep -q .; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           else
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
@@ -74,11 +74,14 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/express-retry-queue.json
-          # alert-ledger.json (routeAlert()'s cooldown) and alert-router-
-          # attempts.jsonl (logDispatchAttempt()'s rewritten-every-attempt
-          # tracked file — unstaged, it makes a rebase refuse pre-flight and
-          # forces push-with-retry.sh onto its clobber-prone merge path).
+          # alert-ledger.json (routeAlert()'s cooldown), alert-digest-
+          # queue.json (express-retry-queue.js:123 uses disposition:'digest'),
+          # and alert-router-attempts.jsonl (logDispatchAttempt()'s rewritten-
+          # every-attempt tracked file — unstaged, it makes a rebase refuse
+          # pre-flight and forces push-with-retry.sh onto its clobber-prone
+          # merge path).
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m "chore: Opening Night Express retry-check — dispatch due retries
 

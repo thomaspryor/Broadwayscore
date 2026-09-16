@@ -102,22 +102,29 @@ function isRequireCall(node) {
 // e.g. recover-explicit-ratings.js:250, which a VariableDeclarator-only walk
 // misses entirely since `discoverCorrectUrl` is declared via a bare `let`
 // one line earlier and only bound inside the try).
-// `declNode` is the exact Identifier AST node object created at the binding
-// site (the ObjectPattern property's value, or the bare `let x` pattern) —
-// kept by reference (not by name) so subtreeReferencesTracked can exclude
-// precisely this occurrence from "is this name used anywhere" scanning
-// without also excluding a same-named USAGE elsewhere in the file.
+// `declNodes` holds every Identifier AST node object created AT the binding
+// site — kept by reference (not by name) so subtreeReferencesTracked can
+// exclude precisely these occurrences from "is this name used anywhere"
+// scanning without also excluding a same-named USAGE elsewhere in the file.
+// For an ObjectPattern property, that's BOTH `prop.key` and `prop.value` —
+// even for shorthand `{ routeAlert }`, acorn allocates two DISTINCT
+// Identifier objects (verified: `prop.key === prop.value` is false) with the
+// same name and position. Recording only `prop.value` left `prop.key`
+// unexcluded, so a walk over the whole declaration statement would find its
+// own key node as a "reference" and flag every script that merely
+// destructures a tracked export — with no other use — as reaching it; the
+// exact false-positive class this AST engine exists to avoid.
 function bindingsFromPattern(pattern, requirePath, out) {
   if (!requirePath.startsWith('.')) return;
   if (pattern.type === 'Identifier') {
-    out.push({ localName: pattern.name, kind: 'namespace', exportName: null, requirePath, declNode: pattern });
+    out.push({ localName: pattern.name, kind: 'namespace', exportName: null, requirePath, declNodes: [pattern] });
   } else if (pattern.type === 'ObjectPattern') {
     for (const prop of pattern.properties) {
       if (prop.type !== 'Property') continue;
       const exportName =
         prop.key.type === 'Identifier' ? prop.key.name : prop.key.type === 'Literal' ? String(prop.key.value) : null;
       const localName = prop.value.type === 'Identifier' ? prop.value.name : null;
-      if (exportName && localName) out.push({ localName, kind: 'named', exportName, requirePath, declNode: prop.value });
+      if (exportName && localName) out.push({ localName, kind: 'named', exportName, requirePath, declNodes: [prop.key, prop.value] });
     }
   }
 }
@@ -304,7 +311,7 @@ function subtreeCallsTracked(subtreeNode, bindings, definedFunctions, currentAbs
 // heuristic-with-documented-limitation standard as this file's YAML-side
 // sibling checks.
 function subtreeReferencesTrackedDirectly(subtreeNode, bindings, currentAbsPath, trackedTargets) {
-  const declNodes = new Set(bindings.map((b) => b.declNode).filter(Boolean));
+  const declNodes = new Set(bindings.flatMap((b) => b.declNodes || []));
   let found = false;
   walkNode(subtreeNode, (node) => {
     if (found || node.type !== 'Identifier' || declNodes.has(node)) return;
