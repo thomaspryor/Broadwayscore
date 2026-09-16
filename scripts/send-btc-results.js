@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const { applyUtm } = require('./lib/email-utm');
+const { markTestSend } = require('./lib/test-send-marker');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
@@ -303,7 +304,13 @@ async function main() {
       isWinner,
     }), { source: 'beat-the-critics', campaign: `btc-results-${CEREMONY_YEAR}` });
 
-    const subject = `Your Tony results: ${sub.score.correct}/${Object.keys(winners).length} correct — Beat the Critics`;
+    let subject = `Your Tony results: ${sub.score.correct}/${Object.keys(winners).length} correct — Beat the Critics`;
+    let taggedHtml = html;
+    // SEND_TO is a manual-verification send, not a real results email to a real
+    // entrant — mark it so it can never read as one in the recipient's inbox
+    // (BRO-3577: an unmarked test send of the sibling confirmation template
+    // previously landed in the owner's own inbox and was mistaken for real).
+    if (SEND_TO) ({ subject, html: taggedHtml } = markTestSend({ subject, html }));
 
     if (DRY_RUN) {
       console.log(`[DRY RUN] ${sub.email} — ${sub.score.correct}/${Object.keys(winners).length} correct${isWinner ? ' 🏆 WINNER' : ''}`);
@@ -312,7 +319,7 @@ async function main() {
     }
 
     try {
-      await sendEmail({ to: sub.email, subject, html });
+      await sendEmail({ to: sub.email, subject, html: taggedHtml });
       console.log(`✓ ${sub.email} — ${sub.score.correct}/${Object.keys(winners).length} correct${isWinner ? ' 🏆 WINNER' : ''}`);
       sent++;
       // 300ms spacing to stay within Resend rate limits
