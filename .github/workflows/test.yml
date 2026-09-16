@@ -1477,6 +1477,13 @@ on:
       # (skips in unit-tests, which never checks out data/review-texts; enforced for
       # real by the data-validation job's re-run below, after checkout-review-texts).
       - 'scripts/verify-frankie-2002-cleanup.test.mjs'
+      # BRO-1397: corpus-wide regression guard for excerptMentionsFormerCast
+      # (scripts/lib/excerpt-validation.js, covered by the scripts/lib/**
+      # glob above already, but this test file itself is a root scripts/
+      # file so it needs its own entry, same pattern as frankie above).
+      # Corpus-presence-gated: skips locally without review-texts, enforced
+      # for real by the data-validation job's re-run below.
+      - 'scripts/verify-prior-run-former-cast-sweep.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
       # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
       # must never silently override a unanimous LLM ensemble rejection.
@@ -5112,6 +5119,18 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/verify-frankie-2002-cleanup.test.mjs
+
+      - name: Run BRO-1397 prior-run former-cast sweep (needs review-texts)
+        # BRO-1397: registered in tests/unit-test-manifest.txt, but that batch
+        # runs in the unit-tests job which never checks out data/review-texts,
+        # so it would only ever exercise its own skip branch there. Re-run
+        # HERE with REQUIRE_REVIEW_CORPUS=1 so a future false positive on any
+        # priorRuns show (or a regression un-suppressing a known one) actually
+        # fails CI instead of silently skipping.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/verify-prior-run-former-cast-sweep.test.mjs
 
       - name: Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)
         # Same corpus-missing trap as the frankie step above: registered in
