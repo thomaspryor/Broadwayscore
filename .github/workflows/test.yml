@@ -2838,6 +2838,14 @@ on:
       # covered by any glob, so it needs explicit listing
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-linear-drain-health.js'
+      # Its colocated CLI test needs its OWN entry, not just the source's:
+      # audit-toplevel-script-test-yml-coverage.js flags a manifest-registered
+      # top-level test whose own path is absent here, because a solo push
+      # touching only the test file would otherwise trigger ZERO CI
+      # (feedback_test_yml_push_path_allowlist). These are CLI-level tests that
+      # spawn the real binary — exactly the class that caught the stdin bug the
+      # pure-function tests could not see — so they must run on their own edits.
+      - 'scripts/check-linear-drain-health.test.mjs'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.
