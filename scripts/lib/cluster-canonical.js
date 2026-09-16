@@ -148,14 +148,20 @@ function decideClusterAction(files, opts = {}) {
   // explosion cluster on a solo-critic outlet is not a real corpus shape, so
   // the imprecision is accepted rather than plumbing outlet-registry lookups
   // through this deliberately data-free (no I/O) module.
-  // isPlaceholderRecord alone treats an ABSENT criticName as "not a
-  // placeholder" (by design — see its docstring: that case is meant to be
-  // handled by a separate, filename-based unknown-byline check upstream,
-  // which this module doesn't have). Re-add that half explicitly so an
-  // empty/"unknown" byline still ranks as weak, exactly like before.
+  // isPlaceholderRecord alone treats an ABSENT (or non-string — malformed
+  // scrape data, ship-check finding) criticName as "not a placeholder" (by
+  // design — see its docstring: that case is meant to be handled by a
+  // separate, filename-based unknown-byline check upstream, which this
+  // module doesn't have). Re-add that half explicitly, coerced through
+  // String() (the OLD code's own safety net — a non-string criticName from a
+  // malformed record must degrade to "weak", not throw and crash the whole
+  // audit script on one bad file). The 'unknown' literal check is otherwise
+  // redundant with isPlaceholderRecord's own GENERIC_BYLINE_TERMS, but is
+  // kept here anyway since it's needed for the empty-string short-circuit
+  // regardless.
   const bylineWeak = (f) => {
-    const name = (f.criticName || '').trim().toLowerCase();
-    if (!name || name === 'unknown') return true;
+    const name = String(f.criticName || '').trim().toLowerCase();
+    if (!name) return true;
     return isPlaceholderRecord({ criticName: f.criticName, outlet: f.outlet });
   };
   const rankVec = (f) => [
