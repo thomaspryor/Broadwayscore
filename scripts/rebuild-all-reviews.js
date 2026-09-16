@@ -84,6 +84,7 @@ const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = req
 const { safeWriteReview, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
+const { writeShowExclusionsFile } = require('./lib/rebuild-exclusion-audit');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { findDuplicateOfCycle, resolveCycleTiebreak } = require('./lib/duplicate-cycle');
@@ -242,20 +243,39 @@ const humanReviewQueue = [];
 // Exclusion logging: routes through shared lib (scripts/lib/exclusion-logger.js).
 // Exclusions always write to data/audit/exclusions-YYYY-MM-DD.jsonl and emit a
 // [EXCLUSION] line on stdout for CI grep. REBUILD_VERBOSE no longer required.
+//
+// BRO-925: every PER-FILE call here (a real `file`, not the "-" sentinel)
+// ALSO buffers into stats.byShow[showId].exclusions, flushed to a per-show
+// data/audit/rebuild-exclusions-{showId}.json after the showDirs.forEach loop
+// below. The daily JSONL is the event-by-event log; this is the same events
+// grouped by show, so "what got excluded for show X" doesn't require grepping
+// it. Whole-show skips that fire BEFORE any file is ever read (file === '-':
+// skippedOrphanDirs, skippedPreviewsShows, skippedUpcomingShows) are excluded
+// from the buffer — they aren't a file silently dropped mid-pipeline (the
+// failure mode this ticket targets), and including them would create a
+// rebuild-exclusions-{showId}.json for every previews/upcoming show on every
+// run, defeating the "only shows worth looking at" point of the file.
 function logExclusion(statKey, showId, file, data, extra) {
+  const key = showId || 'unknown';
+  const details = {
+    url: (data && data.url) || undefined,
+    outletId: (data && (data.outletId || data.outlet)) || undefined,
+    criticName: (data && (data.criticName || data.critic)) || undefined,
+    publishDate: (data && data.publishDate) || undefined,
+    ...(extra || {}),
+  };
   _sharedLogExclusion({
     script: 'rebuild-all-reviews',
-    showId: showId || 'unknown',
+    showId: key,
     file: file || '-',
     reason: statKey,
-    details: {
-      url: (data && data.url) || undefined,
-      outletId: (data && (data.outletId || data.outlet)) || undefined,
-      criticName: (data && (data.criticName || data.critic)) || undefined,
-      publishDate: (data && data.publishDate) || undefined,
-      ...(extra || {}),
-    },
+    details,
   });
+  if (file && file !== '-') {
+    if (!stats.byShow[key]) stats.byShow[key] = { files: 0, reviews: 0, skipped: 0, exclusions: [] };
+    if (!stats.byShow[key].exclusions) stats.byShow[key].exclusions = [];
+    stats.byShow[key].exclusions.push({ file, reason: statKey, evidence: details });
+  }
 }
 
 // normalizeThumb, normalizePublishDate — imported from ./lib/rebuild-helpers
@@ -1057,6 +1077,13 @@ function getBestScore(data) {
 module.exports = {
   selectBestExcerpt,
   extractExcerptFromFullText,
+  // BRO-925: exposed so scripts/rebuild-all-reviews.test.mjs can exercise the
+  // per-file exclusion logging (logExclusion buffers into stats.byShow[id]
+  // .exclusions; getBestScore's null path now calls it) without running the
+  // full pipeline — see the escape-hatch note above.
+  getBestScore,
+  logExclusion,
+  stats,
 };
 if (require.main !== module) return;
 
@@ -2225,7 +2252,10 @@ showDirs.forEach(showId => {
     return compareFilesForDedupPriority({ file: a, ...am }, { file: b, ...bm });
   });
 
-  stats.byShow[showId] = { files: files.length, reviews: 0, skipped: 0 };
+  // Preserve any exclusions already buffered for this showId (e.g. a prior
+  // skippedPreviewsShows/skippedUpcomingShows logExclusion call for the same
+  // id) instead of clobbering the array logExclusion() lazily creates.
+  stats.byShow[showId] = { files: files.length, reviews: 0, skipped: 0, exclusions: (stats.byShow[showId] && stats.byShow[showId].exclusions) || [] };
   stats.totalFiles += files.length;
 
   // Track seen outlet+critic combinations to avoid duplicates
@@ -4571,7 +4601,30 @@ showDirs.forEach(showId => {
       const scoreResult = getBestScore(data);
 
       if (scoreResult === null) {
-        // Skip this review - no valid score
+        // Skip this review - no valid score. This used to be the one
+        // exclusion path with zero audit trail (task #838 / BRO-925): every
+        // OTHER skip in this loop calls logExclusion, this one only
+        // incremented a counter — the Fear of 13 opening night (5 scored
+        // reviews silently dropped) took ~30 min/file to debug via a manual
+        // REBUILD_VERBOSE=1 rerun because nothing on disk said why.
+        //
+        // Surface-level signals only (no re-derivation of getBestScore's
+        // ~15-branch priority chain — that logic lives in the critical-tier
+        // scripts/lib/rebuild-helpers.js and this is deliberately just a
+        // read of fields already on `data`) — enough to distinguish "no
+        // scoring input existed" from "a single-model LLM score was
+        // blocked pending ensemble" without a manual REBUILD_VERBOSE rerun.
+        logExclusion("skippedNoScore", showId, file, data, {
+          hasOriginalScore: !!data.originalScore,
+          hasAggregatorStars: !!data.aggregatorStars,
+          hasLlmScore: !!(data.llmScore && data.llmScore.score),
+          llmConfidence: (data.llmScore && data.llmScore.confidence) || undefined,
+          hasEnsemble: !!data.ensembleData,
+          hasAssignedScore: !!data.assignedScore,
+          hasBucket: !!data.bucket,
+          hasThumb: !!(data.dtliThumb || data.bwwThumb || data.thumb),
+          scoreStatus: data.scoreStatus || undefined,
+        });
         stats.skippedNoScore++;
         stats.byShow[showId].skipped++;
         skippedReviews.push({
@@ -4731,6 +4784,17 @@ showDirs.forEach(showId => {
     }
   });
 });
+
+// BRO-925: flush every show's buffered exclusions (populated by logExclusion
+// above) to its own data/audit/rebuild-exclusions-{showId}.json. Runs before
+// the --show= diagnostic early-exit below so a scoped run gets its file too;
+// writeShowExclusionsFile no-ops (returns null) for shows with zero
+// exclusions, so a full rebuild only creates files for shows worth looking at.
+for (const [excludedShowId, showStats] of Object.entries(stats.byShow)) {
+  if (showStats.exclusions && showStats.exclusions.length > 0) {
+    writeShowExclusionsFile(excludedShowId, showStats.exclusions);
+  }
+}
 
 if (SHOW_FILTER) {
   // Diagnostic mode: print what would be included/excluded and exit BEFORE
