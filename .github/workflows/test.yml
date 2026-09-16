@@ -459,6 +459,11 @@ on:
       # audit-placeholder-venues.js still needs its own entry (no scripts/**
       # broad glob) so a solo edit triggers CI.
       - 'scripts/audit-placeholder-venues.js'
+      # BRO-2271: backward-looking pre-BRO-736 SERP wrong-production corpus
+      # audit. Test lives in tests/unit/ (node --test batch, globbed already);
+      # this top-level script needs its own entry (no scripts/** broad glob)
+      # so a solo edit triggers CI.
+      - 'scripts/audit-corpus-contamination.js'
       # Affiliate revenue hardening (2026-08-03): link contract + anomaly
       # decision layer for the site's only revenue stream. Colocated *.test.mjs
       # run in the lib-test glob (incl. the real June–July incident replay);
