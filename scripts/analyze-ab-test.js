@@ -20,10 +20,21 @@
  *    4. Small samples deserve skepticism. At current traffic, 100 clicks
  *       per variant takes ~50 days. Don't declare early.
  *
- *  Companion validator: scripts/validate-ab-test.js (proves the flag is
- *  actually serving variants, DOM renders correctly, and click tracking
- *  fires with the right ab_variant). Run that first when debugging.
  * ═══════════════════════════════════════════════════════════════════════
+ *
+ * ticket-single-button concluded 2026-09-16 (see
+ * docs/experiments/ticket-single-button.md "Conclusion") and its client-side
+ * A/B branching was removed from TicketButtonsAB.tsx — but the default flag
+ * below stays 'ticket-single-button', NOT ticket-primary-platform, and this
+ * is deliberate, not an oversight: TicketButtonsAB.tsx's abVariantStr is
+ * permanently namespaced `flag:ticket-single-button,...` (kept that way so
+ * historical Impact conversions keep joining correctly), so
+ * ticket-primary-platform's VARIANT_RE would match ZERO real events if it
+ * were the default — every click, past and future, is still tagged under
+ * the ticket-single-button cohort string even though the button count is
+ * no longer a variable. Changing this default (2026-09-16, reverted same
+ * session after a Codex review caught it) would have silently broken
+ * default-invocation analysis for both flags.
  *
  * Usage:
  *   node scripts/analyze-ab-test.js                  # default: ticket-single-button
