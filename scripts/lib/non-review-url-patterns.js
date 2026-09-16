@@ -271,6 +271,12 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)stratfordeast\.com$/, reason: 'venue-production-page' },
   { host: /(^|\.)ntlive\.com$/, reason: 'venue-production-page' },
   { host: /(^|\.)royalcourttheatre\.com$/, reason: 'venue-production-page' },
+  // BRO-3515: mirror of domain-filters.js's REFERENCE_DOMAINS entry — see
+  // that file for why rexfeatures.com (UK stock-photo agency) is not a
+  // review source. Required by the parity test in
+  // non-review-url-patterns.test.mjs so a SERP census doesn't count it as
+  // an uncovered review gap.
+  { host: /(^|\.)rexfeatures\.com$/, reason: 'photo-agency-page' },
 ];
 
 /**

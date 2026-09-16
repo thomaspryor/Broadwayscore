@@ -7,6 +7,7 @@ import {
   getGuideEditorial,
   getCriticConsensus,
 } from '@/lib/data-guides';
+import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 import {
   getAllGuideSlugs,
   getGuideConfig,
@@ -304,7 +305,15 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
               const consensus = getCriticConsensus(show.id);
               const ticketLinks = sortTicketLinks(show.ticketLinks?.filter(Boolean) || []);
               const lotteryRush = getLotteryRush(show.id);
-              const displayText = consensus || show.synopsis;
+              // BRO-927: same synopsis-mislabeled-as-verdict bug as the show
+              // page and compare page — `consensus || show.synopsis` put the
+              // plot synopsis where a critics' verdict is expected for any
+              // ranked show with reviews but no generated take.
+              const criticsTakeMode = getCriticsTakeDisplayMode(!!consensus, !!show.criticScore, show.criticScore?.reviewCount || 0, !!show.synopsis);
+              const displayText = criticsTakeMode === 'consensus' ? consensus
+                : criticsTakeMode === 'coming-soon' ? "Critics' Take coming soon."
+                : criticsTakeMode === 'synopsis' ? show.synopsis
+                : null;
               const buzz = getAudienceBuzz(show.id);
               const audienceGrade = buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null;
 
@@ -384,7 +393,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                   {/* Critic Consensus or Synopsis fallback — clamped so long
                       press copy doesn't balloon one card vs its neighbors */}
                   {displayText && (
-                    <p className="text-gray-400 text-sm leading-relaxed mt-3 line-clamp-3">
+                    <p className={`text-sm leading-relaxed mt-3 line-clamp-3 ${criticsTakeMode === 'coming-soon' ? 'text-gray-500 italic' : 'text-gray-400'}`}>
                       {displayText}
                     </p>
                   )}

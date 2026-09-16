@@ -9,24 +9,68 @@
  * 4. Flagging multi-production shows with generic URLs
  *
  * Usage:
- *   node scripts/audit-show-score-urls.js [--verbose]
+ *   node scripts/audit-show-score-urls.js [--verbose]        report only
+ *   node scripts/audit-show-score-urls.js --strict           exit 1 on a NEW duplicate URL
+ *   node scripts/audit-show-score-urls.js --update-baseline  regenerate baseline from current scan
+ *
+ * Baseline-diff (BRO-3471), same posture as audit-duplicate-shows.js: which
+ * side of a duplicate-URL pair is the page's real subject is a per-pair data
+ * judgment call (BRO-3471's PARKED rationale) that this script cannot make
+ * automatically, so --strict does not try to resolve existing collisions —
+ * it only stops a NEW one from landing invisibly. Pre-existing collisions are
+ * frozen in data/audit/show-score-urls-baseline.json; only a URL not already
+ * in that baseline fails under --strict. See
+ * scripts/lib/show-score-urls-baseline.js for why identity is the URL, not
+ * the showId pair. Default mode (no flags) always exits 0 — report only,
+ * matching the sibling gates' advisory-first convention. Only the
+ * duplicate-URL check is wired into --strict: it's a structural fact (two
+ * showIds literally point at the same URL), not a heuristic. The
+ * confirmed_wrong/suspicious checks below are heuristics (page-year/venue/
+ * review-date mismatches against an archived HTML snapshot) that can
+ * false-positive on their own, so they stay report-only regardless of
+ * whether data/aggregator-archive/show-score (private, gitignored, not
+ * present without a data setup step) is available.
  */
 
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const { venuesMatch } = require('./lib/deduplication');
+const { normalizeUrl, baselineKeySet, computeNewViolators } = require('./lib/show-score-urls-baseline');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const ARCHIVE_DIR = path.join(DATA_DIR, 'aggregator-archive/show-score');
+const BASELINE_PATH = path.join(DATA_DIR, 'audit', 'show-score-urls-baseline.json');
 
-const verbose = process.argv.includes('--verbose');
+const args = process.argv.slice(2);
+const verbose = args.includes('--verbose');
+const STRICT = args.includes('--strict');
+const UPDATE_BASELINE = args.includes('--update-baseline');
+
+function loadBaseline() {
+  try {
+    return JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+  } catch {
+    return { urls: [] };
+  }
+}
 
 const urlData = JSON.parse(fs.readFileSync(URLS_PATH, 'utf8'));
 const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
 const shows = showsData.shows || showsData;
+
+// FAIL LOUD on an empty show-score-urls.json under --strict/--update-baseline
+// (mirrors audit-duplicate-shows.js's corpusHealthCount guard, task #1063
+// class): with zero entries, urlToIds is empty, duplicate_url is [], and
+// --strict would exit 0 vacuously — passing not because nothing is wrong but
+// because nothing was checked (e.g. a bad merge emptied the file).
+if ((STRICT || UPDATE_BASELINE) && Object.keys(urlData.shows || {}).length === 0) {
+  console.error(`\n❌ data/show-score-urls.json has 0 entries — cannot scan for duplicates. Refusing to pass vacuously.`);
+  process.exit(1);
+}
+
 const showMap = {};
 for (const s of shows) showMap[s.id] = s;
 
@@ -86,15 +130,32 @@ const multiProductionBases = new Set(
 
 const results = { confirmed_wrong: [], duplicate_url: [], suspicious: [], ok: [], no_archive: [] };
 
-// Check 1: Duplicate URLs
+// Check 1: Duplicate URLs. Group on the NORMALIZED url (lowercase, no
+// trailing slash) — two entries that differ only by casing/trailing-slash
+// are the same Show Score page and must collide here, not slip past as two
+// singleton groups (adversarial review, BRO-3471). Report the raw url from
+// whichever entry is seen first so the report still shows real data.
 const urlToIds = {};
 for (const [id, url] of Object.entries(urlData.shows)) {
-  if (!urlToIds[url]) urlToIds[url] = [];
-  urlToIds[url].push(id);
+  const key = normalizeUrl(url);
+  if (!urlToIds[key]) urlToIds[key] = { url, showIds: [] };
+  urlToIds[key].showIds.push(id);
 }
-for (const [url, ids] of Object.entries(urlToIds)) {
-  if (ids.length > 1) results.duplicate_url.push({ url, showIds: ids });
+for (const { url, showIds } of Object.values(urlToIds)) {
+  if (showIds.length > 1) results.duplicate_url.push({ url, showIds });
 }
+
+if (UPDATE_BASELINE) {
+  const urls = results.duplicate_url.map(d => ({ url: d.url, showIds: d.showIds }));
+  const baseline = { generatedAt: new Date().toISOString().slice(0, 10), urls };
+  fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
+  fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
+  console.log(`✅ Baseline updated: ${urls.length} known duplicate-URL entr${urls.length === 1 ? 'y' : 'ies'} (${BASELINE_PATH})`);
+  process.exit(0);
+}
+
+const baselineSet = baselineKeySet(loadBaseline().urls);
+const newDuplicates = computeNewViolators(results.duplicate_url, baselineSet);
 
 // Check 2: Per-show audit
 for (const [showId, url] of Object.entries(urlData.shows)) {
@@ -177,14 +238,22 @@ console.log('  Show Score URL Audit Report');
 console.log('═══════════════════════════════════════════════════\n');
 
 if (results.duplicate_url.length > 0) {
-  console.log(`DUPLICATE URLs (${results.duplicate_url.length}):`);
+  console.log(`DUPLICATE URLs (${results.duplicate_url.length}, baselined: ${results.duplicate_url.length - newDuplicates.length}, new: ${newDuplicates.length}):`);
   results.duplicate_url.forEach(d => {
-    console.log(`  ${d.url}`);
+    const isNew = newDuplicates.some(n => n.url === d.url);
+    console.log(`  ${d.url}${isNew ? '  [NEW — not in baseline]' : ''}`);
     d.showIds.forEach(id => {
       const s = showMap[id];
       console.log(`    → ${id} (${s?.status || '?'}, ${s?.venue || 'no venue'}, opens ${s?.openingDate || '?'})`);
     });
   });
+  if (newDuplicates.length > 0) {
+    console.log(`\n⚠️  NEW duplicate URL(s) not in the baseline (${BASELINE_PATH}):`);
+    newDuplicates.forEach(d => console.log(`  ${d.url}: ${d.showIds.join(' <-> ')}`));
+    console.log(`\nEach side needs hand verification of which production the Show Score page`);
+    console.log(`actually describes (BRO-3471) before adding to the baseline:`);
+    console.log(`  node scripts/audit-show-score-urls.js --update-baseline`);
+  }
   console.log('');
 }
 
@@ -217,3 +286,6 @@ console.log(`  Suspicious (no arch): ${results.suspicious.length}`);
 console.log(`  OK:                   ${results.ok.length}`);
 console.log(`  No archive:           ${results.no_archive.length}`);
 console.log(`  Total checked:        ${Object.keys(urlData.shows).length}`);
+
+if (STRICT && newDuplicates.length > 0) process.exit(1);
+process.exit(0);
