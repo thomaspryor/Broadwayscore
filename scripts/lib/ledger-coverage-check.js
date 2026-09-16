@@ -36,19 +36,14 @@
  * rebuild-all-reviews.js requires url-discovery.js but only destructures
  * OUTLET_DOMAINS/REGISTRY_DOMAIN_ALIASES (data, never called); flagging it
  * would be a false positive of exactly the kind that made check_core_data_
- * pairing's v1 a dead no-op (see that check's history comment). The walk:
- *  1. Parse the file with acorn (fails open — skip the file — if acorn is
- *     unavailable or the file doesn't parse; same pattern as
- *     scripts/audit-help-flag-safety.js's acorn usage).
- *  2. Collect its `const { a, b: c } = require('./x')` / `const m =
- *     require('./x')` bindings (any depth, not just top-level — some
- *     scripts lazy-require inside a function body).
- *  3. Walk the target subtree (whole Program for an entry-point script; a
- *     single function's body when recursing into a required lib) for
- *     CallExpressions whose callee resolves to one of those bindings.
- *  4. A call reaches the ledger if it resolves directly to one of
- *     TRACKED_TARGETS' exports, or (recursively, memoized, cycle-safe) to an
- *     exported function in another local file whose OWN body reaches.
+ * pairing's v1 a dead no-op (see that check's history comment). The walk
+ * itself (parse, collect require() bindings, resolve calls transitively,
+ * memoized + cycle-safe) is shared with alert-ledger-commit-check.js via
+ * scripts/lib/require-graph-ast.js (BRO-3671) — that file's own tracked
+ * module is owner-alert-router.js's routeAlert/resolveCondition, not
+ * url-discovery.js/scraper.js, but the reachability engine (and the
+ * false-positive class an AST walk avoids that a text-regex version does
+ * not — see require-graph-ast.js's header) is identical.
  *
  * KNOWN LIMITATIONS: only sees `node scripts/<path>.js` invocations written
  * literally in the workflow YAML; only static/relative requires (no dynamic
@@ -58,6 +53,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { findTrackedCallerScripts } = require('./require-graph-ast');
 
 const LEDGER_FILE = 'scraper-spend-ledger.jsonl';
 const LEDGER_PATH = 'data/audit/scraper-spend-ledger.jsonl';
@@ -127,332 +123,20 @@ function matchForLoopStart(jobLines, i) {
   return null;
 }
 
-function loadAcorn() {
-  try {
-    return require('acorn');
-  } catch {
-    return null;
-  }
-}
-
-function resolveRequirePath(fromFileAbs, requirePath) {
-  let resolved = path.normalize(path.join(path.dirname(fromFileAbs), requirePath));
-  if (!resolved.endsWith('.js')) resolved += '.js';
-  return resolved;
-}
-
-function isTrackedExport(resolvedPath, exportName) {
-  const names = TRACKED_TARGETS.get(path.basename(resolvedPath));
-  return !!names && names.has(exportName);
-}
-
-// Generic ESTree walk — visits every node with a `.type`, recursing into all
-// own-enumerable properties. Avoids depending on acorn-walk (a transitive,
-// not package.json-declared dependency).
-function walkNode(node, visit) {
-  if (!node || typeof node !== 'object') return;
-  if (Array.isArray(node)) {
-    for (const item of node) walkNode(item, visit);
-    return;
-  }
-  if (typeof node.type === 'string') visit(node);
-  for (const key in node) {
-    if (key === 'type' || key === 'start' || key === 'end' || key === 'loc' || key === 'range') continue;
-    const value = node[key];
-    if (value && typeof value === 'object') walkNode(value, visit);
-  }
-}
-
-function isRequireCall(node) {
-  return (
-    node &&
-    node.type === 'CallExpression' &&
-    node.callee &&
-    node.callee.type === 'Identifier' &&
-    node.callee.name === 'require' &&
-    node.arguments.length === 1 &&
-    node.arguments[0].type === 'Literal' &&
-    typeof node.arguments[0].value === 'string'
-  );
-}
-
-// bindings: [{ localName, kind: 'named'|'namespace', exportName, requirePath }]
-// Only relative requires ('./x' / '../x') are tracked — matches this repo's
-// scripts/lib/ import convention.
-// Shared by both binding forms below: `const {a} = require(...)` (pattern is
-// a VariableDeclarator's `id`) and `({a} = require(...))` (pattern is an
-// AssignmentExpression's `left` — the lazy try/catch-require style used by
-// e.g. recover-explicit-ratings.js:250, which a VariableDeclarator-only walk
-// misses entirely since `discoverCorrectUrl` is declared via a bare `let`
-// one line earlier and only bound inside the try).
-function bindingsFromPattern(pattern, requirePath, out) {
-  if (!requirePath.startsWith('.')) return;
-  if (pattern.type === 'Identifier') {
-    out.push({ localName: pattern.name, kind: 'namespace', exportName: null, requirePath });
-  } else if (pattern.type === 'ObjectPattern') {
-    for (const prop of pattern.properties) {
-      if (prop.type !== 'Property') continue;
-      const exportName =
-        prop.key.type === 'Identifier' ? prop.key.name : prop.key.type === 'Literal' ? String(prop.key.value) : null;
-      const localName = prop.value.type === 'Identifier' ? prop.value.name : null;
-      if (exportName && localName) out.push({ localName, kind: 'named', exportName, requirePath });
-    }
-  }
-}
-
-function collectBindings(ast) {
-  const bindings = [];
-  walkNode(ast, (node) => {
-    if (node.type === 'VariableDeclarator' && isRequireCall(node.init)) {
-      bindingsFromPattern(node.id, node.init.arguments[0].value, bindings);
-    } else if (
-      node.type === 'AssignmentExpression' &&
-      node.operator === '=' &&
-      (node.left.type === 'Identifier' || node.left.type === 'ObjectPattern') &&
-      isRequireCall(node.right)
-    ) {
-      bindingsFromPattern(node.left, node.right.arguments[0].value, bindings);
-    }
-  });
-  return bindings;
-}
-
-// name -> function node (FunctionDeclaration, or a FunctionExpression /
-// ArrowFunctionExpression assigned to `const name = ...`).
-function collectDefinedFunctions(ast) {
-  const fns = new Map();
-  walkNode(ast, (node) => {
-    if (node.type === 'FunctionDeclaration' && node.id) {
-      fns.set(node.id.name, node);
-    } else if (
-      node.type === 'VariableDeclarator' &&
-      node.id.type === 'Identifier' &&
-      node.init &&
-      (node.init.type === 'FunctionExpression' || node.init.type === 'ArrowFunctionExpression')
-    ) {
-      fns.set(node.id.name, node.init);
-    }
-  });
-  return fns;
-}
-
-// exportName -> { type: 'function', node } | { type: 'identifier', name } | { type: 'other' }
-// Handles `module.exports = { a, b: c }` and `module.exports.a = ...` /
-// `exports.a = ...`.
-function collectExportsMap(ast) {
-  const exportsMap = new Map();
-  const setFromValueNode = (name, valueNode) => {
-    if (!valueNode) return;
-    if (valueNode.type === 'Identifier') {
-      exportsMap.set(name, { type: 'identifier', name: valueNode.name });
-    } else if (valueNode.type === 'FunctionExpression' || valueNode.type === 'ArrowFunctionExpression') {
-      exportsMap.set(name, { type: 'function', node: valueNode });
-    } else {
-      exportsMap.set(name, { type: 'other' });
-    }
-  };
-
-  walkNode(ast, (node) => {
-    if (node.type !== 'AssignmentExpression' || node.left.type !== 'MemberExpression') return;
-    const left = node.left;
-
-    // module.exports = { ... }
-    if (
-      left.object.type === 'Identifier' &&
-      left.object.name === 'module' &&
-      !left.computed &&
-      left.property.type === 'Identifier' &&
-      left.property.name === 'exports' &&
-      node.right.type === 'ObjectExpression'
-    ) {
-      for (const prop of node.right.properties) {
-        if (prop.type !== 'Property') continue;
-        const name = prop.key.type === 'Identifier' ? prop.key.name : prop.key.type === 'Literal' ? String(prop.key.value) : null;
-        if (name) setFromValueNode(name, prop.value);
-      }
-      return;
-    }
-
-    // module.exports.NAME = ... / exports.NAME = ...
-    const isModuleExportsMember =
-      left.object.type === 'MemberExpression' &&
-      left.object.object.type === 'Identifier' &&
-      left.object.object.name === 'module' &&
-      left.object.property.type === 'Identifier' &&
-      left.object.property.name === 'exports';
-    const isExportsMember = left.object.type === 'Identifier' && left.object.name === 'exports';
-    if ((isModuleExportsMember || isExportsMember) && !left.computed && left.property.type === 'Identifier') {
-      setFromValueNode(left.property.name, node.right);
-    }
-  });
-
-  return exportsMap;
-}
-
-const astCache = new Map(); // absPath -> ast | null
-
-function parseFileCached(absPath, acorn) {
-  if (astCache.has(absPath)) return astCache.get(absPath);
-  let ast = null;
-  try {
-    let src = fs.readFileSync(absPath, 'utf8');
-    // Strip a leading shebang (`#!/usr/bin/env node`) — acorn throws on it
-    // otherwise ("Unexpected character '!'"), which would silently fail this
-    // file open (false) and miss every entry-point script, since nearly all
-    // of them start with one.
-    if (src.startsWith('#!')) src = '//' + src.slice(2);
-    ast = acorn.parse(src, { ecmaVersion: 2022, sourceType: 'script', allowReturnOutsideFunction: true });
-  } catch {
-    ast = null;
-  }
-  astCache.set(absPath, ast);
-  return ast;
-}
-
-// Does walking `subtreeNode` (a function node or a whole Program) find a
-// CallExpression that reaches one of TRACKED_TARGETS' exports (url-discovery.js's
-// serpQuery/discoverCorrectUrl, or scraper.js's fetchPage), directly, through
-// another local file's exported function, OR through a
-// same-file sibling function call (e.g. discoverAnnouncedClosingDate calling
-// discoverAnnouncedDate — both defined in closing-date-discovery.js, no
-// require() involved for that hop)?
-function subtreeCallsTracked(subtreeNode, bindings, definedFunctions, currentAbsPath, acorn, memo, stack) {
-  let found = false;
-  walkNode(subtreeNode, (node) => {
-    if (found || node.type !== 'CallExpression') return;
-    const callee = node.callee;
-
-    if (callee.type === 'Identifier') {
-      const binding = bindings.find((b) => b.kind === 'named' && b.localName === callee.name);
-      if (binding) {
-        const resolvedPath = resolveRequirePath(currentAbsPath, binding.requirePath);
-        if (isTrackedExport(resolvedPath, binding.exportName) || reachedName(resolvedPath, binding.exportName, acorn, memo, stack)) {
-          found = true;
-        }
-      } else if (reachesLocalFunction(callee.name, definedFunctions, bindings, currentAbsPath, acorn, memo, stack)) {
-        found = true;
-      }
-    } else if (
-      callee.type === 'MemberExpression' &&
-      !callee.computed &&
-      callee.object.type === 'Identifier' &&
-      callee.property.type === 'Identifier'
-    ) {
-      const binding = bindings.find((b) => b.kind === 'namespace' && b.localName === callee.object.name);
-      if (!binding) return;
-      const resolvedPath = resolveRequirePath(currentAbsPath, binding.requirePath);
-      const propName = callee.property.name;
-      if (isTrackedExport(resolvedPath, propName) || reachedName(resolvedPath, propName, acorn, memo, stack)) {
-        found = true;
-      }
-    }
-  });
-  return found;
-}
-
-// Does calling the same-file function `name` (e.g. a sibling helper, not
-// require()d) itself reach a tracked call? Memoized per (absPath, name).
-function reachesLocalFunction(name, definedFunctions, bindings, currentAbsPath, acorn, memo, stack) {
-  const fnNode = definedFunctions.get(name);
-  if (!fnNode) return false;
-  const key = `${currentAbsPath}#local:${name}`;
-  if (memo.has(key)) return memo.get(key);
-  if (stack.has(key)) return false;
-  stack.add(key);
-  const reach = subtreeCallsTracked(fnNode, bindings, definedFunctions, currentAbsPath, acorn, memo, stack);
-  stack.delete(key);
-  memo.set(key, reach);
-  return reach;
-}
-
-// Does the function exported as `exportName` from `absPath` itself reach a
-// tracked call? Memoized per (absPath, exportName); cycle-safe.
-function reachedName(absPath, exportName, acorn, memo, stack) {
-  const key = `${absPath}#${exportName}`;
-  if (memo.has(key)) return memo.get(key);
-  if (stack.has(key)) return false;
-  if (isTrackedExport(absPath, exportName)) {
-    memo.set(key, true);
-    return true;
-  }
-
-  const ast = parseFileCached(absPath, acorn);
-  if (!ast) {
-    memo.set(key, false);
-    return false;
-  }
-
-  const definedFunctions = collectDefinedFunctions(ast);
-  const exportsMap = collectExportsMap(ast);
-  const entry = exportsMap.get(exportName);
-  let bodyNode = null;
-  if (entry && entry.type === 'function') {
-    bodyNode = entry.node;
-  } else if (entry && entry.type === 'identifier') {
-    bodyNode = definedFunctions.get(entry.name) || null;
-  }
-  if (!bodyNode) {
-    memo.set(key, false);
-    return false;
-  }
-
-  stack.add(key);
-  const bindings = collectBindings(ast);
-  const reach = subtreeCallsTracked(bodyNode, bindings, definedFunctions, absPath, acorn, memo, stack);
-  stack.delete(key);
-
-  memo.set(key, reach);
-  return reach;
-}
-
-// Does the whole file at absPath (any code path in it) reach a tracked call?
-// Used for the entry-point scripts workflows invoke directly via
-// `node scripts/X.js` — unlike reachedName(), no export-name scoping is
-// needed because the whole file runs, not just one exported function.
-function fileReachesLedger(absPath, acorn, memo) {
-  const key = `${absPath}#__file__`;
-  if (memo.has(key)) return memo.get(key);
-  const ast = parseFileCached(absPath, acorn);
-  if (!ast) {
-    memo.set(key, false);
-    return false;
-  }
-  const bindings = collectBindings(ast);
-  const definedFunctions = collectDefinedFunctions(ast);
-  const reach = subtreeCallsTracked(ast, bindings, definedFunctions, absPath, acorn, memo, new Set());
-  memo.set(key, reach);
-  return reach;
-}
-
 /**
  * findLedgerScripts(scriptsDir) -> Set<string>
  * Returns scripts/-relative paths (e.g. "audit-closing-dates.js") for every
  * .js file under scriptsDir whose own code calls url-discovery.js's
  * serpQuery/discoverCorrectUrl, directly or transitively. Returns an empty
  * set (fails open, logs nothing — callers should treat this as "skip the
- * check") if acorn isn't installed.
+ * check") if acorn isn't installed. Thin wrapper over the shared
+ * require-graph-ast.js engine (BRO-3671) — see that file's header for the
+ * AST walk itself.
  */
 function findLedgerScripts(scriptsDir) {
-  const acorn = loadAcorn();
-  const result = new Set();
-  if (!acorn) return result;
-
-  const memo = new Map();
-  const walk = (dir) => {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const abs = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        walk(abs);
-      } else if (entry.name.endsWith('.js')) {
-        if (fileReachesLedger(abs, acorn, memo)) {
-          result.add(path.relative(scriptsDir, abs).split(path.sep).join('/'));
-        }
-      }
-    }
-  };
-  walk(scriptsDir);
-  return result;
+  return findTrackedCallerScripts(scriptsDir, TRACKED_TARGETS);
 }
+
 
 function splitJobs(workflowYamlText) {
   const lines = workflowYamlText.split('\n');
@@ -602,8 +286,5 @@ function findMissingLedgerCommits(workflowYamlText, ledgerScripts) {
 module.exports = {
   findLedgerScripts,
   findMissingLedgerCommits,
-  fileReachesLedger,
-  reachedName,
-  resolveRequirePath,
   splitJobs,
 };

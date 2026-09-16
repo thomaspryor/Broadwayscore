@@ -118,6 +118,60 @@ test('a STRING return fabricates nothing — a string is iterable, per character
   }
 });
 
+// The 2->1 collapse kept MOVING rather than closing: first the iteration was
+// outside the try, then the catch handler itself could throw on `err.message`.
+// These drive the catch handler with values that make naive error formatting
+// explode. Each must return code 2 from scanWorkflows, never escape it.
+for (const [label, thrower] of [
+  ['throw null', () => { throw null; }],
+  ['throw undefined', () => { throw undefined; }],
+  ['throw a string', () => { throw 'plain string'; }],
+  ['throw an object whose .message getter throws', () => {
+    throw { get message() { throw new Error('nested'); } };
+  }],
+  ['throw an object whose toString throws', () => {
+    throw { toString() { throw new Error('nested'); }, get message() { return undefined; } };
+  }],
+  ['throw a Symbol', () => { throw Symbol('nope'); }],
+]) {
+  test(`code 2 — NOT 1 — when the checker does: ${label}`, () => {
+    const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+    try {
+      let r;
+      assert.doesNotThrow(() => { r = scanWorkflows(dir, thrower); }, `${label} escaped scanWorkflows`);
+      assert.equal(r.code, 2);
+      assert.match(r.error, /checker threw on /);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+}
+
+test('code 2 when the checker returns an array of non-strings (no [object Object] findings)', () => {
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => [{ job: 'x' }]);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /non-string violation at index 0/);
+    assert.deepEqual(r.violations, []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('code 2 when the checker returns a sparse array (holes stringify to "undefined")', () => {
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const sparse = ['a'];
+    sparse[2] = 'c'; // index 1 is a hole
+    const r = scanWorkflows(dir, () => sparse);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /non-string violation at index 1/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('.YML (uppercase) is scanned, not silently skipped', () => {
   const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
   try {

@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-16T16:34:21.632Z",
+  "timestamp": "2026-09-16T18:13:39.160Z",
   "stats": {
-    "totalReviews": 43513,
-    "alreadyFlagged": 18012,
+    "totalReviews": 43523,
+    "alreadyFlagged": 18013,
     "dateGuardCatches": 243,
     "directorMismatch": 1045,
-    "tvFilmSignals": 1275,
-    "londonSignals": 1074,
+    "tvFilmSignals": 1276,
+    "londonSignals": 1077,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
     "noPublishDate": 3806
@@ -11077,6 +11077,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -40696,6 +40714,19 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
+      "file": "fringereview--unknown.json",
+      "publishDate": "2026-09-16",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
       "file": "independent--alice-saville.json",
       "publishDate": "2026-09-16",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
@@ -45271,6 +45302,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
