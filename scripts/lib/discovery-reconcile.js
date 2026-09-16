@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const { normalizeTitle, areTitlesSimilar } = require('./deduplication');
 
 /**
@@ -75,4 +77,96 @@ function computeShowReconciliation(existing, candidate) {
   return Object.keys(patch).length > 0 ? patch : null;
 }
 
-module.exports = { computeShowReconciliation };
+/**
+ * Multi-source-agreement gate (BRO-2072, follow-up to #1446 / card #1446
+ * ship-check gap #1).
+ *
+ * computeShowReconciliation() above only checks whether a candidate is the
+ * SAME show as an existing entry — it says nothing about whether the
+ * candidate's data is trustworthy enough to overwrite what's already there.
+ * A single source's parser regression (a botched Playbill scrape, a
+ * TodayTix field remap) would previously patch venue/dates straight onto
+ * shows.json for every match in that run with no independent corroboration.
+ *
+ * Mirrors scripts/enrich-off-broadway-dates.js:919's pattern: a value seen
+ * from >=2 independent discovery sources in the same run is trusted outright;
+ * a single source is only trusted for a small date nudge (this is the
+ * original card #1446 bug — a stale date drifting by days/weeks as a show's
+ * schedule firms up) capped at RECONCILE_MAX_SHIFT_DAYS. A single source
+ * proposing a venue change, or a date shift bigger than the cap, is withheld
+ * — those look like either a wrong-production match or a parser regression,
+ * not routine drift.
+ */
+const RECONCILE_MAX_SHIFT_DAYS = 60;
+
+function dayShift(a, b) {
+  if (!a || !b) return 0;
+  const ms = Math.abs(new Date(a).getTime() - new Date(b).getTime());
+  if (Number.isNaN(ms)) return 0;
+  return Math.round(ms / 86400000);
+}
+
+function evaluateReconciliationSafety(existing, patch, agreeingSourceCount) {
+  if (agreeingSourceCount >= 2) {
+    return { safe: true, reason: 'multi-source-agreement' };
+  }
+
+  const holdReasons = [];
+  if (patch.venue) {
+    holdReasons.push('venue-change-single-source-unconfirmed');
+  }
+  if (patch.openingDate || patch.previewsStartDate) {
+    const shiftDays = Math.max(
+      dayShift(patch.openingDate, existing.openingDate),
+      dayShift(patch.previewsStartDate, existing.previewsStartDate)
+    );
+    if (shiftDays > RECONCILE_MAX_SHIFT_DAYS) {
+      holdReasons.push(`shift-too-large (${shiftDays}d > ${RECONCILE_MAX_SHIFT_DAYS}d cap)`);
+    }
+  }
+  if (holdReasons.length > 0) {
+    return { safe: false, reason: holdReasons.join('; ') };
+  }
+  return { safe: true, reason: 'single-source-small-change' };
+}
+
+/**
+ * Before/after audit trail for reconciliation patches (BRO-2072 gap #3).
+ * Mirrors enrich-off-broadway-dates.js's appendAudit(): read-append-write,
+ * capped history, one entry per run (even a no-op run, so an operator can
+ * see discovery ran and found nothing to reconcile).
+ */
+const AUDIT_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'discovery-reconciliation-log.json');
+const AUDIT_MAX_RUNS = 50;
+
+// auditPath is overridable (unit tests point it at a tmp file) so exercising
+// this never writes into the real, git-tracked data/audit/ directory.
+function appendReconciliationAudit(entries, meta = {}, auditPath = AUDIT_PATH) {
+  if (entries.length === 0) return;
+  let existing = { _meta: { schema: 'discovery-reconciliation-log v1' }, runs: [] };
+  if (fs.existsSync(auditPath)) {
+    try {
+      existing = JSON.parse(fs.readFileSync(auditPath, 'utf8'));
+      if (!Array.isArray(existing.runs)) existing.runs = [];
+    } catch {
+      // corrupt audit file — start fresh rather than blocking the run.
+    }
+  }
+  existing.runs.push({
+    runAt: new Date().toISOString(),
+    script: 'discover-new-shows',
+    ...meta,
+    entries,
+  });
+  if (existing.runs.length > AUDIT_MAX_RUNS) existing.runs = existing.runs.slice(-AUDIT_MAX_RUNS);
+  fs.mkdirSync(path.dirname(auditPath), { recursive: true });
+  fs.writeFileSync(auditPath, JSON.stringify(existing, null, 2));
+}
+
+module.exports = {
+  computeShowReconciliation,
+  evaluateReconciliationSafety,
+  appendReconciliationAudit,
+  RECONCILE_MAX_SHIFT_DAYS,
+  AUDIT_PATH,
+};

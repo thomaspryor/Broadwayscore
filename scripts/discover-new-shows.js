@@ -40,7 +40,7 @@ const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
-const { computeShowReconciliation } = require('./lib/discovery-reconcile');
+const { computeShowReconciliation, evaluateReconciliationSafety, appendReconciliationAudit } = require('./lib/discovery-reconcile');
 const { classifyTodayTixStartDate, unconfirmedStartFlags, productionIdYear } = require('./lib/todaytix-dates');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
@@ -54,6 +54,18 @@ const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-class
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
+
+// Tags each candidate with which discovery source produced it (BRO-2072) so
+// reconcileMatchedShow() below can require multi-source agreement before
+// trusting a venue/date patch. Internal field only — never copied into
+// shows.json (showEntry is built field-by-field) and stripped from the
+// pending-review JSON alongside the other `_`-prefixed internal fields.
+function tagSource(shows, sourceLabel) {
+  for (const s of shows) {
+    if (!s._discoverySource) s._discoverySource = sourceLabel;
+  }
+  return shows;
+}
 
 // Strict exact-match set of the 41 official Broadway houses (canonical + aliases),
 // normalized. We deliberately do NOT use broadway-theaters' isOfficialBroadwayTheater
@@ -1849,7 +1861,7 @@ async function discoverShows() {
   // prior Broadway.org fallback was dead code for exactly that reason).
   let discoveredShows;
   try {
-    discoveredShows = await fetchShowsFromTodayTix();
+    discoveredShows = tagSource(await fetchShowsFromTodayTix(), 'todaytix');
     sourceCounts.todaytix = discoveredShows.length;
     console.log(`Found ${discoveredShows.length} shows via TodayTix API`);
   } catch (e) {
@@ -1879,7 +1891,7 @@ async function discoverShows() {
       console.error(`::error::Playbill Broadway returned ${playbillBroadwayShows.length} candidates (cap: ${BROADWAY_SCHEDULE_CAP}) — likely parser regression. Skipping this source only.`);
       process.exitCode = 1;
     } else {
-      discoveredShows.push(...playbillBroadwayShows);
+      discoveredShows.push(...tagSource(playbillBroadwayShows, 'playbill-broadway'));
     }
   } catch (e) {
     sourceCounts.playbillBroadway = 0;
@@ -1909,7 +1921,7 @@ async function discoverShows() {
         console.error(`::error::Playbill OB returned ${playbillOBShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Skipping this source only.`);
         process.exitCode = 1;
       } else {
-        discoveredShows.push(...playbillOBShows);
+        discoveredShows.push(...tagSource(playbillOBShows, 'playbill-ob'));
       }
     } catch (e) {
       sourceCounts.playbillOB = 0;
@@ -2034,7 +2046,12 @@ async function discoverShows() {
     // TodayTix first (richer metadata), OLT second, TM third, LT fourth —
     // venue-page candidates are staged above, not merged here. Dedup prefers
     // earlier entries among the sources that DO write directly.
-    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows);
+    discoveredShows.push(
+      ...tagSource(todayTixWEShows, 'todaytix-we'),
+      ...tagSource(oltShows, 'olt'),
+      ...tagSource(tmShows, 'theatremonkey'),
+      ...tagSource(ltShows, 'londontheatre')
+    );
     console.log('');
   }
 
@@ -2067,7 +2084,7 @@ async function discoverShows() {
         for (const s of ssValidated) {
           if (s._showScoreUrl) consumedCandidateUrls.push({ title: s.title, url: s._showScoreUrl });
         }
-        discoveredShows.push(...ssValidated);
+        discoveredShows.push(...tagSource(ssValidated, 'showscore'));
         console.log(`Added ${ssValidated.length} ShowScore candidates to discovery pipeline`);
       }
     } catch (e) {
@@ -2121,11 +2138,13 @@ async function discoverShows() {
     if (s.todaytixId) existingTodaytixIds.set(s.todaytixId, s);
   }
 
-  // Applies computeShowReconciliation's patch (if any) directly onto the
-  // matched shows.json entry — `existing` is a reference into data.shows, so
-  // this mutation is what saveShows(data) below persists. Always logged (even
-  // in dry-run) so --dry-run output demonstrates the refresh; only mutated
-  // when actually writing.
+  // Records candidate patches keyed by existing show id (BRO-2072) instead of
+  // applying immediately — resolveReconciliationProposals() below decides,
+  // once every discoveredShows candidate in this run has been matched,
+  // whether each field is corroborated by >=2 independent sources before
+  // touching shows.json. `existing` objects are references into data.shows,
+  // so the eventual Object.assign in the resolver is what saveShows(data)
+  // persists.
   //
   // Gated to HIGH-CONFIDENCE match reasons only (adversarial ship-check
   // finding, card #1446): checkForDuplicate() also returns fuzzy/containment/
@@ -2137,13 +2156,93 @@ async function discoverShows() {
   // equality (exact title/slug, ID base) — todaytixId matches (Step 0 below)
   // are separately high-confidence and always eligible.
   const HIGH_CONFIDENCE_REASON_PREFIXES = ['Exact title match', 'Exact slug match', 'ID base match'];
+  // existingId -> { existing, fields: { [field]: Map(value -> Set(sourceLabel)) } }
+  const reconciliationProposals = new Map();
   function reconcileMatchedShow(existing, candidate, reason) {
     if (reason && !HIGH_CONFIDENCE_REASON_PREFIXES.some(p => reason.startsWith(p))) return;
     const patch = computeShowReconciliation(existing, candidate);
     if (!patch) return;
-    reconciledShows.push({ id: existing.id, title: existing.title, patch });
-    console.log(`  🔄 "${existing.title}" (${existing.id}): refreshing stale field(s) from live source — ${Object.keys(patch).join(', ')}`);
-    if (!dryRun) Object.assign(existing, patch);
+    let proposal = reconciliationProposals.get(existing.id);
+    if (!proposal) {
+      proposal = { existing, fields: {} };
+      reconciliationProposals.set(existing.id, proposal);
+    }
+    const sourceLabel = candidate._discoverySource || 'unknown';
+    for (const [field, value] of Object.entries(patch)) {
+      if (!proposal.fields[field]) proposal.fields[field] = new Map();
+      const bySourceForValue = proposal.fields[field];
+      if (!bySourceForValue.has(value)) bySourceForValue.set(value, new Set());
+      bySourceForValue.get(value).add(sourceLabel);
+    }
+  }
+
+  // Resolves every accumulated proposal (BRO-2072 gap #1): for each field,
+  // pick the value with the most agreeing independent sources, then gate
+  // application through evaluateReconciliationSafety — a value seen from
+  // >=2 sources this run is trusted outright; a single source is only
+  // trusted for a small date nudge (the original card #1446 drift-repair
+  // case), never a venue change or a large date jump. Held-back proposals
+  // are still recorded to the audit trail (gap #3, no-op when there's
+  // nothing to log) so an operator can see what discovery *would* have
+  // written and promote it manually.
+  function resolveReconciliationProposals() {
+    const auditEntries = [];
+    for (const { existing, fields } of reconciliationProposals.values()) {
+      const patch = {};
+      const heldFields = [];
+      const pickBest = (bySourceForValue) => {
+        let bestValue = null;
+        let bestSources = null;
+        for (const [value, sources] of bySourceForValue.entries()) {
+          if (!bestSources || sources.size > bestSources.size) {
+            bestValue = value;
+            bestSources = sources;
+          }
+        }
+        return { bestValue, bestSources };
+      };
+
+      // openingDate + openingDateSource are a paired unit (computeShowReconciliation
+      // always writes both together) — resolved as one field using
+      // openingDate's own agreement count.
+      if (fields.openingDate) {
+        const { bestValue, bestSources } = pickBest(fields.openingDate);
+        const bestSourceValue = fields.openingDateSource ? pickBest(fields.openingDateSource).bestValue : undefined;
+        const fieldPatch = { openingDate: bestValue, openingDateSource: bestSourceValue };
+        const safety = evaluateReconciliationSafety(existing, fieldPatch, bestSources.size);
+        if (safety.safe) {
+          Object.assign(patch, fieldPatch);
+        } else {
+          heldFields.push({ field: 'openingDate', value: bestValue, agreeingSourceCount: bestSources.size, reason: safety.reason });
+        }
+      }
+
+      for (const field of ['previewsStartDate', 'venue']) {
+        if (!fields[field]) continue;
+        const { bestValue, bestSources } = pickBest(fields[field]);
+        const fieldPatch = { [field]: bestValue };
+        const safety = evaluateReconciliationSafety(existing, fieldPatch, bestSources.size);
+        if (safety.safe) {
+          Object.assign(patch, fieldPatch);
+        } else {
+          heldFields.push({ field, value: bestValue, agreeingSourceCount: bestSources.size, reason: safety.reason });
+        }
+      }
+
+      if (Object.keys(patch).length > 0) {
+        const before = {};
+        for (const field of Object.keys(patch)) before[field] = existing[field] ?? null;
+        reconciledShows.push({ id: existing.id, title: existing.title, patch });
+        console.log(`  🔄 "${existing.title}" (${existing.id}): refreshing stale field(s) from live source — ${Object.keys(patch).join(', ')}`);
+        if (!dryRun) Object.assign(existing, patch);
+        auditEntries.push({ kind: 'applied', id: existing.id, title: existing.title, before, after: patch });
+      }
+      for (const held of heldFields) {
+        console.log(`  ⏸️  "${existing.title}" (${existing.id}): held reconciliation of ${held.field} (${held.reason}) — needs a 2nd corroborating source`);
+        auditEntries.push({ kind: 'held', id: existing.id, title: existing.title, ...held });
+      }
+    }
+    appendReconciliationAudit(auditEntries, { mode: { dryRun } });
   }
 
   for (const show of discoveredShows) {
@@ -2309,6 +2408,11 @@ async function discoverShows() {
       closingDate,
     });
   }
+
+  // Every discoveredShows candidate has now been matched or accepted as new —
+  // resolve the accumulated reconciliation proposals (BRO-2072) before any
+  // save/summary logic below reads reconciledShows.
+  resolveReconciliationProposals();
 
   // IBDB date enrichment: get accurate preview/opening/closing dates
   // Skip off-Broadway and London shows — IBDB only covers Broadway
@@ -2772,7 +2876,7 @@ async function discoverShows() {
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
       discoveredAt: new Date().toISOString(),
       shows: newShows.map(s => {
-        const { _showScoreUrl, _source, _ibdbRevivalChecked, ...clean } = s;
+        const { _showScoreUrl, _source, _ibdbRevivalChecked, _discoverySource, ...clean } = s;
         return clean;
       }),
     }, null, 2));
