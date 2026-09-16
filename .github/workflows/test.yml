@@ -1461,6 +1461,16 @@ on:
       # in the rebuild + standalone flagger — solo edits need CI.
       - 'scripts/flag-wrong-production-by-date.js'
       - 'scripts/flag-wrong-production-by-date.test.mjs'
+      # BRO-916: per-review URL-date guard for BWW Review Roundup entries
+      # (getWrongProductionReasonForBwwRoundup, scripts/lib/review-guards.js —
+      # already covered by the 'scripts/lib/**' glob above). Root scripts/
+      # test files aren't globbed, so this needs its own entry. The standalone
+      # flagger below shares this test file's name by convention (per the
+      # Linear ticket's cited acceptance-test path) but isn't itself changed
+      # by this fix — path-listed anyway so audit-toplevel-script-test-yml-
+      # coverage.js's sibling-source heuristic stays satisfied.
+      - 'scripts/flag-wrong-production-by-url-date.js'
+      - 'scripts/flag-wrong-production-by-url-date.test.mjs'
       - 'scripts/rebuild-all-reviews.js'
       # Time-to-publish SLA (task #388): how long a review takes to go from
       # published by the outlet to live on the site, and the 90%-within-15-min
