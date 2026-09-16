@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-16T18:13:39.160Z",
+  "timestamp": "2026-09-16T22:08:26.620Z",
   "stats": {
-    "totalReviews": 43523,
-    "alreadyFlagged": 18013,
-    "dateGuardCatches": 243,
+    "totalReviews": 43536,
+    "alreadyFlagged": 18016,
+    "dateGuardCatches": 244,
     "directorMismatch": 1045,
     "tvFilmSignals": 1276,
-    "londonSignals": 1077,
+    "londonSignals": 1080,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3806
+    "noPublishDate": 3812
   },
   "findings": [
     {
@@ -729,6 +729,19 @@
       "score": 92,
       "publishDate": "2024-09-14",
       "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 697d before show (2024-09-14 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2024-09-14",
+      "url": "https://www.londonboxoffice.co.uk/news/post/abigails-party-review",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -11083,6 +11096,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-theatre--unknown.json",
+      "score": 85,
       "publishDate": "2026-09-16",
       "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
       "findings": [
@@ -40715,6 +40729,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "fringereview--unknown.json",
+      "score": 90,
       "publishDate": "2026-09-16",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/",
       "findings": [
@@ -40727,7 +40742,21 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
       "file": "independent--alice-saville.json",
+      "score": 82,
       "publishDate": "2026-09-16",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
       "findings": [
@@ -40741,7 +40770,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -40757,6 +40786,20 @@
       "file": "nationaltheatre--unknown.json",
       "publishDate": null,
       "url": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "standard--unknown.json",
+      "score": null,
+      "publishDate": "2026-09-16",
+      "url": "https://www.standard.co.uk/culture/theatre/golden-boy-almeida-theatre-review-b1297258.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -44861,6 +44904,19 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "the-recs--unknown.json",
+      "publishDate": "2026-09-13",
+      "url": "https://therecs.co.uk/man-to-man/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
       "score": 79,
       "publishDate": "2026-09-13",
@@ -45308,6 +45364,7 @@
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
       "file": "london-theatre--unknown.json",
+      "score": 87,
       "publishDate": "2026-09-14",
       "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
       "findings": [
