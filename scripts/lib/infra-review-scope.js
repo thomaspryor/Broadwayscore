@@ -715,11 +715,26 @@ function evaluateInfraReviewGate({
 
 /**
  * The freshest usable plan-phase verdict for this session, or null.
- * A 'fail' verdict does NOT unlock the gate — the reviewer wins by default.
- * Overturning a fail is an owner call, recorded as a verdict with
- * reviewer='owner-override' (the devil's-advocate reviewer's answer to open
- * question 3: without this, "reviewer said no" becomes the self-classification
- * dodge one level up).
+ *
+ * This function only ever looks at result==='pass' entries (see the loop
+ * below) — a 'fail' verdict is invisible here, not sticky. It does NOT by
+ * itself block a later pass for the same session: findFreshPlanVerdict has no
+ * way to tell "a genuinely revised plan, re-reviewed" from "the same plan,
+ * reviewed again until it passed" (task #1079's open question 3, still
+ * unresolved — a future plan-content hash could resolve it). Hard-blocking
+ * here on any fail was tried in the BRO-2310 design pass and rejected: it
+ * would wedge the legitimate "fail on v1, revise the plan, pass on v2" flow
+ * this gate exists to support.
+ *
+ * The accountability property lives one layer up instead, at WRITE time:
+ * recordPlanVerdict() (review-gate.mjs) refuses to record a pass whose
+ * session's own most recent plan verdict was a fail unless the call carries
+ * --note explaining what changed, or --reviewer=owner-override. Either way
+ * the write succeeds and later unlocks the gate here — the point is a visible
+ * paper trail, not a wedge. computeInfraReviewDigest() (infra-review-digest.js)
+ * surfaces every such fail→pass transition (via the overturnsFail flag
+ * recordPlanVerdict stamps on the entry) so the pattern is observable in the
+ * daily digest even when it is permitted (BRO-2310, option 2 of that card).
  */
 function findFreshPlanVerdict({ verdicts = [], sessionId = null, now = 0 }) {
   let best = null;
