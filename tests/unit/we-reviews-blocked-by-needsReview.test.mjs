@@ -156,4 +156,39 @@ describe('isRejectedNonReview — kept in lock-step with the inclusion gate (BRO
     const noScore = { ...johnProctorShaped, scoreSource: undefined, originalScoreSource: undefined, originalScoreNormalized: undefined };
     assert.equal(isRejectedNonReview(noScore), true);
   });
+
+  // ship-check finding (Codex adversarial review): hasStructuralStarScore only
+  // overrides explainExclusion's rejectionReason/rejectedAt gates — it does NOT
+  // override the separate cvWrongArticleHighConfidence gate. A file can carry
+  // both a structural star score AND a high-confidence contentVerification
+  // wrongArticle verdict from a different pipeline stage; the original
+  // `if (hasStructuralStarScore(data)) return false` short-circuited past that
+  // check entirely, letting a still-excluded-by-explainExclusion file be marked
+  // "retrieved" (not awaiting rediscovery) — a permanently missing review the
+  // pipeline believed was covered.
+  it('still treats a structurally-scored file as a non-review when CV separately flags high-confidence wrongArticle', () => {
+    const wrongArticleToo = {
+      ...johnProctorShaped,
+      contentVerification: { wrongArticle: true, confidence: 'high' },
+    };
+    assert.equal(isRejectedNonReview(wrongArticleToo), true);
+  });
+
+  it('does not flip on a LOW-confidence wrongArticle verdict alongside a structural star score', () => {
+    const lowConfWrongArticle = {
+      ...johnProctorShaped,
+      contentVerification: { wrongArticle: true, confidence: 'low' },
+    };
+    assert.equal(isRejectedNonReview(lowConfWrongArticle), false);
+  });
+});
+
+describe('hasStructuralStarScore — originalScoreCleared (ship-check finding)', () => {
+  it('is false once a later pass (fix-p0-score-corruption.js) invalidates the extraction', () => {
+    assert.equal(hasStructuralStarScore({ ...johnProctorShaped, originalScoreCleared: true }), false);
+  });
+
+  it('explainExclusion still excludes once originalScoreCleared is set', () => {
+    assert.equal(explainExclusion({ ...johnProctorShaped, originalScoreCleared: true }), 'rejectionReason');
+  });
 });

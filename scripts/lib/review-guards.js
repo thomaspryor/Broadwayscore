@@ -4169,9 +4169,16 @@ function isRejectedNonReview(data) {
   if (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data)) return false;
   // Same exception as isIncludableForRebuild's structural-star-score carve-out
   // (BRO-2282) — a markup-based star score never read the rejected prose, so
-  // this file is scored, not a non-review awaiting rediscovery.
-  if (hasStructuralStarScore(data)) return false;
-  if (NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
+  // rejectionReason alone doesn't make this a non-review. Deliberately scoped to
+  // JUST the rejectionReason check below, not an early return for the whole
+  // function: hasStructuralStarScore only overrides explainExclusion's
+  // rejectionReason/rejectedAt gates, not its separate cvWrongArticleHighConfidence
+  // gate — a file can carry BOTH a garbage_text rejectionReason AND a high-confidence
+  // contentVerification.wrongArticle verdict from a different pipeline stage, and the
+  // latter must still mark it non-retrieved (ship-check finding, ties isRejectedNonReview
+  // back to explainExclusion's real scope instead of over-widening this predicate).
+  const rejectionReasonCleared = hasStructuralStarScore(data);
+  if (!rejectionReasonCleared && NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
   const cv = data.contentVerification;
   // wrongArticle gated on high confidence to match isIncludableForRebuild's
   // exact exclusion (line ~2588): a medium/low-confidence CV false-positive on a
@@ -4259,6 +4266,13 @@ function hasStructuralStarScore(data) {
   if (!data) return false;
   if (data.rejectionReason !== 'not_a_review' && data.rejectionReason !== 'garbage_text') return false;
   if (data.wrongProduction === true || data.wrongShow === true) return false;
+  // A later pipeline pass (fix-p0-score-corruption.js) can determine the
+  // extracted score was wrong (extraction-no-evidence, aggregator-score-in-
+  // p0-slot, ...) and stamp originalScoreCleared=true without touching
+  // rejectionReason/scoreSource — same check hasValidScore's hasOrig makes
+  // (line ~4330). Without this, a since-invalidated extraction would still
+  // pass here.
+  if (data.originalScoreCleared === true) return false;
   const source = data.scoreSource || data.originalScoreSource;
   if (!STRUCTURAL_STAR_SOURCES.has(source)) return false;
   return typeof data.originalScoreNormalized === 'number'
