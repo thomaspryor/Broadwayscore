@@ -1,39 +1,5 @@
 [
   {
-    "startedAt": "2026-09-12T15:15:06.925Z",
-    "completedAt": "2026-09-12T15:15:10.168Z",
-    "totalReviews": 37,
-    "processed": 0,
-    "skipped": 36,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4969,
-      "output": 142,
-      "total": 12979
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-12T15:21:27.706Z",
-    "completedAt": "2026-09-12T15:21:27.917Z",
-    "totalReviews": 27,
-    "processed": 0,
-    "skipped": 26,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "man-to-man-west-end-2026",
-        "outletId": "culturecity",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-12T18:25:06.659Z",
     "completedAt": "2026-09-12T18:25:10.017Z",
     "totalReviews": 6,
@@ -439140,6 +439106,38 @@
     },
     "costUsd": 1.2273617,
     "runId": "35061642869",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-16T07:31:09.380Z",
+    "completedAt": "2026-09-16T07:31:20.611Z",
+    "totalReviews": 30,
+    "processed": 2,
+    "skipped": 28,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 11458,
+      "output": 670,
+      "total": 28906
+    },
+    "costUsd": 0.0568903,
+    "runId": "35067127879",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-16T07:31:22.134Z",
+    "completedAt": "2026-09-16T07:31:31.037Z",
+    "totalReviews": 4,
+    "processed": 4,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 11442,
+      "output": 852,
+      "total": 12294
+    },
+    "costUsd": 0.030721900000000003,
+    "runId": "35067127879",
     "errorDetails": []
   }
 ]
