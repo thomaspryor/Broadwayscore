@@ -77,13 +77,34 @@ function isEmptyDecisionContent(question) {
 
 // Pure: cross-reference persisted questions against live workspace titles,
 // dropping any whose extracted content is empty/none regardless of glyph.
+//
+// Driven by LIVE WORKSPACES, not by state files (2026-09-16, owner-reported).
+// It used to iterate `states` and inner-join to workspaces, which silently
+// omitted any ❓ tab with no state file. Measured on this machine that day:
+// 4 of 7 live ❓ tabs had no state file, so the morning digest showed less
+// than half of what the sidebar showed — and the digest was the wrong one.
+// The two writes (title glyph, then state JSON) are separate fs calls in
+// ~/.claude/hooks/lib/workspace-mark-done.js, so a crash, an older hook
+// version, or a tab marked by any other path all produce title-without-state.
+// The TITLE is the authoritative "needs you" signal; the state file only
+// enriches it with the captured question. A title-only tab therefore still
+// surfaces, flagged questionUnavailable so callers can render "open the tab"
+// instead of inventing a question.
+//
+// The empty-content filter (card #940) still applies ONLY to tabs that have a
+// state file: an explicit "no pending decision" extraction is a session
+// saying there is nothing to ask, which is different from having no file.
 function pendingDecisions(states, workspaces) {
-  const byRef = new Map(workspaces.map(w => [w.ref, w.title]));
-  return states
-    .filter(s => s && s.ref && byRef.has(s.ref))
-    .map(s => ({ ...s, title: byRef.get(s.ref) }))
-    .filter(s => isNeedsYouTitle(s.title))
-    .filter(s => !isEmptyDecisionContent(s.question));
+  const stateByRef = new Map();
+  for (const s of states || []) if (s && s.ref) stateByRef.set(s.ref, s);
+  return (workspaces || [])
+    .filter(w => w && w.ref && isNeedsYouTitle(w.title))
+    .map(w => {
+      const s = stateByRef.get(w.ref);
+      if (s) return { ...s, title: w.title };
+      return { ref: w.ref, title: w.title, question: null, ts: null, questionUnavailable: true };
+    })
+    .filter(s => s.questionUnavailable || !isEmptyDecisionContent(s.question));
 }
 
 // BRO-2989: a crown succession hand-off (launchCmuxSession({successorOf})
@@ -143,7 +164,11 @@ function collapseCrownLineages(pending) {
 // gets it in front of the owner, and keeps this module the single source of
 // truth for how a pending decision reads.
 function formatDetail(p) {
-  const base = p.question || '(no question captured)';
+  // questionUnavailable = ❓ title with no state file (see pendingDecisions).
+  // Say what the owner should DO rather than printing a hollow placeholder —
+  // the tab is genuinely waiting, we just never captured the question text.
+  const base = p.question
+    || (p.questionUnavailable ? 'decision pending — open the tab to see it' : '(no question captured)');
   if (!p.supersededCount) return base;
   const since = p.pendingSinceTs ? String(p.pendingSinceTs).slice(0, 10) : 'unknown';
   const gens = p.supersededCount + 1;
@@ -161,9 +186,13 @@ function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
   // question was empty/none, so they were excluded above. Logged, not
   // thrown — this must never block the digest, only make the mismatch
   // visible for the hook-side extraction bug it points at.
+  // Counted directly rather than as (glyphMatched - pending): pending now
+  // also contains title-only tabs that have no state file at all, so the old
+  // subtraction could go NEGATIVE and silently stop reporting real mismatches.
   const byRef = new Map(workspaces.map(w => [w.ref, w.title]));
-  const glyphMatched = states.filter(s => s && s.ref && byRef.has(s.ref) && isNeedsYouTitle(byRef.get(s.ref)));
-  const mismatches = glyphMatched.length - pending.length;
+  const mismatches = states.filter(s => s && s.ref && byRef.has(s.ref)
+    && isNeedsYouTitle(byRef.get(s.ref))
+    && isEmptyDecisionContent(s.question)).length;
   if (mismatches > 0) {
     console.error(`[needs-you] WARN ${mismatches} tab(s) ❓-marked but decision content was empty/none — excluded from "Needs your decision"`);
   }
