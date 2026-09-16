@@ -68,8 +68,10 @@ test('workflow_dispatch: proceeds unless SHA already live', () => {
     decide({ ...base, eventName: 'workflow_dispatch', diffResult: null }),
     { proceed: true, reason: 'explicit-ship' }
   );
+  // 'already-live' dedup requires a POSITIVELY clean data signal — see the
+  // BRO-3149 code-review fix test below for the unknown-signal case.
   assert.deepEqual(
-    decide({ ...base, eventName: 'workflow_dispatch', headSha: A }),
+    decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean' }),
     { proceed: false, reason: 'already-live' }
   );
 });
@@ -81,7 +83,27 @@ test('workflow_dispatch: Vercel API down still ships (no dedup possible)', () =>
 
 test('workflow_run: same semantics as dispatch', () => {
   assert.equal(decide({ ...base, eventName: 'workflow_run' }).proceed, true);
-  assert.equal(decide({ ...base, eventName: 'workflow_run', headSha: A }).proceed, false);
+  assert.equal(decide({ ...base, eventName: 'workflow_run', headSha: A, dataDiffResult: 'clean' }).proceed, false);
+});
+
+// Codex adversarial /code-review (BRO-3149, post-merge): the non-schedule
+// dedup branch used to treat an UNKNOWN dataDiffResult exactly like a
+// positively-clean one and skip — reproducing the original bug via the
+// workflow_run/workflow_dispatch lane instead of the schedule lane (this is
+// the trigger rebuild-fast.yml's direct post-push dispatch uses, arguably
+// the highest-value path for this fix). Unknown status must fail OPEN here,
+// unlike the schedule branch (which has an age-gated backstop to lean on
+// instead of a blanket fail-open).
+test('workflow_dispatch: HEAD already live, data status UNKNOWN — fails open (does not silently dedup)', () => {
+  for (const dataDiffResult of ['error', null, undefined]) {
+    const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult });
+    assert.deepEqual(r, { proceed: true, reason: 'data-unknown-fail-open' });
+  }
+});
+
+test('workflow_run: HEAD already live, data status UNKNOWN — fails open (same lane rebuild-fast.yml dispatches through)', () => {
+  const r = decide({ ...base, eventName: 'workflow_run', headSha: A, dataDiffResult: 'error' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-unknown-fail-open' });
 });
 
 // BRO-3149: reviews.json/shows.json live in the private core-data repo and
