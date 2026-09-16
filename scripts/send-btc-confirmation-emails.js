@@ -29,6 +29,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { applyUtm } = require('./lib/email-utm');
+const { markTestSend } = require('./lib/test-send-marker');
 const {
   parseSubmissionsJsonl,
   dedupeLatestByEmail,
@@ -177,8 +178,13 @@ async function main() {
 
   let sent = 0, failed = 0;
   for (const record of toSend) {
-    const { subject, html } = buildConfirmationEmail(record);
-    const taggedHtml = applyUtm(html, { source: 'beat-the-critics', campaign: 'btc-confirmation-retroactive' });
+    let { subject, html } = buildConfirmationEmail(record);
+    html = applyUtm(html, { source: 'beat-the-critics', campaign: 'btc-confirmation-retroactive' });
+    // SEND_TO is a manual-verification send, not a real confirmation to a real
+    // entrant — mark it so it can never read as one in the recipient's inbox
+    // (BRO-3577: an unmarked test send of this exact template previously
+    // landed in the owner's own inbox and was mistaken for a real broadcast).
+    if (SEND_TO) ({ subject, html } = markTestSend({ subject, html }));
 
     if (DRY_RUN) {
       console.log(`[DRY RUN] ${record.email} — "${subject}"`);
@@ -187,7 +193,7 @@ async function main() {
     }
 
     try {
-      await sendEmail({ to: record.email, subject, html: taggedHtml });
+      await sendEmail({ to: record.email, subject, html });
       console.log(`✓ ${record.email}`);
       sent++;
       if (!SEND_TO) {
