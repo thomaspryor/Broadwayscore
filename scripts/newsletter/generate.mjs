@@ -2186,7 +2186,16 @@ function seasonStandingFor(openedShow, isReopening) {
       </td>
       <td valign="middle" style="padding:10px 0;${!isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}${rowBg}">
         <div style="font-size:14px;font-weight:${isHighlight ? '700' : '600'};color:${isHighlight ? '#fff' : '#f3f4f6'};line-height:1.3;">${showLink(x.s, x.s.title)}</div>
-        ${isHighlight ? '<div style="display:inline-block;margin-top:4px;padding:2px 7px;border-radius:999px;background:#d4a574;color:#0f0f14;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">Just opened</div>' : ''}
+        ${/* BRO-3560 — outline chip, not a filled bg+text pair: same Gmail-iOS
+           dark-mode bug class as BRO-1392/BRO-3555 (a colored background with
+           separately-styled text can flip independently and lose contrast),
+           but this chip is variable-width text so it doesn't fit the fixed-
+           size PNG badge pattern those used. Dropping the background instead
+           of baking a raster removes the vulnerable pair entirely — a single
+           color used for both border and text is the same safe category as
+           the plain colored prose text already used elsewhere in this email
+           (e.g. the tier labels above), which has never needed the PNG fix. */
+        isHighlight ? '<div style="display:inline-block;margin-top:4px;padding:1px 6px;border:1px solid #d4a574;border-radius:999px;color:#d4a574;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">Just opened</div>' : ''}
         <div style="font-size:11px;color:#9ca3af;margin-top:${isHighlight ? '4' : '2'}px;">Opened ${fmt(x.s.openingDate)} · ${x.agg.count} reviews</div>
       </td>
       <td valign="middle" width="48" align="right" style="padding:10px 12px 10px 0;${!isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}${rowBg}">
