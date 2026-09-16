@@ -28,6 +28,17 @@ test('buildTbCandidateUrls also emits year-suffixed short-title variants', () =>
   assert.ok(urls.includes('https://www.talkinbroadway.com/page/world/beaches2026.html'));
 });
 
+test('buildTbCandidateUrls tries dated short-title variants before the bare undated one', () => {
+  // The bare short-title URL (Beaches.html) has no publish-date signal to verify against,
+  // so for a same-titled revival it could match the wrong production's page. Dated variants
+  // must be tried first so a correctly-dated page wins when one exists.
+  const urls = buildTbCandidateUrls('Beaches, A New Musical', 2026);
+  const datedIdx = urls.indexOf('https://www.talkinbroadway.com/page/world/Beaches2026.html');
+  const bareIdx = urls.indexOf('https://www.talkinbroadway.com/page/world/Beaches.html');
+  assert.ok(datedIdx !== -1 && bareIdx !== -1);
+  assert.ok(datedIdx < bareIdx, `expected dated variant before bare variant, got: ${JSON.stringify(urls)}`);
+});
+
 test('buildTbCandidateUrls does not duplicate when short title equals full title camel-slug', () => {
   const urls = buildTbCandidateUrls('Hamilton', 2015);
   const unique = new Set(urls);

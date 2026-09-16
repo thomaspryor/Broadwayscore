@@ -58,14 +58,23 @@ function buildTbCandidateUrls(title, year) {
   // Comma-subtitled shows ("Beaches, A New Musical") get indexed by TB under the
   // short title only ("Beaches.html"). See verifyTbPage's short-title fallback for
   // the same guard rationale (Beaches 2026-04-22 opening night).
+  //
+  // Length check uses normalizeText (strips punctuation) to match the floor verifyTbPage
+  // applies to the same short title — a raw-character check would disagree with it (e.g.
+  // "Oh!!" is 4 raw chars but normalizes to "oh", 2 chars).
+  //
+  // Dated variants are tried before the bare short-title page: an undated short-title URL
+  // has no publish-date signal, so for a revival it could match an old production's page
+  // before a same-titled dated page is ever tried (verifyTbPage's date-window gate only
+  // rejects it if a date happens to be extractable from the page).
   const shortTitle = shortTitleCandidate(title);
-  if (shortTitle && shortTitle.length >= MIN_SHORT_VARIANT_CHARS) {
+  if (shortTitle && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
     const camelShort = toCamelSlug(shortTitle);
     const lowerShort = toLowerSlug(shortTitle);
     if (camelShort && camelShort !== camel) {
-      urls.push(`${TB_HOST}/page/world/${camelShort}.html`);
       urls.push(`${TB_HOST}/page/world/${camelShort}${y4}.html`);
       urls.push(`${TB_HOST}/page/world/${camelShort}${y2}.html`);
+      urls.push(`${TB_HOST}/page/world/${camelShort}.html`);
       urls.push(`${TB_HOST}/page/world/${lowerShort}${y4}.html`);
     }
   }
