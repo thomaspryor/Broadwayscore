@@ -234,12 +234,12 @@ diagnostic scripts and their tests deleted
 (`monitor-gate-cold-start.js`, `analyze-gate-cold-start.js`,
 `diagnose-gate-cold-start-join.js`, `gate-cold-start-rules.js` + test,
 `diagnose-gate-cold-start-join.yml`); `monitor-gate-ab.yml`'s gate-cold-start
-step removed. The PostHog flag itself (id 772232) is left live-but-unread
-in PostHog, not deleted, for reproducibility — no session had
-`POSTHOG_PERSONAL_API_KEY` available locally to archive it at teardown time;
-this is a follow-up hygiene item, not a functional blocker (nothing in
-`src/` reads this flag anymore). This document is kept in place as the
-reproducibility record.
+step removed. The PostHog flag itself (id 772232) was archived (`active:
+false`, not deleted, for reproducibility) via `.github/workflows/manual-
+posthog-flag-archive.yml` — built and dispatched by the BRO-3459 follow-up
+(2026-09-15, run 35027111711, succeeded) after no session at teardown time
+had `POSTHOG_PERSONAL_API_KEY` available locally to do it directly. This
+document is kept in place as the reproducibility record.
 
 **Rollback:** flipping the PostHog flag does NOTHING now — enforcement is
 unconditional in code, not flag-gated. Reverting to pre-teardown (arm-split)
