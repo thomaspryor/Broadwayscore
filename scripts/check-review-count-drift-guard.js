@@ -140,7 +140,12 @@ async function main() {
     consecutiveBlocks: state.consecutiveBlocks,
     workflowDisplayName: WORKFLOW_DISPLAY_NAME,
     overrideCommand,
-    impact: 'reviews.json freshness/suppression breaches are no longer being caught in real time — opening-window reviews may be silently missing from the site',
+    // Generic on purpose: this guard treats EITHER of check-review-count-drift.js's
+    // failure exit codes as "blocked" (1 = cannot run at all — e.g. a broken
+    // review-texts/reviews.json checkout — and 2 = a real --strict breach), so
+    // the impact text must not assume this run was specifically a suppression
+    // breach when it could just as easily be a checkout that never got scanned.
+    impact: 'the daily reviews.json freshness/suppression check is no longer running in real time — either the checkout can\'t be scanned, or opening-window reviews are silently missing from the site',
     runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
       ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
       : undefined,

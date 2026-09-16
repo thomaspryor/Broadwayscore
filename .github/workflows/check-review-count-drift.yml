@@ -94,6 +94,18 @@ jobs:
 
       - name: Check for changes
         id: changes
+        # BRO-2423: must run even when "Run drift check" failed loud (the
+        # guard's first-or-below-threshold block, unchanged pre-port
+        # behavior) — without always() here, GitHub Actions' default
+        # success()-gating skips this step (and the commit step after it)
+        # whenever the guard blocks, so the consecutiveBlocks streak it just
+        # wrote to guard-escalation-state.json is NEVER committed. The next
+        # scheduled run starts from a fresh checkout with no memory of the
+        # block, resets to consecutiveBlocks=1, and can never reach the
+        # auto-recovery threshold — exactly the check-corpus-drift.yml
+        # reference's "Check for changes" step (also always()) exists to
+        # avoid.
+        if: always()
         run: |
           DRIFT_CHANGED=false
           if git diff --quiet data/audit/review-count-drift.json 2>/dev/null; then
