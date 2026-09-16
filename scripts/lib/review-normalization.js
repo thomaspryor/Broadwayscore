@@ -1743,7 +1743,12 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
       if (parts.length !== 2) continue;
 
       const fileOutletNormalized = normalizeOutlet(parts[0]);
-      if (fileOutletNormalized === normalizedOutlet) continue; // already checked in pass 1
+      // Safe to skip: any file whose filename-outlet already equals the
+      // target outlet is fully covered by Pass 1 (filename match) and Pass 2
+      // (internal outletId/criticName match, BRO-1031) above — this pass
+      // exists only to resolve a DIFFERENT filename-outlet alias that shares
+      // the same registered domain, which by definition doesn't apply here.
+      if (fileOutletNormalized === normalizedOutlet) continue;
 
       // Check if this file's outlet shares the same domain as the incoming outlet
       const fileDomain = outletDefs[fileOutletNormalized] ? outletDefs[fileOutletNormalized].domain : null;

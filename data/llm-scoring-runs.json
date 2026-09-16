@@ -1,39 +1,5 @@
 [
   {
-    "startedAt": "2026-09-11T19:42:12.619Z",
-    "completedAt": "2026-09-11T19:42:44.426Z",
-    "totalReviews": 43124,
-    "processed": 3,
-    "skipped": 43116,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 32485,
-      "output": 1567,
-      "total": 88382
-    },
-    "errorDetails": [
-      {
-        "showId": "the-children-off-west-end-2026",
-        "outletId": "theatreboard",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-11T21:00:01.703Z",
-    "completedAt": "2026-09-11T21:00:12.505Z",
-    "totalReviews": 30,
-    "processed": 2,
-    "skipped": 28,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 11462,
-      "output": 624,
-      "total": 28877
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-11T23:53:24.904Z",
     "completedAt": "2026-09-11T23:53:31.490Z",
     "totalReviews": 20,
@@ -439003,6 +438969,44 @@
     },
     "costUsd": 1.2319342,
     "runId": "35043302058",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-16T02:06:37.582Z",
+    "completedAt": "2026-09-16T02:06:51.569Z",
+    "totalReviews": 43887,
+    "processed": 2,
+    "skipped": 43883,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 16406,
+      "output": 731,
+      "total": 41878
+    },
+    "costUsd": 0.07336154999999998,
+    "runId": "35045040368",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-16T02:06:53.589Z",
+    "completedAt": "2026-09-16T02:12:50.252Z",
+    "totalReviews": 169,
+    "processed": 169,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 440871,
+      "output": 38717,
+      "total": 479588
+    },
+    "costUsd": 1.2272942,
+    "runId": "35045040368",
     "errorDetails": []
   }
 ]
