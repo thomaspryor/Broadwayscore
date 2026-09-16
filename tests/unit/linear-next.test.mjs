@@ -49,6 +49,7 @@ import {
   decideRouting,
   decideDetach,
   describeHeadlessOutcome,
+  findChildLaunchRow,
   checkTerminalStateGuard,
   buildLinearSeed,
   buildDispatchComment,
@@ -344,6 +345,22 @@ test('describeHeadlessOutcome: only done is success; blocked/stopped-short/stran
   assert.equal(failed.label, 'FAILED (timeout)');
 });
 
+test('findChildLaunchRow: newest launch row for the issue at/after sinceMs; ignores other issues, other events and stale rows', () => {
+  const rows = [
+    { event: 'launch', linearId: 'BRO-1', workspaceRef: 'headless:linear:BRO-1', ts: '2026-09-16T10:00:00.000Z' },
+    { event: 'launch', linearId: 'BRO-1', workspaceRef: 'workspace:7', ts: '2026-09-16T10:05:00.000Z' },
+    { event: 'job-spawned', linearId: 'BRO-1', ts: '2026-09-16T10:06:00.000Z' },
+    { event: 'launch', linearId: 'BRO-2', workspaceRef: 'headless:linear:BRO-2', ts: '2026-09-16T10:07:00.000Z' },
+    { event: 'launch', linearId: 'BRO-1', workspaceRef: 'headless:linear:BRO-1', ts: 'garbage' },
+  ];
+  const since = Date.parse('2026-09-16T10:01:00.000Z');
+  assert.equal(findChildLaunchRow(rows, { linearId: 'BRO-1', sinceMs: since }).workspaceRef, 'workspace:7');
+  assert.equal(findChildLaunchRow(rows, { linearId: 'BRO-1', sinceMs: Date.parse('2026-09-16T11:00:00.000Z') }), null);
+  assert.equal(findChildLaunchRow(rows, { linearId: 'BRO-3', sinceMs: 0 }), null);
+  assert.equal(findChildLaunchRow([], { linearId: 'BRO-1', sinceMs: 0 }), null);
+  assert.equal(findChildLaunchRow(null, { linearId: 'BRO-1', sinceMs: 0 }), null);
+});
+
 test('main(): (a) bare --id on an unlabeled verifiable issue takes the headless path — runJobFn called, launchCmux not, ledger launch row workspaceRef headless:<id>', async () => {
   const cap = captureConsole();
   const ledger = [];
@@ -473,27 +490,53 @@ test('main(): detached parent — child argv carries --no-detach (never re-detac
   // detached-parent path here. The real CLI (no deps) takes it by default —
   // decideDetach's truth-table test above pins that.
   let childArgv = null, spawnCwd = null, scriptPath = null;
-  // alive at the end of the window → dispatched
+  // alive at the end of the window AND the child's launch row appears → dispatched (lane named)
   {
     const cap = captureConsole();
+    let reads = 0;
     try {
-      await main(['--id', 'BRO-3652', '--detach', '--model', 'opus'], headlessDefaultDeps({
+      await main(['--id', 'BRO-3652', '--detach', '--headless', '--model', 'opus'], headlessDefaultDeps({
         getIssue: async () => makeHeadlessDefaultIssue(),
         runJobFn: async () => { throw new Error('the parent must never run the job itself when detaching'); },
         launchCmux: () => { throw new Error('launchCmux must not be called'); },
         spawnDetachedDispatch: (o) => { childArgv = o.argv; spawnCwd = o.cwd; scriptPath = o.scriptPath; return { pid: 424242 }; },
-        waitForSettle: async () => ({ alive: true, waitedMs: 30000 }),
+        waitForSettle: async () => ({ alive: true, waitedMs: 1000 }),
+        // the child's launch row shows up on the second read (i.e. after the settle window)
+        readLedgerEntries: () => (++reads >= 2
+          ? [{ event: 'launch', taskId: 'linear:BRO-3652', linearId: 'BRO-3652', workspaceRef: 'headless:linear:BRO-3652', correlationId: 'abc12345', ts: new Date().toISOString() }]
+          : []),
       }));
     } finally { cap.restore(); }
     assert.ok(childArgv, 'spawnDetachedDispatch must be called');
     assert.ok(childArgv.includes('--no-detach'), `child must run attached: ${childArgv.join(' ')}`);
     assert.ok(!childArgv.includes('--detach'), `child must not re-detach: ${childArgv.join(' ')}`);
     assert.equal(childArgv.filter(a => a === '--no-detach').length, 1, 'never doubled');
+    assert.equal(childArgv.filter(a => a === '--headless').length, 1, '--headless pinned exactly once (version-skew guard for the canonical copy)');
     assert.deepEqual(childArgv.slice(0, 2), ['--id', 'BRO-3652']);
     assert.ok(childArgv.includes('--model') && childArgv.includes('opus'), 'other flags pass through');
     assert.match(scriptPath, /scripts[\/\\]linear-next\.js$/);
     assert.equal(spawnCwd, path.dirname(path.dirname(scriptPath)), 'child cwd is the canonical repo the script lives in');
-    assert.ok(cap.out.some(l => /detached dispatcher running \(pid 424242\)/.test(l)), cap.out.join(' | '));
+    assert.ok(cap.out.some(l => /dispatched BRO-3652 → headless:linear:BRO-3652 \(launch row abc12345/.test(l)), cap.out.join(' | '));
+    assert.ok(cap.out.some(l => /exit 0 here means DISPATCHED, not done/.test(l)), 'must say what exit 0 means');
+  }
+  // alive but NO launch row within the ack cap → NOT claimed as dispatched
+  {
+    const cap = captureConsole();
+    const prevAck = process.env.LINEAR_NEXT_DETACH_ACK_MS;
+    process.env.LINEAR_NEXT_DETACH_ACK_MS = '3000';
+    try {
+      await main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+        getIssue: async () => makeHeadlessDefaultIssue(),
+        spawnDetachedDispatch: () => ({ pid: 424244 }),
+        waitForSettle: async () => ({ alive: true, waitedMs: 1000 }),
+        readLedgerEntries: () => [
+          // a STALE launch row from an earlier dispatch must not count as this one's ack
+          { event: 'launch', taskId: 'linear:BRO-3652', linearId: 'BRO-3652', workspaceRef: 'headless:linear:BRO-3652', ts: '2026-09-01T00:00:00.000Z' },
+        ],
+      }));
+    } finally { cap.restore(); if (prevAck === undefined) delete process.env.LINEAR_NEXT_DETACH_ACK_MS; else process.env.LINEAR_NEXT_DETACH_ACK_MS = prevAck; }
+    assert.ok(cap.out.some(l => /NOT confirmed as dispatched/.test(l)), cap.out.join(' | '));
+    assert.ok(!cap.out.some(l => /dispatched BRO-3652 →/.test(l)), 'must not claim dispatched without a fresh launch row');
   }
   // gone inside the window → refusal, exit 1
   {

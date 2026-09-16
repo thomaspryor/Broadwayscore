@@ -248,6 +248,29 @@ function decideDetach({ routingMode, routingReason = '', detachFlag, tab = false
   return { detach: true, refusal: null };
 }
 
+/**
+ * BRO-3652 detached-parent launch acknowledgement: the most recent `launch`
+ * ledger row for this Linear issue written at/after `sinceMs`. linear-next.js
+ * writes that row BEFORE spawning on either lane (headless: workspaceRef
+ * `headless:linear:BRO-N`; tab: `workspace:N`), so its presence is the proof
+ * the child got past every guard — liveness alone is not (see the caller).
+ * Pure over the rows the caller read.
+ *
+ * @param {Array<object>} rows   dispatch-ledger entries (any order)
+ * @param {{linearId: string, sinceMs: number}} o
+ * @returns {object|null}
+ */
+function findChildLaunchRow(rows, { linearId, sinceMs }) {
+  let best = null;
+  for (const r of rows || []) {
+    if (!r || r.event !== 'launch' || r.linearId !== linearId) continue;
+    const t = Date.parse(r.ts || '');
+    if (!Number.isFinite(t) || t < sinceMs) continue;
+    if (!best || t > Date.parse(best.ts)) best = r;
+  }
+  return best;
+}
+
 // bsc-runner.js's runJob() classifies how a session ENDED into
 // res.headlessOutcome (see its job-* ledger rows); linear-next.js turns that
 // into the one line an operator reads. Only 'done' is success.
@@ -1037,6 +1060,7 @@ module.exports = {
   decideRouting,
   decideDetach,
   describeHeadlessOutcome,
+  findChildLaunchRow,
   HEADLESS_OUTCOME_LABELS,
   checkTerminalStateGuard,
   marketingProjectGuard,

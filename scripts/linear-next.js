@@ -563,8 +563,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // The child MUST run attached: with detach now the default (BRO-3652),
     // stripping `--detach` alone would make the child detach a grandchild,
     // and so on. `--no-detach` is appended explicitly (and `--no-detach`
-    // stripped first so it is never doubled).
-    const childArgv = [...stripFlag(stripFlag(argv, 'detach'), 'no-detach'), '--no-detach'];
+    // stripped first so it is never doubled). `--headless` is appended too
+    // (Codex review, version skew): the re-exec targets the CANONICAL
+    // checkout, which may still be — or be rolled back to — the pre-3652
+    // copy whose default is a tab and which does not know `--no-detach`.
+    // That copy honours `--headless` (attached, no --detach), so the child
+    // lands on the same lane either way.
+    const childArgv = [...stripFlag(stripFlag(stripFlag(argv, 'detach'), 'no-detach'), 'headless'), '--headless', '--no-detach'];
     const { pid } = spawnDetachedDispatch({
       scriptPath: path.join(REPO, 'scripts', 'linear-next.js'),
       argv: childArgv,
@@ -604,9 +609,47 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       console.error(`[linear-next] full log: ${logFile}`);
       process.exit(1);
     }
-    console.log(`[linear-next] detached dispatcher running (pid ${pid}) — this process is NOT the job's parent.`);
+    // LAUNCH ACK (Codex review on BRO-3652, two findings closed at once):
+    // "still alive at the end of the window" was the only evidence of a
+    // dispatch, but (1) linear-client.js allows 30s per attempt plus retries
+    // on the child's re-fetch, so a slow fetch followed by a refusal outlives
+    // the window and would have been reported as dispatched; and (2) a card
+    // that gains 'mac-only' between the parent's fetch and the child's
+    // launches a tab and exits fast, which the liveness check alone would
+    // have called a refusal. The child writes its `launch` ledger row (with
+    // linearId) BEFORE it spawns anything on either lane, so that row is the
+    // real acknowledgement: keep watching past the settle window until the
+    // row appears (dispatched — report its lane), the child exits (refused),
+    // or the ack cap passes (alive but unconfirmed — say so, never claim
+    // "dispatched"). LINEAR_NEXT_DETACH_ACK_MS caps the extra wait (default
+    // 120s); 0 disables the ack watch and keeps the liveness-only verdict.
+    const spawnedAt = Date.now();
+    const ackMs = Number(process.env.LINEAR_NEXT_DETACH_ACK_MS ?? 120000);
+    const findLaunchRow = () => {
+      let rows = [];
+      try { rows = readLedgerEntriesFn(); } catch { rows = []; }
+      return ld.findChildLaunchRow(rows, { linearId: identifier, sinceMs: spawnedAt - 1000 });
+    };
+    let launchRow = findLaunchRow();
+    let ackWaited = 0;
+    while (!launchRow && ackMs > 0 && ackWaited < ackMs) {
+      const tick = await waitForSettle(pid, 1000);
+      ackWaited += tick.waitedMs || 1000;
+      if (!tick.alive) {
+        console.error(`[linear-next] the detached dispatcher for ${idForLog} EXITED after ${settled.waitedMs + ackWaited}ms without writing a launch row — it refused or failed. Its output:`);
+        console.error(readLogTail(logFile, 40));
+        console.error(`[linear-next] full log: ${logFile}`);
+        process.exit(1);
+      }
+      launchRow = findLaunchRow();
+    }
+    if (launchRow) {
+      console.log(`[linear-next] dispatched ${identifier} → ${launchRow.workspaceRef || '(no workspaceRef)'} (launch row ${launchRow.correlationId || 'n/a'} at ${launchRow.ts}); the detached dispatcher (pid ${pid}) is NOT this process's child.`);
+    } else {
+      console.log(`[linear-next] WARNING: detached dispatcher (pid ${pid}) is still alive after ${settled.waitedMs + ackWaited}ms but has NOT written a launch ledger row yet — NOT confirmed as dispatched. Check the ledger for linearId ${identifier} before relying on it.`);
+    }
     console.log(`[linear-next] dispatcher output: ${logFile}`);
-    console.log('[linear-next] the job survives this shell; watch the ledger, not this process.');
+    console.log('[linear-next] exit 0 here means DISPATCHED, not done — the job\'s own verdict (job-done / job-stranded / job-blocked) lands in the ledger and in that log; watch those, not this process.');
     return;
   }
 
