@@ -387,6 +387,11 @@ jobs:
           git add data/audit/stage-latency.jsonl 2>/dev/null || true
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          # alert-router-attempts.jsonl (BRO-3671/BRO-3662): logDispatchAttempt()
+          # rewrites this TRACKED file on every dispatch attempt; unstaged, it
+          # makes a rebase refuse pre-flight and forces the clobber-prone merge
+          # path in push-with-retry.sh. Also multi-writer, same as the two above.
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No shared audit telemetry changes to commit"
           else

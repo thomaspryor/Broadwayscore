@@ -128,7 +128,18 @@ jobs:
             GUARD_STATE_CHANGED=true
             echo "Changes detected in data/audit/guard-escalation-state.json (guard-escalation state)"
           fi
-          if [ "$DRIFT_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ]; then
+          # BRO-3671: check-review-count-drift-guard.js calls routeAlert()/
+          # resolveCondition() — without this, a run where ONLY the alert
+          # cooldown ledger or dispatch-attempts log changed (no drift/guard-
+          # escalation state change) would skip the commit step entirely,
+          # same has_changes-gating class as audit-aggregator-gap.yml's
+          # digest-queue comment above.
+          ALERT_STATE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null)" ]; then
+            ALERT_STATE_CHANGED=true
+            echo "Changes detected in alert-ledger.json / alert-router-attempts.jsonl (alert cooldown state)"
+          fi
+          if [ "$DRIFT_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ] || [ "$ALERT_STATE_CHANGED" = "true" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -145,7 +156,12 @@ jobs:
           # BRO-2423: guard-escalation streak state must ride this commit too
           # (see "Check for changes" above). Safe when the file doesn't exist
           # yet (no guard has ever blocked).
-          bash scripts/lib/git-add-existing.sh data/audit/guard-escalation-state.json
+          # BRO-3671/BRO-3662: alert-ledger.json (routeAlert()'s cooldown) and
+          # alert-router-attempts.jsonl (logDispatchAttempt()'s rewritten-
+          # every-attempt tracked file — unstaged, it makes a rebase refuse
+          # pre-flight and forces push-with-retry.sh onto its clobber-prone
+          # merge path) must ride this commit too.
+          bash scripts/lib/git-add-existing.sh data/audit/guard-escalation-state.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
 
           SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); const s=d.summary; console.log(s.showsOverThreshold + ' show(s) over suppression threshold, reviews.json ' + (s.reviewsJsonAgeHours ?? '?') + 'h old')")
 

@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "pre-existing-condition-off-broadway-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-16T16:34:10.979Z",
+  "detectedAt": "2026-09-16T18:13:20.823Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "front-row-center--tom-storch.json",
+      "outletId": "front-row-center",
+      "criticName": "Tom Storch",
+      "url": "https://thefrontrowcenter.com/2026/09/pre-existing-condition/",
+      "fullTextLen": 3908,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-16T18:13:20.823Z"
 }
