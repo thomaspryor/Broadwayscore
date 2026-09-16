@@ -173,14 +173,23 @@ const VENUE_ALIASES = [
   },
   {
     canonical: 'second stage hayes',
-    matches: [/hayes\s*theater/i, /second\s*stage.*hayes/i],
+    // theat(?:er|re), not a hardcoded spelling (BRO-2255 what-else sweep):
+    // Playbill prints "Hayes Theatre", shows.json holds "Helen Hayes
+    // Theater" — the American-only /theater/ regex matched shows.json's side
+    // and missed Playbill's, so aliasCanonical returned a real hit on one
+    // side and null on the other. venuesMatch's early return
+    // (`aliasA !== null && aliasA === aliasB`) then hard-FALSEd on a
+    // same-venue pair instead of falling through to normalizeVenueName's
+    // spelling-insensitive comparison, which would have matched them.
+    matches: [/hayes\s*theat(?:er|re)/i, /second\s*stage.*hayes/i],
   },
   // Atlantic Theater Company — two stages. The lookahead must tolerate words
   // between "Theater" and "Stage 2" ("Atlantic Theater Company Stage 2")
   // or company-form Stage 2 listings collapse onto the mainstage alias.
   {
     canonical: 'atlantic theater',
-    matches: [/atlantic\s*theater(?!.*stage\s*2)/i, /linda\s*gross/i],
+    // Same asymmetric-spelling gap as second-stage-hayes above.
+    matches: [/atlantic\s*theat(?:er|re)(?!.*stage\s*2)/i, /linda\s*gross/i],
   },
   {
     canonical: 'atlantic stage 2',
@@ -189,12 +198,15 @@ const VENUE_ALIASES = [
   // MCC at 511 W 52nd St — multiple sub-stages
   {
     canonical: 'mcc theater',
-    matches: [/mcc\s*theater/i, /newman\s*mills/i, /susan.*frankel/i, /robert\s*w\.?\s*wilson\s*mcc/i],
+    // Same asymmetric-spelling gap as second-stage-hayes above.
+    matches: [/mcc\s*theat(?:er|re)/i, /newman\s*mills/i, /susan.*frankel/i, /robert\s*w\.?\s*wilson\s*mcc/i],
   },
   // Other major OB venues — canonical alias = lowercase venue name
   {
     canonical: 'vineyard theatre',
-    matches: [/vineyard\s*theatre/i],
+    // Same asymmetric-spelling gap as second-stage-hayes above, mirrored:
+    // this one was British-spelling-only and missed an American-spelled side.
+    matches: [/vineyard\s*theat(?:er|re)/i],
   },
   {
     canonical: 'soho rep',
