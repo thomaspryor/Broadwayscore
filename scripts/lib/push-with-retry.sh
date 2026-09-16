@@ -452,6 +452,55 @@ _fetch_with_captured_stderr() {
   return $rc
 }
 
+# BRO-3662: `git rebase` can fail BEFORE it starts — a pre-flight refusal
+# ("cannot rebase: You have unstaged changes" / "your index contains
+# uncommitted changes") when the worktree or index is dirty. The old call site
+# discarded stderr with 2>/dev/null, so that refusal was reported as "Rebase had
+# conflicts", ran the 4-round resolve loop against ZERO conflicted files, and
+# fell through to `git merge -X ours` — the path that resolves conflicting hunks
+# in OUR favour and can silently discard a concurrent writer's changes.
+# process-feedback.yml run 34852355418 did exactly this on all 10 retry attempts.
+#
+# Mirrors _fetch_with_captured_stderr above (mktemp fallback, chmod 600, rc
+# immediately after the git call, _redact_creds, always cleans up). Sets
+# _REBASE_REFUSAL_REASON to the real git error when — and only when — the rebase
+# provably never started; empty means "a genuine conflict, handle as before".
+# Diagnostics only: the caller's control flow is unchanged either way.
+_REBASE_REFUSAL_REASON=""
+# Resolve a rebase state dir. Prefers _marker_git_path (detect-stale-merge-head
+# .sh, which uses --path-format=absolute) but that source is deliberately
+# fail-OPEN above, so it may be undefined — fall back to the plain --git-path
+# idiom already used at sync-audit-checkout.sh:229-232.
+_rebase_state_dir() {
+  if command -v _marker_git_path >/dev/null 2>&1; then
+    _marker_git_path "$(pwd)" "$1"
+  else
+    git rev-parse --git-path "$1" 2>/dev/null
+  fi
+}
+_rebase_with_captured_stderr() {
+  local errfile
+  errfile=$(mktemp 2>/dev/null || echo "/tmp/push-retry-rebase-err.$$.$RANDOM")
+  chmod 600 "$errfile" 2>/dev/null || true
+  git rebase -X theirs "origin/$PULL_BRANCH" 2>"$errfile"
+  local rc=$?
+  _REBASE_REFUSAL_REASON=""
+  if [ "$rc" -ne 0 ]; then
+    local rm_dir ra_dir conflicted
+    rm_dir=$(_rebase_state_dir rebase-merge)
+    ra_dir=$(_rebase_state_dir rebase-apply)
+    conflicted=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
+    # "Never started" = non-zero exit AND no rebase state on disk AND nothing
+    # actually conflicted. All three, because any one alone is ambiguous.
+    if [ ! -d "${rm_dir:-/nonexistent}" ] && [ ! -d "${ra_dir:-/nonexistent}" ] && [ -z "$conflicted" ]; then
+      _REBASE_REFUSAL_REASON=$(tail -c 800 "$errfile" 2>/dev/null | _redact_creds | tr '\n' ' ')
+      [ -n "$_REBASE_REFUSAL_REASON" ] || _REBASE_REFUSAL_REASON="git printed no error"
+    fi
+  fi
+  rm -f "$errfile" 2>/dev/null || true
+  return $rc
+}
+
 # Best-effort failure telemetry (task #394). Appends a JSONL record when a push is
 # abandoned — the no-op-rebase abort, an early loop exit (deadline / early-fallback), or full retry exhaustion below — so
 # repeated exhaustion is DETECTABLE instead of silent-forever. health-check.js
@@ -1944,11 +1993,24 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # survival-check failure log pinpoints the exact path that dropped a file
   # (rebase-clean vs rebase-resolved vs merge vs cherry-pick). Diagnostics only.
   RESOLUTION_PATH=none
-  if git rebase -X theirs "origin/$PULL_BRANCH" 2>/dev/null; then
+  if _rebase_with_captured_stderr; then
     rebase_ok=true
     RESOLUTION_PATH="rebase-clean(-X theirs)"
     restore_protected_fields
     reconcile_merged_json
+  elif [ -n "$_REBASE_REFUSAL_REASON" ]; then
+    # BRO-3662: the rebase never started, so there is nothing to auto-resolve
+    # and nothing to --abort. Say so LOUDLY with the real git error and the
+    # dirty paths — the caller left a tracked file modified and unstaged, and
+    # that is a bug in the CALLER's staging, not a conflict here. Falls through
+    # to the same merge fallback as before: behaviour is unchanged, only the
+    # diagnosis and the skipped no-op loop differ.
+    # Deliberately does NOT set RESOLUTION_PATH: that variable means "the
+    # strategy that produced the new HEAD", and this path produced none. The
+    # merge fallback below sets it if it succeeds.
+    echo "::warning::push-with-retry: rebase REFUSED before it started (NOT a conflict): $_REBASE_REFUSAL_REASON"
+    echo "  dirty tracked paths: $(git status --porcelain --untracked-files=no 2>/dev/null | head -20 | tr '\n' ' ')"
+    echo "  Skipping conflict auto-resolution (zero conflicted files) and going straight to the merge fallback."
   else
     echo "  Rebase had conflicts, attempting auto-resolution..."
     # Try up to 4 rounds of conflict resolution (one per conflicting commit)

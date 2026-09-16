@@ -4627,6 +4627,19 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.noop-rebase.test.sh
 
+      - name: Run push-with-retry rebase-refusal test (bash integration)
+        # BRO-3662. `git rebase` refuses BEFORE it starts when the worktree or
+        # index is dirty; the old call site discarded that stderr and reported
+        # "Rebase had conflicts", ran its resolve loop against ZERO conflicted
+        # files, and fell through to `merge -X ours` — the path that can
+        # silently discard a concurrent writer's changes. Seen on all 10 retry
+        # attempts of process-feedback.yml run 34852355418. Case 1 pins the
+        # diagnosis (real git error + the dirty path); case 2 pins that a
+        # GENUINE conflict still takes the old path, so the new branch cannot
+        # over-fire.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.rebase-refusal.test.sh
+
       - name: Run push-with-retry content-drop test (bash integration)
         # Asserts the task #619 P0 fix: a push could report success with a
         # genuine ref-update while silently discarding the run's own commit
