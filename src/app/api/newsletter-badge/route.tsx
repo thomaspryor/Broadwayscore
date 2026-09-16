@@ -23,7 +23,7 @@ const TIER_COLORS: Record<string, { bg: string; text: string; border?: string }>
   skip: { bg: '#d97706', text: '#1a1a1a' },
   miss: { bg: '#ef4444', text: '#ffffff' },
 };
-const TBD_COLORS = { bg: '#2a2a38', text: '#9ca3af' };
+const TBD_COLORS: { bg: string; text: string; border?: string } = { bg: '#2a2a38', text: '#9ca3af' };
 
 // Server-side render scale for retina sharpness — the <img> tag pins
 // width/height to the nominal CSS `size`, so this only affects pixel density.
@@ -38,15 +38,25 @@ function clampInt(raw: string | null, fallback: number, min: number, max: number
 export async function GET(request: NextRequest) {
   const sp = new URL(request.url).searchParams;
   const tierId = sp.get('tier');
-  const tier = tierId && TIER_COLORS[tierId] ? TIER_COLORS[tierId] : null;
+  // hasOwnProperty guard, not a bare `TIER_COLORS[tierId]` truthy check —
+  // `?tier=__proto__`/`constructor`/`toString` etc. otherwise resolves to an
+  // inherited Object.prototype value (truthy, but with no bg/text of its
+  // own), defeating the "malformed input -> safe TBD fallback" contract on
+  // this public, unauthenticated endpoint (ship-check catch).
+  const tier = tierId && Object.prototype.hasOwnProperty.call(TIER_COLORS, tierId) ? TIER_COLORS[tierId] : null;
   const scoreRaw = clampInt(sp.get('score'), NaN, 0, 999);
-  const label = tier && Number.isFinite(scoreRaw) ? String(scoreRaw) : 'TBD';
+  const hasScore = tier != null && Number.isFinite(scoreRaw);
+  const label = hasScore ? String(scoreRaw) : 'TBD';
 
   const size = clampInt(sp.get('size'), 64, 8, 200);
   const fontSize = clampInt(sp.get('fontSize'), Math.round(size * 0.42), 4, 120);
   const radius = clampInt(sp.get('radius'), 12, 0, 100);
 
-  const colors = tier || TBD_COLORS;
+  // Colors track hasScore, not just tier — `?tier=gold` with no/garbage
+  // `score` used to render a gold-colored box that read "TBD", a confusing
+  // hybrid state (ship-check catch). Any malformed request now falls all the
+  // way back to the plain gray TBD styling.
+  const colors = hasScore && tier ? tier : TBD_COLORS;
   const px = size * RENDER_SCALE;
 
   return new ImageResponse(
@@ -68,7 +78,7 @@ export async function GET(request: NextRequest) {
           // the key) throws "Cannot read properties of undefined (reading
           // 'trim')" and crashes the render — only ever surfaced on non-gold
           // tiers, since gold is the only one that sets a real border string.
-          border: tier?.border ? `${2 * RENDER_SCALE}px solid ${tier.border}` : '0px solid transparent',
+          border: colors.border ? `${2 * RENDER_SCALE}px solid ${colors.border}` : '0px solid transparent',
         }}
       >
         {label}
