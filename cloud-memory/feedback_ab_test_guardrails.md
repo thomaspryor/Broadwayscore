@@ -50,13 +50,20 @@ Keep test infrastructure in place even when variants are at 0% rollout. Re-enabl
 
 ## 6. Run `scripts/validate-ab-test.js` before and after any A/B change
 
-The validator runs 4 checks on the live flag:
+**DELETED 2026-09-16** when `ticket-single-button` retired (BRO-3456) — it
+was the only live consumer. If a NEW A/B test is started on any flag, this
+class of end-to-end validator (distribution, sticky-bucketing consistency,
+DOM render per variant, click-tracking property) needs to be rebuilt or
+generalized, not assumed to still exist. For a flag being CONCLUDED (not
+started), a source-level regression test like
+`tests/unit/ticket-buttons-single-only.test.mjs` is sufficient — there's
+only one arm left to validate.
+
+Original 4 checks the deleted validator ran, for reference when rebuilding:
 - ~50/50 distribution over 30 random distinct_ids
 - Sticky bucketing consistency (same id → same variant 5x)
 - Each variant renders the expected DOM on a real show page
 - Click tracking fires with the correct `ab_variant` property
-
-If any check fails, stop and investigate before shipping further changes.
 
 ## 7. Sample-size reality for this test
 
@@ -80,8 +87,8 @@ Before citing "live A/B test, needs user approval" as a reason to defer a fix, c
 - `src/components/TicketButtonsAB.tsx` — reads the flag, renders variants
 - `src/lib/ticket-utils.ts` — `HIDDEN_PLATFORMS` set (separate concern — StubHub lives here)
 - `scripts/analyze-ab-test.js` — pulls PostHog events, computes per-variant metrics, applies `FLAG_RESTART_DATES` clamp
-- `scripts/validate-ab-test.js` — end-to-end validator (distribution + sticky + DOM + click tracking)
-- PostHog flag key: `ticket-single-button` (project 332742, flag id 637535)
+- `scripts/validate-ab-test.js` — DELETED 2026-09-16 (see rule 6)
+- PostHog flag key: `ticket-single-button` (project 332742, flag id 637535) — **retired 2026-09-16, archived (`active: false`), no live split; `TicketButtonsAB.tsx` renders single-button unconditionally**
 - PostHog flag key: `ticket-primary-platform` (project 332742, flag id 631794) — locked 100% todaytix, don't touch
 
 ## 9. Power-calculation must use the PRE-REGISTERED primary metric's exact denominator — not a plausible-looking substitute
