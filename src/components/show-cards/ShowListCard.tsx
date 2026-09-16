@@ -125,7 +125,12 @@ const ShowListCard = memo(function ShowListCard({
   // is_affiliate: true.
   const openAndTrackPrimaryTicket = () => {
     if (!primaryTicket) return;
-    const { url: affiliateUrl, isAffiliate } = buildAffiliateUrl(primaryTicket.url, primaryTicket.platform, 'browse');
+    // distinctId → Impact subId1 (see affiliate-utils.ts's AffiliateTracking
+    // doc comment) — without it, analyze-ab-test.js can't join a browse-card
+    // conversion back to this PostHog click, same gap TicketLink.tsx avoids
+    // by threading distinctId through buildAffiliateUrl.
+    const distinctId = window.posthog?.get_distinct_id?.();
+    const { url: affiliateUrl, isAffiliate } = buildAffiliateUrl(primaryTicket.url, primaryTicket.platform, 'browse', { distinctId });
     trackTicketClick({
       showId: show.id, showName: show.title, platform: primaryTicket.platform,
       pageType: 'browse', showStatus: show.status, isAffiliate, linkPosition: 0,

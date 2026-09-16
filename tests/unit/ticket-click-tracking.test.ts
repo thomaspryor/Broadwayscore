@@ -1,6 +1,21 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { join, dirname } from 'node:path';
 import { buildAffiliateUrl, trackTicketClick } from '../../src/lib/affiliate-utils';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const SHOW_LIST_CARD_PATH = join(HERE, '../../src/components/show-cards/ShowListCard.tsx');
+
+// Strips `//` line comments so source-pattern assertions below check actual
+// code, not the prose explaining the bug being guarded against (which
+// necessarily quotes the exact strings/calls it's warning against). Safe
+// here because ShowListCard.tsx has no `//` inside string literals (no URLs).
+function codeOnly(source: string): string {
+  return source.split('\n').map(line => line.replace(/\/\/.*$/, '')).join('\n');
+}
+const showListCardSource = () => codeOnly(readFileSync(SHOW_LIST_CARD_PATH, 'utf-8'));
 
 // BRO-2392: ShowListCard's browse-page ticket CTA used to hand-roll its own
 // PostHog sendBeacon call instead of calling trackTicketClick()/
@@ -79,4 +94,23 @@ test('buildAffiliateUrl reports is_affiliate: false and leaves the URL unchanged
   const result = buildAffiliateUrl('https://example.com/official', 'Official Site', 'browse');
   assert.equal(result.isAffiliate, false);
   assert.equal(result.url, 'https://example.com/official');
+});
+
+// The tests above only pin the shared helpers' behavior — they'd keep
+// passing even if ShowListCard.tsx were reverted to its old hand-rolled
+// tracking. These source-level checks guard the actual wiring: reverting
+// the fix (or copy-pasting the old pattern into a new call site) must fail
+// loudly here, not just silently ship a corrupted browse-card click again.
+test('ShowListCard routes its ticket CTA through the shared affiliate-utils helpers, not a hand-rolled beacon', () => {
+  const source = showListCardSource();
+  assert.match(source, /from ['"]@\/lib\/affiliate-utils['"]/, 'must import the shared affiliate-utils helpers');
+  assert.match(source, /buildAffiliateUrl\(/, 'must call the shared buildAffiliateUrl()');
+  assert.match(source, /trackTicketClick\(/, 'must call the shared trackTicketClick()');
+  assert.doesNotMatch(source, /sendBeacon/, 'must not hand-roll its own PostHog beacon');
+});
+
+test('ShowListCard never hardcodes distinct_id or is_affiliate for its ticket CTA', () => {
+  const source = showListCardSource();
+  assert.doesNotMatch(source, /browse-click/, 'must not reintroduce the fake per-surface distinct_id literal');
+  assert.doesNotMatch(source, /is_affiliate:\s*true/, 'is_affiliate must be derived from buildAffiliateUrl, never hardcoded');
 });
