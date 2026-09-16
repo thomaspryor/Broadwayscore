@@ -161,6 +161,52 @@ function auditDataValidationGates(testYmlContent, readScriptSource, workflowFile
   };
 }
 
+/**
+ * BRO-3535: the same "every strict/gated audit needs a heal path" contract,
+ * applied to scripts/check-corpus-drift.js's `AUDITS` array — the destination
+ * for gates moved out of test.yml's blocking data-validation job. Text-scanning
+ * check-corpus-drift.js's source the way findStrictGateSteps() scans YAML
+ * would be unreliable (AUDITS entries are multi-line JS object literals with
+ * no stable comment-adjacency convention — a `//` comment could belong to the
+ * entry above or below it), so this reads the array as DATA (already
+ * `require()`d and passed in) rather than re-parsing source text, and reuses
+ * `evaluateGate()` unchanged as the shared evaluator.
+ *
+ * Unlike test.yml's --strict/--gate text filter, AUDITS entries can't be
+ * scoped by flag alone: ~20 pre-existing entries here are permanent, by-design
+ * MONITOR-mode audits (no --strict/--gate at all, e.g. `false-balance`,
+ * `aggregator-truth`) or the already-correctly-split FULL companion to a
+ * narrower test.yml gate (e.g. `review-contamination` --strict here is
+ * intentionally the exhaustive report, never meant to need its own heal
+ * path — the narrow catastrophe floor in test.yml is the thing that's gated).
+ * Requiring a heal path from all of them fails the ratchet on ~18
+ * pre-existing, working-as-designed entries with no actionable fix. So this
+ * only evaluates entries opted in via `healPathRequired: true` — the set
+ * MOVED here from test.yml's blocking gate (BRO-3535), where a heal path was
+ * already a real requirement before the move. A future PR moving MORE gates
+ * here should mark them the same way.
+ *
+ * @param {Array<{name: string, script: string, args?: string[], healExempt?: string, healPathRequired?: boolean}>} audits
+ * @param {(scriptName: string) => string} readScriptSource
+ * @param {Array<{filename: string, content: string}>} workflowFiles
+ */
+function auditCorpusDriftGates(audits, readScriptSource, workflowFiles) {
+  const rawGates = (audits || [])
+    .filter((a) => a.healPathRequired)
+    .map((a) => ({
+      script: a.script.replace(/\.js$/, ''),
+      flags: (a.args || []).join(' '),
+      healExemptReason: a.healExempt || null,
+    }));
+  const gates = rawGates.map((gate) =>
+    evaluateGate(gate, { scriptSource: readScriptSource(gate.script), workflowFiles })
+  );
+  return {
+    gates,
+    violations: gates.filter((g) => !g.compliant),
+  };
+}
+
 module.exports = {
   extractJobLines,
   findStrictGateSteps,
@@ -168,4 +214,5 @@ module.exports = {
   hasScheduledFixWorkflow,
   evaluateGate,
   auditDataValidationGates,
+  auditCorpusDriftGates,
 };
