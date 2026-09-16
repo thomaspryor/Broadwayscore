@@ -589,7 +589,7 @@ test('dispatchDetached: --allow-autofix-filed is appended only for linear ids, o
   const fakeChild = { unref: () => {} };
   withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
     mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutofixFiled: true });
-    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --allow-autofix-filed/);
+    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --no-detach --allow-autofix-filed/);
 
     // Default (no opts) must NOT carry the bypass — linear-drain-parked.js and
     // any future caller share this helper and never asked for it.
@@ -612,10 +612,10 @@ test('dispatchDetached: --allow-automation-parked is appended only for linear id
   const fakeChild = { unref: () => {} };
   withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
     mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutomationParked: true });
-    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --allow-automation-parked/);
+    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --no-detach --allow-automation-parked/);
 
     mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutofixFiled: true, allowAutomationParked: true });
-    assert.match(calls.spawn[1][1][1], /--id BRO-9 --headless --allow-autofix-filed --allow-automation-parked/);
+    assert.match(calls.spawn[1][1][1], /--id BRO-9 --headless --no-detach --allow-autofix-filed --allow-automation-parked/);
 
     mod.dispatchDetached('linear:BRO-9', () => {}, 0, null);
     assert.doesNotMatch(calls.spawn[2][1][1], /--allow-automation-parked/);

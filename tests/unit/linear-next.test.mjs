@@ -355,6 +355,7 @@ test('main(): LINEAR_NEXT_DISABLED=1 with a bare --id refuses in-process and ins
   const cap = captureConsole();
   try {
     await assert.rejects(() => main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
       getIssue: async () => makeHeadlessDefaultIssue(),
       spawnDetachedDispatch: () => { spawned++; return { pid: 1 }; },
       waitForSettle: async () => ({ alive: true, waitedMs: 30000 }),
@@ -430,6 +431,7 @@ test('main(): (b) a mac-only label with a bare --id routes to a cmux tab in the 
   let runJobCalls = 0, cmuxCalls = 0, spawned = 0;
   try {
     await main(['--id', 'BRO-3652'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
       getIssue: async () => makeHeadlessDefaultIssue({ labels: { nodes: [{ name: 'mac-only' }] } }),
       runJobFn: async () => { runJobCalls++; return { ok: true, jobId: 'x', headlessOutcome: 'done' }; },
       launchCmux: () => { cmuxCalls++; return { ok: true, ref: 'workspace:9', adoptedLate: false }; },
@@ -450,6 +452,7 @@ test('main(): (c) runJob returning {ok:true, headlessOutcome:"stranded"} prints 
   const cap = captureConsole();
   try {
     await main(['--id', 'BRO-3652'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
       getIssue: async () => makeHeadlessDefaultIssue(),
       runJobFn: async () => ({ ok: true, jobId: 'job-c', logFile: '/tmp/job-c.log', headlessOutcome: 'stranded' }),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
@@ -466,6 +469,7 @@ test('main(): (c2) blocked and stopped-short also fail the exit code; done does 
     const cap = captureConsole();
     try {
       await main(['--id', 'BRO-3652'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
         getIssue: async () => makeHeadlessDefaultIssue(),
         runJobFn: async () => ({ ok: true, jobId: 'job-' + outcome, logFile: null, headlessOutcome: outcome }),
       }));
@@ -479,6 +483,7 @@ test('main(): (d) --tab is the explicit opt-out — launchCmux called, runJob no
   let runJobCalls = 0, cmuxCalls = 0;
   try {
     await main(['--id', 'BRO-3652', '--tab'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
       getIssue: async () => makeHeadlessDefaultIssue(),
       runJobFn: async () => { runJobCalls++; return { ok: true, jobId: 'x', headlessOutcome: 'done' }; },
       launchCmux: () => { cmuxCalls++; return { ok: true, ref: 'workspace:2', adoptedLate: false }; },
@@ -494,6 +499,7 @@ test('main(): --headless stays a no-op alias (same headless path as the bare def
     let runJobCalls = 0, cmuxCalls = 0;
     try {
       await main(argv, headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
         getIssue: async () => makeHeadlessDefaultIssue(),
         runJobFn: async () => { runJobCalls++; return { ok: true, jobId: 'x', headlessOutcome: 'done' }; },
         launchCmux: () => { cmuxCalls++; return { ok: true, ref: 'workspace:3', adoptedLate: false }; },
@@ -543,6 +549,7 @@ test('main(): detached parent — child argv carries --no-detach (never re-detac
     let reads = 0;
     try {
       await main(['--id', 'BRO-3652', '--detach', '--headless', '--model', 'opus'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
         getIssue: async () => makeHeadlessDefaultIssue(),
         runJobFn: async () => { throw new Error('the parent must never run the job itself when detaching'); },
         launchCmux: () => { throw new Error('launchCmux must not be called'); },
@@ -573,6 +580,7 @@ test('main(): detached parent — child argv carries --no-detach (never re-detac
     process.env.LINEAR_NEXT_DETACH_ACK_MS = '3000';
     try {
       await main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
         getIssue: async () => makeHeadlessDefaultIssue(),
         spawnDetachedDispatch: () => ({ pid: 424244 }),
         waitForSettle: async () => ({ alive: true, waitedMs: 1000 }),
@@ -593,6 +601,7 @@ test('main(): detached parent — child argv carries --no-detach (never re-detac
     const cap = captureConsole();
     try {
       await assert.rejects(() => main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
         getIssue: async () => makeHeadlessDefaultIssue(),
         runJobFn: async () => { throw new Error('the parent must never run the job itself when detaching'); },
         launchCmux: () => { throw new Error('launchCmux must not be called'); },
@@ -611,6 +620,7 @@ test('main(): detached parent — child argv carries --no-detach (never re-detac
     const cap = captureConsole();
     try {
       await assert.rejects(() => main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
         getIssue: async () => makeHeadlessDefaultIssue({ labels: { nodes: [{ name: 'mac-only' }] } }),
         launchCmux: () => { throw new Error('launchCmux must not be called after a refusal'); },
         spawnDetachedDispatch: () => { spawned++; return { pid: 1 }; },
