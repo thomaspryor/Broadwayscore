@@ -28,12 +28,16 @@
  * scrape-new-aggregators.yml as surviving that way. That stopped being true at
  * BRO-3051, which made findMissingLedgerCommits() strip comment lines before
  * call detection — a comment now buys NOTHING. scrape-new-aggregators.yml is
- * in fact covered by its non-comment `require('./scripts/lib/owner-alert-
- * router.js')` at :226; process-feedback.yml, which relied on the comment,
+ * in fact covered by its non-comment `routeAlert({` CALL at :228 — it is the
+ * CALL that matches, not the `require(...)` at :226, which
+ * ROUTE_ALERT_CALL_RE does NOT match because no `(` directly follows the
+ * identifier in `{routeAlert}=require(`; process-feedback.yml, relying on a comment,
  * had silently dropped OUT of coverage until BRO-3662 gave it a real
  * (non-comment) breadcrumb. audit-aggregator-gap.yml is still uncovered for
  * exactly this reason: all six of its routeAlert mentions are `#` comments.
- * So the breadcrumb must be a REAL line (an `echo`, or the `require` itself),
+ * So the breadcrumb must be a REAL line containing `routeAlert(` or
+ * `resolveCondition(` with the paren directly attached (an `echo` works; a
+ * `require` alone does NOT),
  * never a comment.
  *
  * The blind spot is WIDE, not anecdotal: ~20 workflows invoke a script that

@@ -15,8 +15,20 @@ const path = require('path');
 const { findMissingLedgerCommits } = require('./alert-ledger-commit-check.js');
 
 const dir = path.join(__dirname, '..', '..', '.github', 'workflows');
+
+// Exit 2, not an uncaught ENOENT stack trace: a crash exits 1, which is the
+// SAME code as "violations found", so a wrong-cwd invocation would read as a
+// real finding (review finding).
+let files;
+try {
+  files = fs.readdirSync(dir).filter((f) => f.endsWith('.yml')).sort();
+} catch (err) {
+  console.error(`could not read ${dir}: ${err.message}`);
+  process.exit(2);
+}
+
 let total = 0;
-for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.yml')).sort()) {
+for (const file of files) {
   const text = fs.readFileSync(path.join(dir, file), 'utf8');
   for (const violation of findMissingLedgerCommits(text)) {
     console.log(`${file}: ${violation}`);
