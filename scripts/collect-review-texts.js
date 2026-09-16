@@ -3734,9 +3734,14 @@ const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor'
 
 async function extractArticleText(page) {
   // Serialize the lib function and run it in the browser. Wrapping in
-  // `(${fn.toString()})(document)` evaluates the IIFE with the browser's
-  // own document. Function must be self-contained — no closures.
-  return await page.evaluate(`(${extractArticleTextFromDocument.toString()})(document)`);
+  // `(${fn.toString()})(document, url)` evaluates the IIFE with the browser's
+  // own document. Function must be self-contained — no closures. The current
+  // page URL is passed through so BRO-912's talkinbroadway.com bail-out
+  // (dom-article-extractor.js) can domain-scope itself.
+  const currentUrl = page.url();
+  return await page.evaluate(
+    `(${extractArticleTextFromDocument.toString()})(document, ${JSON.stringify(currentUrl)})`
+  );
 }
 
 /**
@@ -3786,6 +3791,24 @@ function extractFromJsonLd(html) {
 function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
 
+  // Talkin' Broadway (BRO-912): checked FIRST (ahead of JSON-LD/generic
+  // parsing) and authoritative — a "known outlet, don't let a bad fallback
+  // masquerade as a real extraction" host, same as WSJ/Stage/Times in
+  // scripts/lib/article-extractor.js's DEDICATED_EXTRACTOR_HOSTS. The naive
+  // "grab every <p> inside <section class='page'>" scrape this used to fall
+  // through to has no byline anchor, so on a "Past Reviews" page (multiple
+  // runs stacked on one URL) it blends every stacked run into one fullText,
+  // and it doesn't structurally exclude the newsletter-signup sidebar either
+  // — the exact garbage/bleed failure modes BRO-912 reports. Delegate to the
+  // shared, unit-tested byline-anchored extractor (task #1887) instead, which
+  // anchors on the page's "Theatre Review by {Critic} - {Date}" marker. If it
+  // returns null (no byline marker — not a real review page), return ''
+  // rather than resurrecting the naive scrape: a null here means "this TB
+  // page isn't a review", not "the good extractor merely failed".
+  if (url && url.includes('talkinbroadway.com')) {
+    return extractArticleTextFromHtml(html, url) || '';
+  }
+
   // New Yorker-specific extraction: isolate article body before generic parsing
   if (url && url.includes('newyorker.com')) {
     const nyText = extractNewYorkerFromHtml(html);
@@ -3795,19 +3818,6 @@ function extractTextFromHtml(html, url) {
   // Try JSON-LD extraction — reliable when available, avoids CSS selector fragility
   const jsonLdText = extractFromJsonLd(html);
   if (jsonLdText && jsonLdText.length > 500) return jsonLdText;
-
-  // Talkin' Broadway (BRO-912): the naive "grab every <p> inside <section
-  // class='page'>" fallback below blends stacked "Past Reviews" runs together
-  // and has no byline anchor, so it can't reliably isolate a single review.
-  // Delegate to the shared, unit-tested byline-anchored extractor (task #1887,
-  // scripts/lib/article-extractor.js) instead — it anchors on the page's
-  // "Theatre Review by {Critic} - {Date}" marker and structurally excludes the
-  // newsletter-signup sidebar. Only fall through to the generic paragraph
-  // scrape below if this returns null (e.g. no byline marker on the page).
-  if (url && url.includes('talkinbroadway.com')) {
-    const tbText = extractArticleTextFromHtml(html, url);
-    if (tbText) return tbText;
-  }
 
   // Remove scripts, styles, nav, etc.
   let text = html
@@ -3825,16 +3835,6 @@ function extractTextFromHtml(html, url) {
     .replace(/<div[^>]*class="[^"]*(?:sharedaddy|jp-relatedposts|sd-sharing|sd-like|wpcnt|related-posts|widget|sidebar|comment|author-bio|author-info|post-tags|post-meta|social-share|share-buttons)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
     .replace(/<section[^>]*class="[^"]*(?:related|comments|author)[^"]*"[^>]*>[\s\S]*?<\/section>/gi, '')
     .replace(/<ul[^>]*class="[^"]*(?:social|share|tag)[^"]*"[^>]*>[\s\S]*?<\/ul>/gi, '');
-
-  // Talkin' Broadway: content lives in <section class="page">, not a <div>.
-  // Check this BEFORE the generic div-class container loop.
-  const sectionPageMatch = text.match(/<section\s+class="page">([\s\S]*?)<\/section>/i);
-  if (sectionPageMatch && sectionPageMatch[1]) {
-    const sectionPs = Array.from(sectionPageMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi));
-    if (sectionPs.length >= 3) {
-      text = sectionPageMatch[1];
-    }
-  }
 
   // Try to isolate article body container using broad class matches.
   // Use greedy [\s\S]* bounded by a known end-marker to capture all nested divs.

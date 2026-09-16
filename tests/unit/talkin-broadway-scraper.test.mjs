@@ -39,7 +39,7 @@ const NEWSLETTER_CHROME =
   '</aside>';
 
 describe('BRO-912: collect-review-texts.js wires TB extraction to the shared byline-anchored extractor', () => {
-  test('extractTextFromHtml delegates talkinbroadway.com to extractArticleText before the generic <section class="page"> fallback', () => {
+  test('extractTextFromHtml delegates talkinbroadway.com to extractArticleText, and does NOT fall through to a naive scrape on null', () => {
     const src = fs.readFileSync(COLLECT_REVIEW_TEXTS_PATH, 'utf8');
     const fnStart = src.indexOf('function extractTextFromHtml(html, url) {');
     assert.ok(fnStart !== -1, 'extractTextFromHtml should still exist in collect-review-texts.js');
@@ -47,15 +47,23 @@ describe('BRO-912: collect-review-texts.js wires TB extraction to the shared byl
     const delegationIdx = src.indexOf("url.includes('talkinbroadway.com')", fnStart);
     assert.ok(delegationIdx !== -1, 'extractTextFromHtml should branch on talkinbroadway.com');
 
+    // The old naive "grab every <p> inside <section class='page'>" scrape must
+    // be gone entirely, not just reordered after the shared extractor — a
+    // null result from the byline-anchored extractor means "not a review
+    // page", and falling through to the naive scrape on null would resurrect
+    // the exact stacked-review-blending bug this fix removes.
     const legacyFallbackIdx = src.indexOf('section class="page"', fnStart);
-    assert.ok(legacyFallbackIdx !== -1, 'the old <section class="page"> fallback should still exist as a safety net');
-    assert.ok(
-      delegationIdx < legacyFallbackIdx,
-      'the shared-extractor delegation must run BEFORE the naive <section class="page"> paragraph scrape'
-    );
+    assert.strictEqual(legacyFallbackIdx, -1, 'the naive <section class="page"> fallback must be removed, not just deprioritized');
 
     const requireIdx = src.indexOf("require('./lib/article-extractor')");
     assert.ok(requireIdx !== -1, 'collect-review-texts.js should require the shared article-extractor lib');
+
+    // Ordering: the TB branch must run before the generic JSON-LD attempt too
+    // (a TB page with >500 chars of unrelated JSON-LD — e.g. an ad/tracking
+    // script — must not silently bypass the byline-anchored extraction).
+    const jsonLdIdx = src.indexOf('extractFromJsonLd(html)', fnStart);
+    assert.ok(jsonLdIdx !== -1, 'extractFromJsonLd call should still exist');
+    assert.ok(delegationIdx < jsonLdIdx, 'the TB branch must run before the generic JSON-LD attempt');
   });
 });
 
@@ -96,5 +104,39 @@ describe('BRO-912: the extractor now driving TB opening-night scraping handles b
     assert.ok(text, 'should extract text');
     assert.ok(text.includes('current opening-night review'), 'criticHint should select the current run');
     assert.ok(!text.includes('earlier revival review'), 'must not bleed the earlier stacked run into the current one');
+  });
+
+  test('no criticHint (production calling convention — collect-review-texts.js never has one): still isolates ONE run, never blends both', () => {
+    // collect-review-texts.js's tier functions (fetchWithBrightData etc.) only
+    // have a URL in scope, never a critic name — TB discovery always seeds
+    // criticName: 'Unknown' since the critic isn't known until the review
+    // body itself is read. This is the real production call shape. The
+    // pre-#1887 naive scrape would have concatenated both runs; the shared
+    // extractor's documented no-hint behavior is to take the first marker —
+    // either way, this asserts single-run isolation, not a specific pick.
+    const oldRun = 'This is the earlier revival review text, describing a different cast entirely. '.repeat(15);
+    const currentRun = 'This is the current opening-night review text, distinctly different prose. '.repeat(15);
+    const html =
+      '<html><body>' + NEWSLETTER_CHROME +
+      "<section class='page'>" +
+      "<P><B>Theatre Review by <A HREF='mailto:x'>Matthew Murray</A> - October 1, 2020</B></CENTER>" +
+      `<P>${oldRun}` +
+      "<P><B>Theatre Review by <A HREF='mailto:y'>Howard Miller</A> - April 15, 2026</B></CENTER>" +
+      `<P>${currentRun}` +
+      '</section></body></html>';
+
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text, 'should extract text');
+    const hasOld = text.includes('earlier revival review');
+    const hasCurrent = text.includes('current opening-night review');
+    assert.ok(hasOld !== hasCurrent, `should isolate exactly one run, not blend both (hasOld=${hasOld}, hasCurrent=${hasCurrent})`);
+  });
+
+  test('no byline marker at all (e.g. a forum/index page, not a review): returns null — extractTextFromHtml must treat this as failure, not fall back to a naive scrape', () => {
+    const html = '<html><body>' + NEWSLETTER_CHROME +
+      "<section class='page'><p>All That Chat forum listing, not a review.</p></section>" +
+      '</body></html>';
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.strictEqual(text, null, 'a TB page with no byline marker is not a review page and must return null');
   });
 });
