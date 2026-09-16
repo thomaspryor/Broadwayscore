@@ -39,6 +39,28 @@ source "$SCRIPT_DIR/disk-floor-check.sh"
 ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
 MAX_RETRIES=${1:-7}
+# BRO-2554: validate BEFORE any arithmetic touches it (the fallback-after
+# calculation a few lines below is a `$(( ))` arithmetic context, where an
+# unvalidated non-numeric value is treated as a VARIABLE NAME — e.g. a caller
+# passing "origin" as $1, an easy mistake since this script's usage is
+# `[max_retries] [branch]`, not `[remote] [branch]`. That name is unset, so
+# `set -u` (line 32) throws a confusing "unbound variable" deep in the script
+# instead of a clear usage error at the top. Checked here, right after the
+# assignment and before push_mutex_acquire/detect-stale-merge-head run further
+# down — a malformed invocation never takes the cross-session push mutex.
+# Rejects leading zeros ("08", "010"), not just non-digits: bash arithmetic
+# treats a leading-0 numeral as OCTAL, which either throws its own confusing
+# "value too great for base" error (08, 09 — not valid octal digits) or
+# silently computes the WRONG decimal value (010 -> 8) instead of crashing —
+# both are exactly the class of confusing failure this check exists to
+# prevent, not just the plain-non-numeric case (adversarial review finding,
+# confirmed live: `bash -c 'echo $(( 08 ))'` errors, `$(( 010 ))` silently
+# yields 8).
+if ! [[ "$MAX_RETRIES" =~ ^(0|[1-9][0-9]*)$ ]]; then
+  echo "usage: $0 [max_retries] [branch]" >&2
+  echo "  max_retries must be a non-negative integer with no leading zeros (got: '$MAX_RETRIES')" >&2
+  exit 1
+fi
 # BRANCH: a plain name (e.g. "main") means "push the LOCAL branch literally
 # named that" — NOT current HEAD. In a worktree checked out on a feature
 # branch, local `main` is a separate ref pinned at worktree-creation time
