@@ -67,9 +67,12 @@ const DAYS = (() => {
   return idx >= 0 ? parseInt(process.argv[idx + 1], 10) : 14;
 })();
 
-// --json: emit one machine-readable summary line instead of the prose report
-// (consumed by scripts/monitor-ticket-ab.js via loadWindows/runAnalyzerJson —
-// same pattern as analyze-gate-cold-start.js / analyze-email-gate-funnel.js).
+// --json: emit one machine-readable summary line instead of the prose report.
+// Originally consumed by scripts/monitor-ticket-ab.js (deleted 2026-09-16
+// when ticket-single-button retired, BRO-3456) — no remaining consumer
+// today. Kept for a future flag that wants the same machine-readable
+// summary a monitor script could consume, same pattern as
+// analyze-gate-cold-start.js / analyze-email-gate-funnel.js.
 const JSON_OUT = process.argv.includes('--json');
 
 /**
