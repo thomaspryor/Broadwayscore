@@ -118,10 +118,15 @@ function classifyDiffExit(code) {
  * @param {number|null} i.deployAgeSec age of that deployment (null = unknown)
  * @param {string} i.headSha
  * @param {'clean'|'dirty'|'error'|null} i.diffResult site-path diff vs baseline
- * @param {'clean'|'dirty'|'error'|null} i.dataDiffResult core-data (reviews.json)
- *   blob-SHA diff vs the SHA stamped on the live deployment — see BRO-3149
- *   header comment. null/'error' (lookup unavailable) never forces a skip or
- *   a proceed on its own; it just falls through to the site-path signal.
+ * @param {'clean'|'dirty'|'error'|null} i.dataDiffResult core-data (reviews.json
+ *   + shows.json) blob-SHA diff vs the SHAs stamped on the live deployment —
+ *   see BRO-3149 header comment. An unresolved value ('error'/null — lookup
+ *   unavailable) never forces a SKIP by itself: in the schedule branch it
+ *   falls through to the site-path signal (with an age-gated staleness
+ *   backstop as the fallback bound); in the non-schedule already-live dedup
+ *   branch it fails OPEN (proceeds) rather than silently dedup-skipping a
+ *   possible real core-data change — those are deliberately different because
+ *   only the schedule branch has a staleness backstop to fall back on.
  * @returns {{proceed: boolean, reason: string}}
  */
 function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, diffResult, dataDiffResult }) {
@@ -130,13 +135,19 @@ function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, d
   if (eventName !== 'schedule') {
     // Explicit ship intent — dedup only when this exact SHA is verifiably live
     // (strictly less skip-prone than the old gh-run-list dedup, which skipped
-    // against SHAs of runs that never deployed) AND core data hasn't advanced
-    // past what that live deployment shipped (BRO-3149 — a rebuild that
-    // changed ONLY private core-data without moving public HEAD used to dedup
-    // here even though a redeploy would ship fresher data).
+    // against SHAs of runs that never deployed) AND core data is POSITIVELY
+    // known to have not advanced (BRO-3149 — a rebuild that changed ONLY
+    // private core-data without moving public HEAD used to dedup here even
+    // though a redeploy would ship fresher data). An UNKNOWN data signal
+    // ('error'/null — e.g. a transient GitHub API failure) fails OPEN here
+    // rather than silently dedup-skipping, unlike the schedule branch below
+    // (which has an age-gated staleness backstop to fall back on instead):
+    // this is the workflow_run lane rebuild-fast.yml's direct post-push
+    // dispatch uses — the highest-value trigger for exactly the bug class
+    // this file exists to close (Codex adversarial /code-review, BRO-3149).
     if (baselineSha && baselineSha === headSha) {
-      if (dataDiffResult === 'dirty') return { proceed: true, reason: 'data-changed' };
-      return { proceed: false, reason: 'already-live' };
+      if (dataDiffResult === 'clean') return { proceed: false, reason: 'already-live' };
+      return { proceed: true, reason: dataDiffResult === 'dirty' ? 'data-changed' : 'data-unknown-fail-open' };
     }
     return { proceed: true, reason: 'explicit-ship' };
   }
