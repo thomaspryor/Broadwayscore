@@ -131,6 +131,24 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // entries yet; scripts/check-rebuild-staleness.js (via
   // scripts/lib/guard-escalation.js's shouldEscalate) is the first sender.
   'guard-escalation:stale-checkout-staleness',
+
+  // Category 3 carve-out (BRO-1333): main's Test Suite went undetected-red for
+  // ~2 days (2026-06-13 → 06-15) because the only signal was a daily digest
+  // line nobody read in time — direct pushes to main are not gated by
+  // required checks (memory/feedback_branch_protection_direct_push.md), so
+  // broken code keeps landing the whole time it stays red. This is the
+  // "escalation" tier of that same detector (test.yml's own "Route alert —
+  // main test.yml red on consecutive pushes" step, disposition:'human' at 4+
+  // consecutive failures) — the 2-failure 'auto' tier still just files a
+  // Linear card. Verified still live and needed on 2026-09-16: with this key
+  // NOT yet on the allowlist, the 4+ tier had silently fired 73 times over
+  // three weeks with zero real pages, its ledger entry pointing at BRO-3030
+  // (an unrelated noise-audit issue matched by Linear's own substring search
+  // finding the conditionKey quoted in that issue's body, not a dedicated
+  // fix-main tracker) — i.e. the exact "digest line nobody reads" failure
+  // mode this card exists to close. 24h cooldown (routeAlert call site) caps
+  // this to at most one email per day while main stays red.
+  'test-yml:main-streak-escalation',
 ]);
 
 function isPageWorthy(conditionKey) {

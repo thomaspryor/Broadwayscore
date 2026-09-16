@@ -6320,8 +6320,10 @@ jobs:
               // main stays red 4+ in a row, instead of firing every push (spam)
               // or firing exactly once ever (the old cooldownHours:0 hack, which
               // also fully bypassed the ledger's own dedup). disposition:'human'
-              // is not on the page-worthy allowlist, so the router downgrades
-              // this to the morning digest anyway — task #843: model:'opus'
+              // IS on the page-worthy allowlist (scripts/lib/page-worthy-alerts.js,
+              // BRO-1333) — it sends a real email, not just a digest line — after
+              // that same key was found to have silently downgraded to digest for
+              // 3+ weeks with zero real notifications. task #843: model:'opus'
               // makes digest-autofix.js dispatch THIS row (a technical
               // investigation, not a decision) straight to opus on its first
               // attempt, since it's already the SECOND machine attempt at the
