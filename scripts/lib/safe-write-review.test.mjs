@@ -247,3 +247,121 @@ test('orphan rescue respects force: true (bypasses protection like every other g
   const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
   assert.strictEqual(onDisk.wrongProduction, undefined, 'force:true intentionally bypasses the rescue');
 });
+
+test('orphan rescue does not resurrect a family the incoming write is itself clearing', () => {
+  const showDir = makeShowDir();
+  const legacyUrl = 'http://www.variety.com/review/VE1117947963?refCatId=33';
+
+  fs.writeFileSync(path.join(showDir, 'variety--ellise-shafer.json'), JSON.stringify({
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Ellise Shafer',
+    url: 'https://variety.com/2026/theater/global/some-other-article/',
+    previousUrl: legacyUrl,
+    wrongProduction: true,
+    wrongProductionReason: 'manual flag',
+  }, null, 2));
+
+  const filePath = path.join(showDir, 'variety--bob-verini.json');
+  const fresh = {
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Bob Verini',
+    url: legacyUrl,
+    source: 'bww-roundup',
+    // The caller is asserting a human already reviewed and cleared this
+    // exact article — the canonical wrongProductionManualClear breadcrumb —
+    // without also spelling out wrongProduction:false. Rescuing the
+    // sibling's stale wrongProduction:true here would contradict that
+    // signal (codex adversarial review).
+    wrongProductionManualClear: true,
+  };
+
+  const result = safeWriteReview(filePath, fresh, { merge: false });
+  assert.strictEqual(result.wrote, true);
+
+  const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  assert.strictEqual(onDisk.wrongProduction, undefined, 'must not resurrect a family the incoming write is clearing');
+  assert.strictEqual(onDisk._orphanedVerdictRescuedFrom, undefined);
+});
+
+test('a sibling carrying only wrongProduction:false is never treated as a rescue target', () => {
+  const showDir = makeShowDir();
+  const legacyUrl = 'http://www.variety.com/review/VE1117947963?refCatId=33';
+
+  // A resolved/cleared verdict — false is meaningful ("not excluded"), never
+  // something worth rescuing forward onto a fresh write.
+  fs.writeFileSync(path.join(showDir, 'variety--ellise-shafer.json'), JSON.stringify({
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Ellise Shafer',
+    url: 'https://variety.com/2026/theater/global/some-other-article/',
+    previousUrl: legacyUrl,
+    wrongProduction: false,
+  }, null, 2));
+
+  const filePath = path.join(showDir, 'variety--bob-verini.json');
+  const fresh = {
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Bob Verini',
+    url: legacyUrl,
+    source: 'bww-roundup',
+  };
+
+  const result = safeWriteReview(filePath, fresh, { merge: false });
+  assert.strictEqual(result.wrote, true);
+
+  const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  assert.strictEqual(onDisk._orphanedVerdictRescuedFrom, undefined, 'false is not a rescue-worthy exclusion');
+});
+
+test('BRO-2559 actual incident shape: url-change-invariant genuinely cleared the sibling — quarantines the recreate instead of writing pristine', () => {
+  const showDir = makeShowDir();
+  const legacyUrl = 'http://www.variety.com/review/VE1117947963?refCatId=33';
+
+  // The renamed sibling as url-change-invariant actually leaves it: the flag
+  // is GONE (not merely renamed-but-live), with the _urlChangedClear
+  // breadcrumb recording that it used to carry wrongProduction before this
+  // exact url (legacyUrl) was superseded.
+  fs.writeFileSync(path.join(showDir, 'variety--ellise-shafer.json'), JSON.stringify({
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Ellise Shafer',
+    url: 'https://variety.com/2026/theater/global/some-other-article/',
+    previousUrl: legacyUrl,
+    _urlChangedClear: {
+      from: legacyUrl,
+      to: 'https://variety.com/2026/theater/global/some-other-article/',
+      at: '2026-08-27T15:53:56.639Z',
+      cleared: ['wrongProduction', 'wrongProductionReason', 'contentTier'],
+    },
+  }, null, 2));
+
+  // BWW's stale roundup page recreates the OLD filename at the OLD (proven
+  // wrongProduction) url. There is no live sibling verdict to rescue, so the
+  // write must not land as a pristine, unflagged file.
+  const filePath = path.join(showDir, 'variety--bob-verini.json');
+  const fresh = {
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Bob Verini',
+    url: legacyUrl,
+    source: 'bww-roundup',
+  };
+
+  const result = safeWriteReview(filePath, fresh, { merge: false });
+  assert.strictEqual(result.wrote, false);
+  assert.strictEqual(result.skipped, 'recreated_previously_excluded_url');
+  assert.ok(fs.existsSync(result.quarantinedPath));
+  assert.strictEqual(fs.existsSync(filePath), false, 'must not land at the live path unflagged');
+
+  const quarantined = JSON.parse(fs.readFileSync(result.quarantinedPath, 'utf-8'));
+  assert.strictEqual(quarantined.pendingReason, 'recreated_previously_excluded_url');
+});

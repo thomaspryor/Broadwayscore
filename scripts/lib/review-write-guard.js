@@ -1566,6 +1566,35 @@ function safeWriteReview(filePath, newData, options = {}) {
       }
       newData._orphanedVerdictRescuedFrom = orphan.filename;
       console.warn(`[review-write-guard] ${path.basename(filePath)}: rescued protected verdict (${orphan.fields.join(', ')}) from orphaned sibling ${orphan.filename} (same url, different filename)`);
+    } else {
+      // Fallback: no sibling carries a LIVE verdict for this url, but one may
+      // have had wrongProduction/wrongShow CLEARED specifically because ITS
+      // OWN url moved away from this one (url-change-invariant's
+      // _urlChangedClear breadcrumb — see applyUrlChangeInvariant above). That
+      // clear only records field NAMES, not the original reason text, so
+      // there is nothing left to rescue verbatim — but the fact that this
+      // exact url was previously judged wrongProduction/wrongShow is real
+      // signal that a scraper blindly recreating it here (the actual
+      // the-producers-west-end-2025/variety--bob-verini.json incident: BWW's
+      // stale roundup page recreated the identity the sibling's rename had
+      // legitimately moved away from) needs a human look, not a silent
+      // pristine write. Quarantine to _pending/, mirroring the
+      // date-plausibility/cross-market quarantine pattern already used
+      // earlier in this function for the same reason: recoverable, not lossy.
+      const clearedOrphan = _findClearedVerdictOrphan(filePath, newData);
+      if (clearedOrphan) {
+        const parentDirName = path.basename(path.dirname(filePath));
+        const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
+        fs.mkdirSync(pendingDir, { recursive: true });
+        const pendingPath = path.join(pendingDir, path.basename(filePath));
+        fs.writeFileSync(pendingPath, JSON.stringify({
+          ...newData,
+          pendingReason: 'recreated_previously_excluded_url',
+          _recreatedPreviouslyExcludedUrlDetail: `url previously carried ${clearedOrphan.clearedFields.join('/')} on ${clearedOrphan.filename}, cleared ${clearedOrphan.at || 'at an unknown date'} when that file's own url changed away from this one`,
+        }, null, 2) + '\n');
+        console.warn(`[review-write-guard] ${path.basename(filePath)}: quarantined to _pending/${parentDirName}/${path.basename(filePath)} — url previously excluded (${clearedOrphan.clearedFields.join(', ')}) on ${clearedOrphan.filename}, cleared via url change, no live verdict to rescue`);
+        return { wrote: false, skipped: 'recreated_previously_excluded_url', quarantinedPath: pendingPath };
+      }
     }
   }
 
@@ -1996,27 +2025,46 @@ function shouldMarkPostCorrectionDuplicate(newData, colliderData) {
   return true;
 }
 
-// Exclusion-verdict fields the orphan rescue carries forward. Deliberately a
-// NARROW subset of PROTECTED_FIELDS — not fullText/assignedScore/contentTier/
-// duplicateOf/etc, which have their own dedicated collision/dedup reasoning
-// elsewhere (checkUrlCollision, findExistingReviewFile's body-length
-// tiebreaks) that a blind field-copy here would silently corrupt (a rescued
-// fullText made a bodyless post-correction write look "substantive" and
-// defeated shouldMarkPostCorrectionDuplicate's tombstone decision in testing).
-// This list is exactly "a human or auditor decided this identity does not
-// belong here" — the class of verdict that must never depend on which exact
-// filename currently holds it.
-const ORPHAN_RESCUE_FIELDS = [
-  'wrongProduction', 'wrongProductionNote', 'wrongProductionReason', 'wrongProductionReasonAt',
-  'wrongProductionOverride', 'wrongProductionOverrideReason', 'wrongProductionOverrideSetAt', 'wrongProductionOverrideSetBy',
-  'wrongProductionManualClear', 'humanReviewedWrongProduction',
-  'wrongShow', 'wrongShowReason', 'wrongShowNote', 'wrongShowReasonAt',
-  'wrongShowOverride', 'wrongShowOverrideReason', 'wrongShowOverrideAt',
-  'wrongShowManualClear',
-  'isNotReview', 'isNotReviewReason', 'isNotReviewSetAt', 'isNotReviewSetBy', 'isNotReviewManualClear',
-  'wrongAttribution', 'wrongAttributionReason', 'wrongArticleManualClear', 'humanReviewedWrongArticle',
-  'wrongFullText',
+// Exclusion-verdict field FAMILIES the orphan rescue carries forward.
+// Deliberately a NARROW subset of PROTECTED_FIELDS — not fullText/
+// assignedScore/contentTier/duplicateOf/etc, which have their own dedicated
+// collision/dedup reasoning elsewhere (checkUrlCollision, findExistingReviewFile's
+// body-length tiebreaks) that a blind field-copy here would silently corrupt
+// (a rescued fullText made a bodyless post-correction write look "substantive"
+// and defeated shouldMarkPostCorrectionDuplicate's tombstone decision in
+// testing). This is exactly "a human or auditor decided this identity does
+// not belong here" — the class of verdict that must never depend on which
+// exact filename currently holds it.
+//
+// Grouped by family with an `isClearedOnIncoming` predicate (reusing the
+// SAME canonical clear predicates the rest of this file uses —
+// _wrongProductionCleared/_wrongShowCleared/_isNotReviewCleared/
+// _wrongArticleCleared) so the rescue never resurrects a family the incoming
+// write is itself in the middle of clearing (codex adversarial review: a
+// caller supplying wrongProductionManualClear=true without also explicitly
+// setting wrongProduction=false must not have wrongProduction resurrected).
+const ORPHAN_RESCUE_FAMILIES = [
+  {
+    fields: ['wrongProduction', 'wrongProductionNote', 'wrongProductionReason', 'wrongProductionReasonAt',
+      'wrongProductionOverride', 'wrongProductionOverrideReason', 'wrongProductionOverrideSetAt', 'wrongProductionOverrideSetBy',
+      'wrongProductionManualClear', 'humanReviewedWrongProduction'],
+    isClearedOnIncoming: _wrongProductionCleared,
+  },
+  {
+    fields: ['wrongShow', 'wrongShowReason', 'wrongShowNote', 'wrongShowReasonAt',
+      'wrongShowOverride', 'wrongShowOverrideReason', 'wrongShowOverrideAt', 'wrongShowManualClear'],
+    isClearedOnIncoming: _wrongShowCleared,
+  },
+  {
+    fields: ['isNotReview', 'isNotReviewReason', 'isNotReviewSetAt', 'isNotReviewSetBy', 'isNotReviewManualClear'],
+    isClearedOnIncoming: _isNotReviewCleared,
+  },
+  {
+    fields: ['wrongAttribution', 'wrongAttributionReason', 'wrongArticleManualClear', 'humanReviewedWrongArticle', 'wrongFullText'],
+    isClearedOnIncoming: _wrongArticleCleared,
+  },
 ];
+const ORPHAN_RESCUE_FIELDS = ORPHAN_RESCUE_FAMILIES.flatMap((f) => f.fields);
 
 // Sibling lookup for the "orphaned protected-verdict rescue" call site above.
 // Only ever reads OTHER files in the directory (filePath itself is known not
@@ -2026,7 +2074,8 @@ const ORPHAN_RESCUE_FIELDS = [
 // the sibling's identity used to BE this exact url before it moved on, which
 // is the orphaned-identity question this function exists to answer. Returns
 // { filename, data, fields } for the first same-outlet sibling whose recorded
-// prior url matches newData.url and carries a live verdict field, or null.
+// prior url matches newData.url and carries a live (truthy/non-empty, and not
+// already being cleared by the incoming write) verdict field, or null.
 function _findOrphanedProtectedVerdict(filePath, newData) {
   const dir = path.dirname(filePath);
   let files;
@@ -2038,6 +2087,7 @@ function _findOrphanedProtectedVerdict(filePath, newData) {
   const { normalizeOutlet } = require('./review-normalization');
   const targetOutlet = normalizeOutlet(newData.outletId || newData.outlet || path.basename(filePath).split('--')[0]);
   const targetUrl = _normalizeUrlForCollision(newData.url);
+  const eligibleFamilies = ORPHAN_RESCUE_FAMILIES.filter((fam) => !fam.isClearedOnIncoming(newData));
   for (const f of files) {
     let data;
     try {
@@ -2052,14 +2102,58 @@ function _findOrphanedProtectedVerdict(filePath, newData) {
       .filter(u => typeof u === 'string' && u);
     const urlMatches = priorUrls.some(u => _normalizeUrlForCollision(u) === targetUrl);
     if (!urlMatches) continue;
-    const fields = ORPHAN_RESCUE_FIELDS.filter(k => {
+    const fields = eligibleFamilies.flatMap((fam) => fam.fields).filter(k => {
       const v = data[k];
-      return v !== undefined && v !== null
+      // false is a meaningful "not excluded"/clear value for every field in
+      // these families, never an exclusion worth rescuing (codex adversarial
+      // review: without this, a sibling carrying only wrongProduction:false
+      // could still "match" and block discovery of a better sibling).
+      return v !== undefined && v !== null && v !== false
         && !(typeof v === 'string' && v.length === 0)
         && !(Array.isArray(v) && v.length === 0);
     });
     if (fields.length === 0) continue;
     return { filename: f, data, fields };
+  }
+  return null;
+}
+
+// Fallback for the "orphaned protected-verdict rescue" call site when no
+// sibling carries a LIVE verdict, but one has _urlChangedClear recording that
+// wrongProduction/wrongShow WAS cleared specifically because its own url
+// moved away from newData.url (applyUrlChangeInvariant, above). That
+// breadcrumb only names cleared fields, not their original values (see
+// url-change-invariant.js), so there is nothing to rescue verbatim — but the
+// url is proven to have been excluded before, which is exactly the signal
+// the caller of this function quarantines on rather than silently accepting
+// a pristine recreate.
+function _findClearedVerdictOrphan(filePath, newData) {
+  const dir = path.dirname(filePath);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  } catch {
+    return null;
+  }
+  const { normalizeOutlet } = require('./review-normalization');
+  const targetOutlet = normalizeOutlet(newData.outletId || newData.outlet || path.basename(filePath).split('--')[0]);
+  const targetUrl = _normalizeUrlForCollision(newData.url);
+  const watchedFlags = new Set(['wrongProduction', 'wrongShow']);
+  for (const f of files) {
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+    } catch {
+      continue;
+    }
+    if (!data || !data._urlChangedClear || !data._urlChangedClear.from) continue;
+    const fileOutlet = normalizeOutlet(data.outletId || f.split('--')[0]);
+    if (fileOutlet !== targetOutlet) continue;
+    if (_normalizeUrlForCollision(data._urlChangedClear.from) !== targetUrl) continue;
+    const cleared = Array.isArray(data._urlChangedClear.cleared) ? data._urlChangedClear.cleared : [];
+    const clearedFields = cleared.filter((c) => watchedFlags.has(c));
+    if (clearedFields.length === 0) continue;
+    return { filename: f, clearedFields, at: data._urlChangedClear.at };
   }
   return null;
 }
