@@ -276,16 +276,60 @@ module.exports = { scanWorkflows, MIN_EXPECTED_WORKFLOWS, WORKFLOW_EXT_RE };
 
 // ── CLI ──────────────────────────────────────────────────────────────────────
 if (require.main === module) {
-  let findMissingLedgerCommits;
+  let findMissingLedgerCommits, findRouterCallerScripts;
   try {
-    ({ findMissingLedgerCommits } = require('./alert-ledger-commit-check.js'));
+    ({ findMissingLedgerCommits, findRouterCallerScripts } = require('./alert-ledger-commit-check.js'));
   } catch (err) {
     console.error(`could not load alert-ledger-commit-check.js: ${describeError(err)}`);
     process.exitCode = 2;
     return;
   }
 
-  const result = scanWorkflows(path.join(__dirname, '..', '..', '.github', 'workflows'), findMissingLedgerCommits);
+  // Parity with lint-workflow-guards.sh's check_alert_ledger_commit (BRO-3671):
+  // that gate resolves the routeAlert()/resolveCondition() require-graph so a
+  // script that requires owner-alert-router.js indirectly — or one hop
+  // through a scripts/lib/ wrapper — still counts as a caller
+  // (findMissingLedgerCommits(text, routerCallerScripts)). This CLI called
+  // findMissingLedgerCommits(text) with NO second argument, so
+  // routerCallerScripts silently defaulted to an empty Set and every
+  // require-graph-indirect violation the real CI gate now catches went
+  // unscanned here — a standalone scan reading "clean" for a real gap.
+  //
+  // findRouterCallerScripts() itself fails OPEN (returns an empty set) when
+  // acorn is unavailable, which is fine for check_alert_ledger_commit
+  // because THAT caller checks acorn availability itself first and fails
+  // loudly before ever calling it. Do the same here rather than silently
+  // reproducing the exact narrowing this fix exists to close.
+  let acorn;
+  try {
+    acorn = require('acorn');
+  } catch {
+    acorn = null;
+  }
+  if (!acorn) {
+    console.error("acorn is unavailable — cannot resolve the routeAlert()/resolveCondition() require-graph (scripts/lib/require-graph-ast.js). Run 'npm ci' to restore it.");
+    process.exitCode = 2;
+    return;
+  }
+  // findRouterCallerScripts() walks scripts/**/*.js with a plain
+  // fs.readdirSync (require-graph-ast.js's findTrackedCallerScripts) — an
+  // unreadable directory throws. Uncaught, that would exit this CLI with
+  // node's default code 1, which this file's own exit contract reserves for
+  // "scanned a real tree, violations found" — a setup failure must never
+  // read as a violations-found verdict (review finding).
+  let routerCallerScripts;
+  try {
+    routerCallerScripts = findRouterCallerScripts(path.join(__dirname, '..'));
+  } catch (err) {
+    console.error(`could not resolve the routeAlert()/resolveCondition() require-graph: ${describeError(err)}`);
+    process.exitCode = 2;
+    return;
+  }
+
+  const result = scanWorkflows(
+    path.join(__dirname, '..', '..', '.github', 'workflows'),
+    (text) => findMissingLedgerCommits(text, routerCallerScripts)
+  );
 
   if (result.code === 2) {
     // Nothing goes to STDOUT on a failed scan (review finding): printing the
