@@ -65,20 +65,15 @@ const REGISTERED_FLAGS = [
   // it's deleted outright, not marked exists:false. The PostHog flag (id
   // 772232) itself is left live-but-unread in PostHog, not deleted, for
   // reproducibility — see docs/experiments/gate-cold-start.md "Conclusion".
-  {
-    key: 'ticket-single-button',
-    expected: {
-      exists: true,
-      active: true,
-      variants: [{ key: 'multi', pct: 50 }, { key: 'single', pct: 50 }],
-      rollout: 100,
-      // TRUE: set at the 2026-04-11 restart so mid-flight rollout changes
-      // can never re-bucket users again (guardrails memory rule 3).
-      ensure_experience_continuity: true,
-    },
-    ownerDoc: 'docs/experiments/ticket-single-button.md',
-    note: 'Live A/B — TicketButtonsAB.tsx multi-button vs single-button CTA.',
-  },
+  // 'ticket-single-button' entry removed 2026-09-16: the A/B (2026-04-11 to
+  // 2026-09-16, ~$51k tracked Impact revenue) found no user-level difference
+  // in conversion rate, converting-user count, or commission — owner chose
+  // the single-button design on UX/maintenance grounds. The multi-button
+  // code path and the flag read were deleted from TicketButtonsAB.tsx, so
+  // per this file's convention this entry is deleted outright, not marked
+  // exists:false. The PostHog flag was archived (active:false, not deleted,
+  // for reproducibility) via scripts/posthog-flag-admin.js — see
+  // docs/experiments/ticket-single-button.md "Conclusion".
   {
     key: 'ticket-primary-platform',
     expected: {
