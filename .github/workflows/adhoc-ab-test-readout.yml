@@ -1,0 +1,66 @@
+name: Ad-hoc A/B Test Readout
+
+# On-demand, read-only prose readout of scripts/analyze-ab-test.js over an
+# arbitrary window — the scheduled monitor (monitor-gate-ab.yml) only ever
+# runs a fixed 14-day --json window and never prints revenue/commission
+# (that's the prose-mode-only "Direct commission (subId2)" section). Built
+# for BRO-3456: the owner picked deciding ticket-single-button on its
+# secondary revenue/commission metric instead of the underpowered rolling
+# conversion-rate primary, which needs a wide (cumulative-since-restart)
+# window this repo had no on-demand way to pull.
+#
+# NEVER judges a winner or touches flag rollout (memory/
+# feedback_ab_test_guardrails.md rule 1) — analyze-ab-test.js only ever
+# fetches (GET) from PostHog/Impact and prints; this workflow makes no
+# commits, no pushes, no PostHog/Impact mutations, no email. A human reads
+# the run's Summary/log and decides.
+on:
+  workflow_dispatch:
+    inputs:
+      flag:
+        description: 'Flag key (matches analyze-ab-test.js --flag)'
+        required: false
+        default: 'ticket-single-button'
+      days:
+        description: 'Lookback window in days'
+        required: false
+        default: '170'
+
+concurrency:
+  group: adhoc-ab-test-readout
+  cancel-in-progress: false
+
+jobs:
+  readout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-node
+
+      - name: Run analyze-ab-test.js (prose mode)
+        env:
+          FLAG: ${{ inputs.flag }}
+          DAYS: ${{ inputs.days }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
+          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
+        run: |
+          node scripts/analyze-ab-test.js --flag "$FLAG" --days "$DAYS" | tee readout.txt
+
+      - name: Render report on the run summary
+        if: always()
+        run: |
+          if [ -s readout.txt ]; then
+            { echo '```'; cat readout.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No output produced — see the run step log." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Ad-hoc A/B Test Readout Failed'
+          severity: low
