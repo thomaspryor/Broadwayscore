@@ -40,7 +40,8 @@ const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
-const { computeShowReconciliation, evaluateReconciliationSafety, appendReconciliationAudit } = require('./lib/discovery-reconcile');
+const { computeShowReconciliation, resolveReconciliationFields, appendReconciliationAudit } = require('./lib/discovery-reconcile');
+const { validateChangeStability } = require('./lib/change-stability-guard');
 const { classifyTodayTixStartDate, unconfirmedStartFlags, productionIdYear } = require('./lib/todaytix-dates');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
@@ -2156,7 +2157,17 @@ async function discoverShows() {
   // equality (exact title/slug, ID base) — todaytixId matches (Step 0 below)
   // are separately high-confidence and always eligible.
   const HIGH_CONFIDENCE_REASON_PREFIXES = ['Exact title match', 'Exact slug match', 'ID base match'];
-  // existingId -> { existing, fields: { [field]: Map(value -> Set(sourceLabel)) } }
+  // existingId -> { existing, fields: {
+  //   openingDate?: Map<dateValue, { sources: Set<sourceLabel>, openingDateSource }>,
+  //   previewsStartDate?: Map<value, Set<sourceLabel>>,
+  //   venue?: Map<value, Set<sourceLabel>>,
+  // } }
+  // openingDate keys its own openingDateSource per proposed VALUE (not as an
+  // independently-resolved field) so a winning date's provenance always
+  // comes from a candidate that actually proposed that date — resolving
+  // date and source-label as two separately-voted fields could pair a
+  // majority-popular source LABEL with a date that label never proposed
+  // (ship-check finding on the first version of this fix).
   const reconciliationProposals = new Map();
   function reconcileMatchedShow(existing, candidate, reason) {
     if (reason && !HIGH_CONFIDENCE_REASON_PREFIXES.some(p => reason.startsWith(p))) return;
@@ -2168,68 +2179,65 @@ async function discoverShows() {
       reconciliationProposals.set(existing.id, proposal);
     }
     const sourceLabel = candidate._discoverySource || 'unknown';
-    for (const [field, value] of Object.entries(patch)) {
+    if (patch.openingDate) {
+      if (!proposal.fields.openingDate) proposal.fields.openingDate = new Map();
+      const byDate = proposal.fields.openingDate;
+      if (!byDate.has(patch.openingDate)) {
+        byDate.set(patch.openingDate, { sources: new Set(), openingDateSource: patch.openingDateSource });
+      }
+      byDate.get(patch.openingDate).sources.add(sourceLabel);
+    }
+    for (const field of ['previewsStartDate', 'venue']) {
+      if (!patch[field]) continue;
       if (!proposal.fields[field]) proposal.fields[field] = new Map();
-      const bySourceForValue = proposal.fields[field];
-      if (!bySourceForValue.has(value)) bySourceForValue.set(value, new Set());
-      bySourceForValue.get(value).add(sourceLabel);
+      const byValue = proposal.fields[field];
+      if (!byValue.has(patch[field])) byValue.set(patch[field], new Set());
+      byValue.get(patch[field]).add(sourceLabel);
     }
   }
 
-  // Resolves every accumulated proposal (BRO-2072 gap #1): for each field,
-  // pick the value with the most agreeing independent sources, then gate
-  // application through evaluateReconciliationSafety — a value seen from
-  // >=2 sources this run is trusted outright; a single source is only
+  // Resolves every accumulated proposal (BRO-2072 gap #1) via the pure
+  // resolveReconciliationFields (scripts/lib/discovery-reconcile.js): picks
+  // the value with the most agreeing independent sources per field, then
+  // gates application through evaluateReconciliationSafety — a value seen
+  // from >=2 sources this run is trusted outright; a single source is only
   // trusted for a small date nudge (the original card #1446 drift-repair
-  // case), never a venue change or a large date jump. Held-back proposals
-  // are still recorded to the audit trail (gap #3, no-op when there's
-  // nothing to log) so an operator can see what discovery *would* have
-  // written and promote it manually.
+  // case), never a venue change, a date fill with no existing baseline to
+  // sanity-check against, or a large date jump.
+  //
+  // A circuit breaker (mirrors change-stability-guard.js, used the same way
+  // by enrich-off-broadway-dates.js) sits in front of applying ANY patch
+  // this run: 2+ sources suffering a correlated failure (shared upstream
+  // outage/cache) could otherwise sail past the per-field agreement check
+  // above and rewrite every matched show's date/venue in one run. Tripping
+  // it holds every proposed patch for manual review instead of aborting the
+  // whole discovery run (reconciliation is one of several things this
+  // script does per run).
   function resolveReconciliationProposals() {
-    const auditEntries = [];
+    const decisions = [];
     for (const { existing, fields } of reconciliationProposals.values()) {
-      const patch = {};
-      const heldFields = [];
-      const pickBest = (bySourceForValue) => {
-        let bestValue = null;
-        let bestSources = null;
-        for (const [value, sources] of bySourceForValue.entries()) {
-          if (!bestSources || sources.size > bestSources.size) {
-            bestValue = value;
-            bestSources = sources;
-          }
-        }
-        return { bestValue, bestSources };
-      };
+      const { patch, heldFields } = resolveReconciliationFields(existing, fields);
+      decisions.push({ existing, patch, heldFields });
+    }
 
-      // openingDate + openingDateSource are a paired unit (computeShowReconciliation
-      // always writes both together) — resolved as one field using
-      // openingDate's own agreement count.
-      if (fields.openingDate) {
-        const { bestValue, bestSources } = pickBest(fields.openingDate);
-        const bestSourceValue = fields.openingDateSource ? pickBest(fields.openingDateSource).bestValue : undefined;
-        const fieldPatch = { openingDate: bestValue, openingDateSource: bestSourceValue };
-        const safety = evaluateReconciliationSafety(existing, fieldPatch, bestSources.size);
-        if (safety.safe) {
-          Object.assign(patch, fieldPatch);
-        } else {
-          heldFields.push({ field: 'openingDate', value: bestValue, agreeingSourceCount: bestSources.size, reason: safety.reason });
-        }
+    const toApply = decisions.filter(d => Object.keys(d.patch).length > 0);
+    const stability = validateChangeStability({
+      name: 'discover-new-shows-reconciliation',
+      changes: toApply.map(d => ({ id: d.existing.id })),
+      candidateCount: reconciliationProposals.size,
+      thresholds: { absoluteChanges: 15, changePercent: 0.5 },
+    });
+
+    const auditEntries = [];
+    if (!stability.ok) {
+      console.error(`::error::Reconciliation circuit breaker tripped (${stability.reason}) — holding all ${toApply.length} proposed patch(es) this run for manual review.`);
+      process.exitCode = 1;
+      for (const { existing, patch } of toApply) {
+        console.log(`  ⏸️  "${existing.title}" (${existing.id}): held ALL field(s) — circuit breaker (${stability.reason})`);
+        auditEntries.push({ kind: 'held', id: existing.id, title: existing.title, field: Object.keys(patch).join(','), value: patch, agreeingSourceCount: null, reason: `circuit-breaker: ${stability.reason}` });
       }
-
-      for (const field of ['previewsStartDate', 'venue']) {
-        if (!fields[field]) continue;
-        const { bestValue, bestSources } = pickBest(fields[field]);
-        const fieldPatch = { [field]: bestValue };
-        const safety = evaluateReconciliationSafety(existing, fieldPatch, bestSources.size);
-        if (safety.safe) {
-          Object.assign(patch, fieldPatch);
-        } else {
-          heldFields.push({ field, value: bestValue, agreeingSourceCount: bestSources.size, reason: safety.reason });
-        }
-      }
-
-      if (Object.keys(patch).length > 0) {
+    } else {
+      for (const { existing, patch } of toApply) {
         const before = {};
         for (const field of Object.keys(patch)) before[field] = existing[field] ?? null;
         reconciledShows.push({ id: existing.id, title: existing.title, patch });
@@ -2237,6 +2245,9 @@ async function discoverShows() {
         if (!dryRun) Object.assign(existing, patch);
         auditEntries.push({ kind: 'applied', id: existing.id, title: existing.title, before, after: patch });
       }
+    }
+
+    for (const { existing, heldFields } of decisions) {
       for (const held of heldFields) {
         console.log(`  ⏸️  "${existing.title}" (${existing.id}): held reconciliation of ${held.field} (${held.reason}) — needs a 2nd corroborating source`);
         auditEntries.push({ kind: 'held', id: existing.id, title: existing.title, ...held });

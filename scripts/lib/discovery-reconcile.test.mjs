@@ -8,6 +8,7 @@ const require = createRequire(import.meta.url);
 const {
   computeShowReconciliation,
   evaluateReconciliationSafety,
+  resolveReconciliationFields,
   appendReconciliationAudit,
   RECONCILE_MAX_SHIFT_DAYS,
 } = require('./discovery-reconcile.js');
@@ -61,10 +62,17 @@ test('evaluateReconciliationSafety: single source, small date nudge is trusted (
 });
 
 test('evaluateReconciliationSafety: single source venue change is held for corroboration', () => {
-  const existing = { openingDate: null, previewsStartDate: null };
+  const existing = { openingDate: null, previewsStartDate: null, venue: 'Old Theatre' };
   const result = evaluateReconciliationSafety(existing, { venue: 'New Theatre' }, 1);
   assert.equal(result.safe, false);
   assert.match(result.reason, /venue-change-single-source-unconfirmed/);
+});
+
+test('evaluateReconciliationSafety: single source venue FILL (no existing venue) is also held', () => {
+  const existing = { openingDate: null, previewsStartDate: null, venue: null };
+  const result = evaluateReconciliationSafety(existing, { venue: 'New Theatre' }, 1);
+  assert.equal(result.safe, false);
+  assert.match(result.reason, /venue-fill-single-source-unconfirmed/);
 });
 
 test('evaluateReconciliationSafety: single source date shift beyond the cap is held (wrong-production guard)', () => {
@@ -90,6 +98,68 @@ test('evaluateReconciliationSafety: single source date shift right at the cap bo
     1
   );
   assert.equal(result.safe, true);
+});
+
+test('evaluateReconciliationSafety: single source filling a date with NO existing baseline is held, not free-passed', () => {
+  // Regression for a ship-check finding on the first version of this fix:
+  // dayShift() returns 0 whenever either side is missing, so a naive
+  // combined shift check let a single source fill in ANY date for a show
+  // with no existing openingDate/previewsStartDate — the exact
+  // parser-regression case the gate exists to catch, worse than a shift
+  // because there's nothing to sanity-check the new value against.
+  const existing = { openingDate: null, previewsStartDate: null };
+  const result = evaluateReconciliationSafety(
+    existing,
+    { openingDate: '2099-01-01', openingDateSource: 'todaytix' },
+    1
+  );
+  assert.equal(result.safe, false);
+  assert.match(result.reason, /openingDate-fill-single-source-unconfirmed/);
+});
+
+test('evaluateReconciliationSafety: 2 sources CAN fill a date with no existing baseline', () => {
+  const existing = { openingDate: null, previewsStartDate: null };
+  const result = evaluateReconciliationSafety(
+    existing,
+    { openingDate: '2099-01-01', openingDateSource: 'todaytix' },
+    2
+  );
+  assert.equal(result.safe, true);
+});
+
+test('resolveReconciliationFields: openingDate provenance always comes from a candidate that proposed the WINNING date', () => {
+  // Regression for a ship-check finding: resolving openingDate and
+  // openingDateSource as two independently-voted fields could pair a
+  // majority-popular source LABEL with a date that label never actually
+  // proposed. TodayTix proposes date A alone; two other sources agree on
+  // date B with their own (different) source labels — B should win the
+  // date vote AND carry a source label that actually proposed B.
+  const existing = { openingDate: '2026-01-01', previewsStartDate: null, venue: null };
+  const fields = {
+    openingDate: new Map([
+      ['2026-02-01', { sources: new Set(['todaytix']), openingDateSource: 'todaytix' }],
+      ['2026-03-01', { sources: new Set(['playbill-broadway', 'showscore']), openingDateSource: 'playbill' }],
+    ]),
+  };
+  const { patch } = resolveReconciliationFields(existing, fields);
+  assert.equal(patch.openingDate, '2026-03-01');
+  assert.equal(patch.openingDateSource, 'playbill');
+});
+
+test('resolveReconciliationFields: applies multi-source venue change, holds single-source venue change', () => {
+  const existing = { openingDate: null, previewsStartDate: null, venue: 'Old Theatre' };
+  const agreed = resolveReconciliationFields(existing, {
+    venue: new Map([['New Theatre', new Set(['todaytix', 'olt'])]]),
+  });
+  assert.equal(agreed.patch.venue, 'New Theatre');
+  assert.equal(agreed.heldFields.length, 0);
+
+  const disputed = resolveReconciliationFields(existing, {
+    venue: new Map([['New Theatre', new Set(['todaytix'])]]),
+  });
+  assert.equal(disputed.patch.venue, undefined);
+  assert.equal(disputed.heldFields.length, 1);
+  assert.equal(disputed.heldFields[0].field, 'venue');
 });
 
 test('appendReconciliationAudit: writes a before/after trail and caps history at 50 runs', () => {

@@ -673,6 +673,12 @@ jobs:
           # sustained source blindness would still be treated as one-run
           # noise every time a fresh runner checks out a stale committed copy.
           git add data/audit/discovery-source-coverage.json 2>/dev/null || true
+          # Reconciliation before/after audit trail (BRO-2072) — this is the
+          # ONLY step that runs discover-new-shows.js, so without this line
+          # every applied/held reconciliation patch's audit record is
+          # silently discarded at job end (same gap shape as the
+          # discovery-source-coverage.json fix above, ship-check finding).
+          git add data/audit/discovery-reconciliation-log.json 2>/dev/null || true
           git add data/audit/playbill-broadway-last-success.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true

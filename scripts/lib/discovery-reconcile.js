@@ -113,21 +113,90 @@ function evaluateReconciliationSafety(existing, patch, agreeingSourceCount) {
 
   const holdReasons = [];
   if (patch.venue) {
-    holdReasons.push('venue-change-single-source-unconfirmed');
+    holdReasons.push(existing.venue ? 'venue-change-single-source-unconfirmed' : 'venue-fill-single-source-unconfirmed');
   }
-  if (patch.openingDate || patch.previewsStartDate) {
-    const shiftDays = Math.max(
-      dayShift(patch.openingDate, existing.openingDate),
-      dayShift(patch.previewsStartDate, existing.previewsStartDate)
-    );
+  // Per-field, not a combined max: dayShift(a, b) returns 0 whenever either
+  // side is missing, so a combined check would let a single source fill in
+  // ANY date for a show with no existing baseline (shiftDays trivially 0) —
+  // exactly the parser-regression case this gate exists to catch, and worse
+  // for a freshly-announced show since there's nothing to sanity-check
+  // against. Missing-baseline fills are held for corroboration same as venue.
+  for (const field of ['openingDate', 'previewsStartDate']) {
+    if (!patch[field]) continue;
+    if (!existing[field]) {
+      holdReasons.push(`${field}-fill-single-source-unconfirmed`);
+      continue;
+    }
+    const shiftDays = dayShift(patch[field], existing[field]);
     if (shiftDays > RECONCILE_MAX_SHIFT_DAYS) {
-      holdReasons.push(`shift-too-large (${shiftDays}d > ${RECONCILE_MAX_SHIFT_DAYS}d cap)`);
+      holdReasons.push(`${field}-shift-too-large (${shiftDays}d > ${RECONCILE_MAX_SHIFT_DAYS}d cap)`);
     }
   }
   if (holdReasons.length > 0) {
     return { safe: false, reason: holdReasons.join('; ') };
   }
   return { safe: true, reason: 'single-source-small-change' };
+}
+
+/**
+ * Resolves one existing show's accumulated per-run reconciliation proposals
+ * (BRO-2072) into a final patch + a list of held (unconfirmed) fields.
+ *
+ * `fields.openingDate` is a Map<dateValue, { sources: Set<sourceLabel>,
+ * openingDateSource }> — openingDate and openingDateSource are resolved as
+ * one unit, keyed by date, so the winning date's provenance always comes
+ * from a candidate that actually proposed that date (never an independently
+ * "most popular" source label tied to a DIFFERENT date). `fields.venue` and
+ * `fields.previewsStartDate` are plain Map<value, Set<sourceLabel>> — ties
+ * keep the first value seen (insertion order).
+ *
+ * Pure and side-effect-free (no shows.json mutation, no audit writes) so
+ * discover-new-shows.js's per-run source-tagging/accumulation logic can be
+ * exercised directly in scripts/lib/discovery-reconcile.test.mjs instead of
+ * only through its three exported primitives in isolation.
+ */
+function resolveReconciliationFields(existing, fields) {
+  const patch = {};
+  const heldFields = [];
+
+  if (fields.openingDate) {
+    let bestValue = null;
+    let bestEntry = null;
+    for (const [value, entry] of fields.openingDate.entries()) {
+      if (!bestEntry || entry.sources.size > bestEntry.sources.size) {
+        bestValue = value;
+        bestEntry = entry;
+      }
+    }
+    const fieldPatch = { openingDate: bestValue, openingDateSource: bestEntry.openingDateSource };
+    const safety = evaluateReconciliationSafety(existing, fieldPatch, bestEntry.sources.size);
+    if (safety.safe) {
+      Object.assign(patch, fieldPatch);
+    } else {
+      heldFields.push({ field: 'openingDate', value: bestValue, agreeingSourceCount: bestEntry.sources.size, reason: safety.reason });
+    }
+  }
+
+  for (const field of ['previewsStartDate', 'venue']) {
+    if (!fields[field]) continue;
+    let bestValue = null;
+    let bestSources = null;
+    for (const [value, sources] of fields[field].entries()) {
+      if (!bestSources || sources.size > bestSources.size) {
+        bestValue = value;
+        bestSources = sources;
+      }
+    }
+    const fieldPatch = { [field]: bestValue };
+    const safety = evaluateReconciliationSafety(existing, fieldPatch, bestSources.size);
+    if (safety.safe) {
+      Object.assign(patch, fieldPatch);
+    } else {
+      heldFields.push({ field, value: bestValue, agreeingSourceCount: bestSources.size, reason: safety.reason });
+    }
+  }
+
+  return { patch, heldFields };
 }
 
 /**
@@ -166,6 +235,7 @@ function appendReconciliationAudit(entries, meta = {}, auditPath = AUDIT_PATH) {
 module.exports = {
   computeShowReconciliation,
   evaluateReconciliationSafety,
+  resolveReconciliationFields,
   appendReconciliationAudit,
   RECONCILE_MAX_SHIFT_DAYS,
   AUDIT_PATH,
