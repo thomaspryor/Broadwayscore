@@ -75,9 +75,18 @@
  * and can drift from the one in this repo.
  * BRO-3060: .github/workflows/check-linear-drain-health.yml runs this file's
  * own --dry-run daily as a READ-ONLY CI monitor (Linear API read only, no
- * spawn) — it goes red if eligible candidates pile up past one dispatch cap,
- * catching a dead Mac-side drain in days instead of the weeks it took for
- * 126 issues to accumulate before anyone noticed the drain never ran.
+ * spawn), and hands the resulting candidate count to
+ * scripts/check-linear-drain-health.js. That script — NOT this one, and no
+ * longer a threshold hardcoded in the YAML — decides health, by asking
+ * whether this drain has written a `drain-parked-dispatch` row recently
+ * enough while work was queued.
+ *
+ * The gate it replaced ("go red if eligible candidates pile up past one
+ * dispatch cap") was dead on arrival: the workflow ran --dry-run with no
+ * --cap, :445 below passes `limit: cap` with cap = DISPATCH_CAP = 3, and
+ * lib/linear-drain-parked.js:85 slices to that limit — so the count it
+ * compared against 3 could never exceed 3. The workflow now passes
+ * `--cap 1000` so the printed count is the real backlog depth.
  */
 'use strict';
 
@@ -417,7 +426,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     const dispatchLedgerEntries = dispatchLedgerEntriesFn();
     const newOutcomes = reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now);
     for (const o of newOutcomes) {
-      appendLedgerFn(o, ledgerPath);
+      // `if (!dryRun)` — byte-for-byte the shape the sibling drain already
+      // ships at scripts/backlog-drain.js:461. Without it --dry-run WROTE:
+      // USAGE and the "no dispatch/ledger writes" line at the bottom of this
+      // function both promised otherwise, but this append ran unconditionally,
+      // above the first `if (!dryRun)` guard. That made the scheduled CI
+      // health check a writer, and dirtied the tracked ledger on any local
+      // preview. The log line stays unconditional (also as in backlog-drain)
+      // so a dry run still SHOWS what it would have reconciled.
+      if (!dryRun) appendLedgerFn(o, ledgerPath);
       log(`[linear-drain-parked] attempt-memory: ${o.cardId} ${o.event} (${o.note})`);
     }
     if (newOutcomes.length) effectiveLedgerEntries = ledgerEntries.concat(newOutcomes);
