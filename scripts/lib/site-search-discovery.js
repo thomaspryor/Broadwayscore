@@ -126,6 +126,48 @@ function operaTitleWords(title) {
 }
 
 /**
+ * Operawire WP REST search returns both announcements ("Asmik Grigorian
+ * Headlines...") and actual reviews. Only review URLs carry "review" in the
+ * slug/path — this predicate keeps just those.
+ */
+function isOperawireReviewUrl(url) {
+  return !!url && /\breview\b|-review-/i.test(url);
+}
+
+/**
+ * Parterre Box posts use POETIC titles/slugs ("A specter, haunting" for
+ * Innocence) that a plain title/slug match would miss, but the WP excerpt
+ * typically names the opera + composer + venue. Matches on combined
+ * title+slug+excerpt text, requiring at least 2 opera-title-word hits (or
+ * all of them, for short titles) to avoid single-word false positives
+ * ("La", "Don") matching unrelated daily art-song posts.
+ */
+function parterrePostMatchesShow(post, showWords) {
+  const title = (post.title?.rendered || '').toLowerCase().replace(/<[^>]+>/g, '');
+  const slug = (post.link || '').toLowerCase();
+  const excerpt = (post.excerpt?.rendered || '').toLowerCase().replace(/<[^>]+>/g, ' ');
+  const text = title + ' ' + slug + ' ' + excerpt;
+  const hits = showWords.filter(w => text.includes(w)).length;
+  return hits >= Math.min(2, showWords.length);
+}
+
+/**
+ * Operawire's WP REST search is fuzzy full-text, not a title match — a
+ * search for "Innocence" can surface an unrelated Handel Festspiele Halle
+ * review that happens to rank on the term elsewhere in the post. The
+ * house reject-list in filterOperaUrls only catches wrong-VENUE hits; this
+ * catches wrong-OPERA hits by requiring the post's own title/slug to
+ * actually mention the show (same threshold as Parterre/Bachtrack above).
+ */
+function operawirePostMatchesShow(post, titleWords) {
+  const title = (post.title?.rendered || '').toLowerCase().replace(/<[^>]+>/g, '');
+  const slug = (post.link || '').toLowerCase();
+  const text = title + ' ' + slug;
+  const hits = titleWords.filter(w => text.includes(w)).length;
+  return hits >= Math.min(2, titleWords.length);
+}
+
+/**
  * Search endpoint configuration.
  * Each entry: outlet search URL template + how to extract result links.
  *
@@ -561,14 +603,7 @@ const SITE_SEARCH_ENDPOINTS = {
       // typically name the opera + composer + venue, so excerpt-search catches
       // posts that title/slug miss.
       const showWords = operaTitleWords(showTitle);
-      const matches = posts.filter(p => {
-        const title = (p.title?.rendered || '').toLowerCase().replace(/<[^>]+>/g, '');
-        const slug = (p.link || '').toLowerCase();
-        const excerpt = (p.excerpt?.rendered || '').toLowerCase().replace(/<[^>]+>/g, ' ');
-        const text = title + ' ' + slug + ' ' + excerpt;
-        const hits = showWords.filter(w => text.includes(w)).length;
-        return hits >= Math.min(2, showWords.length);
-      });
+      const matches = posts.filter(p => parterrePostMatchesShow(p, showWords));
       const urls = matches.map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'parterre-box', showId, openingDate);
     },
@@ -588,14 +623,19 @@ const SITE_SEARCH_ENDPOINTS = {
       const url = `https://operawire.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
       const data = await fetchSSR(url);
       const posts = _safeJsonArray(data, 'operawire');
-      // Operawire publishes BOTH announcements ("Asmik Grigorian Headline...") AND
-      // actual reviews ("metropolitan-opera-2025-26-review-eugene-onegin"). The WP
-      // search returns BOTH; without prioritization, the announcement gets picked
-      // first as the "Operawire/Salazar" file and the actual review is lost.
-      // Strategy: keep ONLY review URLs (slug contains 'review'). Announcement
-      // URLs are not reviews; we don't want them.
-      const reviewPosts = posts.filter(p => p.link && /\breview\b|-review-/i.test(p.link));
-      const urls = (reviewPosts.length > 0 ? reviewPosts : posts).map(p => p.link).filter(Boolean);
+      // Operawire publishes BOTH announcements ("Asmik Grigorian Headlines...") AND
+      // actual reviews ("metropolitan-opera-2025-26-review-eugene-onegin"). Keep
+      // ONLY review URLs — never fall back to announcements when zero review
+      // posts come back (2026-09-15 live-fire: a bare title search for "La
+      // Traviata" used to fall back to 9 unrelated announcement/obituary posts,
+      // matching this issue's "146 discovered -> 0 live reviews" symptom).
+      const reviewPosts = posts.filter(p => isOperawireReviewUrl(p.link));
+      // WP's search is fuzzy full-text, not a title match — validate the
+      // post's own title/slug actually names the show before it becomes a
+      // candidate URL (catches wrong-opera hits the house reject-list can't).
+      const titleWords = operaTitleWords(showTitle);
+      const titleMatched = reviewPosts.filter(p => operawirePostMatchesShow(p, titleWords));
+      const urls = titleMatched.map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'operawire', showId, openingDate);
     },
   },
@@ -1294,4 +1334,9 @@ module.exports = {
   selectApplicableSiteSearchOutlets,
   SITE_SEARCH_ENDPOINTS,
   urlLooksLikeReview,
+  operaTitleWords,
+  filterOperaUrls,
+  isOperawireReviewUrl,
+  parterrePostMatchesShow,
+  operawirePostMatchesShow,
 };
