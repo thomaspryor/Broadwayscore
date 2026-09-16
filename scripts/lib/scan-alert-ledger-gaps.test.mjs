@@ -220,6 +220,107 @@ test('scanned counts files READ, not files FOUND, on a mid-scan code-2 return', 
   }
 });
 
+test('code 2 on a violation containing a bare \r (it OVERWRITES the printed line)', () => {
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => ['visible\rHIDDEN']);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /a control-character violation at index 0/);
+    assert.deepEqual(r.violations, []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('an array overriding [Symbol.iterator] to yield nothing cannot turn a REAL finding into code 0', () => {
+  // Validating one array and then PUBLISHING a second read of it was a hole,
+  // not a guard: the publish step used for..of, so a hostile iterator silently
+  // dropped every finding the validator had just approved (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => {
+      const a = ['job X missing the staging line'];
+      a[Symbol.iterator] = function* () { /* yields nothing */ };
+      return a;
+    });
+    assert.equal(r.code, 1, 'the real finding must still be reported');
+    assert.equal(r.violations.length, MIN_EXPECTED_WORKFLOWS);
+    assert.match(r.violations[0], /job X missing the staging line$/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('an element whose value CHANGES between validation and publication publishes the validated value', () => {
+  const dir = makeTree(1 + MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => {
+      const a = [];
+      let reads = 0;
+      Object.defineProperty(a, 0, {
+        get() { reads += 1; return reads === 1 ? 'real finding' : undefined; },
+        enumerable: true,
+        configurable: true,
+      });
+      return a;
+    });
+    assert.equal(r.code, 1);
+    for (const v of r.violations) {
+      assert.doesNotMatch(v, /undefined/, 'a second read must never reach the output');
+      assert.match(v, /real finding$/);
+    }
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('a Proxy that under-reports length to the validator cannot smuggle an element past it', () => {
+  // length is snapshotted ONCE: a Proxy answering 0 to the validator and its
+  // real length to the publisher would otherwise bypass validation entirely
+  // (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => {
+      const target = ['smuggled\nmulti-line finding'];
+      let lengthReads = 0;
+      return new Proxy(target, {
+        get(t, k) {
+          if (k === 'length') { lengthReads += 1; return lengthReads === 1 ? 0 : t.length; }
+          return t[k];
+        },
+      });
+    });
+    assert.equal(r.code, 0, 'nothing was validated, so nothing may be published');
+    assert.deepEqual(r.violations, [], 'the smuggled element must not reach the output');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('code 2 when a workflow FILENAME contains a newline (it prefixes every record)', () => {
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    fs.writeFileSync(path.join(dir, 'aa-bad\nname.yml'), 'name: x\n');
+    const r = scanWorkflows(dir, () => ['job X missing the staging line']);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /filename contains a control character/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('scanned is 0 — not the file count — on the too-few-workflows refusal', () => {
+  const dir = makeTree(3);
+  try {
+    const r = scanWorkflows(dir, NO_VIOLATIONS);
+    assert.equal(r.code, 2);
+    assert.equal(r.scanned, 0, 'nothing was opened or checked');
+    assert.match(r.error, /found only 3 workflow file\(s\)/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('.YML (uppercase) is scanned, not silently skipped', () => {
   const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
   try {

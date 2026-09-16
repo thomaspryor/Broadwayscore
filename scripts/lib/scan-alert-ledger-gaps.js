@@ -50,6 +50,12 @@ const MIN_EXPECTED_WORKFLOWS = 50;
 // the same under-report as missing `.yaml` (review finding).
 const WORKFLOW_EXT_RE = /\.ya?ml$/i;
 
+// Anything that can move the cursor or split a line once a violation is printed
+// (review finding). `\n` splits one finding into two stdout lines so a caller
+// counting lines disagrees with TOTAL VIOLATIONS; a bare `\r` is worse, because
+// it OVERWRITES the text already on the line and can hide the finding entirely.
+const CONTROL_CHAR_RE = /[\u0000-\u001f\u007f]/;
+
 /**
  * Describe a thrown value without ever throwing itself (review finding).
  *
@@ -121,7 +127,9 @@ function scanWorkflows(dir, check) {
     return {
       code: 2,
       violations: [],
-      scanned: files.length,
+      // Zero, not files.length: nothing was opened or checked. The count that
+      // matters here is already in the message below (review finding).
+      scanned: 0,
       error:
         `refusing to report a verdict: found only ${files.length} workflow file(s) in ${dir}, ` +
         `expected at least ${MIN_EXPECTED_WORKFLOWS}. A near-empty scan would report "clean" having scanned nothing.`,
@@ -134,6 +142,14 @@ function scanWorkflows(dir, check) {
   // `files.length` claimed credit for files never opened.
   let scanned = 0;
   for (const file of files) {
+    // The filename PREFIXES every violation record (`${file}: ${v}`), so a
+    // newline in it splits findings exactly like a newline in the violation
+    // does — validating only the checker's string missed half the surface
+    // (review finding).
+    if (CONTROL_CHAR_RE.test(file)) {
+      return { code: 2, violations, scanned, error: `workflow filename contains a control character: ${JSON.stringify(file)}` };
+    }
+
     let text;
     try {
       text = fs.readFileSync(path.join(dir, file), 'utf8');
@@ -175,9 +191,21 @@ function scanWorkflows(dir, check) {
       // over-reporting its own verdict. And the reason is named, because an
       // empty string IS a string: calling that a "non-string" sent the reader
       // hunting for the wrong bug (review finding).
+      //
+      // `length` is snapshotted and the validated values are COLLECTED, because
+      // validating one array and then publishing a second read of it is a hole,
+      // not a guard (review finding). A getter or Proxy can answer 'ok' while
+      // being validated and `undefined` while being published; a Proxy can
+      // report length 0 to the validator and its real length to the publisher;
+      // and an array overriding [Symbol.iterator] to yield nothing turns a REAL
+      // finding into code 0. Publishing `clean` — the primitives this loop
+      // actually saw and approved — closes all three at once, and the snapshot
+      // also means a length getter that keeps growing cannot spin forever.
+      const n = found.length;
+      const clean = [];
       let bad = -1;
       let badReason = '';
-      for (let i = 0; i < found.length; i++) {
+      for (let i = 0; i < n; i++) {
         const v = found[i];
         if (typeof v !== 'string') {
           bad = i;
@@ -194,6 +222,12 @@ function scanWorkflows(dir, check) {
           badReason = 'a multi-line';
           break;
         }
+        if (CONTROL_CHAR_RE.test(v)) {
+          bad = i;
+          badReason = 'a control-character';
+          break;
+        }
+        clean.push(v);
       }
       if (bad !== -1) {
         return {
@@ -203,7 +237,7 @@ function scanWorkflows(dir, check) {
           error: `checker returned ${badReason} violation at index ${bad} for ${file}`,
         };
       }
-      for (const v of found) violations.push(`${file}: ${v}`);
+      for (const v of clean) violations.push(`${file}: ${v}`);
       scanned++;
     } catch (err) {
       return { code: 2, violations, scanned, error: `checker threw on ${file}: ${describeError(err)}` };
