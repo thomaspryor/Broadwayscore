@@ -155,6 +155,7 @@ const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear }
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { parseDate } = require('./lib/date-utils');
+const { findExistingFileForUrl } = require('./lib/review-url-clusters');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -189,6 +190,26 @@ function renameReviewFileForCriticOverride(review, data, extractedAuthor) {
 
   if (newFilename === currentFile) {
     return { action: 'noop' };
+  }
+
+  // Same URL already promoted under a DIFFERENT critic name/file — rotating-byline
+  // outlets (Times UK, WhatsOnStage: a "more from our critics" recirc widget) return
+  // a different extracted byline on the SAME url across fetches, so the exact-filename
+  // check below only catches a collision with the freshly-computed newFilename; it
+  // misses a sibling already promoted under some OTHER name for this url. That gap is
+  // the byline-explosion root cause (BRO-1391), fixed for the _pending drain in
+  // replay-pending-bylines.js and shared here (BRO-3550) so this 3x-daily primary
+  // collection pipeline gets the same protection instead of minting a second primary.
+  const showId = data.showId || review.showId;
+  if (data.url && showId) {
+    const existingSameUrl = findExistingFileForUrl(CONFIG.reviewTextsDir, showId, outletId, data.url);
+    if (existingSameUrl && existingSameUrl !== currentFile && existingSameUrl !== newFilename) {
+      data.duplicateOf = existingSameUrl;
+      data.duplicateTextOf = existingSameUrl;
+      data.duplicateReason = 'same-url-different-byline-extraction';
+      console.warn(`    ⚠ Same URL already promoted as ${existingSameUrl} — marking ${currentFile} duplicateOf instead of renaming to ${newFilename}`);
+      return { action: 'conflict', newFile: existingSameUrl };
+    }
   }
 
   const newPath = path.join(showDir, newFilename);
