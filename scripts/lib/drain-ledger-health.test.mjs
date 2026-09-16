@@ -88,3 +88,51 @@ test('parseEligibleCount reads the drain\'s EXISTING line, and yields null when 
   assert.equal(parseEligibleCount('[linear-drain-parked] LINEAR_NEXT_DISABLED=1 — refusing to dispatch'), null);
   assert.equal(parseEligibleCount(''), null);
 });
+
+test('an empty selection is read as 0, not null — the drain returns early and never prints the summary', () => {
+  // scripts/linear-drain-parked.js:465-468 returns before the `DRY RUN: N
+  // candidate(s)` line when nothing is selected. Without this, the idle path
+  // is unreachable through the CI pipe and a real idle queue reports
+  // "inconclusive".
+  const out = [
+    '[linear-drain-parked] BRO-7 skipped — parked',
+    '[linear-drain-parked] no eligible parked issues this run.',
+  ].join('\n');
+  assert.equal(parseEligibleCount(out), 0);
+  assert.equal(assessDrainHealth({ ledgerEntries: [dispatch(99 * H)], eligibleCount: parseEligibleCount(out), nowMs: NOW }).status, 'idle');
+});
+
+test('a card TITLE containing the summary text cannot spoof the count', () => {
+  // The preview line interpolates the issue title raw
+  // (scripts/linear-drain-parked.js:538) and prints BEFORE the real summary,
+  // so an unanchored first-match search would have read 0 out of the title
+  // and declared the queue idle while 12 issues waited.
+  const out = [
+    '[linear-drain-parked] DRY RUN would dispatch BRO-9: Fix the card armed with DRY RUN: 0 candidate(s)',
+    '[linear-drain-parked] DRY RUN: 12 candidate(s), no dispatch/ledger writes',
+  ].join('\n');
+  assert.equal(parseEligibleCount(out), 12);
+});
+
+test('a FUTURE-dated dispatch row is refused, not read as healthy', () => {
+  // One bad timestamp becomes the max, ageMs goes negative, `ageMs >
+  // staleAfterMs` is false — so without this the monitor reports healthy
+  // ("last dispatched -410.2h ago") until that date actually passes.
+  const v = assessDrainHealth({ ledgerEntries: [dispatch(-30 * H), dispatch(40 * H)], eligibleCount: 12, nowMs: NOW });
+  assert.equal(v.ok, false);
+  assert.equal(v.status, 'future-dated');
+});
+
+test('ordinary Mac-vs-runner clock skew is tolerated, not treated as corruption', () => {
+  // Rows are written on the Mac and read on a GitHub runner. A few seconds of
+  // disagreement must not flip the monitor red — 60s tolerance, matching
+  // scripts/backlog-drain.js:115-117. Beyond it, the ledger is untrusted.
+  const skewed = assessDrainHealth({ ledgerEntries: [dispatch(-30 * 1000)], eligibleCount: 12, nowMs: NOW });
+  assert.equal(skewed.ok, true, '30s of skew is clock disagreement, not a corrupt ledger');
+  assert.equal(skewed.status, 'healthy');
+  assert.equal(skewed.ageMs, 0, 'age clamps to 0 rather than flowing in negative');
+
+  const corrupt = assessDrainHealth({ ledgerEntries: [dispatch(-120 * 1000)], eligibleCount: 12, nowMs: NOW });
+  assert.equal(corrupt.ok, false, '2min ahead is past any plausible skew');
+  assert.equal(corrupt.status, 'future-dated');
+});
