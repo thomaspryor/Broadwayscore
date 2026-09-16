@@ -152,7 +152,7 @@ test('code 2 when the checker returns an array of non-strings (no [object Object
   try {
     const r = scanWorkflows(dir, () => [{ job: 'x' }]);
     assert.equal(r.code, 2);
-    assert.match(r.error, /non-string violation at index 0/);
+    assert.match(r.error, /a non-string \(object\) violation at index 0/);
     assert.deepEqual(r.violations, []);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -166,7 +166,55 @@ test('code 2 when the checker returns a sparse array (holes stringify to "undefi
     sparse[2] = 'c'; // index 1 is a hole
     const r = scanWorkflows(dir, () => sparse);
     assert.equal(r.code, 2);
-    assert.match(r.error, /non-string violation at index 1/);
+    assert.match(r.error, /a non-string \(undefined\) violation at index 1/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('code 2 — and the reason says EMPTY, not "non-string" — on an empty-string element', () => {
+  // An empty string IS a string. Reporting it as a "non-string violation" sent
+  // the reader hunting for the wrong bug (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => ['ok', '']);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /an empty violation at index 1/);
+    assert.doesNotMatch(r.error, /non-string/);
+    assert.deepEqual(r.violations, []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('code 2 on a violation containing a newline (one finding must not print as two lines)', () => {
+  // A violation carrying an embedded \n prints as TWO stdout lines, so a caller
+  // counting lines disagrees with TOTAL VIOLATIONS — the scanner over-reports
+  // its own verdict (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => ['line one\nline two']);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /a multi-line violation at index 0/);
+    assert.deepEqual(r.violations, []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('scanned counts files READ, not files FOUND, on a mid-scan code-2 return', () => {
+  // files.length claimed credit for files never opened (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    let calls = 0;
+    const r = scanWorkflows(dir, () => {
+      calls += 1;
+      if (calls === 3) throw new Error('boom on the third file');
+      return [];
+    });
+    assert.equal(r.code, 2);
+    assert.equal(r.scanned, 2, 'two files were fully read and checked before the throw');
+    assert.notEqual(r.scanned, MIN_EXPECTED_WORKFLOWS);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

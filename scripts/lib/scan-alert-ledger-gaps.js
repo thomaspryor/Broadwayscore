@@ -129,12 +129,16 @@ function scanWorkflows(dir, check) {
   }
 
   const violations = [];
+  // Files actually READ AND CHECKED, not merely FOUND (review finding). On a
+  // mid-scan code-2 return the caller is told how far the scan really got;
+  // `files.length` claimed credit for files never opened.
+  let scanned = 0;
   for (const file of files) {
     let text;
     try {
       text = fs.readFileSync(path.join(dir, file), 'utf8');
     } catch (err) {
-      return { code: 2, violations, scanned: files.length, error: `could not read ${file}: ${describeError(err)}` };
+      return { code: 2, violations, scanned, error: `could not read ${file}: ${describeError(err)}` };
     }
     try {
       const found = check(text);
@@ -154,31 +158,59 @@ function scanWorkflows(dir, check) {
         return {
           code: 2,
           violations,
-          scanned: files.length,
+          scanned,
           error: `checker returned ${found === null ? 'null' : typeof found} (expected an array) for ${file}`,
         };
       }
-      // Elements must be non-empty STRINGS (review finding). An array of objects
-      // stringified to "[object Object]" and an array hole/undefined stringified
-      // to "undefined" — a fabricated verdict one layer inside the string bug
-      // above (measured: [{job:'x'}] produced 50 findings of "[object Object]",
-      // and a sparse [,,'x'] produced 150, two thirds of them "undefined").
-      const bad = found.findIndex((v) => typeof v !== 'string' || v === '');
+      // Elements must be non-empty, SINGLE-LINE strings (review finding). An
+      // array of objects stringified to "[object Object]" and an array
+      // hole/undefined stringified to "undefined" — a fabricated verdict one
+      // layer inside the string bug above (measured: [{job:'x'}] produced 50
+      // findings of "[object Object]", and a sparse [,,'x'] produced 150, two
+      // thirds of them "undefined").
+      //
+      // The newline case is the same fabrication by a different route: one
+      // violation carrying an embedded \n prints as TWO stdout lines, so anything
+      // counting lines disagrees with `TOTAL VIOLATIONS` — the scanner would be
+      // over-reporting its own verdict. And the reason is named, because an
+      // empty string IS a string: calling that a "non-string" sent the reader
+      // hunting for the wrong bug (review finding).
+      let bad = -1;
+      let badReason = '';
+      for (let i = 0; i < found.length; i++) {
+        const v = found[i];
+        if (typeof v !== 'string') {
+          bad = i;
+          badReason = `a non-string (${v === null ? 'null' : typeof v})`;
+          break;
+        }
+        if (v === '') {
+          bad = i;
+          badReason = 'an empty';
+          break;
+        }
+        if (v.includes('\n')) {
+          bad = i;
+          badReason = 'a multi-line';
+          break;
+        }
+      }
       if (bad !== -1) {
         return {
           code: 2,
           violations,
-          scanned: files.length,
-          error: `checker returned a non-string violation at index ${bad} for ${file}`,
+          scanned,
+          error: `checker returned ${badReason} violation at index ${bad} for ${file}`,
         };
       }
       for (const v of found) violations.push(`${file}: ${v}`);
+      scanned++;
     } catch (err) {
-      return { code: 2, violations, scanned: files.length, error: `checker threw on ${file}: ${describeError(err)}` };
+      return { code: 2, violations, scanned, error: `checker threw on ${file}: ${describeError(err)}` };
     }
   }
 
-  return { code: violations.length === 0 ? 0 : 1, violations, scanned: files.length };
+  return { code: violations.length === 0 ? 0 : 1, violations, scanned };
 }
 
 module.exports = { scanWorkflows, MIN_EXPECTED_WORKFLOWS, WORKFLOW_EXT_RE };
