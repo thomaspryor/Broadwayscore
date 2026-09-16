@@ -94,6 +94,49 @@ jobs:
             echo "No pending file — nothing to apply"
           fi
 
+      - name: Commit poll output
+        # BRO-3665: commit the poll step's own output ADJACENT TO ITS PRODUCER,
+        # before any push-with-retry.sh call in this job can run.
+        #
+        # push-with-retry.sh hard-resets the worktree on several paths — its
+        # conflict-resolution branch (git reset --hard "origin/$PULL_BRANCH",
+        # ~L2008) and its pre-API-fallback diff branch (git reset --hard
+        # "$RESTORE_BASE_HEAD", ~L2274) — and NOTHING in its 2532 lines
+        # inspects, stashes or preserves a dirty worktree. So any unstaged
+        # tracked file on disk when it runs is destroyed.
+        #
+        # Until this step existed, data/commercial-rss-state.json and
+        # data/commercial-pending-review.json (written by "Poll trade-press
+        # RSS" above) sat UNSTAGED across the "Commit breaker state" push
+        # below. Run 34855723797 (2026-09-14) is the proof: the poll step
+        # SUCCEEDED — poll-trade-press-rss.js sets feedState.lastPolledAt for
+        # every feed and calls writeState() unconditionally, so the state file
+        # WAS written — the breaker push then exhausted into its API fallback
+        # and hard-reset, and the later "Commit data changes" step printed
+        # "No changes to commit". The hour's poll output was gone.
+        #
+        # That was survivable-but-visible while the breaker push was job-fatal
+        # (it reddened the run). BRO-2524 soft-failed that push on 2026-09-15,
+        # which made this silent: green job, no poll output, RSS state never
+        # advancing. Committing here is the repo's established fix for exactly
+        # this shape — see data-health-check.yml's "Commit provider spend
+        # ledger" (BRO-3317) and its BRO-472 sibling, both of which moved a
+        # commit EARLIER for the same hard-reset reason.
+        #
+        # Commit only, no push: the "Commit data changes" step below owns the
+        # push for this data and is job-fatal, so nothing here is soft-failed
+        # or stranded.
+        if: always() && inputs.dry_run != true
+        run: |
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
+          if git diff --staged --quiet; then
+            echo "No poll output to commit"
+          else
+            git commit -m "data: hourly poll — recoupment scan
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          fi
+
       - name: Clear BD blacklist of GitHub runner IPs
         # Bright Data's unknown-IP detector auto-blacklists rotating GitHub
         # Actions runner ranges on the zone, silently degrading the scraping
@@ -298,6 +341,37 @@ jobs:
             git commit -m "data: hourly poll — recoupment scan + BD breaker state
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          fi
+          # BRO-3665: push whenever THIS JOB has outstanding commits, not only
+          # when this step itself just made one. The push used to live inside
+          # the `else` above, so a run where nothing staged here pushed
+          # NOTHING — stranding the "Commit poll output" and "Commit breaker
+          # state" commits made earlier in this job on the ephemeral runner
+          # disk. That mattered most for the two files that exist ONLY here
+          # until committed: data/audit/alert-ledger.json and
+          # data/audit/breaker-transitions.jsonl (the sole per-day record of
+          # which guards tripped). BRO-2524's soft-fail on the breaker push
+          # means "its push failed" is now an ordinary, silent outcome, so
+          # this step is the only thing that gets those commits to main.
+          #
+          # Fails OPEN by design: `if` suppresses set -e, so a missing or
+          # unreadable origin/main inside a command substitution would yield
+          # an empty/zero count and silently skip the push — the exact class
+          # of silent loss being fixed. Verify the ref explicitly first and
+          # push anyway when it cannot be read (push-with-retry.sh guards
+          # origin/$PULL_BRANCH the same way at ~L774). A stale origin/main is
+          # harmless here: it can only over-report outstanding commits, which
+          # costs a no-op push, never a skipped one.
+          if git rev-parse --verify --quiet origin/main >/dev/null 2>&1; then
+            OUTSTANDING=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo unknown)
+          else
+            echo "::warning::origin/main not readable — pushing unconditionally rather than risk stranding commits"
+            OUTSTANDING=unknown
+          fi
+          if [ "$OUTSTANDING" = "0" ]; then
+            echo "Nothing to push — HEAD matches origin/main"
+          else
+            echo "Pushing $OUTSTANDING outstanding commit(s) from this job"
             bash scripts/lib/push-with-retry.sh
           fi
 
