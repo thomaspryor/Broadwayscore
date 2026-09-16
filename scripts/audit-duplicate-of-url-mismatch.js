@@ -31,7 +31,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeUrl } = require('./lib/review-normalization');
+const { normalizeUrl, stripTrivial } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
@@ -65,11 +65,13 @@ const FIX_SURGE_THRESHOLD = 25;
 // Canonicalize for comparison: drop the query string, then trim trailing
 // encoded-spaces / whitespace / slashes that normalizeUrl leaves intact. A
 // genuinely different article still differs by PATH; only trivially-dirty
-// variants of the SAME url collapse to equal. Exported for the unit test.
-function stripTrivial(u) {
-  if (!u) return u;
-  return u.split('?')[0].replace(/(?:%20|\s|\/)+$/gi, '');
-}
+// variants of the SAME url collapse to equal.
+//
+// Moved to lib/review-normalization.js (BRO-2409) so review-write-guard.js's
+// write-time stale-duplicateOf self-heal can use the SAME comparator this
+// audit does — re-exported here (not just required, see the require above)
+// so the existing tests/unit/duplicate-of-url-mismatch.test.mjs import keeps
+// working unchanged.
 
 // Domain-alias map: alias hostname -> canonical hostname, from the SAME
 // outlet-registry.json domainAliases the C_domain_mismatch detector uses
