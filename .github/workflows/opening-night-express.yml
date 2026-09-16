@@ -287,6 +287,13 @@ jobs:
           COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          # BRO-2381: without this, pushReviewTextsCheckpoint()'s mid-run
+          # checkpoint to the private review-texts repo silently no-ops —
+          # this job has a 90-min timeout, and the "Push review texts to
+          # private repo" step below never runs if this step is killed by it,
+          # so the mid-run checkpoint is the only safety net for an opening-
+          # night run that runs long.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           echo "=== Collecting review texts for ${{ inputs.show_id }} ==="
           node scripts/collect-review-texts.js \
