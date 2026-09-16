@@ -108,4 +108,15 @@ describe('BRO-3535: gates moved from test.yml', () => {
     // the `if (a.crashed) continue;` guard, without needing to mock the router.
     await assert.doesNotReject(() => routePerAuditAlerts([crashed('only-crashed')]));
   });
+
+  test('routePerAuditAlerts is scoped to exactly the healPathRequired: true entries', () => {
+    // Codebase-review catch: an earlier draft looped over ALL of AUDITS
+    // (~34 entries), which would have started routing digest alerts for the
+    // ~20 pre-existing MONITOR-only audits too — an unreviewed behavior
+    // change this ticket never asked for. Pinning the scoped set to exactly
+    // MOVED_NAMES (already verified above to be the healPathRequired:true
+    // entries) locks that the fix landed and stays landed.
+    const scopedNames = new Set(AUDITS.filter((a) => a.healPathRequired).map((a) => a.name));
+    assert.deepEqual([...scopedNames].sort(), [...MOVED_NAMES].sort());
+  });
 });

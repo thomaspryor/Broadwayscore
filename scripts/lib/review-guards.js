@@ -820,9 +820,16 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
     return matchCountTB >= minMatchTB;
   }
 
+  // Boundary chars: whitespace/slug punctuation plus prose punctuation
+  // (comma/colon/etc.) — this function doubles as a prose title matcher
+  // (see the block comment above), and a headline like "'Dad, Don't Read
+  // This' Review:" puts a comma directly after "Dad" with no space before
+  // the quote. Without comma/colon in the boundary set, that word-boundary
+  // regex never matches "dad" and a correct SERP candidate gets silently
+  // dropped. [BRO-1351]
   const wordMatch = (haystack, word) => {
     const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
-    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_\\d])', 'i').test(haystack);
+    return new RegExp('(?:^|[\\s\\-/.,:;!?\'"_])' + escaped + '(?:$|[\\s\\-/.,:;!?\'"_\\d])', 'i').test(haystack);
   };
   const matchCount = titleWords.filter(w => wordMatch(lowerUrl, w)).length;
   const minMatch = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
