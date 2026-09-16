@@ -734,7 +734,26 @@ async function main() {
   console.log('Done.');
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Exported for scripts/enrich-west-end-dates.test.mjs — the pure
+// parsing/validation/merge functions behind the Theatremonkey + Playbill
+// London date enrichment (BRO-3527, cousin of the OB script's BRO-1108
+// export shape). Network-calling functions (scrapeTheatremonkey,
+// scrapePlaybill) are intentionally NOT exported; they're exercised
+// indirectly via --dry-run / --show=SLUG manual verification.
+module.exports = {
+  parseBritishDate,
+  parsePlaybillDate,
+  cleanTitle,
+  titleToTmSlugs,
+  parseTheatremonkeyIndex,
+  extractTheatremonkeyDates,
+  parsePlaybillSchedulePage,
+  mergeSources,
+};
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
