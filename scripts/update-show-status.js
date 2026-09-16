@@ -117,7 +117,7 @@ function isDateReached(dateStr) {
 function fetchTodayTixPage(location, offset = 0, limit = 100) {
   const url = `https://api.todaytix.com/api/v2/shows?location=${location}&limit=${limit}&offset=${offset}`;
   return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
+    const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
         return;
@@ -128,7 +128,9 @@ function fetchTodayTixPage(location, offset = 0, limit = 100) {
         try { resolve(JSON.parse(body)); }
         catch (e) { reject(new Error('TodayTix JSON parse error')); }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
