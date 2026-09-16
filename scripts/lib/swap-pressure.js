@@ -49,7 +49,15 @@ function parseSwapUsage(output) {
   const match = /total\s*=\s*([\d.]+)M\s+used\s*=\s*([\d.]+)M\s+free\s*=\s*([\d.]+)M/.exec(output || '');
   if (!match) return null;
   const [, totalMB, usedMB, freeMB] = match;
-  return { totalMB: Number(totalMB), usedMB: Number(usedMB), freeMB: Number(freeMB) };
+  const parsed = { totalMB: Number(totalMB), usedMB: Number(usedMB), freeMB: Number(freeMB) };
+  // The capture group `[\d.]+` accepts malformed multi-dot numbers (e.g. a
+  // truncated/garbled sysctl line reading "1.2.3M"), which Number() turns
+  // into NaN rather than throwing (adversarial review finding). A NaN freeMB
+  // silently reads as "not critical" in isSwapPressureCritical (NaN < floor
+  // is always false) — fail to null like any other unparseable line instead
+  // of returning a value that looks healthy.
+  if (!Object.values(parsed).every(Number.isFinite)) return null;
+  return parsed;
 }
 
 /**
@@ -69,10 +77,22 @@ function currentSwapUsage() {
 }
 
 /**
+ * CAVEAT (adversarial review, BRO-2205): macOS grows the swap volume
+ * dynamically — `totalMB` is not a fixed ceiling, it is however much swap
+ * happens to be allocated right now. That means (a) a freshly-booted Mac
+ * with no swap pressure yet can read `{totalMB: 0, usedMB: 0, freeMB: 0}`,
+ * which would trip "critical" against any positive floor despite there
+ * being no actual pressure — callers should treat `totalMB === 0` as "no
+ * swap pressure data yet", not "critical"; and (b) macOS can relieve a
+ * "critical" reading by simply allocating another swapfile, which frees up
+ * `freeMB` again without the underlying memory pressure having eased at
+ * all. This function is a literal headroom-vs-floor comparison only — it
+ * is not, by itself, a memory-pressure verdict.
+ *
  * @param {object} d
  * @param {number} d.freeMB - current swap headroom (within swap's own ceiling)
  * @param {number} d.floorMB - alert threshold
- * @returns {boolean} true iff swap headroom is critically low
+ * @returns {boolean} true iff swap headroom is below the floor
  */
 function isSwapPressureCritical({ freeMB, floorMB }) {
   return freeMB < floorMB;

@@ -31,9 +31,21 @@ const { decideWorktreeReclaim } = require('./worktree-gc-reclaim.js');
  * kept here as a JS-callable equivalent so a triage report can be built
  * without shelling out to the bash script's internals.
  *
+ * `isPrimary` is set on the FIRST record only: `git worktree list` always
+ * lists the main/primary working tree first (the one `git worktree add`
+ * branches off of, not itself removable by any of this repo's GC tooling —
+ * see gc-merged-worktrees.sh's own `[ "$path" = "$REPO" ]` special case).
+ * Deriving it from position rather than a caller-supplied path means this
+ * function works without the caller knowing the repo root, and without
+ * hardcoding a default-branch name (adversarial review finding: an earlier
+ * version had no primary-checkout exclusion at all, so a generic caller
+ * that fed every parsed record into triageWorktree() with normal signals
+ * would see the primary checkout itself come back removable — main is
+ * trivially "already an ancestor of origin/main").
+ *
  * @param {string} output - raw stdout of `git worktree list --porcelain`
  * @returns {Array<{path: string, branch: string|null, locked: boolean,
- *   lockedReason: string, bare: boolean, detached: boolean}>}
+ *   lockedReason: string, bare: boolean, detached: boolean, isPrimary: boolean}>}
  */
 function parseWorktreeListPorcelain(output) {
   const worktrees = [];
@@ -52,6 +64,7 @@ function parseWorktreeListPorcelain(output) {
         lockedReason: '',
         bare: false,
         detached: false,
+        isPrimary: worktrees.length === 0,
       };
       continue;
     }
@@ -93,12 +106,46 @@ function triageWorktree(record, signals = {}) {
   const { isAncestorOfMain, hasUnmergedCommits, hasLiveLease, ageDays, sizeBytes, uncommittedCount } = signals;
   const base = { path: record.path, branch: record.branch, ageDays, sizeBytes, uncommittedCount };
 
+  if (record.bare) {
+    // A bare worktree entry is the repo's own administrative record, never a
+    // real checkout to reclaim (adversarial review finding: bare/detached
+    // flags survive parseWorktreeListPorcelain() but were silently dropped
+    // here, so a caller iterating every parsed record with real-looking
+    // merge signals could see this reported removable).
+    return { ...base, removable: false, reason: 'bare worktree entry — not a reclaimable checkout' };
+  }
+
+  if (record.isPrimary) {
+    // The main/primary checkout (see parseWorktreeListPorcelain's docstring)
+    // is never a GC candidate — mirrors gc-merged-worktrees.sh's own
+    // `[ "$path" = "$REPO" ]` special case (adversarial review finding).
+    return { ...base, removable: false, reason: 'primary checkout — not a reclaimable worktree' };
+  }
+
+  if (record.detached) {
+    // No branch to evaluate merge-ancestry against; gc-merged-worktrees.sh
+    // unconditionally SKIPs detached-HEAD worktrees rather than guessing
+    // (adversarial review finding: detached survives parsing but was never
+    // checked here).
+    return { ...base, removable: false, reason: 'detached HEAD — no branch to evaluate against origin/main' };
+  }
+
   if (record.locked) {
     return {
       ...base,
       removable: false,
       reason: `git-locked${record.lockedReason ? `: ${record.lockedReason}` : ''}`,
     };
+  }
+
+  // Fail safe on incomplete signals (adversarial review finding): a caller
+  // that forgot to gather one of the three booleans — e.g. the lease scan
+  // errored, or a field was typo'd — must never see that silently read as
+  // "false" and fall through to decideWorktreeReclaim's default-removable
+  // branches. Only a fully-specified, all-boolean signal set is trusted.
+  const hasCompleteSignals = [isAncestorOfMain, hasUnmergedCommits, hasLiveLease].every((v) => typeof v === 'boolean');
+  if (!hasCompleteSignals) {
+    return { ...base, removable: false, reason: 'incomplete merge/lease signals — refusing to authorize removal' };
   }
 
   const decision = decideWorktreeReclaim({ isAncestorOfMain, hasUnmergedCommits, hasLiveLease });

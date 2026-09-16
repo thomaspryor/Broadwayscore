@@ -24,6 +24,14 @@ test('parseSwapUsage: unparseable input (missing binary, unexpected format) retu
   assert.equal(parseSwapUsage(undefined), null);
 });
 
+test('parseSwapUsage: a malformed multi-dot number (garbled/truncated line) returns null, not NaN', () => {
+  // Adversarial review finding: [\d.]+ matches "1.2.3" and Number("1.2.3")
+  // is NaN, which must not silently read as healthy (NaN < floor is always
+  // false in isSwapPressureCritical).
+  const result = parseSwapUsage('vm.swapusage: total = 14336.00M  used = 13365.19M  free = 1.2.3M');
+  assert.equal(result, null);
+});
+
 test('isSwapPressureCritical: below the floor is critical', () => {
   assert.equal(isSwapPressureCritical({ freeMB: 970.81, floorMB: 1024 }), true);
 });
