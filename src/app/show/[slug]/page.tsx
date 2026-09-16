@@ -11,6 +11,7 @@ import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
 import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
+import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowSchedule, getScheduleCurrentMonday, getShowShowtimeIds } from '@/lib/data-showtimes';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
@@ -967,6 +968,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               ...r,
               outletSlug: getOutletSlugById(r.outletId) || undefined,
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
+              priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
             }))} initialCount={5} category={show.category} />
 
             {/* Subtle in-card methodology link — explains how CriticScore is

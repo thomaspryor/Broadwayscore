@@ -39,7 +39,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
-const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
 const {
   shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
@@ -677,6 +677,30 @@ function selectBestExcerpt(data, showTitle) {
     if (rank == null) rank = EXCERPT_SOURCE_RANK[source];
     if (rank == null) rank = EXCERPT_SOURCE_RANK.fullText;
 
+    // Layer -1: Former-cast mention (BRO-1397) — a priorRuns review naming a
+    // since-departed cast member (e.g. a 2022-run pull-quote praising a lead
+    // who isn't in the 2026 revival's cast). Runs BEFORE every soft-defer
+    // layer below (fragment, hedge): those layers push a rejected candidate
+    // onto `deferred` and pickExcerptCandidate() can still choose it later as
+    // a fallback, which would let a former-cast mention that also happens to
+    // start lowercase (or read as a hedge) slip past a check placed after
+    // them (ship-check adversarial review, 2026-09-16). Hard reject: unlike
+    // the hedge guard, a factually-wrong actor name doesn't get better by
+    // falling back to a lower-ranked candidate that also names them, so
+    // every candidate is screened the same way and the review simply ships
+    // with no pull quote if none pass.
+    const formerCastCheck = excerptMentionsFormerCast(excerpt, {
+      show: showById[showId],
+      reviewDate: data.publishDate,
+      reviewData: data,
+    });
+    if (formerCastCheck.mentionsFormerCast) {
+      if (!stats.formerCastExcerptRejected) stats.formerCastExcerptRejected = [];
+      stats.formerCastExcerptRejected.push({ showId, source, name: formerCastCheck.name, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [former-cast] ${showId}: "${source}" mentions former cast ("${formerCastCheck.name}")`);
+      return null;
+    }
+
     // Layer 0: Fragment guard. Fallback sources (LLM keyPhrases, aggregator
     // excerpts) can surface mid-sentence fragments that the dedicated
     // llmPullQuote path would have trimmed. Trim a trailing partial sentence,
@@ -1058,6 +1082,19 @@ function getBestScore(data) {
 
 // scoreToBucket, scoreToThumb — imported from ./lib/rebuild-helpers
 
+// showsData/showById must be available whenever selectBestExcerpt() runs —
+// including when this file is require()'d as a pure library by tests, which
+// never reaches the "require.main !== module" CLI guard below. BRO-1397's
+// former-cast guard reads showById[showId] from inside validateExcerpt(), so
+// this can no longer be deferred to the CLI-only pipeline setup further down
+// (previously fine since nothing exported depended on it — the other
+// show*Map builders below still are CLI-only and unaffected).
+const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+const showById = {};
+for (const s of showsData.shows) {
+  showById[s.id] = s;
+}
+
 // ---------------------------------------------------------------------------
 // Require-as-a-library escape hatch (2026-08-01).
 //
@@ -1114,7 +1151,7 @@ if (!process.argv.includes('--ignore-pause') && isRebuildPaused()) {
 }
 
 // Load show dates and status for production-date guard
-const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+// (showsData/showById are declared above the require-as-a-library boundary now.)
 const showDateMap = {};
 const showOpeningDateMap = {};  // showId -> opening date only (NOT previewsStartDate) — for publishDate fallback
 const showClosingDateMap = {};
@@ -1124,10 +1161,6 @@ const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway'
 const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 const skipCrossShowDupeIds = new Set(showsData.shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
-const showById = {};
-for (const s of showsData.shows) {
-  showById[s.id] = s;
-}
 for (const s of showsData.shows) {
   // MIN of preview/previews/opening (see earliestShowDate) so an out-of-order
   // stale date can't push the date-guard window later than opening and mis-flag
