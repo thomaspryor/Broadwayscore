@@ -593,6 +593,66 @@ function terminalForLaunch(launch, entries) {
   return found;
 }
 
+// BRO-3481: terminalForLaunch above only recognizes the cmux-tab vocabulary
+// (dead/vanished/prune-closed/remapped), which a --headless dispatch never
+// writes at all — it finishes through JOB_EVENTS (job-done/job-failed/...)
+// instead, keyed by taskId, not workspaceRef (job events carry no ref). A
+// headless launch's own terminal signal therefore needs a separate lookup,
+// not a workspaceRef match against the wrong vocabulary. Without this,
+// dispatchCommentIsOurFinishedLaunch (linear-dispatch.js) could never
+// recognize a successfully-finished headless dispatch as "ours, already
+// done" — reproduced live on BRO-3431: a Linear issue reopened after its
+// headless job reached job-done still refused re-dispatch with "it already
+// looks dispatched", because the only finished-check available asked the
+// wrong vocabulary and always came back empty.
+//
+// Deliberately a NARROWER set than TERMINAL_JOB_EVENTS (second-opinion
+// review caught this): JOB_EVENTS.RETRIED means this jobId was SUPERSEDED by
+// a brand-new job (see TERMINAL_JOB_EVENTS's own header above), not that the
+// dispatch is over — a live successor could still be running. JOB_EVENTS.
+// ABANDONED means this specific attempt never ran because something else
+// held the lease, which says nothing about whether that something else is
+// still live. Trusting either here would let this function call a launch
+// "finished" while real work might still be in flight. This function only
+// answers "is THIS SPECIFIC launch resolved" — hasLiveLedgerEntry (which
+// reads the task's true LATEST attempt, not this one launch) is what
+// actually decides current liveness, so this must fail toward "not
+// resolved" for anything short of an unambiguous stop.
+//
+// Declared as `let`, assigned lower down (near TERMINAL_JOB_EVENTS) rather
+// than here: it needs JOB_EVENTS, which isn't defined until later in this
+// file, and this function isn't called until module load has finished.
+let LAUNCH_FINISHED_JOB_EVENTS;
+
+function terminalJobEventForLaunch(launch, entries) {
+  if (!launch) return null;
+  // Codex adversarial review (BRO-3481): JOB_EVENTS are only ever written by
+  // bsc-runner.js's headless runner — a live CMUX launch shares the same
+  // taskId namespace but is invisible to that runner's lease. Without this
+  // guard, a later UNRELATED headless attempt on the same task (forced
+  // manually, or the duplicate-tab hole this codebase's own "guard parity"
+  // test exists to narrow) that fails at provisioning writes job-failed,
+  // which would then wrongly read as proof the still-running cmux launch is
+  // "over" — dismissing a genuinely live cross-machine warning. Headless
+  // launches always carry this exact prefix (linear-next.js/bsc-next.js's
+  // own `workspaceRef: \`headless:${taskId}\`` convention); a cmux launch's
+  // workspaceRef never does.
+  if (!launch.workspaceRef || !String(launch.workspaceRef).startsWith('headless:')) return null;
+  const launchTs = Date.parse(launch.ts || '');
+  if (!Number.isFinite(launchTs)) return null; // unorderable launch — never claim it is over
+  let found = null;
+  for (const e of entries || []) {
+    if (!e || typeof e !== 'object') continue;
+    if (!LAUNCH_FINISHED_JOB_EVENTS.has(e.event)) continue;
+    if (String(e.taskId) !== String(launch.taskId)) continue;
+    const ts = Date.parse(e.ts || '');
+    if (!Number.isFinite(ts)) continue; // unorderable terminal — proves nothing
+    if (ts <= launchTs) continue; // strictly after, same ambiguity rule as terminalForLaunch
+    found = e; // last-wins
+  }
+  return found;
+}
+
 function deadBreadcrumbs(idleWorkspaces, entries, opts = {}) {
   const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
   const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
@@ -1322,6 +1382,16 @@ const TERMINAL_JOB_EVENTS = new Set([
   JOB_EVENTS.BLOCKED, JOB_EVENTS.STOPPED_SHORT, JOB_EVENTS.STRANDED,
 ]);
 
+// BRO-3481: the subset of TERMINAL_JOB_EVENTS that terminalJobEventForLaunch
+// (above, near terminalForLaunch) trusts as proof a specific LAUNCH is over —
+// see that function's own header for why RETRIED and ABANDONED are excluded.
+// Assigned here (declared as `let` earlier) because it needs JOB_EVENTS,
+// which isn't defined until this point in the file.
+LAUNCH_FINISHED_JOB_EVENTS = new Set([
+  JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED,
+  JOB_EVENTS.BLOCKED, JOB_EVENTS.STOPPED_SHORT, JOB_EVENTS.STRANDED,
+]);
+
 // ── Orphan-detection debounce (BRO-3052) ────────────────────────────────────
 // bsc-reconcile.js's orphan sweep used to treat a SINGLE liveness glance
 // (lease pid vs `ps`) as proof of death, immediately writing job-orphaned AND
@@ -1498,7 +1568,7 @@ module.exports = {
   // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
-  terminalForLaunch,
+  terminalForLaunch, terminalJobEventForLaunch,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount, countRecentLaunches,

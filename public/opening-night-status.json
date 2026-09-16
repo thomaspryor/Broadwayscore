@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T02:05:13.340Z",
+  "generatedAt": "2026-09-16T03:48:51.258Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -836,7 +836,7 @@
       "openingDate": "2026-09-15",
       "status": "open",
       "slug": "golden-boy-off-west-end",
-      "thumbnail": null,
+      "thumbnail": "/images/shows/golden-boy-off-west-end-2026/thumbnail.jpg",
       "siteScore": null,
       "liveScore": 84,
       "scoreDrift": null,
@@ -968,24 +968,24 @@
       "slug": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway",
       "thumbnail": null,
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 69,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "t2": 1,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
+          "T2:1/3",
           "hi-conf:0/8"
         ],
         "highConfidence": 0,
@@ -1085,10 +1085,6 @@
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -1339,6 +1335,20 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-09-16T03:48:51.258Z",
+          "rc": 2,
+          "s": 69,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -1351,25 +1361,25 @@
       "status": "open",
       "slug": "pre-existing-condition-off-broadway",
       "thumbnail": "/images/shows/pre-existing-condition-off-broadway-2026/thumbnail.webp",
-      "siteScore": 75.39,
-      "liveScore": 75,
-      "scoreDrift": -0.39000000000000057,
+      "siteScore": 76.62,
+      "liveScore": 77,
+      "scoreDrift": 0.37999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
+      "total": 16,
       "t1": 3,
-      "t2": 5,
+      "t2": 6,
       "t3": 7,
-      "positive": 8,
+      "positive": 9,
       "mixed": 7,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "hi-conf:3/8"
+          "hi-conf:4/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1463,10 +1473,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -1801,6 +1807,18 @@
           "m": 7,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-16T03:48:51.258Z",
+          "rc": 16,
+          "s": 76.62,
+          "t1": 3,
+          "t2": 6,
+          "t3": 7,
+          "p": 9,
+          "m": 7,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1814,9 +1832,9 @@
       "status": "open",
       "slug": "bloodsport-after-helen-of-troy-off-west-end",
       "thumbnail": "/images/shows/bloodsport-after-helen-of-troy-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 73.69,
+      "siteScore": 73.65,
       "liveScore": 74,
-      "scoreDrift": 0.3100000000000023,
+      "scoreDrift": 0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1824,8 +1842,8 @@
       "t1": 7,
       "t2": 9,
       "t3": 11,
-      "positive": 18,
-      "mixed": 6,
+      "positive": 17,
+      "mixed": 7,
       "negative": 3,
       "readiness": {
         "ready": true,
@@ -2072,6 +2090,18 @@
           "t3": 11,
           "p": 18,
           "m": 6,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-16T03:48:51.258Z",
+          "rc": 27,
+          "s": 73.65,
+          "t1": 7,
+          "t2": 9,
+          "t3": 11,
+          "p": 17,
+          "m": 7,
           "n": 3,
           "bc": "waiting"
         }

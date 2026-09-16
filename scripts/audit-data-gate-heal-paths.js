@@ -22,7 +22,8 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { auditDataValidationGates } = require('./lib/data-gate-heal-paths.js');
+const { auditDataValidationGates, auditCorpusDriftGates } = require('./lib/data-gate-heal-paths.js');
+const { AUDITS: CORPUS_DRIFT_AUDITS } = require('./check-corpus-drift.js');
 
 const USAGE = `audit-data-gate-heal-paths.js — every strict/gated Data Validation audit needs a heal path.
 
@@ -64,22 +65,35 @@ function main() {
 
   const testYmlContent = fs.readFileSync(TEST_YML_PATH, 'utf8');
   const workflowFiles = loadWorkflowFiles();
-  const { gates, violations } = auditDataValidationGates(testYmlContent, readScriptSource, workflowFiles);
+  const testYmlResult = auditDataValidationGates(testYmlContent, readScriptSource, workflowFiles);
+  const corpusDriftResult = auditCorpusDriftGates(CORPUS_DRIFT_AUDITS, readScriptSource, workflowFiles);
+
+  const gates = [...testYmlResult.gates, ...corpusDriftResult.gates];
+  const violations = [...testYmlResult.violations, ...corpusDriftResult.violations];
 
   if (JSON_OUT) {
-    console.log(JSON.stringify({ gates, violations }, null, 2));
+    console.log(JSON.stringify({ testYml: testYmlResult, corpusDrift: corpusDriftResult, gates, violations }, null, 2));
   }
 
-  if (!gates.length) {
+  if (!testYmlResult.gates.length) {
     console.error('❌ No --strict/--gate steps found in the data-validation job — the parser likely broke (job renamed/restructured).');
+    process.exit(1);
+  }
+  if (!corpusDriftResult.gates.length) {
+    console.error('❌ No entries found in check-corpus-drift.js\'s AUDITS array — the parser likely broke (array renamed/restructured).');
     process.exit(1);
   }
 
   if (violations.length) {
     if (!JSON_OUT) {
-      console.error(`❌ Data-gate heal-path ratchet failed: ${violations.length} of ${gates.length} strict/gated audit step(s) have no heal path.\n`);
-      for (const v of violations) {
-        console.error(`  • scripts/${v.script}.js ${v.flags}`);
+      console.error(`❌ Data-gate heal-path ratchet failed: ${violations.length} of ${gates.length} gated audit(s) have no heal path.\n`);
+      if (testYmlResult.violations.length) {
+        console.error(`  test.yml data-validation job (${testYmlResult.violations.length}):`);
+        for (const v of testYmlResult.violations) console.error(`    • scripts/${v.script}.js ${v.flags}`);
+      }
+      if (corpusDriftResult.violations.length) {
+        console.error(`  check-corpus-drift.js AUDITS table (${corpusDriftResult.violations.length}):`);
+        for (const v of corpusDriftResult.violations) console.error(`    • scripts/${v.script}.js ${v.flags}`);
       }
       console.error(
         '\nFix one of:\n' +
@@ -87,14 +101,15 @@ function main() {
           '  2. Add a scheduled workflow that runs it with --fix / --update-baseline / --heal / --write\n' +
           '     (see .github/workflows/fix-circular-duplicate-pairs.yml for the template).\n' +
           '  3. If auto-healing is unsafe (needs a human to judge each hit) or this is an\n' +
-          '     intentional hard floor, annotate the step: `# heal-exempt: <reason>`.'
+          '     intentional hard floor: in test.yml, annotate the step `# heal-exempt: <reason>`;\n' +
+          '     in check-corpus-drift.js, add a `healExempt: \'<reason>\'` field to the AUDITS entry.'
       );
     }
     process.exit(1);
   }
 
   if (!JSON_OUT) {
-    console.log(`✅ Data-gate heal-path ratchet passed (${gates.length} strict/gated steps, all have a heal path).`);
+    console.log(`✅ Data-gate heal-path ratchet passed (${gates.length} gated audits across both workflows, all have a heal path).`);
   }
 }
 

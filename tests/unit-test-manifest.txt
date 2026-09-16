@@ -101,6 +101,7 @@ scripts/lib/dispatch-timeout-match.test.mjs
 scripts/lib/dmarc-analysis.test.mjs
 scripts/lib/dmarc-report-parser.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
+scripts/lib/drain-ledger-health.test.mjs
 scripts/lib/exec-error-detail.test.mjs
 scripts/lib/ip-cidr.test.mjs
 scripts/lib/ledger-write-isolation.test.mjs
@@ -765,6 +766,7 @@ tests/unit/serp-cache.test.mjs
 tests/unit/serp-negative-cache-policy.test.mjs
 tests/unit/serp-session-cap.test.mjs
 tests/unit/serp-slug-discovery.test.mjs
+tests/unit/serp-url-matcher.test.mjs
 tests/unit/session-metrics.test.mjs
 tests/unit/session-start-disk-check.test.mjs
 tests/unit/settings-hook-paths.test.mjs
