@@ -137,11 +137,6 @@ const EXEMPT_KNOWN_BROKEN = {
   // given a 30s per-test budget; the original "TIMEOUT" report was from a 30s
   // wall-clock kill across 3 sequential tests. Now registered in test.yml's main
   // runner. Decayed-exemption gate caught this.)
-  //
-  // (should-defer-cv-wrong-show.test.mjs removed 2026-09-16 — 10/10 passes now.
-  // The heuristic was fixed by another session after this exemption was added;
-  // the decayed-exemption gate caught the drift. Verified: `node --test
-  // --test-timeout 30000 tests/unit/should-defer-cv-wrong-show.test.mjs`.)
 };
 
 // .mjs is the canonical extension but .test.ts and .test.js exist too — must
