@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractScore } = require('./score-extractors.js');
+const { extractScore, extractNYPostScore } = require('./score-extractors.js');
 
 // KNOWN_STAR_OUTLETS fallthrough — combined multi-show roundup columns.
 // Card #935: sylvia-off-west-end-2026's Guardian review was a "week in
@@ -238,19 +238,117 @@ test('one-minute-critic: a rating-image filename with no alt text does NOT produ
   assert.equal(result, null, 'must not extract a rating from URL/filename structure alone');
 });
 
-// NY Post regression coverage: css-stars must count real DOM elements, not
-// CSS rule definitions that mention the same class names (e.g.
-// ".rating__star--filled svg{fill:...}" inside a <style> block).
-test('nypost: css-stars ignores <style> block rules and counts only real star elements', () => {
-  const html = '<style>.rating__star--filled svg{fill:red}.rating__star--empty svg{fill:grey}</style>' +
-    '<div class="rating__stars">' +
-    '<div class="rating__star rating__star--filled"></div>' +
-    '<div class="rating__star rating__star--filled"></div>' +
-    '<div class="rating__star rating__star--empty"></div>' +
-    '<div class="rating__star rating__star--empty"></div>' +
-    '</div>';
-  const result = extractScore(html, '', 'nypost');
-  assert.ok(result);
-  assert.equal(result.originalScore, '2/4 stars');
-  assert.equal(result.source, 'css-stars');
+// BRO-922: NY Post CSS stars selector grabs sidebar widget, inflating the score.
+// Root cause: extractNYPostScore originally scoped star-counting to the review
+// widget's own container (3ea7e7d5d32, the Dog Day Afternoon postmortem fix), but a
+// same-day follow-up (fc2d78f12ab) accidentally dropped that scoping while fixing an
+// unrelated bug (CSS class DEFINITIONS in <style> blocks being miscounted as stars).
+// Both fixes are combined below: strip <style> blocks, AND scope to the first
+// inline-module--review widget's own bounded window only.
+//
+// Real NY Post markup: each star is a <div class="rating__star rating__star--{kind}">
+// wrapping an inline <style> block (CSS custom properties) plus an SVG.
+function starDiv(kind) {
+  return `<div class="rating__star rating__star--${kind}"><style>.review-block-star{--x:#000}</style><svg></svg></div>`;
+}
+
+function reviewWidget(filled, half, empty, title = 'THE FEAR OF 13') {
+  const stars = [
+    ...Array(filled).fill('filled'),
+    ...Array(half).fill('half'),
+    ...Array(empty).fill('empty'),
+  ].map(starDiv).join('');
+  return `<div class="inline-module inline-module--review alignleft">
+    <div class="inline-module__inner">
+      <span class="inline-module--review__eyebrow">Theater review</span>
+      <h2 class="inline-module--review__title">${title}</h2>
+      <div class="rating"><div class="rating__stars">${stars}</div></div>
+    </div>
+  </div>`;
+}
+
+// The page-wide stylesheet NY Post ships alongside every widget repeats the same
+// class names as CSS selector text, which a naive (unscoped) regex would also count.
+const NYPOST_PAGE_STYLESHEET = `<style>
+.inline-module--review .rating .rating__star--filled svg{fill:var(--x)}
+.inline-module--review .rating .rating__star--half svg{fill:url(#half-gradient)}
+</style>`;
+
+test('extractNYPostScore: real review with 2/4 filled stars (Fear of 13 fixture, BRO-922 acceptance)', () => {
+  const html = `<html><body>
+    <div class="single__content entry-content">${reviewWidget(2, 0, 2)}</div>
+    ${NYPOST_PAGE_STYLESHEET}
+  </body></html>`;
+  const result = extractNYPostScore(html, '');
+  assert.deepEqual(result, {
+    originalScore: '2/4 stars',
+    normalizedScore: 50,
+    source: 'css-stars',
+  });
+});
+
+test('extractNYPostScore: half star counts as 0.5', () => {
+  const html = `<div class="single__content entry-content">${reviewWidget(3, 1, 0)}</div>${NYPOST_PAGE_STYLESHEET}`;
+  const result = extractNYPostScore(html, '');
+  assert.equal(result.originalScore, '3.5/4 stars');
+  assert.equal(result.normalizedScore, 88); // Math.round(3.5/4*100)
+});
+
+test('extractNYPostScore: CSS class DEFINITIONS in <style> blocks are not counted as stars', () => {
+  // No actual DOM star elements anywhere on the page — only the stylesheet mentions
+  // rating__star--filled/half as selector text (the original Dog Day Afternoon bug:
+  // 1.5 stars inflated purely from CSS text, not real elements).
+  const html = `<html><body>${NYPOST_PAGE_STYLESHEET}</body></html>`;
+  assert.equal(extractNYPostScore(html, ''), null);
+});
+
+test('extractNYPostScore: BRO-922 — sidebar/recirc widget immediately adjacent must NOT contribute stars', () => {
+  // The real review widget (2 filled/2 empty = 2/4) appears first. A "Related Stories"
+  // recirc module immediately follows in the same page, reusing the exact same
+  // rating__stars markup for a DIFFERENT show's rating (4 filled = 4/4) — deliberately
+  // placed with NO padding between the two widgets, so this proves isolation comes from
+  // the real DOM boundary (the `</div></div>` that closes rating__stars + rating), not
+  // from the two widgets merely being far apart on the page.
+  // Without scoping, a page-wide count would read 2 + 4 = 6 filled stars (out of range,
+  // would abstain) or, with a fixed-size window instead of a DOM boundary, could still
+  // spill into the second widget depending on window size.
+  const realReview = reviewWidget(2, 0, 2, 'THE FEAR OF 13');
+  const sidebarRecirc = reviewWidget(4, 0, 0, 'SOME OTHER SHOW');
+  const html = `<html><body>
+    <div class="single__content entry-content">${realReview}</div>
+    <aside class="related-stories">${sidebarRecirc}</aside>
+    ${NYPOST_PAGE_STYLESHEET}
+  </body></html>`;
+  const result = extractNYPostScore(html, '');
+  assert.deepEqual(result, {
+    originalScore: '2/4 stars',
+    normalizedScore: 50,
+    source: 'css-stars',
+  });
+});
+
+test('extractNYPostScore: does not truncate mid-widget when unrelated markup precedes the close boundary', () => {
+  // Codex adversarial review (BRO-922): a fixed character window could truncate a
+  // widget mid-star, silently under-counting. Insert a large unrelated <div> BEFORE
+  // the widget's own closing `</div></div>`, forced well past where an old 6000-char
+  // window would have cut off — the DOM-boundary match must still find the widget's
+  // real close, not some earlier `</div></div>` pair inside the inserted filler.
+  const filler = '<div class="filler">' + 'x'.repeat(6800) + '</div>';
+  const html = `<div class="rating"><div class="rating__stars">${starDiv('filled')}${starDiv('filled')}${starDiv('filled')}${filler}</div></div>`;
+  const result = extractNYPostScore(html, '');
+  assert.ok(result, 'must still find the real widget close beyond a naive fixed window');
+  assert.equal(result.originalScore, '3/4 stars');
+});
+
+test('extractNYPostScore: falls back to letter grade when no CSS star widget present', () => {
+  const html = '<div class="entry-content">no stars here</div>';
+  const text = 'Grade: B';
+  const result = extractNYPostScore(html, text);
+  assert.equal(result.originalScore, 'B');
+  assert.equal(result.source, 'letter-grade');
+});
+
+test('extractNYPostScore: no widget, no grade, no numeric stars → null (no full-HTML fallback)', () => {
+  const html = '<div class="entry-content">Just a plain review with no rating markers.</div>';
+  assert.equal(extractNYPostScore(html, 'Just a plain review with no rating markers.'), null);
 });
