@@ -306,6 +306,13 @@ function main() {
 
   let successCount = 0;
   let failCount = 0;
+  // Distinguishes "the archive isn't here" (data/aggregator-archive is a
+  // private, gitignored repo — routinely absent in a worktree/cloud session,
+  // see the --check fail-open comment below) from "the archive IS here and
+  // extraction is broken" (a real regression --check must catch — ship-check/
+  // Codex finding: the earlier version of --check passed unconditionally
+  // even when every show failed, which is a vacuous check, not a real one).
+  let archiveFoundCount = 0;
   const categoryCounts = { broadway: 0, 'off-broadway': 0, 'west-end': 0, 'off-west-end': 0 };
   // Per-show extraction-gap report. Surfaces shows where the carousel scroll
   // didn't load the full critic-review set (Bug 2/3 in the 2026-04-28 fix).
@@ -325,6 +332,7 @@ function main() {
       failCount++;
       continue;
     }
+    archiveFoundCount++;
 
     try {
       const html = fs.readFileSync(archiveFile, 'utf8');
@@ -419,12 +427,17 @@ function main() {
     console.log(`Output written to: ${outputPath}`);
     console.log(`Extraction gaps written to: ${gapsPath}`);
   }
-  // Deliberately no "zero successes" fatal check here: data/aggregator-archive
-  // is a private, gitignored repo (CLAUDE.md §11) — absent in a worktree or
-  // cloud session that hasn't cloned it, where every show legitimately SKIPs
-  // with "Archive file not found". A --check run must pass in that
-  // environment too, so the only pass/fail signal is an unhandled exception
-  // (the existing top-level try/catch below, unchanged).
+  // Fail loud when the archive WAS present but extraction still produced
+  // nothing: that combination can only mean the extractor itself is broken,
+  // not an environment limitation (ship-check/Codex finding — an earlier cut
+  // of --check exited 0 unconditionally, which can "certify" a fully broken
+  // extractor). When the archive is entirely absent (private, gitignored
+  // repo — CLAUDE.md §11 — routinely missing in a worktree/cloud session),
+  // there is nothing to verify, so --check passes rather than failing on an
+  // environment gap it didn't cause.
+  if (archiveFoundCount > 0 && successCount === 0) {
+    throw new Error(`archive present for ${archiveFoundCount} show(s) but extraction produced zero successes — extractor is broken, not just missing data`);
+  }
 }
 
 try {
