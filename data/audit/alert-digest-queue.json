@@ -314,30 +314,6 @@
     "queuedAt": "2026-09-16T01:06:30.065Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "9/129 show(s) differ between internal state and what prod serves.\nscore-drift: 9\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nMuch Ado About Nothing: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-16T01:06:42.556Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (379/498)\noff-broadway: 43.4% (135/311)\nwest-end: 76.5% (423/553)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (783h)\nA Midsummer Night's Dream — observer (783h)\nA Midsummer Night's Dream — standard (783h)\nABBA Voyage — independent (783h)\nAladdin — ew (783h)\n… 163 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (783h)\nThe Book of Mormon — usatoday (783h)\nBuena Vista Social Club — broadwaynews (783h)\nBuena Vista Social Club — nydailynews (783h)\nHadestown — nydailynews (783h)\n… 20 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-16T01:06:42.749Z"
-  },
-  {
     "conditionKey": "watchdog-park:linear:BRO-80",
     "title": "Watchdog parked #linear:BRO-80 after 3 dead dispatch attempts",
     "description": "Watchdog: card \"Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")\" was dispatched 3 times and every session died. It will NOT be retried automatically — it needs your look (or a fresh dispatch with bsc-next --id linear:BRO-80 --force once fixed).",
@@ -468,5 +444,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-16T06:16:49.527Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "10/130 show(s) differ between internal state and what prod serves.\nscore-drift: 10\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T07:02:06.741Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.5% (381/498)\noff-broadway: 43.4% (135/311)\nwest-end: 76.5% (423/553)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (789h)\nA Midsummer Night's Dream — observer (789h)\nA Midsummer Night's Dream — standard (789h)\nABBA Voyage — independent (789h)\nAladdin — ew (789h)\n… 162 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (789h)\nThe Book of Mormon — usatoday (789h)\nBuena Vista Social Club — broadwaynews (789h)\nBuena Vista Social Club — nydailynews (789h)\nHadestown — nydailynews (789h)\n… 19 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T07:02:06.943Z"
   }
 ]

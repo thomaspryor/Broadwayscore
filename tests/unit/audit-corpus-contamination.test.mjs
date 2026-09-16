@@ -200,6 +200,73 @@ test('applyClear writes wrongProductionAuditCleared + note and is picked up as r
   assert.equal(findCandidates({ showsById: shows, reviewTextsDir: dir }).length, 0);
 });
 
+test('skips a file protected by a shouldSkipWrongProductionAudit breadcrumb (BRO-3586)', () => {
+  const dir = makeCorpus({
+    'cats-2026': {
+      'nyt--unknown.json': {
+        showId: 'cats-2026',
+        source: 'serp-discovery',
+        url: 'https://www.nytimes.com/2024/06/12/theater/cats-review.html',
+        wrongProductionManualClear: true,
+      },
+    },
+  });
+  const shows = showsMap([{ id: 'cats-2026', openingDate: '2026-04-09' }]);
+  assert.equal(findCandidates({ showsById: shows, reviewTextsDir: dir }).length, 0);
+});
+
+test('applyFlag refuses a file protected by a shouldSkipWrongProductionAudit breadcrumb, leaving it unchanged (BRO-3586)', () => {
+  const dir = makeCorpus({
+    'cats-2026': {
+      'nyt--unknown.json': {
+        showId: 'cats-2026',
+        source: 'serp-discovery',
+        url: 'https://www.nytimes.com/2024/06/12/theater/cats-review.html',
+        wrongProductionManualClear: true,
+      },
+    },
+  });
+  const target = path.join(dir, 'cats-2026', 'nyt--unknown.json');
+  const before = fs.readFileSync(target, 'utf8');
+  assert.throws(() => applyFlag(target, 'attempted override'), /wrongProductionManualClear=true/);
+  assert.equal(fs.readFileSync(target, 'utf8'), before);
+});
+
+test('applyFlag refuses a file already cleared by this audit\'s own --clear, leaving it unchanged (BRO-3586)', () => {
+  const dir = makeCorpus({
+    'eugene-onegin-2026': {
+      'operawire--critic.json': {
+        showId: 'eugene-onegin-2026',
+        source: 'site-search',
+        url: 'https://operawire.com/metropolitan-opera-2025-26-review-eugene-onegin/',
+        wrongProductionAuditCleared: true,
+        wrongProductionAuditClearedNote: 'season-notation false positive',
+      },
+    },
+  });
+  const target = path.join(dir, 'eugene-onegin-2026', 'operawire--critic.json');
+  const before = fs.readFileSync(target, 'utf8');
+  assert.throws(() => applyFlag(target, 'attempted override'), /wrongProductionAuditCleared=true/);
+  assert.equal(fs.readFileSync(target, 'utf8'), before);
+});
+
+test('applyFlag still writes wrongProduction for a bare wrongProduction:false (auto-clear, not a human breadcrumb) (BRO-3586)', () => {
+  const dir = makeCorpus({
+    'cats-2026': {
+      'nyt--unknown.json': {
+        showId: 'cats-2026',
+        source: 'serp-discovery',
+        url: 'https://www.nytimes.com/2024/06/12/theater/cats-review.html',
+        wrongProduction: false,
+      },
+    },
+  });
+  const target = path.join(dir, 'cats-2026', 'nyt--unknown.json');
+  applyFlag(target, 'verified contamination despite stale auto-clear');
+  const updated = JSON.parse(fs.readFileSync(target, 'utf8'));
+  assert.equal(updated.wrongProduction, true);
+});
+
 test('SUSPECT_SOURCES covers every source tag written by the pre-BRO-736 SERP/site-search discovery paths', () => {
   for (const s of [
     'serp-discovery',
