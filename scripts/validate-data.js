@@ -2006,7 +2006,14 @@ function validateReviewsJson() {
       const unknownOutlets = {};
       for (const r of reviews) {
         if (!r.outletId) continue;
-        if (!outlets[r.outletId]) {
+        // Resolve through normalizeOutlet() first (BRO-1343) — an outletId that's
+        // been folded into another outlet's `aliases` array (registry merge, not
+        // deletion) has no literal top-level key anymore but still resolves to a
+        // real, domained entry via the same alias map rebuild-all-reviews.js uses
+        // before every registry lookup. A raw `outlets[r.outletId]` check would
+        // otherwise mislabel every merged-away id as "unknown" forever.
+        const canonical = normalizeOutlet ? normalizeOutlet(r.outletId) : r.outletId;
+        if (!outlets[r.outletId] && !outlets[canonical]) {
           if (!unknownOutlets[r.outletId]) unknownOutlets[r.outletId] = 0;
           unknownOutlets[r.outletId]++;
         }

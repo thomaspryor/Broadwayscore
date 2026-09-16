@@ -2204,6 +2204,11 @@ on:
       # triggers CI (red) instead of silently reverting it (registry-clobber card
       # 38b637c5). Detection, not prevention.
       - 'data/outlet-registry.json'
+      # BRO-1343 null-domain-count/collision regression guard — root-level
+      # scripts/*.test.mjs is NOT globbed, registered in tests/unit-test-
+      # manifest.txt for execution; path-listed here so a solo edit to
+      # the test file itself still triggers CI.
+      - 'scripts/outlet-registry.test.mjs'
       - 'tests/fixtures/classify-category-baseline.json'
       - 'public/data/mobile-shows.json'
       # OB closing-date detector (alert-only) — colocated scripts/lib/*.test.mjs
