@@ -125,9 +125,16 @@ function dirtyTrackedPaths(repo = REPO) {
  * files, and an ordinary `git checkout` refuses rather than proceeding:
  *
  *   1. .github/actions/checkout-core-data ends with
- *      `cp -f /tmp/core-data-checkout/*.json data/`, and one shipped file —
- *      data/outlet-registry.json — is tracked here (it is also in .gitignore,
- *      which is the underlying accident).
+ *      `cp -f /tmp/core-data-checkout/*.json data/`. If any shipped private-
+ *      core-data file were ALSO tracked here while still gitignored, this
+ *      would dirty it on every run — the original trigger for run
+ *      32086045215 (below) was data/outlet-registry.json in exactly that
+ *      state. BRO-1084 moved outlet-registry.json to public-repo-tracked
+ *      AND out of checkout-core-data's copy step entirely, so it can't
+ *      recur for that file specifically — but the general hazard (some
+ *      OTHER core-data file ending up both tracked and gitignored) is what
+ *      scripts/lib/tracked-and-ignored-guard.js exists to catch (task
+ *      #1759), and this force-checkout still guards against it recurring.
  *   2. the re-verify itself runs `next build`, whose `prebuild` regenerates seven
  *      more tracked files from that same private data: data/slug-redirects.json,
  *      data/gold-lists-computed.json, data/blog-reviews-for-scoring.json,
