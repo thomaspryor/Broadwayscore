@@ -365,3 +365,82 @@ test('BRO-2559 actual incident shape: url-change-invariant genuinely cleared the
   const quarantined = JSON.parse(fs.readFileSync(result.quarantinedPath, 'utf-8'));
   assert.strictEqual(quarantined.pendingReason, 'recreated_previously_excluded_url');
 });
+
+test('quarantine fallback does not fire on a _urlChangedClear that only cleared a never-true wrongProduction=false', () => {
+  // codex adversarial review, second pass: url-change-invariant's `cleared`
+  // array records field NAMES whenever the old value was merely *defined*,
+  // including an explicit false from an unrelated auto-heal — not only when
+  // it was a live exclusion. Without a reason/note corroboration check, this
+  // shape would falsely quarantine a recreation of a url that was never
+  // actually flagged.
+  const showDir = makeShowDir();
+  const legacyUrl = 'http://www.variety.com/review/VE1117947963?refCatId=33';
+
+  fs.writeFileSync(path.join(showDir, 'variety--ellise-shafer.json'), JSON.stringify({
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Ellise Shafer',
+    url: 'https://variety.com/2026/theater/global/some-other-article/',
+    previousUrl: legacyUrl,
+    _urlChangedClear: {
+      from: legacyUrl,
+      to: 'https://variety.com/2026/theater/global/some-other-article/',
+      at: '2026-08-27T15:53:56.639Z',
+      // wrongProduction was cleared (it was `false`, an unrelated auto-heal
+      // reset), but no reason/note field is in the list — there never was one.
+      cleared: ['wrongProduction', 'contentTier'],
+    },
+  }, null, 2));
+
+  const filePath = path.join(showDir, 'variety--bob-verini.json');
+  const fresh = {
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Bob Verini',
+    url: legacyUrl,
+    source: 'bww-roundup',
+  };
+
+  const result = safeWriteReview(filePath, fresh, { merge: false });
+  assert.strictEqual(result.wrote, true, 'must not quarantine a never-true flag');
+  assert.strictEqual(result.skipped, undefined);
+  assert.ok(fs.existsSync(filePath));
+});
+
+test('quarantine fallback does not fire when the incoming write itself carries the manual-clear breadcrumb', () => {
+  const showDir = makeShowDir();
+  const legacyUrl = 'http://www.variety.com/review/VE1117947963?refCatId=33';
+
+  fs.writeFileSync(path.join(showDir, 'variety--ellise-shafer.json'), JSON.stringify({
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Ellise Shafer',
+    url: 'https://variety.com/2026/theater/global/some-other-article/',
+    previousUrl: legacyUrl,
+    _urlChangedClear: {
+      from: legacyUrl,
+      to: 'https://variety.com/2026/theater/global/some-other-article/',
+      at: '2026-08-27T15:53:56.639Z',
+      cleared: ['wrongProduction', 'wrongProductionReason'],
+    },
+  }, null, 2));
+
+  const filePath = path.join(showDir, 'variety--bob-verini.json');
+  const fresh = {
+    showId: FIXTURE_SHOW,
+    outletId: 'variety',
+    outlet: 'Variety',
+    criticName: 'Bob Verini',
+    url: legacyUrl,
+    source: 'bww-roundup',
+    // A human has already re-reviewed this exact article and cleared it.
+    wrongProductionManualClear: true,
+  };
+
+  const result = safeWriteReview(filePath, fresh, { merge: false });
+  assert.strictEqual(result.wrote, true, 'must not quarantine a write the caller is itself clearing');
+  assert.ok(fs.existsSync(filePath));
+});
