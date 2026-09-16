@@ -37,6 +37,7 @@ const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage: node scripts/recover-wsj-subscriber.js');
@@ -225,12 +226,9 @@ function loadCandidates() {
   let skippedWrongShow = 0;
   let skippedNoUrl = 0;
 
-  const showDirs = fs.readdirSync(CONFIG.reviewTextsDir);
+  const showDirs = listShowDirs(CONFIG.reviewTextsDir);
   for (const showDir of showDirs) {
     const showPath = path.join(CONFIG.reviewTextsDir, showDir);
-    let stat;
-    try { stat = fs.statSync(showPath); } catch { continue; }
-    if (!stat.isDirectory()) continue;
 
     const files = fs.readdirSync(showPath);
     for (const file of files) {

@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE_TEXT = `Retroactive LLM Content Verification
 
@@ -91,9 +92,7 @@ for (const s of (showsData.shows || showsData)) {
 // ============================================================
 
 function getAllReviewFiles() {
-  const allDirs = fs.readdirSync(BASE).filter(d => {
-    try { return fs.statSync(path.join(BASE, d)).isDirectory(); } catch { return false; }
-  });
+  const allDirs = listShowDirs(BASE);
 
   // Apply show filters
   let dirs = allDirs;

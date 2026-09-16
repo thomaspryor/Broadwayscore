@@ -154,6 +154,13 @@ const recentAnnouncedIds = new Set(_priorIssues.filter(i => i.weekStart >= _anno
 // though subscribers already saw them. featuredShowIds was always saved; this
 // wires it back up on the read side, windowed so multiple prior rows all count.
 const lastFeaturedIds = new Set(_priorIssues.filter(i => i.weekStart >= _featuredCutoff).flatMap(i => i.featuredShowIds || []));
+// Award Score Movers dedup: _priorIssues is sorted most-recent-first, so [0] is
+// last issue's own row. If the snapshot cron misses a Saturday, the "two most
+// recent snapshots" latestMovers() picks are UNCHANGED from last issue — same
+// dates, same deltas — and without this check the section would silently
+// re-headline last week's movers as if they were new (Codex adversarial review,
+// BRO-3531).
+const lastAwardMoverSnapshotDate = (_priorIssues[0] && _priorIssues[0].awardMoverSnapshotDate) || null;
 
 // --- Within-issue cross-section de-dup -----------------------------------------
 // A show featured in a higher section is suppressed from every lower one, so a
@@ -163,6 +170,10 @@ const lastFeaturedIds = new Set(_priorIssues.filter(i => i.weekStart >= _feature
 const featuredShowIds = new Set();
 const _moverShowIds = [];
 const _announcedShowIds = [];
+// Carries forward by default (not null) so a week where the section renders
+// nothing (stale/deduped/no significant movers) doesn't erase the memory of
+// the last snapshot date actually processed — see the write-state block.
+let _awardMoverSnapshotDate = lastAwardMoverSnapshotDate;
 
 // NEWSLETTER_EXCLUDE_SHOWS=id1,id2 (Coverage Verdict S3, task #905): drops
 // specific shows from every section entirely — used by pre-send-check.mjs's
@@ -1178,6 +1189,108 @@ function biggestMoverSection() {
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${allRows}</table>`;
   const title = totalRows > 1 ? 'Biggest Movers' : 'Biggest Mover';
   return sectionWrap(sectionHeading(title), body);
+}
+
+// SECTION: Award Score Movers — composite Site Award Score week-over-week
+// deltas, sourced from data/award-score-history/ snapshots (Saturday cron,
+// scripts/snapshot-award-scores.js; diff logic in scripts/lib/award-score-
+// movers.js, shared with the award-score-movers.js CLI). Broadway/Tony only
+// — no West End snapshots exist yet (BRO-3531).
+//
+// Round "medal" circle mirrors AwardScoreBadge.tsx's tier treatment (flat
+// colors, not the site's gradient/shimmer — email clients don't render
+// those reliably) so a subscriber who's seen the /award-score leaderboard
+// recognizes the same gold/silver/bronze language here.
+function awardTierColor(badge) {
+  if (badge === 'sweeper') return '#D4AF37';
+  if (badge === 'decorated') return '#B8B8B8';
+  if (badge === 'honored') return '#C2773A';
+  if (badge === 'in-the-hunt') return '#9ca3af';
+  if (badge === 'nominated') return '#6b7280';
+  return '#4b5563'; // eligible / unknown
+}
+function awardBadgeBox(score, badge, size = 40) {
+  const c = awardTierColor(badge);
+  const inner = size - 4;
+  const display = score > 0 ? score : '—';
+  return `<div style="box-sizing:border-box;display:inline-block;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,0.03);border:2px solid ${c};color:#fff;font-size:${Math.round(size * 0.36)}px;font-weight:700;line-height:${inner}px;text-align:center;">${display}</div>`;
+}
+function awardScoreMoversSection() {
+  const { latestMovers } = cjsRequire(path.join(repo, 'scripts/lib/award-score-movers.js'));
+  // top:Infinity — closures/new-entrants dominate the raw ranking (a show
+  // leaving the pool reads as a full drop to 0, see diffSnapshots), and the
+  // presentBefore/presentAfter filter below drops those. Cap AFTER filtering,
+  // not before — market size (~40-100 shows) makes the full diff cheap, and a
+  // fixed pre-filter cap can starve every real mover in a heavy-turnover week
+  // (Codex adversarial review, BRO-3531).
+  const result = latestMovers({ historyDir: path.join(repo, 'data/award-score-history'), market: 'broadway', top: Infinity });
+  if (!result || !result.movers.length) return null;
+  // Cron gone quiet (feedback_github_cron_delays.md: crons silently disable
+  // after ~60d inactivity) — stop resurfacing an increasingly stale
+  // comparison rather than showing the same "movers" issue after issue.
+  if (result.weekEnd < _daysBefore(14)) return null;
+  // Same snapshot pair as last issue (cron missed a Saturday) — nothing NEW
+  // to report; re-showing it would look like fresh movement to a subscriber
+  // who already saw this exact comparison (Codex adversarial review).
+  if (result.weekEnd === lastAwardMoverSnapshotDate) return null;
+  // Record the snapshot date as "processed" as soon as we know it's genuinely
+  // new — even if it ends up rendering zero movers below, we've still seen
+  // it, and must not treat this same date as fresh again next issue.
+  _awardMoverSnapshotDate = result.weekEnd;
+  // A show leaving the snapshot pool (closed, or dropped out of Tony
+  // eligibility) isn't a score MOVE — it's a status change already covered
+  // by Closing This Week. Filtering to shows present in both snapshots keeps
+  // this section to genuine score shifts.
+  const candidates = result.movers
+    .filter((m) => m.presentBefore && m.presentAfter)
+    // Newsworthiness gate mirrors biggestMoverSection's critic-score bar
+    // (≥3 pts, full stop) — a 1-pt award-score wobble shouldn't be able to
+    // claim a show via markFeatured() and bump it out of Closing This Week.
+    .filter((m) => Math.abs(m.delta) >= 3)
+    .map((m) => ({ ...m, show: shows.find((s) => s.id === m.showId) }))
+    .filter((m) => m.show && isPrimaryMarket(m.show) && notFeatured(m.show.id))
+    // A show closing THIS issue's week is a more actionable "last chance to
+    // see it" notice than an award-score badge move — never let this section
+    // claim it via markFeatured() and bump it out of Closing This Week
+    // (same window closingSection() itself gates on). Independent Claude
+    // review, BRO-3531.
+    .filter((m) => !(m.show.closingDate && m.show.closingDate > weekEndStr && m.show.closingDate <= horizon7Str));
+  const top = candidates.slice(0, 3);
+  if (!top.length) return null;
+  top.forEach((m) => markFeatured(m.show.id));
+  const rows = top.map((m, i, arr) => {
+    const isLast = i === arr.length - 1;
+    const border = !isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
+    const dirColor = m.delta > 0 ? '#22c55e' : '#ef4444';
+    const dirArrow = m.delta > 0 ? '▲' : '▼';
+    const dirWord = m.delta > 0 ? 'up' : 'down';
+    const pts = Math.abs(m.delta);
+    return `<tr>
+      <td valign="middle" width="68" style="padding:10px 10px 10px 0;${border}">${thumb(m.show, 56)}</td>
+      <td valign="middle" style="padding:10px 0;${border}">
+        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)}</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:2px;">Award Score</div>
+      </td>
+      <td valign="middle" width="120" align="center" style="padding:10px 16px 10px 4px;${border}">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;"><tr>
+          <td align="center" valign="middle">${awardBadgeBox(m.before, m.beforeBadge)}</td>
+          <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
+          <td align="center" valign="middle">${awardBadgeBox(m.after, m.afterBadge)}</td>
+        </tr></table>
+        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${dirWord} ${pluralize(pts, 'pt')}</div>
+      </td>
+    </tr>`;
+  }).join('');
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
+    <tr><td style="padding:4px 16px;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
+    </td></tr>
+  </table>`;
+  // "since <date>" rather than a hardcoded "last 7 days" — the snapshot cron
+  // only just started running weekly (BRO-1226); the first live comparison
+  // spans months, not a week, and a fixed "7 days" label would misrepresent
+  // that to subscribers (Codex adversarial review, BRO-3531).
+  return sectionWrap(sectionHeading('Award Score Movers', `Tony race · since ${fmt(result.weekStart)}`), body);
 }
 
 // SECTION: Awards Race Movers — Tony odds shifts week-over-week
@@ -2416,6 +2529,7 @@ const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection
 // side-effect — which wrongly suppressed a WE show (Cyrano, a mover) from the
 // catch-up section that IS rendered (2026-07-12). Don't run what won't render.
 const mover = IS_WE ? null : sections.run('biggest-movers', () => biggestMoverSection());
+const awardMover = IS_WE ? null : sections.run('award-score-movers', () => awardScoreMoversSection());
 const clo   = sections.run('closing-this-week', () => closingSection());
 const announced = IS_WE ? null : sections.run('announced-closings', () => announcedClosingsSection());
 const box      = IS_WE ? null : sections.run('box-office', () => boxOfficeSection());
@@ -2468,6 +2582,7 @@ try {
     moverShowIds: _moverShowIds,
     announcedClosingShowIds: _announcedShowIds,
     featuredShowIds: Array.from(featuredShowIds),
+    awardMoverSnapshotDate: _awardMoverSnapshotDate,
   });
   _issues.sort((a, b) => a.weekStart.localeCompare(b.weekStart));
   fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-24) }, null, 2) + '\n');
@@ -2553,6 +2668,7 @@ const sectionOrder = IS_WE ? [
   _slot('out-of-town-openings', otO.html),
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
+  _slot('award-score-movers', awardMover),
   _slot('closing-this-week', clo),
   _slot('announced-closings', announced),
   // London (+ Opera) openings sit right after the closings block — user

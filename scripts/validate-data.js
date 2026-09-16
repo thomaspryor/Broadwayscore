@@ -2839,10 +2839,7 @@ function validateTourReviewContamination() {
     return;
   }
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return fs.statSync(path.join(reviewTextsDir, d)).isDirectory() && !d.startsWith('.'); }
-    catch { return false; }
-  });
+  const showDirs = listShowDirs(reviewTextsDir);
 
   let totalUnflagged = 0;
   const contaminated = [];
@@ -2896,10 +2893,7 @@ function validateAggregatorScoreContamination() {
 
   const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return fs.statSync(path.join(reviewTextsDir, d)).isDirectory() && !d.startsWith('.') && d !== 'aggregator-archive'; }
-    catch { return false; }
-  });
+  const showDirs = listShowDirs(reviewTextsDir).filter(d => d !== 'aggregator-archive');
 
   let contaminated = 0;
   const examples = [];
@@ -2939,10 +2933,7 @@ function validateCrossMarketSourceFiles() {
   // Use shared patterns from venue-classification.js (single source of truth)
   const { isBroadwayUrl } = require('./lib/venue-classification');
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return d.includes('west-end') && fs.statSync(path.join(reviewTextsDir, d)).isDirectory(); }
-    catch { return false; }
-  });
+  const showDirs = listShowDirs(reviewTextsDir).filter(d => d.includes('west-end'));
 
   const problems = [];
 
@@ -4675,9 +4666,7 @@ function validateAggregatorArchives(shows) {
     return;
   }
 
-  const dirs = fs.readdirSync(archiveDir).filter(d =>
-    fs.statSync(path.join(archiveDir, d)).isDirectory()
-  );
+  const dirs = listShowDirs(archiveDir);
 
   if (dirs.length === 0) {
     error('data/aggregator-archive/ has zero subdirectories');

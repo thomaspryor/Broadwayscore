@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const MARKET_ARG = process.argv.find(a => a.startsWith('--market='));
@@ -26,13 +27,10 @@ let fixed = 0;
 let skipped = 0;
 const examples = [];
 
-const showDirs = fs.readdirSync(REVIEW_DIR).filter(d => {
-  try { 
-    if (!fs.statSync(path.join(REVIEW_DIR, d)).isDirectory()) return false;
-    if (d.startsWith('.') || d === 'aggregator-archive') return false;
-    if (MARKET_FILTER && !d.includes(MARKET_FILTER)) return false;
-    return true;
-  } catch { return false; }
+const showDirs = listShowDirs(REVIEW_DIR).filter(d => {
+  if (d === 'aggregator-archive') return false;
+  if (MARKET_FILTER && !d.includes(MARKET_FILTER)) return false;
+  return true;
 });
 
 for (const showDir of showDirs) {

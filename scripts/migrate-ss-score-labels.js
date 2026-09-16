@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const REVIEW_DIR = path.join(__dirname, '../data/review-texts');
@@ -27,9 +28,7 @@ if (!fs.existsSync(REVIEW_DIR)) {
   process.exit(1);
 }
 
-const shows = fs.readdirSync(REVIEW_DIR).filter(d => {
-  try { return fs.statSync(path.join(REVIEW_DIR, d)).isDirectory(); } catch { return false; }
-});
+const shows = listShowDirs(REVIEW_DIR);
 
 let fixed = 0;
 let skipped = 0;

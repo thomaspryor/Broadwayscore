@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 
@@ -24,8 +25,7 @@ function normalize(str) {
 }
 
 // Get all shows
-const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-  .filter(f => fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory());
+const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
 for (const showId of shows) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);

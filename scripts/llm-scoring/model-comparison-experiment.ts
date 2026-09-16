@@ -14,6 +14,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 const ANCHORED_PROMPT = `You are a theater critic scoring system. Score this review on a 0-100 scale.
 
@@ -138,9 +140,7 @@ async function loadReviewsWithExplicitScores(): Promise<ReviewData[]> {
   const reviewTextsDir = '/Users/tompryor/Broadwayscore/data/review-texts';
   const reviews: ReviewData[] = [];
 
-  const shows = fs.readdirSync(reviewTextsDir).filter(f => {
-    return fs.statSync(path.join(reviewTextsDir, f)).isDirectory();
-  });
+  const shows = listShowDirs(reviewTextsDir);
 
   for (const show of shows) {
     const showDir = path.join(reviewTextsDir, show);

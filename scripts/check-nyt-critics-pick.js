@@ -24,6 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const http = require('http');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewsDir = path.join(__dirname, '../data/review-texts');
 
@@ -98,9 +99,7 @@ function checkForCriticsPick(html) {
 
 async function main() {
   // Find all NYT review files
-  const shows = fs.readdirSync(reviewsDir).filter(f =>
-    fs.statSync(path.join(reviewsDir, f)).isDirectory()
-  );
+  const shows = listShowDirs(reviewsDir);
 
   const targetShows = showFilter ? shows.filter(s => s === showFilter) : shows;
 

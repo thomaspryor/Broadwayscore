@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -120,8 +121,7 @@ function main() {
 
   const unknownOutlets = new Map(); // outletId -> { files: [], outlets: Set, critics: Set }
 
-  const showDirs = fs.readdirSync(reviewTextsDir)
-    .filter(f => fs.statSync(path.join(reviewTextsDir, f)).isDirectory());
+  const showDirs = listShowDirs(reviewTextsDir);
 
   for (const showId of showDirs) {
     const showDir = path.join(reviewTextsDir, showId);

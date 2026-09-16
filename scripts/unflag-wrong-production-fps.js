@@ -33,6 +33,7 @@ const path = require('path');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { parseHistoricalDate } = require('./lib/date-utils');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `unflag-wrong-production-fps.js — Unflag false-positive wrongProduction reviews
 
@@ -109,9 +110,7 @@ function showRunYears(show) {
 }
 
 // Main scan
-const dirs = fs.readdirSync(BASE).filter(d => {
-  try { return fs.statSync(path.join(BASE, d)).isDirectory(); } catch { return false; }
-});
+const dirs = listShowDirs(BASE);
 
 const stats = {
   unflagged: 0, reviewNeeded: 0, llmClassified: 0, structural: 0,

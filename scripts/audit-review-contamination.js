@@ -92,6 +92,7 @@ const { normalizeOutlet, normalizeUrl, normalizeCritic } = require('./lib/review
 const { isOutletDomainMismatch } = require('./lib/aggregator-domains');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { classifyCrossMarketContamination } = require('./lib/cross-market-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   classifyClassAContamination,
   normalizeShowTitle: normalizeTitle,
@@ -346,10 +347,7 @@ let showsScanned = 0;
 
 let showDirs = [];
 try {
-  showDirs = fs.readdirSync(REVIEW_DIR).filter(d => {
-    try { return fs.statSync(path.join(REVIEW_DIR, d)).isDirectory(); }
-    catch { return false; }
-  });
+  showDirs = listShowDirs(REVIEW_DIR);
 } catch { /* missing checkout — showDirs stays [], corpus guard below catches it */ }
 
 for (const showId of showDirs) {
