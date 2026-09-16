@@ -29,7 +29,15 @@ const path = require('path');
 // EXISTS but yields almost no matches — sparse checkout, wrong tree, this file
 // vendored elsewhere — would otherwise print "TOTAL VIOLATIONS: 0" and exit 0:
 // a guard reporting CLEAN having scanned NOTHING, which is the exact failure
-// shape this whole card is about. The repo has ~244 workflow files.
+// shape this whole card is about.
+//
+// SCOPE, stated honestly (review finding): this is an "is this a real workflow
+// tree at all" sanity floor, NOT a completeness check. The repo has ~244
+// workflow files, so a 60-file partial checkout still passes this and reports on
+// ~25% of the tree. Raising the number does not fix that — it just moves the
+// line, and a floor above the real count would wedge the scanner the day
+// workflows are pruned. If completeness ever needs guaranteeing, compare against
+// a committed manifest rather than inflating this constant.
 const MIN_EXPECTED_WORKFLOWS = 50;
 
 // GitHub Actions honours BOTH extensions. Matching only .yml would let a future
@@ -38,7 +46,9 @@ const MIN_EXPECTED_WORKFLOWS = 50;
 // scanner exists to prevent. (No .yaml files exist today;
 // scripts/lint-workflow-guards.sh has the same .yml-only glob, tracked in
 // BRO-3671 as a class-level gap.)
-const WORKFLOW_EXT_RE = /\.ya?ml$/;
+// Case-insensitive: a `.YML` file would otherwise be skipped silently, which is
+// the same under-report as missing `.yaml` (review finding).
+const WORKFLOW_EXT_RE = /\.ya?ml$/i;
 
 /**
  * Scan a workflows directory. Pure-ish: does IO, but takes its directory and
@@ -98,13 +108,32 @@ function scanWorkflows(dir, check) {
     } catch (err) {
       return { code: 2, violations, scanned: files.length, error: `could not read ${file}: ${err.message}` };
     }
-    let found;
     try {
-      found = check(text);
+      const found = check(text);
+      // Array.isArray, not "is it iterable" (review finding). Two real ways a
+      // checker can betray this scanner, both of which made it report a verdict
+      // it had not earned:
+      //   - returns undefined/null (e.g. someone adds an early `return;` for a
+      //     no-jobs workflow): iterating threw OUT of this function, the CLI had
+      //     no catch, and node exited 1 — "violations found" from a BROKEN
+      //     checker, exactly the 2->1 collapse this contract exists to prevent.
+      //   - returns a STRING: a string is iterable, so it iterated per CHARACTER
+      //     and fabricated one violation per letter (measured: 732 against the
+      //     real repo).
+      // Both are now "could not scan" (2). The loop lives INSIDE the try so a
+      // throw from the iteration itself cannot escape either.
+      if (!Array.isArray(found)) {
+        return {
+          code: 2,
+          violations,
+          scanned: files.length,
+          error: `checker returned ${found === null ? 'null' : typeof found} (expected an array) for ${file}`,
+        };
+      }
+      for (const v of found) violations.push(`${file}: ${v}`);
     } catch (err) {
       return { code: 2, violations, scanned: files.length, error: `checker threw on ${file}: ${err.message}` };
     }
-    for (const v of found) violations.push(`${file}: ${v}`);
   }
 
   return { code: violations.length === 0 ? 0 : 1, violations, scanned: files.length };
@@ -124,13 +153,19 @@ if (require.main === module) {
   }
 
   const result = scanWorkflows(path.join(__dirname, '..', '..', '.github', 'workflows'), findMissingLedgerCommits);
-  for (const v of result.violations) console.log(v);
 
   if (result.code === 2) {
-    // No TOTAL line on a failed scan: the count would be a PARTIAL scan's, and
-    // printing it as the verdict is the same lie in a smaller shape.
+    // Nothing goes to STDOUT on a failed scan (review finding): printing the
+    // partial violation list while suppressing only the TOTAL line still hands
+    // a stdout-parsing caller a list that looks like a verdict. The findings
+    // from the files that WERE scanned go to stderr, clearly marked partial.
     console.error(result.error);
+    if (result.violations.length) {
+      console.error(`(partial — ${result.violations.length} finding(s) before the scan failed, NOT a verdict:)`);
+      for (const v of result.violations) console.error(`  ${v}`);
+    }
   } else {
+    for (const v of result.violations) console.log(v);
     console.log(`TOTAL VIOLATIONS: ${result.violations.length}`);
   }
   // process.exitCode, never process.exit(): stdout is ASYNC when piped and

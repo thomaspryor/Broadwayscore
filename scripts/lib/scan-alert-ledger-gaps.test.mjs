@@ -79,6 +79,56 @@ test('code 2 — NOT 1 — when the checker itself throws', () => {
   }
 });
 
+test('code 2 — NOT 1 — when the checker returns undefined', () => {
+  // The 2->1 collapse: iterating undefined threw OUT of scanWorkflows, the CLI
+  // had no catch, and node exited 1 — a BROKEN checker reported as "violations
+  // found". Realistic trigger: an early `return;` added for a no-jobs workflow.
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => undefined);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /checker returned undefined \(expected an array\)/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('code 2 — NOT 1 — when the checker returns null', () => {
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => null);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /checker returned null/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('a STRING return fabricates nothing — a string is iterable, per character', () => {
+  // Measured against the real repo before the fix: 732 fabricated violations,
+  // one per character. "Says violations when it merely broke."
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => 'boom');
+    assert.equal(r.code, 2);
+    assert.match(r.error, /checker returned string/);
+    assert.deepEqual(r.violations, [], 'must not fabricate per-character violations');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('.YML (uppercase) is scanned, not silently skipped', () => {
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    fs.writeFileSync(path.join(dir, 'zz-shouty.YML'), 'name: z\n');
+    const r = scanWorkflows(dir, NO_VIOLATIONS);
+    assert.equal(r.scanned, MIN_EXPECTED_WORKFLOWS + 1);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('a symlink POINTING AT A DIRECTORY cannot wedge the scan (EISDIR regression)', () => {
   // Accepting every symlink let a dir-shaped one reach readFileSync -> EISDIR,
   // and with fail-fast over a sorted list an early-sorting name aborted the
