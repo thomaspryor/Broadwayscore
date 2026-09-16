@@ -7,7 +7,7 @@
 // Per CLAUDE.md §15 these import the real functions; no logic is copied here.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildBadgeUrl, badgeImg } from './badge-render.mjs';
+import { buildBadgeUrl, badgeImg, buildRankBadgeUrl, rankBadgeImg, buildAwardBadgeUrl, awardBadgeImg } from './badge-render.mjs';
 
 const goldTier = { id: 'gold', label: 'Critical Gold', bg: 'linear-gradient(...)', text: '#1a1a1a', border: '#C8960E', glow: '0 0 24px rgba(218,165,32,0.55)' };
 const recTier = { id: 'rec', label: 'Recommended', bg: '#22c55e', text: '#fff', glow: '0 2px 8px rgba(34,197,94,0.3)' };
@@ -63,4 +63,45 @@ test('badgeImg falls back to a plain "TBD" alt for an unscored show', () => {
   const html = badgeImg({ tier: null, score: null, size: 36, fontSize: 11, radius: 8 });
   assert.match(html, /alt="TBD"/);
   assert.doesNotMatch(html, /box-shadow:/);
+});
+
+// BRO-3555 — Social Buzz rank box + Awards Score Movers ring, same fix as
+// BRO-1392: render as an <img> keyed off a fixed tier id, never raw colors.
+
+test('buildRankBadgeUrl encodes kind + tier id + position, not raw colors', () => {
+  const url = buildRankBadgeUrl({ tierId: 'top10', position: 1, size: 40, fontSize: 15, radius: 8 });
+  const params = new URL(url).searchParams;
+  assert.equal(params.get('kind'), 'rank');
+  assert.equal(params.get('tier'), 'top10');
+  assert.equal(params.get('pos'), '1');
+  assert.equal(params.get('size'), '40');
+  assert.equal(params.get('bg'), null);
+  assert.equal(params.get('text'), null);
+});
+
+test('rankBadgeImg renders an <img> pinned to the exact nominal size with decorative shadow', () => {
+  const html = rankBadgeImg({ tierId: 'top10', position: 1, size: 40, fontSize: 15, radius: 8, shadow: '0 2px 6px #f59e0b55' });
+  assert.match(html, /<img /);
+  assert.match(html, /width="40"/);
+  assert.match(html, /height="40"/);
+  assert.match(html, /border-radius:8px/);
+  assert.match(html, /box-shadow:0 2px 6px #f59e0b55/);
+  assert.match(html, /alt="#1"/);
+  assert.match(html, /src="https:\/\/broadwayscorecard\.com\/api\/newsletter-badge\?kind=rank/);
+});
+
+test('buildAwardBadgeUrl encodes kind + tier id + score, not a raw ring color', () => {
+  const url = buildAwardBadgeUrl({ tierId: 'sweeper', score: 12, size: 40, fontSize: 14 });
+  const params = new URL(url).searchParams;
+  assert.equal(params.get('kind'), 'award');
+  assert.equal(params.get('tier'), 'sweeper');
+  assert.equal(params.get('score'), '12');
+  assert.equal(params.get('bg'), null);
+});
+
+test('awardBadgeImg renders a circular <img> and falls back to an em dash for a zero/negative score', () => {
+  const html = awardBadgeImg({ tierId: 'nominated', score: 0, size: 40, fontSize: 14 });
+  assert.match(html, /<img /);
+  assert.match(html, /border-radius:50%/);
+  assert.match(html, /alt="Award score —"/);
 });
