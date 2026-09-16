@@ -118,6 +118,11 @@ scrape-waltz-costs.yml
 scrape-wp-blogs.yml
 send-follow-notifications.yml
 sentry-triage.yml
+# Self-heal for orphan slim show files (BRO-3507), same low-stakes shape as
+# fix-circular-duplicate-pairs.yml/dedupe-same-url-bylines.yml above: a stale
+# run means the "Audit orphan slim show files" gate in test.yml sits red
+# longer, not user-facing staleness worth paging on.
+self-heal-orphan-show-files.yml
 snapshot-audience-grades.yml
 snapshot-audience-history.yml
 snapshot-award-scores.yml
