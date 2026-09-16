@@ -28,12 +28,20 @@
  * scrape-new-aggregators.yml as surviving that way. That stopped being true at
  * BRO-3051, which made findMissingLedgerCommits() strip comment lines before
  * call detection — a comment now buys NOTHING. scrape-new-aggregators.yml is
- * in fact covered by its non-comment `require('./scripts/lib/owner-alert-
- * router.js')` at :226; process-feedback.yml, which relied on the comment,
+ * in fact covered by its non-comment `routeAlert({` CALL at :228 — it is the
+ * CALL that matches, not the `require(...)` at :226. ROUTE_ALERT_CALL_RE is
+ * /\b(routeAlert|resolveCondition)\s*\(/, so it wants the identifier followed
+ * by `(` with only WHITESPACE between (`routeAlert (` matches fine). :226 fails
+ * because `}=require` intervenes — i.e. the identifier there is not being
+ * CALLED at all. Exact behaviour is pinned by the "ROUTE_ALERT_CALL_RE" tests
+ * in the colocated .test.mjs, so check those rather than re-deriving it from
+ * this paragraph. process-feedback.yml, relying on a comment,
  * had silently dropped OUT of coverage until BRO-3662 gave it a real
  * (non-comment) breadcrumb. audit-aggregator-gap.yml is still uncovered for
  * exactly this reason: all six of its routeAlert mentions are `#` comments.
- * So the breadcrumb must be a REAL line (an `echo`, or the `require` itself),
+ * So the breadcrumb must be a REAL (non-comment) line that CALLS `routeAlert(`
+ * or `resolveCondition(` — an `echo` mentioning the call works; a bare
+ * `require` of the router does NOT,
  * never a comment.
  *
  * The blind spot is WIDE, not anecdotal: ~20 workflows invoke a script that
@@ -235,4 +243,8 @@ function findMissingLedgerCommits(workflowYamlText) {
   return violations;
 }
 
-module.exports = { findMissingLedgerCommits };
+// ROUTE_ALERT_CALL_RE is exported for its colocated tests ONLY. Its exact
+// behaviour (whitespace tolerated before `(`; a bare `require` of the router is
+// NOT a call) is the thing sessions keep restating incorrectly in prose, so it
+// is pinned by assertions instead — see the "ROUTE_ALERT_CALL_RE" tests.
+module.exports = { findMissingLedgerCommits, ROUTE_ALERT_CALL_RE };
