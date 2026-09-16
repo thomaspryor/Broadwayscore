@@ -4666,9 +4666,7 @@ function validateAggregatorArchives(shows) {
     return;
   }
 
-  const dirs = fs.readdirSync(archiveDir).filter(d =>
-    fs.statSync(path.join(archiveDir, d)).isDirectory()
-  );
+  const dirs = listShowDirs(archiveDir);
 
   if (dirs.length === 0) {
     error('data/aggregator-archive/ has zero subdirectories');
