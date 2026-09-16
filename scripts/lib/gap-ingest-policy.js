@@ -39,7 +39,7 @@
 
 const { extractPublishDate } = require('./article-extractor');
 const { isCurrentRunRoundup } = require('./gap-reference-sources');
-const { isUrlYearInPriorRun } = require('./url-discovery');
+const { isUrlYearInPriorRun, URL_YEAR_PATTERN } = require('./url-discovery');
 
 /**
  * Date an aggregator article against the show's current opening window.
@@ -67,17 +67,36 @@ function articleRunIdentity(html, show, url) {
  * links directly to each outlet's own review with no roundup wrapper to
  * date. This is the same signal the SERP census discovery path
  * (acceptSerpCensusResult) already applies to its own candidates; extracted
- * here so any URL-only discovery source can reuse it without duplicating the
- * year-delimiter regex (a second, drifted copy is how a URL trips one guard
- * while staying invisible to the priorRuns readmission in the other).
+ * here so any URL-only discovery source can reuse it, importing the SAME
+ * URL_YEAR_PATTERN isUrlYearInPriorRun already uses rather than a second,
+ * drifted regex literal (a second copy is how a URL trips one guard while
+ * staying invisible to the priorRuns readmission in the other).
+ *
+ * This is a PARTIAL signal, not a full identity check: only URLs that embed
+ * a publish year in their path (nytimes.com/YYYY/... style) can be checked at
+ * all — outlets with slug-only URLs (playbill.com, variety.com, most
+ * WordPress-style sites; roughly 60% of this corpus's review URLs) have
+ * nothing to compare and fail open (treated as current). Closing that
+ * remainder needs the review page's own fetched publish date, the same way
+ * articleRunIdentity() dates aggregator articles — out of scope here because
+ * Show Score links go straight to the outlet with no per-URL fetch in this
+ * discovery pass.
  * @param {string} url
  * @param {object} show shows.json record ({previewsStartDate, openingDate, priorRuns})
  * @returns {boolean} true when the embedded year predates this production's window
  */
 function isUrlYearOutOfWindow(url, show) {
-  const urlYear = (String(url).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/) || [])[1];
+  const urlYear = (String(url).match(URL_YEAR_PATTERN) || [])[1];
   if (!urlYear) return false;
   if (isUrlYearInPriorRun(url, show && show.priorRuns)) return false;
+  // A title that IS a year (e.g. "1984") slugs into review URLs as that same
+  // 4-digit number with no way to distinguish it from a genuine publish year
+  // — a Broadway "1984" revival's own current-run reviews would otherwise
+  // permanently self-block. Skip the check when the matched number is a
+  // whole token in the show's own title (ship-check finding, codex review).
+  if (show && typeof show.title === 'string' && new RegExp(`(?:^|[^0-9])${urlYear}(?:[^0-9]|$)`).test(show.title)) {
+    return false;
+  }
   const starts = [show && show.previewsStartDate, show && show.openingDate]
     .map(d => (d ? new Date(d).getUTCFullYear() : NaN))
     .filter(Number.isFinite);

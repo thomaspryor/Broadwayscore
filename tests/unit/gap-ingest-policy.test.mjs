@@ -195,6 +195,16 @@ describe('isUrlYearOutOfWindow (BRO-1412 — Show Score / other URL-only discove
       false
     );
   });
+
+  test('a title that IS a year does not self-block its own current-run reviews (codex review)', () => {
+    // "1984" the show slugs into review URLs as the literal string "1984" —
+    // indistinguishable from a genuine 1984 publish year by the regex alone.
+    const orwell1984 = { id: '1984-broadway-2026', title: '1984', openingDate: '2026-05-01' };
+    assert.equal(isUrlYearOutOfWindow('https://variety.com/review-1984-broadway/', orwell1984), false);
+    // A DIFFERENT number embedded in the same URL is still caught.
+    const oldUrl = 'https://variety.com/2010/review-1984-broadway/';
+    assert.equal(isUrlYearOutOfWindow(oldUrl, orwell1984), true);
+  });
 });
 
 describe('ingestBlockReason — SERP census gate (#371, ship-check 2026-07-24)', () => {

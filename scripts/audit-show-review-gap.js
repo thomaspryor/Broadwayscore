@@ -1056,8 +1056,15 @@ async function auditShow(show, opts = {}) {
       // dated aggregator article → permanently report-only (TKAM 2018 class).
       if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
       // Show Score production identity (BRO-1412): URL's own embedded year
-      // predates this production's window → permanently report-only.
-      if (ssPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'show-score-url-year'; }
+      // predates this production's window → permanently report-only. Don't
+      // clobber priorRunSource if the (stronger, HTML-dated) article check
+      // above already attributed this URL — attribution is audit-trail only,
+      // ingestBlockReason reads the boolean, but the article date is the
+      // higher-confidence signal and should win when both apply.
+      if (ssPriorRunUrls.has(m.url)) {
+        m.priorRun = true;
+        if (!m.priorRunSource) m.priorRunSource = 'show-score-url-year';
+      }
       // SERP census provenance (report/debug only — ingest eligibility for
       // these follows the same rules as any other missing URL: blocked on WE
       // shows until WE_GAP_INGEST=1, per gap-ingest-policy.js).
