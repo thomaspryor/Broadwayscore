@@ -15,6 +15,7 @@ import { isOperaShow, OPERA_DURATION_SUFFIX, OPERA_MARKET_LABEL } from '@/lib/sh
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
 import { sortTicketLinks } from '@/lib/ticket-utils';
+import { buildAffiliateUrl, trackTicketClick } from '@/lib/affiliate-utils';
 import type { ShowCardShow, ScoreModeParam } from './types';
 
 export interface ShowListCardProps {
@@ -113,6 +114,24 @@ const ShowListCard = memo(function ShowListCard({
   // --- Ticket CTA (inline text, desktop only) ---
   // Rendered inside the card's <Link> — uses span+onClick+stopPropagation
   // since nested <a> tags are invalid HTML.
+  //
+  // Click handling goes through the same buildAffiliateUrl()/trackTicketClick()
+  // helpers every other ticket surface uses (TicketLink.tsx, LotteryRushCard,
+  // etc). It used to hand-roll its own sendBeacon call with distinct_id
+  // hardcoded to the literal string 'browse-click' and is_affiliate hardcoded
+  // to true while opening the raw (non-affiliate-wrapped) URL — every browse
+  // card ticket click was both mis-attributed in PostHog AND never reached
+  // Impact/Partnerize, so it earned no affiliate revenue despite claiming
+  // is_affiliate: true.
+  const openAndTrackPrimaryTicket = () => {
+    if (!primaryTicket) return;
+    const { url: affiliateUrl, isAffiliate } = buildAffiliateUrl(primaryTicket.url, primaryTicket.platform, 'browse');
+    trackTicketClick({
+      showId: show.id, showName: show.title, platform: primaryTicket.platform,
+      pageType: 'browse', showStatus: show.status, isAffiliate, linkPosition: 0,
+    });
+    window.open(affiliateUrl, '_blank', 'noopener');
+  };
   const ticketCta = canShowTicket ? (
     <span
       role="link"
@@ -121,17 +140,9 @@ const ShowListCard = memo(function ShowListCard({
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        try {
-          navigator.sendBeacon('https://us.i.posthog.com/capture/', JSON.stringify({
-            api_key: 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7',
-            event: 'ticket_click',
-            properties: { distinct_id: 'browse-click', show_id: show.id, show_name: show.title, show_status: show.status ?? null, platform: primaryTicket.platform, page_type: 'browse', is_affiliate: true, link_position: 0 },
-            timestamp: new Date().toISOString(),
-          }));
-        } catch { /* not critical */ }
-        window.open(primaryTicket.url, '_blank', 'noopener');
+        openAndTrackPrimaryTicket();
       }}
-      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); window.open(primaryTicket.url, '_blank', 'noopener'); } }}
+      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); openAndTrackPrimaryTicket(); } }}
     >
       {primaryTicket.priceFrom ? `· From ${isLondonMarket(category) ? '£' : '$'}${primaryTicket.priceFrom} ↗` : '· Tickets ↗'}
     </span>
