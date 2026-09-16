@@ -438,7 +438,7 @@
         "usatoday",
         "usa-today",
         "usa today",
-        "USATODAY"
+        "usatoday30"
       ],
       "domain": "usatoday.com",
       "accessModel": "metered",
@@ -1560,7 +1560,9 @@
         "philadelphia-daily-news",
         "philadelphia daily news",
         "philly",
-        "phillycom"
+        "phillycom",
+        "philly-stage",
+        "philly stage"
       ],
       "domain": "inquirer.com",
       "domainAliases": [
@@ -4245,14 +4247,6 @@
       "accessModel": "free",
       "domain": "attractionsmagazine.com"
     },
-    "austin": {
-      "displayName": "Austin",
-      "tier": 3,
-      "aliases": [
-        "austincom"
-      ],
-      "accessModel": "defunct"
-    },
     "bg-independent-news": {
       "displayName": "Bg Independent News",
       "tier": 3,
@@ -4415,7 +4409,9 @@
       "displayName": "The Austin Chronicle",
       "tier": 3,
       "aliases": [
-        "the-austin-chronicle"
+        "the-austin-chronicle",
+        "austin",
+        "austincom"
       ],
       "accessModel": "free",
       "defaultCritic": "Richard Whittaker",
@@ -4604,15 +4600,6 @@
       "accessModel": "paywalled",
       "defaultCritic": "Micael J. Fressola",
       "domain": "silive.com"
-    },
-    "philly-stage": {
-      "displayName": "Philly Stage",
-      "tier": 3,
-      "aliases": [
-        "philly-stage"
-      ],
-      "accessModel": "free",
-      "defaultCritic": "Toby Zinman"
     },
     "abc14": {
       "displayName": "Abc14",
@@ -7602,10 +7589,15 @@
         "times uk",
         "times-london",
         "times-uk",
-        "The Times",
-        "The Sunday Times",
+        "the sunday times",
         "sunday-times",
-        "sundaytimes"
+        "sundaytimes",
+        "the-times-barbican",
+        "the times (barbican)",
+        "the-times-garrick",
+        "the times (garrick)",
+        "the-times-menier-chocolate-factory",
+        "the times (menier chocolate factory)"
       ],
       "domain": "thetimes.co.uk",
       "region": "london",
@@ -7712,7 +7704,9 @@
         "the upcoming",
         "the-upcoming",
         "the upcoming (uk)",
-        "the-upcoming-uk"
+        "the-upcoming-uk",
+        "the-upcoming-barbican",
+        "the upcoming barbican"
       ],
       "domain": "theupcoming.co.uk",
       "region": "london",
@@ -7992,7 +7986,9 @@
         "londontheatre.co.uk",
         "londontheatreuk",
         "london-theatre-uk",
-        "londontheatre-co-uk"
+        "londontheatre-co-uk",
+        "london-theatre-barbican",
+        "london theatre barbican"
       ],
       "domain": "londontheatre.co.uk",
       "region": "london",
@@ -8019,7 +8015,13 @@
       "aliases": [
         "time out london",
         "timeout london",
-        "time-out-london"
+        "time-out-london",
+        "time-out-barbican",
+        "time out barbican",
+        "time-out-garrick",
+        "time out garrick",
+        "time-out-menier-chocolate-factory",
+        "time out menier chocolate factory"
       ],
       "domain": "timeout.com",
       "accessModel": "free",
@@ -8742,15 +8744,6 @@
       ],
       "domain": "bachtrack.com",
       "region": "london"
-    },
-    "usatoday30": {
-      "displayName": "Usatoday30",
-      "tier": 3,
-      "aliases": [
-        "usatoday30"
-      ],
-      "domain": null,
-      "defaultCritic": "Elysa Gardner"
     },
     "journaltimes": {
       "displayName": "Journaltimes",
@@ -11074,33 +11067,6 @@
       ],
       "domain": null
     },
-    "london-theatre-barbican": {
-      "displayName": "London Theatre Barbican",
-      "tier": 3,
-      "aliases": [
-        "london-theatre-barbican"
-      ],
-      "domain": null,
-      "region": "london"
-    },
-    "the-upcoming-barbican": {
-      "displayName": "The Upcoming Barbican",
-      "tier": 3,
-      "aliases": [
-        "the-upcoming-barbican"
-      ],
-      "domain": null,
-      "region": "london"
-    },
-    "time-out-garrick": {
-      "displayName": "Time Out Garrick",
-      "tier": 3,
-      "aliases": [
-        "time-out-garrick"
-      ],
-      "domain": null,
-      "region": "london"
-    },
     "west-sussex-gazette": {
       "displayName": "West Sussex Gazette",
       "tier": 3,
@@ -11108,6 +11074,63 @@
         "west-sussex-gazette"
       ],
       "domain": null
+    },
+    "stannswarehouseorg": {
+      "displayName": "Stannswarehouseorg",
+      "tier": 3,
+      "aliases": [
+        "stannswarehouseorg"
+      ],
+      "accessModel": "defunct"
+    },
+    "americanpsychothemusicalcomlottery": {
+      "displayName": "Americanpsychothemusicalcomlottery",
+      "tier": 3,
+      "aliases": [
+        "americanpsychothemusicalcomlottery"
+      ],
+      "accessModel": "defunct"
+    },
+    "nycitycenterorg": {
+      "displayName": "Nycitycenterorg",
+      "tier": 3,
+      "aliases": [
+        "nycitycenterorg"
+      ],
+      "accessModel": "defunct"
+    },
+    "ricky-martin": {
+      "displayName": "Ricky Martin",
+      "tier": 3,
+      "aliases": [
+        "ricky-martin"
+      ],
+      "domain": null,
+      "accessModel": "defunct"
+    },
+    "seattlereporg": {
+      "displayName": "Seattlereporg",
+      "tier": 3,
+      "aliases": [
+        "seattlereporg"
+      ],
+      "accessModel": "defunct"
+    },
+    "laughteronbroadwaycomlottery": {
+      "displayName": "Laughteronbroadwaycomlottery",
+      "tier": 3,
+      "aliases": [
+        "laughteronbroadwaycomlottery"
+      ],
+      "accessModel": "defunct"
+    },
+    "the-answer-is": {
+      "displayName": "The Answer Is",
+      "tier": 3,
+      "aliases": [
+        "the-answer-is"
+      ],
+      "accessModel": "defunct"
     }
   },
   "_aliasIndex": {
@@ -11675,7 +11698,7 @@
     "on-stage-colorado": "onstage-colorado",
     "broadwayspace": "broadway-space",
     "artsatlcom": "artsatl",
-    "austincom": "austin",
+    "austincom": "the-austin-chronicle",
     "clevelandcom": "cleveland-plain-dealer",
     "phillycom": "philadelphia-inquirer",
     "laexcitescom": "la-excites",
