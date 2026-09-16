@@ -196,12 +196,20 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from fetch-show-images'
 
+      # BRO-873 cousin fix (found while auditing for the same shape): this
+      # step had no severity/email inputs, which default to 'low'/'false' —
+      # notify-failure/action.yml is a no-op for anything but 'critical', so
+      # this twice-weekly, user-facing workflow (broken/missing show images)
+      # was producing zero alerts on failure, same as update-lottery-rush.yml
+      # before that fix. Pages on every failure since the next scheduled
+      # attempt is 3-4 days away.
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Image Fetch Failed'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          severity: 'critical'
+          email: 'true'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
