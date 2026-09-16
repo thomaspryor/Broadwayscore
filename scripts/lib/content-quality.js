@@ -146,6 +146,41 @@ function detectStrongErrorPageAnywhere(text) {
   return { detected: false, match: null };
 }
 
+// BRO-3572: WSJ's dowjones.com archive-reprint capture sometimes cuts the
+// article off right at the syndication interstitial — the review's real lede
+// sentence ends mid-thought with an ellipsis, immediately followed by the
+// page's "Most Popular Videos"/"Most Popular Articles" navigation rail
+// instead of the rest of the review. Unconditional/position-independent like
+// STRONG_ERROR_PAGE_PATTERNS above, for the same reason: this exact adjacency
+// never occurs in real review prose or in a real review's own trailing
+// footer (verified against the full ~43k-file corpus, 2026-09-16 — the one
+// non-WSJ "Most Popular Articles" hit, an Exeunt Magazine sidebar with no
+// ellipsis immediately before it, correctly does not match). Deliberately
+// classified as isGarbageContent -> contentTier='invalid' (excluded from
+// isIncludableForRebuild), NOT routed through TRUNCATION_SIGNALS.severeAnywhere
+// (which only ever produces 'truncated', still counted at 0.85 confidence
+// weight by compute-critic-score.js) — these files have a single truncated
+// lede fragment with zero critical judgment, not partial-credit truncated
+// content.
+const STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS = [
+  /(?:\.{3,}|…)\s+Most Popular (?:Videos|Articles)\b/,
+];
+
+/**
+ * Scan the entire body for the WSJ archive-interstitial truncation signature
+ * (position-independent).
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectStrongWsjArchiveTruncationAnywhere(text) {
+  const t = (typeof text === 'string') ? text : '';
+  for (const pattern of STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS) {
+    const m = t.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
+
 // Unambiguous full-page chrome (cookie-consent banners, dedicated legal/privacy
 // pages, hard paywall walls) whose distinctive marker can be pushed PAST the
 // first-500-char windows used by detectCookieConsent (line ~271) and the legal
@@ -1039,6 +1074,11 @@ function isGarbageContent(text) {
   const strongError = detectStrongErrorPageAnywhere(collapsedForErrorCheck);
   if (strongError.detected) {
     return { isGarbage: true, reason: `Error/404 page (body): "${strongError.match}"` };
+  }
+
+  const strongWsjTruncation = detectStrongWsjArchiveTruncationAnywhere(collapsedForErrorCheck);
+  if (strongWsjTruncation.detected) {
+    return { isGarbage: true, reason: `WSJ archive dump truncated at interstitial: "${strongWsjTruncation.match}"` };
   }
 
   // Check for legal/privacy page
@@ -3202,6 +3242,7 @@ module.exports = {
   detectLegalPage,
   detectErrorPage,
   detectStrongErrorPageAnywhere,
+  detectStrongWsjArchiveTruncationAnywhere,
   detectStrongChromeDumpAnywhere,
   detectNewsletter,
   detectUrlOnly,
@@ -3229,6 +3270,7 @@ module.exports = {
   COOKIE_CONSENT_PATTERNS,
   ERROR_PAGE_PATTERNS,
   STRONG_ERROR_PAGE_PATTERNS,
+  STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS,
   STRONG_CHROME_DUMP_PATTERNS,
   NEWSLETTER_PATTERNS,
   NAVIGATION_PATTERNS,
