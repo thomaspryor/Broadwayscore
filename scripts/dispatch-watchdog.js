@@ -384,6 +384,9 @@ function dispatchArgvFor(taskId) {
   // have FED the very write-back leak this change surfaces. With --detach,
   // linear-next re-execs in its own session and returns immediately, which is
   // exactly what digest-autofix.js's own spawn site does.
+  // BRO-3652: both flags are now linear-next's DEFAULT (supervised headless,
+  // detached) and are accepted as no-op aliases; kept explicit here so the
+  // ledger's argv row reads unambiguously.
   if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless', '--detach'];
   return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
 }

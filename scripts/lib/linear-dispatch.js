@@ -201,9 +201,81 @@ function decideRouting(issue, { headless = false } = {}) {
   if (hasMacOnlyLabel(issue)) {
     return { mode: 'tab', reason: `label '${MAC_ONLY_LABEL}' forces a local cmux tab` };
   }
+  // BRO-3652: linear-next.js now passes headless: !args.tab, so the reasons
+  // name the CLI's actual default rather than the pre-3652 "--headless flag".
   return headless
-    ? { mode: 'headless', reason: '--headless flag' }
-    : { mode: 'tab', reason: 'default (no --headless)' };
+    ? { mode: 'headless', reason: 'supervised headless (default; --tab opts out)' }
+    : { mode: 'tab', reason: '--tab flag' };
+}
+
+/**
+ * BRO-3652: whether linear-next.js should re-exec itself detached (its own
+ * session, survives the caller's shell) for this dispatch. Pure, so
+ * tests/unit/linear-next.test.mjs can pin the whole truth table without
+ * spawning anything. The caller resolves decideRouting() FIRST and passes
+ * its mode — that ordering is what keeps a tab-routed (mac-only) card out of
+ * the detached settle window (the "settle-window inversion" review blocker).
+ *
+ * @param {object} o
+ * @param {'tab'|'headless'} o.routingMode   decideRouting().mode
+ * @param {string} [o.routingReason]         decideRouting().reason, for the refusal text
+ * @param {boolean|undefined} o.detachFlag   args.detach: true = explicit --detach,
+ *                                            false = --no-detach / --detach=false,
+ *                                            undefined = not given (→ the default)
+ * @param {boolean} o.tab                    --tab was passed
+ * @param {boolean} [o.preview]              --dry-run / --print-prompt: launches nothing, so never detach
+ * @param {boolean} [o.depsInjected]         main() was called with injected seams (tests) — those
+ *                                            cannot cross a process boundary, so stay attached
+ * @returns {{detach: boolean, refusal: string|null}}
+ */
+function decideDetach({ routingMode, routingReason = '', detachFlag, tab = false, preview = false, depsInjected = false }) {
+  const explicit = detachFlag === true;
+  if (routingMode !== 'headless') {
+    // A cmux-tab launch already returns promptly and has no long-lived
+    // supervisor to protect, so detaching one would just hide its output.
+    // The DEFAULT simply takes the tab path; an EXPLICIT --detach on a
+    // tab-routed card is refused loudly rather than silently doing something
+    // different from what was asked.
+    if (explicit) {
+      const why = tab ? '--tab was passed' : (routingReason || 'this issue routes to a cmux tab');
+      return { detach: false, refusal: `--detach applies only to the headless path, but ${why} (a cmux-tab launch already returns immediately and has no supervisor to protect). Drop --detach.` };
+    }
+    return { detach: false, refusal: null };
+  }
+  if (detachFlag === false) return { detach: false, refusal: null };
+  if (preview) return { detach: false, refusal: null };
+  if (depsInjected && !explicit) return { detach: false, refusal: null };
+  return { detach: true, refusal: null };
+}
+
+// bsc-runner.js's runJob() classifies how a session ENDED into
+// res.headlessOutcome (see its job-* ledger rows); linear-next.js turns that
+// into the one line an operator reads. Only 'done' is success.
+const HEADLESS_OUTCOME_LABELS = Object.freeze({
+  'done': { label: 'DONE', success: true, detail: 'job-done ledger row written' },
+  'stranded': { label: 'STRANDED', success: false, detail: 'the session declared itself finished but its work never landed on origin/main (job-stranded ledger row) — inspect the log, then land it or re-dispatch with --force' },
+  'blocked': { label: 'BLOCKED', success: false, detail: 'the session reported a blocker it could not clear (job-blocked ledger row) — resolve it, then re-dispatch with --force' },
+  'stopped-short': { label: 'STOPPED SHORT', success: false, detail: 'the session ended without a THIS SESSION verdict (job-stopped-short ledger row) — inspect the log before re-dispatching' },
+});
+
+/**
+ * BRO-3652 (review blocker): `res.ok` from runJob() only says the claude
+ * process exited cleanly; the outcome lives in `res.headlessOutcome`.
+ * Printing DONE for every ok result and exiting 0 was the fire-and-forget
+ * this card ends. Pure; unit-tested in tests/unit/linear-next.test.mjs.
+ *
+ * @param {{ok: boolean, stage?: string, headlessOutcome?: string}} res
+ * @returns {{label: string, success: boolean, detail: string}}
+ */
+function describeHeadlessOutcome(res) {
+  if (!res || !res.ok) return { label: `FAILED (${(res && res.stage) || 'unknown'})`, success: false, detail: '' };
+  const known = HEADLESS_OUTCOME_LABELS[res.headlessOutcome];
+  if (known) return { ...known };
+  return {
+    label: `UNKNOWN OUTCOME (${res.headlessOutcome == null ? 'runner returned no headlessOutcome' : String(res.headlessOutcome)})`,
+    success: false,
+    detail: 'not treating this as done — check the ledger for the job-* row',
+  };
 }
 
 // ── seed prompt ─────────────────────────────────────────────────────────
@@ -963,6 +1035,9 @@ module.exports = {
   issueLabelNames,
   hasMacOnlyLabel,
   decideRouting,
+  decideDetach,
+  describeHeadlessOutcome,
+  HEADLESS_OUTCOME_LABELS,
   checkTerminalStateGuard,
   marketingProjectGuard,
   autofixFiledIssueGuard,

@@ -190,7 +190,7 @@ test('main(): --allow-phantom-path overrides the refusal and proceeds to launch'
   console.error = () => {};
   let launched = false;
   try {
-    await main(['--id', 'BRO-25690', '--allow-phantom-path', '--force'], {
+    await main(['--id', 'BRO-25690', '--allow-phantom-path', '--force', '--tab'], {
       getIssue: async () => makePhantomPathIssue(),
       launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
       cmuxAvailable: () => false,
