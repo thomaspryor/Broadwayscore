@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-07-01T09:46:05.462Z",
+    "lastUpdated": "2026-09-16T01:08:30.774Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -1821,10 +1821,47 @@
     "yearBuilt": 1972,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-15T04:22:34.383Z",
+      "lastUpdated": "2026-09-16T00:59:38.037Z",
       "seating": {
         "bestSeats": "The Gershwin is a large theater, but the steep rake means even rear mezzanine seats offer decent views. Center orchestra provides the most immersive experience.",
-        "accessibility": "First Broadway theater with hearing loop (2013). Elevator to Orchestra and Mezzanine. 12 wheelchair spaces."
+        "accessibility": "First Broadway theater with hearing loop (2013). Elevator to Orchestra and Mezzanine. 12 wheelchair spaces.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Gershwin Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "skip",
+            "verdictLabel": "Distant, angled view",
+            "priceTier": "budget",
+            "rationale": "At 1,933 seats, Gershwin Theatre is one of the larger Broadway houses — far side mezzanine seats sit well off-axis and a long way from the stage."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -2293,10 +2330,47 @@
     "yearBuilt": 1923,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:46.539Z",
+      "lastUpdated": "2026-09-16T00:59:38.037Z",
       "seating": {
         "bestSeats": "Center orchestra rows D-L are considered some of the best seats on Broadway due to the theater's wide stage and excellent acoustics.",
-        "accessibility": "5 wheelchair locations in Orchestra. No steps from sidewalk. Infrared devices available."
+        "accessibility": "5 wheelchair locations in Orchestra. No steps from sidewalk. Infrared devices available.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Imperial Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "solid",
+            "verdictLabel": "Budget-friendly, workable angle",
+            "priceTier": "budget",
+            "rationale": "A noticeable side angle, but Imperial Theatre's more moderate size keeps the distance from the stage manageable."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -2855,10 +2929,47 @@
     "yearBuilt": 1910,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:15.217Z",
+      "lastUpdated": "2026-09-16T00:59:38.037Z",
       "seating": {
         "bestSeats": "The front mezzanine offers excellent sightlines in this grand theater.",
-        "accessibility": "Step-free to lobby and Orchestra. Copper induction loop available. 5 wheelchair spaces."
+        "accessibility": "Step-free to lobby and Orchestra. Copper induction loop available. 5 wheelchair spaces.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Lunt-Fontanne Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "solid",
+            "verdictLabel": "Budget-friendly, workable angle",
+            "priceTier": "budget",
+            "rationale": "A noticeable side angle, but Lunt-Fontanne Theatre's more moderate size keeps the distance from the stage manageable."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -3136,11 +3247,48 @@
     "yearBuilt": 1998,
     "operator": "ATG Entertainment",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:30.775Z",
+      "lastUpdated": "2026-09-16T01:08:30.774Z",
       "seating": {
         "bestSeats": "The Lyric is a large theater, so aim for seats in the center orchestra for the best views. Mezzanine seats can also offer a good perspective, especially in the front rows.",
         "avoidSeats": "Seats far to the side in the balcony or rear orchestra may have obstructed views. Check the seating chart carefully when purchasing tickets.",
-        "accessibility": "42nd St entrance at street level with elevator to Orchestra and Dress Circle. No elevator to Balcony."
+        "accessibility": "42nd St entrance at street level with elevator to Orchestra and Dress Circle. No elevator to Balcony.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Lyric Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, check the seat map",
+            "priceTier": "mid",
+            "rationale": "Lyric Theatre's own seating notes flag possible obstructed views from the rear orchestra — sound still carries well, but check the seat map before booking here."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "skip",
+            "verdictLabel": "Distant, angled view",
+            "priceTier": "budget",
+            "rationale": "At 1,930 seats, Lyric Theatre is one of the larger Broadway houses — far side mezzanine seats sit well off-axis and a long way from the stage."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -3417,10 +3565,47 @@
     "yearBuilt": 1986,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:48.007Z",
+      "lastUpdated": "2026-09-16T00:59:38.037Z",
       "seating": {
         "bestSeats": "Orchestra seats offer the most immersive experience. Mezzanine seats provide a good overall view of the stage.",
-        "accessibility": "Elevator via Marriott Marquis hotel. 10 wheelchair spaces. No elevator to Mezzanine."
+        "accessibility": "Elevator via Marriott Marquis hotel. 10 wheelchair spaces. No elevator to Mezzanine.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Marquis Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "skip",
+            "verdictLabel": "Distant, angled view",
+            "priceTier": "budget",
+            "rationale": "At 1,611 seats, Marquis Theatre is one of the larger Broadway houses — far side mezzanine seats sit well off-axis and a long way from the stage."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -3557,10 +3742,47 @@
     "yearBuilt": 1973,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-15T04:22:41.400Z",
+      "lastUpdated": "2026-09-16T00:59:38.037Z",
       "seating": {
         "bestSeats": "The front mezzanine offers exceptional, full-stage views.",
-        "accessibility": "Dedicated elevator to Orchestra and Mezzanine. 12 wheelchair spaces in Orchestra, 2 in Mezzanine. Hearing loop installed."
+        "accessibility": "Dedicated elevator to Orchestra and Mezzanine. 12 wheelchair spaces in Orchestra, 2 in Mezzanine. Hearing loop installed.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Minskoff Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "skip",
+            "verdictLabel": "Distant, angled view",
+            "priceTier": "budget",
+            "rationale": "At 1,710 seats, Minskoff Theatre is one of the larger Broadway houses — far side mezzanine seats sit well off-axis and a long way from the stage."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -3831,11 +4053,48 @@
     "yearBuilt": 1921,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-15T04:22:48.913Z",
+      "lastUpdated": "2026-09-16T01:08:30.774Z",
       "seating": {
         "bestSeats": "Good sightlines from most seats. The mezzanine has a nice rake.",
         "avoidSeats": "Watch out for limited legroom in some orchestra sections.",
-        "accessibility": "Step-free main entrance to Orchestra. 6 wheelchair spaces. Personal induction loop devices available."
+        "accessibility": "Step-free main entrance to Orchestra. 6 wheelchair spaces. Personal induction loop devices available.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Nederlander Theatre, with the fullest sound. The standard top pick for any show here. Note: Nederlander Theatre itself warns of limited legroom in some orchestra rows."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out. As with the rest of the orchestra here, legroom can be tight in some rows."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well. As with the rest of the orchestra here, legroom can be tight in some rows."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "solid",
+            "verdictLabel": "Budget-friendly, workable angle",
+            "priceTier": "budget",
+            "rationale": "A noticeable side angle, but Nederlander Theatre's more moderate size keeps the distance from the stage manageable."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -4250,11 +4509,48 @@
     "yearBuilt": 1913,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:34.568Z",
+      "lastUpdated": "2026-09-16T00:59:38.037Z",
       "seating": {
         "bestSeats": "Orchestra seats provide the most immersive experience in this grand, renovated theater. Mezzanine seats also offer excellent views.",
         "avoidSeats": "Balcony seats may feel distant due to the theater's height; check seat views before booking.",
-        "accessibility": "Elevator to all levels. Wheelchair, aisle transfer, and companion seating on all levels."
+        "accessibility": "Elevator to all levels. Wheelchair, aisle transfer, and companion seating on all levels.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Palace Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "skip",
+            "verdictLabel": "Distant, angled view",
+            "priceTier": "budget",
+            "rationale": "At 1,648 seats, Palace Theatre is one of the larger Broadway houses — far side mezzanine seats sit well off-axis and a long way from the stage."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -4671,11 +4967,48 @@
     "yearBuilt": 1913,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:54.836Z",
+      "lastUpdated": "2026-09-16T00:59:38.037Z",
       "seating": {
         "bestSeats": "Orchestra seats offer the best views, especially in the center sections. Mezzanine seats can also provide a good vantage point.",
         "avoidSeats": "Seats far to the side in the balcony may have obstructed views.",
-        "accessibility": "7 wheelchair spaces in Orchestra. No wheelchair-accessible restrooms (available across street)."
+        "accessibility": "7 wheelchair spaces in Orchestra. No wheelchair-accessible restrooms (available across street).",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at Shubert Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "skip",
+            "verdictLabel": "Distant, angled view",
+            "priceTier": "budget",
+            "rationale": "Shubert Theatre's own seating notes flag obstructed or distant views from the far side balcony/mezzanine — worth avoiding unless it's the only option."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -4741,10 +5074,47 @@
     "yearBuilt": 1927,
     "operator": "ATG Entertainment",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:02.260Z",
+      "lastUpdated": "2026-09-16T00:59:38.037Z",
       "seating": {
         "bestSeats": "The orchestra section offers excellent sightlines. The front mezzanine is also a great option.",
-        "accessibility": "No steps from sidewalk to Orchestra. No elevator. Mezzanine up 29 steps, Balcony up 76 steps."
+        "accessibility": "No steps from sidewalk to Orchestra. No elevator. Mezzanine up 29 steps, Balcony up 76 steps.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overall",
+            "priceTier": "premium",
+            "rationale": "Closest and most direct view of the stage at St. James Theatre, with the fullest sound. The standard top pick for any show here."
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "An elevated, full-stage view with no orchestra-level neck-craning — especially strong for shows with big staging or choreography."
+          },
+          {
+            "name": "Orchestra Sides",
+            "verdict": "solid",
+            "verdictLabel": "Good, slight angle",
+            "priceTier": "mid",
+            "rationale": "A modest side angle on the stage but still close and clear — a reliable choice when center seats are sold out."
+          },
+          {
+            "name": "Rear Orchestra",
+            "verdict": "solid",
+            "verdictLabel": "Good sound, less intimate",
+            "priceTier": "mid",
+            "rationale": "Farther from the stage than center orchestra — less up-close, but the sound still carries well."
+          },
+          {
+            "name": "Side Mezzanine",
+            "verdict": "skip",
+            "verdictLabel": "Distant, angled view",
+            "priceTier": "budget",
+            "rationale": "At 1,710 seats, St. James Theatre is one of the larger Broadway houses — far side mezzanine seats sit well off-axis and a long way from the stage."
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
