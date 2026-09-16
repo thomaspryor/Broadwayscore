@@ -1,12 +1,18 @@
-// scripts/tests/bww-roundup-yield-provenance.test.mjs
+// tests/unit/bww-roundup-fix-provenance.test.mjs
 //
-// Re-armed acceptance test for card #1729 (P1: prove the BWW roundup fix
-// actually recovers reviews). The card's original acceptance (`npx tsc
-// --noEmit`) was vacuous — it type-checks the repo and proves nothing about
-// whether the 2026-07-31 cheap-tier fix (bww-rr-discover.js) actually
-// recovers reviews. This file closes the three specific claims the card
-// re-armed against, and require()s the real functions throughout (CLAUDE.md
-// rule 15) rather than re-implementing any of their logic here.
+// Acceptance test for card #1729 / BRO-2352 (P1: prove the BWW roundup fix
+// actually recovers reviews). The original acceptance (`npx tsc --noEmit`)
+// was vacuous — it type-checks the repo and proves nothing about whether the
+// 2026-07-31 cheap-tier fix (bww-rr-discover.js) actually recovers reviews.
+// This file closes the three specific claims re-armed against, and
+// require()s the real functions throughout (CLAUDE.md rule 15) rather than
+// re-implementing any of their logic here. Moved here from
+// scripts/tests/bww-roundup-yield-provenance.test.mjs (2026-09-16, BRO-2352)
+// so `node --test tests/unit/bww-roundup-fix-provenance.test.mjs` — the
+// exact command BRO-2352's acceptance criteria names — actually finds it;
+// content and fixtures are unchanged, and re-verified live against current
+// data/review-texts/ (2026-09-16): all three shows still show the identical
+// 8/0, 2/0, 4/2 touched/exclusive split the fixtures below encode.
 //
 // 1. YIELD PROVENANCE — computeRoundupYield() (scripts/lib/bww-roundup-yield.js)
 //    classifies each review-text record as roundup-touched / roundup-exclusive.
@@ -60,8 +66,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { computeRoundupYield } = require('../lib/bww-roundup-yield.js');
-const { discoverBwwRoundupUrl, shouldSkipReviewsPhp } = require('../lib/bww-rr-discover.js');
+const { computeRoundupYield } = require('../../scripts/lib/bww-roundup-yield.js');
+const { discoverBwwRoundupUrl, shouldSkipReviewsPhp } = require('../../scripts/lib/bww-rr-discover.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
