@@ -46,6 +46,7 @@ const {
   showsDataAvailable,
 } = require('./fix-circular-duplicate-pairs');
 const { findFullyUnsuppressedSameUrlGroups, chooseSameUrlCanonical } = require('./lib/suppression-logic');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `fix-unflagged-same-url-clusters.js — Repairs same-URL review clusters left with ZERO duplicate.
@@ -70,9 +71,11 @@ const GATE_FLOOR = 10;
 
 function walkShowDirs(root) {
   if (!fs.existsSync(root)) return [];
-  return fs.readdirSync(root, { withFileTypes: true })
-    .filter((e) => e.isDirectory() && e.name !== '_pending' && !e.name.startsWith('.'))
-    .map((e) => e.name);
+  // listShowDirs (not a plain readdirSync+isDirectory filter): tolerates a
+  // dangling symlink per-entry (warns + skips) instead of throwing and
+  // crashing the whole run — the 2026-05-27 stray-symlink incident this
+  // helper exists to prevent (scripts/lib/list-show-dirs.js).
+  return listShowDirs(root).filter((name) => name !== '_pending' && !name.startsWith('.'));
 }
 
 function loadShowRecords(showDir) {
