@@ -677,6 +677,30 @@ function selectBestExcerpt(data, showTitle) {
     if (rank == null) rank = EXCERPT_SOURCE_RANK[source];
     if (rank == null) rank = EXCERPT_SOURCE_RANK.fullText;
 
+    // Layer -1: Former-cast mention (BRO-1397) — a priorRuns review naming a
+    // since-departed cast member (e.g. a 2022-run pull-quote praising a lead
+    // who isn't in the 2026 revival's cast). Runs BEFORE every soft-defer
+    // layer below (fragment, hedge): those layers push a rejected candidate
+    // onto `deferred` and pickExcerptCandidate() can still choose it later as
+    // a fallback, which would let a former-cast mention that also happens to
+    // start lowercase (or read as a hedge) slip past a check placed after
+    // them (ship-check adversarial review, 2026-09-16). Hard reject: unlike
+    // the hedge guard, a factually-wrong actor name doesn't get better by
+    // falling back to a lower-ranked candidate that also names them, so
+    // every candidate is screened the same way and the review simply ships
+    // with no pull quote if none pass.
+    const formerCastCheck = excerptMentionsFormerCast(excerpt, {
+      show: showById[showId],
+      reviewDate: data.publishDate,
+      reviewData: data,
+    });
+    if (formerCastCheck.mentionsFormerCast) {
+      if (!stats.formerCastExcerptRejected) stats.formerCastExcerptRejected = [];
+      stats.formerCastExcerptRejected.push({ showId, source, name: formerCastCheck.name, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [former-cast] ${showId}: "${source}" mentions former cast ("${formerCastCheck.name}")`);
+      return null;
+    }
+
     // Layer 0: Fragment guard. Fallback sources (LLM keyPhrases, aggregator
     // excerpts) can surface mid-sentence fragments that the dedicated
     // llmPullQuote path would have trimmed. Trim a trailing partial sentence,
@@ -784,25 +808,6 @@ function selectBestExcerpt(data, showTitle) {
         console.log(`  🚫 SUPPRESSED ${msg}`);
         return null;
       }
-    }
-
-    // Layer 3b: Former-cast mention (BRO-1397) — a priorRuns review naming a
-    // since-departed cast member (e.g. a 2022-run pull-quote praising a lead
-    // who isn't in the 2026 revival's cast). Hard reject: unlike the hedge
-    // guard, a factually-wrong actor name doesn't get better by falling back
-    // to a lower-ranked candidate that also names them, so every candidate
-    // is screened the same way and the review simply ships with no pull
-    // quote if none pass.
-    const formerCastCheck = excerptMentionsFormerCast(excerpt, {
-      show: showById[showId],
-      reviewDate: data.publishDate,
-      reviewData: data,
-    });
-    if (formerCastCheck.mentionsFormerCast) {
-      if (!stats.formerCastExcerptRejected) stats.formerCastExcerptRejected = [];
-      stats.formerCastExcerptRejected.push({ showId, source, name: formerCastCheck.name, excerpt: excerpt.slice(0, 80) });
-      console.log(`  🚫 [former-cast] ${showId}: "${source}" mentions former cast ("${formerCastCheck.name}")`);
-      return null;
     }
 
     // Layer 4: Tour review detection (only for non-tour-stop shows)

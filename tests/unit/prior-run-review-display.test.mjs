@@ -73,13 +73,41 @@ describe('excerptMentionsFormerCast', () => {
     assert.strictEqual(res.name, 'spall');
   });
 
-  it('does not flag a current cast member mention', () => {
+  it('does not flag a current cast member mention outside any priorRuns window', () => {
     const reviewData = { publishDate: '2026-07-01', fullText: '' };
     const res = excerptMentionsFormerCast(
       "Richard Coyle's Atticus is a beacon of goodness.",
       { show: SHOW, reviewDate: '2026-07-01', reviewData }
     );
     assert.strictEqual(res.mentionsFormerCast, false);
+  });
+
+  it('does not flag a current cast member mention even INSIDE a priorRuns window', () => {
+    // publishDate sits inside the 2022 window, and the excerpt itself sits
+    // right next to a role name — the same positive-evidence shape that
+    // flags a former lead. This must stay unflagged because the mentioned
+    // person IS in show.cast, exercising buildSafeNameTokens' exclusion
+    // rather than just the isWithinPriorRun early-exit.
+    const excerpt = "Richard Coyle is sensational as Atticus Finch.";
+    const reviewData = { publishDate: '2022-04-01', llmPullQuote: excerpt };
+    const res = excerptMentionsFormerCast(
+      excerpt,
+      { show: SHOW, reviewDate: '2022-04-01', reviewData }
+    );
+    assert.strictEqual(res.mentionsFormerCast, false);
+  });
+
+  it('flags a hyphenated former-cast surname (UK/West End casts commonly hyphenate)', () => {
+    const reviewData = {
+      publishDate: '2022-04-04',
+      fullText: 'a tremendous performance from Rafe Lloyd-Webber inheriting the screen role as Atticus Finch.',
+    };
+    const res = excerptMentionsFormerCast(
+      'Lloyd-Webber handles moral outrage with an understated command.',
+      { show: SHOW, reviewDate: '2022-04-04', reviewData }
+    );
+    assert.strictEqual(res.mentionsFormerCast, true);
+    assert.strictEqual(res.name, 'lloyd-webber');
   });
 
   it('does not flag the creative team (director/writer persist across runs)', () => {

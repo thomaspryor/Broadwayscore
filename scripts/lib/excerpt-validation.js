@@ -216,13 +216,26 @@ function extractPersonNameCandidates(text) {
   if (!text) return [];
   const out = [];
   for (const m of text.matchAll(NAME_CANDIDATE_RE)) {
-    const candidate = m[0];
-    const words = candidate.split(/\s+/);
-    if (LEADING_STOPWORD_RE.test(words[0])) continue;
+    let candidate = m[0];
+    let index = m.index;
+    let words = candidate.split(/\s+/);
+    if (LEADING_STOPWORD_RE.test(words[0])) {
+      // The regex is greedy and non-overlapping: "The Rafe Spall" matches as
+      // ONE 3-word candidate, so rejecting it outright would lose "Rafe
+      // Spall" entirely (the next matchAll() iteration resumes AFTER this
+      // match, it never re-tries the tail). Retry on the remainder instead
+      // of just dropping it.
+      if (words.length < 3) continue;
+      const restOffset = candidate.indexOf(words[1]);
+      candidate = words.slice(1).join(' ');
+      index = m.index + restOffset;
+      words = candidate.split(/\s+/);
+      if (LEADING_STOPWORD_RE.test(words[0])) continue;
+    }
     if (INSTITUTIONAL_SUFFIX_RE.test(words[words.length - 1])) continue;
-    const afterMatch = text.slice(m.index + candidate.length, m.index + candidate.length + LITERARY_SOURCE_SUFFIX_WINDOW);
+    const afterMatch = text.slice(index + candidate.length, index + candidate.length + LITERARY_SOURCE_SUFFIX_WINDOW);
     if (LITERARY_SOURCE_SUFFIX_RE.test(afterMatch)) continue;
-    out.push({ name: candidate, index: m.index });
+    out.push({ name: candidate, index });
   }
   return out;
 }
@@ -360,7 +373,12 @@ function excerptMentionsFormerCast(excerpt, context) {
   if (formerTokens.size === 0) return { mentionsFormerCast: false };
 
   const excerptLower = excerpt.toLowerCase();
-  const excerptWords = (excerpt.match(/[A-Za-z']+/g) || []).map(w => w.toLowerCase());
+  // Use the same tokenizer that built formerTokens (nameTokens keeps a
+  // hyphenated surname as one token, e.g. "lloyd-webber") — a regex ad hoc
+  // to this call site previously split on hyphens, so a hyphenated former
+  // cast member's surname alone (common in UK/West End casts) could never
+  // match here even though it was correctly collected above.
+  const excerptWords = nameTokens(excerpt);
   for (const entry of formerTokens) {
     if (entry.includes(' ')) {
       // Multi-word phrase (3-word candidate, kept atomic) — substring match.
