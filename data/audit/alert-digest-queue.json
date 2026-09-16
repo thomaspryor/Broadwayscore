@@ -480,5 +480,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-16T09:29:48.150Z"
+  },
+  {
+    "conditionKey": "watchdog-park:37",
+    "title": "Watchdog parked #37 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Dead CI check: core-data-pairing never worked - redesign and audit 50 flagged workflows\" was claimed for redispatch at 2026-09-16T10:12:12.466Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 37), then re-arm with node scripts/bsc-next.js --id 37 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T10:28:24.096Z"
   }
 ]
