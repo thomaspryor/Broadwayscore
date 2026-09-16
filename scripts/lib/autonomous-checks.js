@@ -188,13 +188,49 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   return checks;
 }
 
+// BRO-2208: a naive `cmd.split(/\s+/)` mis-tokenizes any quoted value
+// containing whitespace — `gh run list --workflow="Deploy to Vercel"` split
+// this way becomes FIVE broken argv entries (`--workflow="Deploy`, `to`,
+// `Vercel"`, …), which `gh` then receives as literal, nonsensical positional
+// args. This is a correctness bug, not a shell-injection one — argv is
+// exec'd via execFileSync (no shell), so nothing here is ever re-interpreted
+// — but a card author's well-formed, quoted acceptance command must still
+// actually run as written. Minimal shlex-style tokenizer: single/double
+// quotes group a run of characters (including spaces) into one token and are
+// stripped from the output; no backslash-escape handling, no nesting — the
+// repo's own card-authored commands never need more than that.
+function tokenizeCheckCommand(cmd) {
+  const s = String(cmd || '');
+  const tokens = [];
+  let i = 0;
+  while (i < s.length) {
+    while (i < s.length && /\s/.test(s[i])) i++;
+    if (i >= s.length) break;
+    let token = '';
+    while (i < s.length && !/\s/.test(s[i])) {
+      const ch = s[i];
+      if (ch === '"' || ch === "'") {
+        const quote = ch;
+        i++;
+        while (i < s.length && s[i] !== quote) { token += s[i]; i++; }
+        if (i < s.length) i++; // skip closing quote
+      } else {
+        token += ch;
+        i++;
+      }
+    }
+    tokens.push(token);
+  }
+  return tokens;
+}
+
 // The card's own checkableDone command, revalidated at EXECUTION time (the
 // queue file is not trusted either) and split into argv for shell-free exec.
 function cardCheckArgv(checkableDone, isSafeCheckCommand) {
   const cmd = String(checkableDone || '').trim();
   if (!cmd) return null;
   if (!isSafeCheckCommand(cmd)) return null;
-  return cmd.split(/\s+/);
+  return tokenizeCheckCommand(cmd);
 }
 
 // ── Workdir preparation ─────────────────────────────────────────────────────
@@ -336,6 +372,7 @@ module.exports = {
   tierOf,
   decideChecks,
   cardCheckArgv,
+  tokenizeCheckCommand,
   isUiDiff,
   hasSrcChange,
   prepareCheckWorkdir,
