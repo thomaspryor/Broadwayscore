@@ -4463,6 +4463,14 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.usage-validation.test.sh
 
+      - name: Run wait-for-run usage-validation test (bash integration)
+        # BRO-2554 what-else sweep: wait-for-run.sh's TIMEOUT_MIN validation had
+        # the same leading-zero-octal hazard just fixed in push-with-retry.sh's
+        # MAX_RETRIES. Covered by scripts/lib/** (line 22) for CI triggering —
+        # no separate path-filter entry needed.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/wait-for-run.usage-validation.test.sh
+
       - name: Run push-with-retry push-rc diagnosis test (bash integration)
         # BRO-2732: rebuild-reviews.yml's push step failed every run and the log
         # could not say why — git_push runs git under `_timeout -k 10`, and a
