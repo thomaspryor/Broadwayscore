@@ -135,17 +135,16 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-16T04:57:39.608Z",
-      "lastNotifiedAt": "2026-09-16T04:57:39.608Z",
-      "lastSurfacedAt": "2026-09-16T04:57:39.608Z",
-      "notifyCount": 77,
+      "lastSeen": "2026-09-16T06:05:41.323Z",
+      "lastNotifiedAt": "2026-09-16T06:05:41.323Z",
+      "lastSurfacedAt": "2026-09-16T06:05:41.323Z",
+      "notifyCount": 78,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "resolvedAt": "2026-09-16T05:20:42.054Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -788,12 +787,13 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-16T05:45:30.821Z",
+      "lastSeen": "2026-09-16T06:05:41.321Z",
       "lastNotifiedAt": "2026-09-16T05:45:30.821Z",
       "lastSurfacedAt": null,
       "notifyCount": 55,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
