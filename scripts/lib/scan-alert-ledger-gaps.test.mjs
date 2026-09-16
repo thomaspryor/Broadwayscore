@@ -152,7 +152,7 @@ test('code 2 when the checker returns an array of non-strings (no [object Object
   try {
     const r = scanWorkflows(dir, () => [{ job: 'x' }]);
     assert.equal(r.code, 2);
-    assert.match(r.error, /non-string violation at index 0/);
+    assert.match(r.error, /a non-string \(object\) violation at index 0/);
     assert.deepEqual(r.violations, []);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -166,11 +166,223 @@ test('code 2 when the checker returns a sparse array (holes stringify to "undefi
     sparse[2] = 'c'; // index 1 is a hole
     const r = scanWorkflows(dir, () => sparse);
     assert.equal(r.code, 2);
-    assert.match(r.error, /non-string violation at index 1/);
+    assert.match(r.error, /a non-string \(undefined\) violation at index 1/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('code 2 — and the reason says EMPTY, not "non-string" — on an empty-string element', () => {
+  // An empty string IS a string. Reporting it as a "non-string violation" sent
+  // the reader hunting for the wrong bug (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => ['ok', '']);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /an empty violation at index 1/);
+    assert.doesNotMatch(r.error, /non-string/);
+    assert.deepEqual(r.violations, []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('code 2 on a violation containing a newline (one finding must not print as two lines)', () => {
+  // A violation carrying an embedded \n prints as TWO stdout lines, so a caller
+  // counting lines disagrees with TOTAL VIOLATIONS — the scanner over-reports
+  // its own verdict (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => ['line one\nline two']);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /a multi-line violation at index 0/);
+    assert.deepEqual(r.violations, []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('scanned counts files READ, not files FOUND, on a mid-scan code-2 return', () => {
+  // files.length claimed credit for files never opened (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    let calls = 0;
+    const r = scanWorkflows(dir, () => {
+      calls += 1;
+      if (calls === 3) throw new Error('boom on the third file');
+      return [];
+    });
+    assert.equal(r.code, 2);
+    assert.equal(r.scanned, 2, 'two files were fully read and checked before the throw');
+    assert.notEqual(r.scanned, MIN_EXPECTED_WORKFLOWS);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('code 2 on a violation containing a bare \r (it OVERWRITES the printed line)', () => {
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => ['visible\rHIDDEN']);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /a control-character violation at index 0/);
+    assert.deepEqual(r.violations, []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('an array overriding [Symbol.iterator] to yield nothing cannot turn a REAL finding into code 0', () => {
+  // Validating one array and then PUBLISHING a second read of it was a hole,
+  // not a guard: the publish step used for..of, so a hostile iterator silently
+  // dropped every finding the validator had just approved (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => {
+      const a = ['job X missing the staging line'];
+      a[Symbol.iterator] = function* () { /* yields nothing */ };
+      return a;
+    });
+    assert.equal(r.code, 1, 'the real finding must still be reported');
+    assert.equal(r.violations.length, MIN_EXPECTED_WORKFLOWS);
+    assert.match(r.violations[0], /job X missing the staging line$/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('an element whose value CHANGES between validation and publication publishes the validated value', () => {
+  const dir = makeTree(1 + MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => {
+      const a = [];
+      let reads = 0;
+      Object.defineProperty(a, 0, {
+        get() { reads += 1; return reads === 1 ? 'real finding' : undefined; },
+        enumerable: true,
+        configurable: true,
+      });
+      return a;
+    });
+    assert.equal(r.code, 1);
+    for (const v of r.violations) {
+      assert.doesNotMatch(v, /undefined/, 'a second read must never reach the output');
+      assert.match(v, /real finding$/);
+    }
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('a Proxy that under-reports length to the validator cannot smuggle an element past it', () => {
+  // length is snapshotted ONCE: a Proxy answering 0 to the validator and its
+  // real length to the publisher would otherwise bypass validation entirely
+  // (review finding).
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    const r = scanWorkflows(dir, () => {
+      const target = ['smuggled\nmulti-line finding'];
+      let lengthReads = 0;
+      return new Proxy(target, {
+        get(t, k) {
+          if (k === 'length') { lengthReads += 1; return lengthReads === 1 ? 0 : t.length; }
+          return t[k];
+        },
+      });
+    });
+    assert.equal(r.code, 0, 'nothing was validated, so nothing may be published');
+    assert.deepEqual(r.violations, [], 'the smuggled element must not reach the output');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('code 2 when a workflow FILENAME contains a newline (it prefixes every record)', () => {
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    fs.writeFileSync(path.join(dir, 'aa-bad\nname.yml'), 'name: x\n');
+    const r = scanWorkflows(dir, () => ['job X missing the staging line']);
+    assert.equal(r.code, 2);
+    assert.match(r.error, /filename contains a control character/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('scanned is 0 — not the file count — on the too-few-workflows refusal', () => {
+  const dir = makeTree(3);
+  try {
+    const r = scanWorkflows(dir, NO_VIOLATIONS);
+    assert.equal(r.code, 2);
+    assert.equal(r.scanned, 0, 'nothing was opened or checked');
+    assert.match(r.error, /found only 3 workflow file\(s\)/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+const REAL_FINDING = 'job X missing the staging line';
+
+for (const [label, lying] of [
+  ['NaN', NaN],
+  ['undefined', undefined],
+  ['-1', -1],
+  ['0.5', 0.5],
+]) {
+  test(`code 2 — NOT a false-clean 0 — when the array's length LIES: ${label}`, () => {
+    // Snapshotting length fixed the double-read, but a snapshot of a LIE is
+    // still a lie: `i < n` is false on the first test, validation is skipped
+    // entirely, and a REAL finding publishes as code 0 — the "clean verdict
+    // having scanned nothing" this whole file exists to prevent (review
+    // finding, measured against the live tree).
+    const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+    try {
+      const r = scanWorkflows(dir, () => new Proxy([REAL_FINDING], {
+        get(t, k) { return k === 'length' ? lying : t[k]; },
+      }));
+      assert.notEqual(r.code, 0, 'a real finding must never publish as clean');
+      assert.equal(r.code, 2);
+      assert.match(r.error, /length is not a non-negative integer/);
+      assert.deepEqual(r.violations, []);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+}
+
+test('an OBJECT-valued length terminates instead of spinning on repeated coercion', () => {
+  // `i < n` coerces an object length on EVERY comparison, so a valueOf() that
+  // grows never terminates. typeof is checked before any comparison happens.
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    let coercions = 0;
+    const r = scanWorkflows(dir, () => new Proxy([REAL_FINDING], {
+      get(t, k) {
+        if (k === 'length') return { valueOf() { coercions += 1; return coercions; } };
+        return t[k];
+      },
+    }));
+    assert.equal(r.code, 2);
+    assert.equal(coercions, 0, 'typeof must reject it before any coercion');
+    assert.match(r.error, /length is not a non-negative integer \(object\)/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+for (const [label, code] of [['NEL U+0085', 0x85], ['LINE SEPARATOR U+2028', 0x2028], ['PARAGRAPH SEPARATOR U+2029', 0x2029]]) {
+  test(`code 2 on a violation containing ${label} (a line terminator too)`, () => {
+    const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+    try {
+      const r = scanWorkflows(dir, () => [`before${String.fromCharCode(code)}after`]);
+      assert.equal(r.code, 2);
+      assert.match(r.error, /violation at index 0/);
+      assert.deepEqual(r.violations, []);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+}
 
 test('.YML (uppercase) is scanned, not silently skipped', () => {
   const dir = makeTree(MIN_EXPECTED_WORKFLOWS);

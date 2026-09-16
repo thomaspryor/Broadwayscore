@@ -50,6 +50,20 @@ const MIN_EXPECTED_WORKFLOWS = 50;
 // the same under-report as missing `.yaml` (review finding).
 const WORKFLOW_EXT_RE = /\.ya?ml$/i;
 
+// Anything that can move the cursor or split a line once a violation is printed
+// (review finding). `\n` splits one finding into two stdout lines so a caller
+// counting lines disagrees with TOTAL VIOLATIONS; a bare `\r` is worse, because
+// it OVERWRITES the text already on the line and can hide the finding entirely.
+//
+// C0 + DEL is NOT the whole surface (review finding): NEL (U+0085), LINE
+// SEPARATOR (U+2028) and PARAGRAPH SEPARATOR (U+2029) are line terminators too,
+// and all three were measured PUBLISHING as code 1. They cost nothing to reject
+// — every string the real checker emits is fixed ASCII text plus a job name
+// captured from [A-Za-z0-9_.-]+, verified zero false positives across all 244
+// workflows — so the guard covers them rather than depending on how a
+// particular consumer happens to render them.
+const CONTROL_CHAR_RE = /[\u0000-\u001f\u007f\u0085\u2028\u2029]/;
+
 /**
  * Describe a thrown value without ever throwing itself (review finding).
  *
@@ -121,7 +135,9 @@ function scanWorkflows(dir, check) {
     return {
       code: 2,
       violations: [],
-      scanned: files.length,
+      // Zero, not files.length: nothing was opened or checked. The count that
+      // matters here is already in the message below (review finding).
+      scanned: 0,
       error:
         `refusing to report a verdict: found only ${files.length} workflow file(s) in ${dir}, ` +
         `expected at least ${MIN_EXPECTED_WORKFLOWS}. A near-empty scan would report "clean" having scanned nothing.`,
@@ -129,12 +145,24 @@ function scanWorkflows(dir, check) {
   }
 
   const violations = [];
+  // Files actually READ AND CHECKED, not merely FOUND (review finding). On a
+  // mid-scan code-2 return the caller is told how far the scan really got;
+  // `files.length` claimed credit for files never opened.
+  let scanned = 0;
   for (const file of files) {
+    // The filename PREFIXES every violation record (`${file}: ${v}`), so a
+    // newline in it splits findings exactly like a newline in the violation
+    // does — validating only the checker's string missed half the surface
+    // (review finding).
+    if (CONTROL_CHAR_RE.test(file)) {
+      return { code: 2, violations, scanned, error: `workflow filename contains a control character: ${JSON.stringify(file)}` };
+    }
+
     let text;
     try {
       text = fs.readFileSync(path.join(dir, file), 'utf8');
     } catch (err) {
-      return { code: 2, violations, scanned: files.length, error: `could not read ${file}: ${describeError(err)}` };
+      return { code: 2, violations, scanned, error: `could not read ${file}: ${describeError(err)}` };
     }
     try {
       const found = check(text);
@@ -154,31 +182,94 @@ function scanWorkflows(dir, check) {
         return {
           code: 2,
           violations,
-          scanned: files.length,
+          scanned,
           error: `checker returned ${found === null ? 'null' : typeof found} (expected an array) for ${file}`,
         };
       }
-      // Elements must be non-empty STRINGS (review finding). An array of objects
-      // stringified to "[object Object]" and an array hole/undefined stringified
-      // to "undefined" — a fabricated verdict one layer inside the string bug
-      // above (measured: [{job:'x'}] produced 50 findings of "[object Object]",
-      // and a sparse [,,'x'] produced 150, two thirds of them "undefined").
-      const bad = found.findIndex((v) => typeof v !== 'string' || v === '');
+      // Elements must be non-empty, SINGLE-LINE strings (review finding). An
+      // array of objects stringified to "[object Object]" and an array
+      // hole/undefined stringified to "undefined" — a fabricated verdict one
+      // layer inside the string bug above (measured: [{job:'x'}] produced 50
+      // findings of "[object Object]", and a sparse [,,'x'] produced 150, two
+      // thirds of them "undefined").
+      //
+      // The newline case is the same fabrication by a different route: one
+      // violation carrying an embedded \n prints as TWO stdout lines, so anything
+      // counting lines disagrees with `TOTAL VIOLATIONS` — the scanner would be
+      // over-reporting its own verdict. And the reason is named, because an
+      // empty string IS a string: calling that a "non-string" sent the reader
+      // hunting for the wrong bug (review finding).
+      //
+      // `length` is snapshotted and the validated values are COLLECTED, because
+      // validating one array and then publishing a second read of it is a hole,
+      // not a guard (review finding). A getter or Proxy can answer 'ok' while
+      // being validated and `undefined` while being published; a Proxy can
+      // report length 0 to the validator and its real length to the publisher;
+      // and an array overriding [Symbol.iterator] to yield nothing turns a REAL
+      // finding into code 0. Publishing `clean` — the primitives this loop
+      // actually saw and approved — closes all three at once, and the snapshot
+      // also means a length getter that keeps growing cannot spin forever.
+      // `length` is read once, but a snapshot of a LIE is still a lie (review
+      // finding). A Proxy answering NaN, undefined or -1 makes `i < n` false on
+      // the first test, so validation is skipped entirely and a REAL finding
+      // publishes as code 0 — measured: all three returned code 0 over the live
+      // 244-workflow tree with a finding present, which is precisely the "clean
+      // verdict having scanned nothing" this file exists to prevent. An
+      // OBJECT-valued length is worse: `i < n` coerces it on every comparison,
+      // so a valueOf() that grows never terminates. typeof is checked first
+      // because it cannot trigger that coercion.
+      const n = found.length;
+      if (typeof n !== 'number' || !Number.isSafeInteger(n) || n < 0) {
+        return {
+          code: 2,
+          violations,
+          scanned,
+          error: `checker returned an array whose length is not a non-negative integer (${typeof n}) for ${file}`,
+        };
+      }
+      const clean = [];
+      let bad = -1;
+      let badReason = '';
+      for (let i = 0; i < n; i++) {
+        const v = found[i];
+        if (typeof v !== 'string') {
+          bad = i;
+          badReason = `a non-string (${v === null ? 'null' : typeof v})`;
+          break;
+        }
+        if (v === '') {
+          bad = i;
+          badReason = 'an empty';
+          break;
+        }
+        if (v.includes('\n')) {
+          bad = i;
+          badReason = 'a multi-line';
+          break;
+        }
+        if (CONTROL_CHAR_RE.test(v)) {
+          bad = i;
+          badReason = 'a control-character';
+          break;
+        }
+        clean.push(v);
+      }
       if (bad !== -1) {
         return {
           code: 2,
           violations,
-          scanned: files.length,
-          error: `checker returned a non-string violation at index ${bad} for ${file}`,
+          scanned,
+          error: `checker returned ${badReason} violation at index ${bad} for ${file}`,
         };
       }
-      for (const v of found) violations.push(`${file}: ${v}`);
+      for (const v of clean) violations.push(`${file}: ${v}`);
+      scanned++;
     } catch (err) {
-      return { code: 2, violations, scanned: files.length, error: `checker threw on ${file}: ${describeError(err)}` };
+      return { code: 2, violations, scanned, error: `checker threw on ${file}: ${describeError(err)}` };
     }
   }
 
-  return { code: violations.length === 0 ? 0 : 1, violations, scanned: files.length };
+  return { code: violations.length === 0 ? 0 : 1, violations, scanned };
 }
 
 module.exports = { scanWorkflows, MIN_EXPECTED_WORKFLOWS, WORKFLOW_EXT_RE };
