@@ -132,6 +132,18 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // scripts/lib/guard-escalation.js's shouldEscalate) is the first sender.
   'guard-escalation:stale-checkout-staleness',
 
+  // Category 3 (BRO-2423, port of BRO-545's guard-escalation auto-recovery
+  // to llm-ensemble-score.yml + check-review-count-drift.yml, found during
+  // BRO-545's own /what-else pass): each of these three means the daily
+  // LLM-scoring pipeline — reviews never getting a score is the same
+  // "site's single source of truth has stopped advancing" class BRO-545
+  // covers for rebuild-reviews.yml — or the review-count-drift safety net
+  // that catches silently-suppressed opening-night reviews, has stopped
+  // working for 2+ consecutive daily runs.
+  'guard-escalation:scoring-queue-scan-failed', // scripts/check-scoring-queue-guard.js: count-scoring-queue.js can't trust the corpus scan (broken checkout) — the scoring cascade can't see its own queue depth
+  'guard-escalation:ensemble-scoring-pipeline-crashed', // scripts/run-ensemble-scoring-guard.js: scripts/llm-scoring/index.ts itself is crashing — new reviews stop getting scored
+  'guard-escalation:review-count-drift-strict-breach', // scripts/check-review-count-drift-guard.js: check-review-count-drift.yml's daily --strict run keeps blocking (stale reviews.json or opening-window reviews silently missing)
+
   // Category 3 carve-out (BRO-1333): main's Test Suite went undetected-red for
   // ~2 days (2026-06-13 → 06-15) because the only signal was a daily digest
   // line nobody read in time — direct pushes to main are not gated by

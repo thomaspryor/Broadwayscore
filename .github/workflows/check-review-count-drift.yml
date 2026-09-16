@@ -78,21 +78,60 @@ jobs:
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.strict }}" = "true" ]; then
             ARGS="$ARGS --strict"
           fi
-          node scripts/check-review-count-drift.js $ARGS
+          # BRO-2423 (port of BRO-545's guard-escalation auto-recovery):
+          # scheduled runs always pass --strict above, so a breach hard-exits
+          # 2 and a "cannot run" precondition failure hard-exits 1 — both with
+          # no continue-on-error, and this step's own "Notify on failure" is
+          # severity: 'warning' (digest-only, not real-time). A block that
+          # keeps recurring used to fail this daily job loud forever with
+          # nobody paged until the next digest — see
+          # scripts/check-review-count-drift-guard.js header. Fails loud on
+          # the first occurrence exactly like a bare check-review-count-drift.js
+          # call would; only auto-recovers after 2+ consecutive blocks past a
+          # 24h floor. opening-night-broadcast.yml's separate per-show gate
+          # calls check-review-count-drift.js directly and is untouched.
+          node scripts/check-review-count-drift-guard.js $ARGS
 
       - name: Check for changes
         id: changes
+        # BRO-2423: must run even when "Run drift check" failed loud (the
+        # guard's first-or-below-threshold block, unchanged pre-port
+        # behavior) — without always() here, GitHub Actions' default
+        # success()-gating skips this step (and the commit step after it)
+        # whenever the guard blocks, so the consecutiveBlocks streak it just
+        # wrote to guard-escalation-state.json is NEVER committed. The next
+        # scheduled run starts from a fresh checkout with no memory of the
+        # block, resets to consecutiveBlocks=1, and can never reach the
+        # auto-recovery threshold — exactly the check-corpus-drift.yml
+        # reference's "Check for changes" step (also always()) exists to
+        # avoid.
+        if: always()
         run: |
+          DRIFT_CHANGED=false
           if git diff --quiet data/audit/review-count-drift.json 2>/dev/null; then
-            if [ ! -f data/audit/review-count-drift.json ]; then
-              echo "has_changes=false" >> $GITHUB_OUTPUT
-            elif git ls-files --error-unmatch data/audit/review-count-drift.json 2>/dev/null; then
-              echo "has_changes=false" >> $GITHUB_OUTPUT
-            else
-              echo "has_changes=true" >> $GITHUB_OUTPUT
+            if [ -f data/audit/review-count-drift.json ] && ! git ls-files --error-unmatch data/audit/review-count-drift.json 2>/dev/null; then
+              DRIFT_CHANGED=true
             fi
           else
+            DRIFT_CHANGED=true
+          fi
+          # BRO-2423 guard-escalation streak state must ride this commit even
+          # when the drift audit content itself doesn't change this run — same
+          # class of bug BRO-545's own adversarial review caught for
+          # rebuild-reviews.yml's "Check for changes" step: without this, a
+          # run where the strict-breach guard blocks (or auto-recovers) but
+          # the audit JSON happens not to differ from HEAD never persists its
+          # streak, so the next fresh checkout restarts the count at 0 and
+          # escalation can never fire.
+          GUARD_STATE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/guard-escalation-state.json 2>/dev/null)" ]; then
+            GUARD_STATE_CHANGED=true
+            echo "Changes detected in data/audit/guard-escalation-state.json (guard-escalation state)"
+          fi
+          if [ "$DRIFT_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit and push audit
@@ -103,6 +142,10 @@ jobs:
 
           # Glob: --show dispatches write review-count-drift-{show}.json
           git add data/audit/review-count-drift*.json
+          # BRO-2423: guard-escalation streak state must ride this commit too
+          # (see "Check for changes" above). Safe when the file doesn't exist
+          # yet (no guard has ever blocked).
+          bash scripts/lib/git-add-existing.sh data/audit/guard-escalation-state.json
 
           SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); const s=d.summary; console.log(s.showsOverThreshold + ' show(s) over suppression threshold, reviews.json ' + (s.reviewsJsonAgeHours ?? '?') + 'h old')")
 
