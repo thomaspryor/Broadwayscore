@@ -127,6 +127,14 @@ const REFERENCE_DOMAINS = new Set([
   'wikipedia.org', 'wikidata.org', 'imdb.com',
   'yelp.com', 'tripadvisor.com', 'google.com', 'amazon.com',
   'iloveny.com',
+  // BRO-3515: rexfeatures.com is a UK stock-photo/wire agency. Its
+  // in-honor-of-jean-michel-basquiat-off-broadway-2026 "livefeed" URL was a
+  // Shutterstock Editorial photo caption (323 chars, no critic, no
+  // assessment), not a review — ingested as outletId `rexfeatures` and
+  // reddened audit-outlet-registry.js --strict as a new unregistered
+  // outlet. Domain-blocked rather than registered so the same photo-agency
+  // livefeed can't be re-ingested for a future opening night.
+  'rexfeatures.com',
 ]);
 
 // Venue/producer own-site listing pages — box-office "what's on" copy, never

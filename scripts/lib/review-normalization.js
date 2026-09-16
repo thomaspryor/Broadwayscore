@@ -1779,6 +1779,9 @@ const JUNK_OUTLETS = new Set([
   'garth-drabinsky', 'paradise-square',
   'buy-tickets', 'click-here',
   'lets-note', 'lets-go-to-the-theater',
+  // BRO-3515: Rex Features photo-agency livefeed caption, not a critic
+  // outlet — see domain-filters.js REFERENCE_DOMAINS for the write-time block.
+  'rexfeatures',
 ]);
 
 // Exact reserved-word match only — no structural fuzz (length/hyphen-count/
