@@ -81,11 +81,15 @@ else
 fi
 
 # ── Case 2: a GENUINE conflict must still take the conflict path ─────────────
-# Guard against the new branch over-firing. Same divergence, but the worktree is
-# CLEAN and both sides edited the same line, so the rebase really does start.
+# Guard against the new branch over-firing. The worktree is CLEAN, so the rebase
+# really starts — and the conflict is MODIFY/DELETE, which `-X theirs` cannot
+# auto-resolve. (Two competing one-line edits would NOT work here: `-X theirs`
+# resolves those silently and the rebase would succeed, so the test would prove
+# nothing about the conflict path — ship-check/Codex finding.)
 git init -q --bare "$TMP/origin2.git"
 git clone -q "$TMP/origin2.git" "$TMP/seed2"
 printf 'line\n' > "$TMP/seed2/conflict.txt"
+printf 'anchor\n' > "$TMP/seed2/anchor.txt"
 git -C "$TMP/seed2" add -A
 git -C "$TMP/seed2" commit -q -m base
 git -C "$TMP/seed2" push -q origin HEAD:main
@@ -93,22 +97,29 @@ git -C "$TMP/seed2" push -q origin HEAD:main
 git clone -q "$TMP/origin2.git" "$TMP/work2"
 git -C "$TMP/work2" checkout -q -B main origin/main
 
+# Remote MODIFIES the file...
 git clone -q "$TMP/origin2.git" "$TMP/racer2"
 git -C "$TMP/racer2" checkout -q -B main origin/main
 printf 'remote-side\n' > "$TMP/racer2/conflict.txt"
 git -C "$TMP/racer2" commit -q -am remote-side
 git -C "$TMP/racer2" push -q origin main
 
-printf 'local-side\n' > "$TMP/work2/conflict.txt"
-git -C "$TMP/work2" commit -q -am local-side
+# ...while we DELETE it. -X theirs has no side to prefer for a modify/delete.
+git -C "$TMP/work2" rm -q conflict.txt
+git -C "$TMP/work2" commit -q -m local-deletes-it
 # Worktree is CLEAN here — no dirty file.
 
 out2=$( cd "$TMP/work2" && bash "$PUSH_SCRIPT" 2 main 2>&1 )
 
 if grep -q "rebase REFUSED before it started" <<<"$out2"; then
-  echo "FAIL[2]: pre-flight-refusal branch fired on a CLEAN worktree. Output:"; echo "$out2"; fail=1
+  echo "FAIL[2]: pre-flight-refusal branch fired on a CLEAN worktree with a REAL conflict. Output:"; echo "$out2"; fail=1
+elif ! grep -q "Rebase had conflicts" <<<"$out2"; then
+  # Asserting the POSITIVE (conflict handling was entered) matters: checking
+  # only that the refusal message is absent would also pass if the run died
+  # early for some unrelated reason.
+  echo "FAIL[2]: expected to ENTER conflict handling; never saw 'Rebase had conflicts'. Output:"; echo "$out2"; fail=1
 else
-  echo "PASS[2]: clean worktree did not trip the pre-flight-refusal branch"
+  echo "PASS[2]: real conflict entered the conflict path, refusal branch stayed silent"
 fi
 
 exit $fail

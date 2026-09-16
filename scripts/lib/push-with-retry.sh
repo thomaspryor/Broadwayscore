@@ -486,13 +486,25 @@ _rebase_with_captured_stderr() {
   local rc=$?
   _REBASE_REFUSAL_REASON=""
   if [ "$rc" -ne 0 ]; then
-    local rm_dir ra_dir conflicted
+    # Declared before assignment on purpose: `local x=$(...)` returns the exit
+    # status of `local`, NOT of the substitution, so the rc capture below would
+    # silently always read 0.
+    local rm_dir ra_dir conflicted conflicted_rc
     rm_dir=$(_rebase_state_dir rebase-merge)
     ra_dir=$(_rebase_state_dir rebase-apply)
-    conflicted=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
-    # "Never started" = non-zero exit AND no rebase state on disk AND nothing
-    # actually conflicted. All three, because any one alone is ambiguous.
-    if [ ! -d "${rm_dir:-/nonexistent}" ] && [ ! -d "${ra_dir:-/nonexistent}" ] && [ -z "$conflicted" ]; then
+    conflicted=$(git diff --name-only --diff-filter=U 2>/dev/null)
+    conflicted_rc=$?
+    # "Never started" requires POSITIVE evidence on all three counts, not merely
+    # the absence of a signal (ship-check/Codex finding): both state-dir lookups
+    # must actually have RESOLVED (non-empty path) and show no directory, and
+    # the conflict query must have SUCCEEDED and come back empty. A failed
+    # lookup returns "" and a failed query returns "" too — treating either as
+    # "no state exists" would let this branch claim a rebase never started
+    # without ever establishing it, and then skip the --abort that a genuinely
+    # half-started rebase needs.
+    if [ -n "$rm_dir" ] && [ -n "$ra_dir" ] \
+         && [ ! -d "$rm_dir" ] && [ ! -d "$ra_dir" ] \
+         && [ "$conflicted_rc" -eq 0 ] && [ -z "$conflicted" ]; then
       _REBASE_REFUSAL_REASON=$(tail -c 800 "$errfile" 2>/dev/null | _redact_creds | tr '\n' ' ')
       [ -n "$_REBASE_REFUSAL_REASON" ] || _REBASE_REFUSAL_REASON="git printed no error"
     fi
