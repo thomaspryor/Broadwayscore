@@ -346128,35 +346128,41 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-16T18:30:07.183Z",
-    "completedAt": "2026-09-16T18:30:34.580Z",
-    "totalReviews": 23,
-    "processed": 4,
-    "skipped": 19,
-    "errors": 0,
+    "startedAt": "2026-09-16T18:37:41.831Z",
+    "completedAt": "2026-09-16T18:37:41.993Z",
+    "totalReviews": 12,
+    "processed": 0,
+    "skipped": 11,
+    "errors": 1,
     "tokensUsed": {
-      "input": 23221,
-      "output": 1280,
-      "total": 58171
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "costUsd": 0.11390234999999999,
-    "runId": "35133050944",
-    "errorDetails": []
+    "costUsd": 0,
+    "runId": "35133044297",
+    "errorDetails": [
+      {
+        "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
+        "outletId": "thereviewshub",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   },
   {
-    "startedAt": "2026-09-16T18:30:35.742Z",
-    "completedAt": "2026-09-16T18:30:43.190Z",
-    "totalReviews": 3,
-    "processed": 3,
+    "startedAt": "2026-09-16T18:37:43.426Z",
+    "completedAt": "2026-09-16T18:37:43.429Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 9145,
-      "output": 740,
-      "total": 9885
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "costUsd": 0.024899300000000003,
-    "runId": "35133050944",
+    "costUsd": 0,
+    "runId": "35133044297",
     "errorDetails": []
   }
 ]
