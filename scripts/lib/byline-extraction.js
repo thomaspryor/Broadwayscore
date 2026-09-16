@@ -28,18 +28,25 @@ function extractByline(html) {
     // Run BEFORE rel="author" because Jetpack's "View all posts by X" link in the
     // footer also has rel="author" and pollutes the value.
     /<[a-z]+[^>]+class=["'][^"']*author-name[^"']*["'][^>]*>([^<]+)</i,
-    // class="author-name" wrapping a nested <a> instead of raw text (e.g.
-    // TheaterMania: <div class="author-name..."><a id="article-author-tag">Name</a></div>)
-    // — the pattern above only captures direct text content, so it misses this
-    // shape and the byline lands as "Unknown" (Basquiat 2026-09-16 postmortem).
-    /<[a-z]+[^>]+class=["'][^"']*author-name[^"']*["'][^>]*>\s*<a[^>]*>([^<]+)<\/a>/i,
     /<span[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+)<\/span>/i,
     /<p[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+)<\/p>/i,
     // Inline "By Name" prose near top of article — FMJ-style "By Ross" right
     // after the headline. Capture follows the literal "By " token.
     />By\s+([A-Z][A-Za-z][A-Za-z .'-]{1,38})(?=\s+(?:[A-Z]|<|—))/,
-    // <a rel="author"> — last because of the Jetpack footer issue above.
+    // <a rel="author"> — before the nested-author-name fallback below because
+    // an explicit rel="author" is a stronger signal than a bare class name.
     /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
+    // class="author-name" wrapping a nested <a> instead of raw text (e.g.
+    // TheaterMania: <div class="author-name..."><a id="article-author-tag">Name</a></div>)
+    // — the direct-text pattern above only captures immediate text content, so
+    // it misses this shape and the byline lands as "Unknown" (Basquiat
+    // 2026-09-16 postmortem). Kept LAST and scoped to an <a> that carries
+    // rel="author" or an id/class containing "author" — an unscoped version
+    // matched the first nested anchor found anywhere inside any author-name-
+    // classed ancestor (e.g. a "Share"/related-article link), which could
+    // outrank a real .byline/rel=author match earlier in the same page
+    // (2026-09-16 adversarial review, BRO-3658 follow-up).
+    /<[a-z]+[^>]+class=["'][^"']*author-name[^"']*["'][^>]*>\s*<a[^>]*(?:rel=["']author["']|(?:id|class)=["'][^"']*author[^"']*["'])[^>]*>([^<]+)<\/a>/i,
   ];
   for (const re of candidates) {
     const m = html.match(re);
