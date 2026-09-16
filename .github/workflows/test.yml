@@ -1100,6 +1100,14 @@ on:
       # --update-baseline commit touching only the JSON (or a lib-only fix)
       # would get ZERO CI (memory/feedback_test_yml_push_path_allowlist.md).
       - 'data/audit/duplicate-shows-baseline.json'
+      # Show Score URL duplicate-mapping gate (BRO-3471). scripts/lib/** above
+      # already covers show-score-urls-baseline.js + its colocated test, but
+      # the root-level script and the baseline/source JSON need their own
+      # entries — without them a solo edit to any of these three gets ZERO CI
+      # (memory/feedback_test_yml_push_path_allowlist.md).
+      - 'scripts/audit-show-score-urls.js'
+      - 'data/audit/show-score-urls-baseline.json'
+      - 'data/show-score-urls.json'
       # Aggregator-candidate bridge (PV/BWW unmatched → OB/regional staging) +
       # its colocated test (lib glob) + driver + promoter. Without these a solo
       # edit triggers ZERO CI.
@@ -5062,6 +5070,26 @@ jobs:
         # separate Christmas Carol 2026 productions) doesn't red the trunk —
         # only a NEW (showId, showId) pair fails. Notion 38a637c5-416f-81a7.
         run: node scripts/audit-duplicate-shows.js --strict
+
+      - name: Audit Show Score URL duplicates
+        if: always()
+        # Show Score serves ONE page per title, so a URL mapped to 2+ showIds
+        # in data/show-score-urls.json means at most one side is the page's
+        # real subject — the other silently ingests the wrong production's
+        # reviews (she-loves-me-1994 had 21/22 review files be the 2016
+        # revival before BRO-3416; beetlejuice-2025 currently carries 39/40
+        # files flagged wrongProduction from the same class of bug). The
+        # script (audit-show-score-urls.js) already detected this but ran in
+        # no workflow and always exited 0 — invisible to CI (BRO-3471).
+        #
+        # Baseline-diff (same posture as "Audit duplicate shows" above):
+        # which side of an existing collision is correct is a per-pair
+        # hand-verification judgment call this script cannot make
+        # automatically, so --strict does NOT try to resolve the 5 known
+        # pairs frozen in data/audit/show-score-urls-baseline.json — it only
+        # stops a NEW collision from landing invisibly. Identity + rationale:
+        # scripts/lib/show-score-urls-baseline.js.
+        run: node scripts/audit-show-score-urls.js --strict
 
       - name: Audit cast-changes.json
         if: always()
