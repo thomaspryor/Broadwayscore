@@ -139,10 +139,10 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-16T16:47:40.575Z",
-      "lastNotifiedAt": "2026-09-16T16:47:40.575Z",
-      "lastSurfacedAt": "2026-09-16T16:47:40.575Z",
-      "notifyCount": 81,
+      "lastSeen": "2026-09-16T17:12:32.111Z",
+      "lastNotifiedAt": "2026-09-16T17:12:32.111Z",
+      "lastSurfacedAt": "2026-09-16T17:12:32.111Z",
+      "notifyCount": 82,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -787,12 +787,13 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-16T16:47:38.372Z",
-      "lastNotifiedAt": "2026-09-16T16:47:38.372Z",
+      "lastSeen": "2026-09-16T17:12:32.109Z",
+      "lastNotifiedAt": "2026-09-16T16:36:05.011Z",
       "lastSurfacedAt": null,
       "notifyCount": 59,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -2568,12 +2569,13 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
       "firstSeen": "2026-09-09T11:30:02.094Z",
-      "lastSeen": "2026-09-16T11:43:26.349Z",
+      "lastSeen": "2026-09-16T17:04:29.065Z",
       "lastNotifiedAt": "2026-09-16T11:43:26.349Z",
       "lastSurfacedAt": "2026-09-16T11:43:26.349Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-health:Audit Aggregator Review Gap": {
       "status": "resolved",
@@ -2784,12 +2786,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Golden Boy",
       "firstSeen": "2026-09-13T16:24:10.983Z",
-      "lastSeen": "2026-09-16T11:43:29.081Z",
+      "lastSeen": "2026-09-16T17:04:29.076Z",
       "lastNotifiedAt": "2026-09-13T16:24:10.983Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "opening-night-placeholder-synopsis-night-city-off-west-end-2026": {
       "status": "open",
@@ -2818,12 +2820,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
       "firstSeen": "2026-09-13T16:24:13.022Z",
-      "lastSeen": "2026-09-16T11:43:30.298Z",
+      "lastSeen": "2026-09-16T17:04:29.081Z",
       "lastNotifiedAt": "2026-09-13T16:24:13.022Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "gap:the-children-off-west-end-2026/times-uk--the-times.json": {
       "status": "resolved",
@@ -2919,13 +2921,13 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-15T07:50:19.616Z",
-      "lastSeen": "2026-09-16T11:43:29.079Z",
+      "lastSeen": "2026-09-16T17:04:29.074Z",
       "lastNotifiedAt": "2026-09-15T07:50:19.616Z",
       "lastSurfacedAt": "2026-09-15T07:50:19.616Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Data quality: provider spend ledger": {
       "status": "open",
@@ -3105,24 +3107,26 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on IN HONOR OF JEAN-MICHEL BASQUIAT",
       "firstSeen": "2026-09-16T11:43:26.352Z",
-      "lastSeen": "2026-09-16T11:43:26.352Z",
+      "lastSeen": "2026-09-16T17:04:29.066Z",
       "lastNotifiedAt": "2026-09-16T11:43:26.352Z",
       "lastSurfacedAt": "2026-09-16T11:43:26.352Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-slug-mismatch-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Review URL cross-show mismatch on IN HONOR OF JEAN-MICHEL BASQUIAT",
       "firstSeen": "2026-09-16T11:43:26.354Z",
-      "lastSeen": "2026-09-16T11:43:26.354Z",
+      "lastSeen": "2026-09-16T17:04:29.068Z",
       "lastNotifiedAt": "2026-09-16T11:43:26.354Z",
       "lastSurfacedAt": "2026-09-16T11:43:26.354Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-golden-boy-off-west-end-2026": {
       "status": "open",
@@ -3141,12 +3145,13 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Golden Boy",
       "firstSeen": "2026-09-16T11:43:29.082Z",
-      "lastSeen": "2026-09-16T11:43:29.082Z",
+      "lastSeen": "2026-09-16T17:04:29.077Z",
       "lastNotifiedAt": "2026-09-16T11:43:29.082Z",
       "lastSurfacedAt": "2026-09-16T11:43:29.082Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-health-chronic:Check Opening Night Drift": {
       "status": "open",
@@ -3159,6 +3164,90 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3655"
+    },
+    "opening-night-cv-wrongproduction-unhandled-my-sons-a-queer-but-what-can-you-do-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on My Son’s A Queer (But What Can You Do?)",
+      "firstSeen": "2026-09-16T17:04:29.055Z",
+      "lastSeen": "2026-09-16T17:04:29.055Z",
+      "lastNotifiedAt": "2026-09-16T17:04:29.055Z",
+      "lastSurfacedAt": "2026-09-16T17:04:29.055Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-fulltext-mentions-show:short:my-sons-a-queer-but-what-can-you-do-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review too short to verify on My Son’s A Queer (But What Can You Do?)",
+      "firstSeen": "2026-09-16T17:04:29.059Z",
+      "lastSeen": "2026-09-16T17:04:29.059Z",
+      "lastNotifiedAt": "2026-09-16T17:04:29.059Z",
+      "lastSurfacedAt": "2026-09-16T17:04:29.059Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-slug-mismatch-my-sons-a-queer-but-what-can-you-do-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review URL cross-show mismatch on My Son’s A Queer (But What Can You Do?)",
+      "firstSeen": "2026-09-16T17:04:29.062Z",
+      "lastSeen": "2026-09-16T17:04:29.062Z",
+      "lastNotifiedAt": "2026-09-16T17:04:29.062Z",
+      "lastSurfacedAt": "2026-09-16T17:04:29.062Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-t1-missing:in-honor-of-jean-michel-basquiat-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "firstSeen": "2026-09-16T17:04:29.070Z",
+      "lastSeen": "2026-09-16T17:04:29.070Z",
+      "lastNotifiedAt": "2026-09-16T17:04:29.070Z",
+      "lastSurfacedAt": "2026-09-16T17:04:29.070Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-explicit-ratings:in-honor-of-jean-michel-basquiat-off-broadway-2026:timeout": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "firstSeen": "2026-09-16T17:04:29.072Z",
+      "lastSeen": "2026-09-16T17:04:29.072Z",
+      "lastNotifiedAt": "2026-09-16T17:04:29.072Z",
+      "lastSurfacedAt": "2026-09-16T17:04:29.072Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-t1-missing:golden-boy-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on golden-boy-off-west-end-2026",
+      "firstSeen": "2026-09-16T17:04:29.079Z",
+      "lastSeen": "2026-09-16T17:04:29.079Z",
+      "lastNotifiedAt": "2026-09-16T17:04:29.079Z",
+      "lastSurfacedAt": "2026-09-16T17:04:29.079Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-t1-missing:the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+      "firstSeen": "2026-09-16T17:04:29.083Z",
+      "lastSeen": "2026-09-16T17:04:29.083Z",
+      "lastNotifiedAt": "2026-09-16T17:04:29.083Z",
+      "lastSurfacedAt": "2026-09-16T17:04:29.083Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

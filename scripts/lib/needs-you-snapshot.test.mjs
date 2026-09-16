@@ -112,3 +112,34 @@ test('collapseCrownLineages: a falsy ts on one crown item never corrupts pending
   assert.equal(collapsed.length, 1);
   assert.equal(collapsed[0].pendingSinceTs, '2026-09-01T00:00:00.000Z');
 });
+
+// Second-opinion review, 2026-09-16: caught by an adversarial reading of the
+// title-driven pendingDecisions rewrite, not by any existing test — the
+// NEWEST crown generation winning extractVersion's sort and being title-only
+// (no state file) silently discarded a REAL captured question from an older
+// generation, replacing it with the hollow "open the tab" placeholder. Net
+// information loss in exactly the BRO-2989 case this function exists for.
+test('collapseCrownLineages: a title-only NEWEST generation borrows the most recent REAL question from a superseded one', () => {
+  const { collapseCrownLineages, formatDetail } = require('./needs-you-snapshot.js');
+  const pending = [
+    { ref: 'workspace:1', title: '❓ 👑 OWNER — Crown v10: BRO-343 P1 triage', question: 'ship v2 or wait?', ts: '2026-09-01T00:00:00.000Z' },
+    // Newest generation (highest version), but no state file: title-only.
+    { ref: 'workspace:2', title: '❓ 👑 OWNER — Crown v11: BRO-343 P1 triage', questionUnavailable: true, question: null, ts: null },
+  ];
+  const [collapsed] = collapseCrownLineages(pending);
+  assert.equal(collapsed.title, '❓ 👑 OWNER — Crown v11: BRO-343 P1 triage', 'keeps the NEWEST title');
+  assert.equal(collapsed.question, 'ship v2 or wait?', 'borrows the older real question');
+  assert.equal(collapsed.questionUnavailable, false);
+  assert.equal(formatDetail(collapsed).includes('ship v2 or wait?'), true);
+});
+
+test('collapseCrownLineages: when EVERY generation is title-only, the placeholder is used (nothing real to borrow)', () => {
+  const { collapseCrownLineages, formatDetail } = require('./needs-you-snapshot.js');
+  const pending = [
+    { ref: 'workspace:1', title: '❓ 👑 OWNER — Crown v10: BRO-343 P1 triage', questionUnavailable: true, question: null, ts: null },
+    { ref: 'workspace:2', title: '❓ 👑 OWNER — Crown v11: BRO-343 P1 triage', questionUnavailable: true, question: null, ts: null },
+  ];
+  const [collapsed] = collapseCrownLineages(pending);
+  assert.equal(collapsed.questionUnavailable, true);
+  assert.equal(formatDetail(collapsed).includes('open the tab'), true);
+});

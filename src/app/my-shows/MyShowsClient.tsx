@@ -1627,14 +1627,19 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
             </svg>
           </button>
         )}
-        {/* Delete button — hidden on mobile, visible on hover on desktop.
+        {/* Delete button — always visible on mobile (no hover), hover/focus-
+            revealed on desktop. List view's DiaryCard already renders delete
+            in-flow on mobile via actionIcons (md:hidden block); this grid
+            card's `hidden sm:flex` had no such fallback, leaving mobile grid
+            users with no way to delete a rating (parity fix, cousin of
+            WatchlistCard's #270 fix — same bug class, different tab).
             The confirm state SAYS "Delete?" — a trash that merely turned red
             didn't read as tap-again-to-confirm (owner, 2026-07-19). */}
         {onDelete && (
           <button
             type="button"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmDelete ? onDelete() : setConfirmDelete(true); }}
-            className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmDelete ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
+            className={`absolute top-2 right-2 z-[2] flex items-center justify-center rounded-full ${confirmDelete ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100 focus-visible:opacity-100'} transition-opacity`}
             aria-label="Delete rating"
           >
             {confirmDelete ? 'Delete?' : (
