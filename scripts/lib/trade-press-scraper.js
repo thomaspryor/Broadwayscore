@@ -336,7 +336,7 @@ async function fetchFromArchive(url) {
   const availabilityUrl = `http://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
 
   const availability = await new Promise((resolve, reject) => {
-    https.get(availabilityUrl.replace('http:', 'https:'), (res) => {
+    const req = https.get(availabilityUrl.replace('http:', 'https:'), { timeout: 15000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -346,7 +346,9 @@ async function fetchFromArchive(url) {
           reject(new Error('Invalid Archive.org response'));
         }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 
   const snapshot = availability?.archived_snapshots?.closest;
@@ -356,7 +358,7 @@ async function fetchFromArchive(url) {
 
   // Fetch the archived version
   const archiveResponse = await new Promise((resolve, reject) => {
-    https.get(snapshot.url, (res) => {
+    const req = https.get(snapshot.url, { timeout: 15000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -366,7 +368,9 @@ async function fetchFromArchive(url) {
           reject(new Error(`Archive.org HTTP ${res.statusCode}`));
         }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 
   return {

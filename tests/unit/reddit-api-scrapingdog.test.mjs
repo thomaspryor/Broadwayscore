@@ -320,9 +320,13 @@ test('fetchViaScrapingDog rejects (falls through to caller) when the daily break
 // — the same object instance reddit-api.js's own `require('https')` resolves
 // to — to simulate a response without a real network call.
 
+// Accepts both https.get(url, cb) and https.get(url, options, cb) — BRO-2383
+// added a { timeout: N } options argument to fetchViaScrapingBee's real call,
+// so the callback can land in either position depending on arity.
 function withMockedHttpsGet(statusCode, body, fn) {
   const original = https.get;
-  https.get = (_url, cb) => {
+  https.get = (_url, optionsOrCb, maybeCb) => {
+    const cb = typeof optionsOrCb === 'function' ? optionsOrCb : maybeCb;
     const res = new EventEmitter();
     res.statusCode = statusCode;
     const req = new EventEmitter();

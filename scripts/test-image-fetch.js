@@ -20,7 +20,7 @@ function fetchPage(url) {
       timeout: 15000,
     };
 
-    https.get(url, options, (response) => {
+    const req = https.get(url, options, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`HTTP ${response.statusCode}`));
         return;
@@ -29,7 +29,9 @@ function fetchPage(url) {
       let data = '';
       response.on('data', chunk => data += chunk);
       response.on('end', () => resolve(data));
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

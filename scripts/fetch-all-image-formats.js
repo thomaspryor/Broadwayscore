@@ -54,8 +54,20 @@ function fetchViaScrapingBee(url) {
   return new Promise((resolve, reject) => {
     const scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
 
-    https.get(scrapingBeeUrl, (response) => {
-      recordSbCall({ url, fn: 'page', success: response.statusCode === 200, status: response.statusCode, credits: sbBilledCredits(response.statusCode, 1), purpose: 'image-formats' });
+    // Guards against double-billing the ledger: req.destroy() on timeout
+    // itself emits a socket 'error' right after, so without this both
+    // handlers below would fire and recordSbCall() twice for one request
+    // (Codex adversarial review, BRO-2383) — same pattern already used by
+    // scripts/lib/reddit-api.js's _rec() for this exact reason.
+    let recorded = false;
+    const rec = (fields) => {
+      if (recorded) return;
+      recorded = true;
+      recordSbCall({ url, fn: 'page', purpose: 'image-formats', ...fields });
+    };
+
+    const req = https.get(scrapingBeeUrl, { timeout: 30000 }, (response) => {
+      rec({ success: response.statusCode === 200, status: response.statusCode, credits: sbBilledCredits(response.statusCode, 1) });
       if (response.statusCode !== 200) {
         reject(new Error(`HTTP ${response.statusCode}`));
         return;
@@ -65,9 +77,15 @@ function fetchViaScrapingBee(url) {
       response.on('data', chunk => data += chunk);
       response.on('end', () => resolve(data));
       response.on('error', reject);
-    }).on('error', (e) => {
-      recordSbCall({ url, fn: 'page', success: false, status: 'error', credits: 0, purpose: 'image-formats' });
+    });
+    req.on('error', (e) => {
+      rec({ success: false, status: 'error', credits: 0 });
       reject(e);
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      rec({ success: false, status: 'timeout', credits: 0 });
+      reject(new Error('Request timeout'));
     });
   });
 }
