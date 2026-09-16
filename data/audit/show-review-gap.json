@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-15T22:04:41.420Z",
+  "generatedAt": "2026-09-16T01:06:29.959Z",
   "windowDays": 1095,
-  "targets": 302,
-  "auditedThisRun": 17,
-  "carriedForward": 522,
+  "targets": 293,
+  "auditedThisRun": 9,
+  "carriedForward": 530,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 323,
-    "totalMissing": 1662,
+    "withGap": 324,
+    "totalMissing": 1665,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1802,
-    "totalRecoverable": 24,
-    "totalRecovered": 5
+    "totalFlaggedMisses": 1801,
+    "totalRecoverable": 23,
+    "totalRecovered": 4
   },
   "results": [
     {
@@ -4784,8 +4784,8 @@
     {
       "showId": "america-who-hurt-you-off-broadway-2026",
       "title": "AMERICA, WHO HURT YOU?",
-      "openingDate": "2026-09-11",
-      "status": "upcoming",
+      "openingDate": "2026-09-17",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -4814,7 +4814,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-08T15:05:36.720Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -29285,7 +29285,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-14T23:04:15.991Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -29572,33 +29572,168 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
+        "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
+          "host": "openingnight.online",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
+          "host": "stageraw.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Crazy Mama: A True Story of Love and Madness\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Crazy Mama: A True Story of Love and Madness\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Crazy Mama: A True Story of Love and Madness\" review 59e59",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Crazy Mama: A True Story of Love and Madness 59E59 Theaters, Theater C review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Crazy Mama: A True Story of Love and Madness 59E59 Theaters, Theater C review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Crazy Mama: A True Story of Love and Madness 59E59 Theaters, Theater C review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 36,
+        "byReason": {
+          "aggregator-internal-nav": 9,
+          "non-review-host": 20,
+          "merch-store": 5,
+          "venue-production-page": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
+          "host": "openingnight.online",
+          "outletId": "openingnight",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=openingnight.online): Scrapingdog HTTP 404: {\"message\""
+        },
+        {
+          "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
+          "host": "stageraw.com",
+          "outletId": "stageraw",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"stageraw\" (not in registry) — onboard to outlet-registry.json after review.\n"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "openingnight.online",
+            "outlet": "openingnight.online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/"
+          },
+          {
+            "outletId": "stageraw.com",
+            "outlet": "stageraw.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
+            "outletId": "openingnight.online",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
+            "outletId": "stageraw.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-09-15T18:49:59.948Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -46275,7 +46410,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-14T23:04:15.991Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
@@ -67613,30 +67748,27 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://culturesauce.com/jean-michel-basquiat-roger-guenveur-smith-off-broadway-review/",
-        "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/"
+        "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
+        "https://www.newyorktheatreguide.com/reviews/in-honor-of-jean-michel-basquiat-off-broadway-review-roger-guenveur-smith",
+        "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
+        "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
+        "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
+        "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
+        "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
+        "https://www.rexfeatures.com/livefeed/2026/09/14/'in_honor_of_jean-michel_basquiat'_new_york_theatre_workshop's_off-broadway_opening_night,_new_york"
       ],
-      "dirFiles": 8,
-      "dirClean": 6,
-      "inReviewsJson": 5,
-      "missing": [],
-      "dirOnly": [
+      "dirFiles": 9,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [
         {
-          "host": "nystagereview.com",
-          "count": 2
-        },
-        {
-          "host": "newyorktheatreguide.com",
-          "count": 1
-        },
-        {
-          "host": "1minutecritic.com",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
-          "count": 1
+          "url": "https://www.rexfeatures.com/livefeed/2026/09/14/'in_honor_of_jean-michel_basquiat'_new_york_theatre_workshop's_off-broadway_opening_night,_new_york",
+          "host": "rexfeatures.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
@@ -67653,23 +67785,107 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/"
             }
-          ]
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"IN HONOR OF JEAN-MICHEL BASQUIAT\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"IN HONOR OF JEAN-MICHEL BASQUIAT\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"IN HONOR OF JEAN-MICHEL BASQUIAT\" review york",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "IN HONOR OF JEAN-MICHEL BASQUIAT New York Theatre Workshop review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "IN HONOR OF JEAN-MICHEL BASQUIAT New York Theatre Workshop review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "IN HONOR OF JEAN-MICHEL BASQUIAT New York Theatre Workshop review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 9,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 24,
+        "byReason": {
+          "aggregator-internal-nav": 2,
+          "non-review-host": 21,
+          "non-review-path": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.rexfeatures.com/livefeed/2026/09/14/'in_honor_of_jean-michel_basquiat'_new_york_theatre_workshop's_off-broadway_opening_night,_new_york",
+          "host": "rexfeatures.com",
+          "outletId": "rexfeatures",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "rexfeatures.com",
+            "outlet": "rexfeatures.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.rexfeatures.com/livefeed/2026/09/14/'in_honor_of_jean-michel_basquiat'_new_york_theatre_workshop's_off-broadway_opening_night,_new_york"
+          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -67687,17 +67903,60 @@
             "firstSeenAt": "2026-09-15T02:14:14.949Z"
           },
           {
+            "url": "https://www.newyorktheatreguide.com/reviews/in-honor-of-jean-michel-basquiat-off-broadway-review-roger-guenveur-smith",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://www.rexfeatures.com/livefeed/2026/09/14/'in_honor_of_jean-michel_basquiat'_new_york_theatre_workshop's_off-broadway_opening_night,_new_york",
+            "outletId": "rexfeatures.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
             "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           }
         ],
-        "liveCount": 1,
-        "candidateCount": 2
+        "liveCount": 6,
+        "candidateCount": 8
       },
-      "computedAt": "2026-09-15T22:04:41.420Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -97794,12 +98053,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 194,
+        "count": 191,
         "byReason": {
-          "non-review-host": 24,
           "aggregator-internal-nav": 160,
           "not-http-url": 6,
-          "aggregator-section-root": 4
+          "aggregator-section-root": 4,
+          "non-review-host": 21
         }
       },
       "dedupedVariants": [],
@@ -97901,7 +98160,7 @@
         "liveCount": 2,
         "candidateCount": 7
       },
-      "computedAt": "2026-09-14T23:04:15.991Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -98053,35 +98312,38 @@
         "https://onin.london/night-city-at-southwark-playhouse-review/",
         "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
         "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
+        "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
+        "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
+        "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
         "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
         "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
-        "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
         "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
-        "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/amp/",
-        "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
         "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
-        "https://www.britishtheatreguide.info/reviews/night-city-southwark-playh-26005",
-        "https://www.reviewsgate.co.uk/all-reviews/night-city-by-max-wilkinson-southwark-playhouse",
+        "https://www.southwark.gov.uk/southwark-presents/night-city",
         "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912",
-        "https://terripaddock.com/events/night-city/",
-        "https://www.londonboxoffice.co.uk/news/post/night-city-southwark-playhouse-borough-review"
+        "https://www.londonboxoffice.co.uk/news/post/night-city-southwark-playhouse-borough-review",
+        "https://terripaddock.com/events/night-city/"
       ],
-      "dirFiles": 28,
-      "dirClean": 21,
-      "inReviewsJson": 20,
+      "dirFiles": 31,
+      "dirClean": 22,
+      "inReviewsJson": 21,
       "missing": [],
       "dirOnly": [
         {
-          "host": "londonpubtheatres.com",
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
+        {
+          "host": "reviewsgate.co.uk",
+          "count": 1
+        },
+        {
+          "host": "saltertonartsreview.com",
           "count": 1
         },
         {
           "host": "theatrereviews.design",
           "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 2
         }
       ],
       "flaggedMisses": [
@@ -98104,19 +98366,19 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming",
-          "recoverable": true,
-          "recoverableFile": "theupcoming--unknown.json",
-          "recoverableOutletId": "theupcoming",
-          "recoverableCritic": "Unknown",
+          "url": "https://www.southwark.gov.uk/southwark-presents/night-city",
+          "host": "southwark.gov.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theupcoming--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/"
+              "file": "southwark--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.southwark.gov.uk/southwark-presents/night-city"
             }
           ],
           "serpCensus": true
@@ -98225,7 +98487,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -98241,31 +98503,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 21,
+        "resultCount": 20,
         "error": null
       },
       "candidatesRejected": {
         "count": 11,
         "byReason": {
-          "non-review-host": 8,
-          "roundup-page": 2,
-          "aggregator-internal-nav": 1
+          "aggregator-internal-nav": 1,
+          "non-review-host": 7,
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "file": "theupcoming--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -98277,11 +98526,11 @@
             "url": "https://southwarkplayhouse.co.uk/productions/night-city/"
           },
           {
-            "outletId": "theupcoming",
-            "outlet": "theupcoming",
+            "outletId": "southwark.gov.uk",
+            "outlet": "southwark.gov.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/"
+            "url": "https://www.southwark.gov.uk/southwark-presents/night-city"
           },
           {
             "outletId": "terripaddock.com",
@@ -98312,6 +98561,12 @@
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
+            "url": "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T18:49:59.948Z"
+          },
+          {
             "url": "https://northwestend.com/night-city-southwark-playhouse/",
             "outletId": "northwestend.com",
             "state": "live",
@@ -98336,6 +98591,24 @@
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
+            "url": "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
+            "outletId": "londonpubtheatres.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T18:49:59.948Z"
+          },
+          {
             "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
@@ -98348,44 +98621,14 @@
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
-          },
-          {
             "url": "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
             "outletId": "rolandcat.substack.com",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
-            "url": "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/amp/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
-          },
-          {
-            "url": "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
-            "outletId": "saltertonartsreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
-          },
-          {
             "url": "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
             "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/night-city-southwark-playh-26005",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
-          },
-          {
-            "url": "https://www.reviewsgate.co.uk/all-reviews/night-city-by-max-wilkinson-southwark-playhouse",
-            "outletId": "reviewsgate.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
@@ -98409,11 +98652,11 @@
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
           },
           {
-            "url": "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/",
-            "outletId": "theupcoming",
+            "url": "https://www.southwark.gov.uk/southwark-presents/night-city",
+            "outletId": "southwark.gov.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
           },
           {
             "url": "https://terripaddock.com/events/night-city/",
@@ -98426,7 +98669,7 @@
         "liveCount": 17,
         "candidateCount": 20
       },
-      "computedAt": "2026-09-15T18:49:59.948Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "night-side-songs-off-broadway-2026",
@@ -129944,8 +130187,8 @@
         "https://www.talkinbroadway.com/page/ob/10_29_23b.html"
       ],
       "dirFiles": 46,
-      "dirClean": 11,
-      "inReviewsJson": 10,
+      "dirClean": 12,
+      "inReviewsJson": 12,
       "missing": [
         {
           "url": "https://theartsdesk.com/theatre/stereophonic-duke-yorks-theatre-review-rich-slice-creative-life-delivered-1970s-rock-band",
@@ -130020,7 +130263,7 @@
         {
           "url": "https://piedmontexedra.com/2025/11/review-stereophonic-goes-behind-the-scenes-with-1970s-rockers-at-work-and-at-odds",
           "host": "piedmontexedra.com",
-          "knownOutletId": null,
+          "knownOutletId": "piedmontexedra",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -130083,14 +130326,14 @@
         {
           "url": "https://www.newcitystage.com/2026/02/02/the-triumphs-of-music-and-tribulations-of-fame-in-stereophonic/",
           "host": "newcitystage.com",
-          "knownOutletId": "newcitystage",
+          "knownOutletId": "new-city-stage",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://chicago.suntimes.com/theater/2026/01/30/stereophonic-review-chicago-cibc-theatre-will-butler-arcade-fire",
           "host": "suntimes.com",
-          "knownOutletId": "suntimes",
+          "knownOutletId": "chicago-sun-times",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -130364,23 +130607,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed"
-            }
-          ]
         },
         {
           "url": "https://ew.com/stereophonic-review-broadway-8635241",
@@ -130684,13 +130910,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1157,
+        "count": 1181,
         "byReason": {
-          "non-review-host": 107,
-          "non-review-path": 9,
-          "roundup-page": 1,
-          "not-http-url": 145,
-          "aggregator-internal-nav": 895
+          "aggregator-internal-nav": 895,
+          "not-http-url": 151,
+          "aggregator-section-root": 24,
+          "non-review-host": 110,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -130952,8 +131178,8 @@
             "url": "https://www.seattletimes.com/entertainment/theater/stereophonic-is-an-alluring-drug-fueled-rocket-ship/"
           },
           {
-            "outletId": "piedmontexedra.com",
-            "outlet": "piedmontexedra.com",
+            "outletId": "piedmontexedra",
+            "outlet": "piedmontexedra",
             "critic": "Unknown",
             "stars": null,
             "url": "https://piedmontexedra.com/2025/11/review-stereophonic-goes-behind-the-scenes-with-1970s-rockers-at-work-and-at-odds"
@@ -131015,15 +131241,15 @@
             "url": "https://www.cleveland.com/entertainment/2026/01/stereophonic-review-fleetwood-macadjacent-play-arrives-at-playhouse-square.html"
           },
           {
-            "outletId": "newcitystage",
-            "outlet": "newcitystage",
+            "outletId": "new-city-stage",
+            "outlet": "new-city-stage",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.newcitystage.com/2026/02/02/the-triumphs-of-music-and-tribulations-of-fame-in-stereophonic/"
           },
           {
-            "outletId": "suntimes",
-            "outlet": "suntimes",
+            "outletId": "chicago-sun-times",
+            "outlet": "chicago-sun-times",
             "critic": "Unknown",
             "stars": null,
             "url": "https://chicago.suntimes.com/theater/2026/01/30/stereophonic-review-chicago-cibc-theatre-will-butler-arcade-fire"
@@ -131148,13 +131374,6 @@
             "url": "https://www.chicagotribune.com/2024/04/19/review-stereophonic-about-the-end-of-a-band-is-a-broadway-show-not-to-be-missed/"
           },
           {
-            "outletId": "dailybeast",
-            "outlet": "dailybeast",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed"
-          },
-          {
             "outletId": "ew",
             "outlet": "ew",
             "critic": "Unknown",
@@ -131269,6 +131488,12 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
           {
             "url": "https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html",
             "outletId": "nytimes.com",
@@ -131389,7 +131614,7 @@
           },
           {
             "url": "https://piedmontexedra.com/2025/11/review-stereophonic-goes-behind-the-scenes-with-1970s-rockers-at-work-and-at-odds",
-            "outletId": "piedmontexedra.com",
+            "outletId": "piedmontexedra",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -131452,14 +131677,14 @@
           },
           {
             "url": "https://www.newcitystage.com/2026/02/02/the-triumphs-of-music-and-tribulations-of-fame-in-stereophonic/",
-            "outletId": "newcitystage",
+            "outletId": "new-city-stage",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
             "url": "https://chicago.suntimes.com/theater/2026/01/30/stereophonic-review-chicago-cibc-theatre-will-butler-arcade-fire",
-            "outletId": "suntimes",
+            "outletId": "chicago-sun-times",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -131584,13 +131809,6 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
-            "outletId": "dailybeast",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
             "url": "https://ew.com/stereophonic-review-broadway-8635241",
             "outletId": "ew",
             "state": "GAP",
@@ -131703,10 +131921,10 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           }
         ],
-        "liveCount": 7,
+        "liveCount": 8,
         "candidateCount": 54
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "steve-burns-alive-off-broadway-2026",
@@ -146378,7 +146596,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-14T23:04:15.991Z"
+      "computedAt": "2026-09-16T01:06:29.959Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
