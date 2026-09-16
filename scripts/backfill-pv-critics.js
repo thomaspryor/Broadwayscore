@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -35,9 +36,7 @@ Usage:
 `;
 // --- Collect PV unknown-critic reviews ---
 function collectUnknowns() {
-  const dirs = fs.readdirSync(reviewsDir).filter(d => {
-    try { return fs.statSync(path.join(reviewsDir, d)).isDirectory(); } catch { return false; }
-  });
+  const dirs = listShowDirs(reviewsDir);
 
   const unknowns = [];
   for (const d of dirs) {

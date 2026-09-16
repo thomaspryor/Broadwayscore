@@ -40,6 +40,7 @@ const {
   hasEnsembleConsensus,
   isTextStaleRelativeToUrlRewrite,
 } = require('./wrong-production-autoclear.js');
+const { listShowDirs } = require('./list-show-dirs');
 // Generalized to (data, reason) under #1156 — see scripts/lib/autoclear-vs-ensemble.test.mjs
 // for the wrongProduction-side coverage of the same functions.
 const hasEnsembleWrongShowConsensus = (data) => hasEnsembleConsensus(data, 'wrong_show');
@@ -109,15 +110,8 @@ test('corpus: no review-text file has rejectionReason=wrong_show + wrongShowAuto
 
   const offenders = [];
   let files = 0;
-  for (const showId of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+  for (const showId of listShowDirs(REVIEW_TEXTS_DIR)) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    let stat;
-    try {
-      stat = fs.statSync(showDir);
-    } catch {
-      continue;
-    }
-    if (!stat.isDirectory()) continue;
     for (const file of fs.readdirSync(showDir)) {
       if (!file.endsWith('.json')) continue;
       let data;

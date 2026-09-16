@@ -14,6 +14,8 @@ import { ReviewScorer } from './scorer';
 import { OpenAIReviewScorer } from './openai-scorer';
 import { GeminiScorer } from './gemini-scorer';
 import { BUCKET_RANGES, scoreToBucket } from './config';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 // ========================================
 // TYPES
@@ -140,9 +142,7 @@ function findReviews(options: { withOriginalScore?: boolean; withFullText?: bool
   const reviewsDir = 'data/review-texts';
   const reviews: ReviewData[] = [];
 
-  const shows = fs.readdirSync(reviewsDir).filter(f =>
-    fs.statSync(path.join(reviewsDir, f)).isDirectory()
-  );
+  const shows = listShowDirs(reviewsDir);
 
   for (const show of shows) {
     if (reviews.length >= options.limit) break;

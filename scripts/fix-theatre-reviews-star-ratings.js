@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `fix-theatre-reviews-star-ratings.js — Fix theatre-reviews star rating misattribution.
 
@@ -46,8 +47,7 @@ function isMangledCritic(name) {
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(d => fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   let deletedFiles = 0;
   let strippedScores = 0;

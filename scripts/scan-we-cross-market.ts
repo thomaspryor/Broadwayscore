@@ -7,6 +7,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { buildScoringInput } from './llm-scoring/input-builder';
 const Anthropic = require('@anthropic-ai/sdk');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const anthropic = new Anthropic();
 
 const SYSTEM_PROMPT = `You are a theater critic review scorer for Broadway and West End shows. Your task is to determine how strongly a critic recommends seeing a show based on their review text.
@@ -42,7 +43,7 @@ for (const s of (showsData.shows || [])) { if (s.id) showMap[s.id] = s; }
 
 // Find candidates
 const reviewDir = 'data/review-texts';
-const weDirs = fs.readdirSync(reviewDir).filter(d => d.includes('-west-end-') && fs.statSync(path.join(reviewDir, d)).isDirectory());
+const weDirs = listShowDirs(reviewDir).filter((d: string) => d.includes('-west-end-'));
 
 const candidates: any[] = [];
 for (const showDir of weDirs) {

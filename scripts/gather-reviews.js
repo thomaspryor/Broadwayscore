@@ -84,6 +84,7 @@ const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
+const { listShowDirs } = require('./lib/list-show-dirs');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
 const { stampFirstSeen, emitReviewFirstSeen } = require('./lib/review-file-writer');
@@ -257,9 +258,7 @@ function getGlobalUrlIndex() {
   _globalUrlIndex = new Map();
   const skipIds = getSkipCrossShowDupeIds();
   try {
-    const dirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
-    });
+    const dirs = listShowDirs(REVIEW_TEXTS_DIR);
     for (const d of dirs) {
       if (skipIds.has(d)) continue; // _skipCrossShowDupe: excluded from global URL index
       const showDir = path.join(REVIEW_TEXTS_DIR, d);

@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { extractDesignation } = require('./lib/score-extractors');
 const { setExtractedScore } = require('./lib/score-routing');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
@@ -184,9 +185,7 @@ async function main() {
   console.log(DRY_RUN ? '(DRY RUN - no changes will be made)\n' : '\n');
 
   // Get all show directories
-  let shows = fs.readdirSync(REVIEW_DIR).filter(f =>
-    fs.statSync(path.join(REVIEW_DIR, f)).isDirectory()
-  );
+  let shows = listShowDirs(REVIEW_DIR);
 
   if (SHOW_FILTER) {
     shows = shows.filter(s => s === SHOW_FILTER);

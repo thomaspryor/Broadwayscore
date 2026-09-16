@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { setExtractedScore } = require('./lib/score-routing');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const REVIEW_DIR = 'data/review-texts';
@@ -118,9 +119,7 @@ async function main() {
   const notFixed = [];
 
   // Find all NYSR reviews
-  const shows = fs.readdirSync(REVIEW_DIR).filter(f =>
-    fs.statSync(path.join(REVIEW_DIR, f)).isDirectory()
-  );
+  const shows = listShowDirs(REVIEW_DIR);
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_DIR, show);

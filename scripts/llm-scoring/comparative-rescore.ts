@@ -51,6 +51,8 @@ import { PipelineRunSummary } from './types';
 const { detectBandFromReviewFile } = require('../lib/star-reliability');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { getBestTextForScoring } = require('../lib/text-quality');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR =
   process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '../../data/review-texts');
@@ -330,15 +332,8 @@ async function main() {
   if (showArg) shows = [showArg];
   else if (showsArg) shows = showsArg.split(',').map((s) => s.trim()).filter(Boolean);
   else if (allWE) {
-    shows = fs
-      .readdirSync(REVIEW_TEXTS_DIR)
-      .filter((s) => {
-        try {
-          return fs.statSync(path.join(REVIEW_TEXTS_DIR, s)).isDirectory() && /west-end|off-west-end/.test(s);
-        } catch {
-          return false;
-        }
-      });
+    shows = listShowDirs(REVIEW_TEXTS_DIR)
+      .filter((s) => /west-end|off-west-end/.test(s));
     if (limit > 0) shows = shows.slice(0, limit);
   } else {
     console.error('Pass --show=ID or --all-we');

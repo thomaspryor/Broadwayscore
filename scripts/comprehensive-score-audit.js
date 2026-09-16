@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseStarRating, parseLetterGrade, LETTER_GRADES } = require('./lib/score-parsers');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 const OUTPUT_FILE = 'data/audit/comprehensive-score-audit.json';
@@ -43,8 +44,7 @@ const NORMALIZATION_TABLE = {
 
 function loadAllReviews() {
   const reviews = [];
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory());
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);

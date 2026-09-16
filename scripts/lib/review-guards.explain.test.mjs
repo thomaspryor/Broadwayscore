@@ -23,6 +23,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const guards = require('./review-guards.js');
 const { explainExclusion, isIncludableForRebuild } = guards;
+const { listShowDirs } = require('./list-show-dirs');
 
 const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
@@ -293,11 +294,8 @@ test('parity: explainExclusion()===null <=> isIncludableForRebuild()===true on e
 
   let files = 0;
   const mismatches = [];
-  for (const dir of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+  for (const dir of listShowDirs(REVIEW_TEXTS_DIR)) {
     const showDir = path.join(REVIEW_TEXTS_DIR, dir);
-    let st;
-    try { st = fs.statSync(showDir); } catch { continue; }
-    if (!st.isDirectory()) continue;
     const show = byId.get(dir) || null;
     let entries;
     try { entries = fs.readdirSync(showDir); } catch { continue; }

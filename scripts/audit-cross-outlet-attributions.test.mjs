@@ -6,9 +6,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { listShowDirs } from './lib/list-show-dirs.js';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -133,10 +134,9 @@ test('no live-scoring review-text file has a reverted wrongAttribution clear', (
     return;
   }
   const contradictions = [];
-  for (const showId of readdirSync(reviewTexts)) {
+  for (const showId of listShowDirs(reviewTexts)) {
     if (showId.startsWith('_') || showId.startsWith('.')) continue;
     const dir = path.join(reviewTexts, showId);
-    if (!statSync(dir).isDirectory()) continue;
     for (const file of readdirSync(dir)) {
       if (!file.endsWith('.json')) continue;
       let d;

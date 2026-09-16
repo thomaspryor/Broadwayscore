@@ -11,6 +11,8 @@ import * as path from 'path';
 import { ReviewScorer } from './scorer';
 import { OpenAIReviewScorer } from './openai-scorer';
 import { GeminiScorer } from './gemini-scorer';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 interface TestReview {
   id: string;
@@ -23,9 +25,7 @@ function findTestReviews(count: number): TestReview[] {
   const reviewsDir = 'data/review-texts';
   const reviews: TestReview[] = [];
 
-  const shows = fs.readdirSync(reviewsDir).filter(f =>
-    fs.statSync(path.join(reviewsDir, f)).isDirectory()
-  );
+  const shows = listShowDirs(reviewsDir);
 
   outer:
   for (const show of shows) {

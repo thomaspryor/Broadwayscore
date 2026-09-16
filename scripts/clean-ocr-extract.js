@@ -7,6 +7,7 @@ const path = require('path');
 const https = require('https');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -115,9 +116,7 @@ async function main() {
   
   // Find all newspapers.com OCR files
   const toProcess = [];
-  const dirs = fs.readdirSync(rtDir).filter(d => {
-    try { return fs.statSync(path.join(rtDir, d)).isDirectory(); } catch { return false; }
-  });
+  const dirs = listShowDirs(rtDir);
 
   for (const showDir of dirs) {
     const files = fs.readdirSync(path.join(rtDir, showDir)).filter(f => f.endsWith('-bway.json'));

@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewsDir = path.join(__dirname, '../data/review-texts');
 const designationsFile = path.join(__dirname, '../data/designations.json');
@@ -36,9 +37,7 @@ function updateReviewWithDesignation(review, showDesignation) {
 }
 
 function main() {
-  const shows = fs.readdirSync(reviewsDir).filter(f =>
-    fs.statSync(path.join(reviewsDir, f)).isDirectory()
-  );
+  const shows = listShowDirs(reviewsDir);
 
   let updated = 0;
   let skipped = 0;

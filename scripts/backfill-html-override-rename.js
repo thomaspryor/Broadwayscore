@@ -35,6 +35,7 @@ const {
 const { generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `backfill-html-override-rename.js — One-shot backfill: rename review-text files where criticName was overwritten.
 
@@ -77,11 +78,7 @@ function isSourceCorrupt(data) {
 function findCandidates() {
   if (!fs.existsSync(REVIEW_TEXTS)) return [];
   const candidates = [];
-  const showDirs = fs.readdirSync(REVIEW_TEXTS)
-    .filter(f => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS, f)).isDirectory(); }
-      catch { return false; }
-    });
+  const showDirs = listShowDirs(REVIEW_TEXTS);
   for (const showDir of showDirs) {
     const dir = path.join(REVIEW_TEXTS, showDir);
     let files;
