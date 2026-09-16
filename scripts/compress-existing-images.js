@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { compressImage, SIZE_LIMITS } = require('./lib/compress-image');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const dryRun = process.argv.includes('--dry-run');
@@ -21,9 +22,7 @@ function getImageType(filename) {
 }
 
 async function main() {
-  const showDirs = fs.readdirSync(IMAGES_DIR).filter(d =>
-    fs.statSync(path.join(IMAGES_DIR, d)).isDirectory()
-  );
+  const showDirs = listShowDirs(IMAGES_DIR);
 
   let totalBefore = 0;
   let totalAfter = 0;
