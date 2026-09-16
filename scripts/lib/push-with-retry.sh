@@ -846,8 +846,15 @@ fi
 # — `$?` read inside an `if !` is always 0 (see the BRO-2413 note at the
 # fallback block's own rc handling), which would silently turn every
 # disqualification into "rc=0", i.e. fail OPEN.
+# The offending path is captured into $_API_DISQUALIFY_DETAIL rather than
+# discarded: before BRO-3663 this check's stderr went to /dev/null and BOTH
+# warnings said only "touches a MANAGED/shows.json/reviews.json/unaudited path"
+# without ever naming WHICH — so an operator had to reconstruct the diff by hand
+# to act on it. The module prints exactly one line naming the path.
+_API_DISQUALIFY_DETAIL=""
 api_fallback_paths_ok() {
-  node "$SCRIPT_DIR/api-fallback-disqualifier.js" "$1" "$2" 2>/dev/null
+  _API_DISQUALIFY_DETAIL="$(node "$SCRIPT_DIR/api-fallback-disqualifier.js" "$1" "$2" 2>&1 >/dev/null)"
+  return $?
 }
 
 # BRO-3663: memo for the early-break gate only. Empty = not yet evaluated.
@@ -2225,11 +2232,16 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # NOT identical to the fallback block's own check: this diffs our commits as
   # of loop entry, while that one diffs from RESTORE_BASE_HEAD, which
   # sync_restore_base_head() may have advanced to adopt a concurrent writer's
-  # commit (deliberately — it rides along in the pushed diff). So the late range
-  # can be a SUPERSET and this gate narrows the hole rather than closing it. That
-  # asymmetry is safe in this direction only: a narrower view can suppress a
-  # break that would have been fine, never authorise a fallback the late check
-  # would reject.
+  # commit (deliberately — it rides along in the pushed diff). The two ranges are
+  # therefore INDEPENDENT, not nested: an adopted commit can add paths this gate
+  # never saw, and a later commit can revert one it did. So this gate NARROWS the
+  # budget-loss hole rather than closing it — a run whose disqualifying path
+  # arrives only via an adopted commit still breaks early and still forfeits its
+  # remaining attempts. That residual case is acceptable because the direction of
+  # error is safe: this verdict may only ever SUPPRESS a break. It can cost some
+  # extra local attempts; it can never authorise a fallback, because the
+  # authoritative check below still runs on the real pushed range and is the only
+  # thing that can permit one.
   if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ] \
        && [ -z "$_PUSH_API_EARLY_BREAK_OK" ]; then
     _early_break_rc=0
@@ -2238,7 +2250,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       _PUSH_API_EARLY_BREAK_OK=true
     else
       _PUSH_API_EARLY_BREAK_OK=false
-      echo "::warning::push-with-retry: NOT breaking out early for the Git Data API fallback — our outgoing diff touches a path the fallback's own disqualifier rejects (rc=$_early_break_rc: a MANAGED file without apiFallbackMerge coverage, shows.json/reviews.json, an unaudited data/audit/ path not on API_FALLBACK_SAFE, or the check itself failed and we fail closed). Spending the remaining local attempts instead — breaking early would forfeit them for a fallback that cannot run (BRO-3663). Register the path in scripts/lib/core-data-merge-registry.js to make the fallback available here."
+      echo "::warning::push-with-retry: NOT breaking out early for the Git Data API fallback — our outgoing diff touches a path the fallback's own disqualifier rejects (rc=$_early_break_rc${_API_DISQUALIFY_DETAIL:+; $_API_DISQUALIFY_DETAIL}). Spending the remaining local attempts instead — breaking early would forfeit them for a fallback that cannot run (BRO-3663). Register the path in scripts/lib/core-data-merge-registry.js to make the fallback available here."
     fi
   fi
   if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$_PUSH_API_EARLY_BREAK_OK" = "true" ] \
@@ -2453,7 +2465,7 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
     # check let those cases silently proceed as if the diff were clean —
     # exactly backwards for a guard whose whole job is to fail closed.
     if [ "$_managed_check_rc" != "0" ]; then
-      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file (without apiFallbackMerge coverage), shows.json/reviews.json, an unaudited data/audit/ path (not in API_FALLBACK_SAFE either), or the disqualifier check itself failed unexpectedly (rc=$_managed_check_rc, failing closed). See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries for a hand-verified single-writer path, or its apiFallbackMerge entries for a genuinely multi-writer path with real reconciliation."
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file (without apiFallbackMerge coverage), shows.json/reviews.json, an unaudited data/audit/ path (not in API_FALLBACK_SAFE either), or the disqualifier check itself failed unexpectedly (rc=$_managed_check_rc, failing closed).${_API_DISQUALIFY_DETAIL:+ Offending path — $_API_DISQUALIFY_DETAIL.} See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries for a hand-verified single-writer path, or its apiFallbackMerge entries for a genuinely multi-writer path with real reconciliation."
       _api_fallback_ok=false
     fi
   fi
