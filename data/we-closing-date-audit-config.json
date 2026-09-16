@@ -5,7 +5,7 @@
     "_comment": "show.id -> booking URL override, when SERP discovery (data/westend-slug-map.json) picks the wrong page or a show has no westendtheatre.com presence but a good officialUrl/other booking page exists."
   },
   "openRunSkip": {
-    "_comment": "Open-run West End long-runners (opened pre-2018, no stored closingDate) with no announced closing horizon — the exact class of show most likely to produce a spurious anchored-date match on ordinary prose (no real 'booking until' statement exists to find). Mirrors data/closing-date-audit-config.json's openRunSkip. Remove an entry once the show announces a close — the audit will then surface a NEW_CLOSING candidate.",
+    "_comment": "Open-run West End long-runners (curated, not mechanically date-cut — six-the-musical-west-end-2021 opened 2019 but is unambiguously open-ended) with no announced closing horizon — the exact class of show most likely to produce a spurious anchored-date match on ordinary prose (no real 'booking until' statement exists to find). Mirrors data/closing-date-audit-config.json's openRunSkip. Remove an entry once the show announces a close — the audit will then surface a NEW_CLOSING candidate.",
     "ids": [
       "the-mousetrap-west-end-2021",
       "les-miserables-west-end-2021",
@@ -18,7 +18,8 @@
       "the-play-that-goes-wrong-west-end-2021",
       "showstopper-the-improvised-musical-west-end-2023",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-      "hamilton-west-end-2021"
+      "hamilton-west-end-2021",
+      "six-the-musical-west-end-2021"
     ]
   },
   "ambiguousAllowlist": {

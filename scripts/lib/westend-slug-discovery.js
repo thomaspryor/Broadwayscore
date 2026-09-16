@@ -106,6 +106,20 @@ async function discoverWestEndTheatreUrl(show, mapPath, opts = {}) {
     log(`  [we-slug-discovery] SERP error for ${show.id}: ${e.message.slice(0, 100)}`);
     return null;
   }
+  // serpQuery() returns null (not an empty array, not a throw) when no SERP
+  // provider key is configured, or on some provider failures — see
+  // url-discovery.js's "⚠ No SERP API keys available" early-return. That is
+  // NOT the same fact as "queried Google and got zero westendtheatre.com
+  // matches": conflating the two would write a false notFoundAt entry every
+  // time the provider is unavailable (observed live in this session's own
+  // local dry-run with no SERP keys set — every show got cached as
+  // not-found), silently suppressing real discovery for 14 days once a key
+  // IS configured. Only persist the negative cache when the query genuinely
+  // ran (results is an array, however empty).
+  if (results === null || results === undefined) {
+    log(`  [we-slug-discovery] SERP unavailable for ${show.id} — not caching as not-found`);
+    return null;
+  }
   const url = pickBestWetUrl(results, title);
   if (!url) {
     map.shows[show.id] = { notFoundAt: new Date().toISOString().slice(0, 10) };

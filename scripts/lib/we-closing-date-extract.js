@@ -35,6 +35,35 @@ const US_DATE_RE = new RegExp(
   'i'
 );
 
+// Year-LESS UK date: "must end 31 May" (the real captured phrase from
+// draculawestend.com's closingDateSource for dracula-west-end-2025 — it has
+// no year at all; announcement copy commonly omits it when the close is
+// "this year" from the reader's perspective). Tried only as a fallback when
+// UK_DATE_RE finds nothing in the window, and only matched when NOT
+// immediately followed by a 4-digit year (negative lookahead) so it never
+// double-parses a year-bearing date as a truncated year-less one.
+const UK_DATE_NO_YEAR_RE = new RegExp(
+  `\\b(?:[A-Z][a-z]+\\s+)?(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(${MONTH_RE})\\.?(?!\\s*\\d{4})\\b`,
+  'i'
+);
+
+// Sanity window for an extracted year, mirrors audit-closing-dates.js's
+// buildYearPattern() (TODAY_YEAR..+3): rejects a plausible-shaped but wrong
+// year that happened to land near an anchor phrase (e.g. a copyright notice
+// or an unrelated archived date), same failure class Codex's adversarial
+// review flagged for the unbounded original. Allows a little past-slack
+// (a booking page updated right after close can show a same-week past date).
+const YEAR_WINDOW_PAST_DAYS = 30;
+const YEAR_WINDOW_FUTURE_DAYS = 3 * 365;
+
+function isDateInSaneWindow(dateStr, now) {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return false;
+  const min = new Date(now.getTime() - YEAR_WINDOW_PAST_DAYS * 86400000);
+  const max = new Date(now.getTime() + YEAR_WINDOW_FUTURE_DAYS * 86400000);
+  return d >= min && d <= max;
+}
+
 // Keyword phrases that anchor a trustworthy "this date is the booking/run
 // end" reading. Each capture group is the phrase immediately preceding the
 // date text (kept short — just enough context to log for human review).
@@ -70,33 +99,61 @@ function stripHtml(html) {
     .trim();
 }
 
-function parseUkDate(m) {
+function parseUkDate(m, now) {
   const [, day, mon, year] = m;
   const d = new Date(`${day} ${mon.replace(/^Sept$/i, 'Sep')} ${year}`);
-  return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+  if (isNaN(d.getTime())) return null;
+  const iso = d.toISOString().slice(0, 10);
+  return isDateInSaneWindow(iso, now) ? iso : null;
 }
 
-function parseUsDate(m) {
+function parseUsDate(m, now) {
   const [, mon, day, year] = m;
   const d = new Date(`${mon.replace(/^Sept$/i, 'Sep')} ${day}, ${year}`);
-  return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+  if (isNaN(d.getTime())) return null;
+  const iso = d.toISOString().slice(0, 10);
+  return isDateInSaneWindow(iso, now) ? iso : null;
+}
+
+// "31 May" with no year: try this year first; if that reading is already
+// more than a week in the past, the announcement almost certainly means NEXT
+// year's 31 May (a booking page doesn't advertise a date that already
+// passed). A week of slack (not zero) avoids flipping a booking-until date
+// that's merely a few days old to next year on a stale scrape.
+function parseUkDateNoYear(m, now) {
+  const [, day, mon] = m;
+  const monClean = mon.replace(/^Sept$/i, 'Sep');
+  const thisYear = now.getFullYear();
+  let d = new Date(`${day} ${monClean} ${thisYear}`);
+  if (isNaN(d.getTime())) return null;
+  if (d.getTime() < now.getTime() - 7 * 86400000) {
+    d = new Date(`${day} ${monClean} ${thisYear + 1}`);
+  }
+  const iso = d.toISOString().slice(0, 10);
+  return isDateInSaneWindow(iso, now) ? iso : null;
 }
 
 /**
  * Find every keyword-anchored date in `text`, in document order.
+ * @param {string} text
+ * @param {Date} [now] - injectable for tests; defaults to the real current time
  * @returns {Array<{date: string, quote: string, index: number}>}
  */
-function findAnchoredDates(text) {
+function findAnchoredDates(text, now = new Date()) {
   const found = [];
   const anchorUnion = new RegExp(ANCHOR_PHRASES.map(r => `(?:${r.source})`).join('|'), 'gi');
   let am;
   while ((am = anchorUnion.exec(text)) !== null) {
     const windowText = text.slice(am.index, am.index + am[0].length + 40);
     let dateMatch = UK_DATE_RE.exec(windowText);
-    let date = dateMatch ? parseUkDate(dateMatch) : null;
+    let date = dateMatch ? parseUkDate(dateMatch, now) : null;
     if (!date) {
       dateMatch = US_DATE_RE.exec(windowText);
-      date = dateMatch ? parseUsDate(dateMatch) : null;
+      date = dateMatch ? parseUsDate(dateMatch, now) : null;
+    }
+    if (!date) {
+      dateMatch = UK_DATE_NO_YEAR_RE.exec(windowText);
+      date = dateMatch ? parseUkDateNoYear(dateMatch, now) : null;
     }
     if (date) {
       // dateMatch.index is relative to windowText, which itself starts at
@@ -142,8 +199,8 @@ function pageMatchesShowTitle(text, showTitle) {
  * @returns {{date: string, quote: string}|null} - null if the page doesn't
  *   confirm the show, or no anchored date was found.
  */
-function extractWestEndClosingDate(html, showTitle) {
-  const result = extractWestEndClosingDateDetailed(html, showTitle);
+function extractWestEndClosingDate(html, showTitle, now) {
+  const result = extractWestEndClosingDateDetailed(html, showTitle, now);
   return result.date ? { date: result.date, quote: result.quote } : null;
 }
 
@@ -157,12 +214,13 @@ function extractWestEndClosingDate(html, showTitle) {
  * distinction matters — a page that no longer mentions the show is at least
  * as strong a "probably closed" signal as an empty one.
  *
+ * @param {Date} [now] - injectable for tests; defaults to the real current time
  * @returns {{date: string, quote: string}|{date: null, kind: 'title_mismatch'|'no_date_found'}}
  */
-function extractWestEndClosingDateDetailed(html, showTitle) {
+function extractWestEndClosingDateDetailed(html, showTitle, now = new Date()) {
   const text = stripHtml(html);
   if (!pageMatchesShowTitle(text, showTitle)) return { date: null, kind: 'title_mismatch' };
-  const dates = findAnchoredDates(text);
+  const dates = findAnchoredDates(text, now);
   if (dates.length === 0) return { date: null, kind: 'no_date_found' };
   // Latest date wins (an "extended until" mention should beat an older
   // "until" mention still present elsewhere on the page).
