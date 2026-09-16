@@ -1,0 +1,117 @@
+name: Self-Heal Orphan Slim Show Files
+
+# BRO-3507 (follow-on to BRO-3425): drains the "Audit orphan slim show files"
+# gate in test.yml's data-validation job (~scripts/audit-orphan-show-ids.js
+# bare, no flags) DAILY instead of waiting for a human to notice it's red and
+# run --fix by hand. BRO-3425 measured main red on 143 of 150 runs over 8
+# days; a gate with no scheduled heal sits red between whoever last noticed
+# it and whoever notices next. Same template as
+# .github/workflows/fix-circular-duplicate-pairs.yml — report, then --fix,
+# then push, then notify on failure.
+#
+# audit-orphan-show-ids.js --fix only DELETES slim files under
+# public/data/shows/{id}.json whose id no longer exists in data/shows.json
+# (renamed/consolidated shows) — it never writes or regenerates a show's
+# content, so this can't reintroduce the "regenerate public JSONs from
+# core-data" hazard documented in .github/workflows/CLAUDE.md's "Public Show
+# JSON Safety" section. audience-buzz.json / show-score.json orphan keys stay
+# report-only (require a manual rename, per the script's own output) — this
+# workflow does not touch them.
+
+on:
+  schedule:
+    # Daily at 3:15 AM UTC — off-peak, no collision with the hourly/half-
+    # hourly data pollers or the other daily self-heals (fix-circular-
+    # duplicate-pairs.yml at 11:40, clear-stale-duplicate-of.yml at 11:30).
+    - cron: '15 3 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: self-heal-orphan-show-files
+  cancel-in-progress: false
+
+jobs:
+  self-heal:
+    name: Self-heal orphan slim show files
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # shows.json (private core-data) is the ground truth this audit diffs
+      # public/data/shows/*.json against — without it every slim file looks
+      # orphaned (the script's own MIN_PLAUSIBLE_SHOWS floor refuses to run
+      # rather than let that happen, but a real checkout avoids tripping it).
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Run audit (report)
+        id: audit
+        run: |
+          set +e
+          OUT=$(node scripts/audit-orphan-show-ids.js --json 2>&1)
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(node -e "try{const d=JSON.parse(process.argv[1]);console.log(d.orphans.slimShowFiles.length)}catch{console.log(0)}" "$OUT" 2>/dev/null)
+          COUNT=${COUNT:-0}
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          # Don't fail here — the next step fixes.
+          exit 0
+
+      - name: Apply fix
+        if: steps.audit.outputs.count != '0' && inputs.dry_run != 'true'
+        run: node scripts/audit-orphan-show-ids.js --fix
+
+      - name: Commit + push deleted orphan files
+        if: steps.audit.outputs.count != '0' && inputs.dry_run != 'true'
+        run: |
+          git add -u public/data/shows/
+          if git diff --cached --quiet; then
+            echo "No orphan files actually removed (audit/fix disagreed) — nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore: self-heal ${{ steps.audit.outputs.count }} orphan slim show file(s) [orphan-show-heal]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Summary
+        run: |
+          {
+            echo "## Orphan Slim Show File Sweep"
+            echo ""
+            echo "**Orphan slim files detected:** ${{ steps.audit.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.audit.outputs.count }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** auto-fixed + pushed"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Self-Heal Orphan Slim Show Files Failed'
+          severity: 'warning'
