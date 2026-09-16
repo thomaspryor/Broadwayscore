@@ -244,6 +244,7 @@ tests/unit/audience-full-snapshot.test.mjs
 tests/unit/audience-label-affordance.test.mjs
 tests/unit/audit-aggregator-gap-push-timeout.test.mjs
 tests/unit/audit-audience-buzz-stale-source.test.mjs
+tests/unit/audit-corpus-contamination.test.mjs
 tests/unit/audit-cross-show-excerpt-contamination.test.mjs
 tests/unit/audit-delete-without-breadcrumb.test.mjs
 tests/unit/audit-dependencies.test.mjs
@@ -307,6 +308,7 @@ tests/unit/canonical-duplicate-pointers.test.mjs
 tests/unit/canonical-venue.test.mjs
 tests/unit/card-creation-disposition.test.mjs
 tests/unit/card-premises-auditor.test.mjs
+tests/unit/card-verification-tokenizer.test.mjs
 tests/unit/cascade-clear-duplicate-refs.test.mjs
 tests/unit/cast-changes-filters.test.mjs
 tests/unit/cast-changes-real-data.test.mjs
@@ -359,6 +361,7 @@ tests/unit/content-quality-nyt-bot-stub.test.mjs
 tests/unit/content-quality-nyt-verify-access-stub.test.mjs
 tests/unit/content-quality-paywall-subscriber.test.mjs
 tests/unit/content-quality-wrong-production-autocleared.test.mjs
+tests/unit/content-quality-wsj-archive-truncation.test.mjs
 tests/unit/content-quality-wsj-capsule-review.test.mjs
 tests/unit/content-quality-wsj-paywall-gate.test.mjs
 tests/unit/content-quality.test.mjs
@@ -674,6 +677,7 @@ tests/unit/push-via-git-api.test.mjs
 tests/unit/push-with-retry-abort-preserves-head.test.mjs
 tests/unit/push-with-retry-fallback-eligibility.test.mjs
 tests/unit/push-with-retry-trap-exit-code.test.mjs
+tests/unit/rebuild-all-reviews.test.mjs
 tests/unit/rebuild-dedup-scored-preference.test.mjs
 tests/unit/rebuild-fast-contamination-guard.test.mjs
 tests/unit/rebuild-fast-push-timeout.test.mjs

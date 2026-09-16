@@ -474,6 +474,8 @@ test('tier3: NO tier-3 path is deterministic-green (merge tap preserved)', () =>
   }
   // colocated .test.mjs files remain green — unchanged behavior
   assert.equal(isDeterministicGreenPath('scripts/lib/foo.test.mjs'), true);
+  // BRO-2247 cousin: a colocated .test.ts is exactly as inert as .test.mjs
+  assert.equal(isDeterministicGreenPath('scripts/lib/foo.test.ts'), true);
 });
 
 test('tier3: email-basename, dispatch control-plane, and cmux libs refused (ship-check round)', () => {

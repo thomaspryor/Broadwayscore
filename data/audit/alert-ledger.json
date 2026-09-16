@@ -139,13 +139,13 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-16T04:57:39.608Z",
-      "lastNotifiedAt": "2026-09-16T04:57:39.608Z",
-      "lastSurfacedAt": "2026-09-16T04:57:39.608Z",
-      "notifyCount": 77,
+      "lastSeen": "2026-09-16T06:09:01.911Z",
+      "lastNotifiedAt": "2026-09-16T05:55:43.958Z",
+      "lastSurfacedAt": "2026-09-16T05:55:43.958Z",
+      "notifyCount": 78,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "resolvedAt": "2026-09-16T05:20:42.054Z"
+      "resolvedAt": "2026-09-16T06:30:17.705Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -788,14 +788,14 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-16T04:57:39.606Z",
-      "lastNotifiedAt": "2026-09-16T04:02:19.970Z",
+      "lastSeen": "2026-09-16T06:19:24.689Z",
+      "lastNotifiedAt": "2026-09-16T05:38:13.349Z",
       "lastSurfacedAt": null,
-      "notifyCount": 54,
+      "notifyCount": 55,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 4,
-      "resolvedAt": "2026-09-16T05:20:41.972Z"
+      "silentRefires": 2,
+      "resolvedAt": "2026-09-16T06:30:17.636Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -3076,6 +3076,32 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "corpus-drift:critic-outlets": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
+      "firstSeen": "2026-09-16T06:16:49.523Z",
+      "lastSeen": "2026-09-16T06:28:24.352Z",
+      "lastNotifiedAt": "2026-09-16T06:16:49.523Z",
+      "lastSurfacedAt": "2026-09-16T06:16:49.523Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "corpus-drift:duplicate-of-cleared-contradiction": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
+      "firstSeen": "2026-09-16T06:16:49.526Z",
+      "lastSeen": "2026-09-16T06:28:24.356Z",
+      "lastNotifiedAt": "2026-09-16T06:16:49.526Z",
+      "lastSurfacedAt": "2026-09-16T06:16:49.526Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
     }
   }
 }

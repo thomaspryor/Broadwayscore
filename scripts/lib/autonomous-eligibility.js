@@ -386,7 +386,12 @@ const DETERMINISTIC_GREEN_PREFIXES = ['tests/', 'docs/'];
 function isDeterministicGreenPath(file) {
   const f = normalizePath(file);
   if (!f) return false;
-  if (/\.test\.mjs$/.test(f)) return true;
+  // BRO-2247 cousin (what-else sweep): a colocated .test.ts is exactly as
+  // inert as a .test.mjs — both are test-only code that cannot change site
+  // or data behavior — but was missing here, so a diff touching only a
+  // .test.ts file failed this predicate and kept the human tap that this
+  // class exists to skip.
+  if (/\.test\.(?:m?js|ts)$/.test(f)) return true;
   return DETERMINISTIC_GREEN_PREFIXES.some(p => f.startsWith(p));
 }
 

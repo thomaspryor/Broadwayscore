@@ -85,6 +85,8 @@ const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpenin
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { checkReviewTextsPreflight } = require('./lib/review-texts-preflight');
+const { isRunningInCI } = require('./lib/regression-guard');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
 const { stampFirstSeen, emitReviewFirstSeen } = require('./lib/review-file-writer');
@@ -5574,14 +5576,31 @@ async function rebuildReviewsJson() {
 
   // Use the existing rebuild script if available
   const rebuildScript = path.join(__dirname, 'rebuild-all-reviews.js');
-  if (fs.existsSync(rebuildScript)) {
-    const { execSync } = require('child_process');
-    try {
-      execSync(`node "${rebuildScript}"`, { stdio: 'inherit' });
-      console.log('✓ reviews.json rebuilt');
-    } catch (e) {
-      console.log('⚠️  Failed to rebuild reviews.json:', e.message);
+  if (!fs.existsSync(rebuildScript)) return;
+
+  // BRO-2276: a cloud-bootstrapped worktree (or any checkout where
+  // data/review-texts wasn't fully cloned) can trigger this local rebuild
+  // against a stub/partial directory, folding a near-empty dataset into the
+  // real, symlinked reviews.json. rebuild-all-reviews.js's own regression
+  // guard is a second line of defense, but refusing to even spawn it here
+  // avoids the subprocess touching disk at all. CI always checks out the
+  // full review-texts clone fresh, so this preflight is local-only.
+  if (!isRunningInCI()) {
+    const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
+    const preflight = checkReviewTextsPreflight(reviewTextsDir);
+    if (!preflight.ok) {
+      console.log(`⚠️  Skipping local rebuild — ${preflight.reason}`);
+      console.log(`   Fix: ./scripts/setup-local-data.sh --all (re-clone the full review-texts checkout)`);
+      return;
     }
+  }
+
+  const { execSync } = require('child_process');
+  try {
+    execSync(`node "${rebuildScript}"`, { stdio: 'inherit' });
+    console.log('✓ reviews.json rebuilt');
+  } catch (e) {
+    console.log('⚠️  Failed to rebuild reviews.json:', e.message);
   }
 }
 
