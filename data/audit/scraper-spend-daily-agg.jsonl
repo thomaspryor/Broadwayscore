@@ -237,3 +237,99 @@
 {"day":"2026-09-14","provider":"brightdata","workflow":"Enrich Off-Broadway Dates","script":"enrich-off-broadway-dates.js","fn":"web-unlocker","host":null,"category":null,"calls":1,"credits":0}
 {"day":"2026-09-14","provider":"brightdata","workflow":"Refresh Review Data","script":"extract-theatre-record.js","fn":"web-unlocker","host":null,"category":null,"calls":1,"credits":0}
 {"day":"2026-09-14","provider":"brightdata","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"serp-api","host":null,"category":null,"calls":1,"credits":0}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"serp","host":null,"category":null,"calls":1393,"credits":6685}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"serp","host":null,"category":null,"calls":143,"credits":3375}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"collect-outlet-reviews.js","fn":"serp","host":null,"category":null,"calls":512,"credits":2585}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"render","host":null,"category":null,"calls":396,"credits":1950}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"serp","host":null,"category":null,"calls":211,"credits":1060}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Scrape New Aggregators","script":"scrape-nyc-theatre-roundups.js","fn":"serp","host":null,"category":null,"calls":186,"credits":940}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js","fn":"render","host":null,"category":null,"calls":131,"credits":655}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Gather Review Data","script":"collect-outlet-reviews.js","fn":"serp","host":null,"category":null,"calls":25,"credits":625}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js","fn":"serp","host":null,"category":null,"calls":101,"credits":525}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"render","host":null,"category":null,"calls":78,"credits":390}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"stealth","host":null,"category":null,"calls":36,"credits":380}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"serp","host":null,"category":null,"calls":13,"credits":325}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"render","host":null,"category":null,"calls":53,"credits":265}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"render","host":null,"category":null,"calls":47,"credits":265}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"stealth","host":null,"category":null,"calls":17,"credits":230}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Scrape New Aggregators","script":"scrape-nyc-theatre-roundups.js","fn":"serp","host":null,"category":null,"calls":8,"credits":200}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"stealth","host":null,"category":null,"calls":16,"credits":170}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Scrape New Aggregators","script":"scrape-nyc-theatre-roundups.js","fn":"render","host":null,"category":null,"calls":31,"credits":155}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Collect Outlet Reviews (SERP)","script":"collect-outlet-reviews.js","fn":"serp","host":null,"category":null,"calls":30,"credits":150}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"page","host":null,"category":null,"calls":154,"credits":145}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"page","host":null,"category":null,"calls":134,"credits":129}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Enrich Reviews","script":"backfill-unknown-critics.js","fn":"stealth","host":null,"category":null,"calls":6,"credits":120}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Collect Review Texts","script":"collect-review-texts.js","fn":"serp","host":null,"category":null,"calls":22,"credits":110}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js","fn":"serp","host":null,"category":null,"calls":5,"credits":100}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"serp","host":null,"category":null,"calls":18,"credits":90}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"page","host":null,"category":null,"calls":78,"credits":80}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"render","host":null,"category":null,"calls":15,"credits":75}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"scrape-nyc-theatre-roundups.js","fn":"serp","host":null,"category":null,"calls":14,"credits":60}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Aggregator Review Gap","script":"ingest-review-from-url.js","fn":"page","host":null,"category":null,"calls":50,"credits":50}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"scrape-bww-reviews.js","fn":"serp","host":null,"category":null,"calls":11,"credits":50}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"serp","host":null,"category":null,"calls":2,"credits":50}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Enrich Reviews","script":"replay-pending-bylines.js","fn":"page","host":null,"category":null,"calls":48,"credits":49}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"scrape-playbill-verdict.js","fn":"serp","host":null,"category":null,"calls":10,"credits":45}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Enrich Reviews","script":"backfill-unknown-critics.js","fn":"page","host":null,"category":null,"calls":31,"credits":31}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"page","host":null,"category":null,"calls":25,"credits":25}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"json","host":null,"category":null,"calls":25,"credits":25}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"render","host":null,"category":null,"calls":6,"credits":25}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"serp","host":null,"category":null,"calls":5,"credits":25}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Gather Review Data","script":"scrape-nyc-theatre-roundups.js","fn":"serp","host":null,"category":null,"calls":3,"credits":25}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"serp","host":null,"category":null,"calls":1,"credits":25}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Collect Outlet Reviews (SERP)","script":"collect-outlet-reviews.js","fn":"serp","host":null,"category":null,"calls":1,"credits":25}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Collect Review Texts","script":"collect-review-texts.js","fn":"serp","host":null,"category":null,"calls":1,"credits":25}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Gather Review Data","script":"scrape-bww-reviews.js","fn":"serp","host":null,"category":null,"calls":1,"credits":25}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js","fn":"json","host":null,"category":null,"calls":21,"credits":21}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Opening Dates","script":"audit-opening-dates.js","fn":"serp","host":null,"category":null,"calls":4,"credits":20}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"premium","host":null,"category":null,"calls":3,"credits":20}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Aggregator Review Gap","script":"ingest-review-from-url.js","fn":"render","host":null,"category":null,"calls":3,"credits":15}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"page","host":null,"category":null,"calls":14,"credits":14}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"scrape-playbill-verdict.js","fn":"page","host":null,"category":null,"calls":14,"credits":14}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"json","host":null,"category":null,"calls":12,"credits":12}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Aggregator URL Watcher","script":"watch-aggregator-urls.js","fn":"page","host":null,"category":null,"calls":12,"credits":12}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"scrape-bww-reviews.js","fn":"page","host":null,"category":null,"calls":11,"credits":11}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Enrich Reviews","script":"backfill-unknown-critics.js","fn":"page","host":null,"category":null,"calls":10,"credits":10}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Gather Review Data","script":"scrape-nyc-theatre-roundups.js","fn":"render","host":null,"category":null,"calls":2,"credits":10}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Aggregator Review Gap","script":"ingest-review-from-url.js","fn":"stealth","host":null,"category":null,"calls":1,"credits":10}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Enrich Reviews","script":"replay-pending-bylines.js","fn":"stealth","host":null,"category":null,"calls":1,"credits":10}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js","fn":"stealth","host":null,"category":null,"calls":1,"credits":10}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"page","host":null,"category":null,"calls":9,"credits":9}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Audit Aggregator Review Gap","script":"ingest-review-from-url.js","fn":"page","host":null,"category":null,"calls":6,"credits":6}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"json","host":null,"category":null,"calls":5,"credits":5}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Enrich Reviews","script":"replay-pending-bylines.js","fn":"page","host":null,"category":null,"calls":5,"credits":5}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Reverse Discovery Audit","script":"audit-reverse-discovery.js","fn":"page","host":null,"category":null,"calls":3,"credits":5}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Audit Aggregator Review Gap","script":"ingest-review-from-url.js","fn":"render","host":null,"category":null,"calls":1,"credits":5}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Closing Dates","script":"audit-closing-dates.js","fn":"serp","host":null,"category":null,"calls":1,"credits":5}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Enrich Reviews","script":"backfill-unknown-critics.js","fn":"render","host":null,"category":null,"calls":1,"credits":5}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Enrich Reviews","script":"replay-pending-bylines.js","fn":"render","host":null,"category":null,"calls":1,"credits":5}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Aggregator URL Watcher","script":"watch-aggregator-urls.js","fn":"page","host":null,"category":null,"calls":4,"credits":4}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Opening Dates","script":"audit-opening-dates.js","fn":"page","host":null,"category":null,"calls":3,"credits":3}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"page","host":null,"category":null,"calls":3,"credits":2}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Collect Review Texts","script":"collect-review-texts.js","fn":"page","host":null,"category":null,"calls":2,"credits":2}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Audit Closing Dates","script":"audit-closing-dates.js","fn":"page","host":null,"category":null,"calls":2,"credits":2}
+{"day":"2026-09-15","provider":"scrapingdog","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js","fn":"page","host":null,"category":null,"calls":1,"credits":1}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"web-unlocker","host":null,"category":null,"calls":236,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"web-unlocker","host":null,"category":null,"calls":116,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"web-unlocker","host":null,"category":null,"calls":62,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Gather Review Data","script":"collect-outlet-reviews.js","fn":"serp-unlocker","host":null,"category":null,"calls":31,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Enrich Reviews","script":"backfill-unknown-critics.js","fn":"web-unlocker","host":null,"category":null,"calls":17,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Audit Aggregator Review Gap","script":"ingest-review-from-url.js","fn":"web-unlocker","host":null,"category":null,"calls":10,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"serp-unlocker","host":null,"category":null,"calls":9,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js","fn":"serp-unlocker","host":null,"category":null,"calls":8,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Enrich Reviews","script":"replay-pending-bylines.js","fn":"web-unlocker","host":null,"category":null,"calls":6,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Fetch Show Images","script":"fetch-show-images-auto.js","fn":"web-unlocker","host":null,"category":null,"calls":5,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Reverse Discovery Audit","script":"audit-reverse-discovery.js","fn":"web-unlocker","host":null,"category":null,"calls":4,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Audit Aggregator Review Gap","script":"audit-show-review-gap.js","fn":"serp-unlocker","host":null,"category":null,"calls":3,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Collect Outlet Reviews (SERP)","script":"collect-outlet-reviews.js","fn":"serp-unlocker","host":null,"category":null,"calls":2,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Opening Night Poller","script":"opening-night-poller.js","fn":"serp-unlocker","host":null,"category":null,"calls":2,"credits":0}
+{"day":"2026-09-15","provider":"browserbase","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js:the-stage","fn":"session","host":"thestage.co.uk","category":"discovery","calls":2,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Gather Review Data","script":"collect-outlet-reviews.js","fn":"serp-api","host":null,"category":null,"calls":1,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Collect Review Texts","script":"collect-review-texts.js","fn":"serp-unlocker","host":null,"category":null,"calls":1,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"serp-api","host":null,"category":null,"calls":1,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":"Gather Review Data","script":"scrape-playbill-verdict.js","fn":"serp-unlocker","host":null,"category":null,"calls":1,"credits":0}
+{"day":"2026-09-15","provider":"brightdata","workflow":null,"script":"unknown","fn":"web-unlocker","host":null,"category":null,"calls":1,"credits":0}
+{"day":"2026-09-15","provider":"browserbase","workflow":"Sweep WE Aggregators","script":"scrape-stagedoor-critics.js","fn":"session","host":"stagedoor.com","category":"discovery","calls":1,"credits":0}
+{"day":"2026-09-15","provider":"browserbase","workflow":"Scrape The Stage Roundups","script":"scrape-thestage-roundups.js","fn":"session","host":"thestage.co.uk","category":"discovery","calls":1,"credits":0}
+{"day":"2026-09-15","provider":"browserbase","workflow":"Sweep WE Aggregators","script":"sweep-we-aggregators.js:theatre-reviews","fn":"session","host":"theatre.reviews","category":"discovery","calls":1,"credits":0}
+{"day":"2026-09-15","provider":"scrapingbee","workflow":"Gather Review Data","script":"gather-reviews.js","fn":"serp-cap-hit","host":null,"category":null,"calls":1,"credits":0}
