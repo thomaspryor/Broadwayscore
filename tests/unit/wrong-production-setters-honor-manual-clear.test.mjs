@@ -178,17 +178,13 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       // evaluated against a reconstructed pre-incident git blob instead of the
       // live file. Not CI-scheduled; not in any workflow. (task #1086)
       'repair-noteless-wrongprod-autoclear.js',
-      // audit-corpus-contamination.js (BRO-2271) — its `--flag=<path>` write is
-      // explicitly a HUMAN-INVOKED, single-file action taken only after manual
-      // verification of one report candidate (see its own docblock: "Every
-      // candidate must be manually verified ... before being written back as
-      // wrongProduction:true"), the same shape as the manual-flag-by-id
-      // utilities above — not an automated re-scan that could re-flag a file a
-      // human already cleared elsewhere. It also carries its own separate
-      // clearing breadcrumb (wrongProductionAuditCleared, set via its
-      // `--clear=<path>` mode) rather than reading wrongProductionManualClear.
-      // Landed on main unregistered and turned the Unit Tests job red;
-      // registering it here rather than blocking an unrelated PR on it.
+      // audit-corpus-contamination.js (BRO-2271) — its --flag=<path> mode is a
+      // manual CLI utility: a human runs `node scripts/audit-corpus-contamination.js
+      // --flag=<path> --note="..."` only AFTER manually verifying (reading the
+      // review's own fullText, comparing to the show's declared production) that
+      // a candidate the report mode surfaced is genuine contamination. It never
+      // auto-re-scans the corpus and write on its own — same category as
+      // flag-wrong-production-by-id.js/flag-wrong-production-by-date.js above.
       'audit-corpus-contamination.js',
     ]);
 
