@@ -23,6 +23,18 @@
  *   --show=ID              one show only
  *   --all-provisional      every entry with provisional:true OR
  *                          discoverySource matching ^manual|^venue-page
+ *   --all                  (BRO-2255) every show in the corpus, not just
+ *                          provisional entries — the full-corpus Playbill
+ *                          revival/type sweep. Writes to a SEPARATE ledger
+ *                          (data/audit/venue-date-mismatches-all.json), not
+ *                          venue-date-mismatches.json, because that domain is
+ *                          exactly "shows currently provisional" and mixing
+ *                          the two would make a --all-provisional run retire
+ *                          every non-provisional row as no-longer-tracked.
+ *                          Newly SERP-resolved Playbill URLs are written back
+ *                          to data/playbill-urls.json as they're found, so a
+ *                          budget-capped run's cache gains persist across
+ *                          sessions instead of re-querying SERP every time.
  *   --fail-on-mismatch     exit 1 + emit ::error:: lines per mismatch
  *   --dry-run              do not write audit file
  *   --limit=N              cap shows processed (debug aid)
@@ -51,6 +63,7 @@
  *   node scripts/validate-show-venue.js --show=sunset-baby-off-broadway-2026
  *   node scripts/validate-show-venue.js --all-provisional
  *   node scripts/validate-show-venue.js --all-provisional --fail-on-mismatch
+ *   node scripts/validate-show-venue.js --all --time-budget-min=60
  *
  * Exit codes (BRO-2821). A run that explicitly names ONE show with --show is
  * held to a stricter contract than a sweep, because a sweep averages rows and
@@ -92,6 +105,7 @@ const {
   missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { openPlaybillUrls } = require('./lib/playbill-urls-store');
 const { venueSearchToken } = require('./lib/venue-search-token');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { classifyNamedShowRun } = require('./lib/named-show-verdict');
@@ -109,13 +123,21 @@ const args = process.argv.slice(2);
 const dataDirOverride = args.find(a => a.startsWith('--data-dir='))?.split('=').slice(1).join('=');
 const SHOWS_PATH = dataDirOverride ? path.join(path.resolve(dataDirOverride), 'shows.json') : path.join(ROOT, 'data', 'shows.json');
 const PLAYBILL_URLS_PATH = path.join(ROOT, 'data', 'playbill-urls.json');
+// --all (BRO-2255) sweeps the WHOLE corpus, not just provisional entries — a
+// different domain than --all-provisional's ledger, which the file's own
+// header documents as "exactly the shows that are provisional right now"
+// (buildAuditResults). Mixing the two domains into one file would let a
+// --all-provisional CI run silently retire every non-provisional row it
+// doesn't recognise, so --all gets its own ledger rather than sharing
+// venue-date-mismatches.json.
+const allMode = args.includes('--all');
 // VENUE_AUDIT_PATH redirects the shared report for tests only — the report is
 // a repo-wide ledger, so an automated test of the write path must not be able
 // to touch the real one (that is the BRO-2696 failure itself). Production and
 // CI never set it.
 const AUDIT_PATH = process.env.VENUE_AUDIT_PATH
   ? path.resolve(process.env.VENUE_AUDIT_PATH)
-  : path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
+  : path.join(ROOT, 'data', 'audit', allMode ? 'venue-date-mismatches-all.json' : 'venue-date-mismatches.json');
 if (process.env.VENUE_AUDIT_PATH) {
   // Never silent: if this were ever set in CI, the gate would read and update a
   // ledger nobody is looking at while every run still reported success.
@@ -164,14 +186,20 @@ function loadPreviousResultById() {
   } catch { return {}; }
 }
 
-function isProvisional(show) {
+// Shows Playbill validation is known to false-positive on, regardless of
+// whether they're provisional. Split out from isProvisional (BRO-2255) so
+// --all can apply the SAME exemptions instead of re-litigating every one of
+// them at corpus scale — a --all sweep still has to query SERP for shows the
+// PROVISIONAL sweep already excluded because a same-titled Broadway transfer
+// or the wrong market's page reliably wins scorePlaybillUrl otherwise.
+function isExemptFromPlaybillCheck(show) {
   const src = show.discoverySource || '';
   // Roundup-promoted REGIONAL shows are exempt: "the roundup IS the validation"
   // (user rule 2026-07-08, CLAUDE.md §3). Playbill validation false-positives on
   // them because Playbill's /production/ page for a same-title show is often the
   // Broadway transfer, not the regional run (little-bear-ridge-road-regional-2024:
   // Steppenwolf 2024 record vs Playbill's Booth 2025 transfer — main red 2026-07-10).
-  if (show.category === 'regional' && src.startsWith('aggregator-roundup')) return false;
+  if (show.category === 'regional' && src.startsWith('aggregator-roundup')) return true;
   // Free outdoor/park productions with no Playbill /production/ page at all
   // (not tracked by Playbill's commercial-production database) are exempt.
   // Without this, the SERP query in findPlaybillUrl() falls back to a
@@ -185,7 +213,13 @@ function isProvisional(show) {
   // #814).
   if (show.noPlaybillProductionPage === true
       && typeof show.statusBackfillSource === 'string'
-      && show.statusBackfillSource.length > 50) return false;
+      && show.statusBackfillSource.length > 50) return true;
+  return false;
+}
+
+function isProvisional(show) {
+  if (isExemptFromPlaybillCheck(show)) return false;
+  const src = show.discoverySource || '';
   if (show.provisional === true) return true;
   return src.startsWith('manual-user-request') || src.startsWith('venue-page');
 }
@@ -693,14 +727,14 @@ async function validateOne(show, log) {
     log(`  ✓ match`);
     return {
       id: show.id, title: show.title, venue: show.venue,
-      result: 'match', playbillUrl: urlResult.url, parsed, mismatches: [], explainedByPriorRun,
+      result: 'match', playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches: [], explainedByPriorRun,
     };
   }
   log(`  ✗ ${mismatches.length} mismatch(es):`);
   mismatches.forEach(m => log(`    - ${m.field}: shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`));
   return {
     id: show.id, title: show.title, venue: show.venue,
-    result: 'mismatch', playbillUrl: urlResult.url, parsed, mismatches, explainedByPriorRun,
+    result: 'mismatch', playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches, explainedByPriorRun,
   };
 }
 
@@ -720,6 +754,16 @@ async function main() {
   // than a branch someone has to remember to keep in sync.
   const allShows = loadShows();
   const provisionalShows = allShows.filter(isProvisional);
+  // --all's domain is every CHECKABLE show in the corpus rather than just the
+  // provisional subset — see the allMode/AUDIT_PATH comments above for why
+  // that domain gets its own ledger file instead of sharing this one. Still
+  // excludes isExemptFromPlaybillCheck() shows: those exemptions exist
+  // because Playbill validation is KNOWN to false-positive on them (a
+  // same-titled Broadway transfer or wrong-market page reliably wins
+  // scorePlaybillUrl), and --all sweeping every show unfiltered would just
+  // re-litigate that at corpus scale instead of reusing the answer.
+  const allCheckableShows = allShows.filter((s) => !isExemptFromPlaybillCheck(s));
+  const trackedShows = allMode ? allCheckableShows : provisionalShows;
   const previousResultsById = loadPreviousResultById();
   // --data-dir points shows.json at a CANDIDATE branch's copy while the ledger
   // still resolves to the real repo (documented above), so the two describe
@@ -731,12 +775,12 @@ async function main() {
   // the two DO describe the same universe and normal semantics apply.
   const mismatchedUniverse = Boolean(dataDirOverride) && !process.env.VENUE_AUDIT_PATH;
   const currentProvisionalIds = new Set([
-    ...provisionalShows.map(s => s.id),
+    ...trackedShows.map(s => s.id),
     ...(mismatchedUniverse ? Object.keys(previousResultsById) : []),
   ]);
   const showsById = mismatchedUniverse
     ? null
-    : Object.fromEntries(provisionalShows.map(s => [s.id, s]));
+    : Object.fromEntries(trackedShows.map(s => [s.id, s]));
   // BRO-2701 review finding 3: this used to map EVERY prior row to its
   // `.result` unconditionally, while buildAuditResults drops fingerprint-stale
   // rows at write time. A show whose venue/dates were edited since its last
@@ -767,8 +811,10 @@ async function main() {
     }
   } else if (allProvisional) {
     targets = orderProvisionalTargets(provisionalShows, previousResultOnlyById);
+  } else if (allMode) {
+    targets = orderProvisionalTargets(allCheckableShows, previousResultOnlyById);
   } else {
-    console.error('Pass --show=ID, --all-provisional, or --candidates-file=PATH');
+    console.error('Pass --show=ID, --all-provisional, --all, or --candidates-file=PATH');
     process.exit(2);
   }
   if (limit > 0) targets = targets.slice(0, limit);
@@ -777,11 +823,42 @@ async function main() {
   if (dryRun) console.log('[DRY RUN — audit file not written]');
 
   const log = verbose || targets.length <= 5 ? console.log : () => {};
+  // Write-through cache (BRO-2255): a freshly SERP-resolved Playbill URL is
+  // persisted to data/playbill-urls.json once it's confirmed correct. Without
+  // this, a --all sweep re-runs the exact same SERP query for the exact same
+  // show every session until the whole corpus happens to be swept in one run,
+  // which the corpus's size makes unrealistic.
+  //
+  // Deliberately restricted to a CLEAN 'match' with a parsed venue — NOT
+  // 'mismatch' (ship-check adversarial review, Codex): a 'mismatch' can mean
+  // scorePlaybillUrl picked the WRONG production's page just as easily as it
+  // can mean shows.json has a real data error (this run found exactly that —
+  // beetlejuice-2022 matched a 2025 remount's page, caroline-or-change-2021
+  // matched the 2004 original's vault page). Caching a wrong-page URL would
+  // make that mistake PERMANENT: every future run reads the cache before ever
+  // querying SERP again (findPlaybillUrl's cache-read branch, above), so
+  // there'd be no path back to the correct page without a manual cache edit.
+  // A clean match, in contrast, has already been independently confirmed
+  // against Playbill's own venue/date/tag fields, which is the same bar
+  // BRO-2023's original 107-show cache was held to. The parsed-venue check
+  // additionally guards against a page that loaded (>5000 bytes) but didn't
+  // actually parse as a production page — an empty parse can't disagree with
+  // shows.json on anything, so it would read as a vacuous 'match'.
+  // openPlaybillUrls (scripts/lib/playbill-urls-store.js) narrows, but does
+  // NOT close, the concurrent-write race between this process and a peer
+  // saving at the same instant — see that module's own docblock for exactly
+  // what remains open. dryRun skips it like every other write below.
+  const playbillCache = dryRun ? null : openPlaybillUrls(PLAYBILL_URLS_PATH);
   const results = [];
   for (const show of targets) {
     if (timeBudget.exceeded()) break;
     const r = await validateOne(show, log);
     results.push(r);
+    if (playbillCache && r.urlSource === 'serp' && r.playbillUrl
+        && r.result === 'match' && r.parsed?.titleParse?.venue) {
+      playbillCache.data.shows[show.id] = r.playbillUrl;
+      playbillCache.save();
+    }
     await sleep(400);
   }
   const deferredShows = targets.slice(results.length);
@@ -890,6 +967,7 @@ async function main() {
     let filterMeta;
     if (showFilter) filterMeta = { show: showFilter };
     else if (candidatesFile) filterMeta = { candidatesFile, limit: limit || null };
+    else if (allMode) filterMeta = { all: true, limit: limit || null };
     else filterMeta = { allProvisional: true, limit: limit || null };
     const out = {
       generatedAt: new Date().toISOString(),
@@ -1003,7 +1081,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  isProvisional, shortTitleSlug, scorePlaybillUrl,
+  isProvisional, isExemptFromPlaybillCheck, shortTitleSlug, scorePlaybillUrl,
   parseTitleVenueYear, parseFactDates, urlYear, daysBetween, compareShow,
   findCorroboratingPriorRun, findPlaybillUrl, validateOne,
 };
