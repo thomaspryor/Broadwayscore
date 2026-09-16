@@ -47,10 +47,22 @@
  *      collapsed; byline-first → 21 regressions.
  *   When both-or-neither member would be live, fall back to chooseCanonical:
  *   1. BYLINE — a named human beats "unknown"/staff/outlet-name/empty, and a
- *      correctly-spelled byline beats a near-misspelling sibling (Levenshtein ≤ 2).
- *   2. SCORE RICHNESS — more score signals (llm/assigned/human/…) wins.
- *   3. AGE — older publishDate wins.
- *   4. Filename — deterministic final tiebreak.
+ *      correctly-spelled byline beats a near-misspelling sibling (Levenshtein ≤ 2),
+ *      then byline ATTESTATION — is the name actually printed in its own text.
+ *   2. TEXT QUALITY (BRO-3570) — empty fullText loses to a non-empty sibling;
+ *      a fullText that visibly cuts off ("...") right where a decent-length
+ *      chunk it shares VERBATIM with the sibling ends, while the sibling
+ *      continues past that point, is a truncated preview of the sibling's
+ *      fuller capture and loses. Ranked above score richness/age for the same
+ *      reason attestation is: those measure how much PROCESSING a record
+ *      received, not whether it is a complete, real capture — a paywall
+ *      preview can carry its own (wrong) score. king-kong-2018's WSJ pair had
+ *      a misattributed byline on a soft-paywall preview that beat the real,
+ *      fuller review purely on the AGE tiebreak because byline/score both
+ *      tied and nothing checked whether either side was actually complete.
+ *   3. SCORE RICHNESS — more score signals (llm/assigned/human/…) wins.
+ *   4. AGE — older publishDate wins.
+ *   5. Filename — deterministic final tiebreak.
  *
  * NOTE: the rebuild already has circular-duplicate recovery (review-guards.js
  * BUG F, 2026-05-27) that surfaces one side of MOST pairs — so the true corpus
@@ -176,6 +188,64 @@ function levenshtein(a, b) {
     prev = cur;
   }
   return prev[n];
+}
+
+/**
+ * True when `text` visibly cuts off mid-capture ("..."/"…") right after a
+ * decent-length chunk that also appears VERBATIM inside `otherText`, with
+ * `otherText` continuing past that same point — i.e. `text` is a truncated
+ * preview of the same article `otherText` captured more completely (BRO-3570:
+ * WSJ's soft-paywall preview truncates the review mid-sentence while a fuller
+ * capture at the same URL continues past the exact cutoff).
+ *
+ * Deliberately narrow, PURE text comparison — no keyword/outlet matching, so
+ * it never touches the general-purpose paywall/garbage classifiers in
+ * content-quality.js (those flagged real, complete WSJ captures as garbage in
+ * testing here, because WSJ's browser-update/nav chrome is identical on real
+ * and truncated captures alike — the chrome doesn't distinguish them, only
+ * completeness of the ARTICLE does). A verbatim 60+ char run immediately
+ * before a real cutoff, with enough distinct words to rule out a repeated
+ * nav-chrome fragment ("Most Popular Videos" blocks repeat 2-3 short phrases
+ * over and over — see king-kong-2018/wsj--charles-isherwood.json), is strong,
+ * low-false-positive evidence: two independently-written reviews at the same
+ * URL essentially never share a run this long and this varied, so this only
+ * fires on two captures of the SAME article.
+ *
+ * Residual false-positive risk this does NOT fully close (Codex adversarial
+ * review, 2026-09-16): two captures could each independently quote the same
+ * long dialogue/pull-quote ending in an ellipsis with real continuation on
+ * both sides. The caller (chooseCanonical) is what makes that safe — it only
+ * demotes when EXACTLY ONE direction trips this function, so a mutual match
+ * is inconclusive and falls through rather than always demoting one side.
+ */
+function isTruncatedPreviewOf(text, otherText) {
+  const norm = (s) => (s || '').replace(/\s+/g, ' ').trim();
+  const t = norm(text);
+  const other = norm(otherText);
+  if (!t || !other) return false;
+  const MIN_CHUNK = 60;
+  const MAX_CHUNK = 500;
+  const MIN_DISTINCT_WORDS = 8;
+  const distinctWordCount = (s) => new Set(
+    s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length > 3),
+  ).size;
+  const cutoffRe = /\.{2,}|…+/g;
+  let m;
+  while ((m = cutoffRe.exec(t))) {
+    // Shrink the window from the front (anchored at the cutoff) until it
+    // matches — a fixed-size window would fail whenever the preamble before
+    // the shared review text is a different length than in `otherText` (a
+    // different chrome/masthead/photo-caption block precedes the same
+    // article on each capture).
+    for (let len = Math.min(MAX_CHUNK, m.index); len >= MIN_CHUNK; len -= 20) {
+      const chunk = t.slice(m.index - len, m.index).trim();
+      if (chunk.length < MIN_CHUNK) continue;
+      if (distinctWordCount(chunk) < MIN_DISTINCT_WORDS) continue;
+      const idx = other.indexOf(chunk);
+      if (idx !== -1 && (other.length - (idx + chunk.length)) > 40) return true;
+    }
+  }
+  return false;
 }
 
 /** Count the distinct score signals present on a review record. */
@@ -307,6 +377,32 @@ function chooseCanonical(aName, aData, bName, bData) {
   }
   if (bAttested && !aAttested && !aNameSeen) {
     return pick(bName, aName, 'byline: only this byline is printed in the article text');
+  }
+
+  // 2d. Text quality (BRO-3570) — empty fullText loses outright, and a
+  // record that visibly cuts off exactly where the sibling's fuller capture
+  // continues is a truncated preview and loses too. Ranked above score
+  // richness/age: see module header for why (paywall previews carry their
+  // own score, so a richness/age-first check would never reach this rule).
+  const aEmpty = !_aText;
+  const bEmpty = !_bText;
+  if (aEmpty && !bEmpty) return pick(bName, aName, 'text quality: this member has no fullText');
+  if (bEmpty && !aEmpty) return pick(aName, bName, 'text quality: this member has no fullText');
+  // Deliberately ASYMMETRIC, same shape as the byline-attestation check above:
+  // a shared quoted line (dialogue, a review-of-record's pull-quote, a wire
+  // lede) can independently end in "..." with real continuation on BOTH
+  // sides, so isTruncatedPreviewOf can return true in both directions (Codex
+  // adversarial review, 2026-09-16). Only demoting when EXACTLY ONE side
+  // trips it means a mutual/ambiguous match is inconclusive and falls
+  // through, instead of always demoting whichever side happens to be
+  // checked first.
+  const aIsPreview = isTruncatedPreviewOf(_aText, _bText);
+  const bIsPreview = isTruncatedPreviewOf(_bText, _aText);
+  if (aIsPreview && !bIsPreview) {
+    return pick(bName, aName, 'text quality: this member is a truncated preview of the sibling capture');
+  }
+  if (bIsPreview && !aIsPreview) {
+    return pick(aName, bName, 'text quality: this member is a truncated preview of the sibling capture');
   }
 
   // 3. Score richness.
@@ -651,6 +747,6 @@ if (require.main === module) main();
 
 module.exports = {
   bylineSlug, outletSlug, isUnknownByline, levenshtein, scoreSignals,
-  isScoreable, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
+  isScoreable, isTruncatedPreviewOf, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
   isClassAContaminated, audit, fix, showsDataAvailable,
 };
