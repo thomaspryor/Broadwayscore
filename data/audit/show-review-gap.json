@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-16T18:05:29.294Z",
+  "generatedAt": "2026-09-16T22:01:51.843Z",
   "windowDays": 1095,
   "targets": 301,
-  "auditedThisRun": 11,
-  "carriedForward": 528,
+  "auditedThisRun": 15,
+  "carriedForward": 524,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 330,
-    "totalMissing": 1677,
+    "withGap": 329,
+    "totalMissing": 1658,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1812,
-    "totalRecoverable": 23,
-    "totalRecovered": 4
+    "totalFlaggedMisses": 1806,
+    "totalRecoverable": 26,
+    "totalRecovered": 8
   },
   "results": [
     {
@@ -17082,53 +17082,30 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
-        "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
-        "https://everything-theatre.co.uk/2026/09/review-bloodsport-after-helen-of-troy-stratford-east/",
-        "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
         "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review",
-        "https://www.allthatdazzles.co.uk/post/review-bloodsport-after-helen-of-troy-stratford-east",
-        "https://www.thereviewshub.com/bloodsport-after-helen-of-troy-stratford-east-london/",
-        "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
-        "https://theqr.co.uk/2026/09/14/review-bloodsport-after-helen-of-troy-stratford-east/",
-        "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
-        "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy",
-        "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/bloodsport-after-helen-of-troy-theatre-royal-stratford-east",
-        "https://theatreweekly.com/review-bloodsport-after-helen-of-troy-at-stratford-east/",
-        "https://www.uktw.co.uk/London/Theatre-Royal-Stratford-East/Play/Bloodsport-After-Helen-of-Troy/L01371424366/",
-        "https://westendwilma.com/review-bloodsport-after-helen-of-troy-review/",
-        "https://ground.news/article/review-bloodsport-after-helen-of-troy-at-stratford-east-theatre-weekly",
         "https://www.whatsonstage.com/news/bloodsport-after-helen-of-troy-review-michelle-dockery-and-laura-aikman-in-a-play-that-takes-on-the-world_1731495/",
+        "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
+        "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
         "https://www.radiotimes.com/going-out/going-out-reviews/bloodsport-after-helen-of-troy-review/",
+        "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
         "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
+        "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
         "https://www.broadwayworld.com/westend/article/Review-BLOODSPORT-AFTER-HELEN-OF-TROY-Stratford-East-20260911",
         "https://www.ft.com/content/dca1a15b-517e-4d6c-90f7-e1ac46db8f4c"
       ],
       "dirFiles": 36,
-      "dirClean": 24,
+      "dirClean": 23,
       "inReviewsJson": 27,
-      "missing": [
-        {
-          "url": "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/Theatre-Royal-Stratford-East/Play/Bloodsport-After-Helen-of-Troy/L01371424366/",
-          "host": "uktw.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
         {
           "host": "firstnightmagazine.com",
           "count": 1
@@ -17146,34 +17123,35 @@
           "count": 1
         },
         {
+          "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
           "host": "thespyinthestalls.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theqr.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
           "count": 1
         },
         {
           "host": "westendbestfriend.co.uk",
           "count": 1
-        }
-      ],
-      "flaggedMisses": [
+        },
         {
-          "url": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy"
-            }
-          ],
-          "serpCensus": true
+          "host": "westendwilma.com",
+          "count": 1
         }
       ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 19,
@@ -17226,167 +17204,21 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"BLOODSPORT: After Helen of Troy\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"BLOODSPORT: After Helen of Troy\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"BLOODSPORT: After Helen of Troy\" review stratford",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 17,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 16,
+        "count": 2,
         "byReason": {
-          "roundup-page": 2,
-          "non-review-host": 10,
-          "ticketing-listing": 1,
-          "venue-production-page": 3
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
-          "host": "westendtheatre.com",
-          "outletId": "westendtheatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trail"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
-          "host": "thetimes.com",
-          "outletId": "times-uk",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/Theatre-Royal-Stratford-East/Play/Bloodsport-After-Helen-of-Troy/L01371424366/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"uktw\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/"
-          },
-          {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw"
-          },
-          {
-            "outletId": "uktw.co.uk",
-            "outlet": "uktw.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/London/Theatre-Royal-Stratford-East/Play/Bloodsport-After-Helen-of-Troy/L01371424366/"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/09/review-bloodsport-after-helen-of-troy-stratford-east/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
           {
             "url": "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review",
             "outletId": "timeout.com",
@@ -17394,22 +17226,10 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-bloodsport-after-helen-of-troy-stratford-east",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.whatsonstage.com/news/bloodsport-after-helen-of-troy-review-michelle-dockery-and-laura-aikman-in-a-play-that-takes-on-the-world_1731495/",
+            "outletId": "whatsonstage.com",
             "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/bloodsport-after-helen-of-troy-stratford-east-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://theqr.co.uk/2026/09/14/review-bloodsport-after-helen-of-troy-stratford-east/",
-            "outletId": "theqr.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
+            "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
@@ -17424,44 +17244,26 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
           {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/bloodsport-after-helen-of-troy-theatre-royal-stratford-east",
-            "outletId": "stagedtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-bloodsport-after-helen-of-troy-at-stratford-east/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://westendwilma.com/review-bloodsport-after-helen-of-troy-review/",
-            "outletId": "westendwilma.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://ground.news/article/review-bloodsport-after-helen-of-troy-at-stratford-east-theatre-weekly",
-            "outletId": "ground.news",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/bloodsport-after-helen-of-troy-review-michelle-dockery-and-laura-aikman-in-a-play-that-takes-on-the-world_1731495/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
             "url": "https://www.radiotimes.com/going-out/going-out-reviews/bloodsport-after-helen-of-troy-review/",
             "outletId": "radiotimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-14T19:55:29.406Z"
+          },
+          {
             "url": "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
             "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-14T19:55:29.406Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
+            "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
@@ -17476,40 +17278,12 @@
             "outletId": "ft.com",
             "state": "live",
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
-            "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
-            "outletId": "times-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.uktw.co.uk/London/Theatre-Royal-Stratford-East/Play/Bloodsport-After-Helen-of-Troy/L01371424366/",
-            "outletId": "uktw.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy",
-            "outletId": "bestoftheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
           }
         ],
-        "liveCount": 18,
-        "candidateCount": 22
+        "liveCount": 10,
+        "candidateCount": 10
       },
-      "computedAt": "2026-09-16T18:05:29.294Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -29674,7 +29448,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -29967,7 +29741,7 @@
         "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/"
       ],
       "dirFiles": 1,
-      "dirClean": 1,
+      "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
@@ -29989,12 +29763,7 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -30060,12 +29829,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 35,
         "byReason": {
-          "non-review-host": 22,
-          "aggregator-internal-nav": 8,
+          "aggregator-internal-nav": 7,
           "merch-store": 5,
-          "venue-production-page": 2
+          "venue-production-page": 2,
+          "non-review-host": 21
         }
       },
       "dedupedVariants": [],
@@ -30160,7 +29929,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -31854,73 +31623,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Day of the Hog\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Day of the Hog\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Day of the Hog\" review steve",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Day of the Hog The Steve & Marie Sgouros Theatre (The Players Theatre Loft) review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Day of the Hog The Steve & Marie Sgouros Theatre (The Players Theatre Loft) review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Day of the Hog The Steve & Marie Sgouros Theatre (The Players Theatre Loft) review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 26,
-        "byReason": {
-          "non-review-host": 16,
-          "aggregator-internal-nav": 4,
-          "venue-production-page": 6
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -31931,7 +31639,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-16T18:05:29.294Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "days-of-wine-and-roses-2024",
@@ -46898,7 +46606,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
@@ -49539,24 +49247,6 @@
         "http://www.hollywoodreporter.com/review/golden-boy-theater-review-398830",
         "http://www.newsday.com/entertainment/theater/golden-boy-review-clifford-odets-revival-1.4295816",
         "http://www.northjersey.com/arts_entertainment/theater/182489731_Theater_review___Golden_Boy__a_loser_in_a_decision.html",
-        "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor",
-        "https://www.telegraph.co.uk/theatre/what-to-see/golden-boy-almeida-theatre-review-john-oconnor/",
-        "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
-        "https://www.allthatdazzles.co.uk/post/review-golden-boy-almeida-theatre",
-        "https://www.thetimes.com/culture/theatre-dance/article/golden-boy-review-boxing-tale-packs-some-punch-but-its-no-knockout-76ts9drmv",
-        "https://www.thereviewshub.com/golden-boy-almeida-theatre-london/",
-        "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/",
-        "https://www.whatsonstage.com/news/golden-boy-with-josh-oconnor-at-almeida-theatre-review_1731559/",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
-        "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
-        "https://almeida.co.uk/whats-on/golden-boy/",
-        "https://www.timeout.com/london/theatre/golden-boy",
-        "https://thesaucemag.com/golden-boy/",
-        "https://www.anothermag.com/design-living/17447/josh-oconnor-golden-boy-sam-yates-interview-almeida-theatre",
-        "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
-        "https://theatreweekly.com/artwork-revealed-for-golden-boy-starring-josh-oconnor-at-almeida-theatre/",
-        "https://www.whatsonstage.com/news/almeidas-golden-boy-with-josh-oconnor-to-be-shown-in-cinemas_1729386/",
         "https://www.timeout.com/london/theatre/man-and-boy-review",
         "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
         "https://www.londontheatre.co.uk/reviews/man-and-boy-review-national-theatre",
@@ -49566,11 +49256,12 @@
         "https://www.thestage.co.uk/reviews/man-and-boy-review-dorfman-theatre-national-theatre-london",
         "https://www.theartsdesk.com/theatre/man-and-boy-national-theatre-review-ben-daniels-dazzles-crook-who-feels-frighteningly-familiar",
         "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama",
-        "https://www.thetimes.com/culture/theatre-dance/article/man-and-boy-review-even-in-the-age-of-epstein-this-seems-a-stretch-fnkt29v8d"
+        "https://www.thetimes.com/culture/theatre-dance/article/man-and-boy-review-even-in-the-age-of-epstein-this-seems-a-stretch-fnkt29v8d",
+        "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review"
       ],
-      "dirFiles": 19,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirFiles": 27,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [
         {
           "url": "http://theater.nytimes.com/2012/12/07/theater/reviews/golden-boy-directed-by-bartlett-sher.html",
@@ -49650,86 +49341,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/",
-          "host": "fringereview.co.uk",
-          "knownOutletId": "fringereview",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/golden-boy-with-josh-oconnor-at-almeida-theatre-review_1731559/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://thesaucemag.com/golden-boy/",
-          "host": "thesaucemag.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/almeidas-golden-boy-with-josh-oconnor-to-be-shown-in-cinemas_1729386/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/man-and-boy-review-national-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/man-and-boy-review-dorfman-theatre-national-theatre-london",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
           "url": "https://www.theartsdesk.com/theatre/man-and-boy-national-theatre-review-ben-daniels-dazzles-crook-who-feels-frighteningly-familiar",
           "host": "theartsdesk.com",
           "knownOutletId": "artsdesk",
@@ -49743,7 +49354,19 @@
       ],
       "dirOnly": [
         {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "fringereview.co.uk",
+          "count": 1
+        },
+        {
           "host": "theatreboard.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
           "count": 1
         }
       ],
@@ -49752,12 +49375,17 @@
           "url": "http://www.timeout.com/newyork/theater/golden-boy",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "timeout-london--time-out.json",
+          "recoverableOutletId": "timeout-london",
+          "recoverableCritic": "Time Out",
           "recoverableCount": 0,
           "dirFlags": [
+            {
+              "file": "timeout-london--time-out.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timeout.com/london/theatre/golden-boy-review"
+            },
             {
               "file": "timeout-london--unknown.json",
               "flag": "wrongProduction",
@@ -49768,123 +49396,20 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": true,
-          "recoverableFile": "guardian--unknown.json",
-          "recoverableOutletId": "guardian",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://almeida.co.uk/whats-on/golden-boy/",
-          "host": "almeida.co.uk",
-          "knownOutletId": "almeidacouk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "almeidacouk--clifford.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://almeida.co.uk/whats-on/golden-boy/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/golden-boy",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/golden-boy"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.anothermag.com/design-living/17447/josh-oconnor-golden-boy-sam-yates-interview-almeida-theatre",
-          "host": "anothermag.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "anothermag--another.json",
-              "flag": "clean",
-              "urlInDir": "https://www.anothermag.com/design-living/17447/josh-oconnor-golden-boy-sam-yates-interview-almeida-theatre"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
-          "host": "nationaltheatre.org.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nationaltheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreweekly.com/artwork-revealed-for-golden-boy-starring-josh-oconnor-at-almeida-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/artwork-revealed-for-golden-boy-starring-josh-oconnor-at-almeida-theatre/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.timeout.com/london/theatre/man-and-boy-review",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "timeout-london--time-out.json",
+          "recoverableOutletId": "timeout-london",
+          "recoverableCritic": "Time Out",
           "recoverableCount": 0,
           "dirFlags": [
+            {
+              "file": "timeout-london--time-out.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timeout.com/london/theatre/golden-boy-review"
+            },
             {
               "file": "timeout-london--unknown.json",
               "flag": "wrongProduction",
@@ -49899,26 +49424,49 @@
           "weRefStarsSource": "theatre-reviews"
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "recoverable": true,
-          "recoverableFile": "guardian--unknown.json",
-          "recoverableOutletId": "guardian",
+          "recoverableFile": "whatsonstage--unknown.json",
+          "recoverableOutletId": "whatsonstage",
           "recoverableCritic": "Unknown",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "guardian--unknown.json",
+              "file": "whatsonstage--unknown.json",
               "flag": "emptyBody",
-              "urlInDir": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor"
+              "urlInDir": "https://www.whatsonstage.com/news/golden-boy-with-josh-oconnor-at-almeida-theatre-review_1731559/"
             }
           ],
           "weRef": true,
           "weRefSources": [
             "theatre-reviews"
           ],
-          "weRefStars": 2,
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": true,
+          "recoverableFile": "broadwayworld--unknown.json",
+          "recoverableOutletId": "broadwayworld",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-GOLDEN-BOY-starring-Josh-OConnor-Almeida-Theatre-20260916"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
           "weRefStarsSource": "theatre-reviews"
         }
       ],
@@ -49957,11 +49505,11 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 11,
-        "corroborated": 4,
+        "corroborated": 7,
         "perSource": {
           "theatre-reviews": {
-            "cited": 5,
-            "corroborated": 3
+            "cited": 9,
+            "corroborated": 6
           },
           "lbo-roundup": {
             "cited": 1,
@@ -49970,75 +49518,16 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Golden Boy\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Golden Boy\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 8,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Golden Boy\" review almeida",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Golden Boy Almeida Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Golden Boy Almeida Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Golden Boy Almeida Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 18,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 371,
+        "count": 354,
         "byReason": {
-          "non-review-host": 29,
-          "aggregator-internal-nav": 227,
-          "venue-production-page": 1,
+          "aggregator-internal-nav": 226,
+          "non-review-host": 15,
           "not-http-url": 109,
-          "aggregator-section-root": 4,
-          "event-listing": 1
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -50118,109 +49607,64 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
+          "url": "https://www.theartsdesk.com/theatre/man-and-boy-national-theatre-review-ben-daniels-dazzles-crook-who-feels-frighteningly-familiar",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
           "provisional": false,
           "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
           "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/",
-          "host": "fringereview.co.uk",
-          "outletId": "fringereview",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/golden-boy-with-josh-oconnor-at-almeida-theatre-review_1731559/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://thesaucemag.com/golden-boy/",
-          "host": "thesaucemag.com",
-          "outletId": "thesaucemag",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "reason": "golden-boy-off-west-end-2026: https://www.theartsdesk.com/theatre/man-and-boy-national-theatre-review-ben-daniels-dazzles-crook-who-feels-frighteningly-familiar is already owned by man-and-boy-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/man-and-boy-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         }
       ],
-      "ingestSkippedByCap": [
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
         {
-          "url": "https://www.whatsonstage.com/news/almeidas-golden-boy-with-josh-oconnor-to-be-shown-in-cinemas_1729386/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
+          "url": "https://www.timeout.com/london/theatre/man-and-boy-review",
+          "host": "timeout.com",
+          "file": "timeout-london--time-out.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": true,
+          "reason": null,
+          "recoveryCount": 0
         },
         {
           "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
           "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/man-and-boy-review-national-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
+          "file": "whatsonstage--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": true,
+          "reason": null,
+          "recoveryCount": 0
         },
         {
           "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211",
           "host": "broadwayworld.com",
-          "outletId": "broadwayworld"
+          "file": "broadwayworld--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "filled text dated 2026-02-11 — outside production window, flagged wrongProduction",
+          "recoveryCount": 1
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/man-and-boy-review-dorfman-theatre-national-theatre-london",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        },
-        {
-          "url": "https://www.theartsdesk.com/theatre/man-and-boy-national-theatre-review-ben-daniels-dazzles-crook-who-feels-frighteningly-familiar",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        }
-      ],
-      "recoveryResults": [],
-      "recoverySkippedByCap": [
-        {
-          "url": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor",
-          "host": "theguardian.com",
-          "file": "guardian--unknown.json"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama",
-          "host": "theguardian.com",
-          "file": "guardian--unknown.json"
+          "url": "https://www.standard.co.uk/culture/theatre/golden-boy-almeida-theatre-review-b1297258.html",
+          "host": "standard.co.uk",
+          "file": "standard--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
         }
       ],
       "censusVerdict": {
@@ -50304,76 +49748,6 @@
             "url": "http://www.northjersey.com/arts_entertainment/theater/182489731_Theater_review___Golden_Boy__a_loser_in_a_decision.html"
           },
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor"
-          },
-          {
-            "outletId": "fringereview",
-            "outlet": "fringereview",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/golden-boy-with-josh-oconnor-at-almeida-theatre-review_1731559/"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays"
-          },
-          {
-            "outletId": "thesaucemag.com",
-            "outlet": "thesaucemag.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thesaucemag.com/golden-boy/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/almeidas-golden-boy-with-josh-oconnor-to-be-shown-in-cinemas_1729386/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/man-and-boy-review-national-theatre"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/man-and-boy-review-dorfman-theatre-national-theatre-london"
-          },
-          {
             "outletId": "artsdesk",
             "outlet": "artsdesk",
             "critic": "Unknown",
@@ -50388,48 +49762,6 @@
             "url": "http://www.timeout.com/newyork/theater/golden-boy"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor"
-          },
-          {
-            "outletId": "almeidacouk",
-            "outlet": "almeidacouk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://almeida.co.uk/whats-on/golden-boy/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/golden-boy"
-          },
-          {
-            "outletId": "anothermag.com",
-            "outlet": "anothermag.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.anothermag.com/design-living/17447/josh-oconnor-golden-boy-sam-yates-interview-almeida-theatre"
-          },
-          {
-            "outletId": "nationaltheatre.org.uk",
-            "outlet": "nationaltheatre.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/artwork-revealed-for-golden-boy-starring-josh-oconnor-at-almeida-theatre/"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -50437,50 +49769,27 @@
             "url": "https://www.timeout.com/london/theatre/man-and-boy-review"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama"
+            "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/golden-boy-almeida-theatre-review-john-oconnor/",
-            "outletId": "telegraph.co.uk",
+            "url": "https://www.londontheatre.co.uk/reviews/man-and-boy-review-national-theatre",
+            "outletId": "londontheatre.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-golden-boy-almeida-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/golden-boy-review-boxing-tale-packs-some-punch-but-its-no-knockout-76ts9drmv",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/golden-boy-almeida-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
-            "outletId": "independent.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
+            "firstSeenAt": "2026-09-15T02:14:14.949Z"
           },
           {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/man-and-boy-national-theatre-review-dorfman-b2918084.html",
@@ -50495,10 +49804,28 @@
             "firstSeenAt": "2026-09-15T02:14:14.949Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/man-and-boy-review-dorfman-theatre-national-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T02:14:14.949Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T02:14:14.949Z"
+          },
+          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/man-and-boy-review-even-in-the-age-of-epstein-this-seems-a-stretch-fnkt29v8d",
             "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-15T02:14:14.949Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T07:01:53.756Z"
           },
           {
             "url": "http://theater.nytimes.com/2012/12/07/theater/reviews/golden-boy-directed-by-bartlett-sher.html",
@@ -50578,76 +49905,6 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/",
-            "outletId": "fringereview",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/golden-boy-with-josh-oconnor-at-almeida-theatre-review_1731559/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://thesaucemag.com/golden-boy/",
-            "outletId": "thesaucemag.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/almeidas-golden-boy-with-josh-oconnor-to-be-shown-in-cinemas_1729386/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T02:14:14.949Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/man-and-boy-review-national-theatre",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T02:14:14.949Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T02:14:14.949Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/man-and-boy-review-dorfman-theatre-national-theatre-london",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T02:14:14.949Z"
-          },
-          {
             "url": "https://www.theartsdesk.com/theatre/man-and-boy-national-theatre-review-ben-daniels-dazzles-crook-who-feels-frighteningly-familiar",
             "outletId": "artsdesk",
             "state": "GAP",
@@ -50662,48 +49919,6 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://almeida.co.uk/whats-on/golden-boy/",
-            "outletId": "almeidacouk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/golden-boy",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
-          },
-          {
-            "url": "https://www.anothermag.com/design-living/17447/josh-oconnor-golden-boy-sam-yates-interview-almeida-theatre",
-            "outletId": "anothermag.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
-          },
-          {
-            "url": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
-            "outletId": "nationaltheatre.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
-          },
-          {
-            "url": "https://theatreweekly.com/artwork-revealed-for-golden-boy-starring-josh-oconnor-at-almeida-theatre/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
-          },
-          {
             "url": "https://www.timeout.com/london/theatre/man-and-boy-review",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -50711,17 +49926,24 @@
             "firstSeenAt": "2026-09-15T02:14:14.949Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama",
-            "outletId": "guardian",
+            "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-15T02:14:14.949Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211",
+            "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-15T02:14:14.949Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 30
+        "liveCount": 7,
+        "candidateCount": 22
       },
-      "computedAt": "2026-09-16T18:05:29.294Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "good-night-and-good-luck-2025",
@@ -68277,7 +67499,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -68297,7 +67519,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -68307,12 +67529,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 30,
         "byReason": {
-          "non-review-host": 23,
-          "non-review-path": 1,
           "aggregator-internal-nav": 2,
-          "ticketing-reseller": 1
+          "non-review-host": 25,
+          "ticketing-reseller": 2,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -68394,7 +67616,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -80130,7 +79352,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -80140,7 +79362,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -80160,12 +79382,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 39,
+        "count": 35,
         "byReason": {
-          "non-review-host": 29,
-          "aggregator-internal-nav": 5,
-          "merch-store": 4,
-          "venue-production-page": 1
+          "aggregator-internal-nav": 6,
+          "merch-store": 1,
+          "non-review-host": 28
         }
       },
       "dedupedVariants": [],
@@ -80214,7 +79435,7 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "left-on-tenth-2024",
@@ -85664,26 +84885,27 @@
         "https://www.londontheatre.co.uk/reviews/man-to-man-review-royal-court",
         "https://www.timeout.com/london/news/review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre-091226",
         "https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-court-theatre/",
-        "https://thespyinthestalls.com/2026/09/man-to-man/",
         "https://www.britishtheatreguide.info/reviews/man-to-man-royal-court-the-26014",
         "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court",
         "https://theqr.co.uk/2026/09/14/review-man-to-man-royal-court-theatre-london/",
         "https://theartsdesk.com/theatre/man-man-royal-court-review-vividly-high-definition-revival",
         "https://liamodell.com/2026/09/12/man-to-man-review-royal-court-theatre-traverse-theatre-berliner-ensemble-new-york-manfred-karge/",
-        "https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton",
-        "https://www.theguardian.com/stage/2026/sep/10/man-to-man-tilda-swinton-royal-court-manfred-karge",
+        "https://theatreweekly.com/review-man-to-man-at-royal-court-theatre/",
+        "https://ayoungishperspective.co.uk/2026/09/14/review-man-to-man/",
         "https://sierz.co.uk/reviews/man-to-man-royal-court/",
         "https://readaboutstuff.com/2026/09/13/review-man-to-man-royal-court-london/",
-        "https://ayoungishperspective.co.uk/2026/09/14/review-man-to-man/",
+        "https://www.theguardian.com/stage/2026/sep/10/man-to-man-tilda-swinton-royal-court-manfred-karge",
+        "https://theatre.reviews/reviews-roundup/man-to-man-tilda-swinton-reviews/",
+        "https://therecs.co.uk/man-to-man/",
         "https://www.whatsonstage.com/news/man-to-man-with-tilda-swinton-at-the-royal-court-review_1731550/",
         "https://www.telegraph.co.uk/theatre/what-to-see/man-to-man-review-tilda-swinton-triumphant-stage-return/",
         "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/man-to-man-tilda-swinton-review-royal-court-b3048691.html",
         "https://www.standard.co.uk/culture/theatre/man-to-man-at-royal-court-review-tilda-swinton-b1296889.html"
       ],
-      "dirFiles": 49,
-      "dirClean": 21,
-      "inReviewsJson": 21,
+      "dirFiles": 50,
+      "dirClean": 22,
+      "inReviewsJson": 22,
       "missing": [
         {
           "url": "https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-court-theatre/",
@@ -85692,9 +84914,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://thespyinthestalls.com/2026/09/man-to-man/",
-          "host": "thespyinthestalls.com",
-          "knownOutletId": "the-spy-in-the-stalls",
+          "url": "https://theatre.reviews/reviews-roundup/man-to-man-tilda-swinton-reviews/",
+          "host": "theatre.reviews",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -85708,11 +84930,15 @@
           "count": 1
         },
         {
-          "host": "theatreweekly.com",
+          "host": "thespyinthestalls.com",
           "count": 1
         },
         {
           "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
           "count": 1
         },
         {
@@ -85753,6 +84979,24 @@
               "file": "guardian--stephen-unwin.json",
               "flag": "clean",
               "urlInDir": "https://www.theguardian.com/stage/2026/sep/10/man-to-man-tilda-swinton-royal-court-manfred-karge"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://therecs.co.uk/man-to-man/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs",
+          "recoverable": true,
+          "recoverableFile": "the-recs--unknown.json",
+          "recoverableOutletId": "the-recs",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-recs--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://therecs.co.uk/man-to-man/"
             }
           ],
           "serpCensus": true
@@ -85813,7 +85057,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 8,
+            "accepted": 7,
             "error": null
           },
           {
@@ -85833,7 +85077,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -85853,23 +85097,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 18,
+        "resultCount": 19,
         "error": null
       },
       "candidatesRejected": {
-        "count": 16,
+        "count": 15,
         "byReason": {
-          "non-review-host": 10,
-          "ticketing-listing": 1,
           "venue-production-page": 3,
+          "non-review-host": 9,
           "roundup-page": 1,
-          "ticketing-reseller": 1
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
@@ -85887,19 +85130,32 @@
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-c"
         },
         {
-          "url": "https://thespyinthestalls.com/2026/09/man-to-man/",
-          "host": "thespyinthestalls.com",
-          "outletId": "the-spy-in-the-stalls",
-          "provisional": false,
-          "ok": true,
+          "url": "https://theatre.reviews/reviews-roundup/man-to-man-tilda-swinton-reviews/",
+          "host": "theatre.reviews",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "unknown-outlet-no-host"
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://therecs.co.uk/man-to-man/",
+          "host": "therecs.co.uk",
+          "file": "the-recs--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -85911,11 +85167,11 @@
             "url": "https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-court-theatre/"
           },
           {
-            "outletId": "the-spy-in-the-stalls",
-            "outlet": "the-spy-in-the-stalls",
+            "outletId": "theatre.reviews",
+            "outlet": "theatre.reviews",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://thespyinthestalls.com/2026/09/man-to-man/"
+            "url": "https://theatre.reviews/reviews-roundup/man-to-man-tilda-swinton-reviews/"
           },
           {
             "outletId": "all-that-dazzles-uk",
@@ -85930,6 +85186,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/stage/2026/sep/10/man-to-man-tilda-swinton-royal-court-manfred-karge"
+          },
+          {
+            "outletId": "the-recs",
+            "outlet": "the-recs",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://therecs.co.uk/man-to-man/"
           }
         ],
         "suppressedMissing": [],
@@ -85977,8 +85240,14 @@
             "firstSeenAt": "2026-09-16T07:01:53.756Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton",
-            "outletId": "thestage.co.uk",
+            "url": "https://theatreweekly.com/review-man-to-man-at-royal-court-theatre/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/09/14/review-man-to-man/",
+            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-16T07:01:53.756Z"
           },
@@ -85991,12 +85260,6 @@
           {
             "url": "https://readaboutstuff.com/2026/09/13/review-man-to-man-royal-court-london/",
             "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://ayoungishperspective.co.uk/2026/09/14/review-man-to-man/",
-            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-16T07:01:53.756Z"
           },
@@ -86038,11 +85301,11 @@
             "firstSeenAt": "2026-09-16T07:01:53.756Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/09/man-to-man/",
-            "outletId": "the-spy-in-the-stalls",
+            "url": "https://theatre.reviews/reviews-roundup/man-to-man-tilda-swinton-reviews/",
+            "outletId": "theatre.reviews",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T13:09:25.039Z"
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court",
@@ -86057,12 +85320,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-16T07:01:53.756Z"
+          },
+          {
+            "url": "https://therecs.co.uk/man-to-man/",
+            "outletId": "the-recs",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
           }
         ],
         "liveCount": 16,
-        "candidateCount": 20
+        "candidateCount": 21
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "manic-street-creature-west-end-2026",
@@ -91983,15 +91253,6 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/",
-        "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
-        "https://www.londonmumsmagazine.com/whats-on/million-dollar-quartet-preview-your-cheat-sheet-for-a-night-of-rock-n-roll/",
-        "https://thespyinthestalls.com/2026/09/million-dollar-quartet/",
-        "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
-        "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer",
-        "https://revuewm.com/arts/review-million-dollar-quartet-at-sc4a-is-a-spectacular-look-at-a-musical-revolution",
-        "https://www.timeout.com/london/theatre/million-dollar-quartet-2",
-        "https://eventslist.co.uk/london/events/million-dollar-quartet-2026-08-08",
         "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
         "http://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doesnt-throb-with-heart-and-soul.do",
         "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8354312/Million-Dollar-Quartet-Noel-Coward-Theatre-review.html",
@@ -91999,58 +91260,10 @@
         "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/million-dollar-quartet-noel-coward-theatre-london-2230529.html",
         "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet"
       ],
-      "dirFiles": 3,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 7,
+      "dirClean": 5,
+      "inReviewsJson": 4,
       "missing": [
-        {
-          "url": "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londonmumsmagazine.com/whats-on/million-dollar-quartet-preview-your-cheat-sheet-for-a-night-of-rock-n-roll/",
-          "host": "londonmumsmagazine.com",
-          "knownOutletId": "londonmumsmagazine",
-          "serpCensus": true
-        },
-        {
-          "url": "https://thespyinthestalls.com/2026/09/million-dollar-quartet/",
-          "host": "thespyinthestalls.com",
-          "knownOutletId": "the-spy-in-the-stalls",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://revuewm.com/arts/review-million-dollar-quartet-at-sc4a-is-a-spectacular-look-at-a-musical-revolution",
-          "host": "revuewm.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/million-dollar-quartet-2",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://eventslist.co.uk/london/events/million-dollar-quartet-2026-08-08",
-          "host": "eventslist.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
           "host": "guardian.co.uk",
@@ -92084,7 +91297,28 @@
           "priorRun": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonmumsmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "loureviews.blog",
+          "count": 1
+        },
+        {
+          "host": "thespyinthestalls.com",
+          "count": 1
+        },
+        {
+          "host": "theupcoming.co.uk",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8354312/Million-Dollar-Quartet-Noel-Coward-Theatre-review.html",
@@ -92174,86 +91408,12 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Million Dollar Quartet\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Million Dollar Quartet\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Million Dollar Quartet\" review marble",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Million Dollar Quartet\" Escott review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Million Dollar Quartet The Arts at Marble Arch Powered by TodayTix review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Million Dollar Quartet The Arts at Marble Arch Powered by TodayTix review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Million Dollar Quartet The Arts at Marble Arch Powered by TodayTix review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 9,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 37,
-        "byReason": {
-          "roundup-page": 2,
-          "non-review-host": 30,
-          "ticketing-listing": 1,
-          "aggregator-internal-nav": 2,
-          "non-review-path": 1,
-          "ticketing-reseller": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "weIngestBlocked": [
@@ -92282,144 +91442,11 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "outletId": "theupcoming",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.londonmumsmagazine.com/whats-on/million-dollar-quartet-preview-your-cheat-sheet-for-a-night-of-rock-n-roll/",
-          "host": "londonmumsmagazine.com",
-          "outletId": "londonmumsmagazine",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://thespyinthestalls.com/2026/09/million-dollar-quartet/",
-          "host": "thespyinthestalls.com",
-          "outletId": "the-spy-in-the-stalls",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://revuewm.com/arts/review-million-dollar-quartet-at-sc4a-is-a-spectacular-look-at-a-musical-revolution",
-          "host": "revuewm.com",
-          "outletId": "revuewm"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/million-dollar-quartet-2",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://eventslist.co.uk/london/events/million-dollar-quartet-2026-08-08",
-          "host": "eventslist.co.uk",
-          "outletId": "eventslist"
-        }
-      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theupcoming",
-            "outlet": "theupcoming",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/"
-          },
-          {
-            "outletId": "londonmumsmagazine",
-            "outlet": "londonmumsmagazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonmumsmagazine.com/whats-on/million-dollar-quartet-preview-your-cheat-sheet-for-a-night-of-rock-n-roll/"
-          },
-          {
-            "outletId": "the-spy-in-the-stalls",
-            "outlet": "the-spy-in-the-stalls",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thespyinthestalls.com/2026/09/million-dollar-quartet/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer"
-          },
-          {
-            "outletId": "revuewm.com",
-            "outlet": "revuewm.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://revuewm.com/arts/review-million-dollar-quartet-at-sc4a-is-a-spectacular-look-at-a-musical-revolution"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/million-dollar-quartet-2"
-          },
-          {
-            "outletId": "eventslist.co.uk",
-            "outlet": "eventslist.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://eventslist.co.uk/london/events/million-dollar-quartet-2026-08-08"
-          },
           {
             "outletId": "guardian",
             "outlet": "guardian",
@@ -92466,68 +91493,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
-            "outletId": "theupcoming",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.londonmumsmagazine.com/whats-on/million-dollar-quartet-preview-your-cheat-sheet-for-a-night-of-rock-n-roll/",
-            "outletId": "londonmumsmagazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/09/million-dollar-quartet/",
-            "outletId": "the-spy-in-the-stalls",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://revuewm.com/arts/review-million-dollar-quartet-at-sc4a-is-a-spectacular-look-at-a-musical-revolution",
-            "outletId": "revuewm.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/million-dollar-quartet-2",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://eventslist.co.uk/london/events/million-dollar-quartet-2026-08-08",
-            "outletId": "eventslist.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
             "url": "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
             "outletId": "guardian",
             "state": "GAP",
@@ -92570,10 +91535,10 @@
             "firstSeenAt": "2026-09-16T18:05:29.294Z"
           }
         ],
-        "liveCount": 1,
-        "candidateCount": 15
+        "liveCount": 0,
+        "candidateCount": 6
       },
-      "computedAt": "2026-09-16T18:05:29.294Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "mister-snickers-of-new-york-city-off-broadway-2026",
@@ -98179,11 +97144,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 30,
         "byReason": {
-          "non-review-host": 26,
           "aggregator-internal-nav": 4,
-          "venue-production-page": 1
+          "non-review-host": 26
         }
       },
       "dedupedVariants": [],
@@ -98390,7 +97354,7 @@
         "liveCount": 0,
         "candidateCount": 11
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -99619,23 +98583,23 @@
       "aggregatorListedUrls": [
         "https://southwarkplayhouse.co.uk/productions/night-city/",
         "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/",
+        "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
+        "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
         "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
         "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/",
-        "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
+        "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
         "https://www.pinkprincetheatre.com/post/review-night-city-southwark-playhouse",
-        "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
         "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
         "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
-        "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
-        "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
-        "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
         "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
+        "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
+        "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
+        "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
         "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
-        "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
         "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
         "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912",
         "https://northwestend.com/night-city-southwark-playhouse/",
-        "https://terripaddock.com/events/night-city/",
+        "https://www.reviewsgate.co.uk/all-reviews/night-city-by-max-wilkinson-southwark-playhouse",
         "https://www.londonboxoffice.co.uk/news/post/night-city-southwark-playhouse-borough-review"
       ],
       "dirFiles": 31,
@@ -99646,6 +98610,12 @@
           "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/",
           "host": "lovelondonloveculture.com",
           "knownOutletId": "lovelondonloveculture",
+          "serpCensus": true
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
           "serpCensus": true
         }
       ],
@@ -99659,11 +98629,11 @@
           "count": 1
         },
         {
-          "host": "reviewsgate.co.uk",
+          "host": "theatrereviews.design",
           "count": 1
         },
         {
-          "host": "theatrereviews.design",
+          "host": "thereviewshub.com",
           "count": 1
         }
       ],
@@ -99682,24 +98652,6 @@
               "file": "southwarkplayhouse--unknown.json",
               "flag": "wrongShow",
               "urlInDir": "https://southwarkplayhouse.co.uk/productions/night-city/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://terripaddock.com/events/night-city/",
-          "host": "terripaddock.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "terripaddock--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://terripaddock.com/events/night-city/"
             }
           ],
           "serpCensus": true
@@ -99760,7 +98712,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -99770,7 +98722,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -99780,7 +98732,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -99790,7 +98742,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -99810,11 +98762,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 10,
         "byReason": {
-          "non-review-host": 9,
           "aggregator-internal-nav": 1,
-          "roundup-page": 3
+          "non-review-host": 7,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -99830,6 +98782,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwa"
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
+          "host": "everything-theatre.co.uk",
+          "outletId": "everything-theatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -99844,22 +98808,28 @@
             "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/"
           },
           {
+            "outletId": "everything-theatre",
+            "outlet": "everything-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/"
+          },
+          {
             "outletId": "southwarkplayhouse.co.uk",
             "outlet": "southwarkplayhouse.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://southwarkplayhouse.co.uk/productions/night-city/"
-          },
-          {
-            "outletId": "terripaddock.com",
-            "outlet": "terripaddock.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://terripaddock.com/events/night-city/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
+            "outletId": "londonpubtheatres.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+          },
           {
             "url": "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
             "outletId": "londontheatre1.com",
@@ -99873,8 +98843,8 @@
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
+            "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
@@ -99883,12 +98853,6 @@
             "outletId": "pinkprincetheatre.com",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
-          },
-          {
-            "url": "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
-            "outletId": "saltertonartsreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T13:09:25.039Z"
           },
           {
             "url": "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
@@ -99903,10 +98867,16 @@
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
-            "url": "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
-            "outletId": "londonpubtheatres.com",
+            "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-16T01:06:29.959Z"
+            "firstSeenAt": "2026-09-15T18:49:59.948Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
@@ -99915,26 +98885,14 @@
             "firstSeenAt": "2026-09-16T01:06:29.959Z"
           },
           {
-            "url": "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
+            "outletId": "saltertonartsreview.com",
             "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
+            "firstSeenAt": "2026-09-16T13:09:25.039Z"
           },
           {
             "url": "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
             "outletId": "rolandcat.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
-          },
-          {
-            "url": "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
-            "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
@@ -99957,6 +98915,12 @@
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
+            "url": "https://www.reviewsgate.co.uk/all-reviews/night-city-by-max-wilkinson-southwark-playhouse",
+            "outletId": "reviewsgate.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
+          },
+          {
             "url": "https://www.londonboxoffice.co.uk/news/post/night-city-southwark-playhouse-borough-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
@@ -99970,24 +98934,24 @@
             "firstSeenAt": "2026-09-16T13:09:25.039Z"
           },
           {
+            "url": "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
+            "outletId": "everything-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
+          },
+          {
             "url": "https://southwarkplayhouse.co.uk/productions/night-city/",
             "outletId": "southwarkplayhouse.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
-            "url": "https://terripaddock.com/events/night-city/",
-            "outletId": "terripaddock.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
           }
         ],
         "liveCount": 17,
         "candidateCount": 20
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "night-side-songs-off-broadway-2026",
@@ -139704,26 +138668,27 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.thereviewshub.com/tartuffe-remixed-marylebone-theatre-london/",
         "https://www.theguardian.com/stage/2026/sep/11/tartuffe-remixed-review-marylebone-theatre-london-mark-rylance-moliere",
         "https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-marylebone-theatre/",
-        "https://www.thereviewshub.com/tartuffe-remixed-marylebone-theatre-london/",
-        "https://www.marylebonetheatre.com/productions/tartuffe-remixed",
         "https://www.londonpubtheatres.com/review-tartuffe-remixed-at-marylebone-theatre-4-sept-24-october-2026",
+        "https://www.marylebonetheatre.com/productions/tartuffe-remixed",
         "https://www.afridiziak.com/reviews/tartuffe-remixed/",
-        "https://ayoungishperspective.co.uk/2026/09/12/review-tartuffe-remixed/",
         "https://www.timeout.com/london/theatre/tartuffe-remixed-review",
-        "https://www.allthatdazzles.co.uk/post/review-tartuffe-remixed-marylebone-theatre",
+        "https://ayoungishperspective.co.uk/2026/09/12/review-tartuffe-remixed/",
         "https://www.therendition.co.uk/whats-on/tartuffe-remixed",
+        "https://theartsdesk.com/theatre/tartuffe-remixed-marylebone-theatre-review-false-teeth-not-needed-curates-egg-production",
         "https://redbuslondinium.uk/2026/09/11/tartuffe-remixed-marylebone-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
-        "https://loureviews.blog/2026/09/11/play-review-tartuffe-remixed-at-marylebone-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-tartuffe-remixed-marylebone-theatre",
+        "https://saltertonartsreview.com/2026/09/tartuffe-remixed-marylebone-theatre-london/",
         "https://www.whatsonstage.com/news/tartuffe-remixed-with-mark-rylance-at-marylebone-theatre-review_1731492/",
+        "https://loureviews.blog/2026/09/11/play-review-tartuffe-remixed-at-marylebone-theatre/",
         "https://www.londontheatre1.com/reviews/tartuffe-remixed-marylebone-theatre/",
         "https://fringereview.co.uk/review/fringereview-uk/2026/tartuffe-remixed/",
+        "https://www.curtaincallreviews.co.uk/tartuffe-remixed",
         "https://everything-theatre.co.uk/2026/09/review-tartuffe-remixed-marylebone-theatre/",
-        "https://readaboutstuff.com/2026/09/12/review-tartuffe-remixed-marylebone-theatre-london/",
         "https://viewfromthegods.co.uk/2026/09/11/tartuffe-remixed-at-marylebone-theatre/",
-        "https://www.thetimes.com/culture/theatre-dance/article/tartuffe-remixed-review-mark-rylance-jrqb8lb2f",
-        "https://www.westendbestfriend.co.uk/news/review-tartuffe-remixed-marylebone-theatre",
+        "https://readaboutstuff.com/2026/09/12/review-tartuffe-remixed-marylebone-theatre-london/",
         "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-intermission-youth"
       ],
       "dirFiles": 30,
@@ -139734,6 +138699,12 @@
           "url": "https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-marylebone-theatre/",
           "host": "lovelondonloveculture.com",
           "knownOutletId": "lovelondonloveculture",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/tartuffe-remixed-marylebone-theatre-review-false-teeth-not-needed-curates-egg-production",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
           "serpCensus": true
         },
         {
@@ -139749,10 +138720,6 @@
           "count": 1
         },
         {
-          "host": "curtaincallreviews.co.uk",
-          "count": 1
-        },
-        {
           "host": "londonboxoffice.co.uk",
           "count": 1
         },
@@ -139765,15 +138732,19 @@
           "count": 1
         },
         {
-          "host": "saltertonartsreview.com",
-          "count": 1
-        },
-        {
           "host": "standard.co.uk",
           "count": 1
         },
         {
           "host": "thespyinthestalls.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -139888,7 +138859,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -139908,7 +138879,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -139918,7 +138889,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 6,
             "error": null
           },
           {
@@ -139928,22 +138899,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 20,
+        "resultCount": 21,
         "error": null
       },
       "candidatesRejected": {
         "count": 15,
         "byReason": {
-          "non-review-host": 9,
-          "non-review-path": 1,
-          "aggregator-internal-nav": 2,
-          "roundup-page": 3
+          "aggregator-internal-nav": 1,
+          "non-review-host": 11,
+          "roundup-page": 2,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -139959,6 +138930,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-m"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/tartuffe-remixed-marylebone-theatre-review-false-teeth-not-needed-curates-egg-production",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
         },
         {
           "url": "https://redbuslondinium.uk/2026/09/11/tartuffe-remixed-marylebone-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
@@ -139983,6 +138966,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-marylebone-theatre/"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/tartuffe-remixed-marylebone-theatre-review-false-teeth-not-needed-curates-egg-production"
           },
           {
             "outletId": "redbuslondinium.uk",
@@ -140016,16 +139006,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2026/sep/11/tartuffe-remixed-review-marylebone-theatre-london-mark-rylance-moliere",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/tartuffe-remixed-marylebone-theatre-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/11/tartuffe-remixed-review-marylebone-theatre-london-mark-rylance-moliere",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-13T18:41:03.414Z"
           },
           {
             "url": "https://www.londonpubtheatres.com/review-tartuffe-remixed-at-marylebone-theatre-4-sept-24-october-2026",
@@ -140040,14 +139030,14 @@
             "firstSeenAt": "2026-09-16T13:09:25.039Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/09/12/review-tartuffe-remixed/",
-            "outletId": "ayoungishperspective.co.uk",
+            "url": "https://www.timeout.com/london/theatre/tartuffe-remixed-review",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/tartuffe-remixed-review",
-            "outletId": "timeout.com",
+            "url": "https://ayoungishperspective.co.uk/2026/09/12/review-tartuffe-remixed/",
+            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
@@ -140058,10 +139048,10 @@
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
-            "url": "https://loureviews.blog/2026/09/11/play-review-tartuffe-remixed-at-marylebone-theatre/",
-            "outletId": "loureviews.blog",
+            "url": "https://saltertonartsreview.com/2026/09/tartuffe-remixed-marylebone-theatre-london/",
+            "outletId": "saltertonartsreview.com",
             "state": "live",
-            "firstSeenAt": "2026-09-15T18:49:59.948Z"
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/tartuffe-remixed-with-mark-rylance-at-marylebone-theatre-review_1731492/",
@@ -140070,10 +139060,22 @@
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
           },
           {
+            "url": "https://loureviews.blog/2026/09/11/play-review-tartuffe-remixed-at-marylebone-theatre/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T18:49:59.948Z"
+          },
+          {
             "url": "https://www.londontheatre1.com/reviews/tartuffe-remixed-marylebone-theatre/",
             "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
+          },
+          {
+            "url": "https://www.curtaincallreviews.co.uk/tartuffe-remixed",
+            "outletId": "curtaincallreviews.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/09/review-tartuffe-remixed-marylebone-theatre/",
@@ -140082,26 +139084,14 @@
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
-            "url": "https://readaboutstuff.com/2026/09/12/review-tartuffe-remixed-marylebone-theatre-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T13:09:25.039Z"
-          },
-          {
             "url": "https://viewfromthegods.co.uk/2026/09/11/tartuffe-remixed-at-marylebone-theatre/",
             "outletId": "viewfromthegods.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/tartuffe-remixed-review-mark-rylance-jrqb8lb2f",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-tartuffe-remixed-marylebone-theatre",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://readaboutstuff.com/2026/09/12/review-tartuffe-remixed-marylebone-theatre-london/",
+            "outletId": "readaboutstuff.com",
             "state": "live",
             "firstSeenAt": "2026-09-16T13:09:25.039Z"
           },
@@ -140117,6 +139107,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-15T18:49:59.948Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/tartuffe-remixed-marylebone-theatre-review-false-teeth-not-needed-curates-egg-production",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
           },
           {
             "url": "https://redbuslondinium.uk/2026/09/11/tartuffe-remixed-marylebone-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
@@ -140148,9 +139145,9 @@
           }
         ],
         "liveCount": 16,
-        "candidateCount": 21
+        "candidateCount": 22
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
@@ -142085,20 +141082,21 @@
         "https://www.londontheatre.co.uk/reviews/the-children-review-lyric-hammersmith",
         "https://www.london-unattached.com/the-children-lyric-hammersmith-theatre/",
         "https://www.thereviewshub.com/the-children-lyric-hammersmith-london/",
-        "https://www.theguardian.com/stage/2026/sep/13/the-children-review-meera-syal-lyric-hammersmith-london",
         "https://www.thestage.co.uk/reviews/the-children-review-lyric-hammersmith-london",
-        "https://www.allthatdazzles.co.uk/post/review-the-children-lyric-hammersmith-theatre",
         "https://www.timeout.com/london/theatre/the-children-1-review",
+        "https://www.theguardian.com/stage/2026/sep/13/the-children-review-meera-syal-lyric-hammersmith-london",
+        "https://www.allthatdazzles.co.uk/post/review-the-children-lyric-hammersmith-theatre",
         "https://theatreandtonic.co.uk/blog/the-children-at-lyric-theatre-hammersmith-review",
-        "https://lyric.co.uk/shows/the-children/",
-        "https://theartsdesk.com/theatre/children-lyric-hammersmith-review-instant-classic-given-jaunty-revival",
-        "https://www.londontheatre1.com/reviews/the-children-lyric-hammersmith-theatre/",
-        "https://firstnightmagazine.com/2026/09/11/review-of-the-children-lyric-hammersmith-2026-nuclear-tragedy-misses-some-of-its-core/",
-        "https://www.westendbestfriend.co.uk/news/review-the-children-lyric-hammersmith-theatre",
-        "https://www.timeout.com/london/theatre/the-children-1",
-        "https://playstosee.com/reviews/the-children/",
-        "https://thespyinthestalls.com/2026/09/the-children/",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-children-review-lyric-hammersith/",
+        "https://lyric.co.uk/shows/the-children/",
+        "https://www.londontheatre1.com/reviews/the-children-lyric-hammersmith-theatre/",
+        "https://www.whatsonstage.com/news/the-children-with-meera-syal-at-lyric-hammersmith-theatre-review_1731504/",
+        "https://firstnightmagazine.com/2026/09/11/review-of-the-children-lyric-hammersmith-2026-nuclear-tragedy-misses-some-of-its-core/",
+        "https://thespyinthestalls.com/2026/09/the-children/",
+        "https://theatreweekly.com/review-the-children-at-lyric-hammersmith-theatre/",
+        "https://www.standard.co.uk/culture/theatre/the-children-at-lyric-hammersmith-review-b1296870.html",
+        "https://www.westendbestfriend.co.uk/news/review-the-children-lyric-hammersmith-theatre",
+        "https://playstosee.com/reviews/the-children/",
         "https://www.broadwayworld.com/westend/article/Review-THE-CHILDREN-STARRING-MEERA-SYAL-Lyric-Hammersmith-20260911",
         "https://www.londonboxoffice.co.uk/news/post/review-the-children"
       ],
@@ -142291,6 +141289,10 @@
       ],
       "dirOnly": [
         {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
           "host": "liamodell.com",
           "count": 1
         },
@@ -142303,19 +141305,7 @@
           "count": 1
         },
         {
-          "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
           "host": "theatreboard.com",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
           "count": 1
         }
       ],
@@ -142478,7 +141468,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 6,
             "error": null
           },
           {
@@ -142488,7 +141478,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           },
           {
@@ -142497,8 +141487,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -142518,7 +141508,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 6,
             "error": null
           },
           {
@@ -142528,22 +141518,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 16,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 532,
+        "count": 527,
         "byReason": {
-          "non-review-host": 69,
           "aggregator-internal-nav": 386,
+          "non-review-host": 63,
+          "roundup-page": 4,
           "ticketing-listing": 1,
-          "roundup-page": 3,
           "not-http-url": 61,
           "aggregator-section-root": 12
         }
@@ -142989,22 +141979,10 @@
             "firstSeenAt": "2026-09-15T22:04:41.420Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/sep/13/the-children-review-meera-syal-lyric-hammersmith-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/the-children-review-lyric-hammersmith-london",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-the-children-lyric-hammersmith-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/the-children-1-review",
@@ -143013,16 +141991,28 @@
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/sep/13/the-children-review-meera-syal-lyric-hammersmith-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T22:04:41.420Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-children-lyric-hammersmith-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T22:04:41.420Z"
+          },
+          {
             "url": "https://theatreandtonic.co.uk/blog/the-children-at-lyric-theatre-hammersmith-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-15T22:04:41.420Z"
           },
           {
-            "url": "https://theartsdesk.com/theatre/children-lyric-hammersmith-review-instant-classic-given-jaunty-revival",
-            "outletId": "theartsdesk.com",
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-children-review-lyric-hammersith/",
+            "outletId": "telegraph.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-16T07:01:53.756Z"
+            "firstSeenAt": "2026-09-13T18:41:03.414Z"
           },
           {
             "url": "https://www.londontheatre1.com/reviews/the-children-lyric-hammersmith-theatre/",
@@ -143031,26 +142021,14 @@
             "firstSeenAt": "2026-09-15T22:04:41.420Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/the-children-with-meera-syal-at-lyric-hammersmith-theatre-review_1731504/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
+          },
+          {
             "url": "https://firstnightmagazine.com/2026/09/11/review-of-the-children-lyric-hammersmith-2026-nuclear-tragedy-misses-some-of-its-core/",
             "outletId": "firstnightmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-children-lyric-hammersmith-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-15T22:04:41.420Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-children-1",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-16T13:09:25.039Z"
-          },
-          {
-            "url": "https://playstosee.com/reviews/the-children/",
-            "outletId": "playstosee.com",
             "state": "live",
             "firstSeenAt": "2026-09-15T22:04:41.420Z"
           },
@@ -143061,10 +142039,28 @@
             "firstSeenAt": "2026-09-15T22:04:41.420Z"
           },
           {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-children-review-lyric-hammersith/",
-            "outletId": "telegraph.co.uk",
+            "url": "https://theatreweekly.com/review-the-children-at-lyric-hammersmith-theatre/",
+            "outletId": "theatreweekly.com",
             "state": "live",
-            "firstSeenAt": "2026-09-13T18:41:03.414Z"
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-children-at-lyric-hammersmith-review-b1296870.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-16T22:01:51.843Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-the-children-lyric-hammersmith-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T22:04:41.420Z"
+          },
+          {
+            "url": "https://playstosee.com/reviews/the-children/",
+            "outletId": "playstosee.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-15T22:04:41.420Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-THE-CHILDREN-STARRING-MEERA-SYAL-Lyric-Hammersmith-20260911",
@@ -143290,10 +142286,10 @@
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
           }
         ],
-        "liveCount": 16,
-        "candidateCount": 31
+        "liveCount": 18,
+        "candidateCount": 33
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
@@ -147948,7 +146944,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-16T13:09:25.039Z"
+      "computedAt": "2026-09-16T22:01:51.843Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",

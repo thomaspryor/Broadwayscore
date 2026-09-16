@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-09-16T18:05:53.572Z",
+  "generatedAt": "2026-09-16T22:02:10.682Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 138,
-  "clean": 138,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 137,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.92 vs local 78.23 (Δ2.31)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11
+    }
+  ]
 }

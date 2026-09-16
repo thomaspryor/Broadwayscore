@@ -613,18 +613,6 @@
     "queuedAt": "2026-09-16T11:43:29.083Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "9/135 show(s) differ between internal state and what prod serves.\nscore-drift: 9\nBLOODSPORT: After Helen of Troy: score-drift\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-16T13:09:43.243Z"
-  },
-  {
     "conditionKey": "watchdog-park:95",
     "title": "Watchdog parked #95 — redispatch never produced a launch",
     "description": "Watchdog: card \"NYT bot-stub reviews mislabeled contentTier=complete (scored on partial text)\" was claimed for redispatch at 2026-09-16T16:12:06.822Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 95), then re-arm with node scripts/bsc-next.js --id 95 --force once fixed.",
@@ -774,18 +762,6 @@
     "queuedAt": "2026-09-16T18:05:53.684Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.3% (380/498)\noff-broadway: 42.5% (135/318)\nwest-end: 76.3% (426/558)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (800h)\nA Midsummer Night's Dream — observer (800h)\nA Midsummer Night's Dream — standard (800h)\nABBA Voyage — independent (800h)\nAladdin — ew (800h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (800h)\nBuena Vista Social Club — broadwaynews (800h)\nBuena Vista Social Club — nydailynews (800h)\nHadestown — nydailynews (800h)\nHeathers The Musical — dailybeast (800h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-16T18:05:53.783Z"
-  },
-  {
     "conditionKey": "opening-night-fulltext-mentions-show:short:golden-boy-off-west-end-2026",
     "title": "Shipped review too short to verify on Golden Boy",
     "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
@@ -796,5 +772,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-16T20:12:58.178Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/138 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nGolden Boy: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T22:02:10.698Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.3% (380/498)\noff-broadway: 42.5% (135/318)\nwest-end: 76.3% (426/558)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (804h)\nA Midsummer Night's Dream — observer (804h)\nA Midsummer Night's Dream — standard (804h)\nABBA Voyage — independent (804h)\nAladdin — ew (804h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (804h)\nBuena Vista Social Club — broadwaynews (804h)\nBuena Vista Social Club — nydailynews (804h)\nHadestown — nydailynews (804h)\nHeathers The Musical — dailybeast (804h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T22:02:10.888Z"
   }
 ]
