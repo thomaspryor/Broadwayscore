@@ -1589,6 +1589,15 @@ on:
       # helpers are covered via tests/unit/collect-review-texts-rename-helper.test.mjs
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
+      # BRO-2381: colocated test (pushReviewTextsCheckpoint() env-var gating —
+      # REVIEW_TEXTS_TOKEN/GITHUB_ACTIONS). Root-level scripts/*.test.mjs is
+      # NOT globbed — registered in tests/unit-test-manifest.txt and
+      # path-listed here so a solo edit to the test triggers CI. Its
+      # dependency scripts/lib/review-texts-checkpoint-gate.js needs no entry
+      # of its own — already covered by the scripts/lib/** glob above (same
+      # pattern as scripts/audit-stale-announced-shows.js above, which lists
+      # only the top-level file and not its scripts/lib/ dependency).
+      - 'scripts/collect-review-texts.test.mjs'
       # BRO-1431: colocated test (stale-flag neutralization on body
       # replacement — wrongProduction/contentVerification/contentTier).
       # Root-level scripts/*.test.mjs files are NOT globbed — registered in

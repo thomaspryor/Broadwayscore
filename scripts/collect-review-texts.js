@@ -57,6 +57,7 @@ const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions } = require('./lib/review-write-guard.js');
+const { shouldPushReviewTextsCheckpoint } = require('./lib/review-texts-checkpoint-gate.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
 
@@ -5660,7 +5661,16 @@ function commitChanges(processed, forcePush = false) {
  * Runs at every checkpoint so data is saved incrementally, not just at the end.
  */
 function pushReviewTextsCheckpoint(processed) {
-  if (!process.env.REVIEW_TEXTS_TOKEN || !process.env.GITHUB_ACTIONS) return;
+  const gate = shouldPushReviewTextsCheckpoint(process.env);
+  if (!gate.ok) {
+    // BRO-2381: this used to be a bare `return` — several workflow steps
+    // invoke this script without REVIEW_TEXTS_TOKEN in their env, so the
+    // mid-run checkpoint silently no-op'd for the whole run with nothing in
+    // the job log to show it. Logging makes that visible without changing
+    // behavior for the correctly-configured case.
+    console.log(`  (Skipping review-texts checkpoint push — ${gate.reason})`);
+    return;
+  }
 
   const rtDir = path.join(process.cwd(), 'data', 'review-texts');
   if (!fs.existsSync(path.join(rtDir, '.git'))) {
@@ -7356,8 +7366,14 @@ async function main() {
   generateReport();
 }
 
-// Run
-main().catch(error => {
-  console.error('Fatal error:', error);
-  closeBrowser().finally(() => process.exit(1));
-});
+module.exports = { pushReviewTextsCheckpoint };
+
+// Run (guarded so scripts/collect-review-texts.test.mjs can require() this
+// file for pushReviewTextsCheckpoint() without kicking off a real collection
+// run — see CLAUDE.md rule 15, test extraction pattern).
+if (require.main === module) {
+  main().catch(error => {
+    console.error('Fatal error:', error);
+    closeBrowser().finally(() => process.exit(1));
+  });
+}
