@@ -41,8 +41,8 @@ function loadSnapshot(historyDir, date, market) {
 }
 
 // Pure diff of two snapshot payloads → ranked movers (biggest |delta| first).
-// `badge` carries the AFTER snapshot's tier (falls back to BEFORE's) so a
-// display layer can color the mover by its current award standing.
+// beforeBadge/afterBadge carry each snapshot's own tier so a display layer
+// can color each side by the standing it actually had at that time.
 function diffSnapshots(before, after, top) {
   const allIds = new Set([...Object.keys(before.shows || {}), ...Object.keys(after.shows || {})]);
   const rows = [];
