@@ -420,7 +420,15 @@ function dispatchCommentIsOurFinishedLaunch(comment, taskId, entries) {
     launch = e;
   }
   if (!launch) return false; // not a dispatch this host recorded — cross-machine, stay live
-  return Boolean(dispatchLedger.terminalForLaunch(launch, list));
+  // BRO-3481: terminalForLaunch alone only recognizes the cmux-tab
+  // vocabulary (workspaceRef-keyed dead/vanished/prune-closed/remapped) — a
+  // --headless dispatch (every Linear-lane dispatch; see dispatch-watchdog.js's
+  // dispatchArgvFor) finishes through JOB_EVENTS instead, which
+  // terminalJobEventForLaunch checks. Either vocabulary proving this launch
+  // over is enough; which one applies depends on how THIS launch actually
+  // ran, not on the caller.
+  return Boolean(dispatchLedger.terminalForLaunch(launch, list))
+    || Boolean(dispatchLedger.terminalJobEventForLaunch(launch, list));
 }
 
 // Terminal-state guard (task #1517, BRO-247 incident root cause): a

@@ -21,7 +21,15 @@
  * ledger, one guard — same doctrine as JOB_EVENTS there) as:
  *   'watchdog-redispatch' {taskId}  claimed BEFORE the child bsc-next spawn,
  *                                   so budgets survive a crash mid-dispatch
- *   'watchdog-park'       {taskId}  retries exhausted; needs the owner
+ *   'watchdog-park'       {taskId}  retries exhausted; needs the owner. Also
+ *                                   written on the FIRST attempt when the
+ *                                   child's own dispatch guard refuses in a
+ *                                   way structuralGuardRefusal recognizes as
+ *                                   permanent (BRO-3481) — retrying a guard
+ *                                   that will refuse identically every time
+ *                                   only burns day-budget claims, so this
+ *                                   case skips straight to parked rather than
+ *                                   waiting for retries to exhaust.
  *   'watchdog-resurrect'  {taskId:'watchdog', workspaceRef, gapMs}  the
  *                                   crowned tab was recreated after a gap
  * All are excluded from bsc-prune/bsc-next semantics (unknown events are
@@ -40,6 +48,56 @@ const WATCHDOG_EVENTS = Object.freeze({
   REDISPATCH: 'watchdog-redispatch',
   PARK: 'watchdog-park',
 });
+
+// BRO-3481: a curated allow-list, NOT a general parser of dispatcher stderr.
+// A first draft of this scanned any "REFUSING ...:" line — second-opinion
+// review caught that this matches 25+ call sites across linear-next.js and
+// bsc-next.js, several of which are transient/self-resolving (a succession
+// lock held but not stale, a dispatch-claim race, "a claude process is
+// STILL ALIVE" — all of which should keep retrying, not park forever on
+// their first occurrence). These two phrases are the only ones this ticket
+// is actually about: a genuinely PERMANENT refusal that will read the same
+// way on every future retry until either the underlying state changes or
+// someone passes --force. Both are literal substrings of messages a test
+// already pins byte-for-byte (linear-next.js's idempotency guard message at
+// ~849, checkTerminalStateGuard's own return string in linear-dispatch.js) —
+// a wording change to either breaks its own test before it can silently
+// break this.
+const STRUCTURAL_REFUSAL_PHRASES = [
+  'it already looks dispatched',
+  'is already in a terminal state',
+];
+
+// Codex adversarial review (BRO-3481): "it already looks dispatched" is
+// printed by the SAME line (linear-next.js:849) whether the refusal came
+// from a stale historical comment (the permanent case this ticket is about)
+// OR from hasLiveLedgerEntry finding a genuinely LIVE concurrent dispatch
+// (linear-next.js:842-858's own two-branch detail print) — which is NOT
+// permanent, it resolves on its own once that live dispatch finishes.
+// Parking the live-dispatch case would be actively harmful: nothing but a
+// NEW launch clears a watchdog-park row (watchdogParkedIds below), so
+// legitimate future work on that task would stay suppressed even after the
+// concurrent dispatch completes. Only the ledger detail line below is
+// printed on the live-ledger branch — its absence is how this tells the two
+// apart, failing toward "not structural" (keep retrying) when ambiguous.
+const LIVE_LEDGER_DETAIL_MARKER = 'Local dispatch ledger has a live';
+
+// Extracts the guard's own refusal LINE (not the whole multi-line stderr
+// blob some of these guards print extra detail under) from a dispatch
+// child's captured output, or null if nothing in the curated list matched.
+function structuralGuardRefusal(output) {
+  const text = String(output || '');
+  for (const phrase of STRUCTURAL_REFUSAL_PHRASES) {
+    const idx = text.indexOf(phrase);
+    if (idx === -1) continue;
+    if (phrase === 'it already looks dispatched' && text.slice(idx, idx + 500).includes(LIVE_LEDGER_DETAIL_MARKER)) continue;
+    const lineStart = text.lastIndexOf('\n', idx) + 1;
+    const lineEnd = text.indexOf('\n', idx);
+    const line = text.slice(lineStart, lineEnd === -1 ? text.length : lineEnd).trim();
+    return (line || phrase).slice(0, 300);
+  }
+  return null;
+}
 
 // BRO-2318: the fixed lead-in of the failureRate hold string below, exported
 // so send-morning-digest.js's localDispatchWatchdogLeakMessage() can match
@@ -857,7 +915,7 @@ function renderNarrative(plan) {
 }
 
 module.exports = {
-  WATCHDOG_EVENTS, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER, LAUNCHER_LEAK_HOLD_PREFIX,
+  WATCHDOG_EVENTS, structuralGuardRefusal, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER, LAUNCHER_LEAK_HOLD_PREFIX,
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,
   watchdogClaimPending, lastLaunchAnywhereMs,
