@@ -18,8 +18,10 @@
  *      earlier landed-acked (no double-acks);
  *   2. `git fetch origin main`, then --sha is an ancestor of origin/main
  *      (scripts/lib/landing-verify.js checkLanded — shallow-safe);
- *   3. the sha is THIS job's work: committed after the launch row and naming
- *      the ref in its message, or descending from a job-stranded row's sha;
+ *   3. the sha is THIS job's work: committed after the launch row and before
+ *      the terminal row (+5 min skew) and naming the ref in its message; for
+ *      a job-stranded row it must be the stranded sha itself (or an ancestor
+ *      of it) — the one case where the landing legitimately happens later;
  *   4. --verify is a safe-form command (the same allowlist linear-next.js
  *      applies to acceptance criteria) and it is RUN here, in the canonical
  *      checkout — which must already contain the sha and have no uncommitted
@@ -133,12 +135,22 @@ function main() {
   }
   const landing = checkLanded({ sha, cwd: REPO, log: (m) => console.error(`→ ${m}`) });
   landing.sha = sha;
-  landing.commitTs = git(['show', '-s', '--format=%cI', sha]);
-  landing.message = git(['show', '-s', '--format=%B', sha]);
-  landing.descendsFromStranded = Boolean(
-    pre.stranded && pre.stranded.sha && gitOk(['merge-base', '--is-ancestor', String(pre.stranded.sha), sha])
+  try {
+    landing.commitTs = git(['show', '-s', '--format=%cI', sha]);
+    landing.message = git(['show', '-s', '--format=%B', sha]);
+  } catch (e) {
+    refuse(ref, [`could not read commit ${sha}: ${String(e.stderr || e.message).trim()}`]);
+  }
+  // job-stranded tie: --sha is the stranded sha itself, or an ancestor of it.
+  landing.tiedToStranded = Boolean(
+    pre.stranded && pre.stranded.sha
+      && (String(pre.stranded.sha).startsWith(sha) || sha.startsWith(String(pre.stranded.sha))
+        || gitOk(['merge-base', '--is-ancestor', sha, String(pre.stranded.sha)]))
   );
   console.error(`→ git: ${sha.slice(0, 11)} ${landing.verdict} on origin/main; committed ${landing.commitTs}`);
+  if (pre.launchVerifyCmd && pre.launchVerifyCmd !== args.verify.trim()) {
+    console.error(`⚠️  --verify differs from the command recorded at dispatch (${pre.launchVerifyCmd}); both are kept on the ledger row`);
+  }
 
   // 3. The checkout the verify command runs in must already prove origin/main.
   const checkout = {

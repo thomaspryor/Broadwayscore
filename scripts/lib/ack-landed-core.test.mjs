@@ -45,6 +45,7 @@ test('happy path: stopped-short job with a landed, tied sha and a green verify �
   assert.equal(d.row.verifyCmd, 'node scripts/audit-workflow-concurrency.js');
   assert.equal(d.row.ackedBy, 'session-abc');
   assert.equal(d.row.priorEvent, 'job-stopped-short');
+  assert.equal(d.row.launchVerifyCmd, 'node scripts/audit-workflow-concurrency.js');
   assert.equal(core.formatAckLine(REF, d.row), `ACKED: ${REF} — c88cdf6c126fa6dc on origin/main, node scripts/audit-workflow-concurrency.js exit 0`);
 });
 
@@ -104,13 +105,27 @@ test('refuse: rubber-stamp sha — committed before the launch, or not naming th
   assert.equal(nearMiss.ok, false);
 });
 
-test('stranded row: a sha descending from the recorded stranded sha is tied even without the ref in its message', () => {
+test('refuse: rubber-stamp sha committed AFTER the terminal row (empty commit pushed once the job was dead)', () => {
+  const late = core.decideAck(happy({ landing: { ...happy().landing, commitTs: '2026-09-16T04:30:00.000Z', message: `${REF} ack` } }));
+  assert.equal(late.ok, false);
+  assert.match(late.refusals.join('\n'), /AFTER the job's terminal job-stopped-short row/);
+  // Inside the 5-minute skew grace it is still the job's plausible push.
+  const skew = core.decideAck(happy({ landing: { ...happy().landing, commitTs: '2026-09-16T04:13:00.000Z' } }));
+  assert.equal(skew.ok, true, skew.refusals.join('\n'));
+});
+
+test('stranded row: --sha must be the stranded sha (or an ancestor of it); a later landing is allowed only then', () => {
   const rows = [...rowsStoppedShort.slice(0, 2), { ts: '2026-09-16T04:11:36.000Z', event: 'job-stranded', taskId: TASK, jobId: `${TASK}-fixture`, sha: 'deadbeef' }];
-  const tied = core.decideAck(happy({ rows, landing: { ...happy().landing, message: 'merge worktree', descendsFromStranded: true } }));
+  const tied = core.decideAck(happy({ rows, landing: { ...happy().landing, sha: 'deadbeef', commitTs: '2026-09-16T04:05:00.000Z', message: 'merge worktree', tiedToStranded: true } }));
   assert.equal(tied.ok, true, tied.refusals.join('\n'));
-  const untied = core.decideAck(happy({ rows, landing: { ...happy().landing, message: 'merge worktree', descendsFromStranded: false } }));
+  assert.equal(tied.row.strandedSha, 'deadbeef');
+  // A commit that merely names the ref but is not the stranded sha's history is refused.
+  const untied = core.decideAck(happy({ rows, landing: { ...happy().landing, commitTs: '2026-09-16T05:00:00.000Z', tiedToStranded: false } }));
   assert.equal(untied.ok, false);
-  assert.match(untied.refusals.join('\n'), /nor descends from the job-stranded row's sha deadbeef/);
+  assert.match(untied.refusals.join('\n'), /must be the stranded sha deadbeef itself or an ancestor of it/);
+  // Landing later than the terminal row is fine for stranded (that is the whole point of the row).
+  const lateButTied = core.decideAck(happy({ rows, landing: { ...happy().landing, sha: 'deadbeef', commitTs: '2026-09-16T04:05:00.000Z', message: 'x', tiedToStranded: true } }));
+  assert.equal(lateButTied.ok, true);
 });
 
 test('refuse: verify command exits 1, is unsafe, or is missing', () => {

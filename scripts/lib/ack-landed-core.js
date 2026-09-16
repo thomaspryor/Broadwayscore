@@ -25,6 +25,11 @@
 'use strict';
 
 const MIN_REASON_CHARS = 15;
+// bsc-runner writes the terminal row moments after the job process exits; a
+// commit stamped a little after it (clock skew, a push racing the exit) is
+// still plausibly the job's. Same 5-minute skew convention as
+// dispatch-ledger.js's FUTURE_TS_GRACE_MS.
+const COMMIT_AFTER_TERMINAL_GRACE_MS = 5 * 60 * 1000;
 
 // Terminal rows an ack may follow. job-done and landed-acked are terminal
 // too, but there is nothing left to ack after them (Gate O already accepts
@@ -72,20 +77,23 @@ function ledgerPrecondition(rows) {
     refusals.push(`newest ledger row is ${ev || '(no event)'} (${newest.ts || '?'}) — not a terminal event; the job is still open or a relaunch superseded the one you verified`);
   }
   let launch = null;
+  let launchVerifyCmd = null; // only 'launch' rows carry verifyCmd; job-spawned does not
   let stranded = null;
   for (const r of list) {
     if (LAUNCH_EVENTS.has(String(r.event))) launch = r;
+    if (String(r.event) === 'launch' && r.verifyCmd) launchVerifyCmd = String(r.verifyCmd);
     if (String(r.event) === 'job-stranded' && r.sha) stranded = r;
   }
   if (!launch) refusals.push('no launch/job-spawned row for this ref — cannot tie a sha to a dispatch that was never recorded');
-  return { refusals, newest, launch, stranded };
+  return { refusals, newest, launch, launchVerifyCmd, stranded };
 }
 
 /**
  * @param {object} input
  * @param {string} input.ref            e.g. 'BRO-3535'
  * @param {object[]} input.rows         ledger rows for the ref, file order
- * @param {object} input.landing        {verdict:'LANDED'|'NOT_LANDED'|'UNKNOWN', sha, commitTs, message, descendsFromStranded}
+ * @param {object} input.landing        {verdict:'LANDED'|'NOT_LANDED'|'UNKNOWN', sha, commitTs, message, tiedToStranded}
+ *   tiedToStranded: sha === the job-stranded row's sha, or sha is an ancestor of it
  * @param {object} input.checkout       {containsSha:boolean, dirtyCodePaths:string[]}
  * @param {object} input.verify         {cmd, safe:boolean, unsafeReason, exitCode:number|null}
  * @param {string} input.reason
@@ -95,27 +103,41 @@ function decideAck(input) {
   const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
   const pre = ledgerPrecondition(rows);
   const refusals = [...pre.refusals];
-  const { newest, launch, stranded } = pre;
+  const { newest, launch, launchVerifyCmd, stranded } = pre;
 
   if (landing.verdict !== 'LANDED') {
     refusals.push(`${landing.sha || '<sha>'} is not an ancestor of origin/main after a fresh fetch (verdict ${landing.verdict || 'missing'}${landing.reason ? ', ' + landing.reason : ''})`);
   }
-  if (launch) {
+  // Tie the sha to THIS job, both ways (ship-check blocker 2026-09-16: with
+  // only a lower bound, `git commit --allow-empty -m "BRO-N ack" && git push`
+  // after the job died satisfied every check). The commit must postdate the
+  // launch AND predate the terminal row — the job had already exited when
+  // bsc-runner wrote that row, so anything committed later is not its work.
+  // job-stranded is the one legitimate later-push case (the owner lands the
+  // job's own stranded sha afterwards), so there the tie is the stranded sha
+  // itself: --sha must BE it, or be a commit it descends from.
+  const isStranded = Boolean(newest && String(newest.event) === 'job-stranded' && stranded);
+  const commitTs = Date.parse(landing.commitTs || '');
+  if (!Number.isFinite(commitTs)) {
+    refusals.push('could not read the commit timestamp for the sha');
+  } else if (launch) {
     const launchTs = Date.parse(launch.ts || '');
-    const commitTs = Date.parse(landing.commitTs || '');
-    if (!Number.isFinite(commitTs)) {
-      refusals.push('could not read the commit timestamp for the sha');
-    } else if (Number.isFinite(launchTs) && commitTs <= launchTs) {
+    if (Number.isFinite(launchTs) && commitTs <= launchTs) {
       refusals.push(`the sha was committed at ${landing.commitTs}, BEFORE this dispatch launched (${launch.ts}) — it cannot be this job's work`);
+    }
+    const endTs = Date.parse((newest && newest.ts) || '');
+    if (!isStranded && Number.isFinite(endTs) && commitTs > endTs + COMMIT_AFTER_TERMINAL_GRACE_MS) {
+      refusals.push(`the sha was committed at ${landing.commitTs}, AFTER the job's terminal ${newest.event} row (${newest.ts}) — the job had already exited, so this is not its work (only job-stranded may be acked with a later landing, via the stranded sha)`);
     }
   }
   const refRe = new RegExp(`(?<![\\w-])${String(ref || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w-])`, 'i');
   const namesRef = refRe.test(String(landing.message || ''));
-  const viaStranded = Boolean(stranded && landing.descendsFromStranded);
-  if (!namesRef && !viaStranded) {
-    refusals.push(stranded
-      ? `the sha neither names ${ref} in its commit message nor descends from the job-stranded row's sha ${stranded.sha}`
-      : `the sha's commit message does not name ${ref} — pass the job's own commit, not an unrelated one`);
+  if (isStranded) {
+    if (!landing.tiedToStranded) {
+      refusals.push(`for a job-stranded row the sha must be the stranded sha ${stranded.sha} itself or an ancestor of it (the stranded job's own history) — got ${landing.sha || '<sha>'}`);
+    }
+  } else if (!namesRef) {
+    refusals.push(`the sha's commit message does not name ${ref} — pass the job's own commit, not an unrelated one`);
   }
 
   if (!checkout.containsSha) {
@@ -144,7 +166,9 @@ function decideAck(input) {
     taskId: (newest && newest.taskId) || `linear:${ref}`,
     jobId: (newest && newest.jobId) || (launch && launch.jobId) || null,
     sha: landing.sha,
+    strandedSha: isStranded ? stranded.sha : undefined,
     verifyCmd: verify.cmd,
+    launchVerifyCmd: launchVerifyCmd || null,
     reason: reasonText,
     ackedBy: ackedBy || 'manual',
     priorEvent: newest ? newest.event : null,
@@ -157,6 +181,6 @@ function formatAckLine(ref, row) {
 }
 
 module.exports = {
-  MIN_REASON_CHARS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
+  MIN_REASON_CHARS, COMMIT_AFTER_TERMINAL_GRACE_MS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
   rowsForRef, normalizeRef, ledgerPrecondition, decideAck, formatAckLine,
 };
