@@ -540,6 +540,7 @@ const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
+const { neutralizeStaleFlagsOnBodyReplacement } = require('./lib/stale-flag-neutralization');
 const { emitStage } = require('./lib/stage-latency');
 
 // Outlet-specific Playwright wait configurations
@@ -4378,6 +4379,11 @@ function mapSourceMethod(method) {
 
 async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null) {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+  // BRO-1431: snapshot the body BEFORE any mutation below, so the stale-flag
+  // neutralization call (after contentTier reclassification) can tell "this
+  // fetch just filled/replaced the body" apart from an unrelated metadata-only
+  // update. See scripts/lib/stale-flag-neutralization.js.
+  const fullTextBeforeUpdate = data.fullText || '';
 
   // EMPTY-WRITE GUARD (Joe Turner postmortem A #1, A #16) — never overwrite
   // an existing non-empty fullText with empty/whitespace, and never modify a
@@ -5264,6 +5270,26 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       data.filmTvSignals = filmCheck.signals;
       console.log(`    ⚠ Heuristic fallback — possible film/TV review: ${filmCheck.signals.join(', ')}`);
     }
+  }
+
+  // BRO-1431: neutralize stale exclusion state BEFORE reclassifying content
+  // tier below — classifyContentTier()'s T5/invalid check
+  // (isEffectivelyWrongProductionOrShow) reads wrongProduction/
+  // wrongProductionAutoCleared directly, so clearing the flag AFTER
+  // classification would classify against the stale flag and stay 'invalid'
+  // for one extra run. A stub ingested via ingest-urls.js/gather-reviews.js
+  // that this fetch fills in for the first time is the common trigger — see
+  // stale-flag-neutralization.js for the full reasoning and guardrails.
+  //
+  // Only when NO fresh LLM verification ran this pass (Codex adversarial
+  // review, BRO-1431 ship-check): the `if (contentVerification) {...}` block
+  // above (~line 5063) already wrote data.contentVerification and any
+  // wrongProduction stamp from a FRESH read of THIS body — that block IS the
+  // "re-evaluate against the new text" step this module exists to unblock for
+  // callers with no LLM verification of their own (e.g. ingest-urls.js).
+  // Running this too would strip the fresh verdict it just computed.
+  if (!contentVerification) {
+    neutralizeStaleFlagsOnBodyReplacement(data, fullTextBeforeUpdate);
   }
 
   // Reclassify contentTier using canonical 5-tier system
