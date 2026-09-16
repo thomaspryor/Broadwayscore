@@ -78,6 +78,21 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 // autonomous-triage-core.js's own requires (autonomous-eligibility.js,
 // attempt-memory.js) never reach back to this file.
 const { resolveCheckPaths } = require('./autonomous-triage-core.js');
+// classifyVacuousCheck/fetchOriginMain/pathExistsOnOriginMain only (no
+// audit-report machinery pulled in) — resolveVacuousCheck()/vacuousCheckGuard()
+// below need the identical opposite-polarity check (BRO-3378: "can this
+// command ever FAIL?") already run by the enricher's guardrail 2b
+// (enrich-card-acceptance.js), applied once more at the point a dispatcher
+// actually commits to launching a workspace on a hand-written or imported
+// command that never went through it (BRO-3394 — the vacuous-check twin of
+// BRO-2569 just below). No cycle: card-premises-auditor.js's own requires
+// (autonomous-triage-core.js, shallow-fetch-args.js, autofix-canary.js) never
+// reach back to this file — autofix-canary.js's own require('../bsc-next.js')
+// is lazy (inside a function body), not at module load.
+const {
+  classifyVacuousCheck, isTestFCommand, fetchOriginMain, pathExistsOnOriginMain,
+  VACUOUS_TEST_F_UNRESOLVED,
+} = require('./card-premises-auditor.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS, isAutomationParked } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 const { findOverlappingCards } = require('./dispatch-overlap-check.js');
@@ -335,6 +350,84 @@ function pathVerifiabilityGuard(task, pathCheck, opts) {
     `    1. Correct the acceptance criteria to name a file that exists, or a path inside a directory that does.\n` +
     `    2. Add "VERIFY: owner-judgment" if this outcome genuinely cannot be machine-checked.\n` +
     `    3. Re-run with --allow-phantom-path to dispatch anyway (recorded in the ledger).`;
+}
+
+// ── Vacuous-check guard (BRO-3394) ───────────────────────────────────────────
+// The opposite-polarity twin of the phantom-path guard just above: that one
+// asks "can this command ever PASS?", classifyVacuousCheck (card-premises-
+// auditor.js, BRO-3378) asks "can it ever FAIL?" — a `test -f <path>` naming a
+// file already present on origin/main is green before the work starts, so
+// re-running it at Done time proves nothing. BRO-3378 wired that classifier
+// into exactly two places: the read-only sweep (audit-card-verifiability.js)
+// and the enricher's own guardrail 2b (enrich-card-acceptance.js, blocking
+// only its OWN LLM-drafted commands). That is the identical shape BRO-2546
+// left for BRO-2569 to close: every OTHER path an acceptance command can
+// arrive by — hand-written, `linear-brain.js create`, the plan-tasks skill,
+// an imported Notion card — reached both real dispatchers with no vacuous-
+// check at all. Measured live 2026-09-15: 31 open Linear cards carry a
+// `test -f` that can never fail; only ~11 trace to the enricher's own log.
+//
+// Same split as resolvePathCheck/pathVerifiabilityGuard: resolveVacuousCheck
+// does the I/O (a bounded git fetch + cat-file, via card-premises-auditor.js's
+// own fetchOriginMain/pathExistsOnOriginMain), vacuousCheckGuard stays pure
+// over the result — matching every sibling guard's (task, data, opts) shape.
+//
+// isTestFCommand pre-filters BEFORE the fetch: classifyVacuousCheck only ever
+// fires on the `test -f` form, so a `node --test`/`tsc`/`lint` gate.cmd (the
+// common case) never pays for a git fetch it can't possibly need — the same
+// "only fetch when at least one candidate is file-naming-shaped" cheap-common-
+// case guard card-premises-auditor.js's own findCardCheckPathDefects() already
+// applies across a whole card batch, kept here for a single gate.cmd.
+//
+// Fails OPEN on a fetch failure (fetchOriginMain returning false) AND on
+// VACUOUS_TEST_F_UNRESOLVED (classifyVacuousCheck's own "could not resolve
+// this run" verdict) — deliberately mirroring the READ-ONLY AUDIT's choice
+// (auditVacuousChecks drops UNRESOLVED) rather than the ENRICHER's (guardrail
+// 2b defers-not-writes on UNRESOLVED). The enricher is about to WRITE a
+// permanent record and can afford to defer one run; this guard runs
+// synchronously on every dispatch attempt, and a transient git/network blip
+// must not block real work — the identical asymmetry every other guard in
+// this file (staleOutcomeGuard, pathVerifiabilityGuard, sessionTrackingCloneGuard,
+// linearMirrorGuard) already resolves in favor of failing open on missing or
+// ambiguous data.
+//
+// A dedicated `--allow-vacuous-check` bypass, not `--allow-phantom-path`
+// (which means "the command names a path that can never resolve") or
+// `--allow-unverifiable` (which means "no command exists to check at all") —
+// a vacuous command resolves fine and is a syntactically real check, it
+// simply cannot distinguish done from not-done. A materially different fact,
+// so its own flag keeps the ledger legible, matching pathVerifiabilityGuard's
+// own stated rationale (above) for why IT has a dedicated flag too.
+//
+// Deliberately NOT added to GUARD_NAMES (predispatch-queue-audit.js's
+// blind-simulation array, pinned to exactly 8 entries by
+// dispatch-guard-queue-audit.test.mjs) — same acknowledged-gap treatment
+// pathVerifiabilityGuard already gets (see its own header above, BRO-2626),
+// and more strongly warranted here: this guard's I/O is a LIVE NETWORK FETCH
+// per task, not a local fs stat, so blind-simulating it across the WHOLE
+// backlog would be a real per-run network cost, not just a side-effect-safety
+// question. Wiring it into that audit — if ever done — needs its own scoped
+// decision about batching/caching the fetch across the sweep, not a drive-by
+// addition here.
+function resolveVacuousCheck(gate, repoOpts) {
+  if (!gate || !gate.cmd || !isTestFCommand(gate.cmd)) return null;
+  if (!fetchOriginMain(repoOpts)) return null;
+  const cache = new Map();
+  const existsFn = (p) => {
+    if (!cache.has(p)) cache.set(p, pathExistsOnOriginMain(p, repoOpts));
+    return cache.get(p);
+  };
+  return classifyVacuousCheck(gate.cmd, existsFn);
+}
+
+function vacuousCheckGuard(task, vacuousVerdict, opts) {
+  if (!vacuousVerdict || vacuousVerdict.kind === VACUOUS_TEST_F_UNRESOLVED) return null;
+  if (opts.force || opts['allow-vacuous-check'] || opts['dry-run'] || opts['print-prompt']) return null;
+  return `REFUSING to dispatch #${task.id}: the acceptance command is vacuous — ${vacuousVerdict.reason}.\n` +
+    `  Fix one of:\n` +
+    `    1. Rewrite the acceptance criteria to name a file the work actually creates or changes.\n` +
+    `    2. Add "VERIFY: owner-judgment" if this outcome genuinely cannot be machine-checked.\n` +
+    `    3. Re-run with --allow-vacuous-check to dispatch anyway (recorded in the ledger).`;
 }
 
 // ── Closed-card guard (task #1790, the stall-sweep half of the mirror problem) ──
@@ -965,4 +1058,7 @@ module.exports = {
   resolvePathCheck,
   resolveCanonicalRepoRoot,
   pathVerifiabilityGuard,
+  // BRO-3394 — deliberately not in GUARD_NAMES, see the guard's own header.
+  resolveVacuousCheck,
+  vacuousCheckGuard,
 };
