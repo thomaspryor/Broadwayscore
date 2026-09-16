@@ -15,6 +15,20 @@ const { findMissingLedgerCommits, ROUTE_ALERT_CALL_RE } = require('./alert-ledge
 // points here. A `require` of the router is not a CALL and must not count as a
 // coverage breadcrumb: that distinction is what silently evicted
 // process-feedback.yml from coverage (BRO-3662).
+// Exporting a regex is only safe if it carries no match state. A /g (or /y)
+// flag makes .test() advance lastIndex, so the SAME input alternates true/false
+// across calls — and this object is now shared between the checker and these
+// tests, which would make the guard's verdict depend on call order.
+test('ROUTE_ALERT_CALL_RE is stateless (no /g, no lastIndex drift)', () => {
+  assert.equal(ROUTE_ALERT_CALL_RE.global, false);
+  assert.equal(ROUTE_ALERT_CALL_RE.sticky, false);
+  const line = '            routeAlert({';
+  assert.equal(ROUTE_ALERT_CALL_RE.test(line), true);
+  assert.equal(ROUTE_ALERT_CALL_RE.test(line), true);
+  assert.equal(ROUTE_ALERT_CALL_RE.test(line), true);
+  assert.equal(ROUTE_ALERT_CALL_RE.lastIndex, 0);
+});
+
 test('ROUTE_ALERT_CALL_RE matches a call, with or without space before the paren', () => {
   assert.ok(ROUTE_ALERT_CALL_RE.test("            routeAlert({"));
   assert.ok(ROUTE_ALERT_CALL_RE.test('routeAlert ({'));
@@ -36,8 +50,13 @@ test('ROUTE_ALERT_CALL_RE matches the real scrape-new-aggregators.yml call line,
   const requireLine = wf.findIndex(l => l.includes('}=require(') && l.includes('owner-alert-router'));
   assert.ok(requireLine >= 0, 'expected a router require line in scrape-new-aggregators.yml');
   assert.equal(ROUTE_ALERT_CALL_RE.test(wf[requireLine]), false);
-  // The call that actually provides coverage sits just below the require.
-  const callLine = wf.slice(requireLine).findIndex(l => /\brouteAlert\s*\(/.test(l));
+  // The call that actually provides coverage sits below the require. Uses the
+  // EXPORTED regex, not a copy of it (CLAUDE.md rule 15) — a literal restated
+  // here would keep passing if the real regex changed, which is the whole thing
+  // these tests exist to catch. slice(requireLine) puts the require line at
+  // offset 0 and it provably does not match (asserted above), so a result > 0
+  // means a genuine call was found strictly below it; -1 (none) also fails.
+  const callLine = wf.slice(requireLine).findIndex((l) => ROUTE_ALERT_CALL_RE.test(l));
   assert.ok(callLine > 0, 'expected a routeAlert( call below the require');
 });
 
