@@ -1,8 +1,29 @@
 {
-  "generatedAt": "2026-09-16T13:09:32.551Z",
+  "generatedAt": "2026-09-16T18:05:42.610Z",
   "windowDays": 45,
   "showsScanned": 65,
   "gaps": [
+    {
+      "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
+      "title": "The Human Voice / The Seven Deadly Sins",
+      "openingDate": "2026-09-12",
+      "file": "thereviewshub--the-reviews-hub-london.json",
+      "outletId": "thereviewshub",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/",
+      "recovery": {
+        "attempted": true,
+        "ok": true,
+        "reason": null
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-16T18:00:50.847Z",
+      "fileAgeHours": 0.08090138888888888,
+      "gapSeenAt": "2026-09-16T18:05:42.610Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "benevolent-off-broadway-2026",
       "title": "Benevolent",
@@ -16,9 +37,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 451.8808408333333,
+      "fileAgeHours": 456.81696805555555,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 413.4717725
+      "nonTerminalAgeHours": 418.4079
     }
   ],
   "contradictions": []
