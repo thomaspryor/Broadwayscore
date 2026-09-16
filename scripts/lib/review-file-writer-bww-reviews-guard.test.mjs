@@ -150,6 +150,51 @@ describe('review-file-writer Guard K (BWW cross-production wrongProduction, BRO-
     });
   });
 
+  test('human-cleared existing file is still found when the incoming URL is a refreshed/different one (criticName-identity fix)', () => {
+    // Regression for a bug the ship-check adversarial review found: Guard K's
+    // own existing-file lookup used to always pass criticName=null, while the
+    // REAL merge-target lookup (the findExistingReviewFile call feeding
+    // _mergeIntoExisting) passes the actual criticName. When
+    // an incoming write's URL doesn't canonically match the existing file's
+    // stored URL (e.g. a scraper refresh with a slightly different URL), the
+    // null-based lookup fails to find the existing named-critic file at all
+    // (criticIsCompatibleMergeTarget treats null-vs-named as incompatible) —
+    // so Guard K wrongly concludes "not cleared" and stamps wrongProduction,
+    // which then merges onto the SAME file the real (criticName-based) merge
+    // lookup finds and writes to, resurrecting a flag a human had cleared.
+    withTempReviewTextsDir(SHOW_ID, (tmp) => {
+      const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
+      const showDir = path.join(tmp, SHOW_ID);
+      const filepath = path.join(showDir, 'guardian--some-named-critic.json');
+      fs.writeFileSync(filepath, JSON.stringify({
+        showId: SHOW_ID,
+        outletId: 'guardian',
+        criticName: 'Some Named Critic',
+        url: 'https://www.theguardian.com/stage/2019/09/15/the-fear-of-13-review-original',
+        source: 'bww-reviews',
+        excerpt: 'A real review excerpt about the show.',
+        wrongProductionManualClear: true,
+      }, null, 2));
+
+      const result = createOrMergeReviewFile(SHOW_ID, {
+        outletId: 'guardian',
+        outlet: 'The Guardian',
+        criticName: 'Some Named Critic',
+        // Different URL than the existing file's — same critic, same outlet,
+        // still out-of-window, but won't canonically URL-match the existing
+        // record (simulates a scraper picking up a refreshed permalink).
+        url: 'https://www.theguardian.com/stage/2019/09/15/the-fear-of-13-review-refreshed',
+        source: 'bww-reviews',
+        fields: { publishDate: null, excerpt: 'A real review excerpt about the show.' },
+      }, { reviewTextsDir: tmp });
+
+      assert.notEqual(result.action, 'skipped', `expected write, got skipped: ${result.reason}`);
+      const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
+      assert.equal(result.filepath, filepath, 'must merge into the same existing file the real merge-target lookup finds');
+      assert.notEqual(written.wrongProduction, true, 'human-cleared file must not be re-stamped even via a URL-refresh merge');
+    });
+  });
+
   test('does not fire for a non-BWW source, even with the same out-of-window URL', () => {
     withTempReviewTextsDir(SHOW_ID, (tmp) => {
       const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');

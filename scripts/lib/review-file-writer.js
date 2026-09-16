@@ -270,9 +270,15 @@ function _isHumanClearedWrongProduction(existingData) {
  * Shared existing-file lookup for the wrongProduction human-clear check above
  * — one read, reused by every URL-date guard instead of each guard hand-
  * rolling its own findExistingReviewFile call. `criticNameOrNull` is passed
- * through as-is (callers decide their own Unknown/Staff-to-null translation,
- * since that choice differs by guard — e.g. Guard J always passes null
- * because its whole predicate is critic-name-agnostic).
+ * through as-is (callers decide their own Unknown/Staff-to-null translation).
+ * Guards J and K both pass `criticName !== 'Unknown' ? criticName : null` —
+ * the SAME expression as the real merge-target lookup below (~line 936) — so
+ * the clearance they read belongs to the file the write actually lands on.
+ * Do NOT "simplify" either back to a bare `null`: that regresses BRO-3502's
+ * criticName-identity fix (regression test: review-file-writer-bww-reviews-
+ * guard.test.mjs, "criticName-identity fix"). Guard A passes raw
+ * `input.criticName` instead only because it runs before `criticName` is
+ * sanitized (line 738); the two differ solely for URL-shaped bylines.
  * @returns {object|null} the existing file's parsed data, or null if none
  */
 function _lookupExistingWrongProductionData(reviewTextsDir, showId, outletId, criticNameOrNull, url) {
@@ -827,8 +833,14 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       // Same human-clear guard as the classifyMarketRouting flag stamp above —
       // `!existing.wrongProduction` in the merge loop is `true` for an explicit
       // `wrongProduction: false`, so stamping here unconditionally would clobber
-      // a verified-correct human decision.
-      const existingWpData = _lookupExistingWrongProductionData(reviewTextsDir, showId, outletId, null, input.url);
+      // a verified-correct human decision. Uses the SAME criticName resolution
+      // as the real merge-target lookup below (`criticName !== 'Unknown' ? ... : null`)
+      // — passing a bare `null` here would risk checking a different file's
+      // clearance than the one the merge step actually writes to, for the rare
+      // case this guard fires on a non-Unknown/Staff byline it wasn't gated on.
+      const existingWpData = _lookupExistingWrongProductionData(
+        reviewTextsDir, showId, outletId, criticName !== 'Unknown' ? criticName : null, input.url
+      );
       const humanClearedWp = _isHumanClearedWrongProduction(existingWpData);
       if (humanClearedWp) {
         console.warn(`  ⏭️  Skipping unknown-critic wrongProduction stamp for ${showId}/${outletId}: human override in place`);
@@ -865,26 +877,52 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // autoclear.js's DATE_GUARD_PREFIXES match on the "Auto-flagged:" prefix.
   //
   // Corpus-scanned against the full data/review-texts corpus (BRO-3502,
-  // 2026-09-15): of 7,063 existing bww-roundup/bww-reviews files (excluding
-  // ones already wrongProduction:true), 4 NEW hits. Spot-checked all 4: 2 are
-  // confirmed LIVE contamination this guard newly catches — a Guardian/Lyn
-  // Gardner "Jesus Christ Superstar" review dated 84 days after the 2012
-  // Broadway production closed (a different, later production/tour, scored
-  // as if it were this one) and a "Life of Pi" review dated 573 days after
-  // the 2023 Broadway closing (the touring production, same contamination
-  // shape). The other 2 hits are already excluded from scoring by unrelated
-  // content-quality flags (contentTier: invalid / nonReviewType: preview,
-  // contentVerification.wrongArticle: true) before this guard ever runs, so
+  // 2026-09-15): of 7,063 existing bww-roundup/bww-reviews files, 4 hit this
+  // predicate (3,803 after excluding files already wrongProduction:true).
+  // Spot-checked all 4: 2 were confirmed LIVE contamination this guard's
+  // predicate correctly identifies but — being write-time-only — cannot
+  // retroactively fix on its own: a Guardian/Lyn Gardner "Jesus Christ
+  // Superstar" review dated 84 days after the 2012 Broadway production
+  // closed (a different, later production/tour, scored as if it were this
+  // one) and a "Life of Pi" review dated 573 days after the 2023 Broadway
+  // closing (the touring production, same contamination shape) — both
+  // remediated by a one-off stamp in the same BRO-3502 pass, matching this
+  // guard's exact field-write pattern. The other 2 hits are already excluded
+  // from scoring by unrelated content-quality flags (contentTier: invalid /
+  // nonReviewType: preview, contentVerification.wrongArticle: true) before
+  // this guard ever runs, so
   // stamping wrongProduction on them is additive, not newly harmful — same
   // "hoist introduces no new false-positive class" bar Guard J's own comment
   // above documents for task #1150 (42,251-file scan, 2 hits, 1 legit).
+  //
+  // Known limitation shared with Guard J above (not new to this guard): this
+  // check runs on `input.url` — the INCOMING candidate URL — before the
+  // create-vs-merge fork below decides whether that candidate is even
+  // accepted (maybeUpgradeUrl, in _mergeIntoExisting) or rejected in favor of
+  // an existing file's already-correct URL. A rejected candidate can still
+  // leave its wrongProduction stamp behind on the existing (correct) file.
+  // Pre-existing architectural shape of this chokepoint, not something
+  // BRO-3502 restructures (Codex adversarial review flagged this; fixing it
+  // needs reordering guards around the merge decision for both Guard J and K
+  // together, out of this fix's scope).
   if (!fields.wrongProduction) {
     const bwwReason = getWrongProductionReasonForBww(
       { url: input.url, source: input.source },
       _getShowById(showId),
     );
     if (bwwReason) {
-      const existingBwwData = _lookupExistingWrongProductionData(reviewTextsDir, showId, outletId, null, input.url);
+      // Same criticName resolution as the real merge-target lookup below
+      // (the `findExistingReviewFile` call that feeds _mergeIntoExisting,
+      // `criticName !== 'Unknown' ? criticName : null`) — unlike
+      // Guard J above, Guard K commonly fires with a REAL named critic (a
+      // roundup/reviews page entry with a genuine byline), so a bare `null`
+      // here could find a different existing file than the one this write
+      // will actually merge into (e.g. a second critic at the same outlet),
+      // missing that file's human-clear breadcrumb (Codex adversarial review,
+      // BRO-3502 ship-check).
+      const existingBwwData = _lookupExistingWrongProductionData(
+        reviewTextsDir, showId, outletId, criticName !== 'Unknown' ? criticName : null, input.url
+      );
       const humanClearedBww = _isHumanClearedWrongProduction(existingBwwData);
       if (humanClearedBww) {
         console.warn(`  ⏭️  Skipping BWW cross-production stamp for ${showId}/${outletId}: human override in place`);
