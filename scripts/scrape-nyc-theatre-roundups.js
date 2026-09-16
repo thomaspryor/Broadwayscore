@@ -21,8 +21,9 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
-const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { matchTitleToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -49,6 +50,16 @@ Usage:
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+
+// Memoized showId -> same-title-sibling categories index (BRO-2565, mirroring
+// scrape-bww-reviews.js's siblingCategoriesByShowId()) — feeds
+// checkArchiveCategory()'s cross-market-sibling check below.
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
+  return _siblingCategoriesCache;
+}
 
 // ---------------------------------------------------------------------------
 // HTTP helper — fetch page via ScrapingBee
@@ -491,10 +502,17 @@ async function scrapeNYCTheatreRoundups() {
     if (archiveFresh) {
       const html = fs.readFileSync(effectiveArchivePath, 'utf8');
 
-      // Validate cached page matches this show (prevents cross-contamination)
-      const validation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
-      if (!validation.valid) {
-        console.log(`[CACHE] ${showId}: Cached page is WRONG show — ${validation.reason}. Deleting cache.`);
+      // Category-aware read-time guard (BRO-2565) — a fresh mtime is not
+      // proof the file arrived via the write-time guard below (a restore, a
+      // manual copy, a different writer, or a rolled-back deploy can all put
+      // a poisoned file on disk). Mirrors BWW's read-path guard exactly: the
+      // deterministic word-match + cross-market-sibling check catches a
+      // regional premiere's cache slot holding its later Broadway transfer's
+      // page — same title, transfer's page carries the transfer's own year,
+      // which validatePageMatchesShow() alone cannot separate.
+      const validation = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
+      if (!validation.ok) {
+        console.log(`[CACHE] ${showId}: Cached page is WRONG show — ${validation.reason} (page "${(validation.pageTitle || '').substring(0, 80)}"). Deleting cache.`);
         fs.unlinkSync(effectiveArchivePath);
         // Fall through to re-fetch via Google search below
       } else {
@@ -555,6 +573,19 @@ async function scrapeNYCTheatreRoundups() {
       const validation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
       if (!validation.valid) {
         console.log(`  [SKIP] Page doesn't match "${show.title}" — ${validation.reason}`);
+        continue;
+      }
+
+      // Category-aware guard (BRO-2565, mirroring BRO-2547/2549's BWW fix).
+      // validatePageMatchesShow() above compares title + opening year, which
+      // CANNOT separate a regional premiere from its later Broadway transfer:
+      // same title, and the transfer's page carries the transfer's year.
+      // Re-use the exact predicate audit-aggregator-archive-integrity.js
+      // applies post-hoc so a page the audit would call poisoned never
+      // reaches the cache in the first place.
+      const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
+      if (!catCheck.ok) {
+        console.log(`  [SKIP] Page category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
         continue;
       }
 

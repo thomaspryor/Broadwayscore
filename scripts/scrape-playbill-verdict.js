@@ -17,9 +17,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
+const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
@@ -56,6 +57,16 @@ const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// Memoized showId -> same-title-sibling categories index (BRO-2565, mirroring
+// scrape-bww-reviews.js's siblingCategoriesByShowId()) — feeds
+// checkArchiveCategory()'s cross-market-sibling check below.
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
+  return _siblingCategoriesCache;
+}
 
 const USAGE = `scrape-playbill-verdict.js — Playbill Verdict Scraper.
 
@@ -421,10 +432,17 @@ async function processShowViaGoogle(show, showId, shows) {
     : (slugArchive && fs.existsSync(slugArchive) ? slugArchive : existingArchive);
   if (fs.existsSync(effectiveArchive)) {
     const html = fs.readFileSync(effectiveArchive, 'utf8');
-    // Validate cached page matches this show
-    const cacheValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, category: show.category });
-    if (!cacheValidation.valid) {
-      console.log(`  [CACHE] ${showId}: Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
+    // Category-aware read-time guard (BRO-2565) — a fresh mtime/existence
+    // check is not proof the file arrived via the write-time guard below (a
+    // restore, a manual copy, a different writer, or a rolled-back deploy
+    // can all put a poisoned file on disk). Mirrors BWW's read-path guard
+    // exactly: the deterministic word-match + cross-market-sibling check
+    // catches a regional premiere's cache slot holding its later Broadway
+    // transfer's page — same title, transfer's page carries the transfer's
+    // own year, which validatePageMatchesShow() alone cannot separate.
+    const cacheValidation = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
+    if (!cacheValidation.ok) {
+      console.log(`  [CACHE] ${showId}: Cached page is WRONG show — ${cacheValidation.reason} (page "${(cacheValidation.pageTitle || '').substring(0, 80)}"). Deleting cache.`);
       fs.unlinkSync(effectiveArchive);
       // Fall through to Google search below
     } else {
@@ -519,6 +537,19 @@ async function processShowViaGoogle(show, showId, shows) {
         const articleValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, category: show.category });
         if (!articleValidation.valid) {
           console.log(`    [SKIP] Article doesn't match show "${show.title}": ${articleValidation.reason}`);
+          continue;
+        }
+
+        // Category-aware guard (BRO-2565, mirroring BRO-2547/2549's BWW fix).
+        // validatePageMatchesShow() above compares title + opening year, which
+        // CANNOT separate a regional premiere from its later Broadway transfer:
+        // same title, and the transfer's page carries the transfer's year.
+        // Re-use the exact predicate audit-aggregator-archive-integrity.js
+        // applies post-hoc so a page the audit would call poisoned never
+        // reaches the cache in the first place.
+        const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
+        if (!catCheck.ok) {
+          console.log(`    [SKIP] Article category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
           continue;
         }
 

@@ -17,6 +17,8 @@ const path = require('path');
 const https = require('https');
 const { isJunkOutlet } = require('./lib/review-normalization');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { buildSiblingCategoriesFromShows } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { urlLooksLikeReview } = require('./lib/review-guards');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
@@ -101,6 +103,16 @@ function slugify(text) {
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   return data.shows || data;
+}
+
+// Memoized showId -> same-title-sibling categories index (BRO-2565, mirroring
+// scrape-bww-reviews.js's siblingCategoriesByShowId()) — feeds
+// checkArchiveCategory()'s cross-market-sibling check below.
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
+  return _siblingCategoriesCache;
 }
 
 /**
@@ -247,6 +259,18 @@ async function findDTLIPage(show) {
         const validation = await validatePageMatchesShow(result.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
         if (!validation.valid) {
           console.log(`  [SKIP] DTLI page doesn't match "${show.title}": ${validation.reason}`);
+          continue;
+        }
+        // Category-aware guard (BRO-2565, mirroring BRO-2547/2549's BWW fix).
+        // validatePageMatchesShow() above compares title + opening year, which
+        // CANNOT separate a regional premiere from its later Broadway transfer:
+        // same title, and the transfer's page carries the transfer's year.
+        // Re-use the exact predicate audit-aggregator-archive-integrity.js
+        // applies post-hoc so a page the audit would call poisoned never
+        // reaches the cache in the first place.
+        const catCheck = checkArchiveCategory(result.html, show, siblingCategoriesByShowId()[show.id]);
+        if (!catCheck.ok) {
+          console.log(`  [SKIP] DTLI page category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
           continue;
         }
         console.log(`  ✓ Found at: ${url}`);
@@ -432,10 +456,15 @@ async function processShow(show) {
   if (fs.existsSync(archivePath)) {
     console.log(`  Using archived page...`);
     const archiveContent = fs.readFileSync(archivePath, 'utf8');
-    // Validate cached page is about the right show
-    const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM, openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
-    if (!cacheValidation.valid) {
-      console.log(`  [CACHE] Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
+    // Category-aware read-time guard (BRO-2565) — a fresh mtime is not proof
+    // the file arrived via the write-time guard above (a restore, a manual
+    // copy, a different writer, or a rolled-back deploy can all put a
+    // poisoned file on disk). Mirrors BWW's read-path guard exactly: the
+    // deterministic word-match + cross-market-sibling check, not the LLM
+    // tiebreak (that already ran once at write time).
+    const cacheValidation = checkArchiveCategory(archiveContent, show, siblingCategoriesByShowId()[show.id]);
+    if (!cacheValidation.ok) {
+      console.log(`  [CACHE] Cached page is WRONG show — ${cacheValidation.reason} (page "${(cacheValidation.pageTitle || '').substring(0, 80)}"). Deleting cache.`);
       fs.unlinkSync(archivePath);
       // Fall through to re-fetch below
     } else {

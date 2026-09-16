@@ -1300,6 +1300,11 @@ on:
       # colocated regression test. Without these, an edit pushes with ZERO CI
       # (Archduke/Royal Court silent-miss class, 2026-06-27).
       - 'scripts/scrape-london-box-office-roundups.js'
+      # BRO-2565: category-aware archive-cache-guard.js read/write wiring added
+      # to scrape-dtli.js (its 3 sibling scrapers above are already listed).
+      # scrape-dtli.js itself was never path-listed before this — a solo edit
+      # shipped with ZERO CI (same gap class the comments above document).
+      - 'scripts/scrape-dtli.js'
       # OB venue listing discovery (S5-T2 added Bedlam + Audible's Minetta Lane
       # Theatre 2026-07-22). Colocated tests/unit/venue-listing-discover.test.mjs
       # runs in the tests/unit node --test batch (not globbed); path-listed so
