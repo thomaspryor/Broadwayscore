@@ -156,6 +156,12 @@ function runGc(fixture, { dryRun }) {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
     env,
+    // Bound the call (code-review finding, BRO-2153): the script's own
+    // internal fetch/cherry/lsof timeouts sum to well under this, so a
+    // genuine hang throws here instead of stalling the test indefinitely —
+    // load-bearing for the liveness test below, whose spawned child process
+    // only reaches cleanup in a `finally` after this call returns or throws.
+    timeout: 45000,
   });
 
   // Belt and braces: the LOGGED fallback (node or the helper missing entirely),
