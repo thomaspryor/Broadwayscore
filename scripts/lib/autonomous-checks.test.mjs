@@ -87,10 +87,16 @@ test('tier 3: a diff mixing .test.mjs and .test.ts colocated tests runs two sepa
 
 // Real-filesystem, real-execution proof (not just an argv assertion): a
 // fixture .ts source with a colocated .test.ts is found on disk by the real
-// decideChecks() and the derived check actually PASSES under tsx. The `y`
-// type annotation in the fixture is invalid JS syntax — plain `node --test`
-// would blow up on it outright, so a pass here proves the check ran through
-// tsx, not merely that the argv looked right.
+// decideChecks() and the derived check actually PASSES under tsx. The test
+// imports its sibling module via an EXTENSIONLESS path (`./foo`, not
+// `./foo.js`) — the exact case BRO-2218/BRO-2247 exist to fix. That is not
+// merely non-idiomatic; recent Node versions (22.6+) natively strip TS type
+// annotations, so a fixture that only relied on a type annotation being
+// "invalid JS" would silently pass under PLAIN `node --test` too and prove
+// nothing (caught in review — the first cut of this fixture had exactly that
+// gap on this machine's Node version). An extensionless internal import
+// fails ERR_MODULE_NOT_FOUND under plain node on every Node version — only
+// tsx's TS-aware resolver follows it — so a pass here can only mean tsx ran.
 test('a real colocated .test.ts fixture is auto-derived and actually passes under tsx (BRO-2247)', () => {
   const gitCommonDir = execFileSync('git', ['rev-parse', '--git-common-dir'], { encoding: 'utf8' }).trim();
   const repoRoot = path.dirname(path.resolve(gitCommonDir));
@@ -100,8 +106,8 @@ test('a real colocated .test.ts fixture is auto-derived and actually passes unde
   fs.writeFileSync(path.join(dir, 'scripts', 'foo.test.ts'), [
     "import { test } from 'node:test';",
     "import assert from 'node:assert/strict';",
-    'const y: number = 1;',
-    "test('trivial', () => { assert.equal(y, 1); });",
+    "import { x } from './foo';",
+    "test('trivial', () => { assert.equal(x, 1); });",
     '',
   ].join('\n'));
 
