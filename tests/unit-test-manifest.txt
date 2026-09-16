@@ -476,6 +476,7 @@ tests/unit/gemini-thinking-budget-guard.test.mjs
 tests/unit/generate-search-shows-closed-scored.test.mjs
 tests/unit/gh-runs-query.test.mjs
 tests/unit/git-add-existing.test.mjs
+tests/unit/grosses-history-columns.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
 tests/unit/guardian-stale-slug-guard.test.mjs
 tests/unit/gun-and-powder-show.test.mjs
@@ -494,6 +495,7 @@ tests/unit/high-confidence-author.test.mjs
 tests/unit/high-society-2026-west-end.test.mjs
 tests/unit/homepage-interactive-labels.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
+tests/unit/ibdb-table-columns.test.mjs
 tests/unit/image-optimizer-exposure.test.mjs
 tests/unit/import-ledger-checkpoint.test.mjs
 tests/unit/import-ledger.test.mjs
@@ -587,6 +589,7 @@ tests/unit/notion-corpus-io.test.mjs
 tests/unit/notion-corpus.test.mjs
 tests/unit/notion-feedback-integration.test.mjs
 tests/unit/notion-tasks-sync-dedup.test.mjs
+tests/unit/nydcc-legacy-table-parser.test.mjs
 tests/unit/nypost-inline-star-recovery.test.mjs
 tests/unit/nyt-review-extraction.test.mjs
 tests/unit/nyt-roundup-discovery.test.mjs
@@ -757,6 +760,7 @@ tests/unit/score-reviews-llm-skip.test.mjs
 tests/unit/score-routing.test.mjs
 tests/unit/scoring-model-not-eol.test.mjs
 tests/unit/scrape-alltime-column-count.test.mjs
+tests/unit/scrape-alltime-column-order.test.mjs
 tests/unit/scrape-new-aggregators-push-timeout.test.mjs
 tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
