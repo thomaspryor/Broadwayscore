@@ -4,13 +4,20 @@
 // scripts/tests/infra-review-gate.test.mjs (manifest-registered, not
 // auto-globbed) — this file does not restate that coverage. It exists
 // specifically for BRO-2310's own acceptance criterion (`node --test
-// scripts/lib/infra-review-scope.test.mjs`) and covers only the property that
-// card changed: findFreshPlanVerdict/evaluateInfraReviewGate do NOT block a
-// fail-then-pass sequence at the gate-evaluation layer — that was true before
-// BRO-2310 and stays true after it. The accountability half of the fix
-// (a pass overturning a fail needs --note or --reviewer=owner-override) lives
-// in recordPlanVerdict(), tested in tests/unit/review-gate.test.mjs, because
-// that is where the ledger is actually written.
+// scripts/lib/infra-review-scope.test.mjs`) and covers the two properties
+// that card changed in findFreshPlanVerdict:
+//   1. A fail is now the freshest verdict the moment it's recorded, so it
+//      RE-BLOCKS a session that had an earlier pass on file — closing the
+//      bug an adversarial /ship-check review caught in the first version of
+//      this fix (the original code only ever compared PASS timestamps, so an
+//      old pass outlived a later fail for the rest of the TTL window).
+//   2. A fail-then-pass sequence still unlocks the gate at THIS layer — that
+//      was true before BRO-2310 and stays true after it; hard-blocking here
+//      was considered and rejected (see the comment above findFreshPlanVerdict).
+// The accountability half of the fix (a pass overturning a fail needs --note
+// or --reviewer=owner-override) lives in recordPlanVerdict(), tested in
+// tests/unit/review-gate.test.mjs, because that is where the ledger is
+// actually written.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -68,4 +75,31 @@ test('BRO-2310: an owner-override pass after a fail unlocks and is indistinguish
   const d = evaluateInfraReviewGate({ paths: [CRITICAL_PATH], verdicts, sessionId: SESSION, now: NOW });
   assert.equal(d.action, 'allow');
   assert.match(d.reason, /owner-override/);
+});
+
+test('BRO-2310: a PASS followed by a LATER fail re-blocks — an earlier pass must not outlive a later fail', () => {
+  // The bug an adversarial review caught in v1 of this fix: the original
+  // findFreshPlanVerdict only ever compared PASS timestamps against each
+  // other, so it never even looked at whether a later verdict existed that
+  // was a fail. A session that passed once and then failed a later review
+  // (scope grew, plan changed) stayed "covered" until the original pass aged
+  // out of the TTL window — nothing about a fresh fail ever mattered.
+  const verdicts = [
+    planVerdict({ ts: new Date(NOW - 120_000).toISOString(), result: 'pass' }),
+    planVerdict({ ts: new Date(NOW - 60_000).toISOString(), reviewer: 'second-opinion', result: 'fail' }),
+  ];
+  const d = evaluateInfraReviewGate({ paths: [CRITICAL_PATH], verdicts, sessionId: SESSION, now: NOW });
+  assert.equal(d.action, 'block', 'the later fail must be the verdict that governs, not the earlier pass');
+  assert.equal(findFreshPlanVerdict({ verdicts, sessionId: SESSION, now: NOW }), null);
+});
+
+test('BRO-2310: on a millisecond timestamp tie, the ledger\'s append order (later array position) wins', () => {
+  const tiedTs = new Date(NOW - 60_000).toISOString();
+  const verdicts = [
+    planVerdict({ ts: tiedTs, result: 'fail' }),
+    planVerdict({ ts: tiedTs, reviewer: 'owner-override', result: 'pass' }),
+  ];
+  const fresh = findFreshPlanVerdict({ verdicts, sessionId: SESSION, now: NOW });
+  assert.ok(fresh, 'the later-appended pass must win the tie, not lose to the earlier fail');
+  assert.equal(fresh.reviewer, 'owner-override');
 });

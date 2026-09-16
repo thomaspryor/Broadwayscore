@@ -163,6 +163,18 @@ test('BRO-2310: pass -> pass (no intervening fail) never requires a note', (t) =
   assert.equal(r.entry.overturnsFail, undefined);
 });
 
+test('BRO-2310: recording another fail (not a pass) never stamps overturnsFail, even from owner-override', (t) => {
+  // The guard only fires on result==='pass' — a fail-after-fail (or a fail
+  // recorded by 'owner-override', which has no special meaning for a fail)
+  // must record plainly, with no note requirement and no overturnsFail tag.
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'fail', sessionId: 'sess-g' });
+  const r = recordPlanVerdict({ repoRoot: repo, reviewer: 'owner-override', result: 'fail', sessionId: 'sess-g' });
+  assert.equal(r.recorded, true);
+  assert.equal(r.entry.overturnsFail, undefined);
+});
+
 test('ACCEPTANCE: >30-line scripts/ diff with no verdict is BLOCKED', (t) => {
   const repo = makeRepo();
   t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));

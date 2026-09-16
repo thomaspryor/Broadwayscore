@@ -601,15 +601,18 @@ export function recordPlanVerdict({
   // observable even when permitted.
   let overturnsFail = false;
   if (result === 'pass') {
-    // Same "skip unparseable timestamps, keep the strictly-latest" shape as
-    // findFreshPlanVerdict — a raw .sort() on Date.parse() would let one
-    // corrupt `ts` field scramble the ordering instead of just dropping out.
+    // Same "skip unparseable timestamps, keep the latest" shape as
+    // findFreshPlanVerdict (infra-review-scope.js) — a raw .sort() on
+    // Date.parse() would let one corrupt `ts` field scramble the ordering
+    // instead of just dropping out. >= not >: millisecond-precision ts can
+    // tie between two verdicts recorded moments apart; on a tie, prefer the
+    // one that appears later in the (append-only) ledger.
     let last = null;
     for (const v of readLedger(ledgerRoot)) {
       if (!v || v.phase !== 'plan' || v.sessionId !== sessionId) continue;
       const ts = Date.parse(v.ts || '');
       if (!Number.isFinite(ts)) continue;
-      if (!last || ts > Date.parse(last.ts)) last = v;
+      if (!last || ts >= Date.parse(last.ts)) last = v;
     }
     overturnsFail = !!(last && last.result === 'fail');
     if (overturnsFail && reviewer !== 'owner-override' && !note.trim()) {
