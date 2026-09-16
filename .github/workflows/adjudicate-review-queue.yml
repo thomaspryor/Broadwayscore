@@ -18,6 +18,15 @@ permissions:
   contents: write
   actions: write
 
+# BRO-917: this workflow writes review-texts/ (humanReviewScore) and can overlap
+# with a manual dispatch during its own 5:15 AM UTC cron window. Queued, not
+# cancelled — an in-flight adjudication pass must finish and push, not be killed
+# mid-write. Matches the pattern used by every other review-texts-writing cron
+# (rebuild-reviews, opening-night-checklist, update-critic-consensus, etc.).
+concurrency:
+  group: adjudicate-review-queue
+  cancel-in-progress: false
+
 jobs:
   adjudicate:
     name: Adjudicate flagged reviews
