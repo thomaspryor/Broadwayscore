@@ -45,7 +45,16 @@ test('diffSnapshots: a show leaving the pool reads as a full drop to 0', () => {
   assert.equal(movers.length, 1);
   assert.equal(movers[0].after, 0);
   assert.equal(movers[0].presentAfter, false);
-  assert.equal(movers[0].badge, 'sweeper'); // falls back to BEFORE's badge
+  assert.equal(movers[0].beforeBadge, 'sweeper');
+  assert.equal(movers[0].afterBadge, 'sweeper'); // falls back to BEFORE's badge when absent
+});
+
+test('diffSnapshots: a show that crossed a tier keeps distinct before/after badges', () => {
+  const before = snapshot({ x: { title: 'X', displayScore: 50, badge: 'nominated' } });
+  const after = snapshot({ x: { title: 'X', displayScore: 65, badge: 'honored' } });
+  const { movers } = diffSnapshots(before, after, 5);
+  assert.equal(movers[0].beforeBadge, 'nominated');
+  assert.equal(movers[0].afterBadge, 'honored');
 });
 
 test('diffSnapshots: caps to top N', () => {

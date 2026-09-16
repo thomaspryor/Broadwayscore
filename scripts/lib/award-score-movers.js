@@ -59,7 +59,11 @@ function diffSnapshots(before, after, top) {
       before: beforeScore,
       after: afterScore,
       delta,
-      badge: (a && a.badge) || (b && b.badge) || null,
+      // Separate before/after tiers — a show that crossed a tier boundary
+      // (e.g. nominated → honored after a nomination) must not have its
+      // BEFORE badge silently repainted with the AFTER tier's color.
+      beforeBadge: (b && b.badge) || null,
+      afterBadge: (a && a.badge) || (b && b.badge) || null,
       presentBefore: !!b,
       presentAfter: !!a,
     });
