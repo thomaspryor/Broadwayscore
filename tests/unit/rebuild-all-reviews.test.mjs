@@ -95,6 +95,21 @@ describe('evaluateReviewCountRegression', () => {
     const d = evaluateReviewCountRegression({ existingCount: 1000, newCount: 500, forceWrite: false, isCI: false });
     assert.equal(d.action, 'warn');
   });
+
+  test('2026-03-24 historical incident, replayed: routine CI pipeline-cleanup drops (-756, -731, -335, -117, -109 of ~20,668) never block in CI', () => {
+    // memory/roadmap.md "Rebuild Guard → Claude-Powered Drop Analysis": a prior
+    // unconditional process.exit(1) on this file's guards blocked CI in a retry
+    // loop for 10 days over drops that were routine dedup/flagging/domain-
+    // validation cleanup, not corruption — the exits were removed in favor of
+    // post-hoc qualitative review (analyze-rebuild-drops.js). The local hard
+    // block added for BRO-2276 must never regress this: replayed in CI, every
+    // one of these historical counts must resolve to 'warn' or 'ok', never 'block'.
+    const existingCount = 20668;
+    for (const lost of [756, 731, 335, 117, 109]) {
+      const d = evaluateReviewCountRegression({ existingCount, newCount: existingCount - lost, forceWrite: false, isCI: true });
+      assert.notEqual(d.action, 'block', `a CI drop of ${lost} reviews must never block`);
+    }
+  });
 });
 
 describe('isRunningInCI', () => {

@@ -12,6 +12,17 @@
  * the actual publish-blocking backstop). Locally, a drop this large is far
  * more likely to mean "wrong/incomplete checkout" than "the data really
  * regressed" — so it's refused outright unless the caller opts in.
+ *
+ * DO NOT extend the local hard block to CI. On 2026-03-24 this file had a
+ * process.exit(1) on BOTH its guards unconditionally, and legitimate CI
+ * pipeline cleanup (dedup, quality flagging, domain validation — routine
+ * drops of a few hundred reviews, single-digit % of the corpus) got blocked
+ * in a retry loop for 10 days before the exits were removed in favor of
+ * analyze-rebuild-drops.js's post-hoc qualitative review (memory/roadmap.md,
+ * "Rebuild Guard → Claude-Powered Drop Analysis"). Replaying those exact
+ * historical drop counts (-756, -731, -335, -117, -109 out of ~20,668)
+ * through isCI:true here all resolve to 'warn' or 'ok', never 'block' — this
+ * guard's CI path is unchanged from before this file existed, on purpose.
  */
 
 const WARN_THRESHOLD_PCT = 2.0;
