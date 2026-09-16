@@ -139,12 +139,13 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-16T19:28:27.202Z",
+      "lastSeen": "2026-09-16T22:59:55.323Z",
       "lastNotifiedAt": "2026-09-16T19:28:27.202Z",
       "lastSurfacedAt": "2026-09-16T19:28:27.202Z",
       "notifyCount": 85,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -787,12 +788,13 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-16T19:28:25.689Z",
+      "lastSeen": "2026-09-16T22:59:55.321Z",
       "lastNotifiedAt": "2026-09-16T19:28:25.689Z",
       "lastSurfacedAt": null,
       "notifyCount": 61,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -3264,6 +3266,18 @@
       "lastSeen": "2026-09-16T20:12:58.177Z",
       "lastNotifiedAt": "2026-09-16T20:12:58.177Z",
       "lastSurfacedAt": "2026-09-16T20:12:58.177Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-drift:pre-existing-condition-off-broadway-2026": {
+      "status": "open",
+      "disposition": "human",
+      "title": "Opening night drift: Pre-Existing Condition (pre-existing-condition-off-broadway-2026)",
+      "firstSeen": "2026-09-16T23:11:08.168Z",
+      "lastSeen": "2026-09-16T23:11:08.168Z",
+      "lastNotifiedAt": "2026-09-16T23:11:08.168Z",
+      "lastSurfacedAt": "2026-09-16T23:11:08.168Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
