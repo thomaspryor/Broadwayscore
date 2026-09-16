@@ -154,7 +154,21 @@ function collapseCrownLineages(pending) {
     (min, it) => (it.ts && (min === null || it.ts < min)) ? it.ts : min,
     null,
   );
-  return [...rest, { ...latest, supersededCount: superseded.length, pendingSinceTs: earliestTs }];
+  // The newest generation is the one the owner should open, but it may be
+  // title-only (no state file => questionUnavailable). Before this guard, that
+  // discarded a SUPERSEDED generation's captured question and rendered the
+  // hollow "open the tab" placeholder instead — strictly less than the digest
+  // showed before title-only items existed, i.e. a regression in exactly the
+  // BRO-2989 crown case this function exists for. Keep the newest title, but
+  // borrow the most recent question that was actually captured.
+  let merged = { ...latest, supersededCount: superseded.length, pendingSinceTs: earliestTs };
+  if (merged.questionUnavailable) {
+    const withQuestion = sorted.find(it => it.question && !isEmptyDecisionContent(it.question));
+    if (withQuestion) {
+      merged = { ...merged, question: withQuestion.question, questionUnavailable: false };
+    }
+  }
+  return [...rest, merged];
 }
 
 // The digest's HTML renderer (autonomous-email-render.js's
@@ -181,7 +195,15 @@ function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
   try { workspaces = listWorkspaces(); } catch { return null; }
   const states = readNeedsYouState(dir);
   const pending = collapseCrownLineages(pendingDecisions(states, workspaces))
-    .sort((a, b) => String(a.pendingSinceTs || a.ts || '').localeCompare(String(b.pendingSinceTs || b.ts || '')));
+    // Oldest pending decision first. Title-only items have no timestamp, and a
+    // bare '' sorts BEFORE every real ISO date — which put hollow "open the
+    // tab" placeholders above genuinely long-pending decisions. Undated items
+    // sort last instead, via a sentinel that is greater than any ISO string.
+    .sort((a, b) => {
+      const ka = String(a.pendingSinceTs || a.ts || '\uffff');
+      const kb = String(b.pendingSinceTs || b.ts || '\uffff');
+      return ka.localeCompare(kb);
+    });
   // Glyph/content mismatch count (card #940): ❓-titled tabs whose extracted
   // question was empty/none, so they were excluded above. Logged, not
   // thrown — this must never block the digest, only make the mismatch
