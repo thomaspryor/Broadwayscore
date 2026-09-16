@@ -1907,8 +1907,21 @@ function normalizeUrl(url) {
     // URL "mismatch" and wrongly un-collapsed an already-resolved
     // byline-explosion cluster (mother-play-2024, king-kong-2018).
     u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=[^&]*/g, '')
-      .replace(/\?$/, '')
-      .replace(/\?&/, '?');
+      // Trailing-artifact cleanup (BRO-2409): stripping a param can leave a
+      // dangling `&`/`?` behind — most commonly a URL whose ENTIRE query
+      // string was one now-stripped param with a trailing separator baked
+      // into the source page (NYT's literal `?_r=1&`, the-winslow-boy-2013
+      // live-corpus shape). Left unstripped, `...html&` never compares equal
+      // to the canonical `...html`, which is exactly the false "URL changed"
+      // this whole function exists to avoid triggering. `[?&]+$` covers a
+      // trailing `?`, `&`, or run of either; `\?&` covers a leading `&`
+      // immediately after `?` when the FIRST param was the one stripped;
+      // `&&+` covers two adjacent params collapsing when a MIDDLE one was
+      // stripped. Order matters: trailing strip first, or `?&` at the very
+      // end would already have been eaten by it and never reach the `\?&` step.
+      .replace(/[?&]+$/, '')
+      .replace(/\?&/, '?')
+      .replace(/&&+/g, '&');
     // Re-strip trailing slashes: the first strip (above) runs before the
     // query string is removed, so `/review/?utm_source=x` still ends in a
     // slash here and would compare unequal to `/review` — a false "URL
@@ -1929,6 +1942,49 @@ function normalizeUrl(url) {
   } catch (e) {
     return url.toLowerCase().trim();
   }
+}
+
+/**
+ * Drop the ENTIRE query string (not just the enumerated tracking params
+ * normalizeUrl() strips), then trim trailing encoded-spaces/whitespace/slash.
+ * Two URLs differing only by query string are the same article far more
+ * often than not, and normalizeUrl's tracking-param allowlist is chronic
+ * whack-a-mole — every outlet mints its own share/recirculation params (BWO's
+ * `mod=`, Guardian's `CMP=`, EW's `taid=`, NYT's `smtyp=`/`_r=1&`, Variety's
+ * `categoryid=`/`cs=`/`cmpid=`, AP's `page=`), and each un-enumerated one
+ * previously made review-write-guard.js's stale-duplicateOf self-heal see a
+ * false "URL mismatch" and wrongly clear a correct duplicateOf pointer
+ * (BRO-2409 — confirmed live on 9 of 22 real same-URL clusters left with
+ * ZERO duplicate pointer on either side after this exact false self-heal:
+ * a-life-in-the-theatre-2010, here-lies-love-2023, king-kong-2018,
+ * patriots-2024, the-waverly-gallery-2018, the-winslow-boy-2013, …).
+ *
+ * A genuinely different article still differs by PATH, which this never
+ * touches — only trivially-dirty query-string variants of the SAME URL
+ * collapse to equal. Originally lived only in
+ * audit-duplicate-of-url-mismatch.js (as its own `stripTrivial`, used for the
+ * identical purpose: deciding whether a duplicateOf pointer's URL mismatch is
+ * real or trivial); moved here so review-write-guard.js's write-time
+ * self-heal can use the SAME comparator instead of the narrower
+ * `normalizeUrl` alone — the two disagreeing on what counts as "the same
+ * URL" was BRO-2409's actual mechanism: the write-time self-heal would clear
+ * a pointer the audit itself would never have flagged as stale.
+ *
+ * Splits on the FIRST `?` OR `&`, not just `?`: when this runs after
+ * normalizeUrl() (the standard composition), a query string whose FIRST
+ * param already got stripped by normalizeUrl's tracking-param allowlist
+ * leaves the remainder starting with a bare `&` (e.g. `smid=..&smtyp=cur`
+ * with `smid` stripped leaves `&smtyp=cur`) — no `?` survives for a
+ * `.split('?')` to find, so the leftover param would silently defeat this
+ * function's entire purpose. A literal unencoded `&` occurring inside a URL
+ * PATH (as opposed to its query) is not a real-world shape in this corpus.
+ *
+ * @param {string} u  already lowercased/normalized (pass through normalizeUrl() first)
+ * @returns {string}
+ */
+function stripTrivial(u) {
+  if (!u) return u;
+  return u.split(/[?&]/)[0].replace(/(?:%20|\s|\/)+$/gi, '');
 }
 
 /**
@@ -2166,6 +2222,7 @@ module.exports = {
   normalizeCritic,
   normalizePublishDate,
   normalizeUrl,
+  stripTrivial,
   generateReviewFilename,
   generateReviewKey,
   slugify,

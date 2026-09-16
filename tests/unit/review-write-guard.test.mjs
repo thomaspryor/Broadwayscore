@@ -229,6 +229,43 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
     }
   });
 
+  test('BRO-2409: does NOT self-heal a stale duplicateOf when the sibling URL differs only by query string', () => {
+    // Two fetches of the SAME article commonly differ by an outlet's own
+    // share/recirculation param (here: NYT's ?_r=1&, the exact winslow-boy-2013
+    // live-corpus shape). Before BRO-2409 this self-heal used bare
+    // normalizeUrl(), which does not enumerate every outlet's tracking params,
+    // so it wrongly saw a "mismatch" and cleared a still-correct duplicateOf —
+    // one of the two independent repairs that could each clear one half of an
+    // A<->B pair, leaving BOTH members unsuppressed.
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'query-string-noise-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'nytimes--charles-isherwood.json'), JSON.stringify({
+        url: 'https://www.nytimes.com/2013/10/18/theater/reviews/the-winslow-boy-is-revived.html',
+        criticName: 'Charles Isherwood',
+      }, null, 2));
+
+      const ourPath = path.join(dir, 'nytimes--ben-brantley.json');
+      safeWriteReview(ourPath, {
+        url: 'https://www.nytimes.com/2013/10/18/theater/reviews/the-winslow-boy-is-revived.html?_r=1&',
+        criticName: 'Ben Brantley',
+        duplicateOf: 'nytimes--charles-isherwood.json',
+        duplicateReason: 'byline-explosion-collapse',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      // duplicateOf survives — the self-heal above must not see these as
+      // mismatched and null it out. (The write-time URL-collision detector
+      // separately re-confirms the collision from scratch and re-stamps its
+      // own standard reason — a harmless, expected side effect of the two
+      // URLs now correctly comparing equal — so duplicateReason isn't
+      // asserted verbatim here.)
+      assert.equal(written.duplicateOf, 'nytimes--charles-isherwood.json');
+      assert.equal(written.duplicateClearReason, null);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+
   test('self-heals dangling duplicateOf when sibling file no longer exists', () => {
     // The sibling-missing case: collect-review-texts cleanup deletes
     // *--unknown.json junk files, leaving any review that pointed at one
