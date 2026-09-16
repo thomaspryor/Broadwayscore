@@ -2149,6 +2149,12 @@ on:
       # side triggers CI.
       - 'scripts/enrich-off-broadway-dates.js'
       - 'scripts/enrich-off-broadway-dates.test.mjs'
+      # BRO-3527: WE sibling test coverage (cousin of BRO-1108 above). Root-level
+      # scripts/*.test.mjs is NOT globbed, registered in tests/unit-test-manifest.txt
+      # — path-listed here so a solo edit to the test file triggers CI. The
+      # existing 'scripts/enrich-west-end-dates.js' entry near line 1084 is
+      # unrelated (min-reviews/press-night parity gate), not this reason.
+      - 'scripts/enrich-west-end-dates.test.mjs'
       - 'scripts/backfill-playwright-credits.js'
       - 'scripts/backfill-playwright-credits.test.mjs'
       # Task #649 set-diff gate: shared by update-show-status.yml's discovery
