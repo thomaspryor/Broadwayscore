@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "pre-existing-condition-off-broadway-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-16T08:44:27.185Z",
+  "detectedAt": "2026-09-16T09:00:12.252Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,9 +11,9 @@
       "criticName": "Air Mail",
       "url": "https://airmail.news/arts-intel/events/pre-existing-condition",
       "fullTextLen": 965,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
-  "blockedOrphanCount": 0,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-16T08:44:27.185Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
