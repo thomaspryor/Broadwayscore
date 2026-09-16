@@ -835,6 +835,36 @@ if [ "${PUSH_API_FALLBACK_DISABLE:-}" != "1" ] && [ "$_PUSH_API_REPO_EXCLUDED" !
   _PUSH_API_FALLBACK_ELIGIBLE=true
 fi
 
+# Does the outgoing diff touch a path the Git Data API fallback must not
+# overlay? ONE definition, shared by the early-break gate inside the retry loop
+# and the authoritative check in the fallback block below — see
+# scripts/lib/api-fallback-disqualifier.js for the rules themselves.
+#
+# Returns 0 = no disqualifying path. NON-ZERO = disqualified, and the rc is the
+# node exit code so the caller can print it. Callers MUST invoke this as
+# `api_fallback_paths_ok ... || rc=$?` and never as `if ! api_fallback_paths_ok`
+# — `$?` read inside an `if !` is always 0 (see the BRO-2413 note at the
+# fallback block's own rc handling), which would silently turn every
+# disqualification into "rc=0", i.e. fail OPEN.
+# The offending path is captured into $_API_DISQUALIFY_DETAIL rather than
+# discarded: before BRO-3663 this check's stderr went to /dev/null and BOTH
+# warnings said only "touches a MANAGED/shows.json/reviews.json/unaudited path"
+# without ever naming WHICH — so an operator had to reconstruct the diff by hand
+# to act on it. The module prints exactly one line naming the path.
+_API_DISQUALIFY_DETAIL=""
+api_fallback_paths_ok() {
+  _API_DISQUALIFY_DETAIL="$(node "$SCRIPT_DIR/api-fallback-disqualifier.js" "$1" "$2" 2>&1 >/dev/null)"
+  return $?
+}
+
+# BRO-3663: memo for the early-break gate only. Empty = not yet evaluated.
+# Deliberately NOT folded into $_PUSH_API_FALLBACK_ELIGIBLE: that variable also
+# gates the whole post-loop fallback block, so a disqualifying verdict there
+# would skip the authoritative re-check, the pre-fallback HEAD reset, and the
+# operator-facing "skipping Git Data API fallback" warning. This verdict may
+# only ever SUPPRESS the early break, never cancel the fallback attempt itself.
+_PUSH_API_EARLY_BREAK_OK=""
+
 # Shared ancestor predicate (BRO-259) — used by both sync_restore_base_head()
 # below and restore_head_if_moved() so the two "is it safe to treat this HEAD
 # advance as a clean append?" checks can't drift out of sync with each other.
@@ -2180,7 +2210,51 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # through to the SAME fallback block below as ordinary exhaustion — this is
   # strictly an earlier entry point into existing logic, not new fallback
   # behavior.
-  if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ]; then
+  # BRO-3663: the trade above is only sound if the fallback can ACTUALLY run.
+  # $_PUSH_API_FALLBACK_ELIGIBLE is repo/config-level (PUSH_API_FALLBACK_DISABLE,
+  # repo identity, a resolvable SCRIPT_ENTRY_BASE, script present) — it says
+  # nothing about which PATHS the outgoing diff touches, and the path
+  # disqualifier only runs later, inside the fallback block. So a caller whose
+  # diff touches an unregistered data/audit/ path broke out of this loop at
+  # attempt $PUSH_API_FALLBACK_AFTER_ATTEMPTS, discovered the fallback was
+  # disqualified, and hard-failed with its remaining local attempts unspent —
+  # "Audit Aggregator Review Gap" run 34855239166 lost attempts 4 and 5 that way
+  # while the underlying failures were transport HANGS, exactly what retries
+  # exist to ride out. BRO-3071 registered 86 data/audit/ files as
+  # apiFallbackSafe, but 360 remain unregistered, so the cliff is still live for
+  # any caller staging one.
+  #
+  # Evaluated lazily and memoised: a push that succeeds on attempt 1 (the
+  # overwhelming majority across ~130 call sites, several pushes per job) pays
+  # nothing. Fails CLOSED — a node crash means "don't break early", which costs
+  # only some extra local attempts that today are burned for nothing anyway.
+  #
+  # NOT identical to the fallback block's own check: this diffs our commits as
+  # of loop entry, while that one diffs from RESTORE_BASE_HEAD, which
+  # sync_restore_base_head() may have advanced to adopt a concurrent writer's
+  # commit (deliberately — it rides along in the pushed diff). The two ranges are
+  # therefore INDEPENDENT, not nested: an adopted commit can add paths this gate
+  # never saw, and a later commit can revert one it did. So this gate NARROWS the
+  # budget-loss hole rather than closing it — a run whose disqualifying path
+  # arrives only via an adopted commit still breaks early and still forfeits its
+  # remaining attempts. That residual case is acceptable because the direction of
+  # error is safe: this verdict may only ever SUPPRESS a break. It can cost some
+  # extra local attempts; it can never authorise a fallback, because the
+  # authoritative check below still runs on the real pushed range and is the only
+  # thing that can permit one.
+  if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ] \
+       && [ -z "$_PUSH_API_EARLY_BREAK_OK" ]; then
+    _early_break_rc=0
+    api_fallback_paths_ok "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" || _early_break_rc=$?
+    if [ "$_early_break_rc" = "0" ]; then
+      _PUSH_API_EARLY_BREAK_OK=true
+    else
+      _PUSH_API_EARLY_BREAK_OK=false
+      echo "::warning::push-with-retry: NOT breaking out early for the Git Data API fallback — our outgoing diff touches a path the fallback's own disqualifier rejects (rc=$_early_break_rc${_API_DISQUALIFY_DETAIL:+; $_API_DISQUALIFY_DETAIL}). Spending the remaining local attempts instead — breaking early would forfeit them for a fallback that cannot run (BRO-3663). Register the path in scripts/lib/core-data-merge-registry.js to make the fallback available here."
+    fi
+  fi
+  if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$_PUSH_API_EARLY_BREAK_OK" = "true" ] \
+       && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ]; then
     echo "::warning::push-with-retry: $i failed local attempt(s) reached (PUSH_API_FALLBACK_AFTER_ATTEMPTS=$PUSH_API_FALLBACK_AFTER_ATTEMPTS) — breaking out of the local fetch+rebase+push loop early to try the Git Data API fallback instead of waiting for full exhaustion"
     # Unlike the deadline break above, THIS iteration's attempt ran and failed,
     # so the real completed count is i, not i-1. This is the more common of the
@@ -2378,27 +2452,20 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
     # a plain whole-file overlay for that path (see its own "apiFallbackMerge
     # paths" section). isManaged(f) && !isApiFallbackMergeable(f) is the
     # actual disqualifying condition now, not isManaged(f) alone.
+    # BRO-3663: the rules themselves now live in
+    # scripts/lib/api-fallback-disqualifier.js so this authoritative check and
+    # the early-break gate inside the retry loop share ONE definition. The
+    # range is unchanged — SCRIPT_ENTRY_BASE..HEAD, where HEAD is current and
+    # post-reset, which is exactly what push-via-git-api.sh replays.
     _managed_check_rc=0
-    node -e '
-        const { MANAGED, API_FALLBACK_SAFE, API_FALLBACK_MERGE } = require(process.argv[1]);
-        const NEVER_FALLBACK = ["data/shows.json", "data/reviews.json"];
-        const changed = require("child_process")
-          .execFileSync("git", ["diff", "--name-only", process.argv[2], process.argv[3]], { encoding: "utf8" })
-          .split("\n").filter(Boolean);
-        const isManaged = (f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
-        const isApiFallbackSafe = (f) => API_FALLBACK_SAFE.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
-        const isApiFallbackMergeable = (f) => API_FALLBACK_MERGE.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
-        const isNeverFallback = (f) => NEVER_FALLBACK.some((p) => f === p || f.endsWith("/" + p));
-        const hit = changed.find((f) => (isManaged(f) && !isApiFallbackMergeable(f)) || isNeverFallback(f) || (f.startsWith("data/audit/") && !isManaged(f) && !isApiFallbackSafe(f) && !isApiFallbackMergeable(f)));
-        process.exit(hit ? 1 : 0);
-      ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "HEAD" 2>/dev/null || _managed_check_rc=$?
+    api_fallback_paths_ok "$SCRIPT_ENTRY_BASE" "HEAD" || _managed_check_rc=$?
     # Fail CLOSED on any non-zero exit, not just exactly "1" (Codex adversarial
     # finding, BRO-2413): a syntax error, thrown exception, or missing-node
     # edge case exits with a DIFFERENT non-zero code, and the old `= "1"`
     # check let those cases silently proceed as if the diff were clean —
     # exactly backwards for a guard whose whole job is to fail closed.
     if [ "$_managed_check_rc" != "0" ]; then
-      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file (without apiFallbackMerge coverage), shows.json/reviews.json, an unaudited data/audit/ path (not in API_FALLBACK_SAFE either), or the disqualifier check itself failed unexpectedly (rc=$_managed_check_rc, failing closed). See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries for a hand-verified single-writer path, or its apiFallbackMerge entries for a genuinely multi-writer path with real reconciliation."
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file (without apiFallbackMerge coverage), shows.json/reviews.json, an unaudited data/audit/ path (not in API_FALLBACK_SAFE either), or the disqualifier check itself failed unexpectedly (rc=$_managed_check_rc, failing closed).${_API_DISQUALIFY_DETAIL:+ Offending path — $_API_DISQUALIFY_DETAIL.} See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries for a hand-verified single-writer path, or its apiFallbackMerge entries for a genuinely multi-writer path with real reconciliation."
       _api_fallback_ok=false
     fi
   fi
