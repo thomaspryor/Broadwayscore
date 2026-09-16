@@ -289,7 +289,7 @@ jobs:
           # documented in BRO-335's comment above. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
         run: |
-          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/breaker-transitions.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json
+          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/breaker-transitions.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
           if git diff --staged --quiet; then
             echo "No breaker state changes to commit"
           else

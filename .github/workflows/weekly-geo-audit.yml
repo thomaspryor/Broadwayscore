@@ -47,6 +47,26 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
 
+      # BRO-3671: audit-geo-bots.js:138 calls routeAlert(disposition:'digest')
+      # per new bot country — this job had NO commit step at all, so the
+      # cooldown ledger, the queued digest line, and the dispatch-attempts
+      # log never persisted across weekly runs; every Monday re-alerted (or
+      # silently dropped its digest line) from a blank slate.
+      - name: Commit alert state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No alert-state changes to commit."
+          else
+            git commit -m "chore: geo-bot-audit alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
