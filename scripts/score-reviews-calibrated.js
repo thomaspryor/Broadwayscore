@@ -4,23 +4,7 @@
  * Calibrated LLM Review Scoring
  *
  * Uses few-shot examples from reviews with known original ratings
- * to improve scoring accuracy.
- *
- * Usage:
- *   ANTHROPIC_API_KEY=sk-... node scripts/score-reviews-calibrated.js
- *
- * Options:
- *   --show=hamilton-2015    Only process one show
- *   --dry-run               Don't save, just print results
- *   --limit=10              Only process N reviews
- *   --force                 Re-score even if already scored
- *   --calibration-only      Only score the calibration set
- *   --max-cost=5.00         Stop when cumulative API spend hits $X
- *   --ensemble              Delegate to the multi-model ensemble pipeline instead
- *                           (scripts/llm-scoring/index.ts --ensemble). This script's
- *                           own Claude-only scores have no ensembleData and are
- *                           silently rejected by rebuild-all-reviews.js — use this
- *                           flag to produce scores that actually land in reviews.json.
+ * to improve scoring accuracy. Run with --help for usage.
  */
 
 const fs = require('fs');
@@ -29,6 +13,27 @@ const { spawnSync } = require('child_process');
 const Anthropic = require('@anthropic-ai/sdk').default;
 const { CLAUDE_SONNET } = require('./lib/models');
 const { buildSingleModelWarning, buildEnsembleDelegationArgs } = require('./lib/single-model-warning');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `score-reviews-calibrated.js — Calibrated LLM review scoring (single-model by default).
+
+Usage:
+  ANTHROPIC_API_KEY=sk-... node scripts/score-reviews-calibrated.js [options]
+  node scripts/score-reviews-calibrated.js --help, -h    print this usage and exit
+
+Options:
+  --show=hamilton-2015    Only process one show
+  --dry-run               Don't save, just print results
+  --limit=10              Only process N reviews
+  --force                 Re-score even if already scored
+  --calibration-only      Only score the calibration set
+  --max-cost=5.00         Stop when cumulative API spend hits $X
+  --ensemble              Delegate to the multi-model ensemble pipeline instead
+                          (scripts/llm-scoring/index.ts --ensemble). This script's
+                          own Claude-only scores have no ensembleData and are
+                          silently rejected by rebuild-all-reviews.js — use this
+                          flag to produce scores that actually land in reviews.json.
+`;
 
 const reviewsDir = path.join(__dirname, '../data/review-texts');
 const llmScoresDir = path.join(__dirname, '../data/llm-scores');
@@ -216,6 +221,8 @@ function validateScore(result, review) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
   if (useEnsemble) {
     const delegateArgs = buildEnsembleDelegationArgs({ showFilter, limit, dryRun });
     console.log('--ensemble passed — delegating to the multi-model ensemble pipeline:');

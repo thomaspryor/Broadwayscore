@@ -46,6 +46,14 @@ describe('single-model-warning lib', () => {
 });
 
 describe('score-reviews-calibrated.js CLI', () => {
+  test('--help prints usage and exits without touching ANTHROPIC_API_KEY or network', () => {
+    const env = { ...process.env };
+    delete env.ANTHROPIC_API_KEY;
+    const output = execFileSync('node', [scriptPath, '--help'], { env, encoding: 'utf8' });
+    assert.match(output, /score-reviews-calibrated\.js/);
+    assert.match(output, /--ensemble/);
+  });
+
   test('warns about ensemble rejection before the API-key check fires', () => {
     const env = { ...process.env };
     delete env.ANTHROPIC_API_KEY;
