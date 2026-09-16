@@ -226,10 +226,18 @@ function decideRouting(issue, { headless = false } = {}) {
  * @param {boolean} [o.preview]              --dry-run / --print-prompt: launches nothing, so never detach
  * @param {boolean} [o.depsInjected]         main() was called with injected seams (tests) — those
  *                                            cannot cross a process boundary, so stay attached
+ * @param {boolean} [o.refusesFast]          a cheap, read-only guard the parent can already see will
+ *                                            refuse (kill switch, terminal state): stay attached so the
+ *                                            refusal is instant and in THIS process, not a 30s settle
+ *                                            wait for a child log tail (ship-check finding)
  * @returns {{detach: boolean, refusal: string|null}}
  */
-function decideDetach({ routingMode, routingReason = '', detachFlag, tab = false, preview = false, depsInjected = false }) {
-  const explicit = detachFlag === true;
+function decideDetach({ routingMode, routingReason = '', detachFlag, tab = false, preview = false, depsInjected = false, refusesFast = false }) {
+  // parseArgs' coerceFlagValue already maps ''/'0'/'false' to false, so any
+  // remaining string form (`--detach=1`, `--detach yes`) is an explicit ask,
+  // same as the bare flag (ship-check finding: `--detach=1` is a documented
+  // form in dispatch-timeout-match.js and was reading as "not explicit").
+  const explicit = detachFlag === true || (typeof detachFlag === 'string' && detachFlag !== '');
   if (routingMode !== 'headless') {
     // A cmux-tab launch already returns promptly and has no long-lived
     // supervisor to protect, so detaching one would just hide its output.
@@ -244,6 +252,7 @@ function decideDetach({ routingMode, routingReason = '', detachFlag, tab = false
   }
   if (detachFlag === false) return { detach: false, refusal: null };
   if (preview) return { detach: false, refusal: null };
+  if (refusesFast) return { detach: false, refusal: null };
   if (depsInjected && !explicit) return { detach: false, refusal: null };
   return { detach: true, refusal: null };
 }
@@ -278,7 +287,7 @@ const HEADLESS_OUTCOME_LABELS = Object.freeze({
   'done': { label: 'DONE', success: true, detail: 'job-done ledger row written' },
   'stranded': { label: 'STRANDED', success: false, detail: 'the session declared itself finished but its work never landed on origin/main (job-stranded ledger row) — inspect the log, then land it or re-dispatch with --force' },
   'blocked': { label: 'BLOCKED', success: false, detail: 'the session reported a blocker it could not clear (job-blocked ledger row) — resolve it, then re-dispatch with --force' },
-  'stopped-short': { label: 'STOPPED SHORT', success: false, detail: 'the session ended without a THIS SESSION verdict (job-stopped-short ledger row) — inspect the log before re-dispatching' },
+  'stopped-short': { label: 'STOPPED SHORT', success: false, detail: 'the session ended without a THIS SESSION verdict (job-stopped-short ledger row) — inspect the log, then re-dispatch with --force (the issue is now In Progress, so a bare re-dispatch trips startedStateGuard)' },
 });
 
 /**

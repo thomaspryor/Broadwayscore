@@ -237,6 +237,15 @@ function parseArgs(argv) {
 
 function ledgerTaskId(identifier) { return `linear:${identifier}`; }
 
+// Millisecond env knob: an explicit numeric value (0 included — "skip the
+// watch") wins; empty/unset/non-numeric means the default.
+function envMs(name, dflt) {
+  const raw = process.env[name];
+  if (raw === undefined || String(raw).trim() === '') return dflt;
+  const n = Number(raw);
+  return Number.isFinite(n) && n >= 0 ? n : dflt;
+}
+
 // Last N lines of a detached child's log, for the --detach settle window's
 // refusal report. Best-effort: a missing/unreadable log must never turn a
 // refusal report into a crash, so it degrades to a one-line note.
@@ -539,6 +548,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     detachFlag: args.detach, tab: !!args.tab,
     preview: !!(args['dry-run'] || args['print-prompt']),
     depsInjected: Object.keys(deps).length > 0,
+    // Two guards the parent can already evaluate read-only (kill switch,
+    // terminal state — both pure over env/the fetched issue) refuse
+    // instantly in-process instead of after a settle wait on a child that
+    // was always going to say no. The in-process path below still owns the
+    // actual refusal text; this only decides not to detach first.
+    refusesFast: process.env.LINEAR_NEXT_DISABLED === '1' || (!args.force && !!ld.checkTerminalStateGuard(issue)),
   });
   if (detachDecision.refusal) {
     console.error(`[linear-next] ${detachDecision.refusal}`);
@@ -601,7 +616,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // worst case and trivial beside a 30-minute job. Set
     // LINEAR_NEXT_DETACH_SETTLE_MS=0 to skip the watch in automation that
     // reads the ledger instead.
-    const settleMs = Number(process.env.LINEAR_NEXT_DETACH_SETTLE_MS ?? 30000);
+    // Non-numeric or empty env values fall back to the default rather than
+    // becoming NaN/0, which waitForSettle reads as "skip the watch" and would
+    // silently disable the refusal report (ship-check finding).
+    const settleMs = envMs('LINEAR_NEXT_DETACH_SETTLE_MS', 30000);
     const settled = await waitForSettle(pid, settleMs);
     if (!settled.alive) {
       console.error(`[linear-next] the detached dispatcher for ${idForLog} EXITED after ${settled.waitedMs}ms — it refused or failed. Its output:`);
@@ -624,7 +642,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // "dispatched"). LINEAR_NEXT_DETACH_ACK_MS caps the extra wait (default
     // 120s); 0 disables the ack watch and keeps the liveness-only verdict.
     const spawnedAt = Date.now();
-    const ackMs = Number(process.env.LINEAR_NEXT_DETACH_ACK_MS ?? 120000);
+    const ackMs = envMs('LINEAR_NEXT_DETACH_ACK_MS', 120000);
     const findLaunchRow = () => {
       let rows = [];
       try { rows = readLedgerEntriesFn(); } catch { rows = []; }
@@ -1294,7 +1312,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  parseArgs, ledgerTaskId, runList, main, USAGE,
+  parseArgs, ledgerTaskId, envMs, runList, main, USAGE,
   // Task #1696: pure overlap-guard wiring, exported for
   // scripts/tests/linear-next-overlap-guards.test.mjs (CLAUDE.md rule 15 —
   // the test require()s these real functions rather than restating them).

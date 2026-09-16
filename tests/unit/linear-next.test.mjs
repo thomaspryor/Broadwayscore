@@ -58,7 +58,7 @@ import {
   hasLiveLedgerEntry,
   dispatchCommentIsOurFinishedLaunch,
 } from '../../scripts/lib/linear-dispatch.js';
-import { parseArgs, ledgerTaskId, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
+import { parseArgs, ledgerTaskId, envMs, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
 
 // REPO root for the subprocess regression test below — spawned from a fixed
 // cwd so scripts/linear-next.js's own require('./bsc-next.js') etc. resolve
@@ -326,7 +326,50 @@ test('decideDetach: truth table — headless detaches by default, --no-detach/--
   const tabFlag = decideDetach({ routingMode: 'tab', detachFlag: true, tab: true });
   assert.equal(tabFlag.detach, false);
   assert.match(tabFlag.refusal, /--tab was passed/);
+  // `--detach=1` / `--detach yes` survive parseArgs as strings — still explicit
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: '1', depsInjected: true }), { detach: true, refusal: null });
+  assert.match(decideDetach({ routingMode: 'tab', detachFlag: 'yes', tab: true }).refusal, /--tab was passed/);
+  // a guard the parent can already see will refuse (kill switch / terminal state) → stay attached, refuse instantly in-process
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: undefined, refusesFast: true }), { detach: false, refusal: null });
 });
+
+test('envMs: numeric wins (0 included), empty/unset/garbage fall back to the default', () => {
+  const name = 'LINEAR_NEXT_TEST_ENVMS_3652';
+  const prev = process.env[name];
+  try {
+    delete process.env[name]; assert.equal(envMs(name, 30000), 30000);
+    process.env[name] = ''; assert.equal(envMs(name, 30000), 30000);
+    process.env[name] = 'abc'; assert.equal(envMs(name, 30000), 30000);
+    process.env[name] = '-5'; assert.equal(envMs(name, 30000), 30000);
+    process.env[name] = '0'; assert.equal(envMs(name, 30000), 0);
+    process.env[name] = '4500'; assert.equal(envMs(name, 30000), 4500);
+  } finally { if (prev === undefined) delete process.env[name]; else process.env[name] = prev; }
+});
+
+test('main(): LINEAR_NEXT_DISABLED=1 with a bare --id refuses in-process and instantly — never spawns a detached child to find out', async () => {
+  const prev = process.env.LINEAR_NEXT_DISABLED;
+  process.env.LINEAR_NEXT_DISABLED = '1';
+  let exitCode = null, spawned = 0;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const cap = captureConsole();
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      getIssue: async () => makeHeadlessDefaultIssue(),
+      spawnDetachedDispatch: () => { spawned++; return { pid: 1 }; },
+      waitForSettle: async () => ({ alive: true, waitedMs: 30000 }),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must not be called'); },
+    })), /EXIT/);
+  } finally {
+    process.exit = origExit; cap.restore();
+    if (prev === undefined) delete process.env.LINEAR_NEXT_DISABLED; else process.env.LINEAR_NEXT_DISABLED = prev;
+  }
+  assert.equal(exitCode, 1);
+  assert.equal(spawned, 0, 'kill switch must be honoured in the parent, before any detach');
+  assert.ok(cap.err.some(l => /LINEAR_NEXT_DISABLED=1/.test(l)), cap.err.join(' | '));
+});
+
 
 test('describeHeadlessOutcome: only done is success; blocked/stopped-short/stranded/unknown all fail and are named', () => {
   assert.equal(describeHeadlessOutcome({ ok: true, headlessOutcome: 'done' }).success, true);
@@ -395,7 +438,11 @@ test('main(): (b) a mac-only label with a bare --id routes to a cmux tab in the 
   } finally { cap.restore(); }
   assert.equal(cmuxCalls, 1, `launchCmux must be called for a mac-only card. stderr: ${cap.err.join(' | ')}`);
   assert.equal(runJobCalls, 0);
-  assert.equal(spawned, 0, 'a tab-routed card must never enter the detached settle window');
+  // NOTE: injected deps already keep the default attached, so spawned===0 is
+  // not by itself the ordering proof — the explicit-`--detach` + mac-only
+  // block in the "detached parent" test below is (it refuses without
+  // spawning). This asserts the tab lane was taken cleanly.
+  assert.equal(spawned, 0);
   assert.ok(!cap.err.some(l => /EXITED after|refused/i.test(l)), `must not report a refusal: ${cap.err.join(' | ')}`);
 });
 
@@ -1292,6 +1339,7 @@ test('main(): a held dispatch claim refuses BEFORE the overlap check ever runs',
       listOpenIssuesWithDescriptions: async () => { throw new Error('overlap check must never run once the claim guard refuses'); },
       loadNotionMirrorTasks: () => { throw new Error('overlap check must never run once the claim guard refuses'); },
       launchCmux: () => { throw new Error('launchCmux must never be called once the claim guard refuses'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the claim guard refuses'); },
     }), /EXIT/);
   } finally {
@@ -1380,6 +1428,7 @@ test('main(): refuses to dispatch a completed issue', async () => {
     await assert.rejects(() => main(['--id', 'BRO-1517'], {
       getIssue: async () => makeTerminalIssue('completed', 'Done'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a terminal issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1402,6 +1451,7 @@ test('main(): refuses to dispatch a canceled issue', async () => {
     await assert.rejects(() => main(['--id', 'BRO-1517'], {
       getIssue: async () => makeTerminalIssue('canceled', 'Canceled'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a terminal issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1479,6 +1529,7 @@ test('main(): refuses to dispatch a Marketing/distribution-project issue (BRO-24
     await assert.rejects(() => main(['--id', 'BRO-2488'], {
       getIssue: async () => makeMarketingIssue(),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a Marketing-project issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1559,6 +1610,7 @@ test('main(): refuses to dispatch a "BSC Daily:"-titled auto-filed issue (BRO-24
     await assert.rejects(() => main(['--id', 'BRO-9499'], {
       getIssue: async () => makeAutofixFiledIssue(),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for an auto-filed issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1581,6 +1633,7 @@ test('main(): the daily CANARY card is refused the same way (BRO-2499)', async (
     await assert.rejects(() => main(['--id', 'BRO-9499'], {
       getIssue: async () => makeAutofixFiledIssue('CANARY: touch data/audit/canary-2026-08-26.marker'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1673,6 +1726,7 @@ test('main(): refuses to dispatch an In Progress issue (BRO-2518)', async () => 
     await assert.rejects(() => main(['--id', 'BRO-2518'], {
       getIssue: async () => makeStartedIssue('In Progress'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a started issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1695,6 +1749,7 @@ test('main(): refuses to dispatch an In Review issue too (BRO-2518)', async () =
     await assert.rejects(() => main(['--id', 'BRO-2518'], {
       getIssue: async () => makeStartedIssue('In Review'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1800,6 +1855,7 @@ test('main(): --allow-autofix-filed does NOT bypass the started-state guard — 
     await assert.rejects(() => main(['--id', 'BRO-9499', '--allow-autofix-filed', '--tab'], {
       getIssue: async () => ({ ...makeAutofixFiledIssue(), state: { id: 'state-1', name: 'In Progress', type: 'started' } }),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a started issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],

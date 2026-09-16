@@ -162,6 +162,7 @@ test('main(): refuses to dispatch an issue whose acceptance command names a phan
     await assert.rejects(() => main(['--id', 'BRO-25690'], {
       getIssue: async () => makePhantomPathIssue(),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a phantom-path issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
