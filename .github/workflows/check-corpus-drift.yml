@@ -68,6 +68,18 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Checkout aggregator-archive (private repo)
+        # BRO-3535 ship-check catch (Codex): audit-aggregator-archive-integrity.js
+        # was moved here without this checkout. It does `if (!fs.existsSync(dir))
+        # continue;` per source (scripts/audit-aggregator-archive-integrity.js) —
+        # a missing data/aggregator-archive/ silently scans ZERO files and
+        # reports "clean" against the baseline, which routePerAuditAlerts()
+        # below would then resolve as healthy. Without this checkout the audit
+        # is a permanent, invisible no-op, not a passing check.
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
         with:

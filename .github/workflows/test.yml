@@ -5441,10 +5441,32 @@ jobs:
         # data/audit/outlet-registry-baseline.json and never fails CI; only a NEW
         # un-baselined missing outlet fails the build.
 
-      # "Audit Broadway-category predicate re-derivations" MOVED to
-      # check-corpus-drift.js (BRO-3535, 2026-09-16) — baseline-diff audit
-      # with no narrower on-push-safe mode. Non-blocking companion:
-      # scripts/check-corpus-drift.js AUDITS['broadway-category-predicate'].
+      - name: Audit Broadway-category predicate re-derivations
+        # KEPT on push (BRO-3535 ship-check catch, Codex): unlike the other
+        # baseline-diff audits moved out of this job, this one scans ONLY
+        # scripts/** source + its own committed baseline JSON — zero
+        # dependency on data/review-texts or any bot-mutated corpus. A NEW
+        # hit here can only be introduced by a CODE push, so it is exactly
+        # the "tests CODE" category rule 1 says stays blocking, not "corpus
+        # drifted with no code change." Moving it would let a new
+        # reimplementation of `category === 'broadway'` ship undetected for
+        # up to 24h instead of failing its own push.
+        #
+        # if: always() — same skip-on-earlier-failure shape as the 2026-09-06
+        # outlet-registry incident documented above. This script reads only
+        # scripts/** source plus its git-tracked baseline, so it has no
+        # dependency on any earlier step's side effects and is always safe to
+        # run after a failure.
+        if: always()
+        run: node scripts/audit-broadway-category-predicate.js --strict
+        # Flags raw `category === 'broadway'` literals that should call
+        # isBroadwayCategory() (scripts/lib/venue-classification.js) instead —
+        # 3rd wave of the same reimplementation pattern #1471/#1484 deduped.
+        # Baseline-diff (task #1665, mirrors audit-direct-provider-calls.js and
+        # audit-sibling-title-misroute.js): the pre-existing 30-hit/17-file
+        # backlog is frozen in data/audit/broadway-category-predicate-baseline.json
+        # and never fails CI; only a NEW (file, snippet) hit not in that
+        # baseline fails the build.
 
       - name: Validate mobile-shows.json integrity
         if: always()

@@ -378,14 +378,6 @@ const AUDITS = [
     crashCodes: [],            // 0 under baseline / 1 = new un-baselined (showId,file) flag
   },
   {
-    name: 'broadway-category-predicate',
-    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
-    label: 'raw category==="broadway" literals that should call isBroadwayCategory() (baseline-diff)',
-    script: 'audit-broadway-category-predicate.js',
-    args: ['--strict'],
-    crashCodes: [],            // 0 under baseline / 1 = new un-baselined (file,snippet) hit
-  },
-  {
     name: 'autoclear-vs-ensemble',
     healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
     label: 'an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection',

@@ -60,11 +60,15 @@ describe('check-corpus-drift verdict shape', () => {
 });
 
 describe('BRO-3535: gates moved from test.yml', () => {
+  // NOTE: audit-broadway-category-predicate.js was moved here in an earlier
+  // draft and reverted (ship-check catch, Codex): it scans only scripts/**
+  // source + its own committed baseline, zero corpus dependency, so a NEW
+  // hit can only come from a code push — it belongs in test.yml's blocking
+  // gate, not here. Kept out of this list on purpose.
   const MOVED_NAMES = [
     'sibling-title-misroute', 'duplicate-shows', 'show-score-urls',
     'cv-flag-contradiction', 'self-contradictory-clears',
-    'aggregator-archive-integrity', 'critic-outlets',
-    'broadway-category-predicate', 'autoclear-vs-ensemble',
+    'aggregator-archive-integrity', 'critic-outlets', 'autoclear-vs-ensemble',
     'contradicted-flag-basis', 'duplicate-of-cleared-contradiction',
     'url-downgrade', 'orphan-show-ids', 'aggregator-url-latent',
   ];
