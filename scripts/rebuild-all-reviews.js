@@ -89,6 +89,7 @@ const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { findDuplicateOfCycle, resolveCycleTiebreak } = require('./lib/duplicate-cycle');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { evaluateReviewCountRegression, isRunningInCI, WARN_THRESHOLD_PCT, LOCAL_HARD_BLOCK_PCT } = require('./lib/regression-guard');
 
 const USAGE = `rebuild-all-reviews.js — rebuild reviews.json from data/review-texts.
 
@@ -5405,9 +5406,11 @@ const output = {
   reviews: allReviews
 };
 
-// REVIEW COUNT REGRESSION GUARD: warn if rebuild would lose >2% of reviews.
-// Logs prominently and writes audit trail, but proceeds with the write.
-// Pass --force-write to suppress this warning when the drop is intentional.
+// REVIEW COUNT REGRESSION GUARD (BRO-2276): warn if rebuild would lose >2% of
+// reviews; locally (non-CI), a loss over LOCAL_HARD_BLOCK_PCT refuses the
+// write outright instead of just warning, since that's far more likely to be
+// a stub/incomplete data/review-texts checkout than a genuine regression.
+// Pass --force-write to suppress the warning/block when the drop is intentional.
 {
   const forceWrite = process.argv.includes('--force-write');
   let existingCount = 0;
@@ -5418,19 +5421,35 @@ const output = {
 
   if (existingCount > 0) {
     const newCount = allReviews.length;
-    const lost = existingCount - newCount;
-    const pctLost = (lost / existingCount * 100).toFixed(1);
-    if (lost > 0 && parseFloat(pctLost) > 2.0) {
-      if (forceWrite) {
-        console.log(`\n⚠️  REGRESSION GUARD: Dropping ${lost} reviews (${pctLost}%) — suppressed by --force-write`);
-      } else {
-        console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss)`);
-        console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
-        console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
-        console.error(`   PROCEEDING WITH WRITE — deploy may be blocked by pre-deploy-check.js (3% threshold).`);
-        console.error(`   Details: data/audit/rebuild-regression.json`);
-        console.error(`   To override: gh workflow run "Rebuild Reviews Data" -f reason="..." -f force_write=true`);
-      }
+    const decision = evaluateReviewCountRegression({
+      existingCount,
+      newCount,
+      forceWrite,
+      isCI: isRunningInCI(),
+    });
+    const { action, lost, pctLost } = decision;
+
+    if (action === 'warn-suppressed') {
+      console.log(`\n⚠️  REGRESSION GUARD: Dropping ${lost} reviews (${pctLost}%) — suppressed by --force-write`);
+    } else if (action === 'warn') {
+      console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss)`);
+      console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
+      console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
+      console.error(`   PROCEEDING WITH WRITE — deploy may be blocked by pre-deploy-check.js (3% threshold).`);
+      console.error(`   Details: data/audit/rebuild-regression.json`);
+      console.error(`   To override: gh workflow run "Rebuild Reviews Data" -f reason="..." -f force_write=true`);
+    } else if (action === 'block') {
+      console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss) — REFUSING TO WRITE`);
+      console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
+      console.error(`   This is a local (non-CI) run losing more than ${LOCAL_HARD_BLOCK_PCT}% of reviews — almost`);
+      console.error(`   certainly a stub/incomplete data/review-texts checkout, not a genuine data regression.`);
+      console.error(`   Fix: ./scripts/setup-local-data.sh --all (re-clone the full review-texts checkout), or`);
+      console.error(`   verify data/review-texts isn't a partial cloud-bootstrap copy scoped to one show.`);
+      console.error(`   Details: data/audit/rebuild-regression.json`);
+      console.error(`   To override intentionally: re-run with --force-write.`);
+    }
+
+    if (action !== 'ok') {
       // Write audit trail for tracking
       try {
         const auditDir = path.join(path.dirname(reviewsJsonPath), 'audit');
@@ -5440,15 +5459,21 @@ const output = {
           existingCount,
           newCount,
           lost,
-          pctLost: parseFloat(pctLost),
+          pctLost,
+          action,
           argv: process.argv.slice(2),
         }, null, 2) + '\n');
       } catch (auditErr) {
         console.error(`   Could not write audit file: ${auditErr.message}`);
       }
     }
-    if (lost > 0 && parseFloat(pctLost) <= 2.0) {
-      console.log(`\n⚠️  Review count decreased by ${lost} (${pctLost}%) — within 2% threshold, proceeding.`);
+
+    if (action === 'block') {
+      process.exit(1);
+    }
+
+    if (action === 'ok' && lost > 0) {
+      console.log(`\n⚠️  Review count decreased by ${lost} (${pctLost}%) — within ${WARN_THRESHOLD_PCT}% threshold, proceeding.`);
     }
   }
 }
