@@ -9,11 +9,16 @@
  *     show page's decision function. Once a show clears the review-count
  *     floor, a missing consensus must render "coming soon", never silently
  *     fall back to the synopsis.
- *  2. The opening-night-poller.yml fast path now has a step that calls
- *     generate-critic-consensus.js per polled show after the inline rebuild —
- *     this is what was missing (the orchestrator's fast path never went
- *     through rebuild-reviews.yml, the only place that auto-dispatched
- *     update-critic-consensus.yml).
+ *  2. The opening-night-poller.yml fast path now dispatches
+ *     update-critic-consensus.yml --show=X per polled show after the inline
+ *     rebuild — the orchestrator's fast path never went through
+ *     rebuild-reviews.yml, the only place that previously auto-dispatched
+ *     that workflow. Dispatch (not an inline generate-critic-consensus.js
+ *     call) deliberately preserves critic-consensus.json's single-writer
+ *     invariant (scripts/lib/core-data-merge-registry.js) — this fast path
+ *     runs on a ~15-min cycle for both markets concurrently on a live
+ *     opening night, so an inline write here would race concurrent BW/WE
+ *     poller pushes with no reconciliation.
  *
  * Run: node --test tests/unit/critics-take-generation.test.mjs
  */
@@ -40,12 +45,12 @@ describe('getCriticsTakeDisplayMode', () => {
     assert.equal(getCriticsTakeDisplayMode(false, true, 21, true), 'coming-soon');
   });
 
-  it('no consensus, review count just above the floor → coming-soon', () => {
-    assert.equal(getCriticsTakeDisplayMode(false, true, REVIEW_COUNT_FLOOR + 1, true), 'coming-soon');
+  it('no consensus, review count exactly at the floor → coming-soon (acceptance criteria: "5 or more")', () => {
+    assert.equal(getCriticsTakeDisplayMode(false, true, REVIEW_COUNT_FLOOR, true), 'coming-soon');
   });
 
-  it('no consensus, review count at or below the floor with a synopsis → synopsis', () => {
-    assert.equal(getCriticsTakeDisplayMode(false, false, REVIEW_COUNT_FLOOR, true), 'synopsis');
+  it('no consensus, review count just below the floor with a synopsis → synopsis', () => {
+    assert.equal(getCriticsTakeDisplayMode(false, false, REVIEW_COUNT_FLOOR - 1, true), 'synopsis');
     assert.equal(getCriticsTakeDisplayMode(false, false, 0, true), 'synopsis');
   });
 
@@ -61,7 +66,7 @@ describe('getCriticsTakeDisplayMode', () => {
   });
 });
 
-describe('opening-night-poller.yml fast path calls generate-critic-consensus.js', () => {
+describe('opening-night-poller.yml fast path dispatches update-critic-consensus.yml', () => {
   const workflowPath = path.join(__dirname, '../../.github/workflows/opening-night-poller.yml');
   const workflow = fs.readFileSync(workflowPath, 'utf8');
 
@@ -69,8 +74,11 @@ describe('opening-night-poller.yml fast path calls generate-critic-consensus.js'
     assert.match(workflow, /Generate Critics' Take \(fast_path\)/);
   });
 
-  it('calls generate-critic-consensus.js per polled show', () => {
-    assert.match(workflow, /generate-critic-consensus\.js --show="\$SHOW_ID"/);
+  it('dispatches update-critic-consensus.yml per polled show, not an inline generator call', () => {
+    assert.match(workflow, /gh workflow run update-critic-consensus\.yml -f show="\$SHOW_ID"/);
+    // Must NOT call the generator script directly from this job — that would
+    // write data/critic-consensus.json outside its registered single writer.
+    assert.doesNotMatch(workflow, /node scripts\/generate-critic-consensus\.js/);
   });
 
   it('the new step runs before the fast_path push to the private data repo', () => {
@@ -78,6 +86,14 @@ describe('opening-night-poller.yml fast path calls generate-critic-consensus.js'
     const pushIdx = workflow.indexOf('Push core data to private repo (fast_path)');
     assert.ok(genIdx > -1, 'generation step must exist');
     assert.ok(pushIdx > -1, 'push step must exist');
-    assert.ok(genIdx < pushIdx, 'consensus must be generated before critic-consensus.json is pushed');
+    assert.ok(genIdx < pushIdx, 'dispatch must be queued before this job pushes core data');
+  });
+});
+
+describe('critic-consensus.json single-writer invariant', () => {
+  it('is still registered single-writer (dispatch approach must not need to flip this)', () => {
+    const registryPath = path.join(__dirname, '../../scripts/lib/core-data-merge-registry.js');
+    const registry = fs.readFileSync(registryPath, 'utf8');
+    assert.match(registry, /file: 'critic-consensus\.json'.*status: 'single-writer'/s);
   });
 });

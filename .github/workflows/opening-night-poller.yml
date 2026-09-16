@@ -706,22 +706,36 @@ jobs:
         # update-critic-consensus.yml. Opening-night shows scored via this
         # path fell back to the synopsis in the Critics' Take slot even with
         # a full set of scored reviews (Fear of 13, 21 reviews, no take).
-        # --show= per polled show mirrors opening-night-broadcast.yml's own
-        # call; continue-on-error since a missing take degrades to the
-        # synopsis fallback rather than blocking the opening-night deploy.
+        #
+        # Dispatches update-critic-consensus.yml per show rather than calling
+        # generate-critic-consensus.js inline here — critic-consensus.json is
+        # registered 'single-writer' in scripts/lib/core-data-merge-registry.js
+        # (only update-critic-consensus.yml writes it) and is NOT in
+        # activeEntriesFor('private-core-data'), so push-core-data's -X ours
+        # rebase does not reconcile it. This fast path runs on a ~15-min cycle
+        # for BOTH markets concurrently on a live opening night (unlike
+        # opening-night-broadcast.yml's twice-daily call to the same script),
+        # so writing the file inline here would raise a real, frequent
+        # lost-update race between concurrent BW/WE poller pushes. Dispatching
+        # the queued workflow instead (concurrency: group: update-critic-
+        # consensus, cancel-in-progress: false) keeps the single-writer
+        # invariant intact and reuses the exact single-show remediation path
+        # opening-night-checks/critics-take-present.check.js already declares
+        # for the same gap (task #389) — see that workflow's --show input.
+        # Async by design: the take lands on a later deploy, not this one.
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           SHOWS="${{ steps.find.outputs.shows }}"
           IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
             SHOW_ID="$(echo "$SHOW_ID" | xargs)"
             [ -z "$SHOW_ID" ] && continue
-            echo "Generating Critics' Take: $SHOW_ID"
-            node scripts/generate-critic-consensus.js --show="$SHOW_ID" || echo "::warning::Critics' Take generation failed for $SHOW_ID"
+            echo "Dispatching Critics' Take generation: $SHOW_ID"
+            gh workflow run update-critic-consensus.yml -f show="$SHOW_ID" || echo "::warning::Critics' Take dispatch failed for $SHOW_ID"
           done
         continue-on-error: true
-        timeout-minutes: 5
+        timeout-minutes: 2
 
       - name: Audit recovery state (non-blocking)
         id: verify_recovery
