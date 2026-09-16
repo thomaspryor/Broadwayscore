@@ -19,10 +19,7 @@
  * Whether this retroactive send is still worth making, given results
  * already went out, is an open owner call — see the BRO-1325 report.
  *
- * Usage:
- *   node scripts/send-btc-confirmation-emails.js --dry-run
- *   node scripts/send-btc-confirmation-emails.js --send-to=me@email.com
- *   node scripts/send-btc-confirmation-emails.js                # sends to all unsent entrants
+ * Usage: node scripts/send-btc-confirmation-emails.js --help
  */
 
 'use strict';
@@ -30,6 +27,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { applyUtm } = require('./lib/email-utm');
 const {
   parseSubmissionsJsonl,
@@ -38,13 +36,29 @@ const {
   buildConfirmationEmail,
 } = require('./lib/btc-confirmation');
 
+const USAGE = `send-btc-confirmation-emails.js — retroactive BTC confirmation resend (BRO-1325)
+
+Usage:
+  node scripts/send-btc-confirmation-emails.js --dry-run
+  node scripts/send-btc-confirmation-emails.js --send-to=me@email.com
+  node scripts/send-btc-confirmation-emails.js                # sends to all unsent entrants
+
+Flags:
+  --dry-run           Preview recipients + subjects, sends nothing
+  --send-to=<email>   Send (or resend) to one address only, bypassing the sent-log
+  --data-dir=<path>   Directory containing beat-the-critics-submissions.jsonl
+                      (default: this repo's data/, falling back to ~/broadway-scorecard-data/data)
+`;
+
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
 const SEND_INTERVAL_MS = 500; // ~2/sec
 
+const args = process.argv.slice(2);
+if (hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
+
 const KNOWN_FLAG_PREFIXES = ['--dry-run', '--send-to=', '--data-dir='];
 
-const args = process.argv.slice(2);
 const unknownArg = args.find(a => !KNOWN_FLAG_PREFIXES.some(p => a === p || a.startsWith(p)));
 if (unknownArg) {
   console.error(`Unrecognized argument: ${unknownArg}`);
