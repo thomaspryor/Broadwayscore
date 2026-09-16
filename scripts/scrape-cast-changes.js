@@ -322,6 +322,15 @@ function validateEvent(event) {
     event[field] = v;
   }
 
+  // Any arrival/departure with neither date nor endDate is not newsworthy
+  // (BRO-1297) — flag it here, at the single validation choke point every
+  // ingestion path (articles, official-sites, playbill-cast diff, Reddit)
+  // already runs through, so a future dateless extraction can't silently
+  // reintroduce the un-flagged rows the backfill just cleaned up.
+  if ((event.type === 'arrival' || event.type === 'departure') && !event.date && !event.endDate) {
+    event.incomplete = true;
+  }
+
   return true;
 }
 
