@@ -187,6 +187,7 @@ For each comment, determine:
    - Technical theater: stage rakes, set measurements, lighting rigs, costumes, props
    - Meta discussion: ticket prices, lottery, seating, scheduling
    - Venue/logistics: stage door experience, usher behavior, concessions, bathrooms, crowd behavior, accessibility — these are about the venue, not the show
+   - Discussion OF a scoring site/aggregator/bot's rating or ranking of the show ("the audience score seems low", "that critic score can't be right", "Broadway Scorecard has it at a B+") — this is commentary about a score/ranking, not a review of the production. Only mark relevant if the comment ALSO independently describes the commenter's own experience seeing the show.
    - Just mentions "${showTitle}" in passing without an audience opinion
 
    IMPORTANT: The person MUST have ALREADY attended/seen the show (past tense). Future tense ("I'm going to see it") or present anticipation ("about to see it") = NOT relevant. If comment discusses a different show BY NAME, mark not relevant. For an ambiguous "I saw it" / "the show" that names no other show, resolve it using the thread title per the MATCH THE PRODUCTION rule above (assume "${showTitle}" only when the thread is about this production; when no thread title is given, assume "${showTitle}").
@@ -195,8 +196,18 @@ For each comment, determine:
    - enthusiastic: Strong positive - superlatives like amazing, incredible, best, 10/10, life-changing, cried happy tears, "blown away"
    - positive: Liked it - enjoyed, good, fun, recommend, worth seeing, glad I went. Also: sharing a highlight moment, describing participation in interactive elements, or any implied enjoyment
    - mixed: Explicitly mentions BOTH good AND bad aspects in the SAME comment — e.g., "loved the performances but the story didn't work"
-   - negative: Disappointed, boring, not worth it, wouldn't recommend, waste of money, walked out, regretted going
-   - neutral: ONLY for purely factual statements with absolutely zero sentiment (extremely rare — almost every audience reaction has some sentiment)
+   - negative: The commenter EXPLICITLY disliked THIS show — disappointed, boring, not worth it, wouldn't recommend, waste of money, walked out, regretted going. Do NOT use negative for anything milder than this — see the rules below.
+   - neutral: Purely factual statements with zero sentiment, OR a comment with no explicit criticism that doesn't clear the bar for positive/mixed either (see LUKEWARM rule below). Less rare than it sounds — mild comments should land here, not in negative.
+
+   NEGATIVE REQUIRES EXPLICIT DISLIKE OF THIS SHOW:
+   - If the commenter did NOT explicitly say they disliked, were disappointed by, or would not recommend THIS show, do NOT mark it negative — use mixed or neutral instead. Negative is reserved for unambiguous criticism, not vibes or absence of enthusiasm.
+
+   COMPARATIVE COMMENTS (multi-show threads, "X or Y?", "which is better"):
+   - Preferring a DIFFERENT show over this one ("I'd pick Becky Shaw over Fallen Angels", "Show B was stronger for me") is NOT evidence of negative sentiment about THIS show unless the commenter also states an explicit criticism of it. Being the less-preferred option in a comparison is not a pan.
+   - If the comparison names no specific flaw in THIS show, mark neutral (or mixed if the comment also states an explicit positive about this show).
+
+   LUKEWARM / MILD COMMENTS ARE NOT NEGATIVE:
+   - Phrases like "it was fine", "not my favorite", "not blown away", "slow start but worth it", "decent", "a bit long" describe a mild or middling reaction, not a pan. Classify these as mixed (if they also name something they liked) or neutral (if they name nothing they liked). Never negative unless paired with explicit criticism ("wouldn't recommend it", "wasted my money", "wouldn't go again").
 
    POSITIVE SIGNALS — do NOT mark these neutral:
    - "Saw it twice" / "going back" / "taking my mom" → positive (they wouldn't return if they didn't like it)
@@ -205,7 +216,7 @@ For each comment, determine:
    - Answering "should I see it?" affirmatively → positive
    - Sharing the experience without complaint → positive (people don't share neutral experiences)
 
-   If you're unsure between neutral and positive, choose positive. Neutral should be <5% of relevant comments.
+   If you're unsure between neutral and positive, choose positive. If you're unsure between neutral/mixed and negative, do NOT choose negative — negative must be earned by explicit criticism.
 ${schemaNote}
 Comments to classify:
 ${formatted}

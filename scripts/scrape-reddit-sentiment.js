@@ -34,6 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey } = require('./lib/reddit-post-filters');
+const { isOwnerAccount } = require('./lib/owner-accounts');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -136,6 +137,14 @@ function classifyPost(post, showTitle) {
   // match the search (e.g. "Drama Desk Awards 2025" mentioning "Music City").
   // Exclude outright — overrides review flair.
   if (isRoundupOrMegathread(rawTitle)) return false;
+
+  // ZEROTH-A: Posts by the Scorecard's own accounts (score-summary posts,
+  // audience-score debate threads it started) are not organic audience
+  // reaction — they're the site's own coverage. Replies arguing about
+  // whether "the audience score is too low" get misread as negative
+  // sentiment about the show itself if these self-posts are ever collected.
+  // Exclude before any other signal (BRO-985).
+  if (isOwnerAccount('reddit', post.author)) return false;
 
   // FIRST: Check exclusion keywords - these override everything including flair
   // Industry keywords to EXCLUDE
@@ -756,4 +765,5 @@ module.exports = {
   calculateBuzzScore,
   processShow,
   showMapById,
+  classifyPost,
 };
