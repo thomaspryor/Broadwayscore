@@ -36,11 +36,17 @@ test('work queued + a fresh dispatch is healthy', () => {
   assert.equal(v.status, 'healthy');
 });
 
-test('the overnight 18:30->10:30 gap (16h) stays green; past the 20h window goes red', () => {
+test('the window absorbs the overnight gap, one publish cycle and the DST shift; a dead day still goes red', () => {
+  // 16h = the plain 18:30->10:30 overnight gap.
   assert.equal(assessDrainHealth({ ledgerEntries: [dispatch(16 * H)], eligibleCount: 5, nowMs: NOW }).ok, true);
-  assert.equal(assessDrainHealth({ ledgerEntries: [dispatch(20 * H)], eligibleCount: 5, nowMs: NOW }).ok, true);
-  assert.equal(assessDrainHealth({ ledgerEntries: [dispatch(21 * H)], eligibleCount: 5, nowMs: NOW }).ok, false);
-  assert.equal(STALE_AFTER_MS, 20 * H);
+  // ~20.1h = the measured EST case: cron 15:37 UTC lands 10:37 EST, seven
+  // minutes after the tick, so the newest PUBLISHED row is two ticks old.
+  // A 20h window red-flagged this healthy state in review.
+  assert.equal(assessDrainHealth({ ledgerEntries: [dispatch(20.1 * H)], eligibleCount: 5, nowMs: NOW }).ok, true);
+  assert.equal(assessDrainHealth({ ledgerEntries: [dispatch(28 * H)], eligibleCount: 5, nowMs: NOW }).ok, true);
+  // Past a full day with work queued, something is genuinely wrong.
+  assert.equal(assessDrainHealth({ ledgerEntries: [dispatch(29 * H)], eligibleCount: 5, nowMs: NOW }).ok, false);
+  assert.equal(STALE_AFTER_MS, 28 * H);
 });
 
 test('work queued and NO dispatch row at all is unhealthy, with its own status', () => {
