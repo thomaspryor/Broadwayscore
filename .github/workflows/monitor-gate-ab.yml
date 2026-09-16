@@ -1,7 +1,6 @@
 name: Weekly A/B Monitors
 
-# Weekly guardrail monitors for the email-gate funnel (card #240) and the
-# ticket-single-button A/B (card #392).
+# Weekly guardrail monitor for the email-gate funnel (card #240).
 #
 # Filename + concurrency group keep the historical `monitor-gate-ab` name
 # deliberately (Actions history continuity + check-cron-health.yml keys on
@@ -12,21 +11,18 @@ name: Weekly A/B Monitors
 # gate-cold-start A/B (card #247) that later occupied "Step 2" here concluded
 # 2026-09-15 (roll the 2-page minimum out to 100% of traffic, permanently —
 # see docs/experiments/gate-cold-start.md "Conclusion") and its monitor step
-# was removed the same way.
+# was removed the same way. The ticket-single-button A/B (card #392, "Step 2"
+# after that) concluded 2026-09-16 (owner kept the single-button design on
+# UX grounds after data found no measurable difference — see
+# docs/experiments/ticket-single-button.md "Conclusion") and its monitor step
+# was removed the same way, along with scripts/monitor-ticket-ab.js and
+# scripts/lib/ticket-ab-monitor-rules.js.
 #
 # Step 1 (overall funnel): tracks modal-only impressions/dismissal/captures
 # (trigger != '' — excludes inline header/footer email_captured events) and
 # alerts (actionable-only) if absolute captures/week collapses below ~1,
 # regardless of conversion rate. Full context:
 # ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
-#
-# Step 2 (ticket-single-button A/B, card #392): the analyzer's own zTest()
-# printed "p-value: NaN" on every run for a week before a manual audit caught
-# it (2026-07-24, fixed in scripts/lib/significance.js) — nothing was
-# watching the output. Alerts (actionable-only) on a suppressed/degenerate
-# primary p (data problem) and a once-only "significance reached at adequate
-# power" nudge. Never judges the winner or touches the flag
-# (memory/feedback_ab_test_guardrails.md).
 #
 # Weekly summaries are log-only (no Discord). No step judges a primary metric
 # or touches gate/flag config — those stay owner decisions.
@@ -69,16 +65,6 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/monitor-email-gate-funnel.js ${{ inputs.dry_run && '--dry-run' || '' }}
 
-      - name: Run ticket-single-button A/B monitor (card #392)
-        env:
-          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
-          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
-          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
-          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/monitor-ticket-ab.js ${{ inputs.dry_run && '--dry-run' || '' }}
-
       - name: Commit monitor state
         # always() so a failure in ANY monitor step still commits whatever
         # state the OTHER steps already earned this run (e.g. an alerted-at
@@ -93,14 +79,14 @@ jobs:
           # that would crash the whole step and lose the OTHER monitors'
           # earned state too. Matters on a monitor's first-ever run, before
           # its state file exists in the repo tree.
-          for f in data/audit/email-gate-funnel-monitor-state.json data/audit/ticket-ab-monitor-state.json; do
+          for f in data/audit/email-gate-funnel-monitor-state.json; do
             [ -f "$f" ] && git add "$f"
           done
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
           fi
-          git commit -m "data: email-gate funnel + ticket-ab monitor state [skip ci]"
+          git commit -m "data: email-gate funnel monitor state [skip ci]"
           bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
