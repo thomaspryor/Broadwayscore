@@ -4468,6 +4468,19 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.deadline.test.sh
 
+      - name: Run push-with-retry early-fallback budget test (bash integration)
+        # BRO-3663. The early-fallback break at push-with-retry.sh trades the
+        # remaining local retry budget for the Git Data API fallback, but
+        # $_PUSH_API_FALLBACK_ELIGIBLE is repo/config-level and knows nothing
+        # about the diff's PATHS — so a caller staging an unregistered
+        # data/audit/ path broke out early, found the fallback disqualified, and
+        # hard-failed with attempts unspent ("Audit Aggregator Review Gap" run
+        # 34855239166, 3 of 5). Case 1 pins the budget, Case 2 pins that the
+        # break STILL fires when the fallback is genuinely reachable, Case 3
+        # pins that a hanging caller stays deadline-bounded.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.early-fallback-budget.test.sh
+
       - name: Run push-with-retry usage-validation test (bash integration)
         # BRO-2554: a non-numeric first positional arg (max_retries) used to
         # crash with a confusing "unbound variable" deep in an arithmetic
@@ -4873,6 +4886,15 @@ jobs:
         # macOS-only — the exposure is local, but the defect is authored here.
         if: always()
         run: node --test scripts/lib/ledger-write-isolation.test.mjs
+
+      - name: Run API fallback path disqualifier unit tests
+        # BRO-3663. The predicate deciding which paths the Git Data API fallback
+        # may overlay used to be an inline `node -e` in push-with-retry.sh plus a
+        # hand-maintained "precise mirror" in audit-push-retry-budgets.js — which
+        # had already drifted once (BRO-3348). It now has one definition; this
+        # pins its rules so a change to them fails here.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: node --test scripts/lib/api-fallback-disqualifier.test.mjs
 
   data-validation:
     name: Data Validation
