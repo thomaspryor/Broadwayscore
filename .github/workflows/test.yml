@@ -1851,11 +1851,9 @@ on:
       # Ticket A/B significance math + report decision fn (pure, colocated test
       # runs in the scripts/lib/*.test.mjs glob step) and its analyzer caller —
       # without these entries edits get ZERO CI (feedback_test_yml_push_path_allowlist).
+      # scripts/monitor-ticket-ab.js (card #392) retired 2026-09-16 alongside
+      # ticket-single-button's conclusion — removed from this list with it.
       - 'scripts/analyze-ab-test.js'
-      # Weekly ticket-single-button A/B monitor (card #392) — pure rules +
-      # runner + analyzer; colocated test runs in the scripts/lib/*.test.mjs
-      # glob step.
-      - 'scripts/monitor-ticket-ab.js'
       # Scheduled-email-count monitor (card #510) — pure classifier/decision
       # rules + CLI; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/monitor-scheduled-email-count.js'

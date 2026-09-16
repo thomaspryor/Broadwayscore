@@ -20,13 +20,18 @@
  *    4. Small samples deserve skepticism. At current traffic, 100 clicks
  *       per variant takes ~50 days. Don't declare early.
  *
- *  Companion validator: scripts/validate-ab-test.js (proves the flag is
- *  actually serving variants, DOM renders correctly, and click tracking
- *  fires with the right ab_variant). Run that first when debugging.
  * ═══════════════════════════════════════════════════════════════════════
  *
+ * ticket-single-button concluded 2026-09-16 (see
+ * docs/experiments/ticket-single-button.md "Conclusion") and its client-side
+ * A/B branching was removed from TicketButtonsAB.tsx — this analyzer stays
+ * generic and still supports `--flag ticket-single-button` for historical
+ * reads, but the default flag below is now ticket-primary-platform (the
+ * only other flag this script's variantKey logic knows about; also already
+ * concluded/pinned, but at least still a real registered flag).
+ *
  * Usage:
- *   node scripts/analyze-ab-test.js                  # default: ticket-single-button
+ *   node scripts/analyze-ab-test.js                  # default: ticket-primary-platform
  *   node scripts/analyze-ab-test.js --flag <key>     # specific flag
  *   node scripts/analyze-ab-test.js --days 14        # date range
  *
@@ -41,7 +46,7 @@
 
 const FLAG = (() => {
   const idx = process.argv.indexOf('--flag');
-  return idx >= 0 ? process.argv[idx + 1] : 'ticket-single-button';
+  return idx >= 0 ? process.argv[idx + 1] : 'ticket-primary-platform';
 })();
 
 const DAYS = (() => {
