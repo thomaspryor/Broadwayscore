@@ -20,6 +20,7 @@ import { FilterPanel } from '@/components/filters/FilterPanel';
 import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
 import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_BROADWAY, PANEL_PARAM_KEYS } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
+import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 
 export interface FeaturedRowData {
   title: string;
@@ -587,6 +588,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     onSetSingleValueOverride: setPanelSingleValue,
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const showListEmptyState = getShowListEmptyState({
+    filteredCount: panel.filteredShows.length,
+    archiveLoaded: archiveShows !== null,
+    statusFilter,
+  });
 
   // Single-writer clearAll for the panel: resets inline filters state AND
   // strips all panel keys from the URL in one router.replace. Routing both
@@ -808,7 +814,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       <h2 className="sr-only">Broadway Shows</h2>
       <ShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
-      {panel.filteredShows.length === 0 && !archiveShows && (statusFilter === 'all' || statusFilter === 'closed') && (
+      {showListEmptyState === 'loading' && (
         <div className="space-y-3" role="status" aria-label="Loading shows">
           {[1, 2, 3, 4, 5].map(i => (
             <div key={i} className="animate-pulse h-24 bg-surface-overlay rounded-xl" />
@@ -816,7 +822,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         </div>
       )}
 
-      {panel.filteredShows.length === 0 && (archiveShows || (statusFilter !== 'all' && statusFilter !== 'closed')) && (
+      {showListEmptyState === 'empty' && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
