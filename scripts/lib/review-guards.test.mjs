@@ -91,6 +91,19 @@ test('isCvPromotionEligible: medium confidence is eligible without needing cvLow
   assert.equal(isCvPromotionEligible({ wrongProduction: true, confidence: 'medium' }), true);
 });
 
+test('BRO-938: production calling convention — both rebuild-all-reviews.js call sites pass a pre-computed cvLowButStrong as the 2nd arg, not just the 1-arg fallback', () => {
+  const strongCv = { wrongProduction: true, confidence: 'low', issues: [], reasoning: 'completely different show' };
+  const precomputed = computeCvLowButStrong(strongCv);
+  assert.equal(precomputed, true);
+  // Explicit 2nd arg must match the 1-arg (self-computed) result for a consistent cv.
+  assert.equal(isCvPromotionEligible(strongCv, precomputed), isCvPromotionEligible(strongCv));
+
+  const plainLowCv = { wrongProduction: true, confidence: 'low', issues: [], reasoning: 'reviews a touring stop' };
+  const precomputedLow = computeCvLowButStrong(plainLowCv);
+  assert.equal(precomputedLow, false);
+  assert.equal(isCvPromotionEligible(plainLowCv, precomputedLow), false);
+});
+
 /* ──────────────────────────────────────────────────────────────────────────
  * T1-retrieval canonical predicates (Sprint 1, task #291).
  *
