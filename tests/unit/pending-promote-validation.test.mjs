@@ -197,6 +197,47 @@ describe('findExistingFileForUrl', () => {
     );
   });
 
+  // rebuild-all-reviews.js's duplicateOf resolution only walks ONE hop back — a
+  // file whose duplicateOf target is ITSELF a duplicate is not excluded there,
+  // so it leaks into reviews.json as a second scored copy of the same content
+  // (Codex adversarial review, BRO-1391). A THIRD promotion for the same url
+  // must resolve to the terminal canonical, not to whichever sibling readdir
+  // happens to return first.
+  describe('chain resolution (rebuild-all-reviews.js duplicateOf is single-hop)', () => {
+    const chainShowDir = path.join(reviewTextsDir, 'chain-show-2026');
+    fs.mkdirSync(chainShowDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(chainShowDir, 'times-uk--zzz-canonical.json'),
+      JSON.stringify({ url: 'https://www.thetimes.com/article/chain-review-1' }),
+    );
+    fs.writeFileSync(
+      path.join(chainShowDir, 'times-uk--aaa-first-dupe.json'),
+      JSON.stringify({ url: 'https://www.thetimes.com/article/chain-review-1', duplicateOf: 'times-uk--zzz-canonical.json' }),
+    );
+
+    test('resolves through an intermediate duplicate to the terminal canonical', () => {
+      assert.equal(
+        findExistingFileForUrl('chain-show-2026', 'times-uk', 'https://www.thetimes.com/article/chain-review-1'),
+        'times-uk--zzz-canonical.json',
+      );
+    });
+
+    test('does not hang on a pre-existing cycle among siblings', () => {
+      const cycleShowDir = path.join(reviewTextsDir, 'cycle-show-2026');
+      fs.mkdirSync(cycleShowDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(cycleShowDir, 'times-uk--a.json'),
+        JSON.stringify({ url: 'https://www.thetimes.com/article/cycle-review', duplicateOf: 'times-uk--b.json' }),
+      );
+      fs.writeFileSync(
+        path.join(cycleShowDir, 'times-uk--b.json'),
+        JSON.stringify({ url: 'https://www.thetimes.com/article/cycle-review', duplicateOf: 'times-uk--a.json' }),
+      );
+      const result = findExistingFileForUrl('cycle-show-2026', 'times-uk', 'https://www.thetimes.com/article/cycle-review');
+      assert.ok(result === 'times-uk--a.json' || result === 'times-uk--b.json', `expected a cycle member, got ${result}`);
+    });
+  });
+
   test.after(() => {
     fs.rmSync(fixtureRoot, { recursive: true, force: true });
   });
