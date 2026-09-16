@@ -660,5 +660,53 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-16T13:09:43.438Z"
+  },
+  {
+    "conditionKey": "watchdog-park:95",
+    "title": "Watchdog parked #95 — redispatch never produced a launch",
+    "description": "Watchdog: card \"NYT bot-stub reviews mislabeled contentTier=complete (scored on partial text)\" was claimed for redispatch at 2026-09-16T16:12:06.822Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 95), then re-arm with node scripts/bsc-next.js --id 95 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T16:28:20.006Z"
+  },
+  {
+    "conditionKey": "watchdog-park:96",
+    "title": "Watchdog parked #96 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Comparative within-show anchored scoring (fix 97-clustering)\" was claimed for redispatch at 2026-09-16T16:12:06.948Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 96), then re-arm with node scripts/bsc-next.js --id 96 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T16:28:20.008Z"
+  },
+  {
+    "conditionKey": "watchdog-park:98",
+    "title": "Watchdog parked #98 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Audit other content-quality detectors for buried-signature misses (404 cousin)\" was claimed for redispatch at 2026-09-16T16:13:49.117Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 98), then re-arm with node scripts/bsc-next.js --id 98 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T16:30:04.733Z"
+  },
+  {
+    "conditionKey": "watchdog-park:102",
+    "title": "Watchdog parked #102 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Sweep OB anticipatory_pre_opening_post flags (retroactive OB 14-day grace)\" was claimed for redispatch at 2026-09-16T16:13:49.226Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 102), then re-arm with node scripts/bsc-next.js --id 102 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T16:30:04.735Z"
   }
 ]
