@@ -207,7 +207,7 @@ function ph(event: string, props?: Record<string, unknown>) {
 
 function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; selected: boolean; onSelect: () => void }) {
   return (
-    <button onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
+    <button data-testid="nominee-button" onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
       <ShowPoster show={show} />
       <div className="flex-1 min-w-0">
         <div className="text-[15px] font-bold line-clamp-2 leading-snug">{shortTitle(show.title)}</div>
@@ -222,7 +222,7 @@ function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; s
 
 function ActorNomineeCard({ nominee, selected, onSelect }: { nominee: ActorNominee; selected: boolean; onSelect: () => void }) {
   return (
-    <button onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
+    <button data-testid="nominee-button" onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
       <ActorPoster nominee={nominee} />
       <div className="flex-1 min-w-0">
         <div className="text-[15px] font-bold line-clamp-2 leading-snug">{nominee.name}</div>
