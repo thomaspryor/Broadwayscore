@@ -48,9 +48,17 @@ MAX_RETRIES=${1:-7}
 # instead of a clear usage error at the top. Checked here, right after the
 # assignment and before push_mutex_acquire/detect-stale-merge-head run further
 # down — a malformed invocation never takes the cross-session push mutex.
-if ! [[ "$MAX_RETRIES" =~ ^[0-9]+$ ]]; then
+# Rejects leading zeros ("08", "010"), not just non-digits: bash arithmetic
+# treats a leading-0 numeral as OCTAL, which either throws its own confusing
+# "value too great for base" error (08, 09 — not valid octal digits) or
+# silently computes the WRONG decimal value (010 -> 8) instead of crashing —
+# both are exactly the class of confusing failure this check exists to
+# prevent, not just the plain-non-numeric case (adversarial review finding,
+# confirmed live: `bash -c 'echo $(( 08 ))'` errors, `$(( 010 ))` silently
+# yields 8).
+if ! [[ "$MAX_RETRIES" =~ ^(0|[1-9][0-9]*)$ ]]; then
   echo "usage: $0 [max_retries] [branch]" >&2
-  echo "  max_retries must be a non-negative integer (got: '$MAX_RETRIES')" >&2
+  echo "  max_retries must be a non-negative integer with no leading zeros (got: '$MAX_RETRIES')" >&2
   exit 1
 fi
 # BRANCH: a plain name (e.g. "main") means "push the LOCAL branch literally

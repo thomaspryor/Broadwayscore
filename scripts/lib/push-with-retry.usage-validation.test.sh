@@ -26,7 +26,7 @@ setup_repo() {
 
 # --- Case 1: non-numeric $1 ("origin" — the exact live-incident mistake) ---
 TMP1=$(mktemp -d)
-trap 'rm -rf "$TMP1" "${TMP2:-}"' EXIT
+trap 'rm -rf "$TMP1" "${TMP2:-}" "${TMP3:-}"' EXIT
 setup_repo "$TMP1"
 out1=$( cd "$TMP1" && bash "$PUSH_SCRIPT" origin main 2>&1 ); code1=$?
 if [ "$code1" -ne 1 ]; then
@@ -40,16 +40,41 @@ else
 fi
 
 # --- Case 2: valid numeric $1 is unaffected (regression guard) ---
-# No remote configured, so the push itself will still fail later in the retry
-# loop — the point here is only that a NUMERIC arg passes the new guard and
-# reaches that loop instead of being rejected as usage error.
+# No remote configured, so the push itself fails later in the retry loop —
+# asserted as POSITIVE evidence the script actually reached and ran that
+# loop (not just "no usage error", which a crash or early exit would also
+# satisfy — adversarial review finding). "Pre-resolution push (attempt 1)"
+# only prints from inside the retry loop's first git_push call.
 TMP2=$(mktemp -d)
 setup_repo "$TMP2"
-out2=$( cd "$TMP2" && PUSH_DEADLINE_SEC=2 bash "$PUSH_SCRIPT" 7 main 2>&1 ); code2=$?
+out2=$( cd "$TMP2" && PUSH_DEADLINE_SEC=5 bash "$PUSH_SCRIPT" 1 main 2>&1 ); code2=$?
 if grep -q "^usage: " <<<"$out2"; then
-  echo "FAIL[2]: valid numeric max_retries (7) was rejected as a usage error. Output:"; echo "$out2"; fail=1
+  echo "FAIL[2]: valid numeric max_retries (1) was rejected as a usage error. Output:"; echo "$out2"; fail=1
+elif [ "$code2" -ne 1 ]; then
+  echo "FAIL[2]: expected exit 1 (no remote configured), got $code2. Output:"; echo "$out2"; fail=1
+elif ! grep -q "Pre-resolution push (attempt 1)" <<<"$out2"; then
+  echo "FAIL[2]: guard passed but the retry loop never actually ran. Output:"; echo "$out2"; fail=1
 else
-  echo "PASS[2]: valid numeric max_retries (7) passes the guard (exit $code2, no usage error)"
+  echo "PASS[2]: valid numeric max_retries (1) passes the guard and reaches the real retry loop"
+fi
+
+# --- Case 3: leading-zero $1 ("08") is rejected too, not just non-digits ---
+# Bash arithmetic treats a leading-0 numeral as OCTAL: "08"/"09" error out
+# with "value too great for base" (not valid octal digits) and "010" would
+# SILENTLY compute as decimal 8 instead of 10 — both are the same class of
+# confusing failure this guard exists to prevent, not just plain non-numeric
+# input (adversarial review finding).
+TMP3=$(mktemp -d)
+setup_repo "$TMP3"
+out3=$( cd "$TMP3" && bash "$PUSH_SCRIPT" 08 main 2>&1 ); code3=$?
+if [ "$code3" -ne 1 ]; then
+  echo "FAIL[3]: expected exit 1 for leading-zero max_retries ('08'), got $code3"; fail=1
+elif grep -qi "value too great for base\|unbound variable" <<<"$out3"; then
+  echo "FAIL[3]: leading-zero arithmetic hazard still reachable. Output:"; echo "$out3"; fail=1
+elif ! grep -q "^usage: " <<<"$out3"; then
+  echo "FAIL[3]: exit 1 but no usage message on stderr. Output:"; echo "$out3"; fail=1
+else
+  echo "PASS[3]: leading-zero max_retries ('08') exits 1 with a usage message, not an octal/arithmetic hazard"
 fi
 
 if [ "$fail" -ne 0 ]; then
