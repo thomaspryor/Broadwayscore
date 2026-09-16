@@ -14,17 +14,33 @@
  * This proves the fix lives where BRO-2569 put the phantom-path guard:
  * dispatch-guards.js's resolveVacuousCheck/vacuousCheckGuard, requiring the
  * REAL functions (CLAUDE.md rule 15) rather than restating the decision here.
+ *
+ * Uses INJECTED fetchOriginMain/pathExistsOnOriginMain deps throughout,
+ * never a real `git fetch` — a first version of this file drove
+ * resolveVacuousCheck's real git path and hit an intermittent CI failure
+ * (ship-check finding): `node --test`'s default file-level parallelism runs
+ * many files concurrently against the SAME shared .git directory, and a
+ * mutating `git fetch` from one file can race whatever another concurrent
+ * file does to the same repo at that instant. classifyVacuousCheck's own
+ * correctness against real existence facts is already covered by
+ * tests/unit/card-premises-auditor.test.mjs; this file's job is to prove
+ * resolveVacuousCheck/vacuousCheckGuard WIRE that classifier correctly at
+ * the dispatch boundary, which dependency injection tests without touching
+ * git at all.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import fs from 'node:fs';
-import os from 'node:os';
-import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { resolveVacuousCheck, vacuousCheckGuard } = require('../../scripts/lib/dispatch-guards.js');
 const { VACUOUS_TEST_F_SATISFIED, VACUOUS_TEST_F_UNRESOLVED } = require('../../scripts/lib/card-premises-auditor.js');
+
+// Deterministic stand-ins for the real git-backed oracle — no fetch, no
+// network, no shared-checkout mutation.
+const FETCH_OK = () => true;
+const FETCH_FAILS = (opts) => { (opts && opts.log ? opts.log : () => {})('WARN could not fetch origin/main: simulated failure'); return false; };
+const THROWS_IF_CALLED = () => { throw new Error('must not be called'); };
 
 const SATISFIED_VERDICT = {
   kind: VACUOUS_TEST_F_SATISFIED,
@@ -76,75 +92,57 @@ test('vacuousCheckGuard: fails OPEN on an UNRESOLVED verdict even with no bypass
   assert.equal(vacuousCheckGuard({ id: 42 }, unresolved, {}), null);
 });
 
-// ── resolveVacuousCheck: the I/O half, exercised against this real repo ────
+// ── resolveVacuousCheck: the I/O-wiring half, driven with injected deps ────
 
-test('resolveVacuousCheck: null gate / missing cmd / non-test-f command never triggers a fetch', () => {
-  // No repo override — if this reached fetchOriginMain for a shape it can't
-  // possibly need, it would shell out to real git for nothing.
-  assert.equal(resolveVacuousCheck(null, {}), null);
-  assert.equal(resolveVacuousCheck({}, {}), null);
-  assert.equal(resolveVacuousCheck({ cmd: 'npx tsc --noEmit' }, {}), null);
-  assert.equal(resolveVacuousCheck({ cmd: 'node --test tests/unit/foo.test.mjs' }, {}), null);
+test('resolveVacuousCheck: null gate / missing cmd / non-test-f command never even asks the oracle', () => {
+  assert.equal(resolveVacuousCheck(null, {}, { fetchOriginMain: THROWS_IF_CALLED }), null);
+  assert.equal(resolveVacuousCheck({}, {}, { fetchOriginMain: THROWS_IF_CALLED }), null);
+  assert.equal(resolveVacuousCheck({ cmd: 'npx tsc --noEmit' }, {}, { fetchOriginMain: THROWS_IF_CALLED }), null);
+  assert.equal(resolveVacuousCheck({ cmd: 'node --test tests/unit/foo.test.mjs' }, {}, { fetchOriginMain: THROWS_IF_CALLED }), null);
 });
 
-test('resolveVacuousCheck: end-to-end against this repo — a test -f naming a file already on origin/main is vacuous', () => {
-  // Exercises the REAL fetchOriginMain + pathExistsOnOriginMain path (this
-  // repo's own origin/main, same convention as
-  // tests/unit/card-premises-auditor.test.mjs's pathExistsOnOriginMain test)
-  // — this is the exact shape a dispatcher passes at the real call site: a
-  // {cmd} gate plus a {repo} opts object built from resolveCanonicalRepoRoot.
-  const repo = path.resolve(process.cwd());
-  const verdict = resolveVacuousCheck({ cmd: 'test -f scripts/opening-night-poller.js' }, { repo, log: () => {} });
+test('resolveVacuousCheck: a test -f naming a file the injected oracle reports present is vacuous', () => {
+  const verdict = resolveVacuousCheck(
+    { cmd: 'test -f scripts/opening-night-poller.js' },
+    {},
+    { fetchOriginMain: FETCH_OK, pathExistsOnOriginMain: (p) => p === 'scripts/opening-night-poller.js' },
+  );
   assert.equal(verdict.kind, VACUOUS_TEST_F_SATISFIED);
   assert.equal(verdict.polarity, 'never-fails');
 });
 
 test('resolveVacuousCheck: naming a to-be-created file is NOT vacuous (NEW-ARTIFACT ALLOWANCE)', () => {
-  // `null` here is ambiguous by itself — it is also what a FAILED fetch
-  // returns (see the next test) — so a log spy proves this null came from a
-  // genuine "confirmed absent" verdict, not a silently-swallowed fetch
-  // failure masquerading as one (ship-check/Codex finding, BRO-3394: the
-  // first version of this test could not tell the two apart).
-  const logs = [];
-  const repo = path.resolve(process.cwd());
   const verdict = resolveVacuousCheck(
     { cmd: 'test -f docs/bro-3394-does-not-exist-yet.md' },
-    { repo, log: (msg) => logs.push(msg) },
+    {},
+    { fetchOriginMain: FETCH_OK, pathExistsOnOriginMain: () => false },
   );
   assert.equal(verdict, null);
-  assert.deepEqual(logs, [], 'a genuine absence must not log a fetch-failure WARN');
 });
 
 test('resolveVacuousCheck: a failed fetch fails OPEN to null rather than trusting a stale local ref, AND is logged (not silent)', () => {
-  // A real (non-git) directory makes fetchOriginMain's `git fetch` fail
-  // deterministically, no network mocking needed — same pattern as
-  // card-premises-auditor.test.mjs's own fetch-failure coverage. Asserting
-  // the log fired is the other half of the previous test's proof: a fetch
-  // failure and a genuine absence must both return null, but must be
-  // DISTINGUISHABLE to anything watching the dispatcher's own output
-  // (Codex finding: the guard previously disabled itself on a network blip
-  // with zero visible evidence).
-  const notARepo = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-guard-vacuous-not-a-repo-'));
+  // Codex finding: the guard previously disabled itself on a network blip
+  // with zero visible evidence. Proven here with an injected fetch that
+  // fails and asserts the caller's `log` was actually invoked.
   const logs = [];
   const verdict = resolveVacuousCheck(
     { cmd: 'test -f scripts/opening-night-poller.js' },
-    { repo: notARepo, log: (msg) => logs.push(msg) },
+    { log: (msg) => logs.push(msg) },
+    { fetchOriginMain: FETCH_FAILS, pathExistsOnOriginMain: THROWS_IF_CALLED },
   );
   assert.equal(verdict, null);
   assert.ok(logs.length > 0, 'a fetch failure must be logged, not silent');
 });
 
-test('resolveVacuousCheck: a multi-operand test -f (arity error) is refused WITHOUT any network fetch', () => {
+test('resolveVacuousCheck: a multi-operand test -f (arity error) is refused WITHOUT ever consulting the oracle', () => {
   // Codex adversarial finding (BRO-3394): the first version fetched
   // unconditionally before classifying, making an offline-decidable defect
   // (classifyVacuousCheck's arity branch never consults existsFn) needlessly
-  // network-dependent. Proven here by pointing `repo` at a non-git directory
-  // — if this reached fetchOriginMain it would fail and return null instead
-  // of the arity verdict.
-  const notARepo = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-guard-vacuous-arity-offline-'));
+  // network-dependent. Proven here with an oracle that throws if invoked.
   const verdict = resolveVacuousCheck(
     { cmd: 'test -f docs/a.md docs/b.md' },
-    { repo: notARepo, log: () => { throw new Error('must not attempt a fetch for an arity error'); } },
+    {},
+    { fetchOriginMain: THROWS_IF_CALLED, pathExistsOnOriginMain: THROWS_IF_CALLED },
   );
   assert.equal(verdict.kind, 'test-f-arity');
   assert.equal(verdict.polarity, 'never-passes');
@@ -153,11 +151,11 @@ test('resolveVacuousCheck: a multi-operand test -f (arity error) is refused WITH
 // ── The dispatch boundary itself: resolve + guard, chained ─────────────────
 
 test('DISPATCH BOUNDARY: a vacuous test -f command is refused end-to-end, and --allow-vacuous-check bypasses it', () => {
-  const repo = path.resolve(process.cwd());
   const gate = { cmd: 'test -f scripts/opening-night-poller.js' };
   const task = { id: 'BRO-live' };
+  const deps = { fetchOriginMain: FETCH_OK, pathExistsOnOriginMain: (p) => p === 'scripts/opening-night-poller.js' };
 
-  const verdict = resolveVacuousCheck(gate, { repo, log: () => {} });
+  const verdict = resolveVacuousCheck(gate, {}, deps);
   const refusal = vacuousCheckGuard(task, verdict, {});
   assert.match(refusal, /REFUSING to dispatch #BRO-live/);
   assert.match(refusal, /allow-vacuous-check/);
@@ -167,9 +165,8 @@ test('DISPATCH BOUNDARY: a vacuous test -f command is refused end-to-end, and --
 });
 
 test('DISPATCH BOUNDARY: a real, falsifiable acceptance command is never touched by this guard', () => {
-  const repo = path.resolve(process.cwd());
   const gate = { cmd: 'node --test tests/unit/dispatch-guard-vacuous-check.test.mjs' };
   const task = { id: 'BRO-live2' };
-  const verdict = resolveVacuousCheck(gate, { repo, log: () => {} });
+  const verdict = resolveVacuousCheck(gate, {}, { fetchOriginMain: THROWS_IF_CALLED });
   assert.equal(vacuousCheckGuard(task, verdict, {}), null);
 });

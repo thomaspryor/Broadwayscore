@@ -409,7 +409,25 @@ function pathVerifiabilityGuard(task, pathCheck, opts) {
 // question. Wiring it into that audit — if ever done — needs its own scoped
 // decision about batching/caching the fetch across the sweep, not a drive-by
 // addition here.
-function resolveVacuousCheck(gate, repoOpts) {
+// `deps` (default {}) lets a caller override fetchOriginMain/pathExistsOnOriginMain
+// — same injection convention as card-arming-warning.js's armingWarning(notesStr,
+// deps). Added after a real CI failure (BRO-3394 ship-check): the FIRST test in
+// this repo to exercise fetchOriginMain's actual `git fetch` against the shared
+// checkout (every existing card-premises-auditor.test.mjs case either bypasses
+// it via a direct existsFn injection or drives its FAILURE path against an
+// isolated tmpdir) hit an intermittent race — `node --test`'s default
+// file-level parallelism runs many test files concurrently against the SAME
+// .git directory, so a mutating `git fetch` from one file can collide with
+// whatever another concurrent file is doing to the same repo at that instant.
+// Two of four real-fetch assertions passed and a third (structurally
+// identical) failed nondeterministically in the same CI run — the signature
+// of a shared-resource race, not a logic bug. Fixing the SYMPTOM (retrying,
+// isolating repo copies) would leave the next real-fetch test in this file
+// exposed to the same class; fixing the CAUSE means tests never need a live
+// mutating git op at all, which this seam makes possible.
+function resolveVacuousCheck(gate, repoOpts, deps = {}) {
+  const fetch = deps.fetchOriginMain || fetchOriginMain;
+  const exists = deps.pathExistsOnOriginMain || pathExistsOnOriginMain;
   if (!gate || !gate.cmd || !isTestFCommand(gate.cmd)) return null;
   // Arity errors (`test -f a b`) are decided WITHOUT ever consulting existsFn
   // — classifyVacuousCheck's own arity branch returns before touching it (see
@@ -425,10 +443,10 @@ function resolveVacuousCheck(gate, repoOpts) {
       throw new Error('unreachable: arity errors never consult existsFn');
     });
   }
-  if (!fetchOriginMain(repoOpts)) return null;
+  if (!fetch(repoOpts)) return null;
   const cache = new Map();
   const existsFn = (p) => {
-    if (!cache.has(p)) cache.set(p, pathExistsOnOriginMain(p, repoOpts));
+    if (!cache.has(p)) cache.set(p, exists(p, repoOpts));
     return cache.get(p);
   };
   return classifyVacuousCheck(gate.cmd, existsFn);
