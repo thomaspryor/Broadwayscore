@@ -1029,4 +1029,8 @@ module.exports = {
   // Re-export from score-extractors for convenience
   scoreToBucket,
   scoreToThumb,
+  // Exported so tests/unit/anchored-precedence.test.mjs can assert this stays
+  // in sync with star-reliability.js's LOW_RELIABILITY_EXTRACTION mirror
+  // (see that file's header comment — Sprint 5 cleanup task).
+  LOW_RELIABILITY_STAR_SOURCES,
 };

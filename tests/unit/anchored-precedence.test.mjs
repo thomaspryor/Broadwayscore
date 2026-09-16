@@ -331,3 +331,18 @@ describe('detectBandFromReviewFile (star-reliability helper)', () => {
     assert.strictEqual(detectBandFromReviewFile({}), null);
   });
 });
+
+describe('LOW_RELIABILITY_STAR_SOURCES / LOW_RELIABILITY_EXTRACTION drift guard', () => {
+  // star-reliability.js's header says it "mirrors" rebuild-helpers.js's set and
+  // that "a grep test in the unit suite would catch drift" until the Sprint 5
+  // cleanup (replace the local copy with require('./star-reliability')). This
+  // is that test — catches one list changing without the other.
+  it('the two low-reliability sets have identical contents', () => {
+    const { LOW_RELIABILITY_STAR_SOURCES } = require('../../scripts/lib/rebuild-helpers');
+    const { LOW_RELIABILITY_EXTRACTION } = require('../../scripts/lib/star-reliability');
+    assert.deepStrictEqual(
+      [...LOW_RELIABILITY_STAR_SOURCES].sort(),
+      [...LOW_RELIABILITY_EXTRACTION].sort()
+    );
+  });
+});
