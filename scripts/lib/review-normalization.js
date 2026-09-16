@@ -1673,19 +1673,27 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     }
   }
 
-  // Pass 2: match by outletId stored inside the JSON file.
-  // Catches files where the filename prefix doesn't match the stored outletId —
-  // e.g. a file named "nytimes--adam-feldman.json" that has outletId: "timeout" inside,
-  // caused by bulk fix scripts that update outletId without renaming files.
-  // Without this pass, the next write creates a correctly-named duplicate.
+  // Pass 2: match by outletId + criticName stored inside the JSON file,
+  // ignoring the filename entirely. Catches two distinct cases:
+  //   (a) a file whose filename-outlet prefix doesn't match its stored
+  //       outletId — e.g. "nytimes--adam-feldman.json" with outletId:
+  //       "timeout" inside, caused by bulk fix scripts that updated outletId
+  //       without renaming the file.
+  //   (b) BRO-1031: a file whose filename DOES match on outlet, but whose
+  //       filename critic slug has drifted from the stored criticName — e.g.
+  //       a year-suffix-disambiguated filename like
+  //       amny--matt-windman-2026.json with internal criticName "Matt
+  //       Windman". Pass 1 skips it because criticIsCompatibleMergeTarget
+  //       rejects the filename slug "matt-windman-2026" against "Matt
+  //       Windman". A prior version of this pass ALSO skipped case (b) via
+  //       an "already checked above" guard that wrongly assumed Pass 1 fully
+  //       evaluated any file whose filename-outlet matched — but Pass 1 only
+  //       reads a file once its filename-critic passes that same check, so a
+  //       critic-drifted filename slipped through both untouched, and the
+  //       next write for that outlet+critic silently created a duplicate
+  //       file. Scanning every file (not just filename-outlet-mismatched
+  //       ones) fixes both without a second full-directory scan.
   for (const file of files) {
-    const parts = file.replace('.json', '').split('--');
-    if (parts.length !== 2) continue;
-
-    // Skip files already matched by filename in pass 1 (their outlet normalized to same value)
-    const fileOutletNormalized = normalizeOutlet(parts[0]);
-    if (fileOutletNormalized === normalizedOutlet) continue; // already checked above
-
     const filePath = path.join(showDir, file);
     let data;
     try {
@@ -1693,25 +1701,29 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     } catch {
       continue;
     }
-    if (!data) continue;
-    if (!data.outletId) continue;
-
+    if (!data || !data.outletId) continue;
     if (normalizeOutlet(data.outletId) !== normalizedOutlet) continue;
 
-    // Outlet matches by internal field — check critic. BRO-3182: same
-    // asymmetric-unknown check as pass 1 — an unresolved incoming critic
-    // must not claim a file that already names someone. Deliberately NOT
-    // gated on `data.criticName` being truthy (Codex ship-check finding):
-    // a falsy criticName is exactly the "file names someone" question this
-    // check must still answer — criticIsCompatibleMergeTarget already
-    // treats a missing/empty value as unknown.
-    if (!criticIsCompatibleMergeTarget(criticName, data.criticName)) {
+    // Prefer the stored criticName; only fall back to the filename's critic
+    // slug when the file has none recorded internally. A file whose
+    // filename already names a specific critic (e.g.
+    // "amny--jane-critic.json") must not be treated as an anonymous
+    // byline-fill-in target just because its internal field happens to be
+    // blank — criticIsCompatibleMergeTarget would otherwise let an
+    // unrelated named incoming critic silently claim it.
+    const parts = file.replace('.json', '').split('--');
+    const filenameCritic = parts.length === 2 ? parts[1] : null;
+    const fileCriticForMatch = data.criticName || filenameCritic;
+
+    // BRO-3182: same asymmetric-unknown check as pass 1 — an unresolved
+    // incoming critic must not claim a file that already names someone.
+    if (!criticIsCompatibleMergeTarget(criticName, fileCriticForMatch)) {
       continue; // Different/unconfirmed critic at same outlet — not a duplicate
     }
 
     // Skip flagged/rejected files unless the critic match above was a
     // CONFIRMED same named critic (see pass 1's comment).
-    if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, data.criticName)) continue;
+    if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, fileCriticForMatch)) continue;
 
     return { path: filePath, filename: file, data };
   }
@@ -1731,7 +1743,12 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
       if (parts.length !== 2) continue;
 
       const fileOutletNormalized = normalizeOutlet(parts[0]);
-      if (fileOutletNormalized === normalizedOutlet) continue; // already checked in pass 1
+      // Safe to skip: any file whose filename-outlet already equals the
+      // target outlet is fully covered by Pass 1 (filename match) and Pass 2
+      // (internal outletId/criticName match, BRO-1031) above — this pass
+      // exists only to resolve a DIFFERENT filename-outlet alias that shares
+      // the same registered domain, which by definition doesn't apply here.
+      if (fileOutletNormalized === normalizedOutlet) continue;
 
       // Check if this file's outlet shares the same domain as the incoming outlet
       const fileDomain = outletDefs[fileOutletNormalized] ? outletDefs[fileOutletNormalized].domain : null;

@@ -2143,6 +2143,12 @@ on:
       # root-level pair is NOT globbed, so it's path-listed here too.
       - 'scripts/enrich-todaytix-press-nights.js'
       - 'scripts/enrich-todaytix-press-nights.test.mjs'
+      # BRO-1108: OB sibling of enrich-west-end-dates.js. Root-level
+      # scripts/*.test.mjs is NOT globbed, registered in
+      # tests/unit-test-manifest.txt — path-listed so a solo edit to either
+      # side triggers CI.
+      - 'scripts/enrich-off-broadway-dates.js'
+      - 'scripts/enrich-off-broadway-dates.test.mjs'
       - 'scripts/backfill-playwright-credits.js'
       - 'scripts/backfill-playwright-credits.test.mjs'
       # Task #649 set-diff gate: shared by update-show-status.yml's discovery

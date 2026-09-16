@@ -62,6 +62,21 @@ test('prompt tells the model comparative framing is not automatically negative, 
   assert.match(prompt, /ONLY about a DIFFERENT show by name, with no independent reaction/i);
 });
 
+test('prompt: the postTitle-gated MATCH THE PRODUCTION block is ALSO consistent with the comparative rule', () => {
+  // Regression guard: the first fix-up pass only rescoped the plain (no
+  // postTitle) relevance-gate text and missed the separate, stricter
+  // "MATCH THE PRODUCTION" block that only activates when a comment carries a
+  // postTitle — i.e. real production traffic, and exactly the shape of every
+  // comparative-category golden fixture item (each one has a postTitle). That
+  // block had its own unconditional "any comment that names a different show
+  // is NOT relevant, no matter what thread it is in," directly contradicting
+  // the comparative-sentiment rule for the traffic that matters most.
+  const prompt = buildPrompt('Fallen Angels', [{ body: 'test comment', postTitle: 'Proof, Becky Shaw, or Fallen Angels?' }]);
+  assert.match(prompt, /MATCH THE PRODUCTION/i);
+  assert.match(prompt, /ONLY about a DIFFERENT show, with no independent reaction/i);
+  assert.doesNotMatch(prompt, /no\s+matter what thread it is in\.\s*$/im);
+});
+
 test('prompt tells the model lukewarm/mild comments are mixed/neutral and this overrides the positive tiebreak', () => {
   const prompt = buildPrompt('Fallen Angels', [{ body: 'test comment' }]);
   assert.match(prompt, /LUKEWARM \/ MILD COMMENTS ARE MIXED OR NEUTRAL/i);

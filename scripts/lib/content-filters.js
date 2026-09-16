@@ -207,11 +207,13 @@ const NON_MET_OPERA_URL_MARKERS = [
   'la-scala', 'teatro-alla-scala',
   // Russia
   'bolshoi', 'mariinsky',
+  // Spain
+  '-in-valencia', 'palau-de-les-arts',
   // US (non-Met)
   'lyric-opera-chicago', 'chicago-lyric-opera', 'houston-grand-opera',
   'sf-opera', 'san-francisco-opera', 'seattle-opera', 'pittsburgh-opera',
   'washington-national-opera', 'la-opera-', 'los-angeles-opera',
-  'santa-fe-opera', 'opera-philadelphia',
+  'santa-fe-opera', 'opera-philadelphia', 'wolf-trap',
   // Festivals
   'salzburg-festival', 'bayreuth', 'aix-festival',
   'adelaide-festival', 'edinburgh-festival',

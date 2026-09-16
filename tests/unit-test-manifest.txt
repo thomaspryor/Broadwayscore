@@ -62,6 +62,7 @@ scripts/discover-new-shows.test.mjs
 scripts/enrich-card-acceptance.test.mjs
 scripts/enrich-fallback-ticket-links.test.mjs
 scripts/enrich-ibdb-dates.test.mjs
+scripts/enrich-off-broadway-dates.test.mjs
 scripts/enrich-todaytix-press-nights.test.mjs
 scripts/enrich-wikipedia-synopsis.test.mjs
 scripts/export-notion-outcome-history.test.mjs
@@ -775,6 +776,7 @@ tests/unit/show-score-profile-parser.test.mjs
 tests/unit/shows-write-guard.test.mjs
 tests/unit/sibling-matchers-diacritics.test.mjs
 tests/unit/silent-failure-logging.test.mjs
+tests/unit/site-search-discovery.test.mjs
 tests/unit/slug-mismatch-glued-compound-title.test.mjs
 tests/unit/slug-mismatch-opaque-urls.test.mjs
 tests/unit/stage-extractor.test.mjs
