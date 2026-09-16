@@ -1,39 +1,5 @@
 [
   {
-    "startedAt": "2026-09-12T10:14:41.557Z",
-    "completedAt": "2026-09-12T10:14:50.038Z",
-    "totalReviews": 43158,
-    "processed": 1,
-    "skipped": 43156,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 9035,
-      "output": 444,
-      "total": 24997
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-12T10:44:52.946Z",
-    "completedAt": "2026-09-12T10:45:01.415Z",
-    "totalReviews": 43158,
-    "processed": 1,
-    "skipped": 43155,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 9145,
-      "output": 414,
-      "total": 25081
-    },
-    "errorDetails": [
-      {
-        "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
-        "outletId": "consequence",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-12T11:12:02.490Z",
     "completedAt": "2026-09-12T11:12:05.083Z",
     "totalReviews": 43158,
@@ -461950,6 +461916,44 @@
     },
     "costUsd": 1.2351267,
     "runId": "35055168228",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-16T05:18:51.241Z",
+    "completedAt": "2026-09-16T05:18:54.282Z",
+    "totalReviews": 43880,
+    "processed": 0,
+    "skipped": 43878,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 110,
+      "total": 10919
+    },
+    "costUsd": 0.02523965,
+    "runId": "35057336335",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-16T05:18:56.304Z",
+    "completedAt": "2026-09-16T05:25:08.044Z",
+    "totalReviews": 169,
+    "processed": 169,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 440871,
+      "output": 38631,
+      "total": 479502
+    },
+    "costUsd": 1.2280091999999998,
+    "runId": "35057336335",
     "errorDetails": []
   }
 ]
