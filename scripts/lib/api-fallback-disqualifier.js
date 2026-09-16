@@ -17,6 +17,13 @@
  * the point at which copy-paste stops being defensible. The shell calls this
  * file; there is one definition to keep correct.
  *
+ * NOT A PURE EXTRACTION. The RULES below are character-for-character the inline
+ * version's (verified equivalent over all 327 registry paths). The CLI's
+ * changed-path collection is NOT: it adds `-z --no-renames`, which strictly
+ * WIDENS disqualification by surfacing quoted filenames and rename SOURCES the
+ * old invocation hid. See the CLI comment for the two bypasses that closed.
+ * Safe direction — it can only disqualify more, never fewer, paths.
+ *
  * DISQUALIFYING CONDITIONS (unchanged from the inline version they replace):
  *   - a union-merge MANAGED file that has no apiFallbackMerge coverage. With
  *     coverage, push-via-git-api.sh re-runs that merge function against the
@@ -58,7 +65,18 @@ const NEVER_FALLBACK = ['data/shows.json', 'data/reviews.json'];
  * @returns {string|null} the first disqualifying path, or null when all clear
  */
 function disqualifyingPath(changed, registry) {
-  const { MANAGED = [], API_FALLBACK_SAFE = [], API_FALLBACK_MERGE = [] } = registry || {};
+  const { MANAGED, API_FALLBACK_SAFE, API_FALLBACK_MERGE } = registry || {};
+  // NO `= []` defaults here, deliberately (adversarial review, BRO-3663). A
+  // registry that loads but stops exporting MANAGED would default to "nothing
+  // is managed" — a clean verdict — and the fallback would be permitted to
+  // overlay MANAGED files. That is a fail-OPEN in a guard whose entire job is
+  // to fail closed. The inline version this replaces threw on `undefined.some`
+  // and the shell turned that into "disqualified"; throwing preserves it.
+  for (const [name, list] of [['MANAGED', MANAGED], ['API_FALLBACK_SAFE', API_FALLBACK_SAFE], ['API_FALLBACK_MERGE', API_FALLBACK_MERGE]]) {
+    if (!Array.isArray(list)) {
+      throw new TypeError(`api-fallback-disqualifier: registry.${name} is not an array (got ${typeof list}) — refusing to answer, which fails closed`);
+    }
+  }
   const matches = (list) => (f) => list.some((m) => f.endsWith(String(m.file).replace(/^data\//, '')));
   const isManaged = matches(MANAGED);
   const isApiFallbackSafe = matches(API_FALLBACK_SAFE);
@@ -83,9 +101,20 @@ if (require.main === module) {
   // Any throw here exits non-zero via the default handler, which every caller
   // already treats as disqualified — that is the fail-closed direction.
   const registry = require('./reconcile-merged-json.js');
+  // -z and --no-renames are load-bearing, not tidiness (adversarial review,
+  // BRO-3663 — both were bypasses in the inline version this replaces):
+  //   -z          plain NUL-separated names. Without it git QUOTES any path
+  //               containing a tab, newline or non-ASCII byte, so
+  //               `data/audit/od<TAB>d.json` arrives as `"data/audit/od\td.json"`
+  //               — which no longer startsWith('data/audit/'), silently passing
+  //               an unaudited path as clean.
+  //   --no-renames  a rename is otherwise reported only as its DESTINATION, so
+  //               renaming data/shows.json onto a permitted path hid the
+  //               protected source from both guards while the fallback went on
+  //               to delete it. Forcing delete+add surfaces the old path.
   const changed = require('child_process')
-    .execFileSync('git', ['diff', '--name-only', base, head], { encoding: 'utf8' })
-    .split('\n')
+    .execFileSync('git', ['diff', '--name-only', '-z', '--no-renames', base, head], { encoding: 'utf8' })
+    .split('\0')
     .filter(Boolean);
   const hit = disqualifyingPath(changed, registry);
   if (hit) {

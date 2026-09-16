@@ -215,6 +215,11 @@ if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; th
   if ! W3=$(setup_case case3 "$UNREGISTERED"); then
     echo "FAIL[3]: setup failed — see SETUP-FAIL above"; fail=1; W3=""
   else
+    # ext:: is user-gated by default — WITHOUT this the transport is refused
+    # instantly and the case passes on rejection+backoff timing instead of a
+    # real hang, i.e. it would certify hang coverage it never exercised
+    # (adversarial review finding, BRO-3663). Same line as deadline.test.sh:72.
+    git -C "$W3" config protocol.ext.allow always
     git -C "$W3" remote set-url origin "ext::sh -c 'sleep 120'"
   fi
 
@@ -225,7 +230,10 @@ if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; th
 
     if [ "$code3" -ne 1 ]; then
       echo "FAIL[3]: expected exit 1, got $code3 (elapsed ${elapsed3}s)"; fail=1
-    elif [ "$elapsed3" -ge 120 ]; then
+    elif [ "$elapsed3" -ge 60 ]; then
+      # 60s, not the 120s sleep: against a 20s deadline anything near the sleep
+      # length means the deadline did not bound the run. A loose 120s bound
+      # would let a 119s near-hang pass (adversarial review, BRO-3663).
       echo "FAIL[3]: took ${elapsed3}s — the suppressed early break let a hanging"
       echo "         caller run past its deadline instead of being bounded"; fail=1
     elif ! grep -q "overall deadline .* exceeded" <<<"$out3"; then
