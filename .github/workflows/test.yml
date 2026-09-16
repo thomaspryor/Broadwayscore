@@ -2681,6 +2681,11 @@ on:
       # globbed, so a solo edit to just this file needs its own entry.
       - 'scripts/check-review-count-drift.test.mjs'
       - 'scripts/clear-stale-wrong-production-flags.js'
+      # BRO-2323: root-level scripts/*.test.mjs is NOT globbed — a solo edit to
+      # either the script or its colocated test needs its own entry, or the
+      # test that would catch a predicate/surge-guard regression never runs.
+      - 'scripts/clear-stale-roundup-flags.js'
+      - 'scripts/clear-stale-roundup-flags.test.mjs'
       - 'scripts/triage-unknown-critic-stubs.js'
       # Shared llm-ensemble-score.yml dispatch helper (T1 sweep self-heal +
       # verify-all-scored) and the rebuild-drop analyzer it de-noises
