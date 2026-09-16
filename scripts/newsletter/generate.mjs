@@ -1180,6 +1180,84 @@ function biggestMoverSection() {
   return sectionWrap(sectionHeading(title), body);
 }
 
+// SECTION: Award Score Movers — composite Site Award Score week-over-week
+// deltas, sourced from data/award-score-history/ snapshots (Saturday cron,
+// scripts/snapshot-award-scores.js; diff logic in scripts/lib/award-score-
+// movers.js, shared with the award-score-movers.js CLI). Broadway/Tony only
+// — no West End snapshots exist yet (BRO-3531).
+//
+// Round "medal" circle mirrors AwardScoreBadge.tsx's tier treatment (flat
+// colors, not the site's gradient/shimmer — email clients don't render
+// those reliably) so a subscriber who's seen the /award-score leaderboard
+// recognizes the same gold/silver/bronze language here.
+function awardTierColor(badge) {
+  if (badge === 'sweeper') return '#D4AF37';
+  if (badge === 'decorated') return '#B8B8B8';
+  if (badge === 'honored') return '#C2773A';
+  if (badge === 'in-the-hunt') return '#9ca3af';
+  if (badge === 'nominated') return '#6b7280';
+  return '#4b5563'; // eligible / unknown
+}
+function awardBadgeBox(score, badge, size = 40) {
+  const c = awardTierColor(badge);
+  const inner = size - 4;
+  const display = score > 0 ? score : '—';
+  return `<div style="box-sizing:border-box;display:inline-block;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,0.03);border:2px solid ${c};color:#fff;font-size:${Math.round(size * 0.36)}px;font-weight:700;line-height:${inner}px;text-align:center;">${display}</div>`;
+}
+function awardScoreMoversSection() {
+  const { latestMovers } = cjsRequire(path.join(repo, 'scripts/lib/award-score-movers.js'));
+  // top:20 (not 3) — closures/new-entrants dominate the raw ranking (a show
+  // leaving the pool reads as a full drop to 0, see diffSnapshots), and the
+  // presentBefore/presentAfter filter below drops those. A wide top keeps
+  // enough real score-movers in the candidate pool after that filter.
+  const result = latestMovers({ historyDir: path.join(repo, 'data/award-score-history'), market: 'broadway', top: 20 });
+  if (!result || !result.movers.length) return null;
+  // Cron gone quiet (feedback_github_cron_delays.md: crons silently disable
+  // after ~60d inactivity) — stop resurfacing an increasingly stale
+  // comparison rather than showing the same "movers" issue after issue.
+  if (result.weekEnd < _daysBefore(14)) return null;
+  // A show leaving the snapshot pool (closed, or dropped out of Tony
+  // eligibility) isn't a score MOVE — it's a status change already covered
+  // by Closing This Week. Filtering to shows present in both snapshots keeps
+  // this section to genuine score shifts.
+  const candidates = result.movers
+    .filter((m) => m.presentBefore && m.presentAfter)
+    .map((m) => ({ ...m, show: shows.find((s) => s.id === m.showId) }))
+    .filter((m) => m.show && isPrimaryMarket(m.show) && notFeatured(m.show.id));
+  const top = candidates.slice(0, 3);
+  if (!top.length) return null;
+  top.forEach((m) => markFeatured(m.show.id));
+  const rows = top.map((m, i, arr) => {
+    const isLast = i === arr.length - 1;
+    const border = !isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
+    const dirColor = m.delta > 0 ? '#22c55e' : '#ef4444';
+    const dirArrow = m.delta > 0 ? '▲' : '▼';
+    const dirWord = m.delta > 0 ? 'up' : 'down';
+    const pts = Math.abs(m.delta);
+    return `<tr>
+      <td valign="middle" width="68" style="padding:10px 10px 10px 0;${border}">${thumb(m.show, 56)}</td>
+      <td valign="middle" style="padding:10px 0;${border}">
+        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)}</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:2px;">Award Score</div>
+      </td>
+      <td valign="middle" width="120" align="center" style="padding:10px 16px 10px 4px;${border}">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;"><tr>
+          <td align="center" valign="middle">${awardBadgeBox(m.before, m.badge)}</td>
+          <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
+          <td align="center" valign="middle">${awardBadgeBox(m.after, m.badge)}</td>
+        </tr></table>
+        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${dirWord} ${pluralize(pts, 'pt')}</div>
+      </td>
+    </tr>`;
+  }).join('');
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
+    <tr><td style="padding:4px 16px;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
+    </td></tr>
+  </table>`;
+  return sectionWrap(sectionHeading('Award Score Movers', 'Tony race · last 7 days'), body);
+}
+
 // SECTION: Awards Race Movers — Tony odds shifts week-over-week
 // Source: data/tony-polymarket-odds.json already has nominees + prevNominees
 function awardsMoversSection() {
@@ -2416,6 +2494,7 @@ const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection
 // side-effect — which wrongly suppressed a WE show (Cyrano, a mover) from the
 // catch-up section that IS rendered (2026-07-12). Don't run what won't render.
 const mover = IS_WE ? null : sections.run('biggest-movers', () => biggestMoverSection());
+const awardMover = IS_WE ? null : sections.run('award-score-movers', () => awardScoreMoversSection());
 const clo   = sections.run('closing-this-week', () => closingSection());
 const announced = IS_WE ? null : sections.run('announced-closings', () => announcedClosingsSection());
 const box      = IS_WE ? null : sections.run('box-office', () => boxOfficeSection());
@@ -2553,6 +2632,7 @@ const sectionOrder = IS_WE ? [
   _slot('out-of-town-openings', otO.html),
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
+  _slot('award-score-movers', awardMover),
   _slot('closing-this-week', clo),
   _slot('announced-closings', announced),
   // London (+ Opera) openings sit right after the closings block — user
