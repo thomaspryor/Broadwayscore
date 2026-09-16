@@ -57,6 +57,7 @@ const path = require('path');
 const { shouldRetryFetch } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `unabandon-fetch-cycles.js — rollback for fetchDiscoveryAbandoned (BRO-787's fetch retry lifecycle gate).
 
@@ -141,13 +142,10 @@ let stillGated = 0;
 const toClear = [];
 const reasonBreakdown = {};
 
-const showDirs = SHOW_FILTER ? [SHOW_FILTER] : fs.readdirSync(REVIEW_TEXTS_DIR);
+const showDirs = SHOW_FILTER ? [SHOW_FILTER] : listShowDirs(REVIEW_TEXTS_DIR);
 
 for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  let stat;
-  try { stat = fs.statSync(showDir); } catch { continue; }
-  if (!stat.isDirectory()) continue;
 
   for (const f of fs.readdirSync(showDir)) {
     if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;

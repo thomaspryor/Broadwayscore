@@ -31,6 +31,7 @@ const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/
 const { setExtractedScore } = require('./lib/score-routing');
 const { AGGREGATOR_DOMAINS } = require('./lib/aggregator-domains');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -210,9 +211,7 @@ async function main() {
   console.log(`Limit: ${limit} | Delay: ${delay}ms\n`);
 
   // Find targets
-  const showDirs = fs.readdirSync(REVIEW_DIR).filter(d =>
-    fs.statSync(path.join(REVIEW_DIR, d)).isDirectory()
-  );
+  const showDirs = listShowDirs(REVIEW_DIR);
 
   const targets = [];
   for (const dir of showDirs) {

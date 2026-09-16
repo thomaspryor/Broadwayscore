@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = !process.argv.includes('--apply');
@@ -83,9 +84,7 @@ function extractSingleDate(text) {
 }
 
 function run() {
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d =>
-    fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory()
-  );
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   let updated = 0, alreadyHasDate = 0, noText = 0, noMatch = 0, skipped = 0;
 

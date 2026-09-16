@@ -27,6 +27,7 @@ const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./lib/review-texts-dir');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `backfill-critic-name-truncation.js — One-shot backfill for critic names that the BWW Review Roundup parser.
 
@@ -63,12 +64,11 @@ function eqContent(a, b) {
 
 let updated = 0, renamed = 0, deletedDupes = 0, skipped = 0, errors = 0;
 
-const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
   .filter(d => {
     if (d.startsWith('_')) return false;
     if (d === 'aggregator-archive') return false;
-    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); }
-    catch { return false; }
+    return true;
   });
 
 for (const showId of showDirs) {

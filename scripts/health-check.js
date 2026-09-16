@@ -42,6 +42,7 @@ const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
 
@@ -630,9 +631,7 @@ function checkSync() {
     const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
     let fileCount = 0;
     if (fs.existsSync(reviewTextsDir)) {
-      const showDirs = fs.readdirSync(reviewTextsDir).filter(d =>
-        fs.statSync(path.join(reviewTextsDir, d)).isDirectory()
-      );
+      const showDirs = listShowDirs(reviewTextsDir);
       for (const dir of showDirs) {
         const files = fs.readdirSync(path.join(reviewTextsDir, dir))
           .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');

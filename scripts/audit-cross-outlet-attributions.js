@@ -82,6 +82,7 @@ const { normalizeCriticForCoverage } = require('./lib/multi-critic-serp');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { isTriagedOut } = require('./lib/cross-outlet-triage');
 const { explainExclusion } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Byline zone for the --include-fulltext inline-verify check. A plain
 // whole-body substring search (ship-check adversarial finding, 2026-08-04)
@@ -194,10 +195,9 @@ if (PLAYBILL_BLEED) {
   // because one member (the critic's real home) resolves correctly.
   const groups = new Map();
   let scanned = 0;
-  for (const showId of fs.readdirSync(reviewTexts)) {
+  for (const showId of listShowDirs(reviewTexts)) {
     if (showId.startsWith('_') || showId.startsWith('.')) continue;
     const dir = path.join(reviewTexts, showId);
-    if (!fs.statSync(dir).isDirectory()) continue;
     for (const file of fs.readdirSync(dir)) {
       if (!file.endsWith('.json')) continue;
       let d;
@@ -247,10 +247,9 @@ if (PLAYBILL_BLEED) {
 } else {
   const suspects = [];
   let scanned = 0;
-  for (const showId of fs.readdirSync(reviewTexts)) {
+  for (const showId of listShowDirs(reviewTexts)) {
     if (showId.startsWith('_') || showId.startsWith('.')) continue;
     const dir = path.join(reviewTexts, showId);
-    if (!fs.statSync(dir).isDirectory()) continue;
     for (const file of fs.readdirSync(dir)) {
       if (!file.endsWith('.json')) continue;
       let d;

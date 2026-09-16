@@ -31,6 +31,7 @@ const https = require('https');
 const { safeWriteReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { GEMINI_FLASH } = require('./lib/models');
 const { mergeWriteCheckpoint, deleteCheckpointIfCaughtUp } = require('./lib/classify-checkpoint');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 let lockedSkipCount = 0;
 
@@ -216,9 +217,7 @@ function findCandidates() {
 
   let dirs;
   try {
-    dirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
-    });
+    dirs = listShowDirs(REVIEW_TEXTS_DIR);
   } catch {
     console.error('Cannot read review-texts directory');
     process.exit(1);

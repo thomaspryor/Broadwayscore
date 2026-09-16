@@ -17,6 +17,7 @@ const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -126,7 +127,7 @@ function mergeReviewData(target, source) {
 }
 
 function getShowDirs() {
-  return fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory()).sort();
+  return listShowDirs(REVIEW_TEXTS_DIR).sort();
 }
 function getReviewFiles(showId) {
   try { return fs.readdirSync(path.join(REVIEW_TEXTS_DIR, showId)).filter(f => f.endsWith('.json')).sort(); } catch(e) { return []; }

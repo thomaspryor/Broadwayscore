@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const AUTO_ALIASES_PATH = path.join(__dirname, '..', 'data', 'auto-critic-aliases.json');
@@ -36,9 +37,7 @@ for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
 const criticOutlets = new Map(); // criticSlug -> Map<outletSlug, count>
 const criticCounts = new Map();
 
-const dirs = fs.readdirSync(REVIEW_DIR).filter(d => {
-  try { return fs.statSync(path.join(REVIEW_DIR, d)).isDirectory(); } catch { return false; }
-});
+const dirs = listShowDirs(REVIEW_DIR);
 
 for (const showId of dirs) {
   const files = fs.readdirSync(path.join(REVIEW_DIR, showId))

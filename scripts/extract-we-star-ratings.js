@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { extractScore } = require('./lib/score-extractors');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { setExtractedScore } = require('./lib/score-routing');
@@ -26,12 +27,11 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_FILTER = process.argv.find(a => a.startsWith('--show='))?.slice(7);
 
 async function main() {
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
+  const shows = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(d => {
       if (SHOW_FILTER) return d === SHOW_FILTER;
       return d.includes('west-end') || d.includes('off-west-end');
-    })
-    .filter(d => fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
+    });
 
   let processed = 0, extracted = 0, failed = 0, skipped = 0;
 

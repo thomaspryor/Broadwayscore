@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -54,8 +55,7 @@ const OUTLET_CRITIC_CORRECTIONS = {
 
 function findCruftFiles() {
   const cruftFiles = [];
-  const showDirs = fs.readdirSync(reviewTextsDir)
-    .filter(f => fs.statSync(path.join(reviewTextsDir, f)).isDirectory());
+  const showDirs = listShowDirs(reviewTextsDir);
 
   for (const showId of showDirs) {
     const showDir = path.join(reviewTextsDir, showId);
