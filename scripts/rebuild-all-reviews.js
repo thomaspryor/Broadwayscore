@@ -46,7 +46,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -3982,7 +3982,14 @@ showDirs.forEach(showId => {
       }
 
       // Skip reviews with explicit rejection reason (garbage text, OCR junk, etc.)
-      if (data.rejectionReason) {
+      // Exception: a markup-based star score (wos-star-images, guardian-star-svg, ...)
+      // never read the rejected prose, so a not_a_review/garbage_text verdict on the
+      // prose doesn't taint it — BRO-2282, John Proctor Is the Villain WE
+      // whatsonstage--sarah-crompton.json: cookie-consent boilerplate got the fullText
+      // rejected as garbage_text, but wos-star-images had already read 5/5 stars off
+      // the page's own <img> markup. Mirrors explainExclusion's identical carve-out in
+      // review-guards.js — see hasStructuralStarScore there for the full rationale.
+      if (data.rejectionReason && !hasStructuralStarScore(data)) {
         logExclusion("skippedRejectionReason", showId, file, data);
         stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
         return;
@@ -4028,7 +4035,9 @@ showDirs.forEach(showId => {
       // clear-failure-flags nulled its rejectionReason.
       if (data.rejectedAt && typeof data.rejectedAt === 'string') {
         const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
-        if (!reFetched) {
+        // Same structural-star-score exception as the rejectionReason guard above
+        // (BRO-2282) — mirrors review-guards.js explainExclusion's rejectedAt block.
+        if (!reFetched && !hasStructuralStarScore(data)) {
           logExclusion("skippedRejectedAt", showId, file, data);
           stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
           return;
