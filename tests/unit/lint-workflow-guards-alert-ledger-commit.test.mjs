@@ -31,6 +31,10 @@ const GUARD = path.join(REPO, 'scripts/lint-workflow-guards.sh');
 const CHECKER = path.join(REPO, 'scripts/lib/alert-ledger-commit-check.js');
 const REQUIRE_GRAPH = path.join(REPO, 'scripts/lib/require-graph-ast.js');
 const SCANNER = path.join(REPO, 'scripts/lib/scan-alert-ledger-gaps.js');
+// BRO-3686: check_alert_ledger_commit's floor+file-listing logic moved into
+// this shared helper (also used by check_ledger_coverage,
+// check_ledger_step_guard and check_swallowed_audit_writers).
+const GLOB_GUARD = path.join(REPO, 'scripts/lib/workflow-glob-guard.js');
 
 // A worktree checkout has no node_modules of its own — `require('acorn')`
 // resolves there today only because Node's module lookup walks up parent
@@ -89,6 +93,7 @@ function runGuard(extraWorkflows, { checkerOverride, workflowCount = MIN_WORKFLO
     copyFileSync(GUARD, path.join(dir, 'scripts/lint-workflow-guards.sh'));
     copyFileSync(REQUIRE_GRAPH, path.join(dir, 'scripts/lib/require-graph-ast.js'));
     copyFileSync(SCANNER, path.join(dir, 'scripts/lib/scan-alert-ledger-gaps.js'));
+    copyFileSync(GLOB_GUARD, path.join(dir, 'scripts/lib/workflow-glob-guard.js'));
     if (checkerOverride !== undefined) {
       writeFileSync(path.join(dir, 'scripts/lib/alert-ledger-commit-check.js'), checkerOverride);
     } else {
