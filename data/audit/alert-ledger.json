@@ -135,7 +135,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
@@ -145,7 +145,7 @@
       "notifyCount": 78,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "resolvedAt": "2026-09-16T06:13:53.294Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -784,7 +784,7 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
@@ -794,7 +794,8 @@
       "notifyCount": 55,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 2
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-16T06:11:53.898Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
