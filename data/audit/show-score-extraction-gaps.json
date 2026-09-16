@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-16T08:53:41.703Z",
+    "generatedAt": "2026-09-16T14:04:51.330Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 358,
+  "totalGaps": 360,
   "errorSeverity": 263,
-  "warningSeverity": 95,
+  "warningSeverity": 97,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -716,6 +716,15 @@
       "extracted": 8,
       "gap": 1,
       "ratio": 0.89,
+      "severity": "warning"
+    },
+    {
+      "showId": "drunk-shakespeare-off-broadway-2022",
+      "category": "off-broadway",
+      "expected": 8,
+      "extracted": 7,
+      "gap": 1,
+      "ratio": 0.88,
       "severity": "warning"
     },
     {
@@ -2778,6 +2787,15 @@
       "gap": 49,
       "ratio": 0.14,
       "severity": "error"
+    },
+    {
+      "showId": "the-pass-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
     },
     {
       "showId": "the-peculiar-patriot-off-broadway-2026",
