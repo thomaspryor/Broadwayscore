@@ -426,12 +426,15 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
   // otherwise invisible unless the owner opens the email and scrolls to that
   // block — the same "trains the eye to skip it" failure mode BRO-282/BRO-420
   // fix at the body level, one level up at the subject line. Additive to the
-  // health suffix above — both can be true in the same digest.
+  // health suffix above (both can be true in the same digest) but PREPENDED,
+  // not appended: mobile/notification previews truncate long subjects, and
+  // this is the owner-actionable one — it must not be the part that gets cut
+  // off behind a routine site-health count (ship-check review).
   const staleApprovals = Array.isArray(awaitingOwner?.items)
     ? awaitingOwner.items.filter((i) => i && i.stale).length
     : 0;
   if (staleApprovals) {
-    suffix += ` · ⚠️ ${staleApprovals} approval${staleApprovals === 1 ? '' : 's'} waiting 48h+`;
+    suffix = ` · ⚠️ ${staleApprovals} approval${staleApprovals === 1 ? '' : 's'} waiting 48h+` + suffix;
   }
   return `Morning digest — ${dateLabel}${suffix}`;
 }
