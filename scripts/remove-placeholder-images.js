@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `remove-placeholder-images.js — Clear placeholder image references in shows.json.
 
@@ -18,9 +19,7 @@ if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_DIR = path.join(__dirname, '../public/images/shows');
 const SHOWS_JSON = path.join(__dirname, '../data/shows.json');
 
-const showDirs = fs.readdirSync(SHOWS_DIR).filter(d =>
-  fs.statSync(path.join(SHOWS_DIR, d)).isDirectory()
-);
+const showDirs = listShowDirs(SHOWS_DIR);
 
 const affectedShows = new Set();
 let removed = 0;
