@@ -10,8 +10,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
+// BRO-2381 ship-check finding (Codex): pushReviewTextsCheckpoint() operates on
+// `data/review-texts` relative to process.cwd() — a real private-repo
+// checkout there (some dev machines clone it for local testing) would have
+// its git identity/remote reconfigured, everything staged, and possibly a
+// real commit made if calling this function past the gate. Tests below that
+// exercise the "gate passes" path skip when a real checkout is present.
+const HAS_REAL_REVIEW_TEXTS_CHECKOUT = fs.existsSync(path.join(process.cwd(), 'data', 'review-texts', '.git'));
 const { shouldPushReviewTextsCheckpoint } = require('./lib/review-texts-checkpoint-gate.js');
 const { pushReviewTextsCheckpoint } = require('./collect-review-texts.js');
 
@@ -90,7 +99,15 @@ test('pushReviewTextsCheckpoint: no-ops silently-safe (does not throw) when not 
   });
 });
 
-test('pushReviewTextsCheckpoint: passes the gate (does not early-return on the token check) when both env vars are set', () => {
+test('pushReviewTextsCheckpoint: passes the gate (does not early-return on the token check) when both env vars are set', (t) => {
+  if (HAS_REAL_REVIEW_TEXTS_CHECKOUT) {
+    // A real private-repo checkout is present — calling pushReviewTextsCheckpoint()
+    // past the gate would reconfigure its git identity/remote, stage everything
+    // in it, and could commit real uncommitted work. Skip rather than risk that;
+    // the pure-function tests above already cover this exact case.
+    t.skip('data/review-texts/.git exists — skipping to avoid mutating a real private-repo checkout');
+    return;
+  }
   // With both set, the function proceeds past the gate to the private-repo
   // checkout check — which fails safe with its own distinct log line when
   // data/review-texts/.git isn't present (true both in local dev and in this

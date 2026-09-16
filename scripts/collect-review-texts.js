@@ -5693,6 +5693,21 @@ function pushReviewTextsCheckpoint(processed) {
       execSync(`git remote add origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
     }
 
+    // ROOT-CAUSE GUARD (2026-05-27, mirrors .github/actions/push-review-texts):
+    // the review-texts data repo contains ONLY JSON review files — never
+    // symlinks. A stray symlink committed via `git add -A` from a local
+    // session once dangled in CI and crashed the collection pipeline for
+    // ~8h. This checkpoint previously never reached here in practice (the
+    // REVIEW_TEXTS_TOKEN gate above silently no-op'd on every workflow this
+    // script runs in until BRO-2381), so it never carried this guard — now
+    // that the gate is fixed and this path actually runs mid-collection,
+    // it needs the same protection the final push action has.
+    const strayLinks = execSync("find . -type l -not -path './.git/*'", { cwd: rtDir, stdio: 'pipe' }).toString().trim();
+    if (strayLinks) {
+      console.log(`  ⚠ Removing stray symlink(s) before checkpoint commit: ${strayLinks.split('\n').join(', ')}`);
+      execSync("find . -type l -not -path './.git/*' -delete", { cwd: rtDir, stdio: 'pipe' });
+    }
+
     // Stage all changes
     execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
 
