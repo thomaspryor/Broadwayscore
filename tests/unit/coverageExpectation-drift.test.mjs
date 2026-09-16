@@ -27,7 +27,19 @@ test('outlet-registry.json carries no coverageExpectation drift on the previousl
   const reviews = readJson('data/reviews.json').reviews;
   const outlets = readJson('data/outlet-registry.json').outlets;
 
-  const { needsReprobe } = evaluateCoverageExpectationDrift(shows, reviews, outlets, Date.now());
+  // Pinned to shortly after these outlets' own coverageExpectationDecidedAt,
+  // not Date.now() (BRO-1987 — found by scripts/audit-time-bomb-tests.js: this
+  // test passed today and would have started failing ~14 days after whatever
+  // date it happened to run on, with no commit behind it, once decidedAt aged
+  // past COVERAGE_EXPECTATION_DECAY_DAYS). The live clock is correct for the
+  // actual production check (scripts/audit-standing-coverage.js's cron, which
+  // must notice real drift); this unit test's job is only to confirm the decay
+  // logic treats a freshly-decided outlet as fresh, not to re-derive whether
+  // 2026-09-13 is still recent relative to whenever CI happens to run.
+  const decidedAtMs = Math.max(
+    ...['ap', 'broadwaynews', 'latimes'].map((id) => Date.parse(outlets[id].coverageExpectationDecidedAt))
+  );
+  const { needsReprobe } = evaluateCoverageExpectationDrift(shows, reviews, outlets, decidedAtMs + 86400000);
 
   for (const outletId of ['ap', 'broadwaynews', 'latimes']) {
     assert.ok(
