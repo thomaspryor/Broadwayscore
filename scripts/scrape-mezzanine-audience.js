@@ -19,7 +19,7 @@ const path = require('path');
 const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { normalizeTitle, titleTokens, jaccard } = require('./lib/title-match');
+const { normalizeTitle, titleTokens, jaccard, foldDiacritics, canonicalVenue } = require('./lib/title-match');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 // Parse command line args
@@ -297,6 +297,75 @@ function parseDate(val) {
 const normalize = normalizeTitle;
 
 /**
+ * True when two venue strings refer to the same physical theater, using the
+ * shared canonicalVenue() alias table (title-match.js) so "Noël Coward
+ * Theatre" (our shows.json) lines up with "Noel Coward" (Mezzanine) despite
+ * diacritic/suffix differences.
+ */
+function venuesMatch(a, b) {
+  const ca = canonicalVenue(foldDiacritics(a || ''));
+  const cb = canonicalVenue(foldDiacritics(b || ''));
+  if (!ca || !cb) return false;
+  return ca === cb;
+}
+
+/**
+ * BRO-975: for a one-off revival, Mezzanine can hold Production records for
+ * SEVERAL distinct physical stagings of the same title (e.g. Romeo and
+ * Juliet has run at a dozen different London theaters over the decades). The
+ * exact-title-match strategy (confidence='high') treats all of them as the
+ * same show and merge-averages their ratings together, so an old archival
+ * production silently drags the current revival's score around.
+ *
+ * This only matters when a show has MULTIPLE candidate Production matches —
+ * a single match is left untouched (long-runners like Mamma Mia rely on the
+ * unconditional year-verification bypass: Mezzanine's theater name for a
+ * decades-old continuous run doesn't always track a mid-run venue rename, and
+ * we have no live data in this environment to safely tighten that path).
+ *
+ * Selection: our shows.json `venue` field is the ground truth for which
+ * physical theater the CURRENT production plays. Any candidate whose theater
+ * matches it represents that production; every candidate at a DIFFERENT
+ * theater is a different production of the same title and is dropped,
+ * regardless of how close its year is (an OB-to-transfer within one show.json
+ * entry that changed venues is the accepted tradeoff here — Option A from the
+ * ticket, "merge only with same-venue productions").
+ *
+ * Only when NO candidate's venue matches ours (missing/unrecognized venue
+ * data) do we fall back to the existing year-verification rule used
+ * elsewhere in this file (opened within ±1 year of our openingDate) — a
+ * production 2+ years off is exactly the kind of historical noise this
+ * bug is about (Avenue Q's closest historical run is 2 years out; picking
+ * it "because it's closest" would just swap one wrong answer for another).
+ * If nothing clears that bar either, we drop all candidates — no data
+ * beats wrong data.
+ */
+function selectCurrentProductionMatches(allMatches, openYear, showVenue) {
+  if (allMatches.length <= 1) return allMatches;
+
+  const withInfo = allMatches.map(m => {
+    const y = parseInt(parseDate(m.production.opened || m.production.firstPreview).slice(0, 4));
+    return {
+      m,
+      y: Number.isFinite(y) ? y : null,
+      venueMatch: showVenue ? venuesMatch(showVenue, m.production.theater?.name) : false,
+    };
+  });
+
+  const venueConfirmed = withInfo.filter(x => x.venueMatch);
+  if (venueConfirmed.length > 0) {
+    return venueConfirmed.map(x => x.m);
+  }
+
+  if (openYear) {
+    const yearVerified = withInfo.filter(x => x.y !== null && Math.abs(x.y - openYear) <= 1);
+    if (yearVerified.length > 0) return yearVerified.map(x => x.m);
+  }
+
+  return [];
+}
+
+/**
  * Deduplicate matches: when the same Mezzanine production is claimed by
  * multiple of our shows (e.g., OB 2024 and Broadway 2026 transfers), assign
  * it to the best match and remove it from the others.
@@ -392,7 +461,7 @@ function matchProductions(productions, shows) {
     const hasSiblings = siblings.length > 1;
 
     // Collect ALL matching productions (not just best)
-    const allMatches = [];
+    let allMatches = [];
 
     for (const p of productions) {
       const mName = normalize(p.show?.name || p.showName || '');
@@ -477,6 +546,15 @@ function matchProductions(productions, shows) {
     }
 
     if (allMatches.length === 0) continue;
+
+    // BRO-975: narrow down to the productions that actually represent the
+    // CURRENT run before merging — see selectCurrentProductionMatches().
+    const currentMatches = selectCurrentProductionMatches(allMatches, openYear, show.venue);
+    if (currentMatches.length === 0) {
+      if (verbose) console.log(`  SKIP ${show.id}: ${allMatches.length} title match(es) found but none confirmed as the current production (venue mismatch)`);
+      continue;
+    }
+    allMatches = currentMatches;
 
     // Merge multiple matching productions (weighted average by review count)
     if (allMatches.length > 1) {
@@ -811,7 +889,7 @@ async function main() {
 }
 
 if (require.main !== module) {
-  module.exports = { matchProductions, deduplicateMatches, normalize, MEZZANINE_OVERRIDES };
+  module.exports = { matchProductions, deduplicateMatches, normalize, MEZZANINE_OVERRIDES, selectCurrentProductionMatches, venuesMatch };
 } else {
   main().catch(e => {
     console.error('Fatal error:', e.message);
