@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-09-15T21:29:01.641Z",
-  "bannerText": "124/163 Done(14d) verified on main · 3 FAILED · 16 vacuous · 84 stuck-but-done — PARTIAL RUN: 1 GitHub lookup failed, so these numbers understate the board",
+  "generatedAt": "2026-09-16T12:08:26.202Z",
+  "bannerText": "197/309 Done(14d) verified on main · 5 FAILED · 1 vacuous · 75 stuck-but-done · 28 mis-armed, needs re-arming (BRO-1391, BRO-1333, BRO-1284, +25 more) — PARTIAL RUN: 85 checks not re-run (ran out of time), 1 GitHub lookup failed, so these numbers understate the board",
   "items": [
-    {
-      "title": "FAILED BRO-3335 — OWNER WATCH 2026-09-14: own the in-flight P0/P1 fleet (BRO-2839, BRO-3071, BRO-3092, BRO-3211, BRO-3250, BRO-3218) to verified completion",
-      "detail": "node:internal/modules/cjs/loader:1478 throw err; ^ Error: Cannot find module '<checkout>/scripts/audit-worktree-unpushed.js' at Module._resolveFilename (node:internal/modules/cjs/…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3335/owner-watch-2026-09-14-own-the-in-flight-p0p1-fleet-bro-2839-bro-3071"
-    },
-    {
-      "title": "FAILED BRO-2952 — P1: gate-cold-start A/B impression split drifted toward parity (208:75, expected ~10:1)",
-      "detail": "Could not find 'scripts/lib/gate-cold-start-rules.test.mjs'",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2952/p1-gate-cold-start-ab-impression-split-drifted-toward-parity-20875"
-    },
     {
       "title": "FAILED BRO-472 — BSC Daily: Data quality: fulltext-mentions-show lifetime sweep",
       "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-09-15T12:12:36.755Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-472/bsc-daily-data-quality-fulltext-mentions-show-lifetime-sweep"
     },
     {
-      "title": "STUCK BRO-205 — P1: 6 scraper callers treat conflict skips as benign — the silent-veto class beyond the gap audit",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-205/p1-6-scraper-callers-treat-conflict-skips-as-benign-the-silent-veto"
+      "title": "FAILED BRO-465 — BSC Daily: Main: red streak",
+      "detail": "[check-health-row-absent] FAIL: \"Main: red streak\" still listed in the 2026-09-15T12:12:36.755Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-465/bsc-daily-main-red-streak"
     },
     {
-      "title": "STUCK BRO-199 — Newsletter closing lede announced a future final performance as present-tense news",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-199/newsletter-closing-lede-announced-a-future-final-performance-as"
+      "title": "FAILED BRO-3379 — P1: feedback + submit-review routes can 5xx a user whose submission already succeeded, because the additive Notion write is not isolated",
+      "detail": "TAP version 13 # Subtest: feedback route returns 2xx and keeps the Formspree submission when Notion throws not ok 1 - feedback route returns 2xx and keeps the Formspree submission…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3379/p1-feedback-submit-review-routes-can-5xx-a-user-whose-submission"
     },
     {
-      "title": "STUCK BRO-187 — Review-coverage systemic fixes: junk census candidates, extraction rot, babysitter remediation loop (Pass/Disruption/Vessel)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-187/review-coverage-systemic-fixes-junk-census-candidates-extraction-rot"
+      "title": "FAILED BRO-2952 — P1: gate-cold-start A/B impression split drifted toward parity (208:75, expected ~10:1)",
+      "detail": "Could not find '<checkout>/scripts/lib/gate-cold-start-rules.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2952/p1-gate-cold-start-ab-impression-split-drifted-toward-parity-20875"
     },
     {
-      "title": "STUCK BRO-178 — Image fetch: run cleanup on the throw path (try/finally in processOneShow)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-178/image-fetch-run-cleanup-on-the-throw-path-tryfinally-in-processoneshow"
+      "title": "FAILED BRO-2549 — P1: aggregator archive caches are validated at write time only — a <14d cache is served before any validator runs",
+      "detail": "Could not find '<checkout>/scripts/lib/bww-archive-category-guard.test.mjs'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2549/p1-aggregator-archive-caches-are-validated-at-write-time-only-a-14d"
     },
     {
-      "title": "STUCK BRO-177 — Broadway edition has the same subject/card-order mismatch class fixed for WE: broadwayOpenings renders shows.json order",
+      "title": "STUCK BRO-1397 — Prior-run review display: label run/date + suppress former-cast pull-quotes",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-177/broadway-edition-has-the-same-subjectcard-order-mismatch-class-fixed"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1397/prior-run-review-display-label-rundate-suppress-former-cast-pull"
+    },
+    {
+      "title": "STUCK BRO-1392 — Newsletter score badges break in Gmail iOS dark mode",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1392/newsletter-score-badges-break-in-gmail-ios-dark-mode"
+    },
+    {
+      "title": "STUCK BRO-1325 — BTC: send retroactive confirmation emails to all entrants",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1325/btc-send-retroactive-confirmation-emails-to-all-entrants"
     }
   ],
-  "moreCount": 95
+  "moreCount": 73
 }
