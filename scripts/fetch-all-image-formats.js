@@ -54,7 +54,7 @@ function fetchViaScrapingBee(url) {
   return new Promise((resolve, reject) => {
     const scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
 
-    https.get(scrapingBeeUrl, (response) => {
+    const req = https.get(scrapingBeeUrl, { timeout: 30000 }, (response) => {
       recordSbCall({ url, fn: 'page', success: response.statusCode === 200, status: response.statusCode, credits: sbBilledCredits(response.statusCode, 1), purpose: 'image-formats' });
       if (response.statusCode !== 200) {
         reject(new Error(`HTTP ${response.statusCode}`));
@@ -65,9 +65,15 @@ function fetchViaScrapingBee(url) {
       response.on('data', chunk => data += chunk);
       response.on('end', () => resolve(data));
       response.on('error', reject);
-    }).on('error', (e) => {
+    });
+    req.on('error', (e) => {
       recordSbCall({ url, fn: 'page', success: false, status: 'error', credits: 0, purpose: 'image-formats' });
       reject(e);
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      recordSbCall({ url, fn: 'page', success: false, status: 'timeout', credits: 0, purpose: 'image-formats' });
+      reject(new Error('Request timeout'));
     });
   });
 }
