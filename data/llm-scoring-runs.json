@@ -1,30 +1,5 @@
 [
   {
-    "startedAt": "2026-09-12T09:09:37.840Z",
-    "completedAt": "2026-09-12T09:12:55.087Z",
-    "totalReviews": 43155,
-    "processed": 0,
-    "skipped": 43149,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 16559,
-      "output": 587,
-      "total": 47146
-    },
-    "errorDetails": [
-      {
-        "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
-        "outletId": "consequence",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "bridge-and-tunnel-2006",
-        "outletId": "playbill",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-12T09:13:02.895Z",
     "completedAt": "2026-09-12T09:15:05.794Z",
     "totalReviews": 43155,
@@ -439019,6 +438994,22 @@
     },
     "costUsd": 0,
     "runId": "35051043671",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-16T04:11:55.043Z",
+    "completedAt": "2026-09-16T04:12:02.246Z",
+    "totalReviews": 3,
+    "processed": 3,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 8803,
+      "output": 600,
+      "total": 9403
+    },
+    "costUsd": 0.0232877,
+    "runId": "35052259947",
     "errorDetails": []
   }
 ]
