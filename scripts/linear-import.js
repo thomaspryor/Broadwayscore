@@ -331,8 +331,21 @@ async function runReconcile({ classified, mapping, apply, ledgerRows = [], doneI
   // archived out of the live mirror — see findStaleDuplicates()'s header).
   // Filtered to rows whose Linear issue is still actually on the board and
   // not already retired, so this stays idempotent across repeated runs.
+  //
+  // Also excludes any page whose task is STILL live in the mirror (`classified`)
+  // — that page is already `r.notCurated`'s job above, and this pass has no
+  // way to know if that loop already ran first this same tick (both read the
+  // `issues` snapshot from before either mutated anything). Without this
+  // exclusion a page that is BOTH still-live AND ledger-known gets retired,
+  // logged, and re-appended twice in one run (Codex ship-check finding,
+  // BRO-2384): harmless to the end state (both write the same values) but
+  // doubles the Linear API calls and duplicates the mutation-log/ledger
+  // trail for no reason.
+  const liveNotionIds = new Set(
+    classified.map(({ task }) => extractNotionId(task.description || '')).filter(Boolean)
+  );
   const staleDuplicates = ledgerLib
-    .findStaleDuplicates(ledgerRows, doneIds)
+    .findStaleDuplicates(ledgerRows, doneIds, liveNotionIds)
     .filter((row) => byId.has(row.linearId))
     .filter((row) => {
       const issue = byId.get(row.linearId);
@@ -420,6 +433,21 @@ async function runReconcile({ classified, mapping, apply, ledgerRows = [], doneI
       await linear.updateIssue(issue.id, { stateId: stateByName.get(c.stateName) });
       delete mapping[task.id].retiredReason;
       saveMapping(mapping);
+      // BRO-2384 (Codex ship-check finding): the mapping's retiredReason is
+      // cleared above, but until now nothing told the LEDGER this page was
+      // revived — findStaleDuplicates() reads the ledger's own retiredReason
+      // (last row wins), so the earlier 'notion_done' row would keep
+      // governing forever. Without this, Done -> reopened -> Done again ->
+      // task archives out of the mirror leaves the page permanently excluded
+      // from ever being caught as a stale duplicate again, even though it is
+      // now a genuine one. Appending here closes that loop the same
+      // append-only way every other ledger correction does.
+      if (c.notionId) {
+        ledgerLib.appendRow(path.join(REPO_ROOT, ledgerLib.DEFAULT_LEDGER), ledgerLib.makeRow({
+          pageId: c.notionId, taskId: task.id, linearId: issue.id, identifier: issue.identifier,
+          title: issue.title, project: c.project, retiredReason: null, source: 'reconcile-revive',
+        }));
+      }
       revived++;
     }
     if (!mapping[task.id] || !mapping[task.id].identifier) {
@@ -451,9 +479,25 @@ async function runReconcile({ classified, mapping, apply, ledgerRows = [], doneI
     });
     ledgerLib.appendRow(path.join(REPO_ROOT, ledgerLib.DEFAULT_LEDGER), ledgerLib.makeRow({
       pageId: row.pageId, taskId: row.taskId, linearId: row.linearId, identifier: row.identifier,
-      title: row.title, project: ARCHIVE_PROJECT, retiredReason: 'notion_done', source: 'reconcile-ledger',
+      // Codex ship-check finding: preserve the ORIGINAL row's source
+      // (corpus-import / mirror-import / legacy-migration) instead of
+      // stamping 'reconcile-ledger' over it. This row records a retirement
+      // event, not a re-creation — overwriting source would make
+      // linear-import-corpus.js's rollback selector (`source ===
+      // 'corpus-import'`, last row wins) stop seeing an issue the corpus
+      // importer actually created, so a rollback would silently skip it.
+      title: row.title, project: ARCHIVE_PROJECT, retiredReason: 'notion_done', source: row.source || 'reconcile-ledger',
     }));
-    if (row.taskId && (!mapping[row.taskId] || mapping[row.taskId].retiredReason !== 'notion_done')) {
+    // Codex ship-check finding: only touch mapping.json when there is no
+    // existing entry for this taskId, OR the existing entry already names
+    // THIS SAME Linear issue. Local mirror task ids get reused/renumbered
+    // (BRO-2468) — writing unconditionally on taskId match alone can
+    // overwrite an unrelated, currently-open task's mapping row with this
+    // stale ledger row's linearId/retiredReason, corrupting it (and, via the
+    // revive path above, exposing it to being wrongly "revived" — a
+    // different issue than the owner ever retired).
+    const existingMapEntry = row.taskId ? mapping[row.taskId] : null;
+    if (row.taskId && ledgerLib.mapWriteAllowed(existingMapEntry, row) && (!existingMapEntry || existingMapEntry.retiredReason !== 'notion_done')) {
       mapping[row.taskId] = { linearId: row.linearId, identifier: row.identifier, title: row.title, project: ARCHIVE_PROJECT, retiredReason: 'notion_done' };
       saveMapping(mapping);
     }

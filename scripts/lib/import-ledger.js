@@ -216,16 +216,48 @@ function unaccountedPageIds(sourcePageIds, rows) {
  * Pure: `doneIds` is the caller's already-loaded Notion snapshot Set (or any
  * Set-like with `.has`). No I/O here — the caller does the ledger read and
  * the eventual Linear mutation.
+ *
+ * `liveNotionIds` (Codex ship-check finding, BRO-2384) excludes any page
+ * whose task is STILL present in the live local mirror — that page is
+ * already the mirror-driven reconcile pass's job (linear-import.js's own
+ * `r.notCurated`), and without this exclusion a page that is BOTH still-live
+ * AND already in the ledger gets retired and logged twice in the same run.
  */
-function findStaleDuplicates(rows, doneIds) {
+function findStaleDuplicates(rows, doneIds, liveNotionIds = new Set()) {
   const out = [];
   for (const row of indexByPageId(rows).values()) {
     if (!row.linearId) continue;
     if (row.retiredReason) continue;
     if (!doneIds.has(row.pageId)) continue;
+    if (liveNotionIds.has(row.pageId)) continue;
     out.push(row);
   }
   return out;
+}
+
+/**
+ * Is it safe to overwrite `mapping[taskId]` with a retirement/revival for
+ * `row` (the ledger row driving the write)? (Codex ship-check finding,
+ * BRO-2384.)
+ *
+ * Local mirror task ids get reused/renumbered on resync (BRO-2468) — a
+ * ledger row's `taskId` can be stale, now belonging to a DIFFERENT,
+ * currently-open task. Writing `mapping[taskId]` unconditionally on a bare
+ * id match would overwrite that unrelated task's mapping entry with this
+ * row's linearId/retiredReason, corrupting it (and, via the revive path,
+ * exposing an issue the owner never retired to being wrongly "revived").
+ *
+ * Safe when there is no existing entry for this taskId yet, OR the existing
+ * entry already names THIS SAME Linear issue (linearId agrees) — i.e. the
+ * mapping row really is about the same piece of work the ledger row is.
+ *
+ * Pure: takes the already-looked-up `existingEntry` (or null/undefined), not
+ * the whole mapping object or a taskId to look up — the caller does the read.
+ */
+function mapWriteAllowed(existingEntry, row) {
+  if (!existingEntry) return true;
+  if (!existingEntry.linearId) return true;
+  return existingEntry.linearId === row.linearId;
 }
 
 /**
@@ -287,4 +319,5 @@ module.exports = {
   migrateLegacy,
   unaccountedPageIds,
   findStaleDuplicates,
+  mapWriteAllowed,
 };
