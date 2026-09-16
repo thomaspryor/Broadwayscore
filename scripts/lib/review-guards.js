@@ -680,6 +680,32 @@ function getWrongProductionReasonForUnknownCritic(review, show) {
 }
 
 /**
+ * Wrapper around getWrongProductionReasonFromUrl that fires for BWW Review
+ * Roundup entries regardless of critic name (BRO-916).
+ *
+ * getWrongProductionReasonForUnknownCritic above deliberately only fires on
+ * Unknown/Staff bylines because its false-positive risk is organic pre-transfer
+ * journalism by a named critic (benefit of the doubt applies). BWW RR is a
+ * different risk shape: extractBWWRoundupReviews (gather-reviews.js) pulls
+ * reviews from the roundup PAGE by anchor position/JSON-LD, so contamination
+ * happens in how BWW assembled the page, not in how the critic bylined their
+ * own writing — a real, named critic's real West End review can still land on
+ * the wrong show's Broadway roundup. Incident: Alexander Cohen's London "The
+ * Fear of 13" review (byline "BroadwayWorld", i.e. BWW's own UK edition — not
+ * a distinct outlet the geography filter in validateBWWRoundupGeography would
+ * catch) was pulled into the Broadway show's roundup page and shipped with no
+ * wrongProduction flag until manual cleanup.
+ *
+ * @param {{ url?: string|null, source?: string|null }} review
+ * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string, priorRuns?: any, tourLegs?: any }} show
+ * @returns {string|null}
+ */
+function getWrongProductionReasonForBwwRoundup(review, show) {
+  if (!review || review.source !== 'bww-roundup') return null;
+  return getWrongProductionReasonFromUrl(review.url, show);
+}
+
+/**
  * Check if a URL looks like a review for the given show title.
  * Filters out tag pages, author pages, ticket links, etc.
  * Used in site-search-discovery.js to filter URLs returned by section-page scrapers.
@@ -4275,6 +4301,7 @@ module.exports = {
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
+  getWrongProductionReasonForBwwRoundup,
   urlYearFromPath,
   urlLooksLikeReview,
   isSluglessReviewUrl,

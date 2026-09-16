@@ -68,7 +68,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBwwRoundup, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
@@ -3863,6 +3863,27 @@ function createReviewFile(showId, reviewData, options = {}) {
         console.log(`    ⚠️  ${reason}`);
         review.wrongProduction = true;
         review.wrongProductionNote = reason;
+      }
+    } catch (e) {}
+  }
+
+  // BWW Review Roundup cross-production guard (BRO-916): unlike the
+  // Unknown-critic check above, this fires regardless of criticName. BWW RR
+  // contamination happens on the aggregator PAGE (extractBWWRoundupReviews
+  // mis-attributing an anchor/JSON-LD entry), not in how a critic bylines
+  // their own writing, so the named-critic benefit-of-the-doubt above doesn't
+  // apply to this source. Only wrongProductionNote is set (not
+  // wrongProductionReason) — the note's "Auto-flagged:" prefix is required
+  // for wrong-production-autoclear.js's DATE_GUARD_PREFIXES match; a custom
+  // wrongProductionReason value would make the flag permanently un-auto-
+  // clearable even after a legitimate priorRuns entry is declared (task #1678).
+  if (!review.wrongProduction && _showMeta) {
+    try {
+      const reason = getWrongProductionReasonForBwwRoundup(review, _showMeta);
+      if (reason) {
+        console.log(`    ⚠️  ${reason} (BWW RR cross-production)`);
+        review.wrongProduction = true;
+        review.wrongProductionNote = `${reason} (BWW RR cross-production)`;
       }
     } catch (e) {}
   }
