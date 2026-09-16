@@ -12,6 +12,12 @@
 # holds no project data — deleting it live-freed disk to 7.4Gi in the
 # original incident.
 #
+# Matches `*.code_sign_clone` generically, not just Chrome's: the same OS
+# bug hits any codesigned app's auto-update clone (confirmed live on this
+# machine — com.brave.Browser.code_sign_clone also present under the same
+# parent dir, at 448M as of 2026-09-16). One scanner for the whole class
+# instead of a second bespoke script per browser.
+#
 # Usage:
 #   scripts/check-chrome-clone-cache.sh              # prune anything over the floor
 #   scripts/check-chrome-clone-cache.sh --dry-run     # report only, change nothing
@@ -74,9 +80,10 @@ human_kb() {
 found_any=0
 exit_code=0
 
-# depth: /var/folders/<XX>/<hash>/X/com.google.Chrome.code_sign_clone — 4
-# levels below /var/folders. -iname is case-insensitive defensively; the
-# directory name itself is stable across macOS versions.
+# depth: /var/folders/<XX>/<hash>/X/<bundle-id>.code_sign_clone — 4 levels
+# below /var/folders. -iname is case-insensitive defensively; the
+# `*.code_sign_clone` suffix is the stable, OS-defined part across macOS
+# versions and across which app it belongs to.
 while IFS= read -r dir; do
   [ -z "$dir" ] && continue
   found_any=1
@@ -109,11 +116,11 @@ while IFS= read -r dir; do
   after=${after:-0}
   echo "PRUNED  $dir — freed $(human_kb $((sz - after))) (floor ${floor_display}, now $(human_kb "$after"))"
   if [ "$after" -ge "$FLOOR_KB" ] 2>/dev/null; then
-    echo "WARN  $dir still >= ${floor_display} after prune — Chrome may hold files open, will retry next run" >&2
+    echo "WARN  $dir still >= ${floor_display} after prune — the app may hold files open, will retry next run" >&2
     exit_code=1
   fi
-done < <(find "$SEARCH_ROOT" -maxdepth 4 -type d -iname 'com.google.Chrome.code_sign_clone' 2>/dev/null)
+done < <(find "$SEARCH_ROOT" -maxdepth 4 -type d -iname '*.code_sign_clone' 2>/dev/null)
 
-[ "$found_any" = "0" ] && echo "check-chrome-clone-cache: no com.google.Chrome.code_sign_clone dirs found"
+[ "$found_any" = "0" ] && echo "check-chrome-clone-cache: no *.code_sign_clone dirs found"
 
 exit "$exit_code"

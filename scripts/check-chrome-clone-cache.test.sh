@@ -42,7 +42,7 @@ FLOOR_KB_OVERRIDE=50
 # --- Test 1: missing search root fails open (no crash, no error exit) ---
 out=$(CHROME_CLONE_CACHE_SEARCH_ROOT="$FIXTURE_ROOT/does-not-exist" bash "$SCRIPT" 2>&1)
 code=$?
-if [ "$code" -eq 0 ] && grep -qi "no com.google.Chrome.code_sign_clone dirs found" <<<"$out"; then
+if [ "$code" -eq 0 ] && grep -qi "no \*.code_sign_clone dirs found" <<<"$out"; then
   echo "PASS[1]: missing search root fails open cleanly"
 else
   echo "FAIL[1]: missing search root did not fail open. exit=$code, output:"; echo "$out"; fail=1
@@ -104,6 +104,21 @@ if [ "$code" -eq 0 ] && [ -z "$out" ]; then
   echo "PASS[8]: CHROME_CLONE_CACHE_DISABLED=true short-circuits with no output"
 else
   echo "FAIL[8]: kill switch did not short-circuit cleanly. exit=$code, output:"; echo "$out"; fail=1
+fi
+
+# --- Test 9: matches any *.code_sign_clone dir, not just Chrome's ---
+# com.brave.Browser.code_sign_clone found live on the dev machine at 448M
+# (same OS bug, different Chromium browser) — the glob generalizes to catch
+# the whole class instead of needing a second bespoke script per browser.
+BRAVE_DIR="$FIXTURE_ROOT/__/fakehash5/X/com.brave.Browser.code_sign_clone"
+mkdir -p "$BRAVE_DIR"
+head -c 102400 /dev/zero > "$BRAVE_DIR/clone.dat"
+backdate "$BRAVE_DIR"
+out=$(CHROME_CLONE_CACHE_SEARCH_ROOT="$FIXTURE_ROOT" CHROME_CLONE_CACHE_FLOOR_KB="$FLOOR_KB_OVERRIDE" bash "$SCRIPT" --dry-run 2>&1)
+if grep -q "WOULD-PRUNE.*$BRAVE_DIR" <<<"$out"; then
+  echo "PASS[9]: a non-Chrome *.code_sign_clone dir (Brave) is matched too"
+else
+  echo "FAIL[9]: non-Chrome code_sign_clone dir was not matched. Output:"; echo "$out"; fail=1
 fi
 
 if [ "$fail" -ne 0 ]; then
