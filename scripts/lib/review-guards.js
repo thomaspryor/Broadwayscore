@@ -584,26 +584,15 @@ function urlYearFromPath(url) {
   return Number.isFinite(year) ? year : null;
 }
 
-function getWrongProductionReasonFromUrl(url, show) {
-  if (!url || typeof url !== 'string') return null;
-  if (!show) return null;
-  const earliest = show.previewsStartDate || show.openingDate;
-  if (!earliest) return null;
-
-  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
-  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
-  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
-  if (!m) return null;
-
-  const year = m[1];
-  const rawMonth = m[2].toLowerCase();
-  const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
-  if (!month) return null;
-
-  const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
-  const urlDate = new Date(`${year}-${month}-${dayPart}`);
-  if (isNaN(urlDate.getTime())) return null;
-
+/**
+ * Shared window decision, given an already-parsed review date (from wherever
+ * the caller extracted it). Split out of getWrongProductionReasonFromUrl so
+ * getWrongProductionReasonForBwwRoundup's BWW-trailing-date fallback (below)
+ * can reuse the exact same priorRuns/tourLegs exemption + post-close +
+ * lead-window logic instead of re-deriving it — a second copy of this window
+ * math would be the same drift risk flagged in urlYearFromPath's own comment.
+ */
+function reasonFromParsedUrlDate(urlDate, urlDateStr, show) {
   // Prior-run exemption (ALL markets): a review dated within a declared prior
   // run is legitimate coverage of an earlier staging, not a wrong-production
   // cross-attribution. Off-broadway shows in particular carry same-season
@@ -618,11 +607,11 @@ function getWrongProductionReasonFromUrl(url, show) {
   // production, not a different one.
   if (isWithinTourLeg(urlDate, show.tourLegs)) return null;
 
+  const earliest = show.previewsStartDate || show.openingDate;
   const earliestDate = new Date(earliest);
   if (isNaN(earliestDate.getTime())) return null;
 
   const daysBefore = Math.round((earliestDate - urlDate) / 86400000);
-  const urlDateStr = urlDate.toISOString().slice(0, 10);
 
   // Post-closing check first: an article dated after close is a later production/tour,
   // independent of whether it's also before the previews of this production's ID.
@@ -650,6 +639,54 @@ function getWrongProductionReasonFromUrl(url, show) {
   }
 
   return null;
+}
+
+function getWrongProductionReasonFromUrl(url, show) {
+  if (!url || typeof url !== 'string') return null;
+  if (!show) return null;
+  const earliest = show.previewsStartDate || show.openingDate;
+  if (!earliest) return null;
+
+  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
+  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
+  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
+  if (!m) return null;
+
+  const year = m[1];
+  const rawMonth = m[2].toLowerCase();
+  const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
+  if (!month) return null;
+
+  const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
+  const urlDate = new Date(`${year}-${month}-${dayPart}`);
+  if (isNaN(urlDate.getTime())) return null;
+
+  return reasonFromParsedUrlDate(urlDate, urlDate.toISOString().slice(0, 10), show);
+}
+
+/**
+ * BroadwayWorld's own article URLs encode the publish date as a trailing
+ * `-YYYYMMDD` slug suffix with no path-segment slashes around the date, e.g.
+ * `.../article/BWW-Review-Some-Show-20190915` — a shape
+ * getWrongProductionReasonFromUrl's slash-delimited regex never matches.
+ * Reuses the same YYYYMMDD pattern already proven against real BWW URLs by
+ * scripts/lib/page-validator.js's extractYearFromUrl. Deliberately NOT folded
+ * into getWrongProductionReasonFromUrl itself (used by many other unrelated
+ * callers, e.g. getWrongProductionReasonForUnknownCritic on arbitrary SERP
+ * URLs) — a bare trailing 8-digit number is common on non-BWW URLs for
+ * reasons that aren't a date (WordPress post IDs, etc.), so this fallback
+ * only fires for getWrongProductionReasonForBwwRoundup, scoped to
+ * broadwayworld.com URLs specifically.
+ */
+function bwwTrailingDateFromUrl(url) {
+  const m = url.match(/-(\d{4})(\d{2})(\d{2})\d{0,2}(?:[/?#]|$)/);
+  if (!m) return null;
+  const year = parseInt(m[1], 10);
+  const month = parseInt(m[2], 10);
+  const day = parseInt(m[3], 10);
+  if (year < 1990 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const d = new Date(`${m[1]}-${m[2]}-${m[3]}`);
+  return isNaN(d.getTime()) ? null : d;
 }
 
 /**
@@ -696,13 +733,27 @@ function getWrongProductionReasonForUnknownCritic(review, show) {
  * catch) was pulled into the Broadway show's roundup page and shipped with no
  * wrongProduction flag until manual cleanup.
  *
+ * Tries the general slash-dated URL check first (external outlet URLs, e.g.
+ * a linked NYT/Guardian/Variety article), then falls back to BWW's own
+ * trailing-YYYYMMDD URL convention (bwwTrailingDateFromUrl) when the review's
+ * URL is itself a broadwayworld.com link — the exact shape of a BWW-own-byline
+ * entry like the Alexander Cohen incident.
+ *
  * @param {{ url?: string|null, source?: string|null }} review
  * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string, priorRuns?: any, tourLegs?: any }} show
  * @returns {string|null}
  */
 function getWrongProductionReasonForBwwRoundup(review, show) {
-  if (!review || review.source !== 'bww-roundup') return null;
-  return getWrongProductionReasonFromUrl(review.url, show);
+  if (!review || review.source !== 'bww-roundup' || !show) return null;
+  const url = review.url;
+  const primary = getWrongProductionReasonFromUrl(url, show);
+  if (primary) return primary;
+  if (!url || !/broadwayworld\.com/i.test(url)) return null;
+  const earliest = show.previewsStartDate || show.openingDate;
+  if (!earliest) return null;
+  const urlDate = bwwTrailingDateFromUrl(url);
+  if (!urlDate) return null;
+  return reasonFromParsedUrlDate(urlDate, urlDate.toISOString().slice(0, 10), show);
 }
 
 /**

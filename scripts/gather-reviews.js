@@ -3877,6 +3877,21 @@ function createReviewFile(showId, reviewData, options = {}) {
   // for wrong-production-autoclear.js's DATE_GUARD_PREFIXES match; a custom
   // wrongProductionReason value would make the flag permanently un-auto-
   // clearable even after a legitimate priorRuns entry is declared (task #1678).
+  //
+  // Scope note (ship-check adversarial review): like the Unknown-critic check
+  // above, this only runs on the NEW-FILE creation path — the merge/replace
+  // branches earlier in this function (existing outlet+critic match) return
+  // before `review` is even constructed, so a bad BWW RR URL that happens to
+  // match an ALREADY-EXISTING file for that outlet+critic slot merges without
+  // this check ever running. That gap predates this guard (it equally affects
+  // getWrongProductionReasonForUnknownCritic above) and reordering the merge
+  // decision tree ahead of the date guards is a much larger, separate change
+  // than BRO-916's scope — not addressed here. Also deliberately NOT gated on
+  // review.publishDate: BWW RR's publishDate (when present) is the ROUNDUP
+  // PAGE's own JSON-LD datePublished stamped onto every extracted entry
+  // (Method 2 supplement, ~line 2536), not a per-review verified date — an
+  // in-window page date does not prove any individual review's own URL is
+  // from the current run, which is exactly the gap this guard closes.
   if (!review.wrongProduction && _showMeta) {
     try {
       const reason = getWrongProductionReasonForBwwRoundup(review, _showMeta);

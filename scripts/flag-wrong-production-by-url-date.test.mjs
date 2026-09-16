@@ -84,3 +84,61 @@ test('does not fire for non-bww-roundup sources, even with the same out-of-windo
   // named-critic exemption, which this new guard must not silently widen.
   assert.equal(getWrongProductionReasonForBwwRoundup(review, show), null);
 });
+
+// BroadwayWorld's OWN articles (as opposed to a linked external outlet) use a
+// trailing -YYYYMMDD slug with no slash-delimited date segment — the actual
+// shape of a BWW-self-bylined entry ("BroadwayWorld" outlet, no third party),
+// which is what Alexander Cohen's byline in the real incident was. The
+// slash-dated regex above doesn't match this shape at all, so this needs its
+// own fallback (bwwTrailingDateFromUrl in review-guards.js).
+test('flags a BWW-hosted URL (trailing -YYYYMMDD slug) whose date is outside the show window', () => {
+  const show = getShowData(SHOW_ID);
+  assert.ok(show);
+
+  const review = {
+    source: 'bww-roundup',
+    outlet: 'BroadwayWorld',
+    outletId: 'broadwayworld',
+    criticName: 'Alexander Cohen',
+    url: 'https://www.broadwayworld.com/westend/article/BWW-Review-THE-FEAR-OF-13-at-the-Everyman-Theatre-20190915',
+  };
+
+  const reason = getWrongProductionReasonForBwwRoundup(review, show);
+  assert.ok(reason, 'expected the BWW trailing-date fallback to catch this');
+  assert.match(reason, /^Auto-flagged:/);
+});
+
+test('does not flag a BWW-hosted URL (trailing -YYYYMMDD slug) whose date is inside the show window', () => {
+  const show = getShowData(SHOW_ID);
+  assert.ok(show);
+
+  const review = {
+    source: 'bww-roundup',
+    outlet: 'BroadwayWorld',
+    outletId: 'broadwayworld',
+    criticName: 'Some Critic',
+    url: 'https://www.broadwayworld.com/article/BWW-Review-THE-FEAR-OF-13-Opens-on-Broadway-20260416',
+  };
+
+  assert.equal(getWrongProductionReasonForBwwRoundup(review, show), null);
+});
+
+test('does not apply the BWW trailing-date fallback to a non-broadwayworld.com URL', () => {
+  const show = getShowData(SHOW_ID);
+  assert.ok(show);
+
+  // Same out-of-window-looking trailing digits as the BWW test above, but on
+  // a non-BWW domain — a trailing 8-digit number there is not necessarily a
+  // date (could be a CMS post ID), so the fallback must stay scoped to BWW's
+  // own domain and NOT flag this, even though the digits would parse as a
+  // valid, out-of-window date if the domain check were missing.
+  const review = {
+    source: 'bww-roundup',
+    outlet: 'Some Other Outlet',
+    outletId: 'some-other-outlet',
+    criticName: 'Some Critic',
+    url: 'https://www.someoutlet.com/reviews/fear-of-13-20190915',
+  };
+
+  assert.equal(getWrongProductionReasonForBwwRoundup(review, show), null);
+});
