@@ -20,11 +20,19 @@ function buildSingleModelWarning() {
   return SINGLE_MODEL_WARNING;
 }
 
-function buildEnsembleDelegationArgs({ showFilter, limit, dryRun } = {}) {
-  const args = ['ts-node', '--project', 'scripts/tsconfig.json', 'scripts/llm-scoring/index.ts', '--ensemble'];
+/**
+ * --upgrade-ensemble is the pipeline's real selector for "single-model llmScore,
+ * no ensembleData" (scripts/llm-scoring/index.ts ~line 1091) — the same repair
+ * path llm-ensemble-score.yml's manual upgrade_ensemble dispatch input uses.
+ * Plain --ensemble alone defaults to unscoredOnly, which SKIPS every review
+ * this script already wrote llmScore to — exactly the ones that need fixing.
+ */
+function buildEnsembleDelegationArgs({ showFilter, limit, dryRun, maxCost } = {}) {
+  const args = ['ts-node', '--project', 'scripts/tsconfig.json', 'scripts/llm-scoring/index.ts', '--ensemble', '--upgrade-ensemble'];
   if (showFilter) args.push(`--show=${showFilter}`);
   if (limit) args.push(`--limit=${limit}`);
   if (dryRun) args.push('--dry-run');
+  if (maxCost) args.push(`--max-cost=${maxCost}`);
   return args;
 }
 
