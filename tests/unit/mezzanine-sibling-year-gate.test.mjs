@@ -19,10 +19,10 @@ const ourShows = [
   { id: 'the-merchant-of-venice-2010', title: 'The Merchant of Venice', category: 'broadway', openingDate: '2010-11-13', status: 'closed' },
   { id: 'the-merchant-of-venice-1989', title: 'The Merchant of Venice', category: 'broadway', openingDate: '1989-12-19', status: 'closed' },
   { id: 'the-merchant-of-venice-1973', title: 'The Merchant of Venice', category: 'broadway', openingDate: '1973-03-01', status: 'closed' },
-  { id: 'hamilton-2015', title: 'Hamilton', category: 'broadway', openingDate: '2015-08-06', status: 'open' },
+  { id: 'hamilton-2015', title: 'Hamilton', category: 'broadway', openingDate: '2015-08-06', status: 'open', venue: 'Richard Rodgers Theatre' },
 ];
 
-function mezProd(showName, year, ratingsCount, avg = 3.5) {
+function mezProd(showName, year, ratingsCount, avg = 3.5, theater = 'Some Theater') {
   return {
     objectId: `pid-${showName.toLowerCase().replace(/\s/g, '-')}-${year}`,
     show: { name: showName },
@@ -30,7 +30,7 @@ function mezProd(showName, year, ratingsCount, avg = 3.5) {
     opened: { __type: 'Date', iso: `${year}-01-01T00:00:00Z` },
     ratingsCount,
     averageRating: avg,
-    theater: { name: 'Some Theater' },
+    theater: { name: theater },
   };
 }
 
@@ -66,18 +66,36 @@ describe('Mezzanine sibling-aware year gate', () => {
     assert.strictEqual(byShow.get('the-merchant-of-venice-1973').prodIds.length, 1);
   });
 
-  test('non-sibling shows still merge multiple productions across years (long-running shows)', () => {
-    // Hamilton has no siblings; long-running show with multiple Mezzanine entries
-    // for different years should still merge under the single shows.json entry.
+  test('non-sibling shows still merge multiple productions at the SAME venue across years (long-running shows)', () => {
+    // Hamilton has no siblings; a long-running show with multiple Mezzanine
+    // snapshots at its one continuous venue should still merge them.
     const productions = [
-      mezProd('Hamilton', 2015, 100),
-      mezProd('Hamilton', 2018, 50),
-      mezProd('Hamilton', 2022, 30),
+      mezProd('Hamilton', 2015, 100, 3.5, 'Richard Rodgers Theatre'),
+      mezProd('Hamilton', 2018, 50, 3.5, 'Richard Rodgers Theatre'),
+      mezProd('Hamilton', 2022, 30, 3.5, 'Richard Rodgers Theatre'),
     ];
     const matches = matchProductions(productions, ourShows);
     const hamilton = matches.find(m => m.showId === 'hamilton-2015');
     assert.ok(hamilton, 'expected Hamilton match');
     assert.strictEqual(hamilton.prodIds.length, 3, `expected 3 prodIds merged for Hamilton, got ${hamilton.prodIds.length}`);
+  });
+
+  // BRO-975: the pre-fix version of this file asserted that non-sibling shows
+  // merge ALL same-titled productions regardless of venue — that's exactly the
+  // contamination bug (Romeo and Juliet's current Harold Pinter run getting
+  // merged with an unrelated Duke of York's production just because neither
+  // show has a shows.json sibling to trigger the year gate above). A
+  // different-venue production with no shows.json sibling to attach to is
+  // now dropped instead of merged into the venue it doesn't belong to.
+  test('non-sibling shows do NOT merge a different-venue production of the same title (one-off revival contamination)', () => {
+    const productions = [
+      mezProd('Hamilton', 2015, 100, 3.5, 'Richard Rodgers Theatre'), // current run
+      mezProd('Hamilton', 2003, 40, 3.0, 'Some Regional Theater'),    // unrelated production, different venue
+    ];
+    const matches = matchProductions(productions, ourShows);
+    const hamilton = matches.find(m => m.showId === 'hamilton-2015');
+    assert.ok(hamilton, 'expected Hamilton match');
+    assert.deepStrictEqual(hamilton.prodIds, ['pid-hamilton-2015'], `expected only the current-venue production, got ${JSON.stringify(hamilton.prodIds)}`);
   });
 });
 

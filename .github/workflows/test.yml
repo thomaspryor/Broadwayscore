@@ -210,8 +210,13 @@ on:
       - 'scripts/replay-pending-bylines.js'
       # tests/unit/cast-changes-validate-event.test.mjs
       - 'scripts/scrape-cast-changes.js'
-      # tests/unit/mezzanine-override-collision-auditor.test.mjs
+      # tests/unit/mezzanine-override-collision-auditor.test.mjs +
+      # tests/unit/mezzanine-sibling-year-gate.test.mjs. Colocated test
+      # registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — path-listed so a solo
+      # edit to either triggers CI.
       - 'scripts/scrape-mezzanine-audience.js'
+      - 'scripts/scrape-mezzanine-audience.test.mjs'
       # tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
       - 'scripts/scrape-nysr-reviews.js'
       # tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
