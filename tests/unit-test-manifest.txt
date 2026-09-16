@@ -82,8 +82,8 @@ scripts/ingest-review-from-url.test.mjs
 scripts/ingest-urls.test.mjs
 scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
+scripts/lib/archive-cache-guard.test.mjs
 scripts/lib/audit-push-retry-budgets.test.mjs
-scripts/lib/bww-archive-category-guard.test.mjs
 scripts/lib/cast-changes-data-quality.test.mjs
 scripts/lib/check-critic-coverage.test.mjs
 scripts/lib/check-merge-history.test.mjs
@@ -770,6 +770,7 @@ tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-thestage-roundups-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-westendtheatre-push-timeout.test.mjs
+tests/unit/scraper-spend-attribution.test.mjs
 tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
 tests/unit/scrapingdog-ack.test.mjs
