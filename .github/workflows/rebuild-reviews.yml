@@ -188,6 +188,20 @@ jobs:
         run: node scripts/heal-orphaned-duplicate-pointers.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
+      # BRO-2409: the TWO steps immediately above are independent self-heals
+      # that can each clear one half of an A<->B same-URL duplicateOf/
+      # duplicateTextOf pair with no knowledge of the other — leaving a
+      # cluster with ZERO duplicate pointer on either side, invisible to
+      # every OTHER dedup mechanism (they all require an existing pointer to
+      # find a pair), so both members silently double-score. Running this
+      # sweep immediately after both closes the race at its source, in the
+      # same run that creates it, rather than waiting for a separate cron to
+      # notice hours later. Confirmed live on 22 real same-URL clusters.
+      - name: Sweep fully-unsuppressed same-URL clusters (post cycle-clear)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/fix-unflagged-same-url-clusters.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
       # Coerce URL-shaped critic names (scraper grabbed the byline link href) to
       # a clean personal name or Unknown. Save-time guard lives in
       # review-file-writer.js; this sweeps files that predate it / bypassed it.
