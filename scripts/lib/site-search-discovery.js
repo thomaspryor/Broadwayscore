@@ -152,14 +152,17 @@ function parterrePostMatchesShow(post, showWords) {
 }
 
 /**
- * Operawire's WP REST search is fuzzy full-text, not a title match — a
- * search for "Innocence" can surface an unrelated Handel Festspiele Halle
- * review that happens to rank on the term elsewhere in the post. The
- * house reject-list in filterOperaUrls only catches wrong-VENUE hits; this
- * catches wrong-OPERA hits by requiring the post's own title/slug to
- * actually mention the show (same threshold as Parterre/Bachtrack above).
+ * WordPress `_fields=link,title,date` search results are fuzzy full-text,
+ * not a title match — a search for "Innocence" can surface an unrelated
+ * Handel Festspiele Halle review that happens to rank on the term elsewhere
+ * in the post. The house reject-list in filterOperaUrls only catches
+ * wrong-VENUE hits; this catches wrong-OPERA hits by requiring the post's
+ * own title/slug to actually mention the show (same threshold as
+ * Parterre/Bachtrack above). Shared by every opera outlet whose WP REST
+ * response includes a `title` field (Operawire, NYCR, Seen and Heard
+ * International, The New Criterion).
  */
-function operawirePostMatchesShow(post, titleWords) {
+function wpPostMatchesShow(post, titleWords) {
   const title = (post.title?.rendered || '').toLowerCase().replace(/<[^>]+>/g, '');
   const slug = (post.link || '').toLowerCase();
   const text = title + ' ' + slug;
@@ -617,7 +620,7 @@ const SITE_SEARCH_ENDPOINTS = {
     // Operawire WP REST API — search by show title. Review URLs reliably contain
     // the show name in the slug (e.g. /metropolitan-opera-2025-26-review-{title}/).
     // Three layers, in order below: review-slug filter, title-word validation
-    // (operawirePostMatchesShow — belt-and-suspenders with searchOutletSite's
+    // (wpPostMatchesShow — belt-and-suspenders with searchOutletSite's
     // own urlLooksLikeReview() slug check, but validates the WP post TITLE
     // too, which the slug-only check can't see), then filterOperaUrls' house
     // reject-list + year window for anything that still names the right opera
@@ -638,7 +641,7 @@ const SITE_SEARCH_ENDPOINTS = {
       // post's own title/slug actually names the show before it becomes a
       // candidate URL (catches wrong-opera hits the house reject-list can't).
       const titleWords = operaTitleWords(showTitle);
-      const titleMatched = reviewPosts.filter(p => operawirePostMatchesShow(p, titleWords));
+      const titleMatched = reviewPosts.filter(p => wpPostMatchesShow(p, titleWords));
       const urls = titleMatched.map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'operawire', showId, openingDate);
     },
@@ -653,12 +656,15 @@ const SITE_SEARCH_ENDPOINTS = {
     // el-clasico theme; REST API is enabled and unauthenticated. URL pattern
     // is YYYY/MM/slug, so isUrlYearOutsideWindow filters historical productions
     // (NYCR returns the 2022 Eugene Onegin for a 2026 search; year filter drops it).
+    // wpPostMatchesShow catches the fuzzy-search wrong-opera case (BRO-1095
+    // what-else follow-up, 2026-09-15 — same class of bug found live on Operawire).
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
       const q = encodeURIComponent(showTitle);
       const url = `https://newyorkclassicalreview.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
       const data = await fetchSSR(url);
       const posts = _safeJsonArray(data, 'new-york-classical-review');
-      const urls = posts.map(p => p.link).filter(Boolean);
+      const titleWords = operaTitleWords(showTitle);
+      const urls = posts.filter(p => wpPostMatchesShow(p, titleWords)).map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'new-york-classical-review', showId, openingDate);
     },
   },
@@ -670,13 +676,15 @@ const SITE_SEARCH_ENDPOINTS = {
     applies: (show) => show.type === 'opera',
     // Seen and Heard International — UK/international classical reviews. WP REST
     // is Cloudflare-protected (403 direct); fetchSSR's fallback handles it.
-    // URL pattern: /YYYY/MM/slug/
+    // URL pattern: /YYYY/MM/slug/. wpPostMatchesShow catches the fuzzy-search
+    // wrong-opera case (BRO-1095 what-else follow-up, 2026-09-15).
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
       const q = encodeURIComponent(showTitle);
       const url = `https://seenandheard-international.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
       const data = await fetchSSR(url);
       const posts = _safeJsonArray(data, 'seen-and-heard-international');
-      const urls = posts.map(p => p.link).filter(Boolean);
+      const titleWords = operaTitleWords(showTitle);
+      const urls = posts.filter(p => wpPostMatchesShow(p, titleWords)).map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'seen-and-heard-international', showId, openingDate);
     },
   },
@@ -687,13 +695,15 @@ const SITE_SEARCH_ENDPOINTS = {
     requiresJs: false,
     applies: (show) => show.type === 'opera',
     // The New Criterion — opera dispatch column. WP REST is unauthenticated.
-    // URL pattern: /dispatch/{slug}/
+    // URL pattern: /dispatch/{slug}/. wpPostMatchesShow catches the fuzzy-search
+    // wrong-opera case (BRO-1095 what-else follow-up, 2026-09-15).
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
       const q = encodeURIComponent(showTitle);
       const url = `https://newcriterion.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
       const data = await fetchSSR(url);
       const posts = _safeJsonArray(data, 'the-new-criterion');
-      const urls = posts.map(p => p.link).filter(Boolean);
+      const titleWords = operaTitleWords(showTitle);
+      const urls = posts.filter(p => wpPostMatchesShow(p, titleWords)).map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'the-new-criterion', showId, openingDate);
     },
   },
@@ -1342,5 +1352,5 @@ module.exports = {
   filterOperaUrls,
   isOperawireReviewUrl,
   parterrePostMatchesShow,
-  operawirePostMatchesShow,
+  wpPostMatchesShow,
 };

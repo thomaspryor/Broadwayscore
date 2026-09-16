@@ -20,7 +20,7 @@ import {
   operaTitleWords,
   isOperawireReviewUrl,
   parterrePostMatchesShow,
-  operawirePostMatchesShow,
+  wpPostMatchesShow,
 } from '../../scripts/lib/site-search-discovery.js';
 import { hasNonMetOperaUrlMarker } from '../../scripts/lib/content-filters.js';
 
@@ -97,34 +97,34 @@ test('parterrePostMatchesShow rejects unrelated daily art-song posts', () => {
   assert.equal(parterrePostMatchesShow(post, showWords), false);
 });
 
-test('operawirePostMatchesShow rejects a fuzzy WP full-text hit that never names the show (real gap found 2026-09-15)', () => {
+test('wpPostMatchesShow rejects a fuzzy WP full-text hit that never names the show (real gap found 2026-09-15)', () => {
   const titleWords = operaTitleWords('Innocence');
   const post = {
     title: { rendered: 'Birgit Nilsson Festival 2026 Review: Matilda Sterby in Recital' },
     link: 'https://operawire.com/birgit-nilsson-festival-2026-review-matilda-sterby-in-recital/',
   };
-  assert.equal(operawirePostMatchesShow(post, titleWords), false);
+  assert.equal(wpPostMatchesShow(post, titleWords), false);
 });
 
-test('operawirePostMatchesShow keeps a genuine Met review of the show', () => {
+test('wpPostMatchesShow keeps a genuine Met review of the show', () => {
   const titleWords = operaTitleWords('Eugene Onegin');
   const post = {
     title: { rendered: 'Metropolitan Opera 2025-26 Review: Eugene Onegin' },
     link: 'https://operawire.com/metropolitan-opera-2025-26-review-eugene-onegin/',
   };
-  assert.equal(operawirePostMatchesShow(post, titleWords), true);
+  assert.equal(wpPostMatchesShow(post, titleWords), true);
 });
 
-test('operawirePostMatchesShow matches a single-word title (Math.min(2,1) threshold)', () => {
+test('wpPostMatchesShow matches a single-word title (Math.min(2,1) threshold)', () => {
   const titleWords = operaTitleWords('Turandot');
   const post = {
     title: { rendered: 'Metropolitan Opera 2025-26 Review: Turandot' },
     link: 'https://operawire.com/metropolitan-opera-2025-26-review-turandot/',
   };
-  assert.equal(operawirePostMatchesShow(post, titleWords), true);
+  assert.equal(wpPostMatchesShow(post, titleWords), true);
 });
 
-test('operawirePostMatchesShow / parterrePostMatchesShow become no-ops when the title is all stopwords (pre-existing threshold behavior, not a regression)', () => {
+test('wpPostMatchesShow / parterrePostMatchesShow become no-ops when the title is all stopwords (pre-existing threshold behavior, not a regression)', () => {
   // "Un Ballo in Maschera" tokenizes to [] — every word is <3 chars or a
   // stopword ("un","in") except "ballo"/"maschera" which DO survive, so use
   // a title that's entirely stopwords to hit the true edge case.
@@ -135,13 +135,19 @@ test('operawirePostMatchesShow / parterrePostMatchesShow become no-ops when the 
     title: { rendered: 'Completely Unrelated Recital Review' },
     link: 'https://operawire.com/completely-unrelated-recital-review/',
   };
-  assert.equal(operawirePostMatchesShow(unrelatedPost, titleWords), true);
+  assert.equal(wpPostMatchesShow(unrelatedPost, titleWords), true);
   assert.equal(parterrePostMatchesShow({ ...unrelatedPost, excerpt: { rendered: '' } }, titleWords), true);
 });
 
 test('filterOperaUrls rejects a same-opera Wolf Trap review (non-Met company found live 2026-09-15)', () => {
   const urls = ['https://operawire.com/wolf-trap-opera-2026-review-eugene-onegin/'];
   const filtered = filterOperaUrls(urls, 'operawire', 'eugene-onegin-off-broadway-2026', new Date().toISOString());
+  assert.deepEqual(filtered, []);
+});
+
+test('filterOperaUrls rejects a Valencia (Palau de les Arts) review even in the same calendar year as the Met production (found live 2026-09-15 via seen-and-heard-international)', () => {
+  const urls = ['https://seenandheard-international.com/2026/01/overall-an-excellent-performance-of-eugene-onegin-in-valencia/'];
+  const filtered = filterOperaUrls(urls, 'seen-and-heard-international', 'eugene-onegin-off-broadway-2026', new Date().toISOString());
   assert.deepEqual(filtered, []);
 });
 

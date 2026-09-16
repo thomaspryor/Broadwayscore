@@ -139,8 +139,11 @@ that thread title to decide whether the comment is really about ${productionDesc
      names or unmistakably describes seeing "${showTitle}". Ambiguous "I saw it" / "the
      show was great" in such a thread is NOT relevant (it is almost certainly about a
      different show being discussed).
-   - Any comment that names or is clearly about a DIFFERENT show is NOT relevant, no
-     matter what thread it is in.
+   - A comment that is ONLY about a DIFFERENT show, with no independent reaction to
+     "${showTitle}" itself, is NOT relevant, no matter what thread it is in. But a
+     comparison that ALSO states a reaction to "${showTitle}" — e.g. "Becky Shaw was
+     better, but ${showTitle} was still fun" — IS relevant; score its sentiment per
+     the COMPARATIVE COMMENTS rule below, do not drop it here.
    - Treat an ambiguous "I saw it" / "the show" as referring to "${showTitle}" ONLY
      when the thread title is clearly about "${showTitle}" as this staged production
      (it names the show, its venue, or its market). Otherwise require the comment
