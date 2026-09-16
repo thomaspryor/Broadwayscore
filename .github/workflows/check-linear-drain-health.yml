@@ -44,28 +44,32 @@ jobs:
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
-          OUT=$(node scripts/linear-drain-parked.js --dry-run)
+          set -o pipefail
+          # --cap 1000 so the printed count is the REAL backlog depth. Without
+          # it the drain passes limit = DISPATCH_CAP = 3 into
+          # selectDrainCandidates, which slices to that limit
+          # (scripts/lib/linear-drain-parked.js:85) — so the old `-gt 3` gate
+          # here was comparing a number that could never exceed 3 against 3,
+          # and this monitor had never once been able to fire.
+          OUT=$(node scripts/linear-drain-parked.js --dry-run --cap 1000)
           echo "$OUT"
           # ship-check finding (Codex adversarial review): the kill-switch
           # early-return never prints a "DRY RUN: N candidate(s)" line, so
           # without this check a flipped LINEAR_NEXT_DISABLED=1 would make
-          # the grep below default to N=0 and this monitor would silently
+          # the count below default to 0 and this monitor would silently
           # report "healthy" while dispatch is actually off — the exact
           # silent-starvation failure mode this workflow exists to catch.
           if echo "$OUT" | grep -q 'LINEAR_NEXT_DISABLED=1'; then
             echo "::warning::linear-drain-parked.js reports LINEAR_NEXT_DISABLED=1 — dispatch is switched off repo-wide"
             exit 1
           fi
-          N=$(echo "$OUT" | grep -oE 'DRY RUN: [0-9]+ candidate' | grep -oE '[0-9]+' || true)
-          N=${N:-0}
-          echo "Eligible-but-undispatched parked issues: $N"
-          # More than one dispatch cap's worth (3) sitting idle means the
-          # Mac-side drain isn't running — the exact silent-starvation failure
-          # this workflow exists to surface instead of letting rot for weeks.
-          if [ "$N" -gt 3 ]; then
-            echo "::warning::linear-drain-parked.js has $N eligible parked issues waiting — the Mac-side drain (launchd) may not be running"
-            exit 1
-          fi
+          # The verdict lives in JS, next to the cadence assumption it depends
+          # on, like every other check-*.yml in this repo (check-push-ledger,
+          # check-arm-yield, check-flag-parity) — not as a threshold hardcoded
+          # in YAML. It goes red only when work IS queued AND the drain's own
+          # committed ledger shows no dispatch inside the staleness window;
+          # an idle queue legitimately writes no rows and must not page.
+          echo "$OUT" | node scripts/check-linear-drain-health.js
 
       - name: Notify on failure
         if: failure()
