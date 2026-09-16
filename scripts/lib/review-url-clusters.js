@@ -120,16 +120,26 @@ function resolveTerminalCanonical(showDir, filename) {
  * own url canonicalizes to the same value, and resolves through any
  * duplicateOf chain to the terminal canonical.
  *
+ * `excludeFilename` skips the caller's OWN in-progress file (BRO-3550 ship-check):
+ * without it, a caller whose file already lives in the same show dir being
+ * scanned (collect-review-texts.js's rename path — unlike the _pending drain,
+ * where the file being promoted still lives elsewhere) can match ITSELF on the
+ * very first readdir hit and return early, silently skipping every OTHER
+ * sibling that might share the url. Excluding it lets the scan continue past
+ * a trivial self-match to find a genuine duplicate elsewhere in the directory.
+ *
  * @param {string} reviewTextsRoot - absolute (or cwd-relative) path to the review-texts root
+ * @param {string} [excludeFilename] - basename to skip while scanning (the caller's own file)
  * @returns {string|null} the terminal canonical filename, or null if `url` isn't promoted yet under this outlet
  */
-function findExistingFileForUrl(reviewTextsRoot, showId, outletId, url) {
+function findExistingFileForUrl(reviewTextsRoot, showId, outletId, url, excludeFilename = null) {
   const showDir = path.join(reviewTextsRoot, showId);
   if (!fs.existsSync(showDir)) return null;
   const target = canonicalReviewUrl(url);
   if (!target) return null;
   const prefix = `${outletId}--`;
   for (const f of fs.readdirSync(showDir)) {
+    if (f === excludeFilename) continue;
     if (!f.endsWith('.json') || !f.startsWith(prefix)) continue;
     try {
       const existing = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
@@ -139,4 +149,34 @@ function findExistingFileForUrl(reviewTextsRoot, showId, outletId, url) {
   return null;
 }
 
-module.exports = { canonicalReviewUrl, findUrlClusters, outletOf, resolveTerminalCanonical, findExistingFileForUrl };
+/**
+ * Decide what a critic-name-override rename should do about a url already
+ * promoted under a DIFFERENT filename (findExistingFileForUrl's result).
+ * Ship-check (BRO-3550, Codex adversarial review) flagged that unconditionally
+ * marking duplicate on any same-url sibling can bury a substantive recovered
+ * review under an empty/near-empty byline-extraction stub, and can silently
+ * override a prior deliberate `_duplicateOfCleared` clear (two critics
+ * genuinely sharing one Guardian/BWW url). `shouldMarkDuplicate` is injected
+ * — same DI pattern as this file's `resolveTerminalCanonical` callers and
+ * review-write-guard.js's `wouldFormDuplicateCycle` — so this stays
+ * dependency-free of review-write-guard.js; pass its
+ * `shouldMarkUrlCollisionDuplicate` (the same body-length/quality/
+ * _duplicateOfCleared decision `safeWriteReview`'s own URL-collision path
+ * already uses) at the call site.
+ *
+ * @param {object} params
+ * @param {string} params.currentFile - basename of the file being renamed
+ * @param {string} params.newFilename - the freshly-computed rename target
+ * @param {string|null} params.existingSameUrl - findExistingFileForUrl's result
+ * @param {object} params.newData - the in-memory data about to be written
+ * @param {object|null} params.colliderData - existingSameUrl's parsed data, or null if unreadable
+ * @param {(newData:object, colliderData:object|null) => boolean} params.shouldMarkDuplicate
+ * @returns {{duplicateOf:string, duplicateReason:string}|null}
+ */
+function decideSameUrlDifferentFileGuard({ currentFile, newFilename, existingSameUrl, newData, colliderData, shouldMarkDuplicate }) {
+  if (!existingSameUrl || existingSameUrl === currentFile || existingSameUrl === newFilename) return null;
+  if (!shouldMarkDuplicate(newData, colliderData)) return null;
+  return { duplicateOf: existingSameUrl, duplicateReason: 'same-url-different-byline-extraction' };
+}
+
+module.exports = { canonicalReviewUrl, findUrlClusters, outletOf, resolveTerminalCanonical, findExistingFileForUrl, decideSameUrlDifferentFileGuard };
