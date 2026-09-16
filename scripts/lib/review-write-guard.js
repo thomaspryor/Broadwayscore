@@ -1523,6 +1523,52 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // Orphaned protected-verdict rescue (BRO-2559). A review's on-disk identity
+  // can be RENAMED to a different filename — url-change-invariant above
+  // correctly clears old-URL-derived state when a file's OWN url moves to a
+  // new canonical article, stamping previousUrl/urlCorrectedFrom to remember
+  // where it came from — but that leaves the OLD filename empty. If some
+  // OTHER writer later recreates a file at that now-empty path for the exact
+  // same url (a stale aggregator page that never re-scraped, e.g. BWW's
+  // cached roundup still listing a legacy article id long after a
+  // byline-correction moved this outlet's review to a different filename),
+  // the write looks like a brand-new file with nothing on disk at filePath
+  // to merge/preserve from — so a human-set wrongProduction/wrongShow/
+  // isNotReview verdict on that exact url never lands on the recreated file.
+  //
+  // Measured incident: the-producers-west-end-2025/variety--bob-verini.json,
+  // flagged wrongProduction by hand twice (6092d7b42ac, b7b31d3285a) and
+  // dropped both times by exactly this path — collect-review-texts.js
+  // renamed it to variety--ellise-shafer.json (a legitimate url-change-
+  // invariant clear, recorded via _urlChangedClear), then scrape-bww-
+  // reviews.js recreated variety--bob-verini.json days later from BWW's
+  // still-stale roundup listing of the SAME legacy url.
+  //
+  // Scoped narrowly: only runs for a genuinely brand-new file (nothing at
+  // filePath to merge from), and only matches a sibling in the SAME show
+  // directory, same outlet, whose recorded previousUrl/urlCorrectedFrom
+  // (never its current url — see _findOrphanedProtectedVerdict) equals this
+  // write's url — i.e. the sibling's identity traces back to the exact
+  // article this write is (re)creating a file for. Deliberately separate
+  // from checkUrlCollision/findExistingReviewFile (which decide whether to
+  // MERGE content, and which intentionally skip wrongProduction/duplicateOf
+  // files as merge targets) — this only rescues a narrow set of exclusion-
+  // verdict fields onto the new write, it never merges content into an
+  // existing file.
+  if (!force && !fs.existsSync(filePath) && typeof newData.url === 'string' && newData.url) {
+    const orphan = _findOrphanedProtectedVerdict(filePath, newData);
+    if (orphan) {
+      for (const field of orphan.fields) {
+        const v = newData[field];
+        const incomingIsEmpty = v === undefined || v === null || v === ''
+          || (Array.isArray(v) && v.length === 0);
+        if (incomingIsEmpty) newData[field] = orphan.data[field];
+      }
+      newData._orphanedVerdictRescuedFrom = orphan.filename;
+      console.warn(`[review-write-guard] ${path.basename(filePath)}: rescued protected verdict (${orphan.fields.join(', ')}) from orphaned sibling ${orphan.filename} (same url, different filename)`);
+    }
+  }
+
   // Aggregator score contamination guard (2026-05-25): when scoreSource is in
   // AGGREGATOR_SCORE_SOURCES, the aggregator stars belong in aggregatorStars
   // only — never in originalScore. The merge-mode above can re-introduce a
@@ -1948,6 +1994,74 @@ function shouldMarkPostCorrectionDuplicate(newData, colliderData) {
     || String(colliderData.fullText || '').trim().length >= SUBSTANTIVE_BODY_CHARS;
   if (newHasScore && !colCanScore) return false;
   return true;
+}
+
+// Exclusion-verdict fields the orphan rescue carries forward. Deliberately a
+// NARROW subset of PROTECTED_FIELDS — not fullText/assignedScore/contentTier/
+// duplicateOf/etc, which have their own dedicated collision/dedup reasoning
+// elsewhere (checkUrlCollision, findExistingReviewFile's body-length
+// tiebreaks) that a blind field-copy here would silently corrupt (a rescued
+// fullText made a bodyless post-correction write look "substantive" and
+// defeated shouldMarkPostCorrectionDuplicate's tombstone decision in testing).
+// This list is exactly "a human or auditor decided this identity does not
+// belong here" — the class of verdict that must never depend on which exact
+// filename currently holds it.
+const ORPHAN_RESCUE_FIELDS = [
+  'wrongProduction', 'wrongProductionNote', 'wrongProductionReason', 'wrongProductionReasonAt',
+  'wrongProductionOverride', 'wrongProductionOverrideReason', 'wrongProductionOverrideSetAt', 'wrongProductionOverrideSetBy',
+  'wrongProductionManualClear', 'humanReviewedWrongProduction',
+  'wrongShow', 'wrongShowReason', 'wrongShowNote', 'wrongShowReasonAt',
+  'wrongShowOverride', 'wrongShowOverrideReason', 'wrongShowOverrideAt',
+  'wrongShowManualClear',
+  'isNotReview', 'isNotReviewReason', 'isNotReviewSetAt', 'isNotReviewSetBy', 'isNotReviewManualClear',
+  'wrongAttribution', 'wrongAttributionReason', 'wrongArticleManualClear', 'humanReviewedWrongArticle',
+  'wrongFullText',
+];
+
+// Sibling lookup for the "orphaned protected-verdict rescue" call site above.
+// Only ever reads OTHER files in the directory (filePath itself is known not
+// to exist at the call site). Matches on previousUrl/urlCorrectedFrom ONLY
+// (not the sibling's current url) — a live url match is a DUPLICATE-content
+// question checkUrlCollision already owns; previousUrl/urlCorrectedFrom means
+// the sibling's identity used to BE this exact url before it moved on, which
+// is the orphaned-identity question this function exists to answer. Returns
+// { filename, data, fields } for the first same-outlet sibling whose recorded
+// prior url matches newData.url and carries a live verdict field, or null.
+function _findOrphanedProtectedVerdict(filePath, newData) {
+  const dir = path.dirname(filePath);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  } catch {
+    return null;
+  }
+  const { normalizeOutlet } = require('./review-normalization');
+  const targetOutlet = normalizeOutlet(newData.outletId || newData.outlet || path.basename(filePath).split('--')[0]);
+  const targetUrl = _normalizeUrlForCollision(newData.url);
+  for (const f of files) {
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+    } catch {
+      continue;
+    }
+    if (!data) continue;
+    const fileOutlet = normalizeOutlet(data.outletId || f.split('--')[0]);
+    if (fileOutlet !== targetOutlet) continue;
+    const priorUrls = [data.previousUrl, data.urlCorrectedFrom]
+      .filter(u => typeof u === 'string' && u);
+    const urlMatches = priorUrls.some(u => _normalizeUrlForCollision(u) === targetUrl);
+    if (!urlMatches) continue;
+    const fields = ORPHAN_RESCUE_FIELDS.filter(k => {
+      const v = data[k];
+      return v !== undefined && v !== null
+        && !(typeof v === 'string' && v.length === 0)
+        && !(Array.isArray(v) && v.length === 0);
+    });
+    if (fields.length === 0) continue;
+    return { filename: f, data, fields };
+  }
+  return null;
 }
 
 function checkUrlCollision(filePath, newData) {
