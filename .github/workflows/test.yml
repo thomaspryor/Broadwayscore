@@ -2130,6 +2130,12 @@ on:
       # so an edit triggers CI per feedback_test_yml_push_path_allowlist.
       - 'scripts/fantasy-weekly-email.js'
       - 'scripts/send-btc-results.js'
+      # tests/unit-test-manifest.txt (node --test batch). The dependency
+      # (scripts/lib/btc-confirmation.js) is already covered by the
+      # scripts/lib/** glob above, but the top-level script + test need
+      # their own entry so a solo edit triggers CI.
+      - 'scripts/send-btc-confirmation-emails.js'
+      - 'scripts/send-btc-confirmation-emails.test.mjs'
       - 'scripts/scrape-drama-desk.js'
       - 'scripts/scrape-outer-critics.js'
       - 'scripts/scrape-drama-league.js'
