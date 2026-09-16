@@ -240,6 +240,14 @@ fi
 if echo "$ALL_CHANGED_FILES" | grep -qE "^src/.*\.(ts|tsx)$"; then
   WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}demo-flags"
 fi
+# BRO-3684: alert-ledger-commit now shells out to scan-alert-ledger-gaps.js,
+# which in turn requires alert-ledger-commit-check.js — neither file matched
+# any trigger above (the broad `^scripts/.*\.js$` one below only adds
+# ledger-coverage), so a scanner/checker-only edit that broke the check would
+# not re-run it locally before push.
+if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/lib/(scan-alert-ledger-gaps|alert-ledger-commit-check)\.js$"; then
+  WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}alert-ledger-commit"
+fi
 # reset-soft-partial-commit scans scripts/*.js content (not workflow YAML),
 # so it needs its own scripts/-scoped trigger — same class of gap
 # lint-write-routing.sh's checks fixed above (card #687).
