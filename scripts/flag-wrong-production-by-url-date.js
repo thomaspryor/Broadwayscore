@@ -20,6 +20,13 @@
  * lead, 30d trail, priorRuns/tourLegs-aware), and the reason text now always
  * carries the "Auto-flagged:" prefix the autoclear guard checks for.
  *
+ * This script calls the RAW helper with no critic-name gating (unlike
+ * getWrongProductionReasonForUnknownCritic's ingest-time callers, which only
+ * fire for Unknown/Staff bylines). Dry-run output annotates named-critic
+ * candidates with "[NAMED CRITIC]" so a human reviews those before --apply —
+ * see the illinoise-2024 false positive this refactor found and fixed
+ * (undeclared priorRuns for a real named critic's pre-transfer review).
+ *
  * Usage:
  *   node scripts/flag-wrong-production-by-url-date.js              # dry run
  *   node scripts/flag-wrong-production-by-url-date.js --apply      # write flags
@@ -27,7 +34,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { shouldSkipWrongProductionAudit, getWrongProductionReasonFromUrl } = require('./lib/review-guards');
+const { shouldSkipWrongProductionAudit, getWrongProductionReasonFromUrl, isCriticUnknown } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -63,7 +70,17 @@ for (const showId of dirs) {
     if (!reason) continue;
 
     const urlDateMatch = reason.match(/\b(\d{4}-\d{2}-\d{2})\b/);
-    flaggedDetails.push({ showId, file: f, urlDate: urlDateMatch ? urlDateMatch[1] : null, score: d.assignedScore });
+    // This script calls the raw getWrongProductionReasonFromUrl with no
+    // critic-name gating (unlike getWrongProductionReasonForUnknownCritic's
+    // ingest-time callers, which only fire for Unknown/Staff bylines because
+    // named critics get the benefit of the doubt on organic pre-transfer
+    // coverage). Flagging which candidates carry a named critic here doesn't
+    // change what gets flagged — it tells the human reviewing dry-run output
+    // before --apply which candidates carry the higher false-positive prior
+    // (illinoise-2024 was exactly this shape: a real Jesse Green NYT review of
+    // an undeclared pre-Broadway run, BRO-3509).
+    const namedCritic = !isCriticUnknown(d.criticName);
+    flaggedDetails.push({ showId, file: f, urlDate: urlDateMatch ? urlDateMatch[1] : null, score: d.assignedScore, namedCritic });
     if (APPLY) {
       d.wrongProduction = true;
       d.wrongProductionReason = reason;
@@ -77,4 +94,4 @@ for (const showId of dirs) {
 
 console.log(APPLY ? 'APPLIED' : 'DRY RUN');
 console.log('Flagged:', flagged);
-flaggedDetails.forEach(x => console.log(' ', x.showId, '|', x.file, '|', x.urlDate, '| score:', x.score));
+flaggedDetails.forEach(x => console.log(' ', x.showId, '|', x.file, '|', x.urlDate, '| score:', x.score, x.namedCritic ? '| [NAMED CRITIC — verify priorRuns before --apply]' : ''));
