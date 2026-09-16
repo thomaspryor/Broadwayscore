@@ -207,7 +207,7 @@
       "cells": {
         "usatoday": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "CIRCUIT_OPEN"
+          "state": "GAP"
         },
         "wsj": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
@@ -337,6 +337,18 @@
       "market": "off-broadway",
       "openingDate": "2026-09-23",
       "title": "Così fan tutte"
+    },
+    "drunk-shakespeare-off-broadway-2022": {
+      "cells": {
+        "wsj": {
+          "firstSeenAt": "2026-09-16T13:09:35.436Z",
+          "state": "SUPPRESSED",
+          "url": "http://www.wsj.com/articles/alcohol-fueled-shakespeare-productions-serve-classics-with-a-twist-1409106604?mod=e2fb"
+        }
+      },
+      "market": "off-broadway",
+      "openingDate": "2022-10-05",
+      "title": "Drunk Shakespeare"
     },
     "electra-persona-west-end-2026": {
       "cells": {
@@ -867,25 +879,10 @@
     },
     "my-sons-a-queer-but-what-can-you-do-west-end-2026": {
       "cells": {
-        "standard": {
-          "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "IN_FLIGHT",
-          "url": "https://www.standard.co.uk/culture/theatre/my-sons-a-queer-but-what-can-you-do-garrick-theatre-review-west-end-b1034714.html"
-        },
-        "telegraph": {
-          "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "IN_FLIGHT",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/sons-queer-what-can-do-garrick-theatre-review-rob-madges-bittersweet/"
-        },
         "timeout": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
           "state": "IN_FLIGHT",
           "url": "https://www.timeout.com/london/theatre/my-sons-a-queer-but-what-can-you-do-review"
-        },
-        "times-uk": {
-          "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "IN_FLIGHT",
-          "url": "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz"
         }
       },
       "market": "west-end",
@@ -1071,7 +1068,7 @@
         },
         "usatoday": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "CIRCUIT_OPEN",
+          "state": "GAP",
           "url": "https://www.usatoday.com/story/entertainment/music/2025/03/24/othello-denzel-washington-jake-gyllenhaal-review/82490987007/"
         },
         "variety": {

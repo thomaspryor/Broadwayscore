@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-16T07:01:56.180Z",
+  "generatedAt": "2026-09-16T13:09:32.551Z",
   "windowDays": 45,
-  "showsScanned": 67,
+  "showsScanned": 65,
   "gaps": [
     {
       "showId": "benevolent-off-broadway-2026",
@@ -16,9 +16,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 445.7540638888889,
+      "fileAgeHours": 451.8808408333333,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 407.3450027777778
+      "nonTerminalAgeHours": 413.4717725
     }
   ],
   "contradictions": []

@@ -1,15 +1,30 @@
 {
-  "generatedAt": "2026-09-16T07:02:06.725Z",
+  "generatedAt": "2026-09-16T13:09:43.227Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 130,
-  "clean": 120,
-  "defective": 10,
+  "checked": 135,
+  "clean": 126,
+  "defective": 9,
   "byType": {
-    "score-drift": 10
+    "score-drift": 9
   },
   "shows": [
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
+      "openingDate": "2026-09-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.71 vs local 73.76 (Δ0.05)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27
+    },
     {
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
@@ -18,12 +33,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 76.91 vs local 77.11 (Δ0.2)"
+          "detail": "deployed cs 76.97 vs local 77.23 (Δ0.26)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 20
+      "localCount": 21,
+      "deployedCount": 21
     },
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
@@ -33,7 +48,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 80.86 vs local 80.69 (Δ0.17)"
+          "detail": "deployed cs 80.63 vs local 80.92 (Δ0.29)"
         }
       ],
       "missingFromProd": [],
@@ -48,7 +63,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.87 vs local 78.51 (Δ0.36)"
+          "detail": "deployed cs 78.92 vs local 79.16 (Δ0.24)"
         }
       ],
       "missingFromProd": [],
@@ -63,7 +78,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.9 vs local 72.74 (Δ0.16)"
+          "detail": "deployed cs 72.94 vs local 72.72 (Δ0.22)"
         }
       ],
       "missingFromProd": [],
@@ -78,7 +93,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.59 vs local 78.5 (Δ0.09)"
+          "detail": "deployed cs 78.67 vs local 78.48 (Δ0.19)"
         }
       ],
       "missingFromProd": [],
@@ -93,7 +108,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 75.68 vs local 75.8 (Δ0.12)"
+          "detail": "deployed cs 75.54 vs local 75.49 (Δ0.05)"
         }
       ],
       "missingFromProd": [],
@@ -108,27 +123,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 84.88 vs local 84.66 (Δ0.22)"
+          "detail": "deployed cs 84.62 vs local 84.79 (Δ0.17)"
         }
       ],
       "missingFromProd": [],
       "localCount": 15,
       "deployedCount": 15
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.99 vs local 73.87 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -138,27 +138,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 88.02 vs local 88.08 (Δ0.06)"
+          "detail": "deployed cs 88.08 vs local 88.02 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
       "localCount": 23,
       "deployedCount": 23
-    },
-    {
-      "showId": "six-the-musical-west-end-2021",
-      "title": "SIX the Musical",
-      "openingDate": "2019-01-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.96 vs local 82.07 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16
     }
   ]
 }
