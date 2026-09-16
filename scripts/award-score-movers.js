@@ -19,7 +19,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const HISTORY_DIR = path.join(ROOT, 'data', 'award-score-history');
+// Override for tests: see the matching comment in snapshot-award-scores.js.
+const HISTORY_DIR = process.env.AWARD_SCORE_HISTORY_DIR || path.join(ROOT, 'data', 'award-score-history');
 
 function parseArgs(argv) {
   const args = { weekStart: null, end: null, market: 'broadway', top: 5 };
