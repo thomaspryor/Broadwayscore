@@ -1,3 +1,15 @@
+// timebomb-audit-exempt: `fresh`/`stale` below are stamped via the shimmed
+//   Date.now() of THIS process, then read by check-linear-drain-health.js
+//   running as a *separate* `node` child (execFileSync, no --import of the
+//   clock-shift preload) whose own Date.now() is the real, unshifted clock.
+//   Under a shifted run the parent's "now" and "stale" timestamps land
+//   decades away from the child's real clock, so the verdicts it computes no
+//   longer match what the tests expect. Not a real time bomb — production
+//   runs both sides in the same process (or at worst seconds apart on the
+//   same real clock). Same "clock-shift doesn't reach spawned children" class
+//   documented in tests/unit/validate-added-review-ownership.test.mjs and
+//   scripts/audit-time-bomb-tests.js's own docstring.
+//
 // scripts/check-linear-drain-health.test.mjs — CLI-level regression tests.
 //
 // These exist because every pure-function test passed while the real pipeline

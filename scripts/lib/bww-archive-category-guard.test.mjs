@@ -1,3 +1,12 @@
+// timebomb-audit-exempt: bww-archive-category-guard.js:64 measures cache age
+//   as (Date.now() - fs.statSync(archivePath).mtimeMs). audit-time-bomb-
+//   tests.js shifts the PROCESS clock but cannot shift the FILESYSTEM, so
+//   under a shifted run every cache fixture written by these tests reads as
+//   decades old. Not a real time bomb — production compares two readings of
+//   the same real clock. Same class as tests/unit/ttl-cache.test.mjs; see
+//   that file's exemption for the general note in
+//   scripts/audit-time-bomb-tests.js's own docstring.
+//
 // Regression guard for the poisoned bww-reviews cache class.
 //
 // A regional premiere and its later Broadway transfer share a title, so
