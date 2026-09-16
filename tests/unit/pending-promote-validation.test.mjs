@@ -11,6 +11,10 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { pendingPromoteRejectReason } = require('../../scripts/replay-pending-bylines.js');
@@ -112,5 +116,129 @@ describe('pendingPromoteRejectReason — temporal wrong-production gate', () => 
     const r = pendingPromoteRejectReason(
       TRENEMAN_URL, titledDated('Oresteia review', '2017-08-24'), show);
     assert.equal(r, null, `a declared priorRun window must exempt the date, got reject: ${r}`);
+  });
+});
+
+// BRO-1391 byline-explosion root cause: Times UK / WhatsOnStage article pages carry a
+// rotating "more from our critics" widget, so extractAuthorFromHtml/extractHighConfidenceAuthor
+// can return a DIFFERENT critic name for the SAME url on different fetches. Multiple _pending
+// stub files for that one url (one per discovery event: RSS, SERP, aggregator crosslink) each
+// promoted under a distinct {outlet}--{critic}.json filename, since the promotion guard only
+// checked "does this exact target filename already exist" — never "is this url already a
+// promoted primary under a different name". findExistingFileForUrl closes that gap by scanning
+// the show dir for an existing file (same outlet) whose canonicalReviewUrl matches, so a second
+// promotion attempt files itself as a duplicate instead of a sibling primary.
+describe('findExistingFileForUrl', () => {
+  // findExistingFileForUrl reads REVIEW_TEXTS_ROOT, computed from __dirname at module-load
+  // time as `<repo>/data/review-texts` (the real corpus is gitignored + machine-local, not
+  // present in CI). Load a throwaway copy of the script from a fixture tree so that path
+  // resolves into fixture data instead.
+  const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'find-existing-file-for-url-'));
+  const reviewTextsDir = path.join(fixtureRoot, 'data', 'review-texts');
+  fs.mkdirSync(reviewTextsDir, { recursive: true });
+
+  const realScriptsDir = path.dirname(fileURLToPath(new URL('../../scripts/replay-pending-bylines.js', import.meta.url)));
+  const fixtureScriptsDir = path.join(fixtureRoot, 'scripts');
+  fs.mkdirSync(fixtureScriptsDir, { recursive: true });
+  fs.symlinkSync(path.join(realScriptsDir, 'lib'), path.join(fixtureScriptsDir, 'lib'));
+  fs.copyFileSync(
+    path.join(realScriptsDir, 'replay-pending-bylines.js'),
+    path.join(fixtureScriptsDir, 'replay-pending-bylines.js'),
+  );
+  const { findExistingFileForUrl } = require(path.join(fixtureScriptsDir, 'replay-pending-bylines.js'));
+
+  const showDir = path.join(reviewTextsDir, 'test-show-2026');
+  fs.mkdirSync(showDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(showDir, 'times-uk--ann-treneman.json'),
+    JSON.stringify({ url: 'https://www.thetimes.com/article/some-review-abc123' }),
+  );
+  fs.writeFileSync(
+    path.join(showDir, 'financialtimes--sarah-hemming.json'),
+    JSON.stringify({ url: 'https://www.ft.com/some-other-review' }),
+  );
+
+  test('matches an exact URL under the same outlet', () => {
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.thetimes.com/article/some-review-abc123'),
+      'times-uk--ann-treneman.json',
+    );
+  });
+
+  test('matches through query-string/hash/trailing-slash scrape variants', () => {
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.thetimes.com/article/some-review-abc123?eafs_enabled=false'),
+      'times-uk--ann-treneman.json',
+    );
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.thetimes.com/article/some-review-abc123/#comments'),
+      'times-uk--ann-treneman.json',
+    );
+  });
+
+  test('does not cross-match a different outlet at the same show', () => {
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.ft.com/some-other-review'),
+      null,
+    );
+  });
+
+  test('returns null for a show with no review-texts dir', () => {
+    assert.equal(
+      findExistingFileForUrl('no-such-show-2099', 'times-uk', 'https://example.com/x'),
+      null,
+    );
+  });
+
+  test('returns null when the outlet exists but the URL does not match', () => {
+    assert.equal(
+      findExistingFileForUrl('test-show-2026', 'times-uk', 'https://www.thetimes.com/article/unrelated-review-xyz'),
+      null,
+    );
+  });
+
+  // rebuild-all-reviews.js's duplicateOf resolution only walks ONE hop back — a
+  // file whose duplicateOf target is ITSELF a duplicate is not excluded there,
+  // so it leaks into reviews.json as a second scored copy of the same content
+  // (Codex adversarial review, BRO-1391). A THIRD promotion for the same url
+  // must resolve to the terminal canonical, not to whichever sibling readdir
+  // happens to return first.
+  describe('chain resolution (rebuild-all-reviews.js duplicateOf is single-hop)', () => {
+    const chainShowDir = path.join(reviewTextsDir, 'chain-show-2026');
+    fs.mkdirSync(chainShowDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(chainShowDir, 'times-uk--zzz-canonical.json'),
+      JSON.stringify({ url: 'https://www.thetimes.com/article/chain-review-1' }),
+    );
+    fs.writeFileSync(
+      path.join(chainShowDir, 'times-uk--aaa-first-dupe.json'),
+      JSON.stringify({ url: 'https://www.thetimes.com/article/chain-review-1', duplicateOf: 'times-uk--zzz-canonical.json' }),
+    );
+
+    test('resolves through an intermediate duplicate to the terminal canonical', () => {
+      assert.equal(
+        findExistingFileForUrl('chain-show-2026', 'times-uk', 'https://www.thetimes.com/article/chain-review-1'),
+        'times-uk--zzz-canonical.json',
+      );
+    });
+
+    test('does not hang on a pre-existing cycle among siblings', () => {
+      const cycleShowDir = path.join(reviewTextsDir, 'cycle-show-2026');
+      fs.mkdirSync(cycleShowDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(cycleShowDir, 'times-uk--a.json'),
+        JSON.stringify({ url: 'https://www.thetimes.com/article/cycle-review', duplicateOf: 'times-uk--b.json' }),
+      );
+      fs.writeFileSync(
+        path.join(cycleShowDir, 'times-uk--b.json'),
+        JSON.stringify({ url: 'https://www.thetimes.com/article/cycle-review', duplicateOf: 'times-uk--a.json' }),
+      );
+      const result = findExistingFileForUrl('cycle-show-2026', 'times-uk', 'https://www.thetimes.com/article/cycle-review');
+      assert.ok(result === 'times-uk--a.json' || result === 'times-uk--b.json', `expected a cycle member, got ${result}`);
+    });
+  });
+
+  test.after(() => {
+    fs.rmSync(fixtureRoot, { recursive: true, force: true });
   });
 });

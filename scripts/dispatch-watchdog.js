@@ -518,8 +518,28 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     const r = await runBscNext(item.taskId, { onTick: () => hb({ busy: `dispatching #${item.taskId}` }) });
     if (r.code === 0) results.dispatched.push(item.taskId);
     else {
-      results.failed.push(item.taskId);
       console.error(`[watchdog] bsc-next --id ${item.taskId} exited ${r.code}: ${r.out.split('\n').slice(-3).join(' / ')}`);
+      const structuralReason = core.structuralGuardRefusal(r.out);
+      if (structuralReason) {
+        // BRO-3481: this class of refusal is deterministic — the child's own
+        // dispatch guard will refuse identically on every retry, so letting
+        // the normal retry loop rediscover it burns a REDISPATCH claim each
+        // time before noLaunchPark's generic "produced no launch" message
+        // eventually fires several sweeps later. Park now, naming the
+        // guard's own reason, instead of waiting for retries to exhaust.
+        dispatchLedger.appendEntry({
+          event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject,
+          reason: `dispatch guard refuses structurally: ${structuralReason}`,
+        });
+        pageOwner({
+          conditionKey: `watchdog-park:${item.taskId}`,
+          title: `Watchdog parked #${item.taskId} — dispatch guard refuses by construction`,
+          description: `Watchdog: card "${item.subject}" cannot be redispatched by the watchdog's own argv — its dispatcher refuses: "${structuralReason}". This will NOT clear on retry. Re-arm with ${reArmHintFor(item.taskId)} once you've confirmed it's safe (or fix the underlying cause).`,
+        });
+        results.parked.push(item.taskId);
+      } else {
+        results.failed.push(item.taskId);
+      }
     }
     hb({});
   }

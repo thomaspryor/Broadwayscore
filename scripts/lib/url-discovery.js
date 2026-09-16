@@ -1192,13 +1192,6 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
   // Filter and match results
   const targetDomain = domain || oldDomain;
-  const showTitleLower = showInfo.title.toLowerCase();
-  const primaryTitleLower = primaryTitle ? primaryTitle.toLowerCase() : null;
-  const shortTitle = (review.showId || '')
-    .replace(/-\d{4}$/, '')
-    .replace(/-/g, ' ')
-    .toLowerCase();
-  const shortSlug = shortTitle.replace(/\s+/g, '-');
 
   for (const result of results.slice(0, 5)) {
     const url = result.url || result.link;
@@ -1273,13 +1266,21 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (!domainMatchesExpected(targetDomain.replace(/^www\./, ''), urlDomain)) continue;
 
     const title = (result.title || '').toLowerCase();
-    const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
-    const primarySlugCheck = primaryTitleLower ? primaryTitleLower.replace(/\s+/g, '-') : null;
 
-    const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle)
-      || (primaryTitleLower && title.includes(primaryTitleLower));
-    const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug)
-      || (primarySlugCheck && urlLower.includes(primarySlugCheck));
+    // Token-based match against the CANONICAL title (not a showId-derived
+    // slug — a showId like "dad-dont-read-this-off-broadway-2026" bakes in
+    // the category suffix, which no real review URL or headline ever
+    // contains, so that comparison could never fire). Reuses the same
+    // urlLooksLikeReview() helper the cross-show slug guard below already
+    // calls on `url` — it already folds in the comma-subtitle short-title
+    // fallback (shortTitleCandidate, the Beaches incident) via
+    // urlTitleWordsPass, and is the established pattern for treating a
+    // prose title as if it were a URL (see urlOrTitleLooksLikeReview).
+    // [BRO-1351]
+    const titleHasShow = urlLooksLikeReview(title, showInfo.title)
+      || (primaryTitle && urlLooksLikeReview(title, primaryTitle));
+    const urlHasShow = urlLooksLikeReview(urlLower, showInfo.title)
+      || (primaryTitle && urlLooksLikeReview(urlLower, primaryTitle));
     const reviewTerms = ['review', 'theater', 'theatre', 'stage', 'musical', 'broadway', 'west end',
       'culture', 'arts', 'entertainment', 'article'];
     const titleHasReview = reviewTerms.some(t => title.includes(t));
