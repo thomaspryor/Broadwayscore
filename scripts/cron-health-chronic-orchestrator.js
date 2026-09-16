@@ -36,6 +36,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { classifyJob } = require('./lib/cron-health.js');
 
 const USAGE = `cron-health-chronic-orchestrator.js — Diagnose a chronically-stale cron workflow.
 
@@ -85,35 +86,6 @@ function readJobTimeouts(workflowFile) {
     }
   }
   return timeouts;
-}
-
-function minutesBetween(startIso, endIso) {
-  if (!startIso || !endIso) return null;
-  return (new Date(endIso).getTime() - new Date(startIso).getTime()) / 60000;
-}
-
-function classifyJob(job, timeouts) {
-  if (job.conclusion === 'success' || job.conclusion === 'skipped') return job.conclusion;
-
-  const durationMin = minutesBetween(job.startedAt, job.completedAt);
-  const timeout = timeouts[job.name];
-
-  if (job.conclusion === 'cancelled') {
-    if (timeout != null && durationMin != null && durationMin >= timeout * 0.85) {
-      return `timeout-cancelled (${durationMin.toFixed(0)}min vs ${timeout}min timeout)`;
-    }
-    return 'cancelled (not timeout-shaped — check for a concurrency cancel or manual stop)';
-  }
-
-  if (job.conclusion === 'failure') {
-    const failedSteps = (job.steps || []).filter((s) => s.conclusion === 'failure');
-    const pushStep = failedSteps.find((s) => /^(commit|push)\b/i.test(s.name));
-    if (pushStep) return `push-contention (failed step: "${pushStep.name}")`;
-    if (failedSteps.length) return `other failure (failed step: "${failedSteps[0].name}")`;
-    return 'other failure';
-  }
-
-  return job.conclusion || 'unknown';
 }
 
 async function main() {
