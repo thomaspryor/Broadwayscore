@@ -2572,12 +2572,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
       "firstSeen": "2026-09-09T11:30:02.094Z",
-      "lastSeen": "2026-09-16T00:27:30.099Z",
-      "lastNotifiedAt": "2026-09-09T11:30:02.094Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-16T11:43:26.349Z",
+      "lastNotifiedAt": "2026-09-16T11:43:26.349Z",
+      "lastSurfacedAt": "2026-09-16T11:43:26.349Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": null
     },
     "cron-health:Audit Aggregator Review Gap": {
       "status": "resolved",
@@ -2788,12 +2788,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Golden Boy",
       "firstSeen": "2026-09-13T16:24:10.983Z",
-      "lastSeen": "2026-09-16T00:27:32.938Z",
+      "lastSeen": "2026-09-16T11:43:29.081Z",
       "lastNotifiedAt": "2026-09-13T16:24:10.983Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-placeholder-synopsis-night-city-off-west-end-2026": {
       "status": "open",
@@ -2822,12 +2822,12 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
       "firstSeen": "2026-09-13T16:24:13.022Z",
-      "lastSeen": "2026-09-16T00:27:32.940Z",
+      "lastSeen": "2026-09-16T11:43:30.298Z",
       "lastNotifiedAt": "2026-09-13T16:24:13.022Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "gap:the-children-off-west-end-2026/times-uk--the-times.json": {
       "status": "resolved",
@@ -2923,13 +2923,13 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-15T07:50:19.616Z",
-      "lastSeen": "2026-09-16T00:27:32.936Z",
+      "lastSeen": "2026-09-16T11:43:29.079Z",
       "lastNotifiedAt": "2026-09-15T07:50:19.616Z",
       "lastSurfacedAt": "2026-09-15T07:50:19.616Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Data quality: provider spend ledger": {
       "status": "open",
@@ -3083,26 +3083,74 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-16T09:13:20.523Z",
+      "lastSeen": "2026-09-16T11:47:30.667Z",
       "lastNotifiedAt": "2026-09-16T06:16:49.523Z",
       "lastSurfacedAt": "2026-09-16T06:16:49.523Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-16T09:13:20.527Z",
+      "lastSeen": "2026-09-16T11:47:30.671Z",
       "lastNotifiedAt": "2026-09-16T06:16:49.526Z",
       "lastSurfacedAt": "2026-09-16T06:16:49.526Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
+    },
+    "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on IN HONOR OF JEAN-MICHEL BASQUIAT",
+      "firstSeen": "2026-09-16T11:43:26.352Z",
+      "lastSeen": "2026-09-16T11:43:26.352Z",
+      "lastNotifiedAt": "2026-09-16T11:43:26.352Z",
+      "lastSurfacedAt": "2026-09-16T11:43:26.352Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-slug-mismatch-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review URL cross-show mismatch on IN HONOR OF JEAN-MICHEL BASQUIAT",
+      "firstSeen": "2026-09-16T11:43:26.354Z",
+      "lastSeen": "2026-09-16T11:43:26.354Z",
+      "lastNotifiedAt": "2026-09-16T11:43:26.354Z",
+      "lastSurfacedAt": "2026-09-16T11:43:26.354Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-cv-wrongproduction-unhandled-golden-boy-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on Golden Boy",
+      "firstSeen": "2026-09-16T11:43:29.076Z",
+      "lastSeen": "2026-09-16T11:43:29.076Z",
+      "lastNotifiedAt": "2026-09-16T11:43:29.076Z",
+      "lastSurfacedAt": "2026-09-16T11:43:29.076Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:missing:golden-boy-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on Golden Boy",
+      "firstSeen": "2026-09-16T11:43:29.082Z",
+      "lastSeen": "2026-09-16T11:43:29.082Z",
+      "lastNotifiedAt": "2026-09-16T11:43:29.082Z",
+      "lastSurfacedAt": "2026-09-16T11:43:29.082Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
