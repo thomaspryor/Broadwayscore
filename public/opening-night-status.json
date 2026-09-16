@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T16:34:29.313Z",
+  "generatedAt": "2026-09-16T18:13:46.437Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -959,25 +959,23 @@
       "status": "open",
       "slug": "golden-boy-off-west-end",
       "thumbnail": "/images/shows/golden-boy-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 76.24,
-      "liveScore": 76,
-      "scoreDrift": -0.23999999999999488,
+      "siteScore": 76.57,
+      "liveScore": 77,
+      "scoreDrift": 0.4300000000000068,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 3,
+      "total": 8,
+      "t1": 4,
       "t2": 2,
       "t3": 2,
-      "positive": 5,
+      "positive": 6,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:2/3",
-          "T2:1/2",
           "hi-conf:4/6"
         ],
         "highConfidence": 4,
@@ -1003,10 +1001,6 @@
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -1161,6 +1155,18 @@
           "t2": 2,
           "t3": 2,
           "p": 5,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-16T18:13:46.437Z",
+          "rc": 8,
+          "s": 76.57,
+          "t1": 4,
+          "t2": 2,
+          "t3": 2,
+          "p": 6,
           "m": 2,
           "n": 0,
           "bc": "waiting"
@@ -1738,10 +1744,6 @@
         },
         {
           "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "Front Row Center",
           "isDualMarket": false
         },
         {
