@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
@@ -9,7 +10,6 @@ const require = createRequire(import.meta.url);
 const { computeSiteAwardScore } = require('./snapshot-award-scores.js');
 
 const ROOT = path.resolve(import.meta.dirname, '..');
-const HISTORY_DIR = path.join(ROOT, 'data', 'award-score-history');
 
 test('computeSiteAwardScore: show with no awards entry is eligible/zero', () => {
   const result = computeSiteAwardScore('no-such-show', {}, 'broadway');
@@ -102,43 +102,87 @@ test('snapshot-award-scores.js CLI: --stdout writes a well-formed snapshot for r
   assert.equal(Object.keys(snapshot.shows).length, snapshot.showCount);
 });
 
+// The next two tests use an isolated temp directory (via AWARD_SCORE_HISTORY_DIR)
+// rather than the real data/award-score-history/ — ship-check review (BRO-1226)
+// flagged that fixtures written into the real dir either collide with a future
+// real snapshot's filename, or (for the "only one snapshot" case) silently
+// start failing the day the fixed cron commits a genuine second snapshot.
+// Both scripts fall back to the real dir when this env var is unset.
+
+function withTempHistoryDir(fn) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'award-score-history-test-'));
+  try {
+    return fn(dir);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
 test('award-score-movers.js CLI: single available snapshot returns an empty, non-erroring movers list', () => {
-  const out = execFileSync('node', ['scripts/award-score-movers.js', '--week-start=2026-05-23'], {
-    cwd: ROOT,
-    encoding: 'utf8',
+  withTempHistoryDir((dir) => {
+    fs.writeFileSync(
+      path.join(dir, '2026-05-23.json'),
+      JSON.stringify({ snapshotDate: '2026-05-23', market: 'broadway', shows: { a: { title: 'A', displayScore: 10 } } })
+    );
+    const out = execFileSync('node', ['scripts/award-score-movers.js', '--week-start=2026-05-23'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env: { ...process.env, AWARD_SCORE_HISTORY_DIR: dir },
+    });
+    const result = JSON.parse(out);
+    assert.equal(result.weekStart, '2026-05-23');
+    assert.deepEqual(result.movers, []);
+    assert.ok('note' in result);
   });
-  const result = JSON.parse(out);
-  assert.equal(result.weekStart, '2026-05-23');
-  assert.deepEqual(result.movers, []);
-  assert.ok('note' in result);
 });
 
-test('award-score-movers.js CLI: diffs two real snapshots and ranks movers by absolute delta', () => {
-  // Write a throwaway second snapshot next to the real committed one so the
-  // movers script has something to diff against, then remove it — this
-  // exercises the real two-snapshot code path against real award data
-  // without touching data/award-score-history/2026-05-23.json.
-  const fixtureDate = '2099-06-06';
-  const fixturePath = path.join(HISTORY_DIR, `${fixtureDate}.json`);
-  try {
-    execFileSync('node', ['scripts/snapshot-award-scores.js', `--date=${fixtureDate}`], { cwd: ROOT });
-    assert.ok(fs.existsSync(fixturePath), 'expected the CLI to write the fixture snapshot');
-
+test('award-score-movers.js CLI: diffs two snapshots and ranks movers by absolute delta, exact order', () => {
+  withTempHistoryDir((dir) => {
+    fs.writeFileSync(
+      path.join(dir, '2026-05-23.json'),
+      JSON.stringify({
+        snapshotDate: '2026-05-23',
+        market: 'broadway',
+        shows: {
+          'big-mover': { title: 'Big Mover', displayScore: 10 },
+          'small-mover': { title: 'Small Mover', displayScore: 20 },
+          unchanged: { title: 'Unchanged', displayScore: 50 },
+          closed: { title: 'Closed Show', displayScore: 30 },
+        },
+      })
+    );
+    fs.writeFileSync(
+      path.join(dir, '2026-05-30.json'),
+      JSON.stringify({
+        snapshotDate: '2026-05-30',
+        market: 'broadway',
+        shows: {
+          'big-mover': { title: 'Big Mover', displayScore: 40 }, // +30
+          'small-mover': { title: 'Small Mover', displayScore: 25 }, // +5
+          unchanged: { title: 'Unchanged', displayScore: 50 }, // 0, excluded
+          'new-show': { title: 'New Show', displayScore: 15 }, // +15 (absent before)
+          // closed dropped from the snapshot entirely: -30
+        },
+      })
+    );
     const out = execFileSync(
       'node',
-      ['scripts/award-score-movers.js', '--week-start=2026-05-23', `--end=${fixtureDate}`, '--top=3'],
-      { cwd: ROOT, encoding: 'utf8' }
+      ['scripts/award-score-movers.js', '--week-start=2026-05-23', '--end=2026-05-30', '--top=3'],
+      { cwd: ROOT, encoding: 'utf8', env: { ...process.env, AWARD_SCORE_HISTORY_DIR: dir } }
     );
     const result = JSON.parse(out);
     assert.equal(result.weekStart, '2026-05-23');
-    assert.equal(result.weekEnd, fixtureDate);
-    assert.ok(Array.isArray(result.movers));
-    assert.ok(result.movers.length <= 3);
-    // Movers must be sorted by descending absolute delta.
-    for (let i = 1; i < result.movers.length; i++) {
-      assert.ok(Math.abs(result.movers[i - 1].delta) >= Math.abs(result.movers[i].delta));
-    }
-  } finally {
-    fs.rmSync(fixturePath, { force: true });
-  }
+    assert.equal(result.weekEnd, '2026-05-30');
+    assert.equal(result.movers.length, 3, 'unchanged show must be excluded, leaving exactly 3 movers');
+    assert.deepEqual(
+      result.movers.map((m) => m.showId),
+      ['big-mover', 'closed', 'new-show'],
+      'must rank by descending absolute delta: +30, -30 (tie broken by insertion order), +15'
+    );
+    assert.equal(result.movers[0].delta, 30);
+    assert.equal(result.movers[1].delta, -30);
+    assert.equal(result.movers[1].presentAfter, false, 'closed show should be marked absent after');
+    assert.equal(result.movers[2].delta, 15);
+    assert.equal(result.movers[2].presentBefore, false, 'new show should be marked absent before');
+  });
 });
