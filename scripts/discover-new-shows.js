@@ -2047,12 +2047,16 @@ async function discoverShows() {
     // TodayTix first (richer metadata), OLT second, TM third, LT fourth —
     // venue-page candidates are staged above, not merged here. Dedup prefers
     // earlier entries among the sources that DO write directly.
-    discoveredShows.push(
-      ...tagSource(todayTixWEShows, 'todaytix-we'),
-      ...tagSource(oltShows, 'olt'),
-      ...tagSource(tmShows, 'theatremonkey'),
-      ...tagSource(ltShows, 'londontheatre')
-    );
+    // tagSource() mutates in place and is called for its side effect, not its
+    // return value, so the discoveredShows.push(...) line right below stays
+    // byte-for-byte the literal pattern
+    // tests/unit/discover-new-shows-owe.test.mjs regex-matches to prove
+    // venueShows never joins this call (BRO-182).
+    tagSource(todayTixWEShows, 'todaytix-we');
+    tagSource(oltShows, 'olt');
+    tagSource(tmShows, 'theatremonkey');
+    tagSource(ltShows, 'londontheatre');
+    discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows);
     console.log('');
   }
 
