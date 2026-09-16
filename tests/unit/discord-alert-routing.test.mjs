@@ -94,3 +94,18 @@ test('check-cron-health.yml: update-lottery-rush staleness threshold matches its
       '(Mon+Thu). A threshold this loose would not have caught the BRO-873 incident even with this check in place.'
   );
 });
+
+test('fetch-all-image-formats.yml (BRO-873 cousin): same silent-failure shape, now fixed the same way', () => {
+  const workflow = loadWorkflow('.github/workflows/fetch-all-image-formats.yml');
+  const step = findNotifyFailureStep(workflow);
+  assert.ok(step, 'no step uses ./.github/actions/notify-failure — was it removed?');
+
+  const withBlock = step.with || {};
+  assert.equal(withBlock.severity, 'critical', 'severity must be exactly \'critical\' to route anywhere');
+  assert.equal(String(withBlock.email), 'true', 'email must be \'true\' or the alert is never delivered');
+
+  const raw = fs.readFileSync(path.join(REPO_ROOT, '.github/workflows/check-cron-health.yml'), 'utf-8');
+  const match = raw.match(/"fetch-all-image-formats\.yml\|(\d+)\|/);
+  assert.ok(match, 'fetch-all-image-formats.yml not registered in CRITICAL_CRONS — was it removed?');
+  assert.ok(Number(match[1]) <= 130, `threshold ${match[1]}h too loose for its Mon+Thu (~96h) cadence`);
+});
