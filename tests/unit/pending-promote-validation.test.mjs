@@ -190,6 +190,50 @@ describe('findExistingFileForUrl (scripts/lib/review-url-clusters.js)', () => {
     );
   });
 
+  // BRO-3550 ship-check (Codex adversarial review): unlike the _pending drain, where
+  // the file being promoted still lives OUTSIDE the show dir being scanned,
+  // collect-review-texts.js's rename path scans a directory that ALREADY contains the
+  // caller's own in-progress file. Without excludeFilename, a readdir order that
+  // returns the caller's own file first would short-circuit the whole scan on a
+  // trivial self-match and never reach a genuine same-url sibling further down.
+  describe('excludeFilename (self-match must not short-circuit the scan for a genuine sibling)', () => {
+    const selfMatchShowDir = path.join(reviewTextsDir, 'self-match-show-2026');
+    fs.mkdirSync(selfMatchShowDir, { recursive: true });
+    const sharedUrl = 'https://www.thetimes.com/article/self-match-review';
+    // Named so plain alphabetical readdir order returns the CALLER's own file
+    // ('times-uk--aaa-caller.json') before the genuine sibling ('times-uk--zzz-sibling.json').
+    fs.writeFileSync(
+      path.join(selfMatchShowDir, 'times-uk--aaa-caller.json'),
+      JSON.stringify({ url: sharedUrl }),
+    );
+    fs.writeFileSync(
+      path.join(selfMatchShowDir, 'times-uk--zzz-sibling.json'),
+      JSON.stringify({ url: sharedUrl }),
+    );
+
+    test('without excludeFilename, a self-match short-circuits and hides the real sibling', () => {
+      assert.equal(
+        findExistingFileForUrl(reviewTextsDir, 'self-match-show-2026', 'times-uk', sharedUrl),
+        'times-uk--aaa-caller.json',
+        'demonstrates the bug: readdir order returns the self-match first',
+      );
+    });
+
+    test('with excludeFilename set to the caller, the scan continues to the genuine sibling', () => {
+      assert.equal(
+        findExistingFileForUrl(reviewTextsDir, 'self-match-show-2026', 'times-uk', sharedUrl, 'times-uk--aaa-caller.json'),
+        'times-uk--zzz-sibling.json',
+      );
+    });
+
+    test('with excludeFilename and no OTHER sibling, returns null (no false self-match)', () => {
+      assert.equal(
+        findExistingFileForUrl(reviewTextsDir, 'test-show-2026', 'times-uk', 'https://www.thetimes.com/article/some-review-abc123', 'times-uk--ann-treneman.json'),
+        null,
+      );
+    });
+  });
+
   // rebuild-all-reviews.js's duplicateOf resolution only walks ONE hop back — a
   // file whose duplicateOf target is ITSELF a duplicate is not excluded there,
   // so it leaks into reviews.json as a second scored copy of the same content
@@ -236,6 +280,81 @@ describe('findExistingFileForUrl (scripts/lib/review-url-clusters.js)', () => {
   });
 });
 
+// BRO-3550 ship-check (Codex adversarial review): marking duplicateOf unconditionally
+// on any same-url sibling can (a) bury a substantive recovered review under an
+// empty/near-empty byline-extraction stub found first, and (b) silently re-flag a file
+// a prior cleanup deliberately cleared via _duplicateOfCleared (two critics genuinely
+// sharing one Guardian/BWW url). decideSameUrlDifferentFileGuard delegates that call to
+// an injected shouldMarkDuplicate (collect-review-texts.js wires in
+// review-write-guard.js's shouldMarkUrlCollisionDuplicate — the same check
+// safeWriteReview's own URL-collision path already uses) instead of marking blindly.
+describe('decideSameUrlDifferentFileGuard (scripts/lib/review-url-clusters.js)', () => {
+  const { decideSameUrlDifferentFileGuard } = require('../../scripts/lib/review-url-clusters.js');
+  const base = {
+    currentFile: 'times-uk--unknown.json',
+    newFilename: 'times-uk--john-doe.json',
+    existingSameUrl: 'times-uk--ann-treneman.json',
+    newData: { fullText: 'a'.repeat(1000) },
+    colliderData: { fullText: 'b'.repeat(1000) },
+  };
+
+  test('no existingSameUrl → null (nothing to guard against)', () => {
+    assert.equal(
+      decideSameUrlDifferentFileGuard({ ...base, existingSameUrl: null, shouldMarkDuplicate: () => true }),
+      null,
+    );
+  });
+
+  test('existingSameUrl resolves to the caller itself → null (already canonical, not a sibling)', () => {
+    assert.equal(
+      decideSameUrlDifferentFileGuard({ ...base, existingSameUrl: base.currentFile, shouldMarkDuplicate: () => true }),
+      null,
+    );
+  });
+
+  test('existingSameUrl equals the freshly-computed newFilename → null (exact-filename check owns this case)', () => {
+    assert.equal(
+      decideSameUrlDifferentFileGuard({ ...base, existingSameUrl: base.newFilename, shouldMarkDuplicate: () => true }),
+      null,
+    );
+  });
+
+  test('shouldMarkDuplicate says no (e.g. collider is an empty stub) → null, does not mark', () => {
+    assert.equal(
+      decideSameUrlDifferentFileGuard({ ...base, shouldMarkDuplicate: () => false }),
+      null,
+    );
+  });
+
+  test('shouldMarkDuplicate says yes → marks duplicateOf the existing sibling', () => {
+    assert.deepEqual(
+      decideSameUrlDifferentFileGuard({ ...base, shouldMarkDuplicate: () => true }),
+      { duplicateOf: 'times-uk--ann-treneman.json', duplicateReason: 'same-url-different-byline-extraction' },
+    );
+  });
+
+  test('wires directly to the real shouldMarkUrlCollisionDuplicate: empty collider never buries a substantive recovery', () => {
+    const { shouldMarkUrlCollisionDuplicate } = require('../../scripts/lib/review-write-guard.js');
+    const result = decideSameUrlDifferentFileGuard({
+      ...base,
+      newData: { fullText: 'a substantive recovered review body. '.repeat(30) },
+      colliderData: { fullText: '' },
+      shouldMarkDuplicate: shouldMarkUrlCollisionDuplicate,
+    });
+    assert.equal(result, null, 'a substantive new file must never be marked duplicate of an empty collider');
+  });
+
+  test('wires directly to the real shouldMarkUrlCollisionDuplicate: honors a prior _duplicateOfCleared', () => {
+    const { shouldMarkUrlCollisionDuplicate } = require('../../scripts/lib/review-write-guard.js');
+    const result = decideSameUrlDifferentFileGuard({
+      ...base,
+      newData: { fullText: 'a'.repeat(1000), _duplicateOfCleared: true },
+      shouldMarkDuplicate: shouldMarkUrlCollisionDuplicate,
+    });
+    assert.equal(result, null, 'a deliberately-cleared file must never be re-flagged duplicate');
+  });
+});
+
 // BRO-3550: collect-review-texts.js is the PRIMARY, 3x-daily collection pipeline —
 // far higher traffic than the _pending drain above — and had the exact same gap:
 // renameReviewFileForCriticOverride() only checked whether its freshly-computed
@@ -274,10 +393,18 @@ describe('BRO-3550: collect-review-texts.js wires findExistingFileForUrl into it
         'otherwise a sibling promoted under a different name is never caught',
     );
 
-    // The guard branch must mark duplicateOf onto the EXISTING sibling, not the
-    // about-to-be-computed newFilename — that is the whole point of the check.
+    // The guard branch must mark duplicateOf onto the EXISTING sibling (via the
+    // shared decideSameUrlDifferentFileGuard result), not the about-to-be-computed
+    // newFilename — that is the whole point of the check. It must also delegate
+    // the mark-or-not decision rather than marking unconditionally (Codex
+    // ship-check review: an empty sibling found first must never bury a
+    // substantive recovered review, and a prior _duplicateOfCleared must survive).
     const guardBranch = collectSrc.slice(guardIdx, existsSyncIdx);
-    assert.ok(guardBranch.includes('data.duplicateOf = existingSameUrl'),
-      'the guard branch must set data.duplicateOf to the existing same-url file');
+    assert.ok(guardBranch.includes('decideSameUrlDifferentFileGuard('),
+      'the guard branch must delegate the mark-or-not decision to decideSameUrlDifferentFileGuard');
+    assert.ok(guardBranch.includes('shouldMarkUrlCollisionDuplicate'),
+      'the guard must reuse shouldMarkUrlCollisionDuplicate (respects _duplicateOfCleared + body-length quality) rather than marking duplicate unconditionally');
+    assert.ok(guardBranch.includes('data.duplicateOf = guardResult.duplicateOf'),
+      'the guard branch must set data.duplicateOf from the guard result, not unconditionally');
   });
 });
