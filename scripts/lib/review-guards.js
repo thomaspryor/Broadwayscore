@@ -241,6 +241,36 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
 }
 
 /**
+ * BRO-938: was the temporal override actually strong enough to survive the
+ * CV-promotion cvLowButStrong bypass? applyTemporalOverrides() never clears
+ * cv.wrongProduction itself — it downgrades cv.confidence to 'low'. That
+ * downgrade only protects a review from promotion if the CV row's own
+ * issues/reasoning don't independently name a different show; if they do
+ * (Schmigadoon EBT case), the promotion gate below treats that as
+ * definitive evidence and promotes anyway.
+ */
+function computeCvLowButStrong(cv) {
+  return !!(cv && cv.confidence === 'low' && cv.wrongProduction === true
+    && hasStrongDifferentShowSignal(cv.issues, cv.reasoning));
+}
+
+/**
+ * BRO-938: single source of truth for the CV-promotion confidence gate used
+ * by both rebuild-all-reviews.js's CV pre-pass ([GUARD:CV-PRE-PASS]) and its
+ * main-loop promotion block ([GUARD:CV-MAIN-LOOP]) — the two previously had
+ * this exact boolean hand-copied. This is what makes applyTemporalOverrides()'s
+ * confidence downgrade actually stick: a CV row downgraded to 'low' by the
+ * temporal override is NOT eligible for promotion to the top-level
+ * wrongProduction flag (the override wins), unless computeCvLowButStrong()
+ * says the CV verdict independently names a different show.
+ */
+function isCvPromotionEligible(cv, cvLowButStrong) {
+  if (!cv) return false;
+  const strong = typeof cvLowButStrong === 'boolean' ? cvLowButStrong : computeCvLowButStrong(cv);
+  return cv.confidence === 'high' || cv.confidence === 'medium' || strong;
+}
+
+/**
  * Same-title / different-year false-positive guard (R&J Delacorte 2026 incident).
  *
  * Returns true when a review's publishDate falls inside THIS production's own
@@ -4338,6 +4368,8 @@ module.exports = {
   shouldSkipScoredReview,
   pickBestDtliSlug,
   applyTemporalOverrides,
+  computeCvLowButStrong,
+  isCvPromotionEligible,
   isReviewWithinOwnProductionWindow,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,

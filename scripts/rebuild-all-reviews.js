@@ -46,7 +46,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, computeCvLowButStrong, isCvPromotionEligible } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -1904,10 +1904,8 @@ const crossShowFingerprints = new Map();
         // Schmigadoon 2026-04-21 bypass: CV rows with confidence='low' AND explicit
         // "completely different show" markers are treated as eligible for promotion.
         // The temporal override downgraded them, but the CV.issues evidence is definitive.
-        const cvLowButStrong = cv.confidence === 'low'
-          && cv.wrongProduction === true
-          && hasStrongDifferentShowSignal(cv.issues, cv.reasoning);
-        if (cv.confidence !== 'high' && cv.confidence !== 'medium' && !cvLowButStrong) continue;
+        const cvLowButStrong = computeCvLowButStrong(cv);
+        if (!isCvPromotionEligible(cv, cvLowButStrong)) continue;
         // Staleness check
         let stale = false;
         if (d.textFetchedAt && cv.verifiedAt) {
@@ -2710,11 +2708,8 @@ showDirs.forEach(showId => {
       // are also promoted. The temporal override downgraded them to 'low' but the
       // evidence is definitive, not a subtle LLM FP. hasStrongDifferentShowSignal
       // identifies those rows.
-      const cvLowButStrong = data.contentVerification
-        && data.contentVerification.confidence === 'low'
-        && data.contentVerification.wrongProduction === true
-        && hasStrongDifferentShowSignal(data.contentVerification.issues, data.contentVerification.reasoning);
-      if (data.contentVerification && (data.contentVerification.confidence === 'high' || data.contentVerification.confidence === 'medium' || cvLowButStrong)) {
+      const cvLowButStrong = computeCvLowButStrong(data.contentVerification);
+      if (isCvPromotionEligible(data.contentVerification, cvLowButStrong)) {
         const cv = data.contentVerification;
 
         // Staleness check: if text was fetched after verification, skip promotion
@@ -2759,8 +2754,7 @@ showDirs.forEach(showId => {
           //    EXCEPTION: low confidence + strong "different show" markers in issues/reasoning
           //    still promote — that's definitive evidence, not a subtle FP near opening.
           const wpConfidence = cv.confidence || 'medium';
-          const isHighMediumConfidence = wpConfidence === 'high' || wpConfidence === 'medium';
-          const promotionEligibleConfidence = isHighMediumConfidence || cvLowButStrong;
+          const promotionEligibleConfidence = isCvPromotionEligible(cv, cvLowButStrong);
           // Balusters CLASS 1 generalization (2026-04-22): ensemble-confident file + medium-conf
           // CV → advisory for BOTH wrongArticle and wrongProduction. High-conf CV still
           // promotes. cvLowButStrong still promotes for wrongProduction.

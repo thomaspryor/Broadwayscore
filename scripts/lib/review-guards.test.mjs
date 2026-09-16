@@ -15,7 +15,81 @@ const {
   isStaleCvPromotedWrongShow,
   computeCvIsStale,
   isReviewContentTrustworthy,
+  applyTemporalOverrides,
+  computeCvLowButStrong,
+  isCvPromotionEligible,
 } = require('./review-guards.js');
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * BRO-938 — "CV pre-pass promotes wrongProduction through temporal override".
+ *
+ * Investigation: applyTemporalOverrides() never sets wrongProduction:false —
+ * it downgrades a wrongProduction flag's confidence to 'low' when the review
+ * published within 30 days of opening (and there's no strong different-show
+ * signal). rebuild-all-reviews.js's CV-PRE-PASS and CV-MAIN-LOOP promotion
+ * blocks both gate on that confidence via isCvPromotionEligible() — so the
+ * downgrade already sticks and the override already wins. These tests run
+ * the real functions end-to-end to lock that in, since the two rebuild.js
+ * call sites this logic used to live in (inline, pre-BRO-938) sit below its
+ * require.main guard and can't be require()'d directly by a test.
+ * ────────────────────────────────────────────────────────────────────────── */
+test('BRO-938: temporal override downgrades a high-confidence flag to low, and that low confidence is NOT eligible for CV promotion — the override wins', () => {
+  const openingDate = '2026-04-01';
+  const publishDate = '2026-04-10'; // 9 days after opening — inside the 30-day window
+  const overrides = applyTemporalOverrides(true, false, 'high', openingDate, publishDate, {
+    issues: [],
+    reasoning: 'Reviews a touring stop of the production.',
+  });
+  assert.equal(overrides.wpConfidence, 'low');
+
+  const cv = { wrongProduction: true, confidence: overrides.wpConfidence, issues: [], reasoning: 'Reviews a touring stop of the production.' };
+  assert.equal(computeCvLowButStrong(cv), false);
+  assert.equal(isCvPromotionEligible(cv), false);
+});
+
+test('BRO-938: outside the 30-day window, no override fires — a high-confidence flag stays eligible for CV promotion', () => {
+  const openingDate = '2026-04-01';
+  const publishDate = '2026-06-15'; // 75 days after opening — outside the window
+  const overrides = applyTemporalOverrides(true, false, 'high', openingDate, publishDate, {
+    issues: [],
+    reasoning: 'Reviews a touring stop of the production.',
+  });
+  assert.equal(overrides.wpConfidence, 'high');
+
+  const cv = { wrongProduction: true, confidence: overrides.wpConfidence, issues: [], reasoning: 'Reviews a touring stop of the production.' };
+  assert.equal(isCvPromotionEligible(cv), true);
+});
+
+test('BRO-938: applyTemporalOverrides does not downgrade at all when the reasoning already names a different show — confidence stays at full strength (bypassedForStrongSignal)', () => {
+  const openingDate = '2026-04-01';
+  const publishDate = '2026-04-10';
+  const reasoning = 'This review is for a completely different show and does not mention the expected production.';
+  const overrides = applyTemporalOverrides(true, false, 'high', openingDate, publishDate, {
+    issues: [],
+    reasoning,
+  });
+  assert.equal(overrides.bypassedForStrongSignal, true);
+  assert.equal(overrides.wpConfidence, 'high');
+});
+
+test('BRO-938: cvLowButStrong carve-out — a CV row that is independently low-confidence but names a different show still promotes (Schmigadoon EBT case)', () => {
+  // Confidence can be 'low' for reasons other than applyTemporalOverrides (e.g. the
+  // LLM's own initial verdict). isCvPromotionEligible must still promote here — the
+  // textual evidence is definitive regardless of why confidence ended up low.
+  const reasoning = 'This review is for a completely different show and does not mention the expected production.';
+  const cv = { wrongProduction: true, confidence: 'low', issues: [], reasoning };
+  assert.equal(computeCvLowButStrong(cv), true);
+  assert.equal(isCvPromotionEligible(cv), true);
+});
+
+test('isCvPromotionEligible: no contentVerification block → not eligible', () => {
+  assert.equal(isCvPromotionEligible(null), false);
+  assert.equal(isCvPromotionEligible(undefined), false);
+});
+
+test('isCvPromotionEligible: medium confidence is eligible without needing cvLowButStrong', () => {
+  assert.equal(isCvPromotionEligible({ wrongProduction: true, confidence: 'medium' }), true);
+});
 
 /* ──────────────────────────────────────────────────────────────────────────
  * T1-retrieval canonical predicates (Sprint 1, task #291).
