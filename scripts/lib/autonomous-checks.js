@@ -142,14 +142,29 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
     checks.push({ name, argv, ...extra });
   };
 
+  // BRO-2247: a colocated `.test.ts` needs `npx tsx --test`, not plain `node
+  // --test` — same TS-resolution trap BRO-2218 fixed in isSafeCheckCommand,
+  // here at the auto-derivation call site instead. Plain node's ESM resolver
+  // isn't TS-aware, so it can neither run a `.test.ts` file's own TS syntax
+  // nor resolve a `.ts` module's extensionless internal imports. Two separate
+  // batches (mirrors test.yml's own unit-test-manifest.txt vs
+  // unit-test-manifest-tsx.txt split) so a diff mixing `.test.mjs` and
+  // `.test.ts` colocated tests runs each under the loader that understands it.
   const testFiles = new Set();
+  const tsxTestFiles = new Set();
   for (const f of files) {
     if (/\.test\.mjs$/.test(f)) { testFiles.add(f); continue; }
+    if (/\.test\.ts$/.test(f)) { tsxTestFiles.add(f); continue; }
     // Colocated test convention: scripts/lib/x.js → scripts/lib/x.test.mjs
-    const colocated = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.mjs');
-    if (colocated !== f && existsFn(colocated)) testFiles.add(colocated);
+    // (or scripts/lib/x.ts → scripts/lib/x.test.ts, checked first — a .ts
+    // source is exactly the case whose colocated test needs tsx to run).
+    const colocatedTs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.ts');
+    const colocatedMjs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.mjs');
+    if (colocatedTs !== f && existsFn(colocatedTs)) tsxTestFiles.add(colocatedTs);
+    else if (colocatedMjs !== f && existsFn(colocatedMjs)) testFiles.add(colocatedMjs);
   }
   if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()]);
+  if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', ...[...tsxTestFiles].sort()]);
 
   // Syntax floor for tier-3 script edits: most scripts/ files have no
   // colocated test, and "it parses" is the cheapest true statement we can
