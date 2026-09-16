@@ -410,6 +410,74 @@ test('an unrelated file already STAGED by another writer is never swept into the
   });
 });
 
+test('ACCEPTANCE (BRO-2364): a NEWLY-ADDED staged data/audit snapshot no longer wedges the merge', () => {
+  withTmp((root) => {
+    // The bug: `git checkout HEAD -- <path>` only works for a path HEAD
+    // already has. A crashed job that ran `git add` on a brand-new,
+    // never-committed snapshot leaves a path `git diff --cached` reports as
+    // dirty but HEAD does not contain — checkout HEAD errors ("did not match
+    // any file(s) known to git"), that error was swallowed by `xargs`, and
+    // the file stayed staged forever. This only actually BLOCKS ff-only (as
+    // opposed to being merely along for the ride) when origin ALSO commits
+    // that same never-before-tracked path with different content — git then
+    // refuses with "Your local changes ... would be overwritten by merge",
+    // which is exactly what step 2's reset exists to clear.
+    const { origin, clone } = setupPair(root, 'newstaged');
+    const NEW_SNAPSHOT = 'data/audit/crashed-job-snapshot.json';
+    advanceOrigin(root, origin, 'via-newstaged', (via) => {
+      fs.mkdirSync(path.join(via, 'data', 'audit'), { recursive: true });
+      fs.writeFileSync(path.join(via, NEW_SNAPSHOT), '{"ok":true}\n');
+    });
+    fs.writeFileSync(path.join(clone, NEW_SNAPSHOT), '{"truncated":');
+    git(clone, 'add', '--', NEW_SNAPSHOT); // staged, never committed — collides with origin's addition
+
+    const { code, out } = trySync(clone, 'newstaged');
+    assert.equal(code, 0, `expected the sync to complete, got ${code}:\n${out}`);
+    assert.equal(
+      git(clone, 'rev-parse', 'HEAD').trim(),
+      git(clone, 'rev-parse', 'origin/main').trim(),
+      'the checkout must actually be on origin/main — the whole point of the gate',
+    );
+    assert.equal(
+      git(clone, 'status', '--porcelain', '--', NEW_SNAPSHOT).trim(), '',
+      'the newly-added snapshot must be fully cleared from both the index and the working tree',
+    );
+    assert.equal(
+      fs.readFileSync(path.join(clone, NEW_SNAPSHOT), 'utf8'), '{"ok":true}\n',
+      "origin's committed version landed, not left staged as the crashed job's truncated content",
+    );
+  });
+});
+
+test('a staged rename FROM a .jsonl ledger onto a non-jsonl path is refused, not silently deleted (ship-check finding, BRO-2364)', () => {
+  withTmp((root) => {
+    // Without this guard, the rename destination looks exactly like a
+    // newly-added regenerable snapshot (not in HEAD, not *.jsonl) and the
+    // BRO-2364 fix above would `git reset` + `rm -f` it — destroying real
+    // ledger rows that happen to sit under a renamed, non-.jsonl path. Origin
+    // must ALSO add a file at the destination path for this to actually
+    // BLOCK ff-only (a rename that doesn't collide with anything origin
+    // moved never enters the reset step at all — same reasoning as the
+    // BRO-2364 acceptance test above).
+    const { origin, clone } = setupPair(root, 'renamedledger');
+    const RENAMED = 'data/audit/fixture-union-ledger.json'; // was .jsonl
+    advanceOrigin(root, origin, 'via-renamedledger', (via) => {
+      fs.mkdirSync(path.join(via, 'data', 'audit'), { recursive: true });
+      fs.writeFileSync(path.join(via, RENAMED), '{"origin":true}\n');
+    });
+    git(clone, 'mv', LEDGER, RENAMED);
+
+    const { code, out } = trySync(clone, 'renamedledger');
+    assert.equal(code, 1, `a rename-from-ledger must refuse, not silently recover:\n${out}`);
+    assert.match(out, /staged rename FROM a \.jsonl ledger/, 'the refusal must say why');
+    assert.equal(fs.existsSync(path.join(clone, RENAMED)), true, 'the renamed ledger content must survive on disk');
+    assert.equal(
+      fs.readFileSync(path.join(clone, RENAMED), 'utf8'), 'a\nb\nc\n',
+      'the ledger rows must be intact, not truncated or deleted, and not overwritten by origin\'s version either',
+    );
+  });
+});
+
 test('a rebase left mid-flight by an interrupted run is self-healed, not stuck forever (BRO-3212 review finding)', () => {
   withTmp((root) => {
     // Simulate a run killed between "git commit" succeeding and "git rebase

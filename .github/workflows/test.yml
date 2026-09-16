@@ -612,13 +612,6 @@ on:
       # Bright Data auto-blacklisted GitHub runner range 158.23.190.0/24).
       # Path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-bd-blacklist.js'
-      # Card #1729: yield-provenance classifier (which reviews the BWW roundup
-      # actually, uniquely contributed vs. would have been found anyway) +
-      # its acceptance test, which also replays discoverBwwRoundupUrl against
-      # a real historical Broadway show and regression-guards the West-End
-      # cheap-tier fix from #756 above. Test registered in
-      # tests/unit-test-manifest.txt; path-listed so a solo edit triggers CI.
-      - 'scripts/tests/bww-roundup-yield-provenance.test.mjs'
       # BRO-2226: locks in the missing-show Tier-2 verifier targeting fix
       # (validate-show-venue --show=<addedId> instead of --all-provisional)
       # + the brightdataDailyUsd threshold decision. Deps are all
