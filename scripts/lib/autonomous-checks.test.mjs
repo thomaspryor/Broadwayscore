@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const checks = require('./autonomous-checks.js');
@@ -60,6 +61,57 @@ test('tier 3: a scripts/ diff yields colocated tests + node --check, no lint/bui
 test('tier 3: a test file is not double-run through node --check', () => {
   const out = decideChecks(['scripts/lib/foo.test.mjs'], never, { tier: 3 });
   assert.deepEqual(names(out), ['colocated-tests']);
+});
+
+// BRO-2247: same TS-resolution trap BRO-2218 fixed in isSafeCheckCommand, here
+// at the auto-derivation call site — a colocated .test.ts must be found (not
+// just .test.mjs) and routed through tsx (not plain node, which can't parse
+// TS syntax or resolve a TS module's extensionless internal imports).
+test('tier 3: a colocated .test.ts is derived and routed through tsx, not plain node', () => {
+  const exists = f => f === 'scripts/lib/foo.test.ts';
+  const out = decideChecks(['scripts/lib/foo.ts'], exists, { tier: 3 });
+  const tsxCheck = out.find(c => c.name === 'colocated-tests-tsx');
+  assert.ok(tsxCheck, 'a colocated .test.ts must be auto-derived');
+  assert.deepEqual(tsxCheck.argv, ['npx', 'tsx', '--test', 'scripts/lib/foo.test.ts']);
+  assert.equal(out.some(c => c.name === 'colocated-tests'), false,
+    'a .test.ts colocated file must never be handed to plain node --test');
+});
+
+test('tier 3: a diff mixing .test.mjs and .test.ts colocated tests runs two separate batches', () => {
+  const exists = f => f === 'scripts/lib/foo.test.mjs' || f === 'scripts/lib/bar.test.ts';
+  const out = decideChecks(['scripts/lib/foo.js', 'scripts/lib/bar.ts'], exists, { tier: 3 });
+  const byName = Object.fromEntries(out.map(c => [c.name, c]));
+  assert.deepEqual(byName['colocated-tests'].argv, ['node', '--test', 'scripts/lib/foo.test.mjs']);
+  assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', 'scripts/lib/bar.test.ts']);
+});
+
+// Real-filesystem, real-execution proof (not just an argv assertion): a
+// fixture .ts source with a colocated .test.ts is found on disk by the real
+// decideChecks() and the derived check actually PASSES under tsx. The `y`
+// type annotation in the fixture is invalid JS syntax — plain `node --test`
+// would blow up on it outright, so a pass here proves the check ran through
+// tsx, not merely that the argv looked right.
+test('a real colocated .test.ts fixture is auto-derived and actually passes under tsx (BRO-2247)', () => {
+  const gitCommonDir = execFileSync('git', ['rev-parse', '--git-common-dir'], { encoding: 'utf8' }).trim();
+  const repoRoot = path.dirname(path.resolve(gitCommonDir));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-tsx-'));
+  fs.mkdirSync(path.join(dir, 'scripts'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'scripts', 'foo.ts'), 'export const x: number = 1;\n');
+  fs.writeFileSync(path.join(dir, 'scripts', 'foo.test.ts'), [
+    "import { test } from 'node:test';",
+    "import assert from 'node:assert/strict';",
+    'const y: number = 1;',
+    "test('trivial', () => { assert.equal(y, 1); });",
+    '',
+  ].join('\n'));
+
+  const results = runSafeChecks({
+    cwd: dir, changedFiles: ['scripts/foo.ts'], isSafeCheckCommand: () => false, tier: 3, prepareFrom: repoRoot,
+  });
+  const byName = Object.fromEntries(results.map(r => [r.name, r]));
+  assert.ok(byName['colocated-tests-tsx'], 'the real filesystem colocated .test.ts must be auto-derived');
+  assert.equal(byName['colocated-tests-tsx'].pass, true, byName['colocated-tests-tsx'].detail);
+  fs.rmSync(dir, { recursive: true, force: true });
 });
 
 test('tier 1 never gains the tier-3 checks for the same diff', () => {
