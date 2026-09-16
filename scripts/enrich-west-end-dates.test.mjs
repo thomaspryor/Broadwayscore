@@ -68,8 +68,19 @@ test('cleanTitle — KNOWN LIMITATION: does not normalize real smart-quote unico
   // real smart-quote input. Pinning as documented CURRENT behavior (not
   // desired behavior), same as the OB sibling's known-limitation test —
   // out of scope to fix in a test-coverage-only change to a script with live
-  // daily writes to shows.json.
+  // writes to shows.json (twice-weekly cron, Mon+Thu — see
+  // .github/workflows/enrich-west-end-dates.yml).
   assert.equal(cleanTitle('Andy Warhol’s Frankenstein'), 'Andy Warhol’s Frankenstein');
+});
+
+test('cleanTitle — KNOWN LIMITATION: smart-quote no-op breaks Disney\'s-prefix stripping', () => {
+  // Consequence of the above: cleanTitle's Disney's-prefix regex
+  // (`/^Disney's\s+/i`) only matches the ASCII apostrophe. A real Playbill/TM
+  // title using a smart-quote "Disney’s" (U+2019) is never normalized to
+  // ASCII first, so the prefix strip silently no-ops too. Flagged by Codex
+  // adversarial review (BRO-3527 ship-check) as a real interaction between
+  // the two known limitations, not just a cosmetic one — pinning both here.
+  assert.equal(cleanTitle('Disney’s The Lion King the Musical'), 'Disney’s The Lion King');
 });
 
 test('titleToTmSlugs — generates base slug plus the/the-less variants', () => {
@@ -89,7 +100,13 @@ test('titleToTmSlugs — appends a venue-suffixed candidate when venue present',
   assert.ok(slugs.some(s => s.includes('victoria-palace-theatre')));
 });
 
-test('titleToTmSlugs — dedupes candidates', () => {
+test('titleToTmSlugs — output never contains duplicate candidates', () => {
+  // NOTE: no realistic title was found that actually forces the `[...new
+  // Set(slugs)]` wrapper to remove anything — the base/the-prefix/venue
+  // branches don't appear to produce identical strings for any input tried
+  // (Codex adversarial review, BRO-3527 ship-check: this input passes even
+  // with the Set() wrapper removed). This is an invariant check, not proof
+  // the dedup logic is reachable/necessary.
   const slugs = titleToTmSlugs({ title: 'the-the' });
   assert.equal(slugs.length, new Set(slugs).size);
 });
@@ -98,7 +115,6 @@ test('parseTheatremonkeyIndex — extracts title + slug pairs from show links', 
   const html = `<!DOCTYPE html><html><body>
     <a href="/show/hamilton/">Hamilton</a>
     <a href="/show/wicked/">Wicked</a>
-    <a href="/show/wicked/">Read more...</a>
     <a href="/shows/">Shows</a>
   </body></html>`;
   const entries = parseTheatremonkeyIndex(html);
@@ -108,10 +124,35 @@ test('parseTheatremonkeyIndex — extracts title + slug pairs from show links', 
   ]);
 });
 
+test('parseTheatremonkeyIndex — rejects "Read more..." link text even on a new, not-yet-seen slug', () => {
+  // Must use a slug distinct from any other link in the fixture — reusing an
+  // already-seen slug would pass this assertion via the dedup `seen` check
+  // instead of the title-text filter it's meant to exercise (Codex
+  // adversarial review, BRO-3527 ship-check).
+  const html = `<!DOCTYPE html><html><body>
+    <a href="/show/hamilton/">Hamilton</a>
+    <a href="/show/wicked/">Read more...</a>
+  </body></html>`;
+  const entries = parseTheatremonkeyIndex(html);
+  assert.deepEqual(entries, [{ title: 'Hamilton', tmSlug: 'hamilton' }]);
+});
+
 test('parseTheatremonkeyIndex — returns empty array when no show links present', () => {
   assert.deepEqual(parseTheatremonkeyIndex('<html><body>no shows</body></html>'), []);
 });
 
+// KNOWN CAVEAT (Codex adversarial review, BRO-3527 ship-check): these
+// fixtures are plain text, but extractTheatremonkeyDates() regex-matches
+// against the RAW HTML string (scripts/enrich-west-end-dates.js:146-156),
+// not text-extracted content. The `\s*` between label and date only skips
+// whitespace — an inline tag or `&nbsp;` between "Press Night:" and the date
+// (e.g. `<strong>Press Night:</strong> 28th May 2026`) would defeat
+// extraction in production. No archived Theatremonkey HTML sample exists in
+// this checkout (private aggregator-archive data, not present here) to
+// verify the real markup shape — unlike the OB sibling's test file, which
+// cross-checked its fixtures against 53 logged real extractions. Pinning
+// current regex behavior against plain-text-shaped input, not a verified
+// real-page fixture.
 test('extractTheatremonkeyDates — extracts both Showing from and Press Night dates', () => {
   const html = 'Showing from Wed, 20th May 2026 to Sat, 17th April 2027. Press Night: 28th May 2026.';
   assert.deepEqual(extractTheatremonkeyDates(html), {
@@ -132,6 +173,13 @@ test('extractTheatremonkeyDates — returns nulls when no dates present', () => 
   });
 });
 
+// KNOWN CAVEAT (Codex adversarial review, BRO-3527 ship-check): this fixture
+// only exercises the sibling `<h2>`/`<ul>` branch of
+// parsePlaybillSchedulePage() (scripts/enrich-west-end-dates.js:310-361), not
+// the `<p>`-based branch in the same function, and `.text()` on real markup
+// does not turn `<br>` into `\n` the way the `<p>` branch's `.split('\n')`
+// assumes. Same caveat as above: no archived Playbill London page sample is
+// present in this checkout to verify which branch real pages actually use.
 function playbillScheduleFixture(entries) {
   const blocks = entries.map(e => `
     <h2>${e.title}</h2>
