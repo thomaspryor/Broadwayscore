@@ -964,16 +964,26 @@ async function main() {
       !shiftTooLarge;
 
     // Same-date CONFIRMED (distinct from same-date FIX above): the source
-    // agrees with shows.json's existing same-date values exactly — no
-    // preview period, opening night IS the first performance. This is a
-    // legitimate production shape (see BRO-1108 comment above), not an
-    // IBDB-conflation error, so there's no date to correct. Still rotate
-    // openingDateSource off the unconfirmed value so the show stops being
-    // re-probed by every future run — a source-only write, never touches
-    // openingDate/previewsStartDate.
+    // EXPLICITLY reports both a firstPreview and an opening, and both agree
+    // with shows.json's existing same-date values — no preview period,
+    // opening night IS the first performance. This is a legitimate production
+    // shape (see BRO-1108 comment above), not an IBDB-conflation error, so
+    // there's no date to correct. Still rotate openingDateSource off the
+    // unconfirmed value so the show stops being re-probed by every future
+    // run — a source-only write, never touches openingDate/previewsStartDate.
+    //
+    // Require entry.firstPreview truthy (not just !previewChanges): a source
+    // that reports ONLY an opening date (no preview info at all) has said
+    // nothing about the preview period — silence is not confirmation that
+    // there wasn't one. Also reject 'discrepancy' confidence: mergeSources
+    // still picks a single preferred date pair even when Playbill and Lortel
+    // disagree, so a discrepancy entry is evidence of disagreement, not proof.
+    // (Codex ship-check finding, BRO-1108.)
     const sameDateConfirmed = !sameDateFix && show.openingDate && show.previewsStartDate &&
       show.openingDate === show.previewsStartDate &&
-      !openingChanges && !previewChanges &&
+      !openingChanges &&
+      !!entry.firstPreview && entry.firstPreview === show.previewsStartDate &&
+      entry.confidence !== 'discrepancy' &&
       isUnconfirmedDateSource(show);
 
     // For NON-same-date changes, require two-source agreement OR --force.
