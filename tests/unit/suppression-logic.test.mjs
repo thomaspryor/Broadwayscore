@@ -173,6 +173,48 @@ test('chooseSameUrlCanonical: two real named critics (the-winslow-boy-2013 shape
   assert.notEqual(forward.canonical, forward.losers[0]);
 });
 
+test('chooseSameUrlCanonical: reason reflects why the winner first won, not whichever comparison ran last', () => {
+  // 3-way fold: winner beats challenger #1 for reason A (winner stays winner),
+  // then beats challenger #2 for reason B (winner stays winner again). The
+  // returned reason must be A — the reason the winner is written into the
+  // on-disk duplicateReason audit trail must describe an ACTUAL basis for its
+  // standing, not just whichever pairwise comparison happened to run last.
+  const members = [
+    { file: 'a--x.json', data: {} },
+    { file: 'b--y.json', data: {} },
+    { file: 'c--z.json', data: {} },
+  ];
+  const fakeChooser = (aName, aData, bName, bData) => {
+    // fold order is filename-sorted: a--x.json vs b--y.json first, then
+    // (a--x.json, the still-standing winner) vs c--z.json.
+    if (aName === 'a--x.json' && bName === 'b--y.json') {
+      return { canonical: 'a--x.json', loser: 'b--y.json', reason: 'reason-A' };
+    }
+    return { canonical: 'a--x.json', loser: 'c--z.json', reason: 'reason-B' };
+  };
+  const verdict = chooseSameUrlCanonical(members, fakeChooser);
+  assert.equal(verdict.canonical, 'a--x.json');
+  assert.equal(verdict.reason, 'reason-A');
+});
+
+test('chooseSameUrlCanonical: reason updates when the winner actually changes mid-fold', () => {
+  const members = [
+    { file: 'a--x.json', data: {} },
+    { file: 'b--y.json', data: {} },
+    { file: 'c--z.json', data: {} },
+  ];
+  const fakeChooser = (aName, aData, bName, bData) => {
+    if (aName === 'a--x.json' && bName === 'b--y.json') {
+      return { canonical: 'a--x.json', loser: 'b--y.json', reason: 'reason-A' };
+    }
+    // a--x.json vs c--z.json — the challenger wins this time.
+    return { canonical: 'c--z.json', loser: 'a--x.json', reason: 'reason-C-takeover' };
+  };
+  const verdict = chooseSameUrlCanonical(members, fakeChooser);
+  assert.equal(verdict.canonical, 'c--z.json');
+  assert.equal(verdict.reason, 'reason-C-takeover');
+});
+
 test('chooseSameUrlCanonical: propagates a skip verdict (e.g. cross-market both-contaminated) instead of forcing a winner', () => {
   const members = [
     { file: 'a--x.json', data: { url: URL } },

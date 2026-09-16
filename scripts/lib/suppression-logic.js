@@ -37,26 +37,36 @@
 
 'use strict';
 
-/** Strip query/hash/trailing slash so scrape-variant URLs collapse. Same shape as review-url-clusters.js's canonicalReviewUrl. */
-function canonicalUrl(u) {
-  if (!u || typeof u !== 'string') return '';
-  return u.split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
-}
+const { canonicalReviewUrl, outletOf } = require('./review-url-clusters');
+
+/**
+ * Strip query/hash/trailing slash so scrape-variant URLs collapse. Re-exported
+ * (not re-implemented) from review-url-clusters.js's canonicalReviewUrl — the
+ * SAME "same URL" definition the byline-explosion detector already uses, so
+ * the two "is this one article" checks in this codebase can never drift out
+ * of sync with each other again (the exact class of bug BRO-2409's own
+ * root-cause fix targeted one layer down, between normalizeUrl and
+ * stripTrivial).
+ */
+const canonicalUrl = canonicalReviewUrl;
 
 /**
  * Outlet identity for grouping — prefer the `<outletId>--<critic>.json`
  * filename prefix (the canonical outlet id at write time) over the free-text
  * `data.outlet` display field, which is inconsistent across siblings (e.g.
  * "New York Times" vs "The New York Times" — see the-play-that-goes-wrong-2017
- * in the real corpus). Mirrors review-url-clusters.js's outletOf.
+ * in the real corpus). Delegates to review-url-clusters.js's outletOf (not a
+ * parallel reimplementation): that function ALSO folds diacritics and strips
+ * punctuation, added specifically because "WhatsOnStage" vs "What's On Stage"
+ * once split one real cluster into two groups — reusing it means this
+ * detector inherits that fix instead of needing its own copy of it.
  *
  * @param {string} file basename, e.g. "nytimes--ben-brantley.json"
  * @param {object} data parsed record
  * @returns {string}
  */
 function outletKeyOf(file, data) {
-  if (typeof file === 'string' && file.includes('--')) return file.split('--')[0].toLowerCase();
-  return String((data && (data.outletId || data.outlet)) || '').toLowerCase();
+  return outletOf({ file, outlet: data && (data.outletId || data.outlet) });
 }
 
 /**
@@ -135,8 +145,23 @@ function chooseSameUrlCanonical(members, chooseCanonicalFn) {
     if (verdict.skip) {
       return { canonical: null, losers: [], reason: verdict.reason, skip: true };
     }
-    reason = verdict.reason;
-    winner = verdict.canonical === winner.file ? winner : challenger;
+    if (verdict.canonical !== winner.file) {
+      // The winner changed — this IS why the new winner is winning (so far).
+      winner = challenger;
+      reason = verdict.reason;
+    } else if (reason === null) {
+      // First comparison this file has won (either the opening bout, or its
+      // first successful defense after taking over) — record why. A LATER
+      // defense that doesn't change the winner is NOT recorded: for a 3+
+      // member fold, overwriting `reason` on every iteration regardless of
+      // outcome would let the final pairwise comparison's reason overwrite
+      // (and misdescribe) an earlier, still-true reason the SAME winner
+      // already earned — this string is written verbatim into the on-disk
+      // duplicateReason audit trail by the driver's fix(), so it must
+      // describe the actual basis for the winner's standing, not just
+      // whichever comparison happened to run last.
+      reason = verdict.reason;
+    }
   }
   return {
     canonical: winner.file,

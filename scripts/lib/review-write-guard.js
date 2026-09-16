@@ -2284,6 +2284,21 @@ function _normalizeUrlForCollision(url) {
 // allowlist is the right level of caution (recirculation/share params are the
 // noise there too, but a false NEGATIVE just means a real dupe goes unflagged
 // until the next write, not a live review getting silently dropped).
+//
+// KNOWN RESIDUAL GAP (ship-check finding, not fixed here): audit-duplicate-of-
+// url-mismatch.js's own comparator additionally applies canonicalizeHost()
+// (folds a registered domain alias, e.g. theater.nytimes.com -> nytimes.com,
+// via outlet-registry.json). This does NOT. A pair whose URLs differ ONLY by
+// such a domain alias could still hit the exact race this fix closes for
+// query-string variance. Not ported here because canonicalizeHost requires
+// loading outlet-registry.json, and review-write-guard.js is loaded by nearly
+// every script in the repo — pulling registry I/O into its module-scope
+// self-heal path is a broader change than this ticket's confirmed failure
+// mode warrants. Zero of the 22 real corpus clusters BRO-2409 was filed
+// against involved a domain-alias mismatch; if one surfaces, promote
+// canonicalizeHost (and its registry load) into review-normalization.js
+// alongside stripTrivial so both comparators share it, rather than
+// duplicating the domain-alias map here.
 function _trivialCanonUrl(url) {
   const { normalizeUrl, stripTrivial } = require('./review-normalization');
   return stripTrivial(normalizeUrl(url));

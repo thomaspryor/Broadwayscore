@@ -47,6 +47,7 @@ const {
 } = require('./fix-circular-duplicate-pairs');
 const { findFullyUnsuppressedSameUrlGroups, chooseSameUrlCanonical } = require('./lib/suppression-logic');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `fix-unflagged-same-url-clusters.js — Repairs same-URL review clusters left with ZERO duplicate.
@@ -69,13 +70,21 @@ const GATE = args.includes('--gate');
 // the two self-heals clearing pointers far more aggressively than intended).
 const GATE_FLOOR = 10;
 
+// Buckets under review-texts/ this audit must not scan or mutate — mirrors
+// audit-duplicate-of-url-mismatch.js's NON_SHOW_DIRS. `_superseded-
+// misattributed` is a TOMBSTONE dir: its entries are frozen historical
+// records of a past misattribution, not live scoring candidates, and --fix
+// stamping a fresh duplicateOf onto one would rewrite a record that is
+// supposed to stay exactly as archived.
+const NON_SHOW_DIRS = new Set(['_pending', '_superseded-misattributed']);
+
 function walkShowDirs(root) {
   if (!fs.existsSync(root)) return [];
   // listShowDirs (not a plain readdirSync+isDirectory filter): tolerates a
   // dangling symlink per-entry (warns + skips) instead of throwing and
   // crashing the whole run — the 2026-05-27 stray-symlink incident this
   // helper exists to prevent (scripts/lib/list-show-dirs.js).
-  return listShowDirs(root).filter((name) => name !== '_pending' && !name.startsWith('.'));
+  return listShowDirs(root).filter((name) => !NON_SHOW_DIRS.has(name) && !name.startsWith('.'));
 }
 
 function loadShowRecords(showDir) {
@@ -113,13 +122,20 @@ function showById(id) {
  * Find every fully-unsuppressed same-URL group, corpus-wide, that is actually
  * repairable: 2+ members are currently includable (so the double-count is
  * real) and the canonical choice isn't skip-worthy (both cross-market
- * contaminated). Returns one entry per group.
+ * contaminated).
+ *
+ * @returns {{results: Array, scanned: number}} scanned is the total review
+ *   file count examined — 0 means review-texts is missing/empty (a failed
+ *   checkout, a worktree without the private clone), which --gate must
+ *   refuse to treat as "0 issues found" (see assertCorpusScanned in main()).
  */
 function audit() {
   const results = [];
+  let scanned = 0;
   for (const showId of walkShowDirs(REVIEW_TEXTS_DIR)) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     const records = loadShowRecords(showDir);
+    scanned += records.length;
     if (records.length < 2) continue;
     const groups = findFullyUnsuppressedSameUrlGroups(records);
     for (const group of groups) {
@@ -146,7 +162,7 @@ function audit() {
       });
     }
   }
-  return results;
+  return { results, scanned };
 }
 
 function fix(groups) {
@@ -175,7 +191,21 @@ function fix(groups) {
 
 function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const groups = audit();
+  const { results: groups, scanned } = audit();
+
+  // A missing/empty review-texts checkout scans 0 files and audit() then
+  // vacuously returns 0 groups — indistinguishable from a genuinely clean
+  // corpus unless something checks scanned > 0. Report/--fix modes still see
+  // it (an empty "OK" or "no groups" output is a visible signal to a human
+  // running this locally); --gate must FAIL LOUD instead of silently passing.
+  try {
+    assertCorpusScanned(scanned, { gate: GATE });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\nFAIL: ${e.message}`);
+    process.exit(1);
+  }
+
   if (JSON_OUT) {
     console.log(JSON.stringify({ count: groups.length, groups }, null, 2));
     process.exit(groups.length === 0 ? 0 : 1);

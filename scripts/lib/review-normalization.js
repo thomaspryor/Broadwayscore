@@ -1906,22 +1906,27 @@ function normalizeUrl(url) {
     // article, so review-write-guard.js's stale-duplicateOf self-heal saw a
     // URL "mismatch" and wrongly un-collapsed an already-resolved
     // byline-explosion cluster (mother-play-2024, king-kong-2018).
-    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=[^&]*/g, '')
-      // Trailing-artifact cleanup (BRO-2409): stripping a param can leave a
-      // dangling `&`/`?` behind — most commonly a URL whose ENTIRE query
-      // string was one now-stripped param with a trailing separator baked
-      // into the source page (NYT's literal `?_r=1&`, the-winslow-boy-2013
-      // live-corpus shape). Left unstripped, `...html&` never compares equal
-      // to the canonical `...html`, which is exactly the false "URL changed"
-      // this whole function exists to avoid triggering. `[?&]+$` covers a
-      // trailing `?`, `&`, or run of either; `\?&` covers a leading `&`
-      // immediately after `?` when the FIRST param was the one stripped;
-      // `&&+` covers two adjacent params collapsing when a MIDDLE one was
-      // stripped. Order matters: trailing strip first, or `?&` at the very
-      // end would already have been eaten by it and never reach the `\?&` step.
-      .replace(/[?&]+$/, '')
-      .replace(/\?&/, '?')
-      .replace(/&&+/g, '&');
+    // Query-aware split/filter/rejoin (BRO-2409, replacing a blind regex
+    // strip): a regex removing `[?&]param=value` pieces in place leaves a
+    // dangling separator behind whenever the removed param was FIRST (the
+    // `?` goes with it, stranding the next param's `&` with no `?` left in
+    // the string at all — `?_r=1&taid=X` -> `&taid=X`, never `?taid=X`) or
+    // LAST (a literal trailing `?_r=1&` baked into the source page, the
+    // the-winslow-boy-2013 live-corpus shape, leaves a bare trailing `&`).
+    // Both produced a false "URL changed" against the SAME article with its
+    // tracked param in a different position or its query reduced to nothing
+    // — exactly the comparator disagreement BRO-2409 is about. Splitting the
+    // query into params, filtering, and rejoining is order-independent and
+    // can never leave an artifact regardless of which param was tracked.
+    const qIdx = u.indexOf('?');
+    if (qIdx !== -1) {
+      const base = u.slice(0, qIdx);
+      const kept = u.slice(qIdx + 1).split('&').filter((pair) => {
+        if (!pair) return false; // drop empty segments from a stray &/&& in the source
+        return !/^(utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=/.test(pair);
+      });
+      u = kept.length ? `${base}?${kept.join('&')}` : base;
+    }
     // Re-strip trailing slashes: the first strip (above) runs before the
     // query string is removed, so `/review/?utm_source=x` still ends in a
     // slash here and would compare unequal to `/review` — a false "URL
