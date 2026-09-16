@@ -69,6 +69,11 @@ const KNOWN_SETTERS = [
   // hit, in addition to its own humanReviewedWrongProduction/manualClear/
   // override/explicit-false checks. (added 2026-08-15, #1617)
   'audit-sibling-title-misroute.js',
+  // Operator-invoked `--flag=<path>` CLI path of the pre-BRO-736 SERP
+  // contamination audit (BRO-2271). guards applyFlag() with
+  // shouldSkipWrongProductionAudit() before writing wrongProduction=true.
+  // (added 2026-09-16, BRO-3586)
+  'audit-corpus-contamination.js',
 ];
 
 describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
