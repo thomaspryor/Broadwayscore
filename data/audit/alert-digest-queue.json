@@ -468,5 +468,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-16T07:02:06.943Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-2960",
+    "title": "Watchdog parked #linear:BRO-2960 — redispatch never produced a launch",
+    "description": "Watchdog: card \"P1: breaker state files (sd/bd-circuit-breaker.json) are stale most hours because commercial-rss-poll.yml loses its push race 10 of 12 runs\" was claimed for redispatch at 2026-09-16T09:13:43.522Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-2960), then re-arm with node scripts/linear-next.js --id BRO-2960 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T09:29:48.150Z"
   }
 ]
