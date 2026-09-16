@@ -322,6 +322,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # criteria is literally `test -f docs/opening-night-express.md`, so it has to
 # be committed rather than scratch/local like the rest of /docs/.
 !/docs/opening-night-express.md
+# BRO-917: cross-repo workflow dependency graph. Acceptance criteria is
+# literally `test -f docs/workflow-dependency-graph.md`, so it has to be
+# committed rather than scratch/local like the rest of /docs/.
+!/docs/workflow-dependency-graph.md
 /memory/
 /data/deep-research/
 /data/theater-research/
