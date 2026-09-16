@@ -28,63 +28,114 @@ const showListCardSource = () => codeOnly(readFileSync(SHOW_LIST_CARD_PATH, 'utf
 // pin the real shared helpers' behavior so a future hand-rolled tracking
 // call regresses loudly instead of shipping quietly.
 
+// BRO-3466 / BRO-3617: the global `navigator` binding differs by Node major.
+// Node 20 (what .github/workflows/test.yml pins) has NO global `navigator`;
+// Node 21+ (typical local dev) ships one as a configurable getter-only
+// accessor. The first version of withMockedBrowser read
+// `globalThis.navigator.sendBeacon` unconditionally, so it was green on the
+// author's local Node and red on CI ("Cannot read properties of undefined
+// (reading 'sendBeacon')") — and the BRO-2392 session pushed it having never
+// seen the failure. Two defences below:
+//   1. withMockedBrowser installs a fresh `navigator` via defineProperty on
+//      EVERY runtime (no "is it already there?" branch to get wrong) and
+//      restores the original descriptor afterwards.
+//   2. Every beacon test runs under BOTH global shapes via withNavigatorShape,
+//      whatever Node is actually executing it. This guards the MOCK (a future
+//      edit that reads navigator before defining it fails on every Node), so
+//      a local run can no longer be green while CI's Node is red.
+// 'absent' = no global navigator (Node 20, the CI pin at time of writing);
+// 'present' = a getter-only accessor (Node 21+). Keep the version mapping
+// HERE, not in the labels — labels surface in CI logs and must not go stale
+// when the pin bumps.
+type NavigatorShape = 'absent' | 'present';
+const NAVIGATOR_SHAPES: readonly NavigatorShape[] = ['absent', 'present'];
+
+function withNavigatorShape(shape: NavigatorShape, fn: () => void) {
+  const g = globalThis as Record<string, unknown>;
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
+  try {
+    if (shape === 'absent') {
+      delete g.navigator;
+      assert.equal('navigator' in globalThis, false, 'shape setup must remove the global navigator');
+    } else if (!original) {
+      // Emulate Node 21+'s getter-only accessor so the "can't assign, must
+      // redefine" path is exercised even on a runtime that has no navigator.
+      Object.defineProperty(globalThis, 'navigator', { get: () => ({}), configurable: true });
+    }
+    fn();
+  } finally {
+    delete g.navigator;
+    if (original) Object.defineProperty(globalThis, 'navigator', original);
+  }
+  assert.equal('navigator' in globalThis, original !== undefined, 'shape teardown must restore the pre-test global');
+}
+
 function withMockedBrowser(distinctId: string | undefined, fn: () => void) {
   const sentBeacons: { url: string; body: string }[] = [];
-  const originalWindow = (globalThis as Record<string, unknown>).window;
-  // Node's global `navigator` binding is a getter-only accessor when present
-  // (can't be reassigned) — stub the one method we need on the existing
-  // object. But the binding itself is only stable Node 21+ (CI runs Node
-  // 20, which has no global `navigator` at all), so fall back to defining
-  // one for the duration of the test.
-  const hadNavigator = 'navigator' in globalThis;
-  const nav = (hadNavigator ? globalThis.navigator : {}) as Record<string, unknown>;
-  if (!hadNavigator) {
-    Object.defineProperty(globalThis, 'navigator', { value: nav, configurable: true });
-  }
-  const originalSendBeacon = nav.sendBeacon;
-  (globalThis as Record<string, unknown>).window = {
-    posthog: distinctId !== undefined ? { get_distinct_id: () => distinctId } : undefined,
-    location: { href: 'https://broadwayscorecard.com/browse' },
-  };
-  nav.sendBeacon = (url: string, body: string) => {
-    sentBeacons.push({ url, body });
-    return true;
-  };
+  const g = globalThis as Record<string, unknown>;
+  // Descriptors, not values, for BOTH globals: restoring `window` by
+  // assignment would leave `'window' in globalThis` true (value undefined)
+  // after the first test — the same assign-vs-define trap as navigator.
+  const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  const originalNavigator = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
+  // Define, never assign: a pre-existing Node 21+ `navigator` is a getter-only
+  // accessor (assignment throws in strict mode), but it IS configurable, and
+  // on Node 20 there is nothing to assign to at all. defineProperty is the one
+  // operation that works identically in both cases.
+  Object.defineProperty(globalThis, 'navigator', {
+    value: {
+      sendBeacon: (url: string, body: string) => {
+        sentBeacons.push({ url, body });
+        return true;
+      },
+    },
+    configurable: true,
+    writable: true,
+  });
+  Object.defineProperty(globalThis, 'window', {
+    value: {
+      posthog: distinctId !== undefined ? { get_distinct_id: () => distinctId } : undefined,
+      location: { href: 'https://broadwayscorecard.com/browse' },
+    },
+    configurable: true,
+    writable: true,
+  });
   try {
     fn();
   } finally {
-    (globalThis as Record<string, unknown>).window = originalWindow;
-    nav.sendBeacon = originalSendBeacon;
-    if (!hadNavigator) {
-      delete (globalThis as Record<string, unknown>).navigator;
-    }
+    delete g.window;
+    if (originalWindow) Object.defineProperty(globalThis, 'window', originalWindow);
+    delete g.navigator;
+    if (originalNavigator) Object.defineProperty(globalThis, 'navigator', originalNavigator);
   }
   return sentBeacons;
 }
 
-test('trackTicketClick sends the real PostHog distinct_id, never a hardcoded per-surface placeholder', () => {
-  const beacons = withMockedBrowser('real-visitor-123', () => {
-    trackTicketClick({
-      showId: 'hamilton', showName: 'Hamilton', platform: 'TodayTix',
-      pageType: 'browse', showStatus: 'open', isAffiliate: true, linkPosition: 0,
-    });
-  });
-  assert.equal(beacons.length, 1);
-  const payload = JSON.parse(beacons[0].body);
-  assert.equal(payload.properties.distinct_id, 'real-visitor-123');
-  assert.notEqual(payload.properties.distinct_id, 'browse-click');
-});
+const BROWSE_CLICK = {
+  showId: 'hamilton', showName: 'Hamilton', platform: 'TodayTix',
+  pageType: 'browse', showStatus: 'open', isAffiliate: true, linkPosition: 0,
+} as const;
 
-test('trackTicketClick falls back to "anonymous" (not a page-specific literal) when PostHog has no distinct id yet', () => {
-  const beacons = withMockedBrowser(undefined, () => {
-    trackTicketClick({
-      showId: 'hamilton', showName: 'Hamilton', platform: 'TodayTix',
-      pageType: 'browse', showStatus: 'open', isAffiliate: true, linkPosition: 0,
+for (const shape of NAVIGATOR_SHAPES) {
+  test(`trackTicketClick sends the real PostHog distinct_id, never a hardcoded per-surface placeholder [global navigator ${shape}]`, () => {
+    withNavigatorShape(shape, () => {
+      const beacons = withMockedBrowser('real-visitor-123', () => trackTicketClick(BROWSE_CLICK));
+      assert.equal(beacons.length, 1);
+      const payload = JSON.parse(beacons[0].body);
+      assert.equal(payload.properties.distinct_id, 'real-visitor-123');
+      assert.notEqual(payload.properties.distinct_id, 'browse-click');
     });
   });
-  const payload = JSON.parse(beacons[0].body);
-  assert.equal(payload.properties.distinct_id, 'anonymous');
-});
+
+  test(`trackTicketClick falls back to "anonymous" (not a page-specific literal) when PostHog has no distinct id yet [global navigator ${shape}]`, () => {
+    withNavigatorShape(shape, () => {
+      const beacons = withMockedBrowser(undefined, () => trackTicketClick(BROWSE_CLICK));
+      assert.equal(beacons.length, 1);
+      const payload = JSON.parse(beacons[0].body);
+      assert.equal(payload.properties.distinct_id, 'anonymous');
+    });
+  });
+}
 
 test('buildAffiliateUrl reports is_affiliate: true and wraps the URL for a real affiliate platform (TodayTix)', () => {
   const result = buildAffiliateUrl('https://todaytix.com/x/hamilton', 'TodayTix', 'browse');

@@ -708,11 +708,25 @@ function bwwTrailingDateFromUrl(url) {
  * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string }} show
  * @returns {string|null}
  */
+/**
+ * True when a critic name is empty/Unknown/Staff — the "no benefit of the
+ * doubt" bucket getWrongProductionReasonForUnknownCritic below gates on.
+ * Extracted so a post-hoc audit calling the raw getWrongProductionReasonFromUrl
+ * directly (no critic-name gating applied) can flag which of its own results
+ * carry a NAMED critic — the higher false-positive-risk class this same
+ * criticIsUnknown check exists to protect against here.
+ *
+ * @param {string|null|undefined} criticName
+ * @returns {boolean}
+ */
+function isCriticUnknown(criticName) {
+  const norm = String(criticName || '').trim().toLowerCase();
+  return !norm || norm === 'unknown' || norm === 'staff';
+}
+
 function getWrongProductionReasonForUnknownCritic(review, show) {
   if (!review) return null;
-  const norm = String(review.criticName || '').trim().toLowerCase();
-  const criticIsUnknown = !norm || norm === 'unknown' || norm === 'staff';
-  if (!criticIsUnknown) return null;
+  if (!isCriticUnknown(review.criticName)) return null;
   return getWrongProductionReasonFromUrl(review.url, show);
 }
 
@@ -4464,6 +4478,7 @@ module.exports = {
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
+  isCriticUnknown,
   getWrongProductionReasonForBww,
   urlYearFromPath,
   urlLooksLikeReview,
