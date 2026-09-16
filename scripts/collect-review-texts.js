@@ -99,6 +99,9 @@ process.on('unhandledRejection', (reason, promise) => {
 const { extractScore, extractDesignation, extractNYTCriticsPick, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 const { findBoldHeaderAnchors, loadShows: loadSplitterShows } = require('./lib/multi-show-splitter');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
+// BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
+// to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
+const { extractArticleText: extractArticleTextFromHtml } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
@@ -3792,6 +3795,19 @@ function extractTextFromHtml(html, url) {
   // Try JSON-LD extraction — reliable when available, avoids CSS selector fragility
   const jsonLdText = extractFromJsonLd(html);
   if (jsonLdText && jsonLdText.length > 500) return jsonLdText;
+
+  // Talkin' Broadway (BRO-912): the naive "grab every <p> inside <section
+  // class='page'>" fallback below blends stacked "Past Reviews" runs together
+  // and has no byline anchor, so it can't reliably isolate a single review.
+  // Delegate to the shared, unit-tested byline-anchored extractor (task #1887,
+  // scripts/lib/article-extractor.js) instead — it anchors on the page's
+  // "Theatre Review by {Critic} - {Date}" marker and structurally excludes the
+  // newsletter-signup sidebar. Only fall through to the generic paragraph
+  // scrape below if this returns null (e.g. no byline marker on the page).
+  if (url && url.includes('talkinbroadway.com')) {
+    const tbText = extractArticleTextFromHtml(html, url);
+    if (tbText) return tbText;
+  }
 
   // Remove scripts, styles, nav, etc.
   let text = html
