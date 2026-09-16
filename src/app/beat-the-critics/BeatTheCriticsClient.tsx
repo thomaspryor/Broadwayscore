@@ -838,7 +838,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               return (
                 <div key={tier.key}>
                   <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-2 first:mt-0 mb-0.5 text-center">{tier.name}</div>
-                  {tierPicks.map(cat => (<div key={cat.title} className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 shrink-0 mr-2">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-xs font-bold text-right">{picks[cat.title]}</div></div>))}
+                  {tierPicks.map(cat => (<div key={cat.title} data-testid="ballot-pick-row" className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 shrink-0 mr-2">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-xs font-bold text-right">{picks[cat.title]}</div></div>))}
                 </div>
               );
             })}

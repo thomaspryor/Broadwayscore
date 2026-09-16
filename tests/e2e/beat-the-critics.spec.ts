@@ -365,7 +365,7 @@ test.describe('results ballot', () => {
     await expect(page.getByText('My Tony Picks')).toBeVisible();
 
     // At least one pick row is rendered
-    const pickRows = page.locator('.flex.items-center.justify-between.py-1\\.5');
+    const pickRows = page.getByTestId('ballot-pick-row');
     await expect(pickRows.first()).toBeVisible({ timeout: 10000 });
 
     const visibleText = await page.locator('body').innerText();
