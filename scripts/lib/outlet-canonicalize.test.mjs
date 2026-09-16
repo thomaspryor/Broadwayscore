@@ -155,9 +155,8 @@ test('real review outlets are still accepted — the deny-list did not overreach
 // aliased, and audit-outlet-registry.js gates bad values at WRITE time via
 // findInvalidCvStyles. resolveCvStyle's warning is the read-time backstop.
 //
-// These exercise the real exported functions, not getCvStyle, because
-// data/outlet-registry.json is gitignored private core data and is absent from
-// every worktree.
+// These exercise the real exported functions, not getCvStyle, to keep this
+// suite independent of the registry's current contents.
 // ---------------------------------------------------------------------------
 const { resolveCvStyle, _resetCvStyleWarnings, CV_STYLES, isValidCvStyle, findInvalidCvStyles, countArmedCvStyles } = require_('./outlet-canonicalize.js');
 

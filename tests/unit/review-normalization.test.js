@@ -721,6 +721,31 @@ describe('Alias consistency checks', () => {
   });
 });
 
+describe('normalizeOutlet: ambiguous-prefix guard (card #116, BRO-1084 regression)', () => {
+  test('New York Classical Review resolves to itself, not vulture (2026-04-27 incident)', () => {
+    // NYCR was unregistered at rebuild time due to the outlet-registry
+    // public/private sync gap (BRO-1084) and got fuzzy-matched to vulture's
+    // "new york" alias via the concatenated outlet-critic prefix check.
+    // Now registered — buildAmbiguousPrefixSlugs() must keep "new-york"
+    // flagged ambiguous so this never regresses.
+    assert.strictEqual(normalizeOutlet('New York Classical Review'), 'new-york-classical-review');
+    assert.strictEqual(normalizeOutlet('newyorkclassicalreview'), 'new-york-classical-review');
+  });
+
+  test('Classical Voice America resolves to itself (companion outlet from the same incident)', () => {
+    assert.strictEqual(normalizeOutlet('Classical Voice America'), 'classical-voice-america');
+  });
+
+  test('a hypothetical registered outlet sharing a hyphenated prefix with an existing alias does not fuzzy-match it', () => {
+    // "New York Foo Review" is not a real outlet, but its slugified form
+    // ("new-york-foo-review") shares vulture's "new york" alias prefix.
+    // Because a REAL registered outlet (new-york-classical-review) already
+    // crosses that same prefix, buildAmbiguousPrefixSlugs() flags "new-york"
+    // as ambiguous — so this resolves to its own slug rather than 'vulture'.
+    assert.strictEqual(normalizeOutlet('New York Foo Review'), 'new-york-foo-review');
+  });
+});
+
 // ============================================================================
 // Registry-based functions tests
 // ============================================================================

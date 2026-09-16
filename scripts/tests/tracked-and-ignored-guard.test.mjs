@@ -30,7 +30,7 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 test('getShippedCoreFiles: parses CORE_FILES out of the real push-core-data/action.yml', () => {
   const files = getShippedCoreFiles();
   assert.ok(files.includes('opening-night-sent.json'), 'opening-night-sent.json must still be a shipped core file');
-  assert.ok(files.includes('outlet-registry.json'), 'outlet-registry.json must still be a shipped core file');
+  assert.ok(!files.includes('outlet-registry.json'), 'outlet-registry.json is public-repo-tracked as of BRO-1084 — it must NOT be a shipped core file');
   assert.ok(files.includes('shows.json'), 'sanity check — shows.json is always shipped');
 });
 

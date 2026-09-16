@@ -56,7 +56,7 @@ runs:
         # Decision table is mirrored + pinned in
         # scripts/lib/core-data-sync-decision.js and
         # tests/unit/core-data-sync-decision.test.mjs — change both together.
-        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json"
+        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json"
         # Manifest of files this workflow actually modified — consumed by the
         # "Commit and push core data" step below to decide whether the
         # per-slug reconciliation merge (commercial.json, diary-shows.json) is

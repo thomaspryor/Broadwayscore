@@ -1692,6 +1692,12 @@ const CORE_DATA_MERGE_REGISTRY = [
     // overlapping hunk can rebase clean while still discarding one side's
     // edit.
   },
+  {
+    file: 'outlet-registry.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    note: 'BRO-1084: moved from private-core-data to public-repo — the private copy was routinely stale because the only real writer is a human running scripts/audit-outlet-registry.js --update/--auto locally (CI only ever runs --json/--update-baseline/--strict, never the write branch), and every new outlet addition depended on a manual gh api PUT to the private repo before the next checkout-core-data run silently overwrote it. No CI workflow writes this file, so there is no concurrency group to declare.',
+  },
 
   // ── private-core-data surface (push-core-data/action.yml, CORE_FILES) ────
   {
@@ -1751,7 +1757,6 @@ const CORE_DATA_MERGE_REGISTRY = [
   },
   { file: 'grosses.json', surface: 'private-core-data', status: 'single-writer', note: 'both writers (scrape-alltime-grosses, weekly-grosses) share concurrency group data-grosses-writers — mutually exclusive, no real race' },
   { file: 'critic-consensus.json', surface: 'private-core-data', status: 'single-writer', note: 'only update-critic-consensus.yml writes it' },
-  { file: 'outlet-registry.json', surface: 'private-core-data', status: 'single-writer', note: 'CI never actually reaches the write branch of audit-outlet-registry.js (needs --auto/interactive confirm; CI only runs --json/--update-baseline/--strict)' },
   { file: 'audience-reviews-lbo.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, update-lbo.yml' },
   { file: 'followers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },

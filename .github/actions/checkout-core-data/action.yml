@@ -121,7 +121,15 @@ runs:
           basename=$(basename "$f")
           [ -L "data/$basename" ] && rm -f "data/$basename"
         done
+        # outlet-registry.json (BRO-1084) is PUBLIC-repo-owned as of this change —
+        # never overwrite it from the private clone, even if a stale copy still
+        # lingers there post-migration. Without this explicit skip, this wildcard
+        # copy would silently revert any public-repo edit to the registry made
+        # between this migration landing and the private copy actually being
+        # deleted (or if it's ever accidentally re-added there later).
         for f in /tmp/core-data-checkout/*.json; do
+          basename=$(basename "$f")
+          [ "$basename" = "outlet-registry.json" ] && continue
           [ -f "$f" ] && cp -f "$f" data/
         done
         # Canary check — fail fast if key files missing
@@ -132,12 +140,15 @@ runs:
         echo "Core data restored from private repo ($(ls /tmp/core-data-checkout/*.json | wc -l) files)"
 
         # Save a snapshot that survives git checkout -- . in push-with-retry.sh.
-        # Some core data files (audience-buzz.json, shows.json, outlet-registry.json)
-        # may be tracked in the public repo, and git checkout reverts them to stale
-        # versions. This snapshot preserves the private repo's authoritative state.
+        # Some core data files (audience-buzz.json, shows.json) may be tracked in
+        # the public repo, and git checkout reverts them to stale versions. This
+        # snapshot preserves the private repo's authoritative state. outlet-
+        # registry.json is deliberately excluded (public-repo-owned, see above).
         rm -rf /tmp/core-data-snapshot
         mkdir -p /tmp/core-data-snapshot
         for f in /tmp/core-data-checkout/*.json; do
+          basename=$(basename "$f")
+          [ "$basename" = "outlet-registry.json" ] && continue
           [ -f "$f" ] && cp -f "$f" /tmp/core-data-snapshot/
         done
 
