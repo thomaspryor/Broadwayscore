@@ -52,6 +52,16 @@ async function fetchJson(url) {
 async function downloadImage(url, destPath) {
   return new Promise((resolve, reject) => {
     const finalUrl = url.startsWith('//') ? `https:${url}` : url;
+    // Tracked outside the response callback so a timeout firing mid-download
+    // (body streaming stalls after headers already arrived, `ws` already
+    // created) can clean it up too — leaving it open on timeout stranded the
+    // write stream AND the partial file on disk (Codex adversarial review,
+    // BRO-2383).
+    let ws = null;
+    const abandonPartialFile = () => {
+      if (ws) ws.destroy();
+      fs.unlink(destPath, () => {}); // best-effort — file may not exist yet
+    };
     const req = https.get(finalUrl, { timeout: 15000 }, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
         return downloadImage(res.headers.location, destPath).then(resolve).catch(reject);
@@ -59,13 +69,13 @@ async function downloadImage(url, destPath) {
       if (res.statusCode !== 200) {
         return reject(new Error(`HTTP ${res.statusCode} for ${finalUrl}`));
       }
-      const ws = fs.createWriteStream(destPath);
+      ws = fs.createWriteStream(destPath);
       res.pipe(ws);
       ws.on('finish', () => { ws.close(); resolve(); });
       ws.on('error', reject);
     });
     req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
+    req.on('timeout', () => { req.destroy(); abandonPartialFile(); reject(new Error('Request timeout')); });
   });
 }
 

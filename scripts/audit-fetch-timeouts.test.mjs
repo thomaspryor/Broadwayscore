@@ -266,6 +266,23 @@ test('https.get() options passed as a pre-built variable (not inlined) still fin
   assert.deepEqual(checkSource('fixture.js', src), []);
 });
 
+test('an unrelated same-named identifier merely mentioned inside the callback body does not satisfy the options check', () => {
+  // Real false negative found live (Codex adversarial review, BRO-2383): the
+  // identifier scan originally matched ANY identifier appearing anywhere in
+  // the call's argument text, including deep inside a callback function
+  // BODY — so a same-named but unrelated variable with a { timeout: N }
+  // declaration nearby could satisfy the check for a call whose real options
+  // argument (`{}`) has no timeout at all.
+  const src = `
+    function f(url) {
+      const metadata = { timeout: 15000 };
+      const req = https.get(url, {}, res => console.log(metadata));
+      req.on('timeout', () => req.destroy());
+    }`;
+  const findings = checkSource('fixture.js', src);
+  assert.equal(findings.length, 1, `expected the real gap (no timeout in {}) to still be flagged, got: ${JSON.stringify(findings)}`);
+});
+
 test('an identifier options-lookalike with no matching { timeout } declaration does not false-negative', () => {
   const src = `
     function go(cb) {

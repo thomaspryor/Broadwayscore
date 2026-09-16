@@ -369,6 +369,36 @@ function callArgSpan(source, callOpenParenIdx) {
   return { start: callOpenParenIdx, end: close === null ? source.length : close + 1 };
 }
 
+// Splits a call's argument list into top-level (depth-0) argument spans —
+// depth counting (on the blanked-strings view, so a stray bracket inside a
+// string can't desync it) ensures a comma nested inside an inline options
+// object or callback body never splits an argument in two. Real false
+// positive found live (Codex adversarial review, BRO-2383): scanning
+// ownArgsText for ANY identifier occurring ANYWHERE in the call's arguments —
+// including deep inside a callback function BODY — let an unrelated
+// same-named variable satisfy the options-by-reference check, e.g.
+// `const metadata = { timeout: 15000 }; https.get(url, {}, res =>
+// console.log(metadata))` read as protected because `metadata` merely
+// APPEARS in the call text, despite never being the options argument at all.
+// Restricting the identifier check to args whose ENTIRE top-level span is a
+// bare identifier (see checkSource below) closes that gap.
+function splitTopLevelArgs(source, openParenIdx, closeParenIdx) {
+  const args = [];
+  let depth = 0;
+  let start = openParenIdx + 1;
+  for (let i = openParenIdx + 1; i < closeParenIdx; i++) {
+    const ch = source[i];
+    if (ch === '(' || ch === '{' || ch === '[') depth++;
+    else if (ch === ')' || ch === '}' || ch === ']') depth--;
+    else if (ch === ',' && depth === 0) {
+      args.push({ start, end: i });
+      start = i + 1;
+    }
+  }
+  if (start < closeParenIdx) args.push({ start, end: closeParenIdx });
+  return args;
+}
+
 // Extends a call's own argument span through any immediately-chained
 // `.identifier(...)` segments — `https.get(url, cb).on('error', x).on('timeout', y)`
 // is one statement/expression, and BRO-108's own real code (fetch-bww-roundups.js,
@@ -495,8 +525,14 @@ function checkSource(file, source) {
     let hasTimeoutOption = /timeout\s*:\s*[\w.]+/.test(ownArgsText);
     if (!hasTimeoutOption) {
       const scope = enclosingFunctionScope(scopeSrc, extents, match.index);
-      const idents = [...new Set([...ownArgsText.matchAll(/\b([A-Za-z_$][\w$]*)\b/g)].map((m) => m[1]))];
-      hasTimeoutOption = idents.some((ident) => identifierOptionsHasTimeout(scope, ident));
+      // Only a top-level argument whose ENTIRE span is a bare identifier
+      // counts — never an identifier merely mentioned inside a callback body
+      // (see splitTopLevelArgs doc comment for the false positive this fixes).
+      const argSpans = splitTopLevelArgs(scanSrc, openParenIdx, ownArgs.end - 1);
+      hasTimeoutOption = argSpans.some((span) => {
+        const identMatch = /^([A-Za-z_$][\w$]*)$/.exec(scanSrc.slice(span.start, span.end).trim());
+        return identMatch && identifierOptionsHasTimeout(scope, identMatch[1]);
+      });
     }
 
     // Destroy-handler search is tied to the SPECIFIC request object: if the
