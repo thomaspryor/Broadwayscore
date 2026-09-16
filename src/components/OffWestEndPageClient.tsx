@@ -431,6 +431,7 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
     filteredCount: panel.filteredShows.length,
     archiveLoaded: archiveShows !== null,
     statusFilter,
+    hasSearchQuery: !!searchQuery,
   });
 
   // Single-writer clearAll (avoids URL race between window.history.replaceState

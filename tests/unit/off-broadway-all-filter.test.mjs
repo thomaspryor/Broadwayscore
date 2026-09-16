@@ -41,3 +41,27 @@ test('results already present -> none, regardless of archive state', () => {
     'none',
   );
 });
+
+test('active search + default status + archive still loading + zero results so far -> loading', () => {
+  assert.equal(
+    getShowListEmptyState({
+      filteredCount: 0,
+      archiveLoaded: false,
+      statusFilter: 'open',
+      hasSearchQuery: true,
+    }),
+    'loading',
+  );
+});
+
+test('active search + archive loaded + zero results -> genuinely empty', () => {
+  assert.equal(
+    getShowListEmptyState({
+      filteredCount: 0,
+      archiveLoaded: true,
+      statusFilter: 'open',
+      hasSearchQuery: true,
+    }),
+    'empty',
+  );
+});

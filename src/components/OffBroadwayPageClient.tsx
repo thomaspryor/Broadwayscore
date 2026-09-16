@@ -456,6 +456,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
     filteredCount: panel.filteredShows.length,
     archiveLoaded: archiveShows !== null,
     statusFilter,
+    hasSearchQuery: !!searchQuery,
   });
 
   // Single-writer clearAll (avoids URL race between window.history.replaceState
