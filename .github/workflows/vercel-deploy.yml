@@ -38,14 +38,20 @@ jobs:
   #     report success while its Vercel deploy was CANCELED (2026-06-26), and
   #     skipped preflights also conclude "success" (stale-baseline bug in the
   #     old gh-run-list lookup).
-  #   - Scheduled ticks skip only on positive proof: HEAD already live, or no
-  #     site-path diff vs the live SHA while the live deploy is <6h old
-  #     (content-aware gate, 2026-07-19 cost fix: ~93% of main commits are
-  #     bookkeeping that rebuilt an identical site ~139x/day).
-  #   - The 6h staleness backstop bounds staleness for private core-data
-  #     changes (shows.json etc.) that never touch this repo's tree.
+  #   - Scheduled ticks skip only on positive proof: HEAD already live AND
+  #     core data unchanged, or no site-path diff vs the live SHA AND core
+  #     data unchanged while the live deploy is <6h old (content-aware gate,
+  #     2026-07-19 cost fix: ~93% of main commits are bookkeeping that
+  #     rebuilt an identical site ~139x/day).
+  #   - Core-data awareness (BRO-3149, 2026-09-16): reviews.json/shows.json
+  #     live in the private data repo and never touch this repo's tree — the
+  #     Deploy step below stamps a blob SHA of reviews.json onto each Vercel
+  #     deployment (`--meta dataBlobSha=...`), and the gate compares that
+  #     against the private repo's current blob SHA to catch a core-data-only
+  #     change without waiting on the 6h backstop.
   #   - workflow_dispatch / workflow_run stay "ship NOW" lanes, deduped only
-  #     when HEAD is already live. Any gate-input failure fails OPEN (deploy).
+  #     when HEAD is already live AND core data hasn't advanced. Any
+  #     gate-input failure fails OPEN (deploy).
   # Kill switch: set repo variable DEPLOY_GATE_DISABLED=true to force every
   # trigger through (phone-operable; no code change).
   # Carries the Beaches #9 race guard (workflow_run conclusion check).
@@ -65,6 +71,10 @@ jobs:
         id: check
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # BRO-3149: single GitHub Contents API call (no clone) to read the
+          # current blob SHA of reviews.json in the private core-data repo —
+          # see should-deploy-gate.js header comment.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GATE_EVENT_NAME: ${{ github.event_name }}
           GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
         run: |
@@ -134,6 +144,18 @@ jobs:
             exit 1
           fi
           echo "All data/*.json files valid"
+
+      - name: Compute core data blob SHA
+        # BRO-3149: stamped onto the Vercel deployment below (`--meta
+        # dataBlobSha=...`) so should-deploy-gate.js can detect core-data-only
+        # changes on future ticks. `git hash-object` computes the exact same
+        # value GitHub's Contents API reports as a file's `sha` (verified live)
+        # — no need to reference the private repo's own clone directory.
+        id: data_sha
+        run: |
+          SHA=$(git hash-object data/reviews.json)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Core data (reviews.json) blob SHA: $SHA"
 
       - name: Verify Vercel build guard is active
         env:
@@ -302,6 +324,7 @@ jobs:
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DATA_BLOB_SHA: ${{ steps.data_sha.outputs.sha }}
         run: |
           # --archive=split-tgz: Vercel's split-tarball format (Jan 2025 changelog)
           # uploads up to 30% faster than single --archive=tgz for prebuilt
@@ -336,7 +359,7 @@ jobs:
             if [ "$ATTEMPT" -gt 1 ]; then
               ATTEMPT_TIMEOUT=240
             fi
-            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --prod --archive=split-tgz --token=$VERCEL_TOKEN) && status=0 || status=$?
+            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --prod --archive=split-tgz --meta "dataBlobSha=$DATA_BLOB_SHA" --token=$VERCEL_TOKEN) && status=0 || status=$?
             if [ "$status" -eq 0 ]; then
               break
             fi

@@ -84,6 +84,44 @@ test('workflow_run: same semantics as dispatch', () => {
   assert.equal(decide({ ...base, eventName: 'workflow_run', headSha: A }).proceed, false);
 });
 
+// BRO-3149: reviews.json/shows.json live in the private core-data repo and
+// never touch this repo's git tree, so the site-path diff alone is blind to
+// a core-data-only change. dataDiffResult carries that signal in separately —
+// see should-deploy-gate.js header comment for the full incident writeup.
+test('schedule: core data advanced but web HEAD did not — still proceeds (data-changed)', () => {
+  const r = decide({ ...base, diffResult: 'clean', dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
+test('schedule: baseline == HEAD but core data advanced — still proceeds (data-changed)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
+test('schedule: neither site nor core data changed — skips (content-gate)', () => {
+  const r = decide({ ...base, diffResult: 'clean', dataDiffResult: 'clean' });
+  assert.deepEqual(r, { proceed: false, reason: 'content-gate' });
+});
+
+test('schedule: data diff lookup unavailable falls through to site-diff signal unchanged', () => {
+  for (const dataDiffResult of ['error', null, undefined]) {
+    const clean = decide({ ...base, diffResult: 'clean', dataDiffResult });
+    assert.deepEqual(clean, { proceed: false, reason: 'content-gate' });
+    const dirty = decide({ ...base, diffResult: 'dirty', dataDiffResult });
+    assert.deepEqual(dirty, { proceed: true, reason: 'content-changed' });
+  }
+});
+
+test('workflow_dispatch: already-live dedup still fires when core data has NOT advanced', () => {
+  const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean' });
+  assert.deepEqual(r, { proceed: false, reason: 'already-live' });
+});
+
+test('workflow_dispatch: HEAD already live but core data advanced — proceeds (data-changed)', () => {
+  const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
 test('kill switch forces proceed on every event, even baseline==HEAD', () => {
   for (const eventName of ['schedule', 'workflow_dispatch', 'workflow_run']) {
     const r = decide({ ...base, eventName, gateDisabled: true, headSha: A });

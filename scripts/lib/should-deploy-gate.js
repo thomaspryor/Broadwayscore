@@ -14,25 +14,46 @@
  * charges dominating the Vercel bill (2026-07 cost analysis).
  *
  * Skip rules (scheduled ticks only — the gate ONLY skips on positive proof):
- *   - baseline known AND baseline == HEAD                    → skip (no-new-commits)
- *   - baseline known AND site-path diff empty AND deploy <6h → skip (content-gate)
+ *   - baseline known AND baseline == HEAD AND data unchanged  → skip (no-new-commits)
+ *   - baseline known AND site+data diff empty AND deploy <6h  → skip (content-gate)
  * EVERYTHING else proceeds: unknown baseline, Vercel API failure, git fetch or
- * diff failure, deploy older than 6h (staleness backstop — private core-data
- * changes don't touch this repo, the backstop bounds their staleness), any
- * non-schedule event (workflow_dispatch / workflow_run keep their "ship now"
- * semantics, deduped only when HEAD is already live).
+ * diff failure, deploy older than 6h (staleness backstop), any non-schedule
+ * event (workflow_dispatch / workflow_run keep their "ship now" semantics,
+ * deduped only when HEAD is already live AND core data hasn't advanced).
  * A wrongly-run build costs cents; a wrongly-skipped deploy is silent staleness.
+ *
+ * Core-data awareness (BRO-3149): reviews.json/shows.json live in the private
+ * broadway-scorecard-data repo and are pulled into data/ at BUILD time — they
+ * never appear in this repo's git tree, so the SITE_PATHS diff above is BLIND
+ * to a core-data-only change (e.g. a scored opening-night review landing via
+ * Rebuild Reviews (Fast)). Before this fix that blind spot rode the 6h
+ * staleness backstop every time — confirmed incident: a scored review landed
+ * 2026-09-10, the very next 5-min tick SKIPped (content-gate), prod stayed
+ * stale until a manual FORCE-DEPLOY. Fix: the Deploy step stamps the git blob
+ * SHA of data/reviews.json (as pulled for THAT build) onto the Vercel
+ * deployment via `vercel deploy --meta dataBlobSha=...`. This gate reads that
+ * back from the live deployment (check-prod-deploy.js's `dataBlobSha`) and
+ * compares it to the CURRENT blob SHA of reviews.json in the private repo
+ * (one GitHub Contents API call — `sha` is returned for files of any size,
+ * even when `content` is omitted past the 1MB inline-content cutoff; verified
+ * live that this equals `git hash-object` on the same bytes). Deliberately
+ * NOT a full core-data checkout in this job (which stays ~15s by design) and
+ * NOT a separate throttled watermark file — the baseline updates atomically
+ * with each real deployment, so (unlike an async/throttled record) it can't
+ * re-trigger a redundant deploy on the ticks immediately following a real one.
  *
  * Kill switch: repo variable DEPLOY_GATE_DISABLED=true (passed as GATE_DISABLED)
  * forces proceed on every trigger — the 2am phone-operable escape hatch.
  *
  * Env (set by the workflow; overridable for tests):
- *   VERCEL_TOKEN        required for the live baseline lookup
- *   GATE_EVENT_NAME     github.event_name (schedule | workflow_dispatch | workflow_run)
- *   GATE_DISABLED       'true' → kill switch
- *   GATE_HEAD_SHA       override HEAD (default: git rev-parse HEAD)
- *   GATE_BASELINE_JSON  test seam: JSON {deployedSha, ageSec} — skips the API call
- *   GITHUB_OUTPUT       when set, proceed=/reason= are appended there
+ *   VERCEL_TOKEN         required for the live baseline lookup
+ *   REVIEW_TEXTS_TOKEN   required for the core-data blob SHA lookup (private repo)
+ *   GATE_EVENT_NAME      github.event_name (schedule | workflow_dispatch | workflow_run)
+ *   GATE_DISABLED        'true' → kill switch
+ *   GATE_HEAD_SHA        override HEAD (default: git rev-parse HEAD)
+ *   GATE_BASELINE_JSON   test seam: JSON {deployedSha, ageSec, dataBlobSha} — skips the API call
+ *   GATE_DATA_SHA_JSON   test seam: JSON {sha} — skips the GitHub Contents API call
+ *   GITHUB_OUTPUT        when set, proceed=/reason= are appended there
  *
  * The deploy job's fast-vs-full prebuild step ("Check if data changed",
  * vercel-deploy.yml) keeps its own narrower data-path regex — different
@@ -82,28 +103,38 @@ function classifyDiffExit(code) {
  * @param {number|null} i.deployAgeSec age of that deployment (null = unknown)
  * @param {string} i.headSha
  * @param {'clean'|'dirty'|'error'|null} i.diffResult site-path diff vs baseline
+ * @param {'clean'|'dirty'|'error'|null} i.dataDiffResult core-data (reviews.json)
+ *   blob-SHA diff vs the SHA stamped on the live deployment — see BRO-3149
+ *   header comment. null/'error' (lookup unavailable) never forces a skip or
+ *   a proceed on its own; it just falls through to the site-path signal.
  * @returns {{proceed: boolean, reason: string}}
  */
-function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, diffResult }) {
+function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, diffResult, dataDiffResult }) {
   if (gateDisabled) return { proceed: true, reason: 'kill-switch' };
 
   if (eventName !== 'schedule') {
     // Explicit ship intent — dedup only when this exact SHA is verifiably live
     // (strictly less skip-prone than the old gh-run-list dedup, which skipped
-    // against SHAs of runs that never deployed). Known residual: a rebuild that
-    // changed ONLY private core-data without moving public HEAD would dedup
-    // here even though a redeploy would ship fresher data — in practice
-    // rebuild-all-reviews commits public/data/shows/*.json in lockstep with
-    // reviews.json (HEAD moves), and the 6h backstop bounds the edge case.
-    if (baselineSha && baselineSha === headSha) return { proceed: false, reason: 'already-live' };
+    // against SHAs of runs that never deployed) AND core data hasn't advanced
+    // past what that live deployment shipped (BRO-3149 — a rebuild that
+    // changed ONLY private core-data without moving public HEAD used to dedup
+    // here even though a redeploy would ship fresher data).
+    if (baselineSha && baselineSha === headSha) {
+      if (dataDiffResult === 'dirty') return { proceed: true, reason: 'data-changed' };
+      return { proceed: false, reason: 'already-live' };
+    }
     return { proceed: true, reason: 'explicit-ship' };
   }
 
   if (!baselineSha) return { proceed: true, reason: 'no-baseline-fail-open' };
-  if (baselineSha === headSha) return { proceed: false, reason: 'no-new-commits' };
+  if (baselineSha === headSha) {
+    if (dataDiffResult === 'dirty') return { proceed: true, reason: 'data-changed' };
+    return { proceed: false, reason: 'no-new-commits' };
+  }
   if (deployAgeSec == null) return { proceed: true, reason: 'no-age-fail-open' };
   if (deployAgeSec > STALENESS_BACKSTOP_SEC) return { proceed: true, reason: 'staleness-backstop' };
   if (diffResult === 'dirty') return { proceed: true, reason: 'content-changed' };
+  if (dataDiffResult === 'dirty') return { proceed: true, reason: 'data-changed' };
   if (diffResult === 'clean') return { proceed: false, reason: 'content-gate' };
   return { proceed: true, reason: 'diff-error-fail-open' };
 }
@@ -114,9 +145,13 @@ function getBaseline() {
   if (process.env.GATE_BASELINE_JSON) {
     try {
       const j = JSON.parse(process.env.GATE_BASELINE_JSON);
-      return { sha: j.deployedSha || null, ageSec: j.ageSec != null ? j.ageSec : null };
+      return {
+        sha: j.deployedSha || null,
+        ageSec: j.ageSec != null ? j.ageSec : null,
+        dataBlobSha: j.dataBlobSha || null,
+      };
     } catch {
-      return { sha: null, ageSec: null };
+      return { sha: null, ageSec: null, dataBlobSha: null };
     }
   }
   try {
@@ -126,10 +161,50 @@ function getBaseline() {
       { encoding: 'utf8', timeout: 30000 }
     );
     const j = JSON.parse(out);
-    return { sha: j.deployedSha || null, ageSec: j.ageSec != null ? j.ageSec : null };
+    return {
+      sha: j.deployedSha || null,
+      ageSec: j.ageSec != null ? j.ageSec : null,
+      dataBlobSha: j.dataBlobSha || null,
+    };
   } catch (e) {
     console.log(`::warning::[content-gate] baseline lookup failed (${e.message.split('\n')[0]}) — failing open`);
-    return { sha: null, ageSec: null };
+    return { sha: null, ageSec: null, dataBlobSha: null };
+  }
+}
+
+// The private core-data repo's blob SHA for reviews.json, straight from
+// GitHub's Contents API — no clone needed. GitHub returns `sha` (the git
+// blob object hash) for a file of any size even though `content` is omitted
+// above the 1MB inline-content cutoff (reviews.json is ~17MB); verified live
+// that this exactly equals `git hash-object` on the same bytes, which is what
+// the Deploy step stamps onto the Vercel deployment (see header comment).
+const DATA_REPO = 'thomaspryor/broadway-scorecard-data';
+const DATA_FILE_PATH = 'reviews.json';
+
+async function getDataBlobSha() {
+  if (process.env.GATE_DATA_SHA_JSON) {
+    try {
+      return JSON.parse(process.env.GATE_DATA_SHA_JSON).sha || null;
+    } catch {
+      return null;
+    }
+  }
+  const token = process.env.REVIEW_TEXTS_TOKEN;
+  if (!token) return null;
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${DATA_REPO}/contents/${DATA_FILE_PATH}?ref=main`,
+      {
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+        signal: AbortSignal.timeout(15000),
+      }
+    );
+    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+    const j = await res.json();
+    return j.sha || null;
+  } catch (e) {
+    console.log(`::warning::[content-gate] data blob sha lookup failed (${e.message}) — failing open`);
+    return null;
   }
 }
 
@@ -166,12 +241,12 @@ function writeOutput(proceed, reason) {
   else process.stdout.write(lines);
 }
 
-function main() {
+async function main() {
   const eventName = process.env.GATE_EVENT_NAME || 'schedule';
   const gateDisabled = process.env.GATE_DISABLED === 'true';
   const headSha = process.env.GATE_HEAD_SHA || git(['rev-parse', 'HEAD']).trim();
 
-  const baseline = gateDisabled ? { sha: null, ageSec: null } : getBaseline();
+  const baseline = gateDisabled ? { sha: null, ageSec: null, dataBlobSha: null } : getBaseline();
 
   // Only run the (fetch + diff) when the decision can actually depend on it.
   let diff = { result: null, files: [] };
@@ -184,6 +259,19 @@ function main() {
     diff = runDiff(baseline.sha, headSha);
   }
 
+  // Core-data blob-SHA lookup is a single cheap API call (no clone), so unlike
+  // the site diff above it's not worth narrowing to the schedule-only window —
+  // the non-schedule 'already-live' dedup branch needs it too (see decide()).
+  let dataDiffResult = null;
+  if (!gateDisabled) {
+    const currentDataSha = await getDataBlobSha();
+    if (currentDataSha && baseline.dataBlobSha) {
+      dataDiffResult = currentDataSha === baseline.dataBlobSha ? 'clean' : 'dirty';
+    } else if (currentDataSha || baseline.dataBlobSha) {
+      dataDiffResult = 'error'; // one side known, other not — ambiguous, don't force either way
+    }
+  }
+
   const { proceed, reason } = decide({
     eventName,
     gateDisabled,
@@ -191,12 +279,13 @@ function main() {
     deployAgeSec: baseline.ageSec,
     headSha,
     diffResult: diff.result,
+    dataDiffResult,
   });
 
   const short = (s) => (s ? s.slice(0, 10) : 'unknown');
   const verb = proceed ? 'DEPLOY' : 'SKIP';
   console.log(
-    `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${eventName}`
+    `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${eventName} dataDiff=${dataDiffResult || 'unknown'}`
   );
   if (diff.files.length) console.log(`::notice::[content-gate] changed site files (first ${diff.files.length}): ${diff.files.join(', ')}`);
 
@@ -205,4 +294,9 @@ function main() {
 
 module.exports = { decide, classifyDiffExit, SITE_PATHS, STALENESS_BACKSTOP_SEC };
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch((e) => {
+    console.error(`::error::[content-gate] gate crashed: ${e.stack || e.message}`);
+    process.exit(1);
+  });
+}
