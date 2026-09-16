@@ -364,6 +364,15 @@ DIRTY_AUDIT_FILES=$( (git diff --name-only -- data/audit/; git diff --cached --n
 if [ -n "$DIRTY_AUDIT_FILES" ]; then
   echo "[$TAG] resetting regenerable snapshot(s):"
   echo "$DIRTY_AUDIT_FILES" | sed "s/^/[$TAG]   /"
+  # Rename destinations that came FROM a .jsonl ledger (ship-check adversarial
+  # finding, BRO-2364): a staged `git mv data/audit/foo.jsonl data/audit/foo
+  # .json` would otherwise look like a brand-new non-jsonl path below and get
+  # deleted outright, destroying real ledger rows under their new name. Scoped
+  # to the whole data/audit/ dir, not a single pathspec — git only pairs a
+  # rename's two sides when both are in view, so filtering by single-file
+  # pathspec silently defeats -M detection (verified empirically).
+  RENAMED_FROM_JSONL=$(git diff --cached -M --name-status -- data/audit/ 2>/dev/null \
+    | awk '$1 ~ /^R/ && $2 ~ /\.jsonl$/ {print $3}')
   while IFS= read -r f; do
     [ -n "$f" ] || continue
     if git cat-file -e "HEAD:$f" 2>/dev/null; then
@@ -375,6 +384,8 @@ if [ -n "$DIRTY_AUDIT_FILES" ]; then
       # review, task #732).
       git checkout HEAD -- "$f" \
         || echo "::error::[$TAG] could not reset $f to HEAD"
+    elif printf '%s\n' "$RENAMED_FROM_JSONL" | grep -qx -- "$f"; then
+      echo "::error::[$TAG] $f is a staged rename FROM a .jsonl ledger — refusing to auto-clear it, investigate by hand"
     else
       # BRO-2364: HEAD has no such path (a NEWLY-ADDED snapshot: a crashed
       # job ran `git add` on a brand-new file but never committed it), so
@@ -382,10 +393,17 @@ if [ -n "$DIRTY_AUDIT_FILES" ]; then
       # to git") and leaves it staged forever — that error was previously
       # swallowed by `xargs`, so the merge stayed permanently blocked with no
       # visible cause. There is nothing at HEAD to restore, so unstage it and
-      # delete the working-tree copy instead, same as the untracked case below.
-      git reset -q -- "$f" 2>/dev/null
-      rm -f -- "$f" \
-        || echo "::error::[$TAG] could not remove newly-added $f"
+      # delete the working-tree copy instead, same as the untracked case
+      # below. Only delete on a successful unstage (ship-check finding) — if
+      # `git reset` itself fails (e.g. a lock held by a concurrent process),
+      # leave the file exactly as found rather than removing its content
+      # while it is still staged.
+      if git reset -q -- "$f" 2>/dev/null; then
+        rm -f -- "$f" \
+          || echo "::error::[$TAG] could not remove newly-added $f"
+      else
+        echo "::error::[$TAG] could not unstage $f — leaving it staged for the next run"
+      fi
     fi
   done <<EOF
 $DIRTY_AUDIT_FILES

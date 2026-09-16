@@ -449,6 +449,35 @@ test('ACCEPTANCE (BRO-2364): a NEWLY-ADDED staged data/audit snapshot no longer 
   });
 });
 
+test('a staged rename FROM a .jsonl ledger onto a non-jsonl path is refused, not silently deleted (ship-check finding, BRO-2364)', () => {
+  withTmp((root) => {
+    // Without this guard, the rename destination looks exactly like a
+    // newly-added regenerable snapshot (not in HEAD, not *.jsonl) and the
+    // BRO-2364 fix above would `git reset` + `rm -f` it — destroying real
+    // ledger rows that happen to sit under a renamed, non-.jsonl path. Origin
+    // must ALSO add a file at the destination path for this to actually
+    // BLOCK ff-only (a rename that doesn't collide with anything origin
+    // moved never enters the reset step at all — same reasoning as the
+    // BRO-2364 acceptance test above).
+    const { origin, clone } = setupPair(root, 'renamedledger');
+    const RENAMED = 'data/audit/fixture-union-ledger.json'; // was .jsonl
+    advanceOrigin(root, origin, 'via-renamedledger', (via) => {
+      fs.mkdirSync(path.join(via, 'data', 'audit'), { recursive: true });
+      fs.writeFileSync(path.join(via, RENAMED), '{"origin":true}\n');
+    });
+    git(clone, 'mv', LEDGER, RENAMED);
+
+    const { code, out } = trySync(clone, 'renamedledger');
+    assert.equal(code, 1, `a rename-from-ledger must refuse, not silently recover:\n${out}`);
+    assert.match(out, /staged rename FROM a \.jsonl ledger/, 'the refusal must say why');
+    assert.equal(fs.existsSync(path.join(clone, RENAMED)), true, 'the renamed ledger content must survive on disk');
+    assert.equal(
+      fs.readFileSync(path.join(clone, RENAMED), 'utf8'), 'a\nb\nc\n',
+      'the ledger rows must be intact, not truncated or deleted, and not overwritten by origin\'s version either',
+    );
+  });
+});
+
 test('a rebase left mid-flight by an interrupted run is self-healed, not stuck forever (BRO-3212 review finding)', () => {
   withTmp((root) => {
     // Simulate a run killed between "git commit" succeeding and "git rebase
