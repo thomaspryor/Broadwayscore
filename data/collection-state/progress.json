@@ -1,29 +1,40 @@
 {
-  "processed": [],
+  "processed": [
+    "golden-boy-off-west-end-2026/theatreboard--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytg--amelia-merrill.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json"
+  ],
   "failed": [
-    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
+    "golden-boy-off-west-end-2026/ntlive--powster.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "pre-existing-condition-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/buy-tickets-direct-from-the-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
+    "playwright": [
+      "golden-boy-off-west-end-2026/theatreboard--unknown.json",
+      "pre-existing-condition-off-broadway-2026/nytg--amelia-merrill.json"
     ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "pre-existing-condition-off-broadway-2026/airmail--air-mail.json"
+    ]
   },
-  "startTime": "2026-09-16T07:42:09.807Z",
-  "lastProcessed": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
-  "log": [
-    {
-      "t": "2026-09-16T07:42:28.923Z",
-      "event": "bb-session",
-      "session": "9a64dbbe",
-      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
-    }
-  ]
+  "startTime": "2026-09-16T08:32:06.257Z",
+  "lastProcessed": "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json",
+  "log": []
 }
