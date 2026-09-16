@@ -99,6 +99,82 @@ test('recordPlanVerdict requires a session id (an unattributed verdict covers no
   assert.match(r.reason, /session-id/);
 });
 
+// BRO-2310: findFreshPlanVerdict (infra-review-scope.js) only ever reads the
+// freshest PASS — a fail is invisible to it. Left alone, the accountability
+// the file's own comment described ("the reviewer wins by default... an owner
+// call") was unimplemented: any later pass, from any reviewer, unlocked the
+// gate with nothing checking who recorded it. These cases pin the fix, which
+// lives here at WRITE time rather than in the gate-evaluation layer.
+test('BRO-2310: a pass immediately after this session\'s own fail is REJECTED without --note or owner-override', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const fail = recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'fail', sessionId: 'sess-a' });
+  assert.equal(fail.recorded, true);
+  const dodge = recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'pass', sessionId: 'sess-a' });
+  assert.equal(dodge.recorded, false, 'a bare re-review-and-pass must not silently overturn the fail');
+  assert.match(dodge.reason, /fail/);
+  assert.match(dodge.reason, /--note|owner-override/);
+});
+
+test('BRO-2310: the same pass WITH --note is accepted and tagged overturnsFail:true', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'fail', sessionId: 'sess-b' });
+  const r = recordPlanVerdict({
+    repoRoot: repo, reviewer: 'second-opinion', result: 'pass', sessionId: 'sess-b',
+    note: 'dropped the risky step the fail flagged, re-reviewed the revised plan',
+  });
+  assert.equal(r.recorded, true);
+  assert.equal(r.entry.overturnsFail, true);
+});
+
+test('BRO-2310: --reviewer=owner-override is accepted after a fail with no note required', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'fail', sessionId: 'sess-c' });
+  const r = recordPlanVerdict({ repoRoot: repo, reviewer: 'owner-override', result: 'pass', sessionId: 'sess-c' });
+  assert.equal(r.recorded, true);
+  assert.equal(r.entry.overturnsFail, true);
+});
+
+test('BRO-2310: a pass with no prior fail for the session is unaffected — no overturnsFail tag', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const r = recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'pass', sessionId: 'sess-d' });
+  assert.equal(r.recorded, true);
+  assert.equal(r.entry.overturnsFail, undefined);
+});
+
+test('BRO-2310: a fail from a DIFFERENT session does not require a note on this session\'s pass', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'fail', sessionId: 'sess-other' });
+  const r = recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'pass', sessionId: 'sess-e' });
+  assert.equal(r.recorded, true);
+  assert.equal(r.entry.overturnsFail, undefined);
+});
+
+test('BRO-2310: pass -> pass (no intervening fail) never requires a note', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'pass', sessionId: 'sess-f' });
+  const r = recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'pass', sessionId: 'sess-f' });
+  assert.equal(r.recorded, true);
+  assert.equal(r.entry.overturnsFail, undefined);
+});
+
+test('BRO-2310: recording another fail (not a pass) never stamps overturnsFail, even from owner-override', (t) => {
+  // The guard only fires on result==='pass' — a fail-after-fail (or a fail
+  // recorded by 'owner-override', which has no special meaning for a fail)
+  // must record plainly, with no note requirement and no overturnsFail tag.
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'fail', sessionId: 'sess-g' });
+  const r = recordPlanVerdict({ repoRoot: repo, reviewer: 'owner-override', result: 'fail', sessionId: 'sess-g' });
+  assert.equal(r.recorded, true);
+  assert.equal(r.entry.overturnsFail, undefined);
+});
+
 test('ACCEPTANCE: >30-line scripts/ diff with no verdict is BLOCKED', (t) => {
   const repo = makeRepo();
   t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));

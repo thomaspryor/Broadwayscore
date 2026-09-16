@@ -715,25 +715,55 @@ function evaluateInfraReviewGate({
 
 /**
  * The freshest usable plan-phase verdict for this session, or null.
- * A 'fail' verdict does NOT unlock the gate — the reviewer wins by default.
- * Overturning a fail is an owner call, recorded as a verdict with
- * reviewer='owner-override' (the devil's-advocate reviewer's answer to open
- * question 3: without this, "reviewer said no" becomes the self-classification
- * dodge one level up).
+ *
+ * Tracks the SINGLE freshest phase:'plan' verdict for the session regardless
+ * of result, and only returns it if that freshest verdict is a pass. Before
+ * BRO-2310 this looked only at result==='pass' entries and ignored fails
+ * outright — so a pass recorded before a later fail kept covering edits for
+ * the rest of the TTL window, and the fail never re-blocked anything (an
+ * adversarial /ship-check review of the initial BRO-2310 fix caught this: the
+ * write-time guard below only stops a NEW pass from silently overturning a
+ * fail, it does nothing about an OLD pass that already existed). Tracking the
+ * single latest verdict — not the latest pass — closes that: the moment a
+ * fail is recorded, it becomes the freshest verdict and the gate re-blocks,
+ * exactly as the "reviewer wins by default" comment always claimed.
+ *
+ * This does NOT itself require an owner call to move past that fail: a later,
+ * genuinely fresher pass again becomes the freshest verdict and unlocks the
+ * gate. findFreshPlanVerdict still has no way to tell "a genuinely revised
+ * plan, re-reviewed" from "the same plan, reviewed again until it passed"
+ * (task #1079's open question 3, still unresolved — a future plan-content
+ * hash could resolve it). Hard-blocking here on any fail was tried in the
+ * BRO-2310 design pass and rejected: it would wedge the legitimate "fail on
+ * v1, revise the plan, pass on v2" flow this gate exists to support.
+ *
+ * The accountability property lives one layer up instead, at WRITE time:
+ * recordPlanVerdict() (review-gate.mjs) refuses to record a pass whose
+ * session's own most recent plan verdict was a fail unless the call carries
+ * --note explaining what changed, or --reviewer=owner-override. Either way
+ * the write succeeds and later unlocks the gate here — the point is a visible
+ * paper trail, not a wedge. computeInfraReviewDigest() (infra-review-digest.js)
+ * surfaces every such fail→pass transition (via the overturnsFail flag
+ * recordPlanVerdict stamps on the entry) so the pattern is observable in the
+ * daily digest even when it is permitted (BRO-2310, option 2 of that card).
  */
 function findFreshPlanVerdict({ verdicts = [], sessionId = null, now = 0 }) {
   let best = null;
   for (const v of verdicts) {
     if (!v || v.phase !== 'plan') continue;
-    if (v.result !== 'pass') continue;
     if (sessionId && v.sessionId && v.sessionId !== sessionId) continue;
     if (!v.sessionId) continue; // an unattributed verdict can't cover a session
     const ts = Date.parse(v.ts || '');
     if (!Number.isFinite(ts)) continue;
     if (now && now - ts > VERDICT_TTL_MS) continue;
-    if (!best || ts > Date.parse(best.ts)) best = v;
+    // >= not >: millisecond-precision timestamps can tie (e.g. a fail and the
+    // owner-override pass that overturns it, recorded moments apart in the
+    // same script run). On a tie, prefer the entry that appears LATER in the
+    // ledger — an append-only file, so later-in-array is later-in-time even
+    // when the ts field itself can't distinguish them.
+    if (!best || ts >= Date.parse(best.ts)) best = v;
   }
-  return best;
+  return best && best.result === 'pass' ? best : null;
 }
 
 module.exports = {
