@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T15:05:01.540Z",
+  "generatedAt": "2026-09-16T16:34:29.313Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -959,23 +959,23 @@
       "status": "open",
       "slug": "golden-boy-off-west-end",
       "thumbnail": "/images/shows/golden-boy-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.95,
-      "liveScore": 79,
-      "scoreDrift": 0.04999999999999716,
+      "siteScore": 76.24,
+      "liveScore": 76,
+      "scoreDrift": -0.23999999999999488,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 3,
-      "t2": 1,
+      "t2": 2,
       "t3": 2,
       "positive": 5,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
+          "7/8 total",
           "T1:2/3",
           "T2:1/2",
           "hi-conf:4/6"
@@ -993,10 +993,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1154,6 +1150,18 @@
           "t3": 2,
           "p": 5,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-16T16:25:57.896Z",
+          "rc": 7,
+          "s": 76.24,
+          "t1": 3,
+          "t2": 2,
+          "t3": 2,
+          "p": 5,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
@@ -2148,9 +2156,9 @@
       "status": "open",
       "slug": "bloodsport-after-helen-of-troy-off-west-end",
       "thumbnail": "/images/shows/bloodsport-after-helen-of-troy-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 73.6,
+      "siteScore": 73.64,
       "liveScore": 74,
-      "scoreDrift": 0.4000000000000057,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2485,6 +2493,18 @@
           "t": "2026-09-16T15:05:01.540Z",
           "rc": 27,
           "s": 73.6,
+          "t1": 7,
+          "t2": 9,
+          "t3": 11,
+          "p": 18,
+          "m": 6,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-16T16:25:57.896Z",
+          "rc": 27,
+          "s": 73.64,
           "t1": 7,
           "t2": 9,
           "t3": 11,

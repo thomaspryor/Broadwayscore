@@ -315,7 +315,7 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
               return (
                 <Fragment key={row.slug}>
                   <tr
-                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
+                    className={`border-b border-white/5 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : row.slug)}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >

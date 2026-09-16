@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-16T15:04:54.093Z",
+  "timestamp": "2026-09-16T16:34:21.632Z",
   "stats": {
-    "totalReviews": 43501,
-    "alreadyFlagged": 17998,
-    "dateGuardCatches": 242,
-    "directorMismatch": 1044,
+    "totalReviews": 43513,
+    "alreadyFlagged": 18012,
+    "dateGuardCatches": 243,
+    "directorMismatch": 1045,
     "tvFilmSignals": 1275,
     "londonSignals": 1074,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3811
+    "noPublishDate": 3806
   },
   "findings": [
     {
@@ -5423,6 +5423,24 @@
       "showId": "cats-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 58,
+      "publishDate": "2026-08-11",
+      "url": "https://www.standard.co.uk/culture/theatre/cats-at-regent-s-park-open-air-theatre-review-b1292992.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "standard--west-end-theatre.json",
       "publishDate": "2026-08-11",
       "url": "https://www.standard.co.uk/culture/theatre/cats-at-regent-s-park-open-air-theatre-review-b1292992.html",
       "findings": [
@@ -28051,6 +28069,17 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "amyleighchandler--amy.json",
       "score": 86,
       "publishDate": "2025-05-11",
@@ -40711,20 +40740,6 @@
       "score": 58,
       "publishDate": "2026-09-15",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/golden-boy-review-boxing-tale-packs-some-punch-but-its-no-knockout-76ts9drmv",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "golden-boy-off-west-end-2026",
-      "file": "west-end-best-friend--unknown.json",
-      "score": 72,
-      "publishDate": "2026-08-13",
-      "url": "https://www.westendbestfriend.co.uk/news/almeida-theatre-golden-boy-broadcast-cinemas-national-theatre-live",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

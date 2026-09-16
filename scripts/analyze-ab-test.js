@@ -211,12 +211,27 @@ async function main() {
   }
 
   // ── Pull conversions from Impact ──
+  // Impact's Actions API rejects a StartDate/EndDate pair more than 45 days
+  // apart (BRO-3456: --days 170 crashed here with "Number of days between
+  // them cannot be more than 45 days" — the script had never been run with
+  // a window this wide before). Chunk into <=45-day windows and concatenate;
+  // each chunk starts 1 second after the previous chunk's end so no action
+  // can be double-counted at a boundary instant (the tradeoff — an action
+  // landing in that 1-second gap is missed — is far safer than silently
+  // double-counting revenue). Conversion volume here (a few hundred over 5
+  // months) fits in one Impact API page per chunk, so no pagination.
   let impactConversions = [];
   if (process.env.IMPACT_ACCOUNT_SID && process.env.IMPACT_AUTH_TOKEN) {
     const sid = process.env.IMPACT_ACCOUNT_SID;
-    const url = `https://api.impact.com/Mediapartners/${sid}/Actions.json?StartDate=${fmtISO(startDate)}&EndDate=${fmtISO(endDate)}`;
-    const data = await fetchImpact(url);
-    impactConversions = data.Actions || [];
+    const MAX_CHUNK_MS = 45 * 24 * 60 * 60 * 1000;
+    let chunkStart = startDate;
+    while (chunkStart < endDate) {
+      const chunkEnd = new Date(Math.min(chunkStart.getTime() + MAX_CHUNK_MS, endDate.getTime()));
+      const url = `https://api.impact.com/Mediapartners/${sid}/Actions.json?StartDate=${fmtISO(chunkStart)}&EndDate=${fmtISO(chunkEnd)}`;
+      const data = await fetchImpact(url);
+      impactConversions.push(...(data.Actions || []));
+      chunkStart = new Date(chunkEnd.getTime() + 1000);
+    }
   }
 
   // Postback attribution: as of 2026-04-26, affiliate-utils.ts forwards
