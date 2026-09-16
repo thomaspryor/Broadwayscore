@@ -295,6 +295,17 @@ function validateEvent(event) {
     if (!event.name || typeof event.name !== 'string') return false;
   }
 
+  // Reject placeholder phrases leaking into the name field instead of a real
+  // performer name — e.g. an LLM extraction turning "Anne Boleyn replacement"
+  // (article prose describing an unannounced recast) into arrival.name
+  // verbatim, which then renders as "Anne Boleyn replacement — Anne Boleyn"
+  // (BRO-1297). "note"-type events legitimately use TBA/TBD as placeholder
+  // subject text ("Additional casting TBA") so this only applies to
+  // arrival/departure, which must name a real person.
+  if ((event.type === 'arrival' || event.type === 'departure') && /replacement|TBA|TBD/i.test(event.name)) {
+    return false;
+  }
+
   // Validate + NORMALIZE dates. Coerce month-only (YYYY-MM) to the first of the
   // month so every downstream `===` dedup and date compare is precision-consistent
   // (a closure '2026-06' vs '2026-06-28' must not be treated as two events). Then
@@ -758,6 +769,7 @@ function diffCast(baseline, scraped, showId, sourceUrl) {
         sourceUrl,
         sourceType: 'official-site',
         addedDate: TODAY,
+        incomplete: true,
       });
     }
   }
@@ -773,6 +785,7 @@ function diffCast(baseline, scraped, showId, sourceUrl) {
         sourceUrl,
         sourceType: 'official-site',
         addedDate: TODAY,
+        incomplete: true,
       });
     }
   }
@@ -965,6 +978,7 @@ function diffCastPlaybill(baseline, scraped, showId, sourceUrl) {
         sourceUrl,
         sourceType: 'playbill-cast',
         addedDate: TODAY,
+        incomplete: true,
       });
     }
   }
@@ -979,6 +993,7 @@ function diffCastPlaybill(baseline, scraped, showId, sourceUrl) {
         sourceUrl,
         sourceType: 'playbill-cast',
         addedDate: TODAY,
+        incomplete: true,
       });
     }
   }
