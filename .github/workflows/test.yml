@@ -6164,6 +6164,68 @@ jobs:
         if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
         uses: actions/checkout@v5
 
+      # BRO-3507: names WHICH sibling job(s) are failing right now, and
+      # detects when that set changes from the previous push while main is
+      # STILL red. The escalation alert below (conditionKey 'test-yml:main-
+      # streak-escalation') re-pages once every 24h regardless of WHY main is
+      # red — so if Data Validation gets fixed and lint-workflows breaks on
+      # the very next push, the streak keeps counting (still "failure") but
+      # the escalation stays silent under its cooldown, describing a problem
+      # that's already gone while a NEW one nobody has looked at goes
+      # unmentioned (BRO-3425: "today's 24h escalation row is pure noise
+      # while the aggregate stays red"). Sourced from the `needs` context
+      # (free — the 9 sibling jobs are already listed in this job's `needs:`
+      # above) via failingJobsFromNeeds() in scripts/lib/main-red-streak.js,
+      # the same pure helper (built on failingJobNames()) that health-check.js's
+      # gh-API-sourced backstop uses, so both detectors describe an incident
+      # identically. State is only written when the set actually changes —
+      # not on every push — so this doesn't add a guaranteed diff to the
+      # ledger commit below on every one of main's 200-1200 daily commits.
+      - name: Detect failing-job-set change
+        id: stepset
+        if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
+        uses: actions/github-script@v7
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        with:
+          script: |
+            const fs = require('fs');
+            const { failingJobsFromNeeds } = require('./scripts/lib/main-red-streak.js');
+            const needs = JSON.parse(process.env.NEEDS_JSON || '{}');
+            const currentSet = failingJobsFromNeeds(needs);
+            const STATE_PATH = 'data/audit/main-streak-failing-jobs.json';
+            let prevSet = '';
+            try {
+              prevSet = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')).failingJobs || '';
+            } catch {}
+            const changed = currentSet !== prevSet;
+            core.setOutput('current_failing_jobs', currentSet);
+            core.setOutput('changed', changed && currentSet ? 'true' : 'false');
+            if (changed) {
+              fs.mkdirSync('data/audit', { recursive: true });
+              fs.writeFileSync(
+                STATE_PATH,
+                JSON.stringify({ failingJobs: currentSet, updatedAt: new Date().toISOString() }, null, 2) + '\n'
+              );
+            }
+
+      # Only the ESCALATION incident is resolved here, not the base
+      # 'test-yml:main-streak' key: resolveCondition() only flips the LOCAL
+      # ledger, it never touches the Linear issue itself, and routeAlert's
+      # 'auto' disposition (used by the base card) re-checks Linear for a
+      # still-open duplicate regardless of ledger state — so resolving the
+      # base key here would not let a fresh, accurately-described card
+      # through, just spend an extra Linear search on every job-set flip. The
+      # escalation tier uses 'human' (downgraded to 'digest' when not page-
+      # worthy — see the step below), which has no such re-check: once past
+      # the ledger's open+cooldown gate, it dispatches immediately with
+      # today's FAILING_JOBS value. That is the tier BRO-3425 was actually
+      # complaining about ("pure noise while the aggregate stays red"), so
+      # that is the one worth clearing early.
+      - name: Resolve escalation alert on failing-job-set change
+        if: failure() && steps.stepset.outputs.changed == 'true'
+        run: node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak-escalation')"
+
       - name: Route alert — main test.yml red on consecutive pushes
         if: failure() && steps.streak.outputs.should_dispatch == 'true'
         uses: actions/github-script@v7
@@ -6175,16 +6237,19 @@ jobs:
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
           SHOULD_ESCALATE: ${{ steps.streak.outputs.should_escalate }}
           STREAK: ${{ steps.streak.outputs.streak }}
+          FAILING_JOBS: ${{ steps.stepset.outputs.current_failing_jobs }}
         with:
           script: |
             const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const prevUrl = process.env.PREV_FAILED_URL || '';
             const streak = process.env.STREAK || '?';
+            const failingJobs = process.env.FAILING_JOBS || 'unknown (job-set lookup unavailable)';
             const fields = [
               { name: 'This failed run', value: `[View logs](${runUrl})` },
               { name: 'Previous failed run', value: prevUrl ? `[View logs](${prevUrl})` : 'n/a' },
               { name: 'Consecutive failures', value: streak },
+              { name: 'Currently failing job(s)', value: failingJobs },
             ];
 
             // Independent conditionKey/disposition per severity tier — each gets
@@ -6196,7 +6261,7 @@ jobs:
             await routeAlert({
               conditionKey: 'test-yml:main-streak',
               title: 'main test.yml red on 2+ consecutive pushes',
-              description: 'The Test Suite has failed on at least two consecutive pushes to main. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. A fix-main card has been filed to the Action Queue.',
+              description: `The Test Suite has failed on at least two consecutive pushes to main. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. A fix-main card has been filed to the Action Queue.`,
               severity: 'error',
               disposition: 'auto',
               cardAction: 'Fix',
@@ -6219,7 +6284,7 @@ jobs:
               await routeAlert({
                 conditionKey: 'test-yml:main-streak-escalation',
                 title: 'main test.yml STILL red — auto-dispatch did not resolve it',
-                description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
+                description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
                 severity: 'error',
                 disposition: 'human',
                 model: 'opus',
@@ -6243,7 +6308,7 @@ jobs:
       - name: Commit alert-router ledger changes
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/main-streak-failing-jobs.json 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
