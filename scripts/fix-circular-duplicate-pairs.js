@@ -112,6 +112,7 @@ function _defaultCriticFor(outletId) {
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isBylineAttestedInText, normalizeForAttestation } = require('./lib/byline-attestation');
+const { foldDiacritics } = require('./lib/title-match');
 
 const USAGE = `fix-circular-duplicate-pairs.js — Repairs the circular-duplicateOf class: fileA.duplicateOf=fileB AND.
 
@@ -227,7 +228,7 @@ function isTruncatedPreviewOf(text, otherText) {
   const MAX_CHUNK = 500;
   const MIN_DISTINCT_WORDS = 8;
   const distinctWordCount = (s) => new Set(
-    s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length > 3),
+    foldDiacritics(s.toLowerCase()).replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length > 3),
   ).size;
   const cutoffRe = /\.{2,}|…+/g;
   let m;
