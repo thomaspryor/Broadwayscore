@@ -17,6 +17,8 @@
  */
 
 /** Strip query/hash/trailing slash so scrape-variant URLs collapse. */
+const fs = require('fs');
+const path = require('path');
 const { foldDiacritics } = require('./title-match');
 
 function canonicalReviewUrl(url) {
@@ -76,4 +78,65 @@ function findUrlClusters(reviews, threshold = 5) {
   return clusters.sort((a, b) => b.count - a.count);
 }
 
-module.exports = { canonicalReviewUrl, findUrlClusters, outletOf };
+/**
+ * Walk duplicateOf pointers to the terminal (non-duplicate) file. Bounded so a
+ * pre-existing cycle among siblings can't loop forever.
+ *
+ * rebuild-all-reviews.js's duplicateOf resolution only walks ONE hop back — a
+ * file whose duplicateOf target is ITSELF a duplicate is not excluded there,
+ * so it leaks into reviews.json as a second scored copy of the same content
+ * (BRO-1391). Pointing a fresh promotion at whatever sibling readdir happens
+ * to return first — rather than that sibling's own terminal canonical —
+ * would build exactly that chain.
+ */
+function resolveTerminalCanonical(showDir, filename) {
+  const seen = new Set();
+  let current = filename;
+  for (let hops = 0; hops < 10; hops++) {
+    if (seen.has(current)) return current; // pre-existing cycle among siblings — stop, don't chase forever
+    seen.add(current);
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(path.join(showDir, current), 'utf8'));
+    } catch {
+      return current; // unreadable — return what we have rather than throw
+    }
+    if (!data.duplicateOf || !data.duplicateOf.endsWith('.json') || !fs.existsSync(path.join(showDir, data.duplicateOf))) {
+      return current;
+    }
+    current = data.duplicateOf;
+  }
+  return current;
+}
+
+/**
+ * Is `url` already promoted for this show+outlet under a DIFFERENT filename?
+ * Rotating-byline outlets (Times UK, WhatsOnStage — a "more from our critics"
+ * recirc widget) return a different extracted critic name for the SAME url on
+ * different fetches, so a naive "does the target filename already exist"
+ * collision check misses this entirely and each fetch mints a new
+ * {outlet}--{critic}.json primary (BRO-1391 byline-explosion root cause).
+ * Scans the show's review-texts dir for a sibling `{outletId}--*.json` whose
+ * own url canonicalizes to the same value, and resolves through any
+ * duplicateOf chain to the terminal canonical.
+ *
+ * @param {string} reviewTextsRoot - absolute (or cwd-relative) path to the review-texts root
+ * @returns {string|null} the terminal canonical filename, or null if `url` isn't promoted yet under this outlet
+ */
+function findExistingFileForUrl(reviewTextsRoot, showId, outletId, url) {
+  const showDir = path.join(reviewTextsRoot, showId);
+  if (!fs.existsSync(showDir)) return null;
+  const target = canonicalReviewUrl(url);
+  if (!target) return null;
+  const prefix = `${outletId}--`;
+  for (const f of fs.readdirSync(showDir)) {
+    if (!f.endsWith('.json') || !f.startsWith(prefix)) continue;
+    try {
+      const existing = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      if (canonicalReviewUrl(existing.url) === target) return resolveTerminalCanonical(showDir, f);
+    } catch { /* unreadable/corrupt sibling — skip */ }
+  }
+  return null;
+}
+
+module.exports = { canonicalReviewUrl, findUrlClusters, outletOf, resolveTerminalCanonical, findExistingFileForUrl };
