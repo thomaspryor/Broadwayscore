@@ -592,6 +592,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     filteredCount: panel.filteredShows.length,
     archiveLoaded: archiveShows !== null,
     statusFilter,
+    hasSearchQuery: !!searchQuery,
   });
 
   // Single-writer clearAll for the panel: resets inline filters state AND
