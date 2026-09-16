@@ -1,62 +1,22 @@
 {
-  "generatedAt": "2026-09-15T21:26:17.505Z",
+  "generatedAt": "2026-09-16T12:18:46.224Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "f52f9f72c0f5957f88820ad998cb174418140895",
-  "state": "RED",
-  "consecutiveFailures": 81,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "bb806ec4a744fc1ff53d9d47a12eb9142d8debd2",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 5,
+  "greenSince": "2026-09-16T10:18:36Z",
+  "greenForHours": 2.00284,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-13T22:41:00Z",
-  "redForHours": 46.7548625,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-13T22:10:46Z",
-  "latestFailedRunId": "35024529337",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35024529337",
-  "decidedRuns": 92,
-  "failingJobs": [
-    {
-      "name": "Lint Workflows",
-      "steps": [
-        "Audit — alert-sender direct-bypass gate"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
-      ]
-    },
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit sibling-title misroute (strict)",
-        "Audit flag-vs-CV contradictions",
-        "Audit duplicateOf + stale _duplicateOfCleared contradiction (#1655)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/tests/alert-sender-bypass.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 2304 - alert-sender audit reports zero direct-bypass call sites"
-    },
-    {
-      "path": "tests/unit/archive-row-outlet-id.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 1 - scripts/gather-reviews.js routes LBO, WET, TR, TS cache blocks through resolveArchiveRowOutletId"
-    }
-  ],
-  "topFailingJob": "Lint Workflows"
+  "lastSuccessAt": "2026-09-16T11:01:29Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 100,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
