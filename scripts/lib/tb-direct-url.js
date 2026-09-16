@@ -72,10 +72,12 @@ function buildTbCandidateUrls(title, year) {
     const camelShort = toCamelSlug(shortTitle);
     const lowerShort = toLowerSlug(shortTitle);
     if (camelShort && camelShort !== camel) {
+      // All dated variants (camel + lowercase) before the bare undated one, so a
+      // revival can't match an old production's page before any dated page is tried.
       urls.push(`${TB_HOST}/page/world/${camelShort}${y4}.html`);
       urls.push(`${TB_HOST}/page/world/${camelShort}${y2}.html`);
-      urls.push(`${TB_HOST}/page/world/${camelShort}.html`);
       urls.push(`${TB_HOST}/page/world/${lowerShort}${y4}.html`);
+      urls.push(`${TB_HOST}/page/world/${camelShort}.html`);
     }
   }
   return urls;

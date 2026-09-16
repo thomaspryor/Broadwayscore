@@ -271,6 +271,22 @@ function buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera
 // contaminated yet only 0.79x volume and 6pts low — invisible to any threshold).
 const REDDIT_CONTAMINATION_FIX_DATE = '2026-06-15';
 
+const { isOwnerAccount } = require('./owner-accounts');
+
+/**
+ * Is this comment authored by one of the Scorecard's own accounts? These are
+ * the bot's own replies (e.g. defending/restating a score inside someone
+ * else's organic thread) — never a genuine audience reaction, so drop them
+ * before classification rather than let the LLM's meta-discussion instinct
+ * carry the whole burden. Deliberately COMMENT-level, not post-level: a post
+ * the Scorecard started can still contain other users' genuine reactions in
+ * reply, so the post itself is never excluded wholesale (BRO-985).
+ * @param {{author?: string}} comment
+ */
+function isOwnerComment(comment) {
+  return isOwnerAccount('reddit', comment && comment.author);
+}
+
 /**
  * Was this Reddit record harvested by the pre-fix (contamination-prone) scraper?
  * True when reddit exists, isn't already suppressed, and its lastUpdated predates
@@ -321,6 +337,7 @@ module.exports = {
   isGenericTitle,
   isRedditVolumeInflated,
   commentAnchorsToShow,
+  isOwnerComment,
   otherSourceReviewCounts,
   AUDIENCE_OTHER_SOURCE_NAMES,
   REDDIT_INFLATION_MIN_RC,

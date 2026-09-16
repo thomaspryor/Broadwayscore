@@ -210,8 +210,13 @@ on:
       - 'scripts/replay-pending-bylines.js'
       # tests/unit/cast-changes-validate-event.test.mjs
       - 'scripts/scrape-cast-changes.js'
-      # tests/unit/mezzanine-override-collision-auditor.test.mjs
+      # tests/unit/mezzanine-override-collision-auditor.test.mjs +
+      # tests/unit/mezzanine-sibling-year-gate.test.mjs. Colocated test
+      # registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — path-listed so a solo
+      # edit to either triggers CI.
       - 'scripts/scrape-mezzanine-audience.js'
+      - 'scripts/scrape-mezzanine-audience.test.mjs'
       # tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
       - 'scripts/scrape-nysr-reviews.js'
       # tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
@@ -2835,6 +2840,18 @@ on:
       # above).
       - 'scripts/score-reviews-calibrated.js'
       - 'scripts/score-reviews-calibrated.test.mjs'
+      # BRO-3507: lint-workflows ratchet CLI. Its decision logic
+      # (scripts/lib/data-gate-heal-paths.js, colocated-tested) is covered by
+      # the scripts/lib/** glob above, but this thin CLI wrapper is a
+      # root-level scripts/ file with no test of its own — path-listed so a
+      # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-data-gate-heal-paths.js'
+      # BRO-3507: self-heal-orphan-show-files.yml's deletion CLI. Its decision
+      # logic (scripts/lib/orphan-grace-period.js, colocated-tested) is
+      # covered by the scripts/lib/** glob above, but this thin CLI wrapper is
+      # a root-level scripts/ file with no test of its own — path-listed so a
+      # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/apply-orphan-grace-period.js'
   pull_request:
     branches: [main]
   schedule:
@@ -3007,6 +3024,17 @@ jobs:
         # regresses. Opt-out for idempotent jobs via a "# concurrency-cancel-ok:"
         # annotation. See memory/feedback_test_yml_cancel_in_progress.md.
         run: node scripts/audit-workflow-concurrency.js
+
+      - name: Audit — data-validation gates have a heal path (BRO-3507)
+        if: always() && steps.deps.outcome == 'success'
+        # Ratchet: every --strict/--gate step in the data-validation job must
+        # have a baseline-diff mode, a scheduled --fix/--write workflow, or an
+        # explicit `# heal-exempt: <reason>` annotation — otherwise gates
+        # accumulate faster than anyone drains them (BRO-3425 measured 23 such
+        # gates, only 2 with a real heal path before this ratchet seeded the
+        # rest with heal-exempt annotations). Decision logic + tests:
+        # scripts/lib/data-gate-heal-paths.{js,test.mjs}.
+        run: node scripts/audit-data-gate-heal-paths.js
 
       - name: Audit — workflow hygiene (notify-failure, playwright, push-with-retry)
         if: always() && steps.deps.outcome == 'success'
@@ -4970,6 +4998,9 @@ jobs:
         # Standalone re-runnable audit alongside the corpus test above —
         # same defect class, gate reports the violating files directly
         # (scripts/audit-autoclear-vs-ensemble.js --fix restores them).
+        # heal-exempt: --fix exists and is documented safe but no scheduled
+        # workflow runs it (BRO-3507 ratchet seed, 2026-09-16) — tracked
+        # follow-up, not wired to a cron yet.
         if: always()
         run: node scripts/audit-autoclear-vs-ensemble.js --strict
 
@@ -5112,6 +5143,9 @@ jobs:
 
       - name: Audit review contamination
         if: always()
+        # heal-exempt: contamination/misroute guard — each hit needs a human
+        # to judge which market/show is correct; auto-fixing risks entrenching
+        # a wrong guess (BRO-3507 ratchet seed, 2026-09-16).
         run: node scripts/audit-review-contamination.js --gate
         # Catches cross-market contamination (WE/OB reviews in BW folders),
         # domain/outlet mismatches, unflagged roundup pages, and junk --unknown files.
@@ -5282,6 +5316,10 @@ jobs:
 
       - name: Audit contradicted flag basis (stale exclusion flags)
         if: always()
+        # heal-exempt: report-only by design — a prior sweep of this same
+        # shape auto-un-suppressed 8 wrong-production reviews the day after
+        # running unsupervised (see "There is no --fix on the audit for
+        # exactly that reason" below) (BRO-3507 ratchet seed, 2026-09-16).
         run: node scripts/audit-contradicted-flag-basis.js --gate --max=0
         # BLOCKING replacement for the retired #483 step above. Fires only on
         # POSITIVE evidence that a flag's own stated basis is contradicted: the
@@ -5310,6 +5348,9 @@ jobs:
 
       - name: Audit duplicateOf + stale _duplicateOfCleared contradiction (#1655)
         if: always()
+        # heal-exempt: --fix exists and is documented bulk-safe (see below) but
+        # no scheduled workflow runs it yet (BRO-3507 ratchet seed,
+        # 2026-09-16) — tracked follow-up, not wired to a cron.
         run: node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0
         # A record must never carry a live duplicateOf pointer AND a
         # _duplicateOfCleared breadcrumb for the SAME url — the two verdicts
@@ -5335,6 +5376,9 @@ jobs:
 
       - name: Audit URL-swap regression (#1416)
         if: always()
+        # heal-exempt: fixing requires picking the correct historical URL per
+        # hit (which prior production/run does this review actually belong
+        # to) — not mechanical (BRO-3507 ratchet seed, 2026-09-16).
         run: node scripts/audit-url-downgrade.js --gate
         # #1416: maybeUpgradeUrl() swapped a review's correct current-run url
         # for a URL belonging to a PRIOR production of the same revived show
@@ -5354,6 +5398,10 @@ jobs:
 
       - name: Audit cast contamination
         if: always()
+        # heal-exempt: contamination guard — each hit needs a human to judge
+        # whether the scraped cast/role actually belongs to this show; auto-
+        # fixing risks entrenching a wrong guess (BRO-3507 ratchet seed,
+        # 2026-09-16).
         run: node scripts/audit-cast-contamination.js --gate
         # Catches wrong-show cast scrapes (Met Opera singers as Kavalier-Clay
         # cast, TV-show titles as character roles, LASTNAME-FIRSTNAME name
@@ -5376,6 +5424,9 @@ jobs:
 
       - name: Audit commercial contamination
         if: always()
+        # heal-exempt: contamination guard, no --fix mode exists — each hit
+        # needs a human to judge whether the scraped figure belongs to this
+        # show (BRO-3507 ratchet seed, 2026-09-16).
         run: node scripts/audit-commercial-contamination.js --gate
         # --gate (2026-06-30): blocks only on the impossible/contradictory FAIL
         # class (weekly>cap, recoupment contradiction, cap/weekly outlier) via the
@@ -5395,6 +5446,12 @@ jobs:
 
       - name: Audit non-review content (weather/sports/junk pages)
         if: always()
+        # heal-exempt: audit-review-quality.yml already runs this script bare
+        # on a weekly schedule (cron '0 5 * * 2') — bare invocation IS this
+        # script's live/fix mode (DRY_RUN requires an explicit --dry-run/
+        # --strict/--gate flag, scripts/audit-non-reviews.js:36), so a real
+        # scheduled heal path exists; it just isn't detectable by --fix-flag
+        # pattern matching (BRO-3507 ratchet seed, 2026-09-16).
         run: node scripts/audit-non-reviews.js --gate
         # Hard-fails if any SCORED review is a definitive wrong-page newspaper
         # OCR (weather page, sports scoreboard) or junk scrape. Added after an
@@ -5413,6 +5470,9 @@ jobs:
 
       - name: Audit audience-buzz contamination
         if: always()
+        # heal-exempt: contamination guard — a divergent score is as plausibly
+        # a genuine audience/critic split as a wrong-show Reddit thread; each
+        # hit needs a human call (BRO-3507 ratchet seed, 2026-09-16).
         run: node scripts/audit-audience-buzz-contamination.js --gate
         # scripts/scrape-reddit-sentiment.js can land on wrong-show Reddit
         # threads for generic titles ('Six', 'It', 'Pride'). REDDIT_SCORE_DIVERGENCE
@@ -5430,6 +5490,9 @@ jobs:
 
       - name: Audit critic-consensus contamination
         if: always()
+        # heal-exempt: staleness/orphan guard on LLM-generated summaries — a
+        # hit needs a human to confirm it's genuinely orphaned vs. mid-
+        # regeneration (BRO-3507 ratchet seed, 2026-09-16).
         run: node scripts/audit-critic-consensus-contamination.js --gate
         # scripts/generate-critic-consensus.js summaries are generated
         # against OUR reviews.json, so wrong-source contamination is lower
@@ -5487,6 +5550,10 @@ jobs:
       # row-count floors (500 shows / 15k reviews) structurally can't catch.
       - name: Audit text quality — catastrophe floor (blocking)
         if: always()
+        # heal-exempt: catastrophe floor (wide bands, see below) — a real trip
+        # means active data-quality damage (e.g. a scraper hitting a cookie
+        # expiry) requiring human triage, not routine drift to auto-heal
+        # (BRO-3507 ratchet seed, 2026-09-16).
         run: node scripts/audit-text-quality.js --gate
         # GATE band: <10% full OR >85% truncated OR >25% unknown. ~5x looser than
         # the MONITOR band in check-corpus-drift.yml, so normal drift never reds
@@ -6103,6 +6170,78 @@ jobs:
         if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
         uses: actions/checkout@v5
 
+      # BRO-3507: names WHICH sibling job(s) are failing right now, and
+      # detects when that set changes from the previous push while main is
+      # STILL red. The escalation alert below (conditionKey 'test-yml:main-
+      # streak-escalation') re-pages once every 24h regardless of WHY main is
+      # red — so if Data Validation gets fixed and lint-workflows breaks on
+      # the very next push, the streak keeps counting (still "failure") but
+      # the escalation stays silent under its cooldown, describing a problem
+      # that's already gone while a NEW one nobody has looked at goes
+      # unmentioned (BRO-3425: "today's 24h escalation row is pure noise
+      # while the aggregate stays red"). Sourced from the `needs` context
+      # (free — the 9 sibling jobs are already listed in this job's `needs:`
+      # above) via failingJobsFromNeeds() in scripts/lib/main-red-streak.js,
+      # the same pure helper (built on failingJobNames()) that health-check.js's
+      # gh-API-sourced backstop uses, so both detectors describe an incident
+      # identically. State is only written when the set actually changes —
+      # not on every push — so this doesn't add a guaranteed diff to the
+      # ledger commit below on every one of main's 200-1200 daily commits.
+      - name: Detect failing-job-set change
+        id: stepset
+        if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
+        uses: actions/github-script@v7
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        with:
+          script: |
+            const fs = require('fs');
+            const { failingJobsFromNeeds } = require('./scripts/lib/main-red-streak.js');
+            const needs = JSON.parse(process.env.NEEDS_JSON || '{}');
+            const currentSet = failingJobsFromNeeds(needs);
+            const STATE_PATH = 'data/audit/main-streak-failing-jobs.json';
+            let prevSet = '';
+            try {
+              prevSet = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')).failingJobs || '';
+            } catch {}
+            const changed = currentSet !== prevSet;
+            core.setOutput('current_failing_jobs', currentSet);
+            core.setOutput('changed', changed && currentSet ? 'true' : 'false');
+            if (changed) {
+              fs.mkdirSync('data/audit', { recursive: true });
+              fs.writeFileSync(
+                STATE_PATH,
+                JSON.stringify({ failingJobs: currentSet, updatedAt: new Date().toISOString() }, null, 2) + '\n'
+              );
+            }
+
+      # Only the ESCALATION incident is resolved here, not the base
+      # 'test-yml:main-streak' key: resolveCondition() only flips the LOCAL
+      # ledger, it never touches the Linear issue itself, and routeAlert's
+      # 'auto' disposition (used by the base card) re-checks Linear for a
+      # still-open duplicate regardless of ledger state — so resolving the
+      # base key here would not let a fresh, accurately-described card
+      # through, just spend an extra Linear search on every job-set flip. The
+      # escalation tier uses 'human' (downgraded to 'digest' when not page-
+      # worthy — see the step below), which has no such re-check: once past
+      # the ledger's open+cooldown gate, it dispatches immediately with
+      # today's FAILING_JOBS value. That is the tier BRO-3425 was actually
+      # complaining about ("pure noise while the aggregate stays red"), so
+      # that is the one worth clearing early.
+      #
+      # Known boundary (adversarial review): decideDigestEscalation() in
+      # owner-alert-router.js quiets a re-notify within its OWN resurface
+      # window once this conditionKey has been promoted to a tracked ('auto')
+      # incident (existing.linearIdentifier set, past ESCALATION_NOTIFY_THRESHOLD
+      # notifications) — resolving the ledger status here doesn't bypass that
+      # separate per-digest gate. In practice this only bites once main has
+      # stayed red long enough to cross 14+ escalation notifications (~2
+      # weeks at the 24h cooldown), a state with much bigger problems than a
+      # stale alert description; not worth deeper plumbing for this ticket.
+      - name: Resolve escalation alert on failing-job-set change
+        if: failure() && steps.stepset.outputs.changed == 'true'
+        run: node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak-escalation')"
+
       - name: Route alert — main test.yml red on consecutive pushes
         if: failure() && steps.streak.outputs.should_dispatch == 'true'
         uses: actions/github-script@v7
@@ -6114,16 +6253,19 @@ jobs:
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
           SHOULD_ESCALATE: ${{ steps.streak.outputs.should_escalate }}
           STREAK: ${{ steps.streak.outputs.streak }}
+          FAILING_JOBS: ${{ steps.stepset.outputs.current_failing_jobs }}
         with:
           script: |
             const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const prevUrl = process.env.PREV_FAILED_URL || '';
             const streak = process.env.STREAK || '?';
+            const failingJobs = process.env.FAILING_JOBS || 'unknown (job-set lookup unavailable)';
             const fields = [
               { name: 'This failed run', value: `[View logs](${runUrl})` },
               { name: 'Previous failed run', value: prevUrl ? `[View logs](${prevUrl})` : 'n/a' },
               { name: 'Consecutive failures', value: streak },
+              { name: 'Currently failing job(s)', value: failingJobs },
             ];
 
             // Independent conditionKey/disposition per severity tier — each gets
@@ -6135,7 +6277,7 @@ jobs:
             await routeAlert({
               conditionKey: 'test-yml:main-streak',
               title: 'main test.yml red on 2+ consecutive pushes',
-              description: 'The Test Suite has failed on at least two consecutive pushes to main. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. A fix-main card has been filed to the Action Queue.',
+              description: `The Test Suite has failed on at least two consecutive pushes to main. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. A fix-main card has been filed to the Action Queue.`,
               severity: 'error',
               disposition: 'auto',
               cardAction: 'Fix',
@@ -6158,7 +6300,7 @@ jobs:
               await routeAlert({
                 conditionKey: 'test-yml:main-streak-escalation',
                 title: 'main test.yml STILL red — auto-dispatch did not resolve it',
-                description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
+                description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
                 severity: 'error',
                 disposition: 'human',
                 model: 'opus',
@@ -6182,7 +6324,7 @@ jobs:
       - name: Commit alert-router ledger changes
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/main-streak-failing-jobs.json 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"

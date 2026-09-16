@@ -182,30 +182,41 @@ For each comment, determine:
    - The person has NOT actually seen the show yet — e.g., "I refuse to see it", "I won't go", "I've heard it's bad", "planning to see it", "I'm about to see it", "seeing it tonight", "going tomorrow", "can't wait to see it"
    - Boycott or protest sentiment about the show's creators, source material author, or associated artists — not a review of the production itself
    - Opinions about source material (book, film, original artist) rather than the theatrical production — e.g., "the book was terrible" or "I don't support the author"
-   - Comment is about a DIFFERENT show by name - e.g., "I saw Hamilton..." or "Book of Mormon was better"
+   - Comment is ONLY about a DIFFERENT show by name, with no independent reaction to "${showTitle}" itself — e.g., "I saw Hamilton and loved it" (no mention of "${showTitle}" at all). A comparison that ALSO states a reaction to "${showTitle}" — e.g., "Book of Mormon was better, but ${showTitle} was still a fun night" — IS relevant; see COMPARATIVE COMMENTS below for how to score its sentiment.
    - Industry talk: injuries, cast contracts, working conditions, backstage drama, closing notices
    - Technical theater: stage rakes, set measurements, lighting rigs, costumes, props
    - Meta discussion: ticket prices, lottery, seating, scheduling
    - Venue/logistics: stage door experience, usher behavior, concessions, bathrooms, crowd behavior, accessibility — these are about the venue, not the show
+   - Discussion OF a scoring site/aggregator/bot's rating or ranking of the show ("the audience score seems low", "that critic score can't be right", "Broadway Scorecard has it at a B+") — this is commentary about a score/ranking, not a review of the production. Only mark relevant if the comment ALSO independently describes the commenter's own experience seeing the show.
    - Just mentions "${showTitle}" in passing without an audience opinion
 
-   IMPORTANT: The person MUST have ALREADY attended/seen the show (past tense). Future tense ("I'm going to see it") or present anticipation ("about to see it") = NOT relevant. If comment discusses a different show BY NAME, mark not relevant. For an ambiguous "I saw it" / "the show" that names no other show, resolve it using the thread title per the MATCH THE PRODUCTION rule above (assume "${showTitle}" only when the thread is about this production; when no thread title is given, assume "${showTitle}").
+   IMPORTANT: The person MUST have ALREADY attended/seen the show (past tense). Future tense ("I'm going to see it") or present anticipation ("about to see it") = NOT relevant. If the comment ONLY discusses a different show BY NAME with no reaction to "${showTitle}", mark not relevant — but a comparison that also reacts to "${showTitle}" IS relevant (see COMPARATIVE COMMENTS below). For an ambiguous "I saw it" / "the show" that names no other show, resolve it using the thread title per the MATCH THE PRODUCTION rule above (assume "${showTitle}" only when the thread is about this production; when no thread title is given, assume "${showTitle}").
 
 2. sentiment (only if is_relevant is true):
    - enthusiastic: Strong positive - superlatives like amazing, incredible, best, 10/10, life-changing, cried happy tears, "blown away"
    - positive: Liked it - enjoyed, good, fun, recommend, worth seeing, glad I went. Also: sharing a highlight moment, describing participation in interactive elements, or any implied enjoyment
    - mixed: Explicitly mentions BOTH good AND bad aspects in the SAME comment — e.g., "loved the performances but the story didn't work"
-   - negative: Disappointed, boring, not worth it, wouldn't recommend, waste of money, walked out, regretted going
-   - neutral: ONLY for purely factual statements with absolutely zero sentiment (extremely rare — almost every audience reaction has some sentiment)
+   - negative: The commenter EXPLICITLY disliked THIS show — disappointed, boring, not worth it, wouldn't recommend, waste of money, walked out, regretted going. Do NOT use negative for anything milder than this — see the rules below.
+   - neutral: Purely factual statements with zero sentiment, OR a comment with no explicit criticism that doesn't clear the bar for positive/mixed either (see LUKEWARM rule below). Less rare than it sounds — mild comments should land here, not in negative.
 
-   POSITIVE SIGNALS — do NOT mark these neutral:
+   NEGATIVE REQUIRES EXPLICIT DISLIKE OF THIS SHOW:
+   - If the commenter did NOT explicitly say they disliked, were disappointed by, or would not recommend THIS show, do NOT mark it negative — use mixed or neutral instead. Negative is reserved for unambiguous criticism, not vibes or absence of enthusiasm.
+
+   COMPARATIVE COMMENTS (multi-show threads, "X or Y?", "which is better"):
+   - Preferring a DIFFERENT show over this one ("I'd pick Becky Shaw over Fallen Angels", "Show B was stronger for me") is NOT evidence of negative sentiment about THIS show unless the commenter also states an explicit criticism of it. Being the less-preferred option in a comparison is not a pan.
+   - If the comparison names no specific flaw in THIS show, mark neutral (or mixed if the comment also states an explicit positive about this show).
+
+   LUKEWARM / MILD COMMENTS ARE MIXED OR NEUTRAL, NOT POSITIVE AND NOT NEGATIVE:
+   - Hedging or middling language — "it was fine", "not my favorite", "not blown away", "slow start but worth it", "decent", "a bit long", "okay", "nothing special", "don't regret it" — signals a mild/middling reaction. Classify these as mixed (if they also name something they specifically liked) or neutral (if they don't). This rule takes PRIORITY over the POSITIVE SIGNALS rules below and over the neutral/positive tiebreak — hedged language is never "sharing without complaint," it IS the complaint. Never negative unless paired with explicit criticism ("wouldn't recommend it", "wasted my money", "wouldn't go again").
+
+   POSITIVE SIGNALS — do NOT mark these neutral (unless the LUKEWARM rule above applies instead):
    - "Saw it twice" / "going back" / "taking my mom" → positive (they wouldn't return if they didn't like it)
    - Sharing a specific moment they enjoyed or found moving → positive or enthusiastic
    - Describing participation in interactive elements (chosen by performer, brought on stage) → positive (this is a highlight)
    - Answering "should I see it?" affirmatively → positive
-   - Sharing the experience without complaint → positive (people don't share neutral experiences)
+   - Sharing the experience with no hedging and no complaint → positive (people don't share neutral experiences) — but if the comment contains hedging language, apply LUKEWARM instead.
 
-   If you're unsure between neutral and positive, choose positive. Neutral should be <5% of relevant comments.
+   If you're unsure between neutral and positive AND no hedging language is present, choose positive. If you're unsure between neutral/mixed and negative, do NOT choose negative — negative must be earned by explicit criticism.
 ${schemaNote}
 Comments to classify:
 ${formatted}

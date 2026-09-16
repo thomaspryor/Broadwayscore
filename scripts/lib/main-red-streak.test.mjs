@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { assessMainRedStreak } = require('./main-red-streak.js');
+const { assessMainRedStreak, failingJobsFromNeeds } = require('./main-red-streak.js');
 
 const NOW = Date.parse('2026-08-17T15:40:00.000Z');
 const ago = (min) => new Date(NOW - min * 60000).toISOString();
@@ -224,6 +224,36 @@ test('an in-progress run reported with conclusion "" (not null) does not fire a 
   const r = assessMainRedStreak(runs, NOW, 2);
   assert.equal(r.alarm, null);
   assert.equal(r.redRunCount, 0);
+});
+
+test('failingJobsFromNeeds returns empty string when every job in `needs` succeeded or was skipped', () => {
+  const needs = { 'unit-tests': { result: 'success' }, 'dependency-audit': { result: 'skipped' } };
+  assert.equal(failingJobsFromNeeds(needs), '');
+});
+
+test('failingJobsFromNeeds names the one failing job', () => {
+  const needs = { 'unit-tests': { result: 'success' }, 'data-validation': { result: 'failure' } };
+  assert.equal(failingJobsFromNeeds(needs), 'data-validation');
+});
+
+test('failingJobsFromNeeds comma-joins multiple failing jobs and excludes skipped/success ones', () => {
+  const needs = {
+    'unit-tests': { result: 'success' },
+    'data-validation': { result: 'failure' },
+    'lint-workflows': { result: 'failure' },
+    'dependency-audit': { result: 'skipped' },
+  };
+  assert.equal(failingJobsFromNeeds(needs), 'data-validation, lint-workflows');
+});
+
+test('failingJobsFromNeeds treats cancelled jobs as failing too (not success/skipped)', () => {
+  const needs = { 'e2e-tests': { result: 'cancelled' } };
+  assert.equal(failingJobsFromNeeds(needs), 'e2e-tests');
+});
+
+test('failingJobsFromNeeds handles an empty/missing needs object without crashing', () => {
+  assert.equal(failingJobsFromNeeds({}), '');
+  assert.equal(failingJobsFromNeeds(undefined), '');
 });
 
 test('an unparseable createdAt on the anchor run reports null duration, not a silent pass (code-review finding)', () => {
