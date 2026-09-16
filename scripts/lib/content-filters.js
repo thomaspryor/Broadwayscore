@@ -207,6 +207,8 @@ const NON_MET_OPERA_URL_MARKERS = [
   'la-scala', 'teatro-alla-scala',
   // Russia
   'bolshoi', 'mariinsky',
+  // Spain
+  '-in-valencia', 'palau-de-les-arts',
   // US (non-Met)
   'lyric-opera-chicago', 'chicago-lyric-opera', 'houston-grand-opera',
   'sf-opera', 'san-francisco-opera', 'seattle-opera', 'pittsburgh-opera',
