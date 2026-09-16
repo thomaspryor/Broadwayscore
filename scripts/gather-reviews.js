@@ -121,7 +121,8 @@ function saveAggregatorStub(filePath, stub) {
 }
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { titleWordsMatchWithConfidence, validateRoundupPageTitle } = require('./lib/show-matching');
+const { titleWordsMatchWithConfidence, validateRoundupPageTitle, buildSiblingCategoriesFromShows, pageTitleConfirmsShow } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const {
   isBroadwayLocalRegion, isWestEndLocalRegion, UK_SERP_REGIONS, US_SERP_REGIONS,
@@ -245,6 +246,25 @@ function getSiblingIndex() {
     _siblingIndexCache = new Map();
   }
   return _siblingIndexCache;
+}
+// Lazy-loaded showId -> sibling categories index for checkArchiveCategory()'s
+// cross-market-sibling check (BRO-3610) — mirrors the identical
+// siblingCategoriesByShowId() memoization pattern already used by
+// scrape-bww-reviews.js / scrape-dtli.js / scrape-playbill-verdict.js /
+// scrape-nyc-theatre-roundups.js / scrape-london-box-office-roundups.js
+// (BRO-2565), so gather-reviews.js's own archive-read call sites apply the
+// same category-aware guard those scrapers apply at write time.
+let _siblingCategoriesByShowIdCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesByShowIdCache) return _siblingCategoriesByShowIdCache;
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const shows = showsData.shows || showsData;
+    _siblingCategoriesByShowIdCache = buildSiblingCategoriesFromShows(shows);
+  } catch {
+    _siblingCategoriesByShowIdCache = {};
+  }
+  return _siblingCategoriesByShowIdCache;
 }
 function getSkipCrossShowDupeIds() {
   if (_skipCrossShowDupeIds) return _skipCrossShowDupeIds;
@@ -2054,7 +2074,13 @@ async function searchBWWRoundup(show, year, options = {}) {
       // Validate cached archive matches show — Stuart King 2026-04-25.
       // Pre-validation gates left poisoned BWW archives in cache (142 detected
       // in initial audit). Quarantine instead of silently extracting.
-      const v = validateRoundupPageTitle(html, show.title || showId);
+      // checkArchiveCategory (BRO-3610) — bare validateRoundupPageTitle had no
+      // category/siblingCategories, so it couldn't catch a regional show's
+      // archive being poisoned by its own later Broadway transfer's page
+      // (the exact class scrape-bww-reviews.js's OWN write/read paths were
+      // fixed for by BRO-2547/2549; this reader shared the same cache file
+      // without the same check).
+      const v = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
       if (!v.ok) {
         console.log(`    ✗ BWW archive page-title mismatch (${v.reason}) — quarantining`);
         try { fs.renameSync(archivePath, archivePath + '.mismatch'); } catch (e) {}
@@ -4127,8 +4153,16 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   let dtliResult = await searchDTLI(show);
   if (dtliResult && dtliResult.html) {
     const dtliValidation = await validatePageMatchesShow(dtliResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
-    if (!dtliValidation.valid) {
-      console.log(`    ✗ DTLI page doesn't match "${show.title}": ${dtliValidation.reason}`);
+    // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow
+    // (not instead of it) — year/LLM checks catch a same-title stale revival
+    // that the category-aware check alone can't see, while checkArchiveCategory
+    // catches the cross-market-sibling case (a regional show's page vs. its
+    // later Broadway transfer) that year/LLM checks alone can't see. Replacing
+    // instead of adding was flagged in BRO-2565's own review (Codex) as a
+    // regression — same mistake, do not repeat it here.
+    const dtliCatCheck = checkArchiveCategory(dtliResult.html, show, siblingCategoriesByShowId()[showId]);
+    if (!dtliValidation.valid || !dtliCatCheck.ok) {
+      console.log(`    ✗ DTLI page doesn't match "${show.title}": ${!dtliValidation.valid ? dtliValidation.reason : dtliCatCheck.reason}`);
       dtliResult = null;
     }
   }
@@ -4170,8 +4204,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     // keeps the deterministic year-mismatch + short-title-partial-match
     // guards, drops only the flaky LLM step.
     const ssValidation = await validatePageMatchesShow(showScoreResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
-    if (!ssValidation.valid) {
-      console.log(`    ✗ ShowScore page doesn't match "${show.title}": ${ssValidation.reason}`);
+    // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow —
+    // see the DTLI site above for why both must pass (BRO-2565 review caught
+    // "replace instead of add" as a regression).
+    const ssCatCheck = checkArchiveCategory(showScoreResult.html, show, siblingCategoriesByShowId()[showId]);
+    if (!ssValidation.valid || !ssCatCheck.ok) {
+      console.log(`    ✗ ShowScore page doesn't match "${show.title}": ${!ssValidation.valid ? ssValidation.reason : ssCatCheck.reason}`);
       showScoreResult = null;
     }
   }
@@ -4327,8 +4365,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
       pageUrl: bwwResult.url,
     });
-    if (!validation.valid) {
-      console.log(`    ✗ BWW roundup page doesn't match "${show.title}": ${validation.reason}`);
+    // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow —
+    // see the DTLI site above for why both must pass (BRO-2565 review caught
+    // "replace instead of add" as a regression).
+    const bwwCatCheck = checkArchiveCategory(bwwResult.html, show, siblingCategoriesByShowId()[showId]);
+    if (!validation.valid || !bwwCatCheck.ok) {
+      console.log(`    ✗ BWW roundup page doesn't match "${show.title}": ${!validation.valid ? validation.reason : bwwCatCheck.reason}`);
       bwwResult = null;
     }
   }
@@ -4426,7 +4468,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // wrote roundup HTML for the wrong show under {showId}.html, then this
       // block read it and filed reviews against the wrong show.
       // (Stuart King mis-attribution incident, 2026-04-25.)
-      const validation = validateRoundupPageTitle(lboHtml, show.title || showId);
+      // checkArchiveCategory (BRO-3610) — bare validateRoundupPageTitle had no
+      // category/siblingCategories, so a same-title cross-market sibling
+      // (e.g. a regional premiere vs. its West End transfer) slipped through.
+      const validation = checkArchiveCategory(lboHtml, show, siblingCategoriesByShowId()[showId]);
       if (!validation.ok) {
         console.log(`    ✗ LBO archive page-title mismatch (${validation.reason}): "${(validation.pageTitle || '').substring(0, 60)}" — quarantining`);
         try { fs.renameSync(lboArchivePath, lboArchivePath + '.mismatch'); } catch (e) {}
@@ -4495,7 +4540,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(trArchive)) {
       try {
         const html = fs.readFileSync(trArchive, 'utf8');
-        const trVal = validateRoundupPageTitle(html, show.title || showId);
+        // checkArchiveCategory (BRO-3610) — bare validateRoundupPageTitle had
+        // no category/siblingCategories, so a same-title cross-market sibling
+        // slipped through.
+        const trVal = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
         if (!trVal.ok) {
           console.log(`    ✗ TR archive page-title mismatch (${trVal.reason}) — quarantining`);
           try { fs.renameSync(trArchive, trArchive + '.mismatch'); } catch (e) {}
@@ -4524,6 +4572,25 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(sdArchive)) {
       try {
         const data = JSON.parse(fs.readFileSync(sdArchive, 'utf8'));
+        // BRO-3610: this read previously had ZERO validation — straight from
+        // disk to extraction, unlike every other aggregator in this block.
+        // The archive DOES carry the show title Stagedoor's own page reported
+        // at scrape time (scrape-stagedoor-critics.js writes `title`), so a
+        // wrong-show-under-this-showId file (a restore, a manual copy, a
+        // stale write from a title-matching bug) is just as detectable here
+        // as it is for TR/TS above. There is no full HTML page to run
+        // checkArchiveCategory's cross-market-sibling check against (no
+        // canonical URL, no market-qualifier badge) — that check is scoped to
+        // `category === 'regional'` anyway, which this WE-only branch never
+        // is, so pageTitleConfirmsShow's bare word-match + punctuation rescue
+        // (the same predicate scripts/validate-archive-productions.js uses
+        // for title-only comparisons) covers the same-title-different-show
+        // case this data shape can actually distinguish.
+        if (data.title && !pageTitleConfirmsShow(data.title, show.title)) {
+          console.log(`    ✗ SD archive title mismatch ("${data.title}" vs "${show.title}") — quarantining`);
+          try { fs.renameSync(sdArchive, sdArchive + '.mismatch'); } catch (e) {}
+          throw new Error('quarantined');
+        }
         const sdReviews = data.criticReviews || [];
         if (sdReviews.length > 0) {
           console.log(`    ✓ SD:  ${sdReviews.length} reviews from archive`);
@@ -4547,7 +4614,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(tsArchive)) {
       try {
         const html = fs.readFileSync(tsArchive, 'utf8');
-        const tsVal = validateRoundupPageTitle(html, show.title || showId);
+        // checkArchiveCategory (BRO-3610) — bare validateRoundupPageTitle had
+        // no category/siblingCategories, so a same-title cross-market sibling
+        // slipped through.
+        const tsVal = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
         if (!tsVal.ok) {
           console.log(`    ✗ TS archive page-title mismatch (${tsVal.reason}) — quarantining`);
           try { fs.renameSync(tsArchive, tsArchive + '.mismatch'); } catch (e) {}
