@@ -21,13 +21,25 @@
  * external script (`node scripts/foo.js`) which itself requires
  * owner-alert-router.js is invisible to this check UNLESS the YAML happens
  * to mention "routeAlert(" or "resolveCondition(" somewhere (e.g. an
- * explanatory comment). scrape-new-aggregators.yml's `scrape-playbill-verdict`
- * job is exactly this case today — it's only checked because of a comment
- * documenting that promote-ob-venue-candidates.js calls routeAlert(). If that
- * comment is ever reworded or removed, this job silently drops out of
- * coverage with no warning. Don't remove/reword a "calls routeAlert()"-style
- * comment without confirming the job still has an inline mention, or add a
- * one-line `# routeAlert(...)` breadcrumb if it doesn't.
+ * explanatory comment).
+ *
+ * CORRECTION (BRO-3662): this paragraph used to say a `# routeAlert(...)`
+ * COMMENT was enough to keep such a job in coverage, and named
+ * scrape-new-aggregators.yml as surviving that way. That stopped being true at
+ * BRO-3051, which made findMissingLedgerCommits() strip comment lines before
+ * call detection — a comment now buys NOTHING. scrape-new-aggregators.yml is
+ * in fact covered by its non-comment `require('./scripts/lib/owner-alert-
+ * router.js')` at :226; process-feedback.yml, which relied on the comment,
+ * had silently dropped OUT of coverage until BRO-3662 gave it a real
+ * (non-comment) breadcrumb. audit-aggregator-gap.yml is still uncovered for
+ * exactly this reason: all six of its routeAlert mentions are `#` comments.
+ * So the breadcrumb must be a REAL line (an `echo`, or the `require` itself),
+ * never a comment.
+ *
+ * The blind spot is WIDE, not anecdotal: ~20 workflows invoke a script that
+ * (transitively) requires owner-alert-router.js while their YAML contains no
+ * literal call, so this checker cannot see them at all. Closing it properly
+ * means resolving the require-graph one hop — tracked in BRO-3671.
  */
 
 const JOB_KEY_RE = /^  ([A-Za-z0-9_.-]+):\s*$/;
@@ -35,6 +47,24 @@ const ROUTE_ALERT_CALL_RE = /\b(routeAlert|resolveCondition)\s*\(/;
 const DIGEST_DISPOSITION_RE = /disposition:\s*'digest'/;
 const LEDGER_FILE = 'alert-ledger.json';
 const DIGEST_QUEUE_FILE = 'alert-digest-queue.json';
+// BRO-3662: logDispatchAttempt() (owner-alert-router.js:344) REWRITES this
+// tracked file on every card-dispatch attempt, success or failure. A job that
+// calls routeAlert() but never stages it ends the run with a modified tracked
+// file sitting unstaged in the worktree — and an unstaged tracked modification
+// makes a rebase refuse OUTRIGHT ("cannot rebase: You have unstaged changes")
+// before it starts. push-with-retry.sh mislabels that refusal as a conflict
+// and falls through to `merge -X ours`, the path that resolves conflicting
+// hunks in OUR favour and can silently discard a concurrent writer's changes.
+// Observed live on process-feedback.yml run 34852355418: all 10 retry attempts
+// took the merge path with ZERO conflicted files.
+//
+// Gated on the same trigger as the ledger (any routeAlert/resolveCondition
+// caller) rather than a dispatch-specific marker, because dispatch is NOT
+// statically knowable: decideDigestEscalation() can promote 'human' -> 'auto'
+// at RUNTIME once notifyCount crosses its threshold, so a caller that never
+// dispatches today can start tomorrow with no YAML change. Staging a file the
+// run did not modify is a harmless no-op, so over-broad is the safe direction.
+const ATTEMPTS_LOG_FILE = 'alert-router-attempts.jsonl';
 
 // Matches a bash `for VAR in <list>; do` on one line. A separate check below
 // handles the `for VAR in <list>` / `do` split-across-two-lines form. Tolerates
@@ -148,6 +178,11 @@ function jobStagesFile(jobLines, fileName) {
  * Returns one human-readable reason per job that:
  *  - calls routeAlert()/resolveCondition() but has no step staging
  *    data/audit/alert-ledger.json for commit, and/or
+ *  - calls routeAlert()/resolveCondition() but has no step staging
+ *    data/audit/alert-router-attempts.jsonl for commit (logDispatchAttempt()
+ *    rewrites that tracked file on every dispatch attempt; leaving it unstaged
+ *    makes a rebase refuse pre-flight and silently forces push-with-retry.sh
+ *    onto the clobber-prone merge -X ours path — BRO-3662), and/or
  *  - uses disposition:'digest' but has no step staging
  *    data/audit/alert-digest-queue.json for commit (queueDigestLine() writes
  *    this file in addition to the ledger — found live-broken in
@@ -182,6 +217,12 @@ function findMissingLedgerCommits(workflowYamlText) {
     if (ROUTE_ALERT_CALL_RE.test(body) && !jobStagesFile(job.lines, LEDGER_FILE)) {
       violations.push(
         `job '${job.name}' calls routeAlert()/resolveCondition() but no step stages data/audit/${LEDGER_FILE} for commit in this job`
+      );
+    }
+
+    if (ROUTE_ALERT_CALL_RE.test(body) && !jobStagesFile(job.lines, ATTEMPTS_LOG_FILE)) {
+      violations.push(
+        `job '${job.name}' calls routeAlert()/resolveCondition() but no step stages data/audit/${ATTEMPTS_LOG_FILE} for commit in this job`
       );
     }
 
