@@ -33,10 +33,18 @@ test('parseSwapUsage: a malformed multi-dot number (garbled/truncated line) retu
 });
 
 test('isSwapPressureCritical: below the floor is critical', () => {
-  assert.equal(isSwapPressureCritical({ freeMB: 970.81, floorMB: 1024 }), true);
+  assert.equal(isSwapPressureCritical({ totalMB: 14336, freeMB: 970.81, floorMB: 1024 }), true);
 });
 
 test('isSwapPressureCritical: at or above the floor is not critical', () => {
-  assert.equal(isSwapPressureCritical({ freeMB: 2048, floorMB: 1024 }), false);
-  assert.equal(isSwapPressureCritical({ freeMB: 1024, floorMB: 1024 }), false);
+  assert.equal(isSwapPressureCritical({ totalMB: 14336, freeMB: 2048, floorMB: 1024 }), false);
+  assert.equal(isSwapPressureCritical({ totalMB: 14336, freeMB: 1024, floorMB: 1024 }), false);
+});
+
+test('isSwapPressureCritical: totalMB=0 (no swap allocated yet) is never critical, even with freeMB below the floor', () => {
+  // Final-pass review finding: a freshly-booted Mac with no swap pressure
+  // reads {totalMB: 0, freeMB: 0}, which would trip "critical" against any
+  // positive floor despite there being no actual pressure. totalMB===0
+  // means "no pressure data yet", not "critical".
+  assert.equal(isSwapPressureCritical({ totalMB: 0, freeMB: 0, floorMB: 1024 }), false);
 });
