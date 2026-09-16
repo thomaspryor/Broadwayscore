@@ -179,6 +179,16 @@ async function scrapePlaybillOB() {
 module.exports = {
   scrapePlaybillOB,
   scrapeLortel,
+  // Exported for scripts/enrich-off-broadway-dates.test.mjs — the pure
+  // parsing/validation/merge functions behind Phase 3 (per-show Playbill
+  // production-page lookup, BRO-1108). Network-calling functions
+  // (discoverOBPlaybillUrl, scrapePlaybillProductionPages) are intentionally
+  // NOT exported; they're exercised indirectly via these units plus the
+  // --dry-run / --show=ID manual verification path.
+  parseUSDate,
+  extractDatesFromProductionPage,
+  validateOBProductionPageTitle,
+  mergeSources,
 };
 
 // =========================================================
