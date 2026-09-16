@@ -1,39 +1,5 @@
 [
   {
-    "startedAt": "2026-09-11T17:28:53.493Z",
-    "completedAt": "2026-09-11T17:29:48.333Z",
-    "totalReviews": 43119,
-    "processed": 6,
-    "skipped": 43106,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 72626,
-      "output": 2790,
-      "total": 177119
-    },
-    "errorDetails": [
-      {
-        "showId": "garry-starr-classic-penguins-off-broadway-2026",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-11T18:08:18.958Z",
-    "completedAt": "2026-09-11T18:08:29.451Z",
-    "totalReviews": 43120,
-    "processed": 0,
-    "skipped": 43117,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 12046,
-      "output": 494,
-      "total": 34791
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-11T18:33:56.346Z",
     "completedAt": "2026-09-11T18:34:29.079Z",
     "totalReviews": 43124,
@@ -438989,6 +438955,44 @@
     },
     "costUsd": 1.2284392,
     "runId": "35038806717",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-16T01:08:03.996Z",
+    "completedAt": "2026-09-16T01:08:08.186Z",
+    "totalReviews": 43885,
+    "processed": 0,
+    "skipped": 43883,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 105,
+      "total": 10919
+    },
+    "costUsd": 0.025187150000000002,
+    "runId": "35041013430",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-16T01:08:10.115Z",
+    "completedAt": "2026-09-16T01:14:15.042Z",
+    "totalReviews": 169,
+    "processed": 169,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 440871,
+      "output": 38959,
+      "total": 479830
+    },
+    "costUsd": 1.2308492,
+    "runId": "35041013430",
     "errorDetails": []
   }
 ]

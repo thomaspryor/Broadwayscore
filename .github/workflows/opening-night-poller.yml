@@ -699,6 +699,44 @@ jobs:
         run: node scripts/generate-mobile-show-details.js
         continue-on-error: true
 
+      - name: Generate Critics' Take (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.find.outputs.has_shows == 'true'
+        # BRO-927: the fast path rebuilds reviews.json inline and never went
+        # through rebuild-reviews.yml, which is what auto-dispatches
+        # update-critic-consensus.yml. Opening-night shows scored via this
+        # path fell back to the synopsis in the Critics' Take slot even with
+        # a full set of scored reviews (Fear of 13, 21 reviews, no take).
+        #
+        # Dispatches update-critic-consensus.yml per show rather than calling
+        # generate-critic-consensus.js inline here — critic-consensus.json is
+        # registered 'single-writer' in scripts/lib/core-data-merge-registry.js
+        # (only update-critic-consensus.yml writes it) and is NOT in
+        # activeEntriesFor('private-core-data'), so push-core-data's -X ours
+        # rebase does not reconcile it. This fast path runs on a ~15-min cycle
+        # for BOTH markets concurrently on a live opening night (unlike
+        # opening-night-broadcast.yml's twice-daily call to the same script),
+        # so writing the file inline here would raise a real, frequent
+        # lost-update race between concurrent BW/WE poller pushes. Dispatching
+        # the queued workflow instead (concurrency: group: update-critic-
+        # consensus, cancel-in-progress: false) keeps the single-writer
+        # invariant intact and reuses the exact single-show remediation path
+        # opening-night-checks/critics-take-present.check.js already declares
+        # for the same gap (task #389) — see that workflow's --show input.
+        # Async by design: the take lands on a later deploy, not this one.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            SHOW_ID="$(echo "$SHOW_ID" | xargs)"
+            [ -z "$SHOW_ID" ] && continue
+            echo "Dispatching Critics' Take generation: $SHOW_ID"
+            gh workflow run update-critic-consensus.yml -f show="$SHOW_ID" || echo "::warning::Critics' Take dispatch failed for $SHOW_ID"
+          done
+        continue-on-error: true
+        timeout-minutes: 2
+
       - name: Audit recovery state (non-blocking)
         id: verify_recovery
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.find.outputs.has_shows == 'true'

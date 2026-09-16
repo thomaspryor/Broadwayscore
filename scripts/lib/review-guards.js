@@ -587,7 +587,7 @@ function urlYearFromPath(url) {
 /**
  * Shared window decision, given an already-parsed review date (from wherever
  * the caller extracted it). Split out of getWrongProductionReasonFromUrl so
- * getWrongProductionReasonForBwwRoundup's BWW-trailing-date fallback (below)
+ * getWrongProductionReasonForBww's BWW-trailing-date fallback (below)
  * can reuse the exact same priorRuns/tourLegs exemption + post-close +
  * lead-window logic instead of re-deriving it — a second copy of this window
  * math would be the same drift risk flagged in urlYearFromPath's own comment.
@@ -675,7 +675,7 @@ function getWrongProductionReasonFromUrl(url, show) {
  * callers, e.g. getWrongProductionReasonForUnknownCritic on arbitrary SERP
  * URLs) — a bare trailing 8-digit number is common on non-BWW URLs for
  * reasons that aren't a date (WordPress post IDs, etc.), so this fallback
- * only fires for getWrongProductionReasonForBwwRoundup, scoped to
+ * only fires for getWrongProductionReasonForBww, scoped to
  * broadwayworld.com URLs specifically.
  */
 function bwwTrailingDateFromUrl(url) {
@@ -717,21 +717,30 @@ function getWrongProductionReasonForUnknownCritic(review, show) {
 }
 
 /**
- * Wrapper around getWrongProductionReasonFromUrl that fires for BWW Review
- * Roundup entries regardless of critic name (BRO-916).
+ * Wrapper around getWrongProductionReasonFromUrl that fires for BWW-sourced
+ * entries regardless of critic name (BRO-916, extended to a second source by
+ * BRO-3502).
  *
  * getWrongProductionReasonForUnknownCritic above deliberately only fires on
  * Unknown/Staff bylines because its false-positive risk is organic pre-transfer
- * journalism by a named critic (benefit of the doubt applies). BWW RR is a
- * different risk shape: extractBWWRoundupReviews (gather-reviews.js) pulls
- * reviews from the roundup PAGE by anchor position/JSON-LD, so contamination
- * happens in how BWW assembled the page, not in how the critic bylined their
- * own writing — a real, named critic's real West End review can still land on
- * the wrong show's Broadway roundup. Incident: Alexander Cohen's London "The
- * Fear of 13" review (byline "BroadwayWorld", i.e. BWW's own UK edition — not
- * a distinct outlet the geography filter in validateBWWRoundupGeography would
- * catch) was pulled into the Broadway show's roundup page and shipped with no
- * wrongProduction flag until manual cleanup.
+ * journalism by a named critic (benefit of the doubt applies). BWW-sourced
+ * ingestion is a different risk shape: both extractBWWRoundupReviews
+ * (gather-reviews.js, source 'bww-roundup') and scrape-bww-reviews.js's own
+ * roundup + dedicated /reviews/ page extraction (also 'bww-roundup', and
+ * 'bww-reviews' respectively) pull reviews from a BWW-assembled PAGE by
+ * anchor position/JSON-LD/DOM block, so contamination happens in how BWW
+ * assembled the page, not in how the critic bylined their own writing — a
+ * real, named critic's real West End review can still land on the wrong
+ * show's Broadway page. Incident: Alexander Cohen's London "The Fear of 13"
+ * review (byline "BroadwayWorld", i.e. BWW's own UK edition — not a distinct
+ * outlet the geography filter in validateBWWRoundupGeography would catch)
+ * was pulled into the Broadway show's roundup page and shipped with no
+ * wrongProduction flag until manual cleanup. BRO-3502: scripts/scrape-bww-
+ * reviews.js's dedicated /reviews/{slug} page extraction (source
+ * 'bww-reviews') has the identical page-assembly risk shape and reaches the
+ * same write chokepoint (review-file-writer.js's createOrMergeReviewFile)
+ * that never got the BRO-916 fix — see the corpus-scan note at that call
+ * site.
  *
  * Tries the general slash-dated URL check first (external outlet URLs, e.g.
  * a linked NYT/Guardian/Variety article), then falls back to BWW's own
@@ -743,8 +752,9 @@ function getWrongProductionReasonForUnknownCritic(review, show) {
  * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string, priorRuns?: any, tourLegs?: any }} show
  * @returns {string|null}
  */
-function getWrongProductionReasonForBwwRoundup(review, show) {
-  if (!review || review.source !== 'bww-roundup' || !show) return null;
+function getWrongProductionReasonForBww(review, show) {
+  if (!review || !show) return null;
+  if (review.source !== 'bww-roundup' && review.source !== 'bww-reviews') return null;
   const url = review.url;
   const primary = getWrongProductionReasonFromUrl(url, show);
   if (primary) return primary;
@@ -4352,7 +4362,7 @@ module.exports = {
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
-  getWrongProductionReasonForBwwRoundup,
+  getWrongProductionReasonForBww,
   urlYearFromPath,
   urlLooksLikeReview,
   isSluglessReviewUrl,

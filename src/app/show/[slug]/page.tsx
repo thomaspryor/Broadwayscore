@@ -10,6 +10,7 @@ import { getShowAwards } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
+import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowSchedule, getScheduleCurrentMonday, getShowShowtimeIds } from '@/lib/data-showtimes';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
@@ -797,16 +798,32 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           {/* Critics' Take — inline below the score row, no border/card chrome.
               Matches the redesign hero treatment so the consensus reads as a
               continuous block with whatever sits above it. */}
-          {consensus && show.criticScore ? (
-            <div className="mt-3">
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
-              <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
-            </div>
-          ) : show.synopsis ? (
-            <p className="text-gray-400 text-sm leading-relaxed mt-3">
-              {show.synopsis}
-            </p>
-          ) : null}
+          {(() => {
+            const mode = getCriticsTakeDisplayMode(!!consensus, !!show.criticScore, reviewCount, !!show.synopsis);
+            if (mode === 'consensus') {
+              return (
+                <div className="mt-3">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
+                  <p className="text-gray-300 text-sm leading-relaxed">{consensus!.text}</p>
+                </div>
+              );
+            }
+            if (mode === 'coming-soon') {
+              return (
+                <p className="text-gray-500 text-sm leading-relaxed mt-3 italic">
+                  Critics&apos; Take coming soon.
+                </p>
+              );
+            }
+            if (mode === 'synopsis') {
+              return (
+                <p className="text-gray-400 text-sm leading-relaxed mt-3">
+                  {show.synopsis}
+                </p>
+              );
+            }
+            return null;
+          })()}
 
           {/* Links row: Tickets, Official Site, Trailer, Lottery/Rush + Watchlist */}
           <div className="flex items-center gap-2 mt-4 flex-nowrap">

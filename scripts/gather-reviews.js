@@ -68,7 +68,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBwwRoundup, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
@@ -2263,6 +2263,86 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   // only 2 review files) as the canonical repro.
   const method1UnknownCountByOutlet = new Map();
 
+  // Shared per-outlet anchor-URL queue, consumed by BOTH Method 1's and Method
+  // 2's URL-population passes below. Each pass used to build and consume its
+  // OWN independent queue from the same anchor scan, restarting at index 0 —
+  // so when Method 1 assigned a multi-critic outlet's only anchor to critic
+  // A, Method 2's later pass (unaware A had already consumed it) handed that
+  // SAME url to critic B too. Real-world repro (BRO-923): NYSR's Frank Scheck
+  // and David Finkle both landed on Scheck's URL, and rebuild's URL-fingerprint
+  // dedup silently dropped Finkle's review. Sharing one queue/index across
+  // both passes means each href on the page is consumable exactly once,
+  // however many extraction passes run.
+  let sharedUrlsByOutlet = null;
+  let sharedUrlIdxByOutlet = null;
+  function getSharedUrlQueues() {
+    if (sharedUrlsByOutlet) return { urlsByOutlet: sharedUrlsByOutlet, urlIdxByOutlet: sharedUrlIdxByOutlet };
+    sharedUrlsByOutlet = {};
+    sharedUrlIdxByOutlet = {};
+    const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
+    let aMatch;
+    while ((aMatch = anchorRe.exec(html)) !== null) {
+      const href = aMatch[1];
+      const text = aMatch[2].replace(/:$/, '').trim();
+      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
+      const oid = normalizeOutlet(text);
+      if (!oid) continue;
+      if (!sharedUrlsByOutlet[oid]) sharedUrlsByOutlet[oid] = [];
+      if (!sharedUrlsByOutlet[oid].includes(href)) sharedUrlsByOutlet[oid].push(href);
+    }
+    return { urlsByOutlet: sharedUrlsByOutlet, urlIdxByOutlet: sharedUrlIdxByOutlet };
+  }
+
+  // Assign `review` the next unconsumed queue slot for its outlet, skipping
+  // over (not stopping at) any consecutive candidates that fail validation —
+  // mirrors the retry-until-valid pattern outlet-domain-supplement.js already
+  // uses. Ship-check adversarial finding on the shared-queue fix above: the
+  // original per-pass loops advanced the index past a REJECTED candidate
+  // without trying the next one, so once both passes shared one index, a
+  // rejected candidate for critic A could silently donate critic B's real URL
+  // to A (B then gets null) instead of A just trying the next candidate.
+  function assignUrlFromSharedQueue(review) {
+    getSharedUrlQueues();
+    const queue = sharedUrlsByOutlet[review.outletId];
+    if (!queue || queue.length === 0) return { assigned: false, rejected: 0 };
+    let idx = sharedUrlIdxByOutlet[review.outletId] || 0;
+    let rejected = 0;
+    while (idx < queue.length) {
+      const candidateUrl = queue[idx];
+      idx++;
+      // BWW Review Roundup is manually curated by BWW editors — trust the
+      // outlet→URL mapping. The cross-show URL slug guard at line 2357
+      // (detectCrossShowUrlMismatch in createReviewFile) catches genuine
+      // misattributions downstream. Without trusting BWW curation, we lost
+      // legitimate creative-titled URLs on opening night (Theater Pizzazz
+      // Ron Fassler "hes-back-but-has-willy-loman-ever-left-us" had no
+      // "death-of-a-salesman" in the slug). DoaS Apr 9-10 #6.
+      if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
+        rejected++;
+        console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
+        continue;
+      }
+      // Guard: reject URLs that contain a DIFFERENT show's slug. BWW roundup
+      // HTML sometimes has links to multiple shows (e.g., same critic reviewed
+      // both Becky Shaw and Monte Cristo — roundup page has both URLs, wrong
+      // one gets assigned). detectCrossShowUrlMismatch already runs downstream
+      // at createReviewFile, but catching it here prevents creating the file
+      // at all and avoids wasting text-collection resources.
+      const crossShowMatch = detectCrossShowUrlMismatch(showId, candidateUrl);
+      if (crossShowMatch) {
+        rejected++;
+        console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch.matchedTitle}" not "${crossShowMatch.showTitle}" — ${candidateUrl.substring(0, 80)}`);
+        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch.matchedTitle } });
+        continue;
+      }
+      review.url = candidateUrl;
+      sharedUrlIdxByOutlet[review.outletId] = idx;
+      return { assigned: true, rejected };
+    }
+    sharedUrlIdxByOutlet[review.outletId] = idx;
+    return { assigned: false, rejected };
+  }
+
   // Method 1: Extract from JSON-LD entries (newer BWW articles)
   // Newer articles use LiveBlogPosting with liveBlogUpdate[] containing BlogPosting entries
   // Older articles use standalone BlogPosting entries
@@ -2462,57 +2542,17 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     // multiple times in anchor order. Use a per-outlet queue so each review
     // slot gets a DIFFERENT URL. Previous first-URL-wins behavior (fixed
     // 2026-04-19) caused all NYSR reviews for Fallen Angels to share the
-    // first NYSR URL found in the roundup.
-    const urlsByOutlet = {};
-    const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
-    let aMatch;
-    while ((aMatch = anchorRe.exec(html)) !== null) {
-      const href = aMatch[1];
-      const text = aMatch[2].replace(/:$/, '').trim();
-      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
-      const oid = normalizeOutlet(text);
-      if (!oid) continue;
-      if (!urlsByOutlet[oid]) urlsByOutlet[oid] = [];
-      if (!urlsByOutlet[oid].includes(href)) urlsByOutlet[oid].push(href);
-    }
-    const urlIdxByOutlet = {};
+    // first NYSR URL found in the roundup. Queue is shared with Method 2's
+    // post-pass below (getSharedUrlQueues/assignUrlFromSharedQueue) so a href
+    // consumed here can't be handed out again there (BRO-923).
+    getSharedUrlQueues();
     let urlsPopulated = 0;
     let urlsRejected = 0;
     for (const review of reviews) {
       if (!review.url && review.outletId) {
-        const queue = urlsByOutlet[review.outletId];
-        if (!queue || queue.length === 0) continue;
-        const idx = urlIdxByOutlet[review.outletId] || 0;
-        if (idx >= queue.length) continue;
-        urlIdxByOutlet[review.outletId] = idx + 1;
-        const candidateUrl = queue[idx];
-        // BWW Review Roundup is manually curated by BWW editors — trust the
-        // outlet→URL mapping. The cross-show URL slug guard at line 2357
-        // (detectCrossShowUrlMismatch in createReviewFile) catches genuine
-        // misattributions downstream. Without trusting BWW curation, we lost
-        // legitimate creative-titled URLs on opening night (Theater Pizzazz
-        // Ron Fassler "hes-back-but-has-willy-loman-ever-left-us" had no
-        // "death-of-a-salesman" in the slug). DoaS Apr 9-10 #6.
-        if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
-          urlsRejected++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
-          continue;
-        }
-        // Guard: reject URLs that contain a DIFFERENT show's slug. BWW roundup
-        // HTML sometimes has links to multiple shows (e.g., same critic reviewed
-        // both Becky Shaw and Monte Cristo — roundup page has both URLs, wrong
-        // one gets assigned). detectCrossShowUrlMismatch already runs downstream
-        // at createReviewFile, but catching it here prevents creating the file
-        // at all and avoids wasting text-collection resources.
-        const crossShowMatch = detectCrossShowUrlMismatch(showId, candidateUrl);
-        if (crossShowMatch) {
-          urlsRejected++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch.matchedTitle}" not "${crossShowMatch.showTitle}" — ${candidateUrl.substring(0, 80)}`);
-          logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch.matchedTitle } });
-          continue;
-        }
-        review.url = candidateUrl;
-        urlsPopulated++;
+        const result = assignUrlFromSharedQueue(review);
+        urlsRejected += result.rejected;
+        if (result.assigned) urlsPopulated++;
       }
     }
     if (urlsPopulated > 0) {
@@ -2639,47 +2679,18 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   if (reviews.length > 0) {
     // Extract source URLs from HTML anchor tags
     // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
-    // Same per-outlet queue as Method 1 post-pass — see comment above.
-    const urlsByOutlet2 = {};
-    const anchorRe2 = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
-    let aMatch2;
-    while ((aMatch2 = anchorRe2.exec(html)) !== null) {
-      const href = aMatch2[1];
-      const text = aMatch2[2].replace(/:$/, '').trim();
-      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
-      const oid = normalizeOutlet(text);
-      if (!oid) continue;
-      if (!urlsByOutlet2[oid]) urlsByOutlet2[oid] = [];
-      if (!urlsByOutlet2[oid].includes(href)) urlsByOutlet2[oid].push(href);
-    }
-    const urlIdxByOutlet2 = {};
+    // Same shared per-outlet queue Method 1 draws from (getSharedUrlQueues/
+    // assignUrlFromSharedQueue) — NOT a fresh rebuild. Rebuilding here from
+    // scratch used to reset each outlet's index to 0, so this pass could hand
+    // out a href Method 1 had already assigned to a different critic (BRO-923).
+    const { urlsByOutlet: urlsByOutlet2 } = getSharedUrlQueues();
     let urlsPopulated2 = 0;
     let urlsRejected2 = 0;
     for (const review of reviews) {
       if (!review.url && review.outletId) {
-        const queue = urlsByOutlet2[review.outletId];
-        if (!queue || queue.length === 0) continue;
-        const idx = urlIdxByOutlet2[review.outletId] || 0;
-        if (idx >= queue.length) continue;
-        urlIdxByOutlet2[review.outletId] = idx + 1;
-        const candidateUrl = queue[idx];
-        // Same trustedSource bypass as Method 1 — BWW Roundup curation is trusted,
-        // detectCrossShowUrlMismatch (line 2357) catches misattributions downstream.
-        if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
-          urlsRejected2++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
-          continue;
-        }
-        // Same cross-show guard as Method 1 — catch wrong-show URLs before file creation
-        const crossShowMatch2 = detectCrossShowUrlMismatch(showId, candidateUrl);
-        if (crossShowMatch2) {
-          urlsRejected2++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch2.matchedTitle}" not "${crossShowMatch2.showTitle}" — ${candidateUrl.substring(0, 80)}`);
-          logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch2.matchedTitle, method: 2 } });
-          continue;
-        }
-        review.url = candidateUrl;
-        urlsPopulated2++;
+        const result = assignUrlFromSharedQueue(review);
+        urlsRejected2 += result.rejected;
+        if (result.assigned) urlsPopulated2++;
       }
     }
     if (urlsPopulated2 > 0) {
@@ -3894,7 +3905,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   // from the current run, which is exactly the gap this guard closes.
   if (!review.wrongProduction && _showMeta) {
     try {
-      const reason = getWrongProductionReasonForBwwRoundup(review, _showMeta);
+      const reason = getWrongProductionReasonForBww(review, _showMeta);
       if (reason) {
         console.log(`    ⚠️  ${reason} (BWW RR cross-production)`);
         review.wrongProduction = true;
