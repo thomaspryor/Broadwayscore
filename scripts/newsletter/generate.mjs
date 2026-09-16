@@ -2455,7 +2455,7 @@ function mostReadSection(climberList) {
       </a>
     </td>
     <td valign="middle" width="56" align="right" style="padding:7px 8px 7px 4px;${border}">
-      ${it.score != null ? smallBadge(it.score, 48, it.category) : `<div style="box-sizing:border-box;display:inline-block;width:48px;height:48px;border-radius:8px;background:#2a2a38;color:#6b7280;font-size:14px;font-weight:700;line-height:48px;text-align:center;border:1px solid rgba(255,255,255,0.1);">—</div>`}
+      ${smallBadge(it.score, 48, it.category)}
     </td>
   </tr>`;
   }).join('');
