@@ -1,87 +1,71 @@
 {
-  "runDate": "2026-09-16T07:18:00.569Z",
+  "runDate": "2026-09-16T07:43:02.822Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "golden-boy-off-west-end-2026",
+    "showFilter": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 3,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 11,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "golden-boy-off-west-end-2026/abouttheartists--unknown.json",
-    "golden-boy-off-west-end-2026/telegraph--tristram-fane-saunders.json",
-    "golden-boy-off-west-end-2026/theatreboard--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "golden-boy-off-west-end-2026/airmail--air-mail.json",
-    "golden-boy-off-west-end-2026/ntlive--powster.json"
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "golden-boy-off-west-end-2026/abouttheartists--unknown.json",
-      "golden-boy-off-west-end-2026/theatreboard--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
-    "scrapingbee": [
-      "golden-boy-off-west-end-2026/telegraph--tristram-fane-saunders.json"
+    "browserbase": [
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
     ],
+    "directCookies": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "ntlive": {
-      "count": 1,
-      "domain": "ntlive.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
