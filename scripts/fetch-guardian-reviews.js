@@ -120,7 +120,7 @@ async function fetchArticleFromAPI(articleId) {
       console.log(`    API URL: ${url.replace(CONFIG.apiKey, 'API_KEY')}`);
     }
 
-    https.get(url, (res) => {
+    const req = https.get(url, { timeout: 15000 }, (res) => {
       let data = '';
 
       res.on('data', chunk => data += chunk);
@@ -166,9 +166,11 @@ async function fetchArticleFromAPI(articleId) {
           reject(new Error(`JSON parse error: ${e.message}`));
         }
       });
-    }).on('error', (e) => {
+    });
+    req.on('error', (e) => {
       reject(new Error(`HTTP error: ${e.message}`));
     });
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

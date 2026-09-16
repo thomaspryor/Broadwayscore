@@ -30,8 +30,9 @@ function fetchPage(url) {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml',
       },
+      timeout: 15000,
     };
-    https.get(url, options, (res) => {
+    const req = https.get(url, options, (res) => {
       if (res.statusCode !== 200) {
         reject(new Error(`HTTP ${res.statusCode} for ${url}`));
         return;
@@ -39,7 +40,9 @@ function fetchPage(url) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve(data));
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

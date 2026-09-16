@@ -70,12 +70,14 @@ module.exports = { decodeSlimShow };
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
+    const req = https.get(url, { timeout: 15000 }, (res) => {
       if (res.statusCode !== 200) { res.resume(); return reject(new Error(`HTTP ${res.statusCode}`)); }
       let d = '';
       res.on('data', (c) => (d += c));
       res.on('end', () => { try { resolve(JSON.parse(d)); } catch (e) { reject(e); } });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

@@ -35,13 +35,15 @@ const showFilter = showArg ? showArg.split('=')[1] : null;
 
 function httpGet(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0 (educational project)' } }, (res) => {
+    const req = https.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0 (educational project)' }, timeout: 15000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         try { resolve(JSON.parse(data)); } catch { resolve(null); }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

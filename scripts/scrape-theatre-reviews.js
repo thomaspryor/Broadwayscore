@@ -52,11 +52,12 @@ const stats = { pagesChecked: 0, reviewsExtracted: 0, filesCreated: 0, filesUpda
  */
 function fetchPage(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, {
+    const req = https.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
         'Accept': 'text/html',
       },
+      timeout: 15000,
     }, res => {
       if (res.statusCode === 301 || res.statusCode === 302) {
         return fetchPage(res.headers.location).then(resolve).catch(reject);
@@ -68,7 +69,9 @@ function fetchPage(url) {
       let data = '';
       res.on('data', c => data += c);
       res.on('end', () => resolve(data));
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
