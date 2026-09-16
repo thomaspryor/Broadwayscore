@@ -1056,6 +1056,14 @@ on:
       # edit triggers CI.
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
+      # BRO-2409: repairs same-URL clusters left with ZERO duplicate pointer on
+      # any member (the gap between fix-circular-duplicate-pairs.js, which
+      # needs an existing mutual pointer, and the CI url-mismatch/orphan
+      # self-heals, which only fire on an existing one). Its lib
+      # (scripts/lib/suppression-logic.js) is already covered by the
+      # scripts/lib/** glob above. Test lives in tests/unit/ (node --test
+      # batch); path-listed so a solo edit to this top-level driver triggers CI.
+      - 'scripts/fix-unflagged-same-url-clusters.js'
       # Byline-attestation tiebreak (BRO-3247): decides which of two same-URL
       # bylines is real by checking which one the article actually prints.
       # Test lives in tests/unit/ (node --test batch via unit-test-manifest.txt);
@@ -2843,6 +2851,14 @@ on:
       # covered by any glob, so it needs explicit listing
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-linear-drain-health.js'
+      # Its colocated CLI test needs its OWN entry, not just the source's:
+      # audit-toplevel-script-test-yml-coverage.js flags a manifest-registered
+      # top-level test whose own path is absent here, because a solo push
+      # touching only the test file would otherwise trigger ZERO CI
+      # (feedback_test_yml_push_path_allowlist). These are CLI-level tests that
+      # spawn the real binary — exactly the class that caught the stdin bug the
+      # pure-function tests could not see — so they must run on their own edits.
+      - 'scripts/check-linear-drain-health.test.mjs'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.
@@ -5533,6 +5549,25 @@ jobs:
         # FIX_SURGE_THRESHOLD (producer regression — auto-clearing would flood
         # scoring). Decision + tests: scripts/lib/duplicate-of-gate.{js,test.mjs}.
         # Full report-mode triage runs daily in check-corpus-drift.yml (→ digest).
+
+      - name: Audit fully-unsuppressed same-URL clusters
+        if: always()
+        run: node scripts/fix-unflagged-same-url-clusters.js --gate
+        # Fails on a spike of same-(show,outlet,url) clusters where NO member
+        # carries a duplicateOf/duplicateTextOf pointer to another member —
+        # invisible to the two gates above, which both require an EXISTING
+        # pointer to find anything. Root cause (BRO-2409): the "Sweep stale
+        # duplicateOf flags" and "Sweep orphaned duplicateOf pointers" steps in
+        # rebuild-reviews.yml are two independent self-heals that can each
+        # clear one half of an A<->B pair with no knowledge of the other,
+        # leaving zero pointer on either side — both members then silently
+        # double-score (confirmed on 22 real clusters). rebuild-reviews.yml now
+        # runs this script's own --fix immediately after those two steps, so
+        # this gate is the trunk-level backstop, not the primary fix path
+        # (same relationship check-corpus-drift.yml has to this file's
+        # catastrophe floor). --gate is spike-only (GATE_FLOOR=10) so ordinary
+        # private-repo churn can't red an unrelated code push. Run --fix
+        # locally to repair.
 
       # "Audit orphan slim show files" MOVED to check-corpus-drift.js
       # (BRO-3535, 2026-09-16) — the #2 worst offender in the 8-day diagnostic

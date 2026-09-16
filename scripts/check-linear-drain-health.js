@@ -59,9 +59,32 @@ function readLedger(file) {
   return out;
 }
 
+// DO NOT touch `process.stdin` here — not even to read `.isTTY`. That getter
+// INSTANTIATES the stdin stream, which puts fd 0 into non-blocking mode; the
+// `fs.readFileSync(0)` below then throws EAGAIN whenever the producer has not
+// already filled the pipe buffer. Caught live 2026-09-16 running the real
+// pipeline end to end:
+//
+//   node scripts/linear-drain-parked.js --dry-run --cap 1000 | node scripts/check-linear-drain-health.js
+//   -> "inconclusive", exit 0
+//
+// ...while the identical bytes fed through a probe that never referenced
+// process.stdin parsed to 36. A fast `echo "$OUT" |` masked it, so the
+// workflow's own shape would have passed intermittently — a monitor that is
+// silently green on a race is worse than the dead gate this replaced.
+//
+// tty.isatty(0) answers the same question without constructing the stream.
+// The caller needs to tell "nothing was piped to me" apart from "something was
+// piped and I failed to read it", so this returns both, and the read error is
+// NEVER swallowed into an empty string.
 function readStdin() {
-  if (process.stdin.isTTY) return '';
-  try { return fs.readFileSync(0, 'utf8'); } catch { return ''; }
+  const tty = require('tty');
+  if (tty.isatty(0)) return { text: '', piped: false, error: null };
+  try {
+    return { text: fs.readFileSync(0, 'utf8'), piped: true, error: null };
+  } catch (err) {
+    return { text: '', piped: true, error: err };
+  }
 }
 
 function main(argv) {
@@ -82,7 +105,28 @@ function main(argv) {
     }
   }
 
-  if (eligible === null) eligible = parseEligibleCount(readStdin());
+  if (eligible === null) {
+    const stdin = readStdin();
+    // A read failure on a pipe that WAS given to us is a broken monitor, not an
+    // unknown board state. Reporting it as `inconclusive` (exit 0) is how this
+    // check would go quietly, permanently green — the exact silent-success the
+    // dead `-gt 3` gate already cost us once.
+    if (stdin.error) {
+      console.error(`check-linear-drain-health: could not read piped input (${stdin.error.code || stdin.error.message}) — refusing to report a verdict from no data`);
+      return 2;
+    }
+    if (stdin.piped && !stdin.text.trim()) {
+      console.error('check-linear-drain-health: piped input was empty — the drain produced no output, which is itself a failure');
+      return 2;
+    }
+    eligible = parseEligibleCount(stdin.text);
+    // Piped real output that we could not parse means the drain's log shape
+    // changed underneath us. Silent green again; make it loud.
+    if (stdin.piped && eligible === null && !/LINEAR_NEXT_DISABLED/.test(stdin.text)) {
+      console.error('check-linear-drain-health: received drain output but found neither a "DRY RUN: N candidate" summary nor the empty-selection line — the drain\'s log format has changed and this monitor can no longer read it');
+      return 2;
+    }
+  }
 
   const verdict = assessDrainHealth({
     ledgerEntries: readLedger(ledgerPath),

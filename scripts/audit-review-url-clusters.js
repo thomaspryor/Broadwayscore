@@ -197,6 +197,7 @@ function signalsFor(cluster, dir, parsed, show) {
       includable,
       humanReviewScore: r.humanReviewScore,
       criticName: r.criticName || r.critic,
+      outlet: r.outlet,
       duplicateOf: r.duplicateOf,
     };
   });

@@ -32,7 +32,7 @@ const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { extractPublishDate } = require('./lib/article-extractor');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { canonicalReviewUrl } = require('./lib/review-url-clusters');
+const { findExistingFileForUrl: findExistingFileForUrlShared } = require('./lib/review-url-clusters');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -164,50 +164,12 @@ const NON_MET_OPERA_URL_MARKERS = require('./lib/content-filters').NON_MET_OPERA
 // (BRO-1391): 5-29 files per URL, all invalid/circular-duplicateOf, real review
 // never scores. Guard by URL, not filename, so a second promotion attempt files
 // itself as a duplicate of the first instead of a sibling primary.
-// rebuild-all-reviews.js's duplicateOf resolution only looks ONE hop back (see
-// its own "isCircular check below only looks ONE hop back" comment) — a file
-// whose duplicateOf points at a file that is ITSELF a duplicate (refAlsoDupe)
-// is NOT excluded there (`!refAlsoDupe && !refExcluded` is the skip gate), so
-// it silently leaks into reviews.json as a second scored copy. Pointing a
-// fresh promotion at whatever sibling findExistingFileForUrl happens to find
-// first (readdir order) — rather than that sibling's own terminal canonical —
-// would build exactly that chain. Walk to the terminal (a file with no
-// duplicateOf of its own) before returning, bounded so a pre-existing cycle
-// among siblings can't loop forever.
-function resolveTerminalCanonical(showDir, filename) {
-  const seen = new Set();
-  let current = filename;
-  for (let hops = 0; hops < 10; hops++) {
-    if (seen.has(current)) return current; // pre-existing cycle among siblings — stop, don't chase forever
-    seen.add(current);
-    let data;
-    try {
-      data = JSON.parse(fs.readFileSync(path.join(showDir, current), 'utf8'));
-    } catch {
-      return current; // unreadable — return what we have rather than throw
-    }
-    if (!data.duplicateOf || !data.duplicateOf.endsWith('.json') || !fs.existsSync(path.join(showDir, data.duplicateOf))) {
-      return current;
-    }
-    current = data.duplicateOf;
-  }
-  return current;
-}
-
+//
+// findExistingFileForUrl + its terminal-canonical resolution live in
+// scripts/lib/review-url-clusters.js so collect-review-texts.js's write path
+// (BRO-3550) shares the exact same logic instead of a second, divergent copy.
 function findExistingFileForUrl(showId, outletId, url) {
-  const showDir = path.join(REVIEW_TEXTS_ROOT, showId);
-  if (!fs.existsSync(showDir)) return null;
-  const target = canonicalReviewUrl(url);
-  if (!target) return null;
-  const prefix = `${outletId}--`;
-  for (const f of fs.readdirSync(showDir)) {
-    if (!f.endsWith('.json') || !f.startsWith(prefix)) continue;
-    try {
-      const existing = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-      if (canonicalReviewUrl(existing.url) === target) return resolveTerminalCanonical(showDir, f);
-    } catch { /* unreadable/corrupt sibling — skip */ }
-  }
-  return null;
+  return findExistingFileForUrlShared(REVIEW_TEXTS_ROOT, showId, outletId, url);
 }
 
 async function processShow(showId) {

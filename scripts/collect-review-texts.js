@@ -151,10 +151,11 @@ const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { parseDate } = require('./lib/date-utils');
+const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -189,6 +190,43 @@ function renameReviewFileForCriticOverride(review, data, extractedAuthor) {
 
   if (newFilename === currentFile) {
     return { action: 'noop' };
+  }
+
+  // Same URL already promoted under a DIFFERENT critic name/file — rotating-byline
+  // outlets (Times UK, WhatsOnStage: a "more from our critics" recirc widget) return
+  // a different extracted byline on the SAME url across fetches, so the exact-filename
+  // check below only catches a collision with the freshly-computed newFilename; it
+  // misses a sibling already promoted under some OTHER name for this url. That gap is
+  // the byline-explosion root cause (BRO-1391), fixed for the _pending drain in
+  // replay-pending-bylines.js and shared here (BRO-3550) so this 3x-daily primary
+  // collection pipeline gets the same protection instead of minting a second primary.
+  //
+  // The decision on whether to actually mark duplicate is delegated to
+  // shouldMarkUrlCollisionDuplicate — the SAME check safeWriteReview's own URL-collision
+  // path uses — rather than marking unconditionally: an empty/near-empty sibling found
+  // first must never bury a substantive recovered review, and a prior deliberate
+  // _duplicateOfCleared must never be silently re-flagged (ship-check, Codex review).
+  const showId = data.showId || review.showId;
+  if (data.url && showId) {
+    const existingSameUrl = findExistingFileForUrl(CONFIG.reviewTextsDir, showId, outletId, data.url, currentFile);
+    let colliderData = null;
+    if (existingSameUrl && existingSameUrl !== currentFile && existingSameUrl !== newFilename) {
+      try {
+        colliderData = JSON.parse(fs.readFileSync(path.join(showDir, existingSameUrl), 'utf8'));
+      } catch { /* unreadable collider — shouldMarkUrlCollisionDuplicate treats null as "mark" (historical behavior) */ }
+    }
+    const guardResult = decideSameUrlDifferentFileGuard({
+      currentFile, newFilename, existingSameUrl, newData: data, colliderData,
+      shouldMarkDuplicate: shouldMarkUrlCollisionDuplicate,
+    });
+    if (guardResult) {
+      data.duplicateOf = guardResult.duplicateOf;
+      data.duplicateTextOf = guardResult.duplicateOf;
+      data.duplicateReason = guardResult.duplicateReason;
+      delete data.duplicateClearReason;
+      console.warn(`    ⚠ Same URL already promoted as ${guardResult.duplicateOf} — marking ${currentFile} duplicateOf instead of renaming to ${newFilename}`);
+      return { action: 'conflict', newFile: guardResult.duplicateOf };
+    }
   }
 
   const newPath = path.join(showDir, newFilename);

@@ -1704,8 +1704,24 @@ function safeWriteReview(filePath, newData, options = {}) {
       } else {
         const siblingData = JSON.parse(fs.readFileSync(siblingPath, 'utf-8'));
         if (siblingData.url) {
-          const normHere = _normalizeUrlForCollision(newData.url);
-          const normSibling = _normalizeUrlForCollision(siblingData.url);
+          // BRO-2409: compare with the query string stripped entirely
+          // (_trivialCanonUrl), not bare _normalizeUrlForCollision. Two
+          // fetches of the same article routinely differ by an outlet's own
+          // share/recirculation param (NYT smtyp=/_r=1&, Guardian CMP=,
+          // EW taid=, Variety categoryid=/cmpid=, AP page=, …) that
+          // normalizeUrl's tracking-param allowlist doesn't (and, given how
+          // many outlets mint their own, never fully will) enumerate. Without
+          // this, this self-heal was the SECOND of two independent repairs
+          // that could each clear one side of an A<->B pair with no
+          // knowledge of the other, landing on a same-URL cluster with ZERO
+          // duplicateOf pointer on either side — audit-duplicate-of-url-
+          // mismatch.js already treats exactly this query-string variance as
+          // trivial (its own stripTrivial), so the two must agree on what
+          // "the same URL" means or they keep fighting each other. A
+          // genuinely different article still differs by PATH, which
+          // stripTrivial never touches.
+          const normHere = _trivialCanonUrl(newData.url);
+          const normSibling = _trivialCanonUrl(siblingData.url);
           if (normHere !== normSibling) {
             console.warn(`[review-write-guard] clearing stale duplicateOf in ${path.basename(filePath)}: URL no longer matches ${newData.duplicateOf} (${newData.url} vs ${siblingData.url})`);
             newData.duplicateClearReason = `auto-cleared at write: URL ${newData.url} no longer matches sibling ${newData.duplicateOf} URL ${siblingData.url}`;
@@ -2257,6 +2273,35 @@ function _normalizeUrlForCollision(url) {
   // Lazy require to avoid circular dep at module load.
   const { normalizeUrl } = require('./review-normalization');
   return normalizeUrl(url);
+}
+
+// BRO-2409: normalizeUrl() PLUS a full query-string strip (review-normalization's
+// stripTrivial — the same comparator audit-duplicate-of-url-mismatch.js uses to
+// decide whether a duplicateOf pointer's URL mismatch is real or trivial). Used
+// ONLY by the stale-duplicateOf self-heal above, deliberately more lenient than
+// _normalizeUrlForCollision: that function still gates whether a BRAND NEW
+// duplicateOf gets set on a fresh URL collision, where the tighter tracking-param
+// allowlist is the right level of caution (recirculation/share params are the
+// noise there too, but a false NEGATIVE just means a real dupe goes unflagged
+// until the next write, not a live review getting silently dropped).
+//
+// KNOWN RESIDUAL GAP (ship-check finding, not fixed here): audit-duplicate-of-
+// url-mismatch.js's own comparator additionally applies canonicalizeHost()
+// (folds a registered domain alias, e.g. theater.nytimes.com -> nytimes.com,
+// via outlet-registry.json). This does NOT. A pair whose URLs differ ONLY by
+// such a domain alias could still hit the exact race this fix closes for
+// query-string variance. Not ported here because canonicalizeHost requires
+// loading outlet-registry.json, and review-write-guard.js is loaded by nearly
+// every script in the repo — pulling registry I/O into its module-scope
+// self-heal path is a broader change than this ticket's confirmed failure
+// mode warrants. Zero of the 22 real corpus clusters BRO-2409 was filed
+// against involved a domain-alias mismatch; if one surfaces, promote
+// canonicalizeHost (and its registry load) into review-normalization.js
+// alongside stripTrivial so both comparators share it, rather than
+// duplicating the domain-alias map here.
+function _trivialCanonUrl(url) {
+  const { normalizeUrl, stripTrivial } = require('./review-normalization');
+  return stripTrivial(normalizeUrl(url));
 }
 
 /**
