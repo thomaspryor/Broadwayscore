@@ -457,7 +457,16 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   // --allow-automation-parked doc comment for why --force/--allow-human-gated
   // are each too broad to use here instead).
   const parkedArg = linearMatch && opts && opts.allowAutomationParked ? ' --allow-automation-parked' : '';
-  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${modelArg}${autofixArg}${parkedArg}`;
+  // --no-detach (BRO-3652, Codex review): this helper already detaches via
+  // `sh -c … exec node` with stdio on the advertised log. linear-next.js now
+  // detaches by DEFAULT, which would make that node re-exec a grandchild and
+  // move the whole run's output (and its job-done/job-stranded verdict) into
+  // a detached-linear-next-*.log the drain's troubleshooting notes never
+  // point at (linear-drain-parked.js promises the outcome in THIS log). The
+  // explicit flag keeps the contract exactly as it was. bsc-next.js does not
+  // take the flag, so it is Linear-lane only.
+  const detachArg = linearMatch ? ' --no-detach' : '';
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${detachArg}${modelArg}${autofixArg}${parkedArg}`;
   const child = spawn('sh', ['-c', cmd, 'sh', scriptPath],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();

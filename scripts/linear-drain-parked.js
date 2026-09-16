@@ -21,6 +21,7 @@
  *      passes --allow-unverifiable).
  *   3. Dispatches each via digest-autofix.js's dispatchDetached() — the
  *      SAME detached `node scripts/linear-next.js --id X --headless` spawn
+ *      (`--headless` is linear-next's default since BRO-3652; still a valid alias)
  *      the digest's own autofix rows use for their `linear:BRO-N` taskId
  *      form, so this drain gets linear-next's full guard stack (kill
  *      switch, idempotency, terminal-state, dead-dispatch, verify gate) for
