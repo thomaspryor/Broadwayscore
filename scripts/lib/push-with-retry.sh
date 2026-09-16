@@ -2023,6 +2023,12 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     echo "::warning::push-with-retry: rebase REFUSED before it started (NOT a conflict): $_REBASE_REFUSAL_REASON"
     echo "  dirty tracked paths: $(git status --porcelain --untracked-files=no 2>/dev/null | head -20 | tr '\n' ' ')"
     echo "  Skipping conflict auto-resolution (zero conflicted files) and going straight to the merge fallback."
+    # Belt-and-braces (ship-check finding): the classifier above only reaches
+    # here once both state-dir lookups RESOLVED and showed no directory, so
+    # there is provably no rebase to abort and this is a no-op today. Kept so
+    # that a future edit which loosens the classifier cannot silently
+    # reintroduce "skipped the abort a half-started rebase needed".
+    git rebase --abort 2>/dev/null || true
   else
     echo "  Rebase had conflicts, attempting auto-resolution..."
     # Try up to 4 rounds of conflict resolution (one per conflicting commit)

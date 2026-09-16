@@ -21,13 +21,25 @@
  * external script (`node scripts/foo.js`) which itself requires
  * owner-alert-router.js is invisible to this check UNLESS the YAML happens
  * to mention "routeAlert(" or "resolveCondition(" somewhere (e.g. an
- * explanatory comment). scrape-new-aggregators.yml's `scrape-playbill-verdict`
- * job is exactly this case today — it's only checked because of a comment
- * documenting that promote-ob-venue-candidates.js calls routeAlert(). If that
- * comment is ever reworded or removed, this job silently drops out of
- * coverage with no warning. Don't remove/reword a "calls routeAlert()"-style
- * comment without confirming the job still has an inline mention, or add a
- * one-line `# routeAlert(...)` breadcrumb if it doesn't.
+ * explanatory comment).
+ *
+ * CORRECTION (BRO-3662): this paragraph used to say a `# routeAlert(...)`
+ * COMMENT was enough to keep such a job in coverage, and named
+ * scrape-new-aggregators.yml as surviving that way. That stopped being true at
+ * BRO-3051, which made findMissingLedgerCommits() strip comment lines before
+ * call detection — a comment now buys NOTHING. scrape-new-aggregators.yml is
+ * in fact covered by its non-comment `require('./scripts/lib/owner-alert-
+ * router.js')` at :226; process-feedback.yml, which relied on the comment,
+ * had silently dropped OUT of coverage until BRO-3662 gave it a real
+ * (non-comment) breadcrumb. audit-aggregator-gap.yml is still uncovered for
+ * exactly this reason: all six of its routeAlert mentions are `#` comments.
+ * So the breadcrumb must be a REAL line (an `echo`, or the `require` itself),
+ * never a comment.
+ *
+ * The blind spot is WIDE, not anecdotal: ~20 workflows invoke a script that
+ * (transitively) requires owner-alert-router.js while their YAML contains no
+ * literal call, so this checker cannot see them at all. Closing it properly
+ * means resolving the require-graph one hop — tracked in BRO-3671.
  */
 
 const JOB_KEY_RE = /^  ([A-Za-z0-9_.-]+):\s*$/;
