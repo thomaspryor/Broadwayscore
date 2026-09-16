@@ -498,16 +498,39 @@ function extractNYSRScore(html, text) {
  * (guardianApi.starRating field): node scripts/recover-explicit-ratings.js
  * --outlet=guardian (requires GUARDIAN_API_KEY). Use humanReviewScore for
  * manual per-file corrections when both paths come up empty.
+ *
+ * Two guards added after adversarial review (Codex, 2026-09-15):
+ *  - The class-hash-to-filled/empty resolution below reads the CSS rule,
+ *    which lives in the page's bundled <head> stylesheet — far earlier in
+ *    the document than the widget itself (measured ~148KB earlier on a real
+ *    fetch) — so that lookup stays unscoped. But COUNTING how many elements
+ *    use each class is scoped to a window starting at
+ *    data-gu-name="headline" (measured: the widget's divs sit 700-2200
+ *    chars after that marker), so an unrelated "related reviews" teaser
+ *    card elsewhere on the same article page — which would reuse the SAME
+ *    Emotion class hashes, since Guardian's CSS-in-JS hashes by style
+ *    content, not by instance — can't be counted into this review's total.
+ *    Falls back to the full document when the marker is absent rather than
+ *    refusing outright, since fixture/API HTML may not include it.
+ *  - total MUST equal exactly 5 (not merely <=5), matching the convention
+ *    already used by the WhatsOnStage/Stage extractors below. Guardian's
+ *    widget is always a fixed 5-icon row; requiring the exact count instead
+ *    of an upper bound prevents a short count (e.g. one icon failing to
+ *    match either class) from silently inflating the denominator.
  */
 function extractGuardianScore(html, text) {
   if (html) {
-    const filledClassMatch = html.match(/\.(dcr-[a-z0-9]+)\{[^}]*background-color:var\(--star-rating-background\)[^}]*\}/);
-    const emptyClassMatch = html.match(/\.(dcr-[a-z0-9]+)\{[^}]*background-color:var\(--star-rating-empty-background\)[^}]*\}/);
+    const cssPropPattern = (varName) =>
+      new RegExp(`\\.(dcr-[a-z0-9]+)\\{[^}]*background-color\\s*:\\s*var\\(--${varName}\\b[^)]*\\)[^}]*\\}`);
+    const filledClassMatch = html.match(cssPropPattern('star-rating-background'));
+    const emptyClassMatch = html.match(cssPropPattern('star-rating-empty-background'));
     if (filledClassMatch && emptyClassMatch && filledClassMatch[1] !== emptyClassMatch[1]) {
-      const filledCount = (html.match(new RegExp(`class="${filledClassMatch[1]}"`, 'g')) || []).length;
-      const emptyCount = (html.match(new RegExp(`class="${emptyClassMatch[1]}"`, 'g')) || []).length;
+      const headlineIdx = html.indexOf('data-gu-name="headline"');
+      const scoped = headlineIdx > -1 ? html.slice(headlineIdx, headlineIdx + 6000) : html;
+      const filledCount = (scoped.match(new RegExp(`class="${filledClassMatch[1]}"`, 'g')) || []).length;
+      const emptyCount = (scoped.match(new RegExp(`class="${emptyClassMatch[1]}"`, 'g')) || []).length;
       const total = filledCount + emptyCount;
-      if (filledCount >= 1 && total >= 1 && total <= 5) {
+      if (filledCount >= 1 && total === 5) {
         return {
           originalScore: `${filledCount}/${total} stars`,
           normalizedScore: starsToNumeric(filledCount, total),
@@ -1144,8 +1167,20 @@ function extractOneMinuteCriticScore(html, text) {
   // alt="N star review" (verified live against a 2026-04 review; the older
   // "1 minute critic N-star rating" template above still matches older
   // archived reviews). Scoped to the alt="" attribute so ordinary prose
-  // mentioning "a 3 star review" elsewhere on the page can't match.
-  const altReviewMatch = html.match(/alt="(\d(?:\.\d)?)\s*-?\s*star\s+review"/i);
+  // mentioning "a 3 star review" elsewhere on the page can't match. Checks
+  // both html and text for the same reason as pattern 1 above.
+  //
+  // Adversarial review (Codex, 2026-09-15) flagged a filename-based fallback
+  // ("N-stars.png" under the outlet's uploads path) that was here originally
+  // — removed: matching a rating out of an image URL is exactly the
+  // "extract metadata from URLs" anti-pattern this project's data rules
+  // forbid (URLs are inconsistent), and it could also match an unrelated
+  // <link rel=preload>/related-post reference that happens to share the
+  // filename shape. The alt-text patterns above are attribute content, not
+  // URL structure, and are sufficient — OMC pairs its uploaded rating image
+  // with descriptive alt text on every review checked live.
+  const altReviewPattern = /alt="(\d(?:\.\d)?)\s*-?\s*star\s+review"/i;
+  const altReviewMatch = html.match(altReviewPattern) || text.match(altReviewPattern);
   if (altReviewMatch) {
     const rating = parseFloat(altReviewMatch[1]);
     if (rating >= 1 && rating <= 5) {
@@ -1157,16 +1192,6 @@ function extractOneMinuteCriticScore(html, text) {
                  || html.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i);
   if (textMatch) {
     const rating = parseFloat(textMatch[1]);
-    if (rating >= 1 && rating <= 5) {
-      return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-star-rating' };
-    }
-  }
-  // 3. Rating-image filename fallback: OMC's own "N-stars.png" upload under
-  // its wp-content path (paired with the alt text above on the same <img>,
-  // but caught here if the alt attribute is ever stripped/lazy-swapped).
-  const filenameMatch = html.match(/1minutecritic\.com\/wp-content\/uploads\/[^"'\s]*?(\d(?:\.\d)?)-?stars?\.(?:png|jpe?g|webp)/i);
-  if (filenameMatch) {
-    const rating = parseFloat(filenameMatch[1]);
     if (rating >= 1 && rating <= 5) {
       return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-star-rating' };
     }

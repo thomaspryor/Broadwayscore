@@ -128,12 +128,17 @@ test('reviews hub: colon form of the heading is read', () => {
 // (--star-rating-background / --star-rating-empty-background), which is
 // stable even though the hash isn't. Shape verified live against real
 // Guardian HTML (both a 2026 and a 2024 review URL) 2026-09-15.
+function guardianStarWidget(filledCount, emptyCount, filledClass, emptyClass) {
+  const filled = `<div class="${filledClass}"><svg></svg></div>`.repeat(filledCount);
+  const empty = `<div class="${emptyClass}"><svg></svg></div>`.repeat(emptyCount);
+  return filled + empty;
+}
+
 function guardianStarHtml(filledCount, emptyCount, { filledClass = 'dcr-1we7dfv', emptyClass = 'dcr-d88drm' } = {}) {
   const css = `<style>.${filledClass}{display:flex;background-color:var(--star-rating-background);}` +
     `.${emptyClass}{display:flex;background-color:var(--star-rating-empty-background);}</style>`;
-  const filled = `<div class="${filledClass}"><svg></svg></div>`.repeat(filledCount);
-  const empty = `<div class="${emptyClass}"><svg></svg></div>`.repeat(emptyCount);
-  return `${css}<h1>A Play</h1>${filled}${empty}`;
+  const widget = guardianStarWidget(filledCount, emptyCount, filledClass, emptyClass);
+  return `${css}<div data-gu-name="headline"><h1>A Play</h1>${widget}</div>`;
 }
 
 test('guardian: SVG star widget resolves filled/empty via CSS custom property, not a hardcoded hash', () => {
@@ -157,6 +162,31 @@ test('guardian: a non-review page (no star-rating CSS vars at all) does not fals
   const html = '<style>.dcr-xyz{color:red;}</style><h1>Some unrelated news article</h1><p>Body text.</p>';
   const result = extractScore(html, 'Some unrelated news article body text.', 'guardian');
   assert.equal(result, null, 'articles without the star-rating component must not match');
+});
+
+// Adversarial review (Codex, 2026-09-15): a "related reviews" teaser card
+// elsewhere on the same article page reuses the SAME Emotion class hashes
+// as the main widget (Guardian hashes by style content, not by instance).
+// Without scoping the element COUNT to the headline block, a far-away
+// teaser widget would sum into this review's total and either produce a
+// wrong score or a >5 total. This locks in that the count stays scoped.
+test('guardian: an unrelated widget far from the headline block is not counted into this review\'s total', () => {
+  const css = '<style>.dcr-1we7dfv{display:flex;background-color:var(--star-rating-background);}' +
+    '.dcr-d88drm{display:flex;background-color:var(--star-rating-empty-background);}</style>';
+  const ownWidget = `<div data-gu-name="headline"><h1>A Play</h1>${guardianStarWidget(3, 2, 'dcr-1we7dfv', 'dcr-d88drm')}</div>`;
+  const farAwayTeaser = 'x'.repeat(9000) + guardianStarWidget(5, 0, 'dcr-1we7dfv', 'dcr-d88drm');
+  const result = extractScore(css + ownWidget + farAwayTeaser, '', 'guardian');
+  assert.ok(result, 'the review\'s own widget must still resolve');
+  assert.equal(result.originalScore, '3/5 stars', 'must read the headline widget, not sum in the far-away teaser');
+});
+
+// Requiring total === 5 (not <=5) means a widget that undercounts one icon
+// (e.g. an icon that fails to match either class) abstains instead of
+// silently inflating the score with a smaller denominator (3/3 vs 3/5).
+test('guardian: a widget that does not total exactly 5 abstains rather than inflating the score', () => {
+  const html = guardianStarHtml(3, 1); // only 4 total icons, not 5
+  const result = extractScore(html, '', 'guardian');
+  assert.equal(result, null, 'a short total must not be treated as a smaller-scale rating');
 });
 
 test('guardian: OUTLET_VERIFIED_SOURCES includes the new source name (rebuild trust gate)', () => {
@@ -188,12 +218,24 @@ test('one-minute-critic: current alt-text template ("N star review") is now reco
   assert.equal(result.source, 'omc-alt-text');
 });
 
-test('one-minute-critic: rating-image filename is a fallback when alt text is stripped', () => {
-  const html = '<img data-src="https://1minutecritic.com/wp-content/uploads/2026/04/4-stars.png" class="lazyload">';
-  const result = extractScore(html, '', 'one-minute-critic');
+test('one-minute-critic: current alt-text template is also read from TEXT when html is empty', () => {
+  // Some pipelines store an HTML fragment (not plain text) in fullText —
+  // same rationale as pattern 1's html-or-text fallback above.
+  const result = extractScore('', '<img alt="4 star review">', 'one-minute-critic');
   assert.ok(result);
   assert.equal(result.originalScore, '4/5');
-  assert.equal(result.source, 'omc-star-rating');
+  assert.equal(result.source, 'omc-alt-text');
+});
+
+// Adversarial review (Codex, 2026-09-15): a rating-image filename fallback
+// ("N-stars.png" in the URL) was here originally and was removed — matching
+// a score out of a URL is the "extract metadata from URLs" anti-pattern
+// this project's data rules forbid. The filename alone, with no alt text,
+// must not produce a score.
+test('one-minute-critic: a rating-image filename with no alt text does NOT produce a score', () => {
+  const html = '<img data-src="https://1minutecritic.com/wp-content/uploads/2026/04/4-stars.png" class="lazyload">';
+  const result = extractScore(html, '', 'one-minute-critic');
+  assert.equal(result, null, 'must not extract a rating from URL/filename structure alone');
 });
 
 // NY Post regression coverage: css-stars must count real DOM elements, not
