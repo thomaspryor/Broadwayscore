@@ -2828,6 +2828,16 @@ on:
       # (tests/unit/linear-drain-parked.test.mjs) is registered in
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/linear-drain-parked.js'
+      # CI-side liveness verdict for that same drain (check-linear-drain-
+      # health.yml's gate). Replaced an inline YAML `-gt 3` threshold that
+      # could never fire, since the drain slices its candidate list to
+      # DISPATCH_CAP = 3 before printing the count the YAML compared. The
+      # decision logic is pure and colocated at scripts/lib/drain-ledger-
+      # health.js (covered by the scripts/lib/** glob above, test registered
+      # in tests/unit-test-manifest.txt); this top-level CLI wrapper is not
+      # covered by any glob, so it needs explicit listing
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/check-linear-drain-health.js'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.

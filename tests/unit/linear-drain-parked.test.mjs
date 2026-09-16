@@ -641,6 +641,41 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     assert.strictEqual(ledgerWritten, false);
   });
 
+  // The test ABOVE is vacuous on its own and cannot be the regression pin:
+  // `readLedger: () => []` means reconcileOutcomes has no prior dispatch to
+  // resolve, returns [], and the append loop never executes — so it passed
+  // for as long as the dry-run ledger write existed. This one seeds a prior
+  // dispatch AND its terminal job so reconcileOutcomes actually produces an
+  // outcome, which is the only state in which the bug was reachable.
+  test('--dry-run does not append reconciled outcomes, but still LOGS what it would have reconciled', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const prior = issue({ identifier: 'BRO-9' });
+    const ledger = [
+      { event: 'drain-parked-dispatch', identifier: 'BRO-9', contentHash: computeIssueContentHash(prior), ts: '2026-09-01T12:00:00Z' },
+    ];
+    const dispatchLedgerEntries = [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-9', jobId: 'job-x', ts: '2026-09-01T12:00:05Z' },
+      { event: JOB_EVENTS.DONE, taskId: 'linear:BRO-9', jobId: 'job-x', ts: '2026-09-01T13:00:00Z' },
+    ];
+    const appended = [];
+    const logs = [];
+    const result = await main(['--dry-run'], {
+      listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-10' })],
+      dispatchFn: () => { throw new Error('dry-run must not dispatch'); },
+      readLedger: () => ledger.slice(),
+      appendLedger: (entry) => appended.push(entry),
+      dispatchLedgerEntries: () => dispatchLedgerEntries,
+      log: (m) => logs.push(m),
+    });
+    assert.deepStrictEqual(result.dispatched, []);
+    // Proves reconcileOutcomes really did produce an outcome this run — without
+    // this the assertion below would pass for the wrong reason, exactly as the
+    // older test did.
+    assert.ok(logs.some((m) => m.includes('attempt-memory: BRO-9 card-pass')),
+      `dry run must still report what it would reconcile; logs=${JSON.stringify(logs)}`);
+    assert.deepStrictEqual(appended, [], '--dry-run promises "no dispatch/ledger writes" in USAGE and in its own summary line — it must write nothing');
+  });
+
   test('a Linear fetch failure is reported, not thrown, and dispatches nothing', async () => {
     delete process.env.LINEAR_NEXT_DISABLED;
     // main() sets process.exitCode = 1 on this path (so a real CLI run
