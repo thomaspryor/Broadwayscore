@@ -708,5 +708,89 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-16T16:30:04.735Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on My Son’s A Queer (But What Can You Do?)",
+    "description": "gay-times/Chris Selman (gay-times--chris-selman.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review describes the production at the Garrick Theatre, explicitly stating 'its new home is the glittering G — https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/\nlondon-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine theater review with critical assessment, but it describes the Battersea Turbine Theatre and Edinburgh  — https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre\nlondon-theatre-reviews/Matt Wolf (london-theatre-reviews--matt-wolf.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review is dated 2022-10-24 but the expected West End opening is 2026-09-17 — a 4-year future date. This indi — https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T17:04:29.055Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "title": "Shipped review too short to verify on My Son’s A Queer (But What Can You Do?)",
+    "description": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.standard.co.uk/culture/theatre/my-sons-a-queer-but-what-can-you-do-garrick-theatre-review-west-end-b1034714.html",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T17:04:29.060Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "title": "Review URL cross-show mismatch on My Son’s A Queer (But What Can You Do?)",
+    "description": "Review URL for london-theatre-reviews/Matt Wolf does not mention show slug (checked: my-sons-a-queer-but-what-can-you-do-west-end, my-sons-a-queer-but-what-can-you-do, sons, queer, what, sonsqueerwhat): https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T17:04:29.062Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:in-honor-of-jean-michel-basquiat-off-broadway-2026",
+    "title": "Auto-remediation gave up on in-honor-of-jean-michel-basquiat-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"in-honor-of-jean-michel-basquiat-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T17:04:29.070Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:in-honor-of-jean-michel-basquiat-off-broadway-2026:timeout",
+    "title": "Auto-remediation gave up on in-honor-of-jean-michel-basquiat-off-broadway-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"in-honor-of-jean-michel-basquiat-off-broadway-2026\",\"outlet\":\"timeout\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T17:04:29.072Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:golden-boy-off-west-end-2026",
+    "title": "Auto-remediation gave up on golden-boy-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"golden-boy-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T17:04:29.079Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+    "title": "Auto-remediation gave up on the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T17:04:29.083Z"
   }
 ]
