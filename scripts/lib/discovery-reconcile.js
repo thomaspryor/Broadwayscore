@@ -99,10 +99,17 @@ function computeShowReconciliation(existing, candidate) {
  */
 const RECONCILE_MAX_SHIFT_DAYS = 60;
 
+// Reconciliation candidates never pass through the ISO-normalization step
+// scripts/discover-new-shows.js applies to brand-new shows (that happens
+// later in the pipeline, only for the `newShows` path) — an unparseable
+// candidate date can reach here as-is. Infinity (not 0) for a bad parse:
+// this only runs once evaluateReconciliationSafety has already confirmed
+// BOTH sides are present, so a NaN here means malformed input, not "nothing
+// to compare" — it must fail the shift cap, not silently pass it.
 function dayShift(a, b) {
   if (!a || !b) return 0;
   const ms = Math.abs(new Date(a).getTime() - new Date(b).getTime());
-  if (Number.isNaN(ms)) return 0;
+  if (Number.isNaN(ms)) return Infinity;
   return Math.round(ms / 86400000);
 }
 

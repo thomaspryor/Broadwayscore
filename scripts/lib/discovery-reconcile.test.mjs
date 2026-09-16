@@ -162,6 +162,17 @@ test('resolveReconciliationFields: applies multi-source venue change, holds sing
   assert.equal(disputed.heldFields[0].field, 'venue');
 });
 
+test('evaluateReconciliationSafety: an unparseable candidate date is held, not treated as a zero-day shift', () => {
+  const existing = { openingDate: '2026-01-01', previewsStartDate: null };
+  const result = evaluateReconciliationSafety(
+    existing,
+    { openingDate: 'not-a-real-date', openingDateSource: 'todaytix' },
+    1
+  );
+  assert.equal(result.safe, false);
+  assert.match(result.reason, /shift-too-large/);
+});
+
 test('appendReconciliationAudit: writes a before/after trail and caps history at 50 runs', () => {
   const tmpPath = path.join(os.tmpdir(), `discovery-reconciliation-log-test-${process.pid}-${Date.now()}.json`);
   try {
