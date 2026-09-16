@@ -1548,6 +1548,54 @@ function detectTruncationSignals(text) {
   };
 }
 
+// Truncation signal names that are unambiguous bot-detection/paywall STUB
+// evidence — the site served a wall instead of the article, not "the
+// article doesn't exist." Deliberately the 'severe'/'severeAnywhere' tier
+// only (nyt_bot_stub, wsj_paywall_cta, paywall_or_login_prompt) — excludes
+// the weaker 'moderate' tier (e.g. ends_with_ellipsis), which is genuinely
+// ambiguous truncation evidence, not a definite wall.
+//
+// Distinct purpose from scripts/lib/incomplete-reason.js's own Layer
+// A.5/A.6 nyt_bot_stub/wsj_paywall_cta checks: that module answers "why is
+// this text incomplete" (routes to an incompleteReason bucket, and
+// deliberately keeps paywall_or_login_prompt in a separate lower-priority
+// bucket there). This one answers a narrower question for the ensemble
+// scoreability check — "is a not_a_review/garbage_text verdict actually
+// just evidence of a wall, not evidence this isn't a review" (BRO-2495: an
+// NYT bot-stub body got the LLM ensemble to reject a real, correctly
+// THUMB-scored review as not_a_review on opening night).
+const BOT_STUB_TRUNCATION_SIGNALS = new Set([
+  'nyt_bot_stub', 'paywall_or_login_prompt', 'wsj_paywall_cta'
+]);
+
+/**
+ * True when a review file's stored body shows definite bot-detection/paywall
+ * stub evidence — checked in priority order: the signals already computed by
+ * classifyContentTier (data.truncationSignals), then the human-readable
+ * contentTierReason string it was derived from (`Truncation detected:
+ * ${signals.join(', ')}` — see classifyContentTier below), then (if fullText
+ * is present) a live re-scan, mirroring the same stored-then-live-fallback
+ * pattern incomplete-reason.js already uses for the identical signal names.
+ *
+ * @param {Object} data - review-text JSON
+ * @returns {boolean}
+ */
+function hasBotStubTruncationSignal(data) {
+  if (!data) return false;
+  const stored = Array.isArray(data.truncationSignals) ? data.truncationSignals : [];
+  if (stored.some(s => BOT_STUB_TRUNCATION_SIGNALS.has(s))) return true;
+  if (typeof data.contentTierReason === 'string') {
+    for (const sig of BOT_STUB_TRUNCATION_SIGNALS) {
+      if (data.contentTierReason.includes(sig)) return true;
+    }
+  }
+  if (data.fullText) {
+    const { signals } = detectTruncationSignals(data.fullText);
+    if (signals.some(s => BOT_STUB_TRUNCATION_SIGNALS.has(s))) return true;
+  }
+  return false;
+}
+
 /**
  * Count words in text
  * @param {string} text
@@ -3224,6 +3272,7 @@ module.exports = {
   isEffectivelyWrongProductionOrShow,
   WRONG_PRODUCTION_OR_SHOW_FIELDS,
   detectTruncationSignals,
+  hasBotStubTruncationSignal,
   stripFooterContent,
   getScrapingPriority,
   countWords,
