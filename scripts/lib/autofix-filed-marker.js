@@ -13,7 +13,8 @@
  * scripts/lib/digest-autofix.js files issues titled `BSC Daily: <row>` and
  * scripts/lib/autofix-canary.js files `CANARY: touch <marker>`, and BOTH
  * then dispatch their own issue through the real pipeline
- * (`node scripts/linear-next.js --id BRO-N --headless`, digest-autofix.js's
+ * (`node scripts/linear-next.js --id BRO-N --headless` — the default lane
+ * since BRO-3652, flag kept as an alias — digest-autofix.js's
  * dispatchDetached). A blanket refusal on these titles would disable the
  * daily autofix drain AND the daily end-to-end canary — the only live proof
  * that dispatch still works. The MOTIVATION is candidate selection — a

@@ -165,10 +165,12 @@ test('dispatchArgvFor routes each id namespace to its own dispatcher', () => {
   const wd = require('../dispatch-watchdog.js');
   const linear = wd.dispatchArgvFor('linear:BRO-3380');
   assert.ok(linear[0].endsWith('scripts/linear-next.js'), `expected linear-next.js, got ${linear[0]}`);
-  assert.deepEqual(linear.slice(1), ['--id', 'BRO-3380', '--headless', '--detach'],
-    'Linear work must go headless (no cmux terminal runtime, 83.0% vs 30.5% completion) AND detached: '
-    + '--headless alone awaits the whole job, and runBscNext SIGKILLs the process group at 15 minutes, '
-    + 'which on the real ledger would kill 277 of 424 jobs (65.3%) mid-flight');
+  assert.deepEqual(linear.slice(1), ['--id', 'BRO-3380', '--headless'],
+    'Linear work must go headless (no cmux terminal runtime, 83.0% vs 30.5% completion) AND detached — '
+    + 'since BRO-3652 detach is linear-next\'s DEFAULT on the headless lane, and an EXPLICIT --detach is '
+    + 'deliberately absent: on a mac-only (tab-routed) card the explicit flag is refused, the default takes '
+    + 'the tab path (runBscNext still SIGKILLs the process group at 15 minutes, so the child must not stay attached)');
+  assert.ok(!linear.includes('--detach'), 'explicit --detach would park every mac-only card (BRO-3652 ship-check)');
 
   const notion = wd.dispatchArgvFor('1842');
   assert.ok(notion[0].endsWith('scripts/bsc-next.js'), `expected bsc-next.js, got ${notion[0]}`);
