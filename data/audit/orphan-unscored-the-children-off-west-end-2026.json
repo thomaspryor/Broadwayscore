@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "the-children-off-west-end-2026",
   "openingDate": "2026-09-10",
-  "detectedAt": "2026-09-16T06:42:00.542Z",
+  "detectedAt": "2026-09-16T07:18:31.327Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "artsdesk--unknown.json",
+      "outletId": "artsdesk",
+      "criticName": "Unknown",
+      "url": "https://theartsdesk.com/theatre/children-lyric-hammersmith-review-instant-classic-given-jaunty-revival",
+      "fullTextLen": 2160,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "liamodell--liam-odell.json",
       "outletId": "liamodell",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
