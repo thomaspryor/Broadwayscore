@@ -174,12 +174,21 @@ function readMirrorTasks() {
 // archive/skip decision this run made. Refresh it explicitly with
 // --refresh-snapshot. Mirror file mtimes are NOT a substitute — they all
 // reflect the last mirror resync, not the underlying Notion edit time.
-function refreshNotionSnapshot(mirrorTasks) {
+function refreshNotionSnapshot(mirrorTasks, ledgerPageIds = []) {
   const referenced = new Set();
   for (const t of mirrorTasks) {
     const id = extractNotionId(t.description || '');
     if (id) referenced.add(id);
   }
+  // BRO-2384: also check every page the ledger has ever imported, not just
+  // ones a LIVE mirror task still references. A completed task archives out
+  // of the mirror (often same-day), so without this a page that goes Done
+  // after archival never re-enters `referenced` — the snapshot can never
+  // learn it is Done, and findStaleDuplicates() (which reads this same
+  // snapshot's doneIds) can never retire the Linear issue the ledger already
+  // knows about for it. See findStaleDuplicates()'s own header for the full
+  // incident (BRO-111).
+  for (const id of ledgerPageIds) referenced.add(id);
   const doneIds = [];
   const openAgeDays = {};
   for (const status of ['Done', 'Not started', 'In progress', 'Paused']) {
@@ -308,28 +317,44 @@ function reconcile(classified, byTitle) {
   return out;
 }
 
-async function runReconcile({ classified, mapping, apply }) {
+async function runReconcile({ classified, mapping, apply, ledgerRows = [], doneIds = new Set() }) {
   const team = await linear.getTeam();
   const stateByName = new Map(team.states.nodes.map((s) => [s.name, s.id]));
   const projects = await ensureProjects(team.id);
   const issues = await linear.listIssues(team.id);
   const byTitle = new Map(issues.map((i) => [i.title, i]));
+  const byId = new Map(issues.map((i) => [i.id, i]));
   const r = reconcile(classified, byTitle);
+
+  // BRO-2384: ledger rows whose Notion page went Done but whose issue the
+  // mirror-driven pass above can no longer see (its source task already
+  // archived out of the live mirror — see findStaleDuplicates()'s header).
+  // Filtered to rows whose Linear issue is still actually on the board and
+  // not already retired, so this stays idempotent across repeated runs.
+  const staleDuplicates = ledgerLib
+    .findStaleDuplicates(ledgerRows, doneIds)
+    .filter((row) => byId.has(row.linearId))
+    .filter((row) => {
+      const issue = byId.get(row.linearId);
+      return issue.project !== ARCHIVE_PROJECT || issue.state !== 'Done';
+    });
 
   const notCuratedBy = {};
   for (const n of r.notCurated) notCuratedBy[n.c.skip] = (notCuratedBy[n.c.skip] || 0) + 1;
   console.error(
     `reconcile vs ${issues.length} issues in ${linear.TEAM_KEY}: matched ${r.mapped.length} · ` +
       `missing ${r.missing.length} · not-curated-in ${r.notCurated.length} ${JSON.stringify(notCuratedBy)} · ` +
-      `wrong project ${r.reproject.length}`
+      `wrong project ${r.reproject.length} · stale ledger duplicates ${staleDuplicates.length}`
   );
   for (const m of r.missing) console.error(`  missing: #${m.task.id} ${m.c.project} | ${m.task.subject.slice(0, 70)}`);
+  for (const s of staleDuplicates) console.error(`  stale duplicate: ${s.identifier} (page ${s.pageId} is Done, task #${s.taskId || '?'} already archived out of the mirror)`);
 
   if (!apply) {
     console.log(JSON.stringify({
       reconcile: true, applied: false, issues: issues.length,
       matched: r.mapped.length, missing: r.missing.length,
       notCurated: r.notCurated.length, notCuratedBy, reproject: r.reproject.length,
+      staleLedgerDuplicates: staleDuplicates.length,
     }, null, 2));
     return;
   }
@@ -403,8 +428,40 @@ async function runReconcile({ classified, mapping, apply }) {
       recorded++;
     }
   }
+  // BRO-2384: retire the ledger-only stale duplicates the mirror-driven pass
+  // above structurally cannot see. Recorded by APPENDING a new ledger row
+  // (never editing the old one, same discipline as the rest of the ledger) —
+  // that new row's retiredReason is what makes findStaleDuplicates() skip it
+  // on the next run. mapping.json is also updated when the row still names a
+  // taskId, for parity with the mirror-driven retire path above, but the
+  // ledger row is the one this fix actually depends on for idempotency (a
+  // taskId can be stale/reused; a pageId is not — see the BRO-2468 comment on
+  // isAlreadyImported()).
+  let ledgerRetired = 0;
+  for (const row of staleDuplicates) {
+    const issue = byId.get(row.linearId);
+    logMutation({
+      identifier: row.identifier, taskId: row.taskId, action: 'retire', reason: 'notion_done_ledger',
+      fromProject: issue.project, fromState: issue.state,
+      toProject: ARCHIVE_PROJECT, toState: 'Done',
+    });
+    await linear.updateIssue(row.linearId, {
+      projectId: projects[ARCHIVE_PROJECT].id,
+      stateId: stateByName.get('Done'),
+    });
+    ledgerLib.appendRow(path.join(REPO_ROOT, ledgerLib.DEFAULT_LEDGER), ledgerLib.makeRow({
+      pageId: row.pageId, taskId: row.taskId, linearId: row.linearId, identifier: row.identifier,
+      title: row.title, project: ARCHIVE_PROJECT, retiredReason: 'notion_done', source: 'reconcile-ledger',
+    }));
+    if (row.taskId && (!mapping[row.taskId] || mapping[row.taskId].retiredReason !== 'notion_done')) {
+      mapping[row.taskId] = { linearId: row.linearId, identifier: row.identifier, title: row.title, project: ARCHIVE_PROJECT, retiredReason: 'notion_done' };
+      saveMapping(mapping);
+    }
+    ledgerRetired++;
+  }
+
   console.log(JSON.stringify({
-    reconcile: true, applied: true, moved, retired, revived, recorded,
+    reconcile: true, applied: true, moved, retired, revived, recorded, ledgerRetired,
     missing: r.missing.length, mappingTotal: Object.keys(mapping).length,
     mutationLog: MUTATION_LOG_PATH,
   }, null, 2));
@@ -417,9 +474,16 @@ async function main() {
   const apply = process.argv.includes('--apply');
 
   const mirrorTasks = readMirrorTasks();
+  const ledgerRows = ledgerLib.readRows(path.join(REPO_ROOT, ledgerLib.DEFAULT_LEDGER));
 
   if (process.argv.includes('--refresh-snapshot')) {
-    const snap = refreshNotionSnapshot(mirrorTasks);
+    // BRO-2384: union in every pageId the ledger has ever imported, not just
+    // ones a live mirror task still references — see refreshNotionSnapshot's
+    // own comment for why (a completed task archives out of the mirror,
+    // often same-day, and would otherwise silently drop out of future
+    // snapshots forever).
+    const ledgerPageIds = [...ledgerLib.indexByPageId(ledgerRows).keys()];
+    const snap = refreshNotionSnapshot(mirrorTasks, ledgerPageIds);
     console.log(JSON.stringify({
       snapshot: SNAPSHOT_PATH, generatedAt: snap.generatedAt,
       referencedByMirror: snap.referencedByMirror,
@@ -435,9 +499,7 @@ async function main() {
   // reads as "never imported" against the legacy JSON. The pageId ledger
   // (data/linear-import-mapping.jsonl) is keyed on the Notion page id, which
   // does not move, so a hit there also counts. See isAlreadyImported().
-  const pageIdIndex = ledgerLib.indexByPageId(
-    ledgerLib.readRows(path.join(REPO_ROOT, ledgerLib.DEFAULT_LEDGER))
-  );
+  const pageIdIndex = ledgerLib.indexByPageId(ledgerRows);
 
   // Classify EVERY record first (independent of the mapping), because
   // --reconcile needs the full curation to diff against the board, not just
@@ -445,7 +507,7 @@ async function main() {
   const classified = mirrorTasks.map((task) => ({ task, c: classifyTask(task, notionState) }));
 
   if (wantReconcile) {
-    await runReconcile({ classified, mapping, apply });
+    await runReconcile({ classified, mapping, apply, ledgerRows, doneIds: notionState.doneIds });
     return;
   }
 

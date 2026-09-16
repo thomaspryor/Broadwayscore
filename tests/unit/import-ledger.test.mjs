@@ -89,6 +89,54 @@ test('the anti-join names exactly the pages with no ledger row', () => {
   assert.deepEqual(ledger.unaccountedPageIds(['page-1', 'page-2'], rows.slice(1)), ['page-1']);
 });
 
+// BRO-2384: the real incident. A Notion card (3a9637c5-..., the #483
+// maybeUpgradeUrl stale-flag bug) was mirrored into Linear as BRO-111 while
+// it still read "Not started". Later that same day it was root-caused,
+// fixed, and auto-closed to Notion Status "Done" — but its LOCAL mirror task
+// had already archived out of ~/.claude/tasks/broadwayscore by the time
+// anyone next ran `linear-import.js --reconcile`, so the mirror-driven
+// reconcile pass (classifyTask/reconcile in scripts/linear-import.js) could
+// no longer see it at all: BRO-111 sat open as a duplicate for weeks until a
+// session was dispatched onto it directly and redid already-shipped work.
+// findStaleDuplicates() is the fix — it reads the ledger (which survives
+// archival) instead of the live mirror.
+test('findStaleDuplicates: names a ledger-only issue whose page went Done after its mirror task archived away (BRO-111)', () => {
+  const rows = [
+    ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111', title: 'P1: URL-change invariant gap' }),
+  ];
+  const doneIds = new Set(['page-483']);
+  const stale = ledger.findStaleDuplicates(rows, doneIds);
+  assert.equal(stale.length, 1);
+  assert.equal(stale[0].identifier, 'BRO-111');
+  assert.equal(stale[0].pageId, 'page-483');
+});
+
+test('findStaleDuplicates: a page still open (not in doneIds) is not flagged', () => {
+  const rows = [ledger.makeRow({ pageId: 'page-1', taskId: '1', linearId: 'l1', identifier: 'BRO-1' })];
+  assert.deepEqual(ledger.findStaleDuplicates(rows, new Set()), []);
+});
+
+test('findStaleDuplicates: a row already marked retired is not re-flagged (idempotent across repeated reconcile runs)', () => {
+  const rows = [
+    ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111', retiredReason: 'notion_done' }),
+  ];
+  assert.deepEqual(ledger.findStaleDuplicates(rows, new Set(['page-483'])), []);
+});
+
+test('findStaleDuplicates: a later un-retired row supersedes an earlier retired one for the same pageId', () => {
+  const rows = [
+    ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111', retiredReason: 'notion_done' }),
+    ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111' }), // owner reopened it — revive path's job, not this one's
+  ];
+  const stale = ledger.findStaleDuplicates(rows, new Set(['page-483']));
+  assert.equal(stale.length, 1, 'the last row (un-retired) governs, same last-row-wins semantics as indexByPageId');
+});
+
+test('findStaleDuplicates: a row with no linearId (unresolved legacy row) is never flagged — nothing to retire', () => {
+  const rows = [ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: null, identifier: null })];
+  assert.deepEqual(ledger.findStaleDuplicates(rows, new Set(['page-483'])), []);
+});
+
 test('two concurrent writers both land — no last-writer-wins', async () => {
   // The real scenario: a multi-hour import appending while another process
   // writes the same ledger. The old whole-file rewrite lost entries here and
