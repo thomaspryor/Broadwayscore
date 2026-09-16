@@ -362,34 +362,59 @@ check_snapshot_overwrite() {
 }
 
 check_alert_ledger_commit() {
-  # Any job calling routeAlert()/resolveCondition() (owner-alert-router.js)
-  # must stage data/audit/alert-ledger.json for commit in the SAME job, or
-  # the cooldown/dedup ledger resets every run (5th recurrence of this class
-  # after audit-aggregator-gap.yml, test-ugc-roundtrip.yml, ux-walkthrough.yml,
-  # check-cron-health.yml — card #618). Pure-function check lives in
+  # Any job calling routeAlert()/resolveCondition() (owner-alert-router.js) —
+  # directly in its YAML, OR by invoking a script that requires the router,
+  # directly or one hop through a scripts/lib/ wrapper (BRO-3671's require-
+  # graph resolution; see scripts/lib/require-graph-ast.js) — must stage
+  # data/audit/alert-ledger.json + alert-router-attempts.jsonl for commit in
+  # the SAME job, or the cooldown/dedup ledger resets every run (5th
+  # recurrence of this class after audit-aggregator-gap.yml,
+  # test-ugc-roundtrip.yml, ux-walkthrough.yml, check-cron-health.yml —
+  # card #618). Pure-function check lives in
   # scripts/lib/alert-ledger-commit-check.js (colocated test:
   # scripts/lib/alert-ledger-commit-check.test.mjs).
-  local VIOLATIONS="" f name out
-  for f in .github/workflows/*.yml; do
-    name=$(basename "$f")
-    out=$(node -e "
-      const { findMissingLedgerCommits } = require('./scripts/lib/alert-ledger-commit-check.js');
-      const fs = require('fs');
-      const violations = findMissingLedgerCommits(fs.readFileSync(process.argv[1], 'utf8'));
-      violations.forEach(v => console.log(v));
-    " "$f")
-    if [ -n "$out" ]; then
-      VIOLATIONS="$VIOLATIONS\n$name: $out"
-    fi
-  done
-  if [ -n "$VIOLATIONS" ]; then
-    echo "::error::Workflows call routeAlert()/resolveCondition() without committing data/audit/alert-ledger.json in the same job:"
-    echo -e "$VIOLATIONS"
-    echo "Fix: stage data/audit/alert-ledger.json (git add, or scripts/lib/git-add-existing.sh) before the job's commit step."
+  #
+  # A single Node process handles every workflow file (mirrors
+  # check_ledger_coverage() below) — findRouterCallerScripts()'s scan over
+  # scripts/*.js is the expensive part and must run once, not once per
+  # workflow. Fails loudly (not silently-clean) if acorn is unavailable —
+  # routerCallerScripts would otherwise come back empty and every
+  # require-graph-indirect violation would silently vanish, same failure
+  # mode check_ledger_coverage() already guards against.
+  local OUT
+  OUT=$(node -e "
+    let acorn;
+    try { acorn = require('acorn'); } catch { acorn = null; }
+    if (!acorn) {
+      console.log('__ACORN_MISSING__');
+      process.exit(0);
+    }
+    const fs = require('fs');
+    const path = require('path');
+    const { findMissingLedgerCommits, findRouterCallerScripts } = require('./scripts/lib/alert-ledger-commit-check.js');
+    const routerCallerScripts = findRouterCallerScripts('scripts');
+    const dir = '.github/workflows';
+    let any = false;
+    for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.yml'))) {
+      const text = fs.readFileSync(path.join(dir, name), 'utf8');
+      for (const v of findMissingLedgerCommits(text, routerCallerScripts)) {
+        any = true;
+        console.log(name + ': ' + v);
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  ")
+  if [ "$OUT" = "__ACORN_MISSING__" ]; then
+    echo "::error::acorn is unavailable — cannot resolve the routeAlert()/resolveCondition() require-graph (scripts/lib/require-graph-ast.js). Run 'npm ci' to restore it."
+    FAILED=1
+  elif [ "$OUT" = "__CLEAN__" ]; then
+    echo "All routeAlert()/resolveCondition() callers commit data/audit/alert-ledger.json + alert-router-attempts.jsonl in the same job"
+  else
+    echo "::error::Workflows call routeAlert()/resolveCondition() (directly or via a script that requires owner-alert-router.js) without committing the alert state in the same job:"
+    echo "$OUT"
+    echo "Fix: stage data/audit/alert-ledger.json + data/audit/alert-router-attempts.jsonl (git add, or scripts/lib/git-add-existing.sh) before the job's commit step."
     echo "See scripts/lib/owner-alert-router.js header comment + check-cron-health.yml for a working example."
     FAILED=1
-  else
-    echo "All routeAlert()/resolveCondition() callers commit data/audit/alert-ledger.json in the same job"
   fi
 }
 
