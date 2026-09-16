@@ -388,7 +388,7 @@ function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGE
 // classifies by this prefix, and the parity test in digest-snapshots.test.mjs
 // enforces it. Never a count ("0 items" reads as broken, owner feedback
 // 2026-07-27); the site-health escalation suffix is the only variable part.
-function buildSubject({ health = null, autofixRows = null, now = new Date() } = {}) {
+function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
   }).format(now);
@@ -421,6 +421,17 @@ function buildSubject({ health = null, autofixRows = null, now = new Date() } = 
     if (errs || warns) {
       suffix = ` · ${urgent ? '⛔' : '⚠️'} site health: ${errs} error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'}`;
     }
+  }
+  // BRO-2425 (BRO-420 follow-up): a 48h+ stale awaiting-owner item is
+  // otherwise invisible unless the owner opens the email and scrolls to that
+  // block — the same "trains the eye to skip it" failure mode BRO-282/BRO-420
+  // fix at the body level, one level up at the subject line. Additive to the
+  // health suffix above — both can be true in the same digest.
+  const staleApprovals = Array.isArray(awaitingOwner?.items)
+    ? awaitingOwner.items.filter((i) => i && i.stale).length
+    : 0;
+  if (staleApprovals) {
+    suffix += ` · ⚠️ ${staleApprovals} approval${staleApprovals === 1 ? '' : 's'} waiting 48h+`;
   }
   return `Morning digest — ${dateLabel}${suffix}`;
 }
@@ -661,7 +672,7 @@ function composeDigestEmail({
     }
   }
 
-  const subject = buildSubject({ health: sections.health, autofixRows, now });
+  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, now });
   const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
   return { subject, html };
 }
