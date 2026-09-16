@@ -36,21 +36,23 @@ function slugify(text) {
 
 async function fetchJson(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
+    const req = https.get(url, { timeout: 15000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         try { resolve(JSON.parse(data)); }
         catch (e) { reject(new Error(`Failed to parse JSON from ${url}`)); }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
 async function downloadImage(url, destPath) {
   return new Promise((resolve, reject) => {
     const finalUrl = url.startsWith('//') ? `https:${url}` : url;
-    https.get(finalUrl, (res) => {
+    const req = https.get(finalUrl, { timeout: 15000 }, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
         return downloadImage(res.headers.location, destPath).then(resolve).catch(reject);
       }
@@ -61,7 +63,9 @@ async function downloadImage(url, destPath) {
       res.pipe(ws);
       ws.on('finish', () => { ws.close(); resolve(); });
       ws.on('error', reject);
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
