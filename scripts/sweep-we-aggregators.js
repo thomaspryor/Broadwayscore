@@ -227,8 +227,9 @@ function nodeFetch(url) {
   return new Promise((resolve) => {
     const doFetch = (fetchUrl, redirects) => {
       if (redirects > 5) { resolve(null); return; }
-      https.get(fetchUrl, {
+      const req = https.get(fetchUrl, {
         headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', 'Accept': 'text/html' },
+        timeout: 15000,
       }, res => {
         if (res.statusCode === 301 || res.statusCode === 302) {
           const loc = res.headers.location;
@@ -238,7 +239,9 @@ function nodeFetch(url) {
         let data = '';
         res.on('data', c => data += c);
         res.on('end', () => resolve(data));
-      }).on('error', () => resolve(null));
+      });
+      req.on('error', () => resolve(null));
+      req.on('timeout', () => { req.destroy(); resolve(null); });
     };
     doFetch(url, 0);
   });
