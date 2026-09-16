@@ -2630,6 +2630,11 @@ on:
       # auditor or its unit test triggers CI.
       - 'scripts/audit-self-contradictory-clears.js'
       - 'tests/unit/self-contradictory-clear.test.mjs'
+      # BRO-2283 — root-level scripts/*.test.mjs is NOT globbed (same gap as
+      # the drain acceptance test below); registered in
+      # tests/unit-test-manifest.txt so it RUNS in CI but needs its own path
+      # entry or a solo edit gets ZERO CI.
+      - 'scripts/audit-self-contradictory-clears.test.mjs'
       # BRO-185 drain acceptance test — root-level scripts/*.test.mjs is NOT
       # globbed, and it's registered in tests/unit-test-manifest.txt, so it
       # RUNS in CI but needs its own path entry or a solo edit gets ZERO CI.

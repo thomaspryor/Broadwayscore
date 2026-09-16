@@ -95,17 +95,22 @@ test('listShowDirs + detectAllSelfContradictoryClears together find a fixture se
 });
 
 // Acceptance check against the live corpus, mirroring the exact repro command
-// from the Linear issue. Skips (not fails) when data/review-texts isn't
-// checked out in this worktree — that absence is itself the bug's original
-// trigger, now surfaced as a loud FAIL by the CLI rather than this test
-// silently passing on stale live-corpus content.
-test('CLI --show=<real show> against the live corpus scans >0 files when the corpus is present', (t) => {
-  const showId = 'john-proctor-is-the-villain-west-end-2026';
+// from the Linear issue. Deliberately UNSCOPED (no --show=) rather than
+// pinned to one show: a specific show can be renamed/merged/consolidated
+// (this repo does that regularly — see memory/feedback_self_referential_
+// duplicate_pointers.md), which would fail this test for reasons unrelated to
+// the fix under test (code review finding) rather than skip. An unscoped scan
+// only depends on the corpus existing at all, which is exactly what BRO-2283
+// is about. Skips (not fails) when data/review-texts isn't checked out in
+// this worktree — that absence is itself the bug's original trigger, now
+// surfaced as a loud FAIL by the CLI rather than this test silently passing
+// on stale live-corpus content.
+test('CLI (unscoped) against the live corpus scans >0 files when the corpus is present', (t) => {
   let out;
   try {
     out = execFileSync(
       process.execPath,
-      [path.join(repoRoot, 'scripts', 'audit-self-contradictory-clears.js'), `--show=${showId}`, '--json'],
+      [path.join(repoRoot, 'scripts', 'audit-self-contradictory-clears.js'), '--json'],
       { cwd: repoRoot, encoding: 'utf8' },
     );
   } catch (err) {
@@ -116,5 +121,5 @@ test('CLI --show=<real show> against the live corpus scans >0 files when the cor
     throw err;
   }
   const { scanned } = JSON.parse(out);
-  assert.ok(scanned > 0, `expected >0 files scanned for ${showId}, got ${scanned} (0 scanned is the BRO-2283 regression)`);
+  assert.ok(scanned > 0, `expected >0 files scanned, got ${scanned} (0 scanned is the BRO-2283 regression)`);
 });
