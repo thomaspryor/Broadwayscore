@@ -40,11 +40,18 @@ const { mergeOpeningNightSent } = require(
 const { mergeTrackerEntries } = require(
   path.join(__dirname, '..', '..', 'scripts', 'lib', 'opening-night-tracker-sync.js'),
 );
+const { recordRecencyMs } = require(
+  path.join(__dirname, '..', '..', 'scripts', 'lib', 'tracker-record-recency.js'),
+);
 
-// Both merge paths take (a, b) with the SAME positional meaning ("mine" first,
-// "theirs" second) but different parameter names (ours/remote vs
-// remote/local) — wrap them so every scenario below can drive both surfaces
-// through one identical call shape and compare outcomes directly.
+// The two production functions do NOT share an argument order —
+// mergeOpeningNightSent(ours, remote) vs mergeTrackerEntries(remoteParsed,
+// localParsed), i.e. "mine" is the FIRST positional arg on one and the
+// SECOND on the other. Both do default to "mine" (the local/ours side)
+// winning a tie or a no-comparable-timestamp conflict, so this wrapper gives
+// every scenario below one uniform run(mine, theirs) call shape by reversing
+// the REST surface's argument order to match — verified against both
+// functions' real signatures, not assumed from naming alone.
 const SURFACES = [
   {
     name: 'git-push merge (mergeOpeningNightSent)',
@@ -100,9 +107,19 @@ for (const { name, run } of SURFACES) {
 
 for (const { name, run } of SURFACES) {
   test(`${name}: three-way race on one key converges on the single newest write under every pairwise merge order`, () => {
+    // t1 vs t2 are distinguishable ONLY by draftCreatedAt (t2 has no sentAt) —
+    // deliberately, so a comparator that ignores draftCreatedAt and only
+    // checks sentAt (leaving t1/t2 recency-tied) fails this test, not just a
+    // comparator that ignores recency altogether. t2 models the orchestrator
+    // re-issuing a draft on a retry (a real observed shape — e.g.
+    // schmigadoon-2026's draftId changed between its preview and sent
+    // records in data/opening-night-sent.json); applyResendStatusUpdate
+    // (scripts/lib/broadcast-state.js) never sets sentAt on a 'sending'
+    // transition, only on a confirmed 'sent' one, so t2 deliberately does not
+    // fabricate one.
     const t1 = { draftStatus: 'draft', draftCreatedAt: '2026-04-11T10:00:00Z', method: 'orchestrator-draft' };
-    const t2 = { draftStatus: 'sending', draftCreatedAt: '2026-04-11T10:00:00Z', sentAt: '2026-04-11T11:00:00Z', method: 'reconcile-broadcast-state' };
-    const t3 = { draftStatus: 'sent', draftCreatedAt: '2026-04-11T10:00:00Z', sentAt: '2026-04-11T12:00:00Z', method: 'broadcast-send', recipientCount: 4800 };
+    const t2 = { draftStatus: 'draft', draftCreatedAt: '2026-04-11T11:00:00Z', method: 'orchestrator-redraft' };
+    const t3 = { draftStatus: 'sent', draftCreatedAt: '2026-04-11T11:00:00Z', sentAt: '2026-04-11T12:00:00Z', method: 'broadcast-send', recipientCount: 4800 };
     const records = [t1, t2, t3];
 
     // Every ordering two writers' updates could plausibly arrive in.
@@ -123,9 +140,11 @@ for (const { name, run } of SURFACES) {
       );
       assert.equal(state.shows['giant-2026'].recipientCount, 4800);
     }
-    // Sanity: the fixture actually has three DISTINCT recency values, or this
-    // test would pass vacuously.
-    assert.equal(new Set(records.map((r) => r.sentAt || r.draftCreatedAt)).size >= 2, true);
+    // Sanity: the fixture actually has three DISTINCT recency values (via the
+    // real recordRecencyMs comparator, not a raw string comparison — this is
+    // what the merge functions themselves compare) or this test would pass
+    // vacuously.
+    assert.equal(new Set(records.map((r) => recordRecencyMs(r))).size, 3);
   });
 }
 
@@ -160,14 +179,22 @@ for (const { name, run } of SURFACES) {
 
 for (const { name, run } of SURFACES) {
   test(`${name}: overdue-alert records with no comparable recency field use the deterministic default winner`, () => {
-    const mine = showsOf({ lastOverdueAlertAt: '2026-04-11T11:02:38.978Z', draftStatus: 'draft' });
-    const theirs = showsOf({ lastOverdueAlertAt: '2026-04-10T09:00:00.000Z', draftStatus: 'draft' });
+    // "theirs" carries the chronologically NEWER lastOverdueAlertAt, and
+    // "mine" must still win — the discriminating case. If a regression ever
+    // added lastOverdueAlertAt back into RECENCY_FIELDS (the exact bug class
+    // tracker-record-recency.js's header comment warns against for the
+    // sibling field lastReconciledAt), "theirs" would incorrectly win here
+    // instead. Giving "mine" the newer value, as an earlier draft of this
+    // test did, would let that same regression pass unnoticed since "mine"
+    // wins either way.
+    const mine = showsOf({ lastOverdueAlertAt: '2026-04-10T09:00:00.000Z', draftStatus: 'draft' });
+    const theirs = showsOf({ lastOverdueAlertAt: '2026-04-11T11:02:38.978Z', draftStatus: 'draft' });
     const merged = run(mine, theirs);
     // Documented default: the "mine" side wins when no content timestamp is
     // comparable — see mergeOpeningNightSent's and mergeTrackerEntries' own
     // header comments. Assert the winner is deterministic and matches that
     // contract, not "some" value.
-    assert.equal(merged.shows['giant-2026'].lastOverdueAlertAt, '2026-04-11T11:02:38.978Z');
+    assert.equal(merged.shows['giant-2026'].lastOverdueAlertAt, '2026-04-10T09:00:00.000Z');
   });
 }
 
