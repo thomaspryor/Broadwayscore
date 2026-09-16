@@ -54,7 +54,15 @@ const WORKFLOW_EXT_RE = /\.ya?ml$/i;
 // (review finding). `\n` splits one finding into two stdout lines so a caller
 // counting lines disagrees with TOTAL VIOLATIONS; a bare `\r` is worse, because
 // it OVERWRITES the text already on the line and can hide the finding entirely.
-const CONTROL_CHAR_RE = /[\u0000-\u001f\u007f]/;
+//
+// C0 + DEL is NOT the whole surface (review finding): NEL (U+0085), LINE
+// SEPARATOR (U+2028) and PARAGRAPH SEPARATOR (U+2029) are line terminators too,
+// and all three were measured PUBLISHING as code 1. They cost nothing to reject
+// — every string the real checker emits is fixed ASCII text plus a job name
+// captured from [A-Za-z0-9_.-]+, verified zero false positives across all 244
+// workflows — so the guard covers them rather than depending on how a
+// particular consumer happens to render them.
+const CONTROL_CHAR_RE = /[\u0000-\u001f\u007f\u0085\u2028\u2029]/;
 
 /**
  * Describe a thrown value without ever throwing itself (review finding).
@@ -201,7 +209,24 @@ function scanWorkflows(dir, check) {
       // finding into code 0. Publishing `clean` — the primitives this loop
       // actually saw and approved — closes all three at once, and the snapshot
       // also means a length getter that keeps growing cannot spin forever.
+      // `length` is read once, but a snapshot of a LIE is still a lie (review
+      // finding). A Proxy answering NaN, undefined or -1 makes `i < n` false on
+      // the first test, so validation is skipped entirely and a REAL finding
+      // publishes as code 0 — measured: all three returned code 0 over the live
+      // 244-workflow tree with a finding present, which is precisely the "clean
+      // verdict having scanned nothing" this file exists to prevent. An
+      // OBJECT-valued length is worse: `i < n` coerces it on every comparison,
+      // so a valueOf() that grows never terminates. typeof is checked first
+      // because it cannot trigger that coercion.
       const n = found.length;
+      if (typeof n !== 'number' || !Number.isSafeInteger(n) || n < 0) {
+        return {
+          code: 2,
+          violations,
+          scanned,
+          error: `checker returned an array whose length is not a non-negative integer (${typeof n}) for ${file}`,
+        };
+      }
       const clean = [];
       let bad = -1;
       let badReason = '';

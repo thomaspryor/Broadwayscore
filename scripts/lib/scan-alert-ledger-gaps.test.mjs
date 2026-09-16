@@ -321,6 +321,69 @@ test('scanned is 0 — not the file count — on the too-few-workflows refusal',
   }
 });
 
+const REAL_FINDING = 'job X missing the staging line';
+
+for (const [label, lying] of [
+  ['NaN', NaN],
+  ['undefined', undefined],
+  ['-1', -1],
+  ['0.5', 0.5],
+]) {
+  test(`code 2 — NOT a false-clean 0 — when the array's length LIES: ${label}`, () => {
+    // Snapshotting length fixed the double-read, but a snapshot of a LIE is
+    // still a lie: `i < n` is false on the first test, validation is skipped
+    // entirely, and a REAL finding publishes as code 0 — the "clean verdict
+    // having scanned nothing" this whole file exists to prevent (review
+    // finding, measured against the live tree).
+    const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+    try {
+      const r = scanWorkflows(dir, () => new Proxy([REAL_FINDING], {
+        get(t, k) { return k === 'length' ? lying : t[k]; },
+      }));
+      assert.notEqual(r.code, 0, 'a real finding must never publish as clean');
+      assert.equal(r.code, 2);
+      assert.match(r.error, /length is not a non-negative integer/);
+      assert.deepEqual(r.violations, []);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+}
+
+test('an OBJECT-valued length terminates instead of spinning on repeated coercion', () => {
+  // `i < n` coerces an object length on EVERY comparison, so a valueOf() that
+  // grows never terminates. typeof is checked before any comparison happens.
+  const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+  try {
+    let coercions = 0;
+    const r = scanWorkflows(dir, () => new Proxy([REAL_FINDING], {
+      get(t, k) {
+        if (k === 'length') return { valueOf() { coercions += 1; return coercions; } };
+        return t[k];
+      },
+    }));
+    assert.equal(r.code, 2);
+    assert.equal(coercions, 0, 'typeof must reject it before any coercion');
+    assert.match(r.error, /length is not a non-negative integer \(object\)/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+for (const [label, code] of [['NEL U+0085', 0x85], ['LINE SEPARATOR U+2028', 0x2028], ['PARAGRAPH SEPARATOR U+2029', 0x2029]]) {
+  test(`code 2 on a violation containing ${label} (a line terminator too)`, () => {
+    const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
+    try {
+      const r = scanWorkflows(dir, () => [`before${String.fromCharCode(code)}after`]);
+      assert.equal(r.code, 2);
+      assert.match(r.error, /violation at index 0/);
+      assert.deepEqual(r.violations, []);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+}
+
 test('.YML (uppercase) is scanned, not silently skipped', () => {
   const dir = makeTree(MIN_EXPECTED_WORKFLOWS);
   try {
