@@ -83,6 +83,18 @@ describe('evaluateReviewCountRegression', () => {
     const d = evaluateReviewCountRegression({ existingCount: 1000, newCount: 500, forceWrite: true, isCI: true });
     assert.equal(d.action, 'warn-suppressed');
   });
+
+  test('50.04% loss blocks even though it would round to a displayed "50.0%" (compares the unrounded ratio, not the display value)', () => {
+    // 5004 lost / 10000 existing = exactly 50.04% loss
+    const d = evaluateReviewCountRegression({ existingCount: 10000, newCount: 4996, forceWrite: false, isCI: false });
+    assert.equal(d.action, 'block');
+    assert.equal(d.pctLost, 50.0); // display value still rounds to 50.0
+  });
+
+  test('exactly 50% loss does not block (boundary is > 50, not >=)', () => {
+    const d = evaluateReviewCountRegression({ existingCount: 1000, newCount: 500, forceWrite: false, isCI: false });
+    assert.equal(d.action, 'warn');
+  });
 });
 
 describe('isRunningInCI', () => {
@@ -94,6 +106,12 @@ describe('isRunningInCI', () => {
   });
   test('neither set → false', () => {
     assert.equal(isRunningInCI({}), false);
+  });
+  test('CI=false (a non-empty, truthy JS string) must NOT be misread as CI — a stray CI=false in the shell must not silently disable the local hard block', () => {
+    assert.equal(isRunningInCI({ CI: 'false' }), false);
+  });
+  test('GITHUB_ACTIONS=0 must NOT be misread as CI', () => {
+    assert.equal(isRunningInCI({ GITHUB_ACTIONS: '0' }), false);
   });
 });
 
@@ -165,6 +183,18 @@ describe('wiring: rebuild-all-reviews.js guard', () => {
 
   test('--force-write flag is still parsed and threaded through', () => {
     assert.match(src, /forceWrite\s*=\s*process\.argv\.includes\(['"]--force-write['"]\)/);
+  });
+
+  test('an unreadable/corrupted (but present) reviews.json blocks locally instead of silently falling through as "first run"', () => {
+    const errIdx = src.indexOf('existingReadError');
+    assert.ok(errIdx > -1, 'guard must track a distinct existingReadError (not just swallow every readFileSync/JSON.parse failure as first-run)');
+    assert.match(src, /e\.code\s*!==\s*['"]ENOENT['"]/,
+      'must distinguish "file genuinely does not exist" (ENOENT, a real first run) from any other read/parse failure (corrupted baseline)');
+    const blockSection = src.slice(errIdx, errIdx + 1500);
+    assert.match(blockSection, /existingReadError\s*&&\s*!forceWrite\s*&&\s*!isRunningInCI\(\)/,
+      'the unreadable-baseline block must respect both --force-write and CI, same as the numeric block');
+    assert.match(blockSection, /process\.exit\(1\)/,
+      'an unreadable existing reviews.json must refuse the write, not proceed with an uncomputed loss %');
   });
 
   test('the guard block sits BEFORE the reviews.json write', () => {

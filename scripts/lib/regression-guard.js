@@ -17,11 +17,13 @@
 const WARN_THRESHOLD_PCT = 2.0;
 const LOCAL_HARD_BLOCK_PCT = 50.0;
 
-// Broad CI||GITHUB_ACTIONS check, same idiom as scripts/lib/owner-alert-router.js's
-// isCIExecution() (not exported there, so re-implemented here rather than
-// reaching into an unrelated module for a one-line check).
+// Broad CI||GITHUB_ACTIONS check, mirroring scripts/lib/push-ledger.js's
+// isGithubActionsRunner()-style strict string match rather than a bare
+// truthiness check — `CI=false`/`GITHUB_ACTIONS=0` are non-empty strings and
+// therefore truthy in JS, which would silently misclassify a local run as CI
+// and skip the hard block entirely.
 function isRunningInCI(env = process.env) {
-  return !!(env.CI || env.GITHUB_ACTIONS);
+  return env.CI === 'true' || env.CI === '1' || env.GITHUB_ACTIONS === 'true';
 }
 
 /**
@@ -37,10 +39,14 @@ function evaluateReviewCountRegression({ existingCount, newCount, forceWrite, is
   const lost = existingCount - newCount;
   if (!(lost > 0)) return { action: 'ok', lost, pctLost: 0 };
 
-  const pctLost = parseFloat((lost / existingCount * 100).toFixed(1));
-  if (pctLost <= WARN_THRESHOLD_PCT) return { action: 'ok', lost, pctLost };
+  // Compare against the unrounded ratio so a loss like 50.04% can't round
+  // down to a displayed "50.0%" and slip past the > LOCAL_HARD_BLOCK_PCT
+  // check; pctLost itself stays rounded to 1dp purely for display/logging.
+  const rawPctLost = (lost / existingCount) * 100;
+  const pctLost = parseFloat(rawPctLost.toFixed(1));
+  if (rawPctLost <= WARN_THRESHOLD_PCT) return { action: 'ok', lost, pctLost };
   if (forceWrite) return { action: 'warn-suppressed', lost, pctLost };
-  if (!isCI && pctLost > LOCAL_HARD_BLOCK_PCT) return { action: 'block', lost, pctLost };
+  if (!isCI && rawPctLost > LOCAL_HARD_BLOCK_PCT) return { action: 'block', lost, pctLost };
   return { action: 'warn', lost, pctLost };
 }
 

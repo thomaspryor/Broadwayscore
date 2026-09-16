@@ -5414,10 +5414,26 @@ const output = {
 {
   const forceWrite = process.argv.includes('--force-write');
   let existingCount = 0;
+  let existingReadError = null;
   try {
     const existing = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
     existingCount = (existing.reviews || []).length;
-  } catch (e) { /* first run, no existing file */ }
+  } catch (e) {
+    if (e.code !== 'ENOENT') existingReadError = e; // ENOENT = genuine first run; anything else = a baseline we can't trust
+  }
+
+  // A reviews.json that EXISTS but can't be read/parsed (truncated write,
+  // corrupted JSON) can't have its loss % computed at all — falling through
+  // to existingCount=0 would treat it identically to a legitimate first run
+  // and skip the guard below entirely. Fail closed on it locally, same as an
+  // outsized numeric loss.
+  if (existingReadError && !forceWrite && !isRunningInCI()) {
+    console.error(`\n🚨 REGRESSION GUARD: existing reviews.json is present but unreadable (${existingReadError.message}) — REFUSING TO WRITE`);
+    console.error(`   Can't compute a loss % against an unknown baseline. This usually means a prior write was`);
+    console.error(`   interrupted mid-write, or the file/symlink target is corrupted.`);
+    console.error(`   To override intentionally: re-run with --force-write.`);
+    process.exit(1);
+  }
 
   if (existingCount > 0) {
     const newCount = allReviews.length;
