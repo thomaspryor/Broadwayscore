@@ -381,7 +381,21 @@ check_alert_ledger_commit() {
   # routerCallerScripts would otherwise come back empty and every
   # require-graph-indirect violation would silently vanish, same failure
   # mode check_ledger_coverage() already guards against.
-  local OUT
+  #
+  # BRO-3684: also fails loudly if .github/workflows yields too few files to
+  # be a real tree (wrong cwd, sparse checkout) — previously an empty/near-
+  # empty glob just meant the `for` loop never ran, `any` stayed false, and
+  # the check printed __CLEAN__ having scanned nothing. Reuses
+  # scan-alert-ledger-gaps.js's MIN_EXPECTED_WORKFLOWS (BRO-3662) rather than
+  # a second hardcoded floor. (The other class of fail-open this card
+  # reported — a THROWN exception inside the node -e reads as CLEAN — does
+  # NOT apply here: this function's __CLEAN__/__ACORN_MISSING__ checks are
+  # exact-string matches, so a throw's empty/partial stdout matches neither
+  # and falls into the violation-reporting `else` branch below, which sets
+  # FAILED=1. Confirmed by fault injection: a broken
+  # alert-ledger-commit-check.js exits this function via that `else` branch.)
+  local OUT MIN_WORKFLOWS
+  MIN_WORKFLOWS=$(node -e "console.log(require('./scripts/lib/scan-alert-ledger-gaps.js').MIN_EXPECTED_WORKFLOWS)")
   OUT=$(node -e "
     let acorn;
     try { acorn = require('acorn'); } catch { acorn = null; }
@@ -394,8 +408,13 @@ check_alert_ledger_commit() {
     const { findMissingLedgerCommits, findRouterCallerScripts } = require('./scripts/lib/alert-ledger-commit-check.js');
     const routerCallerScripts = findRouterCallerScripts('scripts');
     const dir = '.github/workflows';
+    const files = fs.readdirSync(dir).filter((f) => f.endsWith('.yml'));
+    if (files.length < $MIN_WORKFLOWS) {
+      console.log('__TOO_FEW_WORKFLOWS__:' + files.length);
+      process.exit(0);
+    }
     let any = false;
-    for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.yml'))) {
+    for (const name of files) {
       const text = fs.readFileSync(path.join(dir, name), 'utf8');
       for (const v of findMissingLedgerCommits(text, routerCallerScripts)) {
         any = true;
@@ -406,6 +425,9 @@ check_alert_ledger_commit() {
   ")
   if [ "$OUT" = "__ACORN_MISSING__" ]; then
     echo "::error::acorn is unavailable — cannot resolve the routeAlert()/resolveCondition() require-graph (scripts/lib/require-graph-ast.js). Run 'npm ci' to restore it."
+    FAILED=1
+  elif echo "$OUT" | grep -qF '__TOO_FEW_WORKFLOWS__:'; then
+    echo "::error::alert-ledger-commit check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
     FAILED=1
   elif [ "$OUT" = "__CLEAN__" ]; then
     echo "All routeAlert()/resolveCondition() callers commit data/audit/alert-ledger.json + alert-router-attempts.jsonl in the same job"
