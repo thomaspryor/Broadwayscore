@@ -27,10 +27,9 @@ test('BRO-2281: relocated Hackney Empire run carries the actual venue, not the c
   const show = findShow('im-every-woman-the-chaka-khan-musical-west-end-2026');
   assert.ok(show, 'show im-every-woman-the-chaka-khan-musical-west-end-2026 must exist in shows.json');
   assert.equal(show.venue, 'Hackney Empire');
-  assert.notEqual(show.venue, 'Peacock Theatre');
 });
 
-test('BRO-2281: the unrelated Troubadour Wembley Park run of the same title is untouched', () => {
+test('BRO-2281: the unrelated Troubadour Wembley Park run of the same title keeps its own venue', () => {
   // Distinct show record (Aug-Sep 2026) — confirmed during BRO-626 research to
   // be a separate production from the West End/Hackney Empire run above.
   // Guards against a future fix accidentally touching the wrong record by id
