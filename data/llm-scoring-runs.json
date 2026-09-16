@@ -439107,20 +439107,25 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-16T08:10:10.755Z",
-    "completedAt": "2026-09-16T08:10:18.520Z",
+    "startedAt": "2026-09-16T08:44:38.459Z",
+    "completedAt": "2026-09-16T08:44:44.918Z",
     "totalReviews": 43896,
-    "processed": 1,
-    "skipped": 43893,
-    "errors": 1,
+    "processed": 0,
+    "skipped": 43892,
+    "errors": 2,
     "tokensUsed": {
-      "input": 7341,
-      "output": 394,
-      "total": 22321
+      "input": 9188,
+      "output": 232,
+      "total": 24785
     },
-    "costUsd": 0.053363799999999996,
-    "runId": "35070168972",
+    "costUsd": 0.056615149999999996,
+    "runId": "35070908132",
     "errorDetails": [
+      {
+        "showId": "pre-existing-condition-off-broadway-2026",
+        "outletId": "airmail",
+        "error": "input_validation_failed:body_too_short"
+      },
       {
         "showId": "oliver-west-end-2024",
         "outletId": "thestage",
@@ -462155,19 +462160,19 @@
     ]
   },
   {
-    "startedAt": "2026-09-16T08:10:50.645Z",
-    "completedAt": "2026-09-16T08:17:06.570Z",
+    "startedAt": "2026-09-16T08:45:43.486Z",
+    "completedAt": "2026-09-16T08:52:08.289Z",
     "totalReviews": 169,
     "processed": 169,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
       "input": 440871,
-      "output": 39175,
-      "total": 480046
+      "output": 39197,
+      "total": 480068
     },
-    "costUsd": 1.2348941999999998,
-    "runId": "35070168972",
+    "costUsd": 1.2316367,
+    "runId": "35070908132",
     "errorDetails": []
   }
 ]

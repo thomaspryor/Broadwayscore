@@ -47,7 +47,7 @@ function sleep(ms) {
 
 function fetch(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { timeout: 30000 }, (res) => {
+    const req = https.get(url, { timeout: 30000 }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         fetch(res.headers.location).then(resolve).catch(reject);
         return;
@@ -55,7 +55,9 @@ function fetch(url) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve({ statusCode: res.statusCode, data }));
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

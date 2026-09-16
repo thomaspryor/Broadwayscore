@@ -907,7 +907,7 @@ function fetchTodayTixApiPage(offset = 0, limit = 100, location = 1) {
   return new Promise((resolve, reject) => {
     const url = `https://api.todaytix.com/api/v2/shows?location=${location}&limit=${limit}&offset=${offset}`;
 
-    https.get(url, (response) => {
+    const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
         return;
@@ -923,7 +923,9 @@ function fetchTodayTixApiPage(offset = 0, limit = 100, location = 1) {
         }
       });
       response.on('error', reject);
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
