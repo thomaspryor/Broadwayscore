@@ -49,6 +49,15 @@ test('parseWorktreeListPorcelain: a detached-HEAD worktree has branch=null and d
   assert.equal(records[0].branch, null);
 });
 
+test('parseWorktreeListPorcelain: a bare repo entry has bare=true', () => {
+  // Final-pass review finding: the only prior "bare" coverage hand-built a
+  // { bare: true } object directly for triageWorktree(), never exercising
+  // parseWorktreeListPorcelain()'s own `line === 'bare'` branch — a typo
+  // there (wrong string, dropped assignment) would have gone undetected.
+  const records = parseWorktreeListPorcelain('worktree /x/.bare\nbare\n');
+  assert.equal(records[0].bare, true);
+});
+
 test('parseWorktreeListPorcelain: captures the lock reason text after "locked "', () => {
   const records = parseWorktreeListPorcelain(PORCELAIN_FIXTURE);
   const diary = records.find((r) => r.path.endsWith('diary-phase0c'));

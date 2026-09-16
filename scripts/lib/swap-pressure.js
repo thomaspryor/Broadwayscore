@@ -31,9 +31,10 @@
  * on a machine that reads as already under pressure by this exact metric,
  * is a fleet-wide behavior change that needs its own review, not a rider
  * on a root-cause investigation. What this DOES give the pipeline today:
- * a standalone, testable signal (see scripts/check-swap-pressure.js) that
- * can be alerted on or wired into the dispatch floor in a follow-up once
- * an owner has picked a threshold.
+ * a standalone, testable signal that a future CLI wrapper or alert path can
+ * call once an owner has picked a threshold — no such wrapper exists yet
+ * (final-pass review finding: an earlier draft of this comment pointed at
+ * scripts/check-swap-pressure.js as if it were already built).
  */
 const { execFileSync } = require('child_process');
 
@@ -82,19 +83,29 @@ function currentSwapUsage() {
  * happens to be allocated right now. That means (a) a freshly-booted Mac
  * with no swap pressure yet can read `{totalMB: 0, usedMB: 0, freeMB: 0}`,
  * which would trip "critical" against any positive floor despite there
- * being no actual pressure — callers should treat `totalMB === 0` as "no
- * swap pressure data yet", not "critical"; and (b) macOS can relieve a
- * "critical" reading by simply allocating another swapfile, which frees up
- * `freeMB` again without the underlying memory pressure having eased at
- * all. This function is a literal headroom-vs-floor comparison only — it
- * is not, by itself, a memory-pressure verdict.
+ * being no actual pressure; and (b) macOS can relieve a "critical" reading
+ * by simply allocating another swapfile, which frees up `freeMB` again
+ * without the underlying memory pressure having eased at all. This
+ * function is a literal headroom-vs-floor comparison — it is not, by
+ * itself, a memory-pressure verdict.
+ *
+ * `totalMB` is a required parameter specifically to enforce caveat (a) in
+ * code rather than leave it as a doc comment a caller has to remember
+ * (final-pass review finding: an earlier version documented this caveat
+ * but the function signature didn't even accept totalMB, so nothing
+ * actually enforced it — the first real caller would have gotten a false
+ * "critical" alert on a quiet machine with no swap allocated yet).
  *
  * @param {object} d
+ * @param {number} d.totalMB - current swap ceiling; 0 means no swap
+ *   allocated yet, i.e. no pressure data, not evidence of pressure
  * @param {number} d.freeMB - current swap headroom (within swap's own ceiling)
  * @param {number} d.floorMB - alert threshold
- * @returns {boolean} true iff swap headroom is below the floor
+ * @returns {boolean} true iff swap headroom is below the floor AND swap is
+ *   actually allocated
  */
-function isSwapPressureCritical({ freeMB, floorMB }) {
+function isSwapPressureCritical({ totalMB, freeMB, floorMB }) {
+  if (totalMB === 0) return false;
   return freeMB < floorMB;
 }
 
