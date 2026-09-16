@@ -6,6 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { badgeImg } from './badge-render.mjs';
 
 // Path setup: `repo` resolves to the repo root via __dirname so the generator
 // runs identically on macOS local dev, Linux CI, and from a git worktree.
@@ -325,21 +326,17 @@ function scoreTier(score, category) {
 }
 function isGoldTier(score, category) { return scoreTier(score, category)?.id === 'gold'; }
 
-// `box-sizing:border-box` is the fix — Critical Gold has a 2px border which would
-// otherwise expand the box past nominal `size`; with border-box the border lives
-// inside the declared width/height so all tiers render at the same visual size.
-// line-height === size keeps the number vertically centered for every tier.
+// Badges render as server-generated PNGs (BRO-1392), not styled <div>s —
+// Gmail iOS dark mode inverts CSS text color against a bg it can't invert,
+// breaking contrast on every score badge. A flat image is immune since Gmail
+// can't recolor baked-in pixels. See badge-render.mjs for the rendering path.
+// Rendering the image at its own exact `size` sidesteps the old box-sizing
+// workarounds entirely — those existed only to compensate for browser box
+// model quirks that don't apply to a raster image.
 function badgeHtml(score, size = 64, category) {
   const t = scoreTier(score, category);
-  if (!t) return `<div style="display:inline-block;width:${size}px;height:${size}px;border-radius:12px;background:#2a2a38;color:#9ca3af;border:1px solid rgba(255,255,255,0.1);font-size:${Math.round(size*0.22)}px;font-weight:700;line-height:${size}px;text-align:center;">TBD</div>`;
-  const isGold = t.id === 'gold';
-  const fontSize = Math.round(size * 0.47);
-  // Default to content-box (no box-sizing) and shrink inner gold size by 4px
-  // so border doesn't push total visual size past peers in Gmail iOS/Android.
-  const innerSize = isGold ? size - 4 : size;
-  const lineHeight = innerSize;
-  const extra = isGold ? `border:2px solid ${t.border};` : '';
-  return `<div style="display:inline-block;width:${innerSize}px;height:${innerSize}px;border-radius:12px;background:${t.bg};color:${t.text};font-size:${fontSize}px;font-weight:700;line-height:${lineHeight}px;text-align:center;${extra}box-shadow:${t.glow};">${score}</div>`;
+  const fontSize = Math.round(size * (t ? 0.47 : 0.22));
+  return badgeImg({ tier: t, score, size, fontSize, radius: 12, shadow: t ? t.glow : null });
 }
 
 function smallBadge(score, size = 36, category) {
@@ -347,19 +344,11 @@ function smallBadge(score, size = 36, category) {
   // Number font must scale with the box (design-system ScoreBadge ratio ~0.42,
   // e.g. text-lg/18px in a 44px badge). Was hardcoded 15px, so enlarging the box
   // left the numbers looking tiny (user, 2026-07-11). TBD is 3 chars → smaller ratio.
-  if (!t) return `<div style="display:inline-block;width:${size}px;height:${size}px;border-radius:8px;background:#2a2a38;color:#9ca3af;border:1px solid rgba(255,255,255,0.1);font-size:${Math.round(size * 0.30)}px;font-weight:700;line-height:${size}px;text-align:center;">TBD</div>`;
-  const isGold = t.id === 'gold';
-  const fontSize = Math.round(size * 0.42);
-  // Some email clients (notably Gmail Android) don't respect box-sizing:border-box,
-  // which makes the 2px gold border push total dimensions to 44px while peers stay
-  // at 40px. Compensate by shrinking the inner width/height so total visual = size.
-  const innerSize = isGold ? size - 4 : size;
-  const lineHeight = innerSize;
-  const extra = isGold ? `border:2px solid ${t.border};` : '';
-  const smallShadow = isGold
-    ? '0 0 8px rgba(218,165,32,0.4),0 2px 6px rgba(0,0,0,0.3)'
-    : `0 2px 6px ${t.solid}40`;
-  return `<div style="display:inline-block;width:${innerSize}px;height:${innerSize}px;border-radius:8px;background:${t.bg};color:${t.text};font-size:${fontSize}px;font-weight:700;line-height:${lineHeight}px;text-align:center;${extra}box-shadow:${smallShadow};">${score}</div>`;
+  const fontSize = Math.round(size * (t ? 0.42 : 0.30));
+  const shadow = t
+    ? (t.id === 'gold' ? '0 0 8px rgba(218,165,32,0.4),0 2px 6px rgba(0,0,0,0.3)' : `0 2px 6px ${t.solid}40`)
+    : null;
+  return badgeImg({ tier: t, score, size, fontSize, radius: 8, shadow });
 }
 
 function tierLabel(score, category) {
