@@ -72,41 +72,51 @@ function runAtSimulatedDate(file, isoDate) {
 describe('time-bomb detector — seo-cwv-ack.js regression (BRO-1987)', () => {
   test('reproduction: the pre-fix pattern (no injected `today`) IS a time bomb', () => {
     const fixtureDir = fs.mkdtempSync(path.join(os.tmpdir(), 'timebomb-repro-'));
-    const fixtureFile = path.join(fixtureDir, 'pre-fix-cwv-ack.test.mjs');
-    // Mirrors the pre-fix call in tests/unit/seo-anomaly-detection.test.mjs:
-    // detectCWVAnomalies(cwv, []) with NO third argument, so
-    // findCWVFieldAcknowledgment falls back to `new Date()` — the live clock.
-    fs.writeFileSync(
-      fixtureFile,
-      [
-        "import { test } from 'node:test';",
-        "import assert from 'node:assert';",
-        "import { createRequire } from 'node:module';",
-        'const require = createRequire(import.meta.url);',
-        `const { detectCWVAnomalies } = require(${JSON.stringify(CHECK_SEO_HEALTH)});`,
-        "test('west-end field-LCP regression is acknowledged', () => {",
-        "  const cwv = [{ url: 'https://broadwayscorecard.com/west-end', performanceScore: 69, lcp: 2512, inp: null, cls: 0 }];",
-        '  const issues = detectCWVAnomalies(cwv, []);',
-        "  const lh = issues.find((i) => i.type === 'cwv_lighthouse_low');",
-        "  assert.strictEqual(lh.severity, 'warning', 'acknowledged field regression should be a warning, not an error');",
-        '});',
-        '',
-      ].join('\n')
-    );
-
     try {
+      const fixtureFile = path.join(fixtureDir, 'pre-fix-cwv-ack.test.mjs');
+      // Mirrors the pre-fix call in tests/unit/seo-anomaly-detection.test.mjs:
+      // detectCWVAnomalies(cwv, []) with NO third argument, so
+      // findCWVFieldAcknowledgment falls back to `new Date()` — the live clock.
+      fs.writeFileSync(
+        fixtureFile,
+        [
+          "import { test } from 'node:test';",
+          "import assert from 'node:assert';",
+          "import { createRequire } from 'node:module';",
+          'const require = createRequire(import.meta.url);',
+          `const { detectCWVAnomalies } = require(${JSON.stringify(CHECK_SEO_HEALTH)});`,
+          "test('west-end field-LCP regression is acknowledged', () => {",
+          "  const cwv = [{ url: 'https://broadwayscorecard.com/west-end', performanceScore: 69, lcp: 2512, inp: null, cls: 0 }];",
+          '  const issues = detectCWVAnomalies(cwv, []);',
+          "  const lh = issues.find((i) => i.type === 'cwv_lighthouse_low');",
+          "  assert.strictEqual(lh.severity, 'warning', 'acknowledged field regression should be a warning, not an error');",
+          '});',
+          '',
+        ].join('\n')
+      );
+
       const before = runAtSimulatedDate(fixtureFile, BEFORE_EXPIRY);
       const after = runAtSimulatedDate(fixtureFile, AFTER_EXPIRY);
+      assert.strictEqual(before.signal, null, `pre-fix pattern's baseline run should not be killed by a signal:\n${before.stderr}`);
       assert.strictEqual(
         before.status,
         0,
         `pre-fix pattern should pass while the ack is still active (${BEFORE_EXPIRY}):\n${before.stdout}`
       );
-      assert.notStrictEqual(
+      // Exact status + the specific assertion's TAP failure line, not just "any
+      // nonzero status" — an unrelated crash or spawn error must not be read as
+      // proof of detection (ship-check/Codex finding).
+      assert.strictEqual(after.signal, null, `pre-fix pattern's shifted run should not be killed by a signal:\n${after.stderr}`);
+      assert.strictEqual(
         after.status,
-        0,
-        `pre-fix pattern should FAIL once the ack expires (${AFTER_EXPIRY}) — this is the time bomb ` +
+        1,
+        `pre-fix pattern should FAIL (exit 1) once the ack expires (${AFTER_EXPIRY}) — this is the time bomb ` +
           `the detector exists to catch, with no code change between the two runs:\n${after.stdout}`
+      );
+      assert.match(
+        after.stdout,
+        /not ok 1 - west-end field-LCP regression is acknowledged/,
+        `the shifted run must fail on THIS test's own assertion, not an unrelated error:\n${after.stdout}`
       );
     } finally {
       fs.rmSync(fixtureDir, { recursive: true, force: true });
