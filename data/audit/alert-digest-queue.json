@@ -336,5 +336,113 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-16T01:06:42.749Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-80",
+    "title": "Watchdog parked #linear:BRO-80 after 3 dead dispatch attempts",
+    "description": "Watchdog: card \"Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")\" was dispatched 3 times and every session died. It will NOT be retried automatically — it needs your look (or a fresh dispatch with bsc-next --id linear:BRO-80 --force once fixed).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T01:32:37.372Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-525",
+    "title": "Watchdog parked #linear:BRO-525 — redispatch never produced a launch",
+    "description": "Watchdog: card \"DMARC reports from Google\" was claimed for redispatch at 2026-09-16T01:32:37.375Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-525), then re-arm with node scripts/linear-next.js --id BRO-525 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T01:48:14.195Z"
+  },
+  {
+    "conditionKey": "watchdog-park:1967",
+    "title": "Watchdog parked #1967 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Email gate 0.6% conversion — 68% dismiss rate signals friction\" was claimed for redispatch at 2026-09-16T01:42:13.632Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1967), then re-arm with node scripts/bsc-next.js --id 1967 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T01:58:43.248Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-866",
+    "title": "Watchdog parked #linear:BRO-866 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Star rating extraction: fix LLM overriding explicit ratings\" was claimed for redispatch at 2026-09-16T01:48:14.196Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-866), then re-arm with node scripts/linear-next.js --id BRO-866 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T02:03:57.778Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-886",
+    "title": "Watchdog parked #linear:BRO-886 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Broadcast dedup race — cancelled run between API call and tracker write\" was claimed for redispatch at 2026-09-16T01:48:18.822Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-886), then re-arm with node scripts/linear-next.js --id BRO-886 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T02:03:57.780Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-916",
+    "title": "Watchdog parked #linear:BRO-916 — redispatch never produced a launch",
+    "description": "Watchdog: card \"BWW Review Roundup includes wrong-production reviews from prior runs\" was claimed for redispatch at 2026-09-16T01:49:59.168Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-916), then re-arm with node scripts/linear-next.js --id BRO-916 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T02:05:34.315Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-917",
+    "title": "Watchdog parked #linear:BRO-917 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Cross-repo workflow race conditions cause data loss + push failures\" was claimed for redispatch at 2026-09-16T01:50:03.054Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-917), then re-arm with node scripts/linear-next.js --id BRO-917 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T02:05:34.317Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-923",
+    "title": "Watchdog parked #linear:BRO-923 — redispatch never produced a launch",
+    "description": "Watchdog: card \"NYSR 2-critics-1-URL pattern fails rebuild dedup every opening night\" was claimed for redispatch at 2026-09-16T01:51:44.900Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-923), then re-arm with node scripts/linear-next.js --id BRO-923 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T02:07:09.761Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-938",
+    "title": "Watchdog parked #linear:BRO-938 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Investigate: CV pre-pass promotes wrongProduction through temporal override\" was claimed for redispatch at 2026-09-16T01:51:48.017Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-938), then re-arm with node scripts/linear-next.js --id BRO-938 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T02:07:09.763Z"
   }
 ]
