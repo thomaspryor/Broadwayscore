@@ -369,27 +369,35 @@ check_alert_ledger_commit() {
   # check-cron-health.yml — card #618). Pure-function check lives in
   # scripts/lib/alert-ledger-commit-check.js (colocated test:
   # scripts/lib/alert-ledger-commit-check.test.mjs).
-  local VIOLATIONS="" f name out
-  for f in .github/workflows/*.yml; do
-    name=$(basename "$f")
-    out=$(node -e "
-      const { findMissingLedgerCommits } = require('./scripts/lib/alert-ledger-commit-check.js');
-      const fs = require('fs');
-      const violations = findMissingLedgerCommits(fs.readFileSync(process.argv[1], 'utf8'));
-      violations.forEach(v => console.log(v));
-    " "$f")
-    if [ -n "$out" ]; then
-      VIOLATIONS="$VIOLATIONS\n$name: $out"
-    fi
-  done
-  if [ -n "$VIOLATIONS" ]; then
+  #
+  # BRO-3684: this used to shell a `node -e` one-liner per workflow file and
+  # treat empty stdout as "no violations" — under this script's `set -uo
+  # pipefail` (no `-e`), a THROWN exception inside that one-liner (checker
+  # renamed/broken, or returning a non-array so .forEach was a TypeError) also
+  # produced empty stdout, so a broken checker read as CLEAN and CI went green
+  # having checked nothing, with no floor on the glob either. Delegates to
+  # scripts/lib/scan-alert-ledger-gaps.js (BRO-3662) instead, which runs the
+  # same pure checker across every workflow in ONE process and returns a
+  # load-bearing 0/1/2 exit contract (0 clean, 1 real violations, 2 could not
+  # scan — including a too-small workflow tree). Fails closed: only exit 0
+  # is treated as clean, so a broken checker (exit 2) or a missing/broken
+  # scanner (any other nonzero exit) both set FAILED=1 instead of passing
+  # silently. See scan-alert-ledger-gaps.js's header for the full contract.
+  local OUT CODE
+  OUT=$(node scripts/lib/scan-alert-ledger-gaps.js 2>&1)
+  CODE=$?
+  if [ "$CODE" -eq 0 ]; then
+    echo "All routeAlert()/resolveCondition() callers commit data/audit/alert-ledger.json in the same job"
+  elif [ "$CODE" -eq 1 ]; then
     echo "::error::Workflows call routeAlert()/resolveCondition() without committing data/audit/alert-ledger.json in the same job:"
-    echo -e "$VIOLATIONS"
+    echo "$OUT"
     echo "Fix: stage data/audit/alert-ledger.json (git add, or scripts/lib/git-add-existing.sh) before the job's commit step."
     echo "See scripts/lib/owner-alert-router.js header comment + check-cron-health.yml for a working example."
     FAILED=1
   else
-    echo "All routeAlert()/resolveCondition() callers commit data/audit/alert-ledger.json in the same job"
+    echo "::error::alert-ledger-commit check could not run (scripts/lib/scan-alert-ledger-gaps.js exited $CODE) — this gate fails closed rather than silently reporting clean:"
+    echo "$OUT"
+    FAILED=1
   fi
 }
 
