@@ -12,7 +12,18 @@
 // Exits 0 when clean, 1 when any workflow has a violation (prints each).
 const fs = require('fs');
 const path = require('path');
-const { findMissingLedgerCommits } = require('./alert-ledger-commit-check.js');
+
+// Loading the checker is inside the exit-2 boundary too (review finding): a
+// missing, unreadable or syntactically broken alert-ledger-commit-check.js
+// would otherwise throw at require time and exit 1 — indistinguishable from
+// "violations found", i.e. a broken guard would look like a real finding.
+let findMissingLedgerCommits;
+try {
+  ({ findMissingLedgerCommits } = require('./alert-ledger-commit-check.js'));
+} catch (err) {
+  console.error(`could not load alert-ledger-commit-check.js: ${err.message}`);
+  process.exit(2);
+}
 
 const dir = path.join(__dirname, '..', '..', '.github', 'workflows');
 
@@ -28,10 +39,14 @@ try {
   console.error(`could not read ${dir}: ${err.message}`);
   process.exit(2);
 }
-// withFileTypes + isFile(): a DIRECTORY named `something.yml` would otherwise
-// be passed to readFileSync and throw EISDIR.
+// withFileTypes excludes a DIRECTORY named `something.yml`, which would
+// otherwise reach readFileSync and throw EISDIR. Symlinks are deliberately
+// INCLUDED (review finding): a plain readdirSync would have followed them, and
+// silently skipping a symlinked workflow would under-report violations — the
+// one failure mode this scanner must not have. A broken symlink then fails the
+// read below and exits 2 (cannot scan), which is the honest answer.
 const files = entries
-  .filter((e) => e.isFile() && e.name.endsWith('.yml'))
+  .filter((e) => (e.isFile() || e.isSymbolicLink()) && e.name.endsWith('.yml'))
   .map((e) => e.name)
   .sort();
 
