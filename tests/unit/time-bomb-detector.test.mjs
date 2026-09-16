@@ -34,6 +34,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { realNowMs } from '../helpers/clock-shift.mjs';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -44,17 +45,12 @@ const CHECK_SEO_HEALTH = path.join(REPO_ROOT, 'scripts', 'check-seo-health.js');
 const BEFORE_EXPIRY = '2026-08-10';
 const AFTER_EXPIRY = '2026-08-20';
 
-// The real system clock, immune to this file being run inside an ALREADY
-// clock-shifted process — which it will be, every time scripts/audit-time-
-// bomb-tests.js's own shifted pass reaches this file in the manifest. Reading
-// plain Date.now() there would double-apply the shift to every date this
-// function computes (self-referentially breaking the very detector under
-// test), so the shift already baked into Date.now() is subtracted back out.
-function realNowMs() {
-  const inheritedShiftDays = Number(process.env.BSC_CLOCK_SHIFT_DAYS || 0);
-  return Date.now() - inheritedShiftDays * 86400000;
-}
-
+// realNowMs() (imported above) is immune to this file being run inside an
+// ALREADY clock-shifted process — which it will be, every time
+// scripts/audit-time-bomb-tests.js's own shifted pass reaches this file in
+// the manifest. Reading plain Date.now() here would double-apply the shift
+// to every date this function computes (self-referentially breaking the very
+// detector under test).
 function shiftDaysTo(isoDate) {
   return Math.round((Date.parse(`${isoDate}T12:00:00Z`) - realNowMs()) / 86400000);
 }
