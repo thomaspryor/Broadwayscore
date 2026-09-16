@@ -803,7 +803,22 @@ async function main() {
 
           console.log(`  Owner notified at ${OWNER_EMAIL.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
         } catch (notifyErr) {
+          // BRO-886: previously an error here fell into the OUTER catch, which
+          // mislabeled it as "draft creation failed" but did at least alert
+          // the owner and exit non-zero. Now that the draft is tracked before
+          // this call, a silent console.error alone would mean the owner never
+          // learns a draft is sitting in Resend waiting for them — route a
+          // correctly-labeled alert instead so visibility isn't lost along
+          // with the (inaccurate) failure signal.
           console.error(`  WARNING: owner notification failed: ${notifyErr.message} (draft ${draftId} was still created and tracked — not a draft-creation failure)`);
+          await routeAlert({
+            conditionKey: `broadcast:owner-notification-failed:${MARKET}`,
+            title: 'Opening Night Draft Ready — Owner Notification Failed',
+            description: `Draft ${draftId} was created and tracked, but the owner-notification email failed: ${notifyErr.message}. Draft URL: ${draftUrl}`,
+            severity: 'warning',
+            disposition: 'human',
+            cooldownHours: 24,
+          });
         }
       } else {
         console.log(`  Warning: OWNER_EMAIL or RESEND_API_KEY not set — owner not notified by email`);
