@@ -368,9 +368,18 @@ check_chrome_clone_cache() {
   [ -x "$script" ] || return 0
   local line dry_run_arg=()
   [ "$DRY_RUN" = "1" ] && dry_run_arg=(--dry-run)
+  # Bare "${dry_run_arg[@]}" on a zero-element array (every real, non-dry-run
+  # invocation) trips "unbound variable" under `set -u` on macOS's /bin/bash
+  # (3.2 — the empty-array-expansion bug fixed upstream in bash 4.4). This
+  # script is launched by launchd as `/bin/bash .../gc-merged-worktrees.sh`
+  # (bypassing the `env bash` shebang — see
+  # ~/Library/LaunchAgents/com.broadwayscore.worktree-gc.plist), so that IS
+  # the interpreter every cron run hits. Same fix as BRO-2186 (see the
+  # CURRENT_BUILD_ARTIFACT_DIRS comment above): `${arr[@]+"${arr[@]}"}`
+  # expands to nothing for a zero-element array instead of dereferencing it.
   while IFS= read -r line; do
     log "$line"
-  done < <("$script" "${dry_run_arg[@]}" 2>&1)
+  done < <("$script" "${dry_run_arg[@]+"${dry_run_arg[@]}"}" 2>&1)
 }
 
 # Emergency cleanup, gated on the free-space floor. None of these touch
