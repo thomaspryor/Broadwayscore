@@ -39,6 +39,20 @@ source "$SCRIPT_DIR/disk-floor-check.sh"
 ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
 MAX_RETRIES=${1:-7}
+# BRO-2554: validate BEFORE any arithmetic touches it (the fallback-after
+# calculation a few lines below is a `$(( ))` arithmetic context, where an
+# unvalidated non-numeric value is treated as a VARIABLE NAME — e.g. a caller
+# passing "origin" as $1, an easy mistake since this script's usage is
+# `[max_retries] [branch]`, not `[remote] [branch]`. That name is unset, so
+# `set -u` (line 32) throws a confusing "unbound variable" deep in the script
+# instead of a clear usage error at the top. Checked here, right after the
+# assignment and before push_mutex_acquire/detect-stale-merge-head run further
+# down — a malformed invocation never takes the cross-session push mutex.
+if ! [[ "$MAX_RETRIES" =~ ^[0-9]+$ ]]; then
+  echo "usage: $0 [max_retries] [branch]" >&2
+  echo "  max_retries must be a non-negative integer (got: '$MAX_RETRIES')" >&2
+  exit 1
+fi
 # BRANCH: a plain name (e.g. "main") means "push the LOCAL branch literally
 # named that" — NOT current HEAD. In a worktree checked out on a feature
 # branch, local `main` is a separate ref pinned at worktree-creation time
