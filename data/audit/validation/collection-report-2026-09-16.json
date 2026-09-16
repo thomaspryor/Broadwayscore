@@ -1,71 +1,117 @@
 {
-  "runDate": "2026-09-16T07:43:02.822Z",
+  "runDate": "2026-09-16T08:36:09.968Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+    "showFilter": "bloodsport-after-helen-of-troy-off-west-end-2026,pre-existing-condition-off-broadway-2026,in-honor-of-jean-michel-basquiat-off-broadway-2026,golden-boy-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 4,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "30.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 7,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 6,
+    "tier4Success": 1,
+    "totalFailed": 9,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.1,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 4,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "golden-boy-off-west-end-2026/theatreboard--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytg--amelia-merrill.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json"
+  ],
   "failed": [
-    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
+    "golden-boy-off-west-end-2026/ntlive--powster.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "pre-existing-condition-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/buy-tickets-direct-from-the-theatre--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
+    "playwright": [
+      "golden-boy-off-west-end-2026/theatreboard--unknown.json",
+      "pre-existing-condition-off-broadway-2026/nytg--amelia-merrill.json"
     ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "pre-existing-condition-off-broadway-2026/airmail--air-mail.json"
+    ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "ntlive": {
+      "count": 1,
+      "domain": "ntlive.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Guardian": {
+      "count": 2,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Times Square Chronicles": {
+      "count": 1,
+      "domain": "t2conline.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "pre-existing-condition-off-broadway-2026/nytg--amelia-merrill.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-marin-ireland",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-lupita-nyongo"
+    }
+  ]
 }
