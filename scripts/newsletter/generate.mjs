@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { badgeImg } from './badge-render.mjs';
+import { badgeImg, rankBadgeImg, awardBadgeImg } from './badge-render.mjs';
 
 // Path setup: `repo` resolves to the repo root via __dirname so the generator
 // runs identically on macOS local dev, Linux CI, and from a git worktree.
@@ -1190,19 +1190,23 @@ function biggestMoverSection() {
 // colors, not the site's gradient/shimmer — email clients don't render
 // those reliably) so a subscriber who's seen the /award-score leaderboard
 // recognizes the same gold/silver/bronze language here.
-function awardTierColor(badge) {
-  if (badge === 'sweeper') return '#D4AF37';
-  if (badge === 'decorated') return '#B8B8B8';
-  if (badge === 'honored') return '#C2773A';
-  if (badge === 'in-the-hunt') return '#9ca3af';
-  if (badge === 'nominated') return '#6b7280';
-  return '#4b5563'; // eligible / unknown
+// BRO-3555 — award ring now renders as a flat PNG (badgeImg pattern from
+// BRO-1392), not a styled <div>: Gmail iOS dark mode flips the div's `color`
+// against a `background` it can't invert, breaking the same contrast bug as
+// the score badges. `awardTierId` maps to a fixed color row on the route
+// (AWARD_RING_COLORS in src/app/api/newsletter-badge/route.tsx) — kept in
+// sync by id, same contract as scoreTier()/TIER_COLORS.
+function awardTierId(badge) {
+  if (badge === 'sweeper') return 'sweeper';
+  if (badge === 'decorated') return 'decorated';
+  if (badge === 'honored') return 'honored';
+  if (badge === 'in-the-hunt') return 'in-the-hunt';
+  if (badge === 'nominated') return 'nominated';
+  return 'eligible'; // eligible / unknown
 }
 function awardBadgeBox(score, badge, size = 40) {
-  const c = awardTierColor(badge);
-  const inner = size - 4;
-  const display = score > 0 ? score : '—';
-  return `<div style="box-sizing:border-box;display:inline-block;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,0.03);border:2px solid ${c};color:#fff;font-size:${Math.round(size * 0.36)}px;font-weight:700;line-height:${inner}px;text-align:center;">${display}</div>`;
+  const fontSize = Math.round(size * 0.36);
+  return awardBadgeImg({ tierId: awardTierId(badge), score, size, fontSize });
 }
 function awardScoreMoversSection() {
   const { latestMovers } = cjsRequire(path.join(repo, 'scripts/lib/award-score-movers.js'));
@@ -1974,14 +1978,20 @@ function buzziestSection() {
     BuildingBaseline: { label: 'STEADY', emoji: '⚪', color: '#3b82f6', sub: 'Consistent buzz' },
     Troubled:{ label: 'TROUBLED', emoji: '💔', color: '#ef4444', sub: 'Negative chatter outweighs positive' },
   };
+  // BRO-3555 — Social Buzz rank box renders as a flat PNG (badgeImg pattern
+  // from BRO-1392), not a styled <div>: same Gmail-iOS-dark-mode text/bg
+  // inversion mismatch as the score badges. `id` maps to a fixed color row
+  // on the route (RANK_COLORS in src/app/api/newsletter-badge/route.tsx);
+  // `shadow` is a local-only decorative box-shadow color (never crosses the
+  // wire) kept in sync with the same buckets for the drop-shadow tint.
   function rankBadgeColor(pos, total) {
-    if (!total) return { bg: '#374151', text: '#9ca3af' };
+    if (!total) return { id: 'none', shadow: '#374151' };
     const pct = pos / total;
-    if (pct <= 0.1) return { bg: '#f59e0b', text: '#1f2937' };
-    if (pct <= 0.2) return { bg: '#f97316', text: '#fff' };
-    if (pct <= 0.4) return { bg: '#10b981', text: '#fff' };
-    if (pct <= 0.6) return { bg: '#3b82f6', text: '#fff' };
-    return { bg: '#475569', text: '#cbd5e1' };
+    if (pct <= 0.1) return { id: 'top10', shadow: '#f59e0b' };
+    if (pct <= 0.2) return { id: 'top20', shadow: '#f97316' };
+    if (pct <= 0.4) return { id: 'top40', shadow: '#10b981' };
+    if (pct <= 0.6) return { id: 'top60', shadow: '#3b82f6' };
+    return { id: 'rest', shadow: '#475569' };
   }
   function parseRank(r) {
     if (!r) return null;
@@ -2092,7 +2102,7 @@ function buzziestSection() {
       </td>
       ${rc && c.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         <div style="font-size:9px;font-weight:700;color:${d.color};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:3px;">${d.label}</div>
-        <div style="display:inline-block;width:36px;height:36px;border-radius:8px;background:${rc.bg};color:${rc.text};font-size:14px;font-weight:800;line-height:36px;text-align:center;box-shadow:0 2px 6px ${rc.bg}55;">#${i + 2}</div>
+        ${rankBadgeImg({ tierId: rc.id, position: i + 2, size: 36, fontSize: 14, radius: 8, shadow: `0 2px 6px ${rc.shadow}55` })}
       </td>` : '<td></td>'}
     </tr>`;
   }).join('');
@@ -2107,7 +2117,7 @@ function buzziestSection() {
       </td>
       ${rankColors && top.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;">
         <div style="font-size:9px;font-weight:700;color:${display.color};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px;">${display.label}</div>
-        <div style="display:inline-block;width:40px;height:40px;border-radius:8px;background:${rankColors.bg};color:${rankColors.text};font-size:15px;font-weight:800;line-height:40px;text-align:center;box-shadow:0 2px 6px ${rankColors.bg}55;">#${top.rank.position}</div>
+        ${rankBadgeImg({ tierId: rankColors.id, position: top.rank.position, size: 40, fontSize: 15, radius: 8, shadow: `0 2px 6px ${rankColors.shadow}55` })}
         <div style="font-size:9px;color:#9ca3af;margin-top:2px;font-weight:500;">of ${top.rank.total}</div>
       </td>` : `<td valign="middle" width="60" align="center" style="padding:6px 0;">
         <div style="width:40px;height:40px;border-radius:8px;background:${display.color}22;text-align:center;line-height:40px;font-size:20px;">${display.emoji}</div>
@@ -2445,7 +2455,7 @@ function mostReadSection(climberList) {
       </a>
     </td>
     <td valign="middle" width="56" align="right" style="padding:7px 8px 7px 4px;${border}">
-      ${it.score != null ? smallBadge(it.score, 48, it.category) : `<div style="box-sizing:border-box;display:inline-block;width:48px;height:48px;border-radius:8px;background:#2a2a38;color:#6b7280;font-size:14px;font-weight:700;line-height:48px;text-align:center;border:1px solid rgba(255,255,255,0.1);">—</div>`}
+      ${smallBadge(it.score, 48, it.category)}
     </td>
   </tr>`;
   }).join('');
