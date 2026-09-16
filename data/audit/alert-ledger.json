@@ -139,12 +139,13 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-16T17:52:31.390Z",
-      "lastNotifiedAt": "2026-09-16T17:52:31.390Z",
-      "lastSurfacedAt": "2026-09-16T17:52:31.390Z",
+      "lastSeen": "2026-09-16T17:56:33.571Z",
+      "lastNotifiedAt": "2026-09-16T17:40:55.821Z",
+      "lastSurfacedAt": "2026-09-16T17:40:55.821Z",
       "notifyCount": 83,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -787,7 +788,7 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-16T17:52:31.388Z",
+      "lastSeen": "2026-09-16T17:56:33.569Z",
       "lastNotifiedAt": "2026-09-16T16:43:41.373Z",
       "lastSurfacedAt": null,
       "notifyCount": 59,
