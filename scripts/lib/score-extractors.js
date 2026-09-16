@@ -534,13 +534,26 @@ function extractGuardianScore(html, text) {
 function extractNYPostScore(html, text) {
   // NY Post uses CSS star widgets on newer articles (2019+).
   // rating__star--filled = full star, rating__star--half = half star, on a 4-star scale.
-  // IMPORTANT: Count actual DOM elements, not CSS class definitions.
-  // NY Post HTML contains CSS rules like `.rating__star--filled svg{fill:...}` — these are NOT stars.
-  // Strip <style> blocks first, then match only actual elements with star classes.
+  // IMPORTANT (BRO-922 / Dog Day Afternoon postmortem): NY Post pages carry recirc/
+  // "related stories" modules that reuse the exact same inline-module--review markup
+  // with their OWN star ratings for a different show. Scope to the review widget's own
+  // bounded window (first occurrence only) so a sidebar widget can never contribute
+  // stars to this extraction — a global page-wide count previously double-counted them
+  // and inflated scores (33% error rate). A prior fix (3ea7e7d5d32) added this scoping
+  // but a same-day follow-up (fc2d78f12ab) accidentally dropped it while fixing an
+  // unrelated bug, so both fixes are combined here.
+  // Also strip <style> blocks first: each star SVG embeds its own <style> block, and the
+  // page stylesheet separately repeats `.rating__star--filled svg{fill:...}` as CSS
+  // selector text, not markup — count only actual DOM elements with star classes.
   const htmlNoStyles = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
-  {
-    const filled = (htmlNoStyles.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--filled\b[^"]*"/gi) || []).length;
-    const half = (htmlNoStyles.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--half\b[^"]*"/gi) || []).length;
+  const reviewIdx = htmlNoStyles.indexOf('inline-module--review');
+  if (reviewIdx > -1) {
+    // Each star element (incl. its inline SVG/style boilerplate) runs several hundred
+    // chars; a 4-star widget plus its eyebrow/title comfortably fits in 6000 chars while
+    // staying well short of any other inline-module--review widget elsewhere on the page.
+    const widgetHtml = htmlNoStyles.substring(reviewIdx, reviewIdx + 6000);
+    const filled = (widgetHtml.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--filled\b[^"]*"/gi) || []).length;
+    const half = (widgetHtml.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--half\b[^"]*"/gi) || []).length;
     if (filled > 0) {
       const rating = filled + (half * 0.5);
       if (rating >= 0.5 && rating <= 4) {
