@@ -78,7 +78,7 @@ function runDisqualifierCheck(relativePaths) {
     assert.equal(result.error, undefined, `node -e crashed to spawn: ${result.error}`);
     return result.status;
   } finally {
-    fs.rmSync(fixture.dir, { recursive: true, force: true });
+    fs.rmSync(fixture.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }
 

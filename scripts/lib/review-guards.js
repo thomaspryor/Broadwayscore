@@ -4164,20 +4164,19 @@ function isRejectedNonReview(data) {
     (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
     require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
   if (isJsonLdStarNotAReview) return false;
-  // Same exception as isIncludableForRebuild's not_a_review carve-out — keeps this
-  // predicate in lock-step with the rebuild gate (see hasIndependentExcerptScore).
-  if (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data)) return false;
-  // Same exception as isIncludableForRebuild's structural-star-score carve-out
-  // (BRO-2282) — a markup-based star score never read the rejected prose, so
-  // rejectionReason alone doesn't make this a non-review. Deliberately scoped to
-  // JUST the rejectionReason check below, not an early return for the whole
-  // function: hasStructuralStarScore only overrides explainExclusion's
-  // rejectionReason/rejectedAt gates, not its separate cvWrongArticleHighConfidence
-  // gate — a file can carry BOTH a garbage_text rejectionReason AND a high-confidence
-  // contentVerification.wrongArticle verdict from a different pipeline stage, and the
-  // latter must still mark it non-retrieved (ship-check finding, ties isRejectedNonReview
-  // back to explainExclusion's real scope instead of over-widening this predicate).
-  const rejectionReasonCleared = hasStructuralStarScore(data);
+  // Same exceptions as isIncludableForRebuild's not_a_review/structural-star-score
+  // carve-outs (BRO-2282, BRO-2495) — an independent excerpt+thumb/star score or a
+  // markup-based star score never read the rejected prose, so rejectionReason alone
+  // doesn't make this a non-review. Deliberately scoped to JUST the rejectionReason
+  // check below, not an early return for the whole function: neither exception
+  // overrides explainExclusion's separate cvWrongArticleHighConfidence gate — a
+  // file can carry BOTH a garbage_text/not_a_review rejectionReason AND a
+  // high-confidence contentVerification.wrongArticle verdict from a different
+  // pipeline stage, and the latter must still mark it non-retrieved (ship-check
+  // finding, ties isRejectedNonReview back to explainExclusion's real scope
+  // instead of over-widening this predicate).
+  const rejectionReasonCleared = hasStructuralStarScore(data) ||
+    (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data));
   if (!rejectionReasonCleared && NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
   const cv = data.contentVerification;
   // wrongArticle gated on high confidence to match isIncludableForRebuild's
@@ -4280,6 +4279,20 @@ function hasStructuralStarScore(data) {
 }
 
 /**
+ * True when a thumb verdict field (dtliThumb / bwwThumb) is a definite
+ * up-or-down call. Excludes 'Meh'/'Flat' (neutral — not independent evidence
+ * of a specific score direction) and normalizes the case each source writes:
+ * llm-extractor.js's DTLI branch stamps dtliThumb upper-case
+ * ('UP'/'DOWN'/'MEH'), its BWW branch stamps bwwThumb title-case
+ * ('Up'/'Down'/'Meh').
+ */
+function isDefiniteThumb(thumb) {
+  if (typeof thumb !== 'string') return false;
+  const upper = thumb.toUpperCase();
+  return upper === 'UP' || upper === 'DOWN';
+}
+
+/**
  * True when a review-text file has an aggregator excerpt substantial and
  * clean enough to stand on its own as the scoring source, independent of a
  * (possibly garbage) fullText fetch — used by the not_a_review rejectionReason
@@ -4291,11 +4304,26 @@ function hasStructuralStarScore(data) {
  *   - an aggregator excerpt field with 150+ chars of non-junk text (excludes
  *     photo captions, aggregator disclaimer boilerplate — see
  *     JUNK_EXCERPT_PATTERNS)
- *   - aggregatorStars that actually parses to a rating (excludes "N/A" and
- *     other unparseable strings masquerading as a score)
+ *   - EITHER aggregatorStars that actually parses to a rating (excludes "N/A"
+ *     and other unparseable strings masquerading as a score) OR a definite
+ *     dtliThumb/bwwThumb verdict (Up/Down — see isDefiniteThumb). Added
+ *     2026-09 (BRO-2495): a THUMB-only score (dtliThumb=Up, scoreSource=thumb)
+ *     is exactly as independent of the article body as aggregatorStars is —
+ *     the verdict is read off the aggregator's own page, not the paywalled
+ *     fullText the ensemble rejected. Before this, every THUMB-scored review
+ *     of a paywalled T1 outlet (NYT, WSJ, New Yorker, The Times) was one
+ *     ensemble re-run away from silently losing its score: the NYT review of
+ *     Paranormal Activity (opening night 2026-08-26) was stamped
+ *     not_a_review purely because its stored body was a bot-detection
+ *     paywall stub, even though it was correctly THUMB-scored from DTLI.
  *   - no wrongProduction / wrongShow flag, unconditionally (this narrow path
  *     does not defer to the manual-clear machinery the other gates use — if
  *     either flag is set, the file stays excluded here regardless)
+ *
+ * Still scoped to rejectionReason === 'not_a_review' only (unchanged) —
+ * 'garbage_text' is a stronger, collector-time signal per the caller's own
+ * scoping comment (see isIncludableForRebuild above); a THUMB verdict + clean
+ * excerpt doesn't override that.
  *
  * Corpus parity check (all 41,455 review-text files, task #734 ship-check
  * 2026-08-01): the earlier version of this exception (excerpt presence +
@@ -4310,6 +4338,7 @@ function hasIndependentExcerptScore(data) {
   const excerpt = bestAggregatorExcerptText(data);
   if (!excerpt || excerpt.trim().length < 150) return false;
   if (JUNK_EXCERPT_PATTERNS.some(p => p.test(excerpt))) return false;
+  if (isDefiniteThumb(data.dtliThumb) || isDefiniteThumb(data.bwwThumb)) return true;
   if (data.aggregatorStars == null) return false;
   const { parseOriginalScore } = require('./score-parsers');
   return parseOriginalScore(String(data.aggregatorStars)) != null;
@@ -4482,6 +4511,8 @@ module.exports = {
   explainExclusion,
   duplicateOfInheritedFlag,
   hasStructuralStarScore,
+  hasIndependentExcerptScore,
+  isDefiniteThumb,
   STRUCTURAL_STAR_SOURCES,
   isRejectedNonReview,
   isRetrieved,
