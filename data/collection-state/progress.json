@@ -35,7 +35,9 @@
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
     "avenue-q-west-end-2026/fairypoweredproductions--unknown.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-    "oh-mary-west-end-2025/deadline--greg-evans.json"
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
@@ -151,7 +153,30 @@
     "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
     "avenue-q-west-end-2026/talkinbroadway--unknown.json",
     "avenue-q-west-end-2026/valentine-dsides--unknown.json",
-    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "pre-existing-condition-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/front-row-center--sarah-downs.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--ben-reiss.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/the-recs--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/theater-scene--joel-benjamin.json",
+    "garry-starr-classic-penguins-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "garry-starr-classic-penguins-off-broadway-2026/theatermania--unknown.json",
+    "the-ford-hill-project-off-broadway-2026/theatermania--pete-hempstead.json",
+    "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json",
+    "the-ford-hill-project-off-broadway-2026/abouttheartists--unknown.json",
+    "the-ford-hill-project-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+    "the-holes-off-broadway-2026/standard--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -176,13 +201,15 @@
       "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
-      "avenue-q-west-end-2026/fairypoweredproductions--unknown.json"
+      "avenue-q-west-end-2026/fairypoweredproductions--unknown.json",
+      "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -206,11 +233,12 @@
       "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
       "the-story-west-end-2026/theatrecat--unknown.json",
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
-      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "pre-existing-condition-off-broadway-2026/airmail--air-mail.json"
     ]
   },
   "startTime": "2026-09-16T13:14:27.886Z",
-  "lastProcessed": "oh-mary-west-end-2025/deadline--greg-evans.json",
+  "lastProcessed": "the-holes-off-broadway-2026/standard--unknown.json",
   "log": [
     {
       "t": "2026-09-16T13:36:32.339Z",
@@ -228,6 +256,30 @@
       "event": "bb-session",
       "session": "2c4d8270",
       "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
+    },
+    {
+      "t": "2026-09-16T13:57:00.212Z",
+      "event": "bb-session",
+      "session": "fd701add",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-16T14:00:06.421Z",
+      "event": "bb-session",
+      "session": "3846d0a1",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-16T14:00:18.973Z",
+      "event": "bb-session",
+      "session": "7880be9a",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-16T14:01:45.076Z",
+      "event": "bb-session",
+      "session": "3f1ab979",
+      "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
     }
   ]
 }
