@@ -1,11 +1,13 @@
 /**
- * Beat the Critics — results ballot pick row markup guard
+ * Beat the Critics — stable-selector markup guards
  *
  * BRO-1299: the E2E results-ballot test asserted on a brittle structural CSS
  * selector (.flex.items-center.justify-between.py-1.5) that broke when the
- * compact-ballot redesign (656ad41493) changed the markup. This guards the
- * stable data-testid instead so future restyles don't silently break the E2E
- * selector again.
+ * compact-ballot redesign (656ad41493) changed the markup. Same brittleness
+ * class existed for the picking-screen nominee buttons (.flex.flex-col.gap-2.5
+ * button) used by 3 call sites in the E2E spec. Both now use data-testid
+ * instead of structural CSS, so future restyles don't silently break the E2E
+ * selectors again.
  *
  * Run: node --test tests/unit/btc-ballot-render.test.mjs
  */
@@ -36,5 +38,17 @@ test('results ballot pick row renders with data-testid="ballot-pick-row"', () =>
   assert.ok(
     pickRowLineMatch[0].includes('data-testid="ballot-pick-row"'),
     'data-testid="ballot-pick-row" must be on the per-category pick row element itself'
+  );
+});
+
+test('picking-screen nominee buttons render with data-testid="nominee-button"', () => {
+  const content = readFileSync(CLIENT_PATH, 'utf8');
+
+  const nomineeButtonMatches = [...content.matchAll(/<button data-testid="nominee-button" onClick=\{onSelect\}/g)];
+  assert.strictEqual(
+    nomineeButtonMatches.length,
+    2,
+    'Expected data-testid="nominee-button" on both NomineeCard and ActorNomineeCard buttons ' +
+    '(tests/e2e/beat-the-critics.spec.ts pickFirstNominee and 2 inline call sites assert on this testid)'
   );
 });
