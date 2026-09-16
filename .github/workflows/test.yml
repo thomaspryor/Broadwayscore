@@ -2808,6 +2808,19 @@ on:
       # scope (not scripts/lib/, no dispatch-* prefix match) and has no test
       # of its own — it's a thin shell-out wrapper around this module.
       - 'scripts/message-dispatched-workspace.js'
+      # BRO-929: score-reviews-calibrated.js gained a single-model rejection
+      # warning + --ensemble delegation to the real pipeline (extracted to
+      # scripts/lib/single-model-warning.js, covered by the scripts/lib/**
+      # glob above). Its new colocated test is registered in
+      # tests/unit-test-manifest.txt, which makes the BRO-2647 gate below
+      # ("every manifest-registered test is reachable by on.push.paths",
+      # scripts/audit-test-yml-manifest-paths.js) fail on this branch without
+      # this entry. Root-level scripts/*.test.mjs is NOT globbed — path-listed
+      # so a solo edit to either file triggers CI (feedback_test_yml_push_
+      # path_allowlist; same script+test pairing convention as BRO-848/BRO-141
+      # above).
+      - 'scripts/score-reviews-calibrated.js'
+      - 'scripts/score-reviews-calibrated.test.mjs'
   pull_request:
     branches: [main]
   schedule:

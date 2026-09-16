@@ -16,12 +16,19 @@
  *   --force                 Re-score even if already scored
  *   --calibration-only      Only score the calibration set
  *   --max-cost=5.00         Stop when cumulative API spend hits $X
+ *   --ensemble              Delegate to the multi-model ensemble pipeline instead
+ *                           (scripts/llm-scoring/index.ts --ensemble). This script's
+ *                           own Claude-only scores have no ensembleData and are
+ *                           silently rejected by rebuild-all-reviews.js — use this
+ *                           flag to produce scores that actually land in reviews.json.
  */
 
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const Anthropic = require('@anthropic-ai/sdk').default;
 const { CLAUDE_SONNET } = require('./lib/models');
+const { buildSingleModelWarning, buildEnsembleDelegationArgs } = require('./lib/single-model-warning');
 
 const reviewsDir = path.join(__dirname, '../data/review-texts');
 const llmScoresDir = path.join(__dirname, '../data/llm-scores');
@@ -37,6 +44,7 @@ const limitArg = args.find(a => a.startsWith('--limit='));
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const maxCostArg = args.find(a => a.startsWith('--max-cost='));
 const maxCost = maxCostArg ? parseFloat(maxCostArg.split('=')[1]) : null;
+const useEnsemble = args.includes('--ensemble');
 
 // Sonnet 4.6 pricing: $3/M input, $15/M output
 const COST_PER_INPUT_TOKEN = 3 / 1_000_000;
@@ -208,6 +216,16 @@ function validateScore(result, review) {
 }
 
 async function main() {
+  if (useEnsemble) {
+    const delegateArgs = buildEnsembleDelegationArgs({ showFilter, limit, dryRun });
+    console.log('--ensemble passed — delegating to the multi-model ensemble pipeline:');
+    console.log(`  npx ${delegateArgs.join(' ')}`);
+    const result = spawnSync('npx', delegateArgs, { stdio: 'inherit', cwd: path.join(__dirname, '..') });
+    process.exit(result.status ?? 1);
+  }
+
+  console.warn(buildSingleModelWarning());
+
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     console.error('Error: ANTHROPIC_API_KEY environment variable not set');
