@@ -166,6 +166,11 @@ function classifyBlockedReason(data) {
   if (data.wrongProduction) reasons.push(`wrongProduction${data.wrongProductionNote ? ` (${data.wrongProductionNote})` : ''}`);
   if (data.wrongShow) reasons.push(`wrongShow${data.wrongShowReason ? ` (${data.wrongShowReason})` : ''}`);
   if (data.contentTier === 'invalid') reasons.push(`contentTier=invalid${data.contentTierReason ? ` (${data.contentTierReason})` : ''}`);
+  // BRO-2282: rejectionReason (set by the LLM ensemble scoreability check, e.g.
+  // 'garbage_text'/'not_a_review') is the ACTUAL rebuild-all-reviews.js exclusion gate
+  // for many files that also carry needsReview — surface it directly instead of only
+  // the needsReview breadcrumb below, which can name a different (non-blocking) flag.
+  if (data.rejectionReason) reasons.push(`rejectionReason=${data.rejectionReason}${data.rejectionReasoning ? ` (${data.rejectionReasoning})` : ''}`);
   if (data.needsReview) reasons.push(`needsReview${data.needsReviewReason ? ` (${data.needsReviewReason})` : ''}`);
   if (!reasons.length) reasons.push('present in review-texts but not in reviews.json (unscored / rebuild pending)');
   return reasons;
