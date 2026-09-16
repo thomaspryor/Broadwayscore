@@ -186,14 +186,20 @@ function loadPreviousResultById() {
   } catch { return {}; }
 }
 
-function isProvisional(show) {
+// Shows Playbill validation is known to false-positive on, regardless of
+// whether they're provisional. Split out from isProvisional (BRO-2255) so
+// --all can apply the SAME exemptions instead of re-litigating every one of
+// them at corpus scale — a --all sweep still has to query SERP for shows the
+// PROVISIONAL sweep already excluded because a same-titled Broadway transfer
+// or the wrong market's page reliably wins scorePlaybillUrl otherwise.
+function isExemptFromPlaybillCheck(show) {
   const src = show.discoverySource || '';
   // Roundup-promoted REGIONAL shows are exempt: "the roundup IS the validation"
   // (user rule 2026-07-08, CLAUDE.md §3). Playbill validation false-positives on
   // them because Playbill's /production/ page for a same-title show is often the
   // Broadway transfer, not the regional run (little-bear-ridge-road-regional-2024:
   // Steppenwolf 2024 record vs Playbill's Booth 2025 transfer — main red 2026-07-10).
-  if (show.category === 'regional' && src.startsWith('aggregator-roundup')) return false;
+  if (show.category === 'regional' && src.startsWith('aggregator-roundup')) return true;
   // Free outdoor/park productions with no Playbill /production/ page at all
   // (not tracked by Playbill's commercial-production database) are exempt.
   // Without this, the SERP query in findPlaybillUrl() falls back to a
@@ -207,7 +213,13 @@ function isProvisional(show) {
   // #814).
   if (show.noPlaybillProductionPage === true
       && typeof show.statusBackfillSource === 'string'
-      && show.statusBackfillSource.length > 50) return false;
+      && show.statusBackfillSource.length > 50) return true;
+  return false;
+}
+
+function isProvisional(show) {
+  if (isExemptFromPlaybillCheck(show)) return false;
+  const src = show.discoverySource || '';
   if (show.provisional === true) return true;
   return src.startsWith('manual-user-request') || src.startsWith('venue-page');
 }
@@ -742,10 +754,16 @@ async function main() {
   // than a branch someone has to remember to keep in sync.
   const allShows = loadShows();
   const provisionalShows = allShows.filter(isProvisional);
-  // --all's domain is every show in the corpus rather than just the
+  // --all's domain is every CHECKABLE show in the corpus rather than just the
   // provisional subset — see the allMode/AUDIT_PATH comments above for why
-  // that domain gets its own ledger file instead of sharing this one.
-  const trackedShows = allMode ? allShows : provisionalShows;
+  // that domain gets its own ledger file instead of sharing this one. Still
+  // excludes isExemptFromPlaybillCheck() shows: those exemptions exist
+  // because Playbill validation is KNOWN to false-positive on them (a
+  // same-titled Broadway transfer or wrong-market page reliably wins
+  // scorePlaybillUrl), and --all sweeping every show unfiltered would just
+  // re-litigate that at corpus scale instead of reusing the answer.
+  const allCheckableShows = allShows.filter((s) => !isExemptFromPlaybillCheck(s));
+  const trackedShows = allMode ? allCheckableShows : provisionalShows;
   const previousResultsById = loadPreviousResultById();
   // --data-dir points shows.json at a CANDIDATE branch's copy while the ledger
   // still resolves to the real repo (documented above), so the two describe
@@ -794,7 +812,7 @@ async function main() {
   } else if (allProvisional) {
     targets = orderProvisionalTargets(provisionalShows, previousResultOnlyById);
   } else if (allMode) {
-    targets = orderProvisionalTargets(allShows, previousResultOnlyById);
+    targets = orderProvisionalTargets(allCheckableShows, previousResultOnlyById);
   } else {
     console.error('Pass --show=ID, --all-provisional, --all, or --candidates-file=PATH');
     process.exit(2);
@@ -806,22 +824,38 @@ async function main() {
 
   const log = verbose || targets.length <= 5 ? console.log : () => {};
   // Write-through cache (BRO-2255): a freshly SERP-resolved Playbill URL is
-  // persisted to data/playbill-urls.json as soon as it's confirmed correct
-  // (a 'match' or 'mismatch' verdict means the page loaded and parsed — a
-  // 'fetch-error'/'short-response' URL is NOT persisted, since the fetch
-  // never actually confirmed the page). Without this, a --all sweep re-runs
-  // the exact same SERP query for the exact same show every session until the
-  // whole corpus happens to be swept in one run, which the corpus's size
-  // makes unrealistic. openPlaybillUrls uses the concurrent-safe delta-replay
-  // writer (scripts/lib/playbill-urls-store.js) that every other cache writer
-  // already goes through, and dryRun skips it like every other write below.
+  // persisted to data/playbill-urls.json once it's confirmed correct. Without
+  // this, a --all sweep re-runs the exact same SERP query for the exact same
+  // show every session until the whole corpus happens to be swept in one run,
+  // which the corpus's size makes unrealistic.
+  //
+  // Deliberately restricted to a CLEAN 'match' with a parsed venue — NOT
+  // 'mismatch' (ship-check adversarial review, Codex): a 'mismatch' can mean
+  // scorePlaybillUrl picked the WRONG production's page just as easily as it
+  // can mean shows.json has a real data error (this run found exactly that —
+  // beetlejuice-2022 matched a 2025 remount's page, caroline-or-change-2021
+  // matched the 2004 original's vault page). Caching a wrong-page URL would
+  // make that mistake PERMANENT: every future run reads the cache before ever
+  // querying SERP again (findPlaybillUrl's cache-read branch, above), so
+  // there'd be no path back to the correct page without a manual cache edit.
+  // A clean match, in contrast, has already been independently confirmed
+  // against Playbill's own venue/date/tag fields, which is the same bar
+  // BRO-2023's original 107-show cache was held to. The parsed-venue check
+  // additionally guards against a page that loaded (>5000 bytes) but didn't
+  // actually parse as a production page — an empty parse can't disagree with
+  // shows.json on anything, so it would read as a vacuous 'match'.
+  // openPlaybillUrls (scripts/lib/playbill-urls-store.js) narrows, but does
+  // NOT close, the concurrent-write race between this process and a peer
+  // saving at the same instant — see that module's own docblock for exactly
+  // what remains open. dryRun skips it like every other write below.
   const playbillCache = dryRun ? null : openPlaybillUrls(PLAYBILL_URLS_PATH);
   const results = [];
   for (const show of targets) {
     if (timeBudget.exceeded()) break;
     const r = await validateOne(show, log);
     results.push(r);
-    if (playbillCache && r.urlSource === 'serp' && r.playbillUrl) {
+    if (playbillCache && r.urlSource === 'serp' && r.playbillUrl
+        && r.result === 'match' && r.parsed?.titleParse?.venue) {
       playbillCache.data.shows[show.id] = r.playbillUrl;
       playbillCache.save();
     }
@@ -1047,7 +1081,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  isProvisional, shortTitleSlug, scorePlaybillUrl,
+  isProvisional, isExemptFromPlaybillCheck, shortTitleSlug, scorePlaybillUrl,
   parseTitleVenueYear, parseFactDates, urlYear, daysBetween, compareShow,
   findCorroboratingPriorRun, findPlaybillUrl, validateOne,
 };
