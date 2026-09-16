@@ -64,6 +64,11 @@ const PATTERN_FAMILIES = [
   // PageAnywhere). Phrases never appear in real review prose or footers, so raw
   // corpus hits among scored-tier reviews are 0. Registered for FP-gate coverage.
   'STRONG_ERROR_PAGE_PATTERNS',
+  // Whole-body WSJ archive-interstitial truncation signature (BRO-3572):
+  // ellipsis immediately followed by "Most Popular Videos/Articles" nav rail.
+  // Never occurs in real review prose/footers — verified 0 FPs against the
+  // full corpus (18/43,886 files matched, all confirmed genuine truncation).
+  'STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS',
   // Position-independent chrome-dump markers (gated at runtime on no-review +
   // non-trailing). Raw corpus hits are ~0; the gate trips only if a scraper
   // regression starts emitting these as bulk chrome. See content-quality.js
@@ -119,6 +124,13 @@ const PATTERN_ALLOWLIST = {
   // in a substantial real review (gate blocks it) or in trailing junk. Sized to
   // the observed full-corpus raw count + 30% headroom, same convention as the
   // source families.
+  // BRO-3572: WSJ archive-interstitial truncation. Each match is a real
+  // positive — the review was genuinely cut off at the syndication
+  // interstitial (this pattern exists specifically to catch and exclude
+  // these). No FP risk: verified 0 false positives across the full corpus.
+  // Sized to raw + 25% headroom; see PATTERN_CALIBRATION for why a future
+  // bump needs per-hit verification, not blanket tolerance.
+  'STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS::0': 20, // raw 16
   'STRONG_CHROME_DUMP_PATTERNS::6': 60,  // /^privacy\s+policy/im — raw 43
   'STRONG_CHROME_DUMP_PATTERNS::7': 20,  // /^terms\s+(of\s+)?(use|service)/im — raw 14
   'STRONG_CHROME_DUMP_PATTERNS::8': 130, // /legitimate\s+interest/i — raw 101
@@ -187,6 +199,24 @@ const PATTERN_ALLOWLIST = {
 //                           //   for if the threshold trips again
 //   }
 const PATTERN_CALIBRATION = {
+  'STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS::0': {
+    commit: 'pending',
+    date: '2026-09-16',
+    rawHits: 16,
+    headroom: 1.25,
+    note: 'BRO-3572: all 16 hits are genuine WSJ archive-interstitial '
+        + 'truncations (ellipsis immediately into "Most Popular '
+        + 'Videos/Articles" nav rail) — this pattern exists specifically to '
+        + 'catch and exclude them, so a high hit count here is the intended '
+        + 'signal, not FP drift. Verified against the full ~43,886-file '
+        + 'corpus with zero false positives (the one non-WSJ "Most Popular '
+        + 'Articles" hit, an Exeunt Magazine sidebar with no ellipsis '
+        + 'adjacency, correctly does not match). Next bump: only if WSJ '
+        + 'changes its archive-reprint template and a genuinely new batch '
+        + 'of truncated captures appears — verify each new hit individually '
+        + 'before raising, since unlike other families here, a new hit '
+        + 'means a new bug to fix in the data, not chrome to tolerate.',
+  },
   'NAVIGATION_PATTERNS::1': {
     commit: '5eab60d60c',
     date: '2026-04-28',
