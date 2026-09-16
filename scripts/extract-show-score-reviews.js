@@ -2,12 +2,20 @@
 /**
  * Extract critic reviews and audience data from archived Show Score HTML pages
  *
- * Usage: node scripts/extract-show-score-reviews.js
+ * Usage: node scripts/extract-show-score-reviews.js [--check]
+ *
+ * --check: run the full extraction pass but skip both writeFileSync calls
+ * (data/show-score.json, data/audit/show-score-extraction-gaps.json) — a
+ * read-only re-verification mode (BRO-2208) for use as a card's acceptance
+ * check. Without it, every run overwrites those two files unconditionally,
+ * which is unsafe to re-run unattended just to confirm a fix held.
  */
 
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+
+const CHECK_MODE = process.argv.includes('--check');
 const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
@@ -298,6 +306,13 @@ function main() {
 
   let successCount = 0;
   let failCount = 0;
+  // Distinguishes "the archive isn't here" (data/aggregator-archive is a
+  // private, gitignored repo — routinely absent in a worktree/cloud session,
+  // see the --check fail-open comment below) from "the archive IS here and
+  // extraction is broken" (a real regression --check must catch — ship-check/
+  // Codex finding: the earlier version of --check passed unconditionally
+  // even when every show failed, which is a vacuous check, not a real one).
+  let archiveFoundCount = 0;
   const categoryCounts = { broadway: 0, 'off-broadway': 0, 'west-end': 0, 'off-west-end': 0 };
   // Per-show extraction-gap report. Surfaces shows where the carousel scroll
   // didn't load the full critic-review set (Bug 2/3 in the 2026-04-28 fix).
@@ -317,6 +332,7 @@ function main() {
       failCount++;
       continue;
     }
+    archiveFoundCount++;
 
     try {
       const html = fs.readFileSync(archiveFile, 'utf8');
@@ -379,22 +395,26 @@ function main() {
     }
   }
 
-  // Write main output
-  fs.writeFileSync(outputPath, JSON.stringify(showScoreData, null, 2));
-
-  // Write extraction-gap audit (always — empty file is a useful signal of "all good")
   const gapsPath = path.join(__dirname, '../data/audit/show-score-extraction-gaps.json');
-  fs.mkdirSync(path.dirname(gapsPath), { recursive: true });
-  fs.writeFileSync(gapsPath, JSON.stringify({
-    _meta: {
-      generatedAt: new Date().toISOString(),
-      description: 'Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic.',
-    },
-    totalGaps: extractionGaps.length,
-    errorSeverity: extractionGaps.filter(g => g.severity === 'error').length,
-    warningSeverity: extractionGaps.filter(g => g.severity === 'warning').length,
-    gaps: extractionGaps,
-  }, null, 2));
+  if (CHECK_MODE) {
+    console.log(`\n[--check] read-only — skipped writing ${outputPath} and ${gapsPath}`);
+  } else {
+    // Write main output
+    fs.writeFileSync(outputPath, JSON.stringify(showScoreData, null, 2));
+
+    // Write extraction-gap audit (always — empty file is a useful signal of "all good")
+    fs.mkdirSync(path.dirname(gapsPath), { recursive: true });
+    fs.writeFileSync(gapsPath, JSON.stringify({
+      _meta: {
+        generatedAt: new Date().toISOString(),
+        description: 'Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic.',
+      },
+      totalGaps: extractionGaps.length,
+      errorSeverity: extractionGaps.filter(g => g.severity === 'error').length,
+      warningSeverity: extractionGaps.filter(g => g.severity === 'warning').length,
+      gaps: extractionGaps,
+    }, null, 2));
+  }
 
   console.log(`\n=== Summary ===`);
   console.log(`Successful: ${successCount} (Broadway: ${categoryCounts.broadway}, Off-Broadway: ${categoryCounts['off-broadway']}, West End: ${categoryCounts['west-end']}, Off-West End: ${categoryCounts['off-west-end']})`);
@@ -403,8 +423,21 @@ function main() {
     console.log(`Critic-review extraction gaps: ${extractionGaps.length} shows (${extractionGaps.filter(g => g.severity === 'error').length} error, ${extractionGaps.filter(g => g.severity === 'warning').length} warning)`);
     console.log(`  Top 5 gaps: ${extractionGaps.slice().sort((a,b) => b.gap - a.gap).slice(0,5).map(g => `${g.showId} (${g.extracted}/${g.expected})`).join(', ')}`);
   }
-  console.log(`Output written to: ${outputPath}`);
-  console.log(`Extraction gaps written to: ${gapsPath}`);
+  if (!CHECK_MODE) {
+    console.log(`Output written to: ${outputPath}`);
+    console.log(`Extraction gaps written to: ${gapsPath}`);
+  }
+  // Fail loud when the archive WAS present but extraction still produced
+  // nothing: that combination can only mean the extractor itself is broken,
+  // not an environment limitation (ship-check/Codex finding — an earlier cut
+  // of --check exited 0 unconditionally, which can "certify" a fully broken
+  // extractor). When the archive is entirely absent (private, gitignored
+  // repo — CLAUDE.md §11 — routinely missing in a worktree/cloud session),
+  // there is nothing to verify, so --check passes rather than failing on an
+  // environment gap it didn't cause.
+  if (archiveFoundCount > 0 && successCount === 0) {
+    throw new Error(`archive present for ${archiveFoundCount} show(s) but extraction produced zero successes — extractor is broken, not just missing data`);
+  }
 }
 
 try {

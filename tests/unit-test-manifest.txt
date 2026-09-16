@@ -307,6 +307,7 @@ tests/unit/canonical-duplicate-pointers.test.mjs
 tests/unit/canonical-venue.test.mjs
 tests/unit/card-creation-disposition.test.mjs
 tests/unit/card-premises-auditor.test.mjs
+tests/unit/card-verification-tokenizer.test.mjs
 tests/unit/cascade-clear-duplicate-refs.test.mjs
 tests/unit/cast-changes-filters.test.mjs
 tests/unit/cast-changes-real-data.test.mjs
@@ -359,6 +360,7 @@ tests/unit/content-quality-nyt-bot-stub.test.mjs
 tests/unit/content-quality-nyt-verify-access-stub.test.mjs
 tests/unit/content-quality-paywall-subscriber.test.mjs
 tests/unit/content-quality-wrong-production-autocleared.test.mjs
+tests/unit/content-quality-wsj-archive-truncation.test.mjs
 tests/unit/content-quality-wsj-capsule-review.test.mjs
 tests/unit/content-quality-wsj-paywall-gate.test.mjs
 tests/unit/content-quality.test.mjs
