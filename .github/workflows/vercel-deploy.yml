@@ -46,7 +46,8 @@ jobs:
   #   - Core-data awareness (BRO-3149, 2026-09-16): reviews.json/shows.json
   #     live in the private data repo and never touch this repo's tree — the
   #     Deploy step below stamps a blob SHA of reviews.json onto each Vercel
-  #     deployment (`--meta dataBlobSha=...`), and the gate compares that
+  #     deployment (`--meta reviewsBlobSha=... --meta showsBlobSha=...`), and
+  #     the gate compares that
   #     against the private repo's current blob SHA to catch a core-data-only
   #     change without waiting on the 6h backstop.
   #   - workflow_dispatch / workflow_run stay "ship NOW" lanes, deduped only
@@ -145,17 +146,21 @@ jobs:
           fi
           echo "All data/*.json files valid"
 
-      - name: Compute core data blob SHA
+      - name: Compute core data blob SHAs
         # BRO-3149: stamped onto the Vercel deployment below (`--meta
-        # dataBlobSha=...`) so should-deploy-gate.js can detect core-data-only
-        # changes on future ticks. `git hash-object` computes the exact same
-        # value GitHub's Contents API reports as a file's `sha` (verified live)
-        # — no need to reference the private repo's own clone directory.
+        # reviewsBlobSha=... --meta showsBlobSha=...`) so should-deploy-gate.js
+        # can detect core-data-only changes on future ticks. `git hash-object`
+        # computes the exact same value GitHub's Contents API reports as a
+        # file's `sha` (verified live) — no need to reference the private
+        # repo's own clone directory. Both files (not just reviews.json) so a
+        # shows.json-only change (e.g. a status flip) isn't a blind spot.
         id: data_sha
         run: |
-          SHA=$(git hash-object data/reviews.json)
-          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
-          echo "Core data (reviews.json) blob SHA: $SHA"
+          REVIEWS_SHA=$(git hash-object data/reviews.json)
+          SHOWS_SHA=$(git hash-object data/shows.json)
+          echo "reviews_sha=$REVIEWS_SHA" >> "$GITHUB_OUTPUT"
+          echo "shows_sha=$SHOWS_SHA" >> "$GITHUB_OUTPUT"
+          echo "Core data blob SHAs — reviews.json: $REVIEWS_SHA  shows.json: $SHOWS_SHA"
 
       - name: Verify Vercel build guard is active
         env:
@@ -324,7 +329,8 @@ jobs:
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          DATA_BLOB_SHA: ${{ steps.data_sha.outputs.sha }}
+          REVIEWS_BLOB_SHA: ${{ steps.data_sha.outputs.reviews_sha }}
+          SHOWS_BLOB_SHA: ${{ steps.data_sha.outputs.shows_sha }}
         run: |
           # --archive=split-tgz: Vercel's split-tarball format (Jan 2025 changelog)
           # uploads up to 30% faster than single --archive=tgz for prebuilt
@@ -359,7 +365,7 @@ jobs:
             if [ "$ATTEMPT" -gt 1 ]; then
               ATTEMPT_TIMEOUT=240
             fi
-            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --prod --archive=split-tgz --meta "dataBlobSha=$DATA_BLOB_SHA" --token=$VERCEL_TOKEN) && status=0 || status=$?
+            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --prod --archive=split-tgz --meta "reviewsBlobSha=$REVIEWS_BLOB_SHA" --meta "showsBlobSha=$SHOWS_BLOB_SHA" --token=$VERCEL_TOKEN) && status=0 || status=$?
             if [ "$status" -eq 0 ]; then
               break
             fi

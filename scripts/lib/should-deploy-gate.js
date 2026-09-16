@@ -30,17 +30,30 @@
  * staleness backstop every time — confirmed incident: a scored review landed
  * 2026-09-10, the very next 5-min tick SKIPped (content-gate), prod stayed
  * stale until a manual FORCE-DEPLOY. Fix: the Deploy step stamps the git blob
- * SHA of data/reviews.json (as pulled for THAT build) onto the Vercel
- * deployment via `vercel deploy --meta dataBlobSha=...`. This gate reads that
- * back from the live deployment (check-prod-deploy.js's `dataBlobSha`) and
- * compares it to the CURRENT blob SHA of reviews.json in the private repo
- * (one GitHub Contents API call — `sha` is returned for files of any size,
- * even when `content` is omitted past the 1MB inline-content cutoff; verified
- * live that this equals `git hash-object` on the same bytes). Deliberately
- * NOT a full core-data checkout in this job (which stays ~15s by design) and
- * NOT a separate throttled watermark file — the baseline updates atomically
- * with each real deployment, so (unlike an async/throttled record) it can't
- * re-trigger a redundant deploy on the ticks immediately following a real one.
+ * SHA of data/reviews.json AND data/shows.json (as pulled for THAT build) onto
+ * the Vercel deployment via `vercel deploy --meta reviewsBlobSha=... --meta
+ * showsBlobSha=...` — both files, not just reviews.json, so a shows.json-only
+ * change (e.g. a status flip) isn't a second blind spot. This gate reads that
+ * back from the live deployment (check-prod-deploy.js's `reviewsBlobSha`/
+ * `showsBlobSha`) and compares it to the CURRENT blob SHAs of those files in
+ * the private repo (two GitHub Contents API calls, run in parallel — `sha` is
+ * returned for files of any size, even when `content` is omitted past the
+ * 1MB inline-content cutoff; verified live that this equals `git hash-object`
+ * on the same bytes). Deliberately NOT a full core-data checkout in this job
+ * (which stays ~15s by design) and NOT a separate throttled watermark file —
+ * the baseline updates atomically with each real deployment, so (unlike an
+ * async/throttled record) it can't re-trigger a redundant deploy on the ticks
+ * immediately following a real one.
+ *
+ * Known residual (accepted tradeoff, not fixed here): rebuild-all-reviews.js
+ * unconditionally stamps a fresh `_meta.lastUpdated` on every run, so the
+ * blob hash — and therefore this gate's `dataDiffResult` — changes even when
+ * no review/show CONTENT actually changed. That costs at most one redundant
+ * deploy per rebuild cycle (rebuild-fast's own 4h safety-net cron, at worst),
+ * consistent with this file's existing bias ("a wrongly-run build costs
+ * cents; a wrongly-skipped deploy is silent staleness") — filtering the
+ * volatile field out would require downloading full file content on the gate
+ * side (defeating the no-clone, ~15s design goal for a 17MB+ file).
  *
  * Kill switch: repo variable DEPLOY_GATE_DISABLED=true (passed as GATE_DISABLED)
  * forces proceed on every trigger — the 2am phone-operable escape hatch.
@@ -51,8 +64,10 @@
  *   GATE_EVENT_NAME      github.event_name (schedule | workflow_dispatch | workflow_run)
  *   GATE_DISABLED        'true' → kill switch
  *   GATE_HEAD_SHA        override HEAD (default: git rev-parse HEAD)
- *   GATE_BASELINE_JSON   test seam: JSON {deployedSha, ageSec, dataBlobSha} — skips the API call
- *   GATE_DATA_SHA_JSON   test seam: JSON {sha} — skips the GitHub Contents API call
+ *   GATE_BASELINE_JSON   test seam: JSON {deployedSha, ageSec, reviewsBlobSha,
+ *                         showsBlobSha} — skips the API call
+ *   GATE_DATA_SHA_JSON   test seam: JSON {reviewsSha, showsSha} — skips the
+ *                         GitHub Contents API calls
  *   GITHUB_OUTPUT        when set, proceed=/reason= are appended there
  *
  * The deploy job's fast-vs-full prebuild step ("Check if data changed",
@@ -129,6 +144,22 @@ function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, d
   if (!baselineSha) return { proceed: true, reason: 'no-baseline-fail-open' };
   if (baselineSha === headSha) {
     if (dataDiffResult === 'dirty') return { proceed: true, reason: 'data-changed' };
+    // dataDiffResult is 'clean'/'error'/null here. A positively-clean data
+    // signal is a genuine no-op — skip immediately (matches pre-BRO-3149
+    // behavior for this branch, which had no second signal at all). An
+    // UNKNOWN data signal (error/null — e.g. a transient API failure or a
+    // missing token) must NOT silently swallow the staleness backstop: an
+    // idle public repo (baselineSha === headSha can persist for a while in a
+    // quiet window) combined with a persistently-broken data lookup would
+    // otherwise strand core-data staleness indefinitely, since this branch
+    // used to return before the age check ever ran (Codex adversarial
+    // review, BRO-3149). Still requires deployAgeSec to be known and past
+    // the backstop — an unknown age alone doesn't force a proceed here,
+    // consistent with the "positive proof only" skip philosophy in the
+    // header comment.
+    if (dataDiffResult !== 'clean' && deployAgeSec != null && deployAgeSec > STALENESS_BACKSTOP_SEC) {
+      return { proceed: true, reason: 'staleness-backstop' };
+    }
     return { proceed: false, reason: 'no-new-commits' };
   }
   if (deployAgeSec == null) return { proceed: true, reason: 'no-age-fail-open' };
@@ -148,10 +179,11 @@ function getBaseline() {
       return {
         sha: j.deployedSha || null,
         ageSec: j.ageSec != null ? j.ageSec : null,
-        dataBlobSha: j.dataBlobSha || null,
+        reviewsBlobSha: j.reviewsBlobSha || null,
+        showsBlobSha: j.showsBlobSha || null,
       };
     } catch {
-      return { sha: null, ageSec: null, dataBlobSha: null };
+      return { sha: null, ageSec: null, reviewsBlobSha: null, showsBlobSha: null };
     }
   }
   try {
@@ -164,47 +196,59 @@ function getBaseline() {
     return {
       sha: j.deployedSha || null,
       ageSec: j.ageSec != null ? j.ageSec : null,
-      dataBlobSha: j.dataBlobSha || null,
+      reviewsBlobSha: j.reviewsBlobSha || null,
+      showsBlobSha: j.showsBlobSha || null,
     };
   } catch (e) {
     console.log(`::warning::[content-gate] baseline lookup failed (${e.message.split('\n')[0]}) — failing open`);
-    return { sha: null, ageSec: null, dataBlobSha: null };
+    return { sha: null, ageSec: null, reviewsBlobSha: null, showsBlobSha: null };
   }
 }
 
-// The private core-data repo's blob SHA for reviews.json, straight from
-// GitHub's Contents API — no clone needed. GitHub returns `sha` (the git
-// blob object hash) for a file of any size even though `content` is omitted
-// above the 1MB inline-content cutoff (reviews.json is ~17MB); verified live
-// that this exactly equals `git hash-object` on the same bytes, which is what
-// the Deploy step stamps onto the Vercel deployment (see header comment).
+// The private core-data repo's blob SHAs for reviews.json + shows.json,
+// straight from GitHub's Contents API — no clone needed. GitHub returns
+// `sha` (the git blob object hash) for a file of any size even though
+// `content` is omitted above the 1MB inline-content cutoff (reviews.json is
+// ~17MB); verified live that this exactly equals `git hash-object` on the
+// same bytes, which is what the Deploy step stamps onto the Vercel
+// deployment (see header comment). Both files are tracked — not reviews.json
+// alone — so a shows.json-only change (e.g. a status flip) isn't a second
+// blind spot (Codex adversarial review, BRO-3149).
 const DATA_REPO = 'thomaspryor/broadway-scorecard-data';
-const DATA_FILE_PATH = 'reviews.json';
+const DATA_TRACKED_FILES = ['reviews.json', 'shows.json'];
 
-async function getDataBlobSha() {
+async function fetchBlobSha(filePath, token) {
+  const res = await fetch(
+    `https://api.github.com/repos/${DATA_REPO}/contents/${filePath}?ref=main`,
+    {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+      signal: AbortSignal.timeout(15000),
+    }
+  );
+  if (!res.ok) throw new Error(`GitHub API ${res.status} for ${filePath}`);
+  const j = await res.json();
+  return j.sha || null;
+}
+
+async function getDataBlobShas() {
   if (process.env.GATE_DATA_SHA_JSON) {
     try {
-      return JSON.parse(process.env.GATE_DATA_SHA_JSON).sha || null;
+      const j = JSON.parse(process.env.GATE_DATA_SHA_JSON);
+      return { reviewsSha: j.reviewsSha || null, showsSha: j.showsSha || null };
     } catch {
-      return null;
+      return { reviewsSha: null, showsSha: null };
     }
   }
   const token = process.env.REVIEW_TEXTS_TOKEN;
-  if (!token) return null;
+  if (!token) return { reviewsSha: null, showsSha: null };
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/${DATA_REPO}/contents/${DATA_FILE_PATH}?ref=main`,
-      {
-        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
-        signal: AbortSignal.timeout(15000),
-      }
+    const [reviewsSha, showsSha] = await Promise.all(
+      DATA_TRACKED_FILES.map((f) => fetchBlobSha(f, token))
     );
-    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-    const j = await res.json();
-    return j.sha || null;
+    return { reviewsSha, showsSha };
   } catch (e) {
     console.log(`::warning::[content-gate] data blob sha lookup failed (${e.message}) — failing open`);
-    return null;
+    return { reviewsSha: null, showsSha: null };
   }
 }
 
@@ -246,7 +290,9 @@ async function main() {
   const gateDisabled = process.env.GATE_DISABLED === 'true';
   const headSha = process.env.GATE_HEAD_SHA || git(['rev-parse', 'HEAD']).trim();
 
-  const baseline = gateDisabled ? { sha: null, ageSec: null, dataBlobSha: null } : getBaseline();
+  const baseline = gateDisabled
+    ? { sha: null, ageSec: null, reviewsBlobSha: null, showsBlobSha: null }
+    : getBaseline();
 
   // Only run the (fetch + diff) when the decision can actually depend on it.
   let diff = { result: null, files: [] };
@@ -259,16 +305,20 @@ async function main() {
     diff = runDiff(baseline.sha, headSha);
   }
 
-  // Core-data blob-SHA lookup is a single cheap API call (no clone), so unlike
+  // Core-data blob-SHA lookup is two cheap API calls (no clone), so unlike
   // the site diff above it's not worth narrowing to the schedule-only window —
   // the non-schedule 'already-live' dedup branch needs it too (see decide()).
+  // 'dirty' if EITHER tracked file's blob SHA differs from the live baseline.
   let dataDiffResult = null;
   if (!gateDisabled) {
-    const currentDataSha = await getDataBlobSha();
-    if (currentDataSha && baseline.dataBlobSha) {
-      dataDiffResult = currentDataSha === baseline.dataBlobSha ? 'clean' : 'dirty';
-    } else if (currentDataSha || baseline.dataBlobSha) {
-      dataDiffResult = 'error'; // one side known, other not — ambiguous, don't force either way
+    const { reviewsSha, showsSha } = await getDataBlobShas();
+    const knownNow = [reviewsSha, showsSha].filter(Boolean).length;
+    const knownBaseline = [baseline.reviewsBlobSha, baseline.showsBlobSha].filter(Boolean).length;
+    if (knownNow === DATA_TRACKED_FILES.length && knownBaseline === DATA_TRACKED_FILES.length) {
+      dataDiffResult =
+        reviewsSha !== baseline.reviewsBlobSha || showsSha !== baseline.showsBlobSha ? 'dirty' : 'clean';
+    } else if (knownNow > 0 || knownBaseline > 0) {
+      dataDiffResult = 'error'; // partial/ambiguous lookup — don't force either way
     }
   }
 

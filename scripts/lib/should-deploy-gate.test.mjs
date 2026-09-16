@@ -122,6 +122,27 @@ test('workflow_dispatch: HEAD already live but core data advanced — proceeds (
   assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
 });
 
+// Codex adversarial review (BRO-3149): the `baselineSha === headSha` branch
+// used to return before the staleness-backstop age check ever ran. A
+// persistently-broken data lookup (missing token, API outage) combined with
+// a genuinely idle public repo could therefore strand core-data staleness
+// indefinitely — the ONE case in this file where an unknown signal used to
+// bypass the 6h backstop entirely rather than falling back to it.
+test('schedule: baseline == HEAD, data status unknown, deploy is stale — backstop still fires', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
+  assert.deepEqual(r, { proceed: true, reason: 'staleness-backstop' });
+});
+
+test('schedule: baseline == HEAD, data status unknown, deploy is fresh — still skips (no false proceed)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: 600 });
+  assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
+});
+
+test('schedule: baseline == HEAD, data positively clean, deploy is stale — skips WITHOUT checking age (genuine no-op)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
+  assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
+});
+
 test('kill switch forces proceed on every event, even baseline==HEAD', () => {
   for (const eventName of ['schedule', 'workflow_dispatch', 'workflow_run']) {
     const r = decide({ ...base, eventName, gateDisabled: true, headSha: A });
