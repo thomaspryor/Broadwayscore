@@ -702,3 +702,48 @@ runs:
 
         echo "WARNING: Failed to push core data after 5 attempts"
         exit 1
+
+    # BRO-1084: outlet-registry.json moved from private-core-data (this
+    # action's CORE_FILES above) to public-repo-tracked. It's no longer in
+    # CORE_FILES, so the "Sync core data files" step above never looks at
+    # it — but ~20 workflows call rebuild-all-reviews.js's unconditional
+    # "AUTO-REGISTER NEW OUTLETS" block (scripts/rebuild-all-reviews.js
+    # ~line 6009), which writes data/outlet-registry.json on disk in the
+    # CALLING workflow's own root checkout (GITHUB_WORKSPACE, the public
+    # repo) whenever a genuinely new outlet is found in that run's reviews.
+    # None of those 21 workflows' own commit steps stage this file (they
+    # only stage narrow lists like data/audit/*.json) — they relied
+    # entirely on this action's old CORE_FILES entry to persist it via the
+    # private repo. Without this step, a CI-auto-registered outlet is
+    # written to the ephemeral runner's disk and silently discarded when
+    # the job ends: never committed anywhere. This step commits it
+    # directly to the public repo (where the calling job is already
+    # checked out) instead — the same repo/branch every other public-repo
+    # commit in these workflows lands on.
+    - name: Sync outlet-registry.json to public repo (BRO-1084)
+      if: steps.refusal-check.outputs.skip != 'true'
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      run: |
+        if [ ! -f "data/outlet-registry.json" ]; then
+          exit 0
+        fi
+        if git diff --quiet -- data/outlet-registry.json && git diff --staged --quiet -- data/outlet-registry.json; then
+          exit 0
+        fi
+        if ! node -e "JSON.parse(require('fs').readFileSync('data/outlet-registry.json','utf8'))" 2>/dev/null; then
+          echo "::error::data/outlet-registry.json is not valid JSON — refusing to commit"
+          exit 1
+        fi
+        # Same identity-config need as any inline root-checkout commit (see
+        # .github/workflows/CLAUDE.md "Git Identity for Inline Commits") —
+        # this action's other steps only configure git identity inside the
+        # private clone at /tmp/core-data-checkout, never here.
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add data/outlet-registry.json
+        if git diff --staged --quiet -- data/outlet-registry.json; then
+          exit 0
+        fi
+        git commit -m "data: auto-register outlet(s) from rebuild"
+        bash scripts/lib/push-with-retry.sh 5 main

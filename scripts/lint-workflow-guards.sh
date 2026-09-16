@@ -65,7 +65,12 @@ check_core_data_pairing() {
   #
   # validate-data.js    — unconditional shows.json auto-fixes (:585,:636,:776,:830)
   # pre-deploy-check.js — shows.json self-heal before build (:215)
-  # rebuild-all-reviews.js — reviews.json (:4405) + outlet-registry.json (:4999)
+  # rebuild-all-reviews.js — reviews.json (:4405). Also writes data/outlet-
+  # registry.json (its own "AUTO-REGISTER NEW OUTLETS" block), but that file
+  # is public-repo-tracked as of BRO-1084 — push-core-data itself now stages
+  # + commits it directly to this checkout (see that action's own trailing
+  # step), so it's no longer a reason a caller of this script needs
+  # push-core-data; reviews.json alone still is.
   local CORE_WRITER_SCRIPTS="validate-data.js pre-deploy-check.js rebuild-all-reviews.js"
   # Exemptions — audited 2026-07-12, every entry verified benign:
   #   test.yml                        CI validation; writes never meant to persist
@@ -143,8 +148,11 @@ check_private_git_add() {
   # update-lottery-rush.yml; 5 other workflows silently broken for weeks).
   # The authoritative list is in push-core-data/action.yml — keep in sync.
   # Force-adds (`git add -f`) are allowed (explicit overrides,
-  # e.g. opening-night-sent.json).
-  local CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json followers.json subscribers.json subscribers-westend.json"
+  # e.g. opening-night-sent.json). outlet-registry.json is deliberately NOT
+  # in this list as of BRO-1084 — it moved to public-repo-tracked, so a
+  # plain `git add data/outlet-registry.json` in a workflow is now the
+  # CORRECT way to commit a registry change, not a silent no-op.
+  local CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json followers.json subscribers.json subscribers-westend.json"
   local VIOLATIONS="" f core
   for f in .github/workflows/*.yml; do
     for core in $CORE_FILES; do
