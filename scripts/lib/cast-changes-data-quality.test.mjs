@@ -73,6 +73,33 @@ test('live data: no arrival/departure event has a placeholder name (replacement/
   assert.deepEqual(offenders, [], `placeholder names found:\n${offenders.join('\n')}`);
 });
 
+test('validateEvent flags ANY dateless arrival/departure incomplete:true, not just AUTO-FLAGGED diffs', () => {
+  // Regression for a gap an adversarial review caught: the AUTO-FLAGGED
+  // cast-page-diff creation sites stamp incomplete:true literally, but a
+  // dateless event reaching validateEvent via a DIFFERENT path (e.g. the LLM
+  // article extractor told to omit the date field for a vague mention) must
+  // still get flagged — otherwise the next scrape silently reintroduces the
+  // un-flagged rows the BRO-1297 backfill just cleaned up.
+  const articleEvent = { type: 'arrival', name: 'Jinkx Monsoon', role: 'Mary', note: 'Current Mary' };
+  assert.equal(validateEvent(articleEvent), true);
+  assert.equal(articleEvent.incomplete, true);
+
+  const departureEvent = { type: 'departure', name: 'Cole Escola', role: 'Mary', note: 'Left after Tony win' };
+  assert.equal(validateEvent(departureEvent), true);
+  assert.equal(departureEvent.incomplete, true);
+
+  // A dated event must NOT be flagged.
+  const datedEvent = { type: 'arrival', name: 'Jeremy Jordan', role: 'Bobby Darin', date: '2026-09-01' };
+  assert.equal(validateEvent(datedEvent), true);
+  assert.equal(datedEvent.incomplete, undefined);
+
+  // note-type and closure events are exempt (never required to name a
+  // dated individual).
+  const noteEvent = { type: 'note', name: '', role: 'Claire', note: 'Further casting TBA' };
+  assert.equal(validateEvent(noteEvent), true);
+  assert.equal(noteEvent.incomplete, undefined);
+});
+
 // ---------------------------------------------------------------------------
 // AC3: no dateless arrival/departure without an explicit incomplete flag
 // ---------------------------------------------------------------------------

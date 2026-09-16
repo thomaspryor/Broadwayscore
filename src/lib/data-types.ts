@@ -624,6 +624,12 @@ export interface CastEvent {
   sourceUrl?: string;
   sourceType?: string;
   addedDate?: string;
+  /** No usable date/endDate was extracted (an [AUTO-FLAGGED] cast-page diff
+   * has none by design; an article extraction may simply have failed to find
+   * one) — consumers should skip it as not-currently-newsworthy rather than
+   * treat the missing date as a data bug. Not a claim that the date can
+   * never be recovered. See BRO-1297. */
+  incomplete?: boolean;
 }
 
 export interface CastHistoryEntry {
