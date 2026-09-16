@@ -47,7 +47,7 @@ test('badgeImg renders an <img> pinned to the exact nominal size', () => {
 
 test('badgeImg stays inline-block so parent text-align:center still centers it', () => {
   // Regression: an earlier draft used display:block, which ignores the
-  // parent <td>'s text-align:center (generate.mjs's scoreCol) and
+  // parent <td> text-align:center (the newsletter generator's scoreCol) and
   // left-aligns the badge instead of centering it (ship-check/Codex catch).
   const html = badgeImg({ tier: goldTier, score: 94, size: 64, fontSize: 30, radius: 12 });
   assert.match(html, /display:inline-block/);
