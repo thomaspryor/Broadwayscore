@@ -38,6 +38,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 // BRO-2423 (port of BRO-545/BRO-2424's guard-escalation pattern): a crashed
 // scan is right to fail this DAILY cron loud on its first occurrence, but the
 // same crash recurring run after run (e.g. a checkout that stays broken)
@@ -50,6 +51,12 @@ const {
   buildOverrideCommand,
   buildGuardBlockedAlert,
 } = require('./lib/guard-escalation');
+
+const USAGE = `Usage: node scripts/check-scoring-queue-guard.js <args...>
+
+Guard-escalation wrapper around scripts/count-scoring-queue.js (see this
+file's header). Forwards <args...> verbatim to count-scoring-queue.js; run
+'node scripts/count-scoring-queue.js --help' for its own flags.`;
 
 // Same state file check-rebuild-staleness.js / check-vercel-build-guard.js /
 // check-corpus-drift.js use — keyed per-guard so multiple guards share one
@@ -87,6 +94,7 @@ function saveGuardState(state) {
 
 async function main() {
   const passthroughArgs = process.argv.slice(2);
+  if (hasHelpFlag(passthroughArgs)) { console.log(USAGE); return; }
   const scriptPath = path.join(__dirname, 'count-scoring-queue.js');
   const result = spawnSync(process.execPath, [scriptPath, ...passthroughArgs], {
     encoding: 'utf8',
