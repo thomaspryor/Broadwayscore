@@ -1716,7 +1716,36 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     return { path: filePath, filename: file, data };
   }
 
-  // Pass 3: shared-domain outlet dedup via URL resolution.
+  // Pass 3 (BRO-1031): match by internal outletId + criticName fields only,
+  // ignoring the filename's critic slug entirely. Catches year-suffix
+  // disambiguated filenames (e.g. amny--matt-windman-2026.json with internal
+  // criticName: "Matt Windman"): Pass 1 skips it because
+  // criticIsCompatibleMergeTarget rejects the filename slug
+  // "matt-windman-2026" against "Matt Windman", and Pass 2 also skips it —
+  // its "already checked above" guard assumes Pass 1 fully evaluated any
+  // file whose filename-outlet matches, but Pass 1 only reads a file once
+  // its filename-critic passes that same check, so a critic-drifted
+  // filename slips through both passes untouched. The next write then
+  // creates a duplicate file for the same outlet+critic. Originally a local
+  // findByInternalFields fallback duplicated in enrich-dtli-thumbs.js and
+  // enrich-bww-thumbs.js; promoted here so gather-reviews.js and
+  // ingest-manual-review.js get the same protection.
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    } catch {
+      continue;
+    }
+    if (!data || !data.outletId) continue;
+    if (normalizeOutlet(data.outletId) !== normalizedOutlet) continue;
+    if (!criticIsCompatibleMergeTarget(criticName, data.criticName)) continue;
+    if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, data.criticName)) continue;
+    return { path: filePath, filename: file, data };
+  }
+
+  // Pass 4: shared-domain outlet dedup via URL resolution.
   // Catches the case where different scrapers use different outlet aliases for the
   // same publication (e.g., "timeout" vs "timeout-london" both on timeout.com).
   // Pass 1 and 2 miss this because the outlet IDs normalize to different canonical values.
