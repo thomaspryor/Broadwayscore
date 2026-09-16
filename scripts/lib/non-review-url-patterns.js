@@ -232,11 +232,6 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // enumerated VENUE/PR_FIRM/UGC — see the test, which now covers all seven
   // sets so an AGGREGATOR/REFERENCE/SOCIAL entry can never slip through again.
   { host: /(^|\.)vocaleyes\.co\.uk$/, reason: 'access-listings-page' },
-  // Mirrors REFERENCE_DOMAINS' rexfeatures.com (BRO-3515, domain-filters.js)
-  // for the same write-path/discovery-path parity reason — without this, a
-  // future SERP census reports it as an UNCOVERED review gap for the show it
-  // was mistakenly ingested for (a stock-photo agency caption, not a review).
-  { host: /(^|\.)rexfeatures\.com$/, reason: 'stock-photo-agency' },
   // Same venue family as southbank.london, different domain — see the
   // matching comment in domain-filters.js's VENUE_DOMAINS.
   { host: /(^|\.)southbankcentre\.co\.uk$/, reason: 'venue-production-page' },
