@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-16T01:06:42.540Z",
+  "generatedAt": "2026-09-16T07:02:06.725Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 129,
+  "checked": 130,
   "clean": 120,
-  "defective": 9,
+  "defective": 10,
   "byType": {
-    "score-drift": 9
+    "score-drift": 10
   },
   "shows": [
     {
@@ -18,7 +18,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 76.99 vs local 77.06 (Δ0.07)"
+          "detail": "deployed cs 76.91 vs local 77.11 (Δ0.2)"
         }
       ],
       "missingFromProd": [],
@@ -33,7 +33,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 80.75 vs local 80.81 (Δ0.06)"
+          "detail": "deployed cs 80.86 vs local 80.69 (Δ0.17)"
         }
       ],
       "missingFromProd": [],
@@ -48,7 +48,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.06 vs local 78.87 (Δ0.19)"
+          "detail": "deployed cs 78.87 vs local 78.51 (Δ0.36)"
         }
       ],
       "missingFromProd": [],
@@ -56,19 +56,19 @@
       "deployedCount": 28
     },
     {
-      "showId": "how-the-other-half-loves-west-end-2026",
-      "title": "How the Other Half Loves",
-      "openingDate": "2026-08-12",
+      "showId": "death-note-the-musical-west-end-2026",
+      "title": "Death Note: The Musical",
+      "openingDate": "2026-08-11",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.16 vs local 77.22 (Δ0.06)"
+          "detail": "deployed cs 72.9 vs local 72.74 (Δ0.16)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25
+      "localCount": 35,
+      "deployedCount": 35
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -78,7 +78,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.38 vs local 78.6 (Δ0.22)"
+          "detail": "deployed cs 78.59 vs local 78.5 (Δ0.09)"
         }
       ],
       "missingFromProd": [],
@@ -93,27 +93,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 75.69 vs local 75.76 (Δ0.07)"
+          "detail": "deployed cs 75.68 vs local 75.8 (Δ0.12)"
         }
       ],
       "missingFromProd": [],
       "localCount": 28,
       "deployedCount": 28
-    },
-    {
-      "showId": "just-in-time-2025",
-      "title": "Just in Time",
-      "openingDate": "2025-04-26",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.95 vs local 79.79 (Δ0.16)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 31,
-      "deployedCount": 32
     },
     {
       "showId": "oliver-west-end-2024",
@@ -123,12 +108,27 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 84.73 vs local 84.66 (Δ0.07)"
+          "detail": "deployed cs 84.88 vs local 84.66 (Δ0.22)"
         }
       ],
       "missingFromProd": [],
       "localCount": 15,
       "deployedCount": 15
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-02-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.99 vs local 73.87 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
@@ -138,12 +138,27 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 87.96 vs local 88.02 (Δ0.06)"
+          "detail": "deployed cs 88.02 vs local 88.08 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
       "localCount": 23,
       "deployedCount": 23
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "title": "SIX the Musical",
+      "openingDate": "2019-01-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.96 vs local 82.07 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16
     }
   ]
 }
