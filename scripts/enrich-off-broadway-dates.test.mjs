@@ -130,3 +130,42 @@ test('mergeSources — single-source entry is not auto-trusted', () => {
   assert.equal(merged.length, 1);
   assert.equal(merged[0].confidence, 'single-source');
 });
+
+test('mergeSources — opening agrees but only one source has a preview date is NOT high confidence', () => {
+  // Both sources agree on opening, but Lortel doesn't report a preview date.
+  // fpAgreement is null (can't compare), which must NOT be treated as "agrees" —
+  // only a real two-field agreement earns 'high'.
+  const playbill = [{ title: 'Kenrex', firstPreview: '2026-04-16', opening: '2026-04-26', source: 'playbill' }];
+  const lortel = [{ title: 'Kenrex', firstPreview: null, opening: '2026-04-26', source: 'lortel' }];
+  const merged = mergeSources(playbill, lortel);
+  assert.equal(merged.length, 1);
+  assert.equal(merged[0].confidence, 'single-source');
+});
+
+test('extractDatesFromProductionPage — KNOWN LIMITATION: a label with no date block steals the next label\'s date', () => {
+  // scripts/enrich-off-broadway-dates.js's extractDatesFromProductionPage regex
+  // pairs each bsp-list-promo-title label with the NEXT info-circular block it
+  // finds within a bounded scan — it doesn't verify that block actually belongs
+  // to that label. If "First Preview" renders with no date (has never been
+  // observed on a real Playbill page across 53 logged production-page
+  // extractions, but isn't structurally impossible), it silently claims
+  // "Opening Date"'s block instead, and "Opening Date" gets nothing.
+  //
+  // Pinning this as documented CURRENT behavior (not desired behavior) so a
+  // future regex change is a deliberate decision, not a silent regression in
+  // either direction. Flagged by Codex adversarial review during BRO-1108
+  // ship-check; not fixed here because it requires a malformed-page condition
+  // never seen in production and touches a script with live daily writes to
+  // shows.json — out of scope for a test-coverage-only change.
+  const html = `<!DOCTYPE html><html><head><title>Kenrex (Off-Broadway, Venue, 2026) | Playbill</title></head><body>
+    <div class="bsp-list-promo-title">First Preview</div>
+    <div class="bsp-list-promo-title">Opening Date</div>
+    <div class="info-circular">
+      <span class="info-circular-pre-text">Apr</span>
+      <span class="info-circular-text">26</span>
+      <span class="info-circular-post-text">2026</span>
+    </div>
+  </body></html>`;
+  const dates = extractDatesFromProductionPage(html);
+  assert.deepEqual(dates, { firstPreview: '2026-04-26', opening: null });
+});
