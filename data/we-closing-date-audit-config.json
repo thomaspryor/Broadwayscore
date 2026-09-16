@@ -1,0 +1,28 @@
+{
+  "_comment": "Config for scripts/audit-we-closing-dates.js. Edited by hand; not auto-generated. West End analogue of data/closing-date-audit-config.json.",
+  "_lastUpdated": "2026-09-15",
+  "urlOverrides": {
+    "_comment": "show.id -> booking URL override, when SERP discovery (data/westend-slug-map.json) picks the wrong page or a show has no westendtheatre.com presence but a good officialUrl/other booking page exists."
+  },
+  "openRunSkip": {
+    "_comment": "Open-run West End long-runners (opened pre-2018, no stored closingDate) with no announced closing horizon — the exact class of show most likely to produce a spurious anchored-date match on ordinary prose (no real 'booking until' statement exists to find). Mirrors data/closing-date-audit-config.json's openRunSkip. Remove an entry once the show announces a close — the audit will then surface a NEW_CLOSING candidate.",
+    "ids": [
+      "the-mousetrap-west-end-2021",
+      "les-miserables-west-end-2021",
+      "the-phantom-of-the-opera-west-end-1986",
+      "mamma-mia-west-end-2021",
+      "the-lion-king-west-end-2021",
+      "wicked-west-end-2021",
+      "matilda-the-musical-west-end-2021",
+      "the-book-of-mormon-west-end-2024",
+      "the-play-that-goes-wrong-west-end-2021",
+      "showstopper-the-improvised-musical-west-end-2023",
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "hamilton-west-end-2021"
+    ]
+  },
+  "ambiguousAllowlist": {
+    "_comment": "Shows where stored closingDate is human-verified correct but the booking page's window cuts off earlier. Same self-cleaning allowlist pattern as data/closing-date-audit-config.json.",
+    "entries": {}
+  }
+}

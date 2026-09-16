@@ -38,6 +38,12 @@ on:
       # covered by scripts/lib/**, but a solo edit to the wrapper would
       # otherwise trigger ZERO CI — the exact gap task #1745 documents.
       - 'scripts/check-missed-broadcasts.js'
+      # scripts/audit-we-closing-dates.js (BRO-1158) is the I/O orchestrator for
+      # scripts/lib/{we-closing-date-extract,we-closing-date-classify,westend-slug-discovery}.js
+      # (all covered by the scripts/lib/** glob above). A solo edit to the
+      # orchestrator itself — e.g. the classify-action switch statement — would
+      # otherwise trigger ZERO CI, the same gap task #1745 documents.
+      - 'scripts/audit-we-closing-dates.js'
       # scripts/audit-imageless-scored-shows.js is the I/O caller for
       # scripts/lib/image-trigger-guard.js (globbed above). BRO-2672's fan-out
       # bug lived in a per-show dispatch LOOP in this caller, not in the lib —

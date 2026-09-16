@@ -1,0 +1,194 @@
+name: Audit WE Closing Dates
+
+# West End analogue of audit-closing-dates.yml (BRO-1158). West End has no
+# broadway.com-equivalent central schedule endpoint, so this audit resolves
+# each show's booking page via westendtheatre.com SERP discovery (cached in
+# data/westend-slug-map.json) or officialUrl, then extracts a single
+# keyword-anchored "Booking until DD Month YYYY" date. See
+# scripts/audit-we-closing-dates.js and memory/feedback_closing_date_audit_gaps.md.
+#
+# SHADOW MODE (remove once live-validated): the extraction regex has not yet
+# been checked against real westendtheatre.com HTML in this sandbox (no
+# scraping credentials available there). The scheduled cron runs --dry-run
+# until a workflow_dispatch run against real shows confirms extraction
+# accuracy — see the report step's live output before flipping this to a
+# live write.
+
+on:
+  schedule:
+    - cron: '15 14 * * *'  # Daily 14:15 UTC — 15 min after audit-closing-dates (Broadway)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no changes)'
+        required: false
+        default: 'false'
+      time_budget_min:
+        description: 'Wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        default: '14'
+      shows:
+        description: 'Comma-separated show IDs to audit (blank = all open WE shows)'
+        required: false
+        default: ''
+
+# Shares the shows-json-writer concurrency group with audit-closing-dates.yml
+# and update-show-status.yml — same reasoning: overlapping runs race on
+# shows.json and push-core-data's rebase can silently drop a closingDate write.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Snapshot pre-audit closingDates (rollback baseline)
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const shows = JSON.parse(fs.readFileSync('data/shows.json','utf8')).shows;
+            const snap = Object.fromEntries(shows.map(s => [s.id, s.closingDate || null]));
+            fs.mkdirSync('data/audit', { recursive: true });
+            fs.writeFileSync('data/audit/we-closing-date-pre-audit.json', JSON.stringify({ takenAt: new Date().toISOString(), closingDates: snap }, null, 2));
+            console.log('Snapshot: ' + Object.keys(snap).length + ' shows');
+          "
+
+      - name: Run WE closing-date audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          TB="${{ github.event.inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=14
+          TB_FLAG="--time-budget-min=$TB"
+
+          SHOWS_FLAG=""
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            SHOWS_FLAG="--shows=${{ github.event.inputs.shows }}"
+          fi
+
+          # Shadow mode: scheduled (cron) runs are forced dry-run regardless of
+          # the dry_run input default, until a manual live run has confirmed
+          # extraction accuracy against real westendtheatre.com pages. See the
+          # header comment above for how to flip this.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            node scripts/audit-we-closing-dates.js --dry-run $TB_FLAG $SHOWS_FLAG
+          elif [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            node scripts/audit-we-closing-dates.js --dry-run $TB_FLAG $SHOWS_FLAG
+          else
+            node scripts/audit-we-closing-dates.js $TB_FLAG $SHOWS_FLAG
+          fi
+
+      - name: Validate shows.json before push (rollback on failure)
+        id: validate
+        run: |
+          if ! node scripts/validate-data.js 2>&1 | tail -30; then
+            echo "::error::validate-data.js failed after audit — reverting shows.json"
+            if [ -f /tmp/core-data-checkout/shows.json ]; then
+              cp -f /tmp/core-data-checkout/shows.json data/shows.json
+              echo "Restored data/shows.json from /tmp/core-data-checkout/"
+            fi
+            exit 1
+          fi
+
+      - name: Push core data to private repo
+        if: success()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from audit-we-closing-dates'
+
+      - name: Dispatch deploy
+        if: success()
+        uses: ./.github/actions/dispatch-deploy
+
+      # data/westend-slug-map.json is committed to the public repo (like
+      # data/dtli-slug-map.json), not the private core-data repo, so it needs
+      # its own commit here rather than riding push-core-data above.
+      - name: Commit westend-slug-map
+        if: always()
+        continue-on-error: true
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/westend-slug-map.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No slug-map changes to commit"
+          else
+            git commit -m "chore: Update westend-slug-map (audit-we-closing-dates)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Create summary
+        if: always()
+        run: |
+          if [ -f data/audit/we-closing-date-discrepancies.json ]; then
+            echo "## WE Closing Date Audit" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              const r = require('./data/audit/we-closing-date-discrepancies.json');
+              const s = r.summary;
+              const lines = [
+                '**Mode:** ' + r.mode,
+                '**Audited:** ' + s.audited,
+                '**Extensions auto-applied:** ' + s.extensions,
+                '**Matches:** ' + s.matches,
+                '**Ambiguous (need review):** ' + s.ambiguous,
+                '**New-closing candidates:** ' + s.newClosings,
+                '**Errors:** ' + s.errors,
+              ];
+              if (s.budgetExit) lines.push('**⏱ Time budget hit — deferred:** ' + s.deferred);
+              console.log(lines.join('\\n'));
+              if (r.extensions.length) {
+                console.log('\\n### Extensions applied');
+                r.extensions.forEach(e => console.log('- ' + e.id + ': ' + e.stored + ' → ' + e.extracted + ' [' + e.urlSource + ']'));
+              }
+              if (r.ambiguous.length) {
+                console.log('\\n### Needs human review');
+                r.ambiguous.forEach(a => {
+                  if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+                    console.log('- ' + a.id + ': stored ' + (a.stored || 'null') + ' but ' + a.missingKind + ' — possibly closed');
+                  } else {
+                    console.log('- ' + a.id + ': stored ' + a.stored + ', ' + a.urlSource + ' extracted ' + a.extracted + ' (' + a.delta + 'd)');
+                  }
+                });
+              }
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit WE Closing Dates Failed'
+          severity: 'warning'
