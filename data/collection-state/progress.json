@@ -31,7 +31,11 @@
     "cats-west-end-2026/north-west-end--michelle-knight.json",
     "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
     "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+    "avenue-q-west-end-2026/reviewsgate--william-russell.json",
+    "avenue-q-west-end-2026/fairypoweredproductions--unknown.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
@@ -131,7 +135,23 @@
     "beetlejuice-west-end-2026/ew--nick-romano.json",
     "beetlejuice-west-end-2026/newsday--barbara-schuler.json",
     "beetlejuice-west-end-2026/nydailynews--chris-jones.json",
-    "beetlejuice-west-end-2026/wsj--edward-rothstein.json"
+    "beetlejuice-west-end-2026/wsj--edward-rothstein.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "beetlejuice-west-end-2026/click-liverpool--unknown.json",
+    "beetlejuice-west-end-2026/independent--louis-chilton.json",
+    "beetlejuice-west-end-2026/times-square-chronicles--unknown.json",
+    "beetlejuice-west-end-2026/hollywood-reporter--david-rooney.json",
+    "beetlejuice-west-end-2026/thewrap--robert-hofler.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json",
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
+    "avenue-q-west-end-2026/backstage--david-sheward.json",
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
+    "avenue-q-west-end-2026/talkinbroadway--unknown.json",
+    "avenue-q-west-end-2026/valentine-dsides--unknown.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -154,11 +174,15 @@
       "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
       "cats-west-end-2026/north-west-end--michelle-knight.json",
       "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+      "avenue-q-west-end-2026/reviewsgate--william-russell.json",
+      "avenue-q-west-end-2026/fairypoweredproductions--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
@@ -181,11 +205,12 @@
       "my-sons-a-queer-but-what-can-you-do-west-end-2026/gay-times--chris-selman.json",
       "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
       "the-story-west-end-2026/theatrecat--unknown.json",
-      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
     ]
   },
   "startTime": "2026-09-16T13:14:27.886Z",
-  "lastProcessed": "beetlejuice-west-end-2026/wsj--edward-rothstein.json",
+  "lastProcessed": "oh-mary-west-end-2025/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-09-16T13:36:32.339Z",
@@ -197,6 +222,12 @@
       "t": "2026-09-16T13:36:33.212Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-16T13:46:42.755Z",
+      "event": "bb-session",
+      "session": "2c4d8270",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
     }
   ]
 }
