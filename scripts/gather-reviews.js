@@ -121,7 +121,7 @@ function saveAggregatorStub(filePath, stub) {
 }
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { titleWordsMatchWithConfidence, validateRoundupPageTitle, buildSiblingCategoriesFromShows, pageTitleConfirmsShow } = require('./lib/show-matching');
+const { titleWordsMatchWithConfidence, buildSiblingCategoriesFromShows, pageTitleConfirmsShow } = require('./lib/show-matching');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const {
@@ -4574,20 +4574,33 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         const data = JSON.parse(fs.readFileSync(sdArchive, 'utf8'));
         // BRO-3610: this read previously had ZERO validation — straight from
         // disk to extraction, unlike every other aggregator in this block.
-        // The archive DOES carry the show title Stagedoor's own page reported
-        // at scrape time (scrape-stagedoor-critics.js writes `title`), so a
-        // wrong-show-under-this-showId file (a restore, a manual copy, a
-        // stale write from a title-matching bug) is just as detectable here
-        // as it is for TR/TS above. There is no full HTML page to run
-        // checkArchiveCategory's cross-market-sibling check against (no
-        // canonical URL, no market-qualifier badge) — that check is scoped to
-        // `category === 'regional'` anyway, which this WE-only branch never
-        // is, so pageTitleConfirmsShow's bare word-match + punctuation rescue
-        // (the same predicate scripts/validate-archive-productions.js uses
-        // for title-only comparisons) covers the same-title-different-show
-        // case this data shape can actually distinguish.
-        if (data.title && !pageTitleConfirmsShow(data.title, show.title)) {
-          console.log(`    ✗ SD archive title mismatch ("${data.title}" vs "${show.title}") — quarantining`);
+        // Two checks, neither sufficient alone but each catching a different
+        // failure mode a restore/manual-copy/stale-write could produce:
+        //   1. ourShowId must match the showId this file is keyed under —
+        //      scrape-stagedoor-critics.js always writes it (line ~502), so a
+        //      file that arrived some other way under the wrong showId is
+        //      caught here regardless of its title.
+        //   2. data.title must word-match show.title (pageTitleConfirmsShow,
+        //      the same predicate validate-archive-productions.js uses for
+        //      title-only comparisons — no full HTML page exists here to run
+        //      checkArchiveCategory's cross-market-sibling check against, and
+        //      that check is scoped to category==='regional' anyway, which
+        //      this WE-only branch never is). A missing/empty title fails
+        //      CLOSED (quarantined), not open — an untitled archive is exactly
+        //      as unverifiable as a mismatched one.
+        //   CAVEAT: for 2 of scrape-stagedoor-critics.js's 3 write paths
+        //   (the "known missing shows" fast path and the SERP-discovery
+        //   path — lines ~214 and ~439), `title` is stamped from OUR OWN
+        //   show.title, not read off the fetched Stagedoor page, so check 2
+        //   passes by construction there and only check 1 does real work.
+        //   Only the listing-scan path's title is independently scraped.
+        //   Tracked as a write-side follow-up (BRO-3610 review) — the writer
+        //   would need to persist a genuinely page-scraped signal on all 3
+        //   paths for this read-time guard to fully close the gap.
+        const sdIdentityMismatch = (data.ourShowId && data.ourShowId !== showId)
+          || !pageTitleConfirmsShow(data.title || '', show.title);
+        if (sdIdentityMismatch) {
+          console.log(`    ✗ SD archive identity mismatch (title "${data.title}" vs "${show.title}"${data.ourShowId ? `, ourShowId "${data.ourShowId}" vs "${showId}"` : ''}) — quarantining`);
           try { fs.renameSync(sdArchive, sdArchive + '.mismatch'); } catch (e) {}
           throw new Error('quarantined');
         }

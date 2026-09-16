@@ -145,17 +145,19 @@ test('BWW roundup validation site: checkArchiveCategory runs ALONGSIDE validateP
 // uses for title-only comparisons) is added.
 // ---------------------------------------------------------------------------
 
-test('Stagedoor (SD) archive read now validates the cached title before extracting reviews', () => {
+test('Stagedoor (SD) archive read now validates cached identity before extracting reviews, and fails CLOSED on a missing title', () => {
   const idx = SRC.indexOf("path.join(archBase, 'stagedoor'");
   assert.ok(idx > 0, 'must still locate the stagedoor archive path');
-  const scope = SRC.slice(idx, idx + 1200);
-  assert.match(scope, /pageTitleConfirmsShow\(data\.title, show\.title\)/,
-    'must validate data.title against show.title before extracting criticReviews');
+  const scope = SRC.slice(idx, idx + 1800);
+  assert.match(scope, /pageTitleConfirmsShow\(data\.title \|\| '', show\.title\)/,
+    'must validate data.title against show.title, defaulting a missing title to "" so it fails CLOSED (not skipped) rather than passing vacuously');
+  assert.match(scope, /data\.ourShowId && data\.ourShowId !== showId/,
+    'must also cross-check the archive\'s own ourShowId field against showId — the one signal that is NOT tautological across all 3 write paths');
   assert.match(scope, /fs\.renameSync\(sdArchive, sdArchive \+ '\.mismatch'\)/,
-    'a title mismatch must quarantine the file, matching the TR/TS/LBO pattern above it');
+    'an identity mismatch must quarantine the file, matching the TR/TS/LBO pattern above it');
   // The quarantine check must run BEFORE reviews are read out of the file.
-  const checkIdx = scope.indexOf('pageTitleConfirmsShow');
+  const checkIdx = scope.indexOf('sdIdentityMismatch');
   const extractIdx = scope.indexOf('data.criticReviews');
   assert.ok(checkIdx > 0 && extractIdx > checkIdx,
-    'the title check must run BEFORE criticReviews are extracted from the untrusted file');
+    'the identity check must run BEFORE criticReviews are extracted from the untrusted file');
 });
