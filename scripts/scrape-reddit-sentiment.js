@@ -33,8 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
-const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey } = require('./lib/reddit-post-filters');
-const { isOwnerAccount } = require('./lib/owner-accounts');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -137,14 +136,6 @@ function classifyPost(post, showTitle) {
   // match the search (e.g. "Drama Desk Awards 2025" mentioning "Music City").
   // Exclude outright — overrides review flair.
   if (isRoundupOrMegathread(rawTitle)) return false;
-
-  // ZEROTH-A: Posts by the Scorecard's own accounts (score-summary posts,
-  // audience-score debate threads it started) are not organic audience
-  // reaction — they're the site's own coverage. Replies arguing about
-  // whether "the audience score is too low" get misread as negative
-  // sentiment about the show itself if these self-posts are ever collected.
-  // Exclude before any other signal (BRO-985).
-  if (isOwnerAccount('reddit', post.author)) return false;
 
   // FIRST: Check exclusion keywords - these override everything including flair
   // Industry keywords to EXCLUDE
@@ -416,10 +407,14 @@ async function collectShowComments(show) {
 
   console.log(`  Collected ${comments.length} comments`);
 
-  // Filter comments (remove deleted, short, and bot messages)
+  // Filter comments (remove deleted, short, bot messages, and the Scorecard's
+  // own comments — its replies inside organic threads are the site's own
+  // coverage, not audience reaction, and must never be scored as sentiment
+  // about the show, BRO-985)
   const filtered = comments.filter(c => {
     if (!c.body || c.body.length < 15) return false;
     if (c.body === '[deleted]' || c.body === '[removed]') return false;
+    if (isOwnerComment(c)) return false;
     for (const pattern of BOT_PATTERNS) {
       if (pattern.test(c.body)) return false;
     }
@@ -765,5 +760,4 @@ module.exports = {
   calculateBuzzScore,
   processShow,
   showMapById,
-  classifyPost,
 };
