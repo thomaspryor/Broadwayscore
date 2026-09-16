@@ -146,7 +146,7 @@ async function fetchViaScrapingBee(url) {
   };
 
   return new Promise((resolve, reject) => {
-    https.get(apiUrl, (res) => {
+    const req = https.get(apiUrl, { timeout: 15000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -177,7 +177,9 @@ async function fetchViaScrapingBee(url) {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
         }
       });
-    }).on('error', (err) => { _rec(false, 'error'); reject(err); });
+    });
+    req.on('error', (err) => { _rec(false, 'error'); reject(err); });
+    req.on('timeout', () => { req.destroy(); _rec(false, 'timeout'); reject(new Error('ScrapingBee request timeout')); });
   });
 }
 
