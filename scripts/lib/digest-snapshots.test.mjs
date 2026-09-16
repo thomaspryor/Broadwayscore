@@ -189,6 +189,45 @@ test('buildSubject: autofixRows omitted or empty — behavior is byte-identical 
   assert.match(buildSubject({ health, autofixRows: [], now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
 });
 
+// BRO-2425 (BRO-420 follow-up): a 48h+ stale "waiting on your approval" item
+// must escalate the subject line too, not just the body block — otherwise it
+// is invisible unless the owner opens the email and scrolls to that section.
+test('buildSubject: stale awaiting-owner item escalates the subject line', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const staleAwaitingOwner = {
+    items: [
+      { title: 'BRO-1: fresh', stale: false },
+      { title: 'BRO-2: stale', stale: true },
+    ],
+  };
+  const s = buildSubject({ health: null, awaitingOwner: staleAwaitingOwner, now });
+  assert.match(s, /⚠️ 1 approval waiting 48h\+/);
+  assert.equal(classifySubject(s)?.key, 'morning-digest');
+});
+
+test('buildSubject: fresh-only or empty awaiting-owner items do not escalate the subject', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const freshOnly = buildSubject({
+    health: null, awaitingOwner: { items: [{ title: 'BRO-1: fresh', stale: false }] }, now,
+  });
+  assert.doesNotMatch(freshOnly, /approval waiting/);
+  const none = buildSubject({ health: null, awaitingOwner: null, now });
+  assert.doesNotMatch(none, /approval waiting/);
+  const emptyItems = buildSubject({ health: null, awaitingOwner: { items: [] }, now });
+  assert.doesNotMatch(emptyItems, /approval waiting/);
+});
+
+test('buildSubject: stale awaiting-owner suffix is additive to the health suffix, not a replacement', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const s = buildSubject({
+    health: { subject: 'BSC URGENT (day 3): 2 unresolved errors', errors: ['a', 'b'], warns: ['c'] },
+    awaitingOwner: { items: [{ title: 'BRO-2: stale', stale: true }, { title: 'BRO-3: stale', stale: true }] },
+    now,
+  });
+  assert.match(s, /⛔ site health: 2 errors, 1 warning/);
+  assert.match(s, /⚠️ 2 approvals waiting 48h\+/);
+});
+
 test('buildHtml never renders loop language; empty day reads calm, not broken', () => {
   const empty = buildHtml({ sections: {}, problemsNote: null, changesHtml: null, now: new Date('2026-07-28T11:30:00Z') });
   assert.match(empty, /Nothing needs your attention this morning/);

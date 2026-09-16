@@ -182,7 +182,7 @@ function fetchViaScrapingBeeSingle(url) {
       try { recordSbCall({ url, fn: 'render', success, status, credits: billed }); } catch (_) {}
     };
 
-    https.get(apiUrl, { timeout: 60000 }, (res) => {
+    const req = https.get(apiUrl, { timeout: 60000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -194,8 +194,9 @@ function fetchViaScrapingBeeSingle(url) {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
-    }).on('error', (err) => { _rec(false, 'error'); reject(err); })
-      .on('timeout', () => { _rec(false, 'timeout'); reject(new Error('ScrapingBee request timeout')); });
+    });
+    req.on('error', (err) => { _rec(false, 'error'); reject(err); });
+    req.on('timeout', () => { req.destroy(); _rec(false, 'timeout'); reject(new Error('ScrapingBee request timeout')); });
   });
 }
 

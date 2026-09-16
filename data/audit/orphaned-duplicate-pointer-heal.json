@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-16T08:21:07.562Z",
+  "generated": "2026-09-16T08:40:41.535Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 83,
+  "count": 84,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -197,6 +197,13 @@
       "loserFile": "vulture--jesse-green.json",
       "targetFile": "vulture--helen-shaw.json",
       "reason": "orphaned-duplicate-heal: vulture--helen-shaw.json was flagged invalid after vulture--jesse-green.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "loserFile": "guardian--arifa-akbar.json",
+      "targetFile": "guardian--tammy-tarng.json",
+      "reason": "orphaned-duplicate-heal: guardian--tammy-tarng.json was flagged invalid after guardian--arifa-akbar.json was pointed at it",
       "field": "duplicateOf"
     },
     {
