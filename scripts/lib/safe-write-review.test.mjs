@@ -444,3 +444,45 @@ test('quarantine fallback does not fire when the incoming write itself carries t
   assert.strictEqual(result.wrote, true, 'must not quarantine a write the caller is itself clearing');
   assert.ok(fs.existsSync(filePath));
 });
+
+test('quarantine fallback also covers wrongAttribution/wrongFullText, not just wrongProduction/wrongShow', () => {
+  // codex adversarial review, third pass: the first cut of the fallback only
+  // watched wrongProduction/wrongShow, silently missing the identical failure
+  // shape for wrongAttribution/wrongFullText (also in url-change-invariant's
+  // URL_DERIVED_FIELDS). No reason/note corroboration is required for this
+  // family — unlike wrongProduction/wrongShow, no script in this codebase
+  // ever writes wrongAttribution:false or wrongFullText:false as a bare
+  // auto-heal, so presence in `cleared` alone is a reliable signal here.
+  const showDir = makeShowDir();
+  const legacyUrl = 'https://www.thestage.co.uk/reviews/old-review-slug';
+
+  fs.writeFileSync(path.join(showDir, 'thestage--sam-marlowe.json'), JSON.stringify({
+    showId: FIXTURE_SHOW,
+    outletId: 'thestage',
+    outlet: 'The Stage',
+    criticName: 'Sam Marlowe',
+    url: 'https://www.thestage.co.uk/reviews/new-review-slug',
+    previousUrl: legacyUrl,
+    _urlChangedClear: {
+      from: legacyUrl,
+      to: 'https://www.thestage.co.uk/reviews/new-review-slug',
+      at: '2026-08-27T15:53:56.639Z',
+      cleared: ['wrongAttribution', 'wrongFullText', 'contentTier'],
+    },
+  }, null, 2));
+
+  const filePath = path.join(showDir, 'thestage--other-critic.json');
+  const fresh = {
+    showId: FIXTURE_SHOW,
+    outletId: 'thestage',
+    outlet: 'The Stage',
+    criticName: 'Other Critic',
+    url: legacyUrl,
+    source: 'aggregator-url-watcher',
+  };
+
+  const result = safeWriteReview(filePath, fresh, { merge: false });
+  assert.strictEqual(result.wrote, false);
+  assert.strictEqual(result.skipped, 'recreated_previously_excluded_url');
+  assert.strictEqual(fs.existsSync(filePath), false);
+});

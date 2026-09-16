@@ -115,6 +115,14 @@ const CONFLICT_REASONS = [
   // Broadway show, or vice versa) — same "inspect the quarantine" shape as
   // date_implausible.
   'cross_market_contamination',
+  // BRO-2559: safeWriteReview() quarantined the write to `_pending/` because
+  // a sibling in the same show directory recorded (via _urlChangedClear) that
+  // this EXACT url was previously excluded (wrongProduction/wrongShow/
+  // wrongAttribution/wrongFullText) before that sibling's own url moved away
+  // from it — the recreate-drops-a-flag shape a scraper hits when it
+  // rediscovers a stale/legacy url a byline-correction had already moved past.
+  // Same "inspect the quarantine" shape as date_implausible.
+  'recreated_previously_excluded_url',
   // BRO-3182: generic fallback when safeWriteReview() returned `wrote:
   // false` without a specific `skipped` reason attached. Should be rare in
   // practice (safeWriteReview's own refusal paths all set `skipped`); kept
@@ -281,6 +289,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'cross_market_contamination') {
     return `${showId}: ${url} was quarantined to _pending/ as suspected cross-market contamination (West End review on a Broadway show, or vice versa). Inspect the quarantined file and confirm the outlet's market before re-ingesting.`;
+  }
+  if (reason === 'recreated_previously_excluded_url') {
+    return `${showId}: ${url} was quarantined to _pending/ — a sibling file in this show's directory recorded that this exact url was previously excluded (wrongProduction/wrongShow/wrongAttribution) before it moved on to a different url. Inspect the quarantined file and the sibling's _urlChangedClear breadcrumb before deciding whether to re-ingest.`;
   }
   if (reason === 'write-guard-refused') {
     return `${showId}: ${url} was refused by the write-guard with no specific reason attached — check this run's log for the safeWriteReview warning that explains why, then decide whether to re-ingest.`;

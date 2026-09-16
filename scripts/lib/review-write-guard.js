@@ -2138,10 +2138,39 @@ const ORPHAN_RESCUE_FAMILY_BY_FIELD = new Map(
   ORPHAN_RESCUE_FAMILIES.flatMap((fam) => fam.fields.map((k) => [k, fam]))
 );
 
+// Which flag fields url-change-invariant.js's URL_DERIVED_FIELDS can actually
+// clear, mapped to the corroborating field(s) that must ALSO appear in
+// `cleared` before treating the flag's presence in `cleared` as proof it was
+// a live exclusion (see the function doc below). isNotReview is deliberately
+// absent — url-change-invariant never touches it (not in URL_DERIVED_FIELDS),
+// so it can never legitimately appear in a `cleared` array.
+//
+//   wrongProduction/wrongShow: corroborate with their reason/note siblings.
+//   Every producer in this codebase that sets the flag true also sets a
+//   reason or note; the self-heal scripts that write `= false` (confirmed via
+//   grep — audit-bro79-ensemble-rejections.js, rebuild-all-reviews.js,
+//   clear-stale-wrong-production-flags.js, etc.) never set one.
+//
+//   wrongAttribution/wrongFullText: no corroboration required — grepping this
+//   codebase found zero producers that ever write `wrongAttribution: false`
+//   or `wrongFullText: false` (unlike wrongProduction/wrongShow, these have
+//   no dedicated "reset to false" self-heal script), so the false-positive
+//   risk _findOrphanedProtectedVerdict's `_isLiveValue` guard exists to catch
+//   doesn't apply here. codex adversarial review (third pass): the original
+//   cut of this fallback only watched wrongProduction/wrongShow, silently
+//   missing the exact same failure shape one family over.
+const CLEARABLE_VERDICT_FLAGS = {
+  wrongProduction: ['wrongProductionReason', 'wrongProductionNote'],
+  wrongShow: ['wrongShowReason', 'wrongShowNote'],
+  wrongAttribution: [],
+  wrongFullText: [],
+};
+
 // Fallback for the "orphaned protected-verdict rescue" call site when no
 // sibling carries a LIVE verdict, but one has _urlChangedClear recording that
-// wrongProduction/wrongShow was among the fields cleared specifically because
-// its own url moved away from newData.url (applyUrlChangeInvariant, above).
+// one of CLEARABLE_VERDICT_FLAGS was among the fields cleared specifically
+// because its own url moved away from newData.url (applyUrlChangeInvariant,
+// above).
 //
 // The breadcrumb's `cleared` array names fields that were REMOVED, but
 // url-change-invariant pushes a field onto it whenever the OLD value was
@@ -2151,12 +2180,9 @@ const ORPHAN_RESCUE_FAMILY_BY_FIELD = new Map(
 // url-change-invariant.js's "cleared BY OMISSION" branch, which pushes on
 // `existing[field] !== undefined` with no truthiness check). A bare
 // `cleared.includes('wrongProduction')` would therefore quarantine recreations
-// of urls that were never actually flagged. Require the flag's OWN reason/note
-// sibling to also appear in `cleared` — real wrongProduction/wrongShow
-// verdicts are always written together with a reason or note (every producer
-// in this file sets both), while an auto-heal `= false` never sets one, so
-// this corroboration is a reliable (if not airtight) discriminator matching
-// the exact shape of the actual incident this rescue targets.
+// of urls that were never actually flagged — so for flags with a real
+// "reset to false" self-heal producer, this requires a corroborating
+// reason/note field to also appear in `cleared`.
 function _findClearedVerdictOrphan(filePath, newData) {
   const dir = path.dirname(filePath);
   let files;
@@ -2168,10 +2194,6 @@ function _findClearedVerdictOrphan(filePath, newData) {
   const { normalizeOutlet } = require('./review-normalization');
   const targetOutlet = normalizeOutlet(newData.outletId || newData.outlet || path.basename(filePath).split('--')[0]);
   const targetUrl = _normalizeUrlForCollision(newData.url);
-  const watchedFlags = {
-    wrongProduction: ['wrongProductionReason', 'wrongProductionNote'],
-    wrongShow: ['wrongShowReason', 'wrongShowNote'],
-  };
   for (const f of files) {
     let data;
     try {
@@ -2184,9 +2206,10 @@ function _findClearedVerdictOrphan(filePath, newData) {
     if (fileOutlet !== targetOutlet) continue;
     if (_normalizeUrlForCollision(data._urlChangedClear.from) !== targetUrl) continue;
     const cleared = Array.isArray(data._urlChangedClear.cleared) ? data._urlChangedClear.cleared : [];
-    const clearedFields = Object.keys(watchedFlags).filter((flag) => {
+    const clearedFields = Object.keys(CLEARABLE_VERDICT_FLAGS).filter((flag) => {
       if (!cleared.includes(flag)) return false;
-      if (!cleared.some((c) => watchedFlags[flag].includes(c))) return false;
+      const corroboration = CLEARABLE_VERDICT_FLAGS[flag];
+      if (corroboration.length > 0 && !cleared.some((c) => corroboration.includes(c))) return false;
       // Don't quarantine a family the INCOMING write is itself clearing (same
       // contract as the live rescue above).
       const fam = ORPHAN_RESCUE_FAMILY_BY_FIELD.get(flag);
