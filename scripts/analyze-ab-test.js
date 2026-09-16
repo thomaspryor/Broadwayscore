@@ -24,14 +24,20 @@
  *
  * ticket-single-button concluded 2026-09-16 (see
  * docs/experiments/ticket-single-button.md "Conclusion") and its client-side
- * A/B branching was removed from TicketButtonsAB.tsx — this analyzer stays
- * generic and still supports `--flag ticket-single-button` for historical
- * reads, but the default flag below is now ticket-primary-platform (the
- * only other flag this script's variantKey logic knows about; also already
- * concluded/pinned, but at least still a real registered flag).
+ * A/B branching was removed from TicketButtonsAB.tsx — but the default flag
+ * below stays 'ticket-single-button', NOT ticket-primary-platform, and this
+ * is deliberate, not an oversight: TicketButtonsAB.tsx's abVariantStr is
+ * permanently namespaced `flag:ticket-single-button,...` (kept that way so
+ * historical Impact conversions keep joining correctly), so
+ * ticket-primary-platform's VARIANT_RE would match ZERO real events if it
+ * were the default — every click, past and future, is still tagged under
+ * the ticket-single-button cohort string even though the button count is
+ * no longer a variable. Changing this default (2026-09-16, reverted same
+ * session after a Codex review caught it) would have silently broken
+ * default-invocation analysis for both flags.
  *
  * Usage:
- *   node scripts/analyze-ab-test.js                  # default: ticket-primary-platform
+ *   node scripts/analyze-ab-test.js                  # default: ticket-single-button
  *   node scripts/analyze-ab-test.js --flag <key>     # specific flag
  *   node scripts/analyze-ab-test.js --days 14        # date range
  *
@@ -46,7 +52,7 @@
 
 const FLAG = (() => {
   const idx = process.argv.indexOf('--flag');
-  return idx >= 0 ? process.argv[idx + 1] : 'ticket-primary-platform';
+  return idx >= 0 ? process.argv[idx + 1] : 'ticket-single-button';
 })();
 
 const DAYS = (() => {

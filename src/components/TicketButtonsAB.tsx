@@ -60,10 +60,9 @@ interface TicketButtonsABProps {
   /** Class applied to the first/primary CTA when splitVariant=true. */
   primaryButtonClassName?: string;
   /**
-   * Optional content appended INSIDE the secondary scroll row (after Telecharge,
-   * Official, etc.). Used by the show-page redesign hero to inline a $X Lottery
-   * pill alongside the ticket platform pills so they stay on a single row.
-   * Only renders when splitVariant=true and the secondary row is shown.
+   * Optional content rendered in its own scroll row below the primary CTA.
+   * Used by the show-page redesign hero to show a $X Lottery pill alongside
+   * the primary ticket CTA. Only renders when splitVariant=true.
    */
   secondaryAfter?: React.ReactNode;
 }

@@ -205,3 +205,88 @@ guess from git history.
 - No experiment behavior, flag rollout, or business decision changed. Per
   `memory/feedback_ab_test_guardrails.md` rule 1 and this ticket's own
   acceptance criteria, that stays an owner call.
+
+## Conclusion (2026-09-16)
+
+**Decision: keep the single-button design permanently. A/B retired,
+flag archived.** Owner picked single on UX/maintenance grounds (BRO-3456)
+after Option 2 above (the revenue metric) was actually pulled and analyzed
+this same day — not left as a follow-up.
+
+**What the revenue pull found, and why it changed twice in one session:**
+
+1. First pass: pulled live Impact Actions.json cumulative since the true
+   2026-04-11 restart (chunked into ≤44-day windows, summed by the
+   `buttons:` segment of `SubId2`). Raw totals: single 142 conversions /
+   $622.52 commission; multi 99 conversions / $757.97 commission — looked
+   like a real 17.9% multi advantage (conversion-level Welch t=-3.07,
+   p=0.0022).
+2. That test was invalid: the 142 single-arm conversions came from only 75
+   unique users — conversions aren't independent, users are the
+   randomization unit. Redone at the **user level** (an Opus review caught
+   this and re-ran it): single **$8.30/user**, multi **$10.83/user**,
+   p=0.119, 95% CI **[-$5.71, +$0.65]** — crosses zero, not significant.
+   Cluster bootstrap on total commission: 95% CI [-$362, +$86], Pr(single
+   ahead) = 12%. Converting-user counts: 75 vs 70, p≈0.68 — also not
+   significant.
+3. **Root cause of the illusion**: TodayTix pays two commission tiers
+   (~1% and ~4-5%). One single-arm user alone made 10 purchases across 5
+   July days at the low tier — a whale who happened to land in that
+   bucket by randomization luck, not a button-design effect. High-tier
+   share was 25.0% (single) vs 50.5% (multi), z=-3.96 — a real difference,
+   but a property of which users each arm happened to draw, not of what
+   the arm showed them.
+4. No platform confound: both arms were 100% `platform:todaytix` in the
+   attributed data (the separate `ticket-primary-platform` experiment is
+   already concluded/pinned 100% todaytix), so the commission-tier mix
+   isn't explained by which platform a click routed to either.
+
+**Net: 5 months and ~$51k in tracked Impact revenue found no user-level
+difference in conversion rate, converting-user count, or commission
+between the two designs.** Building the missing cumulative click-read
+(option 1 above) is not worth it — its money-layer equivalent just ran and
+is also null, and the minimum detectable effect at this variance (~$5/user
+against an observed $2.53/user gap) means more data collection wouldn't
+resolve it either.
+
+**What changed in code (BRO-3456 follow-up implementation, 2026-09-16):**
+`src/components/TicketButtonsAB.tsx` — removed the `ticket-single-button`
+flag read/poll and the entire multi-button code path (secondary platform
+links, the inline Official-Site link, the `maxButtons` prop); only the
+primary CTA renders now, unconditionally. `ticket-primary-platform` is
+untouched. `ticket-single-button` entry removed from
+`scripts/lib/flag-registry.js` (deleted outright, matching gate-cold-start's
+precedent, not marked `exists:false`). Deleted
+`scripts/monitor-ticket-ab.js`, `scripts/lib/ticket-ab-monitor-rules.js` +
+test, `scripts/validate-ab-test.js` — no purpose once the A/B is retired.
+`.github/workflows/monitor-gate-ab.yml`'s ticket-single-button monitor step
+removed. The PostHog flag (`ticket-single-button`) was archived
+(`active: false`, not deleted, for reproducibility) via
+`scripts/posthog-flag-admin.js` / `.github/workflows/manual-posthog-flag-archive.yml`
+(the tool BRO-3459 built earlier the same day specifically so this
+teardown wouldn't have to leave the flag live-but-unread the way
+gate-cold-start's initially did).
+
+**Rollback:** reverting to the arm-split behavior needs a code change
+(restore the deleted flag-read/branching from git history) plus a normal
+deploy — flipping the archived PostHog flag back to active does nothing on
+its own, since enforcement is no longer flag-gated.
+
+**Known limitation (Codex ship-check finding, not fixed — accepted as-is):**
+`TicketButtonsAB.tsx`'s tracking string is permanently namespaced
+`flag:ticket-single-button,platform:...,buttons:single` (kept that way so
+`scripts/analyze-ab-test.js`'s default invocation keeps matching real
+events — see that file's header comment). There is no experiment-end
+cutoff analogous to `FLAG_RESTART_DATES`, so `analyze-ab-test.js --flag
+ticket-single-button` run today (or years from now) mixes genuine
+2026-04-11–09-16 randomized-trial clicks with every post-conclusion click,
+which are no longer randomized (100% single, by design). A historical
+re-read of the trial itself must filter to `EventDate <
+2026-09-16T16:00:00Z`-ish manually; the analyzer does not do this for you.
+Building a proper cutoff was judged not worth it for a concluded,
+permanent-single-button surface — flagging here so a future session
+doesn't mistake "ticket-single-button" for a still-meaningful experiment
+name when reading raw Impact/PostHog data outside this doc.
+
+This document is kept in place as the reproducibility record, same as
+`docs/experiments/gate-cold-start.md`.
