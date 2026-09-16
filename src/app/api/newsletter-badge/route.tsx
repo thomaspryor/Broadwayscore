@@ -41,8 +41,9 @@ const RANK_COLORS: Record<string, { bg: string; text: string }> = {
   none: { bg: '#374151', text: '#9ca3af' },
 };
 
-// Award ring badge keeps a fixed translucent fill + white text (matches the
-// original awardBadgeBox() div); only the ring color varies by tier.
+// Award ring badge keeps a fixed fill + white text (matches the original
+// awardBadgeBox() div's ring-color-only variation); only the ring color
+// varies by tier.
 const AWARD_RING_COLORS: Record<string, string> = {
   sweeper: '#D4AF37',
   decorated: '#B8B8B8',
@@ -51,7 +52,14 @@ const AWARD_RING_COLORS: Record<string, string> = {
   nominated: '#6b7280',
   eligible: '#4b5563',
 };
-const AWARD_FILL = 'rgba(255,255,255,0.03)';
+// Opaque, NOT the original div's rgba(255,255,255,0.03) — a translucent PNG
+// fill defeats the whole point of baking pixels: Gmail dark mode still
+// controls what shows through the near-transparent center, so the baked
+// white text could still land on a light background it didn't ship with
+// (Codex adversarial review, BRO-3555). This is the 3%-white-over-#1a1a24-
+// card composite baked in directly, so it reads identically wherever it
+// sits without depending on the surrounding email background.
+const AWARD_FILL = '#212129';
 const AWARD_TEXT = '#ffffff';
 
 // Server-side render scale for retina sharpness — the <img> tag pins
@@ -70,10 +78,16 @@ export async function GET(request: NextRequest) {
 
   if (kind === 'rank') {
     const rawId = sp.get('tier');
-    const tierId = rawId && Object.prototype.hasOwnProperty.call(RANK_COLORS, rawId) ? rawId : 'none';
-    const colors = RANK_COLORS[tierId];
     const position = clampInt(sp.get('pos'), NaN, 1, 999);
-    const label = Number.isFinite(position) ? `#${position}` : '#?';
+    const hasPosition = Number.isFinite(position);
+    // Color tracks hasPosition, not just tier — same contract as the score
+    // badge's hasScore coupling below. A valid tier id with a garbage/missing
+    // `pos` used to render that tier's color next to a "#?" label, a
+    // confusing hybrid (Codex adversarial review, BRO-3555, mirroring the
+    // ship-check catch already applied to the score path).
+    const tierId = hasPosition && rawId && Object.prototype.hasOwnProperty.call(RANK_COLORS, rawId) ? rawId : 'none';
+    const colors = RANK_COLORS[tierId];
+    const label = hasPosition ? `#${position}` : '#?';
     const size = clampInt(sp.get('size'), 36, 8, 200);
     const fontSize = clampInt(sp.get('fontSize'), Math.round(size * 0.4), 4, 120);
     const radius = clampInt(sp.get('radius'), 8, 0, 100);
@@ -103,10 +117,15 @@ export async function GET(request: NextRequest) {
 
   if (kind === 'award') {
     const rawId = sp.get('tier');
-    const tierId = rawId && Object.prototype.hasOwnProperty.call(AWARD_RING_COLORS, rawId) ? rawId : 'eligible';
-    const ring = AWARD_RING_COLORS[tierId];
     const scoreRaw = clampInt(sp.get('score'), NaN, 0, 999);
-    const label = Number.isFinite(scoreRaw) && scoreRaw > 0 ? String(scoreRaw) : '—';
+    const hasScoreVal = Number.isFinite(scoreRaw);
+    // Ring color tracks hasScoreVal, same coupling as the rank branch above —
+    // a garbage/missing `score` now falls all the way back to the neutral
+    // "eligible" ring instead of keeping a real tier's ring color next to an
+    // em-dash label (Codex adversarial review, BRO-3555).
+    const tierId = hasScoreVal && rawId && Object.prototype.hasOwnProperty.call(AWARD_RING_COLORS, rawId) ? rawId : 'eligible';
+    const ring = AWARD_RING_COLORS[tierId];
+    const label = hasScoreVal && scoreRaw > 0 ? String(scoreRaw) : '—';
     const size = clampInt(sp.get('size'), 40, 8, 200);
     const fontSize = clampInt(sp.get('fontSize'), Math.round(size * 0.36), 4, 120);
     const px = size * RENDER_SCALE;
