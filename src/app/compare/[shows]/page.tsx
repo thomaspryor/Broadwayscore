@@ -20,6 +20,7 @@ import { sortTicketLinks, getVisibleTicketLinks } from '@/lib/ticket-utils';
 import Breadcrumb from '@/components/Breadcrumb';
 import { showFormatTitle } from '@/lib/show-format';
 import { getBrowseSlug } from '@/lib/browse-slugs';
+import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 
 export function generateStaticParams() {
   return getAllComparisonSlugs().map((shows) => ({ shows }));
@@ -163,6 +164,11 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
   const lotteryRushB = getLotteryRush(showB.id);
   const consensusA = getCriticConsensus(showA.id);
   const consensusB = getCriticConsensus(showB.id);
+  // BRO-927: same synopsis-mislabeled-as-verdict bug as the show page —
+  // `consensusA || showA.synopsis || '...'` put the plot synopsis in the
+  // Critics Say slot for any show with reviews but no generated take.
+  const criticsTakeModeA = getCriticsTakeDisplayMode(!!consensusA, !!showA.criticScore, showA.criticScore?.reviewCount || 0, !!showA.synopsis);
+  const criticsTakeModeB = getCriticsTakeDisplayMode(!!consensusB, !!showB.criticScore, showB.criticScore?.reviewCount || 0, !!showB.synopsis);
   const buzzA = getAudienceBuzz(showA.id);
   const buzzB = getAudienceBuzz(showB.id);
   const awardsA = getShowAwards(showA.id);
@@ -746,14 +752,20 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
             <div className="text-[13px] text-gray-400 font-medium pt-0.5">Critics Say</div>
             <div>
               <Link href={`/show/${showA.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showA.title}</Link>
-              <p className="text-gray-400 text-[13px] leading-relaxed mt-1">
-                {consensusA || showA.synopsis || 'No critic consensus available.'}
+              <p className={`text-[13px] leading-relaxed mt-1 ${criticsTakeModeA === 'coming-soon' ? 'text-gray-500 italic' : 'text-gray-400'}`}>
+                {criticsTakeModeA === 'consensus' ? consensusA
+                  : criticsTakeModeA === 'coming-soon' ? "Critics' Take coming soon."
+                  : criticsTakeModeA === 'synopsis' ? showA.synopsis
+                  : 'No critic consensus available.'}
               </p>
             </div>
             <div>
               <Link href={`/show/${showB.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showB.title}</Link>
-              <p className="text-gray-400 text-[13px] leading-relaxed mt-1">
-                {consensusB || showB.synopsis || 'No critic consensus available.'}
+              <p className={`text-[13px] leading-relaxed mt-1 ${criticsTakeModeB === 'coming-soon' ? 'text-gray-500 italic' : 'text-gray-400'}`}>
+                {criticsTakeModeB === 'consensus' ? consensusB
+                  : criticsTakeModeB === 'coming-soon' ? "Critics' Take coming soon."
+                  : criticsTakeModeB === 'synopsis' ? showB.synopsis
+                  : 'No critic consensus available.'}
               </p>
             </div>
           </div>
