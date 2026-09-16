@@ -20,7 +20,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { articleRunIdentity, ingestBlockReason } = require('../../scripts/lib/gap-ingest-policy.js');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('../../scripts/lib/gap-ingest-policy.js');
 
 // TKAM class: WE 2026 entry, 2018 Broadway Review Roundup article.
 const TKAM_2026 = { id: 'to-kill-a-mockingbird-west-end-2026', title: 'To Kill a Mockingbird', openingDate: '2026-06-25' };
@@ -141,6 +141,69 @@ describe('ingestBlockReason — per-aggregator trust (2026-07-11)', () => {
     const ctx = { showIsWe: true, weGateOn: false, lowTrustSources: new Set(['theatre-reviews']) };
     assert.equal(ingestBlockReason({ weRef: true, priorRun: true, weRefSources: ['theatre-reviews'] }, { ...ctx, weGateOn: true }), 'prior-run');
     assert.equal(ingestBlockReason({ weRef: true, weRefSources: ['theatre-reviews'] }, ctx), 'we-gate-off');
+  });
+});
+
+describe('isUrlYearOutOfWindow (BRO-1412 — Show Score / other URL-only discovery)', () => {
+  // A Broadway revival: current run opens 2026-03-25. Show Score's page for
+  // "Cabaret" links straight to each outlet's own review with no roundup
+  // article to date via articleRunIdentity — this is the last mile
+  // articleRunIdentity (Playbill/BWW) doesn't cover.
+  const CABARET_REVIVAL = {
+    id: 'cabaret-broadway-2026',
+    title: 'Cabaret',
+    previewsStartDate: '2026-03-01',
+    openingDate: '2026-03-25',
+  };
+
+  test('a prior production\'s dated review URL is out of window', () => {
+    assert.equal(
+      isUrlYearOutOfWindow('https://www.nytimes.com/1998/03/20/theater/cabaret-review.html', CABARET_REVIVAL),
+      true
+    );
+  });
+
+  test('a fresh current-run review URL is in window', () => {
+    assert.equal(
+      isUrlYearOutOfWindow('https://www.nytimes.com/2026/03/26/theater/cabaret-review.html', CABARET_REVIVAL),
+      false
+    );
+  });
+
+  test('a URL with no embedded year is never flagged (no fetch-free signal available)', () => {
+    assert.equal(
+      isUrlYearOutOfWindow('https://www.nytimes.com/theater/cabaret-review.html', CABARET_REVIVAL),
+      false
+    );
+  });
+
+  test('a declared priorRuns window re-admits its own dated URL', () => {
+    const withPrior = { ...CABARET_REVIVAL, priorRuns: [{ openingDate: '1998-03-19', closingDate: '2004-01-04' }] };
+    assert.equal(
+      isUrlYearOutOfWindow('https://www.nytimes.com/1998/03/20/theater/cabaret-review.html', withPrior),
+      false
+    );
+  });
+
+  test('dash-form permalink years are read the same as slash-form (parity with acceptSerpCensusResult)', () => {
+    assert.equal(isUrlYearOutOfWindow('https://example.com/1998-cabaret-review/', CABARET_REVIVAL), true);
+  });
+
+  test('a show with no opening/previews date fails open (no window to compare against)', () => {
+    assert.equal(
+      isUrlYearOutOfWindow('https://www.nytimes.com/1998/03/20/theater/cabaret-review.html', { id: 'x', title: 'X' }),
+      false
+    );
+  });
+
+  test('a title that IS a year does not self-block its own current-run reviews (codex review)', () => {
+    // "1984" the show slugs into review URLs as the literal string "1984" —
+    // indistinguishable from a genuine 1984 publish year by the regex alone.
+    const orwell1984 = { id: '1984-broadway-2026', title: '1984', openingDate: '2026-05-01' };
+    assert.equal(isUrlYearOutOfWindow('https://variety.com/review-1984-broadway/', orwell1984), false);
+    // A DIFFERENT number embedded in the same URL is still caught.
+    const oldUrl = 'https://variety.com/2010/review-1984-broadway/';
+    assert.equal(isUrlYearOutOfWindow(oldUrl, orwell1984), true);
   });
 });
 

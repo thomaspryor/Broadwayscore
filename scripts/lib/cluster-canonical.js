@@ -21,6 +21,8 @@
 
 'use strict';
 
+const { isPlaceholderRecord } = require('./placeholder-byline');
+
 const STAR_RE = /(\d(?:\.\d)?)\s*\/\s*5/;
 function hasStar(s) {
   return typeof s === 'string' && STAR_RE.test(s);
@@ -61,6 +63,12 @@ function looksLikeConsentWall(head) {
  * @property {boolean} [includable]    isIncludableForRebuild(file) — already scoring
  * @property {number}  [humanReviewScore] set when a human vouched — pins as canonical
  * @property {string}  [criticName]
+ * @property {string}  [outlet]        outlet DISPLAY name, e.g. "The Times (UK)" —
+ *   needed alongside criticName to detect an outlet-name-as-byline placeholder
+ *   (isPlaceholderRecord); the filename prefix alone (bylineSlug vs outletSlug)
+ *   misses the exact shape that survived undetected in card #1907
+ *   (`times-uk--the-times.json`: filename slug "the-times" != outletSlug
+ *   "times-uk", but criticName "The Times" IS the outlet's display name).
  * @property {string}  [duplicateOf]
  */
 
@@ -124,14 +132,39 @@ function decideClusterAction(files, opts = {}) {
   }
 
   // Rank: human-vouched > real complete body > longest body > already-includable >
-  // has a star > concrete (non-Unknown) byline. Final tiebreak on filename = deterministic.
+  // has a star > concrete (non-placeholder) byline. Final tiebreak on filename =
+  // deterministic.
+  //
+  // BRO-2409 (the placeholder-byline half of its title): the byline check used
+  // to be a bare `criticName !== 'unknown'`, which treats an outlet-name-as-
+  // byline placeholder ("The Times" at outlet "The Times (UK)") as EQUALLY
+  // "concrete" as a real critic's name — so two candidates tied on every
+  // earlier rank fell through to filename order, letting the placeholder win a
+  // 5+-file byline-explosion cluster exactly like card #1907's 2-file case.
+  // isPlaceholderRecord (data fields, not the filename slug) is the same check
+  // fix-circular-duplicate-pairs.js's chooseCanonical already uses for the
+  // 2-member case. No `defaultCritic` override is threaded through here (the
+  // self-branded-solo-critic exception, e.g. carole-di-tosti) — a 5+-byline
+  // explosion cluster on a solo-critic outlet is not a real corpus shape, so
+  // the imprecision is accepted rather than plumbing outlet-registry lookups
+  // through this deliberately data-free (no I/O) module.
+  // isPlaceholderRecord alone treats an ABSENT criticName as "not a
+  // placeholder" (by design — see its docstring: that case is meant to be
+  // handled by a separate, filename-based unknown-byline check upstream,
+  // which this module doesn't have). Re-add that half explicitly so an
+  // empty/"unknown" byline still ranks as weak, exactly like before.
+  const bylineWeak = (f) => {
+    const name = (f.criticName || '').trim().toLowerCase();
+    if (!name || name === 'unknown') return true;
+    return isPlaceholderRecord({ criticName: f.criticName, outlet: f.outlet });
+  };
   const rankVec = (f) => [
     f.humanReviewScore != null ? 1 : 0,
     f.contentTier === 'complete' ? 1 : 0,
     f.fullTextLen | 0,
     f.includable === true ? 1 : 0,
     (hasStar(f.aggregatorStars) || hasStar(f.originalScore)) ? 1 : 0,
-    (f.criticName && String(f.criticName).toLowerCase() !== 'unknown') ? 1 : 0,
+    !bylineWeak(f) ? 1 : 0,
   ];
   candidates.sort((a, b) => {
     const ra = rankVec(a);
