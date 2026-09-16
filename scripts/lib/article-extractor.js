@@ -12,6 +12,16 @@
  *   const { extractArticleText } = require('./lib/article-extractor');
  *   const text = extractArticleText(html, hostname);
  *   if (text && text.length > 200) saveAsFullText(text);
+ *
+ * ⚠️ NOT automatically wired into scripts/collect-review-texts.js — the main
+ * opening-night text-collection pipeline has its OWN separate, independent
+ * extraction (extractTextFromHtml) and does NOT call this file for most
+ * outlets. A pattern fixed/added here only reaches that pipeline for hosts
+ * extractTextFromHtml explicitly delegates to — currently just
+ * talkinbroadway.com (BRO-912). Fixing a PATTERNS entry here does NOT mean
+ * the fix is live in production for that outlet unless you check
+ * collect-review-texts.js too. See BRO-3499 for the open audit of which
+ * other DEDICATED_EXTRACTOR_HOSTS entries have this same gap.
  */
 
 'use strict';
