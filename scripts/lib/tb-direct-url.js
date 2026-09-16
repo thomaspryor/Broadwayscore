@@ -20,6 +20,11 @@ const TB_HOST = 'https://www.talkinbroadway.com';
 const MIN_CONTENT_BYTES = 800; // TB 404 pages are <500 bytes; real reviews are >3KB
 
 const { foldDiacritics } = require('./title-match');
+const { shortTitleCandidate } = require('./title-normalization');
+
+// Same floor used by verifyTbPage's short-title fallback below — short titles under this
+// length (e.g. "Oh, Mary!" → "Oh") are too generic to build a reliable URL slug from.
+const MIN_SHORT_VARIANT_CHARS = 4;
 
 function toCamelSlug(title) {
   return foldDiacritics(title)
@@ -44,12 +49,36 @@ function buildTbCandidateUrls(title, year) {
   const lower = toLowerSlug(title);
   const y4 = String(year);
   const y2 = y4.slice(-2);
-  return [
+  const urls = [
     `${TB_HOST}/page/world/${camel}${y4}.html`,
     `${TB_HOST}/page/world/${camel}${y2}.html`,
     `${TB_HOST}/page/world/${camel}.html`,
     `${TB_HOST}/page/world/${lower}${y4}.html`,
   ];
+  // Comma-subtitled shows ("Beaches, A New Musical") get indexed by TB under the
+  // short title only ("Beaches.html"). See verifyTbPage's short-title fallback for
+  // the same guard rationale (Beaches 2026-04-22 opening night).
+  //
+  // Length check uses normalizeText (strips punctuation) to match the floor verifyTbPage
+  // applies to the same short title — a raw-character check would disagree with it (e.g.
+  // "Oh!!" is 4 raw chars but normalizes to "oh", 2 chars).
+  //
+  // Dated variants are tried before the bare short-title page: an undated short-title URL
+  // has no publish-date signal, so for a revival it could match an old production's page
+  // before a same-titled dated page is ever tried (verifyTbPage's date-window gate only
+  // rejects it if a date happens to be extractable from the page).
+  const shortTitle = shortTitleCandidate(title);
+  if (shortTitle && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
+    const camelShort = toCamelSlug(shortTitle);
+    const lowerShort = toLowerSlug(shortTitle);
+    if (camelShort && camelShort !== camel) {
+      urls.push(`${TB_HOST}/page/world/${camelShort}${y4}.html`);
+      urls.push(`${TB_HOST}/page/world/${camelShort}${y2}.html`);
+      urls.push(`${TB_HOST}/page/world/${camelShort}.html`);
+      urls.push(`${TB_HOST}/page/world/${lowerShort}${y4}.html`);
+    }
+  }
+  return urls;
 }
 
 function normalizeText(s) {
@@ -111,8 +140,6 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
   // etc. 2-char substrings are too short to be a reliable title match. Affects
   // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
   // 4 chars is safe for known cases: "Beaches" (7), "Grey" (4 — would work if subtitled).
-  const MIN_SHORT_VARIANT_CHARS = 4;
-  const { shortTitleCandidate } = require('./title-normalization');
   const titleVariants = [showTitle];
   const shortTitle = shortTitleCandidate(showTitle);
   if (shortTitle && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
