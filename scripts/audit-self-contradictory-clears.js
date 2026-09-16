@@ -172,14 +172,24 @@ function readBaseline(baselinePath) {
   return { count: parsed.count, tolerance };
 }
 
-function listShowDirs(showFilter) {
+// Returns { dirs, rootMissing }. rootMissing means REVIEW_TEXTS_DIR itself
+// couldn't be read — the private repo checkout isn't there at all — which is
+// a different failure from `--show=ID` matching no directory (a show with no
+// reviews yet is a normal, legitimate state). Collapsing the two into a bare
+// `[]` is what let a missing checkout print "0 scanned, 0 contradictions" and
+// read as a clean sweep (BRO-2283) instead of the corpus-not-checked-out error
+// it actually was.
+// `dir` is a parameter (not the module-level REVIEW_TEXTS_DIR) so the unit
+// test can require() this exact function against a disposable fixture
+// directory instead of restating its rules against a copy (CLAUDE.md §15).
+function listShowDirs(dir, showFilter) {
   let entries;
   try {
-    entries = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true });
+    entries = fs.readdirSync(dir, { withFileTypes: true });
   } catch {
-    return [];
+    return { dirs: [], rootMissing: true };
   }
-  return entries
+  const dirs = entries
     // isDirectory() is false for symlinked show dirs — accept those too, but
     // never plain files (the stray-symlink class, memory/feedback_stray_symlink).
     .filter((e) => e.isDirectory() || e.isSymbolicLink())
@@ -187,9 +197,10 @@ function listShowDirs(showFilter) {
     .filter((name) => !SKIP_DIRS.has(name))
     .filter((name) => !showFilter || name === showFilter)
     .filter((name) => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, name)).isDirectory(); }
+      try { return fs.statSync(path.join(dir, name)).isDirectory(); }
       catch { return false; }
     });
+  return { dirs, rootMissing: false };
 }
 
 function main() {
@@ -202,7 +213,8 @@ function main() {
   let scanned = 0;
   const showsById = args.fixSafe ? loadShowsById() : new Map();
 
-  for (const showId of listShowDirs(args.show)) {
+  const { dirs: showDirs, rootMissing } = listShowDirs(REVIEW_TEXTS_DIR, args.show);
+  for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); }
@@ -293,7 +305,7 @@ function main() {
   // running the gate with the corpus symlink removed (2026-08-05). Shared
   // across all corpus audits — see scripts/lib/corpus-scan-guard.js (#1063).
   try {
-    assertCorpusScanned(scanned, { gate: args.gate });
+    assertCorpusScanned(scanned, { gate: args.gate, corpusRootMissing: rootMissing });
   } catch (e) {
     if (!(e instanceof CorpusNotScannedError)) throw e;
     console.error(`\nFAIL: ${e.message}`);
@@ -355,4 +367,6 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { listShowDirs };
