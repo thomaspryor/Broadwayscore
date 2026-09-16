@@ -42,9 +42,23 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
 const SEND_INTERVAL_MS = 500; // ~2/sec
 
+const KNOWN_FLAG_PREFIXES = ['--dry-run', '--send-to=', '--data-dir='];
+
 const args = process.argv.slice(2);
+const unknownArg = args.find(a => !KNOWN_FLAG_PREFIXES.some(p => a === p || a.startsWith(p)));
+if (unknownArg) {
+  console.error(`Unrecognized argument: ${unknownArg}`);
+  console.error('Known flags: --dry-run, --send-to=<email>, --data-dir=<path>');
+  process.exit(1);
+}
+
 const DRY_RUN = args.includes('--dry-run');
-const SEND_TO = args.find(a => a.startsWith('--send-to='))?.split('=')[1] ?? null;
+const sendToRaw = args.find(a => a.startsWith('--send-to='))?.split('=')[1] ?? null;
+if (sendToRaw !== null && sendToRaw.trim() === '') {
+  console.error('--send-to= requires a non-empty email address (got an empty value, which would otherwise fall through to sending everyone).');
+  process.exit(1);
+}
+const SEND_TO = sendToRaw;
 const dataDirArg = args.find(a => a.startsWith('--data-dir='))?.split('=')[1] ?? null;
 
 // Falls back to the private core-data clone (~/broadway-scorecard-data) if
@@ -66,9 +80,15 @@ function loadSentLog(sentLogPath) {
   return new Set((raw.sent || []).map(e => e.toLowerCase()));
 }
 
+// Re-reads the log from disk and merges before writing, so a concurrent
+// second run (or a stale in-memory sentSet) can't clobber entries the other
+// process already checkpointed — last-writer-wins per email, union overall.
 function saveSentLog(sentLogPath, sentSet) {
-  const sorted = Array.from(sentSet).sort();
+  const onDisk = loadSentLog(sentLogPath);
+  const merged = new Set([...onDisk, ...sentSet]);
+  const sorted = Array.from(merged).sort();
   fs.writeFileSync(sentLogPath, JSON.stringify({ sent: sorted, updatedAt: new Date().toISOString() }, null, 2) + '\n');
+  for (const email of onDisk) sentSet.add(email); // keep caller's in-memory set in sync
 }
 
 // Best-effort: commit + push the sent-log if the resolved data dir is its
@@ -81,8 +101,11 @@ function commitSentLog(dataDir, sentLogPath) {
     return; // not a git repo (e.g. the app repo's own data/) — nothing to commit
   }
   try {
-    execFileSync('git', ['-C', dataDir, 'add', path.basename(sentLogPath)]);
-    execFileSync('git', ['-C', dataDir, 'commit', '-m', 'chore: BTC confirmation sent-log update [skip ci]'], { stdio: 'ignore' });
+    const logFile = path.basename(sentLogPath);
+    execFileSync('git', ['-C', dataDir, 'add', logFile]);
+    // Pathspec-scoped so this only ever commits the sent-log, never whatever
+    // else happens to be staged in that clone at the time.
+    execFileSync('git', ['-C', dataDir, 'commit', '-m', 'chore: BTC confirmation sent-log update [skip ci]', '--', logFile], { stdio: 'ignore' });
     execFileSync('git', ['-C', dataDir, 'push']);
   } catch (err) {
     console.error(`(sent-log commit/push skipped: ${err.message.split('\n')[0]})`);
@@ -144,7 +167,7 @@ async function main() {
     const taggedHtml = applyUtm(html, { source: 'beat-the-critics', campaign: 'btc-confirmation-retroactive' });
 
     if (DRY_RUN) {
-      console.log(`[DRY RUN] ${record.email}`);
+      console.log(`[DRY RUN] ${record.email} — "${subject}"`);
       sent++;
       continue;
     }
@@ -155,7 +178,16 @@ async function main() {
       sent++;
       if (!SEND_TO) {
         sentSet.add(record.email.trim().toLowerCase());
-        saveSentLog(sentLogPath, sentSet); // checkpoint after every send
+        try {
+          saveSentLog(sentLogPath, sentSet); // checkpoint after every send
+        } catch (logErr) {
+          // The email already went out and can't be un-sent, but continuing
+          // to send without a durable checkpoint risks duplicate sends on
+          // the next run — stop here rather than compounding the problem.
+          console.error(`\nFATAL: sent to ${record.email} but failed to write sent-log: ${logErr.message}`);
+          console.error(`Fix the sent-log path (${sentLogPath}) before re-running.`);
+          process.exit(1);
+        }
       }
       await new Promise(r => setTimeout(r, SEND_INTERVAL_MS));
     } catch (err) {

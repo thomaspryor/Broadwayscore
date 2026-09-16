@@ -15,7 +15,7 @@ function parseSubmissionsJsonl(text) {
   for (const line of text.split('\n')) {
     if (!line.trim()) continue;
     const row = JSON.parse(line);
-    if (!row.email || typeof row.email !== 'string') {
+    if (!row.email || typeof row.email !== 'string' || !row.email.trim()) {
       skippedNoEmail++;
       continue;
     }
@@ -52,6 +52,18 @@ function filterUnsent(recipients, sentSet) {
 
 const CEREMONY_YEAR = 2026;
 
+// Picks originate from a user-submitted POST body (send-picks/route.ts
+// doesn't constrain values to the nominee list), so they're untrusted
+// input rendered into an HTML email — escape before interpolating.
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // Builds the confirmation email. Deliberately NOT a byte-for-byte reuse of
 // send-picks/route.ts's pre-ceremony copy ("we'll email you after the
 // ceremony with your results") — the 2026-06-07 ceremony has already
@@ -63,8 +75,8 @@ function buildConfirmationEmail({ email, picks, ceremonyYear }) {
   const picksHtml = Object.entries(picks || {})
     .map(([cat, pick]) => `
         <tr>
-          <td style="padding:8px 0;border-bottom:1px solid #1f1f1f;color:#6b7280;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">${cat.replace('Best ', '')}</td>
-          <td style="padding:8px 0;border-bottom:1px solid #1f1f1f;color:#ffffff;font-size:14px;font-weight:700;text-align:right;">${pick}</td>
+          <td style="padding:8px 0;border-bottom:1px solid #1f1f1f;color:#6b7280;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">${escapeHtml(cat.replace('Best ', ''))}</td>
+          <td style="padding:8px 0;border-bottom:1px solid #1f1f1f;color:#ffffff;font-size:14px;font-weight:700;text-align:right;">${escapeHtml(pick)}</td>
         </tr>`)
     .join('');
 

@@ -84,3 +84,20 @@ test('buildConfirmationEmail singularizes "category" for a one-pick ballot', () 
   const { html } = buildConfirmationEmail({ email: 'a@x.com', picks: { 'Best Musical': 'Foo' }, ceremonyYear: 2026 });
   assert.match(html, /You picked 1 category for/);
 });
+
+test('buildConfirmationEmail escapes HTML in pick values (picks are unvalidated user input)', () => {
+  const { html } = buildConfirmationEmail({
+    email: 'a@x.com',
+    picks: { 'Best Musical': '<img src=x onerror=alert(1)>' },
+    ceremonyYear: 2026,
+  });
+  assert.ok(!html.includes('<img src=x'));
+  assert.ok(html.includes('&lt;img src=x'));
+});
+
+test('parseSubmissionsJsonl treats a whitespace-only email as no email', () => {
+  const jsonl = JSON.stringify({ email: '   ', picks: { p: 'x' } });
+  const { records, skippedNoEmail } = parseSubmissionsJsonl(jsonl);
+  assert.equal(records.length, 0);
+  assert.equal(skippedNoEmail, 1);
+});
