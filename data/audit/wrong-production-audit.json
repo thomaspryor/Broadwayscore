@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-16T13:16:33.594Z",
+  "timestamp": "2026-09-16T15:04:54.093Z",
   "stats": {
-    "totalReviews": 43496,
-    "alreadyFlagged": 17996,
+    "totalReviews": 43501,
+    "alreadyFlagged": 17998,
     "dateGuardCatches": 242,
     "directorMismatch": 1044,
     "tvFilmSignals": 1275,
-    "londonSignals": 1072,
+    "londonSignals": 1074,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3817
+    "noPublishDate": 3811
   },
   "findings": [
     {
@@ -19902,6 +19902,8 @@
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "gay-times--chris-selman.json",
       "score": 91,
+      "publishDate": "2022-10-24",
+      "url": "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -36393,6 +36395,19 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
+      "file": "fairypoweredproductions--unknown.json",
+      "publishDate": "2026-05-27",
+      "url": "https://fairypoweredproductions.com/avenue-q-review-12/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
       "score": 77,
       "publishDate": "2026-04-17",
@@ -40652,6 +40667,19 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 78,
       "publishDate": "2026-09-16",
@@ -44638,7 +44666,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 77,
+      "score": 82,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -44679,7 +44707,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "guardian--mark-lawson.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-09-11",
       "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
       "findings": [
