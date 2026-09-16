@@ -7,6 +7,7 @@ const {
   matchProductions,
   selectCurrentProductionMatches,
   venuesMatch,
+  findStaleMezzanineShowIds,
 } = require('./scrape-mezzanine-audience.js');
 
 // BRO-975: Mezzanine matcher merges old/historical productions of the same
@@ -45,6 +46,23 @@ describe('venuesMatch', () => {
   test('returns false when either side is empty', () => {
     assert.ok(!venuesMatch('', 'Harold Pinter'));
     assert.ok(!venuesMatch('Harold Pinter Theatre', ''));
+  });
+
+  // Codex adversarial review (BRO-975): title-match.js's canonicalVenue()
+  // falls back to the FIRST WORD for unrecognized venues, which would
+  // falsely collide these pairs. venuesMatch() must not reuse that fallback.
+  test('does not collide real, distinct theaters that share a first word', () => {
+    assert.ok(!venuesMatch('Prince Edward Theatre', 'Prince of Wales Theatre'));
+    assert.ok(!venuesMatch('Apollo Theatre', 'Apollo Victoria Theatre'));
+    assert.ok(!venuesMatch('Lyric Theatre', 'Lyric Hammersmith'));
+  });
+
+  test('matches a descriptive-suffix variant of a specific, multi-word venue name', () => {
+    assert.ok(venuesMatch('New York City Center', 'New York City Center - Mainstage'));
+  });
+
+  test('strips a leading "The" so it does not cause a false negative', () => {
+    assert.ok(venuesMatch('The Gillian Lynne Theatre', 'Gillian Lynne Theatre'));
   });
 });
 
@@ -92,12 +110,16 @@ describe('selectCurrentProductionMatches', () => {
     assert.deepStrictEqual(result, []);
   });
 
-  test('falls back to ±1-year verification when the show has no recognizable venue match anywhere', () => {
-    const inWindow = { production: production({ name: 'Foo', theater: 'Unknown Hall', opened: '2025-01-01', ratingsCount: 10 }) };
-    const alsoInWindow = { production: production({ name: 'Foo', theater: 'Unknown Hall 2', opened: '2024-06-01', ratingsCount: 5 }) };
-    const tooOld = { production: production({ name: 'Foo', theater: 'Unknown Hall 3', opened: '2015-01-01', ratingsCount: 999 }) };
-    const result = selectCurrentProductionMatches([tooOld, inWindow, alsoInWindow], 2025, 'Some Venue Not In Data');
-    assert.deepStrictEqual(new Set(result), new Set([inWindow, alsoInWindow]));
+  test('falls back to ±1-year verification when the show has no recognizable venue match anywhere, merging only the year-anchor\'s own venue', () => {
+    const anchor = { production: production({ name: 'Foo', theater: 'Some Hall', opened: '2025-01-01', ratingsCount: 10 }) };
+    const sameVenueAsAnchor = { production: production({ name: 'Foo', theater: 'Some Hall', opened: '2024-06-01', ratingsCount: 5 }) };
+    const noVenueInfo = { production: production({ name: 'Foo', theater: undefined, opened: '2024-03-01', ratingsCount: 7 }) };
+    const differentKnownVenue = { production: production({ name: 'Foo', theater: 'A Totally Different Hall', opened: '2024-08-01', ratingsCount: 999 }) };
+    const tooOld = { production: production({ name: 'Foo', theater: 'Some Hall', opened: '2015-01-01', ratingsCount: 3 }) };
+    const result = selectCurrentProductionMatches([tooOld, anchor, sameVenueAsAnchor, noVenueInfo, differentKnownVenue], 2025, 'Some Venue Not In Data');
+    // Year-verified (±1 of 2025): anchor, sameVenueAsAnchor, noVenueInfo, differentKnownVenue — tooOld is excluded outright.
+    // Of those, differentKnownVenue names a real, different theater from the anchor and is dropped even though its year qualifies.
+    assert.deepStrictEqual(new Set(result), new Set([anchor, sameVenueAsAnchor, noVenueInfo]));
   });
 
   test('merges same-venue matches (legitimate multi-part production, e.g. Angels in America)', () => {
@@ -105,6 +127,36 @@ describe('selectCurrentProductionMatches', () => {
     const partTwo = { production: production({ name: 'Angels in America: Perestroika', theater: 'Neil Simon Theatre', opened: '2018-03-01', ratingsCount: 80 }) };
     const result = selectCurrentProductionMatches([partOne, partTwo], 2018, 'Neil Simon Theatre');
     assert.deepStrictEqual(new Set(result), new Set([partOne, partTwo]));
+  });
+});
+
+describe('findStaleMezzanineShowIds', () => {
+  const processedShows = [
+    { id: 'avenue-q-west-end-2026', title: 'Avenue Q' },
+    { id: 'romeo-and-juliet-west-end-2026', title: 'Romeo and Juliet' },
+    { id: 'mamma-mia-west-end-2021', title: 'Mamma Mia!' },
+  ];
+
+  test('flags a show with existing Mezzanine data that no longer has a current-run match', () => {
+    const audienceBuzzShows = {
+      'avenue-q-west-end-2026': { sources: { mezzanine: { score: 70, reviewCount: 466 } } },
+    };
+    const result = findStaleMezzanineShowIds(processedShows, new Set(), audienceBuzzShows);
+    assert.deepStrictEqual(result, ['avenue-q-west-end-2026']);
+  });
+
+  test('does not flag a show that still has a current match this run', () => {
+    const audienceBuzzShows = {
+      'romeo-and-juliet-west-end-2026': { sources: { mezzanine: { score: 80, reviewCount: 179 } } },
+    };
+    const matchedShowIds = new Set(['romeo-and-juliet-west-end-2026']);
+    const result = findStaleMezzanineShowIds(processedShows, matchedShowIds, audienceBuzzShows);
+    assert.deepStrictEqual(result, []);
+  });
+
+  test('does not flag a show with no existing Mezzanine data', () => {
+    const result = findStaleMezzanineShowIds(processedShows, new Set(), {});
+    assert.deepStrictEqual(result, []);
   });
 });
 
@@ -164,5 +216,17 @@ describe('matchProductions integration — BRO-975 contamination fixes', () => {
     const matches = matchProductions(productions, shows);
     assert.strictEqual(matches.length, 1);
     assert.strictEqual(matches[0].ratingsCount, 12000);
+  });
+
+  test('legitimate multi-part production still merges end-to-end through Strategy 2 prefix matching (Angels in America)', () => {
+    const shows = [show({ id: 'angels-in-america-2018', title: 'Angels in America', venue: 'Neil Simon Theatre', openingDate: '2018-03-25', category: 'broadway' })];
+    const productions = [
+      production({ name: 'Angels in America: Millennium Approaches', theater: 'Neil Simon Theatre', opened: '2018-03-01', ratingsCount: 100, averageRating: 4.5 }),
+      production({ name: 'Angels in America: Perestroika', theater: 'Neil Simon Theatre', opened: '2018-03-01', ratingsCount: 80, averageRating: 4.5 }),
+    ];
+    const matches = matchProductions(productions, shows);
+    assert.strictEqual(matches.length, 1);
+    assert.strictEqual(matches[0].ratingsCount, 180);
+    assert.strictEqual(matches[0].mergedFrom, 2);
   });
 });

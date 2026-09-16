@@ -19,7 +19,7 @@ const path = require('path');
 const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { normalizeTitle, titleTokens, jaccard, foldDiacritics, canonicalVenue } = require('./lib/title-match');
+const { normalizeTitle, titleTokens, jaccard, foldDiacritics } = require('./lib/title-match');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 // Parse command line args
@@ -297,16 +297,46 @@ function parseDate(val) {
 const normalize = normalizeTitle;
 
 /**
- * True when two venue strings refer to the same physical theater, using the
- * shared canonicalVenue() alias table (title-match.js) so "Noël Coward
- * Theatre" (our shows.json) lines up with "Noel Coward" (Mezzanine) despite
- * diacritic/suffix differences.
+ * Normalize a venue string for identity comparison: fold diacritics, drop a
+ * leading "The", strip the generic "theatre"/"theater" word, collapse
+ * punctuation to spaces.
+ *
+ * Deliberately does NOT use title-match.js's canonicalVenue() — its
+ * unknown-venue fallback keys on the FIRST WORD ONLY, which collapses real,
+ * distinct theaters that share one ("Prince Edward Theatre" and "Prince of
+ * Wales Theatre" both → "prince"; "Apollo Theatre" and "Apollo Victoria
+ * Theatre" both → "apollo"). That fallback exists for a different job
+ * (shared-stage dedup) where those collisions don't come up; reusing it here
+ * would silently reintroduce the exact contamination class this fix is for
+ * (Codex adversarial review, BRO-975).
+ */
+function normalizeVenueForMatch(v) {
+  return foldDiacritics(v || '')
+    .toLowerCase()
+    .replace(/^\s*the\s+/, '')
+    .replace(/\btheatre\b|\btheater\b/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+/**
+ * True when two venue strings identify the same physical theater. Requires
+ * exact match after normalization, OR one to be a distinguishing PREFIX of
+ * the other (handles a descriptive suffix like "New York City Center" vs
+ * "New York City Center - Mainstage") — but only once the shared prefix is
+ * long/specific enough that a short, generic word can't accidentally prefix
+ * an unrelated venue that happens to start the same way ("Lyric" must not
+ * prefix-match "Lyric Hammersmith"). Threshold matches the existing
+ * short-title-match guard used elsewhere in this file (Strategy 2, `>= 8`).
  */
 function venuesMatch(a, b) {
-  const ca = canonicalVenue(foldDiacritics(a || ''));
-  const cb = canonicalVenue(foldDiacritics(b || ''));
-  if (!ca || !cb) return false;
-  return ca === cb;
+  const na = normalizeVenueForMatch(a);
+  const nb = normalizeVenueForMatch(b);
+  if (!na || !nb) return false;
+  if (na === nb) return true;
+  const shorter = na.length <= nb.length ? na : nb;
+  const longer = na.length <= nb.length ? nb : na;
+  return shorter.length >= 8 && longer.startsWith(shorter + ' ');
 }
 
 /**
@@ -337,8 +367,12 @@ function venuesMatch(a, b) {
  * production 2+ years off is exactly the kind of historical noise this
  * bug is about (Avenue Q's closest historical run is 2 years out; picking
  * it "because it's closest" would just swap one wrong answer for another).
- * If nothing clears that bar either, we drop all candidates — no data
- * beats wrong data.
+ * Within that fallback window, candidates with DIFFERENT known theaters are
+ * still different productions — being close in time isn't enough on its own
+ * (Codex adversarial review, BRO-975) — so we anchor on the year closest to
+ * ours and only keep others that share ITS venue, or have no venue info to
+ * contradict it. If nothing clears the year bar at all, we drop every
+ * candidate — no data beats wrong data.
  */
 function selectCurrentProductionMatches(allMatches, openYear, showVenue) {
   if (allMatches.length <= 1) return allMatches;
@@ -348,21 +382,44 @@ function selectCurrentProductionMatches(allMatches, openYear, showVenue) {
     return {
       m,
       y: Number.isFinite(y) ? y : null,
-      venueMatch: showVenue ? venuesMatch(showVenue, m.production.theater?.name) : false,
+      theater: m.production.theater?.name || m.production.theaterName || null,
     };
   });
+  for (const x of withInfo) {
+    x.venueMatch = showVenue && x.theater ? venuesMatch(showVenue, x.theater) : false;
+  }
 
   const venueConfirmed = withInfo.filter(x => x.venueMatch);
   if (venueConfirmed.length > 0) {
     return venueConfirmed.map(x => x.m);
   }
 
-  if (openYear) {
-    const yearVerified = withInfo.filter(x => x.y !== null && Math.abs(x.y - openYear) <= 1);
-    if (yearVerified.length > 0) return yearVerified.map(x => x.m);
-  }
+  if (!openYear) return [];
+  const yearVerified = withInfo.filter(x => x.y !== null && Math.abs(x.y - openYear) <= 1);
+  if (yearVerified.length === 0) return [];
 
-  return [];
+  const anchor = yearVerified.reduce((a, b) => (Math.abs(a.y - openYear) <= Math.abs(b.y - openYear) ? a : b));
+  return yearVerified.filter(x => {
+    if (x === anchor) return true;
+    if (!x.theater || !anchor.theater) return true;
+    return venuesMatch(x.theater, anchor.theater);
+  }).map(x => x.m);
+}
+
+/**
+ * BRO-975: shows that had Mezzanine data attached by a pre-fix run but whose
+ * candidates no longer confirm a current production this run — that stale,
+ * possibly-contaminated data must be cleared, not left in place (fixing the
+ * matcher alone doesn't retroactively fix already-written audience-buzz.json
+ * entries; only a FUTURE valid match would ever overwrite one otherwise).
+ *
+ * Pure decision function — separated from the I/O (delete + recalculate +
+ * save) so it's unit-testable without a live audienceBuzz object.
+ */
+function findStaleMezzanineShowIds(processedShows, matchedShowIds, audienceBuzzShows) {
+  return processedShows
+    .filter(s => audienceBuzzShows[s.id]?.sources?.mezzanine && !matchedShowIds.has(s.id))
+    .map(s => s.id);
 }
 
 /**
@@ -787,6 +844,39 @@ async function main() {
     }
   }
 
+  // BRO-975: a show that HAD Mezzanine data from a previous (pre-fix) run but
+  // produces zero matches this run — because selectCurrentProductionMatches()
+  // could no longer confirm any candidate as the current production — must
+  // have that stale data cleared, not left in place. Otherwise fixing the
+  // matcher alone doesn't fix already-contaminated shows like Avenue Q; only
+  // a FUTURE valid match would ever overwrite it (Codex adversarial review).
+  const processedShows = [...nycShows, ...weShows, ...regionalShows];
+  const matchedShowIds = new Set(matches.map(m => m.showId));
+  const staleIds = new Set(findStaleMezzanineShowIds(processedShows, matchedShowIds, audienceBuzz.shows));
+  let cleared = 0;
+  for (const s of processedShows) {
+    if (!staleIds.has(s.id)) continue;
+    const existingMezz = audienceBuzz.shows[s.id].sources.mezzanine;
+
+    if (dryRun) {
+      console.log(`[CLEAR] ${s.title}: stale Mezzanine data (${existingMezz.reviewCount} ratings) no longer confirms the current production`);
+      cleared++;
+      continue;
+    }
+
+    // delete (not null) — a lingering key, even null-valued, still makes
+    // src/app/show/[slug]/page.tsx:366 emit a dead "View on Mezzanine" link
+    // for a show with confirmed-zero real data.
+    delete audienceBuzz.shows[s.id].sources.mezzanine;
+    const showInfo = { closingDate: s.closingDate, status: s.status, category: s.category };
+    const { score } = calculateCombinedScore(audienceBuzz.shows[s.id].sources, showInfo);
+    audienceBuzz.shows[s.id].combinedScore = score;
+    audienceBuzz.shows[s.id].designation = score !== null ? getDesignation(score) : null;
+    cleared++;
+    console.log(`- ${s.title}: cleared stale Mezzanine data (${existingMezz.reviewCount} ratings)`);
+  }
+  if (cleared > 0) console.log(`Cleared stale Mezzanine data for ${cleared} show(s) that no longer confirm a current production\n`);
+
   // Coverage audit: surface unmatched Mezzanine productions whose title is
   // SIMILAR to one of our open/recent shows that lacks Mezzanine data.
   // This catches title-drift (normalize gaps, missing MEZZANINE_OVERRIDES).
@@ -889,7 +979,7 @@ async function main() {
 }
 
 if (require.main !== module) {
-  module.exports = { matchProductions, deduplicateMatches, normalize, MEZZANINE_OVERRIDES, selectCurrentProductionMatches, venuesMatch };
+  module.exports = { matchProductions, deduplicateMatches, normalize, MEZZANINE_OVERRIDES, selectCurrentProductionMatches, venuesMatch, findStaleMezzanineShowIds };
 } else {
   main().catch(e => {
     console.error('Fatal error:', e.message);
