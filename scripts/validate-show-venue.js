@@ -23,6 +23,18 @@
  *   --show=ID              one show only
  *   --all-provisional      every entry with provisional:true OR
  *                          discoverySource matching ^manual|^venue-page
+ *   --all                  (BRO-2255) every show in the corpus, not just
+ *                          provisional entries — the full-corpus Playbill
+ *                          revival/type sweep. Writes to a SEPARATE ledger
+ *                          (data/audit/venue-date-mismatches-all.json), not
+ *                          venue-date-mismatches.json, because that domain is
+ *                          exactly "shows currently provisional" and mixing
+ *                          the two would make a --all-provisional run retire
+ *                          every non-provisional row as no-longer-tracked.
+ *                          Newly SERP-resolved Playbill URLs are written back
+ *                          to data/playbill-urls.json as they're found, so a
+ *                          budget-capped run's cache gains persist across
+ *                          sessions instead of re-querying SERP every time.
  *   --fail-on-mismatch     exit 1 + emit ::error:: lines per mismatch
  *   --dry-run              do not write audit file
  *   --limit=N              cap shows processed (debug aid)
@@ -51,6 +63,7 @@
  *   node scripts/validate-show-venue.js --show=sunset-baby-off-broadway-2026
  *   node scripts/validate-show-venue.js --all-provisional
  *   node scripts/validate-show-venue.js --all-provisional --fail-on-mismatch
+ *   node scripts/validate-show-venue.js --all --time-budget-min=60
  *
  * Exit codes (BRO-2821). A run that explicitly names ONE show with --show is
  * held to a stricter contract than a sweep, because a sweep averages rows and
@@ -92,6 +105,7 @@ const {
   missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { openPlaybillUrls } = require('./lib/playbill-urls-store');
 const { venueSearchToken } = require('./lib/venue-search-token');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { classifyNamedShowRun } = require('./lib/named-show-verdict');
@@ -109,13 +123,21 @@ const args = process.argv.slice(2);
 const dataDirOverride = args.find(a => a.startsWith('--data-dir='))?.split('=').slice(1).join('=');
 const SHOWS_PATH = dataDirOverride ? path.join(path.resolve(dataDirOverride), 'shows.json') : path.join(ROOT, 'data', 'shows.json');
 const PLAYBILL_URLS_PATH = path.join(ROOT, 'data', 'playbill-urls.json');
+// --all (BRO-2255) sweeps the WHOLE corpus, not just provisional entries — a
+// different domain than --all-provisional's ledger, which the file's own
+// header documents as "exactly the shows that are provisional right now"
+// (buildAuditResults). Mixing the two domains into one file would let a
+// --all-provisional CI run silently retire every non-provisional row it
+// doesn't recognise, so --all gets its own ledger rather than sharing
+// venue-date-mismatches.json.
+const allMode = args.includes('--all');
 // VENUE_AUDIT_PATH redirects the shared report for tests only — the report is
 // a repo-wide ledger, so an automated test of the write path must not be able
 // to touch the real one (that is the BRO-2696 failure itself). Production and
 // CI never set it.
 const AUDIT_PATH = process.env.VENUE_AUDIT_PATH
   ? path.resolve(process.env.VENUE_AUDIT_PATH)
-  : path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
+  : path.join(ROOT, 'data', 'audit', allMode ? 'venue-date-mismatches-all.json' : 'venue-date-mismatches.json');
 if (process.env.VENUE_AUDIT_PATH) {
   // Never silent: if this were ever set in CI, the gate would read and update a
   // ledger nobody is looking at while every run still reported success.
@@ -693,14 +715,14 @@ async function validateOne(show, log) {
     log(`  ✓ match`);
     return {
       id: show.id, title: show.title, venue: show.venue,
-      result: 'match', playbillUrl: urlResult.url, parsed, mismatches: [], explainedByPriorRun,
+      result: 'match', playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches: [], explainedByPriorRun,
     };
   }
   log(`  ✗ ${mismatches.length} mismatch(es):`);
   mismatches.forEach(m => log(`    - ${m.field}: shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`));
   return {
     id: show.id, title: show.title, venue: show.venue,
-    result: 'mismatch', playbillUrl: urlResult.url, parsed, mismatches, explainedByPriorRun,
+    result: 'mismatch', playbillUrl: urlResult.url, urlSource: urlResult.source, parsed, mismatches, explainedByPriorRun,
   };
 }
 
@@ -720,6 +742,10 @@ async function main() {
   // than a branch someone has to remember to keep in sync.
   const allShows = loadShows();
   const provisionalShows = allShows.filter(isProvisional);
+  // --all's domain is every show in the corpus rather than just the
+  // provisional subset — see the allMode/AUDIT_PATH comments above for why
+  // that domain gets its own ledger file instead of sharing this one.
+  const trackedShows = allMode ? allShows : provisionalShows;
   const previousResultsById = loadPreviousResultById();
   // --data-dir points shows.json at a CANDIDATE branch's copy while the ledger
   // still resolves to the real repo (documented above), so the two describe
@@ -731,12 +757,12 @@ async function main() {
   // the two DO describe the same universe and normal semantics apply.
   const mismatchedUniverse = Boolean(dataDirOverride) && !process.env.VENUE_AUDIT_PATH;
   const currentProvisionalIds = new Set([
-    ...provisionalShows.map(s => s.id),
+    ...trackedShows.map(s => s.id),
     ...(mismatchedUniverse ? Object.keys(previousResultsById) : []),
   ]);
   const showsById = mismatchedUniverse
     ? null
-    : Object.fromEntries(provisionalShows.map(s => [s.id, s]));
+    : Object.fromEntries(trackedShows.map(s => [s.id, s]));
   // BRO-2701 review finding 3: this used to map EVERY prior row to its
   // `.result` unconditionally, while buildAuditResults drops fingerprint-stale
   // rows at write time. A show whose venue/dates were edited since its last
@@ -767,8 +793,10 @@ async function main() {
     }
   } else if (allProvisional) {
     targets = orderProvisionalTargets(provisionalShows, previousResultOnlyById);
+  } else if (allMode) {
+    targets = orderProvisionalTargets(allShows, previousResultOnlyById);
   } else {
-    console.error('Pass --show=ID, --all-provisional, or --candidates-file=PATH');
+    console.error('Pass --show=ID, --all-provisional, --all, or --candidates-file=PATH');
     process.exit(2);
   }
   if (limit > 0) targets = targets.slice(0, limit);
@@ -777,11 +805,26 @@ async function main() {
   if (dryRun) console.log('[DRY RUN — audit file not written]');
 
   const log = verbose || targets.length <= 5 ? console.log : () => {};
+  // Write-through cache (BRO-2255): a freshly SERP-resolved Playbill URL is
+  // persisted to data/playbill-urls.json as soon as it's confirmed correct
+  // (a 'match' or 'mismatch' verdict means the page loaded and parsed — a
+  // 'fetch-error'/'short-response' URL is NOT persisted, since the fetch
+  // never actually confirmed the page). Without this, a --all sweep re-runs
+  // the exact same SERP query for the exact same show every session until the
+  // whole corpus happens to be swept in one run, which the corpus's size
+  // makes unrealistic. openPlaybillUrls uses the concurrent-safe delta-replay
+  // writer (scripts/lib/playbill-urls-store.js) that every other cache writer
+  // already goes through, and dryRun skips it like every other write below.
+  const playbillCache = dryRun ? null : openPlaybillUrls(PLAYBILL_URLS_PATH);
   const results = [];
   for (const show of targets) {
     if (timeBudget.exceeded()) break;
     const r = await validateOne(show, log);
     results.push(r);
+    if (playbillCache && r.urlSource === 'serp' && r.playbillUrl) {
+      playbillCache.data.shows[show.id] = r.playbillUrl;
+      playbillCache.save();
+    }
     await sleep(400);
   }
   const deferredShows = targets.slice(results.length);
@@ -890,6 +933,7 @@ async function main() {
     let filterMeta;
     if (showFilter) filterMeta = { show: showFilter };
     else if (candidatesFile) filterMeta = { candidatesFile, limit: limit || null };
+    else if (allMode) filterMeta = { all: true, limit: limit || null };
     else filterMeta = { allProvisional: true, limit: limit || null };
     const out = {
       generatedAt: new Date().toISOString(),
