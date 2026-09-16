@@ -195,4 +195,26 @@ function assessMainRedStreak(runs, nowMs = Date.now(), thresholdHours = DEFAULT_
   };
 }
 
-module.exports = { assessMainRedStreak, DEFAULT_THRESHOLD_HOURS };
+// Converts a GitHub Actions `needs` context object (job name -> { result })
+// into the same comma-joined failing-job-name string failingJobNames()
+// computes for gh-API-sourced runs — so test.yml's push-triggered
+// "test-summary" job (which already has every sibling job's result for free
+// via `needs`, no extra API call) and the gh-API-sourced backstop in
+// health-check.js (checkMainRedStreak) describe an incident identically.
+// Returns '' when nothing in `needsObj` failed (mirrors run.conclusion
+// 'success' rather than falling back to failingJobNames()'s "no names found"
+// branch, which would otherwise return the literal string 'success').
+function failingJobsFromNeeds(needsObj) {
+  const jobs = Object.entries(needsObj || {}).map(([name, v]) => ({ name, conclusion: v && v.result }));
+  const anyFailing = jobs.some((j) => j.conclusion && !['success', 'skipped'].includes(j.conclusion));
+  if (!anyFailing) return '';
+  return failingJobNames({ conclusion: 'failure', jobs });
+}
+
+module.exports = {
+  assessMainRedStreak,
+  DEFAULT_THRESHOLD_HOURS,
+  failingJobNames,
+  hasFailingStep,
+  failingJobsFromNeeds,
+};
