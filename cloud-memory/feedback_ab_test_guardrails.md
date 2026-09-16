@@ -21,7 +21,7 @@ Only the user decides when a test is "done." Do not PATCH PostHog flags to chang
 
 Allowed without asking:
 - Reading flag state via GET (diagnostics)
-- Running `scripts/validate-ab-test.js` or `scripts/analyze-ab-test.js`
+- Running `scripts/analyze-ab-test.js` (`scripts/validate-ab-test.js` was DELETED 2026-09-16 when `ticket-single-button` retired — see rule 6 below)
 - Adding `FLAG_RESTART_DATES` entries in `scripts/analyze-ab-test.js` *after* the user confirms a restart
 
 Not allowed without explicit user approval:
