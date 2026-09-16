@@ -39,7 +39,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
-const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
 const {
   shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
@@ -784,6 +784,25 @@ function selectBestExcerpt(data, showTitle) {
         console.log(`  🚫 SUPPRESSED ${msg}`);
         return null;
       }
+    }
+
+    // Layer 3b: Former-cast mention (BRO-1397) — a priorRuns review naming a
+    // since-departed cast member (e.g. a 2022-run pull-quote praising a lead
+    // who isn't in the 2026 revival's cast). Hard reject: unlike the hedge
+    // guard, a factually-wrong actor name doesn't get better by falling back
+    // to a lower-ranked candidate that also names them, so every candidate
+    // is screened the same way and the review simply ships with no pull
+    // quote if none pass.
+    const formerCastCheck = excerptMentionsFormerCast(excerpt, {
+      show: showById[showId],
+      reviewDate: data.publishDate,
+      reviewData: data,
+    });
+    if (formerCastCheck.mentionsFormerCast) {
+      if (!stats.formerCastExcerptRejected) stats.formerCastExcerptRejected = [];
+      stats.formerCastExcerptRejected.push({ showId, source, name: formerCastCheck.name, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [former-cast] ${showId}: "${source}" mentions former cast ("${formerCastCheck.name}")`);
+      return null;
     }
 
     // Layer 4: Tour review detection (only for non-tour-stop shows)

@@ -2,6 +2,8 @@
  * Excerpt Validation Module
  *
  * Layer 3: Cross-show excerpt validation (detects excerpts mentioning wrong shows)
+ * Layer 3b: Former-cast mention detection (priorRuns reviews naming a
+ *           since-departed cast member)
  * Layer 4: Tour review excerpt detection (detects touring production language)
  *
  * Designed for use in rebuild-all-reviews.js selectBestExcerpt() pipeline.
@@ -11,6 +13,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const { isWithinPriorRun } = require('./wrong-production-autoclear');
 
 // --- Layer 3: Cross-Show Validation ---
 
@@ -126,6 +129,247 @@ function excerptMentionsWrongShow(excerpt, currentShowId, currentShowTitle) {
   }
 
   return { isWrongShow: false };
+}
+
+// --- Layer 3b: Former-Cast Mention Detection ---
+//
+// A returning production (show.priorRuns) re-includes reviews from an
+// earlier run of the same show. Those reviews' pull-quotes were written
+// about THAT run's cast and can name a since-departed lead (BRO-1397: To
+// Kill a Mockingbird WE 2026 re-includes its 2022 Gielgud run, whose Times
+// review reads "Rafe Spall is stunning" — Spall isn't in the 2026 cast).
+//
+// Detection requires POSITIVE evidence, not just "any unrecognized name":
+// a name candidate only counts as a former-cast mention when it sits near
+// one of the CURRENT show's own character/role names (Atticus, Mayella,
+// Judge Taylor...) in the review's own text — the way critics actually
+// write about casting ("Rafe Spall inheriting ... role as Atticus Finch",
+// "a terrified Mayella (Poppy Lee Friar)"). A plain "unrecognized name"
+// net over-fires on the author ("Harper Lee's 1960 novel", "the Harper Lee
+// estate"), other adaptations name-dropped for comparison ("The Social
+// Network"), and outlet/venue text — none of those sit next to a role name.
+//
+// Detection is file-local (scoped to the one review's own text fields, not
+// the show's whole corpus): a corpus-wide "mentioned only in prior-run-era
+// reviews" scan sounds appealing but aggregator excerpt fields on this
+// corpus are already known to carry stale cross-era text (WET/Stagedoor
+// excerpts scraped from an old archive page onto a new review, see
+// memory/feedback_wet_venue_page_wrong_show_ingestion.md) — bucketing by
+// publishDate alone would let a contaminated "current-era" field cancel out
+// a real former-cast name. Restricting the scan to one file's own fields
+// avoids that cross-file poisoning.
+
+// Two-or-three consecutive Title-Case words — a broad "this looks like a
+// person's name" net, deliberately unanchored to any specific name so it
+// generalizes to any show that declares priorRuns.
+const NAME_CANDIDATE_RE = /\b[A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){1,2}\b/g;
+
+// Candidates ending in one of these words are venues/outlets/institutions,
+// not people — "Gielgud Theatre", "New York Times" — even though they match
+// the Title-Case pattern.
+const INSTITUTIONAL_SUFFIX_RE = /(theatre|theater|company|square|street|avenue|award|awards|festival|society|museum|centre|center|studio|productions?|times|guardian|post|herald|journal|tribune|magazine)$/i;
+
+// A candidate starting with a common function word is a title/phrase
+// fragment ("The Social Network", "A Few Good Men" — comparison titles
+// critics drop in passing), not a person's name.
+const LEADING_STOPWORD_RE = /^(the|a|an|and|or|but|of|in|on|at|to|for|with|from|by|as|is|was|are|were|this|that|these|those|its|so|if|when|while|where|what|who|which|how|why|there|here|now|then|yet|not|no)$/i;
+
+// A name immediately followed by "'s novel"/"estate"/etc (with up to a few
+// adjectives in between — "'s beloved book", "'s celebrated 1960 novel") is
+// the literary source's author (Harper Lee, Arthur Miller...) — a valid
+// reference in any era's review, so role-name proximity alone isn't enough
+// to treat it as a departed cast member.
+const LITERARY_SOURCE_SUFFIX_RE = /^\s*['’]?s?\s*(?:\d{4}\s+)?(?:[a-z]+\s+){0,3}(?:novel|book|memoir|play|story|autobiography|screenplay|source material|estate)\b/i;
+const LITERARY_SOURCE_SUFFIX_WINDOW = 40;
+
+// Fields that can carry review prose worth scanning for name candidates —
+// mirrors the source list selectBestExcerpt() itself pulls quotes from.
+const NAME_SCAN_FIELDS = [
+  'fullText', 'westEndTheatreExcerpt', 'stagedoorExcerpt', 'dtliExcerpt',
+  'bwwExcerpt', 'showScoreExcerpt', 'theatreReviewsExcerpt', 'nycTheatreExcerpt',
+  'lboRoundupExcerpt', 'llmPullQuote',
+];
+
+// How close a current-show role name must sit to a name candidate (either
+// side) to count as "this text is describing who plays that role" rather
+// than an unrelated nearby mention.
+const ROLE_PROXIMITY_WINDOW = 60;
+
+function nameTokens(str) {
+  if (!str) return [];
+  return str
+    .replace(/[^\p{L}\s'-]/gu, ' ')
+    .split(/\s+/)
+    .map(t => t.trim().toLowerCase())
+    .filter(t => t.length >= 3);
+}
+
+/**
+ * Extract "this looks like a person's name" candidates (with match index)
+ * from text, dropping institutional matches (venues, outlets) and leading
+ * function-word fragments ("The Social Network").
+ *
+ * @param {string} text
+ * @returns {Array<{ name: string, index: number }>}
+ */
+function extractPersonNameCandidates(text) {
+  if (!text) return [];
+  const out = [];
+  for (const m of text.matchAll(NAME_CANDIDATE_RE)) {
+    const candidate = m[0];
+    const words = candidate.split(/\s+/);
+    if (LEADING_STOPWORD_RE.test(words[0])) continue;
+    if (INSTITUTIONAL_SUFFIX_RE.test(words[words.length - 1])) continue;
+    const afterMatch = text.slice(m.index + candidate.length, m.index + candidate.length + LITERARY_SOURCE_SUFFIX_WINDOW);
+    if (LITERARY_SOURCE_SUFFIX_RE.test(afterMatch)) continue;
+    out.push({ name: candidate, index: m.index });
+  }
+  return out;
+}
+
+/**
+ * Tokens that must never be treated as a former-cast mention: the current
+ * cast (name + role, so character names like "Bob Ewell" aren't mistaken for
+ * a departed actor), the creative team (director/writer persist across
+ * runs), and the show/venue identity.
+ *
+ * @param {object} show
+ * @returns {Set<string>}
+ */
+function buildSafeNameTokens(show) {
+  const safe = new Set();
+  const add = (s) => nameTokens(s).forEach(t => safe.add(t));
+  (show.cast || []).forEach(c => { add(c && c.name); add(c && c.role); });
+  (show.creativeTeam || []).forEach(c => add(c && c.name));
+  add(show.title);
+  add(show.venue);
+  (show.priorRuns || []).forEach(r => add(r && r.venue));
+  return safe;
+}
+
+/**
+ * Role/character-name tokens for the show's CURRENT cast (e.g. "atticus",
+ * "finch", "mayella", "judge", "taylor"). Presence of one of these near a
+ * name candidate is the positive signal that the candidate is being
+ * described as playing that role — see module-level comment.
+ *
+ * @param {object} show
+ * @returns {Set<string>}
+ */
+function buildRoleTerms(show) {
+  const terms = new Set();
+  (show.cast || []).forEach(c => {
+    if (!c || !c.role) return;
+    c.role.split(/[/,]/).forEach(part => nameTokens(part).forEach(t => terms.add(t)));
+  });
+  return terms;
+}
+
+/**
+ * True when a role term appears within ROLE_PROXIMITY_WINDOW chars either
+ * side of a candidate's position in its source text.
+ */
+function hasNearbyRoleTerm(text, candidateName, candidateIndex, roleTerms) {
+  if (roleTerms.size === 0) return false;
+  const start = Math.max(0, candidateIndex - ROLE_PROXIMITY_WINDOW);
+  const end = Math.min(text.length, candidateIndex + candidateName.length + ROLE_PROXIMITY_WINDOW);
+  const window = text.slice(start, end).toLowerCase();
+  for (const term of roleTerms) {
+    if (new RegExp(`\\b${term}\\b`).test(window)) return true;
+  }
+  return false;
+}
+
+/**
+ * Collect name-candidate tokens from a single review file's own text fields
+ * that (a) don't match the show's current cast/creative-team/venue/title and
+ * (b) sit near one of the current show's role names somewhere in the file —
+ * positive evidence the file is describing who plays that role. These are
+ * the tokens (first name, surname, or both) a former-cast guard treats as
+ * "this review's own evidence of who is no longer in the show" — reused
+ * both for a bare-surname mention ("Spall handles...") and a full-name one
+ * ("Rafe Spall is stunning").
+ *
+ * @param {object} data - review-text JSON for one review
+ * @param {Set<string>} safeTokens
+ * @param {Set<string>} roleTerms
+ * @returns {Set<string>}
+ */
+function collectFormerCastTokens(data, safeTokens, roleTerms) {
+  const former = new Set();
+  const texts = NAME_SCAN_FIELDS.map(f => data && data[f]).filter(t => typeof t === 'string' && t);
+  if (data && data.llmScore) {
+    if (data.llmScore.keyQuote) texts.push(data.llmScore.keyQuote);
+    (data.llmScore.keyPhrases || []).forEach(p => { if (p && p.quote) texts.push(p.quote); });
+  }
+
+  for (const text of texts) {
+    for (const { name: candidate, index } of extractPersonNameCandidates(text)) {
+      const tokens = nameTokens(candidate);
+      if (tokens.length === 0) continue;
+      // If ANY token of the candidate matches a safe name, treat the whole
+      // candidate as a mention of that safe person (e.g. "Bartlett Sher"),
+      // not a former-cast member.
+      if (tokens.some(t => safeTokens.has(t))) continue;
+      if (!hasNearbyRoleTerm(text, candidate, index, roleTerms)) continue;
+      // A 2-word candidate ("Rafe Spall") decomposes into both individual
+      // tokens so a later bare-surname mention ("Spall handles...") still
+      // matches. A 3-word candidate ("Poppy Lee Friar") is kept as one
+      // atomic phrase instead — splitting it would add "lee" on its own,
+      // which collides with unrelated words (e.g. the author "Harper
+      // Lee") anywhere else in the file. The tradeoff: a later bare
+      // mention of just the middle/last word of a 3-word name won't
+      // match, which is an acceptable miss next to that false-positive.
+      if (tokens.length <= 2) {
+        tokens.forEach(t => former.add(t));
+      } else {
+        former.add(tokens.join(' '));
+      }
+    }
+  }
+  return former;
+}
+
+/**
+ * Decide whether an excerpt candidate names someone from a returning
+ * production's PRIOR run who isn't in the current cast — a former lead's
+ * pull-quote surviving onto the current show page (BRO-1397).
+ *
+ * Only applies when the show declares priorRuns AND the review's own
+ * publishDate falls inside one of those windows; every other review is
+ * unaffected regardless of who it mentions.
+ *
+ * @param {string} excerpt - the candidate excerpt being validated
+ * @param {object} context
+ * @param {object} context.show - the show record (cast, creativeTeam, priorRuns, title, venue)
+ * @param {string|Date} context.reviewDate - the review's publishDate
+ * @param {object} context.reviewData - the full review-text JSON (for cross-field evidence)
+ * @returns {{ mentionsFormerCast: boolean, name?: string }}
+ */
+function excerptMentionsFormerCast(excerpt, context) {
+  if (!excerpt || !context || !context.show) return { mentionsFormerCast: false };
+  const { show, reviewDate, reviewData } = context;
+  if (!Array.isArray(show.priorRuns) || show.priorRuns.length === 0) {
+    return { mentionsFormerCast: false };
+  }
+  if (!isWithinPriorRun(reviewDate, show.priorRuns)) return { mentionsFormerCast: false };
+
+  const safeTokens = buildSafeNameTokens(show);
+  const roleTerms = buildRoleTerms(show);
+  const formerTokens = collectFormerCastTokens(reviewData || {}, safeTokens, roleTerms);
+  if (formerTokens.size === 0) return { mentionsFormerCast: false };
+
+  const excerptLower = excerpt.toLowerCase();
+  const excerptWords = (excerpt.match(/[A-Za-z']+/g) || []).map(w => w.toLowerCase());
+  for (const entry of formerTokens) {
+    if (entry.includes(' ')) {
+      // Multi-word phrase (3-word candidate, kept atomic) — substring match.
+      if (excerptLower.includes(entry)) return { mentionsFormerCast: true, name: entry };
+    } else if (excerptWords.includes(entry)) {
+      return { mentionsFormerCast: true, name: entry };
+    }
+  }
+  return { mentionsFormerCast: false };
 }
 
 // --- Layer 4: Tour Review Detection ---
@@ -369,6 +613,11 @@ module.exports = {
   excerptMentionsWrongShow,
   isTourReviewExcerpt,
   isFilmTvReview,
+  excerptMentionsFormerCast,
+  buildSafeNameTokens,
+  buildRoleTerms,
+  collectFormerCastTokens,
+  extractPersonNameCandidates,
   hasOnlyForwardTenseTourMention,
   getMatchableTitles,
   resetCache,

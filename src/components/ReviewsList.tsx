@@ -23,6 +23,10 @@ interface Review {
   quote?: string;
   summary?: string;
   pullQuote?: string;
+  // Set when this review belongs to a returning production's declared
+  // priorRuns window — e.g. "2022 Gielgud run" — so a since-departed cast
+  // member's quote reads in context instead of as current casting (BRO-1397).
+  priorRunLabel?: string | null;
 }
 
 interface ReviewsListProps {
@@ -202,6 +206,14 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
 
       {/* Quote + Author, indented to align with outlet name */}
       <div className="pl-24 sm:pl-[6.25rem]">
+        {review.priorRunLabel && (
+          <span
+            className="inline-block mb-1 px-2 py-0.5 rounded-pill bg-surface-overlay text-[10px] font-bold uppercase tracking-[0.08em] text-gray-400"
+            title="This review is from an earlier run of this production"
+          >
+            {review.priorRunLabel}
+          </span>
+        )}
         {review.quote && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
             &ldquo;{review.quote}&rdquo;
