@@ -21,7 +21,7 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
-const EXTRACTOR_VERSION = 6;  // v6: Guardian class-attribute anchoring (UUID/URL false positives), Radio Times <use>-anchored SVG matching
+const EXTRACTOR_VERSION = 7;  // v7 (BRO-922): NY Post css-stars re-scoped to rating__stars DOM boundary (was v6: Guardian class-attribute anchoring, Radio Times <use>-anchored SVG matching)
 
 /**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
@@ -535,33 +535,43 @@ function extractNYPostScore(html, text) {
   // NY Post uses CSS star widgets on newer articles (2019+).
   // rating__star--filled = full star, rating__star--half = half star, on a 4-star scale.
   // IMPORTANT (BRO-922 / Dog Day Afternoon postmortem): NY Post pages carry recirc/
-  // "related stories" modules that reuse the exact same inline-module--review markup
-  // with their OWN star ratings for a different show. Scope to the review widget's own
-  // bounded window (first occurrence only) so a sidebar widget can never contribute
-  // stars to this extraction — a global page-wide count previously double-counted them
-  // and inflated scores (33% error rate). A prior fix (3ea7e7d5d32) added this scoping
-  // but a same-day follow-up (fc2d78f12ab) accidentally dropped it while fixing an
-  // unrelated bug, so both fixes are combined here.
+  // "related stories" modules that reuse the exact same rating__stars markup with their
+  // OWN star ratings for a different show. Scope strictly to the FIRST rating__stars
+  // widget's own DOM boundary so a sidebar widget can never contribute stars to this
+  // extraction — a global page-wide count previously double-counted them and inflated
+  // scores (33% error rate). A prior fix (3ea7e7d5d32) added scoping via a nearby
+  // </section> tag with a fixed-size fallback, but a same-day follow-up (fc2d78f12ab)
+  // accidentally dropped it while fixing an unrelated bug. Re-added here anchored on
+  // rating__stars (the star row itself, not the wider review-card wrapper) with the
+  // actual structural close (`</div></div>` — closes rating__stars then rating) as the
+  // boundary, verified against all 40 archived NY Post reviews in the corpus, rather
+  // than a fixed character window that could truncate a widget mid-star or run long
+  // enough to swallow a nearby recirc widget.
   // Also strip <style> blocks first: each star SVG embeds its own <style> block, and the
   // page stylesheet separately repeats `.rating__star--filled svg{fill:...}` as CSS
   // selector text, not markup — count only actual DOM elements with star classes.
   const htmlNoStyles = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
-  const reviewIdx = htmlNoStyles.indexOf('inline-module--review');
-  if (reviewIdx > -1) {
-    // Each star element (incl. its inline SVG/style boilerplate) runs several hundred
-    // chars; a 4-star widget plus its eyebrow/title comfortably fits in 6000 chars while
-    // staying well short of any other inline-module--review widget elsewhere on the page.
-    const widgetHtml = htmlNoStyles.substring(reviewIdx, reviewIdx + 6000);
-    const filled = (widgetHtml.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--filled\b[^"]*"/gi) || []).length;
-    const half = (widgetHtml.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--half\b[^"]*"/gi) || []).length;
-    if (filled > 0) {
-      const rating = filled + (half * 0.5);
-      if (rating >= 0.5 && rating <= 4) {
-        return {
-          originalScore: `${rating}/4 stars`,
-          normalizedScore: starsToNumeric(rating, 4),
-          source: 'css-stars'
-        };
+  const starsIdx = htmlNoStyles.indexOf('rating__stars');
+  if (starsIdx > -1) {
+    // Cap the search for the closing boundary — a widget with no close within a
+    // generous 8000 chars is not the markup we expect; abstain rather than guess.
+    const searchWindow = htmlNoStyles.substring(starsIdx, starsIdx + 8000);
+    const closeMatch = searchWindow.match(/<\/div>\s*<\/div>/i);
+    const widgetHtml = closeMatch
+      ? searchWindow.substring(0, closeMatch.index)
+      : null;
+    if (widgetHtml !== null) {
+      const filled = (widgetHtml.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--filled\b[^"]*"/gi) || []).length;
+      const half = (widgetHtml.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--half\b[^"]*"/gi) || []).length;
+      if (filled > 0) {
+        const rating = filled + (half * 0.5);
+        if (rating >= 0.5 && rating <= 4) {
+          return {
+            originalScore: `${rating}/4 stars`,
+            normalizedScore: starsToNumeric(rating, 4),
+            source: 'css-stars'
+          };
+        }
       }
     }
   }

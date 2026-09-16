@@ -182,20 +182,20 @@ test('extractNYPostScore: CSS class DEFINITIONS in <style> blocks are not counte
   assert.equal(extractNYPostScore(html, ''), null);
 });
 
-test('extractNYPostScore: BRO-922 — sidebar/recirc widget elsewhere on the page must NOT contribute stars', () => {
-  // The real review widget (2 filled/2 empty = 2/4) appears first in the article body.
-  // A "Related Stories" recirc module further down the page reuses the exact same
-  // inline-module--review markup for a DIFFERENT show's rating (4 filled = 4/4).
-  // Without body-scoping, a page-wide star count would read 2 + 4 = 6 filled stars.
-  // Scoping to the first widget only must return the real review's 2/4.
+test('extractNYPostScore: BRO-922 — sidebar/recirc widget immediately adjacent must NOT contribute stars', () => {
+  // The real review widget (2 filled/2 empty = 2/4) appears first. A "Related Stories"
+  // recirc module immediately follows in the same page, reusing the exact same
+  // rating__stars markup for a DIFFERENT show's rating (4 filled = 4/4) — deliberately
+  // placed with NO padding between the two widgets, so this proves isolation comes from
+  // the real DOM boundary (the `</div></div>` that closes rating__stars + rating), not
+  // from the two widgets merely being far apart on the page.
+  // Without scoping, a page-wide count would read 2 + 4 = 6 filled stars (out of range,
+  // would abstain) or, with a fixed-size window instead of a DOM boundary, could still
+  // spill into the second widget depending on window size.
   const realReview = reviewWidget(2, 0, 2, 'THE FEAR OF 13');
   const sidebarRecirc = reviewWidget(4, 0, 0, 'SOME OTHER SHOW');
-  // Real NY Post articles run several KB of body text (700+ words) before any
-  // "Related Stories" module appears further down the page — pad the fixture to
-  // match, so the scoping window can't accidentally span both widgets.
-  const articleBody = '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>'.repeat(150);
   const html = `<html><body>
-    <div class="single__content entry-content">${realReview}${articleBody}</div>
+    <div class="single__content entry-content">${realReview}</div>
     <aside class="related-stories">${sidebarRecirc}</aside>
     ${NYPOST_PAGE_STYLESHEET}
   </body></html>`;
@@ -205,6 +205,19 @@ test('extractNYPostScore: BRO-922 — sidebar/recirc widget elsewhere on the pag
     normalizedScore: 50,
     source: 'css-stars',
   });
+});
+
+test('extractNYPostScore: does not truncate mid-widget when unrelated markup precedes the close boundary', () => {
+  // Codex adversarial review (BRO-922): a fixed character window could truncate a
+  // widget mid-star, silently under-counting. Insert a large unrelated <div> BEFORE
+  // the widget's own closing `</div></div>`, forced well past where an old 6000-char
+  // window would have cut off — the DOM-boundary match must still find the widget's
+  // real close, not some earlier `</div></div>` pair inside the inserted filler.
+  const filler = '<div class="filler">' + 'x'.repeat(6800) + '</div>';
+  const html = `<div class="rating"><div class="rating__stars">${starDiv('filled')}${starDiv('filled')}${starDiv('filled')}${filler}</div></div>`;
+  const result = extractNYPostScore(html, '');
+  assert.ok(result, 'must still find the real widget close beyond a naive fixed window');
+  assert.equal(result.originalScore, '3/4 stars');
 });
 
 test('extractNYPostScore: falls back to letter grade when no CSS star widget present', () => {
