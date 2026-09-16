@@ -50,26 +50,55 @@ const files = entries
   .map((e) => e.name)
   .sort();
 
+// Scan floor (review finding). Without it, a directory that EXISTS but yields
+// no .yml entries — sparse checkout, or this file vendored somewhere else —
+// prints "TOTAL VIOLATIONS: 0" and exits 0: a guard reporting CLEAN having
+// scanned nothing. That is the exact failure shape this whole card is about, so
+// it must be loud. Mirrors the colocated test's own `files.length > 50` sanity
+// assert; the repo has ~244 workflow files, so 50 is far below any real floor.
+const MIN_EXPECTED_WORKFLOWS = 50;
+if (files.length < MIN_EXPECTED_WORKFLOWS) {
+  console.error(
+    `refusing to report a verdict: found only ${files.length} .yml file(s) in ${dir}, ` +
+      `expected at least ${MIN_EXPECTED_WORKFLOWS}. A near-empty scan would report "clean" having scanned nothing.`
+  );
+  process.exit(2);
+}
+
+// Exit via process.exitCode, NOT process.exit(): stdout is ASYNC when piped, and
+// process.exit() truncates it mid-flush. Measured at 60k lines through a pipe,
+// the TOTAL line itself was lost while the exit code stayed correct — a caller
+// reading stdout would have seen a partial list with no terminator.
 let total = 0;
+let fatal = 0;
 for (const file of files) {
   let text;
   try {
     text = fs.readFileSync(path.join(dir, file), 'utf8');
   } catch (err) {
     console.error(`could not read ${file}: ${err.message}`);
-    process.exit(2);
+    fatal = 2;
+    break;
   }
   let violations;
   try {
     violations = findMissingLedgerCommits(text);
   } catch (err) {
     console.error(`checker threw on ${file}: ${err.message}`);
-    process.exit(2);
+    fatal = 2;
+    break;
   }
   for (const violation of violations) {
     console.log(`${file}: ${violation}`);
     total += 1;
   }
 }
-console.log(`TOTAL VIOLATIONS: ${total}`);
-process.exit(total === 0 ? 0 : 1);
+
+if (fatal) {
+  // No TOTAL line on a fatal: the count would be a partial scan's count, and
+  // printing it as if it were the verdict is exactly the lie to avoid.
+  process.exitCode = fatal;
+} else {
+  console.log(`TOTAL VIOLATIONS: ${total}`);
+  process.exitCode = total === 0 ? 0 : 1;
+}
