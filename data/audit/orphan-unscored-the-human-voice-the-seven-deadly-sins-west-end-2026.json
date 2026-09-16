@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
   "openingDate": "2026-09-12",
-  "detectedAt": "2026-09-16T18:35:16.252Z",
+  "detectedAt": "2026-09-16T18:42:59.736Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,9 +11,9 @@
       "criticName": "The Reviews Hub - London",
       "url": "https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/",
       "fullTextLen": 279,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
-  "blockedOrphanCount": 0,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
