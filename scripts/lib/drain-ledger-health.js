@@ -32,6 +32,19 @@
 // threshold owned in JS next to the thing it describes, not hardcoded in
 // YAML, so the cadence assumption and the constant live together.
 //
+// KNOWN OVER-COUNT IN CI (biases toward alerting, never toward silence) —
+// scripts/linear-drain-parked.js:115 hardcodes
+// `const REPO = '/Users/tompryor/Broadwayscore'` and derives its LEDGER_PATH
+// from it, so on a GitHub Actions runner that path is absent, the read
+// degrades to [] (ENOENT is swallowed, not thrown), and the dry-run applies
+// NO park or 6h-cooldown exclusions. The count CI reports is therefore >= the
+// count the Mac would really select. That can page when the Mac is correctly
+// idle, but only if the ledger is ALSO >20h stale, and it can never hide a
+// dead drain — which is the failure this exists to catch, and the direction
+// to fail in. Fixing it properly means resolving REPO from __dirname so the
+// drain finds its own committed ledger; that is a dispatch-layer change
+// needing its own rule-18 review, tracked as BRO-3545.
+//
 // Pure — no fs, no network, no process. The ledger read and the exit code
 // live in scripts/check-linear-drain-health.js (CLAUDE.md rule 15: the test
 // require()s this function, it does not restate it).
@@ -52,6 +65,26 @@ const STALE_AFTER_MS = 20 * 60 * 60 * 1000;
 // written by a run that dispatched nothing — treating them as evidence the
 // drain is working is how a starved drain would look healthy.
 const DISPATCH_EVENT = 'drain-parked-dispatch';
+
+// How far into the future a row's timestamp may sit before the ledger is
+// treated as untrustworthy rather than merely clock-skewed. Same 60s the
+// sibling drain uses for the same reason (scripts/backlog-drain.js:115-117).
+const MAX_FUTURE_SKEW_MS = 60_000;
+
+// KNOWN LIMIT — this answers "did the drain RUN?", NOT "did its dispatches
+// SUCCEED". A `drain-parked-dispatch` row is written at the attempt
+// (scripts/linear-drain-parked.js:~570), and the detached child can still be
+// refused afterwards by linear-next.js's guard stack. A drain attempting the
+// same doomed issue every tick therefore reports healthy here.
+//
+// That is not hypothetical: BRO-2292 was attempted on six consecutive runs,
+// produced no launch on any of them, and reconciled to `card-fail` each time.
+// Proving launch requires correlating against data/audit/dispatch-ledger.jsonl,
+// which is gitignored and Mac-local (see scripts/lib/board-targeting-sources.js
+// :59-67 — CI never sees it), so this CI-side check structurally cannot do it
+// and deliberately does not pretend to. A green verdict here means "the
+// launchd tick is alive and its ledger is reaching origin/main"; success rate
+// is a separate, Mac-side question. Tracked as BRO-3544.
 
 /**
  * @param {object} opts
@@ -76,8 +109,33 @@ function assessDrainHealth({ ledgerEntries, eligibleCount, nowMs, staleAfterMs =
     if (!Number.isFinite(ms)) continue;
     if (newestMs === null || ms > newestMs) { newestMs = ms; newestTs = r.ts; }
   }
-  const ageMs = newestMs === null ? null : nowMs - newestMs;
+  const rawAgeMs = newestMs === null ? null : nowMs - newestMs;
+  // Clamp ordinary skew to 0 so a row written seconds "ahead" still reads as
+  // brand new rather than as a negative age flowing into the staleness test.
+  const ageMs = rawAgeMs === null ? null : Math.max(0, rawAgeMs);
   const base = { newestDispatchTs: newestTs, ageMs, eligibleCount: eligibleCount == null ? null : eligibleCount };
+
+  // A future-dated row is not evidence of a live drain, and left unhandled it
+  // is the worst possible failure: one bad timestamp becomes the maximum,
+  // ageMs goes NEGATIVE, `ageMs > staleAfterMs` is false, and the monitor
+  // reports healthy — with "last dispatched -410.2h ago" — until that date
+  // actually passes. A hand-edited ledger or a union-merge replay can produce
+  // one.
+  //
+  // MAX_FUTURE_SKEW_MS, not zero: the rows are written on the Mac and read on
+  // a GitHub runner, so a small negative age is ordinary clock disagreement,
+  // not corruption — rejecting it outright would turn a one-second offset into
+  // a red monitor. 60s matches the tolerance scripts/backlog-drain.js:115-117
+  // already settled on for exactly this ("A future-dated ts (clock skew,
+  // corrupted write) must not read as fresh forever — allow 60s of skew,
+  // nothing more"). Within tolerance the age is clamped to 0 so the freshness
+  // comparison below still behaves.
+  //
+  // Checked before the eligibleCount branches because a corrupt ledger is
+  // worth surfacing whether or not there is queued work.
+  if (rawAgeMs !== null && rawAgeMs < -MAX_FUTURE_SKEW_MS) {
+    return { ok: false, status: 'future-dated', reason: `newest ${DISPATCH_EVENT} row is dated ${newestTs}, in the FUTURE relative to now — the ledger cannot be trusted to report drain liveness (clock skew, a hand edit, or a union-merge replay)`, ...base };
+  }
 
   if (eligibleCount == null) {
     return { ok: true, status: 'inconclusive', reason: 'eligible-candidate count unavailable — cannot distinguish an idle queue from a dead drain this run', ...base };
@@ -98,18 +156,45 @@ function assessDrainHealth({ ledgerEntries, eligibleCount, nowMs, staleAfterMs =
   return { ok: true, status: 'healthy', reason: `${eligibleCount} issue(s) eligible and the drain last dispatched ${hrs}h ago (${newestTs})`, ...base };
 }
 
+// Every line the drain emits goes through its log() with this literal prefix,
+// so anchoring to it at line start is what separates the drain's OWN summary
+// from text it merely echoed. Without the anchor the count could be read out
+// of an ISSUE TITLE: the dry-run preview line is
+// `[linear-drain-parked] DRY RUN would dispatch BRO-N: <title>`
+// (scripts/linear-drain-parked.js:538) with the title interpolated raw, and
+// those lines print BEFORE the summary — so a Linear issue titled
+// "... DRY RUN: 0 candidate ..." would have won a first-match search and
+// silently declared the queue idle. Cards DO reference this script's
+// --dry-run invocation in their text (see scripts/lib/card-arming-warning.js),
+// so this is a reachable input, not a theoretical one.
+const SUMMARY_RE = /^\[linear-drain-parked\] DRY RUN: (\d+) candidate/gm;
+
+// The drain RETURNS EARLY on an empty selection (scripts/linear-drain-parked
+// .js:465-468) and prints this instead — the `DRY RUN: N candidate(s)`
+// summary is never reached when N would be 0. Without recognising it, a
+// genuinely idle queue and a drain whose output changed shape are
+// indistinguishable: both parse to null and report `inconclusive`, which
+// exits 0. That would have made the idle path unreachable in CI.
+const EMPTY_RE = /^\[linear-drain-parked\] no eligible parked issues this run\./m;
+
 /**
- * Parse the drain's own stdout for the uncapped candidate count. The drain
- * prints `DRY RUN: N candidate(s), no dispatch/ledger writes`
- * (scripts/linear-drain-parked.js:563). Deliberately reuses that EXISTING
- * line rather than adding a second machine-parsed log line: this workflow is
- * already the only one of 18 check-*.yml that regex-parses stdout, and
- * deepening that outlier was a design blocker on the first draft of this fix.
- * @returns {number|null}
+ * Parse the drain's own stdout for the uncapped candidate count. Deliberately
+ * reuses the drain's EXISTING lines rather than adding a machine-parsed log
+ * line of its own: this workflow is already the only one of 18 check-*.yml
+ * that regex-parses stdout, and deepening that outlier was a design blocker
+ * on the first draft of this fix.
+ * @returns {number|null} null means "could not determine", never "zero".
  */
 function parseEligibleCount(stdout) {
-  const m = /DRY RUN:\s*(\d+)\s*candidate/.exec(String(stdout || ''));
-  return m ? Number(m[1]) : null;
+  const text = String(stdout || '');
+  // Last match, not first: the summary is the final thing the drain prints,
+  // so even if an earlier line somehow slipped past the anchor, the real
+  // summary is the one that wins.
+  let last = null;
+  for (const m of text.matchAll(SUMMARY_RE)) last = m;
+  if (last) return Number(last[1]);
+  if (EMPTY_RE.test(text)) return 0;
+  return null;
 }
 
 module.exports = { assessDrainHealth, parseEligibleCount, STALE_AFTER_MS, DISPATCH_EVENT };
