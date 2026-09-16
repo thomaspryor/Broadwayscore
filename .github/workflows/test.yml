@@ -2346,6 +2346,12 @@ on:
       # colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/bsc-needs-you.js'
+      # The shared snapshot behind BOTH bsc-needs-you.js and the morning
+      # digest. Path-listed 2026-09-16: scripts/lib/** does not TRIGGER CI,
+      # so a solo edit here got zero CI even though its colocated tests run
+      # in the lib-test glob. Found while fixing pendingDecisions() silently
+      # omitting needs-you tabs that had no state file (2 of 5 shown).
+      - 'scripts/lib/needs-you-snapshot.js'
       # bsc-in-review (BRO-282 residual half / BRO-3376) — the issue-scoped
       # sibling of bsc-needs-you above. `In Review` is where finished work
       # actually piles up (120 items, 100 idle 14d+, measured 2026-09-15) and,
