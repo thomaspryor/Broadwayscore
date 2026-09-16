@@ -1511,10 +1511,26 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // check until now). Same fullCardInHand/!args.force gating as the
   // phantom-path guard immediately above, for the identical reason: a
   // truncated Notion-mirror description shouldn't trigger a refusal on
-  // already-known-degraded data, and --force already skips this guard's own
-  // fetch internally.
-  const vacuousCheck = (fullCardInHand && !args.force)
-    ? resolveVacuousCheck(verifyGate, { repo: resolveCanonicalRepoRoot(REPO, __dirname) })
+  // already-known-degraded data.
+  //
+  // Also skipped under --allow-vacuous-check (unlike the phantom-path guard's
+  // own gating, which only skips its own cheap local-fs check under --force):
+  // this guard's own I/O is a live `git fetch`, so a caller who has already
+  // decided to bypass the verdict shouldn't have to pay for it (adversarial
+  // review, Codex, BRO-3394).
+  //
+  // A fetch failure fails OPEN (resolveVacuousCheck returns null — see its
+  // own header) but is NOT silent: passing `log` here surfaces the WARN
+  // fetchOriginMain already emits on failure, so an operator watching this
+  // dispatch's own output can tell "the guard didn't fire because it
+  // couldn't reach origin/main" apart from "the guard didn't fire because
+  // the command is fine" (Codex finding: the guard previously disabled
+  // itself on a network blip with zero visible evidence).
+  const vacuousCheck = (fullCardInHand && !args.force && !args['allow-vacuous-check'])
+    ? resolveVacuousCheck(verifyGate, {
+        repo: resolveCanonicalRepoRoot(REPO, __dirname),
+        log: (msg) => console.error(`[bsc-next] ${msg}`),
+      })
     : null;
   const vacuousErr = vacuousCheckGuard(task, vacuousCheck, args);
   if (vacuousErr) { console.error(`[bsc-next] ${vacuousErr}`); process.exit(1); }

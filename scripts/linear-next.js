@@ -798,8 +798,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // the full rationale (BRO-3378 closed this for the enricher's own drafts
   // only; every other path a Linear issue's description arrives by never got
   // the check). Same skipPathCheck gating as the phantom-path guard above,
-  // for the identical reason.
-  const vacuousCheck = skipPathCheck ? null : resolveVacuousCheck(gate, { repo: resolveCanonicalRepoRoot(REPO, __dirname) });
+  // for the identical reason, PLUS --allow-vacuous-check (unlike
+  // skipPathCheck's own fs-only I/O, this guard's I/O is a live `git fetch` —
+  // a caller who already decided to bypass the verdict shouldn't pay for it;
+  // adversarial review, Codex, BRO-3394). `log` surfaces a fetch failure
+  // instead of letting the guard disable itself silently on a network blip.
+  const skipVacuousCheck = skipPathCheck || args['allow-vacuous-check'];
+  const vacuousCheck = skipVacuousCheck ? null : resolveVacuousCheck(gate, {
+    repo: resolveCanonicalRepoRoot(REPO, __dirname),
+    log: (msg) => console.error(`[linear-next] ${msg}`),
+  });
   const vacuousErr = vacuousCheckGuard(pseudoTask, vacuousCheck, args);
   if (vacuousErr) { console.error(`[linear-next] ${vacuousErr}`); process.exit(1); }
 

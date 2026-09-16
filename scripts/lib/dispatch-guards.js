@@ -90,8 +90,8 @@ const { resolveCheckPaths } = require('./autonomous-triage-core.js');
 // reach back to this file — autofix-canary.js's own require('../bsc-next.js')
 // is lazy (inside a function body), not at module load.
 const {
-  classifyVacuousCheck, isTestFCommand, fetchOriginMain, pathExistsOnOriginMain,
-  VACUOUS_TEST_F_UNRESOLVED,
+  classifyVacuousCheck, isTestFCommand, extractCheckFilePaths, fetchOriginMain,
+  pathExistsOnOriginMain, VACUOUS_TEST_F_UNRESOLVED,
 } = require('./card-premises-auditor.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS, isAutomationParked } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
@@ -411,6 +411,20 @@ function pathVerifiabilityGuard(task, pathCheck, opts) {
 // addition here.
 function resolveVacuousCheck(gate, repoOpts) {
   if (!gate || !gate.cmd || !isTestFCommand(gate.cmd)) return null;
+  // Arity errors (`test -f a b`) are decided WITHOUT ever consulting existsFn
+  // — classifyVacuousCheck's own arity branch returns before touching it (see
+  // card-premises-auditor.test.mjs's "decided without consulting existsFn at
+  // all" case). Checking that structurally-decidable case BEFORE the network
+  // fetch means a malformed multi-operand command is still refused at
+  // dispatch time when origin/main is unreachable (offline, VPN down, credential
+  // expired) — adversarial review (Codex, BRO-3394): the original version
+  // fetched unconditionally, making an offline-decidable defect
+  // network-dependent for no reason.
+  if (extractCheckFilePaths(gate.cmd).length > 1) {
+    return classifyVacuousCheck(gate.cmd, () => {
+      throw new Error('unreachable: arity errors never consult existsFn');
+    });
+  }
   if (!fetchOriginMain(repoOpts)) return null;
   const cache = new Map();
   const existsFn = (p) => {

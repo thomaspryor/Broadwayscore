@@ -100,24 +100,54 @@ test('resolveVacuousCheck: end-to-end against this repo — a test -f naming a f
 });
 
 test('resolveVacuousCheck: naming a to-be-created file is NOT vacuous (NEW-ARTIFACT ALLOWANCE)', () => {
+  // `null` here is ambiguous by itself — it is also what a FAILED fetch
+  // returns (see the next test) — so a log spy proves this null came from a
+  // genuine "confirmed absent" verdict, not a silently-swallowed fetch
+  // failure masquerading as one (ship-check/Codex finding, BRO-3394: the
+  // first version of this test could not tell the two apart).
+  const logs = [];
   const repo = path.resolve(process.cwd());
   const verdict = resolveVacuousCheck(
     { cmd: 'test -f docs/bro-3394-does-not-exist-yet.md' },
-    { repo, log: () => {} },
+    { repo, log: (msg) => logs.push(msg) },
   );
   assert.equal(verdict, null);
+  assert.deepEqual(logs, [], 'a genuine absence must not log a fetch-failure WARN');
 });
 
-test('resolveVacuousCheck: a failed fetch fails OPEN to null rather than trusting a stale local ref', () => {
+test('resolveVacuousCheck: a failed fetch fails OPEN to null rather than trusting a stale local ref, AND is logged (not silent)', () => {
   // A real (non-git) directory makes fetchOriginMain's `git fetch` fail
   // deterministically, no network mocking needed — same pattern as
-  // card-premises-auditor.test.mjs's own fetch-failure coverage.
+  // card-premises-auditor.test.mjs's own fetch-failure coverage. Asserting
+  // the log fired is the other half of the previous test's proof: a fetch
+  // failure and a genuine absence must both return null, but must be
+  // DISTINGUISHABLE to anything watching the dispatcher's own output
+  // (Codex finding: the guard previously disabled itself on a network blip
+  // with zero visible evidence).
   const notARepo = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-guard-vacuous-not-a-repo-'));
+  const logs = [];
   const verdict = resolveVacuousCheck(
     { cmd: 'test -f scripts/opening-night-poller.js' },
-    { repo: notARepo, log: () => {} },
+    { repo: notARepo, log: (msg) => logs.push(msg) },
   );
   assert.equal(verdict, null);
+  assert.ok(logs.length > 0, 'a fetch failure must be logged, not silent');
+});
+
+test('resolveVacuousCheck: a multi-operand test -f (arity error) is refused WITHOUT any network fetch', () => {
+  // Codex adversarial finding (BRO-3394): the first version fetched
+  // unconditionally before classifying, making an offline-decidable defect
+  // (classifyVacuousCheck's arity branch never consults existsFn) needlessly
+  // network-dependent. Proven here by pointing `repo` at a non-git directory
+  // — if this reached fetchOriginMain it would fail and return null instead
+  // of the arity verdict.
+  const notARepo = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-guard-vacuous-arity-offline-'));
+  const verdict = resolveVacuousCheck(
+    { cmd: 'test -f docs/a.md docs/b.md' },
+    { repo: notARepo, log: () => { throw new Error('must not attempt a fetch for an arity error'); } },
+  );
+  assert.equal(verdict.kind, 'test-f-arity');
+  assert.equal(verdict.polarity, 'never-passes');
 });
 
 // ── The dispatch boundary itself: resolve + guard, chained ─────────────────
