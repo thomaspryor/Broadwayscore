@@ -27,6 +27,7 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = 'Usage: node scripts/check-workflow-run-status.js --workflow=<name.yml or "Display Name"> --expect=<conclusion> [--branch=<name>]';
 
@@ -41,7 +42,12 @@ function parseArgs(argv) {
 }
 
 function main(argv) {
-  const { workflow, branch, expect } = parseArgs(argv || []);
+  argv = argv || [];
+  if (hasHelpFlag(argv)) {
+    console.log(USAGE);
+    return;
+  }
+  const { workflow, branch, expect } = parseArgs(argv);
   if (!workflow || !expect) {
     console.error(USAGE);
     process.exit(2);
