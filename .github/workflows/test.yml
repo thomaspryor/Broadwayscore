@@ -1300,6 +1300,11 @@ on:
       # colocated regression test. Without these, an edit pushes with ZERO CI
       # (Archduke/Royal Court silent-miss class, 2026-06-27).
       - 'scripts/scrape-london-box-office-roundups.js'
+      # BRO-2565: category-aware archive-cache-guard.js read/write wiring added
+      # to scrape-dtli.js (its 3 sibling scrapers above are already listed).
+      # scrape-dtli.js itself was never path-listed before this — a solo edit
+      # shipped with ZERO CI (same gap class the comments above document).
+      - 'scripts/scrape-dtli.js'
       # OB venue listing discovery (S5-T2 added Bedlam + Audible's Minetta Lane
       # Theatre 2026-07-22). Colocated tests/unit/venue-listing-discover.test.mjs
       # runs in the tests/unit node --test batch (not globbed); path-listed so
@@ -4462,6 +4467,14 @@ jobs:
         # (line 22) for CI triggering — no separate path-filter entry needed.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.usage-validation.test.sh
+
+      - name: Run wait-for-run usage-validation test (bash integration)
+        # BRO-2554 what-else sweep: wait-for-run.sh's TIMEOUT_MIN validation had
+        # the same leading-zero-octal hazard just fixed in push-with-retry.sh's
+        # MAX_RETRIES. Covered by scripts/lib/** (line 22) for CI triggering —
+        # no separate path-filter entry needed.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/wait-for-run.usage-validation.test.sh
 
       - name: Run push-with-retry push-rc diagnosis test (bash integration)
         # BRO-2732: rebuild-reviews.yml's push step failed every run and the log
