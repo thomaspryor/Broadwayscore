@@ -2846,6 +2846,12 @@ on:
       # root-level scripts/ file with no test of its own — path-listed so a
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-data-gate-heal-paths.js'
+      # BRO-3507: self-heal-orphan-show-files.yml's deletion CLI. Its decision
+      # logic (scripts/lib/orphan-grace-period.js, colocated-tested) is
+      # covered by the scripts/lib/** glob above, but this thin CLI wrapper is
+      # a root-level scripts/ file with no test of its own — path-listed so a
+      # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/apply-orphan-grace-period.js'
   pull_request:
     branches: [main]
   schedule:
