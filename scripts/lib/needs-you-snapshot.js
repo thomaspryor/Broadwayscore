@@ -202,7 +202,11 @@ function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
     .sort((a, b) => {
       const ka = String(a.pendingSinceTs || a.ts || '\uffff');
       const kb = String(b.pendingSinceTs || b.ts || '\uffff');
-      return ka.localeCompare(kb);
+      // Plain string comparison, not localeCompare: ISO-8601 timestamps
+      // compare correctly byte-by-byte, and localeCompare's ordering is
+      // ICU-collation-dependent, which is not worth the risk here
+      // (second-opinion review, 2026-09-16).
+      return ka < kb ? -1 : ka > kb ? 1 : 0;
     });
   // Glyph/content mismatch count (card #940): ❓-titled tabs whose extracted
   // question was empty/none, so they were excluded above. Logged, not
