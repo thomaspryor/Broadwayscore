@@ -52,12 +52,33 @@
 'use strict';
 
 // The launchd plist ticks at 10:30, 14:30 and 18:30 local, so the longest
-// legitimate gap between two runs is the overnight one: 18:30 -> 10:30 =
-// 16h. STALE_AFTER_MS is that gap plus four hours of slack, which covers a
-// late-firing launchd job (memory/feedback_github_cron_delays.md documents
-// 30min-3h drift as routine) without letting a genuinely dead drain hide for
-// a second full day.
-const STALE_AFTER_MS = 20 * 60 * 60 * 1000;
+// legitimate gap between two RUNS is the overnight one: 18:30 -> 10:30 = 16h.
+// But this monitor does not observe runs — it observes rows that have reached
+// origin/main, and the gap between those is larger for two measured reasons:
+//
+//  1. NOTHING PUSHES THIS LEDGER ON A SCHEDULE. scripts/lib/sync-audit-
+//     checkout.sh fetches and commits LOCALLY; it contains no `git push`
+//     (verified: `grep -n 'git push' scripts/lib/sync-audit-checkout.sh` is
+//     empty). Rows reach origin/main only when some unrelated session pushes
+//     main, so two ticks of publish lag is ordinary, not exceptional.
+//  2. DST. The workflow's cron is `37 15 * * *` UTC
+//     (.github/workflows/check-linear-drain-health.yml:26), which is 11:37
+//     EDT — comfortably after the 10:30 tick — but 10:37 EST, seven minutes
+//     after it and before it could publish. Under EST the check therefore
+//     reads a ledger whose newest visible row can be two ticks old.
+//
+// 16h + one skipped publish cycle + the DST shift lands just over 20h, which
+// is why a 20h window red-flagged a healthy drain in review. 28h absorbs both
+// while still catching a drain that has been dead for more than a full day —
+// the failure that let 126 issues pile up unnoticed.
+//
+// NOT covered, deliberately: a drain that RUNS but dispatches nothing because
+// the spend breaker halted it or concurrency is at DEFAULT_CONCURRENCY_CAP
+// (2). No row is written in that case (scripts/linear-drain-parked.js:531),
+// so a sustained throttle reads as stale. That is the honest reading — a
+// drain that has dispatched nothing for 28h is worth a look whether the cause
+// is death or saturation — and the message names both possibilities.
+const STALE_AFTER_MS = 28 * 60 * 60 * 1000;
 
 // Only a real dispatch counts as proof of life. The drain also appends
 // `card-pass`/`card-fail` reconciliation rows (scripts/linear-drain-parked.js
@@ -150,7 +171,7 @@ function assessDrainHealth({ ledgerEntries, eligibleCount, nowMs, staleAfterMs =
   if (ageMs > staleAfterMs) {
     const hrs = (ageMs / 3600000).toFixed(1);
     const limit = (staleAfterMs / 3600000).toFixed(0);
-    return { ok: false, status: 'stale', reason: `${eligibleCount} issue(s) eligible but the newest ${DISPATCH_EVENT} row is ${hrs}h old (limit ${limit}h, newest ${newestTs}) — the Mac-side drain (launchd) is not running, or its ledger writes are not reaching origin/main`, ...base };
+    return { ok: false, status: 'stale', reason: `${eligibleCount} issue(s) eligible but the newest ${DISPATCH_EVENT} row is ${hrs}h old (limit ${limit}h, newest ${newestTs}) — one of: the Mac-side drain (launchd) is not running, its ledger writes are not reaching origin/main, or it is running but dispatching nothing (spend breaker halted / concurrency at cap)`, ...base };
   }
   const hrs = (ageMs / 3600000).toFixed(1);
   return { ok: true, status: 'healthy', reason: `${eligibleCount} issue(s) eligible and the drain last dispatched ${hrs}h ago (${newestTs})`, ...base };
