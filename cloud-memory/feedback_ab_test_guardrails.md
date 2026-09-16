@@ -3,7 +3,7 @@ name: A/B test guardrails — never kill, never unilaterally change rollout
 description: "Never kill running tests or PATCH rollouts without approval."
 type: feedback
 originSessionId: ba2676a0-1232-4de7-b090-d7af31195aa2
-modified: 2026-09-15T21:33:28.678Z
+modified: 2026-09-16T01:12:44.758Z
 ---
 **Hard rules for A/B tests. Violate these and you're wasting real traffic and invalidating weeks of data.**
 
@@ -88,7 +88,7 @@ Before citing "live A/B test, needs user approval" as a reason to defer a fix, c
 
 While concluding `gate-cold-start` (BRO-3422, 2026-09-15), a power calculation was first run on captures/SHOWN (the modal-impression rate) to justify "waiting longer won't resolve this," then had to be corrected mid-session to captures/EXPOSED (the actual pre-registered ITT primary in `docs/experiments/gate-cold-start.md`). The two denominators gave very different required-wait numbers (~241 days vs ~666 days) — both supported the same final decision here, but they didn't have to, and the first number was wrong. **Before running any two-proportion power calc, find the experiment's own stated primary metric definition and use that exact numerator/denominator — never substitute "the rate I have numbers for."**
 
-**Also found:** `data/audit/ticket-ab-monitor-state.json` shows `ticket-single-button` restarted `2026-08-31` — a DIFFERENT, more recent restart than the 2026-04-11 one documented below, with no record here of why. It also hit a one-time significance alert on 2026-07-27 that isn't explained either. This file is stale on that point — see BRO-3456 (filed 2026-09-15) for the investigation. Don't assume "restarted 2026-04-11" is still the operative baseline without checking the monitor state file's `startDate` first.
+**Correction (BRO-3456, same day):** the `2026-08-31` date in `ticket-ab-monitor-state.json` flagged above was NOT a second restart — it's the rolling 14-day analysis window's start boundary. The true (only) restart is still `2026-04-11` (`FLAG_RESTART_DATES`), confirmed by BRO-3456's audit. **Lesson generalized:** a monitor state file's `startDate`/window fields can look like a restart marker without being one — check what the field actually means in the analyzer's source before citing it as history, the same discipline as guardrail #9 above (verify a metric's real definition before reasoning from its name). BRO-3456 also found the one 2026-07-27 significant read (p=0.0158) was a first-data-point artifact of the brand-new monitor pipeline, never reproduced in 7 later weekly windows — same reachability-trap shape as gate-cold-start, no restart mystery involved. See `docs/experiments/ticket-single-button.md` (written by BRO-3456 — this flag's first-ever pre-registration doc) for the full picture and the 3 owner options laid out.
 
 ## What happened 2026-04-11 (why this file exists)
 

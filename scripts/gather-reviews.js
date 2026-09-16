@@ -68,7 +68,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBwwRoundup, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
@@ -3905,7 +3905,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   // from the current run, which is exactly the gap this guard closes.
   if (!review.wrongProduction && _showMeta) {
     try {
-      const reason = getWrongProductionReasonForBwwRoundup(review, _showMeta);
+      const reason = getWrongProductionReasonForBww(review, _showMeta);
       if (reason) {
         console.log(`    ⚠️  ${reason} (BWW RR cross-production)`);
         review.wrongProduction = true;

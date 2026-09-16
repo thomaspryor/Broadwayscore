@@ -16,7 +16,7 @@
  * different production, independent of how the critic bylined their own
  * writing.
  *
- * Tests scripts/lib/review-guards.js's getWrongProductionReasonForBwwRoundup
+ * Tests scripts/lib/review-guards.js's getWrongProductionReasonForBww
  * — the new guard gather-reviews.js's createReviewFile() runs on every
  * bww-roundup-sourced review, regardless of criticName. Requires the real
  * function (CLAUDE.md rule 15) rather than re-implementing the date-window
@@ -27,7 +27,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { getShowData } from './lib/production-verifier.js';
-import { getWrongProductionReasonForBwwRoundup } from './lib/review-guards.js';
+import { getWrongProductionReasonForBww } from './lib/review-guards.js';
 
 const SHOW_ID = 'the-fear-of-13-2026';
 
@@ -47,7 +47,7 @@ test('flags a named-critic BWW RR review whose URL date is outside the show wind
     url: 'https://www.broadwayworld.com/west-end/article/2019/09/15/BWW-Review-THE-FEAR-OF-13-London.html',
   };
 
-  const reason = getWrongProductionReasonForBwwRoundup(review, show);
+  const reason = getWrongProductionReasonForBww(review, show);
   assert.ok(reason, 'expected a wrongProduction reason to be returned');
   assert.match(reason, /^Auto-flagged:/, 'reason must keep the Auto-flagged prefix so wrong-production-autoclear.js can still recognize it as auto-clear-eligible');
 });
@@ -64,7 +64,7 @@ test('does not flag a BWW RR review whose URL date falls inside the show window'
     url: 'https://nytheatreguide.com/reviews/2026/04/16/the-fear-of-13-review',
   };
 
-  assert.equal(getWrongProductionReasonForBwwRoundup(review, show), null);
+  assert.equal(getWrongProductionReasonForBww(review, show), null);
 });
 
 test('does not fire for non-bww-roundup sources, even with the same out-of-window URL', () => {
@@ -82,7 +82,7 @@ test('does not fire for non-bww-roundup sources, even with the same out-of-windo
   // Scoped deliberately to review.source === 'bww-roundup' — other ingest
   // paths keep relying on getWrongProductionReasonForUnknownCritic's
   // named-critic exemption, which this new guard must not silently widen.
-  assert.equal(getWrongProductionReasonForBwwRoundup(review, show), null);
+  assert.equal(getWrongProductionReasonForBww(review, show), null);
 });
 
 // BroadwayWorld's OWN articles (as opposed to a linked external outlet) use a
@@ -103,7 +103,7 @@ test('flags a BWW-hosted URL (trailing -YYYYMMDD slug) whose date is outside the
     url: 'https://www.broadwayworld.com/westend/article/BWW-Review-THE-FEAR-OF-13-at-the-Everyman-Theatre-20190915',
   };
 
-  const reason = getWrongProductionReasonForBwwRoundup(review, show);
+  const reason = getWrongProductionReasonForBww(review, show);
   assert.ok(reason, 'expected the BWW trailing-date fallback to catch this');
   assert.match(reason, /^Auto-flagged:/);
 });
@@ -120,7 +120,7 @@ test('does not flag a BWW-hosted URL (trailing -YYYYMMDD slug) whose date is ins
     url: 'https://www.broadwayworld.com/article/BWW-Review-THE-FEAR-OF-13-Opens-on-Broadway-20260416',
   };
 
-  assert.equal(getWrongProductionReasonForBwwRoundup(review, show), null);
+  assert.equal(getWrongProductionReasonForBww(review, show), null);
 });
 
 test('does not apply the BWW trailing-date fallback to a non-broadwayworld.com URL', () => {
@@ -140,5 +140,5 @@ test('does not apply the BWW trailing-date fallback to a non-broadwayworld.com U
     url: 'https://www.someoutlet.com/reviews/fear-of-13-20190915',
   };
 
-  assert.equal(getWrongProductionReasonForBwwRoundup(review, show), null);
+  assert.equal(getWrongProductionReasonForBww(review, show), null);
 });

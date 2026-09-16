@@ -27,21 +27,32 @@ describe('single-model-warning lib', () => {
     assert.match(warning, /reject/i);
   });
 
-  test('buildEnsembleDelegationArgs passes show/limit/dry-run through to the real pipeline', () => {
-    const delegateArgs = buildEnsembleDelegationArgs({ showFilter: 'hamilton-2015', limit: 5, dryRun: true });
+  test('buildEnsembleDelegationArgs passes show/limit/dry-run/max-cost through to the real pipeline', () => {
+    const delegateArgs = buildEnsembleDelegationArgs({ showFilter: 'hamilton-2015', limit: 5, dryRun: true, maxCost: 5 });
     assert.ok(delegateArgs.includes('scripts/llm-scoring/index.ts'));
     assert.ok(delegateArgs.includes('--ensemble'));
     assert.ok(delegateArgs.includes('--show=hamilton-2015'));
     assert.ok(delegateArgs.includes('--limit=5'));
     assert.ok(delegateArgs.includes('--dry-run'));
+    assert.ok(delegateArgs.includes('--max-cost=5'));
   });
 
-  test('buildEnsembleDelegationArgs with no options omits per-show/limit/dry-run flags', () => {
+  test('buildEnsembleDelegationArgs always includes --upgrade-ensemble (the real "single-model, no ensembleData" selector)', () => {
+    // Plain --ensemble alone defaults the pipeline to unscoredOnly, which SKIPS
+    // every review this script already wrote llmScore to — exactly the reviews
+    // BRO-929 needs fixed. --upgrade-ensemble is the selector that actually
+    // targets them (scripts/llm-scoring/index.ts ~line 1091).
     const delegateArgs = buildEnsembleDelegationArgs();
     assert.ok(delegateArgs.includes('--ensemble'));
+    assert.ok(delegateArgs.includes('--upgrade-ensemble'));
+  });
+
+  test('buildEnsembleDelegationArgs with no options omits per-show/limit/dry-run/max-cost flags', () => {
+    const delegateArgs = buildEnsembleDelegationArgs();
     assert.ok(!delegateArgs.some((a) => a.startsWith('--show=')));
     assert.ok(!delegateArgs.some((a) => a.startsWith('--limit=')));
     assert.ok(!delegateArgs.includes('--dry-run'));
+    assert.ok(!delegateArgs.some((a) => a.startsWith('--max-cost=')));
   });
 });
 
@@ -69,5 +80,34 @@ describe('score-reviews-calibrated.js CLI', () => {
     assert.match(output, /ensembleData/);
     assert.match(output, /--ensemble/);
     assert.match(output, /ANTHROPIC_API_KEY/);
+  });
+
+  test('--ensemble --calibration-only is rejected instead of silently mis-selecting', () => {
+    // The calibration set and --upgrade-ensemble's "single-model, no ensembleData"
+    // selector are different populations — delegating would silently score the
+    // wrong reviews (Codex review finding, BRO-929).
+    let output = '';
+    let status = 0;
+    try {
+      output = execFileSync('node', [scriptPath, '--ensemble', '--calibration-only'], { encoding: 'utf8' });
+    } catch (e) {
+      output = (e.stdout || '') + (e.stderr || '');
+      status = e.status;
+    }
+    assert.strictEqual(status, 1);
+    assert.match(output, /--calibration-only/);
+  });
+
+  test('--ensemble --force is rejected instead of silently ignoring --force', () => {
+    let output = '';
+    let status = 0;
+    try {
+      output = execFileSync('node', [scriptPath, '--ensemble', '--force'], { encoding: 'utf8' });
+    } catch (e) {
+      output = (e.stdout || '') + (e.stderr || '');
+      status = e.status;
+    }
+    assert.strictEqual(status, 1);
+    assert.match(output, /--force/);
   });
 });
