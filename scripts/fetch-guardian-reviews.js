@@ -32,6 +32,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { setExtractedScore } = require('./lib/score-routing');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
@@ -213,8 +214,7 @@ function findGuardianReviews() {
     return reviews;
   }
 
-  const shows = fs.readdirSync(CONFIG.reviewTextsDir)
-    .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
+  const shows = listShowDirs(CONFIG.reviewTextsDir);
 
   for (const showId of shows) {
     // Filter by shows if specified

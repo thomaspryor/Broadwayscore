@@ -36,6 +36,7 @@ const { contentMatchesFiledUnderVenue } = require('./lib/cross-production-guards
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { venueSlug } = require('./lib/venue-classification');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   planCanonicalPointerClear,
   applyCanonicalPointerClear,
@@ -144,9 +145,8 @@ if (!fs.existsSync(RT)) {
 }
 console.log(`[audit-review-url-clusters] review-texts: ${RT}`);
 
-const showDirs = fs.readdirSync(RT).filter((d) => {
-  const p = path.join(RT, d);
-  return !d.startsWith('_') && !d.startsWith('.') && fs.statSync(p).isDirectory();
+const showDirs = listShowDirs(RT).filter((d) => {
+  return !d.startsWith('_') && !d.startsWith('.');
 }).filter((d) => !showFilter || d === showFilter);
 
 const shows = loadShows();

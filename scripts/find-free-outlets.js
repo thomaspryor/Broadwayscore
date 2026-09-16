@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 const fs = require("fs");
 const path = require("path");
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewDir = path.join(__dirname, "../data/review-texts");
-const shows = fs.readdirSync(reviewDir).filter(f =>
-  fs.statSync(path.join(reviewDir, f)).isDirectory()
-);
+const shows = listShowDirs(reviewDir);
 
 const freeOutlets = ["theatrely", "cititour", "stageandcinema", "newyorktheater", "new-york-theater", "culture-sauce", "ny-stage-review", "stage-and-cinema"];
 

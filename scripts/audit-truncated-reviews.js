@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewTextsDir = 'data/review-texts';
 
@@ -65,9 +66,7 @@ function detectTruncationSignals(text, excerptLength = 0) {
 }
 
 // Main audit
-const shows = fs.readdirSync(reviewTextsDir).filter(f => {
-  return fs.statSync(path.join(reviewTextsDir, f)).isDirectory();
-});
+const shows = listShowDirs(reviewTextsDir);
 
 let totalReviews = 0;
 let reviewsWithText = 0;

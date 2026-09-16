@@ -37,6 +37,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyLifecycle, SERP_DISCOVERY_METHODS } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -70,11 +71,8 @@ let scanned = 0;
 let totalWrongContent = 0;
 let alreadyAbandoned = 0;
 
-for (const showId of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+for (const showId of listShowDirs(REVIEW_TEXTS_DIR)) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  let stat;
-  try { stat = fs.statSync(showDir); } catch { continue; }
-  if (!stat.isDirectory()) continue;
 
   const show = showsById[showId];
   const lifecycle = classifyLifecycle(show);

@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit, getWrongProductionReasonFromUrl } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -39,7 +40,7 @@ const shows = Array.isArray(SHOWS.shows) ? SHOWS.shows : Object.values(SHOWS.sho
 const showMap = {};
 for (const s of shows) showMap[s.id] = s;
 
-const dirs = fs.readdirSync(REVIEW_DIR).filter(d => fs.statSync(path.join(REVIEW_DIR, d)).isDirectory());
+const dirs = listShowDirs(REVIEW_DIR);
 
 let flagged = 0;
 const flaggedDetails = [];

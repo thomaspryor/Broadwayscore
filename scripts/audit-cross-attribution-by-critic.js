@@ -29,6 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
 function arg(name, fallback = null) {
@@ -300,9 +301,9 @@ function scoreFileAgainstShows(content, filedShowId) {
 }
 
 console.log(`Scanning ${REVIEW_TEXTS_DIR}…`);
-const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
   if (d.startsWith('.') || d === '_pending') return false;
-  return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory();
+  return true;
 });
 
 let totalFiles = 0;

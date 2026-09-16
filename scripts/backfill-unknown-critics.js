@@ -28,6 +28,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 
 const { safeWriteReview, safeRenameReview, safeUnlinkReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 let lockedSkipCount = 0;
 
@@ -93,9 +94,9 @@ function isRejectName(name) {
 
 // --- Scan all review files ---
 function scanReviewFiles() {
-  const dirs = fs.readdirSync(reviewsDir).filter(d => {
+  const dirs = listShowDirs(reviewsDir).filter(d => {
     if (showFilter && d !== showFilter) return false;
-    try { return fs.statSync(path.join(reviewsDir, d)).isDirectory(); } catch { return false; }
+    return true;
   });
 
   const unknownOutlets = [];

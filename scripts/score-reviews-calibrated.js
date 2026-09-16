@@ -14,6 +14,7 @@ const Anthropic = require('@anthropic-ai/sdk').default;
 const { CLAUDE_SONNET } = require('./lib/models');
 const { buildSingleModelWarning, buildEnsembleDelegationArgs } = require('./lib/single-model-warning');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `score-reviews-calibrated.js — Calibrated LLM review scoring (single-model by default).
 
@@ -282,9 +283,7 @@ async function main() {
     console.log(`Processing calibration set: ${filesToProcess.length} reviews\n`);
   } else {
     // Process all reviews
-    const shows = fs.readdirSync(reviewsDir).filter(f =>
-      fs.statSync(path.join(reviewsDir, f)).isDirectory()
-    );
+    const shows = listShowDirs(reviewsDir);
 
     const targetShows = showFilter ? shows.filter(s => s === showFilter) : shows;
 

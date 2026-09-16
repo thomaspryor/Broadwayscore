@@ -74,6 +74,7 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `scoring-delta.js — mandatory local verification for scoring/exclusion logic changes.
 
@@ -1421,11 +1422,7 @@ function main() {
     process.exit(1);
   }
 
-  let showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(d => !d.startsWith('.'))
-    .filter(d => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
-    });
+  let showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   if (SAMPLE_LIMIT) showDirs = showDirs.slice(0, SAMPLE_LIMIT);
 

@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Overridable via env so tests can point at a temp fixture dir/file instead
 // of real data (same pattern as scripts/flag-wrong-production-by-date.js).
@@ -112,10 +113,7 @@ for (const s of showsData.shows) {
   };
 }
 
-const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-  const stat = fs.statSync(path.join(REVIEW_TEXTS_DIR, d));
-  return stat.isDirectory();
-});
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
 // --- Pre-pass: showId-vs-directory mismatch detection ---
 // BWW scraper placed files in wrong directories but set correct showId internally.

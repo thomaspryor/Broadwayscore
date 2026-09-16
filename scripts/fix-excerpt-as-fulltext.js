@@ -11,15 +11,14 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const dryRun = !process.argv.includes('--apply');
 const base = path.join(__dirname, '..', 'data', 'review-texts');
 
 let fixed = 0, skipped = 0, errors = 0;
 
-const dirs = fs.readdirSync(base).filter(d => {
-  try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
-});
+const dirs = listShowDirs(base);
 
 for (const d of dirs) {
   const files = fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');

@@ -67,6 +67,7 @@ const { parseDate } = require('./lib/date-utils');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `flag-wrong-production-by-date.js — Flag reviews as wrongProduction when publishDate falls outside.
 
@@ -80,9 +81,7 @@ if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 function run() {
   const showMap = loadShows();
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d =>
-    fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory()
-  );
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   const multiProductionTitleIds = buildMultiProductionTitleIds(showMap);
 
