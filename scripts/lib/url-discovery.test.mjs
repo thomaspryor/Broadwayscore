@@ -49,6 +49,7 @@ describe('BRO-928: verifyTbPage rejects a soft-404 / menu-only page', () => {
     const menuGarbage = '<html><head><title>Talkin\' Broadway</title></head><body>Books on theater historyMicrophone equipment</body></html>';
     const v = verifyTbPage(menuGarbage, { showTitle: 'The Fear of 13', openingDate: '2026-04-19' });
     assert.strictEqual(v.ok, false);
+    assert.match(v.reason, /content too short/, `expected the byte-length gate to fire, got: ${v.reason}`);
   });
 });
 
