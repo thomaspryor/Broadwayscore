@@ -39,17 +39,17 @@ Additional defense-in-depth added since the original issue, not asked for but re
 - `scripts/lib/rebuild-staleness-guard.js` + the "Record/re-check review-texts checkout SHA" steps in `rebuild-reviews.yml` — detects a review-texts push that landed *during* a rebuild job and re-syncs just the drifted files before publishing.
 - Per-review `_locked` flag + `PROTECTED_FIELDS` (see `scripts/lib/review-write-guard.js`) — belt-and-braces field-level protection independent of which side "wins" a rebase.
 
-**This session's change:** `adjudicate-review-queue.yml` was the one review-texts-writing
-cron left without a `concurrency:` group (daily 5:15 AM UTC + manual dispatch, writes
-`humanReviewScore`). Added `group: adjudicate-review-queue`, `cancel-in-progress: false`,
-matching the pattern above.
+**This session's change:** added a `concurrency:` group to `adjudicate-review-queue.yml`
+(daily 5:15 AM UTC + manual dispatch, writes `humanReviewScore`) — the highest-traffic
+gap found. A full audit (below) found **22 more** review-texts-writing workflows without
+one; those are tracked as a follow-up rather than fixed blind in this pass (see "Known
+gaps").
 
 ## The sync-critical cluster
 
 These workflows read and/or write `data/review-texts/` (private repo) and/or
 `data/reviews.json` (derived, private repo), so they're the ones that can actually race on
-the same files. Every one of them now has a `concurrency:` group (`cancel-in-progress:
-false` — queue, never cancel a write mid-flight):
+the same files.
 
 | Workflow | Writes review-texts | Rebuilds reviews.json | Concurrency group |
 |---|---|---|---|
@@ -69,12 +69,38 @@ false` — queue, never cancel a write mid-flight):
 | `process-review-submission.yml` | ✅ | ✅ | (single-threaded — one GH Issue at a time) |
 | `llm-ensemble-score.yml` | ✅ (writes scores) | ❌ (triggers rebuild) | `scoring-reviews[-{rescore_reason}]` |
 | `update-critic-consensus.yml` | ❌ (separate file, `critic-consensus.json`) | ❌ | `update-critic-consensus` |
-| `scrape-bww-reviews.yml`, `scrape-new-aggregators.yml`, `scrape-dtli-show-score.yml`, `scrape-westendtheatre.yml`, `scrape-stagedoor.yml`, `scrape-thestage-roundups.yml`, `sweep-we-aggregators.yml`, `collect-we-ob-reviews.yml`, `collect-free-reviews.yml`, `collect-soft-paywall.yml`, `collect-hard-paywall.yml` | ✅ | ✅ or dispatches `rebuild-reviews.yml` | own per-workflow groups (weekly cadence, low collision risk by schedule spacing) |
+| `scrape-new-aggregators.yml`, `scrape-westendtheatre.yml`, `scrape-stagedoor.yml`, `scrape-thestage-roundups.yml`, `sweep-we-aggregators.yml`, `collect-we-ob-reviews.yml` | ✅ | ✅ or dispatches `rebuild-reviews.yml` | own per-workflow groups (verified present) |
 | `opening-night-orchestrator.yml` | ❌ (dispatches poller) | ❌ | **intentionally no workflow-level group** — see `memory/feedback_concurrency_group_must_serialize_work_not_runs.md`; it serializes externally by waiting on each poller run instead |
 | `vercel-deploy.yml` | ❌ | ❌ | job-level, per-run group (deliberate — see file comment, `memory/feedback_gha_concurrency_queue_limit.md`) |
 
 `opening-night-orchestrator.yml` and `vercel-deploy.yml` are deliberate exceptions with
 documented rationale in the files themselves — not gaps.
+
+## Known gaps (audited this session, not yet fixed)
+
+`grep -l "uses: \./\.github/actions/push-review-texts"` + `grep -l "cd data/review-texts"`
+across `.github/workflows/*.yml`, minus every file with a top-level `^concurrency:` line —
+**22 workflows write review-texts with no concurrency group at all**:
+
+```
+backfill-aggregators.yml        collect-soft-paywall.yml        rescrape-truncated.yml
+bulk-collect-review-texts.yml   extract-pull-quotes.yml         retry-wrong-urls.yml
+cleanup-multishow-flags.yml     fetch-guardian-reviews.yml      review-refresh.yml
+close-coverage-gaps.yml         overnight-collect.yml           scrape-bww-reviews.yml
+collect-free-reviews.yml        process-review-submission.yml   scrape-dtli-show-score.yml
+collect-hard-paywall.yml        recover-wsj-subscriber.yml      scrape-nysr.yml
+                                 rediscover-urls.yml             scrape-wp-blogs.yml
+                                                                  verify-existing-reviews.yml
+                                                                  weekly-integrity.yml
+```
+
+Not a blind batch-fix: several of these are intentionally-parallel matrix/self-chaining
+workflows (`bulk-collect-review-texts.yml` partitions disjoint show sets across matrix
+jobs; a naive shared group could reintroduce the exact "queue depth 1 cancels 5+ queued
+runs" bug `rebuild-fast.yml`'s own comment warns about, from the Beaches/Rocky Horror
+opening-night incident). Each needs the same per-workflow judgment call
+`opening-night-poller.yml`'s per-show/market group and `collect-review-texts.yml`'s
+per-filter group already made. Tracked as BRO-3500.
 
 ## Dispatch graph
 
