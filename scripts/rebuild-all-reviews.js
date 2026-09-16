@@ -1082,6 +1082,19 @@ function getBestScore(data) {
 
 // scoreToBucket, scoreToThumb — imported from ./lib/rebuild-helpers
 
+// showsData/showById must be available whenever selectBestExcerpt() runs —
+// including when this file is require()'d as a pure library by tests, which
+// never reaches the "require.main !== module" CLI guard below. BRO-1397's
+// former-cast guard reads showById[showId] from inside validateExcerpt(), so
+// this can no longer be deferred to the CLI-only pipeline setup further down
+// (previously fine since nothing exported depended on it — the other
+// show*Map builders below still are CLI-only and unaffected).
+const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+const showById = {};
+for (const s of showsData.shows) {
+  showById[s.id] = s;
+}
+
 // ---------------------------------------------------------------------------
 // Require-as-a-library escape hatch (2026-08-01).
 //
@@ -1138,7 +1151,7 @@ if (!process.argv.includes('--ignore-pause') && isRebuildPaused()) {
 }
 
 // Load show dates and status for production-date guard
-const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+// (showsData/showById are declared above the require-as-a-library boundary now.)
 const showDateMap = {};
 const showOpeningDateMap = {};  // showId -> opening date only (NOT previewsStartDate) — for publishDate fallback
 const showClosingDateMap = {};
@@ -1148,10 +1161,6 @@ const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway'
 const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 const skipCrossShowDupeIds = new Set(showsData.shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
-const showById = {};
-for (const s of showsData.shows) {
-  showById[s.id] = s;
-}
 for (const s of showsData.shows) {
   // MIN of preview/previews/opening (see earliestShowDate) so an out-of-order
   // stale date can't push the date-guard window later than opening and mis-flag
