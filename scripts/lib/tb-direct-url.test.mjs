@@ -28,15 +28,21 @@ test('buildTbCandidateUrls also emits year-suffixed short-title variants', () =>
   assert.ok(urls.includes('https://www.talkinbroadway.com/page/world/beaches2026.html'));
 });
 
-test('buildTbCandidateUrls tries dated short-title variants before the bare undated one', () => {
+test('buildTbCandidateUrls tries ALL dated short-title variants (including lowercase) before the bare undated one', () => {
   // The bare short-title URL (Beaches.html) has no publish-date signal to verify against,
-  // so for a same-titled revival it could match the wrong production's page. Dated variants
-  // must be tried first so a correctly-dated page wins when one exists.
+  // so for a same-titled revival it could match the wrong production's page. Every dated
+  // variant — camel-case AND lowercase — must be tried before the bare one.
   const urls = buildTbCandidateUrls('Beaches, A New Musical', 2026);
-  const datedIdx = urls.indexOf('https://www.talkinbroadway.com/page/world/Beaches2026.html');
   const bareIdx = urls.indexOf('https://www.talkinbroadway.com/page/world/Beaches.html');
-  assert.ok(datedIdx !== -1 && bareIdx !== -1);
-  assert.ok(datedIdx < bareIdx, `expected dated variant before bare variant, got: ${JSON.stringify(urls)}`);
+  const datedIdxs = [
+    urls.indexOf('https://www.talkinbroadway.com/page/world/Beaches2026.html'),
+    urls.indexOf('https://www.talkinbroadway.com/page/world/Beaches26.html'),
+    urls.indexOf('https://www.talkinbroadway.com/page/world/beaches2026.html'),
+  ];
+  assert.ok(bareIdx !== -1 && datedIdxs.every(i => i !== -1));
+  for (const i of datedIdxs) {
+    assert.ok(i < bareIdx, `expected dated variant at ${i} before bare variant at ${bareIdx}, got: ${JSON.stringify(urls)}`);
+  }
 });
 
 test('buildTbCandidateUrls does not duplicate when short title equals full title camel-slug', () => {
@@ -52,6 +58,14 @@ test('buildTbCandidateUrls suppresses short-title variants below the 4-char floo
   const urls = buildTbCandidateUrls('Oh, Mary!', 2024);
   assert.equal(urls.length, 4, `expected no short-title variants, got: ${JSON.stringify(urls)}`);
   assert.ok(!urls.some(u => /\/Oh(\d|\.html)/.test(u)));
+});
+
+test('buildTbCandidateUrls uses normalized (not raw) length for the floor', () => {
+  // "Oh!!, A Musical" -> short title "Oh!!" is 4 raw chars (would pass a naive raw-length
+  // check) but normalizes to "oh" (2 chars) -- must still be suppressed, matching the
+  // normalized check verifyTbPage applies to the same short title.
+  const urls = buildTbCandidateUrls('Oh!!, A Musical', 2026);
+  assert.equal(urls.length, 4, `expected no short-title variants, got: ${JSON.stringify(urls)}`);
 });
 
 test('buildTbCandidateUrls handles titles with no comma normally (4 variants)', () => {
