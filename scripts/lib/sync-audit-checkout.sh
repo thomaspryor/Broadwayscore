@@ -364,12 +364,32 @@ DIRTY_AUDIT_FILES=$( (git diff --name-only -- data/audit/; git diff --cached --n
 if [ -n "$DIRTY_AUDIT_FILES" ]; then
   echo "[$TAG] resetting regenerable snapshot(s):"
   echo "$DIRTY_AUDIT_FILES" | sed "s/^/[$TAG]   /"
-  # `checkout HEAD --` (not bare `checkout --`) so this clears BOTH the
-  # index and the working tree — a degraded run that crashed after `git add`
-  # but before `git commit` leaves the file staged, and a bare `checkout --`
-  # only resets working-tree-vs-index, silently no-op'ing against a staged
-  # diff and leaving the merge blocked (caught in review, task #732).
-  echo "$DIRTY_AUDIT_FILES" | xargs -I{} git checkout HEAD -- "{}"
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    if git cat-file -e "HEAD:$f" 2>/dev/null; then
+      # `checkout HEAD --` (not bare `checkout --`) so this clears BOTH the
+      # index and the working tree — a degraded run that crashed after `git
+      # add` but before `git commit` leaves the file staged, and a bare
+      # `checkout --` only resets working-tree-vs-index, silently no-op'ing
+      # against a staged diff and leaving the merge blocked (caught in
+      # review, task #732).
+      git checkout HEAD -- "$f" \
+        || echo "::error::[$TAG] could not reset $f to HEAD"
+    else
+      # BRO-2364: HEAD has no such path (a NEWLY-ADDED snapshot: a crashed
+      # job ran `git add` on a brand-new file but never committed it), so
+      # `git checkout HEAD -- "$f"` errors ("did not match any file(s) known
+      # to git") and leaves it staged forever — that error was previously
+      # swallowed by `xargs`, so the merge stayed permanently blocked with no
+      # visible cause. There is nothing at HEAD to restore, so unstage it and
+      # delete the working-tree copy instead, same as the untracked case below.
+      git reset -q -- "$f" 2>/dev/null
+      rm -f -- "$f" \
+        || echo "::error::[$TAG] could not remove newly-added $f"
+    fi
+  done <<EOF
+$DIRTY_AUDIT_FILES
+EOF
 fi
 
 # UNTRACKED regenerable snapshots (review finding, task #1563): a crashed

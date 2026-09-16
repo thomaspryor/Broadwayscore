@@ -410,6 +410,45 @@ test('an unrelated file already STAGED by another writer is never swept into the
   });
 });
 
+test('ACCEPTANCE (BRO-2364): a NEWLY-ADDED staged data/audit snapshot no longer wedges the merge', () => {
+  withTmp((root) => {
+    // The bug: `git checkout HEAD -- <path>` only works for a path HEAD
+    // already has. A crashed job that ran `git add` on a brand-new,
+    // never-committed snapshot leaves a path `git diff --cached` reports as
+    // dirty but HEAD does not contain — checkout HEAD errors ("did not match
+    // any file(s) known to git"), that error was swallowed by `xargs`, and
+    // the file stayed staged forever. This only actually BLOCKS ff-only (as
+    // opposed to being merely along for the ride) when origin ALSO commits
+    // that same never-before-tracked path with different content — git then
+    // refuses with "Your local changes ... would be overwritten by merge",
+    // which is exactly what step 2's reset exists to clear.
+    const { origin, clone } = setupPair(root, 'newstaged');
+    const NEW_SNAPSHOT = 'data/audit/crashed-job-snapshot.json';
+    advanceOrigin(root, origin, 'via-newstaged', (via) => {
+      fs.mkdirSync(path.join(via, 'data', 'audit'), { recursive: true });
+      fs.writeFileSync(path.join(via, NEW_SNAPSHOT), '{"ok":true}\n');
+    });
+    fs.writeFileSync(path.join(clone, NEW_SNAPSHOT), '{"truncated":');
+    git(clone, 'add', '--', NEW_SNAPSHOT); // staged, never committed — collides with origin's addition
+
+    const { code, out } = trySync(clone, 'newstaged');
+    assert.equal(code, 0, `expected the sync to complete, got ${code}:\n${out}`);
+    assert.equal(
+      git(clone, 'rev-parse', 'HEAD').trim(),
+      git(clone, 'rev-parse', 'origin/main').trim(),
+      'the checkout must actually be on origin/main — the whole point of the gate',
+    );
+    assert.equal(
+      git(clone, 'status', '--porcelain', '--', NEW_SNAPSHOT).trim(), '',
+      'the newly-added snapshot must be fully cleared from both the index and the working tree',
+    );
+    assert.equal(
+      fs.readFileSync(path.join(clone, NEW_SNAPSHOT), 'utf8'), '{"ok":true}\n',
+      "origin's committed version landed, not left staged as the crashed job's truncated content",
+    );
+  });
+});
+
 test('a rebase left mid-flight by an interrupted run is self-healed, not stuck forever (BRO-3212 review finding)', () => {
   withTmp((root) => {
     // Simulate a run killed between "git commit" succeeding and "git rebase
