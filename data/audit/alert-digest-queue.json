@@ -110,18 +110,6 @@
     "queuedAt": "2026-09-15T18:16:29.863Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/129 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nPre-Existing Condition: missing-from-prod",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T18:50:21.394Z"
-  },
-  {
     "conditionKey": "watchdog-park:586",
     "title": "Watchdog parked #586 — redispatch never produced a launch",
     "description": "Watchdog: card \"Email gate 0.6% conversion — 68% dismiss rate signals friction\" was claimed for redispatch at 2026-09-15T04:18:04.302Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 586), then re-arm with node scripts/bsc-next.js --id 586 --force once fixed.",
@@ -314,15 +302,39 @@
     "queuedAt": "2026-09-15T21:37:33.495Z"
   },
   {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 57.1% of shows changed coverage state",
+    "description": "review-gap blast radius 57.1% (12/21 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bigfoot-off-broadway-2026, bughouse-off-broadway-2026, chess-2025, data-off-broadway-2026, golden-boy-off-west-end-2026, indian-princesses-off-broadway-2025, mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026, tartuffe-remixed-off-west-end-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-children-off-west-end-2026, well-ill-let-you-go-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nPARTIAL write: the other 9 show(s) audited this run were NOT risky and were persisted normally. Only the 12 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T01:06:30.065Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "9/129 show(s) differ between internal state and what prod serves.\nscore-drift: 9\nMan to Man: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nMuch Ado About Nothing: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-16T01:06:42.556Z"
+  },
+  {
     "conditionKey": "t1-coverage:scoreboard",
     "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (378/497)\noff-broadway: 43.5% (136/313)\nwest-end: 76.9% (432/562)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (780h)\nA Midsummer Night's Dream — observer (780h)\nA Midsummer Night's Dream — standard (780h)\nABBA Voyage — independent (780h)\nAladdin — ew (780h)\n… 163 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (780h)\nThe Book of Mormon — usatoday (780h)\nBuena Vista Social Club — broadwaynews (780h)\nBuena Vista Social Club — nydailynews (780h)\nHadestown — nydailynews (780h)\n… 20 more circuit-open cell(s)",
+    "description": "broadway: 76.1% (379/498)\noff-broadway: 43.4% (135/311)\nwest-end: 76.5% (423/553)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (783h)\nA Midsummer Night's Dream — observer (783h)\nA Midsummer Night's Dream — standard (783h)\nABBA Voyage — independent (783h)\nAladdin — ew (783h)\n… 163 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (783h)\nThe Book of Mormon — usatoday (783h)\nBuena Vista Social Club — broadwaynews (783h)\nBuena Vista Social Club — nydailynews (783h)\nHadestown — nydailynews (783h)\n… 20 more circuit-open cell(s)",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-15T22:04:59.955Z"
+    "queuedAt": "2026-09-16T01:06:42.749Z"
   }
 ]
