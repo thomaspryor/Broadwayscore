@@ -169,6 +169,14 @@ const NAME_CANDIDATE_RE = /\b[A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){1,2}\b/g;
 // the Title-Case pattern.
 const INSTITUTIONAL_SUFFIX_RE = /(theatre|theater|company|square|street|avenue|award|awards|festival|society|museum|centre|center|studio|productions?|times|guardian|post|herald|journal|tribune|magazine)$/i;
 
+// Whole-phrase market/geography boilerplate that recurs constantly in
+// review prose regardless of suffix ("West End", "Off Broadway") — caught
+// live on allegra-west-end-2026 (readaboutstuff--unknown.json, 2026-07-10):
+// "Peter Quilter's hit West End transfer" got its own "West End" tokenized
+// into a false former-cast match once "end" collided with unrelated prose
+// near the role name elsewhere in the file.
+const MARKET_PHRASE_RE = /^(west end|off broadway|off west end|new york|east end|south bank|the fringe)$/i;
+
 // A candidate starting with a common function word is a title/phrase
 // fragment ("The Social Network", "A Few Good Men" — comparison titles
 // critics drop in passing), not a person's name.
@@ -233,6 +241,7 @@ function extractPersonNameCandidates(text) {
       if (LEADING_STOPWORD_RE.test(words[0])) continue;
     }
     if (INSTITUTIONAL_SUFFIX_RE.test(words[words.length - 1])) continue;
+    if (MARKET_PHRASE_RE.test(candidate)) continue;
     const afterMatch = text.slice(index + candidate.length, index + candidate.length + LITERARY_SOURCE_SUFFIX_WINDOW);
     if (LITERARY_SOURCE_SUFFIX_RE.test(afterMatch)) continue;
     out.push({ name: candidate, index });
@@ -278,6 +287,34 @@ function buildRoleTerms(show) {
   return terms;
 }
 
+// "Directed by NAME" / "Written by NAME" / "Developed & Directed by: NAME"
+// — creative-team credits inferred from prose when show.creativeTeam data
+// is incomplete (common for fringe/regional shows). Caught live on
+// the-enormous-crocodile-west-end-2026: creativeTeam is [], but its own
+// reviews credit "Developed & Directed by: Emily Lim" — without this,
+// she reads as an unrecognized name and gets flagged as former cast the
+// same way Rafe Spall does. Whoever created/directed a production
+// typically stays on for a returning run, the same reasoning as the
+// explicit show.creativeTeam exclusion in buildSafeNameTokens.
+const CREATIVE_ROLE_PHRASE_RE = /\b(?:directed|written|created|developed|choreographed|composed|designed|adapted)\s+(?:(?:&|and)\s+\w+\s+)?by:?\s+([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})/gi;
+
+/**
+ * Names inferred from "directed by X" style credit lines in a review's own
+ * text — a file-local safelist augmentation for creative-team members the
+ * structured show.creativeTeam data is missing.
+ *
+ * @param {string} text
+ * @returns {Set<string>} name tokens
+ */
+function extractCreativeRolePhraseNames(text) {
+  const names = new Set();
+  if (!text) return names;
+  for (const m of text.matchAll(CREATIVE_ROLE_PHRASE_RE)) {
+    nameTokens(m[1]).forEach(t => names.add(t));
+  }
+  return names;
+}
+
 /**
  * True when a role term appears within ROLE_PROXIMITY_WINDOW chars either
  * side of a candidate's position in its source text.
@@ -316,6 +353,13 @@ function collectFormerCastTokens(data, safeTokens, roleTerms) {
     (data.llmScore.keyPhrases || []).forEach(p => { if (p && p.quote) texts.push(p.quote); });
   }
 
+  // File-local safelist augmentation: "directed by X" credits caught in
+  // THIS review's own text, on top of the show-level safeTokens.
+  const fileSafeTokens = new Set(safeTokens);
+  for (const text of texts) {
+    for (const t of extractCreativeRolePhraseNames(text)) fileSafeTokens.add(t);
+  }
+
   for (const text of texts) {
     for (const { name: candidate, index } of extractPersonNameCandidates(text)) {
       const tokens = nameTokens(candidate);
@@ -323,7 +367,7 @@ function collectFormerCastTokens(data, safeTokens, roleTerms) {
       // If ANY token of the candidate matches a safe name, treat the whole
       // candidate as a mention of that safe person (e.g. "Bartlett Sher"),
       // not a former-cast member.
-      if (tokens.some(t => safeTokens.has(t))) continue;
+      if (tokens.some(t => fileSafeTokens.has(t))) continue;
       if (!hasNearbyRoleTerm(text, candidate, index, roleTerms)) continue;
       // A 2-word candidate ("Rafe Spall") decomposes into both individual
       // tokens so a later bare-surname mention ("Spall handles...") still

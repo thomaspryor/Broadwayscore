@@ -97,6 +97,37 @@ describe('excerptMentionsFormerCast', () => {
     assert.strictEqual(res.mentionsFormerCast, false);
   });
 
+  it('does not flag a "West End"/market-boilerplate phrase as a name', () => {
+    // Live false positive on allegra-west-end-2026: "West End" collided
+    // with unrelated role-adjacent prose elsewhere in the same file and
+    // got tokenized into a former-cast match.
+    const reviewData = {
+      publishDate: '2026-05-20',
+      fullText: 'Maureen Lipman as Allegra brings warmth to this West End transfer.',
+    };
+    const res = excerptMentionsFormerCast(
+      "Dame Maureen Lipman delivers a luminous performance in this hit West End transfer.",
+      { show: SHOW, reviewDate: '2026-05-20', reviewData }
+    );
+    assert.strictEqual(res.mentionsFormerCast, false);
+  });
+
+  it('does not flag a director/writer inferred from a "directed by X" credit line even when missing from show.creativeTeam', () => {
+    // Live false positive on the-enormous-crocodile-west-end-2026, whose
+    // show.creativeTeam is [] — the guard has no structured way to know
+    // "Emily Lim" is the director, only the review's own prose credit.
+    const showNoCreativeTeam = { ...SHOW, creativeTeam: [] };
+    const reviewData = {
+      publishDate: '2022-04-01',
+      fullText: 'Developed & Directed by: Emily Lim. Atticus Finch wants justice for his client.',
+    };
+    const res = excerptMentionsFormerCast(
+      'Emily Lim stages this with commendable authenticity, close to Atticus Finch.',
+      { show: showNoCreativeTeam, reviewDate: '2022-04-01', reviewData }
+    );
+    assert.strictEqual(res.mentionsFormerCast, false);
+  });
+
   it('flags a hyphenated former-cast surname (UK/West End casts commonly hyphenate)', () => {
     const reviewData = {
       publishDate: '2022-04-04',
