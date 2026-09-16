@@ -51,7 +51,7 @@ const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
-const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle, isUrlYearInPriorRun } = require('./lib/url-discovery');
+const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle } = require('./lib/url-discovery');
 const { buildCensusPlan, isCensusPassComplete, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 const {
@@ -175,7 +175,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason } = require('./lib/gap-ingest-policy');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('./lib/gap-ingest-policy');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
@@ -494,16 +494,10 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   // year in its path is cheap, reliable evidence — if that year predates this
   // production's window (and no priorRuns claim it), it is a different
   // production and does not belong in this show's gap list.
-  // Same delimiter set as isUrlYearInPriorRun (the readmission below) — if the
-  // two regexes disagree, a dash-form URL trips the guard while being invisible
-  // to the priorRuns escape hatch, dropping a declared prior run's reviews.
-  const urlYear = (String(u).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/) || [])[1];
-  if (urlYear && !isUrlYearInPriorRun(u, show.priorRuns)) {
-    const starts = [show.previewsStartDate, show.openingDate]
-      .map(d => (d ? new Date(d).getUTCFullYear() : NaN))
-      .filter(Number.isFinite);
-    if (starts.length && parseInt(urlYear, 10) < Math.min(...starts)) return null;
-  }
+  // isUrlYearOutOfWindow (lib/gap-ingest-policy.js) is the single copy of this
+  // check — a second, drifted copy is how a dash-form URL trips one guard
+  // while staying invisible to the priorRuns escape hatch in the other.
+  if (isUrlYearOutOfWindow(u, show)) return null;
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words
@@ -728,6 +722,16 @@ async function auditShow(show, opts = {}) {
   // story.asp?ID=… with no title in the path, which title-matching rejected, so
   // L&SA was systematically missed across shows, 2026-06-06). isReviewUrl still
   // strips ticketing/maps/form links.
+  //
+  // Production identity (BRO-1412): Show Score keeps ONE page per title (the
+  // current or most recent production), with no roundup article to date via
+  // articleRunIdentity — it links straight to each outlet's own review. A
+  // revival's page can still surface a prior production's review (e.g. an
+  // outlet's own old notice still linked from the show's page). Fall back to
+  // the URL-embedded-year signal (same one the SERP census applies) so a
+  // stale-year Show Score URL is tagged priorRun and permanently ingest-
+  // blocked rather than silently treated as current-run.
+  const ssPriorRunUrls = new Set();
   try {
     const { showScoreUrlForShow, fetchAllShowScoreReviewUrls } = require('./lib/show-score-discover');
     const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap());
@@ -737,7 +741,10 @@ async function auditShow(show, opts = {}) {
         return (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
       };
       for (const u of await fetchAllShowScoreReviewUrls(ssUrl, fetchHtml)) {
-        if (isReviewUrl(u)) aggUrls.add(normalizeReviewUrl(u));
+        if (!isReviewUrl(u)) continue;
+        const norm = normalizeReviewUrl(u);
+        aggUrls.add(norm);
+        if (isUrlYearOutOfWindow(norm, show)) ssPriorRunUrls.add(norm);
       }
     }
   } catch (e) {
@@ -1033,7 +1040,7 @@ async function auditShow(show, opts = {}) {
   // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
   // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
   // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
-  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || serpCensusUrls.size > 0) {
+  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || serpCensusUrls.size > 0 || ssPriorRunUrls.size > 0) {
     for (const m of [...result.missing, ...result.flaggedMisses]) {
       if (weRefUrls.has(m.url)) {
         m.weRef = true;
@@ -1048,6 +1055,9 @@ async function auditShow(show, opts = {}) {
       // Broadway-path production identity: cited only by a prior production's
       // dated aggregator article → permanently report-only (TKAM 2018 class).
       if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
+      // Show Score production identity (BRO-1412): URL's own embedded year
+      // predates this production's window → permanently report-only.
+      if (ssPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'show-score-url-year'; }
       // SERP census provenance (report/debug only — ingest eligibility for
       // these follows the same rules as any other missing URL: blocked on WE
       // shows until WE_GAP_INGEST=1, per gap-ingest-policy.js).

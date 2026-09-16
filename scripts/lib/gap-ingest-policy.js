@@ -25,6 +25,13 @@
  * WE_GAP_INGEST auto-enables, Broadway-path prior-production URLs on WE shows
  * became ingestable again). priorRun blocks UNCONDITIONALLY, on every path.
  *
+ * isUrlYearOutOfWindow() (BRO-1412, 2026-09) covers the source articleRunIdentity
+ * can't: Show Score per-show page discovery has no roundup article to date —
+ * it links straight to each outlet's own review. Applying the URL-embedded-year
+ * check there closes the last title-matched-but-not-production-matched
+ * discovery path (Playbill Verdict SERP + BWW Review Roundup were closed by
+ * articleRunIdentity above; Show Score was not).
+ *
  * Pure functions per CLAUDE.md §15 — the audit wires them; tests require() them.
  */
 
@@ -32,6 +39,7 @@
 
 const { extractPublishDate } = require('./article-extractor');
 const { isCurrentRunRoundup } = require('./gap-reference-sources');
+const { isUrlYearInPriorRun } = require('./url-discovery');
 
 /**
  * Date an aggregator article against the show's current opening window.
@@ -44,6 +52,37 @@ const { isCurrentRunRoundup } = require('./gap-reference-sources');
 function articleRunIdentity(html, show, url) {
   const publishDate = extractPublishDate(html, url);
   return { publishDate, priorRun: !isCurrentRunRoundup(publishDate, show) };
+}
+
+/**
+ * Cheap per-URL production-identity signal, no fetch required: many outlets
+ * embed the publish year in the review URL path itself
+ * (nytimes.com/2018/04/23/theater/...). A URL year older than this
+ * production's opening window is a prior production's review UNLESS a
+ * declared priorRuns window explicitly claims that year.
+ *
+ * Show Score per-show pages (unlike Playbill Verdict / BWW Review Roundup)
+ * carry no article-level publish date articleRunIdentity() can check — Show
+ * Score keeps ONE page per title (current-or-most-recent production) and
+ * links directly to each outlet's own review with no roundup wrapper to
+ * date. This is the same signal the SERP census discovery path
+ * (acceptSerpCensusResult) already applies to its own candidates; extracted
+ * here so any URL-only discovery source can reuse it without duplicating the
+ * year-delimiter regex (a second, drifted copy is how a URL trips one guard
+ * while staying invisible to the priorRuns readmission in the other).
+ * @param {string} url
+ * @param {object} show shows.json record ({previewsStartDate, openingDate, priorRuns})
+ * @returns {boolean} true when the embedded year predates this production's window
+ */
+function isUrlYearOutOfWindow(url, show) {
+  const urlYear = (String(url).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/) || [])[1];
+  if (!urlYear) return false;
+  if (isUrlYearInPriorRun(url, show && show.priorRuns)) return false;
+  const starts = [show && show.previewsStartDate, show && show.openingDate]
+    .map(d => (d ? new Date(d).getUTCFullYear() : NaN))
+    .filter(Number.isFinite);
+  if (!starts.length) return false;
+  return parseInt(urlYear, 10) < Math.min(...starts);
 }
 
 /**
@@ -82,4 +121,4 @@ function ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources, serpCensusG
   return null;
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason };
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow };
