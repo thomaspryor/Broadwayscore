@@ -1,20 +1,24 @@
 {
-  "generatedAt": "2026-09-15T12:12:36.755Z",
-  "subject": "BSC URGENT (day 26): 8 unresolved errors",
-  "bannerText": "8 errors, 30 warnings",
-  "consecutiveErrorDays": 26,
+  "generatedAt": "2026-09-17T12:09:21.616Z",
+  "subject": "BSC URGENT (day 27): 8 unresolved errors",
+  "bannerText": "8 errors, 36 warnings",
+  "consecutiveErrorDays": 27,
   "errors": [
     {
       "name": "Data quality: provider spend ledger",
-      "message": "Provider spend ledger's newest entry (day=2026-09-13) is 3d old (>48h) — the daily reconciliation itself has stopped landing"
+      "message": "Provider spend ledger's newest entry (day=2026-09-15) is 3d old (>48h) — the daily reconciliation itself has stopped landing"
     },
     {
       "name": "Main: red streak",
-      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 21.5h (no green run found in the runs checked — actual gap may be longer) (30 failing runs) — first red commit a2620ca8f, job \"Data Validation, Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 19.8h (no green run found in the runs checked — actual gap may be longer) (30 failing runs) — first red commit ee8996da5, job \"Unit Tests, Data Validation, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+    },
+    {
+      "name": "Alert Router: dispatch deadman",
+      "message": "Most recent auto-dispatch attempt failed (6/14 succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: LINEAR_API_KEY not set in .env or environment"
     },
     {
       "name": "Push-retry deadman",
-      "message": "951 push-retry failure(s) in the last 7d across Broadwayscore:main [Rebuild Reviews (Fast) x148, Gather Review Data x114, Rebuild Reviews Data x102, Test Suite x47, Fetch Guardian Reviews via API x44, Process Feedback Submissions x41, Commercial RSS Poll x39, Backfill Cast Data (Web Search) x38, Fetch Show Images x36, Audit Aggregator Review Gap x36, Scrape New Aggregators x29, Update Show Score Data x26, Opening Night Completeness Check x26, Audit Imageless Scored Shows x25, Enrich Reviews x21, Daily Data Health Check x20, Reverse Discovery Audit x19, Check Corpus Drift x11, Opening Night Express x9, unknown x9, Backfill Cast Data x8, Refresh Show Score (opening-night window) x7, Promote West End Aggregator Candidates x6, Opening Night Checklist x6, Check Review-Count Drift x6, Reddit Engagement Digest x6, Auto-Maintain Show Data x6, Update Lottery/Rush Data x6, Refresh Review Data x5, Monitor Scheduled Email Count x5, Audit Opening Dates x5, Outlet Registry Baseline Maintenance x5, Audit Provisional Show Venues x4, Check Opening Night Drift x4, Audit Closing Dates x4, Nightly UX Walkthrough x3, Commercial Weekly Orchestrator x3, Weekly Video Reviews x2, Weekly Broadway Grosses x2, Weekly Newsletter Draft x2, Newsletter Draft Refresh (Sunday) x2, Audit Census Recall x2, Opening Night Broadcast x2, Enrich IBDB Dates x1, Detect Revivals (IBDB) x1, Enrich Off-Broadway Dates x1, Weekly Data Integrity Check x1, Scrape BWW Reviews x1, Audit Cross-Production (Weekly) x1, Scrape WestEndTheatre Roundups x1, LLM Ensemble Score Reviews x1, Generate Guide Editorials x1, Audit Aggregator Coverage x1]. Most recent reason: api-fallback-exhausted(race-or-other,deadline)."
+      "message": "659 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-2323-mu3r7v68 [Rebuild Reviews (Fast) x112, Rebuild Reviews Data x79, Gather Review Data x57, Process Feedback Submissions x30, Backfill Cast Data (Web Search) x30, Fetch Guardian Reviews via API x29, Fetch Show Images x26, Commercial RSS Poll x26, Audit Aggregator Review Gap x25, unknown x24, Scrape New Aggregators x21, Update Show Score Data x18, Audit Imageless Scored Shows x18, Test Suite x18, Opening Night Completeness Check x16, Daily Data Health Check x15, Enrich Reviews x14, Reverse Discovery Audit x12, Check Corpus Drift x7, Backfill Cast Data x6, Opening Night Express x6, Refresh Show Score (opening-night window) x5, Update Lottery/Rush Data x5, Outlet Registry Baseline Maintenance x4, Refresh Review Data x4, Promote West End Aggregator Candidates x4, Check Review-Count Drift x4, Reddit Engagement Digest x4, Auto-Maintain Show Data x4, Audit Closing Dates x3, Monitor Scheduled Email Count x3, Audit Opening Dates x3, Opening Night Checklist x3, Commercial Weekly Orchestrator x3, Audit Provisional Show Venues x2, Nightly UX Walkthrough x2, Weekly Newsletter Draft x2, Newsletter Draft Refresh (Sunday) x2, Audit Census Recall x2, Opening Night Broadcast x2, Enrich Off-Broadway Dates x1, Weekly Data Integrity Check x1, Scrape BWW Reviews x1, Audit Cross-Production (Weekly) x1, Scrape WestEndTheatre Roundups x1, LLM Ensemble Score Reviews x1, Generate Guide Editorials x1, Weekly Video Reviews x1, Audit Aggregator Coverage x1]. Most recent reason: commit-dropped-post-push(reset+cherry-pick(-X theirs))."
     },
     {
       "name": "Autofix: jobs actually succeeding",
@@ -22,53 +26,53 @@
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
-      "message": "Autofix throughput DEAD: 0 passes on each of the last 6 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — dispatches are launching but nothing is landing."
+      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 3 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
-      "message": "4 open Off-Broadway show(s) look closed per the weekly detector. Oldest: drunk-shakespeare-off-broadway-2022 (missing 65d)"
-    },
-    {
-      "name": "Data: live show with zero critic reviews on site",
-      "message": "1 live show(s) have discovered review URL(s) but NOTHING collected. First: matilda-the-musical-theatre-row-off-broadway-2026"
+      "message": "4 open Off-Broadway show(s) look closed per the weekly detector. Oldest: drunk-shakespeare-off-broadway-2022 (missing 67d)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 35d) — 2 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "6 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 37d) — 4 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ],
   "warns": [
     {
+      "name": "Audience coverage: open-show gaps",
+      "message": "1 open show(s) have audience data on a source that didn't link — Mezzanine: My Son’s A Queer (But What Can You Do?) (151 ratings ↔ My Son's a Queer (But What Can You Do?))"
+    },
+    {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 20651 vs baseline 20730"
+      "message": "Reviews dropped: 20730 vs baseline 20808"
     },
     {
       "name": "Quality: corpus drift",
-      "message": "12 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority)"
+      "message": "15 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)"
     },
     {
       "name": "Quality: DMARC deliverability",
-      "message": "Newest DMARC report is 17d old (reporters send daily)"
+      "message": "Newest DMARC report is 19d old (reporters send daily)"
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (20h ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (24h ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "message": "17 NEW unhandled CV.wrongProduction review(s) since last run (910 total across 424 show(s), 20h ago)"
-    },
-    {
-      "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "message": "3 NEW unmatched review(s) since last run (640 total across 327 show(s), 20h ago)"
+      "message": "4 NEW unhandled CV.wrongProduction review(s) since last run (929 total across 425 show(s), 24h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "1 NEW cross-show URL mismatch(es) since last run (1621 total across 720 show(s), 20h ago)"
+      "message": "1 NEW cross-show URL mismatch(es) since last run (1622 total across 722 show(s), 24h ago)"
+    },
+    {
+      "name": "Data quality: revival-unverified lifetime sweep",
+      "message": "1 NEW unverified revival flag(s) since last run (43 total across 43 show(s), 24h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
-      "message": "6 show(s) opened and qualified but never emailed subscribers (0 still alertable, 6 aged out past the paging window, 20h ago)"
+      "message": "6 show(s) opened and qualified but never emailed subscribers (0 still alertable, 6 aged out past the paging window, 24h ago)"
     },
     {
       "name": "Coverage: adversarial probe",
@@ -76,23 +80,27 @@
     },
     {
       "name": "SEO: health",
-      "message": "Last SEO check 31d ago (>14d)"
+      "message": "Last SEO check 33d ago (>14d)"
     },
     {
       "name": "Cron failed: Test Suite",
-      "message": "Last run inconclusive: failure (1h ago), no success in 48h"
+      "message": "Last run inconclusive: failure (0h ago), no success in 48h"
+    },
+    {
+      "name": "Cron failed: Weekly Video Reviews",
+      "message": "Last run inconclusive: failure (3d ago), no success in 192h"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "41 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (29d, stamp overdue 27d); BRO-235: The Stage + pages-on-stages stub extraction (29d); Monitor: verify 'exactly 1 scheduled owner email/day' holds  (29d) [16 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "41 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (31d, stamp overdue 29d); BRO-235: The Stage + pages-on-stages stub extraction (31d); Monitor: verify 'exactly 1 scheduled owner email/day' holds  (31d) (1 parked via tab-close, oldest 2026-09-16 — resume: node scripts/bsc-next.js --id 431 --force — not counted) [16 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "27 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (53d); P1: headless-claude fallback for the opening-night monitor l (53d); P1: register review-census carriers (audit-aggregator-gap +  (53d) [35 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "26 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (55d); P1: headless-claude fallback for the opening-night monitor l (55d); P1: register review-census carriers (audit-aggregator-gap +  (55d) [36 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: paused P2/other cards",
-      "message": "5 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging) [17 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "5 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging) [18 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Infra-review: gate telemetry",
@@ -123,16 +131,28 @@
       "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
     },
     {
+      "name": "Workflow repeat-failure: Test Suite",
+      "message": "Test Suite failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
       "name": "Workflow coverage: never-run",
       "message": "1 workflow(s) registered on GitHub Actions with ZERO lifetime runs (>30d old): batch-commercial-research.yml"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: benevolent-off-broadway-2026 — talkinbroadway (rejected-unscoreable)"
+      "message": "3 discovered review(s) not reaching the composite score (0 T1). First: truly-howard-hughes-off-broadway-2026 — cititour (unscored)"
+    },
+    {
+      "name": "Data: uncollected live review strands",
+      "message": "29 discovered review URL(s) across 20 live show(s) were never fetched. First: the-producers-west-end-2025 (3 stranded)"
     },
     {
       "name": "Infra: worktree GC log stale",
-      "message": "worktree-gc.log has no line in the last 22.1h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
+      "message": "worktree-gc.log has no line in the last 18.9h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
+    },
+    {
+      "name": "Infra: notion-schedule-coupling audit",
+      "message": "3 live schedule(s) still reference the frozen Notion mirror (24h ago)"
     },
     {
       "name": "Data: undispatchable backlog cards",
@@ -141,161 +161,315 @@
   ],
   "queued": [
     {
-      "title": "Scraping spend over budget",
-      "description": "Day 2026-09-04. Over budget: browserbase $6.3 > $4 (63 sessions); brightdata $4.94 > $2.5 (2386 serp + 906 unlocker reqs). 2026-09-04 · Browserbase: $6.3 (63 sessions) · 2026-09-04 · Bright Data: $4.94 (2386 serp / 906 unlocker) · ScrapingBee: baseline day (cycle 1000010) — day figure starts tomorrow · ScrapingDog: baseline day (cycle 126737) — day figure starts tomorrow · Browserbase attribution: 92% attributed — top: test-caller 56, collect-review-texts.js 2 · Bright Data attribution: 16% attributed — top: opening-night-poller.js 302, validate-show-venue.js 107, gather-reviews.js 58, unknown 24, extract-theatre-record.js 15. Verification streak reset to 0.",
+      "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+      "description": "Scope: 2 opening window(s): in-honor-of-jean-michel-basquiat-off-broadway-2026 (2026-09-15), golden-boy-off-west-end-2026 (2026-09-15)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-08T07:07:43.000Z.\nThis is NOT a pass — the SLA had too little to judge.",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on pre-existing-condition-off-broadway-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"pre-existing-condition-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Shipped review missing publishDate on Pre-Existing Condition",
+      "description": "pages-on-stages/Mason Pilevsky SHIPPED with no publishDate — cannot confirm post-opening: https://pagesonstages.com/2026/09/14/pre-existing-condition/",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-3030",
+      "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
       "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
-      "description": "Scope: 2 opening window(s): the-story-west-end-2026 (2026-09-03), a-month-in-the-country-west-end-2026 (2026-09-02)\nEvaluated 6 review(s), p90 245m.\nSlowest:\n• the-story-west-end-2026 / standard — 245m\n• the-story-west-end-2026 / london-theatre — 221m\n• the-story-west-end-2026 / broadwayworld — 144m\n• the-story-west-end-2026 / whatsonstage — 106m\n• the-story-west-end-2026 / telegraph — 44.3m\n• the-story-west-end-2026 / guardian — 27.5m",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Opening-night monitor pass complete: holy-fool-off-west-end-2026",
-      "description": "Pass 1, model opus, 11min, $1.09. Pass 1 complete — exited cleanly inside the 15-min budget, no report sent (parity not reached, window open until 22:59Z).\n\n**Holy Fool (Park Theatre, off-West-End) — press night 2026-09-04**\n\nLive on prod: **1 review** — WhatsOnStage / Miriam Sallon, score 38 (Negative). No composite score yet (1 review is below display threshold). Show status is already `open`.\n\nIndependent census found **9 outlets**, so the gap is large:\n- 6 never seen by the pipeline at all: The Stage, Everything Theatre, The Spy in the Stalls (4★), West End Best Friend, Jewish News, Theatre and Tonic\n- 2 discovered but text never collected (0-byte stubs): The Reviews Hub, readaboutstuff\n- 1 duplicate artifact: `whatsonstage--unknown.json` is a 0-byte stub of the same URL as the live WhatsOnStage file\n\nCaveat I recorded",
-      "severity": "info",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review URL cross-show mismatch on The Story",
-      "description": "Review URL for financialtimes/Sarah Hemming does not mention show slug (checked: the-story-west-end, the-story, story): https://www.ft.com/content/ce137235-1a5a-4eef-b82a-d6f9e7f6a244?syn-25a6b1a6=1",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Auto-remediation gave up on the-story-west-end-2026",
-      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-story-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Shipped review too short to verify on Holy Fool",
-      "description": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Shipped review missing publishDate on Holy Fool",
-      "description": "thestage/Holly O'Mahony SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/holy-fool-review-park-theatre-london",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on Holy Fool",
-      "description": "holy-fool-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=holy-fool-off-west-end-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "cmux launch refused — claude auth preflight failed",
-      "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched",
-      "description": "Only 8 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min (eligible P0/P1 queue depth: 197). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Scrapingdog daily breaker TRIPPED: 35560/21000 credits",
-      "description": "Scrapingdog billed 35560 credits today against a ceiling of 21000.\nBulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.\n5 show(s) are in an active opening window — bulk review collection for them is capped.\nTop attributed SD callers today: gather-reviews.js (717), collect-review-texts.js (300), collect-outlet-reviews.js (276).",
-      "severity": "critical",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches",
-      "description": "The 👑 OWNER watchdog heartbeat is 1490 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Placeholder synopsis on Kimberly Akimbo",
-      "description": "synopsis for kimberly-akimbo-off-west-end-2026 is too thin (119 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Pre-opening publishDate on Kimberly Akimbo",
-      "description": "monstagigz/Unknown SHIPPED with publishDate 2026-08-30 (10d before openingDate 2026-09-09): https://monstagigz.com/2026/08/30/theatre-review-kimberly-akimbo-starring-maria-friedman-at-hampstead-theatre/comment-page-1/",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Zombie-tab sweep closed workspace:87",
-      "description": "closed workspace:87 \"🤖⚡ Data·BRO-2569 No dispatcher path-checks the command it\" — dead 🤖 tab with no dispatch-ledger record and no task file (RECLAIM_UNMAPPED_DISABLED=1 to disable). If a real task was in progress here, its ledger entry never got written; it will need re-dispatching by hand.",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Feedback: 1 submission(s), all handled automatically",
-      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nSpellbound — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Spellbound closed on september 6\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/809",
-      "severity": "info",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34232807906",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34991983192",
       "fields": [
         {
-          "name": "Submissions",
-          "value": "1"
+          "name": "This failed run",
+          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34991983192)"
         },
         {
-          "name": "Need you",
-          "value": "0"
+          "name": "Previous failed run",
+          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34884167966)"
         },
         {
-          "name": "Pipeline status",
-          "value": "success"
+          "name": "Consecutive failures",
+          "value": "31"
         }
       ]
     },
     {
-      "title": "Auto-remediation gave up on kimberly-akimbo-off-west-end-2026",
-      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"kimberly-akimbo-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
-      "severity": "warning",
+      "title": "Unhandled CV.wrongProduction on Pre-Existing Condition",
+      "description": "nysr/Michael Sommers (nysr--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This review evaluates the 2024 Connelly Theater produ — https://nystagereview.com/2026/09/14/pre-existing-condition-cold-comfort/\nnytg/Kyle Turner (nytg--kyle-turner.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate theater review with substantive  — https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-lupita-nyongo",
+      "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Stale 'upcoming' tag on Kimberly Akimbo",
-      "description": "kimberly-akimbo-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=kimberly-akimbo-off-west-end-2026 --apply",
-      "severity": "warning",
+      "title": "Watchdog parked #586 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Email gate 0.6% conversion — 68% dismiss rate signals friction\" was claimed for redispatch at 2026-09-15T04:18:04.302Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 586), then re-arm with node scripts/bsc-next.js --id 586 --force once fixed.",
+      "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Auto-remediation gave up on jane-eyre-off-west-end-2026",
-      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jane-eyre-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
-      "severity": "warning",
+      "title": "Watchdog parked #1226 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P0 #1199: dispatch dead-launch rate is now measured (20.5% over 7d)\" was claimed for redispatch at 2026-09-15T04:18:04.378Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1226), then re-arm with node scripts/bsc-next.js --id 1226 --force once fixed.",
+      "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Stale 'upcoming' tag on Jane Eyre",
-      "description": "jane-eyre-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=jane-eyre-off-west-end-2026 --apply",
-      "severity": "warning",
+      "title": "Watchdog parked #1279 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P0: merge-worktree-to-main.sh printed \"→ pushed\" but nothing reached origin, and left another session's stash conflicted in the shared checkout\" was claimed for redispatch at 2026-09-15T04:19:36.252Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1279), then re-arm with node scripts/bsc-next.js --id 1279 --force once fixed.",
+      "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Review-gap audit refused to write — 40.9% of shows changed coverage state",
-      "description": "review-gap blast radius 40.9% (9/22 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bigfoot-off-broadway-2026, bughouse-off-broadway-2026, chess-2025, data-off-broadway-2026, indian-princesses-off-broadway-2025, the-dinosaurs-off-broadway-2026, the-monsters-off-broadway-2026, well-ill-let-you-go-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nPARTIAL write: the other 22 show(s) audited this run were NOT risky and were persisted normally. Only the 9 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+      "title": "Watchdog parked #1415 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P0: main red — drain→rebuild→re-flag loop between date guard and #483 gate\" was claimed for redispatch at 2026-09-15T04:19:36.325Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1415), then re-arm with node scripts/bsc-next.js --id 1415 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1730 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Main red 2026-08-17: cats-west-end-2026 london-box-office--phil-willmott.json is a mis-attributed roundup, not a review\" was claimed for redispatch at 2026-09-15T04:21:14.011Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1730), then re-arm with node scripts/bsc-next.js --id 1730 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1759 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P1: data/opening-night-sent.json is tracked AND gitignored — same CI hazard that broke the only merge path\" was claimed for redispatch at 2026-09-15T04:14:59.456Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1759), then re-arm with node scripts/bsc-next.js --id 1759 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1812 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P0: the cmux WORKSPACE lane is the only lane that dies — 115/368 dispatches (31%) never run, while headless is 0/40 and other is 0/31 over the same window\" was claimed for redispatch at 2026-09-15T04:21:16.427Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1812), then re-arm with node scripts/bsc-next.js --id 1812 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1814 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P1: update-show-status.yml runs keep ending CANCELLED — 3 of the last 4, cause unidentified, and two obvious hypotheses are already ruled out\" was claimed for redispatch at 2026-09-15T04:22:48.286Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1814), then re-arm with node scripts/bsc-next.js --id 1814 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1842 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P0: data-health-check.yml push-with-retry deadline exhaustion — same class as task #1791, never applied here\" was claimed for redispatch at 2026-09-15T04:22:49.622Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1842), then re-arm with node scripts/bsc-next.js --id 1842 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1864 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Investigate: Notion card reverted Done→Not started after Auto-closed, resurfaced as duplicate Linear card BRO-111\" was claimed for redispatch at 2026-09-15T04:15:01.510Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1864), then re-arm with node scripts/bsc-next.js --id 1864 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1889 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Opening Night Express fires too early for evening openings, never retries when it finds 0 real reviews\" was claimed for redispatch at 2026-09-15T04:16:32.398Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1889), then re-arm with node scripts/bsc-next.js --id 1889 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1896 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P1: exact-title duplicate-dispatch guard still let card #1893 dispatch to 3 sessions tonight — mirror-staleness race\" was claimed for redispatch at 2026-09-15T04:16:32.473Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1896), then re-arm with node scripts/bsc-next.js --id 1896 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1849 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P0: push-with-retry.sh shallow-fetch fails identically on every retry under heavy churn (rc=128, discovered via task #1842)\" was claimed for redispatch at 2026-09-15T21:19:51.614Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1849), then re-arm with node scripts/bsc-next.js --id 1849 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1904 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P0: the cmux WORKSPACE lane is the only lane that dies — 115/368 dispatches (31%) never run, while headless is 0/40 and other is 0/31 over the same window\" was claimed for redispatch at 2026-09-15T21:19:51.726Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1904), then re-arm with node scripts/bsc-next.js --id 1904 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1932 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Homepage rage clicks surge to 21x — critical UX breakdown\" was claimed for redispatch at 2026-09-15T21:21:30.115Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1932), then re-arm with node scripts/bsc-next.js --id 1932 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1962 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Rage clicks on /west-end '69' element — broken UI\" was claimed for redispatch at 2026-09-15T21:21:31.439Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1962), then re-arm with node scripts/bsc-next.js --id 1962 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review-gap audit refused to write — 57.1% of shows changed coverage state",
+      "description": "review-gap blast radius 57.1% (12/21 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bigfoot-off-broadway-2026, bughouse-off-broadway-2026, chess-2025, data-off-broadway-2026, golden-boy-off-west-end-2026, indian-princesses-off-broadway-2025, mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026, tartuffe-remixed-off-west-end-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-children-off-west-end-2026, well-ill-let-you-go-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nPARTIAL write: the other 9 show(s) audited this run were NOT risky and were persisted normally. Only the 12 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-80 after 3 dead dispatch attempts",
+      "description": "Watchdog: card \"Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")\" was dispatched 3 times and every session died. It will NOT be retried automatically — it needs your look (or a fresh dispatch with bsc-next --id linear:BRO-80 --force once fixed).",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-525 — redispatch never produced a launch",
+      "description": "Watchdog: card \"DMARC reports from Google\" was claimed for redispatch at 2026-09-16T01:32:37.375Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-525), then re-arm with node scripts/linear-next.js --id BRO-525 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #1967 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Email gate 0.6% conversion — 68% dismiss rate signals friction\" was claimed for redispatch at 2026-09-16T01:42:13.632Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1967), then re-arm with node scripts/bsc-next.js --id 1967 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-866 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Star rating extraction: fix LLM overriding explicit ratings\" was claimed for redispatch at 2026-09-16T01:48:14.196Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-866), then re-arm with node scripts/linear-next.js --id BRO-866 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-886 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Broadcast dedup race — cancelled run between API call and tracker write\" was claimed for redispatch at 2026-09-16T01:48:18.822Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-886), then re-arm with node scripts/linear-next.js --id BRO-886 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-916 — redispatch never produced a launch",
+      "description": "Watchdog: card \"BWW Review Roundup includes wrong-production reviews from prior runs\" was claimed for redispatch at 2026-09-16T01:49:59.168Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-916), then re-arm with node scripts/linear-next.js --id BRO-916 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-917 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Cross-repo workflow race conditions cause data loss + push failures\" was claimed for redispatch at 2026-09-16T01:50:03.054Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-917), then re-arm with node scripts/linear-next.js --id BRO-917 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-923 — redispatch never produced a launch",
+      "description": "Watchdog: card \"NYSR 2-critics-1-URL pattern fails rebuild dedup every opening night\" was claimed for redispatch at 2026-09-16T01:51:44.900Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-923), then re-arm with node scripts/linear-next.js --id BRO-923 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-938 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Investigate: CV pre-pass promotes wrongProduction through temporal override\" was claimed for redispatch at 2026-09-16T01:51:48.017Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-938), then re-arm with node scripts/linear-next.js --id BRO-938 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #linear:BRO-2960 — redispatch never produced a launch",
+      "description": "Watchdog: card \"P1: breaker state files (sd/bd-circuit-breaker.json) are stale most hours because commercial-rss-poll.yml loses its push race 10 of 12 runs\" was claimed for redispatch at 2026-09-16T09:13:43.522Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-2960), then re-arm with node scripts/linear-next.js --id BRO-2960 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #37 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Dead CI check: core-data-pairing never worked - redesign and audit 50 flagged workflows\" was claimed for redispatch at 2026-09-16T10:12:12.466Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 37), then re-arm with node scripts/bsc-next.js --id 37 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #57 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Audience-buzz title-collision sweep (revival/year cross-production Reddit contamination)\" was claimed for redispatch at 2026-09-16T10:13:57.340Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 57), then re-arm with node scripts/bsc-next.js --id 57 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #61 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Rage clicks on /west-end page (4 occurrences)\" was claimed for redispatch at 2026-09-16T10:15:33.135Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 61), then re-arm with node scripts/bsc-next.js --id 61 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #63 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Homepage rage clicks persist beyond known labeled issues\" was claimed for redispatch at 2026-09-16T10:17:10.956Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 63), then re-arm with node scripts/bsc-next.js --id 63 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #64 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Rage clicks on /show/proof page\" was claimed for redispatch at 2026-09-16T10:18:53.890Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 64), then re-arm with node scripts/bsc-next.js --id 64 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #65 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Test Suite red on main — mobile-shows.json: 6 closed shows without scored reviews\" was claimed for redispatch at 2026-09-16T10:18:55.402Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 65), then re-arm with node scripts/bsc-next.js --id 65 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #73 — redispatch never produced a launch",
+      "description": "Watchdog: card \"CI red: NEWSLETTER_PATTERNS[4] content-quality regex FP rate over threshold\" was claimed for redispatch at 2026-09-16T10:20:31.621Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 73), then re-arm with node scripts/bsc-next.js --id 73 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #78 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Homepage rage clicks on 'CRITICS ↑' and 'Broadway' labels\" was claimed for redispatch at 2026-09-16T10:20:31.738Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 78), then re-arm with node scripts/bsc-next.js --id 78 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #80 — redispatch never produced a launch",
+      "description": "Watchdog: card \"CI health: ~75% of test.yml runs on main cancel before validating (data-commit churn)\" was claimed for redispatch at 2026-09-16T10:22:09.808Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 80), then re-arm with node scripts/bsc-next.js --id 80 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #88 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Persistent homepage rage clicks — element still unresolved\" was claimed for redispatch at 2026-09-16T10:22:09.909Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 88), then re-arm with node scripts/bsc-next.js --id 88 --force once fixed.",
       "severity": "error",
       "url": null,
       "fields": []
@@ -308,292 +482,187 @@
       "fields": []
     },
     {
-      "title": "Unhandled CV.wrongProduction on Jane Eyre",
-      "description": "guardian/Holly O Mahony (guardian--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical adaptation of 'Jane Ey — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\nguardian/Holly O'Mahony (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical adaptation of 'Jane Ey — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\ntheatreboard/Unknown (theatreboard--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate review of Jane Eyre at Southwark — https://theatreboard.com/thread/14928/jane-eyre-musical-southwark-playhouse?page=3",
+      "title": "Unhandled CV.wrongProduction on IN HONOR OF JEAN-MICHEL BASQUIAT",
+      "description": "talkinbroadway/Marc Miller (talkinbroadway--marc-miller.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a performance that opened a day  — https://www.talkinbroadway.com/page/ob/09_14_26.html",
       "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Shipped review too short to verify on Jane Eyre",
-      "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhouse-elephant-london",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Shipped review missing publishDate on Jane Eyre",
-      "description": "thestage/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/jane-eyre-a-musical-review-southwark-playhouse-elephant-london\ntheatreboard/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://theatreboard.com/thread/14928/jane-eyre-musical-southwark-playhouse?page=3",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Opening-night monitor pass complete: day-of-the-hog-off-broadway-2026, lean-to-off-broadway-2026",
-      "description": "Pass 47, model opus, 2min, $1.01. Pass 47 complete, exited clean inside the 15-min budget.\n\n**No gap tonight — both shows are pre-review.** Nothing to fix.\n\n1. **Standing check (Kimberly Akimbo):** prod cs 83.61 vs pass-46 baseline 83.53 — no drop, no clobber regression. Show stays closed at parity.\n2. **Census (Google News RSS, both OB shows):** zero review items. Day of the Hog returns only off-domain noise; Lean-To returns only the BWW Sheffer *interview* plus reviews of five *different* 59E59 productions. Matches passes 43–46.\n3. **Prod state:** both slim files, `cov.state = no-census-yet`, liveCount 0. No `review-texts/` dir and no `_pending/` byline strand for either show — nothing stuck.\n4. **Resolved pass-46's open item:** the orchestrator run sitting `in_progress` since 20:07Z is **not** hung. `opening-night-orche",
-      "severity": "info",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Shipped review missing publishDate on Man to Man",
-      "description": "london-theatre/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://www.londontheatre.co.uk/show/45676-man-to-man",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Unverified revival on Man to Man",
-      "description": "man-to-man-west-end-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on Man to Man",
-      "description": "man-to-man-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=man-to-man-west-end-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on Lean-To",
-      "description": "lean-to-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=lean-to-off-broadway-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on Day of the Hog",
-      "description": "day-of-the-hog-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=day-of-the-hog-off-broadway-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Placeholder synopsis on The Human Voice / The Seven Deadly Sins",
-      "description": "synopsis for the-human-voice-the-seven-deadly-sins-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Shipped review missing publishDate on Mrs. Stern Wanders the Prussian State Library (Luna Stage)",
-      "description": "adriandimanlig/Adrian Dimanlig SHIPPED with no publishDate — cannot confirm post-opening: https://www.adriandimanlig.com/viewpoints-strong-women-at-the-helm-amy-berrymans-walden-and-jenny-lyn-baders-mrs-stern-wanders-the-prussian-state-library/",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on The Children",
-      "description": "the-children-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-children-off-west-end-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on AMERICA, WHO HURT YOU?",
-      "description": "america-who-hurt-you-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=america-who-hurt-you-off-broadway-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on Becoming Hamlet",
-      "description": "becoming-hamlet-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=becoming-hamlet-off-broadway-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1048/250 reqs)",
-      "description": "Zone web_unlocker2 billed 1048 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n22 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (430), fetch-show-images-auto.js (189), collect-outlet-reviews.js (66).",
-      "severity": "critical",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (252/250 reqs)",
-      "description": "Zone serp_api1 billed 252 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n22 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (430), fetch-show-images-auto.js (189), collect-outlet-reviews.js (66).",
-      "severity": "critical",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on The Human Voice / The Seven Deadly Sins",
-      "description": "the-human-voice-the-seven-deadly-sins-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on Mrs. Stern Wanders the Prussian State Library (Luna Stage)",
-      "description": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Placeholder synopsis on Golden Boy",
-      "description": "synopsis for golden-boy-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Placeholder synopsis on Night City",
-      "description": "synopsis for night-city-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Stale 'upcoming' tag on Night City",
-      "description": "night-city-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=night-city-off-west-end-2026 --apply",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Placeholder synopsis on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
-      "description": "synopsis for the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-      "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34841623686",
-      "fields": [
-        {
-          "name": "This failed run",
-          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34841623686)"
-        },
-        {
-          "name": "Previous failed run",
-          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34841003770)"
-        },
-        {
-          "name": "Consecutive failures",
-          "value": "4"
-        }
-      ]
-    },
-    {
-      "title": "UX walkthrough: high-priority finding(s) filed",
-      "description": "- [3/3] Inconsistent action icons for the same action. 'Add date' uses a calendar icon in 'mobile__watchlist_list' but a '+' icon in 'mobile__watchlist_grid'.",
-      "severity": "info",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34883194050",
-      "fields": []
-    },
-    {
-      "title": "Unhandled CV.wrongProduction on BLOODSPORT: After Helen of Troy",
-      "description": "british-theatre/Keith Mckenna (british-theatre--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] While this is a legitimate theater review with critic — https://www.britishtheatreguide.info/reviews/bloodsport-aft-theatre-royal-s-26002",
+      "title": "Review URL cross-show mismatch on IN HONOR OF JEAN-MICHEL BASQUIAT",
+      "description": "Review URL for talkinbroadway/Marc Miller does not mention show slug (checked: in-honor-of-jean-michel-basquiat-off-broadway, in-honor-of-jean-michel-basquiat, honor, jeanmichel, basquiat, honorjeanmichelbasquiat): https://www.talkinbroadway.com/page/ob/09_14_26.html",
       "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Placeholder synopsis on BLOODSPORT: After Helen of Troy",
-      "description": "synopsis for bloodsport-after-helen-of-troy-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Pre-opening publishDate on BLOODSPORT: After Helen of Troy",
-      "description": "theatre-weekly/Greg Stewart SHIPPED with publishDate 2026-09-10 (3d before openingDate 2026-09-13): https://theatreweekly.com/review-bloodsport-after-helen-of-troy-at-stratford-east/",
+      "title": "Unhandled CV.wrongProduction on Golden Boy",
+      "description": "theatreboard/Unknown (theatreboard--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is clearly a theater review with substantive cri — https://theatreboard.com/thread/13669/golden-boy-almeida-josh-oconnor?page=11",
       "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Stale 'upcoming' tag on BLOODSPORT: After Helen of Troy",
-      "description": "bloodsport-after-helen-of-troy-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=bloodsport-after-helen-of-troy-off-west-end-2026 --apply",
+      "title": "Shipped review missing publishDate on Golden Boy",
+      "description": "theatreboard/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://theatreboard.com/thread/13669/golden-boy-almeida-josh-oconnor?page=11",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
-      "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "1/126 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nMan to Man: score-drift",
+      "title": "Watchdog parked #95 — redispatch never produced a launch",
+      "description": "Watchdog: card \"NYT bot-stub reviews mislabeled contentTier=complete (scored on partial text)\" was claimed for redispatch at 2026-09-16T16:12:06.822Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 95), then re-arm with node scripts/bsc-next.js --id 95 --force once fixed.",
       "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Stale 'upcoming' tag on Pre-Existing Condition",
-      "description": "pre-existing-condition-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=pre-existing-condition-off-broadway-2026 --apply",
+      "title": "Watchdog parked #96 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Comparative within-show anchored scoring (fix 97-clustering)\" was claimed for redispatch at 2026-09-16T16:12:06.948Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 96), then re-arm with node scripts/bsc-next.js --id 96 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #98 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Audit other content-quality detectors for buried-signature misses (404 cousin)\" was claimed for redispatch at 2026-09-16T16:13:49.117Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 98), then re-arm with node scripts/bsc-next.js --id 98 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #102 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Sweep OB anticipatory_pre_opening_post flags (retroactive OB 14-day grace)\" was claimed for redispatch at 2026-09-16T16:13:49.226Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 102), then re-arm with node scripts/bsc-next.js --id 102 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Unhandled CV.wrongProduction on My Son’s A Queer (But What Can You Do?)",
+      "description": "gay-times/Chris Selman (gay-times--chris-selman.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review describes the production at the Garrick Theatre, explicitly stating 'its new home is the glittering G — https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/\nlondon-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine theater review with critical assessment, but it describes the Battersea Turbine Theatre and Edinburgh  — https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre\nlondon-theatre-reviews/Matt Wolf (london-theatre-reviews--matt-wolf.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review is dated 2022-10-24 but the expected West End opening is 2026-09-17 — a 4-year future date. This indi — https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Shipped review too short to verify on My Son’s A Queer (But What Can You Do?)",
+      "description": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.standard.co.uk/culture/theatre/my-sons-a-queer-but-what-can-you-do-garrick-theatre-review-west-end-b1034714.html",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review URL cross-show mismatch on My Son’s A Queer (But What Can You Do?)",
+      "description": "Review URL for london-theatre-reviews/Matt Wolf does not mention show slug (checked: my-sons-a-queer-but-what-can-you-do-west-end, my-sons-a-queer-but-what-can-you-do, sons, queer, what, sonsqueerwhat): https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"in-honor-of-jean-michel-basquiat-off-broadway-2026\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"in-honor-of-jean-michel-basquiat-off-broadway-2026\",\"outlet\":\"timeout\",\"phases\":\"0,1,2,3\"}",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
       "title": "Auto-remediation gave up on golden-boy-off-west-end-2026",
-      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"golden-boy-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+      "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"golden-boy-off-west-end-2026\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+      "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026\"}",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
       "title": "T1 Coverage — new gaps past 24h",
-      "description": "13 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+      "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
       "severity": "error",
       "url": null,
       "fields": [
         {
-          "name": "Twelfth Night — standard (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Twelfth Night — telegraph (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Twelfth Night — timeout (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Twelfth Night — whatsonstage (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"twelfth-night-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Wicked — financialtimes (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Wicked — telegraph (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Wicked — timeout (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Wicked — times-uk (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Wicked — whatsonstage (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Witness for the Prosecution — london-theatre (766h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
+          "name": "The Devil Wears Prada — observer (28h)",
+          "value": "gh workflow run gather-reviews.yml -f shows=\"the-devil-wears-prada-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
         }
       ]
     },
     {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 76.3% (379/497)\noff-broadway: 42.5% (131/308)\nwest-end: 75.5% (420/556)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (766h)\nA Midsummer Night's Dream — observer (766h)\nA Midsummer Night's Dream — standard (766h)\nABBA Voyage — independent (766h)\nAladdin — ew (766h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (766h)\nThe Book of Mormon — usatoday (766h)\nBuena Vista Social Club — broadwaynews (766h)\nBuena Vista Social Club — nydailynews (766h)\nHadestown — nydailynews (766h)\n… 20 more circuit-open cell(s)",
+      "title": "Shipped review too short to verify on Golden Boy",
+      "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
       "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Shipped review missing publishDate on My Son’s A Queer (But What Can You Do?)",
+      "description": "thestage/Paul Vale SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\",\"outlet\":\"standard\",\"phases\":\"0,1,2,3\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\",\"outlet\":\"telegraph\",\"phases\":\"0,1,2,3\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\",\"outlet\":\"times-uk\",\"phases\":\"0,1,2,3\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Opening Night Express retry still found thin review coverage for la-gringa-off-broadway-2026",
+      "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
+      "severity": "warn",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
+      "description": "check-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Cindy Marcolina at london-theatre (4% share) for relics-west-end-2026\n    Primary: broadwayworld (96%), total: 27 reviews\n  Raven Snook at nyt-theater (5% share) for all-my-sons-2019\n    Primary: timeout (95%), total: 22 reviews\n  James Wilson at off-off-online (7% share) for giulia-the-poison-queen-of-palermo-off-broadway-2026\n    Primary: talkinbroadway (93%), total: 28 reviews\n  James Wilson at off-off-online (7% share) for masquerade-off-broadway-2025\n    Primary: talkinbroadway (93%), total: 28 reviews\n  Tony Marinelli at broadwayscorecard (4% share) for sukkot-off-broadway-2026\n    Primary: theater-scene (96%), total: 25 reviews\n  Pete Hempstead at whatsonstage (3% share) for the-lost-boys-2026\n    Primary: theatermania (98%), total: 40 reviews\n  Susannah Clapp at guardian (9% share) for much-ado-about-nothing-globe-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for stranger-things-the-first-shadow-west-end-2023\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for sylvia-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Patrick Ryan at tennessean (3% share) for gypsy-2024\n    Primary: usatoday (97%), total: 31 reviews\n  David Kaufman at nydailynews (4% share) for proof-2000\n    Primary: theater-scene (96%), total: 23 reviews\n  Emlyn Travis at amny (4% share) for cabaret-2024\n    Primary: ew (96%), total: 28 reviews\n  Frank J. Avella at edge-new-york (5% share) for heisenberg-2016\n    Primary: the-contending (95%), total: 21 reviews\n  Scott Matthewman at musical-theatre-review (6% share) for teeth-n-smiles-west-end-2026\n    Primary: thereviewshub (94%), total: 18 reviews\n  Markos Papadatos at truehollywoodtalk (4% share) for the-lost-boys-2026\n    Primary: digital-journal (96%), total: 28 reviews\n\n--report-only/--strict: No files written\n\n(33 baselined, 1 new)\n\n⚠️  NEW flagged review(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/critic-outlets-baseline.json):\n  David Barbour at theatermania (0% share) for the-39-steps-2008\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
+      "description": "check-corpus-drift.js audit \"duplicate-of-cleared-contradiction\" (node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0) has been drifting. Latest output:\n\nDuplicate-of-cleared contradiction sweep: 43975 review file(s) scanned, 2 match(es).\n  and-juliet-2022/theatermania--pete-hempstead.json -> theatermania--jesse-green.json (both claim/deny the same URL)\n  the-cottage-2023/theater-life--paulanne-simmons.json -> theater-life--samuel-l-leiter.json (both claim/deny the same URL)\n\nFAIL: 2 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
+      "description": "check-corpus-drift.js audit \"url-downgrade\" (node scripts/audit-url-downgrade.js --gate) has been drifting. Latest output:\n\n  [protected] dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json — url dated 2026-06-16 (before_preview, 1d)\n  [protected] every-brilliant-thing-2026/nytimes--ben-brantley.json — url dated 2014-12-15 (before_preview, 4065d)\n  [protected] evita-2026/broadwayworld--gary-naylor.json — url dated 2026-04-29 (before_preview, 283d)\n  [protected] fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json — url dated 2024-04-12 (before_preview, 876d)\n  [protected] gigi-2015/washpost--peter-marks.json — url dated 2015-01-29 (before_preview, 28d)\n  [protected] hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/nysr--david-finkle.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/washpost--peter-marks.json — url dated 2018-01-23 (before_preview, 2987d)\n  [protected] heathers-the-musical-off-west-end-2026/broadwayworld--jade-kops.json — url dated 2026-09-04 (after_close, 6d)\n  [protected] kenrex-off-broadway-2026/guardian--mark-fisher.json — url dated 2024-11-01 (before_preview, 510d)\n  [protected] kinky-boots-the-musical-west-end-2026/guardian--arifa-akbar.json — url dated 2025-03-13 (before_preview, 334d)\n  [protected] little-women-2005/ew--ew-staff.json — url dated 2005-06-07 (after_close, 9d)\n  [protected] macbeth-2013/ap--mark-kennedy.json — url dated 2013-04-21 (before_preview, 166d)\n  [protected] manon-off-broadway-2027/broadwayworld--steve-callahan.json — url dated 2024-01-19 (before_preview, 1127d)\n  [protected] mexodus-off-broadway-2026/nyt-theater--unknown.json — url dated 2025-10-04 (before_preview, 132d)\n  [LIVE] my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json — url dated 2025-06-05 (before_preview, 447d)\n  [protected] orlando-off-broadway-2026/guardian--unknown.json — url dated 2022-12-11 (before_preview, 452d)\n  [protected] please-please-me-west-end-2026/guardian--susannah-clapp.json — url dated 2024-08-04 (before_preview, 585d)\n  [protected] romeo-and-juliet-off-broadway-2026/guardian--clare-brennan.json — url dated 2024-09-22 (before_preview, 586d)\n  [protected] romeo-and-juliet-west-end-2026/guardian--unknown.json — url dated 2025-07-09 (before_preview, 215d)\n  [protected] seagull-true-story-off-broadway-2026/nysr--frank-scheck.json — url dated 2023-02-28 (before_preview, 1097d)\n  [protected] the-glass-menagerie-2017/chicagotribune--chris-jones.json — url dated 2013-09-26 (before_preview, 1209d)\n  [protected] the-hills-of-california-2024/guardian--arifa-akbar.json — url dated 2024-02-08 (before_preview, 195d)\n  [protected] the-seagull-2008/guardian--arifa-akbar.json — url dated 2025-03-06 (after_close, 5912d)\n  [protected] the-sound-of-music-2027/broadwayworld--anikatrina-fageol.json — url dated 2026-02-18 (before_preview, 377d)\n  [protected] the-sound-of-music-2027/broadwayworld--david-friscic.json — url dated 2025-09-15 (before_preview, 533d)\n  [protected] the-sound-of-music-2027/broadwayworld--greg-dalton-white.json — url dated 2026-08-31 (before_preview, 183d)\n  [protected] the-sound-of-music-2027/broadwayworld--jeffrey-kare.json — url dated 2025-10-08 (before_preview, 510d)\n  [protected] the-sound-of-music-2027/broadwayworld--joni-lorraine.json — url dated 2026-02-04 (before_preview, 391d)\n  [protected] the-sound-of-music-2027/broadwayworld--r-scott-reedy.json — url dated 2026-01-11 (before_preview, 415d)\n  [protected] the-sound-of-music-2027/broadwayworld--tina-st-angelo.json — url dated 2025-10-25 (before_preview, 493d)\n  [protected] the-sound-of-music-2027/broadwayworld--vickie-evans.json — url dated 2025-11-20 (before_preview, 467d)\n  [protected] the-wiz-2024/latimes--mary-mcnamara.json — url dated 2015-12-03 (before_preview, 3018d)\n  [protected] tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json — url dated 2026-07-02 (before_preview, 101d)\n  [protected] tosca-off-broadway-2026/broadwayworld--roger-catlin.json — url dated 2026-08-10 (before_preview, 62d)\n  [protected] twelfth-night-off-west-end-2026/nysr--unknown.json — url dated 2025-08-21 (before_preview, 317d)\n  [protected] vanya-off-broadway-2025/washpost--unknown.json — url dated 2013-03-14 (before_preview, 4359d)\n\nFAIL: 1 file(s) carry a regressed (wrong-production) url with NO wrongProduction/wrongShow flag — live scoring exposure.\nFix by hand (verify the correct current-run url and restore it, or flag wrongProduction).",
+      "severity": "error",
       "url": null,
       "fields": []
     }
   ],
-  "autoFixedCount": 1,
-  "passedCount": 59,
-  "totalCount": 102
+  "autoFixedCount": 4,
+  "passedCount": 56,
+  "totalCount": 104
 }
