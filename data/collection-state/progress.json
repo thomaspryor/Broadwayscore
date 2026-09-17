@@ -189,7 +189,9 @@
     "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
-    "relics-west-end-2026/rhombus-rota--unknown.json"
+    "relics-west-end-2026/rhombus-rota--unknown.json",
+    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json"
   ],
   "failed": [
     "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
@@ -257,7 +259,6 @@
     "the-story-west-end-2026/slantmagazine--unknown.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
     "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
-    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--david-gordon.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
@@ -440,7 +441,6 @@
     "schmigadoon-2026/timeout--unknown.json",
     "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
     "burlesque-west-end-2026/times-uk--clive-davis.json",
-    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
     "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
     "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
     "heathers-the-musical-off-broadway-2025/thereviewshub--unknown.json",
@@ -1347,7 +1347,9 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/theatermania--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/frontmezzjunkies--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/huffpost--ed-mazza.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "two-strangers-bway-2025/theatermania--david-gordon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1455,7 +1457,8 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "birthright-off-broadway-2026/the-recs--unknown.json",
-      "relics-west-end-2026/rhombus-rota--unknown.json"
+      "relics-west-end-2026/rhombus-rota--unknown.json",
+      "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1525,7 +1528,8 @@
       "two-strangers-bway-2025/theatermania--unknown.json",
       "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
       "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
-      "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json"
+      "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
+      "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1559,7 +1563,7 @@
     ]
   },
   "startTime": "2026-09-17T08:53:57.300Z",
-  "lastProcessed": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
   "log": [
     {
       "t": "2026-09-17T14:36:00.562Z",
@@ -1748,12 +1752,59 @@
       "event": "bb-session",
       "session": "39db007a",
       "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jesus-christ-"
+    },
+    {
+      "t": "2026-09-17T17:30:03.161Z",
+      "event": "bb-session",
+      "session": "0d72565d",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-17T17:30:15.803Z",
+      "event": "bb-session",
+      "session": "016c8847",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-17T17:36:10.013Z",
+      "event": "bb-session",
+      "session": "2ffcfc53",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-17T17:36:10.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-17T17:46:11.927Z",
+      "event": "bb-session",
+      "session": "3b20477b",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-17T17:46:12.679Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-17T17:57:04.860Z",
+      "event": "bb-session",
+      "session": "a0045258",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-17T17:57:05.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
     "million-dollar-quartet-off-west-end-2026/london-box-office--phil-willmott.json",
     "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json"
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json",
+    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json"
   ]
 }
