@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "million-dollar-quartet-off-west-end-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-17T12:22:06.837Z",
+  "detectedAt": "2026-09-17T12:31:14.728Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "whatsonstage--unknown.json",
+      "outletId": "whatsonstage",
+      "criticName": "Unknown",
+      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-for-the-jukebox-extravaganza_1731572/",
+      "fullTextLen": 3617,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
