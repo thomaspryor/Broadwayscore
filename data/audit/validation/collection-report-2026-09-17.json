@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-17T06:40:24.176Z",
+  "runDate": "2026-09-17T07:45:46.340Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 121,
-    "failed": 581,
+    "processed": 125,
+    "failed": 580,
     "skipped": 0,
-    "successRate": "17.2%"
+    "successRate": "17.7%"
   },
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 49,
     "amp": 0,
     "browserbase": 15,
-    "directCookies": 1,
-    "scrapingbee": 13,
+    "directCookies": 2,
+    "scrapingbee": 14,
     "brightdata": 10,
     "archiveToday": 0,
     "archive": 21
   },
   "statistics": {
-    "tier1Attempts": 23,
-    "tier1Success": 13,
+    "tier1Attempts": 16,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 8,
-    "tier1_5Success": 4,
-    "tier2Attempts": 11,
-    "tier2Success": 1,
-    "tier3Attempts": 8,
-    "tier3Success": 2,
-    "tier3_6Attempts": 6,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 10,
+    "tier2Success": 3,
+    "tier3Attempts": 4,
+    "tier3Success": 0,
+    "tier3_6Attempts": 4,
     "tier3_6Success": 0,
-    "tier4Attempts": 15,
+    "tier4Attempts": 13,
     "tier4Success": 5,
-    "totalFailed": 293,
-    "scrapingBeePageCredits": 33,
+    "totalFailed": 296,
+    "scrapingBeePageCredits": 53,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 8,
-    "browserbaseMinutesUsed": 2.6,
-    "urlDiscoveryAttempts": 272,
-    "urlDiscoverySuccess": 4,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 279,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -171,7 +171,11 @@
     "golden-boy-off-west-end-2026/theatreboard--unknown.json",
     "the-seven-deadly-sins-the-human-voice-off-west-end-2026/lovetovisit--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json",
-    "cat-cohen-broad-strokes-off-broadway-2026/theater-life--isa-goldberg.json"
+    "cat-cohen-broad-strokes-off-broadway-2026/theater-life--isa-goldberg.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
+    "million-dollar-quartet-off-west-end-2026/theatre-news--unknown.json",
+    "million-dollar-quartet-off-west-end-2026/west-end-best-friend--unknown.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
@@ -211,7 +215,6 @@
     "the-story-west-end-2026/slantmagazine--unknown.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
     "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
-    "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
     "as-you-like-it-globe-west-end-2026/thewrap--thom-geier.json",
@@ -752,9 +755,9 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--sara-west.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/i-paper--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json",
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
     "the-seven-deadly-sins-the-human-voice-off-west-end-2026/consequence--unknown.json",
-    "man-to-man-west-end-2026/hollywood-reporter--max-gao.json"
+    "man-to-man-west-end-2026/hollywood-reporter--max-gao.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -804,7 +807,9 @@
       "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
       "golden-boy-off-west-end-2026/theatreboard--unknown.json",
       "the-seven-deadly-sins-the-human-voice-off-west-end-2026/lovetovisit--unknown.json",
-      "cat-cohen-broad-strokes-off-broadway-2026/theater-life--isa-goldberg.json"
+      "cat-cohen-broad-strokes-off-broadway-2026/theater-life--isa-goldberg.json",
+      "million-dollar-quartet-off-west-end-2026/theatre-news--unknown.json",
+      "million-dollar-quartet-off-west-end-2026/west-end-best-friend--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -825,7 +830,8 @@
       "data/review-texts/my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
     ],
     "directCookies": [
-      "the-story-west-end-2026/times-uk--clive-davis.json"
+      "the-story-west-end-2026/times-uk--clive-davis.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json"
     ],
     "scrapingbee": [
       "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json",
@@ -840,7 +846,8 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
-      "gimme-a-sign-off-broadway-2026/donyc--unknown.json"
+      "gimme-a-sign-off-broadway-2026/donyc--unknown.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json"
     ],
     "brightdata": [
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
@@ -880,27 +887,6 @@
     ]
   },
   "failuresByOutlet": {
-    "New York Theatre Guide": {
-      "count": 1,
-      "domain": "broadwayworld.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "WhatsOnStage": {
-      "count": 1,
-      "domain": "whatsonstage.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
-      "count": 2,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Stage": {
       "count": 1,
       "domain": "thestage.co.uk",
@@ -921,28 +907,20 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "Times": {
+      "count": 1,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
-      "newUrl": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
-    },
-    {
-      "reviewId": "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Ambassadors-Theatre-20230202",
-      "newUrl": "https://www.broadwayworld.com/westend/article/MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Will-Embark-on-UK-Tour-20240508"
-    },
-    {
-      "reviewId": "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
-      "oldUrl": "https://theatreweekly.com/review-my-sons-a-queer-but-what-can-you-do-at-the-ambassadors-theatre-london/",
-      "newUrl": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-announces-victoria-scone-and-jamie-windust-as-final-queer-hero-thursday-guests/"
-    },
-    {
-      "reviewId": "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
-      "oldUrl": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-ambassadors_58267.html",
-      "newUrl": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/"
+      "reviewId": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json",
+      "oldUrl": "https://www.thetimes.com/magazines/culture-magazine/article/i-wrote-thelma-and-louise-nothing-has-changed-for-women-since-then-5xc7s9x2s",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/thelma-and-louise-review-slow-pace-makes-heroines-seem-like-hitchhikers-pr9qmpzsk"
     }
   ]
 }
