@@ -1,33 +1,5 @@
 [
   {
-    "startedAt": "2026-09-14T18:32:04.197Z",
-    "completedAt": "2026-09-14T18:32:10.202Z",
-    "totalReviews": 25,
-    "processed": 1,
-    "skipped": 24,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5939,
-      "output": 321,
-      "total": 14785
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-14T18:50:39.413Z",
-    "completedAt": "2026-09-14T18:50:47.231Z",
-    "totalReviews": 43661,
-    "processed": 0,
-    "skipped": 43659,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8114,
-      "output": 339,
-      "total": 23304
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-14T19:18:15.522Z",
     "completedAt": "2026-09-14T19:18:21.941Z",
     "totalReviews": 43663,
@@ -254857,6 +254829,60 @@
     },
     "costUsd": 1.2212624,
     "runId": "35205136295",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-17T10:25:10.565Z",
+    "completedAt": "2026-09-17T10:28:27.811Z",
+    "totalReviews": 43978,
+    "processed": 2,
+    "skipped": 43972,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 22845,
+      "output": 956,
+      "total": 62297
+    },
+    "costUsd": 0.066870775,
+    "runId": "35205828781",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-17T10:28:37.621Z",
+    "completedAt": "2026-09-17T10:33:02.703Z",
+    "totalReviews": 43978,
+    "processed": 38,
+    "skipped": 43894,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 273485,
+      "output": 13297,
+      "total": 696499
+    },
+    "costUsd": 1.12851545,
+    "runId": "35205828781",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-17T10:33:04.644Z",
+    "completedAt": "2026-09-17T10:38:55.626Z",
+    "totalReviews": 161,
+    "processed": 161,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 424131,
+      "output": 37224,
+      "total": 461355
+    },
+    "costUsd": 1.1805451,
+    "runId": "35205828781",
     "errorDetails": []
   }
 ]
