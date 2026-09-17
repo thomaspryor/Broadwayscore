@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-17T12:03:48.326Z",
+  "runDate": "2026-09-17T13:01:58.714Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 69,
-    "failed": 304,
+    "processed": 70,
+    "failed": 314,
     "skipped": 0,
-    "successRate": "18.5%"
+    "successRate": "18.2%"
   },
   "tierBreakdown": {
     "playwright": 37,
@@ -22,32 +22,32 @@
     "browserbase": 8,
     "directCookies": 2,
     "scrapingbee": 11,
-    "brightdata": 5,
+    "brightdata": 6,
     "archiveToday": 0,
     "archive": 12
   },
   "statistics": {
-    "tier1Attempts": 21,
-    "tier1Success": 12,
+    "tier1Attempts": 14,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 3,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 10,
     "tier2Success": 3,
-    "tier3Attempts": 5,
+    "tier3Attempts": 6,
     "tier3Success": 2,
-    "tier3_6Attempts": 3,
+    "tier3_6Attempts": 5,
     "tier3_6Success": 0,
     "tier4Attempts": 10,
-    "tier4Success": 3,
-    "totalFailed": 290,
-    "scrapingBeePageCredits": 42,
+    "tier4Success": 5,
+    "totalFailed": 299,
+    "scrapingBeePageCredits": 52,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 1.1,
-    "urlDiscoveryAttempts": 276,
-    "urlDiscoverySuccess": 3,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 280,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -119,7 +119,8 @@
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "operation-mincemeat-2025/whatsonstage--alex-wood.json"
+    "operation-mincemeat-2025/whatsonstage--alex-wood.json",
+    "midnight-off-broadway-2026/whatsonstage--theo-bosanquet.json"
   ],
   "failed": [
     "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
@@ -425,7 +426,17 @@
     "titanique-west-end-2024/the-queer-review--james-kleinmann.json",
     "titanique-west-end-2024/thewrap--robert-hofler.json",
     "titanique-west-end-2024/wsj--charles-isherwood.json",
-    "titanique-west-end-2024/cititour--brian-scott-lipton.json"
+    "titanique-west-end-2024/cititour--brian-scott-lipton.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+    "the-human-voice-the-seven-deadly-sins-west-end-2026/london-theater-tickets--unknown.json",
+    "titanique-west-end-2024/nysr--david-finkle.json",
+    "titanique-west-end-2024/nysr--michael-sommers.json",
+    "titanique-west-end-2024/the-contending--frank-j-avella.json",
+    "titanique-west-end-2024/times-square-chronicles--unknown.json",
+    "oliver-west-end-2024/nytimes--jesse-green.json",
+    "oliver-west-end-2024/theatermania--david-gordon.json",
+    "oliver-west-end-2024/all-that-dazzles-uk--all-that-dazzles.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -500,7 +511,8 @@
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
       "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json"
+      "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json",
+      "midnight-off-broadway-2026/whatsonstage--theo-bosanquet.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -519,8 +531,15 @@
     ]
   },
   "failuresByOutlet": {
-    "The Stage": {
+    "The Guardian": {
       "count": 2,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -541,21 +560,5 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "million-dollar-quartet-off-west-end-2026/london-box-office--phil-willmott.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch"
-    },
-    {
-      "reviewId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json",
-      "oldUrl": "https://www.theatermania.com/news/lindsey-kraft-and-ben-folds-bring-weve-been-here-before-off-broadway_1845209/",
-      "newUrl": "https://www.theatermania.com/news/watch-lindsey-kraft-featuring-ben-folds-sing-beautiful-pain-from-the-musical-weve-been-here-before_1847120/"
-    },
-    {
-      "reviewId": "operation-mincemeat-2025/whatsonstage--alex-wood.json",
-      "oldUrl": "https://www.whatsonstage.com/news/operation-mincemeat-opens-on-broadway-read-our-review_1670405/",
-      "newUrl": "https://www.whatsonstage.com/news/operation-mincemeat-see-inside-the-first-broadway-performance_1665275/"
-    }
-  ]
+  "urlDiscoveries": []
 }
