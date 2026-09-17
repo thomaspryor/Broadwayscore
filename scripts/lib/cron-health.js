@@ -1,5 +1,8 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
 /**
  * cron-health.js — pure job-failure-shape classification for a chronically
  * stale cron (BRO-2530).
@@ -67,4 +70,50 @@ function classifyJob(job, timeouts) {
   return job.conclusion || 'unknown';
 }
 
-module.exports = { minutesBetween, classifyJob };
+/**
+ * Best-effort `timeout-minutes:` per top-level job, parsed straight out of a
+ * workflow YAML's text (not a full YAML parser — good enough for this repo's
+ * consistently-formatted workflow files). Extracted from
+ * scripts/cron-health-chronic-orchestrator.js (BRO-2534) so the parse itself
+ * has test coverage, not just the orchestrator script that calls it — this is
+ * the exact math that showed weekly-video-reviews.yml's "Commit and push"
+ * step was running on push-with-retry.sh's shared 240s default despite the
+ * job carrying a 180-minute (10800s) timeout, which is what let 13 of its
+ * last 20 runs fail on push-contention (CLAUDE.md rule 15 extraction).
+ *
+ * @param {string} yamlText raw workflow YAML text
+ * @returns {Object<string, number>} job name -> timeout-minutes
+ */
+function parseJobTimeouts(yamlText) {
+  const lines = yamlText.split('\n');
+  const timeouts = {};
+  let currentJob = null;
+  // Jobs are top-level keys under `jobs:` at 2-space indent; `timeout-minutes:`
+  // lines nested under a job are indented further.
+  let inJobs = false;
+  for (const line of lines) {
+    if (/^jobs:\s*$/.test(line)) { inJobs = true; continue; }
+    if (!inJobs) continue;
+    const jobMatch = line.match(/^ {2}([a-zA-Z0-9_-]+):\s*$/);
+    if (jobMatch) { currentJob = jobMatch[1]; continue; }
+    const timeoutMatch = line.match(/^\s+timeout-minutes:\s*(\d+)/);
+    if (timeoutMatch && currentJob) {
+      timeouts[currentJob] = parseInt(timeoutMatch[1], 10);
+    }
+  }
+  return timeouts;
+}
+
+/**
+ * IO wrapper around parseJobTimeouts: reads a workflow file by name (relative
+ * to .github/workflows/) from this repo checkout.
+ *
+ * @param {string} workflowFile filename under .github/workflows/
+ * @returns {Object<string, number>} job name -> timeout-minutes
+ */
+function readJobTimeouts(workflowFile) {
+  const wfPath = path.join(__dirname, '..', '..', '.github', 'workflows', workflowFile);
+  return parseJobTimeouts(fs.readFileSync(wfPath, 'utf8'));
+}
+
+module.exports = { minutesBetween, classifyJob, parseJobTimeouts, readJobTimeouts };
