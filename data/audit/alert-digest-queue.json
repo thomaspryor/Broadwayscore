@@ -721,23 +721,6 @@
     "queuedAt": "2026-09-16T17:04:29.083Z"
   },
   {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "The Devil Wears Prada — observer (28h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-devil-wears-prada-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-16T18:05:53.684Z"
-  },
-  {
     "conditionKey": "opening-night-fulltext-mentions-show:short:golden-boy-off-west-end-2026",
     "title": "Shipped review too short to verify on Golden Boy",
     "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
@@ -858,18 +841,6 @@
     "queuedAt": "2026-09-17T12:25:09.862Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.3% (380/498)\noff-broadway: 42.6% (135/317)\nwest-end: 76% (424/558)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (824h)\nA Midsummer Night's Dream — observer (824h)\nA Midsummer Night's Dream — standard (824h)\nABBA Voyage — independent (824h)\nAladdin — ew (824h)\n… 172 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (824h)\nBuena Vista Social Club — broadwaynews (824h)\nBuena Vista Social Club — nydailynews (824h)\nHadestown — nydailynews (824h)\nHeathers The Musical — dailybeast (824h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-17T17:38:03.379Z"
-  },
-  {
     "conditionKey": "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026",
     "title": "Shipped review missing publishDate on Thelma & Louise: A New Musical",
     "description": "musical-theatre-review/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
@@ -892,5 +863,50 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-17T18:20:47.999Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "5 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Million Dollar Quartet — guardian (27h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Million Dollar Quartet — independent (27h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Million Dollar Quartet — standard (27h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Million Dollar Quartet — telegraph (27h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Million Dollar Quartet — times-uk (27h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-17T20:52:57.390Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76% (428/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (827h)\nA Midsummer Night's Dream — observer (827h)\nA Midsummer Night's Dream — standard (827h)\nABBA Voyage — independent (827h)\nAladdin — ew (827h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (827h)\nBuena Vista Social Club — broadwaynews (827h)\nBuena Vista Social Club — nydailynews (827h)\nHadestown — nydailynews (827h)\nHeathers The Musical — dailybeast (827h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-17T20:52:57.483Z"
   }
 ]

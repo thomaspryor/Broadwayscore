@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-17T17:37:49.181Z",
+  "generatedAt": "2026-09-17T20:52:42.292Z",
   "windowDays": 45,
-  "showsScanned": 68,
+  "showsScanned": 69,
   "gaps": [
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -16,27 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 23.61597777777778,
+      "fileAgeHours": 26.86410861111111,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 23.53515861111111
-    },
-    {
-      "showId": "the-children-off-west-end-2026",
-      "title": "The Children",
-      "openingDate": "2026-09-10",
-      "file": "the-spectator-uk--lloyd-evans.json",
-      "outletId": "the-spectator-uk",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": null,
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-children-off-west-end-2026",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-09-17T17:37:49.181Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 26.783245
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -51,9 +33,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 480.3521191666667,
+      "fileAgeHours": 483.6002066666667,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 441.9430586111111
+      "nonTerminalAgeHours": 445.191145
     }
   ],
   "contradictions": []

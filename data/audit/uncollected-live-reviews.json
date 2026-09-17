@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-17T17:37:50.869Z",
+  "generatedAt": "2026-09-17T20:52:47.726Z",
   "maxAgeHours": 12,
   "showsAffected": 19,
-  "strandedFiles": 27,
+  "strandedFiles": 28,
   "blackoutShows": [],
   "findings": [
     {
@@ -42,7 +42,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 1082.5309472222223
+          "ageHours": 1085.7800741666667
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -86,13 +86,13 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/the-mousetrap-the-alexandra-birmingham-3/",
           "outlet": "The Reviews Hub",
-          "ageHours": 170.8965797222222
+          "ageHours": 174.14570666666665
         },
         {
           "file": "west-end-best-friend--unknown.json",
           "url": "https://www.westendbestfriend.co.uk/news/review-the-mousetrap-the-alexandra-tour",
           "outlet": "West End Best Friend",
-          "ageHours": 50.259499444444444
+          "ageHours": 53.50862638888889
         }
       ],
       "usable": 27,
@@ -152,17 +152,39 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/burlesque-the-musical-regent-theatre/",
           "outlet": "North West End",
-          "ageHours": 362.78522944444444
+          "ageHours": 366.0343563888889
         },
         {
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/burlesque-the-musical-kings-theatre-glasgow/",
           "outlet": "The Reviews Hub",
-          "ageHours": 50.266600833333335
+          "ageHours": 53.51572777777778
         }
       ],
       "usable": 22,
       "discovered": 32,
+      "totalBlackout": false
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "title": "My Son’s A Queer (But What Can You Do?)",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "nytg--unknown.json",
+          "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
+          "outlet": "New York Theatre Guide",
+          "ageHours": 12.359209166666666
+        },
+        {
+          "file": "timeout-london--unknown.json",
+          "url": "https://www.timeout.com/london/theatre/my-sons-a-queer-but-what-can-you-do-review",
+          "outlet": "Time Out London",
+          "ageHours": 18.382464444444444
+        }
+      ],
+      "usable": 8,
+      "discovered": 24,
       "totalBlackout": false
     },
     {
@@ -174,7 +196,7 @@
           "file": "theatermania--unknown.json",
           "url": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/",
           "outlet": "TheaterMania",
-          "ageHours": 95.58755166666667
+          "ageHours": 98.83667861111111
         }
       ],
       "usable": 46,
@@ -190,7 +212,7 @@
           "file": "londontheatredirect--unknown.json",
           "url": "https://www.londontheatredirect.com/musical/operation-mincemeat-tickets?srsltid=AfmBOopqWn5X2urH_T_Hz9GwTJM8i1dpD9JO1oThOWl6728AThvffVun",
           "outlet": "Londontheatredirect",
-          "ageHours": 123.72752805555555
+          "ageHours": 126.976655
         }
       ],
       "usable": 35,
@@ -206,7 +228,7 @@
           "file": "radio-times--unknown.json",
           "url": "https://www.radiotimes.com/going-out/oh-mary-hbo-streaming-newsupdate/",
           "outlet": "Radio Times",
-          "ageHours": 72.85060055555556
+          "ageHours": 76.0997275
         }
       ],
       "usable": 70,
@@ -222,7 +244,7 @@
           "file": "all-that-dazzles-uk--unknown.json",
           "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
           "outlet": "All That Dazzles  (UK)",
-          "ageHours": 500.7503302777778
+          "ageHours": 503.99945722222225
         }
       ],
       "usable": 45,
@@ -286,7 +308,7 @@
           "file": "nytimes--unknown.json",
           "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
           "outlet": "The New York Times",
-          "ageHours": 434.4702561111111
+          "ageHours": 437.71938305555557
         }
       ],
       "usable": 29,
@@ -310,22 +332,6 @@
       "totalBlackout": false
     },
     {
-      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
-      "title": "My Son’s A Queer (But What Can You Do?)",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "timeout-london--unknown.json",
-          "url": "https://www.timeout.com/london/theatre/my-sons-a-queer-but-what-can-you-do-review",
-          "outlet": "Time Out London",
-          "ageHours": 15.1333375
-        }
-      ],
-      "usable": 8,
-      "discovered": 24,
-      "totalBlackout": false
-    },
-    {
       "showId": "pre-existing-condition-off-broadway-2026",
       "title": "Pre-Existing Condition",
       "status": "open",
@@ -334,7 +340,7 @@
           "file": "timeout--unknown.json",
           "url": "https://timeout.com/newyork/theater/pre-existing-condition-play-review-martin-ireland-domestic-abuse-lupita-nyongo",
           "outlet": "Time Out New York",
-          "ageHours": 23.20331611111111
+          "ageHours": 26.452443055555555
         }
       ],
       "usable": 26,
