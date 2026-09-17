@@ -1,22 +1,49 @@
 {
-  "generatedAt": "2026-09-16T12:18:46.224Z",
+  "generatedAt": "2026-09-17T12:20:22.394Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "bb806ec4a744fc1ff53d9d47a12eb9142d8debd2",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 5,
-  "greenSince": "2026-09-16T10:18:36Z",
-  "greenForHours": 2.00284,
+  "latestRunHeadSha": "2a8e85708665d889e625031b6548290fffd730c6",
+  "state": "RED",
+  "consecutiveFailures": 25,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-09-16T15:57:31Z",
+  "redForHours": 20.38094277777778,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-16T11:01:29Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 100,
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "lastSuccessAt": "2026-09-16T15:26:35Z",
+  "latestFailedRunId": "35218062656",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35218062656",
+  "decidedRuns": 92,
+  "failingJobs": [
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)",
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "tests/unit/commercial-rss-poll-data-commit.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 4070 - sanity: harness disqualifies an unregistered data/audit/ path (proves the extraction actually runs the real check)"
+    },
+    {
+      "path": "scripts/lib/safe-form-allowlist.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "evidence": "not ok 5650 - every allowlisted basename is write-free across its require graph (baseline may only shrink)"
+    }
+  ],
+  "topFailingJob": "Unit Tests"
 }
