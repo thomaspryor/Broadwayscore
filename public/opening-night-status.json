@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T11:04:02.106Z",
+  "generatedAt": "2026-09-17T12:15:43.560Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -3414,28 +3414,27 @@
       "status": "open",
       "slug": "million-dollar-quartet-off-west-end",
       "thumbnail": "/images/shows/million-dollar-quartet-off-west-end-2026/thumbnail.webp",
-      "siteScore": 83.68,
-      "liveScore": 84,
-      "scoreDrift": 0.3199999999999932,
+      "siteScore": 80.98,
+      "liveScore": 81,
+      "scoreDrift": 0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 8,
       "t1": 0,
-      "t2": 2,
-      "t3": 4,
-      "positive": 5,
-      "mixed": 1,
+      "t2": 3,
+      "t3": 5,
+      "positive": 6,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:2/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3541,6 +3540,18 @@
           "t3": 4,
           "p": 5,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-17T12:15:43.560Z",
+          "rc": 8,
+          "s": 80.98,
+          "t1": 0,
+          "t2": 3,
+          "t3": 5,
+          "p": 6,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
