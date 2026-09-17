@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-17T06:49:53.116Z",
+  "timestamp": "2026-09-17T07:04:19.947Z",
   "stats": {
-    "totalReviews": 43558,
-    "alreadyFlagged": 18031,
+    "totalReviews": 43561,
+    "alreadyFlagged": 18032,
     "dateGuardCatches": 244,
     "directorMismatch": 1046,
     "tvFilmSignals": 1278,
-    "londonSignals": 1083,
+    "londonSignals": 1085,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
     "noPublishDate": 3814
@@ -45395,6 +45395,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "theatre-news--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatre-news.com/news/UK/128405/Million-Dollar-Quartet-transfers-to-London-Arts-at-Marble-Arch-this-Autumn",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "west-end-best-friend--unknown.json",
+      "publishDate": "2026-08-20",
+      "url": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
