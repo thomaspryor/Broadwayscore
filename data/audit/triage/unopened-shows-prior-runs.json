@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-16T12:18:25.955Z",
+  "generatedAt": "2026-09-17T12:20:01.945Z",
   "linearIssue": "BRO-80",
   "scannedShows": 3039,
-  "flaggedShows": 52,
-  "flaggedFiles": 198,
+  "flaggedShows": 51,
+  "flaggedFiles": 197,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 28,
-    "needs-human-review": 24
+    "needs-human-review": 23
   },
   "shows": [
     {
@@ -3726,42 +3726,6 @@
           "criticName": "Stacey Tyler",
           "publishDate": "2017-09-26",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "title": "Million Dollar Quartet",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "The Arts at Marble Arch Powered by TodayTix",
-      "previewsStartDate": "2026-09-04",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"The Arts at Marble Arch Powered by TodayTix\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2011
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "telegraph--charles-spencer.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Charles Spencer",
-          "publishDate": "2011-02-28",
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8354312/Million-Dollar-Quartet-Noel-Coward-Theatre-review.html",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
