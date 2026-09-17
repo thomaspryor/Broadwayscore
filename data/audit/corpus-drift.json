@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-17T17:23:43.805Z",
+    "generatedAt": "2026-09-17T17:32:07.140Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -81,7 +81,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 5 flagged, 37 exempt, 23 covered\n  ⚠️   156  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️   155  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    87  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    68  data/audit/main-streak-failing-jobs.json  — no merge driver; needs a decision\n  ⚠️    58  .github/workflows/test.yml  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 5 flagged, 37 exempt, 23 covered\n  ⚠️   157  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️   155  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    88  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    68  data/audit/main-streak-failing-jobs.json  — no merge driver; needs a decision\n  ⚠️    58  .github/workflows/test.yml  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",

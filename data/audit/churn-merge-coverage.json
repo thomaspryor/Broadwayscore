@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-17T17:22:44.696Z",
+    "generatedAt": "2026-09-17T17:30:49.947Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 156
+      "churn": 157
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
@@ -24,7 +24,7 @@
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 87
+      "churn": 88
     },
     {
       "path": "data/audit/main-streak-failing-jobs.json",
@@ -42,15 +42,15 @@
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 182
+      "churn": 183
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 182
+      "churn": 183
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 182
+      "churn": 183
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -66,7 +66,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 87
+      "churn": 88
     },
     {
       "path": "public/data/shows/bloodsport-after-helen-of-troy-off-west-end-2026.json",
@@ -188,12 +188,12 @@
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 339,
+      "churn": 340,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 328,
+      "churn": 329,
       "mergeAttr": "ours"
     },
     {
@@ -203,27 +203,27 @@
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 298,
+      "churn": 299,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 298,
+      "churn": 299,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 298,
+      "churn": 299,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 229,
+      "churn": 230,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 182,
+      "churn": 183,
       "mergeAttr": "ours"
     },
     {
@@ -233,17 +233,17 @@
     },
     {
       "path": "data/audit/orphan-unscored-pre-existing-condition-off-broadway-2026.json",
-      "churn": 121,
+      "churn": 122,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 97,
+      "churn": 96,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 95,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
@@ -253,52 +253,52 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 78,
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-human-voice-the-seven-deadly-sins-west-end-2026.json",
-      "churn": 74,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 70,
+      "churn": 69,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-golden-boy-off-west-end-2026.json",
-      "churn": 61,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-million-dollar-quartet-off-west-end-2026.json",
-      "churn": 36,
+      "churn": 37,
       "mergeAttr": "ours"
     }
   ]
