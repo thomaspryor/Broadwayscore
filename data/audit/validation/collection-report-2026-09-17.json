@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-17T16:57:51.965Z",
+  "runDate": "2026-09-17T17:58:15.967Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 190,
+    "processed": 192,
     "failed": 1156,
     "skipped": 0,
-    "successRate": "14.1%"
+    "successRate": "14.2%"
   },
   "tierBreakdown": {
-    "playwright": 104,
+    "playwright": 105,
     "amp": 0,
     "browserbase": 14,
     "directCookies": 6,
     "scrapingbee": 27,
-    "brightdata": 14,
+    "brightdata": 15,
     "archiveToday": 0,
     "archive": 27
   },
   "statistics": {
-    "tier1Attempts": 81,
-    "tier1Success": 61,
+    "tier1Attempts": 14,
+    "tier1Success": 6,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 9,
-    "tier1_5Success": 0,
-    "tier2Attempts": 25,
-    "tier2Success": 9,
-    "tier3Attempts": 18,
-    "tier3Success": 11,
-    "tier3_6Attempts": 13,
+    "tier1_5Attempts": 6,
+    "tier1_5Success": 3,
+    "tier2Attempts": 9,
+    "tier2Success": 1,
+    "tier3Attempts": 6,
+    "tier3Success": 1,
+    "tier3_6Attempts": 5,
     "tier3_6Success": 0,
-    "tier4Attempts": 56,
-    "tier4Success": 10,
-    "totalFailed": 225,
-    "scrapingBeePageCredits": 60,
+    "tier4Attempts": 11,
+    "tier4Success": 5,
+    "totalFailed": 298,
+    "scrapingBeePageCredits": 33,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 9,
-    "browserbaseMinutesUsed": 4.9,
-    "urlDiscoveryAttempts": 221,
-    "urlDiscoverySuccess": 20,
+    "browserbaseSessionsUsed": 6,
+    "browserbaseMinutesUsed": 1.5,
+    "urlDiscoveryAttempts": 280,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -240,7 +240,9 @@
     "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
-    "relics-west-end-2026/rhombus-rota--unknown.json"
+    "relics-west-end-2026/rhombus-rota--unknown.json",
+    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json",
+    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json"
   ],
   "failed": [
     "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
@@ -308,7 +310,6 @@
     "the-story-west-end-2026/slantmagazine--unknown.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
     "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
-    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--david-gordon.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
@@ -491,7 +492,6 @@
     "schmigadoon-2026/timeout--unknown.json",
     "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
     "burlesque-west-end-2026/times-uk--clive-davis.json",
-    "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
     "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
     "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
     "heathers-the-musical-off-broadway-2025/thereviewshub--unknown.json",
@@ -1398,7 +1398,9 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/theatermania--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/frontmezzjunkies--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/huffpost--ed-mazza.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "two-strangers-bway-2025/theatermania--david-gordon.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1505,7 +1507,8 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "birthright-off-broadway-2026/the-recs--unknown.json",
-      "relics-west-end-2026/rhombus-rota--unknown.json"
+      "relics-west-end-2026/rhombus-rota--unknown.json",
+      "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1575,7 +1578,8 @@
       "two-strangers-bway-2025/theatermania--unknown.json",
       "the-winters-tale-off-broadway-2026/wsj--charles-isherwood.json",
       "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
-      "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json"
+      "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
+      "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1609,6 +1613,13 @@
     ]
   },
   "failuresByOutlet": {
+    "The Stage": {
+      "count": 2,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "The Guardian": {
       "count": 1,
       "domain": "theguardian.com",
@@ -1616,9 +1627,9 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Jonathan Baz": {
+    "The Reviews Hub": {
       "count": 1,
-      "domain": "jonathanbaz.com",
+      "domain": "thereviewshub.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1630,37 +1641,9 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "WhatsOnStage": {
-      "count": 2,
-      "domain": "whatsonstage.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Click Liverpool": {
+    "BroadwayWorld": {
       "count": 1,
-      "domain": "facebook.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Stage": {
-      "count": 1,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "TheaterMania": {
-      "count": 1,
-      "domain": "theatermania.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Daily Echo": {
-      "count": 1,
-      "domain": "facebook.com",
+      "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1668,104 +1651,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "operation-mincemeat-west-end-2024/thereviewshub--the-reviews-hub.json",
-      "oldUrl": "https://www.thereviewshub.com/operation-mincemeat-leeds-grand-theatre/",
-      "newUrl": "https://www.thereviewshub.com/operation-mincemeat-fortune-theatre-london/"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/the-seagull-12-review",
-      "newUrl": "https://www.timeout.com/london/theatre/the-seagull-review-1"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/daily-mail--patrick-marmion.json",
-      "oldUrl": "https://www.dailymail.co.uk/tvshowbiz/article-14470617/PATRICK-MARMION-reviews-Seagull-Barbican-Theatre-West-End-drama-starring-movie-idol-thats-not-dud-bow-Cate.html",
-      "newUrl": "https://www.dailymail.com/tvshowbiz/article-14470617/PATRICK-MARMION-reviews-Seagull-Barbican-Theatre-West-End-drama-starring-movie-idol-thats-not-dud-bow-Cate.html"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/express-uk--neil-norman.json",
-      "oldUrl": "https://www.express.co.uk/entertainment/theatre/2023535/seagull-review-cate-blanchett-London",
-      "newUrl": "https://www.express.co.uk/entertainment/theatre/1641045/the-seagull-emilia-clark-Harold-Pinter-Theatre-west-end-review"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/i-paper--fiona-mountford.json",
-      "oldUrl": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876?srsltid=AfmBOopmKAHqtr2MRMcq9hAMOTIOD7iGyk0OUGCvm8R2EFBAgu2WVIhx",
-      "newUrl": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876?srsltid=AU7gw4WlaMfrpha3vC5V-343wduojcWXhET5qH4oN__8u8kHOCUnfaPa"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/independent--alice-saville.json",
-      "oldUrl": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-seagull-barbican-cate-blanchett-review-tom-burke-b2710342.html",
-      "newUrl": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/emilia-clarke-the-seagull-review-b2118781.html"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/standard--tim-bano.json",
-      "oldUrl": "https://www.standard.co.uk/culture/theatre/the-seagull-barbican-review-cate-blanchett-b1215074.html",
-      "newUrl": "https://www.standard.co.uk/culture/theatre/the-seagull-harold-pinter-theatre-london-review-emilia-clarke-b1011031.html"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/telegraph--dominic-cavendish.json",
-      "oldUrl": "https://www.telegraph.co.uk/theatre/what-to-see/the-seagull-barbican-theatre-review-cate-blanchett/",
-      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/seagull-review-emelia-clarkes-wings-clipped-ascetic-chekhov/"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json",
-      "oldUrl": "https://www.thestage.co.uk/reviews/the-seagull-review-barbican-theatre-london-chekhov-cate-blanchett-thomas-ostermeier-duncan-macmillan",
-      "newUrl": "https://www.thestage.co.uk/reviews/the-seagull-review-royal-lyceum-theatre-edinburgh-caroline-quentin"
-    },
-    {
-      "reviewId": "the-seagull-globe-off-west-end-2026/whatsonstage--sarah-crompton.json",
-      "oldUrl": "https://www.whatsonstage.com/news/the-seagull-review-cate-blanchett-leads-an-all-star-production-with-vaping-and-rock-songs_1668200/",
-      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-seagull_767413717/"
-    },
-    {
-      "reviewId": "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
-      "oldUrl": "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728",
-      "newUrl": "https://www.broadwayworld.com/article/Wake-Up-With-BroadwayWorld-July-27-2026--LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-at-Radio-City-and-More-20260725"
-    },
-    {
-      "reviewId": "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/watch-cast-of-les-miserables-the-arena-concert-spectacular-perform-one-day-more-on-the-tonight-show",
-      "newUrl": "https://playbill.com/article/les-miserables-the-arena-concert-spectacular-begins-radio-city-music-hall-engagement-july-23"
-    },
-    {
-      "reviewId": "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
-      "oldUrl": "https://www.telegraph.co.uk/theatre/what-to-see/loves-labours-lost-high-camp-account-slippery-play-review/",
-      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/loves-labours-lost-review-shakespeares-globe/"
-    },
-    {
-      "reviewId": "grease-the-immersive-movie-musical-off-west-end-2026/london-box-office--miriam-gibson.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-ancient-grease-the-vaults",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-grease-the-immersive-movie-musical"
-    },
-    {
-      "reviewId": "grease-the-immersive-movie-musical-off-west-end-2026/london-box-office--stuart-king.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/grease-musical-review",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-grease-the-immersive-movie-musical"
-    },
-    {
-      "reviewId": "trainspotting-the-musical-west-end-2026/daily-mail--joanna-crawley.json",
-      "oldUrl": "https://www.dailymail.co.uk/tvshowbiz/article-16026965/Trainspotting-Musical-cancels-UK-tour-cast-members-fume-social-media-low-ticket-sales-brutal-reviews.html",
-      "newUrl": "https://www.dailymail.com/tvshowbiz/article-16026965/Trainspotting-Musical-cancels-UK-tour-cast-members-fume-social-media-low-ticket-sales-brutal-reviews.html"
-    },
-    {
-      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--alun-hood.json",
-      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/",
-      "newUrl": "https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/"
-    },
-    {
-      "reviewId": "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
-      "oldUrl": "https://www.rollingstone.com/tv-movies/tv-movie-news/nancy-guthrie-disappearance-man-guilty-fake-ransom-note-1235588769/",
-      "newUrl": "https://ca.rollingstone.com/culture/luigi-mangione-friends-react-to-guilty-plea/"
-    },
-    {
-      "reviewId": "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
-      "oldUrl": "https://chicago.suntimes.com/theater/2026/06/18/iceboy-nick-offerman-megan-mullally-goodman-theatre",
-      "newUrl": "https://chicago.suntimes.com/theater/2026/06/30/iceboy-review-megan-mullally-nick-offerman-goodman-theatre-world-premiere"
-    },
-    {
-      "reviewId": "pride-west-end-2026/whatsonstage--editorial-staff.json",
-      "oldUrl": "https://www.whatsonstage.com/podcast/pride-musical-finds-a-new-london-home",
-      "newUrl": "https://www.whatsonstage.com/news/the-pride-musical-celebrates-its-official-opening-night-in-london-during-pride-month_1726325/"
+      "reviewId": "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
+      "oldUrl": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
+      "newUrl": "https://www.vulture.com/article/heathers-musical-nyc-revival-new-world-stages.html"
     }
   ]
 }
