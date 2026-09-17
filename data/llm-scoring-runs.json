@@ -1,47 +1,5 @@
 [
   {
-    "startedAt": "2026-09-14T17:13:57.658Z",
-    "completedAt": "2026-09-14T17:14:06.926Z",
-    "totalReviews": 40,
-    "processed": 1,
-    "skipped": 38,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 9634,
-      "output": 454,
-      "total": 25817
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-14T17:38:10.481Z",
-    "completedAt": "2026-09-14T17:38:16.536Z",
-    "totalReviews": 43,
-    "processed": 1,
-    "skipped": 42,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5373,
-      "output": 279,
-      "total": 13864
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-14T17:39:22.705Z",
-    "completedAt": "2026-09-14T17:39:44.627Z",
-    "totalReviews": 47,
-    "processed": 4,
-    "skipped": 43,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 20824,
-      "output": 1261,
-      "total": 54374
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-14T18:32:04.197Z",
     "completedAt": "2026-09-14T18:32:10.202Z",
     "totalReviews": 25,
@@ -254861,6 +254819,44 @@
     },
     "costUsd": 0,
     "runId": "35203568709",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-17T09:52:42.000Z",
+    "completedAt": "2026-09-17T09:52:56.264Z",
+    "totalReviews": 43975,
+    "processed": 0,
+    "skipped": 43969,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 19801,
+      "output": 657,
+      "total": 57734
+    },
+    "costUsd": 0.09600995000000001,
+    "runId": "35205136295",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-17T09:52:58.323Z",
+    "completedAt": "2026-09-17T09:59:12.038Z",
+    "totalReviews": 168,
+    "processed": 168,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 439038,
+      "output": 38418,
+      "total": 477456
+    },
+    "costUsd": 1.2212624,
+    "runId": "35205136295",
     "errorDetails": []
   }
 ]
