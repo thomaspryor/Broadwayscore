@@ -1,133 +1,41 @@
 {
-  "updatedAt": "2026-09-17T15:09:11.909Z",
-  "processed": 125,
-  "failed": 959,
-  "successRate": "11.5%",
+  "updatedAt": "2026-09-17T15:40:05.741Z",
+  "processed": 19,
+  "failed": 131,
+  "successRate": "12.7%",
   "tierBreakdown": {
-    "playwright": 64,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 14,
-    "directCookies": 4,
-    "scrapingbee": 24,
-    "brightdata": 10,
+    "browserbase": 1,
+    "directCookies": 0,
+    "scrapingbee": 5,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 20
+    "archive": 3
   },
-  "browserbaseSessions": 25,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-09-17T14:27:14.660Z",
+      "t": "2026-09-17T15:23:33.140Z",
       "event": "bb-session",
-      "session": "d724eff4",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+      "session": "24e96ac9",
+      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about"
     },
     {
-      "t": "2026-09-17T14:27:18.998Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-17T14:28:52.565Z",
-      "event": "bb-session",
-      "session": "6ba7ea32",
-      "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restore"
-    },
-    {
-      "t": "2026-09-17T14:28:53.302Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-09-17T14:33:05.681Z",
-      "event": "bb-session",
-      "session": "d4b57e53",
-      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
-    },
-    {
-      "t": "2026-09-17T14:33:14.452Z",
-      "event": "bb-session",
-      "session": "00cf2195",
-      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
-    },
-    {
-      "t": "2026-09-17T14:38:03.627Z",
-      "event": "bb-session",
-      "session": "79abd4ba",
-      "url": "http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
-    },
-    {
-      "t": "2026-09-17T14:38:04.278Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-17T14:40:10.619Z",
-      "event": "bb-session",
-      "session": "e0c186a0",
-      "url": "https://www.thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rache"
-    },
-    {
-      "t": "2026-09-17T14:40:11.345Z",
+      "t": "2026-09-17T15:23:33.716Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-09-17T14:47:49.649Z",
+      "t": "2026-09-17T15:31:03.922Z",
       "event": "bb-session",
-      "session": "370a9046",
-      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
+      "session": "ab5da4a6",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-09-17T14:48:03.770Z",
-      "event": "bb-session",
-      "session": "84cd0bca",
-      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
-    },
-    {
-      "t": "2026-09-17T15:02:29.169Z",
-      "event": "bb-session",
-      "session": "e26657e4",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
-    },
-    {
-      "t": "2026-09-17T15:02:29.928Z",
+      "t": "2026-09-17T15:31:04.417Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-17T15:02:59.441Z",
-      "event": "bb-session",
-      "session": "df786bf4",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
-    },
-    {
-      "t": "2026-09-17T15:03:00.252Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-17T15:03:43.935Z",
-      "event": "bb-session",
-      "session": "b1df8c5e",
-      "url": "http://www.publictheater.org/"
-    },
-    {
-      "t": "2026-09-17T15:04:02.312Z",
-      "event": "bb-session",
-      "session": "b3454066",
-      "url": "http://www.publictheater.org/"
-    },
-    {
-      "t": "2026-09-17T15:07:42.450Z",
-      "event": "bb-session",
-      "session": "9cb2717b",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-09-17T15:08:02.178Z",
-      "event": "bb-session",
-      "session": "acc65036",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+      "domain": "nytimes.com"
     }
   ]
 }
