@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
 const require = createRequire(import.meta.url);
 const core = require('../lib/dispatch-watchdog-core.js');
 const { ensureAutoTitle } = require('../lib/workspace-naming.js');
@@ -153,6 +156,96 @@ test('undispatched P0/P1 pending cards queue, P0 first; marketing/human cards ex
   const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
   assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['19', '20']);
   assert.deepEqual(plan.toDispatch.map(q => q.taskId), ['19', '20']);
+});
+
+// BRO-3633: loadTasksUnioned() (audit-dispatch-outcomes.js) unions live/ +
+// archive/ and tags each task fromArchive so planSweep can tell "still live"
+// apart from "deliberately shelved". task-store-archive.js's pending-task
+// archival moves a stale-but-still-'pending' card to archive/ byte-for-byte
+// after 30+ days untouched — not a completion signal — and without this
+// guard p01Queue treated the resurrected card as fresh P0/P1 backlog,
+// claimed it, it never produced a launch, and got parked with a
+// retired-board (bare-numeric) id, which is exactly what tripped
+// board-targeting-audit.js's "Dispatch: board targeting" health-check row.
+test('BRO-3633: an archived-but-pending P0/P1 card is excluded from p01Queue', () => {
+  const [liveId, liveTask] = task(19, 'pending', 'P0 Now');
+  const [archivedId, archivedTask] = task(23, 'pending', 'P0 Now');
+  const tasks = new Map([
+    [liveId, liveTask],
+    [archivedId, { ...archivedTask, fromArchive: true }],
+  ]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['19'],
+    'the archived card must never re-enter the fresh-backlog queue');
+});
+
+test('BRO-3633: a dead dispatch against an archived task is not auto-retried', () => {
+  const entries = [
+    { ts: T(60), event: 'launch', taskId: '24', subject: 's', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'dead', taskId: '24', workspaceRef: 'workspace:5' },
+  ];
+  const [id, archivedTask] = task(24, 'in_progress');
+  const tasks = new Map([[id, { ...archivedTask, fromArchive: true }]]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.retryable.length, 0, 'an archived task must not be auto-retried');
+  assert.equal(plan.toPark.length, 0, 'nor auto-parked — it was never queued for retry in the first place');
+});
+
+// ship-check/Codex catch: p01Queue no longer CREATES new claims for archived
+// tasks, but a claim can already sit in the ledger from just before this
+// fix landed. Without the same guard on awaitingClaim, that pre-existing
+// claim would still age past CLAIM_LABEL_GRACE_MS and get promoted to
+// noLaunchPark — reproducing the exact retired-board park this card exists
+// to stop, just via a different entry point.
+test('BRO-3633: a pre-existing claim on an archived task is not promoted to awaitingClaim/noLaunchPark', () => {
+  const entries = [{ ts: new Date(NOW - core.CLAIM_LABEL_GRACE_MS - 60000).toISOString(), event: 'watchdog-redispatch', taskId: '27', kind: 'p01-backlog' }];
+  const [id, liveTask] = task(27, 'pending', 'P1 Now');
+  const tasks = new Map([[id, { ...liveTask, fromArchive: true }]]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.awaitingClaim.length, 0, 'the stale claim must not surface as a labelled failure');
+  assert.equal(plan.noLaunchPark.length, 0, 'and must never be promoted to an actual park');
+});
+
+// ship-check/Codex catch: the two tests above manufacture `fromArchive: true`
+// by hand — they'd pass even if loadTasksUnioned() stopped setting the tag
+// entirely. This one exercises the real loader (audit-dispatch-outcomes.js)
+// against real files, in an isolated $HOME so it never touches this
+// machine's actual ~/.claude/tasks/.
+test('BRO-3633: loadTasksUnioned() actually tags fromArchive from real files, live wins except completed', () => {
+  const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3633-home-'));
+  const listId = 'test-list';
+  const liveDir = path.join(tmpHome, '.claude', 'tasks', listId);
+  const archiveDir = path.join(liveDir, 'archive');
+  fs.mkdirSync(archiveDir, { recursive: true });
+  const write = (dir, id, status) => fs.writeFileSync(
+    path.join(dir, `${id}.json`),
+    JSON.stringify({ id: String(id), subject: `task ${id}`, status }),
+  );
+  write(liveDir, 1, 'pending');                 // live only
+  write(archiveDir, 2, 'pending');               // archive only — the resurrection case
+  write(liveDir, 3, 'in_progress');              // present in both — live must win
+  write(archiveDir, 3, 'completed');
+  const prevHome = process.env.HOME;
+  const prevListId = process.env.CLAUDE_CODE_TASK_LIST_ID;
+  process.env.HOME = tmpHome;
+  process.env.CLAUDE_CODE_TASK_LIST_ID = listId;
+  try {
+    delete require.cache[require.resolve('../audit-dispatch-outcomes.js')];
+    const { loadTasksUnioned } = require('../audit-dispatch-outcomes.js');
+    const tasks = loadTasksUnioned();
+    assert.equal(tasks.get('1').fromArchive, false, 'a live-only task is not archived');
+    assert.equal(tasks.get('2').fromArchive, true, 'an archive-only task IS archived — the exact tag planSweep now guards on');
+    assert.deepEqual(
+      { status: tasks.get('3').status, fromArchive: tasks.get('3').fromArchive },
+      { status: 'completed', fromArchive: true },
+      'archive wins on completed (pre-existing behavior) and carries the correct tag for the record that actually won',
+    );
+  } finally {
+    if (prevHome === undefined) delete process.env.HOME; else process.env.HOME = prevHome;
+    if (prevListId === undefined) delete process.env.CLAUDE_CODE_TASK_LIST_ID; else process.env.CLAUDE_CODE_TASK_LIST_ID = prevListId;
+    delete require.cache[require.resolve('../audit-dispatch-outcomes.js')];
+    fs.rmSync(tmpHome, { recursive: true, force: true });
+  }
 });
 
 test('caps: day budget and concurrency hold dispatches and are reported', () => {
