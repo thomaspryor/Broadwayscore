@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T07:04:24.583Z",
+  "generatedAt": "2026-09-17T07:53:31.188Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -80,6 +80,10 @@
         },
         {
           "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -3365,23 +3369,23 @@
       "status": "open",
       "slug": "million-dollar-quartet-off-west-end",
       "thumbnail": "/images/shows/million-dollar-quartet-off-west-end-2026/thumbnail.webp",
-      "siteScore": 83.36,
-      "liveScore": 83,
-      "scoreDrift": -0.35999999999999943,
+      "siteScore": 82.24,
+      "liveScore": 82,
+      "scoreDrift": -0.23999999999999488,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
       "t2": 1,
-      "t3": 3,
-      "positive": 3,
+      "t3": 4,
+      "positive": 4,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:2/6"
@@ -3475,6 +3479,18 @@
           "t2": 1,
           "t3": 3,
           "p": 3,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-17T07:53:31.188Z",
+          "rc": 5,
+          "s": 82.24,
+          "t1": 0,
+          "t2": 1,
+          "t3": 4,
+          "p": 4,
           "m": 1,
           "n": 0,
           "bc": "waiting"
