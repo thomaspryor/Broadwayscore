@@ -1,29 +1,8 @@
 {
-  "generatedAt": "2026-09-17T12:25:00.380Z",
+  "generatedAt": "2026-09-17T17:37:49.181Z",
   "windowDays": 45,
-  "showsScanned": 70,
+  "showsScanned": 68,
   "gaps": [
-    {
-      "showId": "midnight-off-broadway-2026",
-      "title": "Midnight",
-      "openingDate": null,
-      "file": "whatsonstage--theo-bosanquet.json",
-      "outletId": "whatsonstage",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.whatsonstage.com/news/midnight-at-the-never-get-with-ben-platt-at-menier-chocolate-factory-review_1727718/",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=midnight-off-broadway-2026 --url=https://www.whatsonstage.com/news/midnight-at-the-never-get-with-ben-platt-at-menier-chocolate-factory-review_1727718/ --outlet=whatsonstage --critic=\"Theo Bosanquet\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-17T04:33:26.409Z",
-      "fileAgeHours": 7.8592152777777775,
-      "gapSeenAt": "2026-09-17T12:25:00.379Z",
-      "nonTerminalAgeHours": 0
-    },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
       "title": "The Human Voice / The Seven Deadly Sins",
@@ -37,9 +16,27 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 18.40246388888889,
+      "fileAgeHours": 23.61597777777778,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 18.3216025
+      "nonTerminalAgeHours": 23.53515861111111
+    },
+    {
+      "showId": "the-children-off-west-end-2026",
+      "title": "The Children",
+      "openingDate": "2026-09-10",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "outletId": "the-spectator-uk",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": true,
+      "url": null,
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-children-off-west-end-2026",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-09-17T17:37:49.181Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -54,9 +51,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 475.13857,
+      "fileAgeHours": 480.3521191666667,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 436.7295025
+      "nonTerminalAgeHours": 441.9430586111111
     }
   ],
   "contradictions": []
