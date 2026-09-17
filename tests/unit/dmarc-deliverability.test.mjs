@@ -7,9 +7,19 @@
 //
 // Pure logic (parseDmarcRecord / evaluateDmarcTxtRecords) is required from
 // scripts/lib/dmarc-record.js per CLAUDE.md rule 15 — this file does not
-// restate the parsing. The last test resolves the live record: a DNS TXT
-// lookup, not a scrape, so it's reliable enough for the main CI batch, and
-// it is the only thing that actually proves the DNS record was changed.
+// restate the parsing. The last test resolves the live record — a real
+// network call — so it runs at its own step in .github/workflows/test.yml
+// ("Run slow network-dependent unit tests", continue-on-error: true) rather
+// than the main manifest batch, which shares a 15-min job timeout with no
+// tolerance for a resolver hiccup unrelated to the PR under test (matches
+// this repo's existing convention for every other network-dependent test —
+// see that step's own comment). continue-on-error means a real DMARC
+// regression here shows as a red step inside an otherwise-green run, not a
+// failed check — scripts/lib/dmarc-analysis.js + the "Quality: DMARC
+// deliverability" health-check (scripts/health-check.js) are the production
+// backstop that actually alerts on a policy downgrade, from aggregate
+// reports rather than a CI run. This test's job is to make it OBVIOUS in the
+// PR that broke it, not to block merges on a DNS lookup.
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
