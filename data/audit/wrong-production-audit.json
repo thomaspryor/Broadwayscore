@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-17T23:10:33.250Z",
+  "timestamp": "2026-09-17T23:31:07.050Z",
   "stats": {
-    "totalReviews": 43629,
+    "totalReviews": 43630,
     "alreadyFlagged": 18050,
     "dateGuardCatches": 244,
     "directorMismatch": 1047,
     "tvFilmSignals": 1280,
-    "londonSignals": 1096,
+    "londonSignals": 1097,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
     "noPublishDate": 3820
@@ -54259,6 +54259,19 @@
       "score": 87,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "standard--unknown.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.standard.co.uk/culture/theatre/thelma-and-louise-at-the-young-vic-review-b1297374.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
