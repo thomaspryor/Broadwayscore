@@ -1,11 +1,13 @@
 {
-  "updatedAt": "2026-09-16T12:18:29.973Z",
-  "scanned": 2080,
-  "showsWithViolations": 722,
-  "totalViolations": 1622,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-09-17T12:20:05.992Z",
+  "scanned": 2089,
+  "showsWithViolations": 725,
+  "totalViolations": 1625,
+  "newSinceLastRun": 3,
   "newViolationKeys": [
-    "in-honor-of-jean-michel-basquiat-off-broadway-2026::https://www.talkinbroadway.com/page/ob/09_14_26.html"
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
+    "golden-boy-off-west-end-2026::https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
+    "el-quijote-off-broadway-2026::http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
   ],
   "violationKeys": [
     "joe-turners-come-and-gone-2026::https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
@@ -1577,6 +1579,7 @@
     "labelless-off-broadway-2026::https://culturesauce.com/drew-lachey-label-less-off-broadway-review/",
     "the-price-off-west-end-2026::https://www.ft.com/content/aeac6f64-9a35-4816-bdec-0c51610c51bb?syn-25a6b1a6=1",
     "and-then-the-rodeo-burned-down-off-broadway-2026::https://www.talkinbroadway.com/page/ob/05_31_26.html",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
     "small-off-broadway-2026::https://www.talkinbroadway.com/page/ob/05_28_26b.html",
     "sukkot-off-broadway-2026::https://www.talkinbroadway.com/page/ob/07_18_26.html",
     "im-every-woman-off-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28567",
@@ -1627,9 +1630,11 @@
     "in-honor-of-jean-michel-basquiat-off-broadway-2026::https://www.talkinbroadway.com/page/ob/09_14_26.html",
     "brainiac-live-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28533",
     "jane-eyre-off-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28993",
+    "golden-boy-off-west-end-2026::https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
     "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025::https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
     "barcelona-west-end-2024::https://www.thetimes.com/culture/theatre-dance/article/steve-coogan-dr-strangelove-gamble-255kzj6ss",
-    "starstruck-regional-2026::https://www.theatermania.com/news/review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767/"
+    "starstruck-regional-2026::https://www.theatermania.com/news/review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767/",
+    "el-quijote-off-broadway-2026::http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
   ],
   "hits": [
     {
@@ -16487,6 +16492,20 @@
       ]
     },
     {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "title": "My Son’s A Queer (But What Can You Do?)",
+      "openingDate": "2026-09-17",
+      "message": "Review URL for london-theatre-reviews/Matt Wolf does not mention show slug (checked: my-sons-a-queer-but-what-can-you-do-west-end, my-sons-a-queer-but-what-can-you-do, sons, queer, what, sonsqueerwhat): https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
+      "violations": [
+        {
+          "outletId": "london-theatre-reviews",
+          "criticName": "Matt Wolf",
+          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
+          "urlSlug": "post.cfm"
+        }
+      ]
+    },
+    {
       "showId": "small-off-broadway-2026",
       "title": "Small",
       "openingDate": "2026-05-29",
@@ -17099,6 +17118,20 @@
       ]
     },
     {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "message": "Review URL for whatsonstage/Unknown does not mention show slug (checked: golden-boy-off-west-end, golden-boy, golden): https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
+      "violations": [
+        {
+          "outletId": "whatsonstage",
+          "criticName": "Unknown",
+          "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
+          "urlSlug": "news man-and-boy-at-the-national-theatre-review_1711733"
+        }
+      ]
+    },
+    {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
       "title": "Two Strangers (Carry A Cake Across New York)",
       "openingDate": "2025-06-02",
@@ -17137,6 +17170,20 @@
           "criticName": "Cameron Kelsall",
           "url": "https://www.theatermania.com/news/review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767/",
           "urlSlug": "news review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767"
+        }
+      ]
+    },
+    {
+      "showId": "el-quijote-off-broadway-2026",
+      "title": "El Quijote",
+      "openingDate": null,
+      "message": "Review URL for nytimes/George Hunka does not mention show slug (checked: el-quijote-off-broadway, el-quijote, quijote): http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html",
+      "violations": [
+        {
+          "outletId": "nytimes",
+          "criticName": "George Hunka",
+          "url": "http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html",
+          "urlSlug": "2006 03 02 theater reviews 02espa"
         }
       ]
     }
