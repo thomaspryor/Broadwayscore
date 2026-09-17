@@ -1,43 +1,30 @@
 {
-  "updatedAt": "2026-09-17T22:23:20.735Z",
-  "processed": 14,
-  "failed": 18,
-  "successRate": "43.8%",
+  "updatedAt": "2026-09-17T22:30:43.301Z",
+  "processed": 41,
+  "failed": 93,
+  "successRate": "30.6%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 23,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 1,
-    "scrapingbee": 1,
+    "browserbase": 1,
+    "directCookies": 2,
+    "scrapingbee": 11,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 3
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-09-17T22:20:24.248Z",
+      "t": "2026-09-17T22:28:52.284Z",
       "event": "bb-session",
-      "session": "0431c306",
-      "url": "https://www.ntlive.com/plays/golden-boy/"
+      "session": "b07f0283",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
     },
     {
-      "t": "2026-09-17T22:20:43.181Z",
-      "event": "bb-session",
-      "session": "d55eac07",
-      "url": "https://www.ntlive.com/plays/golden-boy/"
-    },
-    {
-      "t": "2026-09-17T22:22:55.632Z",
-      "event": "bb-session",
-      "session": "2cdc9f11",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-17T22:23:07.706Z",
-      "event": "bb-session",
-      "session": "2f882aee",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+      "t": "2026-09-17T22:28:53.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
