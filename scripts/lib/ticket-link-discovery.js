@@ -34,6 +34,7 @@ const TICKETING_PLATFORMS = [
   { host: 'ticketleap.com', platform: 'TicketLeap' },
   { host: 'seetickets.com', platform: 'See Tickets' },
   { host: 'ticketsource.co.uk', platform: 'TicketSource', region: 'uk' },
+  { host: 'gotickets.com', platform: 'GoTickets' },
 ];
 
 // Known-region markets/categories in shows.json. Deliberately NOT exhaustive:
@@ -136,6 +137,12 @@ const VENUE_SITES = [
   'thenewgroup.org',
   'lunastage.org',
   'housingworks.org',
+  'stratfordeast.com', // Theatre Royal Stratford East
+  'almeida.co.uk', // Almeida Theatre (covers ticketing.almeida.co.uk)
+  'southwarkplayhouse.co.uk',
+  'americanrepertorytheater.org', // A.R.T., Cambridge MA
+  'repertorio.nyc', // Repertorio Español
+  'borninthecity.com', // off-off-Broadway producer/ticketing site (e.g. The Gym at Judson shows)
 ];
 
 // SERP result paths that are listings/search hubs, never a buyable show page.
