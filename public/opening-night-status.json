@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T18:07:39.244Z",
+  "generatedAt": "2026-09-17T18:44:07.551Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1715,15 +1715,15 @@
       },
       "missingT1": [
         {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
           "name": "Observer",
           "isDualMarket": true
         },
         {
           "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
           "isDualMarket": true
         },
         {
@@ -3700,25 +3700,25 @@
       "status": "open",
       "slug": "million-dollar-quartet-off-west-end",
       "thumbnail": "/images/shows/million-dollar-quartet-off-west-end-2026/thumbnail.webp",
-      "siteScore": 78.96,
+      "siteScore": 79.13,
       "liveScore": 79,
-      "scoreDrift": 0.04000000000000625,
+      "scoreDrift": -0.12999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 13,
       "t1": 0,
       "t2": 5,
-      "t3": 6,
-      "positive": 8,
-      "mixed": 3,
+      "t3": 8,
+      "positive": 9,
+      "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3872,6 +3872,18 @@
           "t3": 6,
           "p": 8,
           "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-17T18:44:07.551Z",
+          "rc": 13,
+          "s": 79.13,
+          "t1": 0,
+          "t2": 5,
+          "t3": 8,
+          "p": 9,
+          "m": 4,
           "n": 0,
           "bc": "waiting"
         }
