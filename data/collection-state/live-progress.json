@@ -1,104 +1,20 @@
 {
-  "updatedAt": "2026-09-17T14:00:43.094Z",
-  "processed": 20,
-  "failed": 131,
-  "successRate": "13.2%",
+  "updatedAt": "2026-09-17T14:30:57.773Z",
+  "processed": 96,
+  "failed": 668,
+  "successRate": "12.6%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 48,
     "amp": 0,
-    "browserbase": 3,
-    "directCookies": 0,
-    "scrapingbee": 5,
-    "brightdata": 1,
+    "browserbase": 13,
+    "directCookies": 2,
+    "scrapingbee": 18,
+    "brightdata": 9,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 16
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-09-17T10:25:17.142Z",
-      "event": "bb-session",
-      "session": "2327d14f",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-17T10:25:17.949Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-17T10:35:36.156Z",
-      "event": "bb-session",
-      "session": "b298f4e0",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
-    },
-    {
-      "t": "2026-09-17T10:45:25.953Z",
-      "event": "bb-session",
-      "session": "b7803c37",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
-    {
-      "t": "2026-09-17T10:45:26.647Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-17T10:47:46.832Z",
-      "event": "bb-session",
-      "session": "21b99e1e",
-      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
-    },
-    {
-      "t": "2026-09-17T11:35:18.372Z",
-      "event": "bb-session",
-      "session": "58423043",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-17T11:35:19.299Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-17T11:43:02.511Z",
-      "event": "bb-session",
-      "session": "01545263",
-      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about"
-    },
-    {
-      "t": "2026-09-17T11:43:03.428Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-17T11:48:56.330Z",
-      "event": "bb-session",
-      "session": "ef1cde44",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
-    {
-      "t": "2026-09-17T11:48:57.348Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-17T11:58:52.762Z",
-      "event": "bb-session",
-      "session": "a0e3b264",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-17T11:58:53.773Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-17T13:32:08.842Z",
-      "event": "bb-session",
-      "session": "d0a90344",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
     {
       "t": "2026-09-17T13:32:21.668Z",
       "event": "bb-session",
@@ -126,6 +42,89 @@
       "t": "2026-09-17T13:53:22.370Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-17T14:02:17.430Z",
+      "event": "bb-session",
+      "session": "80959a0f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-17T14:02:18.201Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-17T14:07:08.151Z",
+      "event": "bb-session",
+      "session": "a22dbf04",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-17T14:07:08.880Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-17T14:12:26.052Z",
+      "event": "bb-session",
+      "session": "0eaf69a9",
+      "url": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-lond"
+    },
+    {
+      "t": "2026-09-17T14:12:26.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-17T14:18:37.390Z",
+      "event": "bb-session",
+      "session": "60603ec4",
+      "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-lyric-theatre-belf"
+    },
+    {
+      "t": "2026-09-17T14:18:38.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-17T14:19:48.048Z",
+      "event": "bb-session",
+      "session": "681dd7e2",
+      "url": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-"
+    },
+    {
+      "t": "2026-09-17T14:26:52.133Z",
+      "event": "bb-session",
+      "session": "47d4c0f1",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-17T14:26:56.449Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-17T14:27:14.660Z",
+      "event": "bb-session",
+      "session": "d724eff4",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-17T14:27:18.998Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-17T14:28:52.565Z",
+      "event": "bb-session",
+      "session": "6ba7ea32",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restore"
+    },
+    {
+      "t": "2026-09-17T14:28:53.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
