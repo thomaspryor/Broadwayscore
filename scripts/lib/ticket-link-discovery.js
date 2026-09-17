@@ -34,7 +34,6 @@ const TICKETING_PLATFORMS = [
   { host: 'ticketleap.com', platform: 'TicketLeap' },
   { host: 'seetickets.com', platform: 'See Tickets' },
   { host: 'ticketsource.co.uk', platform: 'TicketSource', region: 'uk' },
-  { host: 'gotickets.com', platform: 'GoTickets' },
 ];
 
 // Known-region markets/categories in shows.json. Deliberately NOT exhaustive:
@@ -149,7 +148,13 @@ const VENUE_SITES = [
 const LISTING_PATH_FRAGMENTS = ['/search', '/category', '/discover', '/shows?', '/whats-on?'];
 
 // Resale-only marketplaces — never auto-link these.
-const RESALE_HOSTS = ['stubhub.com', 'seatgeek.com', 'vividseats.com', 'viagogo.com', 'ticketnetwork.com'];
+// gotickets.com and boxofficeticketsales.com both self-describe as resale
+// marketplaces (tickets sourced from "licensed professional sellers", not
+// sold on behalf of the venue) despite reading as generic small-venue box
+// office platforms — verified via each site's own FAQ/support pages
+// (BRO-3636 follow-up; a SERP-fallback link to gotickets.com briefly landed
+// in shows.json before this was caught).
+const RESALE_HOSTS = ['stubhub.com', 'seatgeek.com', 'vividseats.com', 'viagogo.com', 'ticketnetwork.com', 'gotickets.com', 'boxofficeticketsales.com'];
 
 /**
  * Fold diacritics + lowercase + strip punctuation. Mirrors the lesson from the
