@@ -56,6 +56,13 @@ jobs:
           fi
 
       - name: Notify on failure
+        # cancelled() covers a job-timeout hitting a LATER step (checkout
+        # already succeeded); a hang IN checkout itself may leave this local
+        # composite action unresolvable regardless. severity: warning below
+        # means this step is a no-op today either way (notify-failure/action
+        # .yml only sends on severity=='critical') — real detection for this
+        # workflow is scripts/monitor-scheduled-email-count.js's independent
+        # Resend-history check (BRO-2531).
         if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:

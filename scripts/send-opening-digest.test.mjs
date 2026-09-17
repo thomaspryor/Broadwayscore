@@ -11,9 +11,24 @@
 // This pins the two workflow-level fixes so neither regresses silently:
 //   1. The job timeout has real margin above normal runtime (was 8min with
 //      ~0 margin over a ~1min job; raised to 15min).
-//   2. The failure-notification step also fires on cancellation, matching the
-//      documented `failure() || cancelled()` pattern used elsewhere in this
-//      repo (e.g. test.yml).
+//   2. The failure-notification step's condition also covers cancellation,
+//      matching the `failure() || cancelled()` pattern used elsewhere in this
+//      repo (e.g. test.yml). Two caveats an adversarial review (Codex) caught
+//      that this test deliberately does NOT claim to fix, so scope stays
+//      honest: (a) this workflow's Notify-on-failure step passes
+//      `severity: 'warning'`, and .github/actions/notify-failure/action.yml's
+//      only two real steps both gate on `severity == 'critical'` — today the
+//      step is a no-op on ANY trigger, cancelled() included; this is
+//      forward-consistency for if severity is ever raised, not a live alert
+//      path. (b) If the HANG is in the checkout step itself (the exact
+//      2026-08-27 shape), the repo may not be fully checked out, so
+//      `uses: ./.github/actions/notify-failure` (a local composite action)
+//      can't necessarily resolve either way. cancelled() mainly helps a
+//      sibling failure mode — a later step (e.g. "Send opening digest")
+//      hanging into the job timeout AFTER checkout has already succeeded.
+//      The mechanism that actually caught 2026-08-27 (4 days later) was the
+//      independent scripts/monitor-scheduled-email-count.js Resend-history
+//      check, which doesn't depend on this workflow's own checkout at all.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -50,15 +65,14 @@ test('opening-digest.yml notifies on both failure and cancellation', () => {
   const notifyStep = (job.steps || []).find((s) => s.name === 'Notify on failure');
   assert.ok(notifyStep, '"Notify on failure" step must exist');
   // A bare `if: failure()` never fires when the job is cancelled by its own
-  // timeout-minutes — exactly what happened 2026-08-27. Require cancelled()
-  // to be part of the condition so a future timeout still reaches the alert
-  // step (belt-and-suspenders alongside the independent Resend-history
-  // monitor in scripts/monitor-scheduled-email-count.js, which is what
-  // actually caught this incident).
-  const condition = String(notifyStep.if || '');
-  assert.match(
+  // timeout-minutes. Exact-match (not a substring/regex check) so an
+  // inverted or dead-code variant — e.g. `!cancelled()` (opposite meaning) or
+  // `false && cancelled()` — can't slip past a looser assertion. Must match
+  // the established repo pattern (e.g. test.yml) exactly.
+  const condition = String(notifyStep.if || '').trim();
+  assert.equal(
     condition,
-    /cancelled\(\)/,
-    `"Notify on failure" if-condition ("${condition}") must include cancelled(), not just failure()`,
+    'failure() || cancelled()',
+    `"Notify on failure" if-condition must be exactly 'failure() || cancelled()', got "${condition}"`,
   );
 });
