@@ -822,27 +822,15 @@
     "queuedAt": "2026-09-17T01:30:33.053Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/141 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nscore-drift: 1\nCat Cohen: Broad Strokes: missing-from-prod+score-drift",
-    "severity": "error",
+    "conditionKey": "express-retry-still-thin:la-gringa-off-broadway-2026",
+    "title": "Opening Night Express retry still found thin review coverage for la-gringa-off-broadway-2026",
+    "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
+    "severity": "warn",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-17T06:58:32.178Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.6% (135/317)\nwest-end: 76% (424/558)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (813h)\nA Midsummer Night's Dream — observer (813h)\nA Midsummer Night's Dream — standard (813h)\nABBA Voyage — independent (813h)\nAladdin — ew (813h)\n… 171 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (813h)\nBuena Vista Social Club — broadwaynews (813h)\nBuena Vista Social Club — nydailynews (813h)\nHadestown — nydailynews (813h)\nHeathers The Musical — dailybeast (813h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-17T06:58:32.333Z"
+    "queuedAt": "2026-09-17T07:03:06.819Z"
   }
 ]
