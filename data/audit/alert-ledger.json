@@ -3086,26 +3086,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-17T17:32:07.187Z",
+      "lastSeen": "2026-09-17T23:17:11.102Z",
       "lastNotifiedAt": "2026-09-17T09:17:53.377Z",
       "lastSurfacedAt": "2026-09-17T09:17:53.377Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-17T17:32:07.192Z",
+      "lastSeen": "2026-09-17T23:17:11.105Z",
       "lastNotifiedAt": "2026-09-17T09:17:53.383Z",
       "lastSurfacedAt": "2026-09-17T09:17:53.383Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3351,7 +3351,7 @@
       "linearIdentifier": null
     },
     "corpus-drift:url-downgrade": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
@@ -3361,7 +3361,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-09-17T23:17:11.106Z"
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3412,6 +3413,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "gap:man-to-man-west-end-2026/thestage--matt-barton.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 silent gap on near-opening show: Man to Man — thestage",
+      "firstSeen": "2026-09-17T23:23:57.842Z",
+      "lastSeen": "2026-09-17T23:23:57.842Z",
+      "lastNotifiedAt": "2026-09-17T23:23:57.842Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3714"
     }
   }
 }

@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-09-17T20:52:42.292Z",
+  "generatedAt": "2026-09-17T23:23:57.838Z",
   "windowDays": 45,
   "showsScanned": 69,
   "gaps": [
+    {
+      "showId": "man-to-man-west-end-2026",
+      "title": "Man to Man",
+      "openingDate": "2026-09-11",
+      "file": "thestage--matt-barton.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=man-to-man-west-end-2026 --url=https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse --outlet=thestage --critic=\"Matt Barton\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-14T14:46:50.891Z",
+      "fileAgeHours": 80.61819833333334,
+      "gapSeenAt": "2026-09-17T23:23:57.838Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
       "title": "The Human Voice / The Seven Deadly Sins",
@@ -16,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 26.86410861111111,
+      "fileAgeHours": 29.385100277777777,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 26.783245
+      "nonTerminalAgeHours": 29.30423
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -33,9 +50,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 483.6002066666667,
+      "fileAgeHours": 486.12119277777776,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 445.191145
+      "nonTerminalAgeHours": 447.71213
     }
   ],
   "contradictions": []

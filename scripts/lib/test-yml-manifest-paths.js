@@ -137,6 +137,10 @@ const UNREGISTERED_TEST_QUARANTINE = new Map([
     'tests/unit/opening-night-checks-skeleton.test.mjs',
     'BRO-2778 — DOES run in CI at its own serial test.yml step. It writes _stub-passes.check.js and _stub-throws.check.js into scripts/lib/opening-night-checks/, which loadChecks() in that directory\'s index.js discovers by globbing *.check.js. Manifest files run in parallel `node --test` workers alongside opening-night-bypass-corpus.test.mjs, which calls that loader, so registering it would make main red nondeterministically. Must stay unregistered.',
   ],
+  [
+    'tests/unit/dmarc-deliverability.test.mjs',
+    'BRO-2600 — DOES run in CI at its own advisory step ("Run slow network-dependent unit tests", continue-on-error: true). It does a live dns.resolveTxt() of _dmarc.broadwayscorecard.com; registering it in the main manifest would put a real network call in the no-continue-on-error batch, gating unrelated PRs on a resolver hiccup. Must stay unregistered.',
+  ],
 ]);
 
 /** Repo-relative paths of every test file under SCANNED_TEST_DIRS. */

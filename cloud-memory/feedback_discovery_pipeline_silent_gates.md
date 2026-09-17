@@ -1085,3 +1085,24 @@ preview/listing copy (cast announcement, ticket times); the `4/5` hits were side
 Only EXTRACTED BODY PROSE counts as census evidence. A title match plus a stars regex on raw HTML will
 manufacture a phantom gap and burn a pass. Cross-ref: feedback_inplace_url_update_preserves_stale_state.md
 (the converse case — that one is real, this one is its false-positive twin).
+
+## Gate: cross-domain title contamination — single common token pulls FILM reviews into a theatre show (observed 2026-09-17, america-who-hurt-you-off-broadway-2026)
+Discovery matched the Marvel film *Captain America: Brave New World* to the Off-Broadway show
+"America, Who Hurt You?" — apparently on the token `America` plus the word `review`, with no outlet-section
+or domain guard. Two film reviews landed in `data/review-texts/_pending/america-who-hurt-you-off-broadway-2026/`:
+`nypost--7a33502.json` → nypost.com/2025/02/12/entertainment/captain-america-brave-new-world-review-...
+`thewrap--747cb373.json` → thewrap.com/captain-america-brave-new-world-review/
+Both `publishDate: null`, `contentTier: stub`, `fullText` length 0.
+
+**Why it is dangerous rather than merely noisy:** harm is contained only because they are 0-byte stubs stranded
+in `_pending` (invisible to rebuild). `replay-pending-bylines.js` would surface them into the show. The
+opening-night monitor's own attempt-19 notes had flagged the NY Post file as "the highest-value single item"
+to drain — draining it would have injected a Marvel film review into a theatre show's score.
+
+**Recurs for:** any show whose title contains a common proper noun (America, Chicago, Company, Hamilton, Wicked).
+**Systemic fix:** require title match beyond one high-frequency token; add a film/TV section-domain guard
+(`nypost.com/*/entertainment/*`, `thewrap.com`) unless registered as a theatre outlet in `data/outlet-registry.json`.
+**Card:** BRO-3711.
+**Monitor lesson:** a `_pending` file is NOT presumptively a recoverable review. Read its url + publishDate
+before drafting a drain — every `_pending` file across all 5 shows this night was prior-run or out-of-scope
+(attempt 20A), and the drain would have been net-negative in every case.
