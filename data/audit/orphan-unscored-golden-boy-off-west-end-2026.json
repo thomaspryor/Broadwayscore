@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "golden-boy-off-west-end-2026",
   "openingDate": "2026-09-15",
-  "detectedAt": "2026-09-17T20:14:50.926Z",
+  "detectedAt": "2026-09-17T21:00:09.262Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "liamodell--liam-odell.json",
+      "outletId": "liamodell",
+      "criticName": "Liam O’Dell",
+      "url": "https://liamodell.com/2026/09/16/golden-boy-review-almeida-theatre-josh-oconnor-hayley-squires-sam-yates/",
+      "fullTextLen": 4136,
+      "dispatchActionable": false,
+      "skipReason": "no_scorable_text",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "whatsonstage--unknown.json",
       "outletId": "whatsonstage",
@@ -23,9 +40,9 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 1,
+  "blockedOrphanCount": 2,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
