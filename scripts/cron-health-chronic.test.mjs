@@ -42,7 +42,11 @@ jobs:
       - name: Some step
         run: echo hi
 `;
-  assert.deepEqual(parseJobTimeouts(yaml), { 'video-reviews': 180, 'other-job': 15 });
+  assert.deepEqual(parseJobTimeouts(yaml), {
+    'video-reviews': 180,
+    'Discover, collect, score and publish new video reviews': 180,
+    'other-job': 15,
+  });
 });
 
 test('parseJobTimeouts ignores timeout-minutes lines before the jobs: block', () => {
@@ -54,6 +58,46 @@ jobs:
     timeout-minutes: 30
 `;
   assert.deepEqual(parseJobTimeouts(yaml), { 'only-job': 30 });
+});
+
+test('parseJobTimeouts keys the result by BOTH the YAML job key and its declared name:, when set', () => {
+  const yaml = `
+jobs:
+  video-reviews:
+    name: Discover, collect, score and publish new video reviews
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+`;
+  // gh run view --json jobs reports job.name as the declared name: — if a
+  // caller only stores the YAML key, classifyJob's timeouts[job.name] lookup
+  // misses every job like this one (BRO-2534 Codex finding).
+  assert.deepEqual(parseJobTimeouts(yaml), {
+    'video-reviews': 180,
+    'Discover, collect, score and publish new video reviews': 180,
+  });
+});
+
+test('parseJobTimeouts ignores a STEP\'s own timeout-minutes (8-space indent), keeping the job-level value (4-space)', () => {
+  // Reproduces rebuild-reviews.yml: a 40min job timeout with a 12min
+  // timeout-minutes on one of its steps used to parse as 12 (last match
+  // wins, no indent discrimination) — BRO-2534 Codex finding.
+  const yaml = `
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Extract pull quotes for new reviews
+        run: node scripts/extract-pull-quotes.js --limit=200
+        continue-on-error: true
+        timeout-minutes: 12
+`;
+  assert.deepEqual(parseJobTimeouts(yaml), { rebuild: 40 });
 });
 
 test('parseJobTimeouts returns an empty map for a workflow with no timeout-minutes declared', () => {
@@ -79,6 +123,13 @@ test('classifyJob reproduces the exact push-contention shape observed on the BRO
     ],
   };
   assert.equal(classifyJob(job, { 'video-reviews': 180 }), 'push-contention (failed step: "Commit and push")');
+});
+
+test('parseJobTimeouts resolves weekly-video-reviews.yml\'s real job under both its key and its display name', () => {
+  const workflowPath = path.join(REPO_ROOT, '.github', 'workflows', 'weekly-video-reviews.yml');
+  const timeouts = parseJobTimeouts(fs.readFileSync(workflowPath, 'utf8'));
+  assert.equal(timeouts['video-reviews'], timeouts['Discover, collect, score and publish new video reviews']);
+  assert.ok(timeouts['Discover, collect, score and publish new video reviews'] >= 60);
 });
 
 // Regression guard for the actual fix: weekly-video-reviews.yml's "Commit and

@@ -81,25 +81,49 @@ function classifyJob(job, timeouts) {
  * job carrying a 180-minute (10800s) timeout, which is what let 13 of its
  * last 20 runs fail on push-contention (CLAUDE.md rule 15 extraction).
  *
+ * Keys the result by BOTH the job's YAML key (e.g. "video-reviews") and its
+ * declared `name:` (e.g. "Discover, collect, score and publish new video
+ * reviews"), when one is set — `gh run view --json jobs` reports `job.name`
+ * as the LATTER, so classifyJob's `timeouts[job.name]` lookup silently missed
+ * every job with an explicit `name:` before this (BRO-2534, Codex adversarial
+ * review: this exact workflow's job was one, so timeout-cancelled detection
+ * could never fire for it). Also restricts `timeout-minutes:` matching to
+ * exactly 4-space indent (one level under the 2-space job key) — matching any
+ * deeper indent picked up a STEP's own `timeout-minutes:` and let it silently
+ * overwrite the job-level value with whichever one appeared last in the file
+ * (same review pass, reproduced live on rebuild-reviews.yml: a 40-minute job
+ * timeout with a 12-minute step timeout on one of its steps used to parse as
+ * 12).
+ *
  * @param {string} yamlText raw workflow YAML text
- * @returns {Object<string, number>} job name -> timeout-minutes
+ * @returns {Object<string, number>} job key (and job display name, if set) -> timeout-minutes
  */
 function parseJobTimeouts(yamlText) {
   const lines = yamlText.split('\n');
-  const timeouts = {};
-  let currentJob = null;
-  // Jobs are top-level keys under `jobs:` at 2-space indent; `timeout-minutes:`
-  // lines nested under a job are indented further.
+  const jobs = [];
+  let current = null;
+  // Jobs are top-level keys under `jobs:` at 2-space indent; job-level
+  // attributes (name, timeout-minutes, ...) sit at exactly 4-space indent in
+  // this repo's consistent 2-space-per-level style. Steps live in a nested
+  // list starting at 6-space indent (`      - name: ...`), with their own
+  // attributes at 8-space — deliberately NOT matched below.
   let inJobs = false;
   for (const line of lines) {
     if (/^jobs:\s*$/.test(line)) { inJobs = true; continue; }
     if (!inJobs) continue;
     const jobMatch = line.match(/^ {2}([a-zA-Z0-9_-]+):\s*$/);
-    if (jobMatch) { currentJob = jobMatch[1]; continue; }
-    const timeoutMatch = line.match(/^\s+timeout-minutes:\s*(\d+)/);
-    if (timeoutMatch && currentJob) {
-      timeouts[currentJob] = parseInt(timeoutMatch[1], 10);
-    }
+    if (jobMatch) { current = { key: jobMatch[1], name: null, timeoutMinutes: null }; jobs.push(current); continue; }
+    if (!current) continue;
+    const nameMatch = line.match(/^ {4}name:\s*(.+?)\s*$/);
+    if (nameMatch) { current.name = nameMatch[1]; continue; }
+    const timeoutMatch = line.match(/^ {4}timeout-minutes:\s*(\d+)/);
+    if (timeoutMatch) { current.timeoutMinutes = parseInt(timeoutMatch[1], 10); }
+  }
+  const timeouts = {};
+  for (const job of jobs) {
+    if (job.timeoutMinutes == null) continue;
+    timeouts[job.key] = job.timeoutMinutes;
+    if (job.name) timeouts[job.name] = job.timeoutMinutes;
   }
   return timeouts;
 }
