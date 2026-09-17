@@ -4396,9 +4396,17 @@ jobs:
         # up the wall-clock budget there. continue-on-error: true so transient
         # network flakes don't block PRs — failures still show up red in the
         # test summary panel.
+        #
+        # tests/unit/dmarc-deliverability.test.mjs (BRO-2600) does a live
+        # dns.resolveTxt() of _dmarc.broadwayscorecard.com — same reasoning:
+        # a resolver hiccup on the runner must not block an unrelated PR, so
+        # it lives here rather than in the no-continue-on-error main manifest
+        # batch. A real DMARC regression still reaches the owner — it's just
+        # via scripts/lib/dmarc-analysis.js's aggregate-report health-check,
+        # not this CI run (second-opinion review, 2026-09-17).
         continue-on-error: true
         run: |
-          node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs scripts/enrich-fallback-ticket-links-live.test.mjs
+          node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs scripts/enrich-fallback-ticket-links-live.test.mjs tests/unit/dmarc-deliverability.test.mjs
 
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
