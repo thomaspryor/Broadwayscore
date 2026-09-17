@@ -1,24 +1,27 @@
 {
-  "generatedAt": "2026-09-17T06:58:20.954Z",
+  "generatedAt": "2026-09-17T12:25:00.380Z",
   "windowDays": 45,
   "showsScanned": 70,
   "gaps": [
     {
-      "showId": "truly-howard-hughes-off-broadway-2026",
-      "title": "Truly, Howard Hughes",
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
       "openingDate": null,
-      "file": "cititour--unknown.json",
-      "outletId": "cititour",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "outletId": "whatsonstage",
       "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
-      "recovery": null,
+      "type": "empty-body",
+      "url": "https://www.whatsonstage.com/news/midnight-at-the-never-get-with-ben-platt-at-menier-chocolate-factory-review_1727718/",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
       "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
-      "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 184.02991805555556,
-      "gapSeenAt": "2026-09-17T06:58:20.954Z",
+      "fix": "node scripts/ingest-review-from-url.js --show=midnight-off-broadway-2026 --url=https://www.whatsonstage.com/news/midnight-at-the-never-get-with-ben-platt-at-menier-chocolate-factory-review_1727718/ --outlet=whatsonstage --critic=\"Theo Bosanquet\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-17T04:33:26.409Z",
+      "fileAgeHours": 7.8592152777777775,
+      "gapSeenAt": "2026-09-17T12:25:00.379Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -34,9 +37,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 12.958228055555555,
+      "fileAgeHours": 18.40246388888889,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 12.877317777777778
+      "nonTerminalAgeHours": 18.3216025
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -51,9 +54,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 469.69429333333335,
+      "fileAgeHours": 475.13857,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 431.2852177777778
+      "nonTerminalAgeHours": 436.7295025
     }
   ],
   "contradictions": []

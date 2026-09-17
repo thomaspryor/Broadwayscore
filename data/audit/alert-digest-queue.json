@@ -846,15 +846,27 @@
     "queuedAt": "2026-09-17T11:13:02.794Z"
   },
   {
-    "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget",
-    "description": "Day 2026-09-16. Over budget: brightdata $2.62 > $2.5 (298 serp + 1449 unlocker reqs); scrapingbee 41768 credits > 35000. 2026-09-16 · Browserbase: $0.7 (64 sessions, 13.21min) · 2026-09-16 · Bright Data: $2.62 (298 serp / 1449 unlocker) · ScrapingBee: 41768 credits (286060 this cycle) · ScrapingDog: 53264 credits (826087 this cycle) · Browserbase attribution: 2% attributed — top callers (covers 2% of billed calls): collect-review-texts.js 1 · ⚠️ Browserbase top-caller coverage low: 2% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · Bright Data attribution: 61% attributed — top callers (covers 55% of billed calls): opening-night-poller.js 378, gather-reviews.js 263, fetch-show-images-auto.js 170, audit-show-review-gap.js 86, collect-outlet-reviews.js 62 · ⚠️ Bright Data top-caller coverage low: 55% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingBee attribution: 32% attributed — top callers (covers 30% of billed credits): gather-reviews.js 4434cr, fetch-show-images-auto.js 4229cr, opening-night-poller.js 2550cr, collect-outlet-reviews.js 1050cr, ob-discovery-ticket-links.js 375cr · ⚠️ ScrapingBee top-caller coverage low: 30% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 32% attributed — top callers (covers 27% of billed credits): gather-reviews.js 7935cr, collect-outlet-reviews.js 2365cr, audit-show-review-gap.js 1877cr, scrape-nyc-theatre-roundups.js 1130cr, opening-night-poller.js 1023cr · ⚠️ ScrapingDog top-caller coverage low: 27% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "5/141 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nMillion Dollar Quartet: score-drift\nMan to Man: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift\nOh, Mary!: score-drift",
     "severity": "error",
     "url": null,
-    "decision": true,
-    "decisionPrompt": "Scraping spend over budget: brightdata $2.62 > $2.5 (298 serp + 1449 unlocker reqs); scrapingbee 41768 credits > 35000. Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
+    "decision": false,
+    "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-17T12:09:40.994Z"
+    "queuedAt": "2026-09-17T12:25:09.862Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.6% (135/317)\nwest-end: 76% (424/558)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (818h)\nA Midsummer Night's Dream — observer (818h)\nA Midsummer Night's Dream — standard (818h)\nABBA Voyage — independent (818h)\nAladdin — ew (818h)\n… 171 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (818h)\nBuena Vista Social Club — broadwaynews (818h)\nBuena Vista Social Club — nydailynews (818h)\nHadestown — nydailynews (818h)\nHeathers The Musical — dailybeast (818h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-17T12:25:10.059Z"
   }
 ]
