@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-17T11:04:00.186Z",
-  "processed": 35,
-  "failed": 94,
-  "successRate": "27.1%",
+  "updatedAt": "2026-09-17T11:55:07.982Z",
+  "processed": 66,
+  "failed": 260,
+  "successRate": "20.2%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 35,
     "amp": 0,
     "browserbase": 7,
     "directCookies": 2,
     "scrapingbee": 10,
-    "brightdata": 4,
+    "brightdata": 5,
     "archiveToday": 0,
     "archive": 12
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-17T08:56:54.358Z",
@@ -65,14 +65,41 @@
     {
       "t": "2026-09-17T11:01:52.545Z",
       "event": "bb-session",
-      "session": "ff81ae75",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+      "session": "21b99e1e",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     },
     {
-      "t": "2026-09-17T11:02:05.142Z",
+      "t": "2026-09-17T11:35:18.372Z",
       "event": "bb-session",
-      "session": "81344bba",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+      "session": "58423043",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-17T11:35:19.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-17T11:43:02.511Z",
+      "event": "bb-session",
+      "session": "01545263",
+      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about"
+    },
+    {
+      "t": "2026-09-17T11:43:03.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-17T11:48:56.330Z",
+      "event": "bb-session",
+      "session": "ef1cde44",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-17T11:48:57.348Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
