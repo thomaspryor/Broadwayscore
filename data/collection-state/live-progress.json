@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-09-17T14:44:37.105Z",
-  "processed": 18,
-  "failed": 132,
-  "successRate": "12.0%",
+  "updatedAt": "2026-09-17T15:02:30.000Z",
+  "processed": 119,
+  "failed": 945,
+  "successRate": "11.2%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 60,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 1,
-    "scrapingbee": 5,
-    "brightdata": 2,
+    "browserbase": 14,
+    "directCookies": 4,
+    "scrapingbee": 22,
+    "brightdata": 10,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 20
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-09-17T14:36:00.562Z",
-      "event": "bb-session",
-      "session": "14b742d7",
-      "url": "http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
-    },
-    {
-      "t": "2026-09-17T14:36:01.083Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-17T14:12:26.052Z",
-      "event": "bb-session",
-      "session": "0eaf69a9",
-      "url": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-lond"
-    },
     {
       "t": "2026-09-17T14:12:26.733Z",
       "event": "bb-cookie-inject",
@@ -86,6 +69,63 @@
       "t": "2026-09-17T14:28:53.302Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-09-17T14:33:05.681Z",
+      "event": "bb-session",
+      "session": "d4b57e53",
+      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
+    },
+    {
+      "t": "2026-09-17T14:33:14.452Z",
+      "event": "bb-session",
+      "session": "00cf2195",
+      "url": "http://www.streetdirectory.com/etoday/the-lion-king-in-broadway-plafuj.html"
+    },
+    {
+      "t": "2026-09-17T14:38:03.627Z",
+      "event": "bb-session",
+      "session": "79abd4ba",
+      "url": "http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+    },
+    {
+      "t": "2026-09-17T14:38:04.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-17T14:40:10.619Z",
+      "event": "bb-session",
+      "session": "e0c186a0",
+      "url": "https://www.thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rache"
+    },
+    {
+      "t": "2026-09-17T14:40:11.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-17T14:47:49.649Z",
+      "event": "bb-session",
+      "session": "370a9046",
+      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
+    },
+    {
+      "t": "2026-09-17T14:48:03.770Z",
+      "event": "bb-session",
+      "session": "84cd0bca",
+      "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
+    },
+    {
+      "t": "2026-09-17T15:02:29.169Z",
+      "event": "bb-session",
+      "session": "e26657e4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669"
+    },
+    {
+      "t": "2026-09-17T15:02:29.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
