@@ -45,50 +45,23 @@
  *
  * Tested by scripts/lib/api-fallback-disqualifier.test.mjs — that test
  * require()s disqualifyingPath() rather than restating the rules.
+ *
+ * SPLIT (unrelated fix picked up while landing BRO-2531): the pure predicate
+ * (disqualifyingPath/NEVER_FALLBACK) now lives in
+ * scripts/lib/api-fallback-disqualifier-core.js and is re-exported below
+ * unchanged. This file's CLI block still does a real `git diff` spawn, and
+ * scripts/lib/audit-push-retry-budgets.js — on the AUDIT_LINT_GENERIC_FORM_
+ * ALLOWED allowlist, which requires a zero-hazard transitive require graph —
+ * used to require() THIS file for the predicate, pulling that spawn in
+ * transitively and failing scripts/lib/safe-form-allowlist.test.mjs on every
+ * run. audit-push-retry-budgets.js now requires the -core file directly; this
+ * file's own exports and CLI behavior are unchanged. See -core.js's header
+ * for the full rationale.
  */
 
 'use strict';
 
-const NEVER_FALLBACK = ['data/shows.json', 'data/reviews.json'];
-
-/**
- * The one rule. Pure — takes the already-computed changed-path list and the
- * registry lists, so the test can drive it without a git repo.
- *
- * Path matching uses endsWith() against the registry entry with its leading
- * `data/` stripped, which is exactly what the inline version did: the shell
- * passes repo-relative paths, but callers have historically run from both the
- * repo root and a worktree subdirectory.
- *
- * @param {string[]} changed        repo-relative changed paths
- * @param {{MANAGED: {file: string}[], API_FALLBACK_SAFE: {file: string}[], API_FALLBACK_MERGE: {file: string}[]}} registry
- * @returns {string|null} the first disqualifying path, or null when all clear
- */
-function disqualifyingPath(changed, registry) {
-  const { MANAGED, API_FALLBACK_SAFE, API_FALLBACK_MERGE } = registry || {};
-  // NO `= []` defaults here, deliberately (adversarial review, BRO-3663). A
-  // registry that loads but stops exporting MANAGED would default to "nothing
-  // is managed" — a clean verdict — and the fallback would be permitted to
-  // overlay MANAGED files. That is a fail-OPEN in a guard whose entire job is
-  // to fail closed. The inline version this replaces threw on `undefined.some`
-  // and the shell turned that into "disqualified"; throwing preserves it.
-  for (const [name, list] of [['MANAGED', MANAGED], ['API_FALLBACK_SAFE', API_FALLBACK_SAFE], ['API_FALLBACK_MERGE', API_FALLBACK_MERGE]]) {
-    if (!Array.isArray(list)) {
-      throw new TypeError(`api-fallback-disqualifier: registry.${name} is not an array (got ${typeof list}) — refusing to answer, which fails closed`);
-    }
-  }
-  const matches = (list) => (f) => list.some((m) => f.endsWith(String(m.file).replace(/^data\//, '')));
-  const isManaged = matches(MANAGED);
-  const isApiFallbackSafe = matches(API_FALLBACK_SAFE);
-  const isApiFallbackMergeable = matches(API_FALLBACK_MERGE);
-  const isNeverFallback = (f) => NEVER_FALLBACK.some((p) => f === p || f.endsWith('/' + p));
-
-  return (changed || []).find((f) =>
-    (isManaged(f) && !isApiFallbackMergeable(f)) ||
-    isNeverFallback(f) ||
-    (f.startsWith('data/audit/') && !isManaged(f) && !isApiFallbackSafe(f) && !isApiFallbackMergeable(f))
-  ) || null;
-}
+const { disqualifyingPath, NEVER_FALLBACK } = require('./api-fallback-disqualifier-core.js');
 
 module.exports = { disqualifyingPath, NEVER_FALLBACK };
 
