@@ -1,33 +1,5 @@
 [
   {
-    "startedAt": "2026-09-14T03:06:50.286Z",
-    "completedAt": "2026-09-14T03:06:59.588Z",
-    "totalReviews": 43587,
-    "processed": 0,
-    "skipped": 43585,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8114,
-      "output": 361,
-      "total": 23342
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-14T03:34:19.479Z",
-    "completedAt": "2026-09-14T03:34:31.333Z",
-    "totalReviews": 43587,
-    "processed": 0,
-    "skipped": 43584,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 13083,
-      "output": 499,
-      "total": 36303
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-14T07:59:00.232Z",
     "completedAt": "2026-09-14T07:59:05.597Z",
     "totalReviews": 17,
@@ -277743,6 +277715,44 @@
     },
     "costUsd": 1.2223799,
     "runId": "35173516497",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-17T03:07:04.470Z",
+    "completedAt": "2026-09-17T03:07:19.470Z",
+    "totalReviews": 43967,
+    "processed": 0,
+    "skipped": 43961,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 19801,
+      "output": 653,
+      "total": 57738
+    },
+    "costUsd": 0.09601994999999999,
+    "runId": "35175321121",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-17T03:07:21.476Z",
+    "completedAt": "2026-09-17T03:14:11.757Z",
+    "totalReviews": 168,
+    "processed": 168,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 439038,
+      "output": 38904,
+      "total": 477942
+    },
+    "costUsd": 1.2258823999999997,
+    "runId": "35175321121",
     "errorDetails": []
   }
 ]
