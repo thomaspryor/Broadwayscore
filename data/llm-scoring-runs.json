@@ -1,39 +1,5 @@
 [
   {
-    "startedAt": "2026-09-14T19:18:15.522Z",
-    "completedAt": "2026-09-14T19:18:21.941Z",
-    "totalReviews": 43663,
-    "processed": 1,
-    "skipped": 43661,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8827,
-      "output": 385,
-      "total": 24522
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-14T20:33:06.200Z",
-    "completedAt": "2026-09-14T20:33:11.870Z",
-    "totalReviews": 9,
-    "processed": 1,
-    "skipped": 8,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5846,
-      "output": 317,
-      "total": 14574
-    },
-    "errorDetails": [
-      {
-        "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-        "outletId": "stratfordeast",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-14T21:04:51.365Z",
     "completedAt": "2026-09-14T21:04:56.469Z",
     "totalReviews": 9,
@@ -254883,6 +254849,44 @@
     },
     "costUsd": 1.1805451,
     "runId": "35205828781",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-17T11:04:59.862Z",
+    "completedAt": "2026-09-17T11:05:14.498Z",
+    "totalReviews": 43978,
+    "processed": 0,
+    "skipped": 43972,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 19801,
+      "output": 632,
+      "total": 57722
+    },
+    "costUsd": 0.09570245,
+    "runId": "35211610292",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-17T11:05:16.398Z",
+    "completedAt": "2026-09-17T11:11:34.067Z",
+    "totalReviews": 171,
+    "processed": 171,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 445262,
+      "output": 39888,
+      "total": 485150
+    },
+    "costUsd": 1.2464362999999998,
+    "runId": "35211610292",
     "errorDetails": []
   }
 ]
