@@ -23,12 +23,15 @@ jobs:
   send-digest:
     runs-on: ubuntu-latest
     # BRO-2531: the 2026-08-27 run never sent — actions/checkout@v5 stalled on
-    # a transient runner hiccup and ate the entire budget (job start 20:50:56,
-    # checkout still running at the 8-minute mark), so the job was cancelled
-    # before the "Send opening digest" step ever ran. Normal end-to-end runtime
-    # is ~1 minute (checkout ~15-90s, everything else <5s), so 8 minutes had
-    # zero margin for any infra jitter. Raised to give real headroom without
-    # meaningfully delaying detection of a genuine hang.
+    # a transient runner hiccup for 8+ minutes (job start 20:50:56, checkout
+    # still running at the 8-minute mark), so the job was cancelled before the
+    # "Send opening digest" step ever ran. Normal end-to-end runtime is ~1
+    # minute (checkout ~15-90s, everything else <5s). Raising the ceiling
+    # doesn't make a hang recover — it only buys more time for a *transient*
+    # stall to clear before the whole run is sacrificed; a hang that outlasts
+    # 15 minutes still misses the send. Real detection for this workflow is
+    # the independent scripts/monitor-scheduled-email-count.js Resend-history
+    # check, not this timeout.
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
