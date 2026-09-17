@@ -1,15 +1,10 @@
 {
-  "generatedAt": "2026-09-16T12:08:26.202Z",
-  "bannerText": "197/309 Done(14d) verified on main · 5 FAILED · 1 vacuous · 75 stuck-but-done · 28 mis-armed, needs re-arming (BRO-1391, BRO-1333, BRO-1284, +25 more) — PARTIAL RUN: 85 checks not re-run (ran out of time), 1 GitHub lookup failed, so these numbers understate the board",
+  "generatedAt": "2026-09-17T12:10:23.712Z",
+  "bannerText": "201/315 Done(14d) verified on main · 5 FAILED · 1 vacuous · 72 stuck-but-done · 26 mis-armed, needs re-arming (BRO-1391, BRO-1333, BRO-1284, +23 more) — PARTIAL RUN: 100 checks not re-run (ran out of time), 1 GitHub lookup failed, so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-472 — BSC Daily: Data quality: fulltext-mentions-show lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-09-15T12:12:36.755Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-472/bsc-daily-data-quality-fulltext-mentions-show-lifetime-sweep"
-    },
-    {
       "title": "FAILED BRO-465 — BSC Daily: Main: red streak",
-      "detail": "[check-health-row-absent] FAIL: \"Main: red streak\" still listed in the 2026-09-15T12:12:36.755Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Main: red streak\" still listed in the 2026-09-17T12:09:21.616Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-465/bsc-daily-main-red-streak"
     },
     {
@@ -21,6 +16,11 @@
       "title": "FAILED BRO-2952 — P1: gate-cold-start A/B impression split drifted toward parity (208:75, expected ~10:1)",
       "detail": "Could not find '<checkout>/scripts/lib/gate-cold-start-rules.test.mjs'",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2952/p1-gate-cold-start-ab-impression-split-drifted-toward-parity-20875"
+    },
+    {
+      "title": "FAILED BRO-2795 — P1: commercial-rss-poll.yml fails hourly — an unregistered data/audit/sd-circuit-breaker.json is swept into its commit and disqualifies the Git Data API fallback",
+      "detail": "TAP version 13 # Subtest: sanity: harness disqualifies an unregistered data/audit/ path (proves the extraction actually runs the real check) not ok 1 - sanity: harness disqualifie…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2795/p1-commercial-rss-pollyml-fails-hourly-an-unregistered-dataauditsd"
     },
     {
       "title": "FAILED BRO-2549 — P1: aggregator archive caches are validated at write time only — a <14d cache is served before any validator runs",
@@ -43,5 +43,5 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-1325/btc-send-retroactive-confirmation-emails-to-all-entrants"
     }
   ],
-  "moreCount": 73
+  "moreCount": 70
 }

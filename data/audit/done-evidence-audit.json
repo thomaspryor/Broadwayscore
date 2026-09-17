@@ -1,53 +1,95 @@
 {
-  "generatedAt": "2026-09-16T12:08:26.202Z",
+  "generatedAt": "2026-09-17T12:10:23.712Z",
   "shadow": true,
   "windowDays": 14,
   "truncated": false,
   "fetchError": null,
-  "checkoutSha": "6a0a5b426e2c30e4d27d557edf5f0763081c16a3",
-  "notReRun": 85,
+  "checkoutSha": "544b4b2068c63c7a914e9865e95aaed02de43412",
+  "notReRun": 100,
   "unresolvedProbes": 1,
-  "sweepOffset": 259,
-  "elapsedMs": 544020,
+  "sweepOffset": 260,
+  "elapsedMs": 547537,
   "timeBudgetMs": 600000,
   "slowestChecks": [
     {
-      "id": "BRO-127",
-      "cmd": "node --test tests/unit/push-via-git-api.test.mjs",
-      "ms": 53033
-    },
-    {
       "id": "BRO-258",
       "cmd": "node --test tests/unit/push-with-retry-abort-preserves-head.test.mjs",
-      "ms": 52430
+      "ms": 52465
     },
     {
-      "id": "BRO-2474",
-      "cmd": "node scripts/validate-data.js",
-      "ms": 45824
+      "id": "BRO-127",
+      "cmd": "node --test tests/unit/push-via-git-api.test.mjs",
+      "ms": 50028
     },
     {
-      "id": "BRO-2391",
+      "id": "BRO-3466",
       "cmd": "node scripts/validate-data.js",
-      "ms": 45614
+      "ms": 45977
     },
     {
-      "id": "BRO-343",
+      "id": "BRO-3357",
       "cmd": "node scripts/validate-data.js",
-      "ms": 45438
+      "ms": 45484
+    },
+    {
+      "id": "BRO-1428",
+      "cmd": "node scripts/validate-data.js",
+      "ms": 44955
     }
   ],
   "counts": {
-    "VERIFIED": 197,
+    "VERIFIED": 201,
     "FAILED": 5,
-    "STUCK": 75,
+    "STUCK": 72,
     "VACUOUS": 1,
-    "UNVERIFIABLE": 217,
-    "total": 495
+    "UNVERIFIABLE": 220,
+    "total": 499
   },
-  "doneVerified": 197,
-  "doneTotal": 309,
+  "doneVerified": 201,
+  "doneTotal": 315,
   "results": [
+    {
+      "id": "BRO-1431",
+      "name": "ingest-urls.js: body replacement must neutralize stale flags/CV",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1431/ingest-urlsjs-body-replacement-must-neutralize-stale-flagscv",
+      "state": "Done",
+      "cmd": "node --test scripts/ingest-urls.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 308
+    },
+    {
+      "id": "BRO-1428",
+      "name": "Fix: main red — 34 review-text 'Unknown' critic-name validation errors",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1428/fix-main-red-34-review-text-unknown-critic-name-validation-errors",
+      "state": "Done",
+      "cmd": "node scripts/validate-data.js",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 44955
+    },
+    {
+      "id": "BRO-1412",
+      "name": "Broadway-path review discovery has no production-identity check (same-title prior-production ingest)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1412/broadway-path-review-discovery-has-no-production-identity-check-same",
+      "state": "Done",
+      "cmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 732
+    },
     {
       "id": "BRO-1397",
       "name": "Prior-run review display: label run/date + suppress former-cast pull-quotes",
@@ -60,7 +102,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 123
+      "ms": 124
     },
     {
       "id": "BRO-1392",
@@ -74,7 +116,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 98
+      "ms": 97
     },
     {
       "id": "BRO-1391",
@@ -87,7 +129,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/lib/byline-extractor.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 693
+      "ms": 587
     },
     {
       "id": "BRO-1386",
@@ -154,7 +196,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/health-check.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 785
+      "ms": 550
     },
     {
       "id": "BRO-1330",
@@ -168,7 +210,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 1058
+      "ms": 1084
     },
     {
       "id": "BRO-1325",
@@ -182,7 +224,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 99
+      "ms": 97
     },
     {
       "id": "BRO-1322",
@@ -196,7 +238,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 102
+      "ms": 103
     },
     {
       "id": "BRO-1299",
@@ -222,7 +264,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 340
+      "ms": 325
     },
     {
       "id": "BRO-1292",
@@ -236,7 +278,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 109
+      "ms": 108
     },
     {
       "id": "BRO-1291",
@@ -250,7 +292,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 102
+      "ms": 101
     },
     {
       "id": "BRO-1290",
@@ -264,7 +306,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 329
+      "ms": 313
     },
     {
       "id": "BRO-1284",
@@ -277,7 +319,7 @@
       "misArmed": true,
       "detail": "its own check names tests/unit/cowriter-system-messages.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 545
+      "ms": 564
     },
     {
       "id": "BRO-1226",
@@ -291,7 +333,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 351
+      "ms": 344
     },
     {
       "id": "BRO-1212",
@@ -305,7 +347,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 96
+      "ms": 92
     },
     {
       "id": "BRO-1197",
@@ -317,7 +359,7 @@
       "evidence": "unknown",
       "detail": "`test -f scripts/scoring-delta.js` names scripts/scoring-delta.js, which was already in the repo before this card was filed — green before the work started, so it proves nothing now",
       "channels": [],
-      "ms": 677
+      "ms": 581
     },
     {
       "id": "BRO-1158",
@@ -331,7 +373,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 122
+      "ms": 121
     },
     {
       "id": "BRO-1108",
@@ -345,7 +387,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 281
+      "ms": 272
     },
     {
       "id": "BRO-1104",
@@ -359,7 +401,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 12279
+      "ms": 12210
     },
     {
       "id": "BRO-1095",
@@ -373,7 +415,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 149
+      "ms": 148
     },
     {
       "id": "BRO-1084",
@@ -386,7 +428,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/lib/review-normalization.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 586
+      "ms": 512
     },
     {
       "id": "BRO-1031",
@@ -399,7 +441,7 @@
       "misArmed": true,
       "detail": "its own check names tests/unit/review-normalization.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 499
+      "ms": 515
     },
     {
       "id": "BRO-1013",
@@ -413,7 +455,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 100
+      "ms": 97
     },
     {
       "id": "BRO-995",
@@ -427,7 +469,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 291
+      "ms": 289
     },
     {
       "id": "BRO-994",
@@ -441,7 +483,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 191
+      "ms": 180
     },
     {
       "id": "BRO-989",
@@ -453,7 +495,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 34
+      "ms": 32
     },
     {
       "id": "BRO-985",
@@ -467,7 +509,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 108
+      "ms": 101
     },
     {
       "id": "BRO-975",
@@ -481,7 +523,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 133
+      "ms": 134
     },
     {
       "id": "BRO-973",
@@ -495,7 +537,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 1059
+      "ms": 1057
     },
     {
       "id": "BRO-948",
@@ -509,7 +551,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 718
+      "ms": 710
     },
     {
       "id": "BRO-941",
@@ -522,7 +564,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/lib/opening-night-sla.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 499
+      "ms": 754
     },
     {
       "id": "BRO-940",
@@ -536,7 +578,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 543
+      "ms": 544
     },
     {
       "id": "BRO-932",
@@ -550,7 +592,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 105
+      "ms": 102
     },
     {
       "id": "BRO-931",
@@ -564,7 +606,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 104
+      "ms": 102
     },
     {
       "id": "BRO-929",
@@ -578,7 +620,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 437
+      "ms": 427
     },
     {
       "id": "BRO-928",
@@ -592,7 +634,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 101
+      "ms": 102
     },
     {
       "id": "BRO-927",
@@ -606,7 +648,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 105
+      "ms": 103
     },
     {
       "id": "BRO-925",
@@ -620,7 +662,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 230
+      "ms": 233
     },
     {
       "id": "BRO-922",
@@ -634,7 +676,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 128
+      "ms": 126
     },
     {
       "id": "BRO-919",
@@ -647,7 +689,7 @@
       "misArmed": true,
       "detail": "its own check names tests/unit/score-extractors.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 499
+      "ms": 521
     },
     {
       "id": "BRO-913",
@@ -661,7 +703,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 116
+      "ms": 109
     },
     {
       "id": "BRO-912",
@@ -675,7 +717,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 112
+      "ms": 105
     },
     {
       "id": "BRO-911",
@@ -688,7 +730,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/opening-night-drift-alarm.yml, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 499
+      "ms": 432
     },
     {
       "id": "BRO-909",
@@ -702,7 +744,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 613
+      "ms": 615
     },
     {
       "id": "BRO-888",
@@ -730,7 +772,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 121
+      "ms": 116
     },
     {
       "id": "BRO-867",
@@ -744,7 +786,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 117
+      "ms": 116
     },
     {
       "id": "BRO-864",
@@ -758,7 +800,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 363
+      "ms": 427
     },
     {
       "id": "BRO-860",
@@ -772,7 +814,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 475
+      "ms": 473
     },
     {
       "id": "BRO-856",
@@ -784,7 +826,7 @@
       "evidence": "unknown",
       "detail": "`npx tsc --noEmit` is green on main for every card at once — it cannot show whether THIS work was done",
       "channels": [],
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "BRO-853",
@@ -798,7 +840,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 96
+      "ms": 97
     },
     {
       "id": "BRO-848",
@@ -812,7 +854,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 102
+      "ms": 93
     },
     {
       "id": "BRO-841",
@@ -838,7 +880,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 451
+      "ms": 459
     },
     {
       "id": "BRO-810",
@@ -852,7 +894,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 204
+      "ms": 202
     },
     {
       "id": "BRO-770",
@@ -866,7 +908,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 112
+      "ms": 108
     },
     {
       "id": "BRO-767",
@@ -880,7 +922,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 580
+      "ms": 565
     },
     {
       "id": "BRO-764",
@@ -892,7 +934,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 32
+      "ms": 29
     },
     {
       "id": "BRO-760",
@@ -906,7 +948,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 127
+      "ms": 126
     },
     {
       "id": "BRO-749",
@@ -920,7 +962,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 735
+      "ms": 729
     },
     {
       "id": "BRO-736",
@@ -934,7 +976,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 156
+      "ms": 155
     },
     {
       "id": "BRO-735",
@@ -948,7 +990,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 125
+      "ms": 121
     },
     {
       "id": "BRO-733",
@@ -960,7 +1002,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 30
+      "ms": 32
     },
     {
       "id": "BRO-720",
@@ -974,7 +1016,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 231
+      "ms": 228
     },
     {
       "id": "BRO-716",
@@ -998,7 +1040,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 31
+      "ms": 29
     },
     {
       "id": "BRO-643",
@@ -1034,7 +1076,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 32
+      "ms": 29
     },
     {
       "id": "BRO-544",
@@ -1048,7 +1090,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 269
+      "ms": 265
     },
     {
       "id": "BRO-536",
@@ -1140,13 +1182,13 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-472/bsc-daily-data-quality-fulltext-mentions-show-lifetime-sweep",
       "state": "Done",
       "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YSBxdWFsaXR5OiBmdWxsdGV4dC1tZW50aW9ucy1zaG93IGxpZmV0aW1lIHN3ZWVw",
-      "verdict": "FAILED",
-      "evidence": "broken",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-09-15T12:12:36.755Z health snapshot\n",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
       "channels": [
         "verify-command"
       ],
-      "ms": 59
+      "ms": 30
     },
     {
       "id": "BRO-471",
@@ -1158,7 +1200,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 29
+      "ms": 30
     },
     {
       "id": "BRO-465",
@@ -1168,11 +1210,11 @@
       "cmd": "node scripts/check-health-row-absent.js --row-b64 TWFpbjogcmVkIHN0cmVhaw",
       "verdict": "FAILED",
       "evidence": "broken",
-      "detail": "[check-health-row-absent] FAIL: \"Main: red streak\" still listed in the 2026-09-15T12:12:36.755Z health snapshot\n",
+      "detail": "[check-health-row-absent] FAIL: \"Main: red streak\" still listed in the 2026-09-17T12:09:21.616Z health snapshot\n",
       "channels": [
         "verify-command"
       ],
-      "ms": 58
+      "ms": 55
     },
     {
       "id": "BRO-461",
@@ -1198,7 +1240,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 7
+      "ms": 8
     },
     {
       "id": "BRO-446",
@@ -1212,7 +1254,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 30
+      "ms": 27
     },
     {
       "id": "BRO-445",
@@ -1226,7 +1268,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 30
+      "ms": 29
     },
     {
       "id": "BRO-433",
@@ -1252,7 +1294,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 29
+      "ms": 27
     },
     {
       "id": "BRO-431",
@@ -1266,7 +1308,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 439
+      "ms": 413
     },
     {
       "id": "BRO-427",
@@ -1278,7 +1320,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 33
+      "ms": 30
     },
     {
       "id": "BRO-424",
@@ -1292,7 +1334,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 377
+      "ms": 506
     },
     {
       "id": "BRO-420",
@@ -1306,7 +1348,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 139
+      "ms": 130
     },
     {
       "id": "BRO-417",
@@ -1344,7 +1386,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 134
+      "ms": 136
     },
     {
       "id": "BRO-395",
@@ -1358,7 +1400,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 100
+      "ms": 98
     },
     {
       "id": "BRO-392",
@@ -1370,7 +1412,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 33
+      "ms": 30
     },
     {
       "id": "BRO-386",
@@ -1384,7 +1426,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 102
+      "ms": 95
     },
     {
       "id": "BRO-372",
@@ -1398,7 +1440,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 2069
+      "ms": 2012
     },
     {
       "id": "BRO-368",
@@ -1412,7 +1454,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 28
+      "ms": 29
     },
     {
       "id": "BRO-363",
@@ -1426,7 +1468,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 103
+      "ms": 101
     },
     {
       "id": "BRO-362",
@@ -1452,7 +1494,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 29
+      "ms": 27
     },
     {
       "id": "BRO-344",
@@ -1466,7 +1508,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 101
+      "ms": 100
     },
     {
       "id": "BRO-343",
@@ -1480,7 +1522,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 45438
+      "ms": 44473
     },
     {
       "id": "BRO-341",
@@ -1494,7 +1536,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 166
+      "ms": 156
     },
     {
       "id": "BRO-339",
@@ -1508,7 +1550,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 108
+      "ms": 101
     },
     {
       "id": "BRO-338",
@@ -1520,7 +1562,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 8
+      "ms": 7
     },
     {
       "id": "BRO-335",
@@ -1532,7 +1574,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 8
+      "ms": 7
     },
     {
       "id": "BRO-333",
@@ -1546,7 +1588,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 27
+      "ms": 29
     },
     {
       "id": "BRO-328",
@@ -1558,7 +1600,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 8
+      "ms": 7
     },
     {
       "id": "BRO-326",
@@ -1572,7 +1614,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 31
+      "ms": 30
     },
     {
       "id": "BRO-318",
@@ -1594,13 +1636,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-303/bsc-daily-audience-coverage-open-show-gaps",
       "state": "In Review",
       "cmd": "node scripts/check-health-row-absent.js --row-b64 QXVkaWVuY2UgY292ZXJhZ2U6IG9wZW4tc2hvdyBnYXBz",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 32
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "channels": [],
+      "ms": 29
     },
     {
       "id": "BRO-296",
@@ -1612,7 +1652,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 10
+      "ms": 7
     },
     {
       "id": "BRO-287",
@@ -1626,7 +1666,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 816
+      "ms": 827
     },
     {
       "id": "BRO-286",
@@ -1652,7 +1692,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 134
+      "ms": 135
     },
     {
       "id": "BRO-279",
@@ -1667,7 +1707,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 1240
+      "ms": 1222
     },
     {
       "id": "BRO-278",
@@ -1681,7 +1721,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 128
+      "ms": 132
     },
     {
       "id": "BRO-277",
@@ -1695,7 +1735,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 508
+      "ms": 431
     },
     {
       "id": "BRO-276",
@@ -1709,7 +1749,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 236
+      "ms": 242
     },
     {
       "id": "BRO-275",
@@ -1721,7 +1761,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 7
+      "ms": 8
     },
     {
       "id": "BRO-273",
@@ -1735,7 +1775,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 469
+      "ms": 485
     },
     {
       "id": "BRO-271",
@@ -1749,7 +1789,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 1128
+      "ms": 1541
     },
     {
       "id": "BRO-270",
@@ -1775,7 +1815,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 1063
+      "ms": 1081
     },
     {
       "id": "BRO-265",
@@ -1789,7 +1829,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 506
+      "ms": 471
     },
     {
       "id": "BRO-264",
@@ -1803,7 +1843,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 102
+      "ms": 104
     },
     {
       "id": "BRO-262",
@@ -1815,7 +1855,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 33
+      "ms": 30
     },
     {
       "id": "BRO-259",
@@ -1843,7 +1883,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 52430
+      "ms": 52465
     },
     {
       "id": "BRO-256",
@@ -1857,7 +1897,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 478
+      "ms": 472
     },
     {
       "id": "BRO-255",
@@ -1883,7 +1923,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 142
+      "ms": 131
     },
     {
       "id": "BRO-250",
@@ -1897,7 +1937,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 742
+      "ms": 716
     },
     {
       "id": "BRO-243",
@@ -1911,7 +1951,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 122
+      "ms": 118
     },
     {
       "id": "BRO-242",
@@ -1935,7 +1975,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 35
+      "ms": 30
     },
     {
       "id": "BRO-237",
@@ -1949,7 +1989,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 1477
+      "ms": 1436
     },
     {
       "id": "BRO-236",
@@ -1961,7 +2001,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 29
+      "ms": 30
     },
     {
       "id": "BRO-235",
@@ -1975,7 +2015,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 108
+      "ms": 105
     },
     {
       "id": "BRO-234",
@@ -1989,7 +2029,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 717
+      "ms": 686
     },
     {
       "id": "BRO-232",
@@ -2001,7 +2041,7 @@
       "evidence": "unknown",
       "detail": "`npx tsc --noEmit` is green on main for every card at once — it cannot show whether THIS work was done",
       "channels": [],
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "BRO-231",
@@ -2015,7 +2055,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 107
+      "ms": 106
     },
     {
       "id": "BRO-228",
@@ -2029,7 +2069,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 211
+      "ms": 209
     },
     {
       "id": "BRO-227",
@@ -2043,7 +2083,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 409
+      "ms": 392
     },
     {
       "id": "BRO-226",
@@ -2069,7 +2109,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 102
+      "ms": 99
     },
     {
       "id": "BRO-224",
@@ -2095,7 +2135,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 111
+      "ms": 106
     },
     {
       "id": "BRO-221",
@@ -2119,7 +2159,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 7
+      "ms": 8
     },
     {
       "id": "BRO-219",
@@ -2133,7 +2173,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 689
+      "ms": 701
     },
     {
       "id": "BRO-218",
@@ -2147,7 +2187,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 136
+      "ms": 130
     },
     {
       "id": "BRO-216",
@@ -2161,7 +2201,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 848
+      "ms": 854
     },
     {
       "id": "BRO-215",
@@ -2187,7 +2227,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 100
+      "ms": 96
     },
     {
       "id": "BRO-213",
@@ -2200,7 +2240,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/allowlist-gate.js, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 453
+      "ms": 500
     },
     {
       "id": "BRO-212",
@@ -2214,7 +2254,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 14758
+      "ms": 22909
     },
     {
       "id": "BRO-208",
@@ -2226,7 +2266,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 31
+      "ms": 32
     },
     {
       "id": "BRO-205",
@@ -2240,7 +2280,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 119
+      "ms": 117
     },
     {
       "id": "BRO-203",
@@ -2292,7 +2332,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 145
+      "ms": 144
     },
     {
       "id": "BRO-197",
@@ -2306,7 +2346,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 117
+      "ms": 116
     },
     {
       "id": "BRO-195",
@@ -2320,7 +2360,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 5250
+      "ms": 5787
     },
     {
       "id": "BRO-194",
@@ -2334,7 +2374,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 140
+      "ms": 144
     },
     {
       "id": "BRO-193",
@@ -2348,7 +2388,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 95
+      "ms": 91
     },
     {
       "id": "BRO-187",
@@ -2362,7 +2402,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 292
+      "ms": 288
     },
     {
       "id": "BRO-184",
@@ -2374,7 +2414,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 30
+      "ms": 32
     },
     {
       "id": "BRO-182",
@@ -2388,7 +2428,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 108
+      "ms": 101
     },
     {
       "id": "BRO-179",
@@ -2400,7 +2440,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 33
+      "ms": 30
     },
     {
       "id": "BRO-178",
@@ -2414,7 +2454,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 100
+      "ms": 95
     },
     {
       "id": "BRO-177",
@@ -2428,7 +2468,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 94
+      "ms": 96
     },
     {
       "id": "BRO-176",
@@ -2442,7 +2482,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 289
+      "ms": 283
     },
     {
       "id": "BRO-171",
@@ -2456,7 +2496,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 122
+      "ms": 117
     },
     {
       "id": "BRO-168",
@@ -2470,7 +2510,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 183
+      "ms": 184
     },
     {
       "id": "BRO-166",
@@ -2484,7 +2524,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 446
+      "ms": 434
     },
     {
       "id": "BRO-164",
@@ -2498,7 +2538,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 120
+      "ms": 119
     },
     {
       "id": "BRO-163",
@@ -2512,7 +2552,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 138
+      "ms": 135
     },
     {
       "id": "BRO-162",
@@ -2552,7 +2592,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 4910
+      "ms": 4920
     },
     {
       "id": "BRO-157",
@@ -2566,7 +2606,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 105
+      "ms": 104
     },
     {
       "id": "BRO-147",
@@ -2592,7 +2632,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 564
+      "ms": 600
     },
     {
       "id": "BRO-142",
@@ -2606,7 +2646,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 652
+      "ms": 665
     },
     {
       "id": "BRO-139",
@@ -2632,7 +2672,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 492
+      "ms": 506
     },
     {
       "id": "BRO-136",
@@ -2646,7 +2686,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 339
+      "ms": 337
     },
     {
       "id": "BRO-135",
@@ -2660,7 +2700,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 360
+      "ms": 378
     },
     {
       "id": "BRO-134",
@@ -2672,7 +2712,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 31
+      "ms": 32
     },
     {
       "id": "BRO-133",
@@ -2686,7 +2726,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 109
+      "ms": 112
     },
     {
       "id": "BRO-132",
@@ -2700,7 +2740,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 291
+      "ms": 280
     },
     {
       "id": "BRO-129",
@@ -2714,7 +2754,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 97
+      "ms": 102
     },
     {
       "id": "BRO-127",
@@ -2728,7 +2768,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 53033
+      "ms": 50028
     },
     {
       "id": "BRO-126",
@@ -2742,7 +2782,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 94
+      "ms": 96
     },
     {
       "id": "BRO-123",
@@ -2756,7 +2796,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 551
+      "ms": 515
     },
     {
       "id": "BRO-121",
@@ -2770,7 +2810,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 688
+      "ms": 692
     },
     {
       "id": "BRO-120",
@@ -2784,7 +2824,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 805
+      "ms": 780
     },
     {
       "id": "BRO-119",
@@ -2798,7 +2838,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 97
+      "ms": 95
     },
     {
       "id": "BRO-118",
@@ -2810,7 +2850,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 9
+      "ms": 8
     },
     {
       "id": "BRO-117",
@@ -2822,7 +2862,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 8
+      "ms": 7
     },
     {
       "id": "BRO-115",
@@ -2850,7 +2890,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 440
+      "ms": 416
     },
     {
       "id": "BRO-111",
@@ -2864,7 +2904,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 116
+      "ms": 111
     },
     {
       "id": "BRO-109",
@@ -2878,7 +2918,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 763
+      "ms": 758
     },
     {
       "id": "BRO-107",
@@ -2893,7 +2933,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 1318
+      "ms": 1262
     },
     {
       "id": "BRO-104",
@@ -2907,7 +2947,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 504
+      "ms": 443
     },
     {
       "id": "BRO-91",
@@ -2921,7 +2961,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 313
+      "ms": 306
     },
     {
       "id": "BRO-90",
@@ -2935,7 +2975,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 396
+      "ms": 404
     },
     {
       "id": "BRO-88",
@@ -2949,7 +2989,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 101
+      "ms": 100
     },
     {
       "id": "BRO-85",
@@ -2961,7 +3001,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 30
+      "ms": 31
     },
     {
       "id": "BRO-76",
@@ -2987,7 +3027,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 280
+      "ms": 285
     },
     {
       "id": "BRO-70",
@@ -2999,7 +3039,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 31
+      "ms": 30
     },
     {
       "id": "BRO-67",
@@ -3013,7 +3053,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 128
+      "ms": 121
     },
     {
       "id": "BRO-62",
@@ -3025,7 +3065,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 32
+      "ms": 29
     },
     {
       "id": "BRO-57",
@@ -3037,7 +3077,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 31
+      "ms": 29
     },
     {
       "id": "BRO-56",
@@ -3051,7 +3091,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 111
+      "ms": 107
     },
     {
       "id": "BRO-55",
@@ -3091,7 +3131,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 242
+      "ms": 241
     },
     {
       "id": "BRO-46",
@@ -3105,7 +3145,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 119
+      "ms": 117
     },
     {
       "id": "BRO-44",
@@ -3119,7 +3159,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 473
+      "ms": 422
     },
     {
       "id": "BRO-40",
@@ -3132,7 +3172,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/send-newsletter-draft.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 591
+      "ms": 524
     },
     {
       "id": "BRO-38",
@@ -3146,7 +3186,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 101
+      "ms": 105
     },
     {
       "id": "BRO-32",
@@ -3158,7 +3198,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 29
+      "ms": 32
     },
     {
       "id": "BRO-30",
@@ -3170,7 +3210,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 30
+      "ms": 32
     },
     {
       "id": "BRO-29",
@@ -3194,7 +3234,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 29
+      "ms": 30
     },
     {
       "id": "BRO-10",
@@ -3207,7 +3247,148 @@
       "misArmed": true,
       "detail": "its own check names memory/cyrus-decision.txt, which is gitignored, so the fresh origin/main checkout this sweep builds can never see it — the file may well exist on the machine that wrote the card — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 439
+      "ms": 429
+    },
+    {
+      "id": "BRO-3695",
+      "name": "CANARY: touch data/audit/canary-2026-09-17.marker",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3695/canary-touch-dataauditcanary-2026-09-17marker",
+      "state": "Done",
+      "cmd": "node scripts/check-canary-marker.js --date=2026-09-17",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 26
+    },
+    {
+      "id": "BRO-3686",
+      "name": "lint-workflow-guards.sh: 3 sibling checks + scan-alert-ledger-gaps.js CLI have the same gaps BRO-3684 just fixed in check_alert_ledger_commit",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3686/lint-workflow-guardssh-3-sibling-checks-scan-alert-ledger-gapsjs-cli",
+      "state": "Done",
+      "cmd": "node --test tests/unit/lint-workflow-guards-core-data-pairing.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 172
+    },
+    {
+      "id": "BRO-3684",
+      "name": "lint-workflow-guards.sh check_alert_ledger_commit FAILS OPEN: a broken checker makes CI print CLEAN with FAILED=0",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3684/lint-workflow-guardssh-check-alert-ledger-commit-fails-open-a-broken",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/scan-alert-ledger-gaps.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 290
+    },
+    {
+      "id": "BRO-3671",
+      "name": "alert-ledger-commit-check.js cannot see ~20 workflows that reach routeAlert() indirectly — close the require-graph blind spot and stage the router files there",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3671/alert-ledger-commit-checkjs-cannot-see-20-workflows-that-reach",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/alert-ledger-commit-check.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 5080
+    },
+    {
+      "id": "BRO-3670",
+      "name": "P1: main test.yml is RED from 3 pre-existing failures (verified not from BRO-3665)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3670/p1-main-testyml-is-red-from-3-pre-existing-failures-verified-not-from",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/api-fallback-writer-drift.test.mjs scripts/tests/headless-dispatch-telemetry.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 852
+    },
+    {
+      "id": "BRO-3665",
+      "name": "P1: commercial-rss-poll's breaker push silently destroys the hour's poll output (unmasked by BRO-2524)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3665/p1-commercial-rss-polls-breaker-push-silently-destroys-the-hours-poll",
+      "state": "Done",
+      "cmd": "node --test tests/unit/commercial-rss-poll.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 140
+    },
+    {
+      "id": "BRO-3664",
+      "name": "UX audit: Watchlist grid view missing remove affordance on mobile (#270)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3664/ux-audit-watchlist-grid-view-missing-remove-affordance-on-mobile-270",
+      "state": "Done",
+      "cmd": "node --test tests/unit/watchlist-grid-remove-affordance.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 92
+    },
+    {
+      "id": "BRO-3662",
+      "name": "push-with-retry.sh mislabels a pre-flight rebase refusal as a conflict, then silently takes the clobber-prone merge -X ours path",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3662/push-with-retrysh-mislabels-a-pre-flight-rebase-refusal-as-a-conflict",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/scan-alert-ledger-gaps.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 672
+    },
+    {
+      "id": "BRO-3659",
+      "name": "Lock in BRO-2524: regression test for commercial-rss-poll breaker-state soft-fail",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3659/lock-in-bro-2524-regression-test-for-commercial-rss-poll-breaker-state",
+      "state": "Done",
+      "cmd": "node --test tests/unit/commercial-rss-poll.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 140
+    },
+    {
+      "id": "BRO-3658",
+      "name": "TheaterMania byline extraction misses nested <a> shape (Basquiat)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3658/theatermania-byline-extraction-misses-nested-a-shape-basquiat",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/byline-extraction.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 99
     },
     {
       "id": "BRO-3644",
@@ -3221,21 +3402,21 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 28
+      "ms": 30
     },
     {
-      "id": "BRO-3623",
-      "name": "P0: main CI red streak — dispatch-guard-vacuous-check.test.mjs fails in full manifest, passes standalone (BRO-3394 follow-up)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3623/p0-main-ci-red-streak-dispatch-guard-vacuous-checktestmjs-fails-in",
+      "id": "BRO-3636",
+      "name": "BSC Daily: Data freshness: shows missing poster/synopsis/tickets",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3636/bsc-daily-data-freshness-shows-missing-postersynopsistickets",
       "state": "Done",
-      "cmd": "node --test tests/unit/dispatch-guard-vacuous-check.test.mjs",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YSBmcmVzaG5lc3M6IHNob3dzIG1pc3NpbmcgcG9zdGVyL3N5bm9wc2lzL3RpY2tldHM",
       "verdict": "VERIFIED",
       "evidence": "holds",
       "detail": null,
       "channels": [
         "verify-command"
       ],
-      "ms": 127
+      "ms": 31
     },
     {
       "id": "BRO-3622",
@@ -3247,7 +3428,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 82
+      "ms": 78
     },
     {
       "id": "BRO-3616",
@@ -3261,7 +3442,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 100
+      "ms": 101
     },
     {
       "id": "BRO-3610",
@@ -3275,7 +3456,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 133
+      "ms": 132
     },
     {
       "id": "BRO-3586",
@@ -3289,7 +3470,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 240
+      "ms": 237
     },
     {
       "id": "BRO-3583",
@@ -3303,7 +3484,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 171
+      "ms": 168
     },
     {
       "id": "BRO-3580",
@@ -3317,7 +3498,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 310
+      "ms": 303
     },
     {
       "id": "BRO-3577",
@@ -3331,7 +3512,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 468
+      "ms": 425
     },
     {
       "id": "BRO-3572",
@@ -3345,7 +3526,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 83
+      "ms": 90
     },
     {
       "id": "BRO-3570",
@@ -3385,7 +3566,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 903
+      "ms": 891
     },
     {
       "id": "BRO-3555",
@@ -3398,7 +3579,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/newsletter/rank-award-badge-render.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 514
+      "ms": 537
     },
     {
       "id": "BRO-3551",
@@ -3412,7 +3593,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 157
+      "ms": 161
     },
     {
       "id": "BRO-3550",
@@ -3426,7 +3607,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 174
+      "ms": 173
     },
     {
       "id": "BRO-3543",
@@ -3440,7 +3621,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 181
+      "ms": 178
     },
     {
       "id": "BRO-3540",
@@ -3454,7 +3635,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 203
+      "ms": 206
     },
     {
       "id": "BRO-3535",
@@ -3496,21 +3677,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 104
-    },
-    {
-      "id": "BRO-3527",
-      "name": "Add unit test coverage for enrich-west-end-dates.js (BRO-1108 cousin gap)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3527/add-unit-test-coverage-for-enrich-west-end-datesjs-bro-1108-cousin-gap",
-      "state": "Done",
-      "cmd": "node --test scripts/enrich-west-end-dates.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 271
+      "ms": 100
     },
     {
       "id": "BRO-3515",
@@ -3535,7 +3702,7 @@
       "misArmed": true,
       "detail": "its own check names tests/unit/flag-wrong-production-by-url-date-parity.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 487
+      "ms": 521
     },
     {
       "id": "BRO-3507",
@@ -3549,7 +3716,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 56
+      "ms": 59
     },
     {
       "id": "BRO-3502",
@@ -3563,7 +3730,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 384
+      "ms": 375
     },
     {
       "id": "BRO-3487",
@@ -3577,7 +3744,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 106
+      "ms": 108
     },
     {
       "id": "BRO-3481",
@@ -3591,7 +3758,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 190
+      "ms": 197
     },
     {
       "id": "BRO-3477",
@@ -3605,7 +3772,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 839
+      "ms": 859
     },
     {
       "id": "BRO-3471",
@@ -3618,7 +3785,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/lib/show-score-url-map.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 522
+      "ms": 546
     },
     {
       "id": "BRO-3466",
@@ -3632,7 +3799,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 44969
+      "ms": 45977
     },
     {
       "id": "BRO-3459",
@@ -3646,19 +3813,21 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 446
+      "ms": 473
     },
     {
       "id": "BRO-3456",
       "name": "Audit ticket-single-button A/B for the same overdue-conclusion pattern as gate-cold-start",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3456/audit-ticket-single-button-ab-for-the-same-overdue-conclusion-pattern",
-      "state": "In Review",
+      "state": "Done",
       "cmd": null,
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
-      "channels": [],
-      "ms": 0
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence"
+      ],
+      "ms": 436
     },
     {
       "id": "BRO-3455",
@@ -3671,7 +3840,7 @@
       "misArmed": true,
       "detail": "its own check names tests/unit/alert-sender-bypass-audit.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 579
+      "ms": 522
     },
     {
       "id": "BRO-3454",
@@ -3685,7 +3854,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 480
+      "ms": 446
     },
     {
       "id": "BRO-3446",
@@ -3699,7 +3868,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 163
+      "ms": 184
     },
     {
       "id": "BRO-3442",
@@ -3713,7 +3882,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 109
+      "ms": 110
     },
     {
       "id": "BRO-3433",
@@ -3727,7 +3896,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 841
+      "ms": 898
     },
     {
       "id": "BRO-3431",
@@ -3741,7 +3910,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 144
+      "ms": 147
     },
     {
       "id": "BRO-3429",
@@ -3754,7 +3923,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/lib/dispatch-watchdog-core.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 540
+      "ms": 566
     },
     {
       "id": "BRO-3428",
@@ -3768,7 +3937,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 124
+      "ms": 123
     },
     {
       "id": "BRO-3427",
@@ -3782,7 +3951,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 341
+      "ms": 348
     },
     {
       "id": "BRO-3426",
@@ -3796,7 +3965,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 179
+      "ms": 178
     },
     {
       "id": "BRO-3424",
@@ -3810,7 +3979,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 633
+      "ms": 625
     },
     {
       "id": "BRO-3423",
@@ -3824,7 +3993,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 131
+      "ms": 136
     },
     {
       "id": "BRO-3422",
@@ -3838,7 +4007,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 478
+      "ms": 456
     },
     {
       "id": "BRO-3421",
@@ -3877,7 +4046,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 1296
+      "ms": 1156
     },
     {
       "id": "BRO-3416",
@@ -3892,7 +4061,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 1088
+      "ms": 1069
     },
     {
       "id": "BRO-3412",
@@ -3906,7 +4075,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 353
+      "ms": 348
     },
     {
       "id": "BRO-3411",
@@ -3920,7 +4089,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 128
+      "ms": 132
     },
     {
       "id": "BRO-3409",
@@ -3934,7 +4103,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 208
+      "ms": 207
     },
     {
       "id": "BRO-3404",
@@ -3948,7 +4117,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 193
+      "ms": 203
     },
     {
       "id": "BRO-3395",
@@ -3962,7 +4131,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 137
+      "ms": 141
     },
     {
       "id": "BRO-3394",
@@ -3976,21 +4145,22 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 129
+      "ms": 134
     },
     {
       "id": "BRO-3393",
       "name": "P0: one sibling launchd job's stale sync-refused snapshot silently forces the morning digest's auto-fix into dry-run — 6 dispatches in 31 days",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3393/p0-one-sibling-launchd-jobs-stale-sync-refused-snapshot-silently",
-      "state": "In Review",
+      "state": "Done",
       "cmd": "node --test tests/unit/digest-sync-refused-reporting.test.mjs",
-      "verdict": "STUCK",
+      "verdict": "VERIFIED",
       "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
+      "detail": null,
       "channels": [
+        "pr-evidence",
         "verify-command"
       ],
-      "ms": 138
+      "ms": 571
     },
     {
       "id": "BRO-3392",
@@ -4003,7 +4173,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/llm-scoring/comparative-rescore-cost-recording.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 503
+      "ms": 621
     },
     {
       "id": "BRO-3391",
@@ -4027,7 +4197,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 30
+      "ms": 31
     },
     {
       "id": "BRO-3389",
@@ -4039,7 +4209,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 31
+      "ms": 32
     },
     {
       "id": "BRO-3388",
@@ -4053,7 +4223,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 2779
+      "ms": 2785
     },
     {
       "id": "BRO-3387",
@@ -4078,7 +4248,7 @@
       "misArmed": true,
       "detail": "its own check names tests/unit/feedback-formspree-status-check.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 501
+      "ms": 453
     },
     {
       "id": "BRO-3381",
@@ -4092,7 +4262,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 3091
+      "ms": 3169
     },
     {
       "id": "BRO-3379",
@@ -4102,11 +4272,11 @@
       "cmd": "node --test src/app/api/__tests__/notion-write-is-non-fatal.test.mjs",
       "verdict": "FAILED",
       "evidence": "broken",
-      "detail": "TAP version 13\n# Subtest: feedback route returns 2xx and keeps the Formspree submission when Notion throws\nnot ok 1 - feedback route returns 2xx and keeps the Formspree submission when Notion throws\n  ---\n  duration_ms: 7.41621\n  location: '<checkout>/src/app/api/__tests__/notion-write-is-non-fatal.test.mjs:62:1'\n  failureType: 'testCodeFailure'\n  error: 'Unknown file extension",
+      "detail": "TAP version 13\n# Subtest: feedback route returns 2xx and keeps the Formspree submission when Notion throws\nnot ok 1 - feedback route returns 2xx and keeps the Formspree submission when Notion throws\n  ---\n  duration_ms: 7.645282\n  location: '<checkout>/src/app/api/__tests__/notion-write-is-non-fatal.test.mjs:62:1'\n  failureType: 'testCodeFailure'\n  error: 'Unknown file extensio",
       "channels": [
         "verify-command"
       ],
-      "ms": 271
+      "ms": 274
     },
     {
       "id": "BRO-3378",
@@ -4120,7 +4290,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 448
+      "ms": 452
     },
     {
       "id": "BRO-3376",
@@ -4135,7 +4305,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 561
+      "ms": 613
     },
     {
       "id": "BRO-3375",
@@ -4173,7 +4343,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 112
+      "ms": 116
     },
     {
       "id": "BRO-3358",
@@ -4201,7 +4371,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 45126
+      "ms": 45484
     },
     {
       "id": "BRO-3354",
@@ -4227,7 +4397,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 234
+      "ms": 227
     },
     {
       "id": "BRO-3348",
@@ -4241,7 +4411,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 130
+      "ms": 129
     },
     {
       "id": "BRO-3338",
@@ -4255,7 +4425,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 143
+      "ms": 138
     },
     {
       "id": "BRO-3336",
@@ -4269,7 +4439,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 169
+      "ms": 172
     },
     {
       "id": "BRO-3335",
@@ -4282,7 +4452,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/audit-worktree-unpushed.js, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 519
+      "ms": 599
     },
     {
       "id": "BRO-3334",
@@ -4297,7 +4467,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 926
+      "ms": 911
     },
     {
       "id": "BRO-3328",
@@ -4311,7 +4481,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 99
+      "ms": 97
     },
     {
       "id": "BRO-3325",
@@ -4338,7 +4508,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 711
+      "ms": 662
     },
     {
       "id": "BRO-3320",
@@ -4352,7 +4522,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 730
+      "ms": 714
     },
     {
       "id": "BRO-3317",
@@ -4379,20 +4549,6 @@
       "ms": 0
     },
     {
-      "id": "BRO-3303",
-      "name": "CANARY: touch data/audit/canary-2026-09-14.marker",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3303/canary-touch-dataauditcanary-2026-09-14marker",
-      "state": "Done",
-      "cmd": "node scripts/check-canary-marker.js --date=2026-09-14",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 29
-    },
-    {
       "id": "BRO-3250",
       "name": "P1: 124 shows have a real review orphaned behind a stale duplicateOf pointer (moulin-rouge-2019 WSJ confirmed missing)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3250/p1-124-shows-have-a-real-review-orphaned-behind-a-stale-duplicateof",
@@ -4404,35 +4560,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 163
-    },
-    {
-      "id": "BRO-3249",
-      "name": "P1: BRO-3092 WSJ dedup keeps resurrecting — 3rd occurrence, root race still unfixed",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3249/p1-bro-3092-wsj-dedup-keeps-resurrecting-3rd-occurrence-root-race",
-      "state": "Done",
-      "cmd": "node --test scripts/verify-addams-wsj-dedup-held.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 100
-    },
-    {
-      "id": "BRO-3247",
-      "name": "Safe House OBW missing reviews: ShowScore venue-link regression broke discovery",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3247/safe-house-obw-missing-reviews-showscore-venue-link-regression-broke",
-      "state": "Done",
-      "cmd": "node --test scripts/discover-new-shows.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 569
+      "ms": 181
     },
     {
       "id": "BRO-3245",
@@ -4446,7 +4574,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 104
+      "ms": 100
     },
     {
       "id": "BRO-3240",
@@ -4460,34 +4588,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 144
-    },
-    {
-      "id": "BRO-3239",
-      "name": "P1: push-audit gate misses scripts/lib/ test files and the two CI-registration audits — 3 main-red incidents in one day",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3239/p1-push-audit-gate-misses-scriptslib-test-files-and-the-two-ci",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/colocated-test-ci-coverage.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 242
-    },
-    {
-      "id": "BRO-3237",
-      "name": "P1: 148 orphan show IDs fail test.yml's Data Validation gate (audit-orphan-show-ids.js) — main red",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3237/p1-148-orphan-show-ids-fail-testymls-data-validation-gate-audit-orphan",
-      "state": "Done",
-      "cmd": "node --test scripts/audit-orphan-show-ids.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "misArmed": true,
-      "detail": "its own check names scripts/audit-orphan-show-ids.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
-      "channels": [],
-      "ms": 508
+      "ms": 147
     },
     {
       "id": "BRO-3225",
@@ -4501,7 +4602,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 175
+      "ms": 171
     },
     {
       "id": "BRO-3218",
@@ -4527,7 +4628,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 508
+      "ms": 504
     },
     {
       "id": "BRO-3193",
@@ -4541,7 +4642,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 442
+      "ms": 460
     },
     {
       "id": "BRO-3149",
@@ -4555,7 +4656,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 115
+      "ms": 118
     },
     {
       "id": "BRO-3115",
@@ -4581,7 +4682,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 167
+      "ms": 164
     },
     {
       "id": "BRO-3092",
@@ -4595,7 +4696,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 45002
+      "ms": 44494
     },
     {
       "id": "BRO-3071",
@@ -4609,20 +4710,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 291
-    },
-    {
-      "id": "BRO-3068",
-      "name": "Apply GIT_NET_TIMEOUT_SEC=30 push-timeout fix to 11 remaining push-with-retry.sh cousins",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3068/apply-git-net-timeout-sec30-push-timeout-fix-to-11-remaining-push-with",
-      "state": "Done",
-      "cmd": "node --test tests/unit/push-timeout-cousins.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "misArmed": true,
-      "detail": "its own check names tests/unit/push-timeout-cousins.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
-      "channels": [],
-      "ms": 532
+      "ms": 347
     },
     {
       "id": "BRO-3063",
@@ -4636,7 +4724,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 1958
+      "ms": 1886
     },
     {
       "id": "BRO-3057",
@@ -4664,7 +4752,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 628
+      "ms": 609
     },
     {
       "id": "BRO-3044",
@@ -4678,7 +4766,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 190
+      "ms": 187
     },
     {
       "id": "BRO-3029",
@@ -4703,7 +4791,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/lib/collect-review-dedup.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 971
+      "ms": 980
     },
     {
       "id": "BRO-3022",
@@ -4718,7 +4806,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 634
+      "ms": 741
     },
     {
       "id": "BRO-3021",
@@ -4744,7 +4832,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 277
+      "ms": 271
     },
     {
       "id": "BRO-2983",
@@ -4758,7 +4846,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 98
+      "ms": 94
     },
     {
       "id": "BRO-2971",
@@ -4772,7 +4860,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 168
+      "ms": 163
     },
     {
       "id": "BRO-2961",
@@ -4786,7 +4874,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 4318
+      "ms": 4233
     },
     {
       "id": "BRO-2959",
@@ -4800,7 +4888,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 124
+      "ms": 122
     },
     {
       "id": "BRO-2952",
@@ -4814,7 +4902,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 564
+      "ms": 585
     },
     {
       "id": "BRO-2943",
@@ -4828,7 +4916,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 101
+      "ms": 98
     },
     {
       "id": "BRO-2941",
@@ -4841,7 +4929,7 @@
       "misArmed": true,
       "detail": "its own check names tests/unit/opening-night-poller-site-search.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 471
+      "ms": 532
     },
     {
       "id": "BRO-2939",
@@ -4855,7 +4943,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 141
+      "ms": 143
     },
     {
       "id": "BRO-2913",
@@ -4869,7 +4957,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 181
+      "ms": 174
     },
     {
       "id": "BRO-2912",
@@ -4883,7 +4971,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 151
+      "ms": 146
     },
     {
       "id": "BRO-2907",
@@ -4897,7 +4985,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 151
+      "ms": 155
     },
     {
       "id": "BRO-2839",
@@ -4911,7 +4999,20 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 474
+      "ms": 471
+    },
+    {
+      "id": "BRO-2819",
+      "name": "P2: the iOS beta-feedback overnight job redoes the same work every night because nothing checks whether the previous night's branch is still unmerged",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2819/p2-the-ios-beta-feedback-overnight-job-redoes-the-same-work-every",
+      "state": "Done",
+      "cmd": "node --test tests/unit/overnight-skip-when-prior-unmerged.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names tests/unit/overnight-skip-when-prior-unmerged.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 506
     },
     {
       "id": "BRO-2817",
@@ -4925,7 +5026,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 230
+      "ms": 228
     },
     {
       "id": "BRO-2795",
@@ -4933,13 +5034,13 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2795/p1-commercial-rss-pollyml-fails-hourly-an-unregistered-dataauditsd",
       "state": "Done",
       "cmd": "node --test tests/unit/commercial-rss-poll-data-commit.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
+      "verdict": "FAILED",
+      "evidence": "broken",
+      "detail": "TAP version 13\n# Subtest: sanity: harness disqualifies an unregistered data/audit/ path (proves the extraction actually runs the real check)\nnot ok 1 - sanity: harness disqualifies an unregistered data/audit/ path (proves the extraction actually runs the real check)\n  ---\n  duration_ms: 2.725769\n  location: '<checkout>/tests/unit/commercial-rss-poll-data-commit.test.mjs:85:1'\n ",
       "channels": [
         "verify-command"
       ],
-      "ms": 404
+      "ms": 202
     },
     {
       "id": "BRO-2701",
@@ -4954,7 +5055,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 658
+      "ms": 637
     },
     {
       "id": "BRO-2695",
@@ -4968,7 +5069,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 114
+      "ms": 105
     },
     {
       "id": "BRO-2575",
@@ -4982,7 +5083,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 157
+      "ms": 159
     },
     {
       "id": "BRO-2565",
@@ -4996,7 +5097,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 136
+      "ms": 134
     },
     {
       "id": "BRO-2559",
@@ -5010,7 +5111,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 726
+      "ms": 712
     },
     {
       "id": "BRO-2554",
@@ -5065,6 +5166,46 @@
       "ms": 0
     },
     {
+      "id": "BRO-2530",
+      "name": "Cron stale 3+ consecutive days: Opening Night Checklist",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2530/cron-stale-3-consecutive-days-opening-night-checklist",
+      "state": "Done",
+      "cmd": "test -f scripts/lib/cron-health.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 435
+    },
+    {
+      "id": "BRO-2529",
+      "name": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2529/cron-stale-3-consecutive-days-daily-data-health-check-digest-snapshot",
+      "state": "Done",
+      "cmd": "test -f scripts/daily-data-health-check.js",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names scripts/daily-data-health-check.js, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 464
+    },
+    {
+      "id": "BRO-2526",
+      "name": "BSC Daily: Workflow repeat-failure: Fetch Show Images",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2526/bsc-daily-workflow-repeat-failure-fetch-show-images",
+      "state": "Done",
+      "cmd": "test -f scripts/fetch-show-images.js",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names scripts/fetch-show-images.js, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 477
+    },
+    {
       "id": "BRO-2525",
       "name": "BSC Daily: Workflow repeat-failure: Update Show Score Data",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2525/bsc-daily-workflow-repeat-failure-update-show-score-data",
@@ -5087,7 +5228,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/cron-health-check.js, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 447
+      "ms": 460
     },
     {
       "id": "BRO-2521",
@@ -5101,7 +5242,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 423
+      "ms": 479
     },
     {
       "id": "BRO-2518",
@@ -5115,7 +5256,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 189
+      "ms": 200
     },
     {
       "id": "BRO-2516",
@@ -5128,7 +5269,7 @@
       "misArmed": true,
       "detail": "its own check names scripts/lib/reconcile-outcomes.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
       "channels": [],
-      "ms": 552
+      "ms": 501
     },
     {
       "id": "BRO-2511",
@@ -5142,7 +5283,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 516
+      "ms": 505
     },
     {
       "id": "BRO-2508",
@@ -5157,7 +5298,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 646
+      "ms": 652
     },
     {
       "id": "BRO-2499",
@@ -5171,7 +5312,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 198
+      "ms": 190
     },
     {
       "id": "BRO-2495",
@@ -5185,7 +5326,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 254
+      "ms": 256
     },
     {
       "id": "BRO-2493",
@@ -5213,7 +5354,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 164
+      "ms": 156
     },
     {
       "id": "BRO-2477",
@@ -5225,7 +5366,7 @@
       "evidence": "unknown",
       "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
       "channels": [],
-      "ms": 32
+      "ms": 30
     },
     {
       "id": "BRO-2474",
@@ -5239,7 +5380,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 45824
+      "ms": 44839
     },
     {
       "id": "BRO-2472",
@@ -5247,13 +5388,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2472/prior-run-triagejs-triage-unopened-showsmjs-essay-intro-nonreview-fpjs",
       "state": "Done",
       "cmd": "node --test tests/unit/sibling-matchers-diacritics.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 309
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "PR-EVIDENCE line names no commit or PR to re-check; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-2462",
@@ -5261,13 +5400,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2462/legacy-tab-count-dispatch-flow-dead-alarm-pages-unconditionally-during",
       "state": "In Review",
       "cmd": "node --test tests/unit/dispatch-stall-detection.test.mjs",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 125
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-2449",
@@ -5275,13 +5412,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2449/p1-content-survival-check-reports-failedreverted-for-stale-branch",
       "state": "Done",
       "cmd": "node --test scripts/lib/push-content-survival.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 2308
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-2438",
@@ -5289,13 +5424,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2438/p1-bro-1699-post-merge-code-review-7-findings-in-the-opening-night",
       "state": "Done",
       "cmd": "node --test scripts/lib/owner-alert-router.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 339
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-2433",
@@ -5305,9 +5438,9 @@
       "cmd": "node --test tests/unit/submit-review-form-validation.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 30
+      "ms": 0
     },
     {
       "id": "BRO-2431",
@@ -5317,9 +5450,9 @@
       "cmd": "node --test tests/unit/sanitize-venue-guard.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 31
+      "ms": 0
     },
     {
       "id": "BRO-2429",
@@ -5327,13 +5460,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2429/p1-successful-rescores-never-clear-needsrescore-push-review-texts",
       "state": "Done",
       "cmd": "node --test tests/unit/review-write-guard.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 726
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-2425",
@@ -5343,10 +5474,9 @@
       "cmd": "node --test scripts/send-morning-digest.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "misArmed": true,
-      "detail": "its own check names scripts/send-morning-digest.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 506
+      "ms": 0
     },
     {
       "id": "BRO-2423",
@@ -5354,13 +5484,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2423/port-guard-escalationjs-auto-recovery-to-llm-ensemble-scoreyml-check",
       "state": "Done",
       "cmd": "node --test scripts/lib/guard-escalation.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 120
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-2421",
@@ -5370,10 +5498,9 @@
       "cmd": "node --test tests/unit/bsc-runner.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "misArmed": true,
-      "detail": "its own check names tests/unit/bsc-runner.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 523
+      "ms": 0
     },
     {
       "id": "BRO-2412",
@@ -5383,9 +5510,9 @@
       "cmd": "node --test scripts/dispatch-watchdog.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 34
+      "ms": 0
     },
     {
       "id": "BRO-2411",
@@ -5407,9 +5534,9 @@
       "cmd": "node --test scripts/generate-blog-reviews-for-scoring.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 31
+      "ms": 0
     },
     {
       "id": "BRO-2409",
@@ -5417,13 +5544,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2409/p1-cycle-clear-leaves-same-url-review-clusters-fully-unsuppressed-no",
       "state": "Done",
       "cmd": "node --test tests/unit/suppression-logic.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 146
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-2408",
@@ -5433,9 +5558,9 @@
       "cmd": "node --test scripts/generate-related-shows.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 30
+      "ms": 0
     },
     {
       "id": "BRO-2407",
@@ -5445,9 +5570,9 @@
       "cmd": "node --test tests/unit/review-scoring.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 33
+      "ms": 0
     },
     {
       "id": "BRO-2406",
@@ -5457,9 +5582,9 @@
       "cmd": "node --test tests/unit/dedupe-syndicated-reviews.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 35
+      "ms": 0
     },
     {
       "id": "BRO-2404",
@@ -5469,9 +5594,9 @@
       "cmd": "node --test tests/unit/sync-memory-to-repo-no-rebase.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 33
+      "ms": 0
     },
     {
       "id": "BRO-2402",
@@ -5481,9 +5606,9 @@
       "cmd": "node --test tests/unit/opening-night-express.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 34
+      "ms": 1
     },
     {
       "id": "BRO-2393",
@@ -5493,9 +5618,9 @@
       "cmd": "test -f src/data/ticket-routing-rules.js",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 7
+      "ms": 0
     },
     {
       "id": "BRO-2392",
@@ -5505,10 +5630,9 @@
       "cmd": "node --test tests/unit/ticket-click-tracking.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "misArmed": true,
-      "detail": "its own check names tests/unit/ticket-click-tracking.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 504
+      "ms": 0
     },
     {
       "id": "BRO-2391",
@@ -5516,13 +5640,11 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2391/investigate-bro-318-stale-backpointer-recurrence-dedupe-same-url",
       "state": "Done",
       "cmd": "node scripts/validate-data.js",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 45614
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-2387",
@@ -5837,30 +5959,6 @@
       "ms": 0
     },
     {
-      "id": "BRO-2300",
-      "name": "T1/T2 silent gap on near-opening show: As You Like It - Globe — thestage",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2300/t1t2-silent-gap-on-near-opening-show-as-you-like-it-globe-thestage",
-      "state": "Done",
-      "cmd": "node --test tests/unit/thestage-as-you-like-it-ingestion.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "its check was not re-run this sweep",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-2297",
-      "name": "BSC Daily: Quality: coverageExpectation drift",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2297/bsc-daily-quality-coverageexpectation-drift",
-      "state": "Done",
-      "cmd": "node --test tests/unit/coverageExpectation-drift.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "its check was not re-run this sweep",
-      "channels": [],
-      "ms": 0
-    },
-    {
       "id": "BRO-2296",
       "name": "BSC Daily: Coverage: SERP census recall",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2296/bsc-daily-coverage-serp-census-recall",
@@ -6013,18 +6111,6 @@
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
       "detail": "its check was not re-run this sweep",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-2258",
-      "name": "P0: machine hit 100% disk — silently broke cmux runtime spawning AND headless job logging, no warning anywhere",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2258/p0-machine-hit-100percent-disk-silently-broke-cmux-runtime-spawning",
-      "state": "Done",
-      "cmd": "node --test tests/unit/session-start-disk-check.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/8ab288b4343) against main this run; its check was not re-run this sweep",
       "channels": [],
       "ms": 0
     },
@@ -6538,42 +6624,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-1618/supervisor-finish-review-completeness-system-every-review-all-tiers",
       "state": "Done",
       "cmd": "node --test tests/unit/review-completeness-monitor.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "its check was not re-run this sweep",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-1431",
-      "name": "ingest-urls.js: body replacement must neutralize stale flags/CV",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-1431/ingest-urlsjs-body-replacement-must-neutralize-stale-flagscv",
-      "state": "Done",
-      "cmd": "node --test scripts/ingest-urls.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "its check was not re-run this sweep",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-1428",
-      "name": "Fix: main red — 34 review-text 'Unknown' critic-name validation errors",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-1428/fix-main-red-34-review-text-unknown-critic-name-validation-errors",
-      "state": "Done",
-      "cmd": "node scripts/validate-data.js",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "its check was not re-run this sweep",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-1412",
-      "name": "Broadway-path review discovery has no production-identity check (same-title prior-production ingest)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-1412/broadway-path-review-discovery-has-no-production-identity-check-same",
-      "state": "Done",
-      "cmd": "node --test scripts/audit-show-review-gap.test.mjs",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
       "detail": "its check was not re-run this sweep",
