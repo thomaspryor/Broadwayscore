@@ -122,10 +122,17 @@ try {
 }
 
 // NEVER_FALLBACK (data/shows.json, data/reviews.json) now lives in
-// api-fallback-disqualifier.js alongside the predicate that consults it —
+// api-fallback-disqualifier-core.js alongside the predicate that consults it —
 // re-exported here so any existing reader of this name keeps working.
+// Requires the -core file, NOT api-fallback-disqualifier.js itself: this
+// script is on AUDIT_LINT_GENERIC_FORM_ALLOWED (scripts/lib/autonomous-
+// triage-core.js), which requires a zero-hazard transitive require graph
+// (scripts/lib/safe-form-allowlist.test.mjs) — api-fallback-disqualifier.js's
+// CLI block does a real `git diff` spawn, which pulled a hazard into this
+// script's graph every run until the predicate was split out (BRO-2531
+// session, unrelated fix picked up while landing that ticket).
 // eslint-disable-next-line global-require
-const { disqualifyingPath, NEVER_FALLBACK: NEVER_FALLBACK_FILES } = require('./api-fallback-disqualifier.js');
+const { disqualifyingPath, NEVER_FALLBACK: NEVER_FALLBACK_FILES } = require('./api-fallback-disqualifier-core.js');
 
 /**
  * Classify one staged repo-relative file path exactly the way push-with-

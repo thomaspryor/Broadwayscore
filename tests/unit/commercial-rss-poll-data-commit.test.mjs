@@ -19,28 +19,17 @@ import { execFileSync, spawnSync } from 'node:child_process';
 // starting 2026-09-04T11:47Z (run 33906734626).
 //
 // This test does not re-implement push-with-retry.sh's disqualifier — it
-// extracts the literal `node -e` snippet the script itself runs (see
-// scripts/lib/push-with-retry.sh's "Commit breaker state" / "Commit data
-// changes" step comments) and executes it against a real git fixture, so a
-// future edit to the real predicate is what this test exercises, not a copy
-// that can silently drift out of sync (CLAUDE.md rule 15 / rule on canonical
-// predicates).
+// shells out to the real scripts/lib/api-fallback-disqualifier.js CLI (the
+// exact command push-with-retry.sh's api_fallback_paths_ok() runs — BRO-3663
+// extracted the inline `node -e` heredoc this test used to string-scrape out
+// of push-with-retry.sh into that standalone module, one definition shared by
+// the early-break gate and the authoritative check) against a real git
+// fixture, so a future edit to the real predicate is what this test
+// exercises, not a copy that can silently drift out of sync (CLAUDE.md rule
+// 15 / rule on canonical predicates).
 
 const REPO_ROOT = path.resolve(import.meta.dirname, '..', '..');
-const PUSH_SCRIPT_PATH = path.join(REPO_ROOT, 'scripts', 'lib', 'push-with-retry.sh');
-const RECONCILE_PATH = path.join(REPO_ROOT, 'scripts', 'lib', 'reconcile-merged-json.js');
-
-function extractDisqualifierSnippet() {
-  const src = fs.readFileSync(PUSH_SCRIPT_PATH, 'utf8');
-  const startMarker = "node -e '";
-  const startIdx = src.indexOf(startMarker);
-  assert.ok(startIdx !== -1, 'could not locate the disqualifier `node -e \'` block in push-with-retry.sh — has it been refactored?');
-  const bodyStart = startIdx + startMarker.length;
-  const endMarker = '\' "$SCRIPT_DIR/reconcile-merged-json.js"';
-  const endIdx = src.indexOf(endMarker, bodyStart);
-  assert.ok(endIdx !== -1, 'could not locate the end of the disqualifier `node -e` block in push-with-retry.sh — has it been refactored?');
-  return src.slice(bodyStart, endIdx);
-}
+const DISQUALIFIER_CLI_PATH = path.join(REPO_ROOT, 'scripts', 'lib', 'api-fallback-disqualifier.js');
 
 function makeFixtureRepo() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-disqualifier-'));
@@ -67,15 +56,14 @@ function commitChangedFiles(fixture, relativePaths) {
 // Returns push-with-retry.sh's real exit code for this diff: 0 = fallback
 // stays ELIGIBLE, 1 (or any non-zero) = fallback is DISQUALIFIED.
 function runDisqualifierCheck(relativePaths) {
-  const snippet = extractDisqualifierSnippet();
   const fixture = makeFixtureRepo();
   try {
     const headSha = commitChangedFiles(fixture, relativePaths);
-    const result = spawnSync('node', ['-e', snippet, RECONCILE_PATH, fixture.baseSha, headSha], {
+    const result = spawnSync('node', [DISQUALIFIER_CLI_PATH, fixture.baseSha, headSha], {
       cwd: fixture.dir,
       encoding: 'utf8',
     });
-    assert.equal(result.error, undefined, `node -e crashed to spawn: ${result.error}`);
+    assert.equal(result.error, undefined, `api-fallback-disqualifier.js crashed to spawn: ${result.error}`);
     return result.status;
   } finally {
     fs.rmSync(fixture.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });

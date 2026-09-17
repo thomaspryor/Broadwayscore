@@ -22,7 +22,14 @@ concurrency:
 jobs:
   send-digest:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    # BRO-2531: the 2026-08-27 run never sent — actions/checkout@v5 stalled on
+    # a transient runner hiccup and ate the entire budget (job start 20:50:56,
+    # checkout still running at the 8-minute mark), so the job was cancelled
+    # before the "Send opening digest" step ever ran. Normal end-to-end runtime
+    # is ~1 minute (checkout ~15-90s, everything else <5s), so 8 minutes had
+    # zero margin for any infra jitter. Raised to give real headroom without
+    # meaningfully delaying detection of a genuine hang.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
 
@@ -49,7 +56,14 @@ jobs:
           fi
 
       - name: Notify on failure
-        if: failure()
+        # cancelled() covers a job-timeout hitting a LATER step (checkout
+        # already succeeded); a hang IN checkout itself may leave this local
+        # composite action unresolvable regardless. severity: warning below
+        # means this step is a no-op today either way (notify-failure/action
+        # .yml only sends on severity=='critical') — real detection for this
+        # workflow is scripts/monitor-scheduled-email-count.js's independent
+        # Resend-history check (BRO-2531).
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Digest Email Failed'
