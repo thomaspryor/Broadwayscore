@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T01:21:15.101Z",
+  "generatedAt": "2026-09-17T02:00:30.699Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -18,18 +18,17 @@
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
-      "t1": 3,
+      "total": 7,
+      "t1": 4,
       "t2": 1,
       "t3": 2,
-      "positive": 5,
+      "positive": 6,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
-          "T2:1/2",
+          "7/8 total",
           "hi-conf:3/6"
         ],
         "highConfidence": 3,
@@ -82,6 +81,10 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -93,6 +96,18 @@
           "t2": 1,
           "t3": 2,
           "p": 5,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-17T02:00:30.699Z",
+          "rc": 7,
+          "s": 76,
+          "t1": 4,
+          "t2": 1,
+          "t3": 2,
+          "p": 6,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1412,6 +1427,10 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -3247,19 +3266,19 @@
       "status": "open",
       "slug": "pre-existing-condition-off-broadway",
       "thumbnail": "/images/shows/pre-existing-condition-off-broadway-2026/thumbnail.webp",
-      "siteScore": 77.9,
-      "liveScore": 78,
-      "scoreDrift": 0.09999999999999432,
+      "siteScore": 75.65,
+      "liveScore": 76,
+      "scoreDrift": 0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 18,
       "t1": 3,
-      "t2": 7,
+      "t2": 8,
       "t3": 7,
       "positive": 10,
       "mixed": 7,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
@@ -3708,6 +3727,18 @@
           "p": 10,
           "m": 7,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-17T02:00:30.699Z",
+          "rc": 18,
+          "s": 75.65,
+          "t1": 3,
+          "t2": 8,
+          "t3": 7,
+          "p": 10,
+          "m": 7,
+          "n": 1,
           "bc": "waiting"
         }
       ]

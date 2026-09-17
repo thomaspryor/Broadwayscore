@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-17T01:17:25.514Z",
+  "generated": "2026-09-17T01:57:36.769Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 83,
+  "count": 86,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -50,6 +50,13 @@
       "loserFile": "newyorker--vinson-cunningham-2024-bway.json",
       "targetFile": "newyorker--naomi-fry.json",
       "reason": "orphaned-duplicate-heal: newyorker--naomi-fry.json was flagged invalid after newyorker--vinson-cunningham-2024-bway.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "loserFile": "london-theatre--unknown.json",
+      "targetFile": "london-theatre--aliya-al-hassan.json",
+      "reason": "orphaned-duplicate-heal: london-theatre--aliya-al-hassan.json was flagged invalid after london-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -424,6 +431,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "loserFile": "standard--unknown.json",
+      "targetFile": "standard--nick-curtis.json",
+      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "sweat-2017",
       "loserFile": "guardian--jesse-green.json",
       "targetFile": "guardian--alexis-soloski.json",
@@ -561,6 +575,13 @@
       "loserFile": "timeout-london--honour-bayes.json",
       "targetFile": "timeout--honour-bayes.json",
       "reason": "orphaned-duplicate-heal: timeout--honour-bayes.json was flagged invalid after timeout-london--honour-bayes.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "loserFile": "london-theatre--unknown.json",
+      "targetFile": "london-theatre--will-longman.json",
+      "reason": "orphaned-duplicate-heal: london-theatre--will-longman.json was flagged invalid after london-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
