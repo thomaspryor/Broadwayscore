@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-17T22:30:43.301Z",
-  "processed": 41,
-  "failed": 93,
-  "successRate": "30.6%",
+  "updatedAt": "2026-09-17T22:53:04.612Z",
+  "processed": 62,
+  "failed": 242,
+  "successRate": "20.4%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 36,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 6,
     "directCookies": 2,
-    "scrapingbee": 11,
-    "brightdata": 2,
+    "scrapingbee": 12,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 7
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-09-17T22:28:52.284Z",
@@ -25,6 +25,41 @@
       "t": "2026-09-17T22:28:53.370Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-17T22:38:33.519Z",
+      "event": "bb-session",
+      "session": "05921681",
+      "url": "https://deadline.com/2026/01/music-city-off-broadway-j-t-harding-1236690521/"
+    },
+    {
+      "t": "2026-09-17T22:43:37.106Z",
+      "event": "bb-session",
+      "session": "681a6d8c",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-17T22:43:46.907Z",
+      "event": "bb-session",
+      "session": "5f200302",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-17T22:45:00.414Z",
+      "event": "bb-session",
+      "session": "4281a3ac",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-17T22:45:01.380Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-17T22:48:55.658Z",
+      "event": "bb-session",
+      "session": "3e46a84e",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
     }
   ]
 }
