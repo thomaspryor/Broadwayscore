@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-17T15:54:00.092Z",
+  "timestamp": "2026-09-17T16:04:09.380Z",
   "stats": {
     "totalReviews": 43604,
-    "alreadyFlagged": 18043,
+    "alreadyFlagged": 18044,
     "dateGuardCatches": 245,
     "directorMismatch": 1046,
     "tvFilmSignals": 1279,
-    "londonSignals": 1091,
+    "londonSignals": 1090,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3828
+    "noPublishDate": 3822
   },
   "findings": [
     {
@@ -11115,6 +11115,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-theatre--olivia-rook.json",
+      "score": 86,
       "publishDate": "2026-09-16",
       "url": null,
       "findings": [
@@ -54156,7 +54157,8 @@
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "file": "london-box-office--unknown.json",
-      "publishDate": null,
+      "score": 75,
+      "publishDate": "2026-09-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/thelma-louise-young-vic-review",
       "findings": [
         {
@@ -54169,6 +54171,7 @@
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
+      "score": 87,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
       "findings": [
@@ -54182,21 +54185,9 @@
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "file": "theatreandtonic--unknown.json",
-      "publishDate": null,
+      "score": 85,
+      "publishDate": "2026-09-17",
       "url": "https://theatreandtonic.co.uk/blog/thelma-and-louise-at-the-young-vic-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "file": "west-end-best-friend--unknown.json",
-      "publishDate": null,
-      "url": "https://www.westendbestfriend.co.uk/news/review-thelma-and-louise-young-vic-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
