@@ -2498,6 +2498,14 @@ on:
       - 'scripts/check-arm-yield.js'
       # cron-health multi-day stale escalation (card #647, root cause (b)).
       - 'scripts/update-cron-health-state.js'
+      # BRO-2534: cron-health-chronic diagnosis orchestrator + its own
+      # colocated regression test. scripts/lib/cron-health.js (the pure
+      # classifyJob/parseJobTimeouts core) is already covered by the
+      # scripts/lib/** glob above; these two are top-level scripts/ files
+      # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a solo
+      # edit to either triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/cron-health-chronic-orchestrator.js'
+      - 'scripts/cron-health-chronic.test.mjs'
       # E2E canary for the alert→card→dispatch chain (card #374) — path-listed
       # for the same reason (feedback_test_yml_push_path_allowlist); it has no
       # colocated unit test (it deliberately exercises the REAL Notion API,

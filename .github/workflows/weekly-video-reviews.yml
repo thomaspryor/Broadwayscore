@@ -156,6 +156,23 @@ jobs:
       # Only commit if all 8 steps succeeded. Avoids shipping inconsistent state
       # (e.g. transcripts collected but video-reviews.json not yet rebuilt).
       - name: Commit and push
+        # BRO-2534: this step was the dominant failure shape behind the
+        # "cron-health-chronic:Weekly Video Reviews" alert — 13 of the last 20
+        # runs failed here (scripts/cron-health-chronic-orchestrator.js
+        # --workflow=weekly-video-reviews.yml), always push-contention against
+        # a busy main, never a script bug. The job carries a 180-min
+        # timeout-minutes (10800s) for exactly the discovery/transcript/scoring
+        # steps above it, but this step was still running on push-with-retry.sh's
+        # shared 240s/5-retry default — audit-push-retry-budgets.js confirmed
+        # 97.8% of the job's timeout margin (10560s) sat unused while the push
+        # gave up after only 2 fundable attempts. Same class of fix already
+        # applied to rebuild-fast.yml, opening-night-poller.yml and
+        # process-feedback.yml (600s/20 retries) and rebuild-reviews.yml /
+        # weekly-integrity.yml (900s) for the same "long job timeout, tiny push
+        # budget" mismatch — see push-with-retry.sh's PUSH_DEADLINE_SEC comment
+        # for why the shared default is never raised globally.
+        env:
+          PUSH_DEADLINE_SEC: '900'
         run: |
           set -euo pipefail
 
@@ -179,7 +196,7 @@ jobs:
           " 2>/dev/null || echo "?")
 
           git commit -m "chore(video-reviews): weekly update (${TOTAL} reviews total)"
-          bash scripts/lib/push-with-retry.sh 5 main
+          bash scripts/lib/push-with-retry.sh 25 main
 
       # Non-critical: weekly misses surface in the morning data-health-check digest.
       # Escalate to 'critical' if same-day alerting becomes important.
