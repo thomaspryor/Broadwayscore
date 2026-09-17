@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-09-16T02:06:53.589Z",
-    "completedAt": "2026-09-16T02:12:50.252Z",
-    "totalReviews": 169,
-    "processed": 169,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 440871,
-      "output": 38717,
-      "total": 479588
-    },
-    "costUsd": 1.2272942,
-    "runId": "35045040368",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-16T02:39:49.920Z",
-    "completedAt": "2026-09-16T02:39:57.661Z",
-    "totalReviews": 43888,
-    "processed": 1,
-    "skipped": 43885,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 9148,
-      "output": 372,
-      "total": 25081
-    },
-    "costUsd": 0.05861575,
-    "runId": "35047138563",
-    "errorDetails": [
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-16T02:39:59.622Z",
     "completedAt": "2026-09-16T02:45:57.679Z",
     "totalReviews": 169,
@@ -209431,6 +209393,44 @@
     },
     "costUsd": 1.238568,
     "runId": "35269727482",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-17T21:13:09.016Z",
+    "completedAt": "2026-09-17T21:13:39.784Z",
+    "totalReviews": 44036,
+    "processed": 2,
+    "skipped": 44028,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 29560,
+      "output": 1348,
+      "total": 83995
+    },
+    "costUsd": 0.16059725,
+    "runId": "35273151373",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-17T21:13:41.295Z",
+    "completedAt": "2026-09-17T21:19:46.531Z",
+    "totalReviews": 169,
+    "processed": 169,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 441163,
+      "output": 38818,
+      "total": 479981
+    },
+    "costUsd": 1.2305338000000001,
+    "runId": "35273151373",
     "errorDetails": []
   }
 ]
