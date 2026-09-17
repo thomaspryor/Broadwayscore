@@ -1101,6 +1101,13 @@ on:
       - 'scripts/generate-mobile-show-details.js'
       - 'scripts/compute-gold-lists.js'
       - 'scripts/send-opening-digest.js'
+      # BRO-2531: colocated workflow-config regression test (job timeout
+      # margin + failure()||cancelled() notify condition). The workflow file
+      # it asserts against (.github/workflows/opening-digest.yml) is already
+      # covered by the '.github/workflows/**' glob below — no separate entry
+      # needed. Registered explicitly in the unit-test node --test list below
+      # (top-level scripts/*.test.mjs is not globbed).
+      - 'scripts/send-opening-digest.test.mjs'
       # Genre classifier (non-theatrical routing, mirror of src/lib/genre.ts) +
       # its colocated parity/FP test, and the discovery writer that tags new
       # shows. Without these path entries a solo edit triggers ZERO CI.
