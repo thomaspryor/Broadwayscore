@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-17T17:41:29.177Z",
+  "generated": "2026-09-17T18:03:52.415Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 86,
+  "count": 87,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -604,6 +604,13 @@
       "targetFile": "theatermania--hayley-levitt.json",
       "reason": "orphaned-duplicate-heal: theatermania--hayley-levitt.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "loserFile": "vulture--jesse-green.json",
+      "targetFile": "vulture--jackson-mchenry.json",
+      "reason": "orphaned-duplicate-heal: vulture--jackson-mchenry.json was flagged invalid after vulture--jesse-green.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

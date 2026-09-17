@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-17T17:44:50.599Z",
+  "timestamp": "2026-09-17T18:07:31.931Z",
   "stats": {
-    "totalReviews": 43613,
-    "alreadyFlagged": 18044,
+    "totalReviews": 43614,
+    "alreadyFlagged": 18043,
     "dateGuardCatches": 245,
-    "directorMismatch": 1046,
+    "directorMismatch": 1047,
     "tvFilmSignals": 1281,
     "londonSignals": 1092,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3817
+    "noPublishDate": 3818
   },
   "findings": [
     {
@@ -12880,6 +12880,19 @@
       "score": 79,
       "publishDate": "2025-07-10",
       "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "vulture--jesse-green.json",
+      "publishDate": "2025-07-10",
+      "url": "https://www.vulture.com/article/heathers-musical-nyc-revival-new-world-stages.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
