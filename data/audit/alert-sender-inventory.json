@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-16T18:38:04.705Z",
+  "generatedAt": "2026-09-17T18:45:39.000Z",
   "counts": {
-    "router": 140,
+    "router": 142,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -72,21 +72,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 3846,
+      "line": 3861,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6274,
+      "line": 6289,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6299,
+      "line": 6314,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -822,6 +822,20 @@
     {
       "file": "scripts/lib/push-content-survival.js",
       "line": 354,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/lib/scan-alert-ledger-gaps.js",
+      "line": 310,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/lib/scan-alert-ledger-gaps.js",
+      "line": 324,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
