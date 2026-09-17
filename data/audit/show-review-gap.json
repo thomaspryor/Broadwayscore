@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-17T20:52:39.992Z",
+  "generatedAt": "2026-09-17T23:23:55.518Z",
   "windowDays": 1095,
-  "targets": 323,
-  "auditedThisRun": 18,
-  "carriedForward": 522,
+  "targets": 313,
+  "auditedThisRun": 19,
+  "carriedForward": 525,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 332,
-    "totalMissing": 1661,
+    "totalMissing": 1663,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1808,
-    "totalRecoverable": 24,
-    "totalRecovered": 3
+    "totalFlaggedMisses": 1801,
+    "totalRecoverable": 23,
+    "totalRecovered": 6
   },
   "results": [
     {
@@ -4721,19 +4721,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Score-only fallback refused: show title \"Alvin Ailey American Dance Theater - New Works\" not found i",
-          "recoveryCount": 1,
-          "uncited": true
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/alvin-ailey-american-dance-theater-review-infectiously-joyous-l0z7c50lb",
-          "host": "thetimes.com",
-          "file": "times-uk--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -4745,7 +4733,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "amaze-magic-off-broadway-2025",
@@ -4847,130 +4835,33 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.vogue.com/article/sarah-jones-america-who-hurt-you-essay"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.vogue.com/article/sarah-jones-america-who-hurt-you-essay",
-          "host": "vogue.com",
-          "knownOutletId": "vogue",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vogue--sarah-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.vogue.com/article/sarah-jones-america-who-hurt-you-essay"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"AMERICA, WHO HURT YOU?\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"AMERICA, WHO HURT YOU?\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"AMERICA, WHO HURT YOU?\" review audience",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "AMERICA, WHO HURT YOU? Theatre for a New Audience/Polonsky Shakespeare Center review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "AMERICA, WHO HURT YOU? Theatre for a New Audience/Polonsky Shakespeare Center review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "AMERICA, WHO HURT YOU? Theatre for a New Audience/Polonsky Shakespeare Center review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 38,
-        "byReason": {
-          "non-review-host": 33,
-          "aggregator-internal-nav": 5
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "vogue",
-            "outlet": "vogue",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vogue.com/article/sarah-jones-america-who-hurt-you-essay"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.vogue.com/article/sarah-jones-america-who-hurt-you-essay",
-            "outletId": "vogue",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -5830,6 +5721,41 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-16T23:13:35.325Z"
+    },
+    {
+      "showId": "an-ideal-husband-hammersmith-review2-west-end-2026",
+      "title": "An Ideal Husband Hammersmith Review2",
+      "openingDate": "2026-05-26",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -18989,16 +18915,29 @@
         "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
         "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
         "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
-        "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/"
+        "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
+        "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
+        "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review",
+        "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html",
+        "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
+        "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/",
+        "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/",
+        "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
+        "https://www.newyorktheatreguide.com/theatre-news/news/discover-the-musicians-of-buena-vista-social-club-on-broadway"
       ],
       "dirFiles": 28,
-      "dirClean": 4,
-      "inReviewsJson": 4,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [
         {
           "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
           "host": "jalanews.com",
           "knownOutletId": null
+        },
+        {
+          "url": "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages"
         }
       ],
       "dirOnly": [
@@ -19125,23 +19064,6 @@
           ]
         },
         {
-          "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--httpsobservercomauthordavid-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/"
-            }
-          ]
-        },
-        {
           "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
@@ -19191,6 +19113,91 @@
               "urlInDir": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/"
             }
           ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--jackson-mchenry.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--frank-rizzo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/"
+            }
+          ]
+        },
+        {
+          "url": "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/?utm_campaign=nypost&utm_medium=referral"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -19200,12 +19207,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 383,
+        "count": 393,
         "byReason": {
-          "non-review-host": 34,
-          "non-review-path": 3,
-          "not-http-url": 39,
-          "aggregator-internal-nav": 307
+          "aggregator-internal-nav": 309,
+          "not-http-url": 41,
+          "aggregator-section-root": 8,
+          "non-review-host": 35
         }
       },
       "dedupedVariants": [],
@@ -19221,6 +19228,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=jalanews.com): Scrapingdog HTTP 404: {\"message\":\"This "
+        },
+        {
+          "url": "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
+          "host": "pagesonstages.com",
+          "outletId": "pages-on-stages",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         }
       ],
       "ingestSkippedByCap": [],
@@ -19233,6 +19252,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/"
+          },
+          {
+            "outletId": "pages-on-stages",
+            "outlet": "pages-on-stages",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://pagesonstages.com/2025/05/04/buena-vista-social-club/"
           },
           {
             "outletId": "theater-pizzazz",
@@ -19277,13 +19303,6 @@
             "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in"
           },
           {
-            "outletId": "observer",
-            "outlet": "observer",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -19303,6 +19322,41 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/"
+          },
+          {
+            "outletId": "nypost",
+            "outlet": "nypost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/"
           }
         ],
         "suppressedMissing": [],
@@ -19320,11 +19374,36 @@
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
           },
           {
+            "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T12:09:29.406Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/discover-the-musicians-of-buena-vista-social-club-on-broadway",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
             "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
             "outletId": "jalanews.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
+            "outletId": "pages-on-stages",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
           },
           {
             "url": "https://www.theaterpizzazz.com/buena-vista-social-club/",
@@ -19369,13 +19448,6 @@
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
           },
           {
-            "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
-            "outletId": "observer",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T12:09:29.406Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -19395,12 +19467,47 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/",
+            "outletId": "nypost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
           }
         ],
-        "liveCount": 2,
-        "candidateCount": 12
+        "liveCount": 3,
+        "candidateCount": 18
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "bug-2026",
@@ -19747,28 +19854,45 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=POSQ0N",
         "https://www.talkinbroadway.com/page/ob/03_11_26.html",
         "https://www.theaterscene.net/plays/solo-plays/bughouse/joseph-pisano/",
-        "https://www.theatrereviews.com/off-broadway-review-bughouse-at-vineyard-theatre-through-sunday-april-5-2026/",
-        "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/",
-        "https://www.interestedbystander.com/2026/03/reviews-my-take-on-enjoyable-ryan.html",
-        "https://pagesonstages.com/2026/03/11/bughouse/"
+        "https://www.theatrereviews.com/off-broadway-review-bughouse-at-vineyard-theatre-through-sunday-april-5-2026/"
       ],
-      "dirFiles": 21,
-      "dirClean": 14,
+      "dirFiles": 20,
+      "dirClean": 13,
       "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2026/03/reviews-my-take-on-enjoyable-ryan.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
         {
           "host": "timeout.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--linda-buchwald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/"
+            },
+            {
+              "file": "theatermania--pete-hempstead.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/"
+            }
+          ]
+        },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=POSQ0N",
           "host": "lightingandsoundamerica.com",
@@ -19802,23 +19926,6 @@
               "urlInDir": "https://www.theatrereviews.com/off-broadway-review-bughouse-at-vineyard-theatre-through-sunday-april-5-2026/"
             }
           ]
-        },
-        {
-          "url": "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/",
-          "host": "lavocedinewyork.com",
-          "knownOutletId": "la-voce-di-new-york",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "la-voce-di-new-york--jk-clarke.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -19828,38 +19935,24 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 88,
+        "count": 92,
         "byReason": {
-          "non-review-host": 21,
+          "aggregator-internal-nav": 47,
           "not-http-url": 20,
-          "aggregator-internal-nav": 47
+          "aggregator-section-root": 5,
+          "non-review-host": 20
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.interestedbystander.com/2026/03/reviews-my-take-on-enjoyable-ryan.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
+            "outletId": "theatermania",
+            "outlet": "theatermania",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.interestedbystander.com/2026/03/reviews-my-take-on-enjoyable-ryan.html"
+            "url": "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/"
           },
           {
             "outletId": "lighting-and-sound-america",
@@ -19874,13 +19967,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatrereviews.com/off-broadway-review-bughouse-at-vineyard-theatre-through-sunday-april-5-2026/"
-          },
-          {
-            "outletId": "la-voce-di-new-york",
-            "outlet": "la-voce-di-new-york",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/"
           }
         ],
         "suppressedMissing": [],
@@ -19940,12 +20026,6 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
             "url": "https://www.talkinbroadway.com/page/ob/03_11_26.html",
             "outletId": "talkinbroadway.com",
             "state": "live",
@@ -19958,14 +20038,8 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://pagesonstages.com/2026/03/11/bughouse/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/03/reviews-my-take-on-enjoyable-ryan.html",
-            "outletId": "the-interested-bystander",
+            "url": "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/",
+            "outletId": "theatermania",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
@@ -19983,19 +20057,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/",
-            "outletId": "la-voce-di-new-york",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 17
+        "liveCount": 11,
+        "candidateCount": 14
       },
-      "computedAt": "2026-08-17T09:42:27.329Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "building-the-wall-off-broadway-2026",
@@ -28209,6 +28276,7 @@
       "category": "broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-make-their-move-on-broadways-new-chess-revival",
+        "https://playbill.com/article/what-do-critics-think-of-the-london-chess-revival-starring-michael-ball-and-alexandra-burke-2",
         "https://www.broadwayworld.com/article/Review-Roundup-CHESS-Revival-Officially-Opens-on-Broadway-20251116",
         "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CHESS-at-The-Kennedy-Center-20180218",
         "https://www.broadwayworld.com/article/Review-Roundup-CHESS-Opens-At-The-Muny-Starring-Jessica-Vosk-Taylor-Louderman-Jarrod-Spector-More-20230707",
@@ -28238,35 +28306,53 @@
         "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9",
         "https://www.washingtonpost.com/entertainment/theater/2025/11/16/chess-broadway-review/",
         "https://www.thewrap.com/chess-broadway-review-abba-musical-lea-michele/",
+        "https://theartsdesk.com/theatre/chess-london-coliseum-review-powerfully-sung-still-problematic",
+        "https://theguardian.com/stage/2018/may/02/chess-review-cold-war-musical-london-coliseum",
+        "https://hollywoodreporter.com/review/chess-theater-1107878",
+        "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html",
+        "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/",
+        "http://radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
+        "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
+        "http://variety.com/2018/legit/reviews/chess-review-english-national-opera-1202795353/",
         "https://www.chicagotribune.com/2025/11/16/review-chess-broadway/",
         "https://dcmetrotheaterarts.com/2018/02/16/review-chess-kennedy-center/",
         "https://dctheatrescene.com/2018/02/18/chess-proves-its-next-move-should-be-to-broadway-review/",
         "http://variety.com/2018/legit/reviews/chess-review-kennedy-center-1202703667/",
         "https://www.washingtonpost.com/lifestyle/chess-has-the-best-cast-of-any-musical-this-season-but-the-show-itself-has-issues/2018/02/16/f66ebb10-12d2-11e8-827c-5150c6f3dc79_story.html",
         "https://www.guide4moms.com/2023/07/the-munys-chess-musical-parents-guide-review.html",
-        "http://variety.com/2018/legit/reviews/chess-review-english-national-opera-1202795353/",
         "https://www.theguardian.com/stage/2018/may/02/chess-review-cold-war-musical-london-coliseum",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html",
         "https://britishtheatre.com/review-chess-london-coliseum/",
         "https://www.standard.co.uk/go/london/theatre/chess-review-not-a-knight-to-remember-a3828836.html",
         "https://www.hollywoodreporter.com/review/chess-theater-1107878",
-        "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
         "https://www.thestage.co.uk/reviews/2018/chess-review-london-coliseum-starring-michael-ball-alexandra-burke/",
-        "http://www.radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
-        "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/",
-        "https://theartsdesk.com/theatre/chess-london-coliseum-review-powerfully-sung-still-problematic",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
-        "https://www.theaterscene.net/musicals/broadway/chess/samuel-l-leiter/",
-        "https://www.theatrereviews.com/broadway-review-chess-at-the-imperial-theatre-through-sunday-may-3-2026/",
-        "https://newyorktheater.me/2025/11/23/chess-broadway-review/",
-        "https://theaterscene.com/reviews/chess/",
-        "https://pagesonstages.com/2025/11/22/chess/",
-        "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html"
+        "http://www.radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/"
       ],
-      "dirFiles": 57,
+      "dirFiles": 56,
       "dirClean": 34,
       "inReviewsJson": 33,
       "missing": [
+        {
+          "url": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
+          "host": "radiotimes.com",
+          "knownOutletId": "radio-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://dcmetrotheaterarts.com/2018/02/16/review-chess-kennedy-center/",
           "host": "dcmetrotheaterarts.com",
@@ -28296,13 +28382,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://www.radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
           "host": "radiotimes.com",
           "knownOutletId": "radio-times",
@@ -28320,6 +28399,14 @@
           "count": 1
         },
         {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
           "host": "stageandcinema.com",
           "count": 1
         },
@@ -28329,6 +28416,18 @@
         },
         {
           "host": "thecontending.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
           "count": 1
         }
       ],
@@ -28349,6 +28448,25 @@
               "urlInDir": "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/"
             }
           ]
+        },
+        {
+          "url": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "i-paper--unknown.json",
+              "flag": "nonReview",
+              "urlInDir": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://dctheatrescene.com/2018/02/18/chess-proves-its-next-move-should-be-to-broadway-review/",
@@ -28406,59 +28524,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "i-paper--unknown.json",
-              "flag": "nonReview",
-              "urlInDir": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP"
-            }
-          ]
-        },
-        {
-          "url": "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html?m=0"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -28468,16 +28533,20 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1330,
+        "count": 1442,
         "byReason": {
-          "non-review-host": 83,
-          "not-http-url": 258,
-          "aggregator-internal-nav": 977,
-          "non-review-path": 12
+          "aggregator-internal-nav": 1048,
+          "not-http-url": 266,
+          "aggregator-section-root": 24,
+          "non-review-host": 104
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-do-critics-think-of-the-london-chess-revival-starring-michael-ball-and-alexandra-burke-2",
+          "publishDate": "2018-05-02"
+        },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CHESS-at-The-Kennedy-Center-20180218",
           "publishDate": "2018-02-18"
@@ -28492,6 +28561,24 @@
         }
       ],
       "weIngestBlocked": [
+        {
+          "url": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
+          "host": "radiotimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
         {
           "url": "https://dcmetrotheaterarts.com/2018/02/16/review-chess-kennedy-center/",
           "host": "dcmetrotheaterarts.com",
@@ -28517,12 +28604,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "http://www.radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
           "host": "radiotimes.com",
           "priorRun": true,
@@ -28534,6 +28615,27 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html"
+          },
+          {
+            "outletId": "radio-times",
+            "outlet": "radio-times",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/"
+          },
+          {
+            "outletId": "theupcoming",
+            "outlet": "theupcoming",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/"
+          },
           {
             "outletId": "dc-metro-theater-arts",
             "outlet": "dc-metro-theater-arts",
@@ -28563,13 +28665,6 @@
             "url": "https://www.standard.co.uk/go/london/theatre/chess-review-not-a-knight-to-remember-a3828836.html"
           },
           {
-            "outletId": "theupcoming",
-            "outlet": "theupcoming",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/"
-          },
-          {
             "outletId": "radio-times",
             "outlet": "radio-times",
             "critic": "Unknown",
@@ -28582,6 +28677,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/"
+          },
+          {
+            "outletId": "i-paper",
+            "outlet": "i-paper",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/"
           },
           {
             "outletId": "dctheatrescene",
@@ -28603,27 +28705,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thestage.co.uk/reviews/2018/chess-review-london-coliseum-starring-michael-ball-alexandra-burke/"
-          },
-          {
-            "outletId": "i-paper",
-            "outlet": "i-paper",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/"
-          },
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP"
-          },
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html"
           }
         ],
         "suppressedMissing": [],
@@ -28761,6 +28842,30 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
+            "url": "https://theartsdesk.com/theatre/chess-london-coliseum-review-powerfully-sung-still-problematic",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://theguardian.com/stage/2018/may/02/chess-review-cold-war-musical-london-coliseum",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://hollywoodreporter.com/review/chess-theater-1107878",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "http://variety.com/2018/legit/reviews/chess-review-english-national-opera-1202795353/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
             "url": "https://www.chicagotribune.com/2025/11/16/review-chess-broadway/",
             "outletId": "chicagotribune.com",
             "state": "live",
@@ -28779,12 +28884,6 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "http://variety.com/2018/legit/reviews/chess-review-english-national-opera-1202795353/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2018/may/02/chess-review-cold-war-musical-london-coliseum",
             "outletId": "theguardian.com",
             "state": "live",
@@ -28797,39 +28896,24 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://theartsdesk.com/theatre/chess-london-coliseum-review-powerfully-sung-still-problematic",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+            "url": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html",
+            "outletId": "independent",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
           },
           {
-            "url": "https://www.theaterscene.net/musicals/broadway/chess/samuel-l-leiter/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+            "url": "http://radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
+            "outletId": "radio-times",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
           },
           {
-            "url": "https://www.theatrereviews.com/broadway-review-chess-at-the-imperial-theatre-through-sunday-may-3-2026/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2025/11/23/chess-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://theaterscene.com/reviews/chess/",
-            "outletId": "theaterscene.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2025/11/22/chess/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
+            "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
+            "outletId": "theupcoming",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
@@ -28861,13 +28945,6 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
-            "outletId": "theupcoming",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
             "url": "http://www.radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
             "outletId": "radio-times",
             "state": "GAP",
@@ -28877,6 +28954,13 @@
           {
             "url": "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/",
             "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/",
+            "outletId": "i-paper",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
@@ -28901,33 +28985,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/",
-            "outletId": "i-paper",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           }
         ],
-        "liveCount": 28,
-        "candidateCount": 41
+        "liveCount": 23,
+        "candidateCount": 34
       },
-      "computedAt": "2026-08-17T09:42:27.329Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "chicka-chicka-boom-boom-the-musical-off-broadway-2026",
@@ -29782,7 +29845,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -46730,7 +46793,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
@@ -84961,23 +85024,6 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
-        "https://www.londontheatre.co.uk/reviews/man-to-man-review-royal-court",
-        "https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-court-theatre/",
-        "https://theqr.co.uk/2026/09/14/review-man-to-man-royal-court-theatre-london/",
-        "https://www.timeout.com/london/news/review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre-091226",
-        "https://www.britishtheatreguide.info/reviews/man-to-man-royal-court-the-26014",
-        "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court",
-        "https://thespyinthestalls.com/2026/09/man-to-man/",
-        "https://theartsdesk.com/theatre/man-man-royal-court-review-vividly-high-definition-revival",
-        "https://theatreandtonic.co.uk/blog/man-to-man-at-royal-court-theatre-review",
-        "https://readaboutstuff.com/2026/09/13/review-man-to-man-royal-court-london/",
-        "https://sierz.co.uk/reviews/man-to-man-royal-court/",
-        "https://www.theatremonkey.com/show/man-to-man/",
-        "https://ayoungishperspective.co.uk/2026/09/14/review-man-to-man/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/man-to-man-review-tilda-swinton-triumphant-stage-return/",
-        "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
-        "https://www.traverse.co.uk/news/a-look-back-tilda-swinton-in-man-to-man",
         "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
         "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
         "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
@@ -84989,18 +85035,23 @@
         "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor",
         "https://www.broadwayworld.com/westend/article/Review-GOLDEN-BOY-starring-Josh-OConnor-Almeida-Theatre-20260916"
       ],
-      "dirFiles": 52,
-      "dirClean": 23,
-      "inReviewsJson": 24,
-      "missing": [
-        {
-          "url": "https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-court-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 53,
+      "dirClean": 22,
+      "inReviewsJson": 23,
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
         {
           "host": "ft.com",
           "count": 1
@@ -85014,6 +85065,14 @@
           "count": 1
         },
         {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "sierz.co.uk",
+          "count": 1
+        },
+        {
           "host": "standard.co.uk",
           "count": 1
         },
@@ -85022,7 +85081,19 @@
           "count": 1
         },
         {
+          "host": "thespyinthestalls.com",
+          "count": 1
+        },
+        {
           "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theqr.co.uk",
           "count": 1
         },
         {
@@ -85032,9 +85103,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
+          "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -85042,35 +85113,45 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "all-that-dazzles-uk--all-that-dazzles.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court"
+              "file": "thestage--matt-barton.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse"
             }
           ],
-          "serpCensus": true
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
         },
         {
-          "url": "https://www.theatremonkey.com/show/man-to-man/",
-          "host": "theatremonkey.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": true,
+          "recoverableFile": "whatsonstage--jim-keaveney.json",
+          "recoverableOutletId": "whatsonstage",
+          "recoverableCritic": "Jim Keaveney",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatremonkey--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatremonkey.com/show/man-to-man/"
+              "file": "whatsonstage--jim-keaveney.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/"
             }
           ],
-          "serpCensus": true
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
         },
         {
-          "url": "https://www.traverse.co.uk/news/a-look-back-tilda-swinton-in-man-to-man",
-          "host": "traverse.co.uk",
-          "knownOutletId": null,
+          "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -85078,12 +85159,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "traverse--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.traverse.co.uk/news/a-look-back-tilda-swinton-in-man-to-man"
+              "file": "thestage--matt-barton.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse"
             }
           ],
-          "serpCensus": true
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
         }
       ],
       "citedNoUrl": [],
@@ -85121,229 +85207,70 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 10,
-        "corroborated": 10,
+        "corroborated": 7,
         "perSource": {
           "westendtheatre": {
             "cited": 3,
-            "corroborated": 3
+            "corroborated": 1
           },
           "theatre-reviews": {
             "cited": 7,
-            "corroborated": 7
+            "corroborated": 6
           }
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Man to Man\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Man to Man\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 8,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Man to Man\" review court",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Man to Man Royal Court review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Man to Man Royal Court review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Man to Man Royal Court review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 17,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 15,
-        "byReason": {
-          "ticketing-listing": 1,
-          "non-review-host": 14
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
+      "recoveryResults": [
         {
-          "url": "https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-court-theatre/",
-          "host": "lovelondonloveculture.com",
-          "outletId": "lovelondonloveculture",
+          "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
+          "host": "whatsonstage.com",
+          "file": "whatsonstage--jim-keaveney.json",
+          "recovered": true,
+          "skipped": false,
           "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-c"
+          "starFallback": true,
+          "reason": null,
+          "recoveryCount": 0
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "lovelondonloveculture",
-            "outlet": "lovelondonloveculture",
+            "outletId": "thestage",
+            "outlet": "thestage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-court-theatre/"
+            "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse"
           },
           {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court"
+            "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/"
           },
           {
-            "outletId": "theatremonkey.com",
-            "outlet": "theatremonkey.com",
+            "outletId": "thestage",
+            "outlet": "thestage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatremonkey.com/show/man-to-man/"
-          },
-          {
-            "outletId": "traverse.co.uk",
-            "outlet": "traverse.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.traverse.co.uk/news/a-look-back-tilda-swinton-in-man-to-man"
+            "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/man-to-man-review-royal-court",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
-            "url": "https://theqr.co.uk/2026/09/14/review-man-to-man-royal-court-theatre-london/",
-            "outletId": "theqr.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/news/review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre-091226",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/man-to-man-royal-court-the-26014",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/09/man-to-man/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/man-man-royal-court-review-vividly-high-definition-revival",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/man-to-man-at-royal-court-theatre-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/09/13/review-man-to-man-royal-court-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://sierz.co.uk/reviews/man-to-man-royal-court/",
-            "outletId": "sierz.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://ayoungishperspective.co.uk/2026/09/14/review-man-to-man/",
-            "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/man-to-man-review-tilda-swinton-triumphant-stage-return/",
-            "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
             "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
-            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
@@ -85356,12 +85283,6 @@
           {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
             "outletId": "independent.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
-            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
@@ -85390,38 +85311,31 @@
             "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
           {
-            "url": "https://lovelondonloveculture.com/2026/09/13/review-round-up-man-to-man-royal-court-theatre/",
-            "outletId": "lovelondonloveculture",
+            "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
+            "outletId": "thestage",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court",
-            "outletId": "all-that-dazzles-uk",
+            "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
+            "outletId": "whatsonstage",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
           {
-            "url": "https://www.theatremonkey.com/show/man-to-man/",
-            "outletId": "theatremonkey.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.traverse.co.uk/news/a-look-back-tilda-swinton-in-man-to-man",
-            "outletId": "traverse.co.uk",
+            "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
+            "outletId": "thestage",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T17:37:02.820Z"
           }
         ],
-        "liveCount": 16,
-        "candidateCount": 20
+        "liveCount": 6,
+        "candidateCount": 8
       },
-      "computedAt": "2026-09-17T17:37:02.820Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "manic-street-creature-west-end-2026",
@@ -91342,19 +91256,6 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
-        "https://theatresoutheast.com/million-dollar-quartet-the-arts-at-marble-arch-review/",
-        "https://fairypoweredproductions.com/million-dollar-quartet-review-2/",
-        "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/",
-        "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
-        "https://www.thereviewshub.com/million-dollar-quartet-the-arts-at-marble-arch-london/",
-        "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch",
-        "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch",
-        "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
-        "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/amp/",
-        "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london",
-        "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/",
-        "https://www.harrytheatrelife.co.uk/post/review-million-dollar-quartet-the-arts-at-marble-arch-theatre-london",
         "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
         "http://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doesnt-throb-with-heart-and-soul.do",
         "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8354312/Million-Dollar-Quartet-Noel-Coward-Theatre-review.html",
@@ -91362,48 +91263,10 @@
         "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/million-dollar-quartet-noel-coward-theatre-london-2230529.html",
         "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet"
       ],
-      "dirFiles": 16,
-      "dirClean": 13,
-      "inReviewsJson": 10,
+      "dirFiles": 21,
+      "dirClean": 17,
+      "inReviewsJson": 14,
       "missing": [
-        {
-          "url": "https://fairypoweredproductions.com/million-dollar-quartet-review-2/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london",
-          "host": "enjoy.ly",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/",
-          "host": "datathistle.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.harrytheatrelife.co.uk/post/review-million-dollar-quartet-the-arts-at-marble-arch-theatre-london",
-          "host": "harrytheatrelife.co.uk",
-          "knownOutletId": "harry-theatre-life",
-          "serpCensus": true
-        },
-        {
-          "url": "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
-          "host": "guardian.co.uk",
-          "knownOutletId": "guardian",
-          "weRef": true,
-          "weRefSources": [],
-          "priorRun": true
-        },
         {
           "url": "http://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doesnt-throb-with-heart-and-soul.do",
           "host": "thisislondon.co.uk",
@@ -91435,11 +91298,31 @@
           "count": 1
         },
         {
+          "host": "fairypoweredproductions.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "harrytheatrelife.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
           "host": "londontheatrereviews.co.uk",
           "count": 1
         },
         {
           "host": "londonmumsmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "loureviews.blog",
           "count": 1
         },
         {
@@ -91451,29 +91334,27 @@
           "count": 1
         },
         {
+          "host": "theatresoutheast.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "theupcoming.co.uk",
+          "count": 1
+        },
+        {
           "host": "whatsonstage.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-best-friend--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8354312/Million-Dollar-Quartet-Noel-Coward-Theatre-review.html",
           "host": "telegraph.co.uk",
@@ -91539,94 +91420,23 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Million Dollar Quartet\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Million Dollar Quartet\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Million Dollar Quartet\" review marble",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Million Dollar Quartet\" Escott review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Million Dollar Quartet The Arts at Marble Arch Powered by TodayTix review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Million Dollar Quartet The Arts at Marble Arch Powered by TodayTix review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Million Dollar Quartet The Arts at Marble Arch Powered by TodayTix review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 13,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 26,
-        "byReason": {
-          "ticketing-listing": 1,
-          "non-review-host": 21,
-          "aggregator-internal-nav": 1,
-          "non-review-path": 1,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
-      "dedupedVariants": [],
-      "weIngestBlocked": [
+      "dedupedVariants": [
         {
           "url": "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
           "host": "guardian.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
+          "matchedUrl": "https://www.theguardian.com/stage/2026/sep/17/million-dollar-quartet-review-the-arts-at-marble-arch-london",
+          "outletId": "guardian",
+          "reason": "same outlet \"guardian\" already held at theguardian.com; guardian.co.uk is a registered alias of it"
+        }
+      ],
+      "weIngestBlocked": [
         {
           "url": "http://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doesnt-throb-with-heart-and-soul.do",
           "host": "thisislondon.co.uk",
@@ -91646,114 +91456,11 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://fairypoweredproductions.com/million-dollar-quartet-review-2/",
-          "host": "fairypoweredproductions.com",
-          "outletId": "fairypoweredproductions",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london",
-          "host": "enjoy.ly",
-          "outletId": "enjoy",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/",
-          "host": "datathistle.com",
-          "outletId": "datathistle",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Playwright failed: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.datathistle.com/event"
-        },
-        {
-          "url": "https://www.harrytheatrelife.co.uk/post/review-million-dollar-quartet-the-arts-at-marble-arch-theatre-london",
-          "host": "harrytheatrelife.co.uk",
-          "outletId": "harry-theatre-life",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "fairypoweredproductions",
-            "outlet": "fairypoweredproductions",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fairypoweredproductions.com/million-dollar-quartet-review-2/"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/"
-          },
-          {
-            "outletId": "enjoy.ly",
-            "outlet": "enjoy.ly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london"
-          },
-          {
-            "outletId": "datathistle.com",
-            "outlet": "datathistle.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/"
-          },
-          {
-            "outletId": "harry-theatre-life",
-            "outlet": "harry-theatre-life",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.harrytheatrelife.co.uk/post/review-million-dollar-quartet-the-arts-at-marble-arch-theatre-london"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review"
-          },
           {
             "outletId": "standard",
             "outlet": "standard",
@@ -91776,13 +91483,6 @@
             "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/million-dollar-quartet-noel-coward-theatre-london-2230529.html"
           },
           {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch"
-          },
-          {
             "outletId": "sunday-telegraph",
             "outlet": "sunday-telegraph",
             "critic": "Unknown",
@@ -91793,93 +91493,15 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
-            "outletId": "londontheatre.co.uk",
+            "url": "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
+            "outletId": "guardian.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://theatresoutheast.com/million-dollar-quartet-the-arts-at-marble-arch-review/",
-            "outletId": "theatresoutheast.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
-            "outletId": "theupcoming.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/million-dollar-quartet-the-arts-at-marble-arch-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/amp/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
+            "firstSeenAt": "2026-09-16T18:05:29.294Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-16T18:05:29.294Z"
-          },
-          {
-            "url": "https://fairypoweredproductions.com/million-dollar-quartet-review-2/",
-            "outletId": "fairypoweredproductions",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london",
-            "outletId": "enjoy.ly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/",
-            "outletId": "datathistle.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.harrytheatrelife.co.uk/post/review-million-dollar-quartet-the-arts-at-marble-arch-theatre-london",
-            "outletId": "harry-theatre-life",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
             "firstSeenAt": "2026-09-16T18:05:29.294Z"
           },
           {
@@ -91904,13 +91526,6 @@
             "firstSeenAt": "2026-09-16T18:05:29.294Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch",
-            "outletId": "west-end-best-friend",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
             "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8354312/Million-Dollar-Quartet-Noel-Coward-Theatre-review.html",
             "outletId": "sunday-telegraph",
             "state": "GAP",
@@ -91918,10 +91533,10 @@
             "firstSeenAt": "2026-09-16T18:05:29.294Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 17
+        "liveCount": 2,
+        "candidateCount": 6
       },
-      "computedAt": "2026-09-17T17:37:02.820Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "mister-snickers-of-new-york-city-off-broadway-2026",
@@ -98454,61 +98069,12 @@
         "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/",
         "https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre",
         "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
-        "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html",
-        "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/",
-        "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
-        "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
-        "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/",
-        "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-        "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
-        "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
-        "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-        "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
-        "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
-        "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
-        "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end"
+        "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html"
       ],
       "dirFiles": 24,
       "dirClean": 6,
       "inReviewsJson": 6,
-      "missing": [
-        {
-          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
-          "host": "jacktheladmag.com",
-          "knownOutletId": "jacktheladmag",
-          "serpCensus": true
-        },
-        {
-          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
-          "host": "burnhamdramaturgy.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "londontheatrereviews.co.uk",
@@ -98543,10 +98109,10 @@
           "url": "https://www.timeout.com/london/theatre/my-sons-a-queer-but-what-can-you-do-review",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "recoverable": true,
-          "recoverableFile": "timeout-london--unknown.json",
-          "recoverableOutletId": "timeout-london",
-          "recoverableCritic": "Unknown",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
@@ -98556,13 +98122,12 @@
             },
             {
               "file": "timeout-london--unknown.json",
-              "flag": "duplicate",
+              "flag": "wrongProduction",
               "urlInDir": "https://www.timeout.com/london/theatre/my-sons-a-queer-but-what-can-you-do-review"
             }
           ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "serpCensus": true
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html",
@@ -98587,129 +98152,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--charlotte-vickers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/"
-            },
-            {
-              "file": "whatsonstage--daniella-harrison.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "i-paper--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963?srsltid=AU7gw4VFjlKyCLX7gE4D3lV4jNb7Qo-HtXPpIbMALtDTUI0ijAXKWBoP"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "recoverable": true,
-          "recoverableFile": "all-that-dazzles-uk--unknown.json",
-          "recoverableOutletId": "all-that-dazzles-uk",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "all-that-dazzles-uk--all-that-dazzles.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
-            },
-            {
-              "file": "all-that-dazzles-uk--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": true,
-          "recoverableFile": "nytg--unknown.json",
-          "recoverableOutletId": "nytg",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--gillian-russo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review"
-            },
-            {
-              "file": "nytg--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatredirect--london-theatre-direct-limited.json",
-              "flag": "clean",
-              "urlInDir": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--paul-vale.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -98751,85 +98193,16 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"My Son’s A Queer (But What Can You Do?)\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"My Son’s A Queer (But What Can You Do?)\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"My Son’s A Queer (But What Can You Do?)\" review apollo",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"My Son’s A Queer (But What Can You Do?)\" Madge review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "My Son’s A Queer (But What Can You Do?) Apollo Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "My Son’s A Queer (But What Can You Do?) Apollo Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "My Son’s A Queer (But What Can You Do?) Apollo Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 14,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 217,
+        "count": 191,
         "byReason": {
-          "non-review-host": 41,
-          "roundup-page": 1,
+          "aggregator-internal-nav": 160,
           "not-http-url": 6,
-          "aggregator-internal-nav": 162,
           "aggregator-section-root": 4,
-          "non-review-path": 3
+          "non-review-host": 21
         }
       },
       "dedupedVariants": [],
@@ -98839,133 +98212,9 @@
           "publishDate": "2022-10-31"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
-          "url": "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/",
-          "host": "westendtheatre.com",
-          "outletId": "westendtheatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-"
-        },
-        {
-          "url": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
-          "host": "jacktheladmag.com",
-          "outletId": "jacktheladmag",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
-          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Article extraction returned 102 chars — pattern may be missing for this outlet. Add an entry to scri"
-        },
-        {
-          "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
-          "host": "burnhamdramaturgy.com",
-          "outletId": "burnhamdramaturgy",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"burnhamdramaturgy\" (not in registry) — onboard to outlet-registry.json after"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
-          "host": "show-score.com",
-          "outletId": null
-        }
-      ],
-      "recoveryResults": [],
-      "recoverySkippedByCap": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-          "host": "allthatdazzles.co.uk",
-          "file": "all-that-dazzles-uk--unknown.json"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
-          "host": "newyorktheatreguide.com",
-          "file": "nytg--unknown.json"
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/"
-          },
-          {
-            "outletId": "jacktheladmag",
-            "outlet": "jacktheladmag",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do"
-          },
-          {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/"
-          },
-          {
-            "outletId": "burnhamdramaturgy.com",
-            "outlet": "burnhamdramaturgy.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end"
-          },
           {
             "outletId": "broadwayworld",
             "outlet": "broadwayworld",
@@ -98986,48 +98235,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/"
-          },
-          {
-            "outletId": "i-paper",
-            "outlet": "i-paper",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963"
-          },
-          {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do"
           }
         ],
         "suppressedMissing": [],
@@ -99057,48 +98264,6 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
-            "outletId": "theatreandtonic",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/",
-            "outletId": "westendtheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T20:52:39.992Z"
-          },
-          {
-            "url": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
-            "outletId": "jacktheladmag",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-            "outletId": "west-end-wilma",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
-            "outletId": "burnhamdramaturgy.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
-            "outletId": "show-score.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
             "url": "https://www.broadwayworld.com/westend/article/Review-MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Garrick-Theatre-20221024",
             "outletId": "broadwayworld",
             "state": "IN_FLIGHT",
@@ -99118,54 +98283,12 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/",
-            "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
-            "outletId": "i-paper",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-            "outletId": "all-that-dazzles-uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
-            "outletId": "nytg",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
-            "outletId": "londontheatredirect",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
-            "outletId": "thestage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
           }
         ],
         "liveCount": 4,
-        "candidateCount": 18
+        "candidateCount": 7
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -102425,13 +101548,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 906,
+        "count": 905,
         "byReason": {
-          "non-review-host": 91,
-          "non-review-path": 6,
-          "roundup-page": 1,
-          "not-http-url": 115,
-          "aggregator-internal-nav": 693
+          "aggregator-internal-nav": 667,
+          "not-http-url": 124,
+          "aggregator-section-root": 20,
+          "non-review-host": 94
         }
       },
       "dedupedVariants": [],
@@ -103486,7 +102608,7 @@
         "liveCount": 4,
         "candidateCount": 50
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "oh-mary-west-end-2025",
@@ -114178,6 +113300,41 @@
         "candidateCount": 21
       },
       "computedAt": "2026-09-17T20:52:39.992Z"
+    },
+    {
+      "showId": "pride-theatre-dorfman-west-end-2026",
+      "title": "Pride Theatre Dorfman",
+      "openingDate": "2026-06-26",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "pride-west-end-2026",
@@ -139164,49 +138321,41 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/sep/11/tartuffe-remixed-review-marylebone-theatre-london-mark-rylance-moliere",
-        "https://www.londonpubtheatres.com/review-tartuffe-remixed-at-marylebone-theatre-4-sept-24-october-2026",
-        "https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-marylebone-theatre/",
-        "https://www.marylebonetheatre.com/productions/tartuffe-remixed",
-        "https://saltertonartsreview.com/2026/09/tartuffe-remixed-marylebone-theatre-london/",
-        "https://www.afridiziak.com/reviews/tartuffe-remixed/",
-        "https://www.thereviewshub.com/tartuffe-remixed-marylebone-theatre-london/",
-        "https://www.timeout.com/london/theatre/tartuffe-remixed-review",
-        "https://ayoungishperspective.co.uk/2026/09/12/review-tartuffe-remixed/",
-        "https://theartsdesk.com/theatre/tartuffe-remixed-marylebone-theatre-review-false-teeth-not-needed-curates-egg-production",
-        "https://redbuslondinium.uk/2026/09/11/tartuffe-remixed-marylebone-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
-        "https://www.allthatdazzles.co.uk/post/review-tartuffe-remixed-marylebone-theatre",
-        "https://www.london-unattached.com/tartuffe-remixed-marylebone-theatre/",
-        "https://playsinternational.org.uk/tartuffe-remixed-marylebone-theatre/",
+        "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-intermission-youth",
         "https://www.whatsonstage.com/news/tartuffe-remixed-with-mark-rylance-at-marylebone-theatre-review_1731492/",
-        "https://www.londontheatre1.com/reviews/tartuffe-remixed-marylebone-theatre/",
-        "https://www.curtaincallreviews.co.uk/tartuffe-remixed",
-        "https://everything-theatre.co.uk/2026/09/review-tartuffe-remixed-marylebone-theatre/",
-        "https://viewfromthegods.co.uk/2026/09/11/tartuffe-remixed-at-marylebone-theatre/",
-        "https://readaboutstuff.com/2026/09/12/review-tartuffe-remixed-marylebone-theatre-london/",
-        "https://www.timeout.com/london/theatre/tartuffe-remixed",
-        "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-intermission-youth"
+        "https://www.theguardian.com/stage/2026/sep/11/tartuffe-remixed-review-marylebone-theatre-london-mark-rylance-moliere"
       ],
       "dirFiles": 31,
       "dirClean": 25,
       "inReviewsJson": 25,
-      "missing": [
-        {
-          "url": "https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-marylebone-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
-          "serpCensus": true
-        },
-        {
-          "url": "https://redbuslondinium.uk/2026/09/11/tartuffe-remixed-marylebone-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
-          "host": "redbuslondinium.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "afridiziak.com",
+          "count": 1
+        },
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
           "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "curtaincallreviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
           "count": 1
         },
         {
@@ -139214,7 +138363,31 @@
           "count": 1
         },
         {
+          "host": "london-unattached.com",
+          "count": 1
+        },
+        {
+          "host": "londonpubtheatres.com",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
           "host": "loureviews.blog",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
+          "count": 1
+        },
+        {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "saltertonartsreview.com",
           "count": 1
         },
         {
@@ -139226,7 +138399,19 @@
           "count": 1
         },
         {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "timeout.com",
+          "count": 1
+        },
+        {
           "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "viewfromthegods.co.uk",
           "count": 1
         },
         {
@@ -139234,26 +138419,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.marylebonetheatre.com/productions/tartuffe-remixed",
-          "host": "marylebonetheatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "marylebonetheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.marylebonetheatre.com/productions/tartuffe-remixed"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 4,
@@ -139298,194 +138464,24 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Tartuffe Remixed\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Tartuffe Remixed\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Tartuffe Remixed\" review marylebone",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Tartuffe Remixed Marylebone Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Tartuffe Remixed Marylebone Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Tartuffe Remixed Marylebone Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 21,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 14,
-        "byReason": {
-          "non-review-host": 10,
-          "aggregator-internal-nav": 1,
-          "roundup-page": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-marylebone-theatre/",
-          "host": "lovelondonloveculture.com",
-          "outletId": "lovelondonloveculture",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-m"
-        },
-        {
-          "url": "https://redbuslondinium.uk/2026/09/11/tartuffe-remixed-marylebone-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
-          "host": "redbuslondinium.uk",
-          "outletId": "redbuslondinium",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lovelondonloveculture",
-            "outlet": "lovelondonloveculture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-marylebone-theatre/"
-          },
-          {
-            "outletId": "redbuslondinium.uk",
-            "outlet": "redbuslondinium.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://redbuslondinium.uk/2026/09/11/tartuffe-remixed-marylebone-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/"
-          },
-          {
-            "outletId": "marylebonetheatre.com",
-            "outlet": "marylebonetheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.marylebonetheatre.com/productions/tartuffe-remixed"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2026/sep/11/tartuffe-remixed-review-marylebone-theatre-london-mark-rylance-moliere",
-            "outletId": "theguardian.com",
+            "url": "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-intermission-youth",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
-            "url": "https://www.londonpubtheatres.com/review-tartuffe-remixed-at-marylebone-theatre-4-sept-24-october-2026",
-            "outletId": "londonpubtheatres.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://saltertonartsreview.com/2026/09/tartuffe-remixed-marylebone-theatre-london/",
-            "outletId": "saltertonartsreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.afridiziak.com/reviews/tartuffe-remixed/",
-            "outletId": "afridiziak.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/tartuffe-remixed-marylebone-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/tartuffe-remixed-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://ayoungishperspective.co.uk/2026/09/12/review-tartuffe-remixed/",
-            "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/tartuffe-remixed-marylebone-theatre-review-false-teeth-not-needed-curates-egg-production",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-tartuffe-remixed-marylebone-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.london-unattached.com/tartuffe-remixed-marylebone-theatre/",
-            "outletId": "london-unattached.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/tartuffe-remixed-marylebone-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/tartuffe-remixed-with-mark-rylance-at-marylebone-theatre-review_1731492/",
@@ -139494,73 +138490,16 @@
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/tartuffe-remixed-marylebone-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.curtaincallreviews.co.uk/tartuffe-remixed",
-            "outletId": "curtaincallreviews.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/09/review-tartuffe-remixed-marylebone-theatre/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://viewfromthegods.co.uk/2026/09/11/tartuffe-remixed-at-marylebone-theatre/",
-            "outletId": "viewfromthegods.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/09/12/review-tartuffe-remixed-marylebone-theatre-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/tartuffe-remixed",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/tartuffe-remixed-review-marylebone-theatre-intermission-youth",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.theguardian.com/stage/2026/sep/11/tartuffe-remixed-review-marylebone-theatre-london-mark-rylance-moliere",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
-          },
-          {
-            "url": "https://lovelondonloveculture.com/2026/09/12/review-round-up-tartuffe-remixed-marylebone-theatre/",
-            "outletId": "lovelondonloveculture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://redbuslondinium.uk/2026/09/11/tartuffe-remixed-marylebone-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
-            "outletId": "redbuslondinium.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
-          },
-          {
-            "url": "https://www.marylebonetheatre.com/productions/tartuffe-remixed",
-            "outletId": "marylebonetheatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T06:58:19.147Z"
           }
         ],
-        "liveCount": 18,
-        "candidateCount": 21
+        "liveCount": 3,
+        "candidateCount": 3
       },
-      "computedAt": "2026-09-17T17:37:02.820Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
@@ -147391,7 +146330,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
@@ -158956,6 +157895,561 @@
       "computedAt": "2026-08-21T22:16:46.049Z"
     },
     {
+      "showId": "the-story-olivier-west-end-2026",
+      "title": "The Story Olivier",
+      "openingDate": "2026-09-04",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://theatrecat.com/2026/09/04/the-story-olivier-se1/",
+        "https://playsinternational.org.uk/the-story-olivier-national-theatre/",
+        "https://www.britishtheatreguide.info/reviews/the-story-olivier-theatre-25983",
+        "https://www.allthatdazzles.co.uk/post/review-the-story-olivier-theatre",
+        "https://www.westminsterextra.co.uk/article/review-the-story-at-olivier-national-theatre",
+        "https://www.thestage.co.uk/reviews/the-story-review-olivier-theatre-national-theatre-london-clint-dyer-letitia-wright",
+        "https://www.londonboxoffice.co.uk/news/post/the-story-olivier-national-theatre-review",
+        "https://www.standard.co.uk/culture/theatre/the-story-national-theatre-review-b1295738.html",
+        "https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-story-review-national-theatre-letitia-wright-b3044684.html",
+        "https://www.whatsonstage.com/news/the-story-with-letitia-wright-at-national-theatre-review_1730979/",
+        "https://www.timeout.com/london/theatre/the-story-review",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectoring-thriller-fails-convince-06fjp2xcd"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://theatrecat.com/2026/09/04/the-story-olivier-se1/",
+          "host": "theatrecat.com",
+          "knownOutletId": "theatrecat",
+          "serpCensus": true
+        },
+        {
+          "url": "https://playsinternational.org.uk/the-story-olivier-national-theatre/",
+          "host": "playsinternational.org.uk",
+          "knownOutletId": "plays-international",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-story-olivier-theatre-25983",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-story-olivier-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-story-at-olivier-national-theatre",
+          "host": "westminsterextra.co.uk",
+          "knownOutletId": "westminsterextra",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-story-review-olivier-theatre-national-theatre-london-clint-dyer-letitia-wright",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/the-story-olivier-national-theatre-review",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
+          "weRef": true,
+          "weRefSources": [
+            "lbo-roundup"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "lbo-roundup",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-story-national-theatre-review-b1295738.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-story-review-national-theatre-letitia-wright-b3044684.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-story-with-letitia-wright-at-national-theatre-review_1730979/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-story-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectoring-thriller-fails-convince-06fjp2xcd",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 2,
+          "weRefStarsSource": "westendtheatre"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 8,
+        "sources": {
+          "westendtheatre": {
+            "found": true,
+            "rows": 7,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": true,
+            "rows": 1,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 8,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Story Olivier\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Story Olivier\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Story Olivier\" review national",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Story Olivier national review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Story Olivier national review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Story Olivier national review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 7,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 29,
+        "byReason": {
+          "non-review-host": 27,
+          "venue-production-page": 1,
+          "ticketing-listing": 1
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://theatrecat.com/2026/09/04/the-story-olivier-se1/",
+          "host": "theatrecat.com",
+          "outletId": "theatrecat",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "the-story-olivier-west-end-2026: https://theatrecat.com/2026/09/04/the-story-olivier-se1/ is already owned by the-story-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/the-story-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://playsinternational.org.uk/the-story-olivier-national-theatre/",
+          "host": "playsinternational.org.uk",
+          "outletId": "plays-international",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "the-story-olivier-west-end-2026: https://playsinternational.org.uk/the-story-olivier-national-theatre/ is already owned by the-story-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/the-story-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-story-olivier-theatre-25983",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "the-story-olivier-west-end-2026: https://www.britishtheatreguide.info/reviews/the-story-olivier-theatre-25983 is already owned by the-story-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/the-story-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-story-olivier-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "unclassified": false,
+          "reason": "the-story-olivier-west-end-2026: https://www.allthatdazzles.co.uk/post/review-the-story-olivier-theatre is already owned by the-story-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/the-story-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-story-at-olivier-national-theatre",
+          "host": "westminsterextra.co.uk",
+          "outletId": "westminsterextra",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-story-review-olivier-theatre-national-theatre-london-clint-dyer-letitia-wright",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/the-story-olivier-national-theatre-review",
+          "host": "londonboxoffice.co.uk",
+          "outletId": "london-box-office"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-story-national-theatre-review-b1295738.html",
+          "host": "standard.co.uk",
+          "outletId": "standard"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-story-review-national-theatre-letitia-wright-b3044684.html",
+          "host": "independent.co.uk",
+          "outletId": "independent"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-story-with-letitia-wright-at-national-theatre-review_1730979/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-story-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectoring-thriller-fails-convince-06fjp2xcd",
+          "host": "thetimes.com",
+          "outletId": "times-uk"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatrecat",
+            "outlet": "theatrecat",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatrecat.com/2026/09/04/the-story-olivier-se1/"
+          },
+          {
+            "outletId": "plays-international",
+            "outlet": "plays-international",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://playsinternational.org.uk/the-story-olivier-national-theatre/"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/the-story-olivier-theatre-25983"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-story-olivier-theatre"
+          },
+          {
+            "outletId": "westminsterextra",
+            "outlet": "westminsterextra",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westminsterextra.co.uk/article/review-the-story-at-olivier-national-theatre"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/the-story-review-olivier-theatre-national-theatre-london-clint-dyer-letitia-wright"
+          },
+          {
+            "outletId": "london-box-office",
+            "outlet": "london-box-office",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-story-olivier-national-theatre-review"
+          },
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/culture/theatre/the-story-national-theatre-review-b1295738.html"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903"
+          },
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-story-review-national-theatre-letitia-wright-b3044684.html"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/the-story-with-letitia-wright-at-national-theatre-review_1730979/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/the-story-review"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectoring-thriller-fails-convince-06fjp2xcd"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://theatrecat.com/2026/09/04/the-story-olivier-se1/",
+            "outletId": "theatrecat",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/the-story-olivier-national-theatre/",
+            "outletId": "plays-international",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/the-story-olivier-theatre-25983",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-story-olivier-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.westminsterextra.co.uk/article/review-the-story-at-olivier-national-theatre",
+            "outletId": "westminsterextra",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-story-review-olivier-theatre-national-theatre-london-clint-dyer-letitia-wright",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-story-olivier-national-theatre-review",
+            "outletId": "london-box-office",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-story-national-theatre-review-b1295738.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-story-review-national-theatre-letitia-wright-b3044684.html",
+            "outletId": "independent",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-story-with-letitia-wright-at-national-theatre-review_1730979/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-story-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectoring-thriller-fails-convince-06fjp2xcd",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-09-17T23:23:55.518Z"
+    },
+    {
       "showId": "the-story-west-end-2026",
       "title": "The Story",
       "openingDate": "2026-09-03",
@@ -161130,25 +160624,17 @@
         "https://www.whatsonstage.com/news/thelma-louise-musical-at-the-young-vic-review_1731575/",
         "https://www.theguardian.com/stage/2026/sep/17/thelma-and-louise-review-young-vic-london-musical"
       ],
-      "dirFiles": 16,
-      "dirClean": 10,
-      "inReviewsJson": 11,
-      "missing": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/thelma-and-louise-review-young-vic-london-rachel-tucker-amy-lennox",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "westendtheatre"
-        }
-      ],
+      "dirFiles": 20,
+      "dirClean": 11,
+      "inReviewsJson": 12,
+      "missing": [],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "jonathanbaz.com",
           "count": 1
         },
         {
@@ -161177,6 +160663,29 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/thelma-and-louise-review-young-vic-london-rachel-tucker-amy-lennox",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": true,
+          "recoverableFile": "thestage--unknown.json",
+          "recoverableOutletId": "thestage",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/reviews/thelma-and-louise-review-young-vic-london-rachel-tucker-amy-lennox"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
+        },
         {
           "url": "https://www.thetimes.com/culture/theatre-dance/article/thelma-and-louise-review-slow-pace-makes-heroines-seem-like-hitchhikers-pr9qmpzsk",
           "host": "thetimes.com",
@@ -161239,7 +160748,7 @@
         "corroborated": 3,
         "perSource": {
           "westendtheatre": {
-            "cited": 4,
+            "cited": 5,
             "corroborated": 3
           }
         }
@@ -161253,44 +160762,28 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
+      "recoveryResults": [
         {
           "url": "https://www.thestage.co.uk/reviews/thelma-and-louise-review-young-vic-london-rachel-tucker-amy-lennox",
           "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Score-only fallback refused: show title \"Thelma & Louise: A New Musical\" not found in page HTML — ca"
-        }
-      ],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic",
-          "host": "allthatdazzles.co.uk",
-          "file": "all-that-dazzles-uk--unknown.json",
-          "recovered": false,
+          "file": "thestage--unknown.json",
+          "recovered": true,
           "skipped": false,
           "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
-          "uncited": true
+          "starFallback": true,
+          "reason": null,
+          "recoveryCount": 0
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/thelma-and-louise-a-new-musical-review-young-vic",
-          "host": "londontheatre.co.uk",
-          "file": "london-theatre--unknown.json",
-          "recovered": false,
+          "url": "https://www.standard.co.uk/culture/theatre/thelma-and-louise-at-the-young-vic-review-b1297374.html",
+          "host": "standard.co.uk",
+          "file": "standard--unknown.json",
+          "recovered": true,
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "Article extraction returned 103 chars — pattern may be missing for this outlet. Add an entry to scri",
-          "recoveryCount": 1,
+          "reason": null,
+          "recoveryCount": 0,
           "uncited": true
         }
       ],
@@ -161350,7 +160843,7 @@
         "liveCount": 3,
         "candidateCount": 5
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
@@ -174527,7 +174020,6 @@
         "https://nystagereview.com/2026/05/14/well-ill-let-you-go-coping-with-grief-magnificently/",
         "https://www.theatermania.com/news/review-well-ill-let-you-go-explores-the-truth-about-death-and-marriage_1836974/",
         "https://www.thewrap.com/creative-content/theater/well-ill-let-you-go-off-broadway-review/",
-        "https://studioseaview.com/show/well-ill-let-you-go/",
         "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html",
         "https://www.newyorktheatreguide.com/reviews/well-ill-let-you-go-off-broadway-review",
         "https://www.theatermania.com/news/review-well-ill-let-you-go-an-elegiac-off-broadway-tearjerker_1796117/",
@@ -174583,23 +174075,6 @@
           ]
         },
         {
-          "url": "https://studioseaview.com/show/well-ill-let-you-go/",
-          "host": "studioseaview.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "studioseaviewcom--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://studioseaview.com/show/well-ill-let-you-go/?"
-            }
-          ]
-        },
-        {
           "url": "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
@@ -174614,7 +174089,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/well-ill-let-you-go-off-broadway-review",
@@ -174682,7 +174159,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://newyorktheater.me/2025/08/20/well-ill-let-you-go-review/"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         }
       ],
       "citedNoUrl": [],
@@ -174692,11 +174171,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 86,
+        "count": 92,
         "byReason": {
-          "non-review-host": 19,
+          "aggregator-internal-nav": 47,
           "not-http-url": 20,
-          "aggregator-internal-nav": 47
+          "aggregator-section-root": 5,
+          "non-review-host": 19,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -174709,13 +174190,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatermania.com/news/review-well-ill-let-you-go-explores-the-truth-about-death-and-marriage_1836974/"
-          },
-          {
-            "outletId": "studioseaview.com",
-            "outlet": "studioseaview.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://studioseaview.com/show/well-ill-let-you-go/"
           },
           {
             "outletId": "nytimes",
@@ -174793,13 +174267,6 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://studioseaview.com/show/well-ill-let-you-go/",
-            "outletId": "studioseaview.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
             "url": "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html",
             "outletId": "nytimes",
             "state": "GAP",
@@ -174836,9 +174303,9 @@
           }
         ],
         "liveCount": 5,
-        "candidateCount": 11
+        "candidateCount": 10
       },
-      "computedAt": "2026-08-17T09:42:27.329Z"
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
@@ -175112,6 +174579,142 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-14T17:43:24.013Z"
+    },
+    {
+      "showId": "why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
+      "title": "Why I Stuck a Flare Up My Arse for England",
+      "openingDate": "2026-06-22",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.allthatdazzles.co.uk/post/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse",
+        "https://everything-theatre.co.uk/2024/04/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse/",
+        "https://www.westendbestfriend.co.uk/news/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse-borough"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2024/04/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse-borough",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://everything-theatre.co.uk/2024/04/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse/",
+          "host": "everything-theatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse-borough",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse"
+          },
+          {
+            "outletId": "everything-theatre",
+            "outlet": "everything-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://everything-theatre.co.uk/2024/04/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse/"
+          },
+          {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse-borough"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2024/04/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse/",
+            "outletId": "everything-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse-borough",
+            "outletId": "west-end-best-friend",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T23:23:55.518Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 3
+      },
+      "computedAt": "2026-09-17T23:23:55.518Z"
     },
     {
       "showId": "woman-in-mind-west-end-2025",

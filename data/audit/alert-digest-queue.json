@@ -829,18 +829,6 @@
     "queuedAt": "2026-09-17T11:13:02.794Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "5/141 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nMillion Dollar Quartet: score-drift\nMan to Man: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift\nOh, Mary!: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-17T12:25:09.862Z"
-  },
-  {
     "conditionKey": "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026",
     "title": "Shipped review missing publishDate on Thelma & Louise: A New Musical",
     "description": "musical-theatre-review/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
@@ -898,18 +886,6 @@
     "queuedAt": "2026-09-17T20:52:57.390Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76% (428/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (827h)\nA Midsummer Night's Dream — observer (827h)\nA Midsummer Night's Dream — standard (827h)\nABBA Voyage — independent (827h)\nAladdin — ew (827h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (827h)\nBuena Vista Social Club — broadwaynews (827h)\nBuena Vista Social Club — nydailynews (827h)\nHadestown — nydailynews (827h)\nHeathers The Musical — dailybeast (827h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-17T20:52:57.483Z"
-  },
-  {
     "conditionKey": "opening-night-fulltext-mentions-show:short:thelma-and-louise-a-new-musical-off-west-end-2026",
     "title": "Shipped review too short to verify on Thelma & Louise: A New Musical",
     "description": "all-that-dazzles-uk/Unknown (all-that-dazzles-uk--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic\nlondon-theatre/Unknown (london-theatre--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.londontheatre.co.uk/reviews/thelma-and-louise-a-new-musical-review-young-vic\ntelegraph/Unknown (telegraph--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.telegraph.co.uk/theatre/what-to-see/thelma-louise-musical-struggles-to-capture-magic/",
@@ -920,5 +896,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-17T21:33:05.743Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "7/147 show(s) differ between internal state and what prod serves.\nscore-drift: 7\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift\nHadestown: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-17T23:24:10.815Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76% (428/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (829h)\nA Midsummer Night's Dream — observer (829h)\nA Midsummer Night's Dream — standard (829h)\nABBA Voyage — independent (829h)\nAladdin — ew (829h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (829h)\nBuena Vista Social Club — broadwaynews (829h)\nBuena Vista Social Club — nydailynews (829h)\nHadestown — nydailynews (829h)\nHeathers The Musical — dailybeast (829h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-17T23:24:11.018Z"
   }
 ]
