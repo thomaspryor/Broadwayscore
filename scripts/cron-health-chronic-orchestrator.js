@@ -32,11 +32,9 @@
 
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { classifyJob } = require('./lib/cron-health.js');
+const { classifyJob, readJobTimeouts } = require('./lib/cron-health.js');
 
 const USAGE = `cron-health-chronic-orchestrator.js — Diagnose a chronically-stale cron workflow.
 
@@ -62,30 +60,6 @@ function parseArgs(argv) {
 
 function gh(args) {
   return execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
-}
-
-/** Best-effort `timeout-minutes:` per job name, read straight from the workflow YAML. */
-function readJobTimeouts(workflowFile) {
-  const wfPath = path.join(__dirname, '..', '.github', 'workflows', workflowFile);
-  const text = fs.readFileSync(wfPath, 'utf8');
-  const lines = text.split('\n');
-  const timeouts = {};
-  let currentJob = null;
-  // Jobs are top-level keys under `jobs:` at 2-space indent; `timeout-minutes:`
-  // lines nested under a job are indented further. Good enough for this
-  // repo's consistently-formatted workflow files — not a YAML parser.
-  let inJobs = false;
-  for (const line of lines) {
-    if (/^jobs:\s*$/.test(line)) { inJobs = true; continue; }
-    if (!inJobs) continue;
-    const jobMatch = line.match(/^ {2}([a-zA-Z0-9_-]+):\s*$/);
-    if (jobMatch) { currentJob = jobMatch[1]; continue; }
-    const timeoutMatch = line.match(/^\s+timeout-minutes:\s*(\d+)/);
-    if (timeoutMatch && currentJob) {
-      timeouts[currentJob] = parseInt(timeoutMatch[1], 10);
-    }
-  }
-  return timeouts;
 }
 
 async function main() {
