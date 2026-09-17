@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T12:31:30.177Z",
+  "generatedAt": "2026-09-17T13:12:25.807Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1681,28 +1681,28 @@
       "status": "open",
       "slug": "the-seven-deadly-sins-the-human-voice-off-west-end",
       "thumbnail": "/images/shows/the-seven-deadly-sins-the-human-voice-off-west-end-2026/thumbnail.webp",
-      "siteScore": 72.66,
-      "liveScore": 73,
-      "scoreDrift": 0.3400000000000034,
+      "siteScore": 73.79,
+      "liveScore": 74,
+      "scoreDrift": 0.20999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
       "t2": 1,
-      "t3": 2,
-      "positive": 1,
+      "t3": 3,
+      "positive": 2,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1803,6 +1803,18 @@
           "t2": 1,
           "t3": 2,
           "p": 1,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-17T13:12:25.807Z",
+          "rc": 4,
+          "s": 73.79,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 2,
           "m": 2,
           "n": 0,
           "bc": "waiting"
@@ -3414,27 +3426,26 @@
       "status": "open",
       "slug": "million-dollar-quartet-off-west-end",
       "thumbnail": "/images/shows/million-dollar-quartet-off-west-end-2026/thumbnail.webp",
-      "siteScore": 80.98,
-      "liveScore": 81,
-      "scoreDrift": 0.01999999999999602,
+      "siteScore": 78.82,
+      "liveScore": 79,
+      "scoreDrift": 0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 0,
-      "t2": 3,
+      "t2": 4,
       "t3": 5,
       "positive": 6,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3552,6 +3563,18 @@
           "t3": 5,
           "p": 6,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-17T13:12:25.807Z",
+          "rc": 9,
+          "s": 78.82,
+          "t1": 0,
+          "t2": 4,
+          "t3": 5,
+          "p": 6,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
