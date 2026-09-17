@@ -1,47 +1,5 @@
 [
   {
-    "startedAt": "2026-09-14T11:18:35.130Z",
-    "completedAt": "2026-09-14T11:18:46.395Z",
-    "totalReviews": 43598,
-    "processed": 1,
-    "skipped": 43596,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8430,
-      "output": 404,
-      "total": 23918
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-14T11:46:21.026Z",
-    "completedAt": "2026-09-14T11:46:25.251Z",
-    "totalReviews": 43598,
-    "processed": 0,
-    "skipped": 43597,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 100,
-      "total": 10923
-    },
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-14T12:18:29.554Z",
-    "completedAt": "2026-09-14T12:18:32.508Z",
-    "totalReviews": 43598,
-    "processed": 0,
-    "skipped": 43597,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 107,
-      "total": 10948
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-14T12:46:08.570Z",
     "completedAt": "2026-09-14T12:46:11.739Z",
     "totalReviews": 43598,
@@ -277765,6 +277723,44 @@
     },
     "costUsd": 0,
     "runId": "35192725543",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-17T07:49:50.695Z",
+    "completedAt": "2026-09-17T07:50:17.118Z",
+    "totalReviews": 43971,
+    "processed": 0,
+    "skipped": 43965,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 19801,
+      "output": 641,
+      "total": 57735
+    },
+    "costUsd": 0.09592244999999999,
+    "runId": "35194319401",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-17T07:50:19.147Z",
+    "completedAt": "2026-09-17T07:56:44.612Z",
+    "totalReviews": 168,
+    "processed": 168,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 439038,
+      "output": 38592,
+      "total": 477630
+    },
+    "costUsd": 1.2212699,
+    "runId": "35194319401",
     "errorDetails": []
   }
 ]
