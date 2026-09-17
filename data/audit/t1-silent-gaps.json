@@ -1,8 +1,26 @@
 {
-  "generatedAt": "2026-09-17T01:13:16.622Z",
+  "generatedAt": "2026-09-17T06:58:20.954Z",
   "windowDays": 45,
   "showsScanned": 70,
   "gaps": [
+    {
+      "showId": "truly-howard-hughes-off-broadway-2026",
+      "title": "Truly, Howard Hughes",
+      "openingDate": null,
+      "file": "cititour--unknown.json",
+      "outletId": "cititour",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
+      "firstSeen": "2026-09-09T14:56:32.660Z",
+      "fileAgeHours": 184.02991805555556,
+      "gapSeenAt": "2026-09-17T06:58:20.954Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
       "title": "The Human Voice / The Seven Deadly Sins",
@@ -12,17 +30,13 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 7.206976666666667,
+      "fileAgeHours": 12.958228055555555,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 7.126114444444444
+      "nonTerminalAgeHours": 12.877317777777778
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -37,9 +51,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 463.94308277777776,
+      "fileAgeHours": 469.69429333333335,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 425.53401444444444
+      "nonTerminalAgeHours": 431.2852177777778
     }
   ],
   "contradictions": []
