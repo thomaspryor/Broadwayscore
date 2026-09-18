@@ -1,25 +1,8 @@
 {
-  "generatedAt": "2026-09-18T12:09:59.723Z",
+  "generatedAt": "2026-09-18T17:02:49.155Z",
   "windowDays": 45,
-  "showsScanned": 73,
+  "showsScanned": 72,
   "gaps": [
-    {
-      "showId": "man-to-man-west-end-2026",
-      "title": "Man to Man",
-      "openingDate": "2026-09-11",
-      "file": "thestage--matt-barton.json",
-      "outletId": "thestage",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
-      "recovery": null,
-      "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=man-to-man-west-end-2026 --url=https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse --outlet=thestage --critic=\"Matt Barton\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-14T14:46:50.891Z",
-      "fileAgeHours": 93.3796836111111,
-      "gapSeenAt": "2026-09-17T23:23:57.838Z",
-      "nonTerminalAgeHours": 12.767190277777777
-    },
     {
       "showId": "alvin-ailey-american-dance-theater-new-works-west-end-2026",
       "title": "Alvin Ailey American Dance Theater - New Works",
@@ -33,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --url=https://www.thestage.co.uk/long-reviews/alvin-ailey-american-dance-theater-review --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-17T15:01:25.973Z",
-      "fileAgeHours": 21.140235,
+      "fileAgeHours": 26.020573055555555,
       "gapSeenAt": "2026-09-18T01:46:13.314Z",
-      "nonTerminalAgeHours": 10.396224722222222
+      "nonTerminalAgeHours": 15.2766225
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -50,26 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 42.15003027777778,
+      "fileAgeHours": 47.03035916666666,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 42.071420277777776
-    },
-    {
-      "showId": "benevolent-off-broadway-2026",
-      "title": "Benevolent",
-      "openingDate": "2026-08-14",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "rejected-unscoreable",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669",
-      "recovery": null,
-      "recoveryCount": 1,
-      "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 498.88612555555557,
-      "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 460.4793202777778
+      "nonTerminalAgeHours": 46.951818055555556
     }
   ],
   "contradictions": []
