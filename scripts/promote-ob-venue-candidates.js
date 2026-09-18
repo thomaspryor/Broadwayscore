@@ -404,7 +404,12 @@ function buildOffBroadwayAggregatorShowEntry(candidate) {
     status: 'open',
     category: 'off-broadway',
     market: 'broadway',
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : null,
+    // 'play' (not null) when the title doesn't say "musical" — status is
+    // 'open' here, and validate-market-expansion.js's required-fields check
+    // only exempts type when status==='announced'. A null type on a
+    // status='open' show fails CI (BRO-3716 was this exact bug, hit first
+    // via the west-end sibling of this function).
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
@@ -457,7 +462,11 @@ function buildRegionalShowEntry(candidate) {
     category: 'regional',
     market: 'regional',
     tags: ['regional'],
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : null,
+    // Same 'play'-not-null default as the west-end/off-broadway builders
+    // above (BRO-3716) — regional isn't in validate-market-expansion.js's
+    // gated markets today, but there's no reason to leave a known-bad
+    // pattern in a third copy of it.
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — reviews auto-ingest via the PV/BWW matchers now that the

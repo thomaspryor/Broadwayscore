@@ -73,7 +73,14 @@ const WE_SLUG_MIN_LENGTH = 5;
 // only; a genuine West End Playhouse/Cambridge Theatre roundup still reaches
 // promotion via the WET-listing path, which validates venue from prose via
 // venueFromWetDescription, not a slug substring.
-const WE_SLUG_GENERIC_EXCLUDE = new Set(['playhouse', 'cambridge']);
+//
+// "lyric" joined the exclusion list after BRO-3716: the bare word matches
+// WEST_END_VENUES' "Lyric" (Shaftesbury Avenue) but also matches inside
+// "an-ideal-husband-lyric-hammersmith-review2" — Lyric Hammersmith is a
+// real, distinct, NON-West-End venue. The false match minted a second,
+// garbage-titled show ("An Ideal Husband Hammersmith Review2") duplicating
+// the correctly-entered an-ideal-husband-west-end-2026.
+const WE_SLUG_GENERIC_EXCLUDE = new Set(['playhouse', 'cambridge', 'lyric']);
 const VENUE_SLUG_ENTRIES = [...WEST_END_VENUES]
   .map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\s+/g, '-') }))
   .filter(e => e.slug.length >= WE_SLUG_MIN_LENGTH && !WE_SLUG_GENERIC_EXCLUDE.has(e.slug))
@@ -88,6 +95,28 @@ function stripGenericVenueWords(remainder) {
     .replace(/^(theatre|theater)-/, '')
     .replace(/-(theatre|theater)$/, '')
     .replace(/^-+|-+$/g, '');
+}
+
+// National Theatre South Bank names its three auditoria inside LBO's slug
+// alongside "national-theatre", in either order — "the-story-OLIVIER-
+// national-theatre-review" and "pride-national-theatre-DORFMAN-review" are
+// both real, live-observed slugs (BRO-3716). Neither auditorium word is part
+// of the show's title; left in the remainder, they produced "The Story
+// Olivier" and "Pride Theatre Dorfman" — garbage titles that minted a
+// second, duplicate show entry alongside the already-correct
+// the-story-west-end-2026 / pride-west-end-2026. Scoped to venue === 'national'
+// only, so an unrelated title that happens to contain one of these words
+// elsewhere is never touched.
+// "theatre"/"theater" is included here too — stripGenericVenueWords only
+// catches it at the very start/end of the remainder, but removing an
+// auditorium token from the middle of "pride-theatre-dorfman" leaves
+// "theatre" stranded ("pride-theatre") rather than at an edge.
+const NATIONAL_AUDITORIUM_TOKENS = new Set(['olivier', 'lyttelton', 'dorfman', 'theatre', 'theater']);
+function stripNationalAuditorium(remainder) {
+  return remainder
+    .split('-')
+    .filter((token) => !NATIONAL_AUDITORIUM_TOKENS.has(token))
+    .join('-');
 }
 
 // Known non-West-End venues whose NAME happens to end in a canonical West
@@ -245,9 +274,10 @@ function matchWestEndVenueFromSlug(slug) {
     const afterIdx = idx + venueSlug.length;
     const after = afterIdx === slug.length || slug[afterIdx] === '-';
     if (!before || !after) continue;
-    const remainder = stripGenericVenueWords(
+    let remainder = stripGenericVenueWords(
       (slug.slice(0, idx) + slug.slice(afterIdx)).replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-')
     );
+    if (venue === 'national') remainder = stripNationalAuditorium(remainder);
     return { venue, remainder };
   }
   return null;
@@ -265,7 +295,11 @@ function slugToTitle(slug) {
 }
 
 const LBO_PREFIX_STRIP = /^(review-roundup-|review-round-up-|review-)/;
-const LBO_SUFFIX_STRIP = /(-reviews|-review)$/;
+// LBO's CMS appends a bare digit (no hyphen) to the slug of a reposted
+// duplicate article — observed live: "an-ideal-husband-lyric-hammersmith-
+// review2" alongside the original "...-review" post (BRO-3716). Without the
+// trailing `\d*`, "review2" survives the strip and leaks into the title.
+const LBO_SUFFIX_STRIP = /(-reviews?\d*)$/;
 
 /**
  * Fetch LBO's news-sitemap.xml and extract {title, venue} review-roundup
