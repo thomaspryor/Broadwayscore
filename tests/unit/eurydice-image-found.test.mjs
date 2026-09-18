@@ -1,3 +1,6 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural check (file exists on disk, non-placeholder
+// hash, predicate returns true) — there is no precursor source file for images, the
+// image file itself IS the source of truth; nothing here pins a scraped/derived fact.
 /**
  * BRO-2651 regression: EURYDICE (eurydice-off-broadway-2026) was auto-filed by
  * owner-alert-router after 5 failed self-heal image fetches. A real poster
