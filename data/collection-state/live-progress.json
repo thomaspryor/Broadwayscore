@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-18T10:12:48.653Z",
-  "processed": 28,
-  "failed": 86,
-  "successRate": "24.6%",
+  "updatedAt": "2026-09-18T10:35:47.832Z",
+  "processed": 31,
+  "failed": 98,
+  "successRate": "24.0%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 21,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-09-18T09:46:40.499Z",
@@ -26,6 +26,41 @@
       "event": "bb-session",
       "session": "71c47984",
       "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-18T10:28:29.967Z",
+      "event": "bb-session",
+      "session": "318a49ed",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-18T10:28:30.756Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-18T10:30:17.084Z",
+      "event": "bb-session",
+      "session": "7a7ef90a",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-18T10:33:36.622Z",
+      "event": "bb-session",
+      "session": "0bb06970",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-18T10:33:48.282Z",
+      "event": "bb-session",
+      "session": "1fbde28a",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-18T10:35:09.117Z",
+      "event": "bb-session",
+      "session": "406ca1de",
+      "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
     }
   ]
 }
