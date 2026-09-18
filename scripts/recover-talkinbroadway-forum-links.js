@@ -208,25 +208,13 @@ async function run() {
     }
     const newFilePath = writeMatch[1].trim();
 
-    // createOrMergeReviewFile's merge-into-existing path only fills BLANK
-    // fields — when the "Updated" target already has a non-blank (but
-    // wrong) url/fullText from the old forum-thread fetch, the merge
-    // silently keeps them and the husk's url never actually changes
-    // (observed live during this script's development: girl-interrupted,
-    // lean-to, romeo-and-juliet-off-broadway all reported "✅ Updated" but
-    // left the forum URL in place). Verify the write actually landed
-    // before trusting "Updated" — a stale merge needs the same manual
-    // field-correction this script's own commit history shows, not a
-    // silent false-positive success count.
-    let landedUrl = null;
-    try {
-      landedUrl = JSON.parse(fs.readFileSync(newFilePath, 'utf8')).url;
-    } catch { /* file unreadable — fall through to the mismatch branch below */ }
-    if (landedUrl !== reviewPageUrl) {
-      console.warn(`  ⚠️  ingest reported "Updated" but ${newFilePath} still has url=${landedUrl} (expected ${reviewPageUrl}) — merge-into-existing only fills blank fields. Manual field correction needed; leaving husk in place.`);
-      skipped++;
-      continue;
-    }
+    // BRO-3790: ingest-review-from-url.js itself now verifies a merge-into-
+    // existing "Updated" actually landed the url/fullText/--critic it was
+    // asked to set (findStaleMergeFields) and exits non-zero — caught by the
+    // try/catch above — when it silently didn't (the exact girl-interrupted /
+    // lean-to / romeo-and-juliet-off-broadway failure mode this script's
+    // development first surfaced). Reaching this line means the write is
+    // already confirmed correct; no need to re-check it here too.
 
     if (path.resolve(newFilePath) !== path.resolve(filePath) && fs.existsSync(newFilePath)) {
       try {

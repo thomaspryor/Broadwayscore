@@ -32,8 +32,10 @@
  *     [--dry-run]
  *
  * Exit codes: 0 on success or skip (review already exists, no-op merge),
- * 1 on hard failure (fetch error, extraction empty, collision-blocked, or
- * the write-guard silently refusing/redirecting an update — BRO-3182).
+ * 1 on hard failure (fetch error, extraction empty, collision-blocked, the
+ * write-guard silently refusing/redirecting an update — BRO-3182 — or a
+ * merge-into-existing that reported "Updated" without actually landing the
+ * intended url/fullText/criticName — BRO-3790).
  */
 
 'use strict';
@@ -48,6 +50,7 @@ const { stripTrailingJunk } = require('./lib/text-cleaning');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile } = require('./lib/review-normalization');
 const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
+const { findStaleMergeFields } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
@@ -396,6 +399,32 @@ if (!show) {
   if (result.action === 'new') {
     console.log(`✅ Created: ${result.filepath}`);
   } else if (result.action === 'updated') {
+    // BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills
+    // BLANK fields (review-file-writer.js _mergeIntoExisting) — a merge onto
+    // a file that already has a non-blank-but-WRONG url/criticName/fullText
+    // silently keeps the old value while still returning action:'updated'
+    // (something else may genuinely have changed, e.g. sources[]). Verify
+    // the fields THIS ingest explicitly intended to establish actually
+    // landed before printing success. criticName is only checked when the
+    // caller passed --critic explicitly — an auto-extracted byline is
+    // best-effort, not a correction the caller is asserting.
+    const intended = { url };
+    if (hasBody) intended.fullText = text;
+    if (criticArg) intended.criticName = criticArg;
+    let landed = null;
+    if (!dryRun) {
+      try {
+        landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+      } catch (e) {
+        console.error(`\n❌ Could not re-read ${result.filepath} to verify the write landed: ${e.message}`);
+        process.exit(1);
+      }
+    }
+    const staleFields = dryRun ? [] : findStaleMergeFields(intended, landed);
+    if (staleFields.length > 0) {
+      console.error(`\n❌ Stale merge: reported an update but ${staleFields.join(', ')} still hold the pre-existing value at ${result.filepath} — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.`);
+      process.exit(1);
+    }
     console.log(`✅ Updated: ${result.filepath}`);
   } else {
     console.log(`⚠️  Skipped: ${result.reason || result.action}`);

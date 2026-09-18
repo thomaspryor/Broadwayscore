@@ -519,6 +519,7 @@ tests/unit/ingest-manual-review-fields.test.mjs
 tests/unit/ingest-manual-review-merge.test.mjs
 tests/unit/ingest-manual-review.test.mjs
 tests/unit/ingest-review-from-url-fix.test.mjs
+tests/unit/ingest-review-from-url-stale-merge.test.mjs
 tests/unit/ingest-review-nytimes-an-american-daughter.test.mjs
 tests/unit/ingest-review-url-blocklist.test.mjs
 tests/unit/initialize-commercial-stub.test.mjs
@@ -834,6 +835,7 @@ tests/unit/stage-latency.test.mjs
 tests/unit/stage-pagesonstages-extractor.test.mjs
 tests/unit/stale-announced-audit-scheduled.test.mjs
 tests/unit/stale-announced-evidence.test.mjs
+tests/unit/stale-merge-check.test.mjs
 tests/unit/stale-wrong-production.test.mjs
 tests/unit/star-anchored-ensemble-wiring.test.mjs
 tests/unit/star-band-mapping.test.mjs
