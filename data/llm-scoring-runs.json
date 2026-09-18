@@ -1,81 +1,5 @@
 [
   {
-    "startedAt": "2026-09-17T02:34:20.513Z",
-    "completedAt": "2026-09-17T02:40:22.771Z",
-    "totalReviews": 168,
-    "processed": 168,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 439038,
-      "output": 38535,
-      "total": 477573
-    },
-    "costUsd": 1.2223799,
-    "runId": "35173516497",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-17T03:07:04.470Z",
-    "completedAt": "2026-09-17T03:07:19.470Z",
-    "totalReviews": 43967,
-    "processed": 0,
-    "skipped": 43961,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 19801,
-      "output": 653,
-      "total": 57738
-    },
-    "costUsd": 0.09601994999999999,
-    "runId": "35175321121",
-    "errorDetails": [
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-17T03:07:21.476Z",
-    "completedAt": "2026-09-17T03:14:11.757Z",
-    "totalReviews": 168,
-    "processed": 168,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 439038,
-      "output": 38904,
-      "total": 477942
-    },
-    "costUsd": 1.2258823999999997,
-    "runId": "35175321121",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-17T03:34:10.454Z",
-    "completedAt": "2026-09-17T03:34:13.230Z",
-    "totalReviews": 43967,
-    "processed": 0,
-    "skipped": 43965,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 118,
-      "total": 10940
-    },
-    "costUsd": 0.025337150000000003,
-    "runId": "35177423877",
-    "errorDetails": [
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-17T03:34:14.461Z",
     "completedAt": "2026-09-17T03:40:28.259Z",
     "totalReviews": 168,
@@ -256144,6 +256068,82 @@
     },
     "costUsd": 1.234713,
     "runId": "35353354554",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-18T15:02:06.702Z",
+    "completedAt": "2026-09-18T15:02:41.064Z",
+    "totalReviews": 44099,
+    "processed": 1,
+    "skipped": 44093,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 21742,
+      "output": 831,
+      "total": 60857
+    },
+    "costUsd": 0.10401525,
+    "runId": "35356946852",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-18T15:02:42.835Z",
+    "completedAt": "2026-09-18T15:08:53.037Z",
+    "totalReviews": 170,
+    "processed": 170,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 444415,
+      "output": 39534,
+      "total": 483949
+    },
+    "costUsd": 1.240388,
+    "runId": "35356946852",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-18T16:08:40.366Z",
+    "completedAt": "2026-09-18T16:08:40.580Z",
+    "totalReviews": 4,
+    "processed": 0,
+    "skipped": 3,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "35363725266",
+    "errorDetails": [
+      {
+        "showId": "gimme-a-sign-off-broadway-2026",
+        "outletId": "donyc",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-18T16:08:42.517Z",
+    "completedAt": "2026-09-18T16:08:42.519Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "35363725266",
     "errorDetails": []
   }
 ]

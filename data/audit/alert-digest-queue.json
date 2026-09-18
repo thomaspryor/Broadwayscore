@@ -908,5 +908,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-18T12:10:09.335Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-18T15:38:10.868Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-show-ids",
+    "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
+    "description": "check-corpus-drift.js audit \"orphan-show-ids\" (node scripts/audit-orphan-show-ids.js) has been drifting. Latest output:\n\n  meat-suit-or-the-stshow-of-motherhood-2026\n  mother-russia-2026\n  much-ado-about-nothing-globe-west-end-2026\n  my-joy-is-heavy-2025\n  night-side-songs-2026\n  not-nobody-2026\n  pen-pals-2025\n  perfect-crime-1987\n  pied-a-terre-2026\n  silver-manhattan-2026\n  singfeld-a-musical-about-nothing-2023\n  spare-parts-2026\n  spread-2026\n  the-25th-annual-putnam-county-spelling-bee-2025\n  the-amazing-adventures-of-kavalier-and-clay-2025\n  the-choir-of-man-west-end-2026\n  the-dinosaurs-2026\n  the-disappear-2026\n  the-infinite-wrench-2025\n  the-little-mermaid-the-musical-2026\n  the-monsters-2026\n  the-office-a-musical-parody-2018\n  the-other-place-2026\n  the-phantom-of-the-opera-off-west-end-2021\n  the-phantom-of-the-opera-west-end-2021\n  the-play-that-goes-wrong-2019\n  the-reservoir-2026\n  the-tragedy-of-coriolanus-2026\n  the-unknown-2026\n  the-waterfall-2026\n  the-winters-tale-2026\n  this-is-my-favorite-song-2024\n  touch-2026\n  ulysses-2026\n  unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026\n  what-we-did-before-our-moth-days-2026\n  you-got-older-2026\n  zack-2026\n\nRun with --fix to delete orphan slim files. audience-buzz/show-score require manual rename.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-18T16:10:40.529Z"
   }
 ]

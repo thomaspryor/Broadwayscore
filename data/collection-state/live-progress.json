@@ -1,36 +1,132 @@
 {
-  "updatedAt": "2026-09-18T14:41:04.654Z",
-  "processed": 8,
-  "failed": 31,
-  "successRate": "20.5%",
+  "updatedAt": "2026-09-18T15:44:26.098Z",
+  "processed": 85,
+  "failed": 365,
+  "successRate": "18.9%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 54,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "browserbase": 9,
+    "directCookies": 1,
+    "scrapingbee": 16,
+    "brightdata": 7,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 17,
   "recentActivity": [
     {
-      "t": "2026-09-18T14:27:32.938Z",
+      "t": "2026-09-18T15:14:25.447Z",
       "event": "bb-session",
-      "session": "c4ead6e8",
-      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+      "session": "dc9fa704",
+      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about"
     },
     {
-      "t": "2026-09-18T14:27:38.602Z",
+      "t": "2026-09-18T15:14:26.217Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-09-18T14:40:33.234Z",
+      "t": "2026-09-18T15:14:56.911Z",
       "event": "bb-session",
-      "session": "c071dcb2",
-      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+      "session": "735bd1c1",
+      "url": "https://deadline.com/2026/01/music-city-off-broadway-j-t-harding-1236690521/"
+    },
+    {
+      "t": "2026-09-18T15:19:41.253Z",
+      "event": "bb-session",
+      "session": "2e44ceda",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-18T15:19:42.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-18T15:22:17.238Z",
+      "event": "bb-session",
+      "session": "cc98802e",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
+    },
+    {
+      "t": "2026-09-18T15:30:29.400Z",
+      "event": "bb-session",
+      "session": "cafb957e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-18T15:30:30.228Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-18T15:34:06.712Z",
+      "event": "bb-session",
+      "session": "245f38d4",
+      "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-09-18T15:34:21.723Z",
+      "event": "bb-session",
+      "session": "5c22095a",
+      "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-09-18T15:34:57.616Z",
+      "event": "bb-session",
+      "session": "1ab5fc17",
+      "url": "https://www.londontheatredirect.com/news/event/buena-vista-social-club-tickets?s"
+    },
+    {
+      "t": "2026-09-18T15:35:05.944Z",
+      "event": "bb-session",
+      "session": "efb0c9c8",
+      "url": "https://www.londontheatredirect.com/news/event/buena-vista-social-club-tickets?s"
+    },
+    {
+      "t": "2026-09-18T15:36:10.614Z",
+      "event": "bb-session",
+      "session": "8fb7ff18",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-18T15:36:11.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-18T15:38:57.488Z",
+      "event": "bb-session",
+      "session": "b0e507a8",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/titanique-review-celine-d"
+    },
+    {
+      "t": "2026-09-18T15:38:58.204Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-18T15:43:25.149Z",
+      "event": "bb-session",
+      "session": "49110768",
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
+    },
+    {
+      "t": "2026-09-18T15:43:25.832Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-18T15:43:43.360Z",
+      "event": "bb-session",
+      "session": "c0ef0529",
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
+    },
+    {
+      "t": "2026-09-18T15:43:44.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
