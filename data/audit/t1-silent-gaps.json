@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T20:16:38.742Z",
+  "generatedAt": "2026-09-18T23:08:53.760Z",
   "windowDays": 45,
   "showsScanned": 72,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --url=https://www.thestage.co.uk/long-reviews/alvin-ailey-american-dance-theater-review --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-17T15:01:25.973Z",
-      "fileAgeHours": 29.253320555555554,
+      "fileAgeHours": 32.12415138888889,
       "gapSeenAt": "2026-09-18T01:46:13.314Z",
-      "nonTerminalAgeHours": 18.507063333333335
+      "nonTerminalAgeHours": 21.377901666666666
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 50.26311777777778,
+      "fileAgeHours": 53.133960555555554,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 50.18225888888889
+      "nonTerminalAgeHours": 53.05309722222222
     }
   ],
   "contradictions": []
