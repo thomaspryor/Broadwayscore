@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "million-dollar-quartet-off-west-end-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-18T23:16:12.405Z",
+  "detectedAt": "2026-09-18T23:40:44.935Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "musical-theatre-review--unknown.json",
-      "outletId": "musical-theatre-review",
-      "criticName": "Admin",
-      "url": "https://musicaltheatrereview.com/million-dollar-quartet-the-arts-at-marble-arch/",
-      "fullTextLen": 4580,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }

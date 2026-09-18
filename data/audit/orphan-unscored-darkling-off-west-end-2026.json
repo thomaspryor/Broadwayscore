@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "darkling-off-west-end-2026",
   "openingDate": "2026-09-16",
-  "detectedAt": "2026-09-18T23:16:12.405Z",
+  "detectedAt": "2026-09-18T23:40:44.935Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "khambayswordswordswords--view-more-posts.json",
-      "outletId": "khambayswordswordswords",
-      "criticName": "View more posts",
-      "url": "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
-      "fullTextLen": 4197,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "viewfromthegods--unknown.json",
       "outletId": "viewfromthegods",
@@ -38,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "voice-magazine--unknown.json",
-      "outletId": "voice-magazine",
-      "criticName": "Unknown",
-      "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
-      "fullTextLen": 2707,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
