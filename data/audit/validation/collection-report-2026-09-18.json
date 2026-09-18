@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-09-18T07:03:28.751Z",
+  "runDate": "2026-09-18T07:39:43.713Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "america-who-hurt-you-off-broadway-2026",
+    "showFilter": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 0,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -39,24 +39,28 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 3,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "america-who-hurt-you-off-broadway-2026/nysr--unknown.json"
+    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/jackstage--emma-knott.json"
   ],
-  "failed": [],
+  "failed": [
+    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
+    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/consequence--unknown.json",
+    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/lovetovisit--unknown.json"
+  ],
   "tierDetails": {
     "playwright": [
-      "america-who-hurt-you-off-broadway-2026/nysr--unknown.json"
+      "the-seven-deadly-sins-the-human-voice-off-west-end-2026/jackstage--emma-knott.json"
     ],
     "amp": [],
     "browserbase": [],
