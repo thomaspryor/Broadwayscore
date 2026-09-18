@@ -326,6 +326,12 @@ on:
       # its new dependency, is already covered by the scripts/lib/** glob above.)
       - 'scripts/ingest-review-from-url.js'
       - 'scripts/ingest-review-from-url.test.mjs'
+      # scripts/ingest-manual-review.js (BRO-3790 cousin fix): the operator
+      # "break-glass" manual-correction CLI sits at the top level of scripts/
+      # with all its tests under tests/unit/ (already globbed above via
+      # 'tests/**'), so a solo edit to the SOURCE file alone would trigger
+      # zero CI — same gap class as scripts/ingest-review-from-url.js above.
+      - 'scripts/ingest-manual-review.js'
       # scripts/audit-safe-form-allowlist.js (BRO-2718): required by
       # scripts/lib/safe-form-allowlist.test.mjs (globbed above) but living at
       # the top level of scripts/, so a solo edit to it would trigger zero CI —
