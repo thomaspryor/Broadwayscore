@@ -1,18 +1,49 @@
 {
-  "updatedAt": "2026-09-18T01:32:08.120Z",
-  "processed": 1,
-  "failed": 3,
-  "successRate": "25.0%",
+  "updatedAt": "2026-09-18T02:08:20.998Z",
+  "processed": 5,
+  "failed": 31,
+  "successRate": "13.9%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-09-18T02:01:05.504Z",
+      "event": "bb-session",
+      "session": "e85b1628",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-18T02:05:47.655Z",
+      "event": "bb-session",
+      "session": "64437c4b",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-18T02:06:00.621Z",
+      "event": "bb-session",
+      "session": "8bb377a9",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-18T02:07:35.034Z",
+      "event": "bb-session",
+      "session": "088a53df",
+      "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
+    },
+    {
+      "t": "2026-09-18T02:07:53.559Z",
+      "event": "bb-session",
+      "session": "08aca89b",
+      "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
+    }
+  ]
 }
