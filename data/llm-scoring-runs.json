@@ -209805,20 +209805,25 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-18T12:09:03.508Z",
-    "completedAt": "2026-09-18T12:09:14.969Z",
-    "totalReviews": 44065,
-    "processed": 0,
-    "skipped": 44060,
-    "errors": 1,
+    "startedAt": "2026-09-18T12:42:24.436Z",
+    "completedAt": "2026-09-18T12:42:45.251Z",
+    "totalReviews": 44067,
+    "processed": 1,
+    "skipped": 44059,
+    "errors": 2,
     "tokensUsed": {
-      "input": 16029,
-      "output": 534,
-      "total": 46458
+      "input": 29482,
+      "output": 968,
+      "total": 78099
     },
-    "costUsd": 0.08250854999999999,
-    "runId": "35341430964",
+    "costUsd": 0.11697874999999999,
+    "runId": "35343590015",
     "errorDetails": [
+      {
+        "showId": "the-hope-theory-off-broadway-2026",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
       {
         "showId": "oliver-west-end-2024",
         "outletId": "thestage",
@@ -211632,10 +211637,10 @@
       {
         "showId": "america-who-hurt-you-off-broadway-2026",
         "ourDistribution": {
-          "up": 2,
+          "up": 3,
           "flat": 0,
           "down": 0,
-          "total": 2
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -232666,6 +232671,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "wicked-2003",
         "ourDistribution": {
           "up": 33,
@@ -232970,19 +232985,19 @@
     ]
   },
   {
-    "startedAt": "2026-09-18T12:09:50.081Z",
-    "completedAt": "2026-09-18T12:15:48.935Z",
+    "startedAt": "2026-09-18T12:43:39.109Z",
+    "completedAt": "2026-09-18T12:49:32.684Z",
     "totalReviews": 170,
     "processed": 170,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
       "input": 444415,
-      "output": 39482,
-      "total": 483897
+      "output": 39210,
+      "total": 483625
     },
-    "costUsd": 1.2390355,
-    "runId": "35341430964",
+    "costUsd": 1.2374705,
+    "runId": "35343590015",
     "errorDetails": []
   }
 ]
