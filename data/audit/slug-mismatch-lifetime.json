@@ -1,13 +1,11 @@
 {
-  "updatedAt": "2026-09-17T12:20:05.992Z",
-  "scanned": 2089,
+  "updatedAt": "2026-09-18T11:55:23.899Z",
+  "scanned": 2092,
   "showsWithViolations": 725,
   "totalViolations": 1625,
-  "newSinceLastRun": 3,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
-    "golden-boy-off-west-end-2026::https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
-    "el-quijote-off-broadway-2026::http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+    "million-dollar-quartet-off-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=29049"
   ],
   "violationKeys": [
     "joe-turners-come-and-gone-2026::https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
@@ -1630,10 +1628,10 @@
     "in-honor-of-jean-michel-basquiat-off-broadway-2026::https://www.talkinbroadway.com/page/ob/09_14_26.html",
     "brainiac-live-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28533",
     "jane-eyre-off-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=28993",
-    "golden-boy-off-west-end-2026::https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
     "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025::https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
     "barcelona-west-end-2024::https://www.thetimes.com/culture/theatre-dance/article/steve-coogan-dr-strangelove-gamble-255kzj6ss",
     "starstruck-regional-2026::https://www.theatermania.com/news/review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767/",
+    "million-dollar-quartet-off-west-end-2026::https://www.londontheatrereviews.co.uk/post.cfm?p=29049",
     "el-quijote-off-broadway-2026::http://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
   ],
   "hits": [
@@ -17118,20 +17116,6 @@
       ]
     },
     {
-      "showId": "golden-boy-off-west-end-2026",
-      "title": "Golden Boy",
-      "openingDate": "2026-09-15",
-      "message": "Review URL for whatsonstage/Unknown does not mention show slug (checked: golden-boy-off-west-end, golden-boy, golden): https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
-      "violations": [
-        {
-          "outletId": "whatsonstage",
-          "criticName": "Unknown",
-          "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
-          "urlSlug": "news man-and-boy-at-the-national-theatre-review_1711733"
-        }
-      ]
-    },
-    {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
       "title": "Two Strangers (Carry A Cake Across New York)",
       "openingDate": "2025-06-02",
@@ -17170,6 +17154,20 @@
           "criticName": "Cameron Kelsall",
           "url": "https://www.theatermania.com/news/review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767/",
           "urlSlug": "news review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767"
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "title": "Million Dollar Quartet",
+      "openingDate": "2026-09-14",
+      "message": "Review URL for london-theatre-reviews/Unknown does not mention show slug (checked: million-dollar-quartet-off-west-end, million-dollar-quartet, million, dollar, quartet, milliondollarquartet): https://www.londontheatrereviews.co.uk/post.cfm?p=29049",
+      "violations": [
+        {
+          "outletId": "london-theatre-reviews",
+          "criticName": "Unknown",
+          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29049",
+          "urlSlug": "post.cfm"
         }
       ]
     },
