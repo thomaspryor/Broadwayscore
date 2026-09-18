@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "golden-boy-off-west-end-2026",
   "openingDate": "2026-09-15",
-  "detectedAt": "2026-09-18T07:12:52.674Z",
+  "detectedAt": "2026-09-18T07:35:52.149Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -13,23 +13,6 @@
       "fullTextLen": 4136,
       "dispatchActionable": false,
       "skipReason": "no_scorable_text",
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
-      "file": "theatreandtonic--eleanor-bywater.json",
-      "outletId": "theatreandtonic",
-      "criticName": "Eleanor Bywater",
-      "url": "https://theatreandtonic.co.uk/blog/golden-boy-at-almeida-theatre-review",
-      "fullTextLen": 6366,
-      "dispatchActionable": true,
-      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -74,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 4,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 3,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
