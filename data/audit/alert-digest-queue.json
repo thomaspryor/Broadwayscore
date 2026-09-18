@@ -898,18 +898,6 @@
     "queuedAt": "2026-09-18T12:10:09.243Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.2% (429/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (842h)\nA Midsummer Night's Dream — observer (842h)\nA Midsummer Night's Dream — standard (842h)\nABBA Voyage — independent (842h)\nAladdin — ew (842h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (842h)\nBuena Vista Social Club — broadwaynews (842h)\nBuena Vista Social Club — nydailynews (842h)\nHadestown — nydailynews (842h)\nHeathers The Musical — dailybeast (842h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-18T12:10:09.335Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:my-sons-a-queer-but-what-can-you-do-west-end-2026",
     "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\"}",
@@ -944,5 +932,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-18T16:29:33.936Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.3% (380/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (847h)\nA Midsummer Night's Dream — observer (847h)\nA Midsummer Night's Dream — standard (847h)\nABBA Voyage — independent (847h)\nAladdin — ew (847h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (847h)\nBuena Vista Social Club — broadwaynews (847h)\nBuena Vista Social Club — nydailynews (847h)\nHadestown — nydailynews (847h)\nHeathers The Musical — dailybeast (847h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-18T17:02:59.504Z"
   }
 ]

@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-18T12:09:36.857Z",
+  "generatedAt": "2026-09-18T17:02:38.752Z",
   "windowDays": 1095,
-  "targets": 311,
-  "auditedThisRun": 13,
-  "carriedForward": 532,
+  "targets": 309,
+  "auditedThisRun": 5,
+  "carriedForward": 540,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 335,
-    "totalMissing": 1703,
+    "withGap": 336,
+    "totalMissing": 1720,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1806,
+    "totalFlaggedMisses": 1808,
     "totalRecoverable": 23,
     "totalRecovered": 5
   },
@@ -32050,37 +32050,642 @@
     {
       "showId": "darkling-off-west-end-2026",
       "title": "Darkling",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-09-16",
+      "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
+        "https://everything-theatre.co.uk/2026/09/review-darkling-bush-theatre/",
+        "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
+        "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
+        "https://www.timeout.com/london/theatre/darkling-review",
+        "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
+        "https://www.thereviewshub.com/darkling-bush-theatre-london/",
+        "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
+        "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
+        "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+        "https://www.bushtheatre.co.uk/event/darkling/",
+        "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+        "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/",
+        "https://www.timeout.com/london/theatre/darkling",
+        "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
+        "https://southasianheritage.org.uk/events/darkling-at-bush-theatre/",
+        "https://www.atctheatre.com/production/darkling-2026/",
+        "https://www.londontheatre1.com/reviews/darkling-bush-theatre/",
+        "https://redbuslondinium.uk/2026/07/14/darkling-actors-touring-companys-new-national-tour-opens-at-bush-theatre/",
+        "https://www.lbhf.gov.uk/news/2026/09/first-look-darkling-bush-theatre",
+        "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/"
+      ],
+      "dirFiles": 11,
+      "dirClean": 6,
+      "inReviewsJson": 7,
+      "missing": [
+        {
+          "url": "https://everything-theatre.co.uk/2026/09/review-darkling-bush-theatre/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/darkling-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+          "host": "voicemag.uk",
+          "knownOutletId": "voice-magazine",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.bushtheatre.co.uk/event/darkling/",
+          "host": "bushtheatre.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+          "host": "redbuslondinium.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/",
+          "host": "fringereview.co.uk",
+          "knownOutletId": "fringereview",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/darkling",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        },
+        {
+          "url": "https://southasianheritage.org.uk/events/darkling-at-bush-theatre/",
+          "host": "southasianheritage.org.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.atctheatre.com/production/darkling-2026/",
+          "host": "atctheatre.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://redbuslondinium.uk/2026/07/14/darkling-actors-touring-companys-new-national-tour-opens-at-bush-theatre/",
+          "host": "redbuslondinium.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.lbhf.gov.uk/news/2026/09/first-look-darkling-bush-theatre",
+          "host": "lbhf.gov.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Darkling\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Darkling\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 7,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Darkling\" review bush",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Darkling Bush Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Darkling Bush Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Darkling Bush Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 7,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 22,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 10,
+        "byReason": {
+          "non-review-host": 8,
+          "ticketing-listing": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://everything-theatre.co.uk/2026/09/review-darkling-bush-theatre/",
+          "host": "everything-theatre.co.uk",
+          "outletId": "everything-theatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/darkling-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
+          "host": "viewfromthegods.co.uk",
+          "outletId": "viewfromthegods",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+          "host": "voicemag.uk",
+          "outletId": "voice-magazine"
+        },
+        {
+          "url": "https://www.bushtheatre.co.uk/event/darkling/",
+          "host": "bushtheatre.co.uk",
+          "outletId": "bushtheatre"
+        },
+        {
+          "url": "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+          "host": "redbuslondinium.uk",
+          "outletId": "redbuslondinium"
+        },
+        {
+          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/",
+          "host": "fringereview.co.uk",
+          "outletId": "fringereview"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/darkling",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld"
+        },
+        {
+          "url": "https://southasianheritage.org.uk/events/darkling-at-bush-theatre/",
+          "host": "southasianheritage.org.uk",
+          "outletId": "southasianheritage"
+        },
+        {
+          "url": "https://www.atctheatre.com/production/darkling-2026/",
+          "host": "atctheatre.com",
+          "outletId": "atctheatre"
+        },
+        {
+          "url": "https://redbuslondinium.uk/2026/07/14/darkling-actors-touring-companys-new-national-tour-opens-at-bush-theatre/",
+          "host": "redbuslondinium.uk",
+          "outletId": "redbuslondinium"
+        },
+        {
+          "url": "https://www.lbhf.gov.uk/news/2026/09/first-look-darkling-bush-theatre",
+          "host": "lbhf.gov.uk",
+          "outletId": "lbhf"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "everything-theatre",
+            "outlet": "everything-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://everything-theatre.co.uk/2026/09/review-darkling-bush-theatre/"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/darkling-review"
+          },
+          {
+            "outletId": "viewfromthegods",
+            "outlet": "viewfromthegods",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/"
+          },
+          {
+            "outletId": "voice-magazine",
+            "outlet": "voice-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre"
+          },
+          {
+            "outletId": "bushtheatre.co.uk",
+            "outlet": "bushtheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bushtheatre.co.uk/event/darkling/"
+          },
+          {
+            "outletId": "redbuslondinium.uk",
+            "outlet": "redbuslondinium.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/"
+          },
+          {
+            "outletId": "fringereview",
+            "outlet": "fringereview",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/darkling"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916"
+          },
+          {
+            "outletId": "southasianheritage.org.uk",
+            "outlet": "southasianheritage.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://southasianheritage.org.uk/events/darkling-at-bush-theatre/"
+          },
+          {
+            "outletId": "atctheatre.com",
+            "outlet": "atctheatre.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.atctheatre.com/production/darkling-2026/"
+          },
+          {
+            "outletId": "redbuslondinium.uk",
+            "outlet": "redbuslondinium.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://redbuslondinium.uk/2026/07/14/darkling-actors-touring-companys-new-national-tour-opens-at-bush-theatre/"
+          },
+          {
+            "outletId": "lbhf.gov.uk",
+            "outlet": "lbhf.gov.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.lbhf.gov.uk/news/2026/09/first-look-darkling-bush-theatre"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/darkling-bush-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/darkling-bush-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/09/review-darkling-bush-theatre/",
+            "outletId": "everything-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
+            "outletId": "london-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
+            "outletId": "theatreandtonic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/darkling-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
+            "outletId": "viewfromthegods",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+            "outletId": "voice-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.bushtheatre.co.uk/event/darkling/",
+            "outletId": "bushtheatre.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+            "outletId": "redbuslondinium.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/",
+            "outletId": "fringereview",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/darkling",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://southasianheritage.org.uk/events/darkling-at-bush-theatre/",
+            "outletId": "southasianheritage.org.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.atctheatre.com/production/darkling-2026/",
+            "outletId": "atctheatre.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://redbuslondinium.uk/2026/07/14/darkling-actors-touring-companys-new-national-tour-opens-at-bush-theatre/",
+            "outletId": "redbuslondinium.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.lbhf.gov.uk/news/2026/09/first-look-darkling-bush-theatre",
+            "outletId": "lbhf.gov.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          }
+        ],
+        "liveCount": 6,
+        "candidateCount": 20
       },
-      "computedAt": "2026-09-08T16:04:48.214Z"
+      "computedAt": "2026-09-18T17:02:38.752Z"
     },
     {
       "showId": "data-off-broadway-2026",
@@ -91960,19 +92565,20 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/sep/17/million-dollar-quartet-review-the-arts-at-marble-arch-london",
         "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
         "https://theatresoutheast.com/million-dollar-quartet-the-arts-at-marble-arch-review/",
-        "https://www.theguardian.com/stage/2026/sep/17/million-dollar-quartet-review-the-arts-at-marble-arch-london",
         "https://fairypoweredproductions.com/million-dollar-quartet-review-2/",
         "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/",
-        "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/",
-        "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
-        "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch",
-        "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/amp/",
-        "https://www.thereviewshub.com/million-dollar-quartet-the-arts-at-marble-arch-london/",
         "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
-        "https://www.spotlightseats.com/shows/million-dollar-quartet/",
-        "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london",
+        "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/",
+        "https://loureviews.blog/2026/09/14/musical-review-million-dollar-quartet-at-arts-at-marble-arch/amp/",
+        "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch",
+        "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch",
+        "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
+        "https://www.thereviewshub.com/million-dollar-quartet-the-arts-at-marble-arch-london/",
+        "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer",
+        "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/",
         "http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review",
         "http://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doesnt-throb-with-heart-and-soul.do",
         "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8354312/Million-Dollar-Quartet-Noel-Coward-Theatre-review.html",
@@ -91980,19 +92586,19 @@
         "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/million-dollar-quartet-noel-coward-theatre-london-2230529.html",
         "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet"
       ],
-      "dirFiles": 23,
-      "dirClean": 18,
-      "inReviewsJson": 15,
+      "dirFiles": 25,
+      "dirClean": 19,
+      "inReviewsJson": 16,
       "missing": [
         {
-          "url": "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/",
-          "host": "southlondon.co.uk",
-          "knownOutletId": "south-london",
+          "url": "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
           "serpCensus": true
         },
         {
-          "url": "https://www.spotlightseats.com/shows/million-dollar-quartet/",
-          "host": "spotlightseats.com",
+          "url": "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/",
+          "host": "datathistle.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -92057,9 +92663,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london",
-          "host": "enjoy.ly",
-          "knownOutletId": null,
+          "url": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -92067,9 +92673,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "enjoy--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london"
+              "file": "west-end-best-friend--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch"
             }
           ],
           "serpCensus": true
@@ -92170,7 +92776,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -92180,7 +92786,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -92190,7 +92796,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -92200,22 +92806,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 23,
         "byReason": {
-          "non-review-host": 22,
-          "roundup-page": 2,
-          "non-review-path": 1,
-          "ticketing-listing": 1
+          "non-review-host": 19,
+          "ticketing-listing": 2,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [
@@ -92249,28 +92854,28 @@
       ],
       "ingestResults": [
         {
-          "url": "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/",
-          "host": "southlondon.co.uk",
-          "outletId": "south-london",
+          "url": "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "Fetch returned no usable HTML (got 109 chars)"
         },
         {
-          "url": "https://www.spotlightseats.com/shows/million-dollar-quartet/",
-          "host": "spotlightseats.com",
-          "outletId": "spotlightseats",
+          "url": "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/",
+          "host": "datathistle.com",
+          "outletId": "datathistle",
           "provisional": true,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "⚠️  Playwright failed: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.datathistle.com/event"
         }
       ],
       "ingestSkippedByCap": [],
@@ -92278,18 +92883,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "south-london",
-            "outlet": "south-london",
+            "outletId": "thestage",
+            "outlet": "thestage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/"
+            "url": "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer"
           },
           {
-            "outletId": "spotlightseats.com",
-            "outlet": "spotlightseats.com",
+            "outletId": "datathistle.com",
+            "outlet": "datathistle.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.spotlightseats.com/shows/million-dollar-quartet/"
+            "url": "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/"
           },
           {
             "outletId": "standard",
@@ -92313,11 +92918,11 @@
             "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/million-dollar-quartet-noel-coward-theatre-london-2230529.html"
           },
           {
-            "outletId": "enjoy.ly",
-            "outlet": "enjoy.ly",
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london"
+            "url": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch"
           },
           {
             "outletId": "sunday-telegraph",
@@ -92330,6 +92935,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.theguardian.com/stage/2026/sep/17/million-dollar-quartet-review-the-arts-at-marble-arch-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+          },
+          {
             "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
             "outletId": "londontheatre.co.uk",
             "state": "live",
@@ -92338,12 +92949,6 @@
           {
             "url": "https://theatresoutheast.com/million-dollar-quartet-the-arts-at-marble-arch-review/",
             "outletId": "theatresoutheast.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/sep/17/million-dollar-quartet-review-the-arts-at-marble-arch-london",
-            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
@@ -92360,14 +92965,14 @@
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
-            "outletId": "theatreweekly.com",
+            "url": "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
+            "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch",
-            "outletId": "londonboxoffice.co.uk",
+            "url": "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/",
+            "outletId": "southlondon.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
@@ -92378,14 +92983,20 @@
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://www.thereviewshub.com/million-dollar-quartet-the-arts-at-marble-arch-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet-the-arts-at-marble-arch",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://www.theupcoming.co.uk/2026/09/16/million-dollar-quartet-at-the-arts-at-marble-arch-theatre-review/",
-            "outletId": "theupcoming.co.uk",
+            "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/million-dollar-quartet-the-arts-at-marble-arch-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
@@ -92402,18 +93013,18 @@
             "firstSeenAt": "2026-09-16T18:05:29.294Z"
           },
           {
-            "url": "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/",
-            "outletId": "south-london",
+            "url": "https://www.thestage.co.uk/news/million-dollar-quartet-lands-london-transfer",
+            "outletId": "thestage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
           },
           {
-            "url": "https://www.spotlightseats.com/shows/million-dollar-quartet/",
-            "outletId": "spotlightseats.com",
+            "url": "https://www.datathistle.com/event/3125058-million-dollar-quartet/144184-the-arts-at-marble-arch-london-w1h/",
+            "outletId": "datathistle.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
           },
           {
             "url": "http://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doesnt-throb-with-heart-and-soul.do",
@@ -92437,11 +93048,11 @@
             "firstSeenAt": "2026-09-16T18:05:29.294Z"
           },
           {
-            "url": "https://www.enjoy.ly/uk/activity/81017795/million-dollar-quartet-the-arts-at-marble-arch-london",
-            "outletId": "enjoy.ly",
+            "url": "https://www.westendbestfriend.co.uk/news/full-casting-million-dollar-quartet-transfer-the-arts-at-marble-arch",
+            "outletId": "west-end-best-friend",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
           },
           {
             "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8354312/Million-Dollar-Quartet-Noel-Coward-Theatre-review.html",
@@ -92451,10 +93062,10 @@
             "firstSeenAt": "2026-09-16T18:05:29.294Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 17
+        "liveCount": 11,
+        "candidateCount": 18
       },
-      "computedAt": "2026-09-18T06:56:38.666Z"
+      "computedAt": "2026-09-18T17:02:38.752Z"
     },
     {
       "showId": "mister-snickers-of-new-york-city-off-broadway-2026",
@@ -115181,7 +115792,7 @@
         "https://t2conline.com/pre-existing-condition-lupita-nyongo-gives-voice-to-what-the-play-leaves-unsaid/",
         "https://nystagereview.com/2024/06/18/pre-existing-condition-healing-only-teases-abused-young-woman/",
         "https://pagesonstages.com/2026/09/14/pre-existing-condition/",
-        "https://thefrontrowcenter.com/2026/09/pre-existing-condition/",
+        "https://stagebuddy.com/theater/theater-review/pre-existing-condition",
         "https://www.newyorktheatreguide.com/show/47324-pre-existing-condition",
         "https://airmail.news/arts-intel/events/pre-existing-condition",
         "https://www.yahoo.com/entertainment/tv/articles/pre-existing-condition-off-broadway-183504333.html",
@@ -115192,6 +115803,12 @@
       "inReviewsJson": 18,
       "missing": [
         {
+          "url": "https://stagebuddy.com/theater/theater-review/pre-existing-condition",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.yahoo.com/entertainment/tv/articles/pre-existing-condition-off-broadway-183504333.html",
           "host": "yahoo.com",
           "knownOutletId": "yahoo",
@@ -115199,6 +115816,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
         {
           "host": "twi-ny.com",
           "count": 1
@@ -115304,7 +115925,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -115313,8 +115934,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -115354,14 +115975,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 770,
+        "count": 767,
         "byReason": {
-          "non-review-host": 83,
-          "roundup-page": 2,
-          "venue-production-page": 1,
+          "non-review-host": 81,
+          "aggregator-internal-nav": 556,
           "not-http-url": 106,
-          "aggregator-internal-nav": 559,
-          "aggregator-section-root": 19
+          "aggregator-section-root": 19,
+          "roundup-page": 3,
+          "venue-production-page": 1,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
@@ -115376,6 +115998,18 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/pre-existing-condition",
+          "host": "stagebuddy.com",
+          "outletId": "stagebuddy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
         {
           "url": "https://www.yahoo.com/entertainment/tv/articles/pre-existing-condition-off-broadway-183504333.html",
           "host": "yahoo.com",
@@ -115393,6 +116027,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "stagebuddy",
+            "outlet": "stagebuddy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagebuddy.com/theater/theater-review/pre-existing-condition"
+          },
           {
             "outletId": "yahoo",
             "outlet": "yahoo",
@@ -115534,12 +116175,6 @@
             "firstSeenAt": "2026-09-15T14:11:27.909Z"
           },
           {
-            "url": "https://thefrontrowcenter.com/2026/09/pre-existing-condition/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T12:24:54.760Z"
-          },
-          {
             "url": "https://airmail.news/arts-intel/events/pre-existing-condition",
             "outletId": "airmail.news",
             "state": "live",
@@ -115550,6 +116185,13 @@
             "outletId": "thewrap.com",
             "state": "live",
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/pre-existing-condition",
+            "outletId": "stagebuddy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
           },
           {
             "url": "https://www.yahoo.com/entertainment/tv/articles/pre-existing-condition-off-broadway-183504333.html",
@@ -115587,10 +116229,10 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           }
         ],
-        "liveCount": 17,
+        "liveCount": 16,
         "candidateCount": 22
       },
-      "computedAt": "2026-09-18T06:56:38.666Z"
+      "computedAt": "2026-09-18T17:02:38.752Z"
     },
     {
       "showId": "pride-theatre-dorfman-west-end-2026",
@@ -159418,14 +160060,15 @@
       "aggregatorListedUrls": [
         "https://www.londontheatre1.com/reviews/the-seven-deadly-sins-the-human-voice/",
         "https://www.jackstage.co.uk/post/the-seven-deadly-sins-the-human-voice-review-abstract-double-bill-of-opera-in-need-of-more-contex",
-        "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
         "https://everything-theatre.co.uk/2026/09/review-the-human-voice-the-seven-deadly-sins-charing-cross-theatre/",
         "https://www.thereviewshub.com/seven-deadly-sins-the-human-voice-charing-cross-theatre-london/",
         "https://bachtrack.com/opera-event/the-human-voice-the-seven-deadly-sins-charing-cross-theatre-11-september-2026/446859",
         "https://www.theatremonkey.com/show/the-human-voice-the-seven-deadly-sins/",
-        "https://www.gauravnijjer.com/post/review-of-seven-deadly-sins-and-the-human-voice-at-the-charing-cross-theatre-london",
+        "https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/",
+        "https://northwestend.com/the-seven-deadly-sins-and-the-human-voice-charing-cross-theatre/amp/",
         "https://theatreweekly.com/katherine-mcindoe-to-star-in-double-bill-of-the-seven-deadly-sins-and-the-human-voice-at-charing-cross-theatre/",
-        "https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/"
+        "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
+        "https://concerts.consequence.net/events/the-human-voice-the-seven-deadly-sins-at-charing-cross-theatre-on-2026-09-19-19-30"
       ],
       "dirFiles": 9,
       "dirClean": 4,
@@ -159435,12 +160078,6 @@
           "url": "https://www.londontheatre1.com/reviews/the-seven-deadly-sins-the-human-voice/",
           "host": "londontheatre1.com",
           "knownOutletId": "londontheatre1",
-          "serpCensus": true
-        },
-        {
-          "url": "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
-          "host": "rhombusrota.co.uk",
-          "knownOutletId": "rhombus-rota",
           "serpCensus": true
         },
         {
@@ -159456,13 +160093,29 @@
           "serpCensus": true
         },
         {
+          "url": "https://northwestend.com/the-seven-deadly-sins-and-the-human-voice-charing-cross-theatre/amp/",
+          "host": "northwestend.com",
+          "knownOutletId": "north-west-end",
+          "serpCensus": true
+        },
+        {
           "url": "https://theatreweekly.com/katherine-mcindoe-to-star-in-double-bill-of-the-seven-deadly-sins-and-the-human-voice-at-charing-cross-theatre/",
           "host": "theatreweekly.com",
           "knownOutletId": "theatre-weekly",
           "serpCensus": true
+        },
+        {
+          "url": "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
+          "host": "rhombusrota.co.uk",
+          "knownOutletId": "rhombus-rota",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "gauravnijjer.com",
+          "count": 1
+        },
         {
           "host": "seatplan.com",
           "count": 1
@@ -159483,6 +160136,24 @@
               "file": "theatremonkey--unknown.json",
               "flag": "wrongShow",
               "urlInDir": "https://www.theatremonkey.com/show/the-human-voice-the-seven-deadly-sins/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://concerts.consequence.net/events/the-human-voice-the-seven-deadly-sins-at-charing-cross-theatre-on-2026-09-19-19-30",
+          "host": "consequence.net",
+          "knownOutletId": "consequence",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "consequence--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://concerts.consequence.net/events/the-human-voice-the-seven-deadly-sins-at-charing-cross-theatre-on-2026-09-19-19-30"
             }
           ],
           "serpCensus": true
@@ -159538,7 +160209,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -159578,21 +160249,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 29,
         "byReason": {
-          "non-review-host": 23,
+          "non-review-host": 22,
+          "ticketing-listing": 3,
           "aggregator-internal-nav": 1,
-          "ticketing-listing": 2,
+          "non-review-path": 2,
           "ticketing-reseller": 1
         }
       },
@@ -159609,18 +160281,6 @@
           "conflictReason": "cross-show-url-owned",
           "unclassified": false,
           "reason": "the-seven-deadly-sins-the-human-voice-off-west-end-2026: https://www.londontheatre1.com/reviews/the-seven-deadly-sins-the-human-voice/ is already owned by the-human-voice-the-seven-deadly-sins-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/the-human-voice-the-seven-deadly-sins-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
-          "host": "rhombusrota.co.uk",
-          "outletId": "rhombus-rota",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "unclassified": false,
-          "reason": "the-seven-deadly-sins-the-human-voice-off-west-end-2026: https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/ is already owned by the-human-voice-the-seven-deadly-sins-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/the-human-voice-the-seven-deadly-sins-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         },
         {
           "url": "https://everything-theatre.co.uk/2026/09/review-the-human-voice-the-seven-deadly-sins-charing-cross-theatre/",
@@ -159647,6 +160307,18 @@
           "reason": "Fetch returned no usable HTML (got 175 chars)"
         },
         {
+          "url": "https://northwestend.com/the-seven-deadly-sins-and-the-human-voice-charing-cross-theatre/amp/",
+          "host": "northwestend.com",
+          "outletId": "north-west-end",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
           "url": "https://theatreweekly.com/katherine-mcindoe-to-star-in-double-bill-of-the-seven-deadly-sins-and-the-human-voice-at-charing-cross-theatre/",
           "host": "theatreweekly.com",
           "outletId": "theatre-weekly",
@@ -159659,7 +160331,13 @@
           "reason": "Article extraction returned 100 chars — pattern may be missing for this outlet. Add an entry to scri"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
+          "host": "rhombusrota.co.uk",
+          "outletId": "rhombus-rota"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -159669,13 +160347,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.londontheatre1.com/reviews/the-seven-deadly-sins-the-human-voice/"
-          },
-          {
-            "outletId": "rhombus-rota",
-            "outlet": "rhombus-rota",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/"
           },
           {
             "outletId": "everything-theatre",
@@ -159692,6 +160363,13 @@
             "url": "https://bachtrack.com/opera-event/the-human-voice-the-seven-deadly-sins-charing-cross-theatre-11-september-2026/446859"
           },
           {
+            "outletId": "north-west-end",
+            "outlet": "north-west-end",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://northwestend.com/the-seven-deadly-sins-and-the-human-voice-charing-cross-theatre/amp/"
+          },
+          {
             "outletId": "theatre-weekly",
             "outlet": "theatre-weekly",
             "critic": "Unknown",
@@ -159699,11 +160377,25 @@
             "url": "https://theatreweekly.com/katherine-mcindoe-to-star-in-double-bill-of-the-seven-deadly-sins-and-the-human-voice-at-charing-cross-theatre/"
           },
           {
+            "outletId": "rhombus-rota",
+            "outlet": "rhombus-rota",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/"
+          },
+          {
             "outletId": "theatremonkey.com",
             "outlet": "theatremonkey.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatremonkey.com/show/the-human-voice-the-seven-deadly-sins/"
+          },
+          {
+            "outletId": "consequence",
+            "outlet": "consequence",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://concerts.consequence.net/events/the-human-voice-the-seven-deadly-sins-at-charing-cross-theatre-on-2026-09-19-19-30"
           }
         ],
         "suppressedMissing": [],
@@ -159721,12 +160413,6 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
-            "url": "https://www.gauravnijjer.com/post/review-of-seven-deadly-sins-and-the-human-voice-at-the-charing-cross-theatre-london",
-            "outletId": "gauravnijjer.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/",
             "outletId": "thereviewshub.com",
             "state": "live",
@@ -159738,13 +160424,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
-          },
-          {
-            "url": "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
-            "outletId": "rhombus-rota",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-17T20:52:39.992Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/09/review-the-human-voice-the-seven-deadly-sins-charing-cross-theatre/",
@@ -159761,6 +160440,13 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
+            "url": "https://northwestend.com/the-seven-deadly-sins-and-the-human-voice-charing-cross-theatre/amp/",
+            "outletId": "north-west-end",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
+          },
+          {
             "url": "https://theatreweekly.com/katherine-mcindoe-to-star-in-double-bill-of-the-seven-deadly-sins-and-the-human-voice-at-charing-cross-theatre/",
             "outletId": "theatre-weekly",
             "state": "GAP",
@@ -159768,17 +160454,31 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
+            "url": "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
+            "outletId": "rhombus-rota",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-17T20:52:39.992Z"
+          },
+          {
             "url": "https://www.theatremonkey.com/show/the-human-voice-the-seven-deadly-sins/",
             "outletId": "theatremonkey.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
+          },
+          {
+            "url": "https://concerts.consequence.net/events/the-human-voice-the-seven-deadly-sins-at-charing-cross-theatre-on-2026-09-19-19-30",
+            "outletId": "consequence",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
           }
         ],
-        "liveCount": 3,
-        "candidateCount": 9
+        "liveCount": 2,
+        "candidateCount": 10
       },
-      "computedAt": "2026-09-18T06:56:38.666Z"
+      "computedAt": "2026-09-18T17:02:38.752Z"
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
@@ -162685,29 +163385,28 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/thelma-and-louise-a-new-musical-review-young-vic",
-        "https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic",
         "https://theatreandtonic.co.uk/blog/thelma-and-louise-at-the-young-vic-review",
-        "https://www.theguardian.com/stage/2026/sep/08/thelma-and-louise-writer-prey-musical-callie-khouri",
-        "https://www.thetimes.com/magazines/culture-magazine/article/i-wrote-thelma-and-louise-nothing-has-changed-for-women-since-then-5xc7s9x2s",
-        "https://www.westendbestfriend.co.uk/news/review-thelma-and-louise-young-vic-theatre",
+        "https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic",
+        "https://www.theguardian.com/stage/2026/sep/17/thelma-and-louise-review-young-vic-london-musical",
+        "https://www.whatsonstage.com/news/thelma-louise-musical-at-the-young-vic-review_1731575/",
         "https://musicaltheatrereview.com/cast-for-world-premiere-of-thelma-louise-musical/",
+        "https://theatreweekly.com/review-thelma-louise-at-young-vic/",
+        "https://musicalmanda.site/2026/09/16/thelma-louise-review/",
+        "https://www.thetimes.com/magazines/culture-magazine/article/i-wrote-thelma-and-louise-nothing-has-changed-for-women-since-then-5xc7s9x2s",
         "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/",
-        "https://www.standard.co.uk/showbiz/thelma-louise-musical-premiere-london-young-vic-b1278953.html",
         "https://www.bestoftheatre.co.uk/thelma-louise",
-        "https://www.londonboxoffice.co.uk/news/post/thelma-louise-young-vic-review",
+        "https://www.londontheatre1.com/reviews/thelma-louise-young-vic/",
         "https://www.thestage.co.uk/reviews/thelma-and-louise-review-young-vic-london-rachel-tucker-amy-lennox",
         "https://www.thetimes.com/culture/theatre-dance/article/thelma-and-louise-review-slow-pace-makes-heroines-seem-like-hitchhikers-pr9qmpzsk",
-        "https://www.timeout.com/london/theatre/thelma-louise-review",
-        "https://www.whatsonstage.com/news/thelma-louise-musical-at-the-young-vic-review_1731575/",
-        "https://www.theguardian.com/stage/2026/sep/17/thelma-and-louise-review-young-vic-london-musical"
+        "https://www.timeout.com/london/theatre/thelma-louise-review"
       ],
-      "dirFiles": 22,
+      "dirFiles": 23,
       "dirClean": 15,
       "inReviewsJson": 16,
       "missing": [
         {
-          "url": "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/",
-          "host": "clarissas-corner.co.uk",
+          "url": "https://musicalmanda.site/2026/09/16/thelma-louise-review/",
+          "host": "musicalmanda.site",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -162718,15 +163417,15 @@
           "count": 1
         },
         {
-          "host": "londontheatre1.com",
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
           "count": 1
         },
         {
           "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
           "count": 1
         },
         {
@@ -162754,9 +163453,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.westendbestfriend.co.uk/news/review-thelma-and-louise-young-vic-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
+          "url": "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/",
+          "host": "clarissas-corner.co.uk",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -162764,9 +163463,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "west-end-best-friend--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendbestfriend.co.uk/news/review-thelma-and-louise-young-vic-theatre"
+              "file": "clarissas-corner--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/"
             }
           ],
           "serpCensus": true
@@ -162867,7 +163566,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
+            "results": 2,
             "accepted": 1,
             "error": null
           },
@@ -162877,7 +163576,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -162887,7 +163586,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -162897,8 +163596,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -162908,7 +163607,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -162918,30 +163617,28 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 18,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-internal-nav": 1,
-          "ticketing-listing": 2,
-          "access-listings-page": 1
+          "non-review-host": 16,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/",
-          "host": "clarissas-corner.co.uk",
-          "outletId": "clarissas-corner",
+          "url": "https://musicalmanda.site/2026/09/16/thelma-louise-review/",
+          "host": "musicalmanda.site",
+          "outletId": "musicalmanda",
           "provisional": true,
           "ok": true,
           "noop": false,
@@ -162956,11 +163653,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "clarissas-corner.co.uk",
-            "outlet": "clarissas-corner.co.uk",
+            "outletId": "musicalmanda.site",
+            "outlet": "musicalmanda.site",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/"
+            "url": "https://musicalmanda.site/2026/09/16/thelma-louise-review/"
           },
           {
             "outletId": "times-uk",
@@ -162970,11 +163667,11 @@
             "url": "https://www.thetimes.com/magazines/culture-magazine/article/i-wrote-thelma-and-louise-nothing-has-changed-for-women-since-then-5xc7s9x2s"
           },
           {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
+            "outletId": "clarissas-corner.co.uk",
+            "outlet": "clarissas-corner.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/review-thelma-and-louise-young-vic-theatre"
+            "url": "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/"
           },
           {
             "outletId": "bestoftheatre",
@@ -163000,22 +163697,28 @@
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
-          },
-          {
             "url": "https://theatreandtonic.co.uk/blog/thelma-and-louise-at-the-young-vic-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/sep/08/thelma-and-louise-writer-prey-musical-callie-khouri",
-            "outletId": "theguardian.com",
+            "url": "https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/17/thelma-and-louise-review-young-vic-london-musical",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-17T17:37:02.820Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/thelma-louise-musical-at-the-young-vic-review_1731575/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
           {
             "url": "https://musicaltheatrereview.com/cast-for-world-premiere-of-thelma-louise-musical/",
@@ -163024,16 +163727,16 @@
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://www.standard.co.uk/showbiz/thelma-louise-musical-premiere-london-young-vic-b1278953.html",
-            "outletId": "standard.co.uk",
+            "url": "https://theatreweekly.com/review-thelma-louise-at-young-vic/",
+            "outletId": "theatreweekly.com",
             "state": "live",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/thelma-louise-young-vic-review",
-            "outletId": "londonboxoffice.co.uk",
+            "url": "https://www.londontheatre1.com/reviews/thelma-louise-young-vic/",
+            "outletId": "londontheatre1.com",
             "state": "live",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/thelma-and-louise-review-young-vic-london-rachel-tucker-amy-lennox",
@@ -163048,23 +163751,11 @@
             "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/thelma-louise-musical-at-the-young-vic-review_1731575/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/sep/17/thelma-and-louise-review-young-vic-london-musical",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
-          },
-          {
-            "url": "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/",
-            "outletId": "clarissas-corner.co.uk",
+            "url": "https://musicalmanda.site/2026/09/16/thelma-louise-review/",
+            "outletId": "musicalmanda.site",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+            "firstSeenAt": "2026-09-18T17:02:38.752Z"
           },
           {
             "url": "https://www.thetimes.com/magazines/culture-magazine/article/i-wrote-thelma-and-louise-nothing-has-changed-for-women-since-then-5xc7s9x2s",
@@ -163074,8 +163765,8 @@
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-thelma-and-louise-young-vic-theatre",
-            "outletId": "west-end-best-friend",
+            "url": "https://clarissas-corner.co.uk/thelma-and-louise-musical-young-vic/",
+            "outletId": "clarissas-corner.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
@@ -163098,7 +163789,7 @@
         "liveCount": 10,
         "candidateCount": 14
       },
-      "computedAt": "2026-09-18T06:56:38.666Z"
+      "computedAt": "2026-09-18T17:02:38.752Z"
     },
     {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
