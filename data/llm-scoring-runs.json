@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-09-16T15:31:03.314Z",
-    "completedAt": "2026-09-16T15:31:14.511Z",
-    "totalReviews": 36,
-    "processed": 0,
-    "skipped": 35,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5687,
-      "output": 156,
-      "total": 14051
-    },
-    "costUsd": 0.032127499999999996,
-    "runId": "35112879935",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-16T15:31:16.712Z",
-    "completedAt": "2026-09-16T15:31:34.079Z",
-    "totalReviews": 6,
-    "processed": 6,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 16096,
-      "output": 1473,
-      "total": 17569
-    },
-    "costUsd": 0.0452109,
-    "runId": "35112879935",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-16T21:26:57.403Z",
     "completedAt": "2026-09-16T21:27:01.400Z",
     "totalReviews": 36,
@@ -255952,6 +255920,49 @@
     },
     "costUsd": 1.237723,
     "runId": "35327192794",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-18T10:01:09.300Z",
+    "completedAt": "2026-09-18T10:01:34.323Z",
+    "totalReviews": 44063,
+    "processed": 0,
+    "skipped": 44056,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 21640,
+      "output": 661,
+      "total": 60375
+    },
+    "costUsd": 0.10148884999999999,
+    "runId": "35330115699",
+    "errorDetails": [
+      {
+        "showId": "gimme-a-sign-off-broadway-2026",
+        "outletId": "donyc",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-18T10:01:36.259Z",
+    "completedAt": "2026-09-18T10:08:00.320Z",
+    "totalReviews": 170,
+    "processed": 170,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 444415,
+      "output": 39459,
+      "total": 483874
+    },
+    "costUsd": 1.2390029999999999,
+    "runId": "35330115699",
     "errorDetails": []
   }
 ]
