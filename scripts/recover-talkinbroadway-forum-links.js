@@ -30,8 +30,13 @@ const path = require('path');
 const { execFileSync, execSync } = require('child_process');
 const { fetchPage } = require('./lib/scraper');
 const { isForumThreadUrl, extractReviewPageUrl, extractCriticName } = require('./lib/talkinbroadway-forum-link');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = 'Usage: node scripts/recover-talkinbroadway-forum-links.js [--show=ID] [--dry-run] [--data-dir=PATH]';
 
 const args = process.argv.slice(2);
+if (hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
+
 function getArg(name) {
   const a = args.find((x) => x.startsWith(`--${name}=`));
   return a ? a.split('=').slice(1).join('=') : null;
