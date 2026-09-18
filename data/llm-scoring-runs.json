@@ -1,27 +1,5 @@
 [
   {
-    "startedAt": "2026-09-17T03:34:10.454Z",
-    "completedAt": "2026-09-17T03:34:13.230Z",
-    "totalReviews": 43967,
-    "processed": 0,
-    "skipped": 43965,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 118,
-      "total": 10940
-    },
-    "costUsd": 0.025337150000000003,
-    "runId": "35177423877",
-    "errorDetails": [
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-17T03:34:14.461Z",
     "completedAt": "2026-09-17T03:40:28.259Z",
     "totalReviews": 168,
@@ -256131,19 +256109,41 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-18T16:05:57.839Z",
-    "completedAt": "2026-09-18T16:06:10.398Z",
-    "totalReviews": 6,
-    "processed": 6,
+    "startedAt": "2026-09-18T16:08:40.366Z",
+    "completedAt": "2026-09-18T16:08:40.580Z",
+    "totalReviews": 4,
+    "processed": 0,
+    "skipped": 3,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "35363725266",
+    "errorDetails": [
+      {
+        "showId": "gimme-a-sign-off-broadway-2026",
+        "outletId": "donyc",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-18T16:08:42.517Z",
+    "completedAt": "2026-09-18T16:08:42.519Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 17060,
-      "output": 1410,
-      "total": 18470
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "costUsd": 0.0463359,
-    "runId": "35363717114",
+    "costUsd": 0,
+    "runId": "35363725266",
     "errorDetails": []
   }
 ]
