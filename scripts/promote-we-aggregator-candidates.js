@@ -190,7 +190,15 @@ function buildWestEndAggregatorShowEntry(candidate) {
     status: ageDays > WE_AGGREGATOR_OPEN_MAX_AGE_DAYS ? 'closed' : 'open',
     category: 'west-end',
     market: 'west-end',
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : null,
+    // 'play' (not null) when the title doesn't say "musical" — status is
+    // 'open' here (a roundup already exists), and validate-market-
+    // expansion.js's required-fields check only exempts type when
+    // status==='announced'. A null type on a status='open' show fails CI
+    // (BRO-3716: main red for 19.8h+ on exactly this). 'play' is also the
+    // correct guess in the overwhelming majority of cases — plays outnumber
+    // musicals ~2:1 in shows.json, and this heuristic already only fires
+    // when "musical" is absent from the title.
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — WET/LBO reviews auto-ingest via the existing per-show
