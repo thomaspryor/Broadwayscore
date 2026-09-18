@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T17:10:20.369Z",
+  "generatedAt": "2026-09-18T17:53:15.079Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2113,25 +2113,25 @@
       "status": "open",
       "slug": "thelma-and-louise-a-new-musical-off-west-end",
       "thumbnail": "/images/shows/thelma-and-louise-a-new-musical-off-west-end-2026/thumbnail.webp",
-      "siteScore": 64.06,
-      "liveScore": 64,
-      "scoreDrift": -0.060000000000002274,
+      "siteScore": 65.03,
+      "liveScore": 65,
+      "scoreDrift": -0.030000000000001137,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 6,
       "t2": 5,
-      "t3": 5,
-      "positive": 5,
+      "t3": 6,
+      "positive": 6,
       "mixed": 9,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2146,10 +2146,6 @@
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
           "isDualMarket": true
         },
         {
@@ -2308,6 +2304,18 @@
           "t2": 5,
           "t3": 5,
           "p": 5,
+          "m": 9,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-18T17:53:15.079Z",
+          "rc": 17,
+          "s": 65.03,
+          "t1": 6,
+          "t2": 5,
+          "t3": 6,
+          "p": 6,
           "m": 9,
           "n": 2,
           "bc": "waiting"
@@ -2485,23 +2493,22 @@
       "status": "open",
       "slug": "darkling-off-west-end",
       "thumbnail": "/images/shows/darkling-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 66.41,
-      "liveScore": 66,
-      "scoreDrift": -0.4099999999999966,
+      "siteScore": 67.78,
+      "liveScore": 68,
+      "scoreDrift": 0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 2,
-      "t2": 3,
-      "t3": 2,
-      "positive": 3,
-      "mixed": 3,
+      "total": 11,
+      "t1": 3,
+      "t2": 5,
+      "t3": 3,
+      "positive": 4,
+      "mixed": 6,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:1/3",
           "hi-conf:4/6"
         ],
@@ -2607,6 +2614,18 @@
           "t3": 2,
           "p": 3,
           "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-18T17:53:15.079Z",
+          "rc": 11,
+          "s": 67.78,
+          "t1": 3,
+          "t2": 5,
+          "t3": 3,
+          "p": 4,
+          "m": 6,
           "n": 1,
           "bc": "waiting"
         }
