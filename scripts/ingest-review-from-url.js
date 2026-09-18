@@ -48,9 +48,9 @@ const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { stripTrailingJunk } = require('./lib/text-cleaning');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
-const { getOutletDisplayName, findExistingReviewFile } = require('./lib/review-normalization');
+const { getOutletDisplayName, findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
 const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
-const { findStaleMergeFields } = require('./lib/stale-merge-check');
+const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
@@ -332,26 +332,28 @@ if (!show) {
   //     successful re-scrape could never actually fix this on its own.
   //   - no fresh date was recovered: clear the stale value rather than leave
   //     a provably-wrong date in place for a human to rediscover the gap.
-  {
-    const existing = findExistingReviewFile(showDir, outletId, critic, url);
-    if (
-      existing &&
-      existing.data.publishDate &&
-      !existing.data.allowEarlyDate &&
-      isStalePublishDate({ existingPublishDate: existing.data.publishDate, show })
-    ) {
-      const correctedValue = publishDate || null;
-      console.warn(`  ⚠️  Existing publishDate "${existing.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
-      if (!dryRun) {
-        const updated = {
-          ...existing.data,
-          publishDate: correctedValue,
-          previousPublishDate: existing.data.publishDate,
-          stalePublishDateClearedAt: new Date().toISOString(),
-          stalePublishDateClearedBy: 'ingest-review-from-url.js',
-        };
-        safeWriteReview(existing.path, updated, { force: true });
-      }
+  // Shared with the post-write stale-merge verification below (BRO-3790) —
+  // one lookup, same identity, same file: this is the pre-write snapshot of
+  // whatever createOrMergeReviewFile is about to merge into (or null, if
+  // this ingest will create a new file).
+  const preExisting = findExistingReviewFile(showDir, outletId, critic, url);
+  if (
+    preExisting &&
+    preExisting.data.publishDate &&
+    !preExisting.data.allowEarlyDate &&
+    isStalePublishDate({ existingPublishDate: preExisting.data.publishDate, show })
+  ) {
+    const correctedValue = publishDate || null;
+    console.warn(`  ⚠️  Existing publishDate "${preExisting.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
+    if (!dryRun) {
+      const updated = {
+        ...preExisting.data,
+        publishDate: correctedValue,
+        previousPublishDate: preExisting.data.publishDate,
+        stalePublishDateClearedAt: new Date().toISOString(),
+        stalePublishDateClearedBy: 'ingest-review-from-url.js',
+      };
+      safeWriteReview(preExisting.path, updated, { force: true });
     }
   }
 
@@ -396,35 +398,63 @@ if (!show) {
     fields,
   }, { dryRun, reviewTextsDir });
 
+  // BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills
+  // BLANK fields (review-file-writer.js _mergeIntoExisting) — a merge onto a
+  // file whose url/criticName/fullText is already non-blank silently keeps
+  // the old value, whether the writer reports 'updated' (something else
+  // changed, e.g. sources[]) or 'skipped: no-changes' (nothing did) — both
+  // exit 0 today with no signal that the intended correction never landed.
+  // Verify it, whenever a file was touched/matched and the write wasn't
+  // already refused by a guard (that already exits 1 below on its own, more
+  // specific, terms).
+  //
+  //   - url: always checked. It's an exact-identity field with no extraction
+  //     non-determinism risk, and the writer's own maybeUpgradeUrl already
+  //     refuses to swap it onto a file with good content BY DESIGN — the
+  //     same "needs a human" situation audit-show-review-gap.js's
+  //     STALE-SLUG comment documents — so flagging that refusal here is
+  //     correct, not a false positive.
+  //   - fullText: only checked when the file actually needed fixing BEFORE
+  //     this write (preBadContent, mirroring maybeUpgradeUrl's own
+  //     badContent gate exactly). A fresh re-extraction of an
+  //     ALREADY-complete file can differ in incidental ways (site chrome,
+  //     rotating ad copy) without the stored body being wrong — that's a
+  //     legitimate preserved value, not staleness, and flagging it would be
+  //     a false positive with nothing to correct.
+  //   - criticName: only checked when the caller passed --critic explicitly
+  //     (an auto-extracted byline is best-effort, not an assertion the
+  //     caller is making), compared via normalizeCritic so a case/whitespace
+  //     difference on the SAME critic never false-flags. criticName is
+  //     never merged by the writer at all — it's an identity key, not a
+  //     mergeable field (review-file-writer.js never assigns
+  //     existing.criticName on merge) — so this explicit-ask path is the
+  //     only way a stale byline can ever be caught.
+  if (result.action !== 'new' && result.filepath && !dryRun
+      && !(result.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(result.reason))) {
+    const preBadContent = isPreExistingContentBad(preExisting);
+    const intended = { url };
+    if (hasBody && preBadContent) intended.fullText = text;
+    let landed;
+    try {
+      landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+    } catch (e) {
+      console.error(`\n❌ Could not re-read ${result.filepath} to verify the write landed: ${e.message}`);
+      process.exit(1);
+    }
+    if (criticArg) {
+      intended.criticName = normalizeCritic(criticArg);
+      landed = { ...landed, criticName: normalizeCritic(landed.criticName) };
+    }
+    const staleFields = findStaleMergeFields(intended, landed);
+    if (staleFields.length > 0) {
+      console.error(`\n❌ Stale merge: ${staleFields.join(', ')} still hold a pre-existing value at ${result.filepath} that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.`);
+      process.exit(1);
+    }
+  }
+
   if (result.action === 'new') {
     console.log(`✅ Created: ${result.filepath}`);
   } else if (result.action === 'updated') {
-    // BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills
-    // BLANK fields (review-file-writer.js _mergeIntoExisting) — a merge onto
-    // a file that already has a non-blank-but-WRONG url/criticName/fullText
-    // silently keeps the old value while still returning action:'updated'
-    // (something else may genuinely have changed, e.g. sources[]). Verify
-    // the fields THIS ingest explicitly intended to establish actually
-    // landed before printing success. criticName is only checked when the
-    // caller passed --critic explicitly — an auto-extracted byline is
-    // best-effort, not a correction the caller is asserting.
-    const intended = { url };
-    if (hasBody) intended.fullText = text;
-    if (criticArg) intended.criticName = criticArg;
-    let landed = null;
-    if (!dryRun) {
-      try {
-        landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
-      } catch (e) {
-        console.error(`\n❌ Could not re-read ${result.filepath} to verify the write landed: ${e.message}`);
-        process.exit(1);
-      }
-    }
-    const staleFields = dryRun ? [] : findStaleMergeFields(intended, landed);
-    if (staleFields.length > 0) {
-      console.error(`\n❌ Stale merge: reported an update but ${staleFields.join(', ')} still hold the pre-existing value at ${result.filepath} — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.`);
-      process.exit(1);
-    }
     console.log(`✅ Updated: ${result.filepath}`);
   } else {
     console.log(`⚠️  Skipped: ${result.reason || result.action}`);

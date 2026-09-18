@@ -40,4 +40,30 @@ function findStaleMergeFields(intended, landed) {
   return stale;
 }
 
-module.exports = { findStaleMergeFields };
+/**
+ * Mirrors review-normalization.js's maybeUpgradeUrl `badContent` gate
+ * exactly: true when the pre-existing file actually needed fixing (so
+ * checking whether a field like fullText landed is meaningful), false when
+ * it was already good (so a fresh re-extraction landing something slightly
+ * different — site chrome, rotating ad copy — is not staleness). The
+ * writer's own url-upgrade guard already treats "good content, don't touch"
+ * as intentional, not a defect; findStaleMergeFields must agree, or a
+ * caller re-ingesting a URL that resolves to a page with even trivially
+ * different incidental text would see every already-correct file flagged
+ * stale.
+ *
+ * @param {{data: object}|null} preExisting - findExistingReviewFile's return
+ *   value, read BEFORE the write this check verifies (or null/undefined
+ *   when no matching file existed — a fresh create, always "bad" in the
+ *   sense that there's nothing yet to compare against).
+ * @returns {boolean}
+ */
+function isPreExistingContentBad(preExisting) {
+  const data = preExisting && preExisting.data;
+  if (!data) return true;
+  return !data.fullText
+    || (data.contentTier != null && data.contentTier !== 'complete')
+    || !!data.needsRefetch;
+}
+
+module.exports = { findStaleMergeFields, isPreExistingContentBad };
