@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-18T03:17:56.233Z",
+    "lastUpdated": "2026-09-18T07:02:44.166Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -9316,7 +9316,10 @@
       "aliases": [
         "fjord-review"
       ],
-      "domain": "fjordreview.com"
+      "domain": "fjordreview.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-09-18T07:02:44.166Z"
     },
     "dance-magazine": {
       "displayName": "Dance Magazine",
