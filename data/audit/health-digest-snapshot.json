@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-09-17T12:09:21.616Z",
-  "subject": "BSC URGENT (day 27): 8 unresolved errors",
-  "bannerText": "8 errors, 36 warnings",
-  "consecutiveErrorDays": 27,
+  "generatedAt": "2026-09-18T11:53:34.628Z",
+  "subject": "BSC URGENT (day 28): 8 unresolved errors",
+  "bannerText": "8 errors, 30 warnings",
+  "consecutiveErrorDays": 28,
   "errors": [
     {
       "name": "Data quality: provider spend ledger",
-      "message": "Provider spend ledger's newest entry (day=2026-09-15) is 3d old (>48h) — the daily reconciliation itself has stopped landing"
+      "message": "Provider spend ledger's newest entry (day=2026-09-16) is 2d old (>48h) — the daily reconciliation itself has stopped landing"
     },
     {
       "name": "Main: red streak",
-      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 19.8h (no green run found in the runs checked — actual gap may be longer) (30 failing runs) — first red commit ee8996da5, job \"Unit Tests, Data Validation, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "message": "main's Test Suite has had no confirmed-green run in 19.9h (2 failing runs) — first red commit 4612b3962, job \"Data Validation, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
     },
     {
       "name": "Alert Router: dispatch deadman",
-      "message": "Most recent auto-dispatch attempt failed (6/14 succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: LINEAR_API_KEY not set in .env or environment"
+      "message": "Most recent auto-dispatch attempt failed (11/37 succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: LINEAR_API_KEY not set in .env or environment"
     },
     {
       "name": "Push-retry deadman",
-      "message": "659 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-2323-mu3r7v68 [Rebuild Reviews (Fast) x112, Rebuild Reviews Data x79, Gather Review Data x57, Process Feedback Submissions x30, Backfill Cast Data (Web Search) x30, Fetch Guardian Reviews via API x29, Fetch Show Images x26, Commercial RSS Poll x26, Audit Aggregator Review Gap x25, unknown x24, Scrape New Aggregators x21, Update Show Score Data x18, Audit Imageless Scored Shows x18, Test Suite x18, Opening Night Completeness Check x16, Daily Data Health Check x15, Enrich Reviews x14, Reverse Discovery Audit x12, Check Corpus Drift x7, Backfill Cast Data x6, Opening Night Express x6, Refresh Show Score (opening-night window) x5, Update Lottery/Rush Data x5, Outlet Registry Baseline Maintenance x4, Refresh Review Data x4, Promote West End Aggregator Candidates x4, Check Review-Count Drift x4, Reddit Engagement Digest x4, Auto-Maintain Show Data x4, Audit Closing Dates x3, Monitor Scheduled Email Count x3, Audit Opening Dates x3, Opening Night Checklist x3, Commercial Weekly Orchestrator x3, Audit Provisional Show Venues x2, Nightly UX Walkthrough x2, Weekly Newsletter Draft x2, Newsletter Draft Refresh (Sunday) x2, Audit Census Recall x2, Opening Night Broadcast x2, Enrich Off-Broadway Dates x1, Weekly Data Integrity Check x1, Scrape BWW Reviews x1, Audit Cross-Production (Weekly) x1, Scrape WestEndTheatre Roundups x1, LLM Ensemble Score Reviews x1, Generate Guide Editorials x1, Weekly Video Reviews x1, Audit Aggregator Coverage x1]. Most recent reason: commit-dropped-post-push(reset+cherry-pick(-X theirs))."
+      "message": "534 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-2323-mu3r7v68 [Rebuild Reviews (Fast) x99, Rebuild Reviews Data x60, Gather Review Data x47, Process Feedback Submissions x24, Backfill Cast Data (Web Search) x24, unknown x24, Commercial RSS Poll x22, Fetch Guardian Reviews via API x22, Audit Aggregator Review Gap x20, Test Suite x20, Fetch Show Images x18, Scrape New Aggregators x18, Update Show Score Data x13, Opening Night Completeness Check x13, Audit Imageless Scored Shows x13, Daily Data Health Check x12, Enrich Reviews x10, Reverse Discovery Audit x8, Check Corpus Drift x5, Update Lottery/Rush Data x5, Opening Night Express x4, Outlet Registry Baseline Maintenance x3, Refresh Review Data x3, Promote West End Aggregator Candidates x3, Refresh Show Score (opening-night window) x3, Check Review-Count Drift x3, Reddit Engagement Digest x3, Auto-Maintain Show Data x3, Commercial Weekly Orchestrator x3, Backfill Cast Data x2, Nightly UX Walkthrough x2, Audit Closing Dates x2, Monitor Scheduled Email Count x2, Audit Opening Dates x2, Opening Night Checklist x2, Weekly Newsletter Draft x2, Newsletter Draft Refresh (Sunday) x2, Audit Census Recall x2, Opening Night Broadcast x2, Weekly Data Integrity Check x1, Audit Provisional Show Venues x1, Scrape BWW Reviews x1, Audit Cross-Production (Weekly) x1, Scrape WestEndTheatre Roundups x1, LLM Ensemble Score Reviews x1, Generate Guide Editorials x1, Weekly Video Reviews x1, Audit Aggregator Coverage x1]. Most recent reason: retries-exhausted."
     },
     {
       "name": "Autofix: jobs actually succeeding",
@@ -26,33 +26,37 @@
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
-      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 3 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
+      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 4 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     },
     {
       "name": "Data: OB closing candidates awaiting review",
-      "message": "4 open Off-Broadway show(s) look closed per the weekly detector. Oldest: drunk-shakespeare-off-broadway-2022 (missing 67d)"
+      "message": "4 open Off-Broadway show(s) look closed per the weekly detector. Oldest: drunk-shakespeare-off-broadway-2022 (missing 68d)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "message": "6 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 37d) — 4 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "6 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 38d) — 5 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ],
   "warns": [
     {
       "name": "Audience coverage: open-show gaps",
-      "message": "1 open show(s) have audience data on a source that didn't link — Mezzanine: My Son’s A Queer (But What Can You Do?) (151 ratings ↔ My Son's a Queer (But What Can You Do?))"
+      "message": "2 open show(s) have audience data on a source that didn't link — Mezzanine: My Son’s A Queer (But What Can You Do?) (151 ratings ↔ My Son's a Queer (But What Can You Do?)); Mezzanine: Thelma & Louise: A New Musical (57 ratings ↔ Thelma & Louise)"
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 20730 vs baseline 20808"
+      "message": "Reviews dropped: 20777 vs baseline 20857"
     },
     {
       "name": "Quality: corpus drift",
-      "message": "15 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)"
+      "message": "14 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "message": "Newest DMARC report is 19d old (reporters send daily)"
+    },
+    {
+      "name": "Quality: outlet domain moves",
+      "message": "1 unregistered host(s) name-match a registered outlet (e.g. aol.co.uk → travel-aol) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
@@ -60,15 +64,11 @@
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "message": "4 NEW unhandled CV.wrongProduction review(s) since last run (929 total across 425 show(s), 24h ago)"
+      "message": "11 NEW unhandled CV.wrongProduction review(s) since last run (937 total across 426 show(s), 24h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "1 NEW cross-show URL mismatch(es) since last run (1622 total across 722 show(s), 24h ago)"
-    },
-    {
-      "name": "Data quality: revival-unverified lifetime sweep",
-      "message": "1 NEW unverified revival flag(s) since last run (43 total across 43 show(s), 24h ago)"
+      "message": "3 NEW cross-show URL mismatch(es) since last run (1625 total across 725 show(s), 24h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
@@ -83,20 +83,12 @@
       "message": "Last SEO check 33d ago (>14d)"
     },
     {
-      "name": "Cron failed: Test Suite",
-      "message": "Last run inconclusive: failure (0h ago), no success in 48h"
-    },
-    {
-      "name": "Cron failed: Weekly Video Reviews",
-      "message": "Last run inconclusive: failure (3d ago), no success in 192h"
-    },
-    {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "41 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (31d, stamp overdue 29d); BRO-235: The Stage + pages-on-stages stub extraction (31d); Monitor: verify 'exactly 1 scheduled owner email/day' holds  (31d) (1 parked via tab-close, oldest 2026-09-16 — resume: node scripts/bsc-next.js --id 431 --force — not counted) [16 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "41 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (32d, stamp overdue 30d); BRO-235: The Stage + pages-on-stages stub extraction (32d); Monitor: verify 'exactly 1 scheduled owner email/day' holds  (32d) (1 parked via tab-close, oldest 2026-09-16 — resume: node scripts/bsc-next.js --id 431 --force — not counted) [17 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "26 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (55d); P1: headless-claude fallback for the opening-night monitor l (55d); P1: register review-census carriers (audit-aggregator-gap +  (55d) [36 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "26 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (56d); P1: headless-claude fallback for the opening-night monitor l (56d); P1: register review-census carriers (audit-aggregator-gap +  (56d) [36 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: paused P2/other cards",
@@ -131,24 +123,20 @@
       "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
     },
     {
-      "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
       "name": "Workflow coverage: never-run",
       "message": "1 workflow(s) registered on GitHub Actions with ZERO lifetime runs (>30d old): batch-commercial-research.yml"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "3 discovered review(s) not reaching the composite score (0 T1). First: truly-howard-hughes-off-broadway-2026 — cititour (unscored)"
+      "message": "4 discovered review(s) not reaching the composite score (2 T1). First: man-to-man-west-end-2026 — thestage (empty-body)"
     },
     {
       "name": "Data: uncollected live review strands",
-      "message": "29 discovered review URL(s) across 20 live show(s) were never fetched. First: the-producers-west-end-2025 (3 stranded)"
+      "message": "23 discovered review URL(s) across 16 live show(s) were never fetched. First: the-producers-west-end-2025 (3 stranded)"
     },
     {
       "name": "Infra: worktree GC log stale",
-      "message": "worktree-gc.log has no line in the last 18.9h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
+      "message": "worktree-gc.log has no line in the last 19.7h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
     },
     {
       "name": "Infra: notion-schedule-coupling audit",
@@ -323,13 +311,6 @@
     {
       "title": "Watchdog parked #1962 — redispatch never produced a launch",
       "description": "Watchdog: card \"Rage clicks on /west-end '69' element — broken UI\" was claimed for redispatch at 2026-09-15T21:21:31.439Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1962), then re-arm with node scripts/bsc-next.js --id 1962 --force once fixed.",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review-gap audit refused to write — 57.1% of shows changed coverage state",
-      "description": "review-gap blast radius 57.1% (12/21 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bigfoot-off-broadway-2026, bughouse-off-broadway-2026, chess-2025, data-off-broadway-2026, golden-boy-off-west-end-2026, indian-princesses-off-broadway-2025, mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026, tartuffe-remixed-off-west-end-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-children-off-west-end-2026, well-ill-let-you-go-off-broadway-2026, youre-a-good-man-charlie-brown-off-broadway-2026\n\nPARTIAL write: the other 9 show(s) audited this run were NOT risky and were persisted normally. Only the 12 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
       "severity": "error",
       "url": null,
       "fields": []
@@ -587,18 +568,6 @@
       "fields": []
     },
     {
-      "title": "T1 Coverage — new gaps past 24h",
-      "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
-      "severity": "error",
-      "url": null,
-      "fields": [
-        {
-          "name": "The Devil Wears Prada — observer (28h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"the-devil-wears-prada-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
-        }
-      ]
-    },
-    {
       "title": "Shipped review too short to verify on Golden Boy",
       "description": "thestage/Unknown (thestage--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
       "severity": "warning",
@@ -641,6 +610,83 @@
       "fields": []
     },
     {
+      "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
+      "description": "check-corpus-drift.js audit \"url-downgrade\" (node scripts/audit-url-downgrade.js --gate) has been drifting. Latest output:\n\n  [protected] dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json — url dated 2026-06-16 (before_preview, 1d)\n  [protected] every-brilliant-thing-2026/nytimes--ben-brantley.json — url dated 2014-12-15 (before_preview, 4065d)\n  [protected] evita-2026/broadwayworld--gary-naylor.json — url dated 2026-04-29 (before_preview, 283d)\n  [protected] fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json — url dated 2024-04-12 (before_preview, 876d)\n  [protected] gigi-2015/washpost--peter-marks.json — url dated 2015-01-29 (before_preview, 28d)\n  [protected] hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/nysr--david-finkle.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/washpost--peter-marks.json — url dated 2018-01-23 (before_preview, 2987d)\n  [protected] heathers-the-musical-off-west-end-2026/broadwayworld--jade-kops.json — url dated 2026-09-04 (after_close, 6d)\n  [protected] kenrex-off-broadway-2026/guardian--mark-fisher.json — url dated 2024-11-01 (before_preview, 510d)\n  [protected] kinky-boots-the-musical-west-end-2026/guardian--arifa-akbar.json — url dated 2025-03-13 (before_preview, 334d)\n  [protected] little-women-2005/ew--ew-staff.json — url dated 2005-06-07 (after_close, 9d)\n  [protected] macbeth-2013/ap--mark-kennedy.json — url dated 2013-04-21 (before_preview, 166d)\n  [protected] manon-off-broadway-2027/broadwayworld--steve-callahan.json — url dated 2024-01-19 (before_preview, 1127d)\n  [protected] mexodus-off-broadway-2026/nyt-theater--unknown.json — url dated 2025-10-04 (before_preview, 132d)\n  [LIVE] my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json — url dated 2025-06-05 (before_preview, 447d)\n  [protected] orlando-off-broadway-2026/guardian--unknown.json — url dated 2022-12-11 (before_preview, 452d)\n  [protected] please-please-me-west-end-2026/guardian--susannah-clapp.json — url dated 2024-08-04 (before_preview, 585d)\n  [protected] romeo-and-juliet-off-broadway-2026/guardian--clare-brennan.json — url dated 2024-09-22 (before_preview, 586d)\n  [protected] romeo-and-juliet-west-end-2026/guardian--unknown.json — url dated 2025-07-09 (before_preview, 215d)\n  [protected] seagull-true-story-off-broadway-2026/nysr--frank-scheck.json — url dated 2023-02-28 (before_preview, 1097d)\n  [protected] the-glass-menagerie-2017/chicagotribune--chris-jones.json — url dated 2013-09-26 (before_preview, 1209d)\n  [protected] the-hills-of-california-2024/guardian--arifa-akbar.json — url dated 2024-02-08 (before_preview, 195d)\n  [protected] the-seagull-2008/guardian--arifa-akbar.json — url dated 2025-03-06 (after_close, 5912d)\n  [protected] the-sound-of-music-2027/broadwayworld--anikatrina-fageol.json — url dated 2026-02-18 (before_preview, 377d)\n  [protected] the-sound-of-music-2027/broadwayworld--david-friscic.json — url dated 2025-09-15 (before_preview, 533d)\n  [protected] the-sound-of-music-2027/broadwayworld--greg-dalton-white.json — url dated 2026-08-31 (before_preview, 183d)\n  [protected] the-sound-of-music-2027/broadwayworld--jeffrey-kare.json — url dated 2025-10-08 (before_preview, 510d)\n  [protected] the-sound-of-music-2027/broadwayworld--joni-lorraine.json — url dated 2026-02-04 (before_preview, 391d)\n  [protected] the-sound-of-music-2027/broadwayworld--r-scott-reedy.json — url dated 2026-01-11 (before_preview, 415d)\n  [protected] the-sound-of-music-2027/broadwayworld--tina-st-angelo.json — url dated 2025-10-25 (before_preview, 493d)\n  [protected] the-sound-of-music-2027/broadwayworld--vickie-evans.json — url dated 2025-11-20 (before_preview, 467d)\n  [protected] the-wiz-2024/latimes--mary-mcnamara.json — url dated 2015-12-03 (before_preview, 3018d)\n  [protected] tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json — url dated 2026-07-02 (before_preview, 101d)\n  [protected] tosca-off-broadway-2026/broadwayworld--roger-catlin.json — url dated 2026-08-10 (before_preview, 62d)\n  [protected] twelfth-night-off-west-end-2026/nysr--unknown.json — url dated 2025-08-21 (before_preview, 317d)\n  [protected] vanya-off-broadway-2025/washpost--unknown.json — url dated 2013-03-14 (before_preview, 4359d)\n\nFAIL: 1 file(s) carry a regressed (wrong-production) url with NO wrongProduction/wrongShow flag — live scoring exposure.\nFix by hand (verify the correct current-run url and restore it, or flag wrongProduction).",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Shipped review missing publishDate on Thelma & Louise: A New Musical",
+      "description": "musical-theatre-review/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Shipped review missing publishDate on Alvin Ailey American Dance Theater - New Works",
+      "description": "bachtrack/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://bachtrack.com/review-new-works-alvin-ailey-american-dance-theater-sadlers-wells-london-september-2026\nthereviewshub/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://www.thereviewshub.com/alvin-ailey-american-dance-theater-new-works-sadlers-wells-london/",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "T1 Coverage — new gaps past 24h",
+      "description": "5 T1/T2 outlet(s) still missing >24h after they became measurable.",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "Million Dollar Quartet — guardian (27h)",
+          "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+        },
+        {
+          "name": "Million Dollar Quartet — independent (27h)",
+          "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+        },
+        {
+          "name": "Million Dollar Quartet — standard (27h)",
+          "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+        },
+        {
+          "name": "Million Dollar Quartet — telegraph (27h)",
+          "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+        },
+        {
+          "name": "Million Dollar Quartet — times-uk (27h)",
+          "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+        }
+      ]
+    },
+    {
+      "title": "Shipped review too short to verify on Thelma & Louise: A New Musical",
+      "description": "all-that-dazzles-uk/Unknown (all-that-dazzles-uk--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic\nlondon-theatre/Unknown (london-theatre--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.londontheatre.co.uk/reviews/thelma-and-louise-a-new-musical-review-young-vic\ntelegraph/Unknown (telegraph--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.telegraph.co.uk/theatre/what-to-see/thelma-louise-musical-struggles-to-capture-magic/",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review-gap audit refused to write — 32.0% of shows changed coverage state",
+      "description": "review-gap blast radius 32.0% (8/25 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bloodsport-after-helen-of-troy-off-west-end-2026, golden-boy-off-west-end-2026, pre-existing-condition-off-broadway-2026, sunset-baby-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-human-voice-the-seven-deadly-sins-west-end-2026, the-seven-deadly-sins-the-human-voice-off-west-end-2026, three-houses-off-broadway-2026\n\nPARTIAL write: the other 18 show(s) audited this run were NOT risky and were persisted normally. Only the 8 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Deployed coverage — the site is serving stale coverage",
+      "description": "2/147 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nThelma & Louise: A New Musical: score-drift\nMillion Dollar Quartet: score-drift",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "T1 Coverage Scoreboard",
+      "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.2% (429/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (837h)\nA Midsummer Night's Dream — observer (837h)\nA Midsummer Night's Dream — standard (837h)\nABBA Voyage — independent (837h)\nAladdin — ew (837h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (837h)\nBuena Vista Social Club — broadwaynews (837h)\nBuena Vista Social Club — nydailynews (837h)\nHadestown — nydailynews (837h)\nHeathers The Musical — dailybeast (837h)\n… 17 more circuit-open cell(s)",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "description": "check-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Cindy Marcolina at london-theatre (4% share) for relics-west-end-2026\n    Primary: broadwayworld (96%), total: 27 reviews\n  Raven Snook at nyt-theater (5% share) for all-my-sons-2019\n    Primary: timeout (95%), total: 22 reviews\n  James Wilson at off-off-online (7% share) for giulia-the-poison-queen-of-palermo-off-broadway-2026\n    Primary: talkinbroadway (93%), total: 28 reviews\n  James Wilson at off-off-online (7% share) for masquerade-off-broadway-2025\n    Primary: talkinbroadway (93%), total: 28 reviews\n  Tony Marinelli at broadwayscorecard (4% share) for sukkot-off-broadway-2026\n    Primary: theater-scene (96%), total: 25 reviews\n  Pete Hempstead at whatsonstage (3% share) for the-lost-boys-2026\n    Primary: theatermania (98%), total: 40 reviews\n  Susannah Clapp at guardian (9% share) for much-ado-about-nothing-globe-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for stranger-things-the-first-shadow-west-end-2023\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for sylvia-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Patrick Ryan at tennessean (3% share) for gypsy-2024\n    Primary: usatoday (97%), total: 31 reviews\n  David Kaufman at nydailynews (4% share) for proof-2000\n    Primary: theater-scene (96%), total: 23 reviews\n  Emlyn Travis at amny (4% share) for cabaret-2024\n    Primary: ew (96%), total: 28 reviews\n  Frank J. Avella at edge-new-york (5% share) for heisenberg-2016\n    Primary: the-contending (95%), total: 21 reviews\n  Scott Matthewman at musical-theatre-review (6% share) for teeth-n-smiles-west-end-2026\n    Primary: thereviewshub (94%), total: 18 reviews\n  Markos Papadatos at truehollywoodtalk (4% share) for the-lost-boys-2026\n    Primary: digital-journal (96%), total: 28 reviews\n\n--report-only/--strict: No files written\n\n(33 baselined, 1 new)\n\n⚠️  NEW flagged review(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/critic-outlets-baseline.json):\n  David Barbour at theatermania (0% share) for the-39-steps-2008\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
       "severity": "error",
@@ -649,20 +695,13 @@
     },
     {
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
-      "description": "check-corpus-drift.js audit \"duplicate-of-cleared-contradiction\" (node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0) has been drifting. Latest output:\n\nDuplicate-of-cleared contradiction sweep: 43975 review file(s) scanned, 2 match(es).\n  and-juliet-2022/theatermania--pete-hempstead.json -> theatermania--jesse-green.json (both claim/deny the same URL)\n  the-cottage-2023/theater-life--paulanne-simmons.json -> theater-life--samuel-l-leiter.json (both claim/deny the same URL)\n\nFAIL: 2 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
-      "description": "check-corpus-drift.js audit \"url-downgrade\" (node scripts/audit-url-downgrade.js --gate) has been drifting. Latest output:\n\n  [protected] dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json — url dated 2026-06-16 (before_preview, 1d)\n  [protected] every-brilliant-thing-2026/nytimes--ben-brantley.json — url dated 2014-12-15 (before_preview, 4065d)\n  [protected] evita-2026/broadwayworld--gary-naylor.json — url dated 2026-04-29 (before_preview, 283d)\n  [protected] fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json — url dated 2024-04-12 (before_preview, 876d)\n  [protected] gigi-2015/washpost--peter-marks.json — url dated 2015-01-29 (before_preview, 28d)\n  [protected] hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/nysr--david-finkle.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/washpost--peter-marks.json — url dated 2018-01-23 (before_preview, 2987d)\n  [protected] heathers-the-musical-off-west-end-2026/broadwayworld--jade-kops.json — url dated 2026-09-04 (after_close, 6d)\n  [protected] kenrex-off-broadway-2026/guardian--mark-fisher.json — url dated 2024-11-01 (before_preview, 510d)\n  [protected] kinky-boots-the-musical-west-end-2026/guardian--arifa-akbar.json — url dated 2025-03-13 (before_preview, 334d)\n  [protected] little-women-2005/ew--ew-staff.json — url dated 2005-06-07 (after_close, 9d)\n  [protected] macbeth-2013/ap--mark-kennedy.json — url dated 2013-04-21 (before_preview, 166d)\n  [protected] manon-off-broadway-2027/broadwayworld--steve-callahan.json — url dated 2024-01-19 (before_preview, 1127d)\n  [protected] mexodus-off-broadway-2026/nyt-theater--unknown.json — url dated 2025-10-04 (before_preview, 132d)\n  [LIVE] my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json — url dated 2025-06-05 (before_preview, 447d)\n  [protected] orlando-off-broadway-2026/guardian--unknown.json — url dated 2022-12-11 (before_preview, 452d)\n  [protected] please-please-me-west-end-2026/guardian--susannah-clapp.json — url dated 2024-08-04 (before_preview, 585d)\n  [protected] romeo-and-juliet-off-broadway-2026/guardian--clare-brennan.json — url dated 2024-09-22 (before_preview, 586d)\n  [protected] romeo-and-juliet-west-end-2026/guardian--unknown.json — url dated 2025-07-09 (before_preview, 215d)\n  [protected] seagull-true-story-off-broadway-2026/nysr--frank-scheck.json — url dated 2023-02-28 (before_preview, 1097d)\n  [protected] the-glass-menagerie-2017/chicagotribune--chris-jones.json — url dated 2013-09-26 (before_preview, 1209d)\n  [protected] the-hills-of-california-2024/guardian--arifa-akbar.json — url dated 2024-02-08 (before_preview, 195d)\n  [protected] the-seagull-2008/guardian--arifa-akbar.json — url dated 2025-03-06 (after_close, 5912d)\n  [protected] the-sound-of-music-2027/broadwayworld--anikatrina-fageol.json — url dated 2026-02-18 (before_preview, 377d)\n  [protected] the-sound-of-music-2027/broadwayworld--david-friscic.json — url dated 2025-09-15 (before_preview, 533d)\n  [protected] the-sound-of-music-2027/broadwayworld--greg-dalton-white.json — url dated 2026-08-31 (before_preview, 183d)\n  [protected] the-sound-of-music-2027/broadwayworld--jeffrey-kare.json — url dated 2025-10-08 (before_preview, 510d)\n  [protected] the-sound-of-music-2027/broadwayworld--joni-lorraine.json — url dated 2026-02-04 (before_preview, 391d)\n  [protected] the-sound-of-music-2027/broadwayworld--r-scott-reedy.json — url dated 2026-01-11 (before_preview, 415d)\n  [protected] the-sound-of-music-2027/broadwayworld--tina-st-angelo.json — url dated 2025-10-25 (before_preview, 493d)\n  [protected] the-sound-of-music-2027/broadwayworld--vickie-evans.json — url dated 2025-11-20 (before_preview, 467d)\n  [protected] the-wiz-2024/latimes--mary-mcnamara.json — url dated 2015-12-03 (before_preview, 3018d)\n  [protected] tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json — url dated 2026-07-02 (before_preview, 101d)\n  [protected] tosca-off-broadway-2026/broadwayworld--roger-catlin.json — url dated 2026-08-10 (before_preview, 62d)\n  [protected] twelfth-night-off-west-end-2026/nysr--unknown.json — url dated 2025-08-21 (before_preview, 317d)\n  [protected] vanya-off-broadway-2025/washpost--unknown.json — url dated 2013-03-14 (before_preview, 4359d)\n\nFAIL: 1 file(s) carry a regressed (wrong-production) url with NO wrongProduction/wrongShow flag — live scoring exposure.\nFix by hand (verify the correct current-run url and restore it, or flag wrongProduction).",
+      "description": "check-corpus-drift.js audit \"duplicate-of-cleared-contradiction\" (node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0) has been drifting. Latest output:\n\nDuplicate-of-cleared contradiction sweep: 44064 review file(s) scanned, 2 match(es).\n  and-juliet-2022/theatermania--pete-hempstead.json -> theatermania--jesse-green.json (both claim/deny the same URL)\n  the-cottage-2023/theater-life--paulanne-simmons.json -> theater-life--samuel-l-leiter.json (both claim/deny the same URL)\n\nFAIL: 2 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
       "severity": "error",
       "url": null,
       "fields": []
     }
   ],
-  "autoFixedCount": 4,
-  "passedCount": 56,
+  "autoFixedCount": 1,
+  "passedCount": 62,
   "totalCount": 104
 }
