@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-18T17:02:38.752Z",
+  "generatedAt": "2026-09-18T20:16:36.338Z",
   "windowDays": 1095,
-  "targets": 309,
-  "auditedThisRun": 5,
-  "carriedForward": 540,
+  "targets": 307,
+  "auditedThisRun": 11,
+  "carriedForward": 534,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 336,
-    "totalMissing": 1720,
+    "withGap": 337,
+    "totalMissing": 1719,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1808,
-    "totalRecoverable": 23,
-    "totalRecovered": 5
+    "totalFlaggedMisses": 1813,
+    "totalRecoverable": 22,
+    "totalRecovered": 4
   },
   "results": [
     {
@@ -4662,8 +4662,8 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/sep/16/alvin-ailey-american-dance-theater-new-works-review",
+        "https://www.afridiziak.com/reviews/alvin-ailey-american-dance-theater-review-legacy/",
         "https://www.thereviewshub.com/alvin-ailey-american-dance-theater-new-works-sadlers-wells-london/",
-        "https://www.afridiziak.com/reviews/alvin-ailey-american-dance-theater-new-works/",
         "https://www.westendbestfriend.co.uk/news/review-alvin-ailey-american-dance-theater-new-works-sadlers-wells",
         "https://www.ticketswap.com/theatre-tickets/alvin-ailey-american-dance-theater-new-works-london-sadlers-wells-theatre-2026-09-15-CepPst1PFFFvzuDEAXnbG",
         "https://www.thestage.co.uk/reviews/alvin-ailey-american-dance-theater-new-works-review-sadlers-wells-london",
@@ -4673,8 +4673,8 @@
         "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater",
         "https://www.aol.co.uk/articles/alvin-ailey-american-dance-theater-110300000.html"
       ],
-      "dirFiles": 12,
-      "dirClean": 9,
+      "dirFiles": 13,
+      "dirClean": 10,
       "inReviewsJson": 9,
       "missing": [
         {
@@ -4687,12 +4687,6 @@
           "url": "https://www.broadwayworld.com/bwwdance/article/Review-ALVIN-AILEY-AMERICAN-DANCE-THEATER-A-Fabulous-All-New-Premiere-Night-20251222",
           "host": "broadwayworld.com",
           "knownOutletId": "broadwayworld",
-          "serpCensus": true
-        },
-        {
-          "url": "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater",
-          "host": "fjordreview.com",
-          "knownOutletId": "fjord-review",
           "serpCensus": true
         },
         {
@@ -4840,11 +4834,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 16,
+        "count": 13,
         "byReason": {
-          "non-review-host": 12,
+          "non-review-host": 10,
           "ticketing-listing": 2,
-          "access-listings-page": 2
+          "access-listings-page": 1
         }
       },
       "dedupedVariants": [],
@@ -4872,18 +4866,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
-          "url": "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater",
-          "host": "fjordreview.com",
-          "outletId": "fjord-review",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
         },
         {
           "url": "https://www.aol.co.uk/articles/alvin-ailey-american-dance-theater-110300000.html",
@@ -4917,13 +4899,6 @@
             "url": "https://www.broadwayworld.com/bwwdance/article/Review-ALVIN-AILEY-AMERICAN-DANCE-THEATER-A-Fabulous-All-New-Premiere-Night-20251222"
           },
           {
-            "outletId": "fjord-review",
-            "outlet": "fjord-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater"
-          },
-          {
             "outletId": "aol.co.uk",
             "outlet": "aol.co.uk",
             "critic": "Unknown",
@@ -4947,14 +4922,14 @@
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
-            "url": "https://www.thereviewshub.com/alvin-ailey-american-dance-theater-new-works-sadlers-wells-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.afridiziak.com/reviews/alvin-ailey-american-dance-theater-review-legacy/",
+            "outletId": "afridiziak.com",
             "state": "live",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
           },
           {
-            "url": "https://www.afridiziak.com/reviews/alvin-ailey-american-dance-theater-new-works/",
-            "outletId": "afridiziak.com",
+            "url": "https://www.thereviewshub.com/alvin-ailey-american-dance-theater-new-works-sadlers-wells-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
@@ -4977,6 +4952,12 @@
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           },
           {
+            "url": "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater",
+            "outletId": "fjordreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T06:56:38.666Z"
+          },
+          {
             "url": "https://www.ticketswap.com/theatre-tickets/alvin-ailey-american-dance-theater-new-works-london-sadlers-wells-theatre-2026-09-15-CepPst1PFFFvzuDEAXnbG",
             "outletId": "ticketswap.com",
             "state": "GAP",
@@ -4986,13 +4967,6 @@
           {
             "url": "https://www.broadwayworld.com/bwwdance/article/Review-ALVIN-AILEY-AMERICAN-DANCE-THEATER-A-Fabulous-All-New-Premiere-Night-20251222",
             "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T06:56:38.666Z"
-          },
-          {
-            "url": "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater",
-            "outletId": "fjord-review",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
@@ -5012,10 +4986,10 @@
             "firstSeenAt": "2026-09-18T06:56:38.666Z"
           }
         ],
-        "liveCount": 5,
+        "liveCount": 6,
         "candidateCount": 10
       },
-      "computedAt": "2026-09-18T06:56:38.666Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "amaze-magic-off-broadway-2025",
@@ -5118,24 +5092,25 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/review-america-who-hurt-you-and-the-united-states-of-sarah_1854178/",
         "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
+        "https://www.theatermania.com/news/review-america-who-hurt-you-and-the-united-states-of-sarah_1854178/",
         "https://newyorktheater.me/2026/09/17/america-who-hurt-you-review/",
-        "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
         "https://www.harlemworldmagazine.com/national-black-theatre-and-theatre-for-a-new-audience-present-america-who-hurt-you/"
       ],
-      "dirFiles": 7,
-      "dirClean": 2,
-      "inReviewsJson": 2,
-      "missing": [
+      "dirFiles": 9,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
+      "dirOnly": [
         {
-          "url": "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
           "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "serpCensus": true
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
         }
       ],
-      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
@@ -5208,7 +5183,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -5234,42 +5209,20 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 29,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 22
+          "non-review-host": 27,
+          "aggregator-internal-nav": 2
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
-          "host": "thefrontrowcenter.com",
-          "outletId": "front-row-center",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/"
-          },
           {
             "outletId": "nysr",
             "outlet": "nysr",
@@ -5300,13 +5253,6 @@
             "firstSeenAt": "2026-09-18T12:09:36.857Z"
           },
           {
-            "url": "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
-            "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
-          },
-          {
             "url": "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
             "outletId": "nysr",
             "state": "GAP",
@@ -5322,9 +5268,9 @@
           }
         ],
         "liveCount": 2,
-        "candidateCount": 5
+        "candidateCount": 4
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -17554,30 +17500,53 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review",
-        "https://www.whatsonstage.com/news/bloodsport-after-helen-of-troy-review-michelle-dockery-and-laura-aikman-in-a-play-that-takes-on-the-world_1731495/",
-        "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
-        "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
-        "https://www.radiotimes.com/going-out/going-out-reviews/bloodsport-after-helen-of-troy-review/",
         "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
-        "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
         "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
+        "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review",
+        "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
+        "https://everything-theatre.co.uk/2026/09/review-bloodsport-after-helen-of-troy-stratford-east/",
+        "https://www.allthatdazzles.co.uk/post/review-bloodsport-after-helen-of-troy-stratford-east",
+        "https://www.thereviewshub.com/bloodsport-after-helen-of-troy-stratford-east-london/",
+        "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
+        "https://theatreweekly.com/review-bloodsport-after-helen-of-troy-at-stratford-east/",
+        "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
+        "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy",
+        "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/bloodsport-after-helen-of-troy-theatre-royal-stratford-east",
+        "https://artspod.co.uk/bloodsport-after-helen-of-troy/",
+        "https://theqr.co.uk/2026/09/14/review-bloodsport-after-helen-of-troy-stratford-east/",
+        "https://lovelondonloveculture.com/2026/09/15/review-round-up-bloodsport-after-helen-stratford-east/",
+        "https://www.radiotimes.com/going-out/going-out-reviews/bloodsport-after-helen-of-troy-review/",
+        "https://www.whatsonstage.com/news/bloodsport-after-helen-of-troy-review-michelle-dockery-and-laura-aikman-in-a-play-that-takes-on-the-world_1731495/",
+        "https://westendwilma.com/review-bloodsport-after-helen-of-troy-review/",
+        "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
         "https://www.broadwayworld.com/westend/article/Review-BLOODSPORT-AFTER-HELEN-OF-TROY-Stratford-East-20260911",
         "https://www.ft.com/content/dca1a15b-517e-4d6c-90f7-e1ac46db8f4c"
       ],
       "dirFiles": 36,
       "dirClean": 23,
       "inReviewsJson": 27,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-bloodsport-after-helen-stratford-east/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": "lovelondonloveculture",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
         {
           "host": "firstnightmagazine.com",
           "count": 1
@@ -17595,35 +17564,52 @@
           "count": 1
         },
         {
-          "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
           "host": "thespyinthestalls.com",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theqr.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
           "count": 1
         },
         {
           "host": "westendbestfriend.co.uk",
           "count": 1
-        },
-        {
-          "host": "westendwilma.com",
-          "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://artspod.co.uk/bloodsport-after-helen-of-troy/",
+          "host": "artspod.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artspod--jo-goodberry.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://artspod.co.uk/bloodsport-after-helen-of-troy/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 19,
@@ -17676,24 +17662,224 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"BLOODSPORT: After Helen of Troy\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"BLOODSPORT: After Helen of Troy\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"BLOODSPORT: After Helen of Troy\" review stratford",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 7,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 19,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 2,
+        "count": 16,
         "byReason": {
-          "venue-production-page": 2
+          "non-review-host": 12,
+          "venue-production-page": 3,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
+          "host": "westendtheatre.com",
+          "outletId": "westendtheatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trail"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
+          "host": "thetimes.com",
+          "outletId": "times-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-bloodsport-after-helen-stratford-east/",
+          "host": "lovelondonloveculture.com",
+          "outletId": "lovelondonloveculture",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/15/review-round-up-bloodsport-after-h"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw"
+          },
+          {
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-bloodsport-after-helen-stratford-east/"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy"
+          },
+          {
+            "outletId": "artspod.co.uk",
+            "outlet": "artspod.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://artspod.co.uk/bloodsport-after-helen-of-troy/"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-14T19:55:29.406Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-14T19:55:29.406Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review",
             "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-14T19:55:29.406Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/09/review-bloodsport-after-helen-of-troy-stratford-east/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-bloodsport-after-helen-of-troy-stratford-east",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/bloodsport-after-helen-of-troy-stratford-east-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-14T19:55:29.406Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-bloodsport-after-helen-of-troy-at-stratford-east/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-14T19:55:29.406Z"
+          },
+          {
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/bloodsport-after-helen-of-troy-theatre-royal-stratford-east",
+            "outletId": "stagedtheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://theqr.co.uk/2026/09/14/review-bloodsport-after-helen-of-troy-stratford-east/",
+            "outletId": "theqr.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://www.radiotimes.com/going-out/going-out-reviews/bloodsport-after-helen-of-troy-review/",
+            "outletId": "radiotimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
@@ -17704,38 +17890,14 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
-            "outletId": "thestage.co.uk",
+            "url": "https://westendwilma.com/review-bloodsport-after-helen-of-troy-review/",
+            "outletId": "westendwilma.com",
             "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
-            "url": "https://www.radiotimes.com/going-out/going-out-reviews/bloodsport-after-helen-of-troy-review/",
-            "outletId": "radiotimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
           },
           {
             "url": "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
             "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
-            "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
@@ -17750,12 +17912,47 @@
             "outletId": "ft.com",
             "state": "live",
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
+          },
+          {
+            "url": "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-bloodsport-after-helen-stratford-east/",
+            "outletId": "lovelondonloveculture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy",
+            "outletId": "bestoftheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://artspod.co.uk/bloodsport-after-helen-of-troy/",
+            "outletId": "artspod.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 10
+        "liveCount": 17,
+        "candidateCount": 22
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -30212,12 +30409,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "merch-store": 3,
-          "non-review-host": 28,
-          "static-asset": 1
+          "non-review-host": 26,
+          "aggregator-internal-nav": 3,
+          "merch-store": 3
         }
       },
       "dedupedVariants": [],
@@ -30245,7 +30441,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -30529,13 +30725,12 @@
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
       "title": "Crazy Mama: A True Story of Love and Madness",
       "openingDate": "2026-09-18",
-      "status": "previews",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://t2conline.com/tag/crazy-mama-a-true-story-of-love-and-madness/",
         "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
-        "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026",
         "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/"
       ],
       "dirFiles": 1,
@@ -30551,12 +30746,6 @@
         {
           "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
           "host": "openingnight.online",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026",
-          "host": "broadwaylog.app",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -30603,7 +30792,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -30629,16 +30818,16 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 35,
         "byReason": {
+          "non-review-host": 19,
           "aggregator-internal-nav": 9,
           "merch-store": 5,
-          "venue-production-page": 2,
-          "non-review-host": 17
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
@@ -30666,18 +30855,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=openingnight.online): Scrapingdog HTTP 404: {\"message\""
-        },
-        {
-          "url": "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026",
-          "host": "broadwaylog.app",
-          "outletId": "broadwaylog",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"broadwaylog\" (not in registry) — onboard to outlet-registry.json after revie"
         },
         {
           "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
@@ -30711,13 +30888,6 @@
             "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/"
           },
           {
-            "outletId": "broadwaylog.app",
-            "outlet": "broadwaylog.app",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026"
-          },
-          {
             "outletId": "stageraw.com",
             "outlet": "stageraw.com",
             "critic": "Unknown",
@@ -30742,13 +30912,6 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026",
-            "outletId": "broadwaylog.app",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
-          },
-          {
             "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
             "outletId": "stageraw.com",
             "state": "IN_FLIGHT",
@@ -30757,9 +30920,9 @@
           }
         ],
         "liveCount": 0,
-        "candidateCount": 4
+        "candidateCount": 3
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -47979,7 +48142,6 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
-        "https://donyc.com/events/2026/9/20/gimme-a-sign-tickets",
         "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
         "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
       ],
@@ -47994,7 +48156,12 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "donyc.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
@@ -48097,21 +48264,22 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 4,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 45,
+        "count": 47,
         "byReason": {
-          "aggregator-internal-nav": 8,
+          "non-review-host": 35,
+          "aggregator-internal-nav": 9,
           "venue-production-page": 2,
-          "non-review-host": 35
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -48158,12 +48326,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://donyc.com/events/2026/9/20/gimme-a-sign-tickets",
-            "outletId": "donyc.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
-          },
-          {
             "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
             "outletId": "theatrevillage.co.uk",
             "state": "GAP",
@@ -48185,10 +48347,10 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           }
         ],
-        "liveCount": 1,
-        "candidateCount": 4
+        "liveCount": 0,
+        "candidateCount": 3
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
@@ -68835,16 +68997,23 @@
         "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
         "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
         "https://www.newyorktheatreguide.com/show/46616-in-honor-of-jean-michel-basquiat",
-        "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
-        "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html"
+        "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
+        "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html",
+        "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672"
       ],
-      "dirFiles": 10,
+      "dirFiles": 11,
       "dirClean": 8,
       "inReviewsJson": 8,
       "missing": [
         {
           "url": "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html",
           "host": "lasentinel.net",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
+          "host": "ticketsales.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -68912,8 +69081,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -68933,26 +69102,32 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 9,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 30,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 25,
-          "ticketing-reseller": 3,
-          "non-review-path": 1,
-          "photo-agency-page": 1
+          "non-review-host": 26,
+          "aggregator-internal-nav": 2,
+          "ticketing-reseller": 2
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
+          "host": "1minutecritic.substack.com",
+          "matchedUrl": "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
+          "outletId": "one-minute-critic",
+          "reason": "same outlet \"one-minute-critic\" already held at 1minutecritic.com; 1minutecritic.substack.com is a registered alias of it"
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html",
@@ -68965,6 +69140,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"lasentinel\" (not in registry) — onboard to outlet-registry.json after review"
+        },
+        {
+          "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
+          "host": "ticketsales.com",
+          "outletId": "ticketsales",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"ticketsales\" (not in registry) — onboard to outlet-registry.json after revie"
         }
       ],
       "ingestSkippedByCap": [],
@@ -68977,6 +69164,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html"
+          },
+          {
+            "outletId": "ticketsales.com",
+            "outlet": "ticketsales.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672"
           },
           {
             "outletId": "theatermania",
@@ -69037,10 +69231,10 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
-            "outletId": "nystagereview.com",
+            "url": "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
+            "outletId": "1minutecritic.substack.com",
             "state": "live",
-            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
           },
           {
             "url": "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html",
@@ -69050,6 +69244,13 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
+            "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
+            "outletId": "ticketsales.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
             "outletId": "theatermania",
             "state": "GAP",
@@ -69057,10 +69258,10 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           }
         ],
-        "liveCount": 7,
-        "candidateCount": 9
+        "liveCount": 8,
+        "candidateCount": 11
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -98426,8 +98627,7 @@
         "https://pagesonstages.wordpress.com/2024/10/26/prussian-library/",
         "https://www.theguardian.com/stage/2026/aug/13/mrs-stern-wanders-the-prussian-state-library-review-traverse-theatre-edinburgh-hanah-arendt",
         "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage",
-        "https://www.iloveny.com/thebeat/post/luna-stage-to-present-new-york-premiere-of-mrs-stern-wanders-the-prussian-state-library/",
-        "https://www.njarts.net/tense-psychological-drama-mrs-stern-wanders-the-prussian-state-library-returns-to-luna-stage/"
+        "https://www.iloveny.com/thebeat/post/luna-stage-to-present-new-york-premiere-of-mrs-stern-wanders-the-prussian-state-library/"
       ],
       "dirFiles": 15,
       "dirClean": 1,
@@ -98443,12 +98643,6 @@
           "url": "https://www.iloveny.com/thebeat/post/luna-stage-to-present-new-york-premiere-of-mrs-stern-wanders-the-prussian-state-library/",
           "host": "iloveny.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.njarts.net/tense-psychological-drama-mrs-stern-wanders-the-prussian-state-library-returns-to-luna-stage/",
-          "host": "njarts.net",
-          "knownOutletId": "njarts",
           "serpCensus": true
         }
       ],
@@ -98661,21 +98855,21 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 34,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "venue-production-page": 1,
-          "non-review-host": 29
+          "non-review-host": 29,
+          "aggregator-internal-nav": 4,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -98703,18 +98897,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Refusing to ingest — https://www.iloveny.com/thebeat/post/luna-stage-to-present-new-york-premiere-of"
-        },
-        {
-          "url": "https://www.njarts.net/tense-psychological-drama-mrs-stern-wanders-the-prussian-state-library-returns-to-luna-stage/",
-          "host": "njarts.net",
-          "outletId": "njarts",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         }
       ],
       "ingestSkippedByCap": [],
@@ -98734,13 +98916,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.iloveny.com/thebeat/post/luna-stage-to-present-new-york-premiere-of-mrs-stern-wanders-the-prussian-state-library/"
-          },
-          {
-            "outletId": "njarts",
-            "outlet": "njarts",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.njarts.net/tense-psychological-drama-mrs-stern-wanders-the-prussian-state-library-returns-to-luna-stage/"
           },
           {
             "outletId": "nytimes",
@@ -98816,13 +98991,6 @@
             "firstSeenAt": "2026-09-18T12:09:36.857Z"
           },
           {
-            "url": "https://www.njarts.net/tense-psychological-drama-mrs-stern-wanders-the-prussian-state-library-returns-to-luna-stage/",
-            "outletId": "njarts",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
-          },
-          {
             "url": "https://www.nytimes.com/2024/12/21/theater/mrs-stern-racecar-racecar-racecar-review.html",
             "outletId": "nytimes",
             "state": "GAP",
@@ -98880,9 +99048,9 @@
           }
         ],
         "liveCount": 0,
-        "candidateCount": 11
+        "candidateCount": 10
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -99794,28 +99962,25 @@
         "https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre",
         "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
         "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html",
-        "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
-        "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/",
-        "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/",
-        "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
+        "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/",
         "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+        "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
+        "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
         "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
         "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
+        "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/",
         "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+        "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
         "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
+        "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
         "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
+        "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
         "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end"
       ],
-      "dirFiles": 25,
+      "dirFiles": 26,
       "dirClean": 6,
       "inReviewsJson": 6,
       "missing": [
-        {
-          "url": "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "serpCensus": true
-        },
         {
           "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
           "host": "theatreandtonic.co.uk",
@@ -99832,6 +99997,12 @@
           "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
           "host": "burnhamdramaturgy.com",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
           "serpCensus": true
         },
         {
@@ -99921,6 +100092,29 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--charlotte-vickers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/"
+            },
+            {
+              "file": "whatsonstage--daniella-harrison.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
           "host": "inews.co.uk",
           "knownOutletId": "i-paper",
@@ -99934,24 +100128,6 @@
               "file": "i-paper--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963?srsltid=AU7gw4VFjlKyCLX7gE4D3lV4jNb7Qo-HtXPpIbMALtDTUI0ijAXKWBoP"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--greg-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-announces-victoria-scone-and-jamie-windust-as-final-queer-hero-thursday-guests/"
             }
           ],
           "serpCensus": true
@@ -100016,6 +100192,60 @@
               "file": "jacktheladmag--simon-webb.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--greg-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-announces-victoria-scone-and-jamie-windust-as-final-queer-hero-thursday-guests/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--greg-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-announces-victoria-scone-and-jamie-windust-as-final-queer-hero-thursday-guests/"
             }
           ],
           "serpCensus": true
@@ -100089,7 +100319,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -100099,7 +100329,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -100129,7 +100359,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -100139,24 +100369,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 220,
+        "count": 216,
         "byReason": {
-          "aggregator-internal-nav": 162,
-          "non-review-host": 44,
-          "non-review-path": 2,
+          "non-review-host": 40,
+          "ticketing-listing": 3,
+          "aggregator-internal-nav": 161,
           "not-http-url": 6,
           "aggregator-section-root": 4,
-          "ticketing-listing": 2
+          "non-review-path": 2
         }
       },
       "dedupedVariants": [],
@@ -100167,18 +100397,6 @@
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/",
-          "host": "westendtheatre.com",
-          "outletId": "westendtheatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-"
-        },
         {
           "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
           "host": "theatreandtonic.co.uk",
@@ -100216,6 +100434,18 @@
           "reason": "⚠️  provisional outlet \"burnhamdramaturgy\" (not in registry) — onboard to outlet-registry.json after"
         },
         {
+          "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+          "host": "westendtheatre.com",
+          "outletId": "westendtheatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-"
+        },
+        {
           "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
           "host": "show-score.com",
           "outletId": null,
@@ -100232,13 +100462,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/"
-          },
           {
             "outletId": "theatreandtonic",
             "outlet": "theatreandtonic",
@@ -100259,6 +100482,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do"
+          },
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/"
           },
           {
             "outletId": "show-score.com",
@@ -100289,18 +100519,18 @@
             "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html"
           },
           {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/"
+          },
+          {
             "outletId": "i-paper",
             "outlet": "i-paper",
             "critic": "Unknown",
             "stars": null,
             "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/"
           },
           {
             "outletId": "all-that-dazzles-uk",
@@ -100322,6 +100552,27 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/"
           },
           {
             "outletId": "thestage",
@@ -100358,13 +100609,6 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
-            "url": "https://www.westendtheatre.com/149107/news/my-sons-a-queer-but-what-can-you-do-returns-to-the-west-end/",
-            "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
-          },
-          {
             "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
             "outletId": "theatreandtonic",
             "state": "GAP",
@@ -100384,6 +100628,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-18T12:09:36.857Z"
+          },
+          {
+            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
           },
           {
             "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
@@ -100414,15 +100665,15 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
-            "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
-            "outletId": "i-paper",
+            "url": "https://www.whatsonstage.com/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end_1719765/",
+            "outletId": "whatsonstage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
           },
           {
-            "url": "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/",
-            "outletId": "theatre-weekly",
+            "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
+            "outletId": "i-paper",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-18T12:09:36.857Z"
@@ -100449,6 +100700,27 @@
             "firstSeenAt": "2026-09-18T12:09:36.857Z"
           },
           {
+            "url": "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T12:09:36.857Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
+            "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
             "outletId": "thestage",
             "state": "GAP",
@@ -100457,9 +100729,9 @@
           }
         ],
         "liveCount": 4,
-        "candidateCount": 18
+        "candidateCount": 19
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -100581,21 +100853,21 @@
         "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
         "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/",
         "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/",
-        "https://theatrereviews.design/night-city/",
-        "https://www.pinkprincetheatre.com/post/review-night-city-southwark-playhouse",
-        "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/amp/",
-        "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
-        "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
-        "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
         "https://www.londonboxoffice.co.uk/news/post/max-wilkinson-night-city-interview",
+        "https://www.pinkprincetheatre.com/post/review-night-city-southwark-playhouse",
+        "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
+        "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
+        "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
+        "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/amp/",
         "https://fringereview.co.uk/review/fringereview-uk/2026/night-city/",
         "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
         "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
-        "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
         "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
-        "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
-        "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
+        "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
+        "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
+        "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
         "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912",
+        "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
         "https://northwestend.com/night-city-southwark-playhouse/",
         "https://www.reviewsgate.co.uk/all-reviews/night-city-by-max-wilkinson-southwark-playhouse",
         "https://terripaddock.com/events/night-city/",
@@ -100628,7 +100900,7 @@
           "count": 1
         },
         {
-          "host": "saltertonartsreview.com",
+          "host": "theatrereviews.design",
           "count": 1
         }
       ],
@@ -100763,7 +101035,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -100773,7 +101045,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -100783,7 +101055,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           },
           {
@@ -100803,9 +101075,9 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 10,
+        "count": 12,
         "byReason": {
-          "non-review-host": 10
+          "non-review-host": 12
         }
       },
       "dedupedVariants": [],
@@ -100902,10 +101174,10 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://theatrereviews.design/night-city/",
-            "outletId": "theatrereviews.design",
+            "url": "https://www.londonboxoffice.co.uk/news/post/max-wilkinson-night-city-interview",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
             "url": "https://www.pinkprincetheatre.com/post/review-night-city-southwark-playhouse",
@@ -100914,26 +101186,20 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
+            "outletId": "rolandcat.substack.com",
             "state": "live",
-            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+            "firstSeenAt": "2026-09-18T12:09:36.857Z"
+          },
+          {
+            "url": "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
+            "outletId": "saltertonartsreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
           },
           {
             "url": "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
             "outletId": "londonbornandbred.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-18T01:46:03.483Z"
-          },
-          {
-            "url": "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
-            "outletId": "viewfromthegods.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-18T01:46:03.483Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/max-wilkinson-night-city-interview",
-            "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
@@ -100950,32 +101216,38 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-18T01:46:03.483Z"
-          },
-          {
             "url": "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
             "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
-            "outletId": "rolandcat.substack.com",
+            "url": "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
+            "outletId": "viewfromthegods.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912",
             "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
@@ -101036,7 +101308,7 @@
         "liveCount": 19,
         "candidateCount": 23
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "night-side-songs-off-broadway-2026",
@@ -149060,22 +149332,16 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
         "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
-        "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+        "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
+        "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
         "https://www.show-score.com/off-broadway-shows/the-hope-theory",
         "https://stageraw.com/the-hope-theory/"
       ],
-      "dirFiles": 4,
-      "dirClean": 1,
+      "dirFiles": 6,
+      "dirClean": 2,
       "inReviewsJson": 1,
       "missing": [
-        {
-          "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-          "host": "thetheatretimes.com",
-          "knownOutletId": "the-theatre-times",
-          "serpCensus": true
-        },
         {
           "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory",
           "host": "show-score.com",
@@ -149092,19 +149358,19 @@
       "dirOnly": [],
       "flaggedMisses": [
         {
-          "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "recoverable": true,
-          "recoverableFile": "wsj--unknown.json",
-          "recoverableOutletId": "wsj",
-          "recoverableCritic": "Unknown",
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "wsj--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7"
+              "file": "nytg--bridget-gross.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
             }
           ],
           "serpCensus": true
@@ -149123,8 +149389,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -149134,7 +149400,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -149153,7 +149419,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -149184,28 +149450,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 30,
         "byReason": {
-          "aggregator-internal-nav": 10,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 8,
           "merch-store": 1,
-          "venue-production-page": 1,
-          "non-review-host": 23
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-          "host": "thetheatretimes.com",
-          "outletId": "the-theatre-times",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
         {
           "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory",
           "host": "show-score.com",
@@ -149232,29 +149486,9 @@
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
-          "host": "wsj.com",
-          "file": "wsj--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "the-theatre-times",
-            "outlet": "the-theatre-times",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/"
-          },
           {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
@@ -149268,17 +149502,16 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://stageraw.com/the-hope-theory/"
-          }
-        ],
-        "suppressedMissing": [
+          },
           {
-            "outletId": "wsj",
-            "outlet": "wsj",
+            "outletId": "nytg",
+            "outlet": "nytg",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7"
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
           }
         ],
+        "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
@@ -149287,11 +149520,10 @@
             "firstSeenAt": "2026-09-18T12:09:36.857Z"
           },
           {
-            "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-            "outletId": "the-theatre-times",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+            "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T12:09:36.857Z"
           },
           {
             "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory",
@@ -149308,17 +149540,17 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
-            "outletId": "wsj",
-            "state": "SUPPRESSED",
-            "reason": "ci-unfetchable",
-            "firstSeenAt": "2026-09-18T12:09:36.857Z"
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T20:16:36.338Z"
           }
         ],
-        "liveCount": 1,
+        "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-09-18T12:09:36.857Z"
+      "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
