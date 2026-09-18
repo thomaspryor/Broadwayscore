@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
   "openingDate": "2026-09-16",
-  "detectedAt": "2026-09-18T17:02:02.117Z",
+  "detectedAt": "2026-09-18T17:10:04.407Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "musicalmanda--unknown.json",
+      "outletId": "musicalmanda",
+      "criticName": "Unknown",
+      "url": "https://musicalmanda.site/2026/09/16/thelma-louise-review/",
+      "fullTextLen": 3798,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "thestage--unknown.json",
       "outletId": "thestage",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

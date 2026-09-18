@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-18T17:02:12.553Z",
+  "timestamp": "2026-09-18T17:10:14.498Z",
   "stats": {
-    "totalReviews": 43694,
+    "totalReviews": 43701,
     "alreadyFlagged": 18061,
     "dateGuardCatches": 244,
     "directorMismatch": 1048,
-    "tvFilmSignals": 1283,
-    "londonSignals": 1103,
+    "tvFilmSignals": 1284,
+    "londonSignals": 1105,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3827
+    "noPublishDate": 3828
   },
   "findings": [
     {
@@ -6685,6 +6685,19 @@
       "score": 56,
       "publishDate": "2026-09-17",
       "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38861,6 +38874,19 @@
       ]
     },
     {
+      "showId": "darkling-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2026-09-17",
+      "url": "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "days-of-wine-and-roses-2024",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 59,
@@ -54369,6 +54395,19 @@
       "score": 87,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "musicalmanda--unknown.json",
+      "publishDate": "2026-09-16",
+      "url": "https://musicalmanda.site/2026/09/16/thelma-louise-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
