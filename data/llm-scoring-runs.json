@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-09-16T09:18:46.480Z",
-    "completedAt": "2026-09-16T09:25:15.737Z",
-    "totalReviews": 169,
-    "processed": 169,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 440871,
-      "output": 39025,
-      "total": 479896
-    },
-    "costUsd": 1.2323367,
-    "runId": "35076198582",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-16T09:52:46.788Z",
-    "completedAt": "2026-09-16T09:52:49.483Z",
-    "totalReviews": 43903,
-    "processed": 0,
-    "skipped": 43901,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 108,
-      "total": 10930
-    },
-    "costUsd": 0.02523715,
-    "runId": "35079369236",
-    "errorDetails": [
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-16T09:52:51.506Z",
     "completedAt": "2026-09-16T09:59:11.728Z",
     "totalReviews": 169,
@@ -232741,6 +232703,44 @@
     },
     "costUsd": 1.238833,
     "runId": "35298840813",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-18T03:16:47.886Z",
+    "completedAt": "2026-09-18T03:16:50.605Z",
+    "totalReviews": 44046,
+    "processed": 0,
+    "skipped": 44044,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 107,
+      "total": 10921
+    },
+    "costUsd": 0.02520715,
+    "runId": "35300924145",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-18T03:16:52.571Z",
+    "completedAt": "2026-09-18T03:22:57.604Z",
+    "totalReviews": 170,
+    "processed": 170,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 444415,
+      "output": 39039,
+      "total": 483454
+    },
+    "costUsd": 1.2393429999999999,
+    "runId": "35300924145",
     "errorDetails": []
   }
 ]
