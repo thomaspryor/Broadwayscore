@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-18T19:41:58.056Z",
+  "generatedAt": "2026-09-18T22:39:04.108Z",
   "date": "2026-09-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 177562,
+  "entryCount": 178998,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -438,7 +438,7 @@
     },
     {
       "showId": "the-real-ivanov-off-broadway-2026",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6095,13 +6095,13 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1215391,
+        "scored-to-rebuilt": 1546171,
         "rebuilt-to-deployed": 347832000
       },
       "reviews_over_15min": 0,
