@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-18T11:23:02.256Z",
+  "generatedAt": "2026-09-18T15:38:13.554Z",
   "date": "2026-09-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 164970,
+  "entryCount": 171690,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -327,7 +327,7 @@
     },
     {
       "showId": "just-in-time-2025",
-      "reviewCount": 34,
+      "reviewCount": 33,
       "median_e2e_ms": 1925815247,
       "p90_e2e_ms": 1925815247,
       "per_stage_median_ms": {
@@ -6095,7 +6095,7 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7778,13 +7778,13 @@
     },
     {
       "showId": "darkling-off-west-end-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 965941,
+        "scored-to-rebuilt": 961217,
         "rebuilt-to-deployed": 28137879
       },
       "reviews_over_15min": 0,
@@ -7823,13 +7823,13 @@
     },
     {
       "showId": "america-who-hurt-you-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 357100,
+        "scored-to-rebuilt": 319903,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7839,6 +7839,36 @@
     {
       "showId": "the-hope-theory-off-broadway-2026",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1564446,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 750865,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "benevolent-off-broadway-2026",
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
