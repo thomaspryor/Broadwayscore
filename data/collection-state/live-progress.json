@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-18T15:23:24.282Z",
-  "processed": 34,
-  "failed": 66,
-  "successRate": "34.0%",
+  "updatedAt": "2026-09-18T15:27:05.766Z",
+  "processed": 75,
+  "failed": 225,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 49,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 6,
     "directCookies": 1,
-    "scrapingbee": 6,
-    "brightdata": 1,
+    "scrapingbee": 13,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-09-18T14:58:58.715Z",
@@ -47,13 +47,74 @@
     {
       "t": "2026-09-18T15:21:37.992Z",
       "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-18T15:05:20.208Z",
+      "event": "bb-session",
+      "session": "2efc67ba",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653519"
+    },
+    {
+      "t": "2026-09-18T15:05:20.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-18T15:05:38.709Z",
+      "event": "bb-session",
+      "session": "25c40e72",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653519"
+    },
+    {
+      "t": "2026-09-18T15:05:39.448Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-18T15:05:57.793Z",
+      "event": "bb-session",
+      "session": "9685e366",
+      "url": "https://www.wsj.com/arts-culture/film/the-history-of-concrete-review-john-wilson"
+    },
+    {
+      "t": "2026-09-18T15:05:58.556Z",
+      "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-09-18T14:40:33.234Z",
+      "t": "2026-09-18T15:14:25.447Z",
       "event": "bb-session",
-      "session": "c071dcb2",
-      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+      "session": "dc9fa704",
+      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about"
+    },
+    {
+      "t": "2026-09-18T15:14:26.217Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-18T15:14:56.911Z",
+      "event": "bb-session",
+      "session": "735bd1c1",
+      "url": "https://deadline.com/2026/01/music-city-off-broadway-j-t-harding-1236690521/"
+    },
+    {
+      "t": "2026-09-18T15:19:41.253Z",
+      "event": "bb-session",
+      "session": "2e44ceda",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-18T15:19:42.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-18T15:22:17.238Z",
+      "event": "bb-session",
+      "session": "cc98802e",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
     }
   ]
 }
