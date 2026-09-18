@@ -1,44 +1,11 @@
 {
-  "generatedAt": "2026-09-18T01:46:22.632Z",
+  "generatedAt": "2026-09-18T06:56:53.397Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 147,
-  "clean": 145,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "title": "Thelma & Louise: A New Musical",
-      "openingDate": "2026-09-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 63.74 vs local 64.06 (Δ0.32)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "title": "Million Dollar Quartet",
-      "openingDate": "2026-09-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.48 vs local 75.91 (Δ0.43)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15
-    }
-  ]
+  "checked": 148,
+  "clean": 148,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
