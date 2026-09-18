@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "million-dollar-quartet-off-west-end-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-18T05:17:38.583Z",
+  "detectedAt": "2026-09-18T07:03:35.212Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,46 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "south-london--unknown.json",
+      "outletId": "south-london",
+      "criticName": "Unknown",
+      "url": "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/",
+      "fullTextLen": 3260,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "spotlightseats--unknown.json",
+      "outletId": "spotlightseats",
+      "criticName": "Unknown",
+      "url": "https://www.spotlightseats.com/shows/million-dollar-quartet/",
+      "fullTextLen": 7220,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-18T07:03:35.212Z"
 }

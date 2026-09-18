@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "golden-boy-off-west-end-2026",
   "openingDate": "2026-09-15",
-  "detectedAt": "2026-09-18T05:17:38.583Z",
+  "detectedAt": "2026-09-18T07:03:35.212Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -23,6 +23,40 @@
       "eligibilityReason": null
     },
     {
+      "file": "theatreandtonic--eleanor-bywater.json",
+      "outletId": "theatreandtonic",
+      "criticName": "Eleanor Bywater",
+      "url": "https://theatreandtonic.co.uk/blog/golden-boy-at-almeida-theatre-review",
+      "fullTextLen": 6366,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "viewfromthegods--unknown.json",
+      "outletId": "viewfromthegods",
+      "criticName": "Unknown",
+      "url": "https://viewfromthegods.co.uk/2026/09/16/golden-boy-almeida-islington/",
+      "fullTextLen": 385,
+      "dispatchActionable": false,
+      "skipReason": "no_scorable_text",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
+    {
       "file": "whatsonstage--unknown.json",
       "outletId": "whatsonstage",
       "criticName": "Unknown",
@@ -40,10 +74,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 2,
+  "orphanCount": 4,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 3,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-18T07:03:35.212Z"
 }
