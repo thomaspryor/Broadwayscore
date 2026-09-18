@@ -21,6 +21,8 @@
  * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing]
  */
 
+require('./lib/load-env').loadEnv();
+
 const https = require('https');
 const fs = require('fs');
 const { serpQuery, serpImagesQuery } = require('./lib/url-discovery');
