@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T06:56:41.063Z",
+  "generatedAt": "2026-09-18T12:09:59.723Z",
   "windowDays": 45,
   "showsScanned": 73,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=man-to-man-west-end-2026 --url=https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse --outlet=thestage --critic=\"Matt Barton\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-14T14:46:50.891Z",
-      "fileAgeHours": 88.16352055555555,
+      "fileAgeHours": 93.3796836111111,
       "gapSeenAt": "2026-09-17T23:23:57.838Z",
-      "nonTerminalAgeHours": 7.545340277777778
+      "nonTerminalAgeHours": 12.767190277777777
     },
     {
       "showId": "alvin-ailey-american-dance-theater-new-works-west-end-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --url=https://www.thestage.co.uk/long-reviews/alvin-ailey-american-dance-theater-review --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-17T15:01:25.973Z",
-      "fileAgeHours": 15.920638333333333,
+      "fileAgeHours": 21.140235,
       "gapSeenAt": "2026-09-18T01:46:13.314Z",
-      "nonTerminalAgeHours": 5.174374722222222
+      "nonTerminalAgeHours": 10.396224722222222
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 36.93043333333333,
+      "fileAgeHours": 42.15003027777778,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 36.84957027777778
+      "nonTerminalAgeHours": 42.071420277777776
     },
     {
       "showId": "benevolent-off-broadway-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=benevolent-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2652669 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-28T17:16:41.421Z",
-      "fileAgeHours": 493.6665247222222,
+      "fileAgeHours": 498.88612555555557,
       "gapSeenAt": "2026-08-30T07:41:14.170Z",
-      "nonTerminalAgeHours": 455.25747027777777
+      "nonTerminalAgeHours": 460.4793202777778
     }
   ],
   "contradictions": []

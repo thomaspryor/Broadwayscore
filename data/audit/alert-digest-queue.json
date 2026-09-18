@@ -817,39 +817,6 @@
     "queuedAt": "2026-09-17T18:20:47.999Z"
   },
   {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "5 T1/T2 outlet(s) still missing >24h after they became measurable.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Million Dollar Quartet — guardian (27h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Million Dollar Quartet — independent (27h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Million Dollar Quartet — standard (27h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Million Dollar Quartet — telegraph (27h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Million Dollar Quartet — times-uk (27h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"million-dollar-quartet-off-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-17T20:52:57.390Z"
-  },
-  {
     "conditionKey": "opening-night-fulltext-mentions-show:short:thelma-and-louise-a-new-musical-off-west-end-2026",
     "title": "Shipped review too short to verify on Thelma & Louise: A New Musical",
     "description": "all-that-dazzles-uk/Unknown (all-that-dazzles-uk--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic\nlondon-theatre/Unknown (london-theatre--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.londontheatre.co.uk/reviews/thelma-and-louise-a-new-musical-review-young-vic\ntelegraph/Unknown (telegraph--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.telegraph.co.uk/theatre/what-to-see/thelma-louise-musical-struggles-to-capture-magic/",
@@ -874,30 +841,6 @@
     "queuedAt": "2026-09-18T01:46:03.597Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "2/147 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nThelma & Louise: A New Musical: score-drift\nMillion Dollar Quartet: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-18T01:46:22.649Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.2% (429/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (837h)\nA Midsummer Night's Dream — observer (837h)\nA Midsummer Night's Dream — standard (837h)\nABBA Voyage — independent (837h)\nAladdin — ew (837h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (837h)\nBuena Vista Social Club — broadwaynews (837h)\nBuena Vista Social Club — nydailynews (837h)\nHadestown — nydailynews (837h)\nHeathers The Musical — dailybeast (837h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-18T06:56:53.591Z"
-  },
-  {
     "conditionKey": "corpus-drift:critic-outlets",
     "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
     "description": "check-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Cindy Marcolina at london-theatre (4% share) for relics-west-end-2026\n    Primary: broadwayworld (96%), total: 27 reviews\n  Raven Snook at nyt-theater (5% share) for all-my-sons-2019\n    Primary: timeout (95%), total: 22 reviews\n  James Wilson at off-off-online (7% share) for giulia-the-poison-queen-of-palermo-off-broadway-2026\n    Primary: talkinbroadway (93%), total: 28 reviews\n  James Wilson at off-off-online (7% share) for masquerade-off-broadway-2025\n    Primary: talkinbroadway (93%), total: 28 reviews\n  Tony Marinelli at broadwayscorecard (4% share) for sukkot-off-broadway-2026\n    Primary: theater-scene (96%), total: 25 reviews\n  Pete Hempstead at whatsonstage (3% share) for the-lost-boys-2026\n    Primary: theatermania (98%), total: 40 reviews\n  Susannah Clapp at guardian (9% share) for much-ado-about-nothing-globe-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for stranger-things-the-first-shadow-west-end-2023\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for sylvia-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Patrick Ryan at tennessean (3% share) for gypsy-2024\n    Primary: usatoday (97%), total: 31 reviews\n  David Kaufman at nydailynews (4% share) for proof-2000\n    Primary: theater-scene (96%), total: 23 reviews\n  Emlyn Travis at amny (4% share) for cabaret-2024\n    Primary: ew (96%), total: 28 reviews\n  Frank J. Avella at edge-new-york (5% share) for heisenberg-2016\n    Primary: the-contending (95%), total: 21 reviews\n  Scott Matthewman at musical-theatre-review (6% share) for teeth-n-smiles-west-end-2026\n    Primary: thereviewshub (94%), total: 18 reviews\n  Markos Papadatos at truehollywoodtalk (4% share) for the-lost-boys-2026\n    Primary: digital-journal (96%), total: 28 reviews\n\n--report-only/--strict: No files written\n\n(33 baselined, 1 new)\n\n⚠️  NEW flagged review(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/critic-outlets-baseline.json):\n  David Barbour at theatermania (0% share) for the-39-steps-2008\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
@@ -920,5 +863,50 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-18T11:13:12.501Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "7/148 show(s) differ between internal state and what prod serves.\nscore-drift: 7\nBLOODSPORT: After Helen of Troy: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-18T12:10:09.131Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "2 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Stranger Things: The First Shadow — standard (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Stranger Things: The First Shadow — times-uk (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-18T12:10:09.243Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.2% (429/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (842h)\nA Midsummer Night's Dream — observer (842h)\nA Midsummer Night's Dream — standard (842h)\nABBA Voyage — independent (842h)\nAladdin — ew (842h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (842h)\nBuena Vista Social Club — broadwaynews (842h)\nBuena Vista Social Club — nydailynews (842h)\nHadestown — nydailynews (842h)\nHeathers The Musical — dailybeast (842h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-18T12:10:09.335Z"
   }
 ]
