@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-18T21:54:38.262Z",
-  "processed": 50,
-  "failed": 90,
-  "successRate": "35.7%",
+  "updatedAt": "2026-09-18T22:04:45.178Z",
+  "processed": 53,
+  "failed": 105,
+  "successRate": "33.5%",
   "tierBreakdown": {
     "playwright": 29,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 12,
-    "brightdata": 2,
+    "brightdata": 5,
     "archiveToday": 0,
     "archive": 6
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-18T21:53:21.081Z",
@@ -25,6 +25,18 @@
       "t": "2026-09-18T21:53:21.856Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-18T22:03:25.391Z",
+      "event": "bb-session",
+      "session": "9b8fb4a8",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-18T22:03:40.817Z",
+      "event": "bb-session",
+      "session": "9c613c0c",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
     }
   ]
 }
