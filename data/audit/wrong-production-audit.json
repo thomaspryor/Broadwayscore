@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-18T23:01:13.970Z",
+  "timestamp": "2026-09-18T23:16:24.490Z",
   "stats": {
-    "totalReviews": 43715,
+    "totalReviews": 43722,
     "alreadyFlagged": 18063,
     "dateGuardCatches": 244,
     "directorMismatch": 1048,
     "tvFilmSignals": 1286,
-    "londonSignals": 1110,
+    "londonSignals": 1112,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3827
+    "noPublishDate": 3831
   },
   "findings": [
     {
@@ -41023,6 +41023,19 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2026-09-18",
+      "url": "https://playsinternational.org.uk/golden-boy-almeida-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
       "file": "standard--unknown.json",
       "score": 88,
       "publishDate": "2026-09-16",
@@ -45670,6 +45683,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "musical-theatre-review--unknown.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/million-dollar-quartet-the-arts-at-marble-arch/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

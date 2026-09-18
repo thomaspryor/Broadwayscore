@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "golden-boy-off-west-end-2026",
   "openingDate": "2026-09-15",
-  "detectedAt": "2026-09-18T23:01:05.109Z",
+  "detectedAt": "2026-09-18T23:16:12.405Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -13,6 +13,23 @@
       "fullTextLen": 4136,
       "dispatchActionable": false,
       "skipReason": "no_scorable_text",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "plays-international--unknown.json",
+      "outletId": "plays-international",
+      "criticName": "Ri-admin",
+      "url": "https://playsinternational.org.uk/golden-boy-almeida-theatre/",
+      "fullTextLen": 5414,
+      "dispatchActionable": true,
+      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -57,10 +74,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 4,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 3,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
   "openingDate": "2026-09-12",
-  "detectedAt": "2026-09-18T23:01:05.109Z",
+  "detectedAt": "2026-09-18T23:16:12.405Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "lovetovisit--unknown.json",
+      "outletId": "lovetovisit",
+      "criticName": "Unknown",
+      "url": "https://content.lovetovisit.net/uk-attractions/charing-cross-theatre/the-seven-deadly-sins-the-human-voice",
+      "fullTextLen": 1838,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "thereviewshub--the-reviews-hub-london.json",
       "outletId": "thereviewshub",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
