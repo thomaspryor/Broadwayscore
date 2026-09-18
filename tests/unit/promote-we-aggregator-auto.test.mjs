@@ -15,6 +15,7 @@ const {
   venueFromWetDescription,
   matchWestEndVenueFromSlug,
   slugToTitle,
+  fetchLboRecentRoundups,
 } = require('../../scripts/lib/we-listing-discover.js');
 
 const WE_CANDIDATE = {
@@ -139,6 +140,43 @@ test('buildWestEndAggregatorShowEntry: an old (>120d) roundup promotes as closed
   assert.equal(fresh.status, 'open');
 });
 
+// BRO-3716: main was red 19.8h+ because validate-market-expansion.js
+// requires `type` on any west-end show whose status !== 'announced', and
+// this builder always writes status='open'. A null type here isn't a
+// hypothetical — it's exactly what 4 live west-end shows had when CI first
+// went red.
+test('buildWestEndAggregatorShowEntry: type defaults to play (not null) so status=open never fails the required-fields gate', () => {
+  const play = buildWestEndAggregatorShowEntry({ ...WE_CANDIDATE, title: 'Why I Stuck a Flare Up My Arse for England' });
+  assert.equal(play.type, 'play');
+  assert.equal(play.status, 'open');
+  const musical = buildWestEndAggregatorShowEntry({ ...WE_CANDIDATE, title: 'Some New Musical' });
+  assert.equal(musical.type, 'musical');
+});
+
+// --- lib/we-listing-discover.js: fetchLboRecentRoundups end-to-end ---
+
+test('fetchLboRecentRoundups: a reposted-duplicate slug ("-review2", no hyphen) does not leak "review2" into the title', async () => {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset>
+  <url>
+    <loc>https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review2</loc>
+    <lastmod>2026-09-10</lastmod>
+  </url>
+  <url>
+    <loc>https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review</loc>
+    <lastmod>2026-09-10</lastmod>
+  </url>
+</urlset>`;
+  const candidates = await fetchLboRecentRoundups({ fetchPage: async () => ({ content: xml }), log: () => {} });
+  // "lyric" is excluded (collides with the non-West-End Lyric Hammersmith) —
+  // this candidate must be dropped entirely, not promoted under a mangled title.
+  assert.equal(candidates.find((c) => c.sourceUrl.includes('ideal-husband')), undefined);
+  const pride = candidates.find((c) => c.sourceUrl.includes('pride'));
+  assert.ok(pride);
+  assert.equal(pride.title, 'Pride');
+  assert.equal(pride.venue, 'national');
+});
+
 // --- lib/candidate-dedup.js: shared dedup reused directly, not re-derived ---
 
 test('findExistingMatch: reused dedup catches an existing West End show by title+venue', () => {
@@ -214,6 +252,28 @@ test('matchWestEndVenueFromSlug: National Theatre South Bank still matches, but 
   assert.equal(m.venue, 'national');
   assert.equal(matchWestEndVenueFromSlug('review-a-play-national-theatre-wales'), null);
   assert.equal(matchWestEndVenueFromSlug('review-a-play-national-theatre-scotland'), null);
+});
+
+// BRO-3716: two live LBO slugs ("the-story-olivier-national-theatre" and
+// "pride-national-theatre-dorfman" — auditorium before/after the venue
+// token, respectively) leaked the auditorium name into the title remainder,
+// producing "The Story Olivier" / "Pride Theatre Dorfman" instead of "The
+// Story" / "Pride" — each a garbage-titled duplicate of an already-correct
+// show already in shows.json.
+test('matchWestEndVenueFromSlug: National Theatre auditorium qualifiers are stripped from the remainder, not left in the title', () => {
+  // Both live-observed on LBO's news-sitemap.xml (BRO-3716) — auditorium
+  // before the venue token in one, after it in the other.
+  assert.equal(matchWestEndVenueFromSlug('the-story-olivier-national-theatre').remainder, 'the-story');
+  assert.equal(matchWestEndVenueFromSlug('pride-national-theatre-dorfman').remainder, 'pride');
+});
+
+// BRO-3716: "lyric" (West End's Lyric Theatre, Shaftesbury Avenue) also
+// matches inside "lyric-hammersmith" — Lyric Hammersmith is a real, distinct
+// non-West-End venue. The false match minted "An Ideal Husband Hammersmith
+// Review2" as a second, garbage-titled duplicate of the already-correct
+// an-ideal-husband-west-end-2026.
+test('matchWestEndVenueFromSlug: lyric is excluded (collides with the non-West-End Lyric Hammersmith)', () => {
+  assert.equal(matchWestEndVenueFromSlug('an-ideal-husband-lyric-hammersmith-review2'), null);
 });
 
 test('matchWestEndVenueFromSlug: no canonical venue in the slug returns null', () => {
