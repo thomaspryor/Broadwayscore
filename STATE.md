@@ -1,55 +1,65 @@
-# Session state — BRO-2600
+# BRO-2605 session state (handoff at ~110min time budget)
 
-## Done (verified, merged, nothing to resume)
+## Done and verified (safe — nothing to redo)
+- BRO-2605 fixed: `benevolent-off-broadway-2026/talkinbroadway--unknown.json` (stuck
+  rejected-unscoreable, wrong stored URL — a forum announcement thread, not the real
+  review page) recovered by re-ingesting from the correct URL
+  (`talkinbroadway.com/page/ob/08_27_26.html`). Pushed to `broadway-review-texts` main
+  (93b625d9659, then 88e4e693304 for a stripTrailingJunk cleanup).
+- Class-of-bug fix: `scripts/ingest-review-from-url.js` now calls `stripTrailingJunk`
+  (it never did, unlike every other collection/recovery path). Pushed to Broadwayscore
+  main (872ed166bb68e4f2d5bbfdd210f7339f6a25c5c9). CI green (Test Suite, Secret Scan,
+  Guard — No Orphan Commit all `success` on that SHA).
+- Regression test `tests/unit/ingest-review-from-url-fix.test.mjs` added + registered
+  in `tests/unit-test-manifest.txt`. Passing (3/3).
+- Linear BRO-2605 reported `done` via `node scripts/linear-session.js report`.
+- This worktree (`job/linear-BRO-2605-mu723q3v`) is fully merged into `origin/main`,
+  zero uncommitted files, zero unmerged commits — safe to remove, nothing lost.
 
-BRO-2600 ("BSC Daily: Quality: DMARC deliverability") is **fully complete**:
-- `_dmarc` TXT record on broadwayscorecard.com tightened to `p=reject` via the Vercel DNS API.
-- `scripts/lib/dmarc-record.js` + `tests/unit/dmarc-deliverability.test.mjs` added as a regression gate.
-- Merged to `origin/main` at `4612b3962d6`. `git log origin/main..HEAD` is empty in this worktree — fully merged, nothing to push.
-- Linear issue BRO-2600 reported `status=done` via `node scripts/linear-session.js report`.
-- Post-merge CI (run 35283526542) investigated: the only failing jobs (Data Validation, Test Summary) are a pre-existing, unrelated data bug (4 west-end shows with bad titles/missing type, traced to an automated `gather-reviews` commit in the private data repo). TypeScript/Unit Tests/Lint/E2E all passed.
+## Still in flight — NOT yet verified landed
+- **BRO-3788** ("TalkinBroadway forum-thread-URL backlog: 20 more stuck/empty reviews
+  need re-ingest from linked review page") was filed and dispatched by this session
+  (`node scripts/linear-next.js --id BRO-3788`), confirmed via a real `job-spawned`
+  ledger row (not just the launcher's "starting" line):
+  `grep '"taskId":"linear:BRO-3788"' /Users/tompryor/Broadwayscore/data/audit/dispatch-ledger.jsonl`
+  jobId: `linear:BRO-3788-mu73516y`, worktree:
+  `/Users/tompryor/Broadwayscore/.claude/worktrees/job-linear-BRO-3788-mu73516y`,
+  log: `/Users/tompryor/Library/Logs/bsc-jobs/linear:BRO-3788-mu73516y.log`
+  (1022+ lines and growing at last check — actively alive, not stalled).
+  Process is detached (`ps -eo pid,ppid,command` shows PPID=1, PID 98597 at last
+  check) — it runs independently of this session and will keep going/self-report
+  even after this session ends.
 
-**If resuming: there is nothing left to do for BRO-2600.** Do not re-open work on it.
+  **As of last check (2026-09-18T16:11Z, ~71 min into its own run):** it had
+  already committed `9995ccc71c1` (feat(BRO-3788): recover talkinbroadway reviews
+  stuck on forum-thread URLs — adds `scripts/recover-talkinbroadway-forum-links.js`
+  + `scripts/lib/talkinbroadway-forum-link.js`), successfully recovered at least
+  `the-balusters-2026/talkinbroadway--howard-miller.json`, correctly skipped several
+  shows with no real Link anchor (genuinely no TB review), hit one write-guard
+  collision on a wrongShow-flagged file (needs manual look — grep the log around
+  "stale-flag-on-existing-file"), and had moved into its own ship-check phase
+  (Codex + Claude parallel diff review) — i.e. it is near the end of its own
+  session, not stuck.
 
-## Adjacent findings filed (not part of BRO-2600)
+## What the NEXT session (or the resumed one) must do
+1. Check whether it already finished:
+   ```
+   grep '"taskId":"linear:BRO-3788".*"event":"job-done"' /Users/tompryor/Broadwayscore/data/audit/dispatch-ledger.jsonl
+   ```
+   If present, the job self-reported already (check Linear BRO-3788 state directly:
+   `node scripts/linear-brain.js find "TalkinBroadway forum-thread-URL backlog"`).
+2. If it landed: re-run its acceptance command yourself before considering this
+   fully closed out — `cd /Users/tompryor/Broadwayscore && node --test tests/unit/recover-talkinbroadway-forum-links.test.mjs`
+   (path may differ slightly — check what the job actually named it, `git log -p`
+   in that worktree, or `tests/unit-test-manifest.txt` diff vs main).
+3. If it's still running: same options this session had — supervise to a terminal
+   ledger row, or (if a live session/tab now exists for it) hand off explicitly.
+4. Either way, the one open loose end this session found and did NOT chase further:
+   the write-guard collision on a wrongShow-flagged file hit during BRO-3788's run
+   (visible in its log around a "stale-flag-on-existing-file" refusal) — worth a
+   quick look to confirm it's a correct refusal (real wrongShow) vs. a stale flag
+   that should be cleared.
 
-- **BRO-3712** ("P0: GMAIL_REFRESH_TOKEN revoked — Daily Gmail Ingest (DMARC + finance) failing 10+ days straight") — parked via `--park`, needs owner interactive Google OAuth. Full runbook on the card.
-- **BRO-3713** ("P1: 4 West End shows failing Data Validation gate — LBO sitemap promotion has 2 bugs (missing type + garbled titles)") — filed with `--dispatch`, which is a **no-op for Linear cards** (task #1303, "P0: Linear has no dispatch path — file-a-card-and-work-it dies with Notion"). Root cause + suggested approach are on the card.
-
-## Blocker preventing this session from closing cleanly
-
-`~/.claude/hooks/exit-status-gate.sh`'s Gate O v2 (dispatch-ownership check) is blocking session close. It fires because `linear-brain.js create --dispatch` was run for BRO-3713, which its own session-wide `is_dispatch_command` detector treats as "this session dispatched work" — permanently, for the rest of the session, regardless of what actually happened.
-
-**Verified via the repo's own sanctioned arbitration tool that nothing was actually dispatched:**
-```
-$ node scripts/ack-landed.js --id BRO-3713 --sha <HEAD> --verify "node scripts/validate-market-expansion.js" --reason "..."
-❌ REFUSED: BRO-3713 not acked — no dispatch-ledger row for this ref — nothing was dispatched under it
-
-$ node scripts/ack-landed.js --id BRO-3712 --sha <HEAD> --verify "node scripts/validate-market-expansion.js" --reason "..."
-❌ REFUSED: BRO-3712 not acked — no dispatch-ledger row for this ref — nothing was dispatched under it
-```
-Also confirmed directly: `grep -c "BRO-3713" data/audit/dispatch-ledger.jsonl` → 0 rows. `cmux list-workspaces` → no match.
-
-Gate O v2 requires, for every `DISPATCHED:` id: either a `LANDED:` line backed by a `job-done`/`landed-acked` ledger row, or an `OWNED BY: workspace:N ("...")` naming a live cmux workspace. Neither is truthfully available: no ledger row exists (nothing was dispatched) and no cmux workspace exists (this is a headless `-p` job with no workspace of its own). This looks like a genuine gap in Gate O v2 for the case where `--dispatch` was passed to a tool that is a documented no-op for Linear (task #1303) — the trigger fires on the flag alone, not on whether a dispatch actually happened.
-
-**Next session / owner: this is a hook/tooling gap, not unfinished BRO-2600 work.** Either:
-1. Fix Gate O v2 to accept `ack-landed.js`'s own "nothing was dispatched under it" refusal as proof there's nothing to own (rather than treating a refused ack as "still uncovered"), or
-2. Fix `linear-brain.js create --dispatch` to not present as a dispatch command to `is_dispatch_command` when it's a documented no-op (i.e., only exercise the `--dispatch` code path, and whatever marks it as a dispatch, once bsc-next actually supports Linear — task #1303).
-
-No code changes are needed to close out BRO-2600 itself — it's done. This file exists only to record why the session may end without a clean `THIS SESSION: CLOSE ME` if the gate loop doesn't resolve.
-
-## Update: the gate is self-contradictory for this exact case, confirmed by direct observation
-
-Two checks fire on the SAME final message and demand opposite things:
-
-- Check A ("A DISPATCHED: line claims a workspace is running but no live cmux workspace title matches"): REJECTS any `DISPATCHED: <ref>` line unless it's launched (`bsc-next --id N`) and shows up in `cmux list-workspaces`. Its own remedy text: "correct the line to `FILED:`/`PARKED:` if nothing was launched."
-- Check B (Gate O v2, dispatch-ownership): REQUIRES a `DISPATCHED: <ref> ("title")` line for BRO-3713/BRO-3712 (because `ever_dispatched` is true for the whole session from the earlier `--dispatch` bash invocation) — and if that line is present, ALSO requires either a `LANDED:` line backed by a ledger `job-done`/`landed-acked` row, or an `OWNED BY: workspace:N (...)` naming a live cmux workspace.
-
-For these two refs: no ledger row exists (`ack-landed.js` itself refuses with "nothing was dispatched under it" — see above), and this is a headless job with no cmux workspace of its own. So:
-- Writing `DISPATCHED:` → satisfies Check B's "trigger needs an id" but then Check B demands `LANDED:`/`OWNED BY:`, neither of which can be truthfully written → Check B blocks.
-- Writing `DISPATCHED:` also trips Check A, which explicitly rejects it and demands `FILED:`/`PARKED:` instead.
-- Writing `FILED:`/`PARKED:` instead (per Check A's own remedy) → satisfies Check A, but Check B still fires ("no DISPATCHED: line names WHAT it dispatched") because `ever_dispatched` is session-scoped and doesn't care what the current message says.
-
-Tried, in order, across this session: (1) DISPATCHED+LANDED assertion without ledger backing, (2) FILED: per Check A's instruction, (3) DISPATCHED again per Check B's instruction with an explanatory LANDED line, (4) DISPATCHED with the `ack-landed.js` refusal quoted as evidence, (5) BLOCKED: framing (the headless-job escape valve) with both DISPATCHED lines present. Every combination triggers one check or the other. There is no message that satisfies both simultaneously for a ref that was flagged as dispatched but never actually launched (no ledger row, no workspace) — this needs an owner/hook fix, not a different choice of words.
-
-**If you are a human or future session reading this because the job hard-timed-out mid-loop: BRO-2600 is done, merged, verified, and reported. The loop above is the only unresolved thing, and it is a hook bug, not incomplete work.**
+## Nothing else pending
+No uncommitted changes anywhere in this worktree. No other async operations
+(deploys/CI) triggered by this session are still running.
