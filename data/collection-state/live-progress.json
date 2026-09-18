@@ -1,42 +1,36 @@
 {
-  "updatedAt": "2026-09-18T14:24:15.548Z",
-  "processed": 34,
-  "failed": 116,
-  "successRate": "22.7%",
+  "updatedAt": "2026-09-18T14:41:04.654Z",
+  "processed": 8,
+  "failed": 31,
+  "successRate": "20.5%",
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 1,
-    "directCookies": 1,
-    "scrapingbee": 7,
-    "brightdata": 1,
+    "directCookies": 0,
+    "scrapingbee": 2,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-09-18T13:54:47.852Z",
+      "t": "2026-09-18T14:27:32.938Z",
       "event": "bb-session",
-      "session": "4b6a06af",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+      "session": "c4ead6e8",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
     },
     {
-      "t": "2026-09-18T13:55:02.864Z",
-      "event": "bb-session",
-      "session": "19bde8f5",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-18T14:15:24.196Z",
-      "event": "bb-session",
-      "session": "18a1a2a8",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-18T14:15:25.191Z",
+      "t": "2026-09-18T14:27:38.602Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-18T14:40:33.234Z",
+      "event": "bb-session",
+      "session": "c071dcb2",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
   ]
 }
