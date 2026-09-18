@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-18T20:20:18.223Z",
+  "generated": "2026-09-18T23:12:38.660Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 88,
+  "count": 90,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -204,6 +204,13 @@
       "loserFile": "vulture--jesse-green.json",
       "targetFile": "vulture--helen-shaw.json",
       "reason": "orphaned-duplicate-heal: vulture--helen-shaw.json was flagged invalid after vulture--jesse-green.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "jane-eyre-off-west-end-2026",
+      "loserFile": "fairypoweredproductions--unknown.json",
+      "targetFile": "fairypoweredproductions--andrew-and.json",
+      "reason": "orphaned-duplicate-heal: fairypoweredproductions--andrew-and.json was flagged invalid after fairypoweredproductions--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -526,6 +533,13 @@
       "loserFile": "cote-notices--david-cote.json",
       "targetFile": "cote-notices--david-finkle.json",
       "reason": "orphaned-duplicate-heal: cote-notices--david-finkle.json was flagged invalid after cote-notices--david-cote.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "loserFile": "british-theatre--unknown.json",
+      "targetFile": "british-theatre--david-chadderton.json",
+      "reason": "orphaned-duplicate-heal: british-theatre--david-chadderton.json was flagged invalid after british-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

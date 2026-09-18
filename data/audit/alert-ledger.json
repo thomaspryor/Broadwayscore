@@ -2573,13 +2573,13 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on AMERICA, WHO HURT YOU?",
       "firstSeen": "2026-09-09T11:30:02.094Z",
-      "lastSeen": "2026-09-18T19:41:57.593Z",
+      "lastSeen": "2026-09-18T22:39:02.543Z",
       "lastNotifiedAt": "2026-09-16T11:43:26.349Z",
       "lastSurfacedAt": "2026-09-16T11:43:26.349Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "cron-health:Audit Aggregator Review Gap": {
       "status": "resolved",
@@ -3087,26 +3087,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-18T16:10:40.520Z",
+      "lastSeen": "2026-09-18T22:43:06.858Z",
       "lastNotifiedAt": "2026-09-18T11:13:12.495Z",
       "lastSurfacedAt": "2026-09-18T11:13:12.495Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-18T16:10:40.525Z",
+      "lastSeen": "2026-09-18T22:43:06.863Z",
       "lastNotifiedAt": "2026-09-18T11:13:12.501Z",
       "lastSurfacedAt": "2026-09-18T11:13:12.501Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3177,39 +3177,39 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on My Son’s A Queer (But What Can You Do?)",
       "firstSeen": "2026-09-16T17:04:29.055Z",
-      "lastSeen": "2026-09-18T19:41:57.585Z",
+      "lastSeen": "2026-09-18T22:39:02.535Z",
       "lastNotifiedAt": "2026-09-16T17:04:29.055Z",
       "lastSurfacedAt": "2026-09-16T17:04:29.055Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "opening-night-fulltext-mentions-show:short:my-sons-a-queer-but-what-can-you-do-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Shipped review too short to verify on My Son’s A Queer (But What Can You Do?)",
       "firstSeen": "2026-09-16T17:04:29.059Z",
-      "lastSeen": "2026-09-18T19:41:57.588Z",
+      "lastSeen": "2026-09-18T22:39:02.537Z",
       "lastNotifiedAt": "2026-09-16T17:04:29.059Z",
       "lastSurfacedAt": "2026-09-16T17:04:29.059Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "opening-night-slug-mismatch-my-sons-a-queer-but-what-can-you-do-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Review URL cross-show mismatch on My Son’s A Queer (But What Can You Do?)",
       "firstSeen": "2026-09-16T17:04:29.062Z",
-      "lastSeen": "2026-09-18T19:41:57.590Z",
+      "lastSeen": "2026-09-18T22:39:02.539Z",
       "lastNotifiedAt": "2026-09-16T17:04:29.062Z",
       "lastSurfacedAt": "2026-09-16T17:04:29.062Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "opening-night-remediation-exhausted-t1-missing:in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3469,38 +3469,39 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "firstSeen": "2026-09-18T15:38:10.868Z",
-      "lastSeen": "2026-09-18T19:41:57.591Z",
+      "lastSeen": "2026-09-18T22:39:02.541Z",
       "lastNotifiedAt": "2026-09-18T15:38:10.868Z",
       "lastSurfacedAt": "2026-09-18T15:38:10.868Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "corpus-drift:orphan-show-ids": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-18T16:10:40.527Z",
+      "lastSeen": "2026-09-18T22:43:06.866Z",
       "lastNotifiedAt": "2026-09-18T16:10:40.527Z",
       "lastSurfacedAt": "2026-09-18T16:10:40.527Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on america-who-hurt-you-off-broadway-2026",
       "firstSeen": "2026-09-18T16:29:33.935Z",
-      "lastSeen": "2026-09-18T19:41:57.595Z",
+      "lastSeen": "2026-09-18T22:39:02.544Z",
       "lastNotifiedAt": "2026-09-18T16:29:33.935Z",
       "lastSurfacedAt": "2026-09-18T16:29:33.935Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "we-aggregator-go-live:jo-the-little-women-musical-west-end-2026": {
       "status": "open",
