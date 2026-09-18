@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-17T23:23:55.518Z",
+  "generatedAt": "2026-09-18T01:46:03.483Z",
   "windowDays": 1095,
-  "targets": 313,
-  "auditedThisRun": 19,
-  "carriedForward": 525,
+  "targets": 310,
+  "auditedThisRun": 18,
+  "carriedForward": 527,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 332,
-    "totalMissing": 1663,
+    "withGap": 336,
+    "totalMissing": 1692,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1801,
+    "totalFlaggedMisses": 1807,
     "totalRecoverable": 23,
     "totalRecovered": 6
   },
@@ -4861,7 +4861,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-17T23:23:55.518Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -21649,7 +21649,8 @@
         "https://playbill.com/article/read-reviews-for-carmen-jones-starring-anika-noni-rose",
         "https://playbill.com/article/read-reviews-for-lempicka-musical-starring-carmen-cusack-and-eden-espinosa",
         "https://playbill.com/article/read-the-reviews-for-call-me-madam-starring-carmen-cusack-at-new-york-city-center",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CARMEN-JONES-20180628"
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CARMEN-JONES-20180628",
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-LEMPICKA-Starring-Carmen-Cusack-and-Eden-Espinosa-at-the-Williamstown-Theatre-Festival-20180730"
       ],
       "aggregatorListedUrls": [
         "https://www.broadwayworld.com/bwwopera/article/Review-When-Akhmetshinas-On-Stage-Dont-Fence-The-Mets-New-CARMEN-In-20240106",
@@ -21674,8 +21675,8 @@
         "https://www.thewrap.com/carmen-jones-theater-review-anika-noni-rose-bizet-hammerstein-dreamgirl-femme-fatale/",
         "https://dctheatrescene.com/2018/06/27/carmen-jones-review-a-sultry-seductive-anika-noni-rose/"
       ],
-      "dirFiles": 26,
-      "dirClean": 13,
+      "dirFiles": 25,
+      "dirClean": 12,
       "inReviewsJson": 12,
       "missing": [
         {
@@ -21847,12 +21848,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 722,
+        "count": 1028,
         "byReason": {
-          "non-review-host": 93,
-          "non-review-path": 3,
-          "not-http-url": 84,
-          "aggregator-internal-nav": 542
+          "not-http-url": 133,
+          "non-review-host": 113,
+          "aggregator-internal-nav": 758,
+          "aggregator-section-root": 24
         }
       },
       "dedupedVariants": [],
@@ -21876,6 +21877,10 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CARMEN-JONES-20180628",
           "publishDate": "2018-06-28"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-LEMPICKA-Starring-Carmen-Cusack-and-Eden-Espinosa-at-the-Williamstown-Theatre-Festival-20180730",
+          "publishDate": "2018-07-30"
         }
       ],
       "weIngestBlocked": [
@@ -22136,7 +22141,7 @@
         "liveCount": 8,
         "candidateCount": 15
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "caroline-off-broadway-2026",
@@ -22961,6 +22966,80 @@
         "candidateCount": 11
       },
       "computedAt": "2026-08-25T05:35:06.890Z"
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "title": "Catarina and the Beauty of Killing Fascists",
+      "openingDate": "2026-09-21",
+      "status": "upcoming",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://events.nationaltheatre.org.uk/events/95881"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://events.nationaltheatre.org.uk/events/95881",
+          "host": "nationaltheatre.org.uk",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://events.nationaltheatre.org.uk/events/95881",
+          "host": "nationaltheatre.org.uk",
+          "outletId": "nationaltheatre",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"nationaltheatre\" (not in registry) — onboard to outlet-registry.json after r"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nationaltheatre.org.uk",
+            "outlet": "nationaltheatre.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://events.nationaltheatre.org.uk/events/95881"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://events.nationaltheatre.org.uk/events/95881",
+            "outletId": "nationaltheatre.org.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "catch-of-the-day-off-broadway-2026",
@@ -29819,33 +29898,142 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.sohoplayhouse.com/see-a-show/conflicted"
+      ],
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/conflicted",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sohoplayhouse--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.sohoplayhouse.com/see-a-show/conflicted"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Conflicted\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Conflicted\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Conflicted\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Conflicted\" Katz review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Conflicted SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Conflicted SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Conflicted SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 35,
+        "byReason": {
+          "non-review-host": 30,
+          "aggregator-internal-nav": 1,
+          "merch-store": 3,
+          "static-asset": 1
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sohoplayhouse.com/see-a-show/conflicted"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/conflicted",
+            "outletId": "sohoplayhouse",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-09-17T23:23:55.518Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -30132,33 +30320,168 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://t2conline.com/tag/crazy-mama-a-true-story-of-love-and-madness/",
+        "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/"
+      ],
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://t2conline.com/tag/crazy-mama-a-true-story-of-love-and-madness/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "serpCensus": true
+        },
+        {
+          "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
+          "host": "openingnight.online",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Crazy Mama: A True Story of Love and Madness\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Crazy Mama: A True Story of Love and Madness\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Crazy Mama: A True Story of Love and Madness\" review 59e59",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Crazy Mama: A True Story of Love and Madness 59E59 Theaters, Theater C review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Crazy Mama: A True Story of Love and Madness 59E59 Theaters, Theater C review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Crazy Mama: A True Story of Love and Madness 59E59 Theaters, Theater C review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 32,
+        "byReason": {
+          "venue-production-page": 2,
+          "non-review-host": 17,
+          "aggregator-internal-nav": 8,
+          "merch-store": 5
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://t2conline.com/tag/crazy-mama-a-true-story-of-love-and-madness/",
+          "host": "t2conline.com",
+          "outletId": "times-square-chronicles",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
+          "host": "openingnight.online",
+          "outletId": "openingnight",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=openingnight.online): Scrapingdog HTTP 404: {\"message\""
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://t2conline.com/tag/crazy-mama-a-true-story-of-love-and-madness/"
+          },
+          {
+            "outletId": "openingnight.online",
+            "outlet": "openingnight.online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://t2conline.com/tag/crazy-mama-a-true-story-of-love-and-madness/",
+            "outletId": "times-square-chronicles",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
+            "outletId": "openingnight.online",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -36360,9 +36683,9 @@
         "https://www.wsj.com/articles/don-giovanni-review-ivo-van-hoves-grim-mozart-at-the-met-80e69ff0",
         "https://pagesonstages.com/2025/06/30/don-giovanni-rock-opera/"
       ],
-      "dirFiles": 8,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirFiles": 9,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [],
       "dirOnly": [
         {
@@ -36371,6 +36694,10 @@
         },
         {
           "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
           "count": 1
         }
       ],
@@ -36400,12 +36727,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 373,
+        "count": 381,
         "byReason": {
-          "non-review-host": 34,
-          "non-review-path": 3,
-          "not-http-url": 37,
-          "aggregator-internal-nav": 299
+          "not-http-url": 39,
+          "non-review-host": 35,
+          "aggregator-internal-nav": 299,
+          "aggregator-section-root": 8
         }
       },
       "dedupedVariants": [],
@@ -36473,7 +36800,7 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "don-quixote-off-broadway-2026",
@@ -46767,33 +47094,216 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
+      "aggregatorListedUrls": [
+        "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+        "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+        "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
+      ],
+      "dirFiles": 4,
+      "dirClean": 1,
       "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "missing": [
+        {
+          "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+          "host": "theatrevillage.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "donyc.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sohoplayhouse--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+          "host": "ouchmagazine.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ouchmagazine--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Gimme a Sign!\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Gimme a Sign!\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Gimme a Sign!\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Gimme a Sign!\" Swilley review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Gimme a Sign! SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Gimme a Sign! SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Gimme a Sign! SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 44,
+        "byReason": {
+          "venue-production-page": 2,
+          "non-review-host": 35,
+          "aggregator-internal-nav": 7
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+          "host": "theatrevillage.co.uk",
+          "outletId": "theatrevillage",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"theatrevillage\" (not in registry) — onboard to outlet-registry.json after re"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatrevillage.co.uk",
+            "outlet": "theatrevillage.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
+          },
+          {
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign"
+          },
+          {
+            "outletId": "ouchmagazine.com",
+            "outlet": "ouchmagazine.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+            "outletId": "theatrevillage.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+            "outletId": "sohoplayhouse",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+            "outletId": "ouchmagazine.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 3
       },
-      "computedAt": "2026-09-17T23:23:55.518Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
@@ -67672,30 +68182,35 @@
       "aggregatorListedUrls": [
         "https://www.talkinbroadway.com/page/ob/09_14_26.html",
         "https://culturesauce.com/jean-michel-basquiat-roger-guenveur-smith-off-broadway-review/",
-        "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/"
+        "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
+        "https://www.newyorktheatreguide.com/reviews/in-honor-of-jean-michel-basquiat-off-broadway-review-roger-guenveur-smith",
+        "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
+        "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
+        "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
+        "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
+        "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
+        "https://www.newyorktheatreguide.com/show/46616-in-honor-of-jean-michel-basquiat",
+        "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html",
+        "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672"
       ],
       "dirFiles": 10,
       "dirClean": 8,
       "inReviewsJson": 8,
-      "missing": [],
-      "dirOnly": [
+      "missing": [
         {
-          "host": "nystagereview.com",
-          "count": 2
+          "url": "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html",
+          "host": "lasentinel.net",
+          "knownOutletId": null,
+          "serpCensus": true
         },
         {
-          "host": "newyorktheatreguide.com",
-          "count": 1
-        },
-        {
-          "host": "1minutecritic.com",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
-          "count": 1
+          "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
+          "host": "ticketsales.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
@@ -67712,23 +68227,138 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/"
             }
-          ]
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"IN HONOR OF JEAN-MICHEL BASQUIAT\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"IN HONOR OF JEAN-MICHEL BASQUIAT\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"IN HONOR OF JEAN-MICHEL BASQUIAT\" review york",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"IN HONOR OF JEAN-MICHEL BASQUIAT\" Smith review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "IN HONOR OF JEAN-MICHEL BASQUIAT New York Theatre Workshop review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "IN HONOR OF JEAN-MICHEL BASQUIAT New York Theatre Workshop review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "IN HONOR OF JEAN-MICHEL BASQUIAT New York Theatre Workshop review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 29,
+        "byReason": {
+          "non-review-host": 24,
+          "aggregator-internal-nav": 1,
+          "ticketing-reseller": 2,
+          "non-review-path": 1,
+          "photo-agency-page": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html",
+          "host": "lasentinel.net",
+          "outletId": "lasentinel",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"lasentinel\" (not in registry) — onboard to outlet-registry.json after review"
+        },
+        {
+          "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
+          "host": "ticketsales.com",
+          "outletId": "ticketsales",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"ticketsales\" (not in registry) — onboard to outlet-registry.json after revie"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "lasentinel.net",
+            "outlet": "lasentinel.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html"
+          },
+          {
+            "outletId": "ticketsales.com",
+            "outlet": "ticketsales.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672"
+          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -67752,6 +68382,62 @@
             "firstSeenAt": "2026-09-15T02:14:14.949Z"
           },
           {
+            "url": "https://www.newyorktheatreguide.com/reviews/in-honor-of-jean-michel-basquiat-off-broadway-review-roger-guenveur-smith",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/show/46616-in-honor-of-jean-michel-basquiat",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://lasentinel.net/hollywatts-roger-guenveur-smith-honors-jean-michel-basquiat-in-electrifying-one-man-show.html",
+            "outletId": "lasentinel.net",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
+            "outletId": "ticketsales.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
             "outletId": "theatermania",
             "state": "GAP",
@@ -67759,10 +68445,10 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           }
         ],
-        "liveCount": 2,
-        "candidateCount": 3
+        "liveCount": 7,
+        "candidateCount": 10
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -79070,9 +79756,9 @@
         "https://observer.com/2022/10/review-nadine-sierra-is-a-force-of-nature-as-violetta-in-la-traviata-at-the-met-opera/",
         "https://newyorkclassicalreview.com/2022/10/sierra-captivates-as-violetta-in-mets-traviata/"
       ],
-      "dirFiles": 16,
-      "dirClean": 6,
-      "inReviewsJson": 6,
+      "dirFiles": 17,
+      "dirClean": 7,
+      "inReviewsJson": 7,
       "missing": [
         {
           "url": "https://www.vulture.com/2018/12/la-traviata-the-met-opera-review.html",
@@ -79094,6 +79780,10 @@
         {
           "host": "parterre.com",
           "count": 2
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -79188,7 +79878,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://observer.com/2022/10/review-nadine-sierra-is-a-force-of-nature-as-violetta-in-la-traviata-at-the-met-opera/"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         }
       ],
       "citedNoUrl": [],
@@ -79198,11 +79890,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 100,
+        "count": 107,
         "byReason": {
-          "non-review-host": 19,
-          "not-http-url": 7,
-          "aggregator-internal-nav": 74
+          "not-http-url": 9,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 74,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -79329,7 +80022,7 @@
         "liveCount": 1,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "labelless-off-broadway-2026",
@@ -82812,7 +83505,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://thefrontrowcenter.com/2022/04/giacomo-puccinis-madama-butterfly-at-the-met-an-audience-member-pov/"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         },
         {
           "url": "https://newyorkclassicalreview.com/2022/03/burattos-triumphant-role-debut-highlights-the-mets-rich-and-treasurable-butterfly/",
@@ -82829,7 +83524,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://newyorkclassicalreview.com/2022/03/burattos-triumphant-role-debut-highlights-the-mets-rich-and-treasurable-butterfly/"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         }
       ],
       "citedNoUrl": [],
@@ -82887,7 +83584,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "making-a-show-of-myself-off-broadway-2026",
@@ -96894,12 +97591,21 @@
         "https://thefrontrowcenter.com/2024/11/mrs-stern-wanders-the-prussian-state-library/",
         "https://twi-ny.com/2024/12/26/mrs-stern-wanders-the-prussian-state-library-bashevis-demons/",
         "https://www.offoffonline.com/offoffonline/2024/9/26/mrs-stern-wanders-the-prussian-state-library",
-        "https://pagesonstages.wordpress.com/2024/10/26/prussian-library/"
+        "https://pagesonstages.wordpress.com/2024/10/26/prussian-library/",
+        "https://www.theguardian.com/stage/2026/aug/13/mrs-stern-wanders-the-prussian-state-library-review-traverse-theatre-edinburgh-hanah-arendt",
+        "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage"
       ],
       "dirFiles": 15,
       "dirClean": 1,
       "inReviewsJson": 1,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "lightingandsoundamerica.com",
@@ -97035,24 +97741,123 @@
           ],
           "priorRun": true,
           "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/13/mrs-stern-wanders-the-prussian-state-library-review-traverse-theatre-edinburgh-hanah-arendt",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2026/aug/13/mrs-stern-wanders-the-prussian-state-library-review-traverse-theatre-edinburgh-hanah-arendt"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" review 59e59",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) 59E59 Theaters (Theater A) review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) 59E59 Theaters (Theater A) review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) 59E59 Theaters (Theater A) review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 32,
         "byReason": {
-          "non-review-host": 1
+          "venue-production-page": 1,
+          "non-review-host": 27,
+          "aggregator-internal-nav": 4
         }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-no-host"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage"
+          },
           {
             "outletId": "nytimes",
             "outlet": "nytimes",
@@ -97101,10 +97906,24 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://pagesonstages.wordpress.com/2024/10/26/prussian-library/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/aug/13/mrs-stern-wanders-the-prussian-state-library-review-traverse-theatre-edinburgh-hanah-arendt"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
           {
             "url": "https://www.nytimes.com/2024/12/21/theater/mrs-stern-racecar-racecar-racecar-review.html",
             "outletId": "nytimes",
@@ -97153,12 +97972,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/13/mrs-stern-wanders-the-prussian-state-library-review-traverse-theatre-edinburgh-hanah-arendt",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 9
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -98071,7 +98897,7 @@
         "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
         "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html"
       ],
-      "dirFiles": 24,
+      "dirFiles": 25,
       "dirClean": 6,
       "inReviewsJson": 6,
       "missing": [],
@@ -98199,10 +99025,10 @@
       "candidatesRejected": {
         "count": 191,
         "byReason": {
-          "aggregator-internal-nav": 160,
           "not-http-url": 6,
-          "aggregator-section-root": 4,
-          "non-review-host": 21
+          "non-review-host": 21,
+          "aggregator-internal-nav": 160,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -98266,29 +99092,29 @@
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Garrick-Theatre-20221024",
             "outletId": "broadwayworld",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/my-sons-a-queer-but-what-can-you-do-review",
             "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
             "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html",
             "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           }
         ],
         "liveCount": 4,
         "candidateCount": 7
       },
-      "computedAt": "2026-09-17T23:23:55.518Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -98309,9 +99135,9 @@
         "https://www.talkinbroadway.com/page/ob/05_15_26.html",
         "https://1minutecritic.com/new-born-review-hugh-jackman/"
       ],
-      "dirFiles": 15,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirFiles": 12,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [],
       "dirOnly": [
         {
@@ -98319,25 +99145,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/review-in-ella-hicksons-new-born-hugh-jackman-will-trim-your-tree_1836852/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--david-gordon.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/review-in-ella-hicksons-new-born-hugh-jackman-will-trim-your-tree_1836852/"
-            }
-          ]
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -98345,27 +99153,19 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 281,
+        "count": 282,
         "byReason": {
+          "not-http-url": 51,
           "non-review-host": 15,
-          "non-review-path": 3,
-          "roundup-page": 2,
-          "not-http-url": 46,
-          "aggregator-internal-nav": 215
+          "aggregator-internal-nav": 208,
+          "aggregator-section-root": 6,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-in-ella-hicksons-new-born-hugh-jackman-will-trim-your-tree_1836852/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -98377,6 +99177,12 @@
           {
             "url": "https://www.wsj.com/articles/new-born-and-what-happened-was-reviews-complicated-relationships-a8f3ecb8",
             "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T12:09:29.406Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-in-ella-hicksons-new-born-hugh-jackman-will-trim-your-tree_1836852/",
+            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
           },
@@ -98409,19 +99215,12 @@
             "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-in-ella-hicksons-new-born-hugh-jackman-will-trim-your-tree_1836852/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T12:09:29.406Z"
           }
         ],
-        "liveCount": 7,
+        "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "night-city-off-west-end-2026",
@@ -98432,55 +99231,52 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://southwarkplayhouse.co.uk/productions/night-city/",
+        "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
+        "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
+        "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
+        "https://www.londonboxoffice.co.uk/news/post/max-wilkinson-night-city-interview",
+        "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/",
+        "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/",
+        "https://www.pinkprincetheatre.com/post/review-night-city-southwark-playhouse",
+        "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
+        "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/amp/",
+        "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
+        "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
+        "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
+        "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
+        "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
+        "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
+        "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
+        "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
+        "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912",
+        "https://northwestend.com/night-city-southwark-playhouse/",
+        "https://terripaddock.com/events/night-city/",
         "https://www.londonboxoffice.co.uk/news/post/night-city-southwark-playhouse-borough-review"
       ],
       "dirFiles": 32,
       "dirClean": 22,
       "inReviewsJson": 22,
-      "missing": [],
-      "dirOnly": [
+      "missing": [
         {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
+          "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": "lovelondonloveculture",
+          "serpCensus": true
         },
+        {
+          "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/amp/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": "lovelondonloveculture",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
         {
           "host": "britishtheatreguide.info",
           "count": 1
         },
         {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londonbornandbred.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londonpubtheatres.com",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "loureviews.blog",
-          "count": 1
-        },
-        {
-          "host": "northwestend.com",
-          "count": 1
-        },
-        {
           "host": "onin.london",
-          "count": 1
-        },
-        {
-          "host": "pinkprincetheatre.com",
           "count": 1
         },
         {
@@ -98492,35 +99288,7 @@
           "count": 1
         },
         {
-          "host": "saltertonartsreview.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
           "host": "theatrereviews.design",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theupcoming.co.uk",
-          "count": 1
-        },
-        {
-          "host": "viewfromthegods.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -98540,7 +99308,26 @@
               "flag": "wrongShow",
               "urlInDir": "https://southwarkplayhouse.co.uk/productions/night-city/"
             }
-          ]
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://terripaddock.com/events/night-city/",
+          "host": "terripaddock.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "terripaddock--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://terripaddock.com/events/night-city/"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -98587,27 +99374,237 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Night City\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Night City\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 7,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Night City\" review southwark",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Night City Southwark Playhouse review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Night City Southwark Playhouse review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Night City Southwark Playhouse review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 21,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 10,
+        "byReason": {
+          "non-review-host": 9,
+          "aggregator-internal-nav": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/",
+          "host": "lovelondonloveculture.com",
+          "outletId": "lovelondonloveculture",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwa"
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/amp/",
+          "host": "lovelondonloveculture.com",
+          "outletId": "lovelondonloveculture",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwa"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/"
+          },
+          {
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/amp/"
+          },
           {
             "outletId": "southwarkplayhouse.co.uk",
             "outlet": "southwarkplayhouse.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://southwarkplayhouse.co.uk/productions/night-city/"
+          },
+          {
+            "outletId": "terripaddock.com",
+            "outlet": "terripaddock.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://terripaddock.com/events/night-city/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
+            "outletId": "londonpubtheatres.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/max-wilkinson-night-city-interview",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.theupcoming.co.uk/2026/09/12/night-city-at-southwark-playhouse-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.pinkprincetheatre.com/post/review-night-city-southwark-playhouse",
+            "outletId": "pinkprincetheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
+            "outletId": "londonbornandbred.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
+            "outletId": "viewfromthegods.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
+            "outletId": "saltertonartsreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://northwestend.com/night-city-southwark-playhouse/",
+            "outletId": "northwestend.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/night-city-southwark-playhouse-borough-review",
             "outletId": "londonboxoffice.co.uk",
@@ -98615,17 +99612,38 @@
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
           },
           {
+            "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/",
+            "outletId": "lovelondonloveculture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/amp/",
+            "outletId": "lovelondonloveculture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
             "url": "https://southwarkplayhouse.co.uk/productions/night-city/",
             "outletId": "southwarkplayhouse.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-13T18:41:03.414Z"
+          },
+          {
+            "url": "https://terripaddock.com/events/night-city/",
+            "outletId": "terripaddock.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
           }
         ],
-        "liveCount": 1,
-        "candidateCount": 2
+        "liveCount": 17,
+        "candidateCount": 20
       },
-      "computedAt": "2026-09-17T20:52:39.992Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "night-side-songs-off-broadway-2026",
@@ -106390,7 +107408,7 @@
         "http://www.thestage.co.uk/reviews/2018/killer-joe-review-starring-orlando-bloom-trafalgar-studios-london-unpleasant-revival-nasty-play/",
         "http://www.telegraph.co.uk/theatre/what-to-see/killer-joe-review-trafalgar-studios-orlando-bloom-bares-shallow/"
       ],
-      "dirFiles": 37,
+      "dirFiles": 33,
       "dirClean": 5,
       "inReviewsJson": 5,
       "missing": [
@@ -106904,13 +107922,14 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 683,
+        "count": 710,
         "byReason": {
-          "non-review-host": 73,
-          "roundup-page": 3,
-          "not-http-url": 64,
-          "aggregator-internal-nav": 539,
-          "non-review-path": 4
+          "not-http-url": 70,
+          "non-review-host": 76,
+          "aggregator-internal-nav": 546,
+          "aggregator-section-root": 16,
+          "non-review-path": 1,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -107379,7 +108398,7 @@
         "liveCount": 2,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-20T10:24:01.870Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "othello-2025",
@@ -112021,7 +113040,8 @@
       "aggregatorArticles": [
         "https://playbill.com/article/what-did-critics-think-of-porgy-and-bess-at-the-metropolitan-opera",
         "https://playbill.com/article/what-did-critics-think-of-english-national-operas-porgy-and-bess",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-PORGY-AND-BESS-at-The-Metropolitan-Opera-20190924"
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-PORGY-AND-BESS-at-The-Metropolitan-Opera-20190924",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Gershwins-PORGY-BESS-on-Broadway-All-the-Reviews-20120113"
       ],
       "aggregatorListedUrls": [
         "https://newyorkclassicalreview.com/2019/09/met-opens-season-with-a-memorable-porgy-and-bess/",
@@ -112038,6 +113058,23 @@
         "https://www.thestage.co.uk/reviews/2018/porgy-bess-review-london-coliseum/",
         "https://www.telegraph.co.uk/opera/what-to-see/porgy-bess-review-english-national-opera-london-coliseum-knock/",
         "https://www.thetimes.co.uk/article/opera-review-porgy-and-bess-at-the-london-coliseum-l7xkrmtjw",
+        "http://theater.nytimes.com/2012/01/13/theater/reviews/audra-mcdonald-in-the-gershwins-porgy-and-bess-review.html",
+        "http://www.usatoday.com/life/theater/reviews/story/2012-01-11/porgy-and-bess-broadway/52523734/1",
+        "http://www.hollywoodreporter.com/review/broadway-gershwins-porgy-bess-theater-review-280994",
+        "http://www.bloomberg.com/news/2012-01-13/lean-porgy-and-bess-soars-with-audra-mcdonald-jeremy-gerard.html",
+        "http://www.huffingtonpost.com/huff-wires/20120112/us-theater-review-the-gershwins--porgy-and-bess/",
+        "http://nymag.com/daily/entertainment/2012/01/theater-review-porgy-and-bess.html",
+        "http://www.newjerseynewsroom.com/new-york-theater/review-porgy-and-bess-revamped-as-a-broadway-musical",
+        "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ae-0115-porgy-bess-broadway-review-20120112,0,7500197.column",
+        "http://www.nydailynews.com/entertainment/music-arts/classic-music-stars-audra-mcdonald-norm-lewis-shine-gershwins-porgy-bess-article-1.1004574",
+        "http://www.newsday.com/entertainment/theater/a-porgy-and-bess-made-for-broadway-1.3445473",
+        "http://www.amny.com/urbanite-1.812039/theater-review-the-gershwins-porgy-and-bess-4-stars-1.3448772",
+        "http://bostonglobe.com/arts/2012/01/13/broadway-porgy-with-bess-its-core/9ffblnwiDCjkqtFFQRjRqK/story.html",
+        "http://blogs.villagevoice.com/dailymusto/2012/01/porgy_and_bess.php",
+        "http://www.northjersey.com/arts_entertainment/137252323__Porgy_and_Bess__adaptation_true_to_roots.html",
+        "http://www.philly.com/philly/entertainment/20120112_Broadway_review__Porgy_and_Bess.html",
+        "http://newyork.timeout.com/arts-culture/theater/2479901/review-porgy-and-bess",
+        "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-porgy-and-bess-1005864352.story",
         "https://newyorkclassicalreview.com/2025/12/new-and-old-faces-imbue-mets-porgy-and-bess-revival-with-fresh-drama-and-impact/"
       ],
       "dirFiles": 14,
@@ -112069,6 +113106,118 @@
           "url": "https://www.thetimes.co.uk/article/opera-review-porgy-and-bess-at-the-london-coliseum-l7xkrmtjw",
           "host": "thetimes.co.uk",
           "knownOutletId": "times-uk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-01-11/porgy-and-bess-broadway/52523734/1",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/broadway-gershwins-porgy-bess-theater-review-280994",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.bloomberg.com/news/2012-01-13/lean-porgy-and-bess-soars-with-audra-mcdonald-jeremy-gerard.html",
+          "host": "bloomberg.com",
+          "knownOutletId": "bloomberg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/huff-wires/20120112/us-theater-review-the-gershwins--porgy-and-bess/",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nymag.com/daily/entertainment/2012/01/theater-review-porgy-and-bess.html",
+          "host": "nymag.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-porgy-and-bess-revamped-as-a-broadway-musical",
+          "host": "newjerseynewsroom.com",
+          "knownOutletId": "new-jersey-newsroom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ae-0115-porgy-bess-broadway-review-20120112,0,7500197.column",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/classic-music-stars-audra-mcdonald-norm-lewis-shine-gershwins-porgy-bess-article-1.1004574",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/a-porgy-and-bess-made-for-broadway-1.3445473",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-gershwins-porgy-and-bess-4-stars-1.3448772",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://bostonglobe.com/arts/2012/01/13/broadway-porgy-with-bess-its-core/9ffblnwiDCjkqtFFQRjRqK/story.html",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://blogs.villagevoice.com/dailymusto/2012/01/porgy_and_bess.php",
+          "host": "villagevoice.com",
+          "knownOutletId": "village-voice",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.northjersey.com/arts_entertainment/137252323__Porgy_and_Bess__adaptation_true_to_roots.html",
+          "host": "northjersey.com",
+          "knownOutletId": "northjerseycom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.philly.com/philly/entertainment/20120112_Broadway_review__Porgy_and_Bess.html",
+          "host": "philly.com",
+          "knownOutletId": "philadelphia-inquirer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://newyork.timeout.com/arts-culture/theater/2479901/review-porgy-and-bess",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-porgy-and-bess-1005864352.story",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -112262,6 +113411,25 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://theater.nytimes.com/2012/01/13/theater/reviews/audra-mcdonald-in-the-gershwins-porgy-and-bess-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--by.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2019/09/24/arts/music/porgy-bess-met-opera-review.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -112271,12 +113439,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 462,
+        "count": 756,
         "byReason": {
-          "non-review-host": 54,
-          "non-review-path": 3,
-          "not-http-url": 45,
-          "aggregator-internal-nav": 360
+          "not-http-url": 84,
+          "non-review-host": 71,
+          "aggregator-internal-nav": 585,
+          "aggregator-section-root": 16
         }
       },
       "dedupedVariants": [],
@@ -112292,6 +113460,10 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-PORGY-AND-BESS-at-The-Metropolitan-Opera-20190924",
           "publishDate": "2019-09-24"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Gershwins-PORGY-BESS-on-Broadway-All-the-Reviews-20120113",
+          "publishDate": "2012-01-13"
         }
       ],
       "weIngestBlocked": [
@@ -112316,6 +113488,102 @@
         {
           "url": "https://www.thetimes.co.uk/article/opera-review-porgy-and-bess-at-the-london-coliseum-l7xkrmtjw",
           "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-01-11/porgy-and-bess-broadway/52523734/1",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/broadway-gershwins-porgy-bess-theater-review-280994",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.bloomberg.com/news/2012-01-13/lean-porgy-and-bess-soars-with-audra-mcdonald-jeremy-gerard.html",
+          "host": "bloomberg.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/huff-wires/20120112/us-theater-review-the-gershwins--porgy-and-bess/",
+          "host": "huffingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nymag.com/daily/entertainment/2012/01/theater-review-porgy-and-bess.html",
+          "host": "nymag.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-porgy-and-bess-revamped-as-a-broadway-musical",
+          "host": "newjerseynewsroom.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ae-0115-porgy-bess-broadway-review-20120112,0,7500197.column",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/classic-music-stars-audra-mcdonald-norm-lewis-shine-gershwins-porgy-bess-article-1.1004574",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/a-porgy-and-bess-made-for-broadway-1.3445473",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-gershwins-porgy-and-bess-4-stars-1.3448772",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://bostonglobe.com/arts/2012/01/13/broadway-porgy-with-bess-its-core/9ffblnwiDCjkqtFFQRjRqK/story.html",
+          "host": "bostonglobe.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://blogs.villagevoice.com/dailymusto/2012/01/porgy_and_bess.php",
+          "host": "villagevoice.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.northjersey.com/arts_entertainment/137252323__Porgy_and_Bess__adaptation_true_to_roots.html",
+          "host": "northjersey.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.philly.com/philly/entertainment/20120112_Broadway_review__Porgy_and_Bess.html",
+          "host": "philly.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://newyork.timeout.com/arts-culture/theater/2479901/review-porgy-and-bess",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-porgy-and-bess-1005864352.story",
+          "host": "backstage.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -112352,6 +113620,118 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thetimes.co.uk/article/opera-review-porgy-and-bess-at-the-london-coliseum-l7xkrmtjw"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/life/theater/reviews/story/2012-01-11/porgy-and-bess-broadway/52523734/1"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/broadway-gershwins-porgy-bess-theater-review-280994"
+          },
+          {
+            "outletId": "bloomberg",
+            "outlet": "bloomberg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.bloomberg.com/news/2012-01-13/lean-porgy-and-bess-soars-with-audra-mcdonald-jeremy-gerard.html"
+          },
+          {
+            "outletId": "huffpost",
+            "outlet": "huffpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.huffingtonpost.com/huff-wires/20120112/us-theater-review-the-gershwins--porgy-and-bess/"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nymag.com/daily/entertainment/2012/01/theater-review-porgy-and-bess.html"
+          },
+          {
+            "outletId": "new-jersey-newsroom",
+            "outlet": "new-jersey-newsroom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newjerseynewsroom.com/new-york-theater/review-porgy-and-bess-revamped-as-a-broadway-musical"
+          },
+          {
+            "outletId": "chicagotribune",
+            "outlet": "chicagotribune",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ae-0115-porgy-bess-broadway-review-20120112,0,7500197.column"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/music-arts/classic-music-stars-audra-mcdonald-norm-lewis-shine-gershwins-porgy-bess-article-1.1004574"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/a-porgy-and-bess-made-for-broadway-1.3445473"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-gershwins-porgy-and-bess-4-stars-1.3448772"
+          },
+          {
+            "outletId": "boston-globe",
+            "outlet": "boston-globe",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://bostonglobe.com/arts/2012/01/13/broadway-porgy-with-bess-its-core/9ffblnwiDCjkqtFFQRjRqK/story.html"
+          },
+          {
+            "outletId": "village-voice",
+            "outlet": "village-voice",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://blogs.villagevoice.com/dailymusto/2012/01/porgy_and_bess.php"
+          },
+          {
+            "outletId": "northjerseycom",
+            "outlet": "northjerseycom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.northjersey.com/arts_entertainment/137252323__Porgy_and_Bess__adaptation_true_to_roots.html"
+          },
+          {
+            "outletId": "philadelphia-inquirer",
+            "outlet": "philadelphia-inquirer",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.philly.com/philly/entertainment/20120112_Broadway_review__Porgy_and_Bess.html"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://newyork.timeout.com/arts-culture/theater/2479901/review-porgy-and-bess"
+          },
+          {
+            "outletId": "backstage",
+            "outlet": "backstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-porgy-and-bess-1005864352.story"
           },
           {
             "outletId": "vulture",
@@ -112408,6 +113788,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nytimes.com/2018/10/28/arts/music/porgy-and-bess-review-english-national-opera.html"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theater.nytimes.com/2012/01/13/theater/reviews/audra-mcdonald-in-the-gershwins-porgy-and-bess-review.html"
           }
         ],
         "suppressedMissing": [
@@ -112459,6 +113846,118 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-19T09:29:52.064Z"
+          },
+          {
+            "url": "http://www.usatoday.com/life/theater/reviews/story/2012-01-11/porgy-and-bess-broadway/52523734/1",
+            "outletId": "usatoday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/broadway-gershwins-porgy-bess-theater-review-280994",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.bloomberg.com/news/2012-01-13/lean-porgy-and-bess-soars-with-audra-mcdonald-jeremy-gerard.html",
+            "outletId": "bloomberg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/huff-wires/20120112/us-theater-review-the-gershwins--porgy-and-bess/",
+            "outletId": "huffpost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://nymag.com/daily/entertainment/2012/01/theater-review-porgy-and-bess.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.newjerseynewsroom.com/new-york-theater/review-porgy-and-bess-revamped-as-a-broadway-musical",
+            "outletId": "new-jersey-newsroom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ae-0115-porgy-bess-broadway-review-20120112,0,7500197.column",
+            "outletId": "chicagotribune",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/music-arts/classic-music-stars-audra-mcdonald-norm-lewis-shine-gershwins-porgy-bess-article-1.1004574",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/a-porgy-and-bess-made-for-broadway-1.3445473",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-gershwins-porgy-and-bess-4-stars-1.3448772",
+            "outletId": "amny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://bostonglobe.com/arts/2012/01/13/broadway-porgy-with-bess-its-core/9ffblnwiDCjkqtFFQRjRqK/story.html",
+            "outletId": "boston-globe",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://blogs.villagevoice.com/dailymusto/2012/01/porgy_and_bess.php",
+            "outletId": "village-voice",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.northjersey.com/arts_entertainment/137252323__Porgy_and_Bess__adaptation_true_to_roots.html",
+            "outletId": "northjerseycom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.philly.com/philly/entertainment/20120112_Broadway_review__Porgy_and_Bess.html",
+            "outletId": "philadelphia-inquirer",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://newyork.timeout.com/arts-culture/theater/2479901/review-porgy-and-bess",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-porgy-and-bess-1005864352.story",
+            "outletId": "backstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
             "url": "https://www.vulture.com/2019/09/justin-davidson-on-the-metropolitan-operas-porgy-and-bess.html",
@@ -112522,12 +114021,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:54:33.136Z"
+          },
+          {
+            "url": "http://theater.nytimes.com/2012/01/13/theater/reviews/audra-mcdonald-in-the-gershwins-porgy-and-bess-review.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
           }
         ],
         "liveCount": 1,
-        "candidateCount": 13
+        "candidateCount": 28
       },
-      "computedAt": "2026-08-19T09:29:52.064Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "prayer-for-the-french-republic-2024",
@@ -146304,33 +147810,279 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+        "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+        "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507",
+        "https://stageraw.com/the-hope-theory/",
+        "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/"
+      ],
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+          "host": "thetheatretimes.com",
+          "knownOutletId": "the-theatre-times",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        },
+        {
+          "url": "https://stageraw.com/the-hope-theory/",
+          "host": "stageraw.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/",
+          "host": "larchmontbuzz.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--bridget-gross.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"THE HOPE THEORY\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"THE HOPE THEORY\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"THE HOPE THEORY\" review york",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"THE HOPE THEORY\" Guimarães review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "THE HOPE THEORY New York City Center/Stage II review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "THE HOPE THEORY New York City Center/Stage II review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "THE HOPE THEORY New York City Center/Stage II review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 5,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 39,
+        "byReason": {
+          "venue-production-page": 4,
+          "non-review-host": 24,
+          "aggregator-internal-nav": 8,
+          "merch-store": 2,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+          "host": "thetheatretimes.com",
+          "outletId": "the-theatre-times",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "the-hope-theory-off-broadway-2026: https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://stageraw.com/the-hope-theory/",
+          "host": "stageraw.com",
+          "outletId": "stageraw",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"stageraw\" (not in registry) — onboard to outlet-registry.json after review.\n"
+        },
+        {
+          "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/",
+          "host": "larchmontbuzz.com",
+          "outletId": "larchmontbuzz",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=larchmontbuzz.com): Scrapingdog HTTP 400: Oops! Someth"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "the-theatre-times",
+            "outlet": "the-theatre-times",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507"
+          },
+          {
+            "outletId": "stageraw.com",
+            "outlet": "stageraw.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stageraw.com/the-hope-theory/"
+          },
+          {
+            "outletId": "larchmontbuzz.com",
+            "outlet": "larchmontbuzz.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+            "outletId": "the-theatre-times",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://stageraw.com/the-hope-theory/",
+            "outletId": "stageraw.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/",
+            "outletId": "larchmontbuzz.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-18T01:46:03.483Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 5
       },
-      "computedAt": "2026-09-17T23:23:55.518Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
@@ -165549,7 +167301,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.nytimes.com/2024/02/29/arts/music/turandot-met-opera-review.html#:~:text=Taut%20strings%20and%20slinky%20woodwinds,the%20princess%20had%20been%20humbled."
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         },
         {
           "url": "https://www.nytimes.com/2021/10/13/arts/music/met-opera-turandot-puccini.html",
@@ -165566,7 +167320,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.nytimes.com/2021/10/13/arts/music/met-opera-turandot-puccini.html"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         },
         {
           "url": "https://operawire.com/metropolitan-opera-2023-2024-review-turandot/",
@@ -165583,7 +167339,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://operawire.com/metropolitan-opera-2023-2024-review-turandot/"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         }
       ],
       "citedNoUrl": [],
@@ -165655,7 +167413,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-08-20T10:24:01.870Z"
+      "computedAt": "2026-09-18T01:46:03.483Z"
     },
     {
       "showId": "twelfth-night-off-west-end-2026",
