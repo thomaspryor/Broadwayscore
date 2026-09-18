@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T01:41:53.223Z",
+  "generatedAt": "2026-09-18T01:53:40.252Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2073,9 +2073,9 @@
       "status": "open",
       "slug": "thelma-and-louise-a-new-musical-off-west-end",
       "thumbnail": "/images/shows/thelma-and-louise-a-new-musical-off-west-end-2026/thumbnail.webp",
-      "siteScore": 63.74,
+      "siteScore": 64.06,
       "liveScore": 64,
-      "scoreDrift": 0.259999999999998,
+      "scoreDrift": -0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2083,15 +2083,15 @@
       "t1": 6,
       "t2": 5,
       "t3": 5,
-      "positive": 4,
-      "mixed": 10,
+      "positive": 5,
+      "mixed": 9,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2257,6 +2257,18 @@
           "t3": 5,
           "p": 4,
           "m": 10,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-18T01:53:40.252Z",
+          "rc": 16,
+          "s": 64.06,
+          "t1": 6,
+          "t2": 5,
+          "t3": 5,
+          "p": 5,
+          "m": 9,
           "n": 2,
           "bc": "waiting"
         }
