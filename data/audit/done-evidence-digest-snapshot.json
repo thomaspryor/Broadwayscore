@@ -1,47 +1,32 @@
 {
-  "generatedAt": "2026-09-17T12:10:23.712Z",
-  "bannerText": "201/315 Done(14d) verified on main · 5 FAILED · 1 vacuous · 72 stuck-but-done · 26 mis-armed, needs re-arming (BRO-1391, BRO-1333, BRO-1284, +23 more) — PARTIAL RUN: 100 checks not re-run (ran out of time), 1 GitHub lookup failed, so these numbers understate the board",
+  "generatedAt": "2026-09-18T11:54:28.780Z",
+  "bannerText": "17/289 Done(14d) verified on main · 0 FAILED · 4 vacuous · 1 stuck-but-done — PARTIAL RUN: 421 checks not re-run (ran out of time), 1 GitHub lookup failed, so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-465 — BSC Daily: Main: red streak",
-      "detail": "[check-health-row-absent] FAIL: \"Main: red streak\" still listed in the 2026-09-17T12:09:21.616Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-465/bsc-daily-main-red-streak"
-    },
-    {
-      "title": "FAILED BRO-3379 — P1: feedback + submit-review routes can 5xx a user whose submission already succeeded, because the additive Notion write is not isolated",
-      "detail": "TAP version 13 # Subtest: feedback route returns 2xx and keeps the Formspree submission when Notion throws not ok 1 - feedback route returns 2xx and keeps the Formspree submission…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3379/p1-feedback-submit-review-routes-can-5xx-a-user-whose-submission"
-    },
-    {
-      "title": "FAILED BRO-2952 — P1: gate-cold-start A/B impression split drifted toward parity (208:75, expected ~10:1)",
-      "detail": "Could not find '<checkout>/scripts/lib/gate-cold-start-rules.test.mjs'",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2952/p1-gate-cold-start-ab-impression-split-drifted-toward-parity-20875"
-    },
-    {
-      "title": "FAILED BRO-2795 — P1: commercial-rss-poll.yml fails hourly — an unregistered data/audit/sd-circuit-breaker.json is swept into its commit and disqualifies the Git Data API fallback",
-      "detail": "TAP version 13 # Subtest: sanity: harness disqualifies an unregistered data/audit/ path (proves the extraction actually runs the real check) not ok 1 - sanity: harness disqualifie…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2795/p1-commercial-rss-pollyml-fails-hourly-an-unregistered-dataauditsd"
-    },
-    {
-      "title": "FAILED BRO-2549 — P1: aggregator archive caches are validated at write time only — a <14d cache is served before any validator runs",
-      "detail": "Could not find '<checkout>/scripts/lib/bww-archive-category-guard.test.mjs'",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2549/p1-aggregator-archive-caches-are-validated-at-write-time-only-a-14d"
-    },
-    {
-      "title": "STUCK BRO-1397 — Prior-run review display: label run/date + suppress former-cast pull-quotes",
+      "title": "STUCK BRO-2701 — P0: validate-show-venue gate is STRUCTURALLY permanently red — 33 no-playbill-url shows can never fit the 9-min budget",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-1397/prior-run-review-display-label-rundate-suppress-former-cast-pull"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2701/p0-validate-show-venue-gate-is-structurally-permanently-red-33-no"
     },
     {
-      "title": "STUCK BRO-1392 — Newsletter score badges break in Gmail iOS dark mode",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-1392/newsletter-score-badges-break-in-gmail-ios-dark-mode"
+      "title": "VACUOUS BRO-2229 — Opening-night bypass check (cv-wrongproduction-unhandled) only runs within +/-2d of opening -- no lifetime corpus coverage",
+      "detail": "`test -f scripts/audit-cv-wrongproduction-lifetime.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2229/opening-night-bypass-check-cv-wrongproduction-unhandled-only-runs"
     },
     {
-      "title": "STUCK BRO-1325 — BTC: send retroactive confirmation emails to all entrants",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-1325/btc-send-retroactive-confirmation-emails-to-all-entrants"
+      "title": "VACUOUS BRO-2222 — P1: BRO-387 Stop-hook is live globally but its script is unmerged — every session hits an unsatisfiable gate",
+      "detail": "`test -f scripts/linear-session.js` names scripts/linear-session.js, which was already in the repo before this card was filed — green before the work started, so it proves nothing…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2222/p1-bro-387-stop-hook-is-live-globally-but-its-script-is-unmerged-every"
+    },
+    {
+      "title": "VACUOUS BRO-1690 — Monitor: verify 'exactly 1 scheduled owner email/day' holds (catches the next digest-noise regression)",
+      "detail": "`test -f scripts/monitor-scheduled-email-count.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1690/monitor-verify-exactly-1-scheduled-owner-emailday-holds-catches-the"
+    },
+    {
+      "title": "VACUOUS BRO-1197 — Sprint 7 — OPERA_DISCOVERY_V2 flag + soak start (due 2026-05-24)",
+      "detail": "`test -f scripts/scoring-delta.js` names scripts/scoring-delta.js, which was already in the repo before this card was filed — green before the work started, so it proves nothing n…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1197/sprint-7-opera-discovery-v2-flag-soak-start-due-2026-05-24"
     }
   ],
-  "moreCount": 70
+  "moreCount": 0
 }
