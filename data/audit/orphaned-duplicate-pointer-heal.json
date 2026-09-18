@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-18T20:20:18.223Z",
+  "generated": "2026-09-18T22:23:12.677Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 88,
+  "count": 92,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -204,6 +204,13 @@
       "loserFile": "vulture--jesse-green.json",
       "targetFile": "vulture--helen-shaw.json",
       "reason": "orphaned-duplicate-heal: vulture--helen-shaw.json was flagged invalid after vulture--jesse-green.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "jane-eyre-off-west-end-2026",
+      "loserFile": "fairypoweredproductions--unknown.json",
+      "targetFile": "fairypoweredproductions--andrew-and.json",
+      "reason": "orphaned-duplicate-heal: fairypoweredproductions--andrew-and.json was flagged invalid after fairypoweredproductions--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -529,6 +536,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "the-story-west-end-2026",
+      "loserFile": "british-theatre--unknown.json",
+      "targetFile": "british-theatre--david-chadderton.json",
+      "reason": "orphaned-duplicate-heal: british-theatre--david-chadderton.json was flagged invalid after british-theatre--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "time-and-the-conways-2017",
       "loserFile": "deadline--pete-hammond.json",
       "targetFile": "deadline--jeremy-gerard.json",
@@ -618,6 +632,20 @@
       "targetFile": "theatermania--hayley-levitt.json",
       "reason": "orphaned-duplicate-heal: theatermania--hayley-levitt.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "jane-eyre-off-west-end-2026",
+      "loserFile": "fairypoweredproductions--unknown.json",
+      "targetFile": "fairypoweredproductions--andrew-and.json",
+      "reason": "orphaned-duplicate-heal: fairypoweredproductions--andrew-and.json was flagged invalid after fairypoweredproductions--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "loserFile": "british-theatre--unknown.json",
+      "targetFile": "british-theatre--david-chadderton.json",
+      "reason": "orphaned-duplicate-heal: british-theatre--david-chadderton.json was flagged invalid after british-theatre--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
