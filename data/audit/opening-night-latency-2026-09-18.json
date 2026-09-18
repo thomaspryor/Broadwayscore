@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-18T06:00:29.800Z",
+  "generatedAt": "2026-09-18T11:23:02.256Z",
   "date": "2026-09-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 160037,
+  "entryCount": 164970,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -6020,13 +6020,13 @@
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 296567,
+        "scored-to-rebuilt": 194868,
         "rebuilt-to-deployed": 59082933
       },
       "reviews_over_15min": 0,
@@ -7142,13 +7142,13 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 280164,
+        "scored-to-rebuilt": 282595,
         "rebuilt-to-deployed": 120462688
       },
       "reviews_over_15min": 0,
@@ -7307,13 +7307,13 @@
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": 178040253,
       "p90_e2e_ms": 178787987,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 954808,
+        "scored-to-rebuilt": 576358,
         "rebuilt-to-deployed": 177203456
       },
       "reviews_over_15min": 2,
@@ -7808,6 +7808,36 @@
     },
     {
       "showId": "the-story-olivier-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "america-who-hurt-you-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 357100,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-hope-theory-off-broadway-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
