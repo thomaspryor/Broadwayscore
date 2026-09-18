@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-18T10:53:11.235Z",
+  "generated": "2026-09-18T11:01:14.867Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 89,
+  "count": 88,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -618,13 +618,6 @@
       "targetFile": "theatermania--hayley-levitt.json",
       "reason": "orphaned-duplicate-heal: theatermania--hayley-levitt.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "loserFile": "financialtimes--unknown.json",
-      "targetFile": "financialtimes--louise-levene.json",
-      "reason": "orphaned-duplicate-heal: financialtimes--louise-levene.json was flagged invalid after financialtimes--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
