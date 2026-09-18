@@ -1,55 +1,20 @@
 {
-  "updatedAt": "2026-09-18T17:44:26.258Z",
-  "processed": 89,
-  "failed": 372,
-  "successRate": "19.3%",
+  "updatedAt": "2026-09-18T19:19:17.151Z",
+  "processed": 99,
+  "failed": 373,
+  "successRate": "21.0%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 62,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 1,
-    "scrapingbee": 16,
-    "brightdata": 9,
+    "scrapingbee": 19,
+    "brightdata": 11,
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-09-18T15:34:06.712Z",
-      "event": "bb-session",
-      "session": "245f38d4",
-      "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
-    },
-    {
-      "t": "2026-09-18T15:34:21.723Z",
-      "event": "bb-session",
-      "session": "5c22095a",
-      "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
-    },
-    {
-      "t": "2026-09-18T15:34:57.616Z",
-      "event": "bb-session",
-      "session": "1ab5fc17",
-      "url": "https://www.londontheatredirect.com/news/event/buena-vista-social-club-tickets?s"
-    },
-    {
-      "t": "2026-09-18T15:35:05.944Z",
-      "event": "bb-session",
-      "session": "efb0c9c8",
-      "url": "https://www.londontheatredirect.com/news/event/buena-vista-social-club-tickets?s"
-    },
-    {
-      "t": "2026-09-18T15:36:10.614Z",
-      "event": "bb-session",
-      "session": "8fb7ff18",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
-    {
-      "t": "2026-09-18T15:36:11.282Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-09-18T15:38:57.488Z",
       "event": "bb-session",
@@ -125,6 +90,39 @@
     },
     {
       "t": "2026-09-18T16:47:54.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-18T18:55:48.210Z",
+      "event": "bb-session",
+      "session": "0715c8ee",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-18T18:55:48.781Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-18T19:08:51.669Z",
+      "event": "bb-session",
+      "session": "1ab865d1",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-18T19:08:52.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-18T19:16:53.901Z",
+      "event": "bb-session",
+      "session": "892db4e1",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-18T19:16:54.472Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
