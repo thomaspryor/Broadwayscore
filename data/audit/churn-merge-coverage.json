@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-18T11:11:57.518Z",
+    "generatedAt": "2026-09-18T11:26:05.552Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -42,7 +42,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 277
+      "churn": 278
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -58,7 +58,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 144
+      "churn": 145
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -162,7 +162,7 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "public/data/shows/all-my-sons-west-end-2025.json",
@@ -222,7 +222,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 220,
+      "churn": 219,
       "mergeAttr": "ours"
     },
     {
@@ -237,7 +237,7 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 145,
+      "churn": 146,
       "mergeAttr": "ours"
     },
     {
@@ -307,12 +307,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     }
   ]
