@@ -44,6 +44,7 @@ const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
+const { stripTrailingJunk } = require('./lib/text-cleaning');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile } = require('./lib/review-normalization');
 const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
@@ -216,7 +217,15 @@ if (!show) {
     }
   }
 
-  const text = extractArticleTextFromUrl(html, url, criticArg);
+  // stripTrailingJunk (newsletter promos, login prompts, site footers) runs
+  // in every other collection/recovery path (collect-review-texts.js,
+  // recover-serp-text.js, recover-wayback-reviews.js, recover-wsj-*.js) but
+  // was missing here — this is the one entry point the public /submit-review
+  // form and the >24h stuck-review backstop (audit-t1-silent-gaps.js
+  // recoverFromOwnUrl) both drive, so site chrome landed unstripped in
+  // fullText and fed straight into the LLM scoring prompt (BRO-2605 ship-check
+  // finding).
+  const text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
   // Star-rating fallback: UK star outlets (The Stage, Telegraph, Times, …)
   // serve recent articles as a registration wall with the review body absent
   // from server HTML — but the page's own StarRating block is still present.
