@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-17T10:35:44.052Z",
+  "generatedAt": "2026-09-18T10:12:48.983Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-09-17T09:59:35.817Z",
+    "reviewsJsonLastUpdated": "2026-09-18T09:36:11.502Z",
     "reviewsJsonAgeHours": 0.6,
     "freshnessBreach": false,
-    "showsScanned": 23,
-    "filesScanned": 358,
+    "showsScanned": 21,
+    "filesScanned": 314,
     "showsOverThreshold": 0,
     "orphanReviews": 5
   },
@@ -39,9 +39,17 @@
   ],
   "perShow": [
     {
-      "showDir": "becoming-hamlet-off-broadway-2026",
-      "actual": 6,
-      "scanned": 9,
+      "showDir": "alvin-ailey-american-dance-theater-new-works-west-end-2026",
+      "actual": 9,
+      "scanned": 13,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "america-who-hurt-you-off-broadway-2026",
+      "actual": 1,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -64,10 +72,18 @@
     },
     {
       "showDir": "golden-boy-off-west-end-2026",
-      "actual": 14,
-      "scanned": 27,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "actual": 16,
+      "scanned": 35,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "london-theatre--unknown.json",
+          "outletId": "london-theatre",
+          "criticName": "Unknown",
+          "publishDate": "2026-09-16",
+          "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor"
+        }
+      ],
       "overThreshold": false
     },
     {
@@ -79,17 +95,9 @@
       "overThreshold": false
     },
     {
-      "showDir": "man-to-man-west-end-2026",
-      "actual": 23,
-      "scanned": 51,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "million-dollar-quartet-off-west-end-2026",
-      "actual": 5,
-      "scanned": 15,
+      "actual": 16,
+      "scanned": 25,
       "suppressedCount": 1,
       "suppressed": [
         {
@@ -113,7 +121,7 @@
     {
       "showDir": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "actual": 6,
-      "scanned": 23,
+      "scanned": 25,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -135,25 +143,9 @@
       "overThreshold": false
     },
     {
-      "showDir": "safe-house-off-broadway-2026",
-      "actual": 8,
-      "scanned": 16,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "tartuffe-remixed-off-west-end-2026",
-      "actual": 25,
-      "scanned": 31,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
-      "actual": 2,
-      "scanned": 4,
+      "actual": 3,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -161,15 +153,23 @@
     {
       "showDir": "the-human-voice-the-seven-deadly-sins-west-end-2026",
       "actual": 5,
-      "scanned": 12,
+      "scanned": 13,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
-      "actual": 3,
-      "scanned": 8,
+      "actual": 4,
+      "scanned": 9,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "actual": 16,
+      "scanned": 23,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
