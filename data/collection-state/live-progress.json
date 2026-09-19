@@ -1,18 +1,42 @@
 {
-  "updatedAt": "2026-09-19T01:30:38.270Z",
-  "processed": 1,
-  "failed": 3,
-  "successRate": "25.0%",
+  "updatedAt": "2026-09-19T02:51:46.569Z",
+  "processed": 5,
+  "failed": 31,
+  "successRate": "13.9%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-09-19T02:38:32.142Z",
+      "event": "bb-session",
+      "session": "a263523c",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-19T02:38:32.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-19T02:42:35.087Z",
+      "event": "bb-session",
+      "session": "65ef98c3",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-19T02:42:47.431Z",
+      "event": "bb-session",
+      "session": "566134ad",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    }
+  ]
 }
