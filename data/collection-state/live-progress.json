@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-19T15:08:16.902Z",
-  "processed": 23,
-  "failed": 127,
-  "successRate": "15.3%",
+  "updatedAt": "2026-09-19T15:32:17.807Z",
+  "processed": 24,
+  "failed": 141,
+  "successRate": "14.5%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 14,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 1,
     "scrapingbee": 5,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-09-19T14:38:21.575Z",
@@ -31,6 +31,46 @@
       "event": "bb-session",
       "session": "217f3b12",
       "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-09-19T15:23:45.884Z",
+      "event": "bb-session",
+      "session": "a8c69ebf",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
+    },
+    {
+      "t": "2026-09-19T15:23:46.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-19T15:24:20.895Z",
+      "event": "bb-session",
+      "session": "b6efa7ae",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-19T15:24:21.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-19T15:25:23.806Z",
+      "event": "bb-session",
+      "session": "f0343961",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-19T15:25:39.120Z",
+      "event": "bb-session",
+      "session": "271c4cbb",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-19T15:26:10.529Z",
+      "event": "bb-session",
+      "session": "8fabb88d",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
   ]
 }
