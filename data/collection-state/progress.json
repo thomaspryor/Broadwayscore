@@ -88,7 +88,12 @@
     "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
     "alvin-ailey-american-dance-theater-new-works-west-end-2026/bestoftheatre--unknown.json",
     "million-dollar-quartet-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
+    "darkling-off-west-end-2026/guardian--unknown.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json",
+    "golden-boy-off-west-end-2026/viewfromthegods--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -479,7 +484,16 @@
     "matilda-the-musical-theatre-row-off-broadway-2026/timeout--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/playbill--unknown.json",
     "the-hunger-games-on-stage-west-end-2025/londontheatredirect--london-theatre-direct-limited.json",
-    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json"
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/fjord-review--unknown.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json",
+    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
+    "golden-boy-off-west-end-2026/ntlive--powster.json",
+    "golden-boy-off-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -539,7 +553,9 @@
       "thelma-and-louise-a-new-musical-off-west-end-2026/ticketed--unknown.json",
       "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
       "alvin-ailey-american-dance-theater-new-works-west-end-2026/bestoftheatre--unknown.json",
-      "million-dollar-quartet-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+      "million-dollar-quartet-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
+      "golden-boy-off-west-end-2026/viewfromthegods--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -554,7 +570,9 @@
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "darkling-off-west-end-2026/voice-magazine--unknown.json"
     ],
     "directCookies": [
       "aida-off-broadway-2027/times-uk--kevin-ng.json",
@@ -589,7 +607,9 @@
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "just-in-time-2025/newyorker--conde-nast.json",
       "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
-      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
+      "darkling-off-west-end-2026/guardian--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -600,7 +620,7 @@
     ]
   },
   "startTime": "2026-09-19T12:35:18.916Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
+  "lastProcessed": "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-09-19T12:46:11.402Z",
@@ -836,12 +856,31 @@
       "t": "2026-09-19T20:07:35.779Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-19T21:38:00.334Z",
+      "event": "bb-session",
+      "session": "ebe5d34f",
+      "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre"
+    },
+    {
+      "t": "2026-09-19T21:42:12.409Z",
+      "event": "bb-session",
+      "session": "c847a5ea",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-19T21:42:27.991Z",
+      "event": "bb-session",
+      "session": "3ae519f1",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
     }
   ],
   "recoveredAfterFailure": [
     "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
     "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
-    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json"
   ]
 }
