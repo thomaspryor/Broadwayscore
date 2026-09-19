@@ -74,6 +74,19 @@ function hasEditorialExclusion(f) {
 // known-blocked URL — re-fetching the file's own URL can only re-ingest the
 // wrong content, and "review missing" is not true (the real review may not
 // exist). These are task-#6 Bug-A phantoms, not silent gaps.
+//
+// WARNING for other consumers (BRO-3804): incompleteReason is informational
+// metadata clearFailureFlags() is supposed to null out once a file scores,
+// but a real-corpus check found ~16,700 of 19,534 WRONG_URL_INCOMPLETE-
+// flagged files already carry a valid score (stale, pre-dating that helper
+// or from a write path that skips it). classifySilentGap below only reaches
+// hasWrongUrlSignal() after the `isIncludableForRebuild(file, show) &&
+// hasValidScore(file)` short-circuit a few lines down — never consume this
+// Set/function directly without the same hasValidScore() (and, per branch
+// 4's pattern, wrongShowCleared()) guard, or you'll misclassify thousands of
+// real scored reviews as junk (scripts/lib/outlet-registry-audit-exclusions.js
+// is the reference implementation, hardened after 2 rounds of adversarial
+// review caught exactly this).
 const WRONG_URL_INCOMPLETE = new Set(['url_content_mismatch', 'wrong_content', 'scraper_garbage']);
 function hasWrongUrlSignal(f) {
   return WRONG_URL_INCOMPLETE.has(f.incompleteReason)
