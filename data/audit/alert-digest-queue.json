@@ -994,18 +994,6 @@
     "queuedAt": "2026-09-18T17:54:34.888Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (853h)\nA Midsummer Night's Dream — observer (853h)\nA Midsummer Night's Dream — standard (853h)\nABBA Voyage — independent (853h)\nAladdin — ew (853h)\n… 169 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (853h)\nBuena Vista Social Club — broadwaynews (853h)\nBuena Vista Social Club — nydailynews (853h)\nHadestown — nydailynews (853h)\nHeathers The Musical — dailybeast (853h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-18T23:09:03.177Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-catarina-and-the-beauty-of-killing-fascists-west-end-2026",
     "title": "Placeholder synopsis on Catarina and the Beauty of Killing Fascists",
     "description": "synopsis for catarina-and-the-beauty-of-killing-fascists-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -1016,5 +1004,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-19T01:14:40.622Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (856h)\nA Midsummer Night's Dream — observer (856h)\nA Midsummer Night's Dream — standard (856h)\nABBA Voyage — independent (856h)\nAladdin — ew (856h)\n… 169 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (856h)\nBuena Vista Social Club — broadwaynews (856h)\nBuena Vista Social Club — nydailynews (856h)\nHadestown — nydailynews (856h)\nHeathers The Musical — dailybeast (856h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-19T01:54:27.808Z"
   }
 ]
