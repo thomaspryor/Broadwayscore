@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T02:03:11.919Z",
+  "generatedAt": "2026-09-19T03:00:54.411Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1832,6 +1832,10 @@
           "isDualMarket": false
         },
         {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -2113,25 +2117,25 @@
       "status": "open",
       "slug": "thelma-and-louise-a-new-musical-off-west-end",
       "thumbnail": "/images/shows/thelma-and-louise-a-new-musical-off-west-end-2026/thumbnail.webp",
-      "siteScore": 63.7,
+      "siteScore": 63.93,
       "liveScore": 64,
-      "scoreDrift": 0.29999999999999716,
+      "scoreDrift": 0.07000000000000028,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 20,
       "t1": 7,
       "t2": 5,
-      "t3": 7,
-      "positive": 6,
+      "t3": 8,
+      "positive": 7,
       "mixed": 10,
       "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2331,6 +2335,18 @@
           "m": 10,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-19T03:00:54.411Z",
+          "rc": 20,
+          "s": 63.93,
+          "t1": 7,
+          "t2": 5,
+          "t3": 8,
+          "p": 7,
+          "m": 10,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -2505,9 +2521,9 @@
       "status": "open",
       "slug": "darkling-off-west-end",
       "thumbnail": "/images/shows/darkling-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 69.92,
+      "siteScore": 69.76,
       "liveScore": 70,
-      "scoreDrift": 0.0799999999999983,
+      "scoreDrift": 0.23999999999999488,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2724,6 +2740,18 @@
           "t": "2026-09-19T02:03:11.919Z",
           "rc": 16,
           "s": 69.92,
+          "t1": 3,
+          "t2": 6,
+          "t3": 7,
+          "p": 8,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-19T03:00:54.411Z",
+          "rc": 16,
+          "s": 69.76,
           "t1": 3,
           "t2": 6,
           "t3": 7,
