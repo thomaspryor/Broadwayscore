@@ -40,8 +40,7 @@ const readline = require('readline');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { isNonReviewDemotedByFreshCV, isRejectedNonReview, wrongShowCleared } = require('./lib/review-guards');
-const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { isExcludedFromOutletRegistryAudit } = require('./lib/outlet-registry-audit-exclusions');
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 
@@ -63,9 +62,6 @@ const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const AUDIT_OUTPUT_PATH = path.join(__dirname, '../data/audit/outlet-registry-gaps.json');
 const NORMALIZATION_PATH = path.join(__dirname, './lib/review-normalization.js');
-// Rejection reasons that mean "this review will never score, but is not
-// non-review junk either" — see the wrong-production exclusion below.
-const WRONG_PRODUCTION_REJECTION_REASONS = new Set(['wrong_production', 'wrong_show']);
 const BASELINE_PATH = path.join(__dirname, '../data/audit/outlet-registry-baseline.json');
 // Separate baseline for pre-existing exact-sentinel registry entries (task
 // #1783). Same reasoning as BASELINE_PATH: a handful of these (e.g.
@@ -314,76 +310,13 @@ function auditOutletRegistry() {
 
       if (!reviewOutletId) continue;
 
-      // Files already flagged by the content-quality pipeline as not being a
-      // review at all (ticket/hotel-booking/venue pages ingested by mistake,
-      // isNonReviewReason explains why) never need a registry entry — that's
-      // the outlet-registration equivalent of registering a 404 page. Without
-      // this, every new junk URL the aggregator-gap ingester picks up trips
-      // --strict again (task #1756, main red 9h+: charingcrosstheatre,
-      // londontopia, hoteldirect all hit this in one show in under a day).
-      //
-      // isNonReviewDemotedByFreshCV guard (task #1756 ship-check finding):
-      // isNonReview:true is NOT a reliable "never scored" signal on its own —
-      // rebuild-all-reviews.js's canonical inclusion predicate (review-guards.js)
-      // ignores a stale isNonReview flag when a newer content-verification pass
-      // affirms the article IS a review (the Telegraph class, #1255), and
-      // nothing re-clears the on-disk flag when that happens. Re-deriving
-      // "isNonReview means excluded" here instead of calling the same function
-      // rebuild-all-reviews.js uses would silently hide a real registry gap for
-      // an outlet that's actually being scored (memory: includability
-      // predicates must be canonical).
-      if (review.isNonReview === true && !isNonReviewDemotedByFreshCV(review)) continue;
-
-      // Same purpose, the OTHER exclusion pipeline: ensemble-scoreability-check
-      // rejects ingest-time junk (ticket-vendor/venue/aggregator/preview pages)
-      // via rejectionReason/contentVerification/contentTier rather than
-      // isNonReview. audit-unknown-outlets.js already treats isRejectedNonReview
-      // as the canonical "this outletId never needs a registry entry" check
-      // (scripts/audit-unknown-outlets.js:55) — mirrored here so this audit
-      // doesn't re-derive its own narrower version of the same predicate.
-      if (isRejectedNonReview(review)) continue;
-
-      // Third exclusion pipeline: a URL on a known non-review domain (ticket/
-      // listing/social/reference/venue/PR-firm — domain-filters.js's
-      // isBlockedReviewUrl) never needs a registry entry either, regardless of
-      // contentTier or classification flags (BRO-2712: a venue "what's on"
-      // page and a PR firm's press release both landed via /submit-review with
-      // no rejectionReason/contentVerification set — isRejectedNonReview alone
-      // doesn't catch a blocked domain). This is the SAME predicate
-      // rebuild-all-reviews.js and explainExclusion() use to drop these files
-      // from scoring (skippedBlockedUrl / blockedReviewUrl) — reusing it here
-      // keeps outlet-level classification canonical instead of a per-file flag.
-      if (review.url && isBlockedReviewUrl(review.url)) continue;
-
-      // Fourth exclusion pipeline: a review confidently rejected as
-      // wrong_production/wrong_show by ensemble-scoreability-check (rejectedAt
-      // + rejectionReason set, no manual clear) is excluded from scoring —
-      // but review-guards.js's isRejectedNonReview deliberately does NOT treat
-      // it as excluded (its docstring: "Deliberately EXCLUDES wrongProduction
-      // / wrongShow ... so scored / stale-flag files keep blocking
-      // rediscovery" — a re-discovery concern, not a scoring one). Left
-      // unchecked here, an outlet whose only current review is a
-      // correctly-rejected wrong-production match (a same-named production in
-      // another market/venue) trips --strict forever, even though it will
-      // never be scored (BRO-3115: stalbanstimes, then same-day
-      // theatreinchicago — a real UK regional paper and a real Chicago
-      // aggregator, each with exactly one review, each a 3-model-agreed
-      // wrong-production rejection).
-      //
-      // Deliberately NOT the full isIncludableForRebuild/explainExclusion
-      // predicate — tried that first and it pulled in duplicateOf/temporal-
-      // window/roundup exclusions unrelated to this audit's question, dropping
-      // 64 otherwise-legitimate outlets from the scan in a real-data test
-      // (also needs data/shows.json + data/critic-registry.json, neither of
-      // which this audit otherwise touches). This mirrors ONLY the
-      // rejectionReason branch of explainExclusion, using wrongShowCleared()
-      // — the single exported source of truth for the 5 manual-clear flags
-      // (review-guards.js:1114) — so a human-cleared file still counts.
-      if (
-        WRONG_PRODUCTION_REJECTION_REASONS.has(review.rejectionReason) &&
-        review.rejectedAt &&
-        !wrongShowCleared(review)
-      ) continue;
+      // 5 exclusion branches for "this file never needs a registry entry"
+      // (non-review junk, ensemble-rejected junk, blocked domain, cleared
+      // wrong-production, and BRO-3804's wrong-URL-content signal) — extracted
+      // to scripts/lib/outlet-registry-audit-exclusions.js so it's unit
+      // tested (scripts/outlet-registry.test.mjs) instead of re-derived here.
+      // See that file's comments for the incident history behind each branch.
+      if (isExcludedFromOutletRegistryAudit(review)) continue;
 
       // Track this outlet
       if (!outletsInReviews.has(reviewOutletId)) {

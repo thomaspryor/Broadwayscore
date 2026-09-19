@@ -424,4 +424,6 @@ module.exports = {
   otherAlertPathKey,
   classifyGapCardState,
   dedupeGapCards,
+  WRONG_URL_INCOMPLETE,
+  hasWrongUrlSignal,
 };

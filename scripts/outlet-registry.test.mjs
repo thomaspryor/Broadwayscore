@@ -23,6 +23,9 @@ const require = createRequire(import.meta.url);
 const { findUndeclaredDomainCollisions } = require(
   resolve(ROOT, 'scripts/lib/outlet-registry-domain-collisions.js')
 );
+const { isExcludedFromOutletRegistryAudit } = require(
+  resolve(ROOT, 'scripts/lib/outlet-registry-audit-exclusions.js')
+);
 
 const registry = JSON.parse(readFileSync(resolve(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
 
@@ -46,6 +49,102 @@ describe('outlet-registry.json domain audit (BRO-1343)', () => {
       collisions,
       [],
       `undeclared domain collision(s): ${collisions.map((c) => `${c.domain} <- ${c.outletIds.join(', ')}`).join('; ')}`
+    );
+  });
+});
+
+// audit-outlet-registry.js's 5 exclusion branches (BRO-3804): a review file
+// matching any of these never needs a registry entry, so --strict must not
+// flag its outletId as a NEW gap. Exercised here via synthetic fixtures
+// (scripts/lib/outlet-registry-audit-exclusions.js) instead of real
+// review-texts, per the Test Extraction Pattern (CLAUDE.md #15).
+describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
+  test('a normal scored review is NOT excluded', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', score: 85 }),
+      false
+    );
+  });
+
+  test('branch 1: isNonReview:true with no corroborating fresh CV is excluded', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({ outletId: 'junk-outlet', isNonReview: true }),
+      true
+    );
+  });
+
+  test('branch 1: isNonReview:true demoted by a fresh high-confidence CV is NOT excluded', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({
+        outletId: 'telegraph-class',
+        isNonReview: true,
+        contentVerification: {
+          articleType: 'review',
+          isValid: true,
+          articleTypeConfidence: 'high',
+          verifiedAt: '2026-09-01T00:00:00Z',
+        },
+      }),
+      false
+    );
+  });
+
+  test('branch 2: ensemble-rejected non-review (contentTier invalid) is excluded', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({ outletId: 'garbage-outlet', contentTier: 'invalid' }),
+      true
+    );
+  });
+
+  test('branch 3: URL on a known blocked (ticketing) domain is excluded', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({ outletId: 'todaytix', url: 'https://todaytix.com/nyc/shows/foo' }),
+      true
+    );
+  });
+
+  test('branch 4: confidently rejected wrong_production with no manual clear is excluded', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({
+        outletId: 'stalbanstimes',
+        rejectionReason: 'wrong_production',
+        rejectedAt: '2026-08-01T00:00:00Z',
+      }),
+      true
+    );
+  });
+
+  test('branch 4: wrong_production rejection with a manual clear is NOT excluded', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({
+        outletId: 'stalbanstimes',
+        rejectionReason: 'wrong_production',
+        rejectedAt: '2026-08-01T00:00:00Z',
+        wrongProductionManualClear: true,
+      }),
+      false
+    );
+  });
+
+  test('branch 5: incompleteReason in WRONG_URL_INCOMPLETE is excluded (BRO-3794)', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({
+        outletId: 'southasianheritage-off-west-end',
+        incompleteReason: 'url_content_mismatch',
+        incompleteDetail: 'show mentioned 0x (below 1 threshold for 1077-char text, titleMatch=true)',
+      }),
+      true
+    );
+  });
+
+  test('branch 5: an unrelated incompleteReason is NOT excluded', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({
+        outletId: 'new-outlet',
+        url: 'https://new-outlet.com/review',
+        incompleteReason: 'paywalled',
+      }),
+      false
     );
   });
 });
