@@ -1,89 +1,11 @@
 {
-  "generatedAt": "2026-09-19T06:54:31.027Z",
+  "generatedAt": "2026-09-19T11:49:47.908Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 146,
-  "clean": 141,
-  "defective": 5,
-  "byType": {
-    "score-drift": 5
-  },
-  "shows": [
-    {
-      "showId": "darkling-off-west-end-2026",
-      "title": "Darkling",
-      "openingDate": "2026-09-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.76 vs local 69.84 (Δ0.08)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16
-    },
-    {
-      "showId": "kimberly-akimbo-off-west-end-2026",
-      "title": "Kimberly Akimbo",
-      "openingDate": "2026-09-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.69 vs local 80.63 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 26
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.9 vs local 78.96 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing",
-      "openingDate": "2026-06-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.45 vs local 78.7 (Δ0.25)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.08 vs local 74.02 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
-    }
-  ]
+  "checked": 145,
+  "clean": 145,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
