@@ -1,75 +1,152 @@
 {
-  "runDate": "2026-09-19T01:30:53.127Z",
+  "runDate": "2026-09-19T02:52:14.717Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
+    "showFilter": "thelma-and-louise-a-new-musical-off-west-end-2026,my-sons-a-queer-but-what-can-you-do-west-end-2026,crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026,alvin-ailey-american-dance-theater-new-works-west-end-2026,darkling-off-west-end-2026,america-who-hurt-you-off-broadway-2026,conflicted-off-broadway-2026,gimme-a-sign-off-broadway-2026,the-hope-theory-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 5,
+    "failed": 31,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "13.9%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Attempts": 10,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier2Attempts": 10,
+    "tier2Success": 6,
+    "tier3Attempts": 7,
+    "tier3Success": 5,
+    "tier3_6Attempts": 6,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 15,
+    "tier4Success": 1,
+    "totalFailed": 31,
+    "scrapingBeePageCredits": 45,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1.1,
+    "urlDiscoveryAttempts": 21,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/jackstage--emma-knott.json"
+    "gimme-a-sign-off-broadway-2026/donyc--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
+    "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
-    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
-    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/consequence--unknown.json",
-    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/lovetovisit--unknown.json"
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--unknown.json",
+    "the-hope-theory-off-broadway-2026/wsj--unknown.json",
+    "america-who-hurt-you-off-broadway-2026/nysr--michael-sommers.json",
+    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/east-midlands-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--sara-west.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/jacktheladmag--simon-webb.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/thestage--paul-vale.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--daniella-harrison.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/fjord-review--unknown.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
+    "darkling-off-west-end-2026/guardian--unknown.json",
+    "darkling-off-west-end-2026/viewfromthegods--unknown.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/thestage--unknown.json",
+    "darkling-off-west-end-2026/the-morning-star--unknown.json",
+    "darkling-off-west-end-2026/thestage--unknown.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-seven-deadly-sins-the-human-voice-off-west-end-2026/jackstage--emma-knott.json"
+      "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "gimme-a-sign-off-broadway-2026/donyc--unknown.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
+      "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "New York Theatre Guide": {
+      "count": 1,
+      "domain": "broadwayworld.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "BroadwayWorld": {
+      "count": 1,
+      "domain": "broadwayworld.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Guardian": {
+      "count": 2,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Viewfromthegods": {
+      "count": 1,
+      "domain": "viewfromthegods.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+      "newUrl": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "reviewId": "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
+      "oldUrl": "https://www.broadwayworld.com/off-broadway/article/Alan-Cumming-Joins-MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Producing-Team-20250605",
+      "newUrl": "https://www.broadwayworld.com/westend/article/MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Will-Embark-on-UK-Tour-20240508"
+    }
+  ]
 }
