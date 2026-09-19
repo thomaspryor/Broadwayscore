@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-19T01:21:02.231Z",
+  "generated": "2026-09-19T01:36:56.427Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 91,
+  "count": 90,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -540,13 +540,6 @@
       "loserFile": "british-theatre--unknown.json",
       "targetFile": "british-theatre--david-chadderton.json",
       "reason": "orphaned-duplicate-heal: british-theatre--david-chadderton.json was flagged invalid after british-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "loserFile": "the-spectator-uk--unknown.json",
-      "targetFile": "the-spectator-uk--the-spectator.json",
-      "reason": "orphaned-duplicate-heal: the-spectator-uk--the-spectator.json was flagged invalid after the-spectator-uk--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
