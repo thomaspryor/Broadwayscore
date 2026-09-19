@@ -77,7 +77,10 @@
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
-    "the-human-voice-the-seven-deadly-sins-west-end-2026/lovetovisit--unknown.json"
+    "the-human-voice-the-seven-deadly-sins-west-end-2026/lovetovisit--unknown.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
+    "darkling-off-west-end-2026/guardian--unknown.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -307,7 +310,6 @@
     "paranormal-activity-west-end-2025/nysr--unknown.json",
     "paranormal-activity-west-end-2025/talkinbroadway--unknown.json",
     "paranormal-activity-west-end-2025/theater-life--samuel-l-leiter.json",
-    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
     "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
     "man-to-man-west-end-2026/whatsonstage--jim-keaveney.json",
     "paranormal-activity-west-end-2025/times-square-chronicles--unknown.json",
@@ -379,12 +381,23 @@
     "operation-mincemeat-2025/whatsonstage--alex-wood.json",
     "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
     "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
-    "darkling-off-west-end-2026/voice-magazine--unknown.json",
     "buena-vista-social-club-2025/observer--david-cote.json",
     "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
     "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
     "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
-    "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json"
+    "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
+    "darkling-off-west-end-2026/viewfromthegods--unknown.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/thestage--unknown.json",
+    "darkling-off-west-end-2026/thestage--unknown.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json",
+    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
+    "golden-boy-off-west-end-2026/ntlive--powster.json",
+    "golden-boy-off-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -447,7 +460,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "darkling-off-west-end-2026/voice-magazine--unknown.json"
     ],
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json"
@@ -476,7 +491,9 @@
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json",
-      "just-in-time-2025/newyorker--conde-nast.json"
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
+      "darkling-off-west-end-2026/guardian--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -492,7 +509,7 @@
     ]
   },
   "startTime": "2026-09-18T21:23:11.659Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
+  "lastProcessed": "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-09-18T21:53:21.081Z",
@@ -613,11 +630,30 @@
       "event": "bb-session",
       "session": "ecbdb552",
       "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-09-19T01:03:54.677Z",
+      "event": "bb-session",
+      "session": "e89e9d8c",
+      "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre"
+    },
+    {
+      "t": "2026-09-19T01:09:23.382Z",
+      "event": "bb-session",
+      "session": "9d63cb8b",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-19T01:09:38.426Z",
+      "event": "bb-session",
+      "session": "1cd30d7d",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
     }
   ],
   "recoveredAfterFailure": [
     "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json"
   ]
 }
