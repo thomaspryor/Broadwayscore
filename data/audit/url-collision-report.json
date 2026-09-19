@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-19T14:15:00.285Z",
+  "generatedAt": "2026-09-19T20:13:29.625Z",
   "summary": {
-    "total": 8,
+    "total": 7,
     "high": 2,
     "medium": 4,
-    "low": 2
+    "low": 1
   },
   "collisions": [
     {
@@ -195,33 +195,6 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
-    },
-    {
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29070",
-      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
-      "candidates": [
-        {
-          "showId": "titanique-west-end-2024",
-          "file": "london-theatre-reviews--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-01-08",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "london-theatre-reviews"
-        },
-        {
-          "showId": "wicked-2003",
-          "file": "london-theatre-reviews--unknown.json",
-          "publishDate": null,
-          "openingDate": "2003-10-30",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "london-theatre-reviews"
-        }
-      ],
-      "suggestedWinner": "titanique-west-end-2024",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
     }
   ]
 }
