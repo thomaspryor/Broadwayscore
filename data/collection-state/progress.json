@@ -60,7 +60,11 @@
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "oh-mary-west-end-2025/deadline--greg-evans.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "darkling-off-west-end-2026/bestoftheatre--unknown.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/ground--unknown.json",
+    "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json",
+    "electra-persona-west-end-2026/vocaleyes--unknown.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
@@ -165,7 +169,6 @@
     "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
     "the-story-west-end-2026/the-spectator-uk--unknown.json",
     "the-story-west-end-2026/times-uk--clive-davis.json",
-    "electra-persona-west-end-2026/vocaleyes--unknown.json",
     "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--david-gordon.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -378,7 +381,8 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
-      "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+      "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+      "darkling-off-west-end-2026/bestoftheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -408,7 +412,9 @@
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
-      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/ground--unknown.json",
+      "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json"
     ],
     "brightdata": [
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--aa-cristi.json",
@@ -429,7 +435,7 @@
     ]
   },
   "startTime": "2026-09-19T08:39:55.177Z",
-  "lastProcessed": "the-producers-west-end-2025/the-sun--dominic-maxwell.json",
+  "lastProcessed": "beetlejuice-west-end-2026/nytg--mark-shenton.json",
   "log": [
     {
       "t": "2026-09-19T08:41:07.374Z",
@@ -523,6 +529,26 @@
       "event": "bb-session",
       "session": "cb0599eb",
       "url": "https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/"
+    },
+    {
+      "t": "2026-09-19T11:03:03.092Z",
+      "event": "bb-session",
+      "session": "b057c425",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-19T11:12:43.983Z",
+      "event": "bb-session",
+      "session": "929e1c17",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-19T11:12:44.374Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "electra-persona-west-end-2026/vocaleyes--unknown.json"
   ]
 }
