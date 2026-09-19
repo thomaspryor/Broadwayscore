@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-19T01:14:41.165Z",
+  "generatedAt": "2026-09-19T05:59:31.997Z",
   "date": "2026-09-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 181009,
+  "entryCount": 183236,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -7737,13 +7737,13 @@
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": 87949072,
       "p90_e2e_ms": 87978028,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 324656,
+        "scored-to-rebuilt": 327749,
         "rebuilt-to-deployed": 84537543
       },
       "reviews_over_15min": 8,
