@@ -14,7 +14,7 @@ const ANCHORED = { score: 85, band: { floor: 71, ceiling: 90, fraction: 0.8 } };
 const UNANCHORED = { score: 91 };
 
 function loser(overrides) {
-  return { criticName: 'Alun Hood', llmScore: ANCHORED, ...overrides };
+  return { criticName: 'Alun Hood', llmScore: ANCHORED, fullText: 'x'.repeat(3000), ...overrides };
 }
 function winner(overrides) {
   return { criticName: 'Unknown', llmScore: UNANCHORED, ...overrides };
@@ -37,6 +37,14 @@ test('isFlaggedRecord: true for exclusion flags and invalid tier', () => {
   assert.equal(isFlaggedRecord(null), true);
 });
 
+test('isFlaggedRecord: true for an ensemble-rejected garbage_text record even when contentTier is not invalid (BRO-3821: the-lion-king-west-end-2021 guardian--lyngardner pattern)', () => {
+  assert.equal(isFlaggedRecord({
+    contentTier: 'truncated',
+    rejectionReason: 'garbage_text',
+    rejectedBy: 'ensemble-scoreability-check',
+  }), true);
+});
+
 test('shouldFlipDuplicateDirection: the Death Note case — named+anchored loser under Unknown+unanchored winner flips', () => {
   assert.equal(shouldFlipDuplicateDirection(loser(), winner()), true);
 });
@@ -53,12 +61,42 @@ test('shouldFlipDuplicateDirection: legitimate direction — winner already name
   assert.equal(shouldFlipDuplicateDirection(loser(), winner({ criticName: 'Alex Wood' })), false);
 });
 
-test('shouldFlipDuplicateDirection: legitimate direction — winner itself anchored — does not flip', () => {
-  assert.equal(shouldFlipDuplicateDirection(loser(), winner({ llmScore: ANCHORED })), false);
+test('shouldFlipDuplicateDirection: winner anchored but its body is SHORTER than loser\'s — still does not flip (the genuine short-stub protection)', () => {
+  assert.equal(shouldFlipDuplicateDirection(
+    loser({ fullText: 'x'.repeat(3000) }),
+    winner({ llmScore: ANCHORED, fullText: 'x'.repeat(2000) }),
+  ), false);
+});
+
+test('shouldFlipDuplicateDirection: winner anchored but its body is LONGER than a named loser\'s — flips (BRO-3821: boilerplate-contaminated Unknown scrape no longer auto-wins)', () => {
+  assert.equal(shouldFlipDuplicateDirection(
+    loser({ fullText: 'x'.repeat(2000) }),
+    winner({ llmScore: ANCHORED, fullText: 'x'.repeat(3000) }),
+  ), true);
+});
+
+test('shouldFlipDuplicateDirection: winner anchored, bodies tied in length — flips (attribution breaks the tie)', () => {
+  assert.equal(shouldFlipDuplicateDirection(
+    loser({ fullText: 'x'.repeat(3000) }),
+    winner({ llmScore: ANCHORED, fullText: 'x'.repeat(3000) }),
+  ), true);
+});
+
+test('shouldFlipDuplicateDirection: winner anchored, loser has neither name (anchored-only loser) — still does not flip (mutual-Unknown/anchored-only case unchanged)', () => {
+  assert.equal(shouldFlipDuplicateDirection(
+    loser({ criticName: 'Unknown', fullText: 'x'.repeat(1000) }),
+    winner({ llmScore: ANCHORED, fullText: 'x'.repeat(3000) }),
+  ), false);
 });
 
 test('shouldFlipDuplicateDirection: loser with neither name nor band — does not flip', () => {
   assert.equal(shouldFlipDuplicateDirection(loser({ criticName: 'Unknown', llmScore: undefined }), winner()), false);
+});
+
+test('shouldFlipDuplicateDirection: loser body below the substance floor — does not flip even with a real byline (BRO-3821: a-little-night-music-2009 backstage--luke-crowe pattern — empty, scoreless "loser" was about to bury a winner holding the only real content)', () => {
+  assert.equal(shouldFlipDuplicateDirection(loser({ fullText: '' }), winner()), false);
+  assert.equal(shouldFlipDuplicateDirection(loser({ fullText: 'x'.repeat(499) }), winner()), false);
+  assert.equal(shouldFlipDuplicateDirection(loser({ fullText: 'x'.repeat(500) }), winner()), true);
 });
 
 test('shouldFlipDuplicateDirection: loser flagged wrongProduction — clean-source gate refuses', () => {

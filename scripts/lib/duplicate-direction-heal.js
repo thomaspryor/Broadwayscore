@@ -52,13 +52,26 @@ function hasAnchoredBand(data) {
  * promoted to canonical — mirrors byline-recovery.js's gate 2 (clean-source):
  * canonicalizing a flagged record just manufactures a fresh problem.
  *
- * @param {{wrongProduction?: any, wrongShow?: any, isNonReview?: any, contentTier?: string}} data
+ * Also defers to review-guards.js's isRejectedNonReview (BRO-3821): a record
+ * the ensemble-scoreability-check already rejected as garbage_text/not_a_review
+ * (or a high-confidence contentVerification.wrongArticle verdict) is just as
+ * unpromotable as an explicit wrongProduction/wrongShow flag, even when
+ * contentTier isn't 'invalid' — e.g. the-lion-king-west-end-2021
+ * guardian--lyngardner.json carries contentTier:'truncated' +
+ * rejectionReason:'garbage_text' (OCR-garbled text about an unrelated show)
+ * and would otherwise slip past this gate. Reusing the canonical predicate
+ * instead of re-deriving the rejection logic here keeps this gate and the
+ * rebuild's own exclusion in lock-step (memory
+ * feedback_includability_predicates_must_be_canonical.md).
+ *
+ * @param {{wrongProduction?: any, wrongShow?: any, isNonReview?: any, contentTier?: string, rejectionReason?: string, contentVerification?: object}} data
  * @returns {boolean}
  */
 function isFlaggedRecord(data) {
   if (!data) return true;
   if (data.wrongProduction || data.wrongShow || data.isNonReview) return true;
   if (data.contentTier === 'invalid') return true;
+  if (require('./review-guards').isRejectedNonReview(data)) return true;
   return false;
 }
 
@@ -75,18 +88,55 @@ function isFlaggedRecord(data) {
  *   1. `loser` carries a real personal byline (isPlausiblePersonName) OR an
  *      anchored-scorer band (hasAnchoredBand) — a genuine quality signal the
  *      Unknown/unanchored `winner` lacks.
- *   2. `winner`'s byline is Unknown/blank AND `winner` has no anchored band —
- *      the winner must be provably the WEAKER record, not merely different.
+ *   2. `winner`'s byline is Unknown/blank — the winner must be provably the
+ *      WEAKER record on attribution, not merely different.
  *   3. `loser` is not itself flagged (wrongProduction/wrongShow/isNonReview/
- *      contentTier==='invalid') — the clean-source gate.
+ *      contentTier==='invalid'/ensemble-rejected non-review) — the
+ *      clean-source gate.
+ *   3b. `loser`'s fullText clears MIN_LOSER_BODY_CHARS — a loser with no real
+ *      body contributes nothing but a byline, and canonicalizing it silently
+ *      discards whatever content `winner` actually held. Found live while
+ *      verifying BRO-3821 against the real corpus: a-little-night-music-2009
+ *      (backstage--luke-crowe.json, rejectionReason 'wrong_show', 0 chars),
+ *      matilda-the-musical-2013 (bloomberg--jeremy-gerard.json, 'not_a_review',
+ *      0 chars), and moulin-rouge-the-musical-west-end-2021 (nytg--gillian-russo.json,
+ *      0 chars, no score at all) were all about to be promoted over winners
+ *      that — Unknown byline or not — held the only real text/score. None of
+ *      the three touch the hasAnchoredBand(winner) branch below (their
+ *      winners aren't anchored) — this gate existed as a gap independent of
+ *      the anchored-band veto, just never triggered until the corpus sweep.
+ *   4. If `winner` DOES carry an anchored band, the flip still proceeds when
+ *      `loser` has a real byline AND `winner`'s fullText is not shorter than
+ *      `loser`'s — an anchored band only vouches for the SCORE (it's pinned
+ *      to an explicit star rating found in the text), not for the BODY, and
+ *      an Unknown-byline scrape routinely drags in page chrome (subscription
+ *      banners, related-article rails, newsletter footers) that a properly
+ *      attributed sibling's scrape never picked up, inflating both length
+ *      and the anchored score along with it (BRO-3821: 16 corpus pairs,
+ *      winner fullText length >= loser's in every one — man-to-man-west-end-2026
+ *      artsdesk--unknown.json literally opens with "Help keep arts journalism
+ *      alive... SUBSCRIBE TODAY" ahead of the review text its named sibling
+ *      artsdesk--aleks-sierz.json lacks). The veto still fires when `winner`'s
+ *      body IS shorter than `loser`'s — that's the genuine "short anchored
+ *      stub shouldn't lose to a padded/longer body" case, and it still fires
+ *      when `loser` lacks a real byline (anchored-only or mutual-Unknown
+ *      case — url-collision-canonical.test.mjs's
+ *      "mutual anchored-but-Unknown siblings" pair keeps deferring to the
+ *      collider, unchanged).
  *
- * @param {{criticName?: string, wrongProduction?: any, wrongShow?: any, isNonReview?: any, contentTier?: string, llmScore?: object}} loser
- * @param {{criticName?: string, llmScore?: object}} winner
+ * @param {{criticName?: string, wrongProduction?: any, wrongShow?: any, isNonReview?: any, contentTier?: string, llmScore?: object, fullText?: string}} loser
+ * @param {{criticName?: string, llmScore?: object, fullText?: string}} winner
  * @returns {boolean}
  */
+// Same threshold review-write-guard.js's SUBSTANTIVE_BODY_CHARS uses — a body
+// this short holds nothing unique, so it can never justify becoming canonical.
+const MIN_LOSER_BODY_CHARS = 500;
+
 function shouldFlipDuplicateDirection(loser, winner) {
   if (!loser || !winner) return false;
   if (isFlaggedRecord(loser)) return false;
+  const loserLen = String(loser.fullText || '').trim().length;
+  if (loserLen < MIN_LOSER_BODY_CHARS) return false;
   const loserName = (loser.criticName || '').trim();
   const loserNamed = isPlausiblePersonName(loserName);
   const loserAnchored = hasAnchoredBand(loser);
@@ -94,7 +144,11 @@ function shouldFlipDuplicateDirection(loser, winner) {
   const winnerName = (winner.criticName || '').trim().toLowerCase();
   const winnerUnknown = !winnerName || winnerName === 'unknown';
   if (!winnerUnknown) return false;
-  if (hasAnchoredBand(winner)) return false;
+  if (hasAnchoredBand(winner)) {
+    if (!loserNamed) return false;
+    const winnerLen = String(winner.fullText || '').trim().length;
+    if (winnerLen < loserLen) return false;
+  }
   return true;
 }
 
