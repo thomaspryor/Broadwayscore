@@ -1,9 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { summarizeCommits, parseWorkspaces, summarizeWorktrees, renderDigestBlock, countStuckSignals } = require('./overnight-digest.js');
+const { summarizeCommits, parseWorkspaces, summarizeWorktrees, renderDigestBlock, countStuckSignals, gatherDigest, ACTIONABLE_RECONCILE_KINDS } = require('./overnight-digest.js');
 
 // Fixtures are verbatim shapes from origin/main on 2026-07-22.
 const LOG = [
@@ -114,5 +117,69 @@ test('countStuckSignals matches the bullets renderDigestBlock actually flags', (
     const m = html.match(/⚠️ Possibly stuck[\s\S]*?<ul[^>]*>([\s\S]*?)<\/ul>/);
     const bullets = m ? (m[1].match(/<li>/g) || []).length : 0;
     assert.equal(countStuckSignals(d), bullets, `mismatch for ${JSON.stringify(d.stuck)}`);
+  }
+});
+
+// Card #794: routine bsc-reconcile.js heartbeat/success kinds (card-drift-
+// pass/summary, successful redispatches/revives/resumes, per-tick budget
+// throttles) fire on EVERY 5-min tick regardless of health — including them
+// in the "needing a look" bucket guaranteed a daily false "Stuck pipeline
+// items" alarm. Only kinds that mean an automated pass hit something it
+// could not fix on its own belong here.
+function writeReconcileReport(repo, entries) {
+  const dir = path.join(repo, 'data', 'audit');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'reconcile-report.jsonl'),
+    entries.map(e => JSON.stringify(e)).join('\n') + '\n',
+  );
+}
+
+test('gatherDigest ignores routine reconcile heartbeat/success kinds', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-digest-'));
+  try {
+    const now = new Date().toISOString();
+    writeReconcileReport(repo, [
+      { ts: now, kind: 'card-drift-pass', detail: 'starting drift pass over 1 in-flight session(s)' },
+      { ts: now, kind: 'card-drift-summary', detail: 'checked 1 in-flight session(s): 0 proven drift, 0 suspected' },
+      { ts: now, kind: 'task-redispatched', detail: 'redispatched #1' },
+      { ts: now, kind: 'task-redispatch-throttled', detail: 'deferred to next tick' },
+      { ts: now, kind: 'orphan-resolved', detail: 'job already terminal' },
+      { ts: now, kind: 'retry', detail: 'resuming session' },
+      { ts: now, kind: 'timeout-resume', detail: 'resuming timed-out session' },
+      { ts: now, kind: 'flagless-revived', detail: 'revived workspace' },
+    ]);
+    const digest = gatherDigest({ repo });
+    assert.equal(digest.stuck.headlessJobs, undefined);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test('gatherDigest surfaces genuinely actionable reconcile kinds', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-digest-'));
+  try {
+    const now = new Date().toISOString();
+    writeReconcileReport(repo, [
+      { ts: now, kind: 'card-drift-pass', detail: 'starting drift pass over 1 in-flight session(s)' },
+      { ts: now, kind: 'orphan', detail: 'job j1 (task #1) has no live claude process' },
+      { ts: now, kind: 'zombie-flip', detail: 'in_progress task #2 flipped back to pending' },
+    ]);
+    const digest = gatherDigest({ repo });
+    assert.equal(digest.stuck.headlessJobs.length, 2);
+    assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[orphan]')));
+    assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[zombie-flip]')));
+    assert.ok(!digest.stuck.headlessJobs.some(l => l.includes('[card-drift-pass]')));
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test('ACTIONABLE_RECONCILE_KINDS excludes known routine/success kinds', () => {
+  for (const k of ['card-drift-pass', 'card-drift-summary', 'card-drift-would-deliver', 'card-drift-delivered',
+    'task-session-wrapper-alive', 'task-redispatched', 'task-redispatch-throttled', 'task-stall-throttled',
+    'flagless-revived', 'flagless-revive-deferred-busy', 'flagless-revive-throttled',
+    'retry', 'timeout-resume', 'orphan-resolved']) {
+    assert.ok(!ACTIONABLE_RECONCILE_KINDS.has(k), `expected ${k} to be excluded (routine/success)`);
   }
 });
