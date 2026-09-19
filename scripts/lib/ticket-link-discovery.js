@@ -142,6 +142,7 @@ const VENUE_SITES = [
   'americanrepertorytheater.org', // A.R.T., Cambridge MA
   'repertorio.nyc', // Repertorio Español
   'borninthecity.com', // off-off-Broadway producer/ticketing site (e.g. The Gym at Judson shows)
+  'tfana.org', // Theatre for a New Audience / Polonsky Shakespeare Center (card #795)
 ];
 
 // SERP result paths that are listings/search hubs, never a buyable show page.
