@@ -865,39 +865,6 @@
     "queuedAt": "2026-09-18T11:13:12.501Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "7/148 show(s) differ between internal state and what prod serves.\nscore-drift: 7\nBLOODSPORT: After Helen of Troy: score-drift\nA Month in the Country: score-drift\nHow the Other Half Loves: score-drift\nDeath Note: The Musical: score-drift\nMuch Ado About Nothing: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-18T12:10:09.131Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "2 T1/T2 outlet(s) still missing >24h after they became measurable.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Stranger Things: The First Shadow — standard (29h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Stranger Things: The First Shadow — times-uk (29h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"stranger-things-the-first-shadow-west-end-2023\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-18T12:10:09.243Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:my-sons-a-queer-but-what-can-you-do-west-end-2026",
     "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\"}",
@@ -1006,15 +973,44 @@
     "queuedAt": "2026-09-19T01:14:40.622Z"
   },
   {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "5/146 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nDarkling: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nMuch Ado About Nothing: score-drift\nHadestown: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-19T06:54:31.044Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "My Son’s A Queer (But What Can You Do?) — timeout (861h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"my-sons-a-queer-but-what-can-you-do-west-end-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-19T06:54:31.155Z"
+  },
+  {
     "conditionKey": "t1-coverage:scoreboard",
     "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (856h)\nA Midsummer Night's Dream — observer (856h)\nA Midsummer Night's Dream — standard (856h)\nABBA Voyage — independent (856h)\nAladdin — ew (856h)\n… 169 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (856h)\nBuena Vista Social Club — broadwaynews (856h)\nBuena Vista Social Club — nydailynews (856h)\nHadestown — nydailynews (856h)\nHeathers The Musical — dailybeast (856h)\n… 17 more circuit-open cell(s)",
+    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (861h)\nA Midsummer Night's Dream — observer (861h)\nA Midsummer Night's Dream — standard (861h)\nABBA Voyage — independent (861h)\nAladdin — ew (861h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (861h)\nBuena Vista Social Club — broadwaynews (861h)\nBuena Vista Social Club — nydailynews (861h)\nHadestown — nydailynews (861h)\nHeathers The Musical — dailybeast (861h)\n… 17 more circuit-open cell(s)",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-19T01:54:27.808Z"
+    "queuedAt": "2026-09-19T06:54:31.250Z"
   }
 ]
