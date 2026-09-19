@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-19T20:55:24.710Z",
+  "timestamp": "2026-09-19T21:27:30.056Z",
   "stats": {
-    "totalReviews": 43767,
+    "totalReviews": 43768,
     "alreadyFlagged": 18071,
     "dateGuardCatches": 246,
     "directorMismatch": 1048,
     "tvFilmSignals": 1291,
-    "londonSignals": 1116,
+    "londonSignals": 1117,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3835
+    "noPublishDate": 3836
   },
   "findings": [
     {
@@ -46136,6 +46136,19 @@
       "file": "londontheatredirect--london-theatre-direct-limited.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "thegoldenticketclub--unknown.json",
+      "publishDate": null,
+      "url": "https://thegoldenticketclub.co.uk/events/my-sons-a-queer-but-what-can-you-do/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
