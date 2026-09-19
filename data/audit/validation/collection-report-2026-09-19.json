@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-19T20:11:54.633Z",
+  "runDate": "2026-09-19T21:25:29.028Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 86,
+    "processed": 89,
     "failed": 389,
     "skipped": 0,
-    "successRate": "18.1%"
+    "successRate": "18.6%"
   },
   "tierBreakdown": {
-    "playwright": 54,
+    "playwright": 56,
     "amp": 0,
     "browserbase": 12,
     "directCookies": 3,
@@ -27,27 +27,27 @@
     "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 9,
+    "tier1Attempts": 18,
+    "tier1Success": 6,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 8,
-    "tier1_5Success": 4,
-    "tier2Attempts": 15,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 12,
     "tier2Success": 4,
-    "tier3Attempts": 13,
-    "tier3Success": 5,
-    "tier3_6Attempts": 10,
+    "tier3Attempts": 11,
+    "tier3Success": 6,
+    "tier3_6Attempts": 7,
     "tier3_6Success": 0,
-    "tier4Attempts": 17,
-    "tier4Success": 3,
-    "totalFailed": 295,
-    "scrapingBeePageCredits": 76,
+    "tier4Attempts": 13,
+    "tier4Success": 1,
+    "totalFailed": 297,
+    "scrapingBeePageCredits": 63,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 8,
-    "browserbaseMinutesUsed": 2.2,
-    "urlDiscoveryAttempts": 268,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 274,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -136,7 +136,10 @@
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/ticketed--unknown.json",
     "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
-    "the-children-off-west-end-2026/telegraph--fiona-mountford.json"
+    "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/bestoftheatre--unknown.json",
+    "million-dollar-quartet-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -526,8 +529,8 @@
     "the-story-west-end-2026/the-spectator-uk--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/timeout--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/playbill--unknown.json",
-    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-    "the-hunger-games-on-stage-west-end-2025/londontheatredirect--london-theatre-direct-limited.json"
+    "the-hunger-games-on-stage-west-end-2025/londontheatredirect--london-theatre-direct-limited.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -584,7 +587,9 @@
       "the-hunger-games-on-stage-west-end-2025/londontheatredirect--unknown.json",
       "titanique-west-end-2024/london-theatre-reviews--unknown.json",
       "thelma-and-louise-a-new-musical-off-west-end-2026/ticketed--unknown.json",
-      "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json"
+      "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
+      "alvin-ailey-american-dance-theater-new-works-west-end-2026/bestoftheatre--unknown.json",
+      "million-dollar-quartet-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
     ],
     "amp": [],
     "browserbase": [
@@ -645,13 +650,6 @@
     ]
   },
   "failuresByOutlet": {
-    "The Stage": {
-      "count": 3,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Guardian": {
       "count": 2,
       "domain": "theguardian.com",
@@ -659,16 +657,9 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "readaboutstuff": {
-      "count": 1,
-      "domain": "readaboutstuff.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Spectator  (UK)": {
-      "count": 1,
-      "domain": "spectator.co.uk",
+    "The Stage": {
+      "count": 3,
+      "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -693,7 +684,20 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "WhatsOnStage": {
+      "count": 1,
+      "domain": "whatsonstage.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "million-dollar-quartet-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "oldUrl": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-million-dollar-quartet-at-the-arts-at-marble-arch-theatre",
+      "newUrl": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-million-dollar-quartet-at-the-arts-at-marble-arch-theatre?srsltid=AU7gw4UkWooPsSQv4qymAZiuX0RQgZMHiQMBoKGYdNoGLGWvtcHHd1qk"
+    }
+  ]
 }
