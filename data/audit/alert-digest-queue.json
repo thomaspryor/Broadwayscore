@@ -1014,18 +1014,6 @@
     "queuedAt": "2026-09-19T09:49:07.599Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (866h)\nA Midsummer Night's Dream — observer (866h)\nA Midsummer Night's Dream — standard (866h)\nABBA Voyage — independent (866h)\nAladdin — ew (866h)\n… 170 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (866h)\nBuena Vista Social Club — broadwaynews (866h)\nBuena Vista Social Club — nydailynews (866h)\nHadestown — nydailynews (866h)\nHeathers The Musical — dailybeast (866h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-19T11:49:48.101Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:catarina-and-the-beauty-of-killing-fascists-west-end-2026",
     "title": "Auto-remediation gave up on catarina-and-the-beauty-of-killing-fascists-west-end-2026",
     "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"catarina-and-the-beauty-of-killing-fascists-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
@@ -1036,5 +1024,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-19T14:29:42.164Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.3% (380/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (869h)\nA Midsummer Night's Dream — observer (869h)\nA Midsummer Night's Dream — standard (869h)\nABBA Voyage — independent (869h)\nAladdin — ew (869h)\n… 171 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (869h)\nBuena Vista Social Club — broadwaynews (869h)\nBuena Vista Social Club — nydailynews (869h)\nHadestown — nydailynews (869h)\nHeathers The Musical — dailybeast (869h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-19T15:06:30.213Z"
   }
 ]

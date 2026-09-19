@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-19T11:49:37.660Z",
+  "generatedAt": "2026-09-19T15:06:19.740Z",
   "maxAgeHours": 12,
-  "showsAffected": 16,
-  "strandedFiles": 23,
+  "showsAffected": 19,
+  "strandedFiles": 26,
   "blackoutShows": [],
   "findings": [
     {
@@ -42,7 +42,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 1124.7272780555556
+          "ageHours": 1128.005633611111
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -86,13 +86,13 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/the-mousetrap-the-alexandra-birmingham-3/",
           "outlet": "The Reviews Hub",
-          "ageHours": 213.09291055555556
+          "ageHours": 216.3712661111111
         },
         {
           "file": "west-end-best-friend--unknown.json",
           "url": "https://www.westendbestfriend.co.uk/news/review-the-mousetrap-the-alexandra-tour",
           "outlet": "West End Best Friend",
-          "ageHours": 92.45583027777778
+          "ageHours": 95.73418583333333
         }
       ],
       "usable": 27,
@@ -130,17 +130,33 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/burlesque-the-musical-regent-theatre/",
           "outlet": "North West End",
-          "ageHours": 404.98156027777776
+          "ageHours": 408.2599158333333
         },
         {
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/burlesque-the-musical-kings-theatre-glasgow/",
           "outlet": "The Reviews Hub",
-          "ageHours": 92.46293166666666
+          "ageHours": 95.74128722222223
         }
       ],
       "usable": 22,
       "discovered": 32,
+      "totalBlackout": false
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "theatrely--unknown.json",
+          "url": "https://www.theatrely.com/post/on-the-scene-simard-shines-in-schmigadoon",
+          "outlet": "Theatrely",
+          "ageHours": 141.06227083333334
+        }
+      ],
+      "usable": 68,
+      "discovered": 75,
       "totalBlackout": false
     },
     {
@@ -152,7 +168,7 @@
           "file": "theatermania--unknown.json",
           "url": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/",
           "outlet": "TheaterMania",
-          "ageHours": 137.7838825
+          "ageHours": 141.06223805555555
         }
       ],
       "usable": 46,
@@ -168,7 +184,7 @@
           "file": "londontheatredirect--unknown.json",
           "url": "https://www.londontheatredirect.com/musical/operation-mincemeat-tickets?srsltid=AfmBOopqWn5X2urH_T_Hz9GwTJM8i1dpD9JO1oThOWl6728AThvffVun",
           "outlet": "Londontheatredirect",
-          "ageHours": 165.9238588888889
+          "ageHours": 169.20221444444445
         }
       ],
       "usable": 35,
@@ -184,7 +200,7 @@
           "file": "radio-times--unknown.json",
           "url": "https://www.radiotimes.com/going-out/oh-mary-hbo-streaming-newsupdate/",
           "outlet": "Radio Times",
-          "ageHours": 115.0469313888889
+          "ageHours": 118.32528694444444
         }
       ],
       "usable": 70,
@@ -200,7 +216,7 @@
           "file": "all-that-dazzles-uk--unknown.json",
           "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
           "outlet": "All That Dazzles  (UK)",
-          "ageHours": 542.9466611111111
+          "ageHours": 546.2250166666666
         }
       ],
       "usable": 45,
@@ -216,7 +232,7 @@
           "file": "washpost--unknown.json",
           "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restores-faith-in-musicals/2013/07/11/f965037a-ea68-11e2-818e-aa29e855f3ab_story.html",
           "outlet": "The Washington Post",
-          "ageHours": 27.263275833333335
+          "ageHours": 30.541631388888888
         }
       ],
       "usable": 38,
@@ -264,7 +280,7 @@
           "file": "nytimes--unknown.json",
           "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
           "outlet": "The New York Times",
-          "ageHours": 476.6665869444444
+          "ageHours": 479.9449425
         }
       ],
       "usable": 29,
@@ -301,6 +317,38 @@
       ],
       "usable": 26,
       "discovered": 40,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "title": "The Phantom of the Opera",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "whatsonstage--unknown.json",
+          "url": "https://www.whatsonstage.com/news/the-phantom-of-the-opera-releases-details-for-40th-anniversary-performance_1732059/",
+          "outlet": "WhatsOnStage",
+          "ageHours": null
+        }
+      ],
+      "usable": 32,
+      "discovered": 43,
+      "totalBlackout": false
+    },
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "title": "ABBA Voyage",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "standard--unknown.json",
+          "url": "https://www.standard.co.uk/culture/music/abba-voyage-concert-experience-review-london-arena-b1002718.html",
+          "outlet": "Evening Standard",
+          "ageHours": null
+        }
+      ],
+      "usable": 23,
+      "discovered": 32,
       "totalBlackout": false
     }
   ]
