@@ -2633,20 +2633,37 @@ function checkStuckPipelineItems() {
   const repo = path.join(__dirname, '..');
   let digest;
   try {
-    digest = gatherDigest({ repo });
+    // skipFetch: this runs inside health-row-probe.js's supposed-to-be
+    // side-effect-free --live probe (rerun on EVERY card's acceptance check,
+    // not just this row's) — a real `git fetch` there would mutate
+    // FETCH_HEAD/remote-tracking refs on disk, which the probe's fs-write
+    // monkey-patch can't catch since it's a child process, not a Node fs
+    // call (adversarial ship-check finding). send-morning-digest.js's real
+    // run is unaffected — it doesn't pass this option.
+    digest = gatherDigest({ repo, skipFetch: true });
   } catch (err) {
     return [{ name: 'Stuck pipeline items', status: 'warn', message: `Could not gather the overnight digest to check for stuck signals (${String(err.message).slice(0, 120)})` }];
   }
   const signals = stuckSignals(digest);
-  if (!signals.length) {
-    return [{ name: 'Stuck pipeline items', status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' }];
+  if (signals.length) {
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. ${signals.join(' | ')}`.slice(0, 500),
+    }];
   }
-  return [{
-    name: 'Stuck pipeline items',
-    status: 'warn',
-    message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick.`,
-    hint: signals.join(' | ').slice(0, 500),
-  }];
+  if (digest.errors.length) {
+    // "No signals found" and "collection itself partially failed" are NOT
+    // the same claim — collapsing them the way this row never existing at
+    // all collapsed every state to "fixed" is the exact false-pass class
+    // this row exists to end (adversarial ship-check finding).
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `Overnight digest gathered partially (${digest.errors.length} source(s) failed) — cannot confirm clean: ${digest.errors.join('; ')}`.slice(0, 500),
+    }];
+  }
+  return [{ name: 'Stuck pipeline items', status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' }];
 }
 
 // --- Push-retry deadman (task #394) ---

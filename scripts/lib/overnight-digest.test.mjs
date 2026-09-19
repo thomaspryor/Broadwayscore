@@ -175,6 +175,59 @@ test('gatherDigest surfaces genuinely actionable reconcile kinds', () => {
   }
 });
 
+test('gatherDigest suppresses an actionable event once its correlated resolving event lands in the window', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-digest-'));
+  try {
+    const now = new Date().toISOString();
+    writeReconcileReport(repo, [
+      { ts: now, kind: 'task-session-dead', taskId: '42', detail: 'dispatched workspace has no live claude process' },
+      { ts: now, kind: 'task-redispatched', taskId: '42', detail: 'redispatched #42' },
+      { ts: now, kind: 'orphan', taskId: '7', jobId: 'j1', detail: 'job j1 has no live claude process' },
+      { ts: now, kind: 'orphan-resolved', taskId: '7', jobId: 'j1', detail: 'job j1 already terminal' },
+      // A different job under the same task is NOT resolved by j1's fix.
+      { ts: now, kind: 'orphan', taskId: '7', jobId: 'j2', detail: 'job j2 has no live claude process' },
+    ]);
+    const digest = gatherDigest({ repo });
+    assert.equal(digest.stuck.headlessJobs.length, 1);
+    assert.match(digest.stuck.headlessJobs[0], /job j2/);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test('gatherDigest does not correlate flagless-session (shared pseudo-taskId) or zombie-flip (self-heal is the point)', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-digest-'));
+  try {
+    const now = new Date().toISOString();
+    writeReconcileReport(repo, [
+      { ts: now, kind: 'flagless-session', taskId: 'sweep', detail: 'workspace:100 running without --dangerously-skip-permissions' },
+      { ts: now, kind: 'flagless-revived', taskId: 'sweep', detail: 'revived a different workspace' },
+      { ts: now, kind: 'zombie-flip', taskId: '99', detail: 'in_progress task #99 flipped back to pending' },
+    ]);
+    const digest = gatherDigest({ repo });
+    assert.equal(digest.stuck.headlessJobs.length, 2);
+    assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[flagless-session]')));
+    assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[zombie-flip]')));
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test('gatherDigest({ skipFetch: true }) never shells out to git fetch', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-digest-'));
+  try {
+    // No .git directory at all — if gatherDigest tried to fetch or log
+    // origin/main, every git call would throw and land in digest.errors.
+    // skipFetch must skip the fetch specifically; `git log` still runs and
+    // fails soft (no .git here), which is the pre-existing, unrelated
+    // "couldn't read git history" path.
+    const digest = gatherDigest({ repo, skipFetch: true });
+    assert.ok(!digest.errors.some(e => /git fetch failed/.test(e)), `unexpected fetch error: ${JSON.stringify(digest.errors)}`);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
 test('ACTIONABLE_RECONCILE_KINDS excludes known routine/success kinds', () => {
   for (const k of ['card-drift-pass', 'card-drift-summary', 'card-drift-would-deliver', 'card-drift-delivered',
     'task-session-wrapper-alive', 'task-redispatched', 'task-redispatch-throttled', 'task-stall-throttled',
