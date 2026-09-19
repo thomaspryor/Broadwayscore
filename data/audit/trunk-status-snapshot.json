@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-09-18T11:55:34.481Z",
+  "generatedAt": "2026-09-19T11:38:31.861Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "6c98a16d5192acc213452057daac6e0097c0035d",
+  "latestRunHeadSha": "3cc481b2ccc5852aa3f3b4b7c86e82858ced0c6b",
   "state": "RED",
-  "consecutiveFailures": 2,
+  "consecutiveFailures": 1,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-17T22:44:35Z",
-  "redForHours": 13.183189166666667,
+  "redSince": "2026-09-19T10:29:23Z",
+  "redForHours": 1.1524613888888888,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-17T16:01:20Z",
-  "latestFailedRunId": "35336261301",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35336261301",
+  "lastSuccessAt": "2026-09-18T22:40:11Z",
+  "latestFailedRunId": "35437539033",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35437539033",
   "decidedRuns": 92,
   "failingJobs": [
     {
       "name": "Data Validation",
       "steps": [
-        "Validate market expansion"
+        "Audit outlet-registry gaps"
       ]
     },
     {
@@ -32,7 +32,7 @@
   ],
   "failingPaths": [
     {
-      "path": "tests/star-rating-extractors.test.js",
+      "path": "scripts/audit-broadway-category-predicate.js",
       "job": "Data Validation",
       "step": "UNKNOWN STEP",
       "evidence": "##[error]Process completed with exit code 1."
