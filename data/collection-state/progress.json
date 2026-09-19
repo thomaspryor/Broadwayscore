@@ -20,7 +20,8 @@
     "aida-off-broadway-2027/times-uk--kevin-ng.json",
     "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
     "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
-    "medea-off-broadway-2026/timeout--adam-feldman.json"
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -151,7 +152,23 @@
     "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
     "king-of-the-yees-off-broadway-2026/theatermania--jonas-schwartz.json",
     "the-unbelievers-off-broadway-2026/timeout-london--andrzej-lukowski.json",
-    "the-unbelievers-off-broadway-2026/financialtimes--sarah-hemming.json"
+    "the-unbelievers-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "the-hope-theory-off-broadway-2026/wsj--unknown.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "pre-existing-condition-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--unknown.json",
+    "garry-starr-classic-penguins-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "the-ford-hill-project-off-broadway-2026/abouttheartists--unknown.json",
+    "the-ford-hill-project-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+    "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -167,13 +184,15 @@
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "medea-off-broadway-2026/timeout--adam-feldman.json"
+      "medea-off-broadway-2026/timeout--adam-feldman.json",
+      "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
-      "data/review-texts/el-quijote-off-broadway-2026/nytimes--george-hunka.json"
+      "data/review-texts/el-quijote-off-broadway-2026/nytimes--george-hunka.json",
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
     ],
     "directCookies": [
       "aida-off-broadway-2027/times-uk--kevin-ng.json"
@@ -194,7 +213,7 @@
     "archive": []
   },
   "startTime": "2026-09-19T12:35:18.916Z",
-  "lastProcessed": "the-unbelievers-off-broadway-2026/financialtimes--sarah-hemming.json",
+  "lastProcessed": "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json",
   "log": [
     {
       "t": "2026-09-19T12:46:11.402Z",
@@ -212,6 +231,41 @@
       "t": "2026-09-19T12:55:25.515Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-19T13:38:14.371Z",
+      "event": "bb-session",
+      "session": "e7c9f52c",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-19T13:38:14.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-19T13:39:51.761Z",
+      "event": "bb-session",
+      "session": "c7241c27",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-19T13:43:34.940Z",
+      "event": "bb-session",
+      "session": "4851d160",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-19T13:43:45.766Z",
+      "event": "bb-session",
+      "session": "5c4b42e7",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-19T13:45:02.428Z",
+      "event": "bb-session",
+      "session": "b5613584",
+      "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
     }
   ]
 }
