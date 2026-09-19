@@ -1,59 +1,5 @@
 [
   {
-    "startedAt": "2026-09-18T02:43:27.759Z",
-    "completedAt": "2026-09-18T02:50:07.763Z",
-    "totalReviews": 170,
-    "processed": 170,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 444415,
-      "output": 39283,
-      "total": 483698
-    },
-    "costUsd": 1.238833,
-    "runId": "35298840813",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-18T03:16:47.886Z",
-    "completedAt": "2026-09-18T03:16:50.605Z",
-    "totalReviews": 44046,
-    "processed": 0,
-    "skipped": 44044,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 107,
-      "total": 10921
-    },
-    "costUsd": 0.02520715,
-    "runId": "35300924145",
-    "errorDetails": [
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-18T03:16:52.571Z",
-    "completedAt": "2026-09-18T03:22:57.604Z",
-    "totalReviews": 170,
-    "processed": 170,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 444415,
-      "output": 39039,
-      "total": 483454
-    },
-    "costUsd": 1.2393429999999999,
-    "runId": "35300924145",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-18T03:49:27.184Z",
     "completedAt": "2026-09-18T03:49:37.579Z",
     "totalReviews": 44046,
@@ -326187,6 +326133,44 @@
     },
     "costUsd": 0,
     "runId": "35451043311",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-19T16:03:52.161Z",
+    "completedAt": "2026-09-19T16:04:03.630Z",
+    "totalReviews": 44171,
+    "processed": 0,
+    "skipped": 44166,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 16029,
+      "output": 538,
+      "total": 46447
+    },
+    "costUsd": 0.08253605,
+    "runId": "35452361805",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-19T16:04:05.569Z",
+    "completedAt": "2026-09-19T16:10:24.400Z",
+    "totalReviews": 175,
+    "processed": 175,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 455865,
+      "output": 40404,
+      "total": 496269
+    },
+    "costUsd": 1.2720566,
+    "runId": "35452361805",
     "errorDetails": []
   }
 ]
