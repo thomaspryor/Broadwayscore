@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-19T11:45:09.190Z",
+  "timestamp": "2026-09-19T11:57:30.869Z",
   "stats": {
-    "totalReviews": 43736,
+    "totalReviews": 43737,
     "alreadyFlagged": 18067,
     "dateGuardCatches": 244,
     "directorMismatch": 1048,
-    "tvFilmSignals": 1287,
-    "londonSignals": 1115,
+    "tvFilmSignals": 1288,
+    "londonSignals": 1116,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
     "noPublishDate": 3832
@@ -6731,6 +6731,20 @@
       "score": 63,
       "publishDate": "2026-09-16",
       "url": "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "the-morning-star--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://morningstaronline.co.uk/article/theatre-review-darkling-bush-theatre-london",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -46045,6 +46059,19 @@
       "file": "londontheatredirect--london-theatre-direct-limited.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "musical-theatre-review--unknown.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
