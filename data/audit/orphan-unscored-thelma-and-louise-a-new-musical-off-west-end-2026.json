@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
   "openingDate": "2026-09-16",
-  "detectedAt": "2026-09-19T15:11:43.733Z",
+  "detectedAt": "2026-09-19T16:17:59.264Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "thereviewshub--the-reviews-hub-london.json",
-      "outletId": "thereviewshub",
-      "criticName": "The Reviews Hub - London",
-      "url": "https://www.thereviewshub.com/thelma-and-louise-young-vic-london/",
-      "fullTextLen": 3753,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "thestage--unknown.json",
       "outletId": "thestage",
@@ -38,29 +21,12 @@
       "llmScore": null,
       "contentTier": "stub",
       "eligibilityReason": null
-    },
-    {
-      "file": "ticketed--unknown.json",
-      "outletId": "ticketed",
-      "criticName": "Unknown",
-      "url": "https://www.ticketed.com/entertainment/musicals/london/thelma-louise-a-new-musical",
-      "fullTextLen": 1616,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
