@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-09-17T15:59:29.330Z",
-    "completedAt": "2026-09-17T15:59:43.458Z",
-    "totalReviews": 32,
-    "processed": 3,
-    "skipped": 29,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 15310,
-      "output": 964,
-      "total": 40571
-    },
-    "costUsd": 0.060749700000000004,
-    "runId": "35240062704",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-17T15:59:45.186Z",
-    "completedAt": "2026-09-17T15:59:45.202Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "35240062704",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-17T15:59:22.875Z",
     "completedAt": "2026-09-17T15:59:55.861Z",
     "totalReviews": 8,
@@ -302606,6 +302574,49 @@
     },
     "costUsd": 1.2636721,
     "runId": "35410638730",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-19T01:46:09.905Z",
+    "completedAt": "2026-09-19T01:46:20.759Z",
+    "totalReviews": 44135,
+    "processed": 0,
+    "skipped": 44129,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 16029,
+      "output": 522,
+      "total": 46436
+    },
+    "costUsd": 0.08223855,
+    "runId": "35412288239",
+    "errorDetails": [
+      {
+        "showId": "the-story-west-end-2026",
+        "outletId": "the-spectator-uk",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-19T01:46:22.714Z",
+    "completedAt": "2026-09-19T01:52:30.025Z",
+    "totalReviews": 173,
+    "processed": 173,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 451140,
+      "output": 40356,
+      "total": 491496
+    },
+    "costUsd": 1.2598021000000001,
+    "runId": "35412288239",
     "errorDetails": []
   }
 ]
