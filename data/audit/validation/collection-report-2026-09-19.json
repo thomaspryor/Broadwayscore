@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-19T11:35:47.837Z",
+  "runDate": "2026-09-19T12:39:51.036Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 68,
-    "failed": 316,
+    "processed": 71,
+    "failed": 321,
     "skipped": 0,
-    "successRate": "17.7%"
+    "successRate": "18.1%"
   },
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 10,
     "directCookies": 1,
@@ -27,27 +27,27 @@
     "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 23,
-    "tier1Success": 8,
+    "tier1Attempts": 17,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 7,
-    "tier1_5Success": 4,
-    "tier2Attempts": 17,
-    "tier2Success": 8,
-    "tier3Attempts": 10,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 11,
+    "tier2Success": 1,
+    "tier3Attempts": 9,
     "tier3Success": 4,
-    "tier3_6Attempts": 8,
+    "tier3_6Attempts": 5,
     "tier3_6Success": 0,
     "tier4Attempts": 15,
-    "tier4Success": 4,
-    "totalFailed": 291,
-    "scrapingBeePageCredits": 86,
+    "tier4Success": 1,
+    "totalFailed": 297,
+    "scrapingBeePageCredits": 43,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 7,
-    "browserbaseMinutesUsed": 1.9,
-    "urlDiscoveryAttempts": 269,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 274,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -118,7 +118,10 @@
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/emmatheatrics--emma-theatrics.json",
+    "the-story-west-end-2026/times-uk--clive-davis.json",
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
@@ -222,8 +225,6 @@
     "the-story-west-end-2026/talkinbroadway--unknown.json",
     "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
     "the-story-west-end-2026/the-spectator-uk--unknown.json",
-    "the-story-west-end-2026/times-uk--clive-davis.json",
-    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--david-gordon.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
     "as-you-like-it-globe-west-end-2026/new-york-sun--elysa-gardner.json",
@@ -436,7 +437,14 @@
     "operation-mincemeat-2025/londontheatre1--unknown.json",
     "operation-mincemeat-2025/north-west-end--unknown.json",
     "operation-mincemeat-2025/standard--nick-curtis.json",
-    "operation-mincemeat-2025/west-end-wilma--unknown.json"
+    "operation-mincemeat-2025/west-end-wilma--unknown.json",
+    "operation-mincemeat-2025/whatsonstage--alex-wood.json",
+    "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
+    "buena-vista-social-club-2025/observer--david-cote.json",
+    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+    "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
+    "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -477,7 +485,9 @@
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
       "darkling-off-west-end-2026/bestoftheatre--unknown.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "bloodsport-after-helen-of-troy-off-west-end-2026/emmatheatrics--emma-theatrics.json",
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [
@@ -533,7 +543,7 @@
   },
   "failuresByOutlet": {
     "The Stage": {
-      "count": 1,
+      "count": 4,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -566,7 +576,20 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "WhatsOnStage": {
+      "count": 1,
+      "domain": "whatsonstage.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "schmigadoon-2026/washpost--naveen-kumar.json",
+      "oldUrl": "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/"
+    }
+  ]
 }
