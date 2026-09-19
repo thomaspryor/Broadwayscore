@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-19T18:33:51.103Z",
+  "generatedAt": "2026-09-19T21:19:05.506Z",
   "windowDays": 1095,
-  "targets": 329,
-  "auditedThisRun": 10,
-  "carriedForward": 536,
+  "targets": 319,
+  "auditedThisRun": 13,
+  "carriedForward": 533,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 336,
-    "totalMissing": 1734,
+    "totalMissing": 1755,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1829,
-    "totalRecoverable": 23,
+    "totalFlaggedMisses": 1841,
+    "totalRecoverable": 24,
     "totalRecovered": 5
   },
   "results": [
@@ -2288,7 +2288,7 @@
       "showId": "a-walk-on-the-moon-off-broadway-2026",
       "title": "A Walk on the Moon",
       "openingDate": "2026-06-29",
-      "status": "open",
+      "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://www.broadwayworld.com/article/Review-Roundup-A-WALK-ON-THE-MOON-With-Tovah-Feldshuh-Talia-Suskauer-Max-Chernin-Sam-Gravitte-and-Andra-Burns-20260629"
@@ -2302,13 +2302,11 @@
         "https://www.theatermania.com/news/review-singing-and-shtupping-through-the-catskills-in-a-walk-on-the-moon_1843818/",
         "https://www.talkinbroadway.com/page/ob/06_29_26.html",
         "https://www.theaterscene.net/musicals/offbway/a-walk-on-the-moon/victor-gluck/",
-        "https://www.theatrereviews.com/off-broadway-review-a-walk-on-the-moon-at-the-laura-pels-theatre-at-the-harold-and-miriam-steinberg-center-for-theatre-through-saturday-august-22-2026/",
-        "https://pagesonstages.com/2026/06/29/a-walk-on-the-moon/",
-        "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html"
+        "https://www.theatrereviews.com/off-broadway-review-a-walk-on-the-moon-at-the-laura-pels-theatre-at-the-harold-and-miriam-steinberg-center-for-theatre-through-saturday-august-22-2026/"
       ],
       "dirFiles": 24,
-      "dirClean": 22,
-      "inReviewsJson": 22,
+      "dirClean": 23,
+      "inReviewsJson": 23,
       "missing": [],
       "dirOnly": [
         {
@@ -2332,7 +2330,15 @@
           "count": 1
         },
         {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
           "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "interestedbystander.com",
           "count": 1
         },
         {
@@ -2360,25 +2366,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--marc-miller.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=MotK11bl7_oGAeQJnhH5ozCC.Rav71xHV9tvxB9h0oo-1782899801-1.0.1.1-_Mvq1E.E_0FWweMKJDcl8.iYGoS61tlUQWAbHIjhVXA"
-            }
-          ]
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -2386,26 +2374,18 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 317,
+        "count": 313,
         "byReason": {
-          "non-review-host": 16,
-          "not-http-url": 77,
-          "aggregator-internal-nav": 221,
-          "non-review-path": 3
+          "non-review-host": 15,
+          "aggregator-internal-nav": 210,
+          "not-http-url": 82,
+          "aggregator-section-root": 6
         }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "talkinbroadway",
-            "outlet": "talkinbroadway",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -2445,6 +2425,12 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
             "url": "https://www.theaterscene.net/musicals/offbway/a-walk-on-the-moon/victor-gluck/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -2455,31 +2441,12 @@
             "outletId": "theatrereviews.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2026/06/29/a-walk-on-the-moon/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
-            "outletId": "interestedbystander.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-12T19:54:19.094Z"
-          },
-          {
-            "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html",
-            "outletId": "talkinbroadway",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 11
+        "liveCount": 9,
+        "candidateCount": 9
       },
-      "computedAt": "2026-08-20T10:24:01.870Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
@@ -4665,12 +4632,12 @@
         "https://www.thestage.co.uk/reviews/alvin-ailey-american-dance-theater-new-works-review-sadlers-wells-london",
         "https://www.westendbestfriend.co.uk/news/review-alvin-ailey-american-dance-theater-new-works-sadlers-wells",
         "https://www.ticketswap.com/theatre-tickets/alvin-ailey-american-dance-theater-new-works-london-sadlers-wells-theatre-2026-09-15-CepPst1PFFFvzuDEAXnbG",
-        "https://www.afridiziak.com/reviews/alvin-ailey-american-dance-theater-new-works/",
+        "https://www.thetimes.com/culture/theatre-dance/article/alvin-ailey-american-dance-theater-review-infectiously-joyous-l0z7c50lb",
         "https://www.theamerican.co.uk/pr/rev-th-Alvin-Ailey-American-Dance-Theater_New-Works_Legacy_Sadlers-Wells",
-        "https://bachtrack.com/de_DE/review-legacy-alvin-ailey-american-dance-theater-night-creature-a-song-for-you-cry-grace-revelations-sadlers-wells-london-september-2026",
-        "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater"
+        "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater",
+        "https://www.aol.co.uk/articles/alvin-ailey-american-dance-theater-110300000.html"
       ],
-      "dirFiles": 13,
+      "dirFiles": 14,
       "dirClean": 10,
       "inReviewsJson": 9,
       "missing": [
@@ -4685,9 +4652,19 @@
           "host": "theamerican.co.uk",
           "knownOutletId": null,
           "serpCensus": true
+        },
+        {
+          "url": "https://www.aol.co.uk/articles/alvin-ailey-american-dance-theater-110300000.html",
+          "host": "aol.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "bachtrack.com",
+          "count": 1
+        },
         {
           "host": "britishtheatreguide.info",
           "count": 1
@@ -4698,10 +4675,6 @@
         },
         {
           "host": "london-unattached.com",
-          "count": 1
-        },
-        {
-          "host": "thetimes.com",
           "count": 1
         }
       ],
@@ -4741,7 +4714,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -4785,7 +4758,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -4795,7 +4768,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -4805,7 +4778,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -4825,11 +4798,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 17,
         "byReason": {
-          "non-review-host": 12,
-          "ticketing-listing": 2,
-          "access-listings-page": 1
+          "roundup-page": 2,
+          "non-review-host": 14,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -4844,7 +4817,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=ticketswap.com): Scrapingdog HTTP 503: {\"success\":fals"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=ticketswap.com): Scrapingdog HTTP 400: Oops! Something"
         },
         {
           "url": "https://www.theamerican.co.uk/pr/rev-th-Alvin-Ailey-American-Dance-Theater_New-Works_Legacy_Sadlers-Wells",
@@ -4856,7 +4829,19 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theamerican.co.uk): Scrapingdog HTTP 503: {\"success\":f"
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://www.aol.co.uk/articles/alvin-ailey-american-dance-theater-110300000.html",
+          "host": "aol.co.uk",
+          "outletId": "aol",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -4876,6 +4861,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theamerican.co.uk/pr/rev-th-Alvin-Ailey-American-Dance-Theater_New-Works_Legacy_Sadlers-Wells"
+          },
+          {
+            "outletId": "aol.co.uk",
+            "outlet": "aol.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.aol.co.uk/articles/alvin-ailey-american-dance-theater-110300000.html"
           },
           {
             "outletId": "thestage",
@@ -4912,16 +4904,10 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
-            "url": "https://www.afridiziak.com/reviews/alvin-ailey-american-dance-theater-new-works/",
-            "outletId": "afridiziak.com",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/alvin-ailey-american-dance-theater-review-infectiously-joyous-l0z7c50lb",
+            "outletId": "thetimes.com",
             "state": "live",
-            "firstSeenAt": "2026-09-19T15:05:46.101Z"
-          },
-          {
-            "url": "https://bachtrack.com/de_DE/review-legacy-alvin-ailey-american-dance-theater-night-creature-a-song-for-you-cry-grace-revelations-sadlers-wells-london-september-2026",
-            "outletId": "bachtrack.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-19T15:05:46.101Z"
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
             "url": "https://fjordreview.com/blogs/all/alvin-ailey-american-dance-theater",
@@ -4944,6 +4930,13 @@
             "firstSeenAt": "2026-09-19T15:05:46.101Z"
           },
           {
+            "url": "https://www.aol.co.uk/articles/alvin-ailey-american-dance-theater-110300000.html",
+            "outletId": "aol.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/alvin-ailey-american-dance-theater-new-works-review-sadlers-wells-london",
             "outletId": "thestage",
             "state": "GAP",
@@ -4952,9 +4945,9 @@
           }
         ],
         "liveCount": 6,
-        "candidateCount": 9
+        "candidateCount": 10
       },
-      "computedAt": "2026-09-19T15:05:46.101Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "amaze-magic-off-broadway-2025",
@@ -5061,22 +5054,15 @@
         "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
         "https://newyorktheater.me/2026/09/17/america-who-hurt-you-review/",
         "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
+        "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
+        "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
         "https://www.harlemworldmagazine.com/national-black-theatre-and-theatre-for-a-new-audience-present-america-who-hurt-you/"
       ],
       "dirFiles": 10,
       "dirClean": 5,
       "inReviewsJson": 5,
       "missing": [],
-      "dirOnly": [
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "theaterpizzazz.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
@@ -5149,7 +5135,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -5159,7 +5145,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -5175,13 +5161,13 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 29,
         "byReason": {
-          "non-review-host": 25,
+          "non-review-host": 27,
           "aggregator-internal-nav": 2
         }
       },
@@ -5225,6 +5211,18 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
+            "url": "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
             "url": "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
             "outletId": "nysr",
             "state": "GAP",
@@ -5239,10 +5237,10 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           }
         ],
-        "liveCount": 3,
-        "candidateCount": 5
+        "liveCount": 5,
+        "candidateCount": 7
       },
-      "computedAt": "2026-09-19T15:05:46.101Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -7509,12 +7507,54 @@
       ],
       "aggregatorListedUrls": [
         "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/",
-        "https://www.timeout.com/newyork/theater/arcadia-bedlam-review-tom-stoppard"
+        "https://www.timeout.com/newyork/theater/arcadia-bedlam-review-tom-stoppard",
+        "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html",
+        "http://www.talkinbroadway.com/page/ob/7_19_17.html",
+        "http://www.theaterscene.net/plays/offbway-plays/arcadia/joel-benjamin/",
+        "http://www.curtainup.com/potomac17.html",
+        "http://www.theasy.com/Reviews/2017/A/arcadia.php",
+        "https://stagebuddy.com/theater/theater-review/review-arcadia",
+        "https://frontmezzjunkies.com/2017/07/24/ptpnycs-arcardia/"
       ],
-      "dirFiles": 41,
-      "dirClean": 17,
-      "inReviewsJson": 20,
-      "missing": [],
+      "dirFiles": 52,
+      "dirClean": 22,
+      "inReviewsJson": 24,
+      "missing": [
+        {
+          "url": "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/offbway-plays/arcadia/joel-benjamin/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        },
+        {
+          "url": "http://www.curtainup.com/potomac17.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2017/A/arcadia.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/review-arcadia",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2017/07/24/ptpnycs-arcardia/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        }
+      ],
       "dirOnly": [
         {
           "host": "theartsdesk.com",
@@ -7526,6 +7566,10 @@
         },
         {
           "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "fringereview.co.uk",
           "count": 1
         },
         {
@@ -7541,6 +7585,10 @@
           "count": 1
         },
         {
+          "host": "liamodell.com",
+          "count": 1
+        },
+        {
           "host": "londonboxoffice.co.uk",
           "count": 1
         },
@@ -7553,7 +7601,15 @@
           "count": 1
         },
         {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
           "host": "thejc.com",
+          "count": 1
+        },
+        {
+          "host": "theartsdispatch.substack.com",
           "count": 1
         },
         {
@@ -7596,6 +7652,23 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.talkinbroadway.com/page/ob/7_19_17.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.talkinbroadway.com/page/ob/7_19_17.html"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -7605,11 +7678,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 98,
+        "count": 106,
         "byReason": {
-          "non-review-host": 20,
-          "not-http-url": 5,
-          "aggregator-internal-nav": 73
+          "non-review-host": 21,
+          "aggregator-internal-nav": 74,
+          "not-http-url": 7,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -7619,15 +7693,129 @@
           "publishDate": "2023-11-13"
         }
       ],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.theasy.com/Reviews/2017/A/arcadia.php",
+          "host": "theasy.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2017/07/24/ptpnycs-arcardia/",
+          "host": "frontmezzjunkies.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/offbway-plays/arcadia/joel-benjamin/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "http://www.curtainup.com/potomac17.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/review-arcadia",
+          "host": "stagebuddy.com",
+          "outletId": "stagebuddy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/plays/offbway-plays/arcadia/joel-benjamin/"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/potomac17.html"
+          },
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2017/A/arcadia.php"
+          },
+          {
+            "outletId": "stagebuddy",
+            "outlet": "stagebuddy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagebuddy.com/theater/theater-review/review-arcadia"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://frontmezzjunkies.com/2017/07/24/ptpnycs-arcardia/"
+          },
           {
             "outletId": "nysr",
             "outlet": "nysr",
             "critic": "Unknown",
             "stars": null,
             "url": "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.talkinbroadway.com/page/ob/7_19_17.html"
           }
         ],
         "suppressedMissing": [],
@@ -7639,17 +7827,66 @@
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
+            "url": "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/arcadia/joel-benjamin/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "http://www.curtainup.com/potomac17.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/A/arcadia.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/review-arcadia",
+            "outletId": "stagebuddy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/07/24/ptpnycs-arcardia/",
+            "outletId": "frontmezzjunkies",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
             "url": "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/",
             "outletId": "nysr",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/7_19_17.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
           }
         ],
         "liveCount": 1,
-        "candidateCount": 2
+        "candidateCount": 9
       },
-      "computedAt": "2026-08-21T22:16:46.049Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "archduke-west-end-2026",
@@ -30198,33 +30435,142 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.sohoplayhouse.com/see-a-show/conflicted"
+      ],
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/conflicted",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sohoplayhouse--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.sohoplayhouse.com/see-a-show/conflicted"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Conflicted\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Conflicted\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Conflicted\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Conflicted\" Katz review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Conflicted SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Conflicted SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Conflicted SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 36,
+        "byReason": {
+          "non-review-host": 29,
+          "aggregator-internal-nav": 3,
+          "merch-store": 3,
+          "static-asset": 1
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sohoplayhouse.com/see-a-show/conflicted"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/conflicted",
+            "outletId": "sohoplayhouse",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-09-19T15:05:46.101Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -47591,33 +47937,219 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
+      "aggregatorListedUrls": [
+        "https://donyc.com/events/2026/9/20/bailey-swilley-s-gimme-a-sign-tickets",
+        "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+        "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+        "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
+      ],
+      "dirFiles": 4,
+      "dirClean": 1,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+          "host": "theatrevillage.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sohoplayhouse--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+          "host": "ouchmagazine.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ouchmagazine--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Gimme a Sign!\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Gimme a Sign!\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Gimme a Sign!\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Gimme a Sign!\" Swilley review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Gimme a Sign! SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Gimme a Sign! SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Gimme a Sign! SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 43,
+        "byReason": {
+          "non-review-host": 31,
+          "aggregator-internal-nav": 9,
+          "non-review-path": 1,
+          "venue-production-page": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+          "host": "theatrevillage.co.uk",
+          "outletId": "theatrevillage",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"theatrevillage\" (not in registry) — onboard to outlet-registry.json after re"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatrevillage.co.uk",
+            "outlet": "theatrevillage.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
+          },
+          {
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign"
+          },
+          {
+            "outletId": "ouchmagazine.com",
+            "outlet": "ouchmagazine.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "candidates": [
+          {
+            "url": "https://donyc.com/events/2026/9/20/bailey-swilley-s-gimme-a-sign-tickets",
+            "outletId": "donyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+            "outletId": "theatrevillage.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+            "outletId": "sohoplayhouse",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+            "outletId": "ouchmagazine.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 4
       },
-      "computedAt": "2026-09-19T15:05:46.101Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
@@ -68486,23 +69018,19 @@
         "https://www.newyorktheatreguide.com/reviews/in-honor-of-jean-michel-basquiat-off-broadway-review-roger-guenveur-smith",
         "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
         "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
+        "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
         "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
-        "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/",
+        "https://thefrontrowcenter.com/2026/09/in-honor-of-jean-michel-basquiat/",
         "https://www.newyorktheatreguide.com/show/46616-in-honor-of-jean-michel-basquiat",
         "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
         "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
-        "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672"
+        "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
+        "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/"
       ],
-      "dirFiles": 12,
-      "dirClean": 9,
-      "inReviewsJson": 9,
+      "dirFiles": 13,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [
-        {
-          "url": "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/",
-          "host": "theaterscene.com",
-          "knownOutletId": "theater-scene",
-          "serpCensus": true
-        },
         {
           "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
           "host": "ticketsales.com",
@@ -68510,16 +69038,7 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "1minutecritic.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
@@ -68553,7 +69072,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -68562,8 +69081,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -68573,7 +69092,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -68603,20 +69122,20 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 10,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
         "count": 29,
         "byReason": {
-          "non-review-host": 27,
-          "aggregator-internal-nav": 1,
+          "non-review-host": 26,
+          "aggregator-internal-nav": 2,
           "ticketing-reseller": 1
         }
       },
@@ -68631,18 +69150,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/",
-          "host": "theaterscene.com",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
           "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
           "host": "ticketsales.com",
           "outletId": "ticketsales",
@@ -68652,20 +69159,13 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=ticketsales.com): Scrapingdog HTTP 503: {\"success\":fal"
+          "reason": "⚠️  provisional outlet \"ticketsales\" (not in registry) — onboard to outlet-registry.json after revie"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/"
-          },
           {
             "outletId": "ticketsales.com",
             "outlet": "ticketsales.com",
@@ -68714,10 +69214,22 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
+            "url": "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/09/in-honor-of-jean-michel-basquiat/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/show/46616-in-honor-of-jean-michel-basquiat",
@@ -68739,9 +69251,8 @@
           },
           {
             "url": "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theaterscene.com",
+            "state": "live",
             "firstSeenAt": "2026-09-19T15:05:46.101Z"
           },
           {
@@ -68759,10 +69270,10 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           }
         ],
-        "liveCount": 7,
-        "candidateCount": 10
+        "liveCount": 10,
+        "candidateCount": 12
       },
-      "computedAt": "2026-09-19T15:05:46.101Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -82765,12 +83276,18 @@
       "status": "closed",
       "category": "regional",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-are-in-for-little-bear-ridge-road-on-broadway",
         "https://playbill.com/article/reviews-critics-sound-off-on-steppenwolfs-little-bear-ridge-road",
+        "https://playbill.com/article/reviews-are-in-for-little-bear-ridge-road-on-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-LITTLE-BEAR-RIDGE-ROAD-Opens-On-Broadway-with-Laurie-MetcalfandMicah-Stock-Star-20251030",
         "https://www.broadwayworld.com/article/Review-Roundup-LITTLE-BEAR-RIDGE-ROAD-Starring-Laurie-Metcalf-Opens-at-Steppenwolf-20240624"
       ],
       "aggregatorListedUrls": [
+        "https://chicago.suntimes.com/theater/2024/06/24/little-bear-ridge-road-review-steppenwolf-theatre-laurie-metcalf-joe-mantello-micah-stock-in-world-premiere-chicago",
+        "https://chicagoreader.com/arts-culture/theater/theater-review/little-bear-ridge-road-steppenwolf-theatre/",
+        "https://www.broadwayworld.com/chicago/article/Review-LITTLE-BEAR-RIDGE-ROAD-at-Steppenwolf-Theatre-Company-20240624",
+        "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
+        "https://www.chicagotribune.com/2024/06/24/review-in-compelling-little-bear-ridge-road-at-steppenwolf-theatre-laurie-metcalf-meets-her-match/",
+        "https://thirdcoastreview.com/2024/06/26/stages-review-steppenwolf-little-bear-ridge-road",
         "https://1minutecritic.com/laurie-metcalf-micah-stock-little-bear-ridge-road-broadway-review/",
         "https://cititour.com/NYC_Broadway/Little-Bear-Ridge-Road/1333",
         "https://culturesauce.com/2025/10/30/laurie-metcalf-little-bear-ridge-road-broadway-review/",
@@ -82791,12 +83308,6 @@
         "https://www.washingtonpost.com/entertainment/theater/2025/10/30/little-bear-ridge-road-broadway-review/",
         "https://www.wsj.com/articles/little-bear-ridge-road-and-endgame-review-a-tale-of-two-samuels-e3a727bb",
         "https://www.thewrap.com/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock/",
-        "https://chicago.suntimes.com/theater/2024/06/24/little-bear-ridge-road-review-steppenwolf-theatre-laurie-metcalf-joe-mantello-micah-stock-in-world-premiere-chicago",
-        "https://chicagoreader.com/arts-culture/theater/theater-review/little-bear-ridge-road-steppenwolf-theatre/",
-        "https://www.broadwayworld.com/chicago/article/Review-LITTLE-BEAR-RIDGE-ROAD-at-Steppenwolf-Theatre-Company-20240624",
-        "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
-        "https://www.chicagotribune.com/2024/06/24/review-in-compelling-little-bear-ridge-road-at-steppenwolf-theatre-laurie-metcalf-meets-her-match/",
-        "https://thirdcoastreview.com/2024/06/26/stages-review-steppenwolf-little-bear-ridge-road",
         "https://www.nytimes.com/2025/10/30/theater/little-bear-ridge-road-review-metcalf.html",
         "https://www.wsj.com/articles/little-bear-ridge-road-review-laurie-metcalf-steppenwolf-4479a7d4"
       ],
@@ -82942,16 +83453,16 @@
           "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
-          "recoverable": true,
-          "recoverableFile": "hollywood-reporter--unknown.json",
-          "recoverableOutletId": "hollywood-reporter",
-          "recoverableCritic": "Unknown",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "hollywood-reporter--unknown.json",
               "flag": "emptyBody",
-              "urlInDir": "https://www.hollywoodreporter.com/features/everyone-just-knows-hes-an-absolute-monster-scott-rudins-ex-staffers-speak-out-on-abusive-behavior"
+              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/"
             }
           ],
           "priorRun": true,
@@ -83003,12 +83514,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 773,
+        "count": 790,
         "byReason": {
-          "non-review-host": 69,
-          "not-http-url": 116,
-          "aggregator-internal-nav": 582,
-          "non-review-path": 6
+          "non-review-host": 71,
+          "aggregator-internal-nav": 583,
+          "not-http-url": 120,
+          "aggregator-section-root": 16
         }
       },
       "dedupedVariants": [],
@@ -83269,12 +83780,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.wsj.com/articles/little-bear-ridge-road-and-endgame-review-a-tale-of-two-samuels-e3a727bb",
-            "outletId": "wsj.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
-          },
-          {
             "url": "https://chicago.suntimes.com/theater/2024/06/24/little-bear-ridge-road-review-steppenwolf-theatre-laurie-metcalf-joe-mantello-micah-stock-in-world-premiere-chicago",
             "outletId": "chicago.suntimes.com",
             "state": "live",
@@ -83307,6 +83812,12 @@
           {
             "url": "https://thirdcoastreview.com/2024/06/26/stages-review-steppenwolf-little-bear-ridge-road",
             "outletId": "thirdcoastreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/little-bear-ridge-road-and-endgame-review-a-tale-of-two-samuels-e3a727bb",
+            "outletId": "wsj.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
@@ -83460,7 +83971,7 @@
         "liveCount": 7,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-21T22:16:46.049Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "liv-redpath-and-harry-rylance-off-broadway-2026",
@@ -85680,63 +86191,13 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://operawire.com/metropolitan-opera-2025-26-review-madama-butterfly-cast-a/",
-        "https://thefrontrowcenter.com/2022/04/giacomo-puccinis-madama-butterfly-at-the-met-an-audience-member-pov/",
-        "https://newyorkclassicalreview.com/2022/03/burattos-triumphant-role-debut-highlights-the-mets-rich-and-treasurable-butterfly/"
-      ],
-      "dirFiles": 3,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [
-        {
-          "url": "https://operawire.com/metropolitan-opera-2025-26-review-madama-butterfly-cast-a/",
-          "host": "operawire.com",
-          "knownOutletId": "operawire"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "nytimes.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://thefrontrowcenter.com/2022/04/giacomo-puccinis-madama-butterfly-at-the-met-an-audience-member-pov/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "front-row-center--edward-kliszus.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thefrontrowcenter.com/2022/04/giacomo-puccinis-madama-butterfly-at-the-met-an-audience-member-pov/"
-            }
-          ]
-        },
-        {
-          "url": "https://newyorkclassicalreview.com/2022/03/burattos-triumphant-role-debut-highlights-the-mets-rich-and-treasurable-butterfly/",
-          "host": "newyorkclassicalreview.com",
-          "knownOutletId": "new-york-classical-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "new-york-classical-review--rick-perdian.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newyorkclassicalreview.com/2022/03/burattos-triumphant-role-debut-highlights-the-mets-rich-and-treasurable-butterfly/"
-            }
-          ]
-        }
-      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -85748,74 +86209,15 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://operawire.com/metropolitan-opera-2025-26-review-madama-butterfly-cast-a/",
-          "host": "operawire.com",
-          "outletId": "operawire",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "operawire",
-            "outlet": "operawire",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://operawire.com/metropolitan-opera-2025-26-review-madama-butterfly-cast-a/"
-          },
-          {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2022/04/giacomo-puccinis-madama-butterfly-at-the-met-an-audience-member-pov/"
-          },
-          {
-            "outletId": "new-york-classical-review",
-            "outlet": "new-york-classical-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorkclassicalreview.com/2022/03/burattos-triumphant-role-debut-highlights-the-mets-rich-and-treasurable-butterfly/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://operawire.com/metropolitan-opera-2025-26-review-madama-butterfly-cast-a/",
-            "outletId": "operawire",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T13:37:57.631Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2022/04/giacomo-puccinis-madama-butterfly-at-the-met-an-audience-member-pov/",
-            "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T13:37:57.631Z"
-          },
-          {
-            "url": "https://newyorkclassicalreview.com/2022/03/burattos-triumphant-role-debut-highlights-the-mets-rich-and-treasurable-butterfly/",
-            "outletId": "new-york-classical-review",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T13:37:57.631Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-20T10:24:01.870Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2026",
@@ -101492,12 +101894,56 @@
         "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/",
         "https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre",
         "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
-        "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html"
+        "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html",
+        "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+        "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+        "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
+        "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
+        "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
+        "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
+        "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+        "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/",
+        "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
+        "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+        "https://thegoldenticketclub.co.uk/events/my-sons-a-queer-but-what-can-you-do/",
+        "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
+        "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do"
       ],
-      "dirFiles": 27,
+      "dirFiles": 28,
       "dirClean": 6,
       "inReviewsJson": 6,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+          "host": "westendwilma.com",
+          "knownOutletId": "west-end-wilma",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
+          "host": "burnhamdramaturgy.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://thegoldenticketclub.co.uk/events/my-sons-a-queer-but-what-can-you-do/",
+          "host": "thegoldenticketclub.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "londontheatrereviews.co.uk",
@@ -101550,7 +101996,8 @@
             }
           ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "serpCensus": true
         },
         {
           "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html",
@@ -101575,6 +102022,160 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "recoverable": true,
+          "recoverableFile": "theatreandtonic--unknown.json",
+          "recoverableOutletId": "theatreandtonic",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreandtonic--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "i-paper--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963?srsltid=AU7gw4VFjlKyCLX7gE4D3lV4jNb7Qo-HtXPpIbMALtDTUI0ijAXKWBoP"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--all-that-dazzles.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
+            },
+            {
+              "file": "all-that-dazzles-uk--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": true,
+          "recoverableFile": "nytg--unknown.json",
+          "recoverableOutletId": "nytg",
+          "recoverableCritic": "Gillian Russo",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/my-sons-a-queer-but-what-can-you-do-to-play-off-broadway"
+            },
+            {
+              "file": "nytg--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/my-sons-a-queer-but-what-can-you-do-to-play-off-broadway"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
+          "host": "jacktheladmag.com",
+          "knownOutletId": "jacktheladmag",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "jacktheladmag--simon-webb.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musical-theatre-review--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--paul-vale.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -101593,7 +102194,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -101616,16 +102217,86 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"My Son’s A Queer (But What Can You Do?)\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"My Son’s A Queer (But What Can You Do?)\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"My Son’s A Queer (But What Can You Do?)\" review apollo",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"My Son’s A Queer (But What Can You Do?)\" Madge review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "My Son’s A Queer (But What Can You Do?) Apollo Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "My Son’s A Queer (But What Can You Do?) Apollo Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "My Son’s A Queer (But What Can You Do?) Apollo Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 15,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 191,
+        "count": 216,
         "byReason": {
-          "non-review-host": 21,
+          "roundup-page": 1,
+          "non-review-host": 40,
+          "ticketing-listing": 2,
           "aggregator-internal-nav": 160,
           "not-http-url": 6,
-          "aggregator-section-root": 4
+          "aggregator-section-root": 4,
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [],
@@ -101635,9 +102306,120 @@
           "publishDate": "2022-10-31"
         }
       ],
+      "ingestResults": [
+        {
+          "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+          "host": "westendtheatre.com",
+          "outletId": "westendtheatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-"
+        },
+        {
+          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+          "host": "westendwilma.com",
+          "outletId": "west-end-wilma",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
+          "host": "burnhamdramaturgy.com",
+          "outletId": "burnhamdramaturgy",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"burnhamdramaturgy\" (not in registry) — onboard to outlet-registry.json after"
+        },
+        {
+          "url": "https://thegoldenticketclub.co.uk/events/my-sons-a-queer-but-what-can-you-do/",
+          "host": "thegoldenticketclub.co.uk",
+          "outletId": "thegoldenticketclub",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-no-host"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+          "host": "theatreandtonic.co.uk",
+          "file": "theatreandtonic--unknown.json"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
+          "host": "newyorktheatreguide.com",
+          "file": "nytg--unknown.json"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/"
+          },
+          {
+            "outletId": "west-end-wilma",
+            "outlet": "west-end-wilma",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/"
+          },
+          {
+            "outletId": "burnhamdramaturgy.com",
+            "outlet": "burnhamdramaturgy.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do"
+          },
+          {
+            "outletId": "thegoldenticketclub.co.uk",
+            "outlet": "thegoldenticketclub.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thegoldenticketclub.co.uk/events/my-sons-a-queer-but-what-can-you-do/"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end"
+          },
           {
             "outletId": "broadwayworld",
             "outlet": "broadwayworld",
@@ -101658,6 +102440,62 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
+          },
+          {
+            "outletId": "i-paper",
+            "outlet": "i-paper",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review"
+          },
+          {
+            "outletId": "jacktheladmag",
+            "outlet": "jacktheladmag",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do"
           }
         ],
         "suppressedMissing": [],
@@ -101687,6 +102525,41 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
+            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+            "outletId": "west-end-wilma",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
+            "outletId": "burnhamdramaturgy.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://thegoldenticketclub.co.uk/events/my-sons-a-queer-but-what-can-you-do/",
+            "outletId": "thegoldenticketclub.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
             "url": "https://www.broadwayworld.com/westend/article/Review-MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Garrick-Theatre-20221024",
             "outletId": "broadwayworld",
             "state": "GAP",
@@ -101706,12 +102579,68 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+            "outletId": "theatreandtonic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
+            "outletId": "i-paper",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
+            "outletId": "jacktheladmag",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/",
+            "outletId": "musical-theatre-review",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
           }
         ],
         "liveCount": 4,
-        "candidateCount": 7
+        "candidateCount": 20
       },
-      "computedAt": "2026-09-19T15:05:46.101Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -129794,7 +130723,13 @@
         "http://www.chicagotribune.com/entertainment/theater/reviews/ct-sherlock-holmes-arquette-review-ent-1126-20151125-column.html",
         "http://www.hollywoodchicago.com/news/26056/theatre-review-david-arquettes-sherlock-holmes-cheapens-drama-with-campy-unfunny-comedy",
         "https://nowtoronto.com/stage/theatre/review-sherlock-holmes/",
-        "http://www.thestar.com/entertainment/stage/2015/11/04/elementary-hardly-arquette-miscast-as-sherlock-holmes-never-gets-past-junior-kindergarten.html"
+        "http://www.thestar.com/entertainment/stage/2015/11/04/elementary-hardly-arquette-miscast-as-sherlock-holmes-never-gets-past-junior-kindergarten.html",
+        "https://www.londontheatre.co.uk/reviews/sherlock-holmes-review-regents-park-open-air-theatre",
+        "https://www.standard.co.uk/culture/theatre/sherlock-holmes-at-regent-s-park-open-air-theatre-review-b1282295.html",
+        "https://www.timeout.com/london/theatre/sherlock-holmes-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/sherlock-holmes-review-open-air-theatre-regents-park/",
+        "https://www.thestage.co.uk/reviews/sherlock-holmes-review-regents-park-open-air-theatre-london-sean-holmes-joshua-james",
+        "https://www.theguardian.com/stage/2026/may/14/sherlock-holmes-review-regents-park-open-air-theatre-london"
       ],
       "dirFiles": 20,
       "dirClean": 18,
@@ -129851,15 +130786,7 @@
           "count": 1
         },
         {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
           "host": "hamhigh.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
           "count": 1
         },
         {
@@ -129871,27 +130798,11 @@
           "count": 1
         },
         {
-          "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
           "host": "theatreandtonic.co.uk",
           "count": 1
         },
         {
           "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
           "count": 1
         },
         {
@@ -129911,12 +130822,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 277,
+        "count": 279,
         "byReason": {
-          "non-review-host": 15,
-          "not-http-url": 40,
+          "non-review-host": 16,
           "aggregator-internal-nav": 219,
-          "non-review-path": 3
+          "not-http-url": 40,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -129989,6 +130900,42 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.londontheatre.co.uk/reviews/sherlock-holmes-review-regents-park-open-air-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/sherlock-holmes-at-regent-s-park-open-air-theatre-review-b1282295.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/sherlock-holmes-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/sherlock-holmes-review-open-air-theatre-regents-park/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/sherlock-holmes-review-regents-park-open-air-theatre-london-sean-holmes-joshua-james",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/may/14/sherlock-holmes-review-regents-park-open-air-theatre-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
             "url": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-sherlock-holmes-arquette-review-ent-1126-20151125-column.html",
             "outletId": "chicagotribune",
             "state": "GAP",
@@ -130017,10 +130964,10 @@
             "firstSeenAt": "2026-08-07T03:55:04.733Z"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 4
+        "liveCount": 6,
+        "candidateCount": 10
       },
-      "computedAt": "2026-08-21T10:23:53.851Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "shifters-off-broadway-2026",
@@ -151686,7 +152633,7 @@
       "showId": "the-jonathan-larson-project-off-west-end-2026",
       "title": "The Jonathan Larson Project",
       "openingDate": "2026-07-13",
-      "status": "open",
+      "status": "closed",
       "category": "off-west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/what-do-the-critics-think-of-the-jonathan-larson-project-off-broadway",
@@ -151706,9 +152653,13 @@
         "https://www.newyorktheatreguide.com/reviews/the-jonathan-larson-project-off-broadway-review",
         "https://www.theatermania.com/news/review-the-jonathan-larson-project-a-taste-of-the-rent-composers-left-behinds_1766868/",
         "https://www.theatrely.com/post/the-jonathan-larson-project-soars-off-broadway-review",
-        "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/"
+        "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/",
+        "https://www.timeout.com/newyork/theater/the-jonathan-larson-project-off-broadway-review",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8PONVB",
+        "https://www.talkinbroadway.com/page/ob/03_10_25.html",
+        "https://www.theaterscene.net/musicals/offbway/the-jonathan-larson-project/victor-gluck/"
       ],
-      "dirFiles": 37,
+      "dirFiles": 40,
       "dirClean": 24,
       "inReviewsJson": 24,
       "missing": [
@@ -151760,6 +152711,16 @@
           "knownOutletId": "times-square-chronicles",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-jonathan-larson-project-off-broadway-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.theaterscene.net/musicals/offbway/the-jonathan-larson-project/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
         }
       ],
       "dirOnly": [
@@ -151993,6 +152954,40 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8PONVB",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8PONVB"
+            }
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/03_10_25.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/03_10_25.html"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -152002,12 +152997,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 383,
+        "count": 392,
         "byReason": {
-          "non-review-host": 35,
-          "not-http-url": 47,
-          "aggregator-internal-nav": 298,
-          "non-review-path": 3
+          "non-review-host": 36,
+          "aggregator-internal-nav": 299,
+          "not-http-url": 49,
+          "aggregator-section-root": 8
         }
       },
       "dedupedVariants": [],
@@ -152065,7 +153060,32 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-jonathan-larson-project-off-broadway-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "the-jonathan-larson-project-off-west-end-2026: https://www.timeout.com/newyork/theater/the-jonathan-larson-project-off-broadway-review was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
+        },
+        {
+          "url": "https://www.theaterscene.net/musicals/offbway/the-jonathan-larson-project/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -152120,6 +153140,20 @@
             "url": "https://t2conline.com/the-jonathan-larson-project-a-powerful-tribute-to-a-visionary-voice/"
           },
           {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/the-jonathan-larson-project-off-broadway-review"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theaterscene.net/musicals/offbway/the-jonathan-larson-project/victor-gluck/"
+          },
+          {
             "outletId": "dailybeast",
             "outlet": "dailybeast",
             "critic": "Unknown",
@@ -152167,6 +153201,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatermania.com/news/review-the-jonathan-larson-project-a-taste-of-the-rent-composers-left-behinds_1766868/"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8PONVB"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/03_10_25.html"
           }
         ],
         "suppressedMissing": [],
@@ -152221,6 +153269,20 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.timeout.com/newyork/theater/the-jonathan-larson-project-off-broadway-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/offbway/the-jonathan-larson-project/victor-gluck/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
             "url": "https://www.thedailybeast.com/the-new-jonathan-larson-musical-is-an-affront-to-the-rent-genius/",
             "outletId": "dailybeast",
             "state": "GAP",
@@ -152268,12 +153330,26 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8PONVB",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/03_10_25.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 14
+        "candidateCount": 18
       },
-      "computedAt": "2026-08-20T10:24:01.870Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "the-karate-kid-the-musical-west-end-2026",
@@ -171712,11 +172788,19 @@
         "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
         "https://www.theatrely.com/post/two-strangers-carry-a-cake-across-new-york-the-great-british-millennial-off-review",
         "https://www.vulture.com/article/theater-review-two-strangers-carry-a-cake-across-new-york-barne-buchan-broadway.html",
-        "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/"
+        "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
+        "https://www.londontheatre.co.uk/reviews/two-strangers-carry-a-cake-across-new-york-review-kiln-theatre",
+        "https://www.broadwayworld.com/westend/article/Review-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Kiln-Theatre-20231117",
+        "https://www.standard.co.uk/culture/theatre/two-strangers-carry-a-cake-across-new-york-kiln-theatre-review-sam-tutty-b1121005.html“Christmas comes early to the Kiln with this charming two-person musical that riffs on New York romcoms...The denouement is delicately handled and the whole thing really, really made me want to visit New York again.”",
+        "https://www.thetimes.co.uk/article/two-strangers-carry-a-cake-across-new-york-review-good-gentle-fun-vwcndkqq8",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/two-strangers-carry-a-cake-across-new-york-review-b2448629.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/two-strangers-carry-a-cake-across-new-york-kiln-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-two-strangers-carry-a-cake-across-new-york-kiln-theatre",
+        "https://theatreweekly.com/review-two-strangers-carry-a-cake-across-new-york-at-kiln-theatre/"
       ],
-      "dirFiles": 16,
-      "dirClean": 5,
-      "inReviewsJson": 8,
+      "dirFiles": 18,
+      "dirClean": 4,
+      "inReviewsJson": 4,
       "missing": [
         {
           "url": "https://1minutecritic.com/two-strangers-carry-cake-broadway-review/",
@@ -171794,6 +172878,46 @@
           "knownOutletId": "vulture",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/two-strangers-carry-a-cake-across-new-york-review-kiln-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Kiln-Theatre-20231117",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/two-strangers-carry-a-cake-across-new-york-kiln-theatre-review-sam-tutty-b1121005.html“Christmas comes early to the Kiln with this charming two-person musical that riffs on New York romcoms...The denouement is delicately handled and the whole thing really, really made me want to visit New York again.”",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/two-strangers-carry-a-cake-across-new-york-review-good-gentle-fun-vwcndkqq8",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/two-strangers-carry-a-cake-across-new-york-review-b2448629.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/two-strangers-carry-a-cake-across-new-york-kiln-theatre/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-two-strangers-carry-a-cake-across-new-york-kiln-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://theatreweekly.com/review-two-strangers-carry-a-cake-across-new-york-at-kiln-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly"
         }
       ],
       "dirOnly": [
@@ -171808,6 +172932,25 @@
       ],
       "flaggedMisses": [
         {
+          "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "cititour--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
           "host": "ew.com",
           "knownOutletId": "ew",
@@ -171819,6 +172962,11 @@
           "dirFlags": [
             {
               "file": "ew--dalton-ross.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800"
+            },
+            {
+              "file": "ew--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800"
             }
@@ -171840,6 +172988,11 @@
               "file": "nypost--johnny-oleksinski.json",
               "flag": "wrongProduction",
               "urlInDir": "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/"
+            },
+            {
+              "file": "nypost--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/"
             }
           ],
           "priorRun": true,
@@ -171853,12 +173006,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 663,
+        "count": 673,
         "byReason": {
-          "non-review-host": 53,
-          "not-http-url": 86,
-          "aggregator-internal-nav": 518,
-          "non-review-path": 6
+          "non-review-host": 54,
+          "aggregator-internal-nav": 519,
+          "not-http-url": 88,
+          "aggregator-section-root": 12
         }
       },
       "dedupedVariants": [],
@@ -171940,8 +173093,85 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "ingestResults": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/two-strangers-carry-a-cake-across-new-york-review-kiln-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 120 chars — pattern may be missing for this outlet. Add an entry to scri"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Kiln-Theatre-20231117",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/two-strangers-carry-a-cake-across-new-york-kiln-theatre-review-sam-tutty-b1121005.html“Christmas comes early to the Kiln with this charming two-person musical that riffs on New York romcoms...The denouement is delicately handled and the whole thing really, really made me want to visit New York again.”",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=standard.co.uk): Scrapingdog HTTP 400: Oops! Something"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/two-strangers-carry-a-cake-across-new-york-review-good-gentle-fun-vwcndkqq8",
+          "host": "thetimes.co.uk",
+          "outletId": "times-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/two-strangers-carry-a-cake-across-new-york-review-b2448629.html",
+          "host": "independent.co.uk",
+          "outletId": "independent",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/two-strangers-carry-a-cake-across-new-york-kiln-theatre/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-two-strangers-carry-a-cake-across-new-york-kiln-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://theatreweekly.com/review-two-strangers-carry-a-cake-across-new-york-at-kiln-theatre/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -172023,6 +173253,69 @@
             "url": "https://www.vulture.com/article/theater-review-two-strangers-carry-a-cake-across-new-york-barne-buchan-broadway.html"
           },
           {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/two-strangers-carry-a-cake-across-new-york-review-kiln-theatre"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Kiln-Theatre-20231117"
+          },
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/culture/theatre/two-strangers-carry-a-cake-across-new-york-kiln-theatre-review-sam-tutty-b1121005.html“Christmas comes early to the Kiln with this charming two-person musical that riffs on New York romcoms...The denouement is delicately handled and the whole thing really, really made me want to visit New York again.”"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.co.uk/article/two-strangers-carry-a-cake-across-new-york-review-good-gentle-fun-vwcndkqq8"
+          },
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/two-strangers-carry-a-cake-across-new-york-review-b2448629.html"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/two-strangers-carry-a-cake-across-new-york-kiln-theatre/"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-two-strangers-carry-a-cake-across-new-york-kiln-theatre"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/review-two-strangers-carry-a-cake-across-new-york-at-kiln-theatre/"
+          },
+          {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344"
+          },
+          {
             "outletId": "ew",
             "outlet": "ew",
             "critic": "Unknown",
@@ -172039,12 +173332,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-06T05:08:53.116Z"
-          },
           {
             "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
             "outletId": "nystagereview.com",
@@ -172141,6 +173428,69 @@
             "firstSeenAt": "2026-08-20T10:24:01.870Z"
           },
           {
+            "url": "https://www.londontheatre.co.uk/reviews/two-strangers-carry-a-cake-across-new-york-review-kiln-theatre",
+            "outletId": "london-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Kiln-Theatre-20231117",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/two-strangers-carry-a-cake-across-new-york-kiln-theatre-review-sam-tutty-b1121005.html“Christmas comes early to the Kiln with this charming two-person musical that riffs on New York romcoms...The denouement is delicately handled and the whole thing really, really made me want to visit New York again.”",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/two-strangers-carry-a-cake-across-new-york-review-good-gentle-fun-vwcndkqq8",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/two-strangers-carry-a-cake-across-new-york-review-b2448629.html",
+            "outletId": "independent",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/two-strangers-carry-a-cake-across-new-york-kiln-theatre/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-two-strangers-carry-a-cake-across-new-york-kiln-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-two-strangers-carry-a-cake-across-new-york-at-kiln-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T05:08:53.116Z"
+          },
+          {
             "url": "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
             "outletId": "ew",
             "state": "GAP",
@@ -172155,10 +173505,10 @@
             "firstSeenAt": "2026-08-06T05:08:53.116Z"
           }
         ],
-        "liveCount": 3,
-        "candidateCount": 16
+        "liveCount": 2,
+        "candidateCount": 24
       },
-      "computedAt": "2026-08-20T10:24:01.870Z"
+      "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
       "showId": "ulster-american-irish-repertory-theatre-off-broadway-2026",
