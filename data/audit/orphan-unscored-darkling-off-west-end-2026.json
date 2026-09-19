@@ -2,9 +2,43 @@
   "version": 1,
   "showId": "darkling-off-west-end-2026",
   "openingDate": "2026-09-16",
-  "detectedAt": "2026-09-19T05:08:34.129Z",
+  "detectedAt": "2026-09-19T07:02:09.711Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "onceaweektheatre--edward-lukes.json",
+      "outletId": "onceaweektheatre",
+      "criticName": "Edward Lukes",
+      "url": "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
+      "fullTextLen": 2056,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
+    {
+      "file": "readaboutstuff--unknown.json",
+      "outletId": "readaboutstuff",
+      "criticName": "Unknown",
+      "url": "https://readaboutstuff.com/2026/09/16/review-darkling-bush-theatre-london/",
+      "fullTextLen": 7169,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "viewfromthegods--unknown.json",
       "outletId": "viewfromthegods",
@@ -23,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-19T07:02:09.711Z"
 }

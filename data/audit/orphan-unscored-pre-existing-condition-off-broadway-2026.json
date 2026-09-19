@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "pre-existing-condition-off-broadway-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-19T05:08:34.129Z",
+  "detectedAt": "2026-09-19T07:02:09.711Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "theatrely--joey-sims.json",
+      "outletId": "theatrely",
+      "criticName": "Joey Sims",
+      "url": "https://www.theatrely.com/post/review-roundup-pre-existing-condition-the-body-of-mary",
+      "fullTextLen": 4802,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-19T07:02:09.711Z"
 }
