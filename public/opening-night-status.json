@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T13:13:06.612Z",
+  "generatedAt": "2026-09-19T14:16:37.590Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,7 +13,7 @@
       "slug": "the-cherry-orchard-park-avenue-armory-off-broadway",
       "thumbnail": "/images/shows/the-cherry-orchard-park-avenue-armory-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 68,
+      "liveScore": 76,
       "scoreDrift": null,
       "belowThreshold": true,
       "reviewsNeeded": 1,
@@ -22,8 +22,8 @@
       "t1": 0,
       "t2": 2,
       "t3": 0,
-      "positive": 1,
-      "mixed": 1,
+      "positive": 2,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
@@ -64,10 +64,6 @@
         },
         {
           "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -387,6 +383,18 @@
           "t3": 0,
           "p": 1,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-19T14:16:37.590Z",
+          "rc": 2,
+          "s": 76,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 2,
+          "m": 0,
           "n": 0,
           "bc": "waiting"
         }
@@ -2539,9 +2547,9 @@
       "status": "open",
       "slug": "darkling-off-west-end",
       "thumbnail": "/images/shows/darkling-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 70.5,
-      "liveScore": 71,
-      "scoreDrift": 0.5,
+      "siteScore": 70.36,
+      "liveScore": 70,
+      "scoreDrift": -0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2854,6 +2862,18 @@
           "t": "2026-09-19T12:49:43.603Z",
           "rc": 19,
           "s": 70.5,
+          "t1": 3,
+          "t2": 6,
+          "t3": 10,
+          "p": 10,
+          "m": 8,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-19T14:16:37.590Z",
+          "rc": 19,
+          "s": 70.36,
           "t1": 3,
           "t2": 6,
           "t3": 10,
