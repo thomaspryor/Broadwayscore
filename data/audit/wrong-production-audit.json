@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-19T15:01:53.220Z",
+  "timestamp": "2026-09-19T15:11:51.521Z",
   "stats": {
-    "totalReviews": 43757,
-    "alreadyFlagged": 18067,
+    "totalReviews": 43760,
+    "alreadyFlagged": 18066,
     "dateGuardCatches": 245,
     "directorMismatch": 1048,
     "tvFilmSignals": 1290,
-    "londonSignals": 1115,
+    "londonSignals": 1116,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3838
+    "noPublishDate": 3839
   },
   "findings": [
     {
@@ -54679,6 +54679,19 @@
       "score": 79,
       "publishDate": "2026-09-04",
       "url": "https://theatreboard.com/thread/15206/thelma-louise-young-vic?page=6",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "ticketed--unknown.json",
+      "publishDate": null,
+      "url": "https://www.ticketed.com/entertainment/musicals/london/thelma-louise-a-new-musical",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
