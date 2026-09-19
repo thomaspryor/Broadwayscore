@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-19T20:46:50.536Z",
+  "generatedAt": "2026-09-19T23:12:01.961Z",
   "date": "2026-09-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 193687,
+  "entryCount": 194660,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -1768,7 +1768,7 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "reviewCount": 16,
+      "reviewCount": 15,
       "median_e2e_ms": 1476065043,
       "p90_e2e_ms": 1476065056,
       "per_stage_median_ms": {
@@ -7142,7 +7142,7 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7936,6 +7936,21 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 1106587,
         "rebuilt-to-deployed": 96383206
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
