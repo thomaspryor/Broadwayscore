@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-18T23:08:53.760Z",
+  "generatedAt": "2026-09-19T01:54:16.553Z",
   "windowDays": 45,
-  "showsScanned": 72,
+  "showsScanned": 80,
   "gaps": [
     {
       "showId": "alvin-ailey-american-dance-theater-new-works-west-end-2026",
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --url=https://www.thestage.co.uk/long-reviews/alvin-ailey-american-dance-theater-review --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-17T15:01:25.973Z",
-      "fileAgeHours": 32.12415138888889,
+      "fileAgeHours": 34.86716416666667,
       "gapSeenAt": "2026-09-18T01:46:13.314Z",
-      "nonTerminalAgeHours": 21.377901666666666
+      "nonTerminalAgeHours": 24.134233055555555
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -33,9 +33,27 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 53.133960555555554,
+      "fileAgeHours": 55.876960833333335,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 53.05309722222222
+      "nonTerminalAgeHours": 55.80942861111111
+    },
+    {
+      "showId": "the-hope-theory-off-broadway-2026",
+      "title": "THE HOPE THEORY",
+      "openingDate": "2026-09-17",
+      "file": "wsj--unknown.json",
+      "outletId": "wsj",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-hope-theory-off-broadway-2026",
+      "firstSeen": "2026-09-18T10:20:54.798Z",
+      "fileAgeHours": 15.556025277777778,
+      "gapSeenAt": "2026-09-19T01:54:16.553Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
