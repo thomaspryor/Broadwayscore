@@ -1,60 +1,63 @@
 {
-  "runDate": "2026-09-19T02:52:14.717Z",
+  "runDate": "2026-09-19T08:52:47.993Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "thelma-and-louise-a-new-musical-off-west-end-2026,my-sons-a-queer-but-what-can-you-do-west-end-2026,crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026,alvin-ailey-american-dance-theater-new-works-west-end-2026,darkling-off-west-end-2026,america-who-hurt-you-off-broadway-2026,conflicted-off-broadway-2026,gimme-a-sign-off-broadway-2026,the-hope-theory-off-broadway-2026",
+    "showFilter": "thelma-and-louise-a-new-musical-off-west-end-2026,my-sons-a-queer-but-what-can-you-do-west-end-2026,alvin-ailey-american-dance-theater-new-works-west-end-2026,darkling-off-west-end-2026,america-who-hurt-you-off-broadway-2026,conflicted-off-broadway-2026,gimme-a-sign-off-broadway-2026,the-hope-theory-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 31,
+    "processed": 8,
+    "failed": 30,
     "skipped": 0,
-    "successRate": "13.9%"
+    "successRate": "21.1%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 4,
+    "tier1Attempts": 9,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 0,
-    "tier2Attempts": 10,
-    "tier2Success": 6,
-    "tier3Attempts": 7,
-    "tier3Success": 5,
-    "tier3_6Attempts": 6,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 1,
+    "tier2Attempts": 6,
+    "tier2Success": 3,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
+    "tier3_6Attempts": 3,
     "tier3_6Success": 0,
-    "tier4Attempts": 15,
-    "tier4Success": 1,
-    "totalFailed": 31,
-    "scrapingBeePageCredits": 45,
+    "tier4Attempts": 17,
+    "tier4Success": 3,
+    "totalFailed": 30,
+    "scrapingBeePageCredits": 5,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.1,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.4,
     "urlDiscoveryAttempts": 21,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
     "gimme-a-sign-off-broadway-2026/donyc--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json",
     "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
     "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "darkling-off-west-end-2026/onceaweektheatre--edward-lukes.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
@@ -76,7 +79,6 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/thestage--paul-vale.json",
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--daniella-harrison.json",
     "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
@@ -85,27 +87,33 @@
     "darkling-off-west-end-2026/guardian--unknown.json",
     "darkling-off-west-end-2026/viewfromthegods--unknown.json",
     "alvin-ailey-american-dance-theater-new-works-west-end-2026/thestage--unknown.json",
+    "darkling-off-west-end-2026/southasianheritage--unknown.json",
     "darkling-off-west-end-2026/the-morning-star--unknown.json",
     "darkling-off-west-end-2026/thestage--unknown.json",
-    "darkling-off-west-end-2026/voice-magazine--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
       "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "darkling-off-west-end-2026/onceaweektheatre--edward-lukes.json",
       "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "darkling-off-west-end-2026/voice-magazine--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "gimme-a-sign-off-broadway-2026/donyc--unknown.json",
-      "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
       "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json"
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json"
+    ]
   },
   "failuresByOutlet": {
     "New York Theatre Guide": {
@@ -135,6 +143,13 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 3,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
@@ -145,8 +160,13 @@
     },
     {
       "reviewId": "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
-      "oldUrl": "https://www.broadwayworld.com/off-broadway/article/Alan-Cumming-Joins-MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Producing-Team-20250605",
-      "newUrl": "https://www.broadwayworld.com/westend/article/MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Will-Embark-on-UK-Tour-20240508"
+      "oldUrl": "https://www.broadwayworld.com/westend/article/MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Will-Embark-on-UK-Tour-20240508",
+      "newUrl": "https://www.broadwayworld.com/off-broadway/article/Alan-Cumming-Joins-MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Producing-Team-20250605"
+    },
+    {
+      "reviewId": "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json",
+      "oldUrl": "https://www.westendbestfriend.co.uk/news/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre",
+      "newUrl": "https://www.westendbestfriend.co.uk/news/review-my-sons-a-queer-but-what-can-you-do-belgrade-theatre-tour"
     }
   ]
 }
