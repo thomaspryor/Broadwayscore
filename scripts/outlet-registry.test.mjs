@@ -147,4 +147,35 @@ describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
       false
     );
   });
+
+  test('branch 5: an unscored review with a human wrongShowCleared verdict is NOT excluded', () => {
+    // Real-corpus regression (the-komisar-scoop class): a human explicitly
+    // cleared wrongProduction/wrongShow on a url_content_mismatch file
+    // before scoring happened. The manual clear must win, same as branch 4.
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({
+        outletId: 'the-komisar-scoop',
+        incompleteReason: 'url_content_mismatch',
+        wrongProductionManualClear: true,
+        wrongShowManualClear: true,
+      }),
+      false
+    );
+  });
+
+  test('branch 5: a stale incompleteReason on an already-scored review is NOT excluded', () => {
+    // Real-corpus regression: incompleteReason is informational metadata
+    // that clearFailureFlags() should null out once a file is scored, but
+    // thousands of older files carry a stale wrong_content/scraper_garbage
+    // reason alongside a perfectly valid score. Without the hasValidScore()
+    // guard, branch 5 would hide these outlets' registry gaps.
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({
+        outletId: 'nytimes',
+        incompleteReason: 'wrong_content',
+        llmScore: { score: 78 },
+      }),
+      false
+    );
+  });
 });

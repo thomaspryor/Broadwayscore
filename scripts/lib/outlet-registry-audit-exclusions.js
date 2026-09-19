@@ -8,7 +8,7 @@
  * Each comment mirrors the rationale inline in audit-outlet-registry.js;
  * see that file for the full incident history behind each branch.
  */
-const { isNonReviewDemotedByFreshCV, isRejectedNonReview, wrongShowCleared } = require('./review-guards');
+const { isNonReviewDemotedByFreshCV, isRejectedNonReview, wrongShowCleared, hasValidScore } = require('./review-guards');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { WRONG_URL_INCOMPLETE } = require('./t1-silent-gap');
 
@@ -44,7 +44,33 @@ function isExcludedFromOutletRegistryAudit(review) {
   // above, or out of scope here) and NOT isIncludableForRebuild wholesale
   // (tried before here per branch 4's comment: pulled in duplicateOf/
   // temporal-window/roundup exclusions unrelated to this audit's question).
-  if (WRONG_URL_INCOMPLETE.has(review.incompleteReason)) return true;
+  //
+  // hasValidScore() gate is load-bearing, not optional: incompleteReason is
+  // informational metadata that clearFailureFlags() is supposed to null out
+  // once a file is scored, but a real-corpus check while building this fix
+  // found ~16,000 of 19,534 WRONG_URL_INCOMPLETE-flagged files already carry
+  // a valid score (older files a clearFailureFlags call never touched).
+  // classifySilentGap gates hasWrongUrlSignal behind the exact same
+  // "not already scored" precondition (t1-silent-gap.js:117:
+  // `isIncludableForRebuild(file, show) && hasValidScore(file)` short-
+  // circuits first) — without mirroring that here, this branch would treat
+  // thousands of real, already-scored outlets' reviews as junk and hide a
+  // genuine registry gap for any of them (ship-check/Codex adversarial
+  // review finding, round 1).
+  //
+  // wrongShowCleared() exception mirrors branch 4: a second adversarial pass
+  // found 28 real files (the-komisar-scoop, nydailynews, etc.) where a human
+  // explicitly cleared wrongProduction/wrongShow (wrongProductionManualClear
+  // / wrongShowManualClear / humanReviewedWrongProduction:false) — overruling
+  // the automated url_content_mismatch verdict — but scoring hadn't happened
+  // yet, so hasValidScore() alone still excluded them. A human's "this IS a
+  // real review" verdict must win regardless of score-presence, same as it
+  // does for branch 4's wrong_production/wrong_show rejections.
+  if (
+    WRONG_URL_INCOMPLETE.has(review.incompleteReason) &&
+    !hasValidScore(review) &&
+    !wrongShowCleared(review)
+  ) return true;
 
   return false;
 }
