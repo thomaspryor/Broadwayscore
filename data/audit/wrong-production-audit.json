@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-19T12:49:36.205Z",
+  "timestamp": "2026-09-19T13:06:18.911Z",
   "stats": {
-    "totalReviews": 43737,
-    "alreadyFlagged": 18067,
+    "totalReviews": 43739,
+    "alreadyFlagged": 18063,
     "dateGuardCatches": 244,
     "directorMismatch": 1048,
     "tvFilmSignals": 1288,
     "londonSignals": 1115,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3831
+    "noPublishDate": 3832
   },
   "findings": [
     {
@@ -27894,7 +27894,7 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2026 (2x) more than 2016 (0x). 2026 matches production: the-cherry-orchard-west-end-2026"
+          "detail": "Mentions year 2026 (2x) more than 2016 (0x). 2026 matches production: the-cherry-orchard-park-avenue-armory-off-broadway-2026"
         }
       ]
     },
