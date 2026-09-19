@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-19T15:38:10.772Z",
+  "runDate": "2026-09-19T20:11:54.633Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 82,
-    "failed": 385,
+    "processed": 86,
+    "failed": 389,
     "skipped": 0,
-    "successRate": "17.6%"
+    "successRate": "18.1%"
   },
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 54,
     "amp": 0,
     "browserbase": 12,
     "directCookies": 3,
-    "scrapingbee": 17,
-    "brightdata": 6,
+    "scrapingbee": 18,
+    "brightdata": 8,
     "archiveToday": 0,
     "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 66,
-    "tier1Success": 44,
+    "tier1Attempts": 24,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 14,
-    "tier1_5Success": 6,
-    "tier2Attempts": 31,
-    "tier2Success": 18,
-    "tier3Attempts": 15,
-    "tier3Success": 7,
-    "tier3_6Attempts": 9,
+    "tier1_5Attempts": 8,
+    "tier1_5Success": 4,
+    "tier2Attempts": 15,
+    "tier2Success": 4,
+    "tier3Attempts": 13,
+    "tier3Success": 5,
+    "tier3_6Attempts": 10,
     "tier3_6Success": 0,
-    "tier4Attempts": 50,
+    "tier4Attempts": 17,
     "tier4Success": 3,
-    "totalFailed": 238,
-    "scrapingBeePageCredits": 107,
+    "totalFailed": 295,
+    "scrapingBeePageCredits": 76,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 14,
-    "browserbaseMinutesUsed": 4.4,
-    "urlDiscoveryAttempts": 213,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 8,
+    "browserbaseMinutesUsed": 2.2,
+    "urlDiscoveryAttempts": 268,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -132,7 +132,11 @@
     "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
     "the-hunger-games-on-stage-west-end-2025/londontheatredirect--unknown.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "titanique-west-end-2024/london-theatre-reviews--unknown.json"
+    "titanique-west-end-2024/london-theatre-reviews--unknown.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/ticketed--unknown.json",
+    "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
+    "the-children-off-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -260,10 +264,6 @@
     "in-the-heights-off-broadway-2026/ew--melissa-rose-bernardo.json",
     "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
     "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
-    "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
-    "king-of-the-yees-off-broadway-2026/theatermania--jonas-schwartz.json",
-    "the-unbelievers-off-broadway-2026/timeout-london--andrzej-lukowski.json",
-    "the-unbelievers-off-broadway-2026/financialtimes--sarah-hemming.json",
     "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
     "the-hope-theory-off-broadway-2026/wsj--unknown.json",
     "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
@@ -302,7 +302,6 @@
     "golden-boy-off-west-end-2026/plays-to-see--unknown.json",
     "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
     "the-seven-deadly-sins-the-human-voice-off-west-end-2026/lovetovisit--unknown.json",
-    "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
     "million-dollar-quartet-off-west-end-2026/telegraph--charles-spencer.json",
     "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--unknown.json",
     "night-city-off-west-end-2026/southwarkplayhouse--unknown.json",
@@ -519,7 +518,16 @@
     "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
     "my-neighbour-totoro-west-end-2025/thestage--sam-marlowe.json",
     "titanique-west-end-2024/nytimes--unknown.json",
-    "titanique-west-end-2024/nypost--johnny-oleksinski.json"
+    "titanique-west-end-2024/nypost--johnny-oleksinski.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatreandtonic--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+    "the-story-west-end-2026/readaboutstuff--unknown.json",
+    "the-story-west-end-2026/the-spectator-uk--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/timeout--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/playbill--unknown.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-hunger-games-on-stage-west-end-2025/londontheatredirect--london-theatre-direct-limited.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -574,7 +582,9 @@
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
       "the-hunger-games-on-stage-west-end-2025/londontheatredirect--unknown.json",
-      "titanique-west-end-2024/london-theatre-reviews--unknown.json"
+      "titanique-west-end-2024/london-theatre-reviews--unknown.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/ticketed--unknown.json",
+      "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -613,7 +623,8 @@
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
       "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
       "schmigadoon-2026/theatrely--unknown.json",
-      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "the-children-off-west-end-2026/telegraph--fiona-mountford.json"
     ],
     "brightdata": [
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json",
@@ -621,7 +632,9 @@
       "weve-been-here-before-a-one-woman-musical-off-broadway-2026/theatermania--linda-buchwald.json",
       "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/theatermania--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "just-in-time-2025/newyorker--conde-nast.json"
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -639,23 +652,23 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Londontheatredirect": {
-      "count": 2,
-      "domain": "londontheatredirect.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "vocaleyes": {
-      "count": 1,
-      "domain": "vocaleyes.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Guardian": {
-      "count": 1,
+      "count": 2,
       "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "readaboutstuff": {
+      "count": 1,
+      "domain": "readaboutstuff.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Spectator  (UK)": {
+      "count": 1,
+      "domain": "spectator.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -667,31 +680,20 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
+    "Londontheatredirect": {
+      "count": 1,
+      "domain": "londontheatredirect.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "BroadwayWorld": {
       "count": 1,
       "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "WhatsOnStage": {
-      "count": 1,
-      "domain": "whatsonstage.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "abigails-party-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/tamzin-outhwaite-and-kevin-bishop-star-in-west-end-transfer-of-abigails-party",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/abigails-party-review"
-    },
-    {
-      "reviewId": "oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oldUrl": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/",
-      "newUrl": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
-    }
-  ]
+  "urlDiscoveries": []
 }
