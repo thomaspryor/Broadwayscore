@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-09-19T15:38:00.505Z",
-  "processed": 82,
-  "failed": 385,
-  "successRate": "17.6%",
+  "updatedAt": "2026-09-19T17:18:46.870Z",
+  "processed": 83,
+  "failed": 382,
+  "successRate": "17.8%",
   "tierBreakdown": {
     "playwright": 52,
     "amp": 0,
     "browserbase": 12,
     "directCookies": 3,
     "scrapingbee": 17,
-    "brightdata": 6,
+    "brightdata": 7,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-09-19T14:26:05.843Z",
-      "event": "bb-session",
-      "session": "5b3ffdeb",
-      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
-    },
     {
       "t": "2026-09-19T14:26:06.256Z",
       "event": "bb-cookie-inject",
@@ -106,6 +100,34 @@
       "event": "bb-session",
       "session": "4519b946",
       "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-09-19T17:10:39.409Z",
+      "event": "bb-session",
+      "session": "e4829817",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
+    },
+    {
+      "t": "2026-09-19T17:10:39.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-19T17:11:15.910Z",
+      "event": "bb-session",
+      "session": "ad91cae5",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-19T17:11:16.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-19T17:13:56.452Z",
+      "event": "bb-session",
+      "session": "5dc25dbd",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
   ]
 }
