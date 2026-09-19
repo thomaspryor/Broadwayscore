@@ -179,12 +179,6 @@ export default function HomePage() {
 
   // --- New shelves: Previews, Lotteries, Rush, Box Office, Sold Out, West End ---
 
-  // In Previews — sorted by opening date (soonest first), null dates last
-  const inPreviewsList = allShows
-    .filter(s => s.status === 'previews')
-    .sort((a, b) => (new Date(a.openingDate || '2099-01-01').getTime()) - (new Date(b.openingDate || '2099-01-01').getTime()))
-    .map(s => ({ ...serializeShow(s), subtitle: s.openingDate ? `Opens ${shortDate(s.openingDate)}` : undefined, subtitleColor: 'text-gray-400' }));
-
   // Lottery/Rush data (fallback to empty if file missing)
   let lrShows: Record<string, { lottery?: { price?: number }; specialLottery?: { price?: number }; rush?: { price?: number }; digitalRush?: { price?: number } }> = {};
   try {
@@ -243,11 +237,19 @@ export default function HomePage() {
     .sort((a, b) => (grossesShows[b.slug]?.thisWeek?.capacity || 0) - (grossesShows[a.slug]?.thisWeek?.capacity || 0))
     .map(s => ({ ...serializeShow(s), subtitle: `${Math.round(grossesShows[s.slug]!.thisWeek!.capacity!)}% capacity`, subtitleColor: 'text-gray-400' }));
 
-  // Shows Starting Soon — upcoming (not yet in previews), sorted by previewsStartDate
+  // Shows Starting Soon — in previews or announced-but-not-yet-in-previews,
+  // sorted by next milestone date (previews shows by opening date, upcoming shows by previews start date)
   const startingSoonList = allShows
-    .filter(s => s.status === 'upcoming' && (s.previewsStartDate || s.openingDate))
-    .sort((a, b) => new Date(a.previewsStartDate || a.openingDate).getTime() - new Date(b.previewsStartDate || b.openingDate).getTime())
+    .filter(s => s.status === 'previews' || (s.status === 'upcoming' && (s.previewsStartDate || s.openingDate)))
+    .sort((a, b) => {
+      const aDate = a.status === 'previews' ? (a.openingDate || '2099-01-01') : (a.previewsStartDate || a.openingDate);
+      const bDate = b.status === 'previews' ? (b.openingDate || '2099-01-01') : (b.previewsStartDate || b.openingDate);
+      return new Date(aDate).getTime() - new Date(bDate).getTime();
+    })
     .map(s => {
+      if (s.status === 'previews') {
+        return { ...serializeShow(s), subtitle: s.openingDate ? `Opens ${shortDate(s.openingDate)}` : undefined, subtitleColor: 'text-gray-400' };
+      }
       const startDate = s.previewsStartDate || s.openingDate;
       return { ...serializeShow(s), subtitle: startDate ? `Starts ${shortDate(startDate)}` : undefined, subtitleColor: 'text-gray-400' };
     });
@@ -279,12 +281,10 @@ export default function HomePage() {
     // scrolling past 3 sections (acceptance criterion on Notion 362637c5-416f-8183).
     { title: 'At the Met', shows: bestOperaList, viewAllHref: '/opera', minCount: 2 },
     ...(nytCriticsPicksList.length > 0 ? [{ title: "New York Times Critic\u2019s Picks", shows: nytCriticsPicksList, viewAllHref: '/critics/outlets/the-new-york-times' }] : []),
-    { title: 'In Previews / Opening Soon', shows: inPreviewsList, viewAllHref: '/browse/upcoming-broadway-shows', minCount: 1 },
     { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
     { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },
     { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
-    { title: 'Shows Starting Soon', shows: startingSoonList, viewAllHref: '/browse/upcoming-broadway-shows' },
     { title: 'Best of the West End', shows: bestWestEndList, viewAllHref: '/west-end' },
     // Pre-Broadway tryouts — differentiating coverage nobody else aggregates;
     // lower-shelf placement per user (2026-07-12). Closed tryouts included by
@@ -296,6 +296,7 @@ export default function HomePage() {
     { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
     { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/browse/broadway-shows-for-kids' },
     { title: 'Jukebox Musicals', shows: jukeboxMusicalsList, viewAllHref: '/browse/jukebox-musicals-on-broadway' },
+    { title: 'Shows Starting Soon', shows: startingSoonList, viewAllHref: '/browse/upcoming-broadway-shows' },
     { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/browse/broadway-shows-closing-soon' },
   ];
 
