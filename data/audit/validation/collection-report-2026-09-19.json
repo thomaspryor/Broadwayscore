@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-09-19T00:25:01.741Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 78,
+    "failed": 305,
+    "skipped": 0,
+    "successRate": "20.4%"
+  },
+  "tierBreakdown": {
+    "playwright": 46,
+    "amp": 1,
+    "browserbase": 8,
+    "directCookies": 1,
+    "scrapingbee": 17,
+    "brightdata": 5,
+    "archiveToday": 0,
+    "archive": 9
+  },
+  "statistics": {
+    "tier1Attempts": 18,
+    "tier1Success": 6,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 14,
+    "tier2Success": 4,
+    "tier3Attempts": 10,
+    "tier3Success": 2,
+    "tier3_6Attempts": 8,
+    "tier3_6Success": 0,
+    "tier4Attempts": 14,
+    "tier4Success": 4,
+    "totalFailed": 298,
+    "scrapingBeePageCredits": 55,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 275,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "gimme-a-sign-off-broadway-2026/donyc--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
@@ -386,8 +437,7 @@
     "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
     "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "the-hope-theory-off-broadway-2026/playbill--unknown.json",
       "darkling-off-west-end-2026/liamodell--unknown.json",
@@ -491,133 +541,55 @@
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
     ]
   },
-  "startTime": "2026-09-18T21:23:11.659Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
-  "log": [
-    {
-      "t": "2026-09-18T21:53:21.081Z",
-      "event": "bb-session",
-      "session": "e66bfaee",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+  "failuresByOutlet": {
+    "BroadwayWorld": {
+      "count": 2,
+      "domain": "broadwayworld.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
-    {
-      "t": "2026-09-18T21:53:21.856Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+    "The Guardian": {
+      "count": 2,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
-    {
-      "t": "2026-09-18T22:03:00.689Z",
-      "event": "bb-session",
-      "session": "560ade43",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
-    {
-      "t": "2026-09-18T22:09:55.951Z",
-      "event": "bb-session",
-      "session": "ec34360e",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    "The Reviews Hub": {
+      "count": 1,
+      "domain": "thereviewshub.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
-    {
-      "t": "2026-09-18T22:09:56.586Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+    "Londontheatredirect": {
+      "count": 1,
+      "domain": "londontheatredirect.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
-    {
-      "t": "2026-09-18T22:13:38.714Z",
-      "event": "bb-session",
-      "session": "7daca378",
-      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
-    },
-    {
-      "t": "2026-09-18T22:16:41.627Z",
-      "event": "bb-session",
-      "session": "ae2cba8f",
-      "url": "https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/"
-    },
-    {
-      "t": "2026-09-18T22:17:01.841Z",
-      "event": "bb-session",
-      "session": "47a9a1e9",
-      "url": "https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/"
-    },
-    {
-      "t": "2026-09-18T22:52:35.435Z",
-      "event": "bb-session",
-      "session": "410dabb4",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-18T22:52:50.865Z",
-      "event": "bb-session",
-      "session": "d03b3d12",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-18T22:54:22.260Z",
-      "event": "bb-session",
-      "session": "b75fcf31",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-09-18T22:59:35.205Z",
-      "event": "bb-session",
-      "session": "a75c2c74",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-18T22:59:36.090Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-18T23:03:54.438Z",
-      "event": "bb-session",
-      "session": "d3b9ecdc",
-      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about"
-    },
-    {
-      "t": "2026-09-18T23:03:55.294Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-18T23:09:34.564Z",
-      "event": "bb-session",
-      "session": "385860ec",
-      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
-    },
-    {
-      "t": "2026-09-18T23:09:35.352Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-18T23:20:53.920Z",
-      "event": "bb-session",
-      "session": "a777e031",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-18T23:20:54.768Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-18T23:24:43.677Z",
-      "event": "bb-session",
-      "session": "71e03038",
-      "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
-    },
-    {
-      "t": "2026-09-18T23:24:59.046Z",
-      "event": "bb-session",
-      "session": "ecbdb552",
-      "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    "WhatsOnStage": {
+      "count": 1,
+      "domain": "whatsonstage.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
-  ],
-  "recoveredAfterFailure": [
-    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
+      "newUrl": "https://www.newyorktheatreguide.com/theatre-news/news/my-sons-a-queer-but-what-can-you-do-to-play-off-broadway"
+    }
   ]
 }
