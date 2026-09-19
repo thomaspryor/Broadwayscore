@@ -115,7 +115,10 @@
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--theo-bosanquet.json",
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/hollywood-reporter--david-rooney.json",
     "the-book-of-mormon-west-end-2024/hollywood-reporter--unknown.json",
-    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
+    "darkling-off-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -507,7 +510,6 @@
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/playbill--unknown.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "the-hunger-games-on-stage-west-end-2025/londontheatredirect--london-theatre-direct-limited.json",
-    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
     "titanique-west-end-2024/the-queer-review--james-kleinmann.json",
     "titanique-west-end-2024/thewrap--robert-hofler.json",
     "titanique-west-end-2024/wsj--charles-isherwood.json",
@@ -776,7 +778,17 @@
     "the-book-of-mormon-west-end-2024/ew--lisa-schwarzbaum.json",
     "the-book-of-mormon-west-end-2024/new-jersey-newsroom--michael-sommers.json",
     "the-book-of-mormon-west-end-2024/newsday--linda-winer.json",
-    "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json"
+    "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/fjord-review--unknown.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json",
+    "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
+    "golden-boy-off-west-end-2026/ntlive--powster.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -843,7 +855,8 @@
       "harry-potter-2021/melindas-malarky--melinda-pressler.json",
       "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--anya-ryan.json",
-      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--theo-bosanquet.json"
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--theo-bosanquet.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -915,7 +928,10 @@
       "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "hamilton-west-end-2021/variety--kj-yossman.json",
-      "hamilton-2015/theatermania--zachary-stewart.json"
+      "hamilton-2015/theatermania--zachary-stewart.json",
+      "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
+      "darkling-off-west-end-2026/guardian--unknown.json",
+      "darkling-off-west-end-2026/voice-magazine--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -934,7 +950,7 @@
     ]
   },
   "startTime": "2026-09-19T12:35:18.916Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "golden-boy-off-west-end-2026/ntlive--powster.json",
   "log": [
     {
       "t": "2026-09-19T12:46:11.402Z",
@@ -1223,11 +1239,23 @@
       "event": "bb-session",
       "session": "fbc34a45",
       "url": "https://www.hollywoodreporter.com/news/general-news/book-mormon-sets-broadway-we"
+    },
+    {
+      "t": "2026-09-19T23:03:49.348Z",
+      "event": "bb-session",
+      "session": "652c5583",
+      "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london"
+    },
+    {
+      "t": "2026-09-19T23:03:50.153Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ],
   "recoveredAfterFailure": [
     "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
-    "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json"
+    "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
+    "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json"
   ]
 }
