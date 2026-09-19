@@ -37,8 +37,10 @@ function isExcludedFromOutletRegistryAudit(review) {
 
   // 5. Content-quality pipeline flagged the file's URL as pointing at the
   // wrong content at write time (BRO-3794) — a re-fetch of the same URL can
-  // only re-ingest more garbage, so this outletId never needs a registry
-  // entry either. Reuses the SAME narrow set t1-silent-gap.js's
+  // only re-ingest more garbage, so this file supplies no registry
+  // requirement either (its outletId may still be covered by other files —
+  // see the hasValidScore/wrongShowCleared guards below). Reuses the SAME
+  // narrow set t1-silent-gap.js's
   // hasWrongUrlSignal checks first, not the full signal (which also covers
   // isBlockedReviewUrl/bwwAggregatorAmbiguous — already handled by branch 3
   // above, or out of scope here) and NOT isIncludableForRebuild wholesale
