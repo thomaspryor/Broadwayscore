@@ -973,18 +973,6 @@
     "queuedAt": "2026-09-19T01:14:40.622Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "5/146 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nDarkling: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nMuch Ado About Nothing: score-drift\nHadestown: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-19T06:54:31.044Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
     "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
@@ -1026,15 +1014,27 @@
     "queuedAt": "2026-09-19T14:29:42.164Z"
   },
   {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "8/146 show(s) differ between internal state and what prod serves.\nscore-drift: 8\nDarkling: score-drift\nBLOODSPORT: After Helen of Troy: score-drift\nMan to Man: score-drift\nA Month in the Country: score-drift\nDeath Note: The Musical: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-19T18:34:03.209Z"
+  },
+  {
     "conditionKey": "t1-coverage:scoreboard",
     "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.3% (380/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (869h)\nA Midsummer Night's Dream — observer (869h)\nA Midsummer Night's Dream — standard (869h)\nABBA Voyage — independent (869h)\nAladdin — ew (869h)\n… 171 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (869h)\nBuena Vista Social Club — broadwaynews (869h)\nBuena Vista Social Club — nydailynews (869h)\nHadestown — nydailynews (869h)\nHeathers The Musical — dailybeast (869h)\n… 17 more circuit-open cell(s)",
+    "description": "broadway: 76.3% (380/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.4% (430/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (873h)\nA Midsummer Night's Dream — observer (873h)\nA Midsummer Night's Dream — standard (873h)\nABBA Voyage — independent (873h)\nAladdin — ew (873h)\n… 171 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (873h)\nBuena Vista Social Club — broadwaynews (873h)\nBuena Vista Social Club — nydailynews (873h)\nHadestown — nydailynews (873h)\nHeathers The Musical — dailybeast (873h)\n… 17 more circuit-open cell(s)",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-19T15:06:30.213Z"
+    "queuedAt": "2026-09-19T18:34:03.402Z"
   }
 ]
