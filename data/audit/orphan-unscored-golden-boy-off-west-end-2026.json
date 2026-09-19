@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "golden-boy-off-west-end-2026",
   "openingDate": "2026-09-15",
-  "detectedAt": "2026-09-19T16:17:59.264Z",
+  "detectedAt": "2026-09-19T18:41:19.541Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -13,6 +13,40 @@
       "fullTextLen": 4136,
       "dispatchActionable": false,
       "skipReason": "no_scorable_text",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "plays-to-see--unknown.json",
+      "outletId": "plays-to-see",
+      "criticName": "Unknown",
+      "url": "https://playstosee.com/reviews/uk-reviews/golden-boy/",
+      "fullTextLen": 4617,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "thenerve--dorian-lynskey.json",
+      "outletId": "thenerve",
+      "criticName": "Dorian Lynskey",
+      "url": "https://www.thenerve.news/p/review-theatre-golden-boy-josh-oconnor-almeida-sam-yates-boxing-dorian-lynskey",
+      "fullTextLen": 5475,
+      "dispatchActionable": true,
+      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -57,10 +91,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 5,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 3,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-19T18:41:19.541Z"
 }

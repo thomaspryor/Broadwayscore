@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "pre-existing-condition-off-broadway-2026",
   "openingDate": "2026-09-14",
-  "detectedAt": "2026-09-19T16:17:59.264Z",
+  "detectedAt": "2026-09-19T18:41:19.541Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "exeunt-magazine--read-more-articles-by-loren-noveck.json",
+      "outletId": "exeunt-magazine",
+      "criticName": "Read more articles by Loren Noveck",
+      "url": "https://exeuntnyc.com/reviews/review-pre-existing-condition-at-greenwich-house-theater/",
+      "fullTextLen": 7680,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-19T18:41:19.541Z"
 }
