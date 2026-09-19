@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "the-hope-theory-off-broadway-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-19T01:40:25.498Z",
+  "detectedAt": "2026-09-19T02:02:53.360Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "broadwayworld--unknown.json",
+      "outletId": "broadwayworld",
+      "criticName": "Unknown",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html",
+      "fullTextLen": 1982,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "wsj--unknown.json",
       "outletId": "wsj",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
