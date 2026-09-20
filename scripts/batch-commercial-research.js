@@ -302,6 +302,11 @@ ${evidence}`;
         'x-api-key': ANTHROPIC_KEY,
         'anthropic-version': '2023-06-01',
       },
+      // Explicit timeout: without one, a hung request (no error, no response)
+      // waits indefinitely — killed a 60min job (BRO-3832) that never even
+      // finished researching a single show. Matches scraper.js's convention
+      // for every other outbound provider call in this pipeline.
+      timeout: 45000,
     }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -326,6 +331,7 @@ ${evidence}`;
       });
     });
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Claude API request timeout')); });
     req.write(body);
     req.end();
   });
