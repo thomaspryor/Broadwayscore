@@ -848,7 +848,23 @@ function cmdPush(args) {
       // (ship-check finding: the sweep would report "marked Done" for a card
       // that is still open, and never try again).
       if (!dry) {
-        entry.pushed = markCardDone(pageId);
+        // Card #794 follow-up (adversarial review): markCardDone() re-throws
+        // on anything other than a close-time-verify refusal, and a task can
+        // reach 'completed' + push-eligible via a path this file's own
+        // mustNeverPushDone guard never sees (e.g. audit-archived-in-
+        // progress.js closing a card whose Notion page it independently
+        // discovered is archived/trashed, without touching THIS file's
+        // .notion-map.json sidecar at all) — a page that refuses every write
+        // throws there too. One card's write failure must never abort the
+        // rest of this push batch, so it's caught here the same way every
+        // other per-entry failure in this file already is (e.g. zombie-flip
+        // below), not left to propagate.
+        try {
+          entry.pushed = markCardDone(pageId);
+        } catch (e) {
+          refused.push({ taskId: entry.taskId, name: entry.name, pageId, error: e.message });
+          continue;
+        }
         // A refused close is NOT a close: it must not be counted, printed as
         // "✓ marked Done", or returned in `done` — the operator would read a
         // still-open card as closed and never look again (second review pass:
@@ -869,10 +885,15 @@ function cmdPush(args) {
       }
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
-    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by close-time verify — their own acceptance command fails on origin/main (still open, will retry)` : ''}${parkedTerminal.length ? `, ${parkedTerminal.length} skipped (Notion status is Archived/Cancelled — never overwrite with Done)` : ''}${dry ? ' (DRY RUN)' : ''}`);
+    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused/failed (still open, will retry)` : ''}${parkedTerminal.length ? `, ${parkedTerminal.length} skipped (Notion status is Archived/Cancelled — never overwrite with Done)` : ''}${dry ? ' (DRY RUN)' : ''}`);
     for (const d of done) console.error(`  ✓ ${d.name}`);
     for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
-    for (const r of refused) console.error(`  ⛔ still open (own file failing on main): ${r.name}`);
+    // r.error present (card #794 follow-up): the write itself threw (e.g. a
+    // page that refuses every write) rather than close-time-verify cleanly
+    // refusing — different cause, different message, so the operator isn't
+    // sent to check origin/main's acceptance command for a card that was
+    // never a close-time-verify case at all.
+    for (const r of refused) console.error(r.error ? `  ⛔ card write failed (${r.error.split('\n')[0]}): ${r.name}` : `  ⛔ still open (own file failing on main): ${r.name}`);
     for (const p of parkedTerminal) console.error(`  · skipped #${p.taskId} (Notion says ${p.syncedStatus} — never overwrite with Done): ${p.name}`);
     return { listId: listId(args), done, skipped, refused, parkedTerminal, dry };
   } finally { release(); }
@@ -1125,7 +1146,12 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false, 
     let viaPausedClosure = false;
     if (!drift && task.status === 'pending') {
       drift = planPendingClosure(task, card);
-      if (drift) viaPausedClosure = true;
+      // Card #794 follow-up: planPendingClosure now also fires for an
+      // archived/trashed card (frozen non-Paused status) — restrict the
+      // name-matching pushed:true stamp below to the literal Paused case it
+      // was written for; the archived case already gets its own permanent
+      // guard via entry.syncedArchived (mustNeverPushDone), no stamp needed.
+      if (drift && card.status === 'Paused') viaPausedClosure = true;
     }
     if (!drift) { unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: card.status }); continue; }
     fixed.push({ taskId: entry.taskId, name: entry.name, from: task.status, to: drift.newStatus, cardStatus: drift.cardStatus, reason: drift.reason });
