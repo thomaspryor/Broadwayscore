@@ -1,15 +1,11 @@
 {
-  "updatedAt": "2026-09-19T11:38:22.041Z",
-  "scanned": 2094,
+  "updatedAt": "2026-09-20T05:19:07.471Z",
+  "scanned": 2096,
   "showsWithViolations": 729,
-  "totalViolations": 1630,
-  "newSinceLastRun": 5,
+  "totalViolations": 1631,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "girl-interrupted-off-broadway-2026::https://www.talkinbroadway.com/page/ob/06_04_26b.html",
-    "lean-to-off-broadway-2026::https://www.talkinbroadway.com/page/ob/09_16_26.html",
-    "camping-off-broadway-2026::https://www.talkinbroadway.com/page/ob/06_24_26.html",
-    "romeo-and-juliet-off-broadway-2026::https://www.talkinbroadway.com/page/ob/06_11_26.html",
-    "benevolent-off-broadway-2026::https://www.talkinbroadway.com/page/ob/08_27_26.html"
+    "man-to-man-west-end-2026::https://www.dailymail.com/tvshowbiz/article-16131281/PATRICK-MARMION-reviews-Man-Man-Royal-Court-Theatre.html"
   ],
   "violationKeys": [
     "joe-turners-come-and-gone-2026::https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
@@ -1540,6 +1536,7 @@
     "are-you-watching-west-end-2026::https://www.britishtheatreguide.info/reviews/are-you-watchin-royal-court-the-25647",
     "the-tempest-globe-west-end-2026::https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/richard-ii-jonathan-bailey-review-b2700182.html",
     "man-and-boy-west-end-2026::https://www.standard.co.uk/culture/theatre/man-boy-review-rattigan-national-theatre-b1270541.html",
+    "man-to-man-west-end-2026::https://www.dailymail.com/tvshowbiz/article-16131281/PATRICK-MARMION-reviews-Man-Man-Royal-Court-Theatre.html",
     "man-to-man-west-end-2026::https://theartsdesk.com/theatre/man-man-royal-court-review-vividly-high-definition-revival",
     "operation-mincemeat-west-end-2024::https://www.ft.com/content/836286f5-cdbb-4bdc-b161-ec6275ff29bd?syn-25a6b1a6=1",
     "stereophonic-off-broadway-2023::https://www.talkinbroadway.com/page/ob/10_29_23b.html",
@@ -15984,8 +15981,14 @@
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
       "openingDate": "2026-09-11",
-      "message": "Review URL for artsdesk/Aleks Sierz does not mention show slug (checked: man-to-man-west-end, man-to-man): https://theartsdesk.com/theatre/man-man-royal-court-review-vividly-high-definition-revival",
+      "message": "Review URL for daily-mail/Patrick Marmion does not mention show slug (checked: man-to-man-west-end, man-to-man): https://www.dailymail.com/tvshowbiz/article-16131281/PATRICK-MARMION-reviews-Man-Man-Royal-Court-Theatre.html\nReview URL for artsdesk/Aleks Sierz does not mention show slug (checked: man-to-man-west-end, man-to-man): https://theartsdesk.com/theatre/man-man-royal-court-review-vividly-high-definition-revival",
       "violations": [
+        {
+          "outletId": "daily-mail",
+          "criticName": "Patrick Marmion",
+          "url": "https://www.dailymail.com/tvshowbiz/article-16131281/PATRICK-MARMION-reviews-Man-Man-Royal-Court-Theatre.html",
+          "urlSlug": "tvshowbiz article-16131281 patrick-marmion-reviews-man-man-royal-court-theatre"
+        },
         {
           "outletId": "artsdesk",
           "criticName": "Aleks Sierz",

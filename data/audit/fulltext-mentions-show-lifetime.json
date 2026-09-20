@@ -1,10 +1,13 @@
 {
-  "updatedAt": "2026-09-19T11:38:21.103Z",
-  "scanned": 2094,
-  "showsWithViolations": 327,
-  "totalViolations": 640,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-09-20T05:19:06.547Z",
+  "scanned": 2096,
+  "showsWithViolations": 329,
+  "totalViolations": 642,
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "equus-west-end-2026::jonathan-baz--unknown.json",
+    "golden-boy-off-west-end-2026::plays-to-see--unknown.json"
+  ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -596,6 +599,7 @@
     "titanique-west-end-2024::thestage--paul-vale.json",
     "titanique-off-broadway-2022::newyorker--dan-stahl.json",
     "titanique-off-broadway-2022::theatermania--zachary-stewart.json",
+    "equus-west-end-2026::jonathan-baz--unknown.json",
     "broken-glass-west-end-2026::guardian--michael-billington.json",
     "broken-glass-west-end-2026::standard--asserts-dominic-cavendish.json",
     "inter-alia-west-end-2026::theatreandtonic--becky-k.json",
@@ -644,6 +648,7 @@
     "the-winters-tale-off-broadway-2026::talkinbroadway--unknown.json",
     "la-boheme-off-broadway-2024::operawire--jennifer-e-pyron.json",
     "the-children-off-west-end-2026::thestage--dave-fargnoli.json",
+    "golden-boy-off-west-end-2026::plays-to-see--unknown.json",
     "barcelona-west-end-2024::times-uk--clive-davis.json",
     "high-society-west-end-2026::guardian--arifa-akbar.json"
   ],
@@ -668,7 +673,7 @@
       "showId": "schmigadoon-2026",
       "title": "Schmigadoon!",
       "openingDate": "2026-04-20",
-      "message": "nytimes/Jesse Green (nytimes--jesse-green.json) SHIPPED but fullText never mentions 'Schmigadoon!' (303 chars): https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html",
+      "message": "nytimes/Jesse Green (nytimes--jesse-green.json) SHIPPED but fullText never mentions 'Schmigadoon!' (303 chars): https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html\n⚠️  washpost/Naveen Kumar (washpost--naveen-kumar.json) also too short to assess (0 chars): https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
       "violations": [
         {
           "filename": "nytimes--jesse-green.json",
@@ -7769,6 +7774,22 @@
       ]
     },
     {
+      "showId": "equus-west-end-2026",
+      "title": "Equus",
+      "openingDate": "2026-05-18",
+      "message": "jonathan-baz/Unknown (jonathan-baz--unknown.json) SHIPPED but fullText never mentions 'Equus' (2651 chars): https://www.jonathanbaz.com/2026/05/equus-review.html\n⚠️  thestage/Holly O' (thestage--holly-o.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lindsay-posner",
+      "violations": [
+        {
+          "filename": "jonathan-baz--unknown.json",
+          "url": "https://www.jonathanbaz.com/2026/05/equus-review.html",
+          "outletId": "jonathan-baz",
+          "criticName": "Unknown",
+          "haystackLength": 2651,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
       "showId": "broken-glass-west-end-2026",
       "title": "Broken Glass",
       "openingDate": "2026-03-03",
@@ -8348,6 +8369,22 @@
           "outletId": "thestage",
           "criticName": "Dave Fargnoli",
           "haystackLength": 2996,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "message": "plays-to-see/Unknown (plays-to-see--unknown.json) SHIPPED but fullText never mentions 'Golden Boy' (4617 chars): https://playstosee.com/reviews/uk-reviews/golden-boy/\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
+      "violations": [
+        {
+          "filename": "plays-to-see--unknown.json",
+          "url": "https://playstosee.com/reviews/uk-reviews/golden-boy/",
+          "outletId": "plays-to-see",
+          "criticName": "Unknown",
+          "haystackLength": 4617,
           "textIssuesFlag": false
         }
       ]
