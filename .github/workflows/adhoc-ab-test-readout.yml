@@ -14,13 +14,21 @@ name: Ad-hoc A/B Test Readout
 # fetches (GET) from PostHog/Impact and prints; this workflow makes no
 # commits, no pushes, no PostHog/Impact mutations, no email. A human reads
 # the run's Summary/log and decides.
+#
+# ticket-single-button concluded 2026-09-16 (single-button, no significant
+# difference — see docs/experiments/ticket-single-button.md) and its
+# registry entry was removed; --flag ticket-single-button still works here
+# for historical reads (analyze-ab-test.js keeps its FLAG_RESTART_DATES
+# entry), but the default below matches analyze-ab-test.js's own new
+# default (ticket-primary-platform) so a run with no --flag input doesn't
+# silently target a retired experiment.
 on:
   workflow_dispatch:
     inputs:
       flag:
         description: 'Flag key (matches analyze-ab-test.js --flag)'
         required: false
-        default: 'ticket-single-button'
+        default: 'ticket-primary-platform'
       days:
         description: 'Lookback window in days'
         required: false
