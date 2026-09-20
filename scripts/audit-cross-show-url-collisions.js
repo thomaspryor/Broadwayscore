@@ -13,7 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Overridable via env so tests can point at a temp fixture dir/file instead
@@ -146,6 +146,7 @@ for (const showId of showDirs) {
 
     if (APPLY) {
       data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(data);
       data.wrongProductionNote = `File showId "${data.showId}" doesn't match directory "${showId}" — placed in wrong production directory`;
       atomicWriteJSON(filePath, data);
       showIdMismatchFlagged++;
@@ -990,6 +991,7 @@ if (APPLY) {
         if (data.wrongShow || data.wrongProduction) continue;
         if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
         data.wrongProduction = true;
+        invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = `Cross-show URL collision (catch-all revival): no date/signal available, defaulting to most recent production ${winner.showId}`;
         atomicWriteJSON(filePath, data);
         catchAllFlagged++;

@@ -2560,6 +2560,13 @@ on:
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit to the lint
       # or its lib triggers CI.
       - 'scripts/lint-wrongproduction-provenance.js'
+      # BRO-3908: wrongProduction/wrongShow invalidate-call lint (cousin sweep
+      # to BRO-3895). Colocated scripts/lib/autoclear-invalidate.test.mjs
+      # runs in the scripts/lib/*.test.mjs glob; path-listed so a solo edit
+      # to the lint or its lib triggers CI.
+      - 'scripts/lint-autoclear-invalidate.js'
+      - 'scripts/lib/autoclear-invalidate.js'
+      - 'scripts/lib/autoclear-invalidate.test.mjs'
       # Task #1713: enrich-card-acceptance.js draft path + its provider
       # fallback, and the SAFE_CHECK_FORMS widening in autonomous-triage-core.js
       # above. Colocated scripts/enrich-card-acceptance.test.mjs runs via the
@@ -3614,6 +3621,19 @@ jobs:
         # writer from being added with zero breadcrumb at all. Blocking — a
         # writer with no provenance signal is exactly this bug's shape.
         run: node scripts/lint-wrongproduction-provenance.js
+
+      - name: Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs
+        if: always() && steps.deps.outcome == 'success'
+        # BRO-3908, cousin sweep to BRO-3895 (main-red): a writer that sets
+        # wrongProduction=true/wrongShow=true without calling
+        # invalidateWrongProductionAutoClear/invalidateWrongShowAutoClear
+        # (scripts/lib/review-write-guard.js) can leave a re-flagged file
+        # carrying the flag beside a stale AutoCleared breadcrumb — the exact
+        # self-contradictory-clear shape
+        # audit-self-contradictory-clear-drained.test.mjs gates on. BRO-3895
+        # fixed the 3 sites this caused a live main-red on; a full sweep
+        # found 33 more. Blocking — same shape as the provenance lint above.
+        run: node scripts/lint-autoclear-invalidate.js
 
       - name: Audit — digest description clip-safety (statically checkable fields)
         if: always() && steps.deps.outcome == 'success'

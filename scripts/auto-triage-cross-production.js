@@ -48,7 +48,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -142,6 +142,7 @@ for (const issue of candidates) {
     `${issue.hasDupeInCorrectDir ? ' Duplicate already filed in target dir.' : ''}`;
 
   data.wrongProduction = true;
+  invalidateWrongProductionAutoClear(data);
   data.wrongProductionReason = 'cross-production-audit';
   data.wrongProductionNote = note;
   data.wrongProductionDetectedBy = 'auto-triage-cross-production';

@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const dryRun = process.argv.includes('--dry-run');
@@ -101,6 +102,7 @@ function findJunkFiles() {
 function flagFile(entry) {
   const { filePath, data, reason } = entry;
   data.wrongShow = true;
+  invalidateWrongShowAutoClear(data);
   data.wrongShowReason = reason;
   data.wrongShowFlaggedAt = new Date().toISOString();
   data.wrongShowFlaggedBy = 'flag-junk-url-reviews.js';

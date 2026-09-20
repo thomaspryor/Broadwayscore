@@ -77,6 +77,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality, detectGarbageFromReasoning, hasBotStubTruncationSignal } = require('../lib/content-quality.js');
 const { getBestTextForScoring } = require('../lib/text-quality');
+const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
 // so "would this review be scoreable?" has exactly one answer — see task #652.
@@ -1559,9 +1560,11 @@ async function main(): Promise<void> {
             console.log(` (combined review — skipping wrongShow flag write)`);
           } else {
             fileData.wrongShow = true;
+            invalidateWrongShowAutoClear(fileData);
           }
         } else if (rejection === 'wrong_production' && !isOffBroadway) {
           fileData.wrongProduction = true;
+          invalidateWrongProductionAutoClear(fileData);
           fileData.wrongProductionProvenance = 'content';
         } else if (rejection === 'wrong_production' && isOffBroadway) {
           console.log(` (OB exempt — skipping wrongProduction flag)`);

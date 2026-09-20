@@ -56,7 +56,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
-const { protectStagedDeletions } = require('./lib/review-write-guard.js');
+const { protectStagedDeletions, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard.js');
 const { shouldPushReviewTextsCheckpoint } = require('./lib/review-texts-checkpoint-gate.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
@@ -4528,6 +4528,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
       data.fullText = null;
       data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(data);
       data.wrongProductionReason = 'anticipatory_pre_opening_post';
       data.wrongProductionDetail = anticip.reason;
       data.wrongProductionDetectedAt = new Date().toISOString();
@@ -5197,6 +5198,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           data.fullText = null;
         }
         data.wrongProduction = true;
+        invalidateWrongProductionAutoClear(data);
         // Record the diagnostic reason so future audits can distinguish LLM-detected
         // wrong-production from silent (reason-less) guard fires. Before this line was
         // added, this code path stamped wrongProduction=true with no trail — reviews

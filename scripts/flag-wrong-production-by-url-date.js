@@ -36,6 +36,7 @@ const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit, getWrongProductionReasonFromUrl, isCriticUnknown } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -83,6 +84,7 @@ for (const showId of dirs) {
     flaggedDetails.push({ showId, file: f, urlDate: urlDateMatch ? urlDateMatch[1] : null, score: d.assignedScore, namedCritic });
     if (APPLY) {
       d.wrongProduction = true;
+      invalidateWrongProductionAutoClear(d);
       d.wrongProductionReason = reason;
       d.wrongProductionFlaggedAt = new Date().toISOString();
       d.wrongProductionFlaggedBy = 'script:flag-wrong-production-by-url-date.js';

@@ -18,6 +18,7 @@ const { normalizeUrl } = require('./lib/review-normalization');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -299,6 +300,7 @@ function cleanupCrossShowUrlDupes() {
       if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
       console.log(`  ${entry.showId}/${entry.file} → wrongProduction (belongs to ${bestShow})`);
       data.wrongProduction = true; data._wrongProductionReason = `URL matches ${bestShow} (year-based)`;
+      invalidateWrongProductionAutoClear(data);
       data._wrongProductionDetectedBy = 'cleanup-dedup-comprehensive';
       writeJsonFile(fp, data); totalFlagged++; stats.crossShowFlagged++;
     }
