@@ -170,6 +170,19 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // mode this card exists to close. 24h cooldown (routeAlert call site) caps
   // this to at most one email per day while main stays red.
   'test-yml:main-streak-escalation',
+  // BRO-3865: 'test-yml:main-streak' — health-check.js's "no confirmed-green
+  // run in Nh" aggregate backstop, downgraded here from 'auto' to 'human'
+  // now that test.yml's push-triggered dispatch files a per-signature 'auto'
+  // card per distinct breakage (conditionKey 'test-yml:red:<job>:<hash>')
+  // instead of one shared 'auto' card under this key. Same Category 3
+  // rationale as 'test-yml:main-streak-escalation' right above: main
+  // staying red with no per-signature card stemming it IS the pipeline
+  // stalling, not "diagnose one failing test." 24h cooldown at the call
+  // site (matches the escalation tier) — 'auto' never paged more than once
+  // per incident (tracker dedupe), so 'human' needs the same-length cooldown
+  // or it turns a condition that can stay open for weeks into an email
+  // every few hours.
+  'test-yml:main-streak',
 ]);
 
 function isPageWorthy(conditionKey) {

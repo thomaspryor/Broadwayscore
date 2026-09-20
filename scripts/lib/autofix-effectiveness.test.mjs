@@ -192,6 +192,23 @@ test('readLedgerRows: parses real JSONL, skipping unparseable lines', () => {
   }
 });
 
+// BRO-3868: digest-autofix-ledger.jsonl is now merge=union — a sync's union
+// recovery can leave the SAME row twice. assessAutofixEffectiveness has no
+// dedupe of its own, so readLedgerRows must collapse an exact duplicate line
+// before it reaches the daily bucketing, or a resurrected dispatch/outcome
+// row would be double-counted.
+test('readLedgerRows: collapses byte-identical duplicate lines to one row', () => {
+  const tmp = path.join(os.tmpdir(), `ledger-dup-${process.pid}.jsonl`);
+  const line = JSON.stringify({ event: 'auto-dispatch', ts: '2026-09-16T11:37:07.007Z' });
+  fs.writeFileSync(tmp, `${line}\n${line}\n`);
+  try {
+    const rows = readLedgerRows(tmp);
+    assert.equal(rows.length, 1, 'a union-resurrected exact duplicate must count once, not twice');
+  } finally {
+    fs.unlinkSync(tmp);
+  }
+});
+
 test('readLedgerRows -> assessAutofixEffectiveness: real dead-fleet ledger on disk reproduces the DEAD verdict', () => {
   const tmp = path.join(os.tmpdir(), `ledger-dead-${process.pid}.jsonl`);
   const rows = [];

@@ -353,6 +353,14 @@ on:
       # above), but this wrapper needs its own entry or a solo edit to the gate
       # itself triggers zero CI, which is exactly the bug it exists to catch.
       - 'scripts/audit-test-yml-manifest-paths.js'
+      # scripts/ci-green-rate.js (2026-09-20): the machine PASS/FAIL verdict on
+      # main's Test Suite green rate — the only thing allowed to say whether
+      # "main is red" is over. Thin CLI outside scripts/lib/; its logic and the
+      # colocated scripts/lib/ci-green-rate.test.mjs (which require()s the
+      # CLI for exit-code tests) are globbed above, but a solo edit to the CLI
+      # would trigger zero CI without this entry (audit-test-yml-lib-deps.js
+      # flagged exactly that when the file was added).
+      - 'scripts/ci-green-rate.js'
       # scripts/lib/workflow-secret-scan.test.mjs (task #1855) requires this
       # top-level CLI wrapper directly (to test findGaps() end-to-end) — same
       # gap shape as scripts/audit-test-yml-lib-deps.js above, caught by that
@@ -1887,6 +1895,11 @@ on:
       - 'scripts/produce-trunk-snapshot.js'
       - 'scripts/tests/close-time-verify.test.mjs'
       - 'scripts/tests/trunk-status.test.mjs'
+      # BRO-3865: per-breakage main-red alert routing (test.yml's own
+      # test-summary job invokes this). Same "non-listed scripts/ = ZERO CI"
+      # gap — a solo edit to just this file, with test.yml untouched, would
+      # otherwise trigger zero CI.
+      - 'scripts/route-main-streak-signatures.js'
       # Launchd auth preflight (task #1107) — cheap exit-code gate wrapping
       # preflightAuth() for bash/python wrappers. Same "scripts/tests/ is not
       # scripts/lib/" gap as the block above: without these entries a push
@@ -2056,13 +2069,16 @@ on:
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
       # individually listed in the unit-test batch (scripts/ root-level tests
       # aren't globbed) — path-listed here so a solo edit triggers CI.
-      # Its colocated scripts/lib/backfill-judged-dispatch-ts.test.mjs runs in
-      # the scripts/lib/*.test.mjs glob step, but the top-level script it
-      # exercises is outside scripts/lib/** and so triggers no CI on its own.
       # audit-test-yml-lib-deps.js's regression floor fails without this entry
       # (it landed red on main 2026-09-14 — not this branch's change, but this
       # branch's merge is what carried it into a CI run, so fixing it here).
+      # scripts/backfill-judged-dispatch-ts.test.mjs (BRO-3868) sits at this
+      # same scripts/ root — neither glob reaches it either — so it is
+      # registered in tests/unit-test-manifest.txt AND path-listed here, same
+      # shape as scripts/backlog-drain.test.mjs and scripts/trace-connect-
+      # phase.test.mjs below.
       - 'scripts/backfill-judged-dispatch-ts.js'
+      - 'scripts/backfill-judged-dispatch-ts.test.mjs'
       - 'scripts/backlog-drain.js'
       - 'scripts/backlog-drain.test.mjs'
       # BRO-2839 push-stall connect-phase breakdown. The logic lives in
@@ -2615,6 +2631,14 @@ on:
       # glob; path-listed so a solo edit triggers CI.
       - 'scripts/autonomous-acceptance-recheck.js'
       - 'scripts/autonomous-acceptance-recheck.test.mjs'
+      # BRO-3551: the open-backlog acceptance sweep (report-only — never
+      # closes/comments/mutates a Linear issue). scripts/lib/autonomous-
+      # recheck-core.js's selectOpenBacklogSweepCandidates and scripts/lib/
+      # linear-open-backlog-source.js both ride the 'scripts/lib/**' glob
+      # above; this top-level orchestrator + its colocated test do not, so
+      # they're path-listed here so a solo edit triggers CI (task #1745 gap).
+      - 'scripts/sweep-open-backlog-acceptance.js'
+      - 'scripts/sweep-open-backlog-acceptance.test.mjs'
       # BRO-386: the recheck ledger's commit+push is a SEPARATE step from the
       # bulk health-check commit in data-health-check.yml (a lost bulk-commit
       # push race was silently discarding every RECHECK-AFTER verdict for the
@@ -6275,75 +6299,49 @@ jobs:
         if: failure() && steps.stepset.outputs.changed == 'true'
         run: node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak-escalation')"
 
-      - name: Route alert — main test.yml red on consecutive pushes
-        if: failure() && steps.streak.outputs.should_dispatch == 'true'
-        uses: actions/github-script@v7
+      # BRO-3865: replaces a single 'test-yml:main-streak' conditionKey that
+      # collapsed EVERY currently-failing job/step into one ledger condition
+      # — main was red 2026-08-12 through 2026-09-20 (63 notifications, one
+      # card) while at least four independent, unrelated failures came and
+      # went under it, none getting its own card. scripts/route-main-streak-
+      # signatures.js (backed by the pure functions in scripts/lib/main-red-
+      # streak.js) computes a conditionKey per distinct job/step/test-name
+      # signature via `gh run view --json jobs` + a per-job `gh api .../logs`
+      # call (NOT `--log-failed` — that refuses to return anything while
+      # THIS run is still in progress, which it always is at this point), so
+      # a NEW breakage that shows up while main is ALREADY red gets its own
+      # card instead of silently deduping into the old one. Runs on every
+      # push (success or failure, never cancelled) because resolution —
+      # closing a signature's condition the moment its OWN job is confirmed
+      # green, independent of whether OTHER signatures or the overall run
+      # are still red — must not wait for should_dispatch/should_escalate,
+      # which only gate the NEW dispatch on the streak's own 2+/4+
+      # thresholds (unchanged from before). The aggregate 'test-yml:main-
+      # streak'/'-escalation' keys (health-check.js backstop + "Resolve
+      # alert" step below) are untouched by this — they stay the human-paged
+      # "main has been down a long time, nobody's per-signature card is
+      # stemming it" signal, not a per-breakage one. continue-on-error:true
+      # is a deliberate backstop (adversarial review): every gh/API call
+      # inside the script already degrades gracefully rather than throwing,
+      # but this ensures even an unforeseen bug in the script can never flip
+      # an otherwise-green push to red — the one thing this alerting step
+      # must never do is become a new way for main to go red.
+      - name: Route + resolve main-streak signature alerts
+        if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
+        continue-on-error: true
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
-          SHOULD_ESCALATE: ${{ steps.streak.outputs.should_escalate }}
           STREAK: ${{ steps.streak.outputs.streak }}
-          FAILING_JOBS: ${{ steps.stepset.outputs.current_failing_jobs }}
-        with:
-          script: |
-            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const prevUrl = process.env.PREV_FAILED_URL || '';
-            const streak = process.env.STREAK || '?';
-            const failingJobs = process.env.FAILING_JOBS || 'unknown (job-set lookup unavailable)';
-            const fields = [
-              { name: 'This failed run', value: `[View logs](${runUrl})` },
-              { name: 'Previous failed run', value: prevUrl ? `[View logs](${prevUrl})` : 'n/a' },
-              { name: 'Consecutive failures', value: streak },
-              { name: 'Currently failing job(s)', value: failingJobs },
-            ];
-
-            // Independent conditionKey/disposition per severity tier — each gets
-            // its own ledger entry, so the router's normal cooldown/dedup does
-            // the "notify once per open incident" work with no special-casing
-            // here. No cooldownHours override: a real Notion/Resend outage
-            // retries next run instead of a failed send silently marking the
-            // incident "notified" (see routeAlert's notifyOk gate).
-            await routeAlert({
-              conditionKey: 'test-yml:main-streak',
-              title: 'main test.yml red on 2+ consecutive pushes',
-              description: `The Test Suite has failed on at least two consecutive pushes to main. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. A fix-main card has been filed to the Action Queue.`,
-              severity: 'error',
-              disposition: 'auto',
-              cardAction: 'Fix',
-              fields,
-              url: runUrl,
-            }).catch(e => console.error('Consecutive-failure card dispatch failed:', e.message));
-
-            if (process.env.SHOULD_ESCALATE === 'true') {
-              // Separate conditionKey, 24h cooldown: re-pages once a day while
-              // main stays red 4+ in a row, instead of firing every push (spam)
-              // or firing exactly once ever (the old cooldownHours:0 hack, which
-              // also fully bypassed the ledger's own dedup). disposition:'human'
-              // IS on the page-worthy allowlist (scripts/lib/page-worthy-alerts.js,
-              // BRO-1333) — it sends a real email, not just a digest line — after
-              // that same key was found to have silently downgraded to digest for
-              // 3+ weeks with zero real notifications. task #843: model:'opus'
-              // makes digest-autofix.js dispatch THIS row (a technical
-              // investigation, not a decision) straight to opus on its first
-              // attempt, since it's already the SECOND machine attempt at the
-              // underlying failure (the 2nd-failure 'auto' card above already
-              // tried once and didn't resolve it).
-              await routeAlert({
-                conditionKey: 'test-yml:main-streak-escalation',
-                title: 'main test.yml STILL red — auto-dispatch did not resolve it',
-                description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
-                severity: 'error',
-                disposition: 'human',
-                model: 'opus',
-                fields,
-                url: runUrl,
-                cooldownHours: 24,
-              }).catch(e => console.error('Consecutive-failure escalation email failed:', e.message));
-            }
+        run: |
+          ARGS=(--run-id="$GITHUB_RUN_ID" --exclude-job="Test Summary" --streak="${STREAK:-?}" --prev-url="$PREV_FAILED_URL")
+          if [ "${{ steps.streak.outputs.should_dispatch }}" == "true" ]; then ARGS+=(--dispatch); fi
+          if [ "${{ steps.streak.outputs.should_escalate }}" == "true" ]; then ARGS+=(--escalate); fi
+          node scripts/route-main-streak-signatures.js "${ARGS[@]}"
 
       # Close both incidents the moment main goes green again — lets a FUTURE
       # streak notify immediately instead of waiting out the cooldown.

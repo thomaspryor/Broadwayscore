@@ -12,30 +12,6 @@
     "queuedAt": "2026-09-20T11:53:21.830Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 24.1% of shows changed coverage state",
-    "description": "review-gap blast radius 24.1% (7/29 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, cats-the-jellicle-ball-2026, death-of-a-salesman-2026, jesus-christ-superstar-west-end-2026, schmigadoon-2026, the-pass-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 22 show(s) audited this run were NOT risky and were persisted normally. Only the 7 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-20T16:50:31.855Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.6% (135/317)\nwest-end: 76.6% (423/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (895h)\nA Midsummer Night's Dream — observer (895h)\nA Midsummer Night's Dream — standard (895h)\nABBA Voyage — independent (895h)\nAladdin — ew (895h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (895h)\nBuena Vista Social Club — broadwaynews (895h)\nBuena Vista Social Club — nydailynews (895h)\nHadestown — nydailynews (895h)\nHeathers The Musical — dailybeast (895h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-20T16:50:43.547Z"
-  },
-  {
     "conditionKey": "slug-misroute:272ae7ed1a95",
     "title": "9 new slug-misroute finding(s)",
     "description": "9 review file(s) appear misrouted and are not yet dispositioned. Nothing was changed automatically. To triage LOCALLY:\n1) node scripts/audit-slug-match-routing.js\n2) node scripts/verify-misroute-content.js --include-flagged --include-oos\n3) gated apply per scripts/apply-slug-misroute-whitelist.js header (snapshot → ff-only → --apply → rebuild → spot-check)\nTo silence a finding you've decided to leave: node scripts/disposition-misroute.js add --from=ID --file=F --reason=\"...\"",
@@ -83,5 +59,41 @@
       }
     ],
     "queuedAt": "2026-09-20T17:21:59.186Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 72.7% of shows changed coverage state",
+    "description": "review-gap blast radius 72.7% (24/33 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, america-who-hurt-you-off-broadway-2026, an-american-daughter-off-broadway-2026, cats-the-jellicle-ball-2026, conflicted-off-broadway-2026, darkling-off-west-end-2026, death-note-the-musical-west-end-2026, death-of-a-salesman-2026, gimme-a-sign-off-broadway-2026, golden-boy-off-west-end-2026, how-the-other-half-loves-west-end-2026, in-honor-of-jean-michel-basquiat-off-broadway-2026, jesus-christ-superstar-west-end-2026, million-dollar-quartet-off-west-end-2026, my-sons-a-queer-but-what-can-you-do-west-end-2026, pre-existing-condition-off-broadway-2026, shifters-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-cherry-orchard-park-avenue-armory-off-broadway-2026, the-hope-theory-off-broadway-2026, the-pass-off-broadway-2026, the-winters-tale-off-broadway-2026, thelma-and-louise-a-new-musical-off-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 9 show(s) audited this run were NOT risky and were persisted normally. Only the 24 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T19:22:00.471Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "8/138 show(s) differ between internal state and what prod serves.\nscore-drift: 8\nDarkling: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nMuch Ado About Nothing: score-drift\nOh, Mary!: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T19:22:12.227Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.3% (135/319)\nwest-end: 76.6% (423/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (897h)\nA Midsummer Night's Dream — observer (897h)\nA Midsummer Night's Dream — standard (897h)\nABBA Voyage — independent (897h)\nAladdin — ew (897h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (897h)\nBuena Vista Social Club — broadwaynews (897h)\nBuena Vista Social Club — nydailynews (897h)\nHadestown — nydailynews (897h)\nHeathers The Musical — dailybeast (897h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T19:22:12.423Z"
   }
 ]
