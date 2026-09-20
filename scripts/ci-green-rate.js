@@ -31,6 +31,7 @@
 
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const core = require('./lib/ci-green-rate-core.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -73,14 +74,16 @@ function fetchRuns({ workflow, branch, days, maxPages, now }) {
 }
 
 function main(argv) {
+  // --help before ANY work (scripts/audit-help-flag-safety.js Rule B: a
+  // script that spawns must never reach the spawn on a help request).
+  if (hasHelpFlag(argv)) {
+    console.log(usage());
+    return 0;
+  }
   const opts = core.parseCliArgs(argv);
   if (opts.error) {
     console.error(`ci-green-rate: ${opts.error}\n${usage()}`);
     return 2;
-  }
-  if (opts.help) {
-    console.log(usage());
-    return 0;
   }
 
   const now = Date.now();

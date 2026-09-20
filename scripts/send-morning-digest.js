@@ -1081,6 +1081,24 @@ async function main() {
     }
   } catch { /* optional */ }
 
+  // The machine verdict on "is main green" (scripts/ci-green-rate.js) — the
+  // only thing allowed to say so; a session's claim never counts. Rendered on
+  // the same line as the overnight sentence. Fail-soft: exit 1 is a legitimate
+  // FAIL and the verdict line is still on stdout; a missing gh, a rate-limit
+  // 403 or any other error just leaves the line out and never blocks the send.
+  try {
+    const { execFileSync } = require('child_process');
+    let out = '';
+    try {
+      out = execFileSync('node', [path.join(REPO, 'scripts', 'ci-green-rate.js'), '--days', '7'], {
+        cwd: REPO, encoding: 'utf8', timeout: 90_000, stdio: ['ignore', 'pipe', 'ignore'],
+        env: { ...process.env, PATH: `${process.env.PATH || ''}:/opt/homebrew/bin:/usr/local/bin` },
+      });
+    } catch (err) { out = String((err && err.stdout) || ''); }
+    const ciLine = out.split('\n').find((l) => l.startsWith('CI-GREEN-RATE:'));
+    if (ciLine) overnightLine = overnightLine ? `${overnightLine} ${ciLine}` : ciLine;
+  } catch { /* optional — never blocks the digest */ }
+
   const now = new Date();
   const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
 
