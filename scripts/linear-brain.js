@@ -26,6 +26,7 @@ const { hasHelpFlag } = require('./lib/cli-help');
 const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
+const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 
 const USAGE = `linear-brain.js — file a Linear issue through the one creation chokepoint.
@@ -315,12 +316,18 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           // inject a stub through deps so no unit test ever shells out.
           const verifyEvidence = deps.verifyEvidence
             || makeVerifyEvidence({ cwd: process.cwd(), issueIdentifier: issue.identifier, log: (m) => console.error(m) });
+          // BRO-3885: actually RUNS a recorded VERIFY command against a fresh
+          // origin/main checkout — see linear-cmd-execution.js's header for
+          // why a shape-only check (evaluateVerifiability) let BRO-3471 close
+          // Done twice on a command naming a file that never existed.
+          const verifyCmdEvidence = deps.verifyCmdEvidence || makeVerifyCmdEvidence({ log: (m) => console.error(m) });
           const gate = checkLinearDoneTransition({
             targetStateType: target.type,
             description: issue.description || '',
             commentText,
             existingComments,
             verifyEvidence,
+            verifyCmdEvidence,
           });
           if (gate.warning) console.error(`⚠️  ${gate.warning}`);
           if (gate.gated && !gate.allowed) {
