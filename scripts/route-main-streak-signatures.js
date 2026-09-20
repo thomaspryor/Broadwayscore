@@ -17,18 +17,27 @@
  * the matching flag (it already gated should_dispatch/should_escalate on the
  * consecutive-failure streak before invoking this script).
  *
- * gh CLI, not the REST API via `fetch`: same choice as produce-trunk-
- * snapshot.js — `gh` already carries the runner's GITHUB_TOKEN auth. But
- * `gh run view --log-failed` / `--json jobs --log` refuse to return ANYTHING
- * while the overall RUN is still in progress ("run <id> is still in
- * progress; logs will be available when it is complete", live-verified
- * 2026-09-20 against run 35530177910) — and this script's own run is BY
- * CONSTRUCTION always still in progress when it executes (test-summary is
- * one of the last jobs via `needs:`, but the run only concludes once
- * test-summary itself finishes). So this uses `gh api
- * repos/{owner}/{repo}/actions/jobs/{jobId}/logs` per job instead — that
- * endpoint only requires the INDIVIDUAL job to be done, which `needs:`
- * already guarantees for every sibling by the time this runs.
+ * gh CLI for job/step data (`gh run view --json jobs`), same choice as
+ * produce-trunk-snapshot.js — `gh` already carries the runner's GITHUB_TOKEN
+ * auth. But `gh run view --log-failed` / `--json jobs --log` refuse to
+ * return ANYTHING while the overall RUN is still in progress ("run <id> is
+ * still in progress; logs will be available when it is complete",
+ * live-verified 2026-09-20 against run 35530177910) — and this script's own
+ * run is BY CONSTRUCTION always still in progress when it executes
+ * (test-summary is one of the last jobs via `needs:`, but the run only
+ * concludes once test-summary itself finishes). So per-job LOG text comes
+ * from `GET /repos/{owner}/{repo}/actions/jobs/{jobId}/logs` via a raw
+ * fetch() call instead — that endpoint only requires the INDIVIDUAL job to
+ * be done, which `needs:` already guarantees for every sibling by the time
+ * this runs. Raw fetch(), not `gh api`, for this ONE call specifically:
+ * `gh api` refuses to print output containing terminal escape sequences
+ * (raw job logs are full of them — this repo's own ::group:: output uses
+ * ANSI color codes) unless its stdout is a TTY, and live-verified
+ * 2026-09-20 (run 35532058380) that even redirecting to a real file
+ * descriptor — not just a captured pipe — still hit this guard on the
+ * GitHub-hosted runner's gh version, despite working around it locally.
+ * fetch() has no concept of terminal rendering at all, so the whole class
+ * of guard doesn't apply.
  *
  * Never lets a `gh` hiccup flip an otherwise-green run red (adversarial
  * review, BRO-3865): every `gh` call is try/caught and degrades to "skip
@@ -41,9 +50,6 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   failingStepSignatures, firstFailingTestNameInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
@@ -52,7 +58,7 @@ const { routeAlert, loadLedger, resolveCondition } = require('./lib/owner-alert-
 
 const USAGE = `route-main-streak-signatures.js — BRO-3865 per-breakage alert routing for main's test.yml
   node scripts/route-main-streak-signatures.js --run-id=<id> [--dispatch] [--escalate] [--prev-url=<url>] [--streak=<n>] [--exclude-job=<name>]
-    --run-id       required — the workflow run to inspect (gh run view --json jobs; gh api .../jobs/{id}/logs)
+    --run-id       required — the workflow run to inspect (gh run view --json jobs; raw fetch() for job logs)
     --exclude-job  a job NAME to drop before computing signatures (test.yml passes its own "Test Summary")
     --dispatch     file an 'auto' card for each currently-failing signature (caller gates this on streak>=2)
     --escalate     also send/resurface the 'test-yml:main-streak-escalation' human page (caller gates this on streak>=4)
@@ -97,40 +103,34 @@ function fetchCurrentRunJobs(runId) {
 
 // Best-effort per job: a huge log or a transient API error must not block
 // dispatch for the OTHER signatures, and must not throw up to main().
-function fetchJobLogText(jobId) {
-  const { GITHUB_REPOSITORY } = process.env;
-  if (!GITHUB_REPOSITORY || !jobId) return '';
-  // Redirect gh's stdout to a REAL FILE, not a captured pipe: raw job logs
-  // routinely carry ANSI color codes (this repo's own ::group:: output does),
-  // and `gh api` refuses to print them to a pipe with "the response contains
-  // terminal escape sequences" — live-verified 2026-09-20 on the first real
-  // production run of this script (run 35530971994): every signature
-  // silently fell back to job+step-only because of exactly this. `gh api`
-  // (unlike `gh run view --log-failed`) has no `--allow-escape-sequences`
-  // flag to opt back in (confirmed against `gh api --help`, v2.88.1) — the
-  // guard is keyed on the underlying file descriptor TYPE, not just
-  // isatty(): writing to a real file (this function's approach, and how an
-  // earlier interactive manual test with `> file.txt` happened to work by
-  // accident) passes; execFileSync's default 'pipe' stdio does not. Caught
-  // only by testing the ACTUAL merged code in CI, not by that earlier manual
-  // test — see main-red-streak.test.mjs's own note on this if it's ever
-  // "fixed" back to a pipe capture.
-  const tmpFile = path.join(os.tmpdir(), `gh-job-log-${jobId}-${process.pid}.txt`);
-  let fd;
+// Raw fetch(), not `gh api` — see the file header for why `gh api` cannot
+// be made to work for this specific call.
+async function fetchJobLogText(jobId) {
+  const { GITHUB_REPOSITORY, GH_TOKEN, GITHUB_TOKEN } = process.env;
+  const token = GH_TOKEN || GITHUB_TOKEN;
+  if (!GITHUB_REPOSITORY || !jobId || !token) return '';
+  const url = `https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/jobs/${jobId}/logs`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 30000);
   try {
-    fd = fs.openSync(tmpFile, 'w');
-    execFileSync('gh', ['api', `repos/${GITHUB_REPOSITORY}/actions/jobs/${jobId}/logs`], {
-      stdio: ['ignore', fd, 'pipe'],
-      maxBuffer: 32 * 1024 * 1024,
-      timeout: 120000,
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent': 'route-main-streak-signatures',
+        Authorization: `token ${token}`,
+        Accept: 'application/vnd.github+json',
+      },
+      signal: controller.signal,
     });
-    return fs.readFileSync(tmpFile, 'utf8');
+    if (!res.ok) {
+      console.error(`[route-main-streak-signatures] job log fetch failed for job ${jobId} (HTTP ${res.status}); this signature falls back to job+step only.`);
+      return '';
+    }
+    return await res.text();
   } catch (err) {
     console.error(`[route-main-streak-signatures] job log fetch failed for job ${jobId} (${err.message}); this signature falls back to job+step only.`);
     return '';
   } finally {
-    if (fd !== undefined) { try { fs.closeSync(fd); } catch { /* already closed */ } }
-    try { fs.unlinkSync(tmpFile); } catch { /* never created, or already gone */ }
+    clearTimeout(timer);
   }
 }
 
@@ -167,14 +167,14 @@ async function main() {
 
   // Test names only matter for --dispatch (sharpening which card gets
   // filed/titled) — resolution only needs job.conclusion, so skip the extra
-  // per-job `gh api .../logs` calls entirely on a run that won't dispatch
+  // per-job log fetch() calls entirely on a run that won't dispatch
   // (a green run, or a red run still under the streak-2 dispatch gate).
   let testNameByJob = new Map();
   if (opts.dispatch) {
     for (const job of jobs) {
       if (!job?.conclusion || ['success', 'skipped'].includes(job.conclusion)) continue;
       if (!job.databaseId) continue;
-      const testName = firstFailingTestNameInJobLog(fetchJobLogText(job.databaseId));
+      const testName = firstFailingTestNameInJobLog(await fetchJobLogText(job.databaseId));
       if (testName) testNameByJob.set(job.name || '', testName);
     }
   }
