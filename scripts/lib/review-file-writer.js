@@ -35,7 +35,7 @@ const {
 } = require('./review-normalization');
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { validateUrlDomain } = require('./url-discovery');
-const { safeWriteReview } = require('./review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
@@ -1172,6 +1172,20 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     if (val != null && !existing[key]) {
       existing[key] = val;
       changed = true;
+      // BRO-3895: this generic loop is the ONLY place fields.wrongProduction
+      // (stamped by classifyMarketRouting's accept-with-flag branch, Guard J,
+      // and Guard K above — none of which call invalidateWrongProductionAutoClear
+      // themselves, unlike every other wrongProduction writer per that
+      // function's docstring) actually lands on `existing`. Without this, a
+      // re-flag onto a file still carrying a stale wrongProductionAutoCleared
+      // breadcrumb from an earlier clear produces wrongProduction:true sitting
+      // beside its own retraction breadcrumb — the exact self-contradictory-
+      // clear shape audit-self-contradictory-clear-drained.test.mjs gates on
+      // (caught live on much-ado-about-nothing-globe-off-west-end-2026/
+      // broadwayworld--aliya-al-hassan.json).
+      if (key === 'wrongProduction' && val === true) {
+        invalidateWrongProductionAutoClear(existing);
+      }
     }
   }
 
