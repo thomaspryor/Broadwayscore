@@ -190,10 +190,27 @@ jobs:
             # scripts/audit-cron-health-coverage.js TIGHT_BY_DESIGN so the
             # cushion warning stays silenced and nobody "fixes" it to 13h; that
             # map matches maxHours on STRICT EQUALITY, so changing the 8 here
-            # means changing it there in the same commit.
-            # Detection cost, quantified: the checker itself runs daily at
-            # 12:00 UTC, so only an outage whose last success falls in the
-            # 04:00-09:00 UTC window loses same-day detection (delayed to ≤30h).
+            # means changing it there in the same commit. That coupling is
+            # enforced by tests/unit/cron-health-tight-by-design-sync.test.mjs —
+            # the audit itself only WARNS (it needs --strict to exit non-zero,
+            # and neither test.yml nor the pre-push hook passes it), so without
+            # that test a desync silently degrades to a yellow line, which is
+            # precisely the "someone fixes it to 13h" outcome this comment is
+            # trying to prevent.
+            #
+            # Detection cost, quantified — NOTE THE OFF-BY-ONE. The comparison
+            # below is `HOURS_AGO -gt max_hours` where
+            # HOURS_AGO = (NOW - LAST_TS) / 3600 in integer (FLOORING) shell
+            # arithmetic, so a band of 8 does not alert until age >= 9h: the
+            # effective band is 9h, not 8h. Real headroom over the observed
+            # 5h31m max gap is therefore ~3.5h, not ~2.5h.
+            # The checker runs daily at 12:00 UTC, so it alerts at noon only
+            # when the last success was <= 03:00 UTC (age >= 9h). Under the old
+            # 3h band that cutoff was <= 08:00 UTC (age >= 4h). So the outages
+            # that lose same-day detection from this widening are exactly those
+            # whose last success falls in 03:00-08:00 UTC. Worst case: a last
+            # success at 03:00:01 is still 8h59m old at noon (floors to 8, not
+            # > 8), so it waits for the next day's check and surfaces at ~33h.
             "commercial-rss-poll.yml|8|Commercial RSS Poll"
             # Weekly Monday cron — Tony + Olivier cutoff freshness check. 200h = 1 missed week.
             # Advisory v1 (warnings only), but staleness still pages so we re-verify dates before

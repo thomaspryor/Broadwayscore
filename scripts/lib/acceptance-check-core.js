@@ -35,7 +35,10 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const { shallowFetchArgs } = require('./shallow-fetch-args.js');
-const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+// extractCheckPaths is the SAME path-token extraction isSafeCheckCommand's own
+// SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
+// than a second regex over the command string).
+const { isSafeCheckCommand, extractCheckPaths } = require('./autonomous-triage-core.js');
 const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
@@ -157,6 +160,34 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   if (!argv) return { status: 'unverifiable', detail: `command failed safe-form re-validation at run time: ${String(cmd).slice(0, 120)}` };
   if (!prepared) {
     return { status: 'unverifiable', detail: 'checkout has no node_modules — any result would measure the environment, not the card' };
+  }
+  // BRO-3446: a card's acceptance command can name a path that was never
+  // created — a --allow-phantom-path dispatch guess, or a stale reference to
+  // a file since renamed/deleted — and isSafeCheckCommand only validates
+  // SHAPE, never existence. Running it anyway makes node exit non-zero on a
+  // missing module and this function would report `fail`, which reads as
+  // "the fix broke" when the true state is "the evidence was never there".
+  // Same fail-open posture this function already takes for a timeout kill and
+  // for exit 3: the absence of evidence is not evidence of failure.
+  //
+  // `missingPath: true` is carried on the result (Codex adversarial finding):
+  // close-time-verify.js's decideClose() used to detect this exact case a
+  // different way — by pattern-matching "could not find" in a FAIL detail,
+  // AFTER actually running the command — to REFUSE the close with "merge the
+  // branch first" guidance (a close attempted before the branch merged, so
+  // the card's own test exists only in its worktree, is not a broken test).
+  // This guard now intercepts before the command ever runs, so that FAIL
+  // never happens and the regex-based detection would go dead, silently
+  // ALLOWING a close it used to correctly refuse. The flag lets that caller
+  // keep refusing on this specific cause without this module needing to know
+  // close-time-verify.js exists.
+  const missing = extractCheckPaths(cmd).filter(p => !fs.existsSync(path.join(cwd, p)));
+  if (missing.length) {
+    return {
+      status: 'unverifiable',
+      detail: `acceptance command names a path absent from this checkout, not evidence the fix broke: ${missing.join(', ')}`,
+      missingPath: true,
+    };
   }
   const env = checksEnv();
   const maxAttempts = Math.max(1, attempts);
