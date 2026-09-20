@@ -692,7 +692,7 @@ function cmdPull(args) {
         const blocks = (priorTask && priorTask.blocks) || existing.blocks || [];
         const blockedBy = (priorTask && priorTask.blockedBy) || existing.blockedBy || [];
         if (!dry) writeTask(dir, { ...mapped, blocks, blockedBy });
-        map[card.id] = { taskId: target.taskId, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
+        map[card.id] = { taskId: target.taskId, name: card.name, syncedStatus: card.status, syncedArchived: !!card.archived, url: card.url, pushed: false, fmt: MIRROR_FMT };
         // Persist the map/hwm right after this write, not just once at the
         // end of the whole run (adversarial review finding on task #1701):
         // the ORIGINAL bug was exactly a task file landing on disk while the
@@ -709,7 +709,7 @@ function cmdPull(args) {
       const task = mapCardToTask(card, id);
       if (priorTask) { task.blocks = priorTask.blocks || []; task.blockedBy = priorTask.blockedBy || []; }
       if (!dry) writeTask(dir, task);
-      map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
+      map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, syncedArchived: !!card.archived, url: card.url, pushed: false, fmt: MIRROR_FMT };
       created.push({ taskId: task.id, name: card.name });
       id++;
       if (!dry) { writeMap(dir, map); writeHwm(dir, id); }
@@ -724,6 +724,7 @@ function cmdPull(args) {
       const task = { ...mapped, blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
       if (!dry) writeTask(dir, task);
       map[card.id].syncedStatus = card.status;
+      map[card.id].syncedArchived = !!card.archived;
       map[card.id].name = card.name;
       map[card.id].fmt = MIRROR_FMT;
       updated.push({ taskId, name: card.name });
@@ -793,6 +794,17 @@ function isPushEligible(entry, task) {
   return !!entry && !entry.pushed && !!task && task.status === 'completed';
 }
 
+// entry.syncedArchived (card #794 follow-up) OR a literal terminal
+// syncedStatus string — either means Notion already considers this card
+// closed/unreachable (a trashed page refuses every write regardless of
+// what its frozen Status property still says), so cmdPush must never
+// attempt markCardDone() against it. Extracted as its own predicate,
+// mirroring isPushEligible above, so it's testable without a live Notion
+// write.
+function mustNeverPushDone(entry) {
+  return !!(entry && (NEVER_OVERWRITE_WITH_DONE.has(entry.syncedStatus) || entry.syncedArchived));
+}
+
 function cmdPush(args) {
   const dir = listDir(args);
   const dry = !!args['dry-run'];
@@ -818,8 +830,17 @@ function cmdPush(args) {
       // Archived/Cancelled with Done. Checked off the entry's last-synced
       // Notion status (not a permanent stamp) so a card a human later
       // reopens naturally drops out of this guard on its next pull/sync-drift.
-      if (NEVER_OVERWRITE_WITH_DONE.has(entry.syncedStatus)) {
-        parkedTerminal.push({ taskId: entry.taskId, name: entry.name, syncedStatus: entry.syncedStatus });
+      // entry.syncedArchived (card #794 follow-up) covers the sibling case
+      // NEVER_OVERWRITE_WITH_DONE's string check can't see: a page moved to
+      // Notion's trash keeps its Status property frozen at whatever it last
+      // read (task #1811) — often still "In progress" — so
+      // planLivenessDowngrade/planPendingClosure's newer archived-driven
+      // 'completed' closures need their own signal here, or this guard
+      // would miss them and markCardDone() would attempt a write against a
+      // page that refuses every write, throwing and aborting the rest of
+      // this push batch.
+      if (mustNeverPushDone(entry)) {
+        parkedTerminal.push({ taskId: entry.taskId, name: entry.name, syncedStatus: entry.syncedArchived ? `${entry.syncedStatus} (archived/trashed)` : entry.syncedStatus });
         continue;
       }
       // pushed only when the card ACTUALLY closed — a trunk-gate refusal
@@ -1194,7 +1215,15 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false, 
         // below this comment's write of syncedStatus) re-evaluates fresh
         // every run instead — a reopened card's next pull/sync-drift updates
         // syncedStatus off Archived/Cancelled and the guard stops firing.
+        // Card #794 follow-up: a trashed page's syncedStatus alone can still
+        // read a non-terminal string like "In progress" (its Status property
+        // never changes), so syncedArchived is stamped independently too —
+        // otherwise cmdPush's guard below wouldn't recognise THIS closure as
+        // terminal and would attempt markCardDone() against a page that
+        // refuses every write, throwing and aborting the rest of that push
+        // batch (adversarial review finding).
         freshMap[pageId].syncedStatus = card.status;
+        freshMap[pageId].syncedArchived = !!card.archived;
         freshMap[pageId].name = card.name;
         freshMap[pageId].fmt = MIRROR_FMT;
         // Task #1778: unlike the Archived/Cancelled case just above,
@@ -1269,4 +1298,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mappedNotionStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, resolveLiveWorkspace, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, writeMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget, isPushEligible };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mappedNotionStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, resolveLiveWorkspace, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, writeMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget, isPushEligible, mustNeverPushDone };

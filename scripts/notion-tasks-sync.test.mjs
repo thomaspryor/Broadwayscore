@@ -466,6 +466,24 @@ test('#1697: NEVER_OVERWRITE_WITH_DONE covers Archived/Cancelled but not Done', 
 // since it lives inside the I/O loop — this test documents the contract at
 // the boundary planPendingClosure controls: the shared helper never asserts
 // anything about NEVER_OVERWRITE_WITH_DONE membership for Paused.
+test('#794: mustNeverPushDone catches a syncedArchived entry even when syncedStatus is a non-terminal string', () => {
+  const { mustNeverPushDone } = require('./notion-tasks-sync.js');
+  assert.equal(mustNeverPushDone({ syncedStatus: 'In progress', syncedArchived: true }), true);
+  assert.equal(mustNeverPushDone({ syncedStatus: 'Not started', syncedArchived: true }), true);
+});
+
+test('#794: mustNeverPushDone still catches literal Archived/Cancelled strings with no syncedArchived flag (pre-existing behavior preserved)', () => {
+  const { mustNeverPushDone } = require('./notion-tasks-sync.js');
+  assert.equal(mustNeverPushDone({ syncedStatus: 'Archived' }), true);
+  assert.equal(mustNeverPushDone({ syncedStatus: 'Cancelled' }), true);
+});
+
+test('#794: mustNeverPushDone is false for an ordinary completed entry (In progress, not archived) — must stay pushable', () => {
+  const { mustNeverPushDone } = require('./notion-tasks-sync.js');
+  assert.equal(mustNeverPushDone({ syncedStatus: 'In progress', syncedArchived: false }), false);
+  assert.equal(mustNeverPushDone({ syncedStatus: 'Not started' }), false);
+});
+
 test('#1778: NEVER_OVERWRITE_WITH_DONE does NOT cover Paused — pushed:true at the reconcile write site handles it precisely instead', () => {
   const { NEVER_OVERWRITE_WITH_DONE } = require('./notion-tasks-sync.js');
   assert.equal(NEVER_OVERWRITE_WITH_DONE.has('Paused'), false);

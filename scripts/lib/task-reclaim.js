@@ -281,7 +281,12 @@ function classifyReclaimable(trapped, ctx = {}) {
     if (!Number.isFinite(idle)) { push('skip-card-unavailable', 'card has no usable lastEditedAt — cannot tell whether anyone is on it'); continue; }
     if (idle < idleMs) { push('skip-fresh', `card was edited ${(idle / 3600e3).toFixed(1)}h ago — someone may be on it`); continue; }
     if (String(card.outcome || '').trim()) { push('park-outcome', 'card already records a completed Outcome — needs a human yes/no, not an automatic reopen'); continue; }
-    if (TERMINAL_CARD_STATUSES.has(card.status)) { push('park-outcome', `card status is ${card.status} — finished work, never reclaim`); continue; }
+    // isCardArchivedOrTerminal (not a bare TERMINAL_CARD_STATUSES.has check):
+    // a trashed page's Status property stays frozen (task #1811) — it can
+    // read "In progress" forever with no outcome text, which would otherwise
+    // sail past this guard and get reclaimed as pending even though the page
+    // refuses every write and can never be worked or closed normally.
+    if (isCardArchivedOrTerminal(card)) { push('park-outcome', `card status is ${card.archived ? `${card.status || 'unknown'} (archived/trashed)` : card.status} — finished work, never reclaim`); continue; }
 
     push('reclaim', (forced && startedIds.has(id))
       ? 'dispatched before, but an owner-directed branch review confirmed its work already landed on main — and every other guard still passed'
