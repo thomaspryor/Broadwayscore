@@ -20,10 +20,21 @@
  *    4. Small samples deserve skepticism. At current traffic, 100 clicks
  *       per variant takes ~50 days. Don't declare early.
  *
- *  Companion validator: scripts/validate-ab-test.js (proves the flag is
- *  actually serving variants, DOM renders correctly, and click tracking
- *  fires with the right ab_variant). Run that first when debugging.
  * ═══════════════════════════════════════════════════════════════════════
+ *
+ * ticket-single-button concluded 2026-09-16 (see
+ * docs/experiments/ticket-single-button.md "Conclusion") and its client-side
+ * A/B branching was removed from TicketButtonsAB.tsx — but the default flag
+ * below stays 'ticket-single-button', NOT ticket-primary-platform, and this
+ * is deliberate, not an oversight: TicketButtonsAB.tsx's abVariantStr is
+ * permanently namespaced `flag:ticket-single-button,...` (kept that way so
+ * historical Impact conversions keep joining correctly), so
+ * ticket-primary-platform's VARIANT_RE would match ZERO real events if it
+ * were the default — every click, past and future, is still tagged under
+ * the ticket-single-button cohort string even though the button count is
+ * no longer a variable. Changing this default (2026-09-16, reverted same
+ * session after a Codex review caught it) would have silently broken
+ * default-invocation analysis for both flags.
  *
  * Usage:
  *   node scripts/analyze-ab-test.js                  # default: ticket-single-button
@@ -56,9 +67,12 @@ const DAYS = (() => {
   return idx >= 0 ? parseInt(process.argv[idx + 1], 10) : 14;
 })();
 
-// --json: emit one machine-readable summary line instead of the prose report
-// (consumed by scripts/monitor-ticket-ab.js via loadWindows/runAnalyzerJson —
-// same pattern as analyze-gate-cold-start.js / analyze-email-gate-funnel.js).
+// --json: emit one machine-readable summary line instead of the prose report.
+// Originally consumed by scripts/monitor-ticket-ab.js (deleted 2026-09-16
+// when ticket-single-button retired, BRO-3456) — no remaining consumer
+// today. Kept for a future flag that wants the same machine-readable
+// summary a monitor script could consume, same pattern as
+// analyze-gate-cold-start.js / analyze-email-gate-funnel.js.
 const JSON_OUT = process.argv.includes('--json');
 
 /**
@@ -200,12 +214,27 @@ async function main() {
   }
 
   // ── Pull conversions from Impact ──
+  // Impact's Actions API rejects a StartDate/EndDate pair more than 45 days
+  // apart (BRO-3456: --days 170 crashed here with "Number of days between
+  // them cannot be more than 45 days" — the script had never been run with
+  // a window this wide before). Chunk into <=45-day windows and concatenate;
+  // each chunk starts 1 second after the previous chunk's end so no action
+  // can be double-counted at a boundary instant (the tradeoff — an action
+  // landing in that 1-second gap is missed — is far safer than silently
+  // double-counting revenue). Conversion volume here (a few hundred over 5
+  // months) fits in one Impact API page per chunk, so no pagination.
   let impactConversions = [];
   if (process.env.IMPACT_ACCOUNT_SID && process.env.IMPACT_AUTH_TOKEN) {
     const sid = process.env.IMPACT_ACCOUNT_SID;
-    const url = `https://api.impact.com/Mediapartners/${sid}/Actions.json?StartDate=${fmtISO(startDate)}&EndDate=${fmtISO(endDate)}`;
-    const data = await fetchImpact(url);
-    impactConversions = data.Actions || [];
+    const MAX_CHUNK_MS = 45 * 24 * 60 * 60 * 1000;
+    let chunkStart = startDate;
+    while (chunkStart < endDate) {
+      const chunkEnd = new Date(Math.min(chunkStart.getTime() + MAX_CHUNK_MS, endDate.getTime()));
+      const url = `https://api.impact.com/Mediapartners/${sid}/Actions.json?StartDate=${fmtISO(chunkStart)}&EndDate=${fmtISO(chunkEnd)}`;
+      const data = await fetchImpact(url);
+      impactConversions.push(...(data.Actions || []));
+      chunkStart = new Date(chunkEnd.getTime() + 1000);
+    }
   }
 
   // Postback attribution: as of 2026-04-26, affiliate-utils.ts forwards

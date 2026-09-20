@@ -156,6 +156,26 @@ function compareShow(show, parsed, playbillUrl) {
       });
     }
   }
+
+  // Show type (play vs musical), BRO-2255: Playbill's genre tag-line also
+  // classifies the production as "Play" or "Musical" — the same authoritative
+  // tag isRevival reads above, one position earlier in the list (BRO-2023's
+  // playbill-tagline.js docblock). Only compared when BOTH sides resolve to
+  // one of those two values: shows.json also carries 'opera' and 'special',
+  // and Playbill's tag-line has no equivalent for either, so a "Play"/
+  // "Musical" tag on one of those is a coarser Playbill taxonomy, not a
+  // contradiction. Structural like isRevival, not run-specific — never
+  // priorRun-explainable.
+  if (parsed.tagLine
+      && (parsed.tagLine.showType === 'play' || parsed.tagLine.showType === 'musical')
+      && (show.type === 'play' || show.type === 'musical')
+      && show.type !== parsed.tagLine.showType) {
+    mismatches.push({
+      field: 'showType',
+      shows: show.type,
+      playbill: parsed.tagLine.showType,
+    });
+  }
   return { mismatches, explainedByPriorRun };
 }
 
@@ -443,6 +463,9 @@ function showFingerprint(show) {
   // membership (BRO-2701 review 5, finding 2):
   //   venue/openingDate/closingDate — compared directly by compareShow.
   //   isRevival — compareShow checks it against Playbill's Original/Revival tag.
+  //   type — compareShow checks it against Playbill's Play/Musical tag (BRO-2255),
+  //     the same way isRevival is checked one line above it — a stale 'match' row
+  //     from before a type correction must not certify a showType nobody re-checked.
   //   title — decides WHICH Playbill page the verdict was even about, via the
   //     SERP queries and scorePlaybillUrl's title-slug hard filter. A title
   //     correction leaves a stale row asserting a match against a different
@@ -460,7 +483,7 @@ function showFingerprint(show) {
     : '';
   return [
     show.venue || '', show.openingDate || '', show.closingDate || '',
-    String(!!show.isRevival), show.title || '', priorRuns, show.category || '',
+    String(!!show.isRevival), show.title || '', priorRuns, show.category || '', show.type || '',
   ].join('|');
 }
 

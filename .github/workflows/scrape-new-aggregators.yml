@@ -236,6 +236,11 @@ jobs:
                 }).then(r=>{console.log('routeAlert ->',r.action);process.exit(0);}).catch(e=>{console.error('routeAlert failed:',e.message);process.exit(0);});
               " || true
               git add data/audit/alert-ledger.json 2>/dev/null || true
+              # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on
+              # every dispatch attempt (this call is disposition:'auto'); left
+              # unstaged it makes every later rebase refuse pre-flight and
+              # forces the clobber-prone merge path.
+              git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
             else
               echo "::warning::validate-data failed with ZERO promotions this run — pre-existing corpus drift, not this job's doing. No owner email (covered by the Data Validation CI gate + morning digest)."
             fi
@@ -334,7 +339,11 @@ jobs:
           # never told a regional show went live (same silent-drop class as
           # card #475). Precedent: data-health-check.yml:125, test.yml:2658,
           # opening-night-checklist.yml:96 all stage these.
-          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/playbill-verdict-sitemap-seen.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/playbill-verdict-sitemap-seen.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
           if ! git diff --staged --quiet; then
             git commit -m "data: Playbill Verdict unmatched audit + candidate staging [skip ci]"
             bash scripts/lib/push-with-retry.sh

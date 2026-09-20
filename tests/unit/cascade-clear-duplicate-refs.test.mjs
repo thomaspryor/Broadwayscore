@@ -193,6 +193,84 @@ test('clears both duplicateOf and duplicateTextOf when both dangle in one siblin
   }
 });
 
+test('clears dangling crossOutletDuplicate when its primary file is deleted', () => {
+  const dir = mkdir();
+  try {
+    const showId = path.basename(dir);
+    writeJson(path.join(dir, 'timeout--andrzej-lukowski.json'), { url: 'https://x.com/a' });
+    writeJson(path.join(dir, 'timeout-london--andrzej-lukowski.json'), {
+      url: 'https://x.com/a',
+      criticName: 'Andrzej Lukowski',
+      crossOutletDuplicate: true,
+      crossOutletPrimaryFile: `${showId}/timeout--andrzej-lukowski.json`,
+      crossOutletSimilarity: 100,
+      crossOutletMethod: 'fingerprint',
+      crossOutletFlaggedAt: '2026-07-28T06:07:41.384Z',
+    });
+
+    const cleared = cascadeClearDuplicateRefs(dir, 'timeout--andrzej-lukowski.json');
+    assert.deepStrictEqual(cleared, ['timeout-london--andrzej-lukowski.json']);
+
+    const written = readJson(path.join(dir, 'timeout-london--andrzej-lukowski.json'));
+    assert.equal(written.crossOutletDuplicate, false);
+    assert.equal('crossOutletPrimaryFile' in written, false);
+    assert.equal('crossOutletSimilarity' in written, false);
+    assert.equal('crossOutletMethod' in written, false);
+    assert.equal('crossOutletFlaggedAt' in written, false);
+    assert.match(written.crossOutletClearReason, /cascade-cleared: sibling timeout--andrzej-lukowski\.json was deleted/);
+    // A crossOutlet-only clear must NOT stamp duplicateClearReason — that
+    // breadcrumb is read elsewhere (review-write-guard.js CLEAR_BREADCRUMBS)
+    // as proof duplicateOf/duplicateTextOf were intentionally cleared, and
+    // this file's duplicateOf was never touched.
+    assert.equal('duplicateClearReason' in written, false);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('stamps both breadcrumbs when duplicateOf AND crossOutletDuplicate dangle on the same file', () => {
+  const dir = mkdir();
+  try {
+    const showId = path.basename(dir);
+    writeJson(path.join(dir, 'gone.json'), { url: 'shared' });
+    writeJson(path.join(dir, 'both.json'), {
+      url: 'shared',
+      duplicateOf: 'gone.json',
+      crossOutletDuplicate: true,
+      crossOutletPrimaryFile: `${showId}/gone.json`,
+    });
+
+    cascadeClearDuplicateRefs(dir, 'gone.json');
+    const written = readJson(path.join(dir, 'both.json'));
+    assert.equal(written.duplicateOf, null);
+    assert.match(written.duplicateClearReason, /cascade-cleared: sibling gone\.json was deleted/);
+    assert.equal(written.crossOutletDuplicate, false);
+    assert.match(written.crossOutletClearReason, /cascade-cleared: sibling gone\.json was deleted/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('leaves crossOutletDuplicate alone when its primary file is NOT the one deleted', () => {
+  const dir = mkdir();
+  try {
+    const showId = path.basename(dir);
+    writeJson(path.join(dir, 'other-outlet--critic.json'), {
+      url: 'https://x.com/a',
+      crossOutletDuplicate: true,
+      crossOutletPrimaryFile: `${showId}/still-here.json`,
+    });
+
+    const cleared = cascadeClearDuplicateRefs(dir, 'unrelated-deleted.json');
+    assert.deepStrictEqual(cleared, []);
+    const after = readJson(path.join(dir, 'other-outlet--critic.json'));
+    assert.equal(after.crossOutletDuplicate, true);
+    assert.equal(after.crossOutletPrimaryFile, `${showId}/still-here.json`);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('persistence injection — custom writeFile lets tests stub disk writes', () => {
   const dir = mkdir();
   try {

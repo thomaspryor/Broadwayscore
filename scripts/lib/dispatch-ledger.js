@@ -1363,6 +1363,20 @@ const JOB_EVENTS = Object.freeze({
   // SHA-ancestry check bsc-runner.js runs itself, in-process, right after
   // the job exits. A real dispatch defect — IS in isDeadlikeEvent.
   STRANDED: 'job-stranded',
+  // LANDED_ACKED (+ `sha`, `verifyCmd`, `reason`, `ackedBy`, `jobId`): the
+  // OWNING session's explicit, auditable "I verified this by hand" row for a
+  // job bsc-runner classified STOPPED_SHORT/STRANDED (or otherwise terminal)
+  // but whose commits genuinely reached origin/main. Written ONLY by
+  // scripts/ack-landed.js after it re-checks the sha's ancestry on a fresh
+  // origin/main, ties the sha to the job (post-launch commit that names the
+  // ref, or descends from a stranded row's sha) and re-runs a safe-form
+  // acceptance command to exit 0. exit-status-gate.sh's Gate O v2 accepts it
+  // as terminal-and-landed when it is NEWER than the last bad row. NOT a
+  // `job-` event on purpose: foldJobs()/openJobs() skip it, so no job-state
+  // consumer changes; deliberately NOT in isDeadlikeEvent (it is the opposite
+  // of a defect) and NOT in TERMINAL_JOB_EVENTS (it does not close a jobId —
+  // the STOPPED_SHORT/STRANDED row already did).
+  LANDED_ACKED: 'landed-acked',
 });
 
 // RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new

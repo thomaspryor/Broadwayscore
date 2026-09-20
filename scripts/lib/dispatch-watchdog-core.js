@@ -607,6 +607,13 @@ function planSweep(entries, tasks, opts) {
     seen.add(id);
     const task = tasks.get(id);
     if (!isTaskOpen(task)) continue;
+    // BRO-3633: same policy as the p01Queue guard below — a task that has
+    // since aged into archive/ was deliberately taken out of active
+    // circulation, so a dead dispatch against it should not be auto-retried
+    // either. (The measured 89% board-targeting failure was the p01Queue
+    // path specifically; this is the same policy applied consistently to
+    // dead-retry, not itself separately measured.)
+    if (task && task.fromArchive) continue;
     if (open.has(id)) continue;                    // a newer launch is running
     if (ownerParked.has(id) || wdParked.has(id)) continue;
     if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
@@ -667,6 +674,17 @@ function planSweep(entries, tasks, opts) {
   const p01Queue = [];
   for (const task of tasks.values()) {
     if (!task || task.status !== 'pending') continue;
+    // BRO-3633: an archived task was deliberately taken out of active
+    // circulation (task-store-archive.js's pending-task archival — status
+    // stays 'pending' in the archive copy by design, see that file's
+    // docstring; it is a noise-reduction move, not a completion signal).
+    // loadTasksUnioned() surfaces it anyway because ITS job is
+    // outcome-auditing, not eligibility, so without this guard p01Queue
+    // resurrected shelved work every sweep — measured 89% of retired-board
+    // watchdog-redispatch rows in the 7d window were exactly this (kind:
+    // p01-backlog against cards untouched for 2+ months), which is what
+    // trips board-targeting-audit.js's "Dispatch: board targeting" check.
+    if (task.fromArchive) continue;
     const pri = taskPriority(task);
     if (pri !== 'P0' && pri !== 'P1') continue;
     if (isExcludedCategory(task)) continue;        // human-territory cards
@@ -687,6 +705,16 @@ function planSweep(entries, tasks, opts) {
   for (const [id, claimMs] of claimPending) {
     const task = tasks.get(id);
     if (!isTaskOpen(task) || open.has(id)) continue;
+    // BRO-3633 (ship-check/Codex catch): a claim can already exist in the
+    // ledger for an archived task at the moment this guard lands (claimed
+    // just before the fix deployed, or mid-flight in another process's
+    // in-memory plan). Without this, noLaunchPark below would still park it
+    // with a retired-board id — the exact symptom this card exists to stop —
+    // even though p01Queue no longer creates NEW claims like it. Silently
+    // dropping it here is correct: watchdogClaimPending already self-clears
+    // after REDISPATCH_REARM_MS regardless, so this is a bounded no-op, not
+    // a lost claim.
+    if (task.fromArchive) continue;
     // BRO-3429 ship-check: once noLaunchPark (below) has actually parked this
     // id, it belongs to the "Needs you: parked" section, not this one — an id
     // in both would double-count in needsYou and print two contradictory

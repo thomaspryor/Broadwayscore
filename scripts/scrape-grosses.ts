@@ -20,7 +20,7 @@ import * as cheerio from 'cheerio';
 // Use the shared show-matching utility (260+ aliases, multi-level matching)
 const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/show-matching');
 // Pure BWW row parser — extracted for unit testing (see tests/unit/parse-bww-grosses-row.test.mjs)
-const { parseBwwGrossesRow } = require('./lib/parse-bww-grosses-row');
+const { parseBwwGrossesRow, resolveBwwColumnIndices } = require('./lib/parse-bww-grosses-row');
 // Bright Data / Scrapingdog fetchers — proxy through non-CI IPs. This
 // script's own Playwright (last-resort tier) fails identically to a direct
 // ScrapingBee call when BroadwayWorld throttles/blocks the GitHub Actions IP
@@ -308,11 +308,14 @@ function parseWeekEndingToISO(weekEnding: string): string {
 // Shared Row Parser (used by both tiers)
 // ============================================================
 
-function parseExtractedRow(cells: string[]): BWWRowData | null {
+function parseExtractedRow(cells: string[], headerCells?: string[]): BWWRowData | null {
   // Delegates to scripts/lib/parse-bww-grosses-row.js. Kept as a thin wrapper
   // so unit tests exercise the same pure function this production path calls.
+  // headerCells resolves column positions by label instead of a fixed index
+  // (BRO-2375) — pass the live header row through so a BWW column
+  // insertion/reorder doesn't silently misassign cell values.
   // On sanity-guard drop, log the row loudly (the pure lib returns null silently).
-  const row = parseBwwGrossesRow(cells, splitShowTheater);
+  const row = parseBwwGrossesRow(cells, splitShowTheater, headerCells);
   if (row !== null) return row;
 
   // The lib returned null. Distinguish three cases so we log the interesting one:
@@ -323,13 +326,14 @@ function parseExtractedRow(cells: string[]): BWWRowData | null {
   // splitShowTheater here — it re-emits its own warn. Use the raw show/theater
   // cell text as the identifier for the drop log.
   if (!cells || cells.length < 10) return null;
-  if (cells[1] && parseCurrency(cells[1]) != null) {
+  const idx = resolveBwwColumnIndices(headerCells);
+  if (cells[idx.grossIdx] && parseCurrency(cells[idx.grossIdx]) != null) {
     // Format values the same way the old inline parser did (parsed numbers,
     // not raw strings with $/%) so grep-alerts on the log message keep working.
-    const atp = parseCurrency(cells[4]?.split(/\s+/)?.[0]);
-    const perfs = parseNumber(cells[6]);
-    const cap = parsePercentage(cells[7]);
-    const showCell = cells[0]?.trim() || '(unknown)';
+    const atp = parseCurrency(cells[idx.atpIdx]?.split(/\s+/)?.[0]);
+    const perfs = parseNumber(cells[idx.perfIdx]);
+    const cap = parsePercentage(cells[idx.capIdx]);
+    const showCell = cells[idx.showIdx]?.trim() || '(unknown)';
     console.warn(`  ⚠ Dropping "${showCell}" — implausible parsed values ` +
       `(atp=${atp}, perf=${perfs}, cap=${cap}). BWW columns may have shifted.`);
   }
@@ -377,6 +381,7 @@ function parseHtmlRows(html: string): { rows: BWWRowData[]; weekEnding: string |
     throw err;
   }
 
+  const showIdx = resolveBwwColumnIndices(headerCells).showIdx;
   const rows: BWWRowData[] = [];
   $('.all-gross-data .row').each((_i, rowEl) => {
     const cells: string[] = [];
@@ -387,11 +392,11 @@ function parseHtmlRows(html: string): { rows: BWWRowData[]; weekEnding: string |
       const target = out.length ? out : (value.length ? value : $cell);
       cells.push(target.text().trim());
     });
-    if (!cells[0]?.trim()) return; // empty row
-    if (cells[0]?.trim()?.startsWith('Show')) return; // header row
-    if (cells[0]?.trim()?.startsWith('Total')) return; // total/average row
+    if (!cells[showIdx]?.trim()) return; // empty row
+    if (cells[showIdx]?.trim()?.startsWith('Show')) return; // header row
+    if (cells[showIdx]?.trim()?.startsWith('Total')) return; // total/average row
 
-    const row = parseExtractedRow(cells);
+    const row = parseExtractedRow(cells, headerCells);
     if (row) rows.push(row);
   });
 
@@ -466,14 +471,15 @@ async function fetchWithPlaywright(): Promise<ScrapeResult | null> {
     });
 
     // Parse rows through the shared parser
+    const showIdx = resolveBwwColumnIndices(headerCells).showIdx;
     const rows: BWWRowData[] = [];
     for (const cellArray of rawRows) {
       // Skip header, total, and empty rows
-      if (cellArray[0]?.trim()?.startsWith('Show')) continue;
-      if (cellArray[0]?.trim()?.startsWith('Total')) continue;
-      if (!cellArray[0]?.trim()) continue;
+      if (cellArray[showIdx]?.trim()?.startsWith('Show')) continue;
+      if (cellArray[showIdx]?.trim()?.startsWith('Total')) continue;
+      if (!cellArray[showIdx]?.trim()) continue;
 
-      const row = parseExtractedRow(cellArray);
+      const row = parseExtractedRow(cellArray, headerCells);
       if (row) rows.push(row);
     }
 

@@ -1,0 +1,57 @@
+{
+  "generatedAt": "2026-09-20T12:01:20.100Z",
+  "workflowHalf": {
+    "ok": true,
+    "reason": null,
+    "scannedWorkflows": 175,
+    "scannedScripts": 499,
+    "findings": [
+      {
+        "workflow": "card-verifiability-audit.yml",
+        "script": "scripts/audit-card-verifiability.js",
+        "signals": [
+          "notion-brain.js"
+        ]
+      },
+      {
+        "workflow": "card-verifiability-audit.yml",
+        "script": "scripts/enrich-card-acceptance.js",
+        "signals": [
+          "notion-brain.js"
+        ]
+      },
+      {
+        "workflow": "check-arm-yield.yml",
+        "script": "scripts/check-arm-yield.js",
+        "signals": [
+          "notion-brain.js"
+        ]
+      },
+      {
+        "workflow": "data-health-check.yml",
+        "script": "scripts/health-check.js",
+        "signals": [
+          "TASKS_DIR",
+          "loadTasksUnioned",
+          "notion-brain.js"
+        ]
+      },
+      {
+        "workflow": "data-health-check.yml",
+        "script": "scripts/autonomous-acceptance-recheck.js",
+        "signals": [
+          "notion-brain.js"
+        ]
+      }
+    ]
+  },
+  "launchdHalf": {
+    "ok": false,
+    "reason": "not darwin — launchd is Mac-only, this half is CI-blind by design (same restriction as check-hook-liveness.js)",
+    "scannedAgents": 0,
+    "scannedScripts": 0,
+    "findings": []
+  },
+  "totalFindings": 5,
+  "bannerText": "notion-schedule-coupling: 5 live schedule(s) still reference the frozen Notion mirror — see data/audit/notion-schedule-coupling.json"
+}

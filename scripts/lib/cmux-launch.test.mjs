@@ -1,3 +1,11 @@
+// timebomb-audit-exempt: cmux-launch.js:205's cmuxIdleSec() measures freshness
+//   as nowMs - fs.statSync(markerPath).mtimeMs. audit-time-bomb-tests.js shifts
+//   the PROCESS clock (nowMs) but cannot shift the FILESYSTEM (mtimeMs), so
+//   under a shifted run the "real marker round-trip" test's freshly-written
+//   marker reads as decades old/negative. Not a real time bomb — production
+//   compares two readings of the same real clock. Same class as
+//   tests/unit/ttl-cache.test.mjs; see that file's exemption for the general
+//   note in scripts/audit-time-bomb-tests.js's own docstring.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

@@ -36,8 +36,14 @@ if [[ -z "$RUN_ID" || ! "$RUN_ID" =~ ^[0-9]+$ ]]; then
   echo "usage: wait-for-run.sh <run-id> [timeout-min]" >&2
   exit 3
 fi
-if [[ ! "$TIMEOUT_MIN" =~ ^[0-9]+$ || "$TIMEOUT_MIN" -eq 0 ]]; then
-  echo "wait-for-run.sh: timeout-min must be a positive integer (got: $TIMEOUT_MIN)" >&2
+# Rejects leading zeros ("08", "010"), not just non-digits: TIMEOUT_MIN feeds
+# `TIMEOUT_MIN * 60` in an arithmetic context below, where a leading-0 numeral
+# is OCTAL — "08"/"09" throw "value too great for base" and "010" silently
+# computes as decimal 8 instead of 10. Identical hazard found and fixed in
+# scripts/lib/push-with-retry.sh's MAX_RETRIES validation (BRO-2554,
+# adversarial review) this same session; same fix applied here.
+if [[ ! "$TIMEOUT_MIN" =~ ^(0|[1-9][0-9]*)$ || "$TIMEOUT_MIN" -eq 0 ]]; then
+  echo "wait-for-run.sh: timeout-min must be a positive integer with no leading zeros (got: $TIMEOUT_MIN)" >&2
   exit 3
 fi
 

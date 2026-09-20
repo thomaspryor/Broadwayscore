@@ -50,14 +50,43 @@ test('JOB_EVENTS.ABANDONED is terminal but NOT deadlike', () => {
   assert.equal(isDeadlikeEvent(JOB_EVENTS.ABANDONED), false);
 });
 
-test('every JOB_EVENTS value is exactly terminal or open (no unclassified event name)', () => {
+// Named, justified exclusion from the terminal-or-open invariant below —
+// mirrors board-targeting-audit.js's EXEMPT_EVENTS convention (name ->
+// >15-char reason) rather than a bare `startsWith('job-')` skip: a prefix
+// check would also silently pass a FUTURE job-state event that was mistakenly
+// given a non-'job-' value, hiding exactly the kind of regression this test
+// exists to catch. Keep this list SHORT — an addition has to be argued for.
+const NON_JOB_STATE_EVENTS = Object.freeze({
+  // dispatch-ledger.js:1366-1379 (JOB_EVENTS.LANDED_ACKED definition): "NOT a
+  // `job-` event on purpose: foldJobs()/openJobs() skip it, so no job-state
+  // consumer changes" — it is an auditable ack row bolted onto an ALREADY
+  // terminal jobId (STOPPED_SHORT/STRANDED), not a job-state transition of
+  // its own, so the terminal/open fold never needs to classify it.
+  'landed-acked': 'ack-landed.js audit row on an already-terminal jobId, not a job-state event',
+});
+
+test('every JOB_EVENTS value is exactly terminal, open, or a named non-job-state exemption', () => {
   // ORPHAN_SUSPECT/ORPHAN_CLEARED (BRO-3052) join SPAWNED in the open set —
   // a job must keep reading as in-flight through a suspicion and its
   // clearing, until a LATER tick writes the real terminal ORPHANED row.
   const OPEN = new Set([JOB_EVENTS.SPAWNED, JOB_EVENTS.ORPHAN_SUSPECT, JOB_EVENTS.ORPHAN_CLEARED]);
   for (const [key, value] of Object.entries(JOB_EVENTS)) {
+    if (Object.prototype.hasOwnProperty.call(NON_JOB_STATE_EVENTS, value)) continue;
     const classified = TERMINAL_JOB_EVENTS.has(value) || OPEN.has(value);
-    assert.ok(classified, `JOB_EVENTS.${key} (${value}) is neither in TERMINAL_JOB_EVENTS nor the known-open set — every consumer that folds job state needs one or the other`);
+    assert.ok(classified, `JOB_EVENTS.${key} (${value}) is neither in TERMINAL_JOB_EVENTS, the known-open set, nor NON_JOB_STATE_EVENTS — every consumer that folds job state needs one of the three`);
+  }
+});
+
+test('every NON_JOB_STATE_EVENTS name is a real, currently-unclassified JOB_EVENTS value', () => {
+  // Keeps the exclusion list from silently going stale (e.g. a future rename
+  // of LANDED_ACKED, or the day it actually gets folded into TERMINAL_JOB_EVENTS)
+  // — it must always name a value that (a) really exists on JOB_EVENTS and
+  // (b) is not ALSO already terminal/open, or the exemption is dead weight.
+  const values = new Set(Object.values(JOB_EVENTS));
+  for (const [event, reason] of Object.entries(NON_JOB_STATE_EVENTS)) {
+    assert.ok(reason.length > 15, `NON_JOB_STATE_EVENTS['${event}'] needs a real justification, not a placeholder`);
+    assert.ok(values.has(event), `NON_JOB_STATE_EVENTS names '${event}', which is not a current JOB_EVENTS value`);
+    assert.ok(!TERMINAL_JOB_EVENTS.has(event), `'${event}' is now in TERMINAL_JOB_EVENTS — remove it from NON_JOB_STATE_EVENTS`);
   }
 });
 

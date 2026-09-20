@@ -22,6 +22,8 @@
  * `gh` call count down).
  */
 
+const crypto = require('crypto');
+
 const DEFAULT_THRESHOLD_HOURS = 2;
 
 function parseMs(value) {
@@ -87,16 +89,22 @@ function isInfraOnlyFailure(run) {
 // failure precedes the first cancelled step; a phantom one follows it.
 // Duration is NOT a usable discriminator here: legitimately fast steps are also
 // 0s.
-function hasFailingStep(job) {
+// Shared by hasFailingStep (boolean) and failingStepSignatures (needs the
+// step object itself, to name it in the signature).
+function firstFailingStepEntry(job) {
   const steps = job?.steps || [];
   const ordered = steps.every((s) => Number.isFinite(s?.number))
     ? [...steps].sort((a, b) => a.number - b.number)
     : steps;
   for (const s of ordered) {
-    if (s?.conclusion === 'cancelled') return false; // everything after this is phantom
-    if (s?.conclusion === 'failure') return true;
+    if (s?.conclusion === 'cancelled') return null; // everything after this is phantom
+    if (s?.conclusion === 'failure') return s;
   }
-  return false;
+  return null;
+}
+
+function hasFailingStep(job) {
+  return !!firstFailingStepEntry(job);
 }
 
 function isBenignCancellation(run) {
@@ -211,10 +219,147 @@ function failingJobsFromNeeds(needsObj) {
   return failingJobNames({ conclusion: 'failure', jobs });
 }
 
+// ── per-breakage signature (BRO-3865) ───────────────────────────────────────
+//
+// The push-triggered dispatch below used to file every red push under ONE
+// conditionKey ('test-yml:main-streak') regardless of which job/step/test
+// was actually failing. While main stayed red for any reason, routeAlert's
+// cooldown/dedup collapsed every NEW, unrelated breakage into that same
+// stale condition — main was red 2026-08-12 through today (63 notifications,
+// one card) while at least four independent failures came and went under it.
+// Keying on a signature of WHAT is failing, not just THAT main is failing,
+// gives each distinct breakage its own ledger entry and its own card.
+
+const RED_SIGNATURE_PREFIX = 'test-yml:red:';
+
+function sha1Short(s) {
+  return crypto.createHash('sha1').update(String(s || '')).digest('hex').slice(0, 8);
+}
+
+/**
+ * conditionKey for one distinct breakage. Two different bugs in the SAME
+ * step (job+step alone can't tell them apart — batched `node --test` runs
+ * dozens of files in one step) still hash to different keys as long as
+ * `testName` differs; the same bug recurring on a later push hashes
+ * identically, so routeAlert's existing cooldown/dedup still collapses
+ * re-notifies for it rather than re-filing.
+ */
+function stepFailureSignature(jobName, stepName, testName) {
+  const hash = sha1Short(`${stepName || ''}::${testName || ''}`);
+  return `${RED_SIGNATURE_PREFIX}${jobName || 'unknown'}:${hash}`;
+}
+
+// node --test's TAP reporter prints `not ok N - <name>` for each failing
+// test; the first one found is treated as the test that defines the
+// signature. A step with no TAP line (a non-test step, e.g. actionlint or a
+// data-validation script) falls back to job+step alone, which still
+// separates it from every OTHER distinct step/job.
+//
+// This scans ONE JOB's raw log at a time (caller fetches per-job via `gh api
+// repos/{owner}/{repo}/actions/jobs/{jobId}/logs`) rather than the whole
+// run's `gh run view --log-failed` dump: `--log-failed` REFUSES to return
+// anything while the RUN is still in progress ("run <id> is still in
+// progress; logs will be available when it is complete", live-verified
+// 2026-09-20 against run 35530177910) — and the run calling this script is,
+// by construction, always still in progress at the moment it calls this
+// (test-summary is one of the LAST jobs to start, via `needs:`, but the
+// overall run doesn't conclude until test-summary itself finishes). The
+// per-job REST logs endpoint has no such restriction — it only requires the
+// INDIVIDUAL job to be done, which `needs:` already guarantees for every
+// sibling by the time test-summary runs.
+const TAP_NOT_OK_RE = /^\s*not ok \d+ - (.+?)\s*$/;
+
+/**
+ * @param {string} jobLogText - raw text from `gh api .../actions/jobs/{id}/logs`
+ *   (GitHub-Actions-timestamp-prefixed lines, e.g. "2026-09-20T18:38:38.233Z msg")
+ * @returns {string|null} the first TAP failing test name in this job's log, or null
+ */
+function firstFailingTestNameInJobLog(jobLogText) {
+  for (const raw of String(jobLogText || '').split('\n')) {
+    // Strip the leading GH Actions timestamp the same way trunk-status.js's
+    // parseFailedLog does for its differently-shaped (tab-framed) input —
+    // `\S*Z ` matches "2026-09-20T18:38:38.2331444Z ". A line that starts
+    // with something else first (e.g. an ANSI-colored echoed comment
+    // containing the literal substring "not ok N - <name>" as documentation
+    // text — this repo's own run_batch() shell function does exactly that)
+    // is left untouched and correctly fails the anchored TAP_NOT_OK_RE match
+    // below, since it no longer starts with "not ok" after whitespace.
+    const line = raw.replace(/^\S*Z\s?/, '').replace(/\r$/, '');
+    const m = TAP_NOT_OK_RE.exec(line);
+    if (m) return m[1].trim();
+  }
+  return null;
+}
+
+/**
+ * One entry per job that failed on a REAL step in `run` (excludes setup-
+ * job-only infra hiccups and benign supersessions/phantom-cancel steps —
+ * same exclusions classify()/isBenignCancellation() apply, so a run this
+ * function is called on should already be known-red at the run level).
+ * @param {{jobs?: Array}} run
+ * @param {Map<string,string>} [testNameByJob] job name -> firstFailingTestNameInJobLog() result, from the caller's per-job log fetch
+ * @returns {Array<{job:string, step:string, testName:string|null, conditionKey:string}>}
+ */
+function failingStepSignatures(run, testNameByJob) {
+  const jobs = (run && run.jobs) || [];
+  const out = [];
+  for (const job of jobs) {
+    if (!job?.conclusion || ['success', 'skipped'].includes(job.conclusion)) continue;
+    if (isSetupJobOnlyFailure(job)) continue;
+    const step = firstFailingStepEntry(job);
+    if (!step) continue; // no real failing step — nothing to attribute
+    const testName = testNameByJob?.get(job.name || '') || null;
+    out.push({
+      job: job.name || 'unknown',
+      step: step.name || 'unknown',
+      testName,
+      conditionKey: stepFailureSignature(job.name, step.name, testName),
+    });
+  }
+  return out;
+}
+
+/**
+ * Which currently-OPEN 'test-yml:red:*' ledger keys should resolve given
+ * this run's job results. A key resolves ONLY when its own job is
+ * CONFIRMED green (conclusion === 'success') on THIS run — never merely
+ * because the job is absent, skipped, or its conclusion is otherwise
+ * undetermined here. Resolving on absence would treat "we have no evidence"
+ * as "it passed": e.g. a job skipped by a path filter, or a job that's
+ * STILL failing but now on a different step than the one the open
+ * condition names (only its CURRENT failing step appears in
+ * `currentSignatures` — an older signature for a step that failed on a
+ * prior push, then got skipped because the job never got past an even
+ * earlier step, must not read as resolved). This is the same "absence of
+ * evidence must not manufacture an excuse" principle classify()/
+ * isBenignCancellation() apply elsewhere in this file (adversarial review,
+ * BRO-3865) — independent of whether OTHER signatures or the overall run
+ * are still red, so one job going fully green doesn't have to wait for
+ * every OTHER job to go green too.
+ * @param {Array<string>} openConditionKeys currently-open ledger keys (any prefix; non-red keys are ignored)
+ * @param {{jobs?: Array}} run this run's job data (same shape failingStepSignatures() takes)
+ * @param {Array<{conditionKey:string}>} currentSignatures failingStepSignatures(run, ...) output for THIS run
+ */
+function signaturesToResolve(openConditionKeys, run, currentSignatures) {
+  const currentSet = new Set((currentSignatures || []).map((s) => s.conditionKey));
+  const confirmedGreenJobPrefixes = ((run && run.jobs) || [])
+    .filter((j) => j?.conclusion === 'success')
+    .map((j) => `${RED_SIGNATURE_PREFIX}${j.name || ''}:`);
+  return (openConditionKeys || [])
+    .filter((k) => typeof k === 'string' && k.startsWith(RED_SIGNATURE_PREFIX))
+    .filter((k) => !currentSet.has(k))
+    .filter((k) => confirmedGreenJobPrefixes.some((prefix) => k.startsWith(prefix)));
+}
+
 module.exports = {
   assessMainRedStreak,
   DEFAULT_THRESHOLD_HOURS,
   failingJobNames,
   hasFailingStep,
   failingJobsFromNeeds,
+  RED_SIGNATURE_PREFIX,
+  stepFailureSignature,
+  firstFailingTestNameInJobLog,
+  failingStepSignatures,
+  signaturesToResolve,
 };

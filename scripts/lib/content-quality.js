@@ -146,6 +146,41 @@ function detectStrongErrorPageAnywhere(text) {
   return { detected: false, match: null };
 }
 
+// BRO-3572: WSJ's dowjones.com archive-reprint capture sometimes cuts the
+// article off right at the syndication interstitial — the review's real lede
+// sentence ends mid-thought with an ellipsis, immediately followed by the
+// page's "Most Popular Videos"/"Most Popular Articles" navigation rail
+// instead of the rest of the review. Unconditional/position-independent like
+// STRONG_ERROR_PAGE_PATTERNS above, for the same reason: this exact adjacency
+// never occurs in real review prose or in a real review's own trailing
+// footer (verified against the full ~43k-file corpus, 2026-09-16 — the one
+// non-WSJ "Most Popular Articles" hit, an Exeunt Magazine sidebar with no
+// ellipsis immediately before it, correctly does not match). Deliberately
+// classified as isGarbageContent -> contentTier='invalid' (excluded from
+// isIncludableForRebuild), NOT routed through TRUNCATION_SIGNALS.severeAnywhere
+// (which only ever produces 'truncated', still counted at 0.85 confidence
+// weight by compute-critic-score.js) — these files have a single truncated
+// lede fragment with zero critical judgment, not partial-credit truncated
+// content.
+const STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS = [
+  /(?:\.{3,}|…)\s+Most Popular (?:Videos|Articles)\b/,
+];
+
+/**
+ * Scan the entire body for the WSJ archive-interstitial truncation signature
+ * (position-independent).
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectStrongWsjArchiveTruncationAnywhere(text) {
+  const t = (typeof text === 'string') ? text : '';
+  for (const pattern of STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS) {
+    const m = t.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
+
 // Unambiguous full-page chrome (cookie-consent banners, dedicated legal/privacy
 // pages, hard paywall walls) whose distinctive marker can be pushed PAST the
 // first-500-char windows used by detectCookieConsent (line ~271) and the legal
@@ -1041,6 +1076,11 @@ function isGarbageContent(text) {
     return { isGarbage: true, reason: `Error/404 page (body): "${strongError.match}"` };
   }
 
+  const strongWsjTruncation = detectStrongWsjArchiveTruncationAnywhere(collapsedForErrorCheck);
+  if (strongWsjTruncation.detected) {
+    return { isGarbage: true, reason: `WSJ archive dump truncated at interstitial: "${strongWsjTruncation.match}"` };
+  }
+
   // Check for legal/privacy page
   // For longer texts, only flag if pattern is in the front — real reviews
   // often have "All Rights Reserved" or copyright as footer boilerplate.
@@ -1506,6 +1546,54 @@ function detectTruncationSignals(text) {
     moderateCount,
     likelyTruncated: severeCount > 0 || moderateCount >= 2
   };
+}
+
+// Truncation signal names that are unambiguous bot-detection/paywall STUB
+// evidence — the site served a wall instead of the article, not "the
+// article doesn't exist." Deliberately the 'severe'/'severeAnywhere' tier
+// only (nyt_bot_stub, wsj_paywall_cta, paywall_or_login_prompt) — excludes
+// the weaker 'moderate' tier (e.g. ends_with_ellipsis), which is genuinely
+// ambiguous truncation evidence, not a definite wall.
+//
+// Distinct purpose from scripts/lib/incomplete-reason.js's own Layer
+// A.5/A.6 nyt_bot_stub/wsj_paywall_cta checks: that module answers "why is
+// this text incomplete" (routes to an incompleteReason bucket, and
+// deliberately keeps paywall_or_login_prompt in a separate lower-priority
+// bucket there). This one answers a narrower question for the ensemble
+// scoreability check — "is a not_a_review/garbage_text verdict actually
+// just evidence of a wall, not evidence this isn't a review" (BRO-2495: an
+// NYT bot-stub body got the LLM ensemble to reject a real, correctly
+// THUMB-scored review as not_a_review on opening night).
+const BOT_STUB_TRUNCATION_SIGNALS = new Set([
+  'nyt_bot_stub', 'paywall_or_login_prompt', 'wsj_paywall_cta'
+]);
+
+/**
+ * True when a review file's stored body shows definite bot-detection/paywall
+ * stub evidence — checked in priority order: the signals already computed by
+ * classifyContentTier (data.truncationSignals), then the human-readable
+ * contentTierReason string it was derived from (`Truncation detected:
+ * ${signals.join(', ')}` — see classifyContentTier below), then (if fullText
+ * is present) a live re-scan, mirroring the same stored-then-live-fallback
+ * pattern incomplete-reason.js already uses for the identical signal names.
+ *
+ * @param {Object} data - review-text JSON
+ * @returns {boolean}
+ */
+function hasBotStubTruncationSignal(data) {
+  if (!data) return false;
+  const stored = Array.isArray(data.truncationSignals) ? data.truncationSignals : [];
+  if (stored.some(s => BOT_STUB_TRUNCATION_SIGNALS.has(s))) return true;
+  if (typeof data.contentTierReason === 'string') {
+    for (const sig of BOT_STUB_TRUNCATION_SIGNALS) {
+      if (data.contentTierReason.includes(sig)) return true;
+    }
+  }
+  if (data.fullText) {
+    const { signals } = detectTruncationSignals(data.fullText);
+    if (signals.some(s => BOT_STUB_TRUNCATION_SIGNALS.has(s))) return true;
+  }
+  return false;
 }
 
 /**
@@ -3184,6 +3272,7 @@ module.exports = {
   isEffectivelyWrongProductionOrShow,
   WRONG_PRODUCTION_OR_SHOW_FIELDS,
   detectTruncationSignals,
+  hasBotStubTruncationSignal,
   stripFooterContent,
   getScrapingPriority,
   countWords,
@@ -3202,6 +3291,7 @@ module.exports = {
   detectLegalPage,
   detectErrorPage,
   detectStrongErrorPageAnywhere,
+  detectStrongWsjArchiveTruncationAnywhere,
   detectStrongChromeDumpAnywhere,
   detectNewsletter,
   detectUrlOnly,
@@ -3229,6 +3319,7 @@ module.exports = {
   COOKIE_CONSENT_PATTERNS,
   ERROR_PAGE_PATTERNS,
   STRONG_ERROR_PAGE_PATTERNS,
+  STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS,
   STRONG_CHROME_DUMP_PATTERNS,
   NEWSLETTER_PATTERNS,
   NAVIGATION_PATTERNS,

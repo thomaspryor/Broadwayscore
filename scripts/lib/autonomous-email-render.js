@@ -20,6 +20,7 @@
 'use strict';
 
 const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
+const { BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
 
 function esc(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -372,8 +373,16 @@ function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
     const displayId = rawId ? (rawId.startsWith('linear:') ? rawId.slice(7) : `#${rawId}`) : null;
     const ref = displayId ? ` <span style="color:#bbb;">(${esc(displayId)})</span>` : '';
     const attemptNote = r.state === 'dispatched' && r.attempt > 1 ? ` \u2014 attempt ${r.attempt}${r.model ? ` (${esc(r.model)})` : ''}` : '';
+    // BRO-3427: a folded row's r.name is just the FIRST affected show \u2014 show
+    // the condition (r.title, minus the "BSC Daily: " prefix) plus the fold
+    // count instead, so the owner sees "N shows", not one arbitrary show
+    // standing in for all of them.
+    const foldedCount = Array.isArray(r.affected) && r.affected.length > 1 ? r.affected.length : 0;
+    const displayName = foldedCount
+      ? `${plainHealthLine(r.title && r.title.startsWith(BSC_DAILY_TITLE_PREFIX) ? r.title.slice(BSC_DAILY_TITLE_PREFIX.length) : r.name)} (${foldedCount} shows)`
+      : plainHealthLine(r.name);
     return `<div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">${icon} ${esc(plainHealthLine(r.name))}${r.dupCount ? ` (\u00d7${r.dupCount})` : ''}${ref}</div>
+      <div style="font-size:13px;color:#333;">${icon} ${esc(displayName)}${r.dupCount ? ` (\u00d7${r.dupCount})` : ''}${ref}</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">${esc(label)}${attemptNote}</div>
     </div>`;
   }).join('');

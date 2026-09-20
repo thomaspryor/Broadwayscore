@@ -28,6 +28,31 @@ test('isSoftWarnGuard: an unlisted (hard) guard is not soft-warn', () => {
   assert.equal(isSoftWarnGuard(undefined), false);
 });
 
+// BRO-2423: port of this same pattern to llm-ensemble-score.yml's two
+// hard-blocking steps + check-review-count-drift.yml's daily --strict run
+// (scripts/check-scoring-queue-guard.js, scripts/run-ensemble-scoring-guard.js,
+// scripts/check-review-count-drift-guard.js). All three are hard guards —
+// none should auto-recover below the threshold, same as check-rebuild-
+// staleness.js's 'stale-checkout-staleness' above.
+test('isSoftWarnGuard: the three BRO-2423-ported guard ids are hard guards, not soft-warn', () => {
+  assert.equal(isSoftWarnGuard('scoring-queue-scan-failed'), false);
+  assert.equal(isSoftWarnGuard('ensemble-scoring-pipeline-crashed'), false);
+  assert.equal(isSoftWarnGuard('review-count-drift-strict-breach'), false);
+});
+
+test('shouldAutoRecover: the three BRO-2423-ported guards do NOT auto-recover below the threshold', () => {
+  assert.equal(shouldAutoRecover('scoring-queue-scan-failed', 1), false);
+  assert.equal(shouldAutoRecover('ensemble-scoring-pipeline-crashed', 1), false);
+  assert.equal(shouldAutoRecover('review-count-drift-strict-breach', 1), false);
+});
+
+test('shouldAutoRecover: the three BRO-2423-ported guards DO auto-recover at the default threshold (2) past the 24h floor', () => {
+  const AGED = { firstBlockedAt: 1_700_000_000_000, now: 1_700_000_000_000 + 25 * 3600 * 1000 };
+  assert.equal(shouldAutoRecover('scoring-queue-scan-failed', 2, AGED), true);
+  assert.equal(shouldAutoRecover('ensemble-scoring-pipeline-crashed', 2, AGED), true);
+  assert.equal(shouldAutoRecover('review-count-drift-strict-breach', 2, AGED), true);
+});
+
 test('nextGuardState: requires a numeric now', () => {
   assert.throws(() => nextGuardState(null, true, undefined), /requires now/);
   assert.throws(() => nextGuardState(null, true, NaN), /requires now/);

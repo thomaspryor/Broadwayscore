@@ -708,11 +708,25 @@ function bwwTrailingDateFromUrl(url) {
  * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string }} show
  * @returns {string|null}
  */
+/**
+ * True when a critic name is empty/Unknown/Staff — the "no benefit of the
+ * doubt" bucket getWrongProductionReasonForUnknownCritic below gates on.
+ * Extracted so a post-hoc audit calling the raw getWrongProductionReasonFromUrl
+ * directly (no critic-name gating applied) can flag which of its own results
+ * carry a NAMED critic — the higher false-positive-risk class this same
+ * criticIsUnknown check exists to protect against here.
+ *
+ * @param {string|null|undefined} criticName
+ * @returns {boolean}
+ */
+function isCriticUnknown(criticName) {
+  const norm = String(criticName || '').trim().toLowerCase();
+  return !norm || norm === 'unknown' || norm === 'staff';
+}
+
 function getWrongProductionReasonForUnknownCritic(review, show) {
   if (!review) return null;
-  const norm = String(review.criticName || '').trim().toLowerCase();
-  const criticIsUnknown = !norm || norm === 'unknown' || norm === 'staff';
-  if (!criticIsUnknown) return null;
+  if (!isCriticUnknown(review.criticName)) return null;
   return getWrongProductionReasonFromUrl(review.url, show);
 }
 
@@ -3618,7 +3632,10 @@ function explainExclusion(data, show, filePath) {
     // Wayback snapshot of a Times subscription-lapsed page (correctly not_a_review), but
     // bwwExcerpt held a real review quote and aggregatorStars held Show-Score's 4/5.
     // Scoped to 'not_a_review' only — 'garbage_text' is a stronger, collector-time signal.
-    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return 'rejectionReason';
+    // hasStructuralStarScore (below) is the one exception that DOES cover 'garbage_text' —
+    // it isn't reading the rejected prose, it's reading page markup, so the reason the
+    // prose was rejected doesn't matter.
+    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data)) return 'rejectionReason';
   }
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return 'rejectedByMultipleModels';
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
@@ -3653,7 +3670,9 @@ function explainExclusion(data, show, filePath) {
     // Exception 4: matches the rejectionReason exception above (line ~2650) — an
     // independent aggregator excerpt + star rating clears the rejectedAt gate too, for
     // the same reason: the rejection was about the fullText fetch, not this content.
-    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return 'rejectedAt';
+    // Exception 5: matches hasStructuralStarScore above — a markup-based star score
+    // never read the rejected prose, so it clears the rejectedAt gate too.
+    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data)) return 'rejectedAt';
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
@@ -4159,10 +4178,20 @@ function isRejectedNonReview(data) {
     (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
     require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
   if (isJsonLdStarNotAReview) return false;
-  // Same exception as isIncludableForRebuild's not_a_review carve-out — keeps this
-  // predicate in lock-step with the rebuild gate (see hasIndependentExcerptScore).
-  if (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data)) return false;
-  if (NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
+  // Same exceptions as isIncludableForRebuild's not_a_review/structural-star-score
+  // carve-outs (BRO-2282, BRO-2495) — an independent excerpt+thumb/star score or a
+  // markup-based star score never read the rejected prose, so rejectionReason alone
+  // doesn't make this a non-review. Deliberately scoped to JUST the rejectionReason
+  // check below, not an early return for the whole function: neither exception
+  // overrides explainExclusion's separate cvWrongArticleHighConfidence gate — a
+  // file can carry BOTH a garbage_text/not_a_review rejectionReason AND a
+  // high-confidence contentVerification.wrongArticle verdict from a different
+  // pipeline stage, and the latter must still mark it non-retrieved (ship-check
+  // finding, ties isRejectedNonReview back to explainExclusion's real scope
+  // instead of over-widening this predicate).
+  const rejectionReasonCleared = hasStructuralStarScore(data) ||
+    (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data));
+  if (!rejectionReasonCleared && NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
   const cv = data.contentVerification;
   // wrongArticle gated on high confidence to match isIncludableForRebuild's
   // exact exclusion (line ~2588): a medium/low-confidence CV false-positive on a
@@ -4213,6 +4242,70 @@ const JUNK_EXCERPT_PATTERNS = [
   /not every review published by/i,
 ];
 
+// Score sources read directly from page markup (image filenames, CSS/SVG
+// classes, widget JSON) rather than scanned from the article prose — see
+// extractUKStarRating and friends in score-extractors.js. A false
+// not_a_review/garbage_text verdict on the PROSE (e.g. cookie-consent
+// boilerplate prepended to a real review — BRO-2282, John Proctor Is the
+// Villain WE, whatsonstage--sarah-crompton.json: the LLM ensemble saw the
+// consent banner and called it garbage_text, but wos-star-images had
+// already read 5/5 stars off the page's star-rating <img> tags, untouched
+// by that banner) does not taint these — the extractor never looked at the
+// rejected prose at all.
+// Deliberately narrower than OUTLET_VERIFIED_SOURCES in score-extractors.js:
+// excludes prose-scanned extractors (unicode-stars, text-pattern, css-stars,
+// word-stars, star-class, numeric-stars, omc-alt-text — which falls back to
+// matching against the plain-text body, not just markup) whose input IS the
+// same text the ensemble judged not-a-review/garbage, so a false rejection
+// could plausibly taint them too. Also excludes json-ld — that already has
+// its own, outlet-gated exception (isJsonLdStarNotAReview below); duplicating
+// it here without the KNOWN_STAR_OUTLETS check would weaken it.
+const STRUCTURAL_STAR_SOURCES = new Set([
+  'wos-star-images', 'stage-star-svg', 'telegraph-svg-stars',
+  'dailymail-rating-img', 'guardian-star-svg', 'bww-star-image',
+  'theatre-weekly-star-image', 'radiotimes-svg-stars', 'radiotimes-page-json',
+  'afridiziak-star-image', 'timeout-svg-stars',
+]);
+
+/**
+ * True when a review-text file's score came from page markup independent of
+ * the article prose the ensemble rejected — used by the not_a_review /
+ * garbage_text rejectionReason exception below. See STRUCTURAL_STAR_SOURCES
+ * for why this is narrower than "any outlet-verified source." Scoped to
+ * these two reasons only (not e.g. wrong_show / wrong_production, which are
+ * content-correctness verdicts a markup-based star score can't vouch for).
+ */
+function hasStructuralStarScore(data) {
+  if (!data) return false;
+  if (data.rejectionReason !== 'not_a_review' && data.rejectionReason !== 'garbage_text') return false;
+  if (data.wrongProduction === true || data.wrongShow === true) return false;
+  // A later pipeline pass (fix-p0-score-corruption.js) can determine the
+  // extracted score was wrong (extraction-no-evidence, aggregator-score-in-
+  // p0-slot, ...) and stamp originalScoreCleared=true without touching
+  // rejectionReason/scoreSource — same check hasValidScore's hasOrig makes
+  // (line ~4330). Without this, a since-invalidated extraction would still
+  // pass here.
+  if (data.originalScoreCleared === true) return false;
+  const source = data.scoreSource || data.originalScoreSource;
+  if (!STRUCTURAL_STAR_SOURCES.has(source)) return false;
+  return typeof data.originalScoreNormalized === 'number'
+    && data.originalScoreNormalized >= 1 && data.originalScoreNormalized <= 100;
+}
+
+/**
+ * True when a thumb verdict field (dtliThumb / bwwThumb) is a definite
+ * up-or-down call. Excludes 'Meh'/'Flat' (neutral — not independent evidence
+ * of a specific score direction) and normalizes the case each source writes:
+ * llm-extractor.js's DTLI branch stamps dtliThumb upper-case
+ * ('UP'/'DOWN'/'MEH'), its BWW branch stamps bwwThumb title-case
+ * ('Up'/'Down'/'Meh').
+ */
+function isDefiniteThumb(thumb) {
+  if (typeof thumb !== 'string') return false;
+  const upper = thumb.toUpperCase();
+  return upper === 'UP' || upper === 'DOWN';
+}
+
 /**
  * True when a review-text file has an aggregator excerpt substantial and
  * clean enough to stand on its own as the scoring source, independent of a
@@ -4225,11 +4318,26 @@ const JUNK_EXCERPT_PATTERNS = [
  *   - an aggregator excerpt field with 150+ chars of non-junk text (excludes
  *     photo captions, aggregator disclaimer boilerplate — see
  *     JUNK_EXCERPT_PATTERNS)
- *   - aggregatorStars that actually parses to a rating (excludes "N/A" and
- *     other unparseable strings masquerading as a score)
+ *   - EITHER aggregatorStars that actually parses to a rating (excludes "N/A"
+ *     and other unparseable strings masquerading as a score) OR a definite
+ *     dtliThumb/bwwThumb verdict (Up/Down — see isDefiniteThumb). Added
+ *     2026-09 (BRO-2495): a THUMB-only score (dtliThumb=Up, scoreSource=thumb)
+ *     is exactly as independent of the article body as aggregatorStars is —
+ *     the verdict is read off the aggregator's own page, not the paywalled
+ *     fullText the ensemble rejected. Before this, every THUMB-scored review
+ *     of a paywalled T1 outlet (NYT, WSJ, New Yorker, The Times) was one
+ *     ensemble re-run away from silently losing its score: the NYT review of
+ *     Paranormal Activity (opening night 2026-08-26) was stamped
+ *     not_a_review purely because its stored body was a bot-detection
+ *     paywall stub, even though it was correctly THUMB-scored from DTLI.
  *   - no wrongProduction / wrongShow flag, unconditionally (this narrow path
  *     does not defer to the manual-clear machinery the other gates use — if
  *     either flag is set, the file stays excluded here regardless)
+ *
+ * Still scoped to rejectionReason === 'not_a_review' only (unchanged) —
+ * 'garbage_text' is a stronger, collector-time signal per the caller's own
+ * scoping comment (see isIncludableForRebuild above); a THUMB verdict + clean
+ * excerpt doesn't override that.
  *
  * Corpus parity check (all 41,455 review-text files, task #734 ship-check
  * 2026-08-01): the earlier version of this exception (excerpt presence +
@@ -4244,6 +4352,7 @@ function hasIndependentExcerptScore(data) {
   const excerpt = bestAggregatorExcerptText(data);
   if (!excerpt || excerpt.trim().length < 150) return false;
   if (JUNK_EXCERPT_PATTERNS.some(p => p.test(excerpt))) return false;
+  if (isDefiniteThumb(data.dtliThumb) || isDefiniteThumb(data.bwwThumb)) return true;
   if (data.aggregatorStars == null) return false;
   const { parseOriginalScore } = require('./score-parsers');
   return parseOriginalScore(String(data.aggregatorStars)) != null;
@@ -4369,6 +4478,7 @@ module.exports = {
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
+  isCriticUnknown,
   getWrongProductionReasonForBww,
   urlYearFromPath,
   urlLooksLikeReview,
@@ -4415,6 +4525,10 @@ module.exports = {
   isIncludableForRebuild,
   explainExclusion,
   duplicateOfInheritedFlag,
+  hasStructuralStarScore,
+  hasIndependentExcerptScore,
+  isDefiniteThumb,
+  STRUCTURAL_STAR_SOURCES,
   isRejectedNonReview,
   isRetrieved,
   blocksRediscovery,

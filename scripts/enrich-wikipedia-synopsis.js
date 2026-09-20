@@ -112,7 +112,7 @@ function callClaudeAPI(prompt, maxTokens, model = CLAUDE_OPUS) {
  */
 function fetchJson(url, attempt = 1) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': USER_AGENT } }, (res) => {
+    const req = https.get(url, { headers: { 'User-Agent': USER_AGENT }, timeout: 15000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -143,7 +143,9 @@ function fetchJson(url, attempt = 1) {
         if (parsed.error) { reject(new Error(`MediaWiki API error: ${parsed.error.info || parsed.error.code || JSON.stringify(parsed.error).slice(0, 150)}`)); return; }
         resolve(parsed);
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

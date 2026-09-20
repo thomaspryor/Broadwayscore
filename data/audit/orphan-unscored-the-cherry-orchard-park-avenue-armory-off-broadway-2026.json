@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+  "openingDate": "2026-09-17",
+  "detectedAt": "2026-09-20T18:38:40.967Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "wsj--charles-isherwood.json",
+      "outletId": "wsj",
+      "criticName": "Charles Isherwood",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-5064641a",
+      "fullTextLen": 658,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
+  "blockBroadcast": true,
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
+}

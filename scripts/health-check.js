@@ -2443,23 +2443,31 @@ async function checkMainRedStreak(isCI) {
     // Actionable, not just "main is red" — the alarm string already names
     // the failing job and the FIRST red commit (CLAUDE.md: alerts must be
     // ACTION-only). File through the alert router rather than a new email
-    // path (task #1748's suggested approach) — 'auto' because diagnosing a
-    // failing test is machine-investigable, same tier as Cron failed:/etc.
+    // path (task #1748's suggested approach).
     //
     // conditionKey is deliberately the SAME 'test-yml:main-streak' key
-    // test.yml's own "Detect consecutive main test failures" step uses
-    // (.github/workflows/test.yml) — not a new one keyed on firstRedSha.
-    // Sharing it means both detectors track ONE incident: routeAlert's
-    // findLinearDuplicate + ledger cooldown (scripts/lib/owner-alert-
-    // router.js) refuse to double-file a tracked issue that's already open,
-    // whichever mechanism opened it. This check exists specifically as a
-    // BACKSTOP for that push-triggered mechanism (it depends on a push
-    // landing on main and on its `needs:` list covering every job that can
-    // fail — task #1690 was exactly that gap) — reusing its key means this
-    // check still closes the loop even when the other one is the one that
-    // missed. A shorter cooldownHours here (vs its 7-day default) makes this
-    // the higher-cadence "is this still open" nag between health-check.js
-    // runs, which happen far more often than pushes to main.
+    // test.yml's own "Detect consecutive main test failures" step has always
+    // used (.github/workflows/test.yml) — not a new one keyed on
+    // firstRedSha — so test.yml's "Resolve alert — main test.yml green
+    // again" step (which resolves this key on every green run) keeps
+    // closing this one too. disposition:'human' (BRO-3865, changed from
+    // 'auto'): test.yml's push-triggered dispatch now files a PER-SIGNATURE
+    // 'auto' card per distinct failing job/step/test
+    // (scripts/route-main-streak-signatures.js, conditionKey
+    // 'test-yml:red:<job>:<hash>') instead of one shared 'auto' card under
+    // THIS key — so this aggregate condition is no longer "diagnose one
+    // failing test", it's "nobody's per-signature card is stemming a
+    // long-running red trunk", the same severity class as the
+    // 'test-yml:main-streak-escalation' human page below. 'test-yml:main-
+    // streak' is on scripts/lib/page-worthy-alerts.js's allowlist so
+    // 'human' actually pages rather than being silently downgraded to
+    // digest. cooldownHours matches the escalation tier's 24h (NOT the old
+    // 6h — under 'auto' this key only ever paged once, since
+    // findLinearDuplicate's tracker dedupe made every later hit
+    // action:'silent' with no email at all; under 'human' there is no such
+    // tracker dedupe, only this cooldown, so 6h here would have turned a
+    // condition that can stay open for weeks into an email every 6h —
+    // caught in second-opinion review before this shipped).
     if (isCI) {
       try {
         await routeAlert({
@@ -2468,10 +2476,10 @@ async function checkMainRedStreak(isCI) {
           description: assessment.alarm,
           hint: `git log ${assessment.firstRedSha} — start from the first red commit, not the latest push.`,
           severity: 'error',
-          disposition: 'auto',
+          disposition: 'human',
           cardAction: 'Fix',
           fields: [{ name: 'First red commit', value: assessment.firstRedSha || 'unknown' }],
-          cooldownHours: 6,
+          cooldownHours: 24,
         });
       } catch (err) {
         console.error(`[Main red streak] routeAlert failed: ${err.message}`);
@@ -2604,6 +2612,66 @@ function checkDigestInvariantFail() {
   const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
   const entries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-invariant-fail-ledger.jsonl'));
   return [assessDigestInvariantFailRow(entries)];
+}
+
+// --- Stuck pipeline items (card #794) ---
+//
+// scripts/send-morning-digest.js has computed this exact signal for months
+// (overnight-digest.js's gatherDigest()/stuckSignals()) and auto-files a
+// "Stuck pipeline items" card whenever it's non-empty — but the row only
+// ever existed inside the digest's own extraIssues list, never in
+// computeCoreHealthResults()/HEALTH_DIGEST_SNAPSHOT_FILE. That meant every
+// auto-filed card's safe-form verify command
+// (check-health-row-absent.js, reading this function's output) could never
+// find the row present in the first place, so it reported the row "absent"
+// (fixed) unconditionally — a permanent false pass regardless of whether
+// anything was actually stuck. This makes the same signal a first-class row
+// here so the row can genuinely go from warn to pass and back.
+//
+// Fidelity note: gatherDigest()'s worktree/cmux/reconcile-report sources
+// only exist on the owner's Mac (reconcile-report.jsonl is gitignored,
+// .claude/worktrees/ and the cmux binary aren't present in CI's ephemeral
+// checkout) — those sections fail soft to "nothing found" there by design.
+// A CI run of this check can therefore only ever see the git-history and
+// tracked-file signals (review-count drop, rebuild-regression.json); the
+// worktree/cmux/headless-job signals are only visible when this runs
+// locally, same as the digest itself.
+function checkStuckPipelineItems() {
+  const { gatherDigest, stuckSignals } = require('./lib/overnight-digest.js');
+  const repo = path.join(__dirname, '..');
+  let digest;
+  try {
+    // skipFetch: this runs inside health-row-probe.js's supposed-to-be
+    // side-effect-free --live probe (rerun on EVERY card's acceptance check,
+    // not just this row's) — a real `git fetch` there would mutate
+    // FETCH_HEAD/remote-tracking refs on disk, which the probe's fs-write
+    // monkey-patch can't catch since it's a child process, not a Node fs
+    // call (adversarial ship-check finding). send-morning-digest.js's real
+    // run is unaffected — it doesn't pass this option.
+    digest = gatherDigest({ repo, skipFetch: true });
+  } catch (err) {
+    return [{ name: 'Stuck pipeline items', status: 'warn', message: `Could not gather the overnight digest to check for stuck signals (${String(err.message).slice(0, 120)})` }];
+  }
+  const signals = stuckSignals(digest);
+  if (signals.length) {
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. ${signals.join(' | ')}`.slice(0, 500),
+    }];
+  }
+  if (digest.errors.length) {
+    // "No signals found" and "collection itself partially failed" are NOT
+    // the same claim — collapsing them the way this row never existing at
+    // all collapsed every state to "fixed" is the exact false-pass class
+    // this row exists to end (adversarial ship-check finding).
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `Overnight digest gathered partially (${digest.errors.length} source(s) failed) — cannot confirm clean: ${digest.errors.join('; ')}`.slice(0, 500),
+    }];
+  }
+  return [{ name: 'Stuck pipeline items', status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' }];
 }
 
 // --- Push-retry deadman (task #394) ---
@@ -3643,6 +3711,24 @@ function obClosingBacklogResults(report, now = new Date()) {
     message: `${candidates.length} open Off-Broadway show(s) look closed per the weekly detector. Oldest: ${label}`,
     hint: 'Review data/audit/ob-closing-candidates.json; confirm evidence quotes, then set closingDate/status in shows.json (data repo).',
   }];
+}
+
+// Reads data/audit/ob-closing-candidates.json off disk and surfaces it via
+// obClosingBacklogResults. Pure local-file read — unlike feedbackBacklogResults
+// (needs a live GitHub API call via getOpenFeedbackReviewIssues), this has no
+// CI-only dependency, so it belongs in computeCoreHealthResults rather than
+// gated behind `if (isCI)` in main(): that gate meant a card targeting this
+// row could never confirm its own fix same-day, because
+// scripts/lib/health-row-probe.js's live re-check only re-runs
+// computeCoreHealthResults (task #799 — moved here so the live probe can see
+// it, same file main() and the probe already share for exactly this reason).
+function checkObClosingBacklog() {
+  try {
+    const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
+    return obClosingBacklogResults(obReport);
+  } catch {
+    return []; // report absent (detector not yet run) — nothing to surface
+  }
 }
 
 // Daily-digest surfacing for reverse-discovery missing-show candidates
@@ -4807,6 +4893,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkPipelines(),
     ...checkBatchState(),
     ...checkQuality(),
+    ...checkObClosingBacklog(),
     ...checkOutletHealth(),
     ...checkCommercialModelDrift(),
     ...checkCookieExpiration(),
@@ -4828,6 +4915,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixCanary(),
     ...checkAutofixThroughput(),
     ...checkDigestInvariantFail(),
+    ...checkStuckPipelineItems(),
   ];
 }
 
@@ -4865,11 +4953,6 @@ async function main() {
       console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
     }
     allResults.push(...feedbackBacklogResults(feedbackSummary));
-
-    try {
-      const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
-      allResults.push(...obClosingBacklogResults(obReport));
-    } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     // Never-run workflow coverage (task #737): computed HERE, not read from a
     // file lint-workflows wrote — that CI job checks out code but has no
@@ -5081,4 +5164,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
+module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };

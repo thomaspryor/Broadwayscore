@@ -170,9 +170,48 @@ jobs:
             # same-night retry never dispatches — the exact silent-miss this
             # card fixed — and the queue's own alerts can't fire either.
             "opening-night-express-retry-check.yml|3|Opening Night Express Retry Check"
-            # Hourly trade-press RSS recoupment poll; 3h = 2 missed runs = alert.
-            # Powers ≤1h detection latency for Variety/Deadline recoupment news.
-            "commercial-rss-poll.yml|3|Commercial RSS Poll"
+            # Hourly trade-press RSS recoupment poll. Powers ≤1h detection
+            # latency for Variety/Deadline recoupment news.
+            # BRO-3666 (2026-09-20): widened 3h -> 8h. The old band assumed the
+            # schedule ('0 * * * *') is what actually runs, and read "3h = 2
+            # missed runs = alert". It isn't: GitHub throttles this repo's
+            # hourly schedules hard, and over 2026-09-16 -> 2026-09-20 (30 runs)
+            # the real cadence was ~1.5-5.5h with a MAX gap of 5h31m
+            # (2026-09-20T07:08:39Z -> 12:39:26Z) and a cluster of 4h54m-5h31m
+            # gaps in the 01:00-12:00 UTC window. So 3h flagged a perfectly
+            # healthy workflow on any noon following a normal throttle gap —
+            # firing the self-heal redispatch and then paging on the second
+            # consecutive check. Same reasoning the process-feedback.yml entry
+            # below already applies to its */10 schedule ("12h tolerates
+            # GitHub's heavy throttling").
+            # 8h = observed max + ~2.5h headroom, NOT the generic
+            # worst-gap + 12h cushion (which would be 13h — 12h of cushion over
+            # an expression-derived 1h gap that never occurs). Registered in
+            # scripts/audit-cron-health-coverage.js TIGHT_BY_DESIGN so the
+            # cushion warning stays silenced and nobody "fixes" it to 13h; that
+            # map matches maxHours on STRICT EQUALITY, so changing the 8 here
+            # means changing it there in the same commit. That coupling is
+            # enforced by tests/unit/cron-health-tight-by-design-sync.test.mjs —
+            # the audit itself only WARNS (it needs --strict to exit non-zero,
+            # and neither test.yml nor the pre-push hook passes it), so without
+            # that test a desync silently degrades to a yellow line, which is
+            # precisely the "someone fixes it to 13h" outcome this comment is
+            # trying to prevent.
+            #
+            # Detection cost, quantified — NOTE THE OFF-BY-ONE. The comparison
+            # below is `HOURS_AGO -gt max_hours` where
+            # HOURS_AGO = (NOW - LAST_TS) / 3600 in integer (FLOORING) shell
+            # arithmetic, so a band of 8 does not alert until age >= 9h: the
+            # effective band is 9h, not 8h. Real headroom over the observed
+            # 5h31m max gap is therefore ~3.5h, not ~2.5h.
+            # The checker runs daily at 12:00 UTC, so it alerts at noon only
+            # when the last success was <= 03:00 UTC (age >= 9h). Under the old
+            # 3h band that cutoff was <= 08:00 UTC (age >= 4h). So the outages
+            # that lose same-day detection from this widening are exactly those
+            # whose last success falls in 03:00-08:00 UTC. Worst case: a last
+            # success at 03:00:01 is still 8h59m old at noon (floors to 8, not
+            # > 8), so it waits for the next day's check and surfaces at ~33h.
+            "commercial-rss-poll.yml|8|Commercial RSS Poll"
             # Weekly Monday cron — Tony + Olivier cutoff freshness check. 200h = 1 missed week.
             # Advisory v1 (warnings only), but staleness still pages so we re-verify dates before
             # season cutoffs bias the show-page rank pool.
@@ -198,6 +237,13 @@ jobs:
             # it RAN, dead arms included, so a real dead arm can never make this
             # entry look stale and trigger a redispatch loop.
             "check-arm-yield.yml|36|Check Arm Yield (dead-arm detector)"
+            # Daily 05:30 UTC. Card #796: audit-card-verifiability.js /
+            # enrich-card-acceptance.js existed and worked but were never
+            # scheduled anywhere for 18+ days, letting the undispatchable-
+            # backlog count silently grow unnoticed — the exact class of
+            # invisibility this list exists to catch. 36h = daily cadence +
+            # 12h cron-lag cushion, matching check-arm-yield.yml above.
+            "card-verifiability-audit.yml|36|Card Verifiability Audit (undispatchable-backlog drain)"
           )
 
           FAILURES=""
@@ -747,7 +793,11 @@ jobs:
           # alert-ledger.json: routeAlert()/resolveCondition()'s cooldown ledger
           # (card #608) — must be committed here or the per-cron 24h cooldown
           # added above never persists across daily runs (same class as #394).
-          for f in data/audit/cron-health-state.json data/audit/alert-ledger.json; do
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          for f in data/audit/cron-health-state.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --staged --quiet; then

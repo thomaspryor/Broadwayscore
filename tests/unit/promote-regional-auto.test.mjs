@@ -99,7 +99,11 @@ test('buildRegionalShowEntry: venue gets the feeder city suffix; type detected f
   assert.equal(e.venue, 'Goodman Theatre, Chicago, IL');
   assert.equal(e.type, 'musical');
   const play = buildRegionalShowEntry({ ...ROUNDUP_CANDIDATE, title: 'A Serious Drama', slug: 'a-serious-drama', venue: 'Arena Stage' });
-  assert.equal(play.type, null, 'no musical keyword → type stays null (validate-data allows null)');
+  // BRO-3716: null (not 'play') on a status='open' show fails validate-
+  // market-expansion.js's required-fields check wherever a market is gated
+  // — west-end/off-broadway are gated today, regional isn't, but all three
+  // builders share this exact heuristic and must agree.
+  assert.equal(play.type, 'play', 'no musical keyword → defaults to play, not null (BRO-3716)');
   assert.equal(play.venue, 'Arena Stage, Washington, DC');
 });
 
@@ -248,6 +252,10 @@ test('buildOffBroadwayAggregatorShowEntry: status open + real openingDate, unlik
   assert.match(e.id, /-off-broadway-\d{4}$/);
   assert.equal(e.provisional, true);
   assert.equal(e.discoverySource, 'aggregator-roundup:bww-roundup');
+  // BRO-3716: off-broadway is one of validate-market-expansion.js's gated
+  // markets, and this builder always writes status='open' — a null type
+  // here fails CI the same way the west-end sibling builder did.
+  assert.equal(e.type, 'play', 'no musical keyword → defaults to play, not null (BRO-3716)');
 });
 
 // Card #1921 (cousin of BRO-160): buildOffBroadwayAggregatorShowEntry wrote

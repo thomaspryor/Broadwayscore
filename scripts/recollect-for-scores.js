@@ -183,24 +183,40 @@ function fetchWithScrapingBee(url, cookieHeader) {
       params.set('forward_headers', 'true');
     }
     const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
-    const options = { headers: {} };
+    const options = { headers: {}, timeout: 30000 };
     if (cookieHeader) {
       options.headers['Spb-Cookie'] = cookieHeader;
     }
-    https.get(apiUrl, options, (res) => {
+    // Guards against double-billing the ledger: req.destroy() on timeout
+    // itself emits a socket 'error' right after, so without this both
+    // handlers below would fire and recordSbCall() twice for one request
+    // (Codex adversarial review, BRO-2383).
+    let recorded = false;
+    const rec = (fields) => {
+      if (recorded) return;
+      recorded = true;
+      recordSbCall({ url, fn: 'render', purpose: 'score-recollect', ...fields });
+    };
+    const req = https.get(apiUrl, options, (res) => {
       let data = '';
       res.on('data', chunk => { data += chunk; });
       res.on('end', () => {
-        recordSbCall({ url, fn: 'render', success: res.statusCode === 200, status: res.statusCode, credits: sbBilledCredits(res.statusCode, 5), purpose: 'score-recollect' });
+        rec({ success: res.statusCode === 200, status: res.statusCode, credits: sbBilledCredits(res.statusCode, 5) });
         if (res.statusCode === 200) {
           resolve(data);
         } else {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
-    }).on('error', (e) => {
-      recordSbCall({ url, fn: 'render', success: false, status: 'error', credits: 0, purpose: 'score-recollect' });
+    });
+    req.on('error', (e) => {
+      rec({ success: false, status: 'error', credits: 0 });
       reject(e);
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      rec({ success: false, status: 'timeout', credits: 0 });
+      reject(new Error('Request timeout'));
     });
   });
 }

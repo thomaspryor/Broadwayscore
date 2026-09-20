@@ -56,6 +56,22 @@ const BSC_DAILY_RE = /^(?:\[fix\]\s*)?BSC Daily:/;
 // already had to fix once for the live sweep).
 const TERMINAL_CARD_STATUSES = new Set(['Done', 'Archived', 'Cancelled']);
 
+// A page moved to Notion's trash (task #1811) keeps its Status property
+// frozen at whatever it last read — it can still say "In progress" or even
+// "Done" forever. Checked as an independent boolean here, never merged into
+// TERMINAL_CARD_STATUSES itself, so a trashed-but-Done card can't collide
+// with a trashed-but-still-"In progress" one — same reasoning
+// dispatch-guards.js:530-533's closedCardGuard and predispatch-guard.js's
+// classifyCandidate already used to justify checking card.archived
+// independently rather than folding it into a status Set. Card #794 follow-
+// up: notion-tasks-sync.js's pull/sync-drift path was the one caller that
+// didn't check it, letting an archived card's frozen "In progress" status
+// keep re-promoting a reclaimed pending mirror straight back to in_progress
+// forever (tasks #1857/#1859 oscillated every ~6-8h for days).
+function isCardArchivedOrTerminal(card) {
+  return !!(card && (TERMINAL_CARD_STATUSES.has(card.status) || card.archived));
+}
+
 const DEFAULT_IDLE_MS = 48 * 60 * 60 * 1000; // same bar as sweepUntrackedInProgress
 
 function notionMarkerOf(task) {
@@ -265,7 +281,12 @@ function classifyReclaimable(trapped, ctx = {}) {
     if (!Number.isFinite(idle)) { push('skip-card-unavailable', 'card has no usable lastEditedAt — cannot tell whether anyone is on it'); continue; }
     if (idle < idleMs) { push('skip-fresh', `card was edited ${(idle / 3600e3).toFixed(1)}h ago — someone may be on it`); continue; }
     if (String(card.outcome || '').trim()) { push('park-outcome', 'card already records a completed Outcome — needs a human yes/no, not an automatic reopen'); continue; }
-    if (TERMINAL_CARD_STATUSES.has(card.status)) { push('park-outcome', `card status is ${card.status} — finished work, never reclaim`); continue; }
+    // isCardArchivedOrTerminal (not a bare TERMINAL_CARD_STATUSES.has check):
+    // a trashed page's Status property stays frozen (task #1811) — it can
+    // read "In progress" forever with no outcome text, which would otherwise
+    // sail past this guard and get reclaimed as pending even though the page
+    // refuses every write and can never be worked or closed normally.
+    if (isCardArchivedOrTerminal(card)) { push('park-outcome', `card status is ${card.archived ? `${card.status || 'unknown'} (archived/trashed)` : card.status} — finished work, never reclaim`); continue; }
 
     push('reclaim', (forced && startedIds.has(id))
       ? 'dispatched before, but an owner-directed branch review confirmed its work already landed on main — and every other guard still passed'
@@ -350,5 +371,6 @@ module.exports = {
   NOTION_MARKER_RE,
   BSC_DAILY_RE,
   TERMINAL_CARD_STATUSES,
+  isCardArchivedOrTerminal,
   DEFAULT_IDLE_MS,
 };

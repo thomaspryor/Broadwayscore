@@ -208,7 +208,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
               return (
                 <Fragment key={item.show.slug}>
                   <tr
-                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
+                    className={`border-b border-white/5 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >
@@ -468,7 +468,7 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
               return (
                 <Fragment key={item.show.slug}>
                   <tr
-                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
+                    className={`border-b border-white/5 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >
@@ -702,7 +702,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
               return (
                 <Fragment key={item.show.slug}>
                   <tr
-                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasDetails ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
+                    className={`border-b border-white/5 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >

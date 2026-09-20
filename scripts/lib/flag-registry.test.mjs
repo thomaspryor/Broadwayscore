@@ -19,7 +19,7 @@ test('extractReferencedFlagKeys finds every real flag key currently used in src/
   const { keys, unresolved } = extractReferencedFlagKeys();
   const found = new Set(keys.map((k) => k.key));
   assert.equal(unresolved.length, 0, `unresolved getFeatureFlag() args (scanner can't statically resolve): ${JSON.stringify(unresolved)}`);
-  for (const expectedKey of ['mobile-gate-timing', 'ticket-single-button', 'ticket-primary-platform']) {
+  for (const expectedKey of ['mobile-gate-timing', 'ticket-primary-platform']) {
     assert.ok(found.has(expectedKey), `expected src/ to still reference '${expectedKey}' — if this flag's code was removed, delete its REGISTERED_FLAGS entry too`);
   }
 });
@@ -61,7 +61,7 @@ test('extractReferencedFlagKeys treats an ambiguous identifier (2+ distinct defi
 });
 
 test('checkFlagParity: a registered key is never reported missing', () => {
-  const referenced = [{ key: 'ticket-single-button', files: ['src/fake.tsx'] }];
+  const referenced = [{ key: 'ticket-primary-platform', files: ['src/fake.tsx'] }];
   const { missing } = checkFlagParity(referenced, REGISTERED_FLAGS);
   assert.deepEqual(missing, []);
 });

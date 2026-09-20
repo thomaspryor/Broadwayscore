@@ -1,55 +1,15 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-09-05T02:22:00.875Z",
+  "lastChecked": "2026-09-20T11:52:53.614Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Fetch Guardian Reviews via API failed 7 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
-      "status": "error",
-      "message": "Rebuild Reviews (Fast) failed 7 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Rebuild Reviews Data",
-      "status": "error",
-      "message": "Rebuild Reviews Data failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Fetch Show Images",
-      "status": "error",
-      "message": "Fetch Show Images failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Commercial RSS Poll",
-      "status": "error",
-      "message": "Commercial RSS Poll failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "status": "error",
-      "message": "Audit Aggregator Review Gap failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Update Show Score Data",
-      "status": "error",
-      "message": "Update Show Score Data failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Imageless Scored Shows",
-      "status": "warn",
-      "message": "Audit Imageless Scored Shows failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Opening Night Checklist",
-      "status": "warn",
-      "message": "Opening Night Checklist failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 6 times in the last 24h — likely broken, not transient."
     }
   ]
 }

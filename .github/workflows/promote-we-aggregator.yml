@@ -130,7 +130,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          bash scripts/lib/git-add-existing.sh data/audit/we-promotion-log.jsonl data/audit/we-last-promotion-ids.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json
+          bash scripts/lib/git-add-existing.sh data/audit/we-promotion-log.jsonl data/audit/we-last-promotion-ids.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
           if ! git diff --staged --quiet; then
             git commit -m "data: WE aggregator promotion audit log [skip ci]"
             bash scripts/lib/push-with-retry.sh

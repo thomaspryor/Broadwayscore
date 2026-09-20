@@ -41,6 +41,18 @@ import { loadWorkflow, findStep } from '../helpers/workflow-push-timeout.mjs';
  * hard-reset fallback could wipe the uncommitted write before it got there.
  * Same env shape as its apiFallbackSafe siblings, so it joins the hybrid
  * category below too.
+ *
+ * BRO-2529 (2026-09-16) added "Commit digest + coverage snapshots
+ * (apiFallbackSafe)" right after "Run health check" — health-digest-
+ * snapshot.json/health-check-history.json/workflow-run-coverage.json/
+ * affiliate-health.json were written there (and by "Affiliate health
+ * monitor" just before it) but not committed until "Commit health check
+ * audit snapshots" much later, with FOUR intervening push-with-retry.sh
+ * callers able to wipe the uncommitted write via the Git Data API fallback's
+ * hard reset — confirmed live on run 35093780383, the file stuck a full
+ * day+ stale on origin/main despite the cron reporting green daily. Same
+ * env shape as its apiFallbackSafe siblings, so it joins the hybrid
+ * category below too.
  */
 
 const WORKFLOW = 'data-health-check.yml';
@@ -51,6 +63,7 @@ const GIT_NET_TIMEOUT_ONLY_STEPS = [
 ];
 const HYBRID_TIMEOUT_AND_REST_STEPS = [
   { name: 'Commit provider spend ledger (apiFallbackSafe)', deadline: '900' },
+  { name: 'Commit digest + coverage snapshots (apiFallbackSafe)', deadline: '900' },
   { name: 'Commit lifetime sweep snapshots (apiFallbackSafe)', deadline: '900' },
   { name: 'Commit health check audit snapshots (apiFallbackSafe)', deadline: '900' },
   { name: 'Commit alert router state (apiFallbackMerge)', deadline: '900' },

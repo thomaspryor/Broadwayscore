@@ -51,7 +51,12 @@ test('runVerify runs a real safe command and reports pass', () => {
   // validator is in the loop, not a stub.
   const r = runVerify(process.cwd(), 'test -f scripts/bsc-next.js');
   assert.equal(r.status, 'pass');
-  assert.equal(runVerify(process.cwd(), 'test -f scripts/does-not-exist-xyz.js').status, 'fail');
+  // BRO-3446: a command naming a path absent from the checkout is
+  // unverifiable, not fail — the missing evidence is not proof the fix
+  // broke (a --allow-phantom-path dispatch guess is exactly this shape).
+  const missing = runVerify(process.cwd(), 'test -f scripts/does-not-exist-xyz.js');
+  assert.equal(missing.status, 'unverifiable');
+  assert.match(missing.detail, /scripts\/does-not-exist-xyz\.js/);
 });
 
 test('parseArgs handles flags with and without values', () => {

@@ -189,6 +189,7 @@ module.exports = {
   extractDatesFromProductionPage,
   validateOBProductionPageTitle,
   mergeSources,
+  isPreviewStrictlyAfterOpening,
 };
 
 // =========================================================
@@ -638,6 +639,24 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
 // =========================================================
 
 /**
+ * Data integrity guard: an entry's firstPreview must not be strictly AFTER
+ * its opening. Equal is a legitimate no-previews production (some OB shows —
+ * verbatim pieces, one-week workshop-style engagements — open cold with no
+ * preview period at all), not bad data.
+ *
+ * BRO-1108 regression: this used to be `>=`, which discarded exactly this
+ * "no previews" shape as bad data BEFORE it ever reached the same-date
+ * confirm/fix logic downstream — so a show like The Ford/Hill Project (BAM
+ * Fisher, opened 2026-09-08 with no previews) had its Playbill production
+ * page correctly discovered and validated every week, then silently thrown
+ * away, forever re-probing (burning SERP+fetch) instead of ever rotating off
+ * its unconfirmed date source.
+ */
+function isPreviewStrictlyAfterOpening(entry) {
+  return !!(entry && entry.firstPreview && entry.opening && entry.firstPreview > entry.opening);
+}
+
+/**
  * Two-source agreement merge. For each (title-matched) show:
  *   - If both sources have a date that agrees within ±1 day → high confidence.
  *   - If exactly one source has the date → low confidence, audit-only.
@@ -887,9 +906,9 @@ async function main() {
     }
     const isCandidate = candidateShows.some(s => s.id === show.id);
 
-    // Data integrity: previews must be before opening.
-    if (entry.firstPreview && entry.opening && entry.firstPreview >= entry.opening) {
-      console.warn(`  SKIP ${show.title}: preview ${entry.firstPreview} >= opening ${entry.opening} (bad data)`);
+    // Data integrity: see isPreviewStrictlyAfterOpening above (BRO-1108).
+    if (isPreviewStrictlyAfterOpening(entry)) {
+      console.warn(`  SKIP ${show.title}: preview ${entry.firstPreview} > opening ${entry.opening} (bad data)`);
       continue;
     }
 
@@ -944,10 +963,33 @@ async function main() {
       isUnconfirmedDateSource(show) &&
       !shiftTooLarge;
 
-    // For NON-same-date-fix changes, require two-source agreement OR --force.
+    // Same-date CONFIRMED (distinct from same-date FIX above): the source
+    // EXPLICITLY reports both a firstPreview and an opening, and both agree
+    // with shows.json's existing same-date values — no preview period,
+    // opening night IS the first performance. This is a legitimate production
+    // shape (see BRO-1108 comment above), not an IBDB-conflation error, so
+    // there's no date to correct. Still rotate openingDateSource off the
+    // unconfirmed value so the show stops being re-probed by every future
+    // run — a source-only write, never touches openingDate/previewsStartDate.
+    //
+    // Require entry.firstPreview truthy (not just !previewChanges): a source
+    // that reports ONLY an opening date (no preview info at all) has said
+    // nothing about the preview period — silence is not confirmation that
+    // there wasn't one. Also reject 'discrepancy' confidence: mergeSources
+    // still picks a single preferred date pair even when Playbill and Lortel
+    // disagree, so a discrepancy entry is evidence of disagreement, not proof.
+    // (Codex ship-check finding, BRO-1108.)
+    const sameDateConfirmed = !sameDateFix && show.openingDate && show.previewsStartDate &&
+      show.openingDate === show.previewsStartDate &&
+      !openingChanges &&
+      !!entry.firstPreview && entry.firstPreview === show.previewsStartDate &&
+      entry.confidence !== 'discrepancy' &&
+      isUnconfirmedDateSource(show);
+
+    // For NON-same-date changes, require two-source agreement OR --force.
     // This protects the bulk of OB shows (where the existing date may already
     // be correct) from being silently overwritten by a single-source error.
-    if (!sameDateFix && entry.confidence !== 'high' && !force) {
+    if (!sameDateFix && !sameDateConfirmed && entry.confidence !== 'high' && !force) {
       // Pick the most informative reason for audit operators. Magnitude veto
       // is the most actionable signal — it usually means a wrong-production
       // match. Otherwise fall back to the generic single-source label.
@@ -985,6 +1027,12 @@ async function main() {
       showChanges.push({ field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource });
       changes.push({ id: show.id, title: show.title, slug: show.slug, changes: showChanges });
       console.log(`  FIX ${show.title}: same-date ${show.openingDate} → preview=${entry.firstPreview || show.previewsStartDate}, opening=${entry.opening} [${entryDateSource}]`);
+    } else if (sameDateConfirmed && isCandidate) {
+      const showChanges = [
+        { field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource },
+      ];
+      changes.push({ id: show.id, title: show.title, slug: show.slug, changes: showChanges });
+      console.log(`  CONFIRM ${show.title}: same-date ${show.openingDate} confirmed correct (no preview period) [${entryDateSource}]`);
     } else if (force && isCandidate) {
       const showChanges = [];
       if (entry.firstPreview && entry.firstPreview !== show.previewsStartDate) {

@@ -19,6 +19,7 @@ const path = require('path');
 const { JSDOM } = require('jsdom');
 const { writePrecursorJson, PRECURSORS_DIR } = require('./lib/precursor-wikipedia');
 const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
+const { parseNydccLegacyTable } = require('./lib/nydcc-legacy-table-parser');
 
 const PAGE = 'New_York_Drama_Critics%27_Circle';
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
@@ -137,29 +138,23 @@ async function main() {
       .map((c) => (c.textContent || '').trim());
     const headerText = headerCells.map((c) => c.toLowerCase()).join('|');
     if (!/nominated for|category/i.test(headerText) || !/year/i.test(headerText)) continue;
-    // Found the right table by header content — assert its column count hasn't
-    // drifted before trusting the fixed cells[0]/[1]/[3] indices below (task #1331).
-    try {
-      assertTableSchema([headerCells], { minCells: 4 });
-    } catch (err) {
-      if (err instanceof TableSchemaError) {
-        console.error(`::error::scrape-nydcc: ${err.message}`);
-        continue;
-      }
-      throw err;
+
+    // Found the right table by header content. Column positions (Year /
+    // Show / "Nominated for") are resolved by label, not assumed at
+    // cells[0]/[1]/[3] (BRO-2375) — assertTableSchema alone only guarantees
+    // the row has 4+ cells, not that those labels haven't shifted position.
+    const { error, entries } = parseNydccLegacyTable(t.outerHTML, {
+      minYear: MIN_YEAR,
+      categoryForHeading,
+      cleanTitle,
+    });
+    if (error) {
+      console.error(`::error::scrape-nydcc: ${error}`);
+      continue;
     }
-    for (const row of t.querySelectorAll('tr')) {
-      const cells = Array.from(row.children).filter((el) => el.tagName === 'TD' || el.tagName === 'TH');
-      if (cells.length < 4) continue;
-      const yearMatch = (cells[0].textContent || '').trim().match(/^([12]\d{3})/);
-      if (!yearMatch) continue;
-      const year = parseInt(yearMatch[1], 10);
-      if (year < MIN_YEAR) continue;
-      const italic = cells[1].querySelector('i');
-      const title = cleanTitle(italic ? italic.textContent : cells[1].textContent);
-      if (!title) continue;
-      const cat = categoryForHeading((cells[3].textContent || '').trim());
-      if (!cat || !result[cat]) continue;
+
+    for (const { category: cat, year, title } of entries) {
+      if (!result[cat]) continue;
       if (seenByCategory[cat].has(year)) continue;
       seenByCategory[cat].add(year);
       if (/^no award|^not awarded/i.test(title)) {

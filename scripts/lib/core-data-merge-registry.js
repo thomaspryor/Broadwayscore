@@ -238,7 +238,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
-    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml (its "Commit digest snapshot" step) writes it; that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
+    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml writes it (as of BRO-2529, 2026-09-16: its "Commit digest + coverage snapshots (apiFallbackSafe)" step); that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
     note: 'the file scripts/autonomous-email.js:HEALTH_DIGEST_PATH reads to build the owner\'s daily digest email — the file whose lost push caused this task\'s originating incident (run 32559247279)',
   },
   {
@@ -1389,9 +1389,16 @@ const CORE_DATA_MERGE_REGISTRY = [
     file: 'audit/ticket-ab-monitor-state.json',
     surface: 'public-repo',
     status: 'single-writer',
-    apiFallbackSafe: true,
+    // false, not true: same pattern as the gate-cold-start-monitor-state.json
+    // entry above — the writer-drift guard re-verifies every apiFallbackSafe:
+    // true entry against the live workflows and rightly found no writer once
+    // BRO-3456 (912f84e7d43) concluded the ticket-single-button A/B and
+    // removed its monitor-gate-ab.yml write step. main went red on
+    // 2026-09-16. A frozen file has no writer to be safe for.
+    apiFallbackSafe: false,
     concurrencyGroup: 'monitor-gate-ab',
-    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false).',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false). SUPERSEDED 2026-09-16: writer removed, see note.',
+    note: 'FROZEN as of 2026-09-16: the ticket-single-button A/B concluded (BRO-3456, card #392) and monitor-gate-ab.yml no longer writes this file (its write step was removed) — kept in the repo as the historical readout, not actively single-written anymore despite the status above.',
   },
   {
     file: 'audit/follow-send-checkpoint.json',
@@ -1597,7 +1604,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     newline: true,
     apiFallbackMerge: true,
     optInReconcile: false, // see audit/alert-ledger.json's comment above
-    verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js.',
+    verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js. UPDATE 2026-09-16 (BRO-2423): 3 more independent writers, same one-key-per-guard shape, no registry change needed (the merge fn is generic over top-level keys) — check-scoring-queue-guard.js: scoring-queue-scan-failed, run-ensemble-scoring-guard.js: ensemble-scoring-pipeline-crashed (both llm-ensemble-score.yml, concurrency group scoring-reviews[-reason]), check-review-count-drift-guard.js: review-count-drift-strict-breach (check-review-count-drift.yml, concurrency group check-review-count-drift) — now 6 total.',
   },
   {
     file: 'audit/breaker-transitions.jsonl',

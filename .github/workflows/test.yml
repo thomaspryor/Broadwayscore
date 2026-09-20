@@ -174,6 +174,10 @@ on:
       # of silently joining this backlog.
       #
       # Sorted by source path; the test each one protects is named alongside.
+      # scripts/lib/ack-landed-core.test.mjs covers the decision this CLI
+      # wraps (scripts/lib/** is globbed above); listed so a solo edit to the
+      # CLI itself still fires CI.
+      - 'scripts/ack-landed.js'
       # tests/unit/assert-broadcast-step-order.test.mjs
       - 'scripts/assert-broadcast-step-order.js'
       # tests/unit/audit-ensemble-rejections.test.mjs
@@ -322,6 +326,12 @@ on:
       # its new dependency, is already covered by the scripts/lib/** glob above.)
       - 'scripts/ingest-review-from-url.js'
       - 'scripts/ingest-review-from-url.test.mjs'
+      # scripts/ingest-manual-review.js (BRO-3790 cousin fix): the operator
+      # "break-glass" manual-correction CLI sits at the top level of scripts/
+      # with all its tests under tests/unit/ (already globbed above via
+      # 'tests/**'), so a solo edit to the SOURCE file alone would trigger
+      # zero CI — same gap class as scripts/ingest-review-from-url.js above.
+      - 'scripts/ingest-manual-review.js'
       # scripts/audit-safe-form-allowlist.js (BRO-2718): required by
       # scripts/lib/safe-form-allowlist.test.mjs (globbed above) but living at
       # the top level of scripts/, so a solo edit to it would trigger zero CI —
@@ -459,6 +469,11 @@ on:
       # audit-placeholder-venues.js still needs its own entry (no scripts/**
       # broad glob) so a solo edit triggers CI.
       - 'scripts/audit-placeholder-venues.js'
+      # BRO-2271: backward-looking pre-BRO-736 SERP wrong-production corpus
+      # audit. Test lives in tests/unit/ (node --test batch, globbed already);
+      # this top-level script needs its own entry (no scripts/** broad glob)
+      # so a solo edit triggers CI.
+      - 'scripts/audit-corpus-contamination.js'
       # Affiliate revenue hardening (2026-08-03): link contract + anomaly
       # decision layer for the site's only revenue stream. Colocated *.test.mjs
       # run in the lib-test glob (incl. the real June–July incident replay);
@@ -607,13 +622,6 @@ on:
       # Bright Data auto-blacklisted GitHub runner range 158.23.190.0/24).
       # Path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-bd-blacklist.js'
-      # Card #1729: yield-provenance classifier (which reviews the BWW roundup
-      # actually, uniquely contributed vs. would have been found anyway) +
-      # its acceptance test, which also replays discoverBwwRoundupUrl against
-      # a real historical Broadway show and regression-guards the West-End
-      # cheap-tier fix from #756 above. Test registered in
-      # tests/unit-test-manifest.txt; path-listed so a solo edit triggers CI.
-      - 'scripts/tests/bww-roundup-yield-provenance.test.mjs'
       # BRO-2226: locks in the missing-show Tier-2 verifier targeting fix
       # (validate-show-venue --show=<addedId> instead of --all-provisional)
       # + the brightdataDailyUsd threshold decision. Deps are all
@@ -1056,6 +1064,14 @@ on:
       # edit triggers CI.
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
+      # BRO-2409: repairs same-URL clusters left with ZERO duplicate pointer on
+      # any member (the gap between fix-circular-duplicate-pairs.js, which
+      # needs an existing mutual pointer, and the CI url-mismatch/orphan
+      # self-heals, which only fire on an existing one). Its lib
+      # (scripts/lib/suppression-logic.js) is already covered by the
+      # scripts/lib/** glob above. Test lives in tests/unit/ (node --test
+      # batch); path-listed so a solo edit to this top-level driver triggers CI.
+      - 'scripts/fix-unflagged-same-url-clusters.js'
       # Byline-attestation tiebreak (BRO-3247): decides which of two same-URL
       # bylines is real by checking which one the article actually prints.
       # Test lives in tests/unit/ (node --test batch via unit-test-manifest.txt);
@@ -1091,6 +1107,13 @@ on:
       - 'scripts/generate-mobile-show-details.js'
       - 'scripts/compute-gold-lists.js'
       - 'scripts/send-opening-digest.js'
+      # BRO-2531: colocated workflow-config regression test (job timeout
+      # margin + failure()||cancelled() notify condition). The workflow file
+      # it asserts against (.github/workflows/opening-digest.yml) is already
+      # covered by the '.github/workflows/**' glob below — no separate entry
+      # needed. Registered explicitly in the unit-test node --test list below
+      # (top-level scripts/*.test.mjs is not globbed).
+      - 'scripts/send-opening-digest.test.mjs'
       # Genre classifier (non-theatrical routing, mirror of src/lib/genre.ts) +
       # its colocated parity/FP test, and the discovery writer that tags new
       # shows. Without these path entries a solo edit triggers ZERO CI.
@@ -1294,6 +1317,11 @@ on:
       # colocated regression test. Without these, an edit pushes with ZERO CI
       # (Archduke/Royal Court silent-miss class, 2026-06-27).
       - 'scripts/scrape-london-box-office-roundups.js'
+      # BRO-2565: category-aware archive-cache-guard.js read/write wiring added
+      # to scrape-dtli.js (its 3 sibling scrapers above are already listed).
+      # scrape-dtli.js itself was never path-listed before this — a solo edit
+      # shipped with ZERO CI (same gap class the comments above document).
+      - 'scripts/scrape-dtli.js'
       # OB venue listing discovery (S5-T2 added Bedlam + Audible's Minetta Lane
       # Theatre 2026-07-22). Colocated tests/unit/venue-listing-discover.test.mjs
       # runs in the tests/unit node --test batch (not globbed); path-listed so
@@ -1469,6 +1497,13 @@ on:
       # (skips in unit-tests, which never checks out data/review-texts; enforced for
       # real by the data-validation job's re-run below, after checkout-review-texts).
       - 'scripts/verify-frankie-2002-cleanup.test.mjs'
+      # BRO-1397: corpus-wide regression guard for excerptMentionsFormerCast
+      # (scripts/lib/excerpt-validation.js, covered by the scripts/lib/**
+      # glob above already, but this test file itself is a root scripts/
+      # file so it needs its own entry, same pattern as frankie above).
+      # Corpus-presence-gated: skips locally without review-texts, enforced
+      # for real by the data-validation job's re-run below.
+      - 'scripts/verify-prior-run-former-cast-sweep.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
       # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
       # must never silently override a unanimous LLM ensemble rejection.
@@ -1576,6 +1611,22 @@ on:
       # helpers are covered via tests/unit/collect-review-texts-rename-helper.test.mjs
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
+      # BRO-2381: colocated test (pushReviewTextsCheckpoint() env-var gating —
+      # REVIEW_TEXTS_TOKEN/GITHUB_ACTIONS). Root-level scripts/*.test.mjs is
+      # NOT globbed — registered in tests/unit-test-manifest.txt and
+      # path-listed here so a solo edit to the test triggers CI. Its
+      # dependency scripts/lib/review-texts-checkpoint-gate.js needs no entry
+      # of its own — already covered by the scripts/lib/** glob above (same
+      # pattern as scripts/audit-stale-announced-shows.js above, which lists
+      # only the top-level file and not its scripts/lib/ dependency).
+      - 'scripts/collect-review-texts.test.mjs'
+      # BRO-1431: colocated test (stale-flag neutralization on body
+      # replacement — wrongProduction/contentVerification/contentTier).
+      # Root-level scripts/*.test.mjs files are NOT globbed — registered in
+      # tests/unit-test-manifest.txt and path-listed here so a solo edit
+      # triggers CI.
+      - 'scripts/ingest-urls.js'
+      - 'scripts/ingest-urls.test.mjs'
       - 'scripts/scoring-delta.js'
       # Colocated test (task #1163: mandated inclusion replay had zero coverage
       # of the wrongShow/wrongProduction auto-clear predicates). Root-level
@@ -1817,11 +1868,9 @@ on:
       # Ticket A/B significance math + report decision fn (pure, colocated test
       # runs in the scripts/lib/*.test.mjs glob step) and its analyzer caller —
       # without these entries edits get ZERO CI (feedback_test_yml_push_path_allowlist).
+      # scripts/monitor-ticket-ab.js (card #392) retired 2026-09-16 alongside
+      # ticket-single-button's conclusion — removed from this list with it.
       - 'scripts/analyze-ab-test.js'
-      # Weekly ticket-single-button A/B monitor (card #392) — pure rules +
-      # runner + analyzer; colocated test runs in the scripts/lib/*.test.mjs
-      # glob step.
-      - 'scripts/monitor-ticket-ab.js'
       # Scheduled-email-count monitor (card #510) — pure classifier/decision
       # rules + CLI; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/monitor-scheduled-email-count.js'
@@ -1838,6 +1887,11 @@ on:
       - 'scripts/produce-trunk-snapshot.js'
       - 'scripts/tests/close-time-verify.test.mjs'
       - 'scripts/tests/trunk-status.test.mjs'
+      # BRO-3865: per-breakage main-red alert routing (test.yml's own
+      # test-summary job invokes this). Same "non-listed scripts/ = ZERO CI"
+      # gap — a solo edit to just this file, with test.yml untouched, would
+      # otherwise trigger zero CI.
+      - 'scripts/route-main-streak-signatures.js'
       # Launchd auth preflight (task #1107) — cheap exit-code gate wrapping
       # preflightAuth() for bash/python wrappers. Same "scripts/tests/ is not
       # scripts/lib/" gap as the block above: without these entries a push
@@ -1987,6 +2041,16 @@ on:
       # Same orphan state as the lock suite above: edited by BRO-2607 and
       # wired into nothing. It guards the emergency disk-floor cleanup path.
       - 'scripts/gc-merged-worktrees.disk-floor-summary.test.sh'
+      # BRO-2279: same orphan state as the two GC test entries above — no
+      # paths entry, no run step, so this suite ran ZERO CI. It guards the
+      # com.google.Chrome.code_sign_clone pruner: that cache silently grew
+      # to 45G under /var/folders and pushed the fleet to 483Mi free
+      # mid-dispatch-loop (a different root cause than BRO-2258's bsc-jobs
+      # log growth). gc-merged-worktrees.sh calls it unconditionally every
+      # pass; that file is already path-listed above, but a solo edit to
+      # only the checker or its test needs its own entry here.
+      - 'scripts/check-chrome-clone-cache.sh'
+      - 'scripts/check-chrome-clone-cache.test.sh'
       # Digest v3 auto-dispatch (owner mandate 2026-08-02) — planner + card
       # filing + headless dispatch; colocated test runs in the
       # scripts/lib/*.test.mjs glob step. check-health-row-absent.js is the
@@ -2189,6 +2253,11 @@ on:
       # triggers CI (red) instead of silently reverting it (registry-clobber card
       # 38b637c5). Detection, not prevention.
       - 'data/outlet-registry.json'
+      # BRO-1343 null-domain-count/collision regression guard — root-level
+      # scripts/*.test.mjs is NOT globbed, registered in tests/unit-test-
+      # manifest.txt for execution; path-listed here so a solo edit to
+      # the test file itself still triggers CI.
+      - 'scripts/outlet-registry.test.mjs'
       - 'tests/fixtures/classify-category-baseline.json'
       - 'public/data/mobile-shows.json'
       # OB closing-date detector (alert-only) — colocated scripts/lib/*.test.mjs
@@ -2293,6 +2362,12 @@ on:
       # colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/bsc-needs-you.js'
+      # The shared snapshot behind BOTH bsc-needs-you.js and the morning
+      # digest. Path-listed 2026-09-16: scripts/lib/** does not TRIGGER CI,
+      # so a solo edit here got zero CI even though its colocated tests run
+      # in the lib-test glob. Found while fixing pendingDecisions() silently
+      # omitting needs-you tabs that had no state file (2 of 5 shown).
+      - 'scripts/lib/needs-you-snapshot.js'
       # bsc-in-review (BRO-282 residual half / BRO-3376) — the issue-scoped
       # sibling of bsc-needs-you above. `In Review` is where finished work
       # actually piles up (120 items, 100 idle 14d+, measured 2026-09-15) and,
@@ -2441,6 +2516,14 @@ on:
       - 'scripts/check-arm-yield.js'
       # cron-health multi-day stale escalation (card #647, root cause (b)).
       - 'scripts/update-cron-health-state.js'
+      # BRO-2534: cron-health-chronic diagnosis orchestrator + its own
+      # colocated regression test. scripts/lib/cron-health.js (the pure
+      # classifyJob/parseJobTimeouts core) is already covered by the
+      # scripts/lib/** glob above; these two are top-level scripts/ files
+      # (root-level scripts/*.test.mjs is NOT globbed) — path-listed so a solo
+      # edit to either triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/cron-health-chronic-orchestrator.js'
+      - 'scripts/cron-health-chronic.test.mjs'
       # E2E canary for the alert→card→dispatch chain (card #374) — path-listed
       # for the same reason (feedback_test_yml_push_path_allowlist); it has no
       # colocated unit test (it deliberately exercises the REAL Notion API,
@@ -2588,6 +2671,11 @@ on:
       # auditor or its unit test triggers CI.
       - 'scripts/audit-self-contradictory-clears.js'
       - 'tests/unit/self-contradictory-clear.test.mjs'
+      # BRO-2283 — root-level scripts/*.test.mjs is NOT globbed (same gap as
+      # the drain acceptance test below); registered in
+      # tests/unit-test-manifest.txt so it RUNS in CI but needs its own path
+      # entry or a solo edit gets ZERO CI.
+      - 'scripts/audit-self-contradictory-clears.test.mjs'
       # BRO-185 drain acceptance test — root-level scripts/*.test.mjs is NOT
       # globbed, and it's registered in tests/unit-test-manifest.txt, so it
       # RUNS in CI but needs its own path entry or a solo edit gets ZERO CI.
@@ -2634,6 +2722,11 @@ on:
       # globbed, so a solo edit to just this file needs its own entry.
       - 'scripts/check-review-count-drift.test.mjs'
       - 'scripts/clear-stale-wrong-production-flags.js'
+      # BRO-2323: root-level scripts/*.test.mjs is NOT globbed — a solo edit to
+      # either the script or its colocated test needs its own entry, or the
+      # test that would catch a predicate/surge-guard regression never runs.
+      - 'scripts/clear-stale-roundup-flags.js'
+      - 'scripts/clear-stale-roundup-flags.test.mjs'
       - 'scripts/triage-unknown-critic-stubs.js'
       # Shared llm-ensemble-score.yml dispatch helper (T1 sweep self-heal +
       # verify-all-scored) and the rebuild-drop analyzer it de-noises
@@ -2838,6 +2931,14 @@ on:
       # covered by any glob, so it needs explicit listing
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-linear-drain-health.js'
+      # Its colocated CLI test needs its OWN entry, not just the source's:
+      # audit-toplevel-script-test-yml-coverage.js flags a manifest-registered
+      # top-level test whose own path is absent here, because a solo push
+      # touching only the test file would otherwise trigger ZERO CI
+      # (feedback_test_yml_push_path_allowlist). These are CLI-level tests that
+      # spawn the real binary — exactly the class that caught the stdin bug the
+      # pure-function tests could not see — so they must run on their own edits.
+      - 'scripts/check-linear-drain-health.test.mjs'
       # Linear session reporting (BRO-387 Phase 1): the Linear twin of
       # Notion's 13-hook session-tracking loop — claim-or-create at start,
       # outcome comment + state update at end, Stop-hook enforcement.
@@ -2847,6 +2948,13 @@ on:
       # a solo edit to either the lib or the CLI needs explicit listing here
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/linear-session.js'
+      # scripts/check-linear-staleness.js (BRO-3869) is the thin I/O wrapper
+      # around scripts/lib/linear-staleness-check.js's pure decision function
+      # (colocated-tested in scripts/lib/linear-staleness-check.test.mjs,
+      # which runs in the scripts/lib/*.test.mjs glob) — no independent test
+      # of its own, but a solo edit here would otherwise trigger ZERO CI, the
+      # same gap task #1745 documents.
+      - 'scripts/check-linear-staleness.js'
       # Linear issue-cap monitor + Done auto-archive (BRO-285): free-tier hard-
       # caps a workspace at 250 unarchived issues, hit once already 2026-08-12.
       # linear-cap-policy.js's pure isOverCapThreshold/isArchivableIssue are
@@ -4306,9 +4414,17 @@ jobs:
         # up the wall-clock budget there. continue-on-error: true so transient
         # network flakes don't block PRs — failures still show up red in the
         # test summary panel.
+        #
+        # tests/unit/dmarc-deliverability.test.mjs (BRO-2600) does a live
+        # dns.resolveTxt() of _dmarc.broadwayscorecard.com — same reasoning:
+        # a resolver hiccup on the runner must not block an unrelated PR, so
+        # it lives here rather than in the no-continue-on-error main manifest
+        # batch. A real DMARC regression still reaches the owner — it's just
+        # via scripts/lib/dmarc-analysis.js's aggregate-report health-check,
+        # not this CI run (second-opinion review, 2026-09-17).
         continue-on-error: true
         run: |
-          node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs scripts/enrich-fallback-ticket-links-live.test.mjs
+          node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs scripts/enrich-fallback-ticket-links-live.test.mjs tests/unit/dmarc-deliverability.test.mjs
 
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
@@ -4392,6 +4508,35 @@ jobs:
         # (task #183 / Notion 39d637c5 — the "Record pipeline success" hang).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.deadline.test.sh
+
+      - name: Run push-with-retry early-fallback budget test (bash integration)
+        # BRO-3663. The early-fallback break at push-with-retry.sh trades the
+        # remaining local retry budget for the Git Data API fallback, but
+        # $_PUSH_API_FALLBACK_ELIGIBLE is repo/config-level and knows nothing
+        # about the diff's PATHS — so a caller staging an unregistered
+        # data/audit/ path broke out early, found the fallback disqualified, and
+        # hard-failed with attempts unspent ("Audit Aggregator Review Gap" run
+        # 34855239166, 3 of 5). Case 1 pins the budget, Case 2 pins that the
+        # break STILL fires when the fallback is genuinely reachable, Case 3
+        # pins that a hanging caller stays deadline-bounded.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.early-fallback-budget.test.sh
+
+      - name: Run push-with-retry usage-validation test (bash integration)
+        # BRO-2554: a non-numeric first positional arg (max_retries) used to
+        # crash with a confusing "unbound variable" deep in an arithmetic
+        # context instead of a clear usage error. Covered by scripts/lib/**
+        # (line 22) for CI triggering — no separate path-filter entry needed.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.usage-validation.test.sh
+
+      - name: Run wait-for-run usage-validation test (bash integration)
+        # BRO-2554 what-else sweep: wait-for-run.sh's TIMEOUT_MIN validation had
+        # the same leading-zero-octal hazard just fixed in push-with-retry.sh's
+        # MAX_RETRIES. Covered by scripts/lib/** (line 22) for CI triggering —
+        # no separate path-filter entry needed.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/wait-for-run.usage-validation.test.sh
 
       - name: Run push-with-retry push-rc diagnosis test (bash integration)
         # BRO-2732: rebuild-reviews.yml's push step failed every run and the log
@@ -4479,6 +4624,12 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/gc-merged-worktrees.disk-floor-summary.test.sh
 
+      - name: Run check-chrome-clone-cache test (bash integration)
+        # BRO-2279: same orphan-suite risk as the two GC test steps above —
+        # without a run step this would sit in the repo passing zero CI.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/check-chrome-clone-cache.test.sh
+
       - name: Run sync-audit-checkout test (bash integration)
         # Task #1563: local main drifted 119 commits behind origin because
         # every launchd job swallowed a failed `git merge --ff-only` with
@@ -4529,6 +4680,19 @@ jobs:
         # scripts/lib/push-rebase-progress.test.mjs (loud-abort decision) run above.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.noop-rebase.test.sh
+
+      - name: Run push-with-retry rebase-refusal test (bash integration)
+        # BRO-3662. `git rebase` refuses BEFORE it starts when the worktree or
+        # index is dirty; the old call site discarded that stderr and reported
+        # "Rebase had conflicts", ran its resolve loop against ZERO conflicted
+        # files, and fell through to `merge -X ours` — the path that can
+        # silently discard a concurrent writer's changes. Seen on all 10 retry
+        # attempts of process-feedback.yml run 34852355418. Case 1 pins the
+        # diagnosis (real git error + the dirty path); case 2 pins that a
+        # GENUINE conflict still takes the old path, so the new branch cannot
+        # over-fire.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.rebase-refusal.test.sh
 
       - name: Run push-with-retry content-drop test (bash integration)
         # Asserts the task #619 P0 fix: a push could report success with a
@@ -4776,6 +4940,15 @@ jobs:
         # macOS-only — the exposure is local, but the defect is authored here.
         if: always()
         run: node --test scripts/lib/ledger-write-isolation.test.mjs
+
+      - name: Run API fallback path disqualifier unit tests
+        # BRO-3663. The predicate deciding which paths the Git Data API fallback
+        # may overlay used to be an inline `node -e` in push-with-retry.sh plus a
+        # hand-maintained "precise mirror" in audit-push-retry-budgets.js — which
+        # had already drifted once (BRO-3348). It now has one definition; this
+        # pins its rules so a change to them fails here.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: node --test scripts/lib/api-fallback-disqualifier.test.mjs
 
   data-validation:
     name: Data Validation
@@ -5084,6 +5257,18 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/verify-frankie-2002-cleanup.test.mjs
+
+      - name: Run BRO-1397 prior-run former-cast sweep (needs review-texts)
+        # BRO-1397: registered in tests/unit-test-manifest.txt, but that batch
+        # runs in the unit-tests job which never checks out data/review-texts,
+        # so it would only ever exercise its own skip branch there. Re-run
+        # HERE with REQUIRE_REVIEW_CORPUS=1 so a future false positive on any
+        # priorRuns show (or a regression un-suppressing a known one) actually
+        # fails CI instead of silently skipping.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/verify-prior-run-former-cast-sweep.test.mjs
 
       - name: Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)
         # Same corpus-missing trap as the frankie step above: registered in
@@ -5528,6 +5713,25 @@ jobs:
         # FIX_SURGE_THRESHOLD (producer regression — auto-clearing would flood
         # scoring). Decision + tests: scripts/lib/duplicate-of-gate.{js,test.mjs}.
         # Full report-mode triage runs daily in check-corpus-drift.yml (→ digest).
+
+      - name: Audit fully-unsuppressed same-URL clusters
+        if: always()
+        run: node scripts/fix-unflagged-same-url-clusters.js --gate
+        # Fails on a spike of same-(show,outlet,url) clusters where NO member
+        # carries a duplicateOf/duplicateTextOf pointer to another member —
+        # invisible to the two gates above, which both require an EXISTING
+        # pointer to find anything. Root cause (BRO-2409): the "Sweep stale
+        # duplicateOf flags" and "Sweep orphaned duplicateOf pointers" steps in
+        # rebuild-reviews.yml are two independent self-heals that can each
+        # clear one half of an A<->B pair with no knowledge of the other,
+        # leaving zero pointer on either side — both members then silently
+        # double-score (confirmed on 22 real clusters). rebuild-reviews.yml now
+        # runs this script's own --fix immediately after those two steps, so
+        # this gate is the trunk-level backstop, not the primary fix path
+        # (same relationship check-corpus-drift.yml has to this file's
+        # catastrophe floor). --gate is spike-only (GATE_FLOOR=10) so ordinary
+        # private-repo churn can't red an unrelated code push. Run --fix
+        # locally to repair.
 
       # "Audit orphan slim show files" MOVED to check-corpus-drift.js
       # (BRO-3535, 2026-09-16) — the #2 worst offender in the 8-day diagnostic
@@ -6076,75 +6280,49 @@ jobs:
         if: failure() && steps.stepset.outputs.changed == 'true'
         run: node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak-escalation')"
 
-      - name: Route alert — main test.yml red on consecutive pushes
-        if: failure() && steps.streak.outputs.should_dispatch == 'true'
-        uses: actions/github-script@v7
+      # BRO-3865: replaces a single 'test-yml:main-streak' conditionKey that
+      # collapsed EVERY currently-failing job/step into one ledger condition
+      # — main was red 2026-08-12 through 2026-09-20 (63 notifications, one
+      # card) while at least four independent, unrelated failures came and
+      # went under it, none getting its own card. scripts/route-main-streak-
+      # signatures.js (backed by the pure functions in scripts/lib/main-red-
+      # streak.js) computes a conditionKey per distinct job/step/test-name
+      # signature via `gh run view --json jobs` + a per-job `gh api .../logs`
+      # call (NOT `--log-failed` — that refuses to return anything while
+      # THIS run is still in progress, which it always is at this point), so
+      # a NEW breakage that shows up while main is ALREADY red gets its own
+      # card instead of silently deduping into the old one. Runs on every
+      # push (success or failure, never cancelled) because resolution —
+      # closing a signature's condition the moment its OWN job is confirmed
+      # green, independent of whether OTHER signatures or the overall run
+      # are still red — must not wait for should_dispatch/should_escalate,
+      # which only gate the NEW dispatch on the streak's own 2+/4+
+      # thresholds (unchanged from before). The aggregate 'test-yml:main-
+      # streak'/'-escalation' keys (health-check.js backstop + "Resolve
+      # alert" step below) are untouched by this — they stay the human-paged
+      # "main has been down a long time, nobody's per-signature card is
+      # stemming it" signal, not a per-breakage one. continue-on-error:true
+      # is a deliberate backstop (adversarial review): every gh/API call
+      # inside the script already degrades gracefully rather than throwing,
+      # but this ensures even an unforeseen bug in the script can never flip
+      # an otherwise-green push to red — the one thing this alerting step
+      # must never do is become a new way for main to go red.
+      - name: Route + resolve main-streak signature alerts
+        if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
+        continue-on-error: true
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
-          SHOULD_ESCALATE: ${{ steps.streak.outputs.should_escalate }}
           STREAK: ${{ steps.streak.outputs.streak }}
-          FAILING_JOBS: ${{ steps.stepset.outputs.current_failing_jobs }}
-        with:
-          script: |
-            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const prevUrl = process.env.PREV_FAILED_URL || '';
-            const streak = process.env.STREAK || '?';
-            const failingJobs = process.env.FAILING_JOBS || 'unknown (job-set lookup unavailable)';
-            const fields = [
-              { name: 'This failed run', value: `[View logs](${runUrl})` },
-              { name: 'Previous failed run', value: prevUrl ? `[View logs](${prevUrl})` : 'n/a' },
-              { name: 'Consecutive failures', value: streak },
-              { name: 'Currently failing job(s)', value: failingJobs },
-            ];
-
-            // Independent conditionKey/disposition per severity tier — each gets
-            // its own ledger entry, so the router's normal cooldown/dedup does
-            // the "notify once per open incident" work with no special-casing
-            // here. No cooldownHours override: a real Notion/Resend outage
-            // retries next run instead of a failed send silently marking the
-            // incident "notified" (see routeAlert's notifyOk gate).
-            await routeAlert({
-              conditionKey: 'test-yml:main-streak',
-              title: 'main test.yml red on 2+ consecutive pushes',
-              description: `The Test Suite has failed on at least two consecutive pushes to main. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. A fix-main card has been filed to the Action Queue.`,
-              severity: 'error',
-              disposition: 'auto',
-              cardAction: 'Fix',
-              fields,
-              url: runUrl,
-            }).catch(e => console.error('Consecutive-failure card dispatch failed:', e.message));
-
-            if (process.env.SHOULD_ESCALATE === 'true') {
-              // Separate conditionKey, 24h cooldown: re-pages once a day while
-              // main stays red 4+ in a row, instead of firing every push (spam)
-              // or firing exactly once ever (the old cooldownHours:0 hack, which
-              // also fully bypassed the ledger's own dedup). disposition:'human'
-              // IS on the page-worthy allowlist (scripts/lib/page-worthy-alerts.js,
-              // BRO-1333) — it sends a real email, not just a digest line — after
-              // that same key was found to have silently downgraded to digest for
-              // 3+ weeks with zero real notifications. task #843: model:'opus'
-              // makes digest-autofix.js dispatch THIS row (a technical
-              // investigation, not a decision) straight to opus on its first
-              // attempt, since it's already the SECOND machine attempt at the
-              // underlying failure (the 2nd-failure 'auto' card above already
-              // tried once and didn't resolve it).
-              await routeAlert({
-                conditionKey: 'test-yml:main-streak-escalation',
-                title: 'main test.yml STILL red — auto-dispatch did not resolve it',
-                description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
-                severity: 'error',
-                disposition: 'human',
-                model: 'opus',
-                fields,
-                url: runUrl,
-                cooldownHours: 24,
-              }).catch(e => console.error('Consecutive-failure escalation email failed:', e.message));
-            }
+        run: |
+          ARGS=(--run-id="$GITHUB_RUN_ID" --exclude-job="Test Summary" --streak="${STREAK:-?}" --prev-url="$PREV_FAILED_URL")
+          if [ "${{ steps.streak.outputs.should_dispatch }}" == "true" ]; then ARGS+=(--dispatch); fi
+          if [ "${{ steps.streak.outputs.should_escalate }}" == "true" ]; then ARGS+=(--escalate); fi
+          node scripts/route-main-streak-signatures.js "${ARGS[@]}"
 
       # Close both incidents the moment main goes green again — lets a FUTURE
       # streak notify immediately instead of waiting out the cooldown.
@@ -6160,7 +6338,11 @@ jobs:
       - name: Commit alert-router ledger changes
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/main-streak-failing-jobs.json 2>/dev/null || true
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/main-streak-failing-jobs.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if ! git diff --staged --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"

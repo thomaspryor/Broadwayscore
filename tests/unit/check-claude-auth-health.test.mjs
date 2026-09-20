@@ -100,3 +100,93 @@ test('scripts/lib/page-worthy-alerts.js has claude-auth:revoked on the page-wort
   const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
   assert.equal(isPageWorthy('claude-auth:revoked'), true);
 });
+
+// ---------------------------------------------------------------------------
+// BRO-2971: a spawn that never reached the auth handshake (spawnSync
+// ETIMEDOUT/ENOMEM, an OS/jetsam signal kill, or a missing binary) used to
+// page with the SAME 'claude-auth:revoked' framing as an actual revoked
+// credential, telling on-call to re-run `claude auth login` for a problem
+// that fix cannot touch. preflightAuth() (scripts/lib/claude-cli.js) now
+// carries a `reason` field through; these tests prove evaluateAuthHealth and
+// buildAlertPayload route it to distinct conditionKeys/remediations.
+// ---------------------------------------------------------------------------
+
+test('evaluateAuthHealth: a spawn-starved preflight failure routes to mode "spawn-starved", not "fail"', () => {
+  const preflight = { ok: false, mode: 'fail', reason: 'spawn-starved', detail: 'spawnSync claude ETIMEDOUT' };
+  const health = evaluateAuthHealth({ preflight, authStatus: null });
+
+  assert.equal(health.ok, false);
+  assert.equal(health.mode, 'spawn-starved');
+});
+
+test('evaluateAuthHealth: a spawn-error preflight failure (e.g. missing binary) routes to mode "spawn-error"', () => {
+  const preflight = { ok: false, mode: 'fail', reason: 'spawn-error', detail: 'spawnSync claude ENOENT' };
+  const health = evaluateAuthHealth({ preflight, authStatus: null });
+
+  assert.equal(health.ok, false);
+  assert.equal(health.mode, 'spawn-error');
+});
+
+test('evaluateAuthHealth: an actual auth rejection (no reason, or reason:"auth-rejected") still routes to mode "fail"', () => {
+  const health = evaluateAuthHealth({
+    preflight: { ok: false, mode: 'fail', detail: 'OAuth access token has been revoked' },
+    authStatus: null,
+  });
+  assert.equal(health.mode, 'fail');
+});
+
+test('buildAlertPayload: spawn-starved gets its OWN conditionKey, no auth-login repair command, and warns against re-login', () => {
+  const health = evaluateAuthHealth({
+    preflight: { ok: false, mode: 'fail', reason: 'spawn-starved', detail: 'spawnSync claude ETIMEDOUT' },
+    authStatus: null,
+  });
+  const payload = buildAlertPayload(health);
+
+  assert.equal(payload.conditionKey, 'claude-spawn-starved');
+  assert.notEqual(payload.conditionKey, 'claude-auth:revoked');
+  assert.equal(payload.disposition, 'human', 'still launch-blocking, so still page-worthy');
+  assert.doesNotMatch(payload.description, new RegExp(REPAIR_STEPS.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'must not print the auth REPAIR_STEPS for a resource-starvation failure');
+  assert.match(payload.description, /do NOT re-run `claude auth login`/);
+  const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy(payload.conditionKey), true);
+});
+
+test('buildAlertPayload: spawn-error gets its OWN conditionKey, distinct from both spawn-starved and revoked', () => {
+  const health = evaluateAuthHealth({
+    preflight: { ok: false, mode: 'fail', reason: 'spawn-error', detail: 'spawnSync claude ENOENT' },
+    authStatus: null,
+  });
+  const payload = buildAlertPayload(health);
+
+  assert.equal(payload.conditionKey, 'claude-spawn-error');
+  assert.notEqual(payload.conditionKey, 'claude-spawn-starved');
+  assert.notEqual(payload.conditionKey, 'claude-auth:revoked');
+  assert.match(payload.description, /do NOT re-run `claude auth login`/);
+  const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy(payload.conditionKey), true);
+});
+
+test('buildBillingFallbackAlertPayload: a spawn-starved stored-probe blip is NOT reported as a confirmed revoked credential', () => {
+  // The stored-login probe itself never reached the handshake (ETIMEDOUT) —
+  // adversarial-review finding: without storedReason threading through, this
+  // read identically to an actually-revoked stored login and told on-call to
+  // re-login for a hiccup that needed no action.
+  const health = evaluateAuthHealth({
+    preflight: { ok: true, mode: 'api-key', storedDetail: 'spawnSync claude ETIMEDOUT', storedReason: 'spawn-starved' },
+    authStatus: { loggedIn: false },
+  });
+  const payload = buildBillingFallbackAlertPayload(health);
+
+  assert.doesNotMatch(health.reason, /stored OAuth login failed/, 'must not assert a confirmed failure for an unreached probe');
+  assert.match(health.reason, /NOT a confirmed revoked credential/);
+  assert.equal(payload.conditionKey, 'claude-auth:api-key-fallback');
+});
+
+test('buildBillingFallbackAlertPayload: an actual revoked stored login (auth-rejected reason) keeps the confirmed-failure wording', () => {
+  const health = evaluateAuthHealth({
+    preflight: { ok: true, mode: 'api-key', storedDetail: 'OAuth access token has been revoked', storedReason: 'auth-rejected' },
+    authStatus: { loggedIn: false },
+  });
+
+  assert.match(health.reason, /stored OAuth login failed/);
+});

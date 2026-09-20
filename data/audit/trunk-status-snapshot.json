@@ -1,28 +1,22 @@
 {
-  "generatedAt": "2026-09-15T21:26:17.505Z",
+  "generatedAt": "2026-09-20T12:01:20.156Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "f52f9f72c0f5957f88820ad998cb174418140895",
+  "latestRunHeadSha": "78989917731d3b6863ea2fad6ca38b40dbc7db59",
   "state": "RED",
-  "consecutiveFailures": 81,
+  "consecutiveFailures": 19,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-13T22:41:00Z",
-  "redForHours": 46.7548625,
+  "redSince": "2026-09-19T23:54:20Z",
+  "redForHours": 12.11671,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-13T22:10:46Z",
-  "latestFailedRunId": "35024529337",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35024529337",
+  "lastSuccessAt": "2026-09-19T12:37:48Z",
+  "latestFailedRunId": "35506218391",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35506218391",
   "decidedRuns": 92,
   "failingJobs": [
-    {
-      "name": "Lint Workflows",
-      "steps": [
-        "Audit — alert-sender direct-bypass gate"
-      ]
-    },
     {
       "name": "Unit Tests",
       "steps": [
@@ -32,9 +26,14 @@
     {
       "name": "Data Validation",
       "steps": [
-        "Audit sibling-title misroute (strict)",
-        "Audit flag-vs-CV contradictions",
-        "Audit duplicateOf + stale _duplicateOfCleared contradiction (#1655)"
+        "Run data validation",
+        "Audit same-URL byline double-counts"
+      ]
+    },
+    {
+      "name": "Lint Workflows",
+      "steps": [
+        "Audit — no submitter PII in committed data/audit files"
       ]
     },
     {
@@ -46,17 +45,35 @@
   ],
   "failingPaths": [
     {
-      "path": "scripts/tests/alert-sender-bypass.test.mjs",
+      "path": "scripts/newsletter/lastfeatured-inweek.test.mjs",
       "job": "Unit Tests",
       "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 2304 - alert-sender audit reports zero direct-bypass call sites"
+      "evidence": "not ok 2223 - broadway edition renders an in-week off-Broadway opening even when a stale lastFeaturedIds entry claims it was already featured"
     },
     {
-      "path": "tests/unit/archive-row-outlet-id.test.mjs",
+      "path": "tests/unit/url-collision-canonical.test.mjs",
       "job": "Unit Tests",
       "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 1 - scripts/gather-reviews.js routes LBO, WET, TR, TS cache blocks through resolveArchiveRowOutletId"
+      "evidence": "not ok 7980 - named-only new write (no band) still beats an Unknown+unanchored collider"
+    },
+    {
+      "path": "scripts/audit-cast-changes.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
+      "path": "scripts/audit-duplicate-of-url-mismatch.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
+      "path": "scripts/audit-alert-senders.js",
+      "job": "Lint Workflows",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
     }
   ],
-  "topFailingJob": "Lint Workflows"
+  "topFailingJob": "Unit Tests"
 }

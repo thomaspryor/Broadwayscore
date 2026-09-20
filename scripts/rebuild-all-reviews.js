@@ -39,14 +39,14 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
-const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
 const {
   shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -89,6 +89,7 @@ const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { findDuplicateOfCycle, resolveCycleTiebreak } = require('./lib/duplicate-cycle');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { evaluateReviewCountRegression, isRunningInCI, WARN_THRESHOLD_PCT, LOCAL_HARD_BLOCK_PCT } = require('./lib/regression-guard');
 
 const USAGE = `rebuild-all-reviews.js — rebuild reviews.json from data/review-texts.
 
@@ -677,6 +678,30 @@ function selectBestExcerpt(data, showTitle) {
     if (rank == null) rank = EXCERPT_SOURCE_RANK[source];
     if (rank == null) rank = EXCERPT_SOURCE_RANK.fullText;
 
+    // Layer -1: Former-cast mention (BRO-1397) — a priorRuns review naming a
+    // since-departed cast member (e.g. a 2022-run pull-quote praising a lead
+    // who isn't in the 2026 revival's cast). Runs BEFORE every soft-defer
+    // layer below (fragment, hedge): those layers push a rejected candidate
+    // onto `deferred` and pickExcerptCandidate() can still choose it later as
+    // a fallback, which would let a former-cast mention that also happens to
+    // start lowercase (or read as a hedge) slip past a check placed after
+    // them (ship-check adversarial review, 2026-09-16). Hard reject: unlike
+    // the hedge guard, a factually-wrong actor name doesn't get better by
+    // falling back to a lower-ranked candidate that also names them, so
+    // every candidate is screened the same way and the review simply ships
+    // with no pull quote if none pass.
+    const formerCastCheck = excerptMentionsFormerCast(excerpt, {
+      show: showById[showId],
+      reviewDate: data.publishDate,
+      reviewData: data,
+    });
+    if (formerCastCheck.mentionsFormerCast) {
+      if (!stats.formerCastExcerptRejected) stats.formerCastExcerptRejected = [];
+      stats.formerCastExcerptRejected.push({ showId, source, name: formerCastCheck.name, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [former-cast] ${showId}: "${source}" mentions former cast ("${formerCastCheck.name}")`);
+      return null;
+    }
+
     // Layer 0: Fragment guard. Fallback sources (LLM keyPhrases, aggregator
     // excerpts) can surface mid-sentence fragments that the dedicated
     // llmPullQuote path would have trimmed. Trim a trailing partial sentence,
@@ -1058,6 +1083,19 @@ function getBestScore(data) {
 
 // scoreToBucket, scoreToThumb — imported from ./lib/rebuild-helpers
 
+// showsData/showById must be available whenever selectBestExcerpt() runs —
+// including when this file is require()'d as a pure library by tests, which
+// never reaches the "require.main !== module" CLI guard below. BRO-1397's
+// former-cast guard reads showById[showId] from inside validateExcerpt(), so
+// this can no longer be deferred to the CLI-only pipeline setup further down
+// (previously fine since nothing exported depended on it — the other
+// show*Map builders below still are CLI-only and unaffected).
+const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+const showById = {};
+for (const s of showsData.shows) {
+  showById[s.id] = s;
+}
+
 // ---------------------------------------------------------------------------
 // Require-as-a-library escape hatch (2026-08-01).
 //
@@ -1114,7 +1152,7 @@ if (!process.argv.includes('--ignore-pause') && isRebuildPaused()) {
 }
 
 // Load show dates and status for production-date guard
-const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+// (showsData/showById are declared above the require-as-a-library boundary now.)
 const showDateMap = {};
 const showOpeningDateMap = {};  // showId -> opening date only (NOT previewsStartDate) — for publishDate fallback
 const showClosingDateMap = {};
@@ -1124,10 +1162,6 @@ const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway'
 const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 const skipCrossShowDupeIds = new Set(showsData.shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
-const showById = {};
-for (const s of showsData.shows) {
-  showById[s.id] = s;
-}
 for (const s of showsData.shows) {
   // MIN of preview/previews/opening (see earliestShowDate) so an out-of-order
   // stale date can't push the date-guard window later than opening and mis-flag
@@ -3948,7 +3982,14 @@ showDirs.forEach(showId => {
       }
 
       // Skip reviews with explicit rejection reason (garbage text, OCR junk, etc.)
-      if (data.rejectionReason) {
+      // Exception: a markup-based star score (wos-star-images, guardian-star-svg, ...)
+      // never read the rejected prose, so a not_a_review/garbage_text verdict on the
+      // prose doesn't taint it — BRO-2282, John Proctor Is the Villain WE
+      // whatsonstage--sarah-crompton.json: cookie-consent boilerplate got the fullText
+      // rejected as garbage_text, but wos-star-images had already read 5/5 stars off
+      // the page's own <img> markup. Mirrors explainExclusion's identical carve-out in
+      // review-guards.js — see hasStructuralStarScore there for the full rationale.
+      if (data.rejectionReason && !hasStructuralStarScore(data)) {
         logExclusion("skippedRejectionReason", showId, file, data);
         stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
         return;
@@ -3994,7 +4035,9 @@ showDirs.forEach(showId => {
       // clear-failure-flags nulled its rejectionReason.
       if (data.rejectedAt && typeof data.rejectedAt === 'string') {
         const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
-        if (!reFetched) {
+        // Same structural-star-score exception as the rejectionReason guard above
+        // (BRO-2282) — mirrors review-guards.js explainExclusion's rejectedAt block.
+        if (!reFetched && !hasStructuralStarScore(data)) {
           logExclusion("skippedRejectedAt", showId, file, data);
           stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
           return;
@@ -5372,32 +5415,66 @@ const output = {
   reviews: allReviews
 };
 
-// REVIEW COUNT REGRESSION GUARD: warn if rebuild would lose >2% of reviews.
-// Logs prominently and writes audit trail, but proceeds with the write.
-// Pass --force-write to suppress this warning when the drop is intentional.
+// REVIEW COUNT REGRESSION GUARD (BRO-2276): warn if rebuild would lose >2% of
+// reviews; locally (non-CI), a loss over LOCAL_HARD_BLOCK_PCT refuses the
+// write outright instead of just warning, since that's far more likely to be
+// a stub/incomplete data/review-texts checkout than a genuine regression.
+// Pass --force-write to suppress the warning/block when the drop is intentional.
 {
   const forceWrite = process.argv.includes('--force-write');
   let existingCount = 0;
+  let existingReadError = null;
   try {
     const existing = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
     existingCount = (existing.reviews || []).length;
-  } catch (e) { /* first run, no existing file */ }
+  } catch (e) {
+    if (e.code !== 'ENOENT') existingReadError = e; // ENOENT = genuine first run; anything else = a baseline we can't trust
+  }
+
+  // A reviews.json that EXISTS but can't be read/parsed (truncated write,
+  // corrupted JSON) can't have its loss % computed at all — falling through
+  // to existingCount=0 would treat it identically to a legitimate first run
+  // and skip the guard below entirely. Fail closed on it locally, same as an
+  // outsized numeric loss.
+  if (existingReadError && !forceWrite && !isRunningInCI()) {
+    console.error(`\n🚨 REGRESSION GUARD: existing reviews.json is present but unreadable (${existingReadError.message}) — REFUSING TO WRITE`);
+    console.error(`   Can't compute a loss % against an unknown baseline. This usually means a prior write was`);
+    console.error(`   interrupted mid-write, or the file/symlink target is corrupted.`);
+    console.error(`   To override intentionally: re-run with --force-write.`);
+    process.exit(1);
+  }
 
   if (existingCount > 0) {
     const newCount = allReviews.length;
-    const lost = existingCount - newCount;
-    const pctLost = (lost / existingCount * 100).toFixed(1);
-    if (lost > 0 && parseFloat(pctLost) > 2.0) {
-      if (forceWrite) {
-        console.log(`\n⚠️  REGRESSION GUARD: Dropping ${lost} reviews (${pctLost}%) — suppressed by --force-write`);
-      } else {
-        console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss)`);
-        console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
-        console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
-        console.error(`   PROCEEDING WITH WRITE — deploy may be blocked by pre-deploy-check.js (3% threshold).`);
-        console.error(`   Details: data/audit/rebuild-regression.json`);
-        console.error(`   To override: gh workflow run "Rebuild Reviews Data" -f reason="..." -f force_write=true`);
-      }
+    const decision = evaluateReviewCountRegression({
+      existingCount,
+      newCount,
+      forceWrite,
+      isCI: isRunningInCI(),
+    });
+    const { action, lost, pctLost } = decision;
+
+    if (action === 'warn-suppressed') {
+      console.log(`\n⚠️  REGRESSION GUARD: Dropping ${lost} reviews (${pctLost}%) — suppressed by --force-write`);
+    } else if (action === 'warn') {
+      console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss)`);
+      console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
+      console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
+      console.error(`   PROCEEDING WITH WRITE — deploy may be blocked by pre-deploy-check.js (3% threshold).`);
+      console.error(`   Details: data/audit/rebuild-regression.json`);
+      console.error(`   To override: gh workflow run "Rebuild Reviews Data" -f reason="..." -f force_write=true`);
+    } else if (action === 'block') {
+      console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss) — REFUSING TO WRITE`);
+      console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
+      console.error(`   This is a local (non-CI) run losing more than ${LOCAL_HARD_BLOCK_PCT}% of reviews — almost`);
+      console.error(`   certainly a stub/incomplete data/review-texts checkout, not a genuine data regression.`);
+      console.error(`   Fix: ./scripts/setup-local-data.sh --all (re-clone the full review-texts checkout), or`);
+      console.error(`   verify data/review-texts isn't a partial cloud-bootstrap copy scoped to one show.`);
+      console.error(`   Details: data/audit/rebuild-regression.json`);
+      console.error(`   To override intentionally: re-run with --force-write.`);
+    }
+
+    if (action !== 'ok') {
       // Write audit trail for tracking
       try {
         const auditDir = path.join(path.dirname(reviewsJsonPath), 'audit');
@@ -5407,15 +5484,21 @@ const output = {
           existingCount,
           newCount,
           lost,
-          pctLost: parseFloat(pctLost),
+          pctLost,
+          action,
           argv: process.argv.slice(2),
         }, null, 2) + '\n');
       } catch (auditErr) {
         console.error(`   Could not write audit file: ${auditErr.message}`);
       }
     }
-    if (lost > 0 && parseFloat(pctLost) <= 2.0) {
-      console.log(`\n⚠️  Review count decreased by ${lost} (${pctLost}%) — within 2% threshold, proceeding.`);
+
+    if (action === 'block') {
+      process.exit(1);
+    }
+
+    if (action === 'ok' && lost > 0) {
+      console.log(`\n⚠️  Review count decreased by ${lost} (${pctLost}%) — within ${WARN_THRESHOLD_PCT}% threshold, proceeding.`);
     }
   }
 }

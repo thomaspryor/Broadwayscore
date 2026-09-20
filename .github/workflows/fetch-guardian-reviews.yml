@@ -232,6 +232,17 @@ jobs:
           # covered it was wrong and made this step a permanent no-op
           # (task #1460, same bug class as #1456).
           git add data/audit/*.json 2>/dev/null || true
+          # alert-ledger.json is already covered by the glob above at
+          # runtime, but named explicitly here so the alert-ledger-commit-
+          # check.js CI gate can see it without depending on glob semantics.
+          # alert-router-attempts.jsonl (BRO-3671): the *.json glob misses it
+          # outright (.jsonl extension) — check-rebuild-staleness.js calls
+          # routeAlert()/resolveCondition(), and logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it
+          # makes a rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh (BRO-3662).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
 
           if git diff --staged --quiet; then
             echo "No changes to commit"

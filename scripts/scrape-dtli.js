@@ -17,6 +17,8 @@ const path = require('path');
 const https = require('https');
 const { isJunkOutlet } = require('./lib/review-normalization');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { buildSiblingCategoriesFromShows } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { urlLooksLikeReview } = require('./lib/review-guards');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
@@ -101,6 +103,16 @@ function slugify(text) {
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   return data.shows || data;
+}
+
+// Memoized showId -> same-title-sibling categories index (BRO-2565, mirroring
+// scrape-bww-reviews.js's siblingCategoriesByShowId()) — feeds
+// checkArchiveCategory()'s cross-market-sibling check below.
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
+  return _siblingCategoriesCache;
 }
 
 /**
@@ -247,6 +259,18 @@ async function findDTLIPage(show) {
         const validation = await validatePageMatchesShow(result.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
         if (!validation.valid) {
           console.log(`  [SKIP] DTLI page doesn't match "${show.title}": ${validation.reason}`);
+          continue;
+        }
+        // Category-aware guard (BRO-2565, mirroring BRO-2547/2549's BWW fix).
+        // validatePageMatchesShow() above compares title + opening year, which
+        // CANNOT separate a regional premiere from its later Broadway transfer:
+        // same title, and the transfer's page carries the transfer's year.
+        // Re-use the exact predicate audit-aggregator-archive-integrity.js
+        // applies post-hoc so a page the audit would call poisoned never
+        // reaches the cache in the first place.
+        const catCheck = checkArchiveCategory(result.html, show, siblingCategoriesByShowId()[show.id]);
+        if (!catCheck.ok) {
+          console.log(`  [SKIP] DTLI page category mismatch: ${catCheck.reason} (page "${(catCheck.pageTitle || '').substring(0, 80)}")`);
           continue;
         }
         console.log(`  ✓ Found at: ${url}`);
@@ -432,10 +456,22 @@ async function processShow(show) {
   if (fs.existsSync(archivePath)) {
     console.log(`  Using archived page...`);
     const archiveContent = fs.readFileSync(archivePath, 'utf8');
-    // Validate cached page is about the right show
+    // Read-time guard: keep the existing year/LLM identity check (catches a
+    // stale same-title, same-category revival — e.g. a 2015 production's
+    // cached page reused for a 2026 revival — which the category-aware
+    // check below cannot see, since same-category siblings never trigger
+    // its cross-market-sibling branch), AND add the category-aware guard
+    // (BRO-2565) on top, since a fresh mtime is not proof the file arrived
+    // via the write-time guard above (a restore, a manual copy, a different
+    // writer, or a rolled-back deploy can all put a poisoned file on disk).
+    // A prior version of this fix REPLACED the year/LLM check with the
+    // category check instead of adding it — flagged in review as a real
+    // regression (a stale-era cached page would no longer be caught).
     const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM, openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
-    if (!cacheValidation.valid) {
-      console.log(`  [CACHE] Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
+    const catCheck = checkArchiveCategory(archiveContent, show, siblingCategoriesByShowId()[show.id]);
+    if (!cacheValidation.valid || !catCheck.ok) {
+      const reason = !cacheValidation.valid ? cacheValidation.reason : catCheck.reason;
+      console.log(`  [CACHE] Cached page is WRONG show — ${reason}. Deleting cache.`);
       fs.unlinkSync(archivePath);
       // Fall through to re-fetch below
     } else {

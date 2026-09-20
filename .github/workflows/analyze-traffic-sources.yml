@@ -4,7 +4,8 @@ name: Analyze Traffic Sources
 # (BRO-3419). PostHog/GA4 credentials exist only as repo secrets, so this runs
 # in CI (weekly, or dispatched on demand) rather than from a local shell. The
 # markdown report renders on the run's Summary page; the raw JSON is an
-# artifact. No commits, no pushes. Scheduled after posthog-monday.yml (08:00)
+# artifact, and the summary is emailed to the owner. No commits, no pushes.
+# Scheduled after posthog-monday.yml (08:00)
 # so the two Monday analytics runs don't contend for PostHog query capacity.
 on:
   schedule:
@@ -46,6 +47,16 @@ jobs:
           else
             echo "No report produced — see the query step log." >> "$GITHUB_STEP_SUMMARY"
           fi
+
+      # The owner reads email, not GitHub — the report goes to their inbox even
+      # when incomplete (the banner says what failed). Transactional to
+      # OWNER_EMAIL only; never a broadcast.
+      - name: Email the report to the owner
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       - name: Upload report + raw data
         if: always()

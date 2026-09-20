@@ -302,6 +302,7 @@ ${evidence}`;
         'x-api-key': ANTHROPIC_KEY,
         'anthropic-version': '2023-06-01',
       },
+      timeout: 60000,
     }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -326,6 +327,11 @@ ${evidence}`;
       });
     });
     req.on('error', reject);
+    // BRO-3838: `timeout: 60000` alone does nothing — Node just emits
+    // 'timeout' and leaves the socket open unless something destroys it.
+    // This exact gap (BRO-3832) hung the whole 60min job on one stuck
+    // request to api.anthropic.com.
+    req.on('timeout', () => { req.destroy(new Error('Claude API request timed out after 60s')); });
     req.write(body);
     req.end();
   });

@@ -111,6 +111,15 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // check-claude-auth-health.js (launchd, runs on the Mac — the token never
   // reaches CI).
   'claude-auth:revoked',
+  // BRO-2971: same launch-gate-dead severity as the entry above, but for the
+  // OS/jetsam resource-starvation shape (spawn ETIMEDOUT/ENOMEM/signal kill)
+  // that check-claude-auth-health.js used to misreport as 'claude-auth:revoked'
+  // — kept as its own key so the alert body's remediation (free memory / prune
+  // cmux sessions) never gets overwritten by the auth-revocation one's.
+  'claude-spawn-starved',
+  // BRO-2971: same rationale as the entry above, for the missing/unexecutable
+  // `claude` binary shape (spawn-error) — also NOT a credential problem.
+  'claude-spawn-error',
 
   // Not one of the 3 owner-approved categories above, but a deliberate
   // carve-out (BRO-1699 ship-check finding): this was a direct sendAlert()
@@ -132,6 +141,18 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // scripts/lib/guard-escalation.js's shouldEscalate) is the first sender.
   'guard-escalation:stale-checkout-staleness',
 
+  // Category 3 (BRO-2423, port of BRO-545's guard-escalation auto-recovery
+  // to llm-ensemble-score.yml + check-review-count-drift.yml, found during
+  // BRO-545's own /what-else pass): each of these three means the daily
+  // LLM-scoring pipeline — reviews never getting a score is the same
+  // "site's single source of truth has stopped advancing" class BRO-545
+  // covers for rebuild-reviews.yml — or the review-count-drift safety net
+  // that catches silently-suppressed opening-night reviews, has stopped
+  // working for 2+ consecutive daily runs.
+  'guard-escalation:scoring-queue-scan-failed', // scripts/check-scoring-queue-guard.js: count-scoring-queue.js can't trust the corpus scan (broken checkout) — the scoring cascade can't see its own queue depth
+  'guard-escalation:ensemble-scoring-pipeline-crashed', // scripts/run-ensemble-scoring-guard.js: scripts/llm-scoring/index.ts itself is crashing — new reviews stop getting scored
+  'guard-escalation:review-count-drift-strict-breach', // scripts/check-review-count-drift-guard.js: check-review-count-drift.yml's daily --strict run keeps blocking (stale reviews.json or opening-window reviews silently missing)
+
   // Category 3 carve-out (BRO-1333): main's Test Suite went undetected-red for
   // ~2 days (2026-06-13 → 06-15) because the only signal was a daily digest
   // line nobody read in time — direct pushes to main are not gated by
@@ -149,6 +170,19 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // mode this card exists to close. 24h cooldown (routeAlert call site) caps
   // this to at most one email per day while main stays red.
   'test-yml:main-streak-escalation',
+  // BRO-3865: 'test-yml:main-streak' — health-check.js's "no confirmed-green
+  // run in Nh" aggregate backstop, downgraded here from 'auto' to 'human'
+  // now that test.yml's push-triggered dispatch files a per-signature 'auto'
+  // card per distinct breakage (conditionKey 'test-yml:red:<job>:<hash>')
+  // instead of one shared 'auto' card under this key. Same Category 3
+  // rationale as 'test-yml:main-streak-escalation' right above: main
+  // staying red with no per-signature card stemming it IS the pipeline
+  // stalling, not "diagnose one failing test." 24h cooldown at the call
+  // site (matches the escalation tier) — 'auto' never paged more than once
+  // per incident (tracker dedupe), so 'human' needs the same-length cooldown
+  // or it turns a condition that can stay open for weeks into an email
+  // every few hours.
+  'test-yml:main-streak',
 ]);
 
 function isPageWorthy(conditionKey) {

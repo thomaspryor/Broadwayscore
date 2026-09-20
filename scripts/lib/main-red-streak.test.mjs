@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { assessMainRedStreak, failingJobsFromNeeds } = require('./main-red-streak.js');
+const {
+  assessMainRedStreak, failingJobsFromNeeds,
+  stepFailureSignature, firstFailingTestNameInJobLog, failingStepSignatures, signaturesToResolve,
+} = require('./main-red-streak.js');
 
 const NOW = Date.parse('2026-08-17T15:40:00.000Z');
 const ago = (min) => new Date(NOW - min * 60000).toISOString();
@@ -254,6 +257,142 @@ test('failingJobsFromNeeds treats cancelled jobs as failing too (not success/ski
 test('failingJobsFromNeeds handles an empty/missing needs object without crashing', () => {
   assert.equal(failingJobsFromNeeds({}), '');
   assert.equal(failingJobsFromNeeds(undefined), '');
+});
+
+// ── per-breakage signature (BRO-3865) ───────────────────────────────────────
+
+test('failingStepSignatures: two different failing steps produce two distinct conditions', () => {
+  const run = {
+    jobs: [
+      testJob('unit-tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'failure', [okStep('Set up job'), failedStep('Lint workflow files')]),
+    ],
+  };
+  const sigs = failingStepSignatures(run);
+  assert.equal(sigs.length, 2);
+  assert.notEqual(sigs[0].conditionKey, sigs[1].conditionKey);
+  assert.ok(sigs.every((s) => s.conditionKey.startsWith('test-yml:red:')));
+});
+
+test('failingStepSignatures: the same failing step recurring on a later push produces the SAME conditionKey (stays dedupe-friendly)', () => {
+  const makeRun = () => ({
+    jobs: [testJob('unit-tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')])],
+  });
+  const sigsA = failingStepSignatures(makeRun());
+  const sigsB = failingStepSignatures(makeRun());
+  assert.equal(sigsA.length, 1);
+  assert.equal(sigsB.length, 1);
+  assert.equal(sigsA[0].conditionKey, sigsB[0].conditionKey);
+});
+
+test('signaturesToResolve: a step that goes CONFIRMED green resolves while a still-failing sibling stays open', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', null);
+  const keyB = stepFailureSignature('lint-workflows', 'Lint workflow files', null);
+  const openKeys = [keyA, keyB, 'test-yml:main-streak-escalation']; // non-red key must be ignored, not resolved
+  // unit-tests recovered (conclusion success); lint-workflows is still red.
+  const laterRun = {
+    jobs: [
+      testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'failure', [okStep('Set up job'), failedStep('Lint workflow files')]),
+    ],
+  };
+  const currentSignatures = failingStepSignatures(laterRun);
+  const toResolve = signaturesToResolve(openKeys, laterRun, currentSignatures);
+  assert.deepEqual(toResolve, [keyA]);
+});
+
+test('signaturesToResolve: a fully-green run resolves every open red-signature key', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', null);
+  const keyB = stepFailureSignature('lint-workflows', 'Lint workflow files', null);
+  const greenRun = {
+    jobs: [
+      testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'success', [okStep('Set up job'), okStep('Lint workflow files')]),
+    ],
+  };
+  const toResolve = signaturesToResolve([keyA, keyB], greenRun, []);
+  assert.deepEqual(new Set(toResolve), new Set([keyA, keyB]));
+});
+
+test('signaturesToResolve does NOT resolve a signature whose job is merely ABSENT/SKIPPED this run (absence of evidence is not evidence of recovery)', () => {
+  // Adversarial-review finding (BRO-3865): a job skipped by a path filter, or
+  // cancelled upstream before it ran, gives ZERO evidence the previously
+  // broken step now passes. Only an explicit conclusion:'success' may
+  // resolve a signature — the same "absence must not manufacture an excuse"
+  // principle classify()/isInfraOnlyFailure apply elsewhere in this file.
+  const keyA = stepFailureSignature('lint-workflows', 'Lint workflow files', null);
+  const runWithLintSkipped = {
+    jobs: [
+      testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'skipped', []),
+    ],
+  };
+  const currentSignatures = failingStepSignatures(runWithLintSkipped);
+  const toResolve = signaturesToResolve([keyA], runWithLintSkipped, currentSignatures);
+  assert.deepEqual(toResolve, []);
+});
+
+test('signaturesToResolve does NOT resolve a signature for a job that is STILL failing, even on a different step than currently reported', () => {
+  // Only the job's OWN FIRST failing step is ever reported by
+  // failingStepSignatures (GitHub Actions skips later steps once one fails),
+  // so an older open signature for a step that isn't the CURRENT one must
+  // stay open rather than being inferred as fixed — the job's conclusion is
+  // still 'failure', not 'success'.
+  const staleKey = stepFailureSignature('data-validation', 'An earlier step that used to fail', null);
+  const stillRedRun = {
+    jobs: [testJob('data-validation', 'failure', [okStep('Set up job'), failedStep('A different, currently-failing step')])],
+  };
+  const currentSignatures = failingStepSignatures(stillRedRun);
+  const toResolve = signaturesToResolve([staleKey], stillRedRun, currentSignatures);
+  assert.deepEqual(toResolve, []);
+});
+
+test('firstFailingTestNameInJobLog extracts the first TAP failing test name from one job\'s raw log', () => {
+  const log = [
+    '2026-09-20T10:00:00.0000000Z not ok 42 - url collision canonical dedupe removes exact duplicate',
+    "2026-09-20T10:00:00.0000000Z   location: '/repo/tests/unit/url-collision-canonical.test.mjs:10:1'",
+    '2026-09-20T10:00:01.0000000Z not ok 88 - lastFeaturedInWeek marks the most recent issue',
+  ].join('\n');
+  // Only the FIRST failing test is kept — later ones in the same batched
+  // step don't overwrite it.
+  assert.equal(firstFailingTestNameInJobLog(log), 'url collision canonical dedupe removes exact duplicate');
+});
+
+test('firstFailingTestNameInJobLog ignores an echoed shell comment that merely CONTAINS the literal string "not ok N - <name>" as documentation text', () => {
+  // Live-verified (BRO-3865): this repo's own run_batch() shell function
+  // prints a comment containing this exact substring as part of GitHub
+  // Actions' "Run <script>" echo of the step's own source — with ANSI color
+  // codes prefixed, so it can never accidentally match the anchored regex,
+  // but worth pinning explicitly since it looks deceptively similar.
+  const log = [
+    "2026-09-20T18:38:38.2331444Z \x1b[36;1m    # (`not ok N - <name>` plus a `location: 'file:line'`\x1b[0m",
+    '2026-09-20T18:39:00.0000000Z not ok 2223 - the real failing test',
+  ].join('\n');
+  assert.equal(firstFailingTestNameInJobLog(log), 'the real failing test');
+});
+
+test('firstFailingTestNameInJobLog returns null when there is no TAP line (a non-test step, e.g. actionlint)', () => {
+  const log = '2026-09-20T10:00:00.0000000Z ::error::some actionlint failure with no TAP output at all';
+  assert.equal(firstFailingTestNameInJobLog(log), null);
+});
+
+test('failingStepSignatures uses the per-job test name map when supplied', () => {
+  const run = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')])] };
+  const testNameByJob = new Map([['Unit Tests', 'named-only new write (no band) still beats an Unknown+unanchored collider']]);
+  const sigs = failingStepSignatures(run, testNameByJob);
+  assert.equal(sigs.length, 1);
+  assert.equal(sigs[0].testName, 'named-only new write (no band) still beats an Unknown+unanchored collider');
+});
+
+test('stepFailureSignature: same job+step, different first-failing-test names produce different conditionKeys', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', 'url collision canonical dedupe removes exact duplicate');
+  const keyB = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', 'lastFeaturedInWeek marks the most recent issue');
+  assert.notEqual(keyA, keyB);
+});
+
+test('failingStepSignatures skips setup-job-only infra failures (no signature manufactured from zero test evidence)', () => {
+  const run = { jobs: [testJob('unit-tests', 'failure', [failedStep('Set up job')])] };
+  assert.deepEqual(failingStepSignatures(run), []);
 });
 
 test('an unparseable createdAt on the anchor run reports null duration, not a silent pass (code-review finding)', () => {

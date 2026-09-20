@@ -198,6 +198,37 @@ function decideClose({ dispatch = null, verifyResult = null, disabled = false, b
   if (verifyResult.status === 'pass') {
     return allow(VERDICTS.PASS, `\`${cmd}\` passes on origin/main`);
   }
+
+  // "Could not find" is node --test's message for a path that isn't there —
+  // the overwhelmingly common cause is a close attempted BEFORE the branch
+  // merged, so the test the card wrote exists only in its worktree. Saying
+  // "your test fails" there sends the next session hunting a bug that isn't
+  // real; the actual instruction is "merge, then close". Checked BEFORE the
+  // generic status branch below, and regardless of status: acceptance-check-
+  // core.js's runVerify (BRO-3446) now detects a missing acceptance path
+  // itself, before ever running the command, and reports it as 'unverifiable'
+  // with `missingPath: true` rather than letting the command fail — so this
+  // refusal must not depend on status being 'fail' any more, only on the
+  // path being confirmed absent from origin/main either way.
+  const notOnMain = verifyResult.missingPath === true ||
+    /could not find|cannot find module|no such file or directory/i.test(String(verifyResult.detail || ''));
+  if (notOnMain) {
+    return {
+      allowed: false,
+      verdict: VERDICTS.FAIL,
+      warn: false,
+      verifyCmd: cmd,
+      notOnMain: true,
+      message:
+        `This card cannot close: its OWN acceptance command cannot even run on a fresh checkout of origin/main.\n\n` +
+        `  command: ${cmd}\n` +
+        `  result:  NOT ON MAIN — the path this command names is not on origin/main\n` +
+        (verifyResult.detail ? `\n${String(verifyResult.detail).split('\n').map((l) => `  | ${l}`).join('\n')}\n` : '') +
+        `\nMerge the branch first, then close the card. A card whose acceptance command exists only in\n` +
+        `a worktree is exactly the "it shipped" claim this check is here to catch.`,
+    };
+  }
+
   if (verifyResult.status !== 'fail') {
     // 'unverifiable' — exit 3, an unrunnable/unsafe command, a timeout kill.
     // Evidence was unavailable; that is not proof the work is broken.
@@ -208,28 +239,19 @@ function decideClose({ dispatch = null, verifyResult = null, disabled = false, b
     );
   }
 
-  // "Could not find" is node --test's message for a path that isn't there —
-  // the overwhelmingly common cause is a close attempted BEFORE the branch
-  // merged, so the test the card wrote exists only in its worktree. Saying
-  // "your test fails" there sends the next session hunting a bug that isn't
-  // real; the actual instruction is "merge, then close".
-  const notOnMain = /could not find|cannot find module|no such file or directory/i.test(String(verifyResult.detail || ''));
   return {
     allowed: false,
     verdict: VERDICTS.FAIL,
     warn: false,
     verifyCmd: cmd,
-    notOnMain,
+    notOnMain: false,
     message:
-      `This card cannot close: its OWN acceptance command ${notOnMain ? 'cannot even run' : 'fails'} on a fresh checkout of origin/main.\n\n` +
+      `This card cannot close: its OWN acceptance command fails on a fresh checkout of origin/main.\n\n` +
       `  command: ${cmd}\n` +
-      `  result:  ${notOnMain ? 'NOT ON MAIN — the path this command names is not on origin/main' : 'FAIL'}\n` +
+      `  result:  FAIL\n` +
       (verifyResult.detail ? `\n${String(verifyResult.detail).split('\n').map((l) => `  | ${l}`).join('\n')}\n` : '') +
-      (notOnMain
-        ? `\nMerge the branch first, then close the card. A card whose acceptance command exists only in\n` +
-          `a worktree is exactly the "it shipped" claim this check is here to catch.`
-        : `\nThis is the card's own check, captured when it was dispatched — not unrelated trunk redness,\n` +
-          `which never blocks a close. Fix it on main, or leave the card open and hand it off.`),
+      `\nThis is the card's own check, captured when it was dispatched — not unrelated trunk redness,\n` +
+      `which never blocks a close. Fix it on main, or leave the card open and hand it off.`,
   };
 }
 

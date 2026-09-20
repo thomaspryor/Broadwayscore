@@ -1,35 +1,25 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-09-15T12:12:12.034Z",
+  "lastChecked": "2026-09-20T11:52:53.614Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Data: OB closing candidates awaiting review",
-      "status": "error",
-      "message": "4 open Off-Broadway show(s) look closed per the weekly detector. Oldest: drunk-shakespeare-off-broadway-2022 (missing 65d)"
-    },
-    {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: benevolent-off-broadway-2026 — talkinbroadway (rejected-unscoreable)"
+      "message": "6 discovered review(s) not reaching the composite score (3 T1). First: the-cherry-orchard-park-avenue-armory-off-broadway-2026 — wsj (unscored)"
     },
     {
-      "name": "Data: live show with zero critic reviews on site",
-      "status": "error",
-      "message": "1 live show(s) have discovered review URL(s) but NOTHING collected. First: matilda-the-musical-theatre-row-off-broadway-2026"
+      "name": "Data: uncollected live review strands",
+      "status": "warn",
+      "message": "23 discovered review URL(s) across 18 live show(s) were never fetched. First: the-lost-boys-2026 (2 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 35d) — 2 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
-    },
-    {
-      "name": "Data: undispatchable backlog cards",
-      "status": "warn",
-      "message": "52 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P0 Now] Homepage rage clicks surge to 21x — critical UX breakdown Refusal causes: no-command=42, no-section=10."
+      "message": "6 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 40d) — 4 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ]
 }

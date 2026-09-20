@@ -384,7 +384,14 @@ function dispatchArgvFor(taskId) {
   // have FED the very write-back leak this change surfaces. With --detach,
   // linear-next re-execs in its own session and returns immediately, which is
   // exactly what digest-autofix.js's own spawn site does.
-  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless', '--detach'];
+  // BRO-3652: detach is now linear-next's DEFAULT on the headless lane, and
+  // `--headless` is a no-op alias for that default. `--detach` is deliberately
+  // NOT passed any more: an EXPLICIT --detach on a card that routes to a tab
+  // ('mac-only' label) is refused loudly by decideDetach, whereas the default
+  // simply takes the tab path in-process — this lane has no mac-only filter
+  // upstream, so the explicit flag would have parked every such card as
+  // "redispatch never produced a launch" (ship-check finding).
+  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless'];
   return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
 }
 

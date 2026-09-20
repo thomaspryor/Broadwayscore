@@ -549,16 +549,30 @@ function stripOwnParkNote(outcome) {
   // below. Strip that optional leading stamp first so it can't mask our own
   // note (and, symmetrically, so a genuinely new dispute hiding under a
   // stamp isn't mistaken for our own note either).
-  const stampMatch = new RegExp(`^${RECHECK_AFTER_RE.source}\\n\\n`, 'i').exec(s);
-  if (stampMatch) s = s.slice(stampMatch[0].length);
-  const sep = '\n\n---\n\n';
-  const idx = s.indexOf(sep);
-  if (idx === -1) return s;
-  const head = s.slice(0, idx);
-  if (head.startsWith(AUTO_PARK_NOTE_PREFIX) && head.includes(AUTO_PARK_NOTE_SIGNATURE)) {
-    return s.slice(idx + sep.length);
+  //
+  // Card #794: hoistRecheckAfterStamp re-copies its stamp on EVERY write
+  // without removing the original occurrence deeper in the text, so a card
+  // that has been auto-parked more than once accumulates ONE MORE stacked
+  // "RECHECK-AFTER...\n\nAuto-parked...\n\n---\n\n" segment per round. A
+  // single strip only ever peeled the newest one, so the "core" content kept
+  // changing round to round, the idempotency hash never stabilized, and
+  // task #914 got re-parked (and re-fired zombie-outcome-needs-review into
+  // the health-check "Stuck pipeline items" row) every ~2 days for a month
+  // straight instead of converging to a no-op after the first park. Loop
+  // until the front of the text is no longer one of our own notes — each
+  // iteration strictly shrinks `s`, so this always terminates.
+  for (;;) {
+    const stampMatch = new RegExp(`^${RECHECK_AFTER_RE.source}\\n\\n`, 'i').exec(s);
+    const stripped = stampMatch ? s.slice(stampMatch[0].length) : s;
+    const sep = '\n\n---\n\n';
+    const idx = stripped.indexOf(sep);
+    if (idx === -1) return stripped;
+    const head = stripped.slice(0, idx);
+    if (!(head.startsWith(AUTO_PARK_NOTE_PREFIX) && head.includes(AUTO_PARK_NOTE_SIGNATURE))) {
+      return stripped;
+    }
+    s = stripped.slice(idx + sep.length);
   }
-  return s;
 }
 
 function notionIdOfTask(task) {

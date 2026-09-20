@@ -44,16 +44,28 @@ const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
  * its subject reports a confident wrong verdict), and it bit the script written
  * to catch exactly that class. Do not "simplify" this to one directory.
  */
+// BRO-3633: `fromArchive` rides along on every returned task, tagging which
+// directory it was actually read from. This loader's own union (live wins
+// unless archive says completed) is right for ITS job — did an
+// already-dispatched task's card close, wherever the file now lives — but
+// dispatch-watchdog-core.js's planSweep() reuses the same Map to decide what
+// NEW work to dispatch, and an archived task was deliberately taken out of
+// active circulation (task-store-archive.js's pending-task archival moves
+// stale-but-still-'pending' cards to archive/ byte-for-byte to cut reminder
+// noise, not because they're done). Without this tag, planSweep has no way
+// to tell "still live" apart from "shelved", and kept resurrecting shelved
+// cards as fresh backlog.
 function loadTasksUnioned() {
   const base = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
   const tasks = new Map();
   for (const dir of [base, path.join(base, 'archive')]) {
     if (!fs.existsSync(dir)) continue;
+    const fromArchive = dir !== base;
     for (const f of fs.readdirSync(dir).filter(n => /^\d+\.json$/.test(n))) {
       try {
         const t = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
         // archive wins on completed: it is the terminal record.
-        if (!tasks.has(String(t.id)) || t.status === 'completed') tasks.set(String(t.id), t);
+        if (!tasks.has(String(t.id)) || t.status === 'completed') tasks.set(String(t.id), { ...t, fromArchive });
       } catch { /* skip unreadable */ }
     }
   }

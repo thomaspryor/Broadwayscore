@@ -1,7 +1,35 @@
 {
-  "generatedAt": "2026-08-23T14:25:28.742Z",
-  "totalFindings": 1,
+  "generatedAt": "2026-09-20T17:21:12.054Z",
+  "totalFindings": 3,
   "findings": [
+    {
+      "currentShowId": "evita-2026",
+      "suggestedShowId": "evita-west-end-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:631",
+        "days-from-closer:1",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/evita-2026/whatsonstage--sarah-crompton.json",
+      "url": "https://www.whatsonstage.com/news/how-jamie-lloyds-evita-was-cast-with-star-qual",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "oh-mary-2024",
+      "suggestedShowId": "oh-mary-west-end-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:575",
+        "days-from-closer:50",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/oh-mary-2024/njcom--christopher-kelly.json",
+      "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-hi",
+      "reason": "publish-date"
+    },
     {
       "currentShowId": "oh-mary-2024",
       "suggestedShowId": "oh-mary-west-end-2025",
