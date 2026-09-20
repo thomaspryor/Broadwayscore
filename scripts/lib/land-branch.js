@@ -164,6 +164,61 @@ function formatLandLine(branch, result) {
   return `REFUSED: ${why} (attempts ${result.attempts}, ${secs}s)`;
 }
 
+/**
+ * Pure decision for a landing whose gauntlet ALREADY ran elsewhere against
+ * `verifiedBase` (land.yml's `checks` job, BRO-3873 step 3): may the rebase
+ * onto `baseSha` reuse that verdict? Yes when the base is the very sha that
+ * was verified, or has moved past it across INERT paths only (the same
+ * judgement the in-process loop applies after its own checks). Anything
+ * else — a substantive move, a base that does not descend from the verified
+ * one (force-moved main, wrong sha), unknown ancestry — is `skip: false`,
+ * i.e. run the full gauntlet. Fails closed.
+ * @param {{verifiedBase:string, baseSha:string, ancestor:boolean, intervening:string[]}} o
+ *   ancestor: is verifiedBase an ancestor of baseSha (false/unknown → no skip)
+ *   intervening: files changed verifiedBase..baseSha
+ */
+function decideVerifiedBaseSkip({ verifiedBase, baseSha, ancestor, intervening }) {
+  if (!verifiedBase || !baseSha) return { skip: false, reason: 'no verified base' };
+  if (verifiedBase === baseSha) return { skip: true, reason: `base ${baseSha.slice(0, 10)} is the verified base` };
+  if (ancestor !== true) return { skip: false, reason: `verified base ${verifiedBase.slice(0, 10)} is not an ancestor of ${baseSha.slice(0, 10)}` };
+  const files = (intervening || []).map(String);
+  const kind = classifyIntervening(files);
+  if (kind === 'inert') return { skip: true, reason: `main moved ${verifiedBase.slice(0, 10)} → ${baseSha.slice(0, 10)} across ${files.length} inert path(s) only` };
+  return { skip: false, reason: `main moved ${verifiedBase.slice(0, 10)} → ${baseSha.slice(0, 10)} across ${files.length} file(s), substantive` };
+}
+
+/**
+ * A checks seam that reuses an upstream verdict when decideVerifiedBaseSkip
+ * allows it and otherwise runs `checks` (the full default gauntlet). On the
+ * skip path the throwaway worktree is still prepared (node_modules link,
+ * core-data copies) because the repo's pre-push hook runs from it on push.
+ * `git` is injectable for tests; the default is a null-on-error runner.
+ */
+function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = null, prepare = prepareCheckWorkdir }) {
+  if (!/^[0-9a-f]{40}$/.test(String(verifiedBase || ''))) throw new Error(`makeVerifiedBaseChecks: verifiedBase must be a full 40-hex sha (got ${JSON.stringify(verifiedBase)})`);
+  const run = git || ((args, cwd) => {
+    try {
+      return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: GIT_NET_TIMEOUT_MS }).trim();
+    } catch { return null; }
+  });
+  return function verifiedBaseChecks(o) {
+    const { cwd, baseSha, repoDir, log = () => {} } = o || {};
+    const ancestor = run(['merge-base', '--is-ancestor', verifiedBase, baseSha], cwd) !== null;
+    const intervening = ancestor ? (run(['diff', '--name-only', `${verifiedBase}..${baseSha}`], cwd) || '').split('\n').filter(Boolean) : [];
+    const decision = decideVerifiedBaseSkip({ verifiedBase, baseSha, ancestor, intervening });
+    if (!decision.skip) {
+      log(`[land] verified-base: ${decision.reason} — running the full gauntlet`);
+      return checks(o);
+    }
+    if (prepare && repoDir) {
+      const linked = prepare(cwd, repoDir);
+      if (linked.length) log(`[land] linked ${linked.length} gitignored path(s) into the worktree (node_modules/core data)`);
+    }
+    log(`[land] verified-base: ${decision.reason} — reusing the upstream verdict, gauntlet skipped`);
+    return [{ name: 'verified-upstream', pass: true, detail: decision.reason }];
+  };
+}
+
 // ── Defaults for the seams ──────────────────────────────────────────────────
 
 function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) {
@@ -294,6 +349,10 @@ function defaultPushMain({ cwd, log = () => {} }) {
  * @param {function} [o.log]
  * @param {number} [o.maxAttempts]
  * @param {'auto'|'local'|'origin'} [o.source]  where the branch tip comes from
+ * @param {string} [o.expectSha]   refuse unless the resolved tip IS this sha
+ *                                 (land.yml: the tip its checks job verified —
+ *                                 a newer push to the branch supersedes this
+ *                                 landing rather than landing unverified code)
  * @param {boolean} [o.dryRun]     rebase + checks only, never push
  * @returns {{landed:boolean, sha:string|null, attempts:number, wallMs:number, failedCheck:string|null, reason:string|null, pushed:boolean, files:string[], verified:'LANDED'|'UNKNOWN'|null, contentNote:string|null, baseSha:string|null}}
  */
@@ -301,7 +360,7 @@ function landBranch(o) {
   const {
     branch, repoDir = REPO_ROOT, checks = defaultChecks, pushMain = defaultPushMain,
     beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS, maxChurnSkips = MAX_CHURN_SKIPS,
-    remote = 'origin', target = 'main', source = 'auto', dryRun = false,
+    remote = 'origin', target = 'main', source = 'auto', dryRun = false, expectSha = null,
   } = o || {};
   const t0 = Date.now();
   const done = (patch) => ({
@@ -345,6 +404,9 @@ function landBranch(o) {
     from = `${remote}/${branch}`;
   }
   if (!sha) return done({ failedCheck: 'resolve', reason: `branch "${branch}" not found (${source})` });
+  if (expectSha && sha !== expectSha) {
+    return done({ failedCheck: 'resolve', reason: `${branch} tip is ${sha.slice(0, 10)} (${from}), not the verified tip ${String(expectSha).slice(0, 10)} — a newer push superseded this landing; nothing pushed` });
+  }
   log(`[land] ${branch} @ ${sha.slice(0, 10)} (${from}) → ${targetRef} @ ${git(['rev-parse', targetRef]).slice(0, 10)}`);
 
   // The tip commit's own files vs origin/main NOW. A difference is a later
@@ -524,6 +586,8 @@ module.exports = {
   classifyIntervening,
   landBranch,
   defaultChecks,
+  decideVerifiedBaseSkip,
+  makeVerifiedBaseChecks,
   defaultPushMain,
   firstFailedCheck,
   classifyPushFailure,
