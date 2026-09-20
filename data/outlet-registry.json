@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-20T19:42:49.214Z",
+    "lastUpdated": "2026-09-20T21:16:08.382Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -673,17 +673,12 @@
       "region": "us"
     },
     "newjerseystage": {
-      "displayName": "New Jersey Stage",
+      "displayName": "Newjerseystage",
       "tier": 3,
       "aliases": [
-        "newjerseystage",
-        "new jersey stage",
-        "new-jersey-stage",
-        "njstage"
+        "newjerseystage"
       ],
-      "domain": "newjerseystage.com",
-      "accessModel": "free",
-      "region": "us"
+      "domain": "newjerseystage.com"
     },
     "culturesauce": {
       "displayName": "Culture Sauce",
@@ -11230,13 +11225,13 @@
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-09-20T00:23:16.872Z"
     },
-    "newjerseystage": {
-      "displayName": "Newjerseystage",
+    "thecomedybureau": {
+      "displayName": "Thecomedybureau",
       "tier": 3,
       "aliases": [
-        "newjerseystage"
+        "thecomedybureau"
       ],
-      "domain": "newjerseystage.com"
+      "domain": "thecomedybureau.com"
     }
   },
   "_aliasIndex": {
