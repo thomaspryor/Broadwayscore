@@ -50,6 +50,17 @@ const repoRoot = path.resolve(__dirname, '..', '..');
 const WEEK = '2026-08-24';
 const FIXTURE_SHOW_ID = 'fx-real-ivanov';
 const FIXTURE_SHOW_TITLE = 'The Real Ivanov (Fixture)';
+// Negative control (ship-check/Codex adversarial finding, BRO-3866): without
+// this, the assertions below would pass identically if offBroadwayOpenings()
+// ignored lastFeaturedIds ENTIRELY, not just for in-week openings — proving
+// only that the section fires, not that the stale-history bypass is scoped
+// the way the regression demands. This decoy opened OUTSIDE the current week
+// (still inside the 14-day grace window that would otherwise re-surface it)
+// and carries the exact same stale "featured" entry, so it must stay
+// suppressed while the in-week fixture above renders — pinning the bypass to
+// `inWeek(...)`, not to "lastFeaturedIds is now a no-op".
+const DECOY_SHOW_ID = 'fx-decoy-suppressed';
+const DECOY_SHOW_TITLE = 'Decoy Still-Suppressed Show (Fixture)';
 const FIXTURE_SHOWS = [
   {
     id: FIXTURE_SHOW_ID,
@@ -58,31 +69,47 @@ const FIXTURE_SHOWS = [
     category: 'off-broadway',
     status: 'open',
     type: 'play',
-    openingDate: '2026-08-25',
+    openingDate: '2026-08-25', // inside WEEK (2026-08-24..2026-08-30)
     venue: 'Fixture Off-Broadway Theatre',
+  },
+  {
+    id: DECOY_SHOW_ID,
+    title: DECOY_SHOW_TITLE,
+    slug: DECOY_SHOW_ID,
+    category: 'off-broadway',
+    status: 'open',
+    type: 'play',
+    openingDate: '2026-08-20', // grace-window-eligible, but NOT inWeek(WEEK)
+    venue: 'Fixture Off-Broadway Theatre 2',
   },
 ];
 // aggregateScore() falls back to averaging this array directly — no
 // public/data/shows/<id>.json exists for a fixture id, so the composite-score
 // cache lookup always misses (see loadCompositeScore() in generate.mjs).
-// 5 reviews clears minReviews('off-broadway') (3).
-const FIXTURE_REVIEWS = Array.from({ length: 5 }, (_, i) => ({
-  showId: FIXTURE_SHOW_ID,
-  outlet: `Fixture Outlet ${i + 1}`,
-  critic: `Fixture Critic ${i + 1}`,
-  assignedScore: 82,
-  publishDate: '2026-08-26',
-  tier: 1,
-}));
+// 5 reviews clears minReviews('off-broadway') (3) for both fixture shows.
+function reviewsFor(showId, publishDate) {
+  return Array.from({ length: 5 }, (_, i) => ({
+    showId,
+    outlet: `Fixture Outlet ${i + 1}`,
+    critic: `Fixture Critic ${i + 1}`,
+    assignedScore: 82,
+    publishDate,
+    tier: 1,
+  }));
+}
+const FIXTURE_REVIEWS = [
+  ...reviewsFor(FIXTURE_SHOW_ID, '2026-08-26'),
+  ...reviewsFor(DECOY_SHOW_ID, '2026-08-21'),
+];
 // The stale history the first test depends on: a prior issue already listed
-// the fixture show as featured two weeks before its real (in-week) opening —
-// same shape as the real BRO-2573 incident's 2026-08-10 entry. Within
+// BOTH fixture shows as featured two-plus weeks before this week — same shape
+// as the real BRO-2573 incident's 2026-08-10 entry. Within
 // offBroadwayOpenings()'s 16-day lastFeaturedIds lookback for WEEK
 // (2026-08-24 - 16d = 2026-08-08), so it's live pressure on the bypass this
-// test guards.
+// test guards for BOTH shows — only the in-week one should escape it.
 const STALE_STATE = {
   issues: [
-    { weekStart: '2026-08-10', edition: 'broadway', featuredShowIds: [FIXTURE_SHOW_ID] },
+    { weekStart: '2026-08-10', edition: 'broadway', featuredShowIds: [FIXTURE_SHOW_ID, DECOY_SHOW_ID] },
   ],
 };
 
@@ -147,6 +174,13 @@ test('broadway edition renders an in-week off-Broadway opening even when a stale
     assert.ok(html.includes(FIXTURE_SHOW_TITLE), `expected ${FIXTURE_SHOW_TITLE} to render in the Opened Off-Broadway body`);
     const openingRef = meta.openingShows.find((s) => s.id === FIXTURE_SHOW_ID);
     assert.ok(openingRef, `expected ${FIXTURE_SHOW_ID} in meta.openingShows (lede/completeness gates read this list)`);
+
+    // Negative control: the decoy carries the identical stale "featured"
+    // entry but opened outside this week, so lastFeaturedIds must still
+    // suppress it — proving the bypass is scoped to in-week openings, not
+    // that suppression stopped working altogether.
+    assert.ok(!html.includes(DECOY_SHOW_TITLE), `${DECOY_SHOW_TITLE} opened outside WEEK and carries a stale featured entry — it must stay suppressed`);
+    assert.ok(!meta.openingShows.find((s) => s.id === DECOY_SHOW_ID), `${DECOY_SHOW_ID} must not appear in meta.openingShows`);
   } finally {
     fs.rmSync(outDir, { recursive: true, force: true });
     fs.rmSync(dataDir, { recursive: true, force: true });

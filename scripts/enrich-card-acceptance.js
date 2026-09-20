@@ -652,7 +652,15 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
   try {
     fs.mkdirSync(path.dirname(logPath), { recursive: true });
     const entry = {
-      ts: new Date().toISOString(), id: card.id, name: card.name, action,
+      ts: new Date().toISOString(), id: card.id,
+      // Redacted (BRO-3866 ship-check, Codex adversarial finding): the FIRST
+      // version of this fix only redacted previousNotes/newNotes and left
+      // name + demotedSpans writing free text verbatim. A card title can be
+      // pasted straight from an email subject line, and demotedSpans are
+      // arbitrary backtick-quoted spans lifted out of newNotes itself
+      // (demoteUnsafeSpans() above) — both are exactly as public-repo-committed
+      // as the two fields already covered, so both need the same guard.
+      name: redactEmails(card.name || ''), action,
       // identifier/url: null for a Notion card (no such fields), populated
       // for a Linear issue (task #1830, ship-check/Codex finding — the
       // pre-existing log had no human-readable Linear reference, only the
@@ -671,7 +679,7 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
       // healthy sweep from a prompt regression spraying script names into
       // every draft — which is exactly the blind spot that made the
       // guardrail's real false-positive rate unmeasurable before now.
-      demotedSpans: extra.demotedSpans || [],
+      demotedSpans: (extra.demotedSpans || []).map((s) => redactEmails(s)),
     };
     fs.appendFileSync(logPath, JSON.stringify(entry) + '\n');
   } catch (e) {

@@ -189,16 +189,41 @@ function maskEmail(value) {
  * satisfies REDACTED_LOCAL_RE, so a re-scan recognizes it as the placeholder
  * it is — the same mechanism gho_REDACTED@github.com already relies on.
  *
- * A fresh RegExp instance (not EMAIL_RE_G) — that module-level regex's
- * lastIndex is mutated by judgeAt()/firstRealEmail() elsewhere, and sharing
- * it here would make redaction result depend on unrelated prior scan calls.
+ * NOT a global-regex `.replace()` over the whole string (adversarial review,
+ * BRO-3866 ship-check: that first version hung 217s on a 100k-char string
+ * with no '@' at all). EMAIL_RE's domain class `[A-Za-z0-9.-]+\.[A-Za-z]{2,}`
+ * is the SAME catastrophic-backtracking pattern judgeAt()'s own comment
+ * documents ("backtracks catastrophically on long punctuation runs") — a
+ * single bounded `.exec()` that returns on the first EARLY match (firstRealEmail's
+ * fast path) never pays that cost, but `.replace(..., 'g')` must keep
+ * searching all the way to the end of the string for every subsequent match,
+ * walking the regex engine straight into the unbounded tail. Reuses the same
+ * per-'@' bounded-window judgeAt() the scan side already relies on for
+ * exactly this reason — `indexOf('@')` skips every non-'@' stretch for free
+ * (no '@' in the string at all — the worst case above — terminates in one
+ * indexOf call), and each candidate is judged in a window capped at
+ * MAX_LOCAL_PART + MAX_DOMAIN_PART chars, never the whole string.
  */
 function redactEmails(value) {
   const s = String(value || '');
-  return s.replace(new RegExp(EMAIL_RE.source, 'g'), (m) => {
-    const [local, domain] = m.split('@');
-    return REDACTED_LOCAL_RE.test(local) ? m : `redacted@${domain}`;
-  });
+  let out = '';
+  let cursor = 0;
+  let at = s.indexOf('@');
+  while (at !== -1) {
+    const verdict = judgeAt(s, at, MAX_DOMAIN_PART);
+    if (verdict && verdict !== 'placeholder') {
+      const atInMatch = verdict.indexOf('@');
+      const start = at - atInMatch;
+      if (start >= cursor) {
+        out += s.slice(cursor, start) + `redacted@${verdict.slice(atInMatch + 1)}`;
+        cursor = start + verdict.length;
+        at = s.indexOf('@', cursor);
+        continue;
+      }
+    }
+    at = s.indexOf('@', at + 1);
+  }
+  return out + s.slice(cursor);
 }
 
 function formatPath(pathSegs) {
