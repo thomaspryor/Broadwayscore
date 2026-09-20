@@ -75,8 +75,16 @@ runs:
           # before every retry anyway, so the branch was unreachable. Leaving a
           # live-looking "cache reuse fast path" behind is what would re-invite
           # the cache, so it is deleted rather than commented out.
+          # --branch main is load-bearing, not decoration (ship-check finding).
+          # The deleted fast-update branch pinned the ref explicitly
+          # (`git fetch origin main && git reset --hard origin/main`); this clone
+          # did not, and relied on the remote's default branch instead. That was
+          # survivable while the clone was the RARE path behind a cache hit — now
+          # it is the ONLY path, so an unpinned ref would silently serve another
+          # branch's core data to all 284 invocations with every job still green.
+          # checkout-review-texts/action.yml:44 already pins the same way.
           rm -rf /tmp/core-data-checkout
-          if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
+          if git clone --depth 1 --branch main "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
             ELAPSED=$(($(date +%s) - START))
             echo "Core data cloned fresh in ${ELAPSED}s"
             SUCCESS=true

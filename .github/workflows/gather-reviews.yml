@@ -274,6 +274,12 @@ jobs:
       # bd-serp-cache-${{ github.run_id }} earlier in this same run, so reusing
       # that exact key here would make every gather-reviews matrix job's own
       # new SERP discoveries a no-op save (adversarial review finding).
+      # hygiene-cache-runid-ok: ~22 KB payload. The run-id is load-bearing in the
+      # SAVE key — actions/cache skips the save on an exact key hit, and the batch
+      # suffix keeps each matrix job's own discoveries from no-opping against the
+      # outlet-serp save earlier in this run. Cross-run reuse is via restore-keys.
+      # Needs its own marker: exemptions are step-scoped, not file-scoped (BRO-3887
+      # ship-check), so the comment on the outlet-serp cache above does not cover it.
       - name: Restore SERP cache
         uses: actions/cache@v5
         with:

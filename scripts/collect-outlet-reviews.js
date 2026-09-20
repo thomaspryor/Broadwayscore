@@ -439,7 +439,7 @@ async function main() {
   let totalWritten = 0;
   let totalSkipped = 0;
 
-  for (const show of targetShows) {
+  for (const [showIdx, show] of targetShows.entries()) {
     // Determine market for this show (auto-detect from category)
     const market = show.category || opts.market || 'broadway';
     let targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
@@ -592,11 +592,19 @@ async function main() {
       // DROPPED, not "deferred": nothing persists a backlog and the outlet-serp
       // job hands this script a fixed --shows list, so these shows are simply
       // not searched this tick (same semantics as the maxSearches break above).
-      // The next scheduled tick will pick them up from scratch.
-      const idx = targetShows.indexOf(show);
-      const dropped = targetShows.slice(idx + 1).map((s) => s.id);
+      // They are re-attempted only because opening-night-reviews.yml re-dispatches
+      // the same day-1..3 window 8x/day (cron 0 5,17 + 0 2,8,11,14,20,23) — this
+      // workflow is workflow_dispatch-only and has no queue of its own.
+      //
+      // Indexed by position, not indexOf(show): repeating an id in --shows puts
+      // the SAME object in targetShows twice, and indexOf would return the first
+      // position and over-report the tail as dropped (ship-check finding).
+      const dropped = targetShows.slice(showIdx + 1).map((s) => s.id);
+      // The current show is partially searched, not untouched — name it
+      // separately so the log does not imply it completed.
+      console.log(`⏱ Time budget spent after ${timeBudget.elapsedMin()}min — ${show.id} only partially searched this run`);
       if (dropped.length) {
-        console.log(`⏱ Time budget spent — dropping ${dropped.length} unsearched show(s) this run: ${dropped.join(', ')}`);
+        console.log(`⏱ Dropping ${dropped.length} unsearched show(s) this run: ${dropped.join(', ')}`);
       }
       break;
     }

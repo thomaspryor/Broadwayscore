@@ -54,11 +54,37 @@ test('the budget is checked in the INNER outlet loop, before the SERP call', () 
   assert.ok(innerEnd > innerStart, 'could not delimit the inner outlet loop');
   const innerBody = src.slice(innerStart, innerEnd);
 
+  // Mutation-proofed (ship-check finding): the earlier version asserted only that
+  // the STRING "timeBudget.exceeded()" appeared before "discoverCorrectUrl", which
+  // still passed after deleting the `break;` and after `if (false && ...)`. It
+  // proved text position, not that anything stops. Require the guard to actually
+  // break.
+  // Brace-match the guard's own block rather than regexing to the next `}` — the
+  // log line contains `${...}` template placeholders, so a `[^}]*` match stops
+  // inside the string and gives a false negative.
+  const guardAt = innerBody.search(/if\s*\(\s*timeBudget\.exceeded\(\)\s*\)\s*\{/);
   assert.ok(
-    innerBody.includes('timeBudget.exceeded()'),
-    'the budget must be checked per-OUTLET, not only per-show: one show can hold the ' +
-      'whole --max-searches allowance (80 on opening night, ~10s each ≈ 13min), so a ' +
-      'per-show-only check lets one in-flight show overshoot and blow the job cap anyway',
+    guardAt >= 0,
+    'the budget must be checked per-OUTLET: one show can hold the whole ' +
+      '--max-searches allowance (80 on opening night, ~10s each ≈ 13min), so a ' +
+      'per-show-only check lets one in-flight show overshoot and blow the job cap',
+  );
+  const openAt = innerBody.indexOf('{', guardAt);
+  let depth = 0;
+  let closeAt = -1;
+  for (let i = openAt; i < innerBody.length; i++) {
+    if (innerBody[i] === '{') depth++;
+    else if (innerBody[i] === '}') {
+      depth--;
+      if (depth === 0) { closeAt = i; break; }
+    }
+  }
+  assert.ok(closeAt > openAt, 'could not brace-match the budget guard block');
+  assert.match(
+    innerBody.slice(openAt, closeAt),
+    /\bbreak;/,
+    'the budget guard must BREAK, not just log — a guard that logs and continues ' +
+      'lets the run overshoot exactly as if the budget were absent',
   );
 
   // It must gate BEFORE the SERP call, otherwise overshoot is unbounded.
@@ -71,22 +97,29 @@ test('the budget is checked in the INNER outlet loop, before the SERP call', () 
   );
 });
 
-test('the budget break falls through to the summary rather than exiting the process', () => {
-  const src = fs.readFileSync(SRC, 'utf8');
-  const mainStart = src.indexOf('async function main()');
-  const mainBody = src.slice(mainStart);
-  // A process.exit(0) on the budget path would skip the summary block, and in the
-  // workflow it would also skip nothing useful — but it hides how much was done.
-  const budgetBlocks = mainBody.split('timeBudget.exceeded()').slice(1);
-  assert.ok(budgetBlocks.length >= 2, 'expected both the inner and outer budget checks');
-  for (const block of budgetBlocks) {
-    const next200 = block.slice(0, 200);
-    assert.ok(
-      !/process\.exit\(/.test(next200),
-      `budget path must break, not process.exit — found: ${next200.slice(0, 120)}`,
-    );
+// Behavioural, not textual (ship-check finding: the previous source-text version
+// survived deleting both `break;` statements). This drives the real CLI with a
+// budget that is already spent and asserts on what it actually DOES.
+test('an exhausted budget stops the run, names the partial show, and exits 0', (t) => {
+  if (!fs.existsSync(path.join(ROOT, 'data', 'shows.json'))) {
+    t.skip('needs core data (checkout-core-data supplies it in CI; absent in a bare worktree)');
+    return;
   }
-  assert.ok(mainBody.includes('=== Summary ==='), 'summary block must still be reachable');
+  const res = spawnSync(
+    process.execPath,
+    [SRC, '--shows', 'zzz-fake-1,zzz-fake-2', '--dry-run', '--time-budget-min=0.0001'],
+    {
+      cwd: ROOT,
+      encoding: 'utf8',
+      timeout: 120_000,
+      env: { ...process.env, SCRAPINGBEE_API_KEY: 'test-key' },
+    },
+  );
+  const out = `${res.stdout}\n${res.stderr}`;
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}\n${out.slice(-1200)}`);
+  assert.match(out, /Time budget: 0\.0001min/, 'header must surface the budget');
+  assert.match(out, /=== Summary ===/, 'summary must still print — the budget path breaks, not exits');
+  assert.match(out, /EXCEEDED — run truncated/, 'summary must mark the run as truncated');
 });
 
 test('the gather-reviews workflow passes the equals form to this script', () => {
@@ -96,8 +129,15 @@ test('the gather-reviews workflow passes the equals form to this script', () => 
     /--time-budget-min=\d+/,
     'outlet-serp must pass --time-budget-min=N (equals), not the space form',
   );
+  // Strip comments first: the naive check matched the explanatory comment that
+  // *documents* the wrong form, so writing the docs would have failed CI
+  // (ship-check finding).
+  const wfCode = wf
+    .split('\n')
+    .filter((l) => !/^\s*#/.test(l))
+    .join('\n');
   assert.ok(
-    !/--time-budget-min\s+\d/.test(wf),
+    !/--time-budget-min\s+\d/.test(wfCode),
     'the space form would parse as 0 and silently disable the budget',
   );
 });

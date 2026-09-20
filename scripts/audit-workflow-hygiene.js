@@ -204,36 +204,85 @@ const ACTIONS_DIR = path.join(__dirname, '..', '.github', 'actions');
  * per deploy on purpose) exempts itself with `# hygiene-cache-runid-ok:`.
  */
 function findRunIdKeyedCaches(raw) {
-  if (raw.includes('hygiene-cache-runid-ok:')) return [];
   const lines = raw.split('\n');
   const hits = [];
-  // Track whether we are inside a step that uses actions/cache. A step boundary
-  // is any line starting a new `- ` list item at the same-or-lower indent.
-  let inCacheStep = false;
-  let cacheStepIndent = -1;
+
+  // Exemption is SCOPED to a step, not the whole file (ship-check finding): a
+  // single file-level comment used to exempt every cache in the file, so a
+  // future 3.4 GiB cache added to gather-reviews.yml — which legitimately has
+  // two tiny run-id caches — would have shipped silently. The marker must sit
+  // inside the step, or in the comment block immediately above it.
+  const EXEMPT = 'hygiene-cache-runid-ok:';
+
+  const indentOf = (l) => (l.match(/^(\s*)/) || ['', ''])[1].length;
+  const isComment = (l) => /^\s*#/.test(l);
+  const isBlank = (l) => /^\s*$/.test(l);
+
+  // Does a `- ` step starting at `i` carry the exemption, either in its own body
+  // or in the contiguous comment block directly above it?
+  function stepIsExempt(i, stepIndent, bodyEnd) {
+    for (let j = i; j < bodyEnd; j++) if (lines[j].includes(EXEMPT)) return true;
+    for (let j = i - 1; j >= 0; j--) {
+      if (isBlank(lines[j])) continue;
+      if (!isComment(lines[j])) break;
+      if (lines[j].includes(EXEMPT)) return true;
+    }
+    return false;
+  }
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (/^\s*#/.test(line)) continue; // commented-out YAML is not a real step
-    const itemMatch = line.match(/^(\s*)-\s/);
-    if (itemMatch) {
-      const indent = itemMatch[1].length;
-      if (inCacheStep && indent <= cacheStepIndent) inCacheStep = false;
-      if (/uses:\s*actions\/cache(\/(restore|save))?@/.test(line)) {
-        inCacheStep = true;
-        cacheStepIndent = indent;
-      }
-    } else if (/^\s*uses:\s*actions\/cache(\/(restore|save))?@/.test(line)) {
-      inCacheStep = true;
-      if (cacheStepIndent < 0) cacheStepIndent = (line.match(/^(\s*)/) || ['', ''])[1].length - 2;
+    if (isComment(line)) continue;
+    const item = line.match(/^(\s*)-\s/);
+    if (!item) continue;
+    const stepIndent = item[1].length;
+
+    // Find where this step's body ends: the next `- ` at the same-or-lower
+    // indent, or the next non-comment line at a strictly lower indent (a
+    // dedented map key ends the list). This also fixes the false positive where
+    // a later bare `key:` outside the step was still attributed to it.
+    let bodyEnd = lines.length;
+    for (let j = i + 1; j < lines.length; j++) {
+      if (isBlank(lines[j]) || isComment(lines[j])) continue;
+      const ind = indentOf(lines[j]);
+      const isItem = /^\s*-\s/.test(lines[j]);
+      if ((isItem && ind <= stepIndent) || ind < stepIndent) { bodyEnd = j; break; }
     }
-    if (!inCacheStep) continue;
-    const keyMatch = line.match(/^\s*key:\s*(.+?)\s*$/);
-    if (keyMatch && /github\.run_id/.test(keyMatch[1])) {
-      hits.push({
-        line: i + 1,
-        key: keyMatch[1],
-        message: `line ${i + 1}: actions/cache key is run-id-scoped (${keyMatch[1]}) — a new entry every job of every run`,
-      });
+
+    const body = lines.slice(i, bodyEnd);
+    // Quotes are optional around `uses:` (ship-check finding).
+    const usesCache = body.some((l) =>
+      /^\s*-?\s*uses:\s*['"]?actions\/cache(\/(restore|save))?@/.test(l),
+    );
+    if (!usesCache) continue;
+    if (stepIsExempt(i, stepIndent, bodyEnd)) continue;
+
+    for (let k = 0; k < body.length; k++) {
+      const m = body[k].match(/^(\s*)key:\s*(.*)$/);
+      if (!m) continue;
+      let value = m[2].trim();
+      // Block scalars (`key: >-`, `|`, `>`, `|-`) put the value on the FOLLOWING
+      // more-indented lines. Matching only the `key:` line captured the literal
+      // ">-" and returned zero hits — a one-line bypass of this entire guard
+      // (ship-check finding, confirmed by mutation).
+      if (/^[|>][-+]?\d*$/.test(value)) {
+        const keyIndent = m[1].length;
+        const parts = [];
+        for (let n = k + 1; n < body.length; n++) {
+          if (isBlank(body[n])) { parts.push(''); continue; }
+          if (indentOf(body[n]) <= keyIndent) break;
+          parts.push(body[n].trim());
+        }
+        value = parts.join(' ').trim();
+      }
+      if (/github\.run_id/.test(value)) {
+        const lineNo = i + k + 1;
+        hits.push({
+          line: lineNo,
+          key: value,
+          message: `line ${lineNo}: actions/cache key is run-id-scoped (${value}) — a new entry every job of every run`,
+        });
+      }
     }
   }
   return hits;
@@ -776,7 +825,13 @@ async function main() {
     violations.shortPushTimeout.length +
     violations.shortBatchPollTimeout.length +
     violations.quoteApostrophe.length +
-    violations.paidProviderOnPush.length;
+    violations.paidProviderOnPush.length +
+    // Rule (m) MUST be summed here or the whole guard is decorative: the report
+    // block below would print and then `total === 0` would still return 0.
+    // Caught by ship-check — the rule shipped unwired and passed its own tests,
+    // because the tests called findRunIdKeyedCaches directly and never asserted
+    // the CLI's exit code.
+    violations.runIdKeyedCache.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
