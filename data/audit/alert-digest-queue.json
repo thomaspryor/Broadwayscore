@@ -10,5 +10,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-20T11:53:21.830Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 46.4% of shows changed coverage state",
+    "description": "review-gap blast radius 46.4% (13/28 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: america-who-hurt-you-off-broadway-2026, conflicted-off-broadway-2026, darkling-off-west-end-2026, gimme-a-sign-off-broadway-2026, golden-boy-off-west-end-2026, in-honor-of-jean-michel-basquiat-off-broadway-2026, million-dollar-quartet-off-west-end-2026, my-sons-a-queer-but-what-can-you-do-west-end-2026, pre-existing-condition-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-cherry-orchard-park-avenue-armory-off-broadway-2026, the-hope-theory-off-broadway-2026, thelma-and-louise-a-new-musical-off-west-end-2026\n\nPARTIAL write: the other 15 show(s) audited this run were NOT risky and were persisted normally. Only the 13 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T12:57:21.383Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.3% (380/498)\noff-broadway: 41.7% (130/312)\nwest-end: 76.6% (423/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (891h)\nA Midsummer Night's Dream — observer (891h)\nA Midsummer Night's Dream — standard (891h)\nABBA Voyage — independent (891h)\nAladdin — ew (891h)\n… 167 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (891h)\nBuena Vista Social Club — broadwaynews (891h)\nBuena Vista Social Club — nydailynews (891h)\nHadestown — nydailynews (891h)\nHeathers The Musical — dailybeast (891h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T12:57:35.230Z"
   }
 ]
