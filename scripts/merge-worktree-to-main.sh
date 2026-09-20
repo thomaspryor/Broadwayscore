@@ -21,6 +21,13 @@
 #              (default: the files the branch changed vs main)
 #   DRY_RUN=1 scripts/merge-worktree-to-main.sh   # do everything except the push
 #
+# docs: landing now has a lib (BRO-3873 step 2) — scripts/lib/land-branch.js
+#   landBranch() does rebase → check gauntlet → fast-forward push → ancestry proof
+#   in a throwaway detached worktree, never in this shared checkout, and
+#   scripts/land.js is its CLI (`node scripts/land.js --branch <name>`).
+#   Step 4 of that plan routes this script through it; until then the two
+#   verify the same things by different means.
+#
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
