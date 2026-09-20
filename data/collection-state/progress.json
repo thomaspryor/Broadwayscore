@@ -788,7 +788,8 @@
     "darkling-off-west-end-2026/voice-magazine--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json",
     "the-seven-deadly-sins-the-human-voice-off-west-end-2026/london-theatre-reviews--unknown.json",
-    "golden-boy-off-west-end-2026/ntlive--powster.json"
+    "golden-boy-off-west-end-2026/ntlive--powster.json",
+    "golden-boy-off-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -950,7 +951,7 @@
     ]
   },
   "startTime": "2026-09-19T12:35:18.916Z",
-  "lastProcessed": "golden-boy-off-west-end-2026/ntlive--powster.json",
+  "lastProcessed": "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-09-19T12:46:11.402Z",
@@ -1250,6 +1251,29 @@
       "t": "2026-09-19T23:03:50.153Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-20T00:21:36.928Z",
+      "event": "bb-session",
+      "session": "11bcf47b",
+      "url": "https://www.thestage.co.uk/reviews/alvin-ailey-american-dance-theater-new-works-"
+    },
+    {
+      "t": "2026-09-20T00:21:37.667Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-20T00:26:58.029Z",
+      "event": "bb-session",
+      "session": "6a576d7a",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-20T00:27:10.641Z",
+      "event": "bb-session",
+      "session": "3de2490e",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
     }
   ],
   "recoveredAfterFailure": [
