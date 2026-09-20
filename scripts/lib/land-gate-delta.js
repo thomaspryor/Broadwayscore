@@ -44,17 +44,30 @@
 //                                   gate.js applies to both of its runs).
 //
 // KEYS
-//   unit-tests / scripts-lib-tests: `<repo-relative test file>::<test name>`
-//     via parseTapOutput (unlocated `?::name` keys are ALWAYS new — see
-//     diffFailingSets for why).
+//   unit-tests-node / unit-tests-tsx / scripts-lib-tests:
+//     `<repo-relative test file>::<test name>` via parseTapOutput (unlocated
+//     `?::name` keys are ALWAYS new — see diffFailingSets for why), with the
+//     block's failureType appended for anything but 'subtestsFailed'
+//     (` [testCodeFailure]`, ` [cancelledByParent]`, …). Without that, a
+//     file X red on base through one failing subtest (`X::sub` and, nested
+//     shape, `X::<X> [subtestsFailed]`) that the branch breaks AT LOAD
+//     (`X::<X>` only) would diff as "0 new, fixed" — a silent pass on a
+//     branch that just deleted a test file's worth of coverage (Claude
+//     adversarial review). The two unit batches are separate gates so a
+//     batch that cannot start is its own zero-parsed-failures fail-safe,
+//     never hidden behind the other batch's unchanged failures.
 //   tsc / tsc-llm-scoring: `<file>::<TS code> <message>` — line:col dropped so
-//     a shifted line is the same error, not a new one.
-//   next-lint: `<file>::<rule> <message>`, errors only (warnings never fail
-//     `next lint`, so they never fail this gate either).
+//     a shifted line is the same error, not a new one; a SECOND identical
+//     diagnostic in the same file keys `… #2`, so adding one is new.
+//   next-lint: `<file>::<rule> <message>` (same multiplicity rule), errors
+//     only (warnings never fail `next lint`, so they never fail this gate).
 //   lint-workflows: the failing audit's label (`::error::lint-workflows gate
-//     failed: <label> (exit N)`).
-//   KNOWN LIMIT (same as merge-post-merge-test-gate.js): an aggregate guard
-//   keyed by one name masks a NEW violation of the same guard while base is
+//     failed: <label> (exit N)`) PLUS, for actionlint (structured output),
+//     each diagnostic `<file>: <message> [rule]` with line:col dropped and the
+//     multiplicity rule — so a new workflow error is new even while base is
+//     already red on some other actionlint finding.
+//   KNOWN LIMIT (same as merge-post-merge-test-gate.js): an audit keyed by
+//   its label alone masks a NEW violation of that same audit while base is
 //   already red on it. Do not read a green delta as proof while main is red.
 //
 // USAGE
@@ -78,21 +91,32 @@ const { isInertForVerification } = require('./land-branch.js');
 
 // The gates land.yml's checks job runs, in verdict order (the first failing
 // one names the digest line). Keep in step with scripts/lib/land-gauntlet.sh.
-const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests', 'scripts-lib-tests', 'lint-workflows'];
-const TAP_GATES = new Set(['unit-tests', 'scripts-lib-tests']);
+const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests', 'lint-workflows'];
+const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests']);
 const TSC_GATES = new Set(['tsc', 'tsc-llm-scoring']);
 
 // ── Parsers: gate output → Map<key, {file, name}> ───────────────────────────
 
+const ANSI_RE = /\x1b\[[0-9;]*m/g;
+const stripAnsi = (s) => String(s || '').replace(ANSI_RE, '');
+
+// Add a failure keyed `<file>::<name>`; a repeat of the SAME key in one run
+// gets `#2`, `#3`, … so multiplicity counts: a branch that adds a second
+// identical diagnostic to a file that already had one produces a NEW key.
+function addWithMultiplicity(map, file, name) {
+  const base = `${file}::${name}`;
+  let key = base;
+  for (let n = 2; map.has(key); n++) key = `${base} #${n}`;
+  map.set(key, { file, name: key.slice(file.length + 2) });
+}
+
 function parseTscFailures(text) {
   const out = new Map();
-  for (const line of String(text || '').split('\n')) {
+  for (const line of stripAnsi(text).split('\n')) {
     // src/lib/x.ts(12,5): error TS2304: Cannot find name 'y'.
     const m = /^(.+?)\((\d+),(\d+)\): error (TS\d+): (.*)$/.exec(line.trimEnd());
     if (!m) continue;
-    const file = m[1].trim();
-    const name = `${m[4]} ${m[5].trim()}`;
-    out.set(`${file}::${name}`, { file, name });
+    addWithMultiplicity(out, m[1].trim(), `${m[4]} ${m[5].trim()}`);
   }
   return out;
 }
@@ -100,7 +124,7 @@ function parseTscFailures(text) {
 function parseNextLintFailures(text) {
   const out = new Map();
   let file = null;
-  for (const raw of String(text || '').split('\n')) {
+  for (const raw of stripAnsi(text).split('\n')) {
     const line = raw.trimEnd();
     if (!line) continue;
     // A non-indented path line opens a file block: ./src/app/page.tsx
@@ -114,25 +138,41 @@ function parseNextLintFailures(text) {
     const m = /^\s*(\d+):(\d+)\s+(Error|Warning|error|warning):?\s+(.*?)\s{2,}(\S+)\s*$/.exec(line);
     if (!m || !file) continue;
     if (!/^error$/i.test(m[3])) continue;
-    const name = `${m[5]} ${m[4].trim()}`;
-    out.set(`${file}::${name}`, { file, name });
+    addWithMultiplicity(out, file, `${m[5]} ${m[4].trim()}`);
   }
   return out;
 }
 
 function parseLintWorkflowsFailures(text) {
   const out = new Map();
-  for (const line of String(text || '').split('\n')) {
-    const m = /^::error::lint-workflows gate failed: (.+?) \(exit \d+\)\s*$/.exec(line);
-    if (!m) continue;
-    out.set(`lint-workflows::${m[1]}`, { file: 'lint-workflows', name: m[1] });
+  for (const raw of stripAnsi(text).split('\n')) {
+    const line = raw.trimEnd();
+    const m = /^::error::lint-workflows gate failed: (.+?) \(exit \d+\)$/.exec(line);
+    if (m) { out.set(`lint-workflows::${m[1]}`, { file: 'lint-workflows', name: m[1] }); continue; }
+    // actionlint: .github/workflows/x.yml:12:5: message [rule]
+    const a = /^(\.github\/workflows\/[^:\s]+):(\d+):(\d+): (.*)$/.exec(line);
+    if (a) addWithMultiplicity(out, 'lint-workflows', `actionlint ${a[1]}: ${a[4].trim()}`);
+  }
+  return out;
+}
+
+// TAP failures re-keyed with their failureType (see KEYS above). A plain
+// assertion failure keys `file::name [testCodeFailure]` on both sides — same
+// key, same verdict; only a CHANGE of failure kind (subtests failed → file
+// crashed at load) becomes a new key.
+function parseTapGateFailures(text, treeRoot) {
+  const out = new Map();
+  for (const [key, v] of parseTapOutput(text, treeRoot).failures) {
+    const ft = v.failureType && v.failureType !== 'subtestsFailed' ? ` [${v.failureType}]` : '';
+    const name = `${v.name}${ft}`;
+    out.set(`${key}${ft}`, { file: v.file, name });
   }
   return out;
 }
 
 /** Map<key,{file,name}> of the failures a gate's captured output names. */
 function parseGateFailures(gate, text, treeRoot) {
-  if (TAP_GATES.has(gate)) return parseTapOutput(text, treeRoot).failures;
+  if (TAP_GATES.has(gate)) return parseTapGateFailures(text, treeRoot);
   if (TSC_GATES.has(gate)) return parseTscFailures(text);
   if (gate === 'next-lint') return parseNextLintFailures(text);
   if (gate === 'lint-workflows') return parseLintWorkflowsFailures(text);
@@ -245,11 +285,25 @@ function formatSummary({ decisions, baseMeta, branchMeta, baseSource }) {
 
 // ── Base cache key: a hash of the verification-relevant tree ────────────────
 
+// Paths INERT_FOR_VERIFICATION_RE calls inert that a gate's verdict does
+// depend on: the unit-test manifests (.txt — which files the batches run),
+// CLAUDE.md (the claude-md-integrity audit) and anything under tests/. They
+// are part of the cache key even though land-branch.js's re-check rule
+// ignores them (Claude adversarial review).
+const HASH_ALWAYS_RELEVANT_RE = /^(tests\/|CLAUDE\.md$|scripts\/lib\/claude-md-anchors\.json$)/;
+
+function isCacheKeyRelevant(file) {
+  return HASH_ALWAYS_RELEVANT_RE.test(file) || !isInertForVerification(file);
+}
+
 /**
- * sha256 over `git ls-tree -r <sha>` minus INERT_FOR_VERIFICATION_RE paths.
- * Two base shas that differ only in bot data churn hash the same, so the
- * cached base gauntlet is reused across them; any code/workflow/test change
- * hashes differently. `lsTree` is injectable for tests.
+ * sha256 over `git ls-tree -r <sha>` minus INERT_FOR_VERIFICATION_RE paths
+ * (except the always-relevant ones above). Two base shas that differ only in
+ * bot data churn hash the same, so the cached base gauntlet is reused across
+ * them; any code/workflow/test change hashes differently. `lsTree` is
+ * injectable for tests. The private core data the unit batches read is NOT
+ * in any tree here — land.yml salts the key per UTC day and re-decides any
+ * refusal against a fresh base, which bounds that staleness.
  */
 function computeCodeTreeHash(sha, { cwd = process.cwd(), lsTree = null } = {}) {
   if (!/^[0-9a-f]{40}$/.test(String(sha || ''))) throw new Error(`computeCodeTreeHash: need a full 40-hex sha (got ${JSON.stringify(sha)})`);
@@ -262,7 +316,7 @@ function computeCodeTreeHash(sha, { cwd = process.cwd(), lsTree = null } = {}) {
     if (!line) continue;
     const tab = line.indexOf('\t');
     const file = tab === -1 ? line : line.slice(tab + 1);
-    if (isInertForVerification(file)) continue;
+    if (!isCacheKeyRelevant(file)) continue;
     h.update(line);
     h.update('\n');
     kept++;
@@ -288,7 +342,7 @@ function parseArgs(argv) {
 function main(argv = process.argv.slice(2)) {
   const args = parseArgs(argv);
   if (args.help || args.h) {
-    console.log('usage: land-gate-delta.js --base-dir D --branch-dir D [--gates a,b] [--summary-file F] [--github-output F] [--base-source S]\n       land-gate-delta.js --code-hash <sha> [--cwd DIR]');
+    console.log('usage: land-gate-delta.js --base-dir D --branch-dir D [--gates a,b] [--summary-file F] [--github-output F] [--base-source S] [--strict]\n       land-gate-delta.js --code-hash <sha> [--cwd DIR]');
     return 0;
   }
   if (args['code-hash']) {
@@ -302,7 +356,10 @@ function main(argv = process.argv.slice(2)) {
     return 2;
   }
   const branchDir = String(args['branch-dir']);
-  const baseDir = args['base-dir'] && args['base-dir'] !== true && fs.existsSync(path.join(String(args['base-dir']), 'meta.json')) ? String(args['base-dir']) : null;
+  // --strict: the rollback switch (land.yml: repo variable LAND_STRICT_GATES=1)
+  // — judge the branch with NO base at all, i.e. the pre-delta strict parity.
+  const strict = args.strict === true || process.env.LAND_STRICT_GATES === '1';
+  const baseDir = !strict && args['base-dir'] && args['base-dir'] !== true && fs.existsSync(path.join(String(args['base-dir']), 'meta.json')) ? String(args['base-dir']) : null;
   const gates = args.gates && args.gates !== true ? String(args.gates).split(',').map((s) => s.trim()).filter(Boolean) : GATES;
   const decisions = decideAllGates({ gates, base: baseDir, branch: branchDir });
   const baseMeta = baseDir ? readMeta(baseDir) : null;
@@ -314,7 +371,7 @@ function main(argv = process.argv.slice(2)) {
     for (const f of d.preExisting) console.log(`  pre-existing (origin/main is red on this too, not blocking): ${f.file}::${f.name}`);
     for (const f of d.fixed) console.log(`  fixed by this branch: ${f.file}::${f.name}`);
   }
-  const summary = formatSummary({ decisions, baseMeta, branchMeta, baseSource: args['base-source'] && args['base-source'] !== true ? String(args['base-source']) : null });
+  const summary = formatSummary({ decisions, baseMeta, branchMeta, baseSource: strict ? 'NONE — strict mode (LAND_STRICT_GATES=1)' : args['base-source'] && args['base-source'] !== true ? String(args['base-source']) : null });
   if (args['summary-file'] && args['summary-file'] !== true) fs.appendFileSync(String(args['summary-file']), summary);
   else console.log(`\n${summary}`);
   const gate = firstFailingGate(decisions);
@@ -331,6 +388,9 @@ module.exports = {
   parseTscFailures,
   parseNextLintFailures,
   parseLintWorkflowsFailures,
+  parseTapGateFailures,
+  addWithMultiplicity,
+  isCacheKeyRelevant,
   decideGateDelta,
   decideAllGates,
   firstFailingGate,

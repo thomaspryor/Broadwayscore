@@ -58,9 +58,12 @@ name: Land
 # green on base (against an empty base set every failure is new — the same
 # rule). Same judgement as land-branch.js's merged-tree gate and
 # merge-post-merge-test-gate.js, whose diffFailingSets() this reuses. The
-# base result is cached per verification-relevant tree hash (actions/cache
-# for this branch, an artifact for every other land/** branch) so a second
-# landing against the same base code does not pay for the base twice.
+# base result is cached per verification-relevant tree hash + UTC day
+# (actions/cache for this branch, an artifact for every other land/** branch)
+# so a second landing against the same base code does not pay for the base
+# twice; a cached base is trusted for a PASS only — a refusal made on it is
+# re-decided against a fresh base run before it is final. Rollback: repo
+# variable LAND_STRICT_GATES=1 restores strict parity without a code change.
 
 on:
   push:
@@ -144,6 +147,14 @@ jobs:
             exit 1
           fi
           echo "rebased=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          # A dependency change means the installed node_modules are the
+          # branch's; the base gauntlet must reinstall its own (see
+          # land-gauntlet.sh --deps-changed).
+          if git diff --name-only "$BASE"...HEAD -- package.json package-lock.json | grep -q .; then
+            echo "deps_changed=true" >> "$GITHUB_OUTPUT"; echo "package.json/package-lock.json changed — the base run reinstalls its own node_modules"
+          else
+            echo "deps_changed=false" >> "$GITHUB_OUTPUT"
+          fi
           echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
           git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
 
@@ -158,6 +169,7 @@ jobs:
         run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: Checkout core data
+        id: coredata
         # src/lib/data-*.ts import data/*.json via resolveJsonModule; tsc and
         # the unit batches need the private core data exactly as test.yml's
         # typescript-check and unit-tests jobs do.
@@ -166,43 +178,61 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Generate gitignored manifests
+        id: manifests
         run: |
           node scripts/build-actor-slugs-manifest.js
           node scripts/build-cast-manifest.js
 
       - name: Install actionlint
+        id: actionlint
         run: |
           ACTIONLINT_VERSION=1.7.7
           curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
           sudo mv actionlint /usr/local/bin/
 
+      - name: Stage the branch's gauntlet harness
+        id: harness
+        # Both runs use the BRANCH's copy of the harness: the base tree may
+        # predate scripts/lib/land-gauntlet.sh entirely (the first landing of
+        # this workflow) or carry an older one. Only the tree under test
+        # changes between the two runs, never the harness.
+        run: cp scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet.sh"
+
       # ── Base gauntlet: origin/main @ base, reused when already measured ─────
       # Key = sha256 over the base tree's VERIFICATION-RELEVANT paths
       # (scripts/lib/land-gate-delta.js --code-hash: INERT_FOR_VERIFICATION_RE
-      # from land-branch.js excluded), not the raw base sha — main moves every
-      # minute or two on bot data churn, and a raw-sha key would never hit.
+      # from land-branch.js excluded, test manifests/CLAUDE.md kept), not the
+      # raw base sha — main moves every minute or two on bot data churn, and a
+      # raw-sha key would never hit — salted per UTC day, because the private
+      # core data the unit batches read is in no tree hash at all.
+      # Rollback switch: repo variable LAND_STRICT_GATES=1 skips the base
+      # entirely and land-gate-delta.js judges the branch strictly (any red
+      # gate refuses) — the pre-delta behaviour, no code change needed.
       - name: Base cache key
         id: basekey
         env:
           BASE: ${{ steps.rebase.outputs.base }}
         run: |
           HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$BASE") || { echo "::error::could not hash the base tree"; exit 1; }
+          DAY=$(date -u +%Y%m%d)
           echo "code_hash=$HASH" >> "$GITHUB_OUTPUT"
-          echo "base ${BASE:0:10} → code tree hash ${HASH:0:16}"
+          echo "key=land-base-gauntlet-v1-${HASH:0:32}-$DAY" >> "$GITHUB_OUTPUT"
+          echo "base ${BASE:0:10} → code tree hash ${HASH:0:16}, day $DAY"
 
       - name: Restore the base gauntlet result (actions/cache)
         id: base_cache
+        if: vars.LAND_STRICT_GATES != '1'
         uses: actions/cache/restore@v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
-          key: land-base-gauntlet-v1-${{ steps.basekey.outputs.code_hash }}
+          key: ${{ steps.basekey.outputs.key }}
 
       - name: Restore the base gauntlet result (artifact saved by another land/** run)
         id: base_artifact
-        if: steps.base_cache.outputs.cache-hit != 'true'
+        if: vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NAME: land-base-gauntlet-v1-${{ steps.basekey.outputs.code_hash }}
+          NAME: ${{ steps.basekey.outputs.key }}
         # actions/cache is scoped to the branch that saved it (plus main), so a
         # base result saved from land/a is invisible to land/b. Artifacts are
         # not scoped: look one up by name across runs before paying to re-run.
@@ -228,36 +258,35 @@ jobs:
 
       - name: Run the base gauntlet (origin/main @ base) — nothing cached
         id: base_run
-        if: steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
+        if: vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE: ${{ steps.rebase.outputs.base }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}
-        # Same checkout, base sha: node_modules, the core data and the
-        # manifests are gitignored and survive the checkout; tracked check
-        # residue (gold lists, audit json) is discarded by -f — nothing in this
-        # tree is anyone's work. The gauntlet script never fails; its per-gate
-        # exit codes are the verdict's input.
+          DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
+        # The staged harness checks out the base sha in this same checkout
+        # (node_modules, core data and manifests are gitignored and survive;
+        # tracked check residue is discarded), runs the gates, and returns to
+        # the rebased tip on every exit path. It never fails on a red gate —
+        # the per-gate exit codes are the verdict's input.
         run: |
           rm -rf "$RUNNER_TEMP/land-gauntlet/base"
-          git checkout -q -f --detach "$BASE"
-          bash scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet/base"
-          git checkout -q -f --detach "$REBASED"
-          echo "back on the rebased tip $(git rev-parse --short HEAD)"
+          bash "$RUNNER_TEMP/land-gauntlet.sh" "$RUNNER_TEMP/land-gauntlet/base" \
+            --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed)
 
       - name: Save the base gauntlet result (actions/cache)
         if: steps.base_run.outcome == 'success'
         uses: actions/cache/save@v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
-          key: land-base-gauntlet-v1-${{ steps.basekey.outputs.code_hash }}
+          key: ${{ steps.basekey.outputs.key }}
 
       - name: Save the base gauntlet result (artifact, visible to every land/** run)
         if: steps.base_run.outcome == 'success'
         uses: actions/upload-artifact@v5
         with:
-          name: land-base-gauntlet-v1-${{ steps.basekey.outputs.code_hash }}
+          name: ${{ steps.basekey.outputs.key }}
           path: ${{ runner.temp }}/land-gauntlet/base
           retention-days: 7
           if-no-files-found: error
@@ -282,6 +311,12 @@ jobs:
         # present on the branch and absent on the base; both sets (new,
         # pre-existing) and the fixed set go to the step summary. Exit 1 names
         # the first failing gate in `gate` for the digest line.
+        # continue-on-error: a refusal on the strength of a CACHED base is
+        # re-checked against a fresh base below before it is final; the
+        # "Gate verdict" step at the end fails the job on the final answer.
+        continue-on-error: true
+        env:
+          LAND_STRICT_GATES: ${{ vars.LAND_STRICT_GATES }}
         run: |
           SRC="ran now (nothing cached)"
           [ "${{ steps.base_cache.outputs.cache-hit }}" = "true" ] && SRC="actions/cache hit"
@@ -292,6 +327,45 @@ jobs:
             --summary-file "$GITHUB_STEP_SUMMARY" \
             --github-output "$GITHUB_OUTPUT" \
             --base-source "$SRC"
+
+      - name: Confirm a refusal against a FRESH base (the cached one may be stale)
+        id: confirm
+        if: steps.delta.outcome == 'failure' && (steps.base_cache.outputs.cache-hit == 'true' || steps.base_artifact.outputs.hit == 'true')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          LAND_BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
+        # A cached base was measured against an older private-data clone (the
+        # unit batches read data/*.json, which is in no tree hash — it changes
+        # every ~30 min and keying on it would never hit). If the data has
+        # since broken a test, a cached-green base would refuse EVERY branch
+        # as "new" until the key rolls. So a cached base is trusted for a PASS
+        # only; a refusal costs one fresh base run and is re-decided against
+        # it. The fresh result is published as the newer artifact so later
+        # runs pick it up.
+        run: |
+          echo "refused on a cached base (gate: ${{ steps.delta.outputs.gate }}) — re-measuring origin/main @ ${BASE:0:10} now"
+          rm -rf "$RUNNER_TEMP/land-gauntlet/base-fresh"
+          bash "$RUNNER_TEMP/land-gauntlet.sh" "$RUNNER_TEMP/land-gauntlet/base-fresh" \
+            --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed)
+          echo "fresh=true" >> "$GITHUB_OUTPUT"
+          node scripts/lib/land-gate-delta.js \
+            --base-dir "$RUNNER_TEMP/land-gauntlet/base-fresh" \
+            --branch-dir "$RUNNER_TEMP/land-gauntlet/branch" \
+            --summary-file "$GITHUB_STEP_SUMMARY" \
+            --github-output "$GITHUB_OUTPUT" \
+            --base-source "fresh re-run to confirm a refusal made on a cached base"
+
+      - name: Publish the fresh base result (artifact)
+        if: always() && steps.confirm.outputs.fresh == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ steps.basekey.outputs.key }}
+          path: ${{ runner.temp }}/land-gauntlet/base-fresh
+          retention-days: 7
+          if-no-files-found: warn
 
       - name: Gate verdict
         id: verdict
@@ -305,14 +379,30 @@ jobs:
           for pair in \
             "rebase:${{ steps.rebase.outcome }}" \
             "npm-ci:${{ steps.deps.outcome }}" \
+            "core-data:${{ steps.coredata.outcome }}" \
+            "manifests:${{ steps.manifests.outcome }}" \
+            "actionlint-install:${{ steps.actionlint.outcome }}" \
+            "harness:${{ steps.harness.outcome }}" \
+            "base-key:${{ steps.basekey.outcome }}" \
+            "base-restore:${{ steps.base_cache.outcome }}" \
+            "base-artifact:${{ steps.base_artifact.outcome }}" \
             "base-gauntlet:${{ steps.base_run.outcome }}" \
             "branch-gauntlet:${{ steps.branch_run.outcome }}" \
-            "delta:${{ steps.delta.outcome }}"; do
+            "delta:${{ steps.delta.outcome }}" \
+            "confirm:${{ steps.confirm.outcome }}"; do
             name="${pair%%:*}"; outcome="${pair#*:}"
             [ -z "$GATE" ] && [ "$outcome" = "failure" ] && GATE="$name"
             echo "  $name: $outcome"
           done
-          if [ "$GATE" = "delta" ]; then GATE="${{ steps.delta.outputs.gate }}"; GATE="${GATE:-delta}"; fi
+          # The delta step is continue-on-error: its refusal is final only if
+          # no fresh-base confirmation ran, or the confirmation refused too.
+          if [ "$GATE" = "delta" ]; then
+            case "${{ steps.confirm.outcome }}" in
+              success) GATE=""; echo "refusal on the cached base NOT confirmed against a fresh base — verdict is GREEN" ;;
+              failure) GATE="${{ steps.confirm.outputs.gate }}"; GATE="${GATE:-confirm}" ;;
+              *)       GATE="${{ steps.delta.outputs.gate }}"; GATE="${GATE:-delta}" ;;
+            esac
+          fi
           echo "gate=$GATE" >> "$GITHUB_OUTPUT"
           {
             echo "### land.yml checks — \`$BRANCH\`"
@@ -321,6 +411,10 @@ jobs:
             echo "- rebased onto origin/main: \`${{ steps.rebase.outputs.base }}\` (rebased tip \`${{ steps.rebase.outputs.rebased }}\`)"
             echo "- verdict: ${GATE:+RED (first failing gate: $GATE)}${GATE:-GREEN}"
           } >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$GATE" ]; then
+            echo "::error::checks RED — first failing gate: $GATE"
+            exit 1
+          fi
 
   land:
     name: Land

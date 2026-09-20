@@ -15,7 +15,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   GATES, decideGateDelta, decideAllGates, firstFailingGate, parseGateFailures, parseTscFailures,
-  parseNextLintFailures, parseLintWorkflowsFailures, computeCodeTreeHash, formatSummary, main,
+  parseNextLintFailures, parseLintWorkflowsFailures, computeCodeTreeHash, formatSummary, main, addWithMultiplicity, isCacheKeyRelevant,
 } = require('./land-gate-delta.js');
 
 const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gate-delta.js');
@@ -25,9 +25,9 @@ const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gat
 function tap(root, failures, { unlocated = [] } = {}) {
   const lines = ['TAP version 13'];
   let n = 0;
-  for (const [file, name] of failures) {
+  for (const [file, name, failureType = 'testCodeFailure'] of failures) {
     n++;
-    lines.push(`not ok ${n} - ${name}`, '  ---', '  duration_ms: 1', `  location: '${path.join(root, file)}:10:1'`, "  failureType: 'testCodeFailure'", '  ...');
+    lines.push(`not ok ${n} - ${name}`, '  ---', '  duration_ms: 1', `  location: '${path.join(root, file)}:10:1'`, `  failureType: '${failureType}'`, '  ...');
   }
   for (const name of unlocated) {
     n++;
@@ -39,12 +39,13 @@ function tap(root, failures, { unlocated = [] } = {}) {
 }
 
 const ROOT = '/work/repo';
-const keys = (list) => list.map((f) => `${f.file}::${f.name}`).sort();
+// Keys as the delta sees them, minus the failureType suffix the TAP re-keying adds.
+const keys = (list) => list.map((f) => `${f.file}::${f.name}`.replace(/ \[[a-zA-Z]+\]$/, '')).sort();
 
 test('same failures in base and branch → pass, all reported pre-existing, none new', () => {
   const both = [['tests/unit/a.test.mjs', 'image self-heal'], ['tests/unit/b.test.mjs', 'venue guard baseline']];
   const d = decideGateDelta({
-    gate: 'unit-tests',
+    gate: 'unit-tests-node',
     base: { exit: 1, text: tap(ROOT, both), root: ROOT },
     branch: { exit: 1, text: tap(ROOT, both), root: ROOT },
   });
@@ -60,7 +61,7 @@ test('a NEW failure on the branch → fail, and the verdict names it (pre-existi
   const base = [['tests/unit/a.test.mjs', 'image self-heal']];
   const branch = [['tests/unit/a.test.mjs', 'image self-heal'], ['scripts/lib/land-branch.test.mjs', 'push seam is push-only']];
   const d = decideGateDelta({
-    gate: 'unit-tests',
+    gate: 'unit-tests-node',
     base: { exit: 1, text: tap(ROOT, base), root: ROOT },
     branch: { exit: 1, text: tap(ROOT, branch), root: ROOT },
   });
@@ -72,7 +73,7 @@ test('a NEW failure on the branch → fail, and the verdict names it (pre-existi
 
 test('a base failure fixed by the branch → pass and reported as fixed (branch green)', () => {
   const d = decideGateDelta({
-    gate: 'unit-tests',
+    gate: 'unit-tests-node',
     base: { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'image self-heal']]), root: ROOT },
     branch: { exit: 0, text: tap(ROOT, []), root: ROOT },
   });
@@ -86,7 +87,7 @@ test('a base failure fixed while another pre-existing one remains → pass, fixe
   const base = [['tests/unit/a.test.mjs', 'image self-heal'], ['tests/unit/b.test.mjs', 'venue guard baseline']];
   const branch = [['tests/unit/b.test.mjs', 'venue guard baseline']];
   const d = decideGateDelta({
-    gate: 'unit-tests',
+    gate: 'unit-tests-node',
     base: { exit: 1, text: tap(ROOT, base), root: ROOT },
     branch: { exit: 1, text: tap(ROOT, branch), root: ROOT },
   });
@@ -127,7 +128,7 @@ test('lint-workflows: the same red audit on base and branch is pre-existing (the
 
 test('fail-safe: a red branch run that parses to zero failures is refused, not passed', () => {
   const d = decideGateDelta({
-    gate: 'unit-tests',
+    gate: 'unit-tests-node',
     base: { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'x']]), root: ROOT },
     branch: { exit: 1, text: 'Segmentation fault\n', root: ROOT },
   });
@@ -138,7 +139,7 @@ test('fail-safe: a red branch run that parses to zero failures is refused, not p
 
 test('fail-safe: a red base run that parses to zero failures cannot vouch for anything → refused', () => {
   const d = decideGateDelta({
-    gate: 'unit-tests',
+    gate: 'unit-tests-node',
     base: { exit: 1, text: 'killed\n', root: ROOT },
     branch: { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'x']]), root: ROOT },
   });
@@ -155,6 +156,24 @@ test('unlocated TAP failures (?::name) are always NEW even when the base has the
   });
   assert.equal(d.verdict, 'fail');
   assert.deepEqual(keys(d.newFailures), ['?::flaky title']);
+});
+
+test('a test file red on base through a failing subtest that the branch breaks AT LOAD is NEW, not "fixed" (nested and flat TAP shapes)', () => {
+  const X = 'tests/unit/x.test.mjs';
+  const absX = path.join(ROOT, X);
+  // nested shape (Node 22+): file wrapper + subtest on base; only the wrapper, now a load crash, on the branch
+  const nestedBase = tap(ROOT, [[X, 'sub assertion'], [X, absX, 'subtestsFailed']]);
+  const crash = tap(ROOT, [[X, absX, 'testCodeFailure']]);
+  const nested = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: nestedBase, root: ROOT }, branch: { exit: 1, text: crash, root: ROOT } });
+  assert.equal(nested.verdict, 'fail');
+  assert.deepEqual(nested.newFailures.map((f) => `${f.file}::${f.name}`), [`${X}::${absX} [testCodeFailure]`]);
+  // flat shape (Node 20 in CI): just the subtest on base
+  const flat = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, [[X, 'sub assertion']]), root: ROOT }, branch: { exit: 1, text: crash, root: ROOT } });
+  assert.equal(flat.verdict, 'fail');
+  // and the same plain assertion failure on both sides is still the same key
+  const same = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, [[X, 'sub assertion']]), root: ROOT }, branch: { exit: 1, text: tap(ROOT, [[X, 'sub assertion']]), root: ROOT } });
+  assert.equal(same.verdict, 'pass');
+  assert.equal(same.preExisting[0].name, 'sub assertion [testCodeFailure]');
 });
 
 test('a missing branch result (the gate never ran) is a fail-safe refusal', () => {
@@ -191,8 +210,30 @@ test('next-lint keys on file::rule message, errors only — warnings never fail 
 test('parseGateFailures dispatches per gate and refuses an unknown gate', () => {
   assert.equal(parseGateFailures('lint-workflows', '::error::lint-workflows gate failed: actionlint (exit 1)').size, 1);
   assert.equal(parseLintWorkflowsFailures('unrelated ::error:: line').size, 0);
-  assert.equal(parseGateFailures('unit-tests', tap(ROOT, [['t.test.mjs', 'n']]), ROOT).size, 1);
+  for (const g of ['unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests']) assert.equal(parseGateFailures(g, tap(ROOT, [['t.test.mjs', 'n']]), ROOT).size, 1);
+  assert.equal(GATES.includes('unit-tests'), false, 'the two unit batches are separate gates');
   assert.throws(() => parseGateFailures('nope', ''), /no parser/);
+});
+
+test('multiplicity: a second identical tsc diagnostic in the same file is a NEW key (base had one, branch has two)', () => {
+  const one = "src/a.ts(3,1): error TS2322: bad.\n";
+  const two = `${one}src/a.ts(9,1): error TS2322: bad.\n`;
+  assert.deepEqual([...parseTscFailures(two).keys()], ['src/a.ts::TS2322 bad.', 'src/a.ts::TS2322 bad. #2']);
+  const d = decideGateDelta({ gate: 'tsc', base: { exit: 2, text: one }, branch: { exit: 2, text: two } });
+  assert.equal(d.verdict, 'fail');
+  assert.deepEqual(keys(d.newFailures), ['src/a.ts::TS2322 bad. #2']);
+  const m = new Map(); addWithMultiplicity(m, 'f', 'n'); addWithMultiplicity(m, 'f', 'n'); addWithMultiplicity(m, 'f', 'n');
+  assert.deepEqual([...m.keys()], ['f::n', 'f::n #2', 'f::n #3']);
+});
+
+test('lint-workflows: actionlint diagnostics are keyed individually (line:col dropped, ANSI stripped) so a NEW workflow error is new even while base is red on actionlint', () => {
+  const base = '\x1b[36m.github/workflows/a.yml\x1b[0m:12:5: property "foo" is not defined [expression]\n::error::lint-workflows gate failed: actionlint (exit 1)\n';
+  const branch = '.github/workflows/a.yml:14:5: property "foo" is not defined [expression]\n.github/workflows/land.yml:3:1: unexpected key "on" [syntax-check]\n::error::lint-workflows gate failed: actionlint (exit 1)\n';
+  assert.deepEqual([...parseLintWorkflowsFailures(base).keys()], ['lint-workflows::actionlint .github/workflows/a.yml: property "foo" is not defined [expression]', 'lint-workflows::actionlint']);
+  const d = decideGateDelta({ gate: 'lint-workflows', base: { exit: 1, text: base }, branch: { exit: 1, text: branch } });
+  assert.equal(d.verdict, 'fail');
+  assert.deepEqual(keys(d.newFailures), ['lint-workflows::actionlint .github/workflows/land.yml: unexpected key "on" [syntax-check]']);
+  assert.equal(d.preExisting.length, 2);
 });
 
 test('decideAllGates + firstFailingGate: verdict order is GATES order and the first non-pass names the digest line', () => {
@@ -210,7 +251,7 @@ test('decideAllGates + firstFailingGate: verdict order is GATES order and the fi
 
 test('formatSummary prints both sets (new + pre-existing) and the fixed set, with base/branch wall times', () => {
   const decisions = [{
-    gate: 'unit-tests', verdict: 'fail', mode: 'delta', reason: 'r',
+    gate: 'unit-tests-node', verdict: 'fail', mode: 'delta', reason: 'r',
     newFailures: [{ file: 'a.test.mjs', name: 'new one' }],
     preExisting: [{ file: 'b.test.mjs', name: 'old one' }],
     fixed: [{ file: 'c.test.mjs', name: 'gone one' }],
@@ -245,12 +286,12 @@ function runCli(args) {
 test('CLI: same red gates on base and branch → exit 0, gate= empty, summary appended, GITHUB_OUTPUT written', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-'));
   try {
-    const red = { 'unit-tests': { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'image self-heal']]) }, 'lint-workflows': { exit: 1, text: '::error::lint-workflows gate failed: audit-venue-write-guard (exit 1)\n' } };
+    const red = { 'unit-tests-node': { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'image self-heal']]) }, 'lint-workflows': { exit: 1, text: '::error::lint-workflows gate failed: audit-venue-write-guard (exit 1)\n' } };
     const base = resultDir(tmp, 'base', red);
     const branch = resultDir(tmp, 'branch', red);
     const summary = path.join(tmp, 'summary.md');
     const ghout = path.join(tmp, 'out.txt');
-    const r = runCli(['--base-dir', base, '--branch-dir', branch, '--gates', 'unit-tests,lint-workflows', '--summary-file', summary, '--github-output', ghout, '--base-source', 'cache hit']);
+    const r = runCli(['--base-dir', base, '--branch-dir', branch, '--gates', 'unit-tests-node,lint-workflows', '--summary-file', summary, '--github-output', ghout, '--base-source', 'cache hit']);
     assert.equal(r.status, 0, r.stdout + r.stderr);
     assert.match(r.stdout, /PASS {2}unit-tests/);
     assert.match(r.stdout, /pre-existing .*tests\/unit\/a\.test\.mjs::image self-heal/);
@@ -265,13 +306,30 @@ test('CLI: same red gates on base and branch → exit 0, gate= empty, summary ap
 test('CLI: a new failure → exit 1, gate=<first failing>, ::error:: annotation naming it', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-'));
   try {
-    const base = resultDir(tmp, 'base', { 'unit-tests': { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'old']]) } });
-    const branch = resultDir(tmp, 'branch', { 'unit-tests': { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'old'], ['tests/unit/z.test.mjs', 'brand new']]) } });
+    const base = resultDir(tmp, 'base', { 'unit-tests-node': { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'old']]) } });
+    const branch = resultDir(tmp, 'branch', { 'unit-tests-node': { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'old'], ['tests/unit/z.test.mjs', 'brand new']]) } });
     const ghout = path.join(tmp, 'out.txt');
-    const r = runCli(['--base-dir', base, '--branch-dir', branch, '--gates', 'unit-tests', '--github-output', ghout]);
+    const r = runCli(['--base-dir', base, '--branch-dir', branch, '--gates', 'unit-tests-node', '--github-output', ghout]);
     assert.equal(r.status, 1);
-    assert.match(r.stdout, /::error::unit-tests: NEW failure on the branch .*tests\/unit\/z\.test\.mjs::brand new/);
-    assert.match(fs.readFileSync(ghout, 'utf8'), /^gate=unit-tests$/m);
+    assert.match(r.stdout, /::error::unit-tests-node: NEW failure on the branch .*tests\/unit\/z\.test\.mjs::brand new/);
+    assert.match(fs.readFileSync(ghout, 'utf8'), /^gate=unit-tests-node$/m);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('CLI: --strict / LAND_STRICT_GATES=1 ignores an existing base dir (the rollback switch)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-'));
+  try {
+    const red = { tsc: { exit: 2, text: 'src/a.ts(1,1): error TS1: x\n' } };
+    const base = resultDir(tmp, 'base', red);
+    const branch = resultDir(tmp, 'branch', red);
+    assert.equal(runCli(['--base-dir', base, '--branch-dir', branch, '--gates', 'tsc']).status, 0, 'delta: same failure → pass');
+    const strict = runCli(['--base-dir', base, '--branch-dir', branch, '--gates', 'tsc', '--strict']);
+    assert.equal(strict.status, 1, 'strict: any red → refuse');
+    assert.match(strict.stdout, /strict mode \(LAND_STRICT_GATES=1\)/);
+    const env = { ...process.env, LAND_STRICT_GATES: '1' }; delete env.NODE_TEST_CONTEXT;
+    assert.equal(spawnSync(process.execPath, [CLI, '--base-dir', base, '--branch-dir', branch, '--gates', 'tsc'], { encoding: 'utf8', env }).status, 1);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -304,6 +362,12 @@ test('computeCodeTreeHash ignores INERT paths (bot data churn) and changes on an
   assert.equal(a.kept, 2);
   assert.notEqual(a.hash, code.hash);
   assert.notEqual(a.hash, blobChange.hash);
+  // "inert" by land-branch.js's rule but load-bearing for a gate verdict: in the key anyway
+  for (const f of ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'CLAUDE.md', 'tests/unit/foo.test.mjs', 'scripts/lib/claude-md-anchors.json']) {
+    assert.equal(isCacheKeyRelevant(f), true, f);
+    assert.notEqual(a.hash, computeCodeTreeHash(sha, { lsTree: () => listing([`100644 blob 7777\t${f}`]) }).hash, f);
+  }
+  for (const f of ['data/shows.json', 'memory/notes.md', 'docs/x.txt', 'data/audit/x.jsonl']) assert.equal(isCacheKeyRelevant(f), false, f);
   assert.throws(() => computeCodeTreeHash('short'), /40-hex/);
 });
 
