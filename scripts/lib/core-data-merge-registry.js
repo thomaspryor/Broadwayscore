@@ -242,6 +242,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     note: 'the file scripts/autonomous-email.js:HEALTH_DIGEST_PATH reads to build the owner\'s daily digest email — the file whose lost push caused this task\'s originating incident (run 32559247279)',
   },
   {
+    file: 'audit/ci-green-rate.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-20: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml stages it (its "Commit digest + coverage snapshots (apiFallbackSafe)" step, the SAME step as health-digest-snapshot.json above); the only writer is scripts/ci-green-rate.js --record, spawned solely by scripts/health-check.js checkCiGreenRate() when isCI, i.e. inside that one workflow, which declares concurrency: {group: data-health-check, cancel-in-progress: false}. Append-only JSONL, one row per nightly run.',
+    note: 'the nightly CI green-rate reading (the machine PASS/FAIL on "is main green" — the only thing allowed to say so); health-check.js\'s "Main: green rate" row reads it back for the "7d trend from Y%, day D of 14" line. Registered the day it was added, because staging it unregistered in the apiFallbackSafe step disqualified that step\'s Git Data API fallback (audit-push-retry-budgets advisory, run 35531905889).',
+  },
+  {
     file: 'audit/imageless-scored-shows.json',
     surface: 'public-repo',
     status: 'single-writer',
