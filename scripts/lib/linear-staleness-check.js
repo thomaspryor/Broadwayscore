@@ -28,17 +28,18 @@
 
 'use strict';
 
-// Linear's own terminal state types (state.type on the GraphQL Issue type).
-// A card reaching any of these means someone concluded it — not merely
-// moved it between working states (e.g. "In Progress" -> "In Review").
-// Includes 'duplicate': this team's "Duplicate" state carries that as its
-// OWN state.type (scripts/lib/linear-duplicate-gate.js's DUPLICATE_STATE_TYPE
-// constant), not folded into 'canceled' — omitting it here meant a Duplicate-
-// closed issue looked non-terminal to checkIssueStaleness, and moving IT
-// into "In Progress" (or Done/Canceled INTO Duplicate) wrongly warned or
-// failed to warn about reopening/concluding it (adversarial review finding,
-// linear-brain.js's update --state cousin fix, BRO-3869).
-const TERMINAL_STATE_TYPES = new Set(['completed', 'canceled', 'duplicate']);
+// linear-state-types.js (BRO-2466) is already "the one place that names
+// Linear's terminal workflow-state TYPES" — its own header exists precisely
+// to prevent a second, independent copy of this list drifting out of sync
+// when a 4th terminal type ever shows up. An earlier version of this file
+// hardcoded its own ['completed','canceled'] Set (missing 'duplicate' until
+// an adversarial review caught it, BRO-3869) — exactly the drift that file
+// was built to prevent. Derive from the canonical array instead of
+// reintroducing a second hand-maintained copy. Kept as a Set (not the
+// canonical Array) since every consumer here and in linear-session-
+// reporting.js/linear-brain.js calls `.has()`.
+const { TERMINAL_STATE_TYPES: CANONICAL_TERMINAL_STATE_TYPES } = require('./linear-state-types');
+const TERMINAL_STATE_TYPES = new Set(CANONICAL_TERMINAL_STATE_TYPES);
 
 // issue: linear-client.getIssue()'s return shape.
 // sessionKnownAt: ISO 8601 string — when THIS session last knew the issue's
