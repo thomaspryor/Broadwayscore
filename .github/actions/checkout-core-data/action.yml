@@ -9,15 +9,45 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Restore core data cache
-      uses: actions/cache/restore@v5
-      with:
-        path: /tmp/core-data-checkout
-        key: core-data-${{ runner.os }}-${{ github.run_id }}
-        restore-keys: |
-          core-data-${{ runner.os }}-
-
-    - name: Clone or update core data repo
+    # NO actions/cache HERE, DELIBERATELY (BRO-3887) — do not "restore" this.
+    #
+    # This action used to wrap the clone in actions/cache restore+save keyed on
+    # `core-data-${{ runner.os }}-${{ github.run_id }}`. Because the key carried
+    # the run id, EVERY job of EVERY run minted a new entry — 284 invocations
+    # across 191 workflow files. Two faults compounded:
+    #
+    #   1. The artifact grew without bound. Each run restored the previous copy,
+    #      ran `git fetch --depth 1` (which adds objects a shallow repo never
+    #      prunes), and re-saved the bigger result. A pristine depth-1 clone of
+    #      this repo is 534 MB; the cached artifact had reached 3,634 MB (6.8x).
+    #   2. At ~1 new 3.4 GiB entry per 75s the repo blew through GitHub's 10 GiB
+    #      per-repo cache limit — measured 28.06 GiB live across 12 entries on
+    #      2026-09-20 — so LRU eviction cleared the ENTIRE cache namespace about
+    #      hourly.
+    #
+    # The damage was not slow builds, it was scraper spend. The 22 KB SERP cache
+    # (scripts/lib/serp-cache.js, /tmp/bd-serp-cache, 24h TTL) never survived to
+    # the next of opening-night-reviews.yml's 8 daily ticks, so every tick re-paid
+    # for SERP queries it had already answered. gather-reviews.js went 360 ->
+    # 9,178 scraper credits/day over 2026-09-14..09-20 on FLAT dispatch volume,
+    # and the cross-run SERP hit rate sat at 17% (77 hits / 366 live calls in run
+    # 35525599209), all of it intra-run.
+    #
+    # And the cache never paid for itself even ignoring the eviction damage.
+    # Measured in run 35497194379's outlet-serp job:
+    #     actions/cache/restore  31,521 ms
+    #     actions/cache/save     25,379 ms
+    #     total overhead         56,900 ms  per job
+    #     work it avoided        "Core data updated from cache in 3s"
+    # against a from-scratch `git clone --depth 1` of the same repo timed at 24s
+    # (534 MB, home internet — a runner is same-datacenter, so that is an upper
+    # bound). ~60s spent to avoid <=24s. Cloning every time is strictly faster
+    # AND frees the whole cache namespace.
+    #
+    # scripts/audit-workflow-hygiene.js now fails CI on any actions/cache key
+    # containing github.run_id without an explicit exemption comment, so this
+    # shape cannot come back silently.
+    - name: Clone core data repo
       shell: bash
       env:
         CORE_DATA_TOKEN: ${{ inputs.token }}
@@ -37,33 +67,19 @@ runs:
           SUCCESS=false
           : > "$STDERR_FILE"
 
-          if [ -d "/tmp/core-data-checkout/.git" ]; then
-            # Cache restored — fast update via fetch
-            cd /tmp/core-data-checkout
-            git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
-            if git fetch origin main --depth 1 2>>"$STDERR_FILE" && git reset --hard origin/main 2>>"$STDERR_FILE"; then
-              ELAPSED=$(($(date +%s) - START))
-              echo "Core data updated from cache in ${ELAPSED}s (git fetch)"
-              SUCCESS=true
-            else
-              # Fetch failed — fall back to full clone
-              echo "::warning::Cache update failed — falling back to full clone"
-              cd /tmp
-              rm -rf /tmp/core-data-checkout
-              if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
-                ELAPSED=$(($(date +%s) - START))
-                echo "Core data cloned fresh in ${ELAPSED}s (fallback)"
-                SUCCESS=true
-              fi
-            fi
-          else
-            # No cache — full clone
-            rm -rf /tmp/core-data-checkout
-            if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
-              ELAPSED=$(($(date +%s) - START))
-              echo "Core data cloned fresh in ${ELAPSED}s"
-              SUCCESS=true
-            fi
+          # Always a fresh clone. The "restored cache — fast update via fetch"
+          # branch that used to sit here went with the cache (BRO-3887): with no
+          # restore step, /tmp/core-data-checkout/.git only ever exists if this
+          # action runs twice in one job (no workflow does — verified across all
+          # .github/workflows/*.yml), and the retry loop below rm -rf's the dir
+          # before every retry anyway, so the branch was unreachable. Leaving a
+          # live-looking "cache reuse fast path" behind is what would re-invite
+          # the cache, so it is deleted rather than commented out.
+          rm -rf /tmp/core-data-checkout
+          if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
+            ELAPSED=$(($(date +%s) - START))
+            echo "Core data cloned fresh in ${ELAPSED}s"
+            SUCCESS=true
           fi
 
           if [ "$SUCCESS" = "true" ]; then
@@ -151,10 +167,3 @@ runs:
           [ "$basename" = "outlet-registry.json" ] && continue
           [ -f "$f" ] && cp -f "$f" /tmp/core-data-snapshot/
         done
-
-    - name: Save core data cache
-      uses: actions/cache/save@v5
-      if: always()
-      with:
-        path: /tmp/core-data-checkout
-        key: core-data-${{ runner.os }}-${{ github.run_id }}

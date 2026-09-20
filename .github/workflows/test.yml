@@ -1735,6 +1735,16 @@ on:
       - 'scripts/recover-explicit-ratings.js'
       - 'scripts/deep-research-commercial.js'
       - 'scripts/sweep-we-aggregators.js'
+      # BRO-3887: outlet-serp's --time-budget-min guard + the run-id-keyed-cache
+      # hygiene rule. Without these entries a solo edit triggers ZERO CI
+      # (memory/feedback_test_yml_push_path_allowlist.md).
+      # tests/unit/collect-outlet-reviews-time-budget.test.mjs
+      - 'scripts/collect-outlet-reviews.js'
+      # tests/unit/actions-cache-runid-key.test.mjs — rule (m) reads every
+      # .github/actions/*/action.yml, so composite actions need push coverage too:
+      # a 3.4 GiB cache added to an action would otherwise ship with no CI at all,
+      # which is exactly how BRO-3887 shipped.
+      - '.github/actions/**'
       - 'scripts/gather-reviews.js'
       # Colocated regression test for quickDateCheck/verifyProduction (date-range +
       # venue filters that gather-reviews.js relies on via production-verifier.js) —

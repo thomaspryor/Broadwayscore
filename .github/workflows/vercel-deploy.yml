@@ -241,6 +241,10 @@ jobs:
           # data/cache/: prebuild hash gates (e.g. mobile-show-details/last-hash.json)
           # that skip regen when inputs unchanged.
           #
+          # hygiene-cache-runid-ok: deliberate and bounded — keyed on
+          # hashFiles(package-lock.json) FIRST, so restore-keys collapse this to one
+          # live lineage per lockfile rather than the unbounded per-run clone
+          # BRO-3887 removed from checkout-core-data.
           # Key includes github.run_id so every deploy gets a UNIQUE primary key.
           # Without this, actions/cache@v5 sees a primary-key hit on restore and
           # SKIPS the save step at job end — meaning per-deploy cache updates

@@ -41,6 +41,7 @@ const { generateReviewFilename, findExistingReviewFile, resolveOutletFromUrl } =
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { domainMatchesExpected } = require('./lib/scraper');
 const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -354,6 +355,22 @@ async function validateUrl(url) {
 
 async function main() {
   const opts = parseArgs();
+  // BRO-3887: the outlet-serp job in gather-reviews.yml was being cancelled at
+  // its timeout-minutes cap (20m20s in 3/3 runs sampled 2026-09-19..20), which
+  // marks the whole run "cancelled" even though every other job succeeded. The
+  // cap is a SIGKILL, so it can also lose the ledger/push steps. A wall-clock
+  // budget lets this script stop cleanly and exit 0 inside the cap instead.
+  //
+  // parseTimeBudgetMin only understands the `--time-budget-min=N` EQUALS form,
+  // unlike this file's own space-separated parseArgs() — passing
+  // `--time-budget-min 12` would silently parse as 0 and disable the budget with
+  // no error (review finding). The workflow passes the equals form; the guard
+  // below makes a space-form mistake loud instead of silent.
+  const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
+  if (process.argv.includes('--time-budget-min') && !timeBudget.enabled) {
+    console.error('ERROR: --time-budget-min takes the equals form, e.g. --time-budget-min=16');
+    process.exit(1);
+  }
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
 
@@ -414,6 +431,7 @@ async function main() {
   console.log(`Date filtering: enabled`);
   console.log(`Dry run: ${opts.dryRun}`);
   console.log(`Max searches: ${opts.maxSearches === Infinity ? 'unlimited' : opts.maxSearches}`);
+  console.log(`Time budget: ${timeBudget.enabled ? `${timeBudget.minutes}min` : 'unlimited'}`);
   console.log('');
 
   let totalSearches = 0;
@@ -468,6 +486,17 @@ async function main() {
     for (const outlet of missing) {
       if (totalSearches >= opts.maxSearches) {
         console.log('\n--- Max searches reached ---');
+        break;
+      }
+      // Checked in the INNER loop, not just the per-show loop: the unit of work
+      // here is one outlet SERP call (~10s including the 1500ms sleep below),
+      // and a single show can hold the whole --max-searches allowance (80 on
+      // opening night ≈ 13min). Gating only the outer loop would let one
+      // in-flight show overshoot the budget by 13min and blow the job cap
+      // anyway — the exact failure this budget exists to prevent (review
+      // finding). Overshoot is now bounded to one SERP call.
+      if (timeBudget.exceeded()) {
+        console.log(`\n⏱ Time budget (${timeBudget.minutes}min) exceeded after ${timeBudget.elapsedMin()}min — stopping`);
         break;
       }
 
@@ -559,10 +588,23 @@ async function main() {
     }
 
     if (totalSearches >= opts.maxSearches) break;
+    if (timeBudget.exceeded()) {
+      // DROPPED, not "deferred": nothing persists a backlog and the outlet-serp
+      // job hands this script a fixed --shows list, so these shows are simply
+      // not searched this tick (same semantics as the maxSearches break above).
+      // The next scheduled tick will pick them up from scratch.
+      const idx = targetShows.indexOf(show);
+      const dropped = targetShows.slice(idx + 1).map((s) => s.id);
+      if (dropped.length) {
+        console.log(`⏱ Time budget spent — dropping ${dropped.length} unsearched show(s) this run: ${dropped.join(', ')}`);
+      }
+      break;
+    }
   }
 
   console.log('\n=== Summary ===');
   console.log(`Searches: ${totalSearches}`);
+  console.log(`Time budget: ${timeBudget.enabled ? `${timeBudget.minutes}min, used ${timeBudget.elapsedMin()}min${timeBudget.exceeded() ? ' (EXCEEDED — run truncated)' : ''}` : 'unlimited'}`);
   console.log(`Found: ${totalFound}`);
   console.log(`Written: ${totalWritten}`);
   console.log(`Skipped (no domain / non-review): ${totalSkipped}`);

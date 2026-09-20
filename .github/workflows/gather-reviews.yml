@@ -132,7 +132,17 @@ jobs:
   outlet-serp:
     needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # 25 not 20 (BRO-3887): at 20 this job was cancelled at the cap in 3/3 runs
+    # sampled 2026-09-19..20 (35497194379, 35479720736, 35434766474 — all exactly
+    # 20m20s), which marks the ENTIRE run "cancelled" even though prepare,
+    # both gather-reviews matrix jobs, scrape-aggregators and rebuild all
+    # succeeded. Contrary to the earlier diagnosis this was NOT a push-transport
+    # hang: the "Push review texts" step completed fine (0d8bad4c..6839d88f
+    # HEAD -> main, "Push succeeded after conflict resolution (attempt 1)") ~20s
+    # before the kill. It was a plain wall-clock overrun — 3m03s setup + ~16m
+    # SERP + 1m15s push. The script-side --time-budget-min below is the real
+    # guard; this cap is the backstop behind it.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
         with:
@@ -152,6 +162,12 @@ jobs:
 
       # Restore 24h SERP cache (scripts/lib/serp-cache.js). Cuts duplicate
       # Bright Data SERP calls across gather-reviews / poller / orchestrator.
+      # hygiene-cache-runid-ok: the SERP cache payload is ~22 KB, not gigabytes,
+      # and the run-id in the SAVE key is load-bearing: actions/cache silently
+      # skips the save on an exact key hit, so a stable key would freeze the
+      # cache at its first contents and never absorb new queries. Cross-run
+      # reuse comes from the `restore-keys: bd-serp-cache-` prefix, not the key.
+      # This is the cache BRO-3887 was protecting, not the one that caused it.
       - name: Restore SERP cache
         uses: actions/cache@v5
         with:
@@ -178,10 +194,18 @@ jobs:
           # gaps are picked up by the orchestrator polling loop. Routine: 30 (weekly run handles the rest).
           MAX_SEARCHES=$([ "$MAX_TIER" = "3" ] && echo "80" || echo "30")
           echo "Running outlet-first SERP discovery for: ${{ inputs.shows }} (max tier: $MAX_TIER, max searches: $MAX_SEARCHES)"
+          # --time-budget-min MUST use the equals form: scripts/lib/run-budget.js
+          # parseTimeBudgetMin() only matches `--flag=N`, so the space-separated
+          # style the rest of this script's flags use would parse as 0 and
+          # silently disable the budget (review finding, BRO-3887). The script
+          # now hard-errors on the space form rather than no-opping.
+          # 16 under the 25min cap: ~2min setup + 16min budget + at most one
+          # in-flight SERP call of overshoot + ~1.5min push.
           node scripts/collect-outlet-reviews.js \
             --shows "${{ inputs.shows }}" \
             --max-tier "$MAX_TIER" \
-            --max-searches "$MAX_SEARCHES"
+            --max-searches "$MAX_SEARCHES" \
+            --time-budget-min=16
 
       - name: Push review texts
         if: always()

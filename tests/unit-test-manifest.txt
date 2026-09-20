@@ -232,6 +232,7 @@ scripts/verify-prior-run-former-cast-sweep.test.mjs
 scripts/verify-reroute-migration.test.mjs
 scripts/wrong-production-exclusion-analysis.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
+tests/unit/actions-cache-runid-key.test.mjs
 tests/unit/aggregator-score-strip-guard.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
 tests/unit/alert-dispatch-streak.test.mjs
@@ -350,6 +351,7 @@ tests/unit/cmux-launch-guard.test.mjs
 tests/unit/cmux-launch-wake.test.mjs
 tests/unit/codex-cli-worktree.test.mjs
 tests/unit/codex-delegation.test.mjs
+tests/unit/collect-outlet-reviews-time-budget.test.mjs
 tests/unit/collect-review-texts-rename-helper.test.mjs
 tests/unit/collection-starvation.test.mjs
 tests/unit/combined-review-pipeline.test.mjs

@@ -9,6 +9,13 @@ inputs:
 runs:
   using: composite
   steps:
+    # hygiene-cache-runid-ok: same SHAPE as the BRO-3887 core-data bug, but three
+    # orders of magnitude smaller and deliberately NOT changed on a guess. Measured
+    # 2026-09-20 in run 35525599209: 132 MB per entry, 2 live entries = 0.26 GiB,
+    # ~3s restore + ~3s save against "Aggregator archive updated from cache in 2s" —
+    # versus core-data's 3.4 GiB per entry, 8 live entries = 27 GiB, 57s overhead.
+    # The cold sparse-clone time was NOT measured (no cache miss in the sample), so
+    # this is left alone. Revisit if rule (m)'s budget starts flagging it.
     - name: Restore aggregator-archive cache
       uses: actions/cache/restore@v5
       with:
