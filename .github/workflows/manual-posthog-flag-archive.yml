@@ -30,6 +30,11 @@ on:
         required: false
         type: boolean
         default: false
+      force:
+        description: 'Force past a flag-registry.js REGISTERED_FLAGS conflict warning (BRO-3869) — only if you have confirmed the registry entry is the stale one, not this action'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -61,7 +66,13 @@ jobs:
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
           FLAG_KEY: ${{ inputs.flag_key }}
           DESIRED_ACTIVE: ${{ inputs.active }}
-        run: node scripts/posthog-flag-admin.js "$FLAG_KEY" --active="$DESIRED_ACTIVE"
+          FORCE_FLAG: ${{ inputs.force }}
+        run: |
+          if [ "$FORCE_FLAG" = "true" ]; then
+            node scripts/posthog-flag-admin.js "$FLAG_KEY" --active="$DESIRED_ACTIVE" --force
+          else
+            node scripts/posthog-flag-admin.js "$FLAG_KEY" --active="$DESIRED_ACTIVE"
+          fi
 
       - name: Notify on failure
         if: failure()

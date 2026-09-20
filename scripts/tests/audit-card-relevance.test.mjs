@@ -128,6 +128,25 @@ test('checkCommitsOnMain: card names its own acceptance command and it is CURREN
   assert.equal(checkCommitsOnMain(c, opts), null);
 });
 
+test('checkCommitsOnMain: BRO-3446 — a missingPath unverifiable result also vetoes, not just a clean fail', () => {
+  const c = card({
+    status: 'Paused',
+    notes: '## Acceptance criteria\n`node --test scripts/verify-thing.test.mjs`\nLanded in commit `d41a6bf` — touches scripts/verify-thing.test.mjs.',
+    outcome: 'Re-checked: STILL BLOCKED, acceptance command fails.',
+  });
+  const opts = {
+    isCommitOnMain: () => true,
+    getCommitTouchedFiles: () => ['scripts/verify-thing.test.mjs'],
+    runAcceptanceCmd: () => ({ status: 'unverifiable', missingPath: true, detail: 'acceptance command names a path absent from this checkout' }),
+  };
+  assert.equal(checkCommitsOnMain(c, opts), null);
+
+  // An ordinary unverifiable cause (exit 3, no node_modules) is unaffected —
+  // this function's pre-existing fail-open behavior for those is unchanged.
+  const opts2 = { ...opts, runAcceptanceCmd: () => ({ status: 'unverifiable', detail: 'checkout has no node_modules' }) };
+  assert.notEqual(checkCommitsOnMain(c, opts2), null);
+});
+
 test('checkCommitsOnMain: card names its own runnable acceptance command but runAcceptanceCmd is not injected -> null, fails closed (adversarial-review catch: checkout-failure fallback wires getCommitTouchedFiles but not runAcceptanceCmd)', () => {
   const c = card({
     status: 'In progress',

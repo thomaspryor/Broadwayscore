@@ -11,11 +11,17 @@
  * docs/experiments/gate-cold-start.md already set for that flag (id 772232).
  *
  * Usage:
- *   node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run]
+ *   node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run] [--force]
  *
  * --active defaults to false (archive). Always GETs and prints the flag's
  * current state before touching anything — including on the numeric-id
  * path, so a mistyped id can't silently archive the wrong flag.
+ *
+ * --force: required (exit 3 otherwise) when the target key is a
+ * scripts/lib/flag-registry.js REGISTERED_FLAGS entry expecting the OTHER
+ * active state — this used to be a warn-and-proceed check; BRO-3869 made it
+ * a hard gate so a conflict with the last recorded decision about this flag
+ * can't scroll past unread.
  *
  * Env: POSTHOG_PERSONAL_API_KEY (set via .github/workflows/manual-posthog-flag-archive.yml's secret).
  */
@@ -24,8 +30,10 @@ const { buildSearchUrl, buildFlagUrl, findExactFlagMatch, buildPatchRequest, par
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { REGISTERED_FLAGS } = require('./lib/flag-registry.js');
 
-const USAGE = 'Usage: node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run]\n' +
-  '  node scripts/posthog-flag-admin.js --help, -h   print this usage and exit — no network calls';
+const USAGE = 'Usage: node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run] [--force]\n' +
+  '  node scripts/posthog-flag-admin.js --help, -h   print this usage and exit — no network calls\n' +
+  '  --force: required when the target key is a flag-registry.js REGISTERED_FLAGS entry\n' +
+  '  expecting the OTHER active state (exit 3 without it) — BRO-3869.';
 
 const PROJECT_ID = '332742';
 
@@ -81,7 +89,7 @@ async function main() {
   // (task #498's established --help pattern).
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
 
-  const { identifier, desiredActive, dryRun } = parseArgs(argv);
+  const { identifier, desiredActive, dryRun, force } = parseArgs(argv);
   const apiKey = getApiKey();
 
   const flag = /^\d+$/.test(identifier)
@@ -91,16 +99,36 @@ async function main() {
   console.log(`Found flag: key='${flag.key}' id=${flag.id} active=${flag.active}`);
 
   const registryWarning = checkRegistryConflict(flag.key, desiredActive, REGISTERED_FLAGS);
-  if (registryWarning) console.warn(`WARNING: ${registryWarning}`);
 
   if (flag.active === desiredActive) {
+    // Already the desired state — no PATCH would fire even without this
+    // check, so a registry conflict here is nothing to force past (adversarial
+    // review finding, BRO-3869: an earlier version of this gate ran the
+    // --force check before this no-op return, wrongly blocking an inspection
+    // call that was never going to mutate anything).
     console.log(`Already active=${desiredActive} — nothing to do.`);
     return;
   }
 
   if (dryRun) {
+    if (registryWarning) console.warn(`WARNING: ${registryWarning}`);
     console.log(`DRY RUN: would set active=${desiredActive} (no PATCH sent).`);
     return;
+  }
+
+  if (registryWarning) {
+    // BRO-3869 hardening: this used to be warn-and-proceed. A conflict here
+    // means flag-registry.js's REGISTERED_FLAGS still expects the OTHER
+    // active state — i.e. this action disagrees with the last recorded,
+    // reviewed decision about this flag. Require an explicit --force instead
+    // of letting a warning nobody reads scroll past in CI/terminal output.
+    // Checked here, not earlier — only an actual mutating PATCH needs it.
+    if (!force) {
+      console.error(`ERROR: ${registryWarning}`);
+      console.error('Re-run with --force to proceed anyway.');
+      process.exit(3);
+    }
+    console.warn(`WARNING (--force): ${registryWarning}`);
   }
 
   const updated = await patchFlagActive(apiKey, flag.id, desiredActive);

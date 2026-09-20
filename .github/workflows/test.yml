@@ -353,6 +353,14 @@ on:
       # above), but this wrapper needs its own entry or a solo edit to the gate
       # itself triggers zero CI, which is exactly the bug it exists to catch.
       - 'scripts/audit-test-yml-manifest-paths.js'
+      # scripts/ci-green-rate.js (2026-09-20): the machine PASS/FAIL verdict on
+      # main's Test Suite green rate — the only thing allowed to say whether
+      # "main is red" is over. Thin CLI outside scripts/lib/; its logic and the
+      # colocated scripts/lib/ci-green-rate.test.mjs (which require()s the
+      # CLI for exit-code tests) are globbed above, but a solo edit to the CLI
+      # would trigger zero CI without this entry (audit-test-yml-lib-deps.js
+      # flagged exactly that when the file was added).
+      - 'scripts/ci-green-rate.js'
       # scripts/lib/workflow-secret-scan.test.mjs (task #1855) requires this
       # top-level CLI wrapper directly (to test findGaps() end-to-end) — same
       # gap shape as scripts/audit-test-yml-lib-deps.js above, caught by that
@@ -2061,13 +2069,16 @@ on:
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
       # individually listed in the unit-test batch (scripts/ root-level tests
       # aren't globbed) — path-listed here so a solo edit triggers CI.
-      # Its colocated scripts/lib/backfill-judged-dispatch-ts.test.mjs runs in
-      # the scripts/lib/*.test.mjs glob step, but the top-level script it
-      # exercises is outside scripts/lib/** and so triggers no CI on its own.
       # audit-test-yml-lib-deps.js's regression floor fails without this entry
       # (it landed red on main 2026-09-14 — not this branch's change, but this
       # branch's merge is what carried it into a CI run, so fixing it here).
+      # scripts/backfill-judged-dispatch-ts.test.mjs (BRO-3868) sits at this
+      # same scripts/ root — neither glob reaches it either — so it is
+      # registered in tests/unit-test-manifest.txt AND path-listed here, same
+      # shape as scripts/backlog-drain.test.mjs and scripts/trace-connect-
+      # phase.test.mjs below.
       - 'scripts/backfill-judged-dispatch-ts.js'
+      - 'scripts/backfill-judged-dispatch-ts.test.mjs'
       - 'scripts/backlog-drain.js'
       - 'scripts/backlog-drain.test.mjs'
       # BRO-2839 push-stall connect-phase breakdown. The logic lives in
@@ -2620,6 +2631,14 @@ on:
       # glob; path-listed so a solo edit triggers CI.
       - 'scripts/autonomous-acceptance-recheck.js'
       - 'scripts/autonomous-acceptance-recheck.test.mjs'
+      # BRO-3551: the open-backlog acceptance sweep (report-only — never
+      # closes/comments/mutates a Linear issue). scripts/lib/autonomous-
+      # recheck-core.js's selectOpenBacklogSweepCandidates and scripts/lib/
+      # linear-open-backlog-source.js both ride the 'scripts/lib/**' glob
+      # above; this top-level orchestrator + its colocated test do not, so
+      # they're path-listed here so a solo edit triggers CI (task #1745 gap).
+      - 'scripts/sweep-open-backlog-acceptance.js'
+      - 'scripts/sweep-open-backlog-acceptance.test.mjs'
       # BRO-386: the recheck ledger's commit+push is a SEPARATE step from the
       # bulk health-check commit in data-health-check.yml (a lost bulk-commit
       # push race was silently discarding every RECHECK-AFTER verdict for the
@@ -2948,6 +2967,13 @@ on:
       # a solo edit to either the lib or the CLI needs explicit listing here
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/linear-session.js'
+      # scripts/check-linear-staleness.js (BRO-3869) is the thin I/O wrapper
+      # around scripts/lib/linear-staleness-check.js's pure decision function
+      # (colocated-tested in scripts/lib/linear-staleness-check.test.mjs,
+      # which runs in the scripts/lib/*.test.mjs glob) — no independent test
+      # of its own, but a solo edit here would otherwise trigger ZERO CI, the
+      # same gap task #1745 documents.
+      - 'scripts/check-linear-staleness.js'
       # Linear issue-cap monitor + Done auto-archive (BRO-285): free-tier hard-
       # caps a workspace at 250 unarchived issues, hit once already 2026-08-12.
       # linear-cap-policy.js's pure isOverCapThreshold/isArchivableIssue are

@@ -46,6 +46,7 @@ scripts/autonomous-triage.test.mjs
 scripts/award-scores.test.mjs
 scripts/backfill-cast.test.mjs
 scripts/backfill-first-seen.test.mjs
+scripts/backfill-judged-dispatch-ts.test.mjs
 scripts/backfill-playwright-credits.test.mjs
 scripts/backlog-drain.test.mjs
 scripts/bright-data-websocket.test.mjs
@@ -169,6 +170,7 @@ scripts/scrape-wp-theater-blogs.test.mjs
 scripts/send-btc-confirmation-emails.test.mjs
 scripts/send-opening-digest.test.mjs
 scripts/send-opening-night-broadcast.test.mjs
+scripts/sweep-open-backlog-acceptance.test.mjs
 scripts/telegraph-reviews-index.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/alert-sender-bypass.test.mjs
@@ -393,6 +395,7 @@ tests/unit/critics-label-interactivity.test.mjs
 tests/unit/critics-take-generation.test.mjs
 tests/unit/cron-health-chronic-refresh-show-score.test.mjs
 tests/unit/cron-health-sets.test.mjs
+tests/unit/cron-health-tight-by-design-sync.test.mjs
 tests/unit/cross-market-contamination.test.mjs
 tests/unit/cross-market-write-guard.test.mjs
 tests/unit/cross-outlet-triage.test.mjs
@@ -502,6 +505,7 @@ tests/unit/headless-unlanded-detection.test.mjs
 tests/unit/health-check-batch-state.test.mjs
 tests/unit/health-check-bww-miss-ledger.test.mjs
 tests/unit/health-check-census-recall.test.mjs
+tests/unit/health-check-ci-green-rate.test.mjs
 tests/unit/health-check-coverage-probe.test.mjs
 tests/unit/health-check-green-streak.test.mjs
 tests/unit/health-check-main-red-streak-alert.test.mjs
@@ -606,7 +610,9 @@ tests/unit/news-article-not-a-review.test.mjs
 tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
+tests/unit/nonreview-contenttype-wrongshow.test.mjs
 tests/unit/nonreview-cv-precedence.test.mjs
+tests/unit/nonreview-slug-coverage.test.mjs
 tests/unit/notion-brain-create-notes.test.mjs
 tests/unit/notion-brain-parse-args.test.mjs
 tests/unit/notion-corpus-io.test.mjs
