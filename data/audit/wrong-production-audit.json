@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-20T21:17:14.901Z",
+  "timestamp": "2026-09-20T21:33:55.894Z",
   "stats": {
     "totalReviews": 43810,
-    "alreadyFlagged": 18094,
+    "alreadyFlagged": 18097,
     "dateGuardCatches": 246,
     "directorMismatch": 1048,
-    "tvFilmSignals": 1295,
+    "tvFilmSignals": 1296,
     "londonSignals": 1133,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3834
+    "noPublishDate": 3830
   },
   "findings": [
     {
@@ -8696,6 +8696,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "everybodys-talking-about-jamie-west-end-2024",
+      "file": "london-theatre--julia-rank.json",
+      "score": 87,
+      "publishDate": "2024-02-16",
+      "url": "https://www.londontheatre.co.uk/reviews/everybodys-talking-about-jamie-review-peacock-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
