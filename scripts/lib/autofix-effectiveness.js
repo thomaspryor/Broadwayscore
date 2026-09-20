@@ -69,9 +69,19 @@ function readLedgerRows(filePath) {
     throw err;
   }
   const rows = [];
+  // Exact-line dedupe (BRO-3868, mirrors linear-drain-parked.js's
+  // readLedger): digest-autofix-ledger.jsonl is tracked and merge=union, so
+  // a sync's union recovery can leave the SAME row twice. This module's
+  // dispatched/passed daily counts have no dedupe of their own and would
+  // double-count a resurrected duplicate. A no-op for this function's other
+  // (gitignored, never git-merged) callers.
+  const seen = new Set();
   for (const line of raw.split('\n')) {
-    if (!line.trim()) continue;
-    try { rows.push(JSON.parse(line)); } catch { /* skip unparseable line */ }
+    const t = line.trim();
+    if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
+    try { rows.push(JSON.parse(t)); } catch { /* skip unparseable line */ }
   }
   return rows;
 }

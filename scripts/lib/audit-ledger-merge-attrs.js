@@ -178,19 +178,6 @@ const EXEMPT_LEDGERS = [
       'reopening — too consequential a gate to risk on merge-disturbed order.',
   },
   {
-    file: 'data/audit/digest-autofix-ledger.jsonl',
-    reason:
-      '2026-08-26 (BRO-2493): scripts/lib/attempt-memory.js\'s checkPark() walks ' +
-      'the ledger newest-to-oldest counting a CONSECUTIVE streak of same-hash ' +
-      '\'fail\' rows and parks the card once the streak hits maxFailures (default ' +
-      '2) — both the walk direction and the "consecutive" test assume file order ' +
-      'is true chronological order. sync-audit-checkout.sh\'s recovery appends ' +
-      'locally-saved rows after origin\'s rows regardless of real timestamps, so a ' +
-      'union recovery can reorder or interleave rows and either falsely park a ' +
-      'card that failed once, or mask a real 2-in-a-row failure — with a bar this ' +
-      'low (2), order corruption is not a marginal risk.',
-  },
-  {
     file: 'data/audit/scraper-spend-daily-agg.jsonl',
     reason:
       '2026-09-13 (BRO-3092): became tracked and reddened this gate on main. Its ' +
