@@ -2592,6 +2592,11 @@ on:
       # + multi-night checkpointing). Colocated *.test.mjs run in the lib-test
       # glob; path-listed so a solo edit triggers CI.
       - 'scripts/autonomous-merge.js'
+      # BRO-3873: the hand-landing CLI over scripts/lib/land-branch.js (the lib
+      # + its colocated test ride the scripts/lib/** glob above). Top-level
+      # scripts/*.js is outside every glob, so without this line a solo edit to
+      # the CLI would trigger ZERO CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/land.js'
       # Autonomous nightly loop (Sprint 4: Tier-2 data-pipeline card classes +
       # branch mechanics in the private repos + verifier harness). Colocated
       # scripts/lib/*.test.mjs run in the lib-test glob; the top-level
