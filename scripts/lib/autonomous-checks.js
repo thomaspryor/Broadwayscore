@@ -235,6 +235,42 @@ function cardCheckArgv(checkableDone, isSafeCheckCommand) {
 
 // ── Workdir preparation ─────────────────────────────────────────────────────
 
+// BRO-3907 (found while landing an unrelated fix, not this ticket's own
+// change): a `repo` that is itself a git WORKTREE nested under the main
+// checkout (e.g. .claude/worktrees/<branch>/, the layout CLAUDE.md's
+// worktree-first rule mandates for every code edit) has no literal
+// `node_modules` of its own — Node's own module resolution finds the main
+// checkout's node_modules by walking up parent directories, which works fine
+// for that worktree directly, but NOT for a caller that later symlinks
+// `<repo>/node_modules` into a THIRD, unrelated location (land-branch.js's
+// disposable /tmp check worktree): fs.existsSync(path.join(repo,
+// 'node_modules')) is false, prepareCheckWorkdir's link() silently no-ops,
+// and the check worktree ends up with no node_modules reachable by ANY
+// ancestor walk (it lives under /tmp, nowhere near the main checkout) —
+// surfaced as `Cannot find module 'jsdom'` (and cascading false positives in
+// unrelated tests whose own scan loop aborts on that same uncaught
+// MODULE_NOT_FOUND) inside land.js's merged-tree-tests gate, deterministically,
+// on every land attempt from a worktree, regardless of what the branch
+// actually changed.
+//
+// scripts/lib/acceptance-check-core.js already solved this for its own
+// caller (a from-scratch checkout, same worktree-vs-main-repo shape) via
+// `git rev-parse --git-common-dir`: a worktree's common dir is always
+// `<main-repo>/.git`, so its dirname is the main repo root regardless of how
+// deeply the worktree is nested or named. Promoted here (not left duplicated
+// — CLAUDE.md rule 15) so land-branch.js's callers get the same fix instead
+// of a second, harder-to-find copy of the same one-liner.
+function resolveInstallRoot(repo) {
+  if (fs.existsSync(path.join(repo, 'node_modules'))) return repo;
+  try {
+    const common = execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'],
+      { cwd: repo, encoding: 'utf8', timeout: 30000 }).trim();
+    const mainRoot = path.dirname(common);
+    if (mainRoot && fs.existsSync(path.join(mainRoot, 'node_modules'))) return mainRoot;
+  } catch { /* not a worktree, or old git — fall through */ }
+  return repo;
+}
+
 // A fresh `git worktree add` has NO node_modules and none of the gitignored
 // core-data symlinks (data/shows.json et al are symlinks into the private
 // repo). Without them `npx tsc --noEmit` fails TS2307 on every JSON import
@@ -244,6 +280,11 @@ function cardCheckArgv(checkableDone, isSafeCheckCommand) {
 // Fills GAPS ONLY: a path that already exists in the workdir (i.e. is tracked
 // in git) is never touched, so this can't shadow the implementer's own work.
 // Everything it links is gitignored, so nothing it creates can reach a diff.
+//
+// `repoRoot` is resolved through resolveInstallRoot() by callers that might
+// hand it a nested worktree (land-branch.js) — this function itself stays a
+// dumb "link what's literally there" so its own tests (and acceptance-check-
+// core.js's already-resolved `repo`) don't have to fake up a git checkout.
 function prepareCheckWorkdir(workdir, repoRoot) {
   const linked = [];
   const link = (from, to) => {
@@ -375,6 +416,7 @@ module.exports = {
   tokenizeCheckCommand,
   isUiDiff,
   hasSrcChange,
+  resolveInstallRoot,
   prepareCheckWorkdir,
   runSafeChecks,
 };

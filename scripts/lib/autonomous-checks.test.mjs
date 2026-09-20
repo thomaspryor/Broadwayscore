@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const checks = require('./autonomous-checks.js');
 const {
   decideChecks, cardCheckArgv, checksEnv, isUiDiff, hasSrcChange,
-  prepareCheckWorkdir, runSafeChecks, BUILD_TIMEOUT_MS, BUILD_ENV,
+  prepareCheckWorkdir, resolveInstallRoot, runSafeChecks, BUILD_TIMEOUT_MS, BUILD_ENV,
 } = checks;
 
 const never = () => false;
@@ -233,6 +233,66 @@ test('prepareCheckWorkdir fills gaps only and never overwrites tracked files', (
   assert.equal(JSON.parse(fs.readFileSync(path.join(repo, 'data', 'shows.json'), 'utf8')).from, 'repo',
     'writing the worktree copy must not reach the source');
   assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), true, 'node_modules stays a link');
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+// ── resolveInstallRoot (BRO-3907) ────────────────────────────────────────────
+
+test('resolveInstallRoot: a repo with its own node_modules is returned unchanged', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-'));
+  fs.mkdirSync(path.join(root, 'node_modules'), { recursive: true });
+  assert.equal(resolveInstallRoot(root), root);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('resolveInstallRoot: a git WORKTREE with no node_modules of its own resolves to the main checkout that has one', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-wt-'));
+  const main = path.join(root, 'main');
+  const wt = path.join(root, 'wt');
+  fs.mkdirSync(main, { recursive: true });
+  fs.mkdirSync(path.join(main, 'node_modules'), { recursive: true });
+  execFileSync('git', ['init', '-q', '-b', 'main'], { cwd: main });
+  execFileSync('git', ['config', 'user.email', 'a@b.c'], { cwd: main });
+  execFileSync('git', ['config', 'user.name', 'test'], { cwd: main });
+  fs.writeFileSync(path.join(main, 'x.txt'), 'x');
+  execFileSync('git', ['add', 'x.txt'], { cwd: main });
+  execFileSync('git', ['commit', '-q', '-m', 'init'], { cwd: main });
+  execFileSync('git', ['worktree', 'add', '-q', '--detach', wt], { cwd: main });
+
+  // The worktree itself has no node_modules — resolveInstallRoot must find
+  // the main checkout's via `git rev-parse --git-common-dir`, not just give up.
+  // realpathSync on both sides: git's --path-format=absolute resolves macOS's
+  // /tmp -> /private/tmp symlink, so a literal string compare against the
+  // unresolved mkdtempSync path would spuriously fail on this platform alone.
+  assert.equal(fs.existsSync(path.join(wt, 'node_modules')), false);
+  assert.equal(fs.realpathSync(resolveInstallRoot(wt)), fs.realpathSync(main));
+
+  execFileSync('git', ['worktree', 'remove', '--force', wt], { cwd: main });
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('resolveInstallRoot: a plain non-git directory with no node_modules fails closed to the input path', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-plain-'));
+  assert.equal(resolveInstallRoot(root), root);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('resolveInstallRoot: a worktree whose MAIN checkout also lacks node_modules fails closed to the input path (never invents a phantom root)', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-nomod-'));
+  const main = path.join(root, 'main');
+  const wt = path.join(root, 'wt');
+  fs.mkdirSync(main, { recursive: true });
+  execFileSync('git', ['init', '-q', '-b', 'main'], { cwd: main });
+  execFileSync('git', ['config', 'user.email', 'a@b.c'], { cwd: main });
+  execFileSync('git', ['config', 'user.name', 'test'], { cwd: main });
+  fs.writeFileSync(path.join(main, 'x.txt'), 'x');
+  execFileSync('git', ['add', 'x.txt'], { cwd: main });
+  execFileSync('git', ['commit', '-q', '-m', 'init'], { cwd: main });
+  execFileSync('git', ['worktree', 'add', '-q', '--detach', wt], { cwd: main });
+
+  assert.equal(resolveInstallRoot(wt), wt);
+
+  execFileSync('git', ['worktree', 'remove', '--force', wt], { cwd: main });
   fs.rmSync(root, { recursive: true, force: true });
 });
 

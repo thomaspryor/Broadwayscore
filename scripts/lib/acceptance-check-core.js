@@ -39,30 +39,19 @@ const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 // SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
 // than a second regex over the command string).
 const { isSafeCheckCommand, extractCheckPaths } = require('./autonomous-triage-core.js');
-const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { checksEnv, cardCheckArgv, prepareCheckWorkdir, resolveInstallRoot, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
 // Per-git-call ceiling. Generous enough for a cold fetch on a large repo,
 // short enough that a synchronous caller can promise a bound.
 const GIT_TIMEOUT_MS = 120000;
 
-// Where node_modules and the gitignored core data actually live. A caller
-// running from a git WORKTREE (every code session in this repo does — CLAUDE.md
-// makes worktrees mandatory) has no node_modules of its own: node resolves them
-// by walking up to the canonical checkout, which a fresh /tmp worktree cannot
-// do. Linking from the worktree root would hand every close an unprepared
-// checkout (measured: prepared=false on the first real run), so resolve the
-// canonical checkout via git's common dir and link from there.
-function resolveInstallRoot(repo) {
-  if (fs.existsSync(path.join(repo, 'node_modules'))) return repo;
-  try {
-    const common = execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'],
-      { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
-    const mainRoot = path.dirname(common);
-    if (mainRoot && fs.existsSync(path.join(mainRoot, 'node_modules'))) return mainRoot;
-  } catch { /* not a worktree, or old git — fall through */ }
-  return repo;
-}
+// resolveInstallRoot (node_modules/gitignored-core-data live at the MAIN
+// checkout, not a git WORKTREE — every code session in this repo runs from
+// one, CLAUDE.md makes it mandatory) now lives in autonomous-checks.js
+// (BRO-3907: promoted there so land-branch.js's callers, which hit the exact
+// same "worktree has no node_modules of its own" gap, get the fix too instead
+// of a second copy — CLAUDE.md §15).
 
 /**
  * ONE disposable worktree per run: every card verifies against the same
