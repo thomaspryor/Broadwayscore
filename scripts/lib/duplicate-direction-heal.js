@@ -142,11 +142,35 @@ const MIN_LOSER_BODY_CHARS = 500;
 // (ship-check adversarial review, BRO-3821).
 const MAX_WINNER_TO_LOSER_RATIO = 3;
 
+/**
+ * Does this record carry a usable numeric score? `assignedScore` is the field
+ * rebuild actually consumes; `llmScore.score` is the upstream value it is
+ * derived from, so either one present means the record can still contribute a
+ * score once it is canonical.
+ */
+function hasUsableScore(data) {
+  if (!data) return false;
+  if (Number.isFinite(data.assignedScore)) return true;
+  return !!(data.llmScore && Number.isFinite(data.llmScore.score));
+}
+
 function shouldFlipDuplicateDirection(loser, winner) {
   if (!loser || !winner) return false;
   if (isFlaggedRecord(loser)) return false;
   const loserLen = String(loser.fullText || '').trim().length;
   if (loserLen < MIN_LOSER_BODY_CHARS) return false;
+  // Never trade a scored record for an unscored one. A byline is only worth
+  // promoting if the promoted record can still be SCORED once canonical —
+  // otherwise the flip silently deletes the pair's only score. Found by
+  // re-running findDirectionFlips over the real corpus after the first two
+  // BRO-3821 commits: archduke-west-end-2026 (thestage--tom-wicker, no score,
+  // would have displaced thestage--unknown at 65), golden-boy-off-west-end-2026
+  // (standard--nick-curtis, no score, would have displaced a T1 Evening
+  // Standard 88) and vanya-off-broadway-2025 (theatermania--dan-rubins,
+  // assignedScore null, would have displaced theatermania--unknown at 93).
+  // All three losers are isIncludableForRebuild=false on their own merits, so
+  // promoting them drops the review from the show entirely.
+  if (!hasUsableScore(loser) && hasUsableScore(winner)) return false;
   const loserName = (loser.criticName || '').trim();
   const loserNamed = isPlausiblePersonName(loserName);
   const loserAnchored = hasAnchoredBand(loser);
@@ -193,6 +217,7 @@ function findDirectionFlips(records) {
 
 module.exports = {
   hasAnchoredBand,
+  hasUsableScore,
   isFlaggedRecord,
   shouldFlipDuplicateDirection,
   findDirectionFlips,

@@ -49,8 +49,15 @@ test('shouldFlipDuplicateDirection: the Death Note case — named+anchored loser
   assert.equal(shouldFlipDuplicateDirection(loser(), winner()), true);
 });
 
+// UNANCHORED (not undefined): this test is about the loser lacking an
+// anchored BAND, not about it lacking a score. `llmScore: undefined` removed
+// both at once, so once the no-score guard landed (BRO-3821 follow-up) the
+// case stopped exercising the band branch at all and started asserting that
+// an unscored record may displace a scored one — which is the regression the
+// guard exists to stop. UNANCHORED has a score and no band, which is the
+// condition the test name describes.
 test('shouldFlipDuplicateDirection: named-only loser (no band) still flips', () => {
-  assert.equal(shouldFlipDuplicateDirection(loser({ llmScore: undefined }), winner()), true);
+  assert.equal(shouldFlipDuplicateDirection(loser({ llmScore: UNANCHORED }), winner()), true);
 });
 
 test('shouldFlipDuplicateDirection: anchored-only loser (Unknown byline) still flips', () => {
@@ -166,4 +173,26 @@ test('findDirectionFlips: no duplicateOf at all — no flips', () => {
     { file: 'b.json', data: winner() },
   ];
   assert.deepEqual(findDirectionFlips(records), []);
+});
+
+// BRO-3821 follow-up: a flip must never trade a scored record for an
+// unscored one. Three real-corpus pairs regressed this way after the first
+// two commits (archduke thestage 65, golden-boy standard 88, vanya
+// theatermania 93 would each have been dropped from their show).
+test('shouldFlipDuplicateDirection: unscored named loser does NOT displace a scored Unknown winner', () => {
+  const loser = { criticName: 'Nick Curtis', fullText: 'x'.repeat(3996) };
+  const winner = { criticName: 'Unknown', fullText: 'x'.repeat(4964), assignedScore: 88 };
+  assert.equal(shouldFlipDuplicateDirection(loser, winner), false);
+});
+
+test('shouldFlipDuplicateDirection: loser scored only via llmScore.score still flips', () => {
+  const loser = { criticName: 'Nick Curtis', fullText: 'x'.repeat(3996), llmScore: { score: 74 } };
+  const winner = { criticName: 'Unknown', fullText: 'x'.repeat(4964), assignedScore: 88 };
+  assert.equal(shouldFlipDuplicateDirection(loser, winner), true);
+});
+
+test('shouldFlipDuplicateDirection: both unscored still flips on byline alone', () => {
+  const loser = { criticName: 'Nick Curtis', fullText: 'x'.repeat(3996) };
+  const winner = { criticName: 'Unknown', fullText: 'x'.repeat(4964) };
+  assert.equal(shouldFlipDuplicateDirection(loser, winner), true);
 });
