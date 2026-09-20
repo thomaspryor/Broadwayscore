@@ -311,8 +311,8 @@ jobs:
           # card #90 for the unresolved half (no newer cron run starting
           # during the burst).
           BUILD_START=$(date +%s)
-          timeout 720 npx vercel build --prod --token=$VERCEL_TOKEN
-          status=$?
+          status=0
+          timeout 720 npx vercel build --prod --token=$VERCEL_TOKEN || status=$?
           BUILD_SECS=$(( $(date +%s) - BUILD_START ))
           echo "build_seconds=$BUILD_SECS" >> "$GITHUB_OUTPUT"
           if [ "$status" -ne 0 ]; then
