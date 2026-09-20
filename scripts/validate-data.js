@@ -29,6 +29,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
+const { isShoutedTitle, toDisplayTitleCase, needsManualReview } = require('./lib/title-display-case');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
@@ -381,6 +382,20 @@ function validateRequiredFields(shows) {
   let missingCount = 0;
 
   for (const show of shows) {
+    // BRO-3863: several scrapers read the title out of a heading the source
+    // renders in CSS uppercase, so the shouted form lands in shows.json and
+    // ships verbatim to the site and the newsletter. Owner caught it in the
+    // 2026-09-20 Broadway round-up ("AMERICA, WHO HURT YOU?" beside a
+    // correctly-cased "The Cherry Orchard (Park Avenue Armory)"); Theatre for
+    // a New Audience writes it "America, Who Hurt You?". Provenance is mixed
+    // (tfana press listing, Playbill production pages, Signature venue pages,
+    // Show-Score), so the gate lives here rather than in one scraper.
+    // Three-word minimum — genuine stylisations (SIX, POTUS, FELA!) are
+    // shorter; see scripts/lib/title-display-case.js.
+    if (isShoutedTitle(show.title) && !needsManualReview(show.id)) {
+      error(`Show "${show.title}" (${show.id}) has an ALL-CAPS title — almost certainly a scraped CSS-uppercase heading. Expected: "${toDisplayTitleCase(show.title)}". Fix the title in shows.json (node scripts/fix-shouted-titles.js --apply), or if the caps are the real stylisation add it to KEEP_UPPER/raise minWords in scripts/lib/title-display-case.js.`);
+    }
+
     const fields = show.status === 'open' ? THRESHOLDS.REQUIRED_FIELDS_OPEN : THRESHOLDS.REQUIRED_FIELDS;
 
     for (const field of fields) {
