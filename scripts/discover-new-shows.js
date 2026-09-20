@@ -81,6 +81,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
 const { classifyShow } = require('./lib/classify-show');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titleCaseFromAllCaps } = require('./lib/playbill-broadway-schedule');
+const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const {
   OB_VENUE_CONFIGS,
   scrapeVenueListing,
@@ -592,7 +593,11 @@ async function fetchShowsFromPlaybillBroadway() {
       return null;
     }
     return {
-      title: titleCaseFromAllCaps(e.title),
+      // Canonical normaliser, not the local titleCaseFromAllCaps(): that
+      // helper is Latin-1 only, has no venue-suffix handling, and would
+      // disagree with the validate-data.js gate. One definition of a correct
+      // title, shared by ingestion, the gate and the sweep.
+      title: normalizeShowTitle({ title: e.title, venue: e.venue }).title,
       venue,
       slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: e.opening || null,
@@ -2137,6 +2142,13 @@ async function discoverShows() {
   const existingSlugs = new Set(data.shows.map(s => s.slug));
   const existingIds = new Set(data.shows.map(s => s.id));
 
+  // BRO-3863 — oracle 2 of the venue-suffix detector (see
+  // scripts/lib/title-venue-suffix.js): the set of venue names the corpus
+  // already knows about, so a title ending in "(Soho Playhouse)" is
+  // recognised even when THIS row's own venue field says something else.
+  // Built once from the pre-existing corpus rather than per candidate.
+  const discoveryVenueVocabulary = buildVenueVocabulary(data.shows);
+
   // Build todaytixId index for fast dedup
   const existingTodaytixIds = new Map();
   for (const s of data.shows) {
@@ -2362,6 +2374,23 @@ async function discoverShows() {
     // to gate reviews on is still plenty good enough to name a row.
     const idYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate })
       || String(new Date().getFullYear());
+    // BRO-3863 — normalise the title BEFORE the slug and id are derived
+    // from it. This is the one place every discovery path converges, so it
+    // is the only place the fix has to live.
+    //
+    // Show-Score's listing pages disambiguate same-title productions in
+    // their own UI by appending the venue ("The Cherry Orchard (Park Avenue
+    // Armory)") and the Show-Score branch above took that display string as
+    // the title verbatim. Left here, the suffix propagates into `slug` and
+    // `id` too, which is why the corpus carries rows literally named
+    // the-cherry-orchard-park-avenue-armory-off-broadway-2026. Normalising
+    // before slugify() means new rows never acquire it in the first place.
+    const titleFix = normalizeShowTitle(show, { venueVocabulary: discoveryVenueVocabulary });
+    if (titleFix.changed) {
+      console.log(`  [TITLE] "${show.title}" -> "${titleFix.title}" (${titleFix.steps.map(st => st.kind).join(' + ')})`);
+      show.title = titleFix.title;
+    }
+
     const baseSlug = slugify(show.title);
 
     // Market-aware slug and ID generation. withMarketSuffix() strips any

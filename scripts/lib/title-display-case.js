@@ -23,6 +23,45 @@
  * stylisation and always a scrape artifact. One- and two-word all-caps
  * titles are left alone; there are 23 of them in the corpus and they are
  * dominated by genuine stylisations.
+ *
+ * ── Hardening pass, 2026-09-20 ────────────────────────────────────────────
+ * The first cut shipped six real defects, every one of which would have put a
+ * WRONG title in front of readers or wedged CI permanently. All six are now
+ * covered by tests in title-display-case.test.mjs:
+ *
+ *  1. KEEP_UPPER held ordinary words. `us` and `la` are English/Spanish words
+ *     far more often than initialisms in a show title, so `JUST FOR US`
+ *     became "Just for US" and `MAN OF LA MANCHA` became "Man of LA Mancha".
+ *     Both removed. A token only earns a KEEP_UPPER slot if it is never a
+ *     plain word (see AMBIGUOUS_REJECTED below for the audit trail).
+ *  2. Roman numerals were a partial hand-list, so `LOUIS XIV RETURNS` became
+ *     "Louis Xiv Returns". Replaced with an explicit, validated set.
+ *  3. A shouted title that converts to ITSELF (e.g. `BBC & RSC`, every token
+ *     of which is a KEEP_UPPER acronym) made validate-data.js error forever
+ *     with nothing the sweep could fix. `wouldChangeTitle()` is now the
+ *     gate's condition, so "detected" and "actionable" are different
+ *     questions and only the second one fails CI.
+ *  4. There was no title-level exemption. KEEP_UPPER cannot suppress
+ *     DETECTION, only re-uppercase a token, so a genuinely stylised
+ *     multi-word title like `SIX THE MUSICAL` had no way to opt out short of
+ *     raising minWords for everyone. KEEP_SHOUTED_IDS does that now.
+ *  5. The letter class was Latin-1 only (`[A-Za-zÀ-ÿ]`), so Polish/Czech/
+ *     Turkish titles corrupted rather than merely being skipped: `ŁÓDŹ BY
+ *     NIGHT` came out "łÓdź by Night" — Ł and Ź fall outside the range, so
+ *     they were lowercased by `.toLowerCase()` and then never re-capitalised.
+ *     Everything is Unicode-aware (`\p{L}`/`\p{Lu}`/`\p{Ll}`) now. As a
+ *     side-effect this also stops a CJK/Hebrew/Arabic title — which has no
+ *     cased letters at all, so `letters === letters.toUpperCase()` was
+ *     trivially TRUE — from being detected as shouted.
+ *  6. The O'Neill rule fired on any single letter before an apostrophe, so
+ *     `I'M STILL HERE` became "I'M Still Here". Only the real name prefixes
+ *     (O', D', L') capitalise what follows.
+ *
+ * Two defects the same review ALLEGED are not real, verified against this
+ * code before changing anything: `THE O'NEILL'S STORY` already produced
+ * "The O'Neill's Story" (not "The O'Neill'S Story"), and a leading curly
+ * quote already produced "“The Great Gatsby” Live". No change was made for
+ * either; both are now pinned by tests so they stay fixed.
  */
 
 'use strict';
@@ -35,13 +74,49 @@ const MINOR_WORDS = new Set([
   'via', 'vs', 'with',
 ]);
 
-// Tokens that must keep their exact shape — acronyms, initialisms, numerals.
+// Tokens that must keep their exact shape — acronyms and initialisms.
 // Checked case-insensitively against the raw token's letters.
+//
+// ADMISSION RULE, and it is strict: a token belongs here only if it is
+// NEVER an ordinary word of English (or of a language that shows up in the
+// corpus) in title position. We cannot consult context to decide, because
+// by construction the ENTIRE title is uppercase — there is no mixed-case
+// evidence anywhere in the string to disambiguate from. So an ambiguous
+// token is always resolved as the ordinary word, which is the reading that
+// is right far more often and, when wrong, is wrong in a way a reader
+// forgives ("Just for Us") instead of one that looks like a bug
+// ("Just for US").
 const KEEP_UPPER = new Set([
-  'nyc', 'usa', 'uk', 'us', 'tv', 'mtv', 'bbc', 'hbo', 'ii', 'iii', 'iv',
-  'vi', 'vii', 'viii', 'ix', 'xi', 'xii', 'dc', 'la', 'ok', 'jfk', 'fbi',
-  'cia', 'nasa', 'mlk', 'bff', 'diy', 'rsc',
+  'nyc', 'usa', 'uk', 'tv', 'mtv', 'bbc', 'hbo', 'jfk', 'fbi',
+  'cia', 'nasa', 'mlk', 'bff', 'diy', 'rsc', 'dc', 'ok',
 ]);
+
+// Rejected from KEEP_UPPER by the rule above — kept as a comment so the next
+// person does not "helpfully" re-add them:
+//   us -> "JUST FOR US"      : the pronoun, not the country. Comedian Alex
+//                              Edelman's show is "Just for Us".
+//   la -> "MAN OF LA MANCHA" : the Spanish article, not Los Angeles.
+//   i  -> "I AM MY OWN WIFE" : the pronoun; also a Roman numeral. The
+//                              pronoun is handled for free (a lone "i" is a
+//                              one-letter word and gets capitalised anyway).
+const AMBIGUOUS_REJECTED = Object.freeze(['us', 'la', 'i']);
+
+// Roman numerals that occur in real show titles (LOUIS XIV, HENRY VIII,
+// ROCKY II, MALCOLM X, V FOR VENDETTA). Deliberately an explicit set and
+// not a /^[IVXLCDM]+$/ regex: that regex also matches the ordinary English
+// words MIX, DIM, DID, LID, MILL, CIVIL and CLIC, every one of which would
+// then be shouted back at the reader. Single letters are included only
+// where the letter is itself a plausible title token.
+const ROMAN_NUMERALS = new Set([
+  'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii',
+  'xiii', 'xiv', 'xv', 'xvi', 'xvii', 'xviii', 'xix', 'xx', 'xxi',
+]);
+
+// Name prefixes where the letter AFTER the apostrophe is part of the name
+// and gets capitalised: O'Neill, D'Angelo, L'Amour. Everything else before
+// an apostrophe is a possessive or a contraction and stays lowercase, so
+// KING'S -> King's and, critically, I'M -> I'm rather than I'M.
+const NAME_PREFIXES = new Set(['o', 'd', 'l']);
 
 // Titles this module must NOT auto-convert because the right answer is an
 // editorial judgement, not a casing rule. Spanish-language titles are the
@@ -53,13 +128,35 @@ const MANUAL_REVIEW_IDS = new Set([
   'mas-sabe-el-saulo-por-viejo-off-broadway-2025',
 ]);
 
+// Titles whose ALL-CAPS *is* the branding, where the 3-word minimum is not
+// enough protection because a subtitle pushes a stylised short name over the
+// threshold: "SIX THE MUSICAL" is three words but "SIX" is a trademark and
+// "Six the Musical" is simply the wrong name. KEEP_UPPER cannot express this
+// — it re-uppercases a TOKEN but cannot stop the title being DETECTED — so
+// exemption is keyed by show id, the same way MANUAL_REVIEW_IDS is.
+//
+// Difference between the two sets: MANUAL_REVIEW_IDS means "a human still
+// owes us a decision here" and is reported by the sweep as outstanding work;
+// KEEP_SHOUTED_IDS means "decided, the caps are correct, never ask again"
+// and is silent.
+const KEEP_SHOUTED_IDS = new Set([]);
+
 function needsManualReview(showId) {
   return MANUAL_REVIEW_IDS.has(showId);
+}
+
+function isExemptFromTitleCase(showId) {
+  return KEEP_SHOUTED_IDS.has(showId);
 }
 
 /**
  * Is this title all-caps in a way that indicates a scrape artifact rather
  * than a deliberate stylisation?
+ *
+ * Unicode-aware: a title is "shouted" only when it contains at least four
+ * CASED letters and not one of them is lowercase. A script without case
+ * (Chinese, Hebrew, Arabic, Japanese) therefore never qualifies, which is
+ * the correct answer and was NOT what the Latin-1 version did.
  *
  * @param {string} title
  * @param {{minWords?: number}} [opts] minWords defaults to 3 — see the
@@ -71,36 +168,45 @@ function isShoutedTitle(title, opts = {}) {
   if (typeof title !== 'string') return false;
   const trimmed = title.trim();
   if (!trimmed) return false;
-  const letters = trimmed.replace(/[^A-Za-zÀ-ÿ]/g, '');
-  // Need enough letters to judge, and every one of them must be uppercase.
-  if (letters.length < 4) return false;
-  if (letters !== letters.toUpperCase()) return false;
+  const upper = trimmed.match(/\p{Lu}/gu) || [];
+  const lower = trimmed.match(/\p{Ll}/gu) || [];
+  // Need enough cased letters to judge, and not one may be lowercase.
+  if (upper.length < 4) return false;
+  if (lower.length > 0) return false;
   return trimmed.split(/\s+/).length >= minWords;
 }
 
 // Capitalise one whitespace-delimited token, preserving internal punctuation.
-// Splits on hyphens and slashes so JEAN-MICHEL -> Jean-Michel, and handles
-// apostrophes so KING'S -> King's rather than King'S.
+// Splits on every alphabetic run so JEAN-MICHEL -> Jean-Michel and 320°F
+// stays 320°F, and handles apostrophes so KING'S -> King's, I'M -> I'm and
+// O'NEILL -> O'Neill.
 function caseToken(token, { force }) {
-  const bare = token.replace(/[^A-Za-zÀ-ÿ]/g, '').toLowerCase();
-  if (bare && KEEP_UPPER.has(bare)) return token.toUpperCase();
+  const bare = token.replace(/\P{L}/gu, '').toLowerCase();
+  if (bare && (KEEP_UPPER.has(bare) || ROMAN_NUMERALS.has(bare))) return token.toUpperCase();
   if (!force && bare && MINOR_WORDS.has(bare)) return token.toLowerCase();
 
   // Capitalise the first letter of every ALPHABETIC RUN in the token, not
   // just after a hyphen: "320°F" must stay "320°F", not become "320°f"
   // (the degree sign is not a letter, so a hyphen-only rule left the F
   // lowercased — caught on NODA MAP – 320°F before any write landed).
-  // A run preceded immediately by an apostrophe is the possessive/contraction
-  // case and stays lowercase, so KING'S -> King's rather than King'S.
   const lowered = token.toLowerCase();
-  return lowered.replace(/([a-zà-ÿ]+)/g, (run, _g, offset) => {
+  // Runs include combining MARKS, not just letters. Turkish is the case that
+  // forces this: 'İ'.toLowerCase() is "i" + U+0307 COMBINING DOT ABOVE, so a
+  // letters-only run stopped at the dot and the rest of the word started a
+  // NEW run that got its own capital — İSTANBUL came out "İStanbul". The
+  // NFC normalise in toDisplayTitleCase() then recomposes i+U+0307 back to
+  // the precomposed U+0130.
+  return lowered.replace(/[\p{L}\p{M}]+/gu, (run, offset) => {
     const prev = offset > 0 ? lowered[offset - 1] : '';
-    if (prev === "'" || prev === '\u2019') {
-      // O'Hara / D'Angelo: a ONE-letter run before the apostrophe means a
-      // name prefix, so capitalise. Otherwise it's a possessive -> leave it.
+    if (prev === "'" || prev === '’') {
+      // O'Hara / D'Angelo / L'Amour: a name prefix capitalises what follows.
+      // Anything else before the apostrophe is a possessive (KING'S -> King's)
+      // or a contraction (I'M -> I'm, IT'S -> It's) and stays lowercase.
       const before = lowered.slice(0, offset - 1);
-      const priorRun = before.match(/([a-zà-ÿ]+)$/);
-      if (priorRun && priorRun[1].length === 1) return run.charAt(0).toUpperCase() + run.slice(1);
+      const priorRun = before.match(/[\p{L}\p{M}]+$/u);
+      if (priorRun && priorRun[0].length === 1 && NAME_PREFIXES.has(priorRun[0])) {
+        return run.charAt(0).toUpperCase() + run.slice(1);
+      }
       return run;
     }
     return run.charAt(0).toUpperCase() + run.slice(1);
@@ -130,22 +236,63 @@ function toDisplayTitleCase(title, opts = {}) {
     if (/^\s+$/.test(tok) || !tok) return tok;
     const force = forceNext || i === firstWord || i === lastWord;
     // A token ending in terminal punctuation starts a new "sentence" inside
-    // the title, so the NEXT word is force-capitalised: "...Mary: A Play..."
-    forceNext = /[:.?!—–|]$/.test(tok.trim());
-    const out = caseToken(tok, { force });
-    // An opening bracket immediately before a minor word also forces it:
-    // "(OF GOD)" -> "(of God)" reads wrong; theatre styling is "(of God)"
-    // only when it's a parenthetical continuation, so leave brackets to the
-    // minor-word rule and only force after terminal punctuation.
-    return out;
-  }).join('');
+    // the title, so the NEXT word is force-capitalised: "...Mary: A Play...".
+    // Trailing closing brackets/quotes are stripped first, so `(WHAT?)` and
+    // `"ENOUGH!"` still count as terminal.
+    const tail = tok.trim().replace(/[)\]}"'’”]+$/u, '');
+    forceNext = /[:.?!—–|]$/.test(tail);
+    return caseToken(tok, { force });
+  }).join('')
+    // Lowercasing a precomposed character can decompose it (U+0130 -> "i" +
+    // U+0307). Recompose so the stored title is canonical NFC, which is what
+    // the rest of the corpus is in and what title matching assumes.
+    .normalize('NFC');
+}
+
+/**
+ * Would conversion actually change this title? This — not isShoutedTitle() —
+ * is what a CI gate must test.
+ *
+ * A title can be detected as shouted and still convert to itself: `BBC & RSC`
+ * is three tokens, every letter uppercase, and every token is a KEEP_UPPER
+ * acronym, so toDisplayTitleCase() returns it verbatim. Gating on detection
+ * made validate-data.js emit an ERROR that the sweep script reported nothing
+ * to fix — a permanently red build with no available action. Gate on this
+ * instead.
+ *
+ * @returns {boolean}
+ */
+function wouldChangeTitle(title, opts = {}) {
+  if (!isShoutedTitle(title, opts)) return false;
+  return toDisplayTitleCase(title, opts) !== title;
+}
+
+/**
+ * The single question every caller (sweep, gate, ingestion) should ask:
+ * should this specific show's title be rewritten, and to what?
+ *
+ * @returns {{action:'convert'|'manual-review'|'none', title:string, from?:string}}
+ */
+function classifyShowTitle(showId, title, opts = {}) {
+  if (!isShoutedTitle(title, opts)) return { action: 'none', title };
+  if (isExemptFromTitleCase(showId)) return { action: 'none', title };
+  if (needsManualReview(showId)) return { action: 'manual-review', title };
+  const next = toDisplayTitleCase(title, opts);
+  if (next === title) return { action: 'none', title };
+  return { action: 'convert', title: next, from: title };
 }
 
 module.exports = {
   isShoutedTitle,
   needsManualReview,
+  isExemptFromTitleCase,
+  wouldChangeTitle,
+  classifyShowTitle,
   MANUAL_REVIEW_IDS,
+  KEEP_SHOUTED_IDS,
   toDisplayTitleCase,
   MINOR_WORDS,
   KEEP_UPPER,
+  ROMAN_NUMERALS,
+  AMBIGUOUS_REJECTED,
 };

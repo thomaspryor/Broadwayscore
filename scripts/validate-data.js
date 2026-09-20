@@ -29,7 +29,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
-const { isShoutedTitle, toDisplayTitleCase, needsManualReview } = require('./lib/title-display-case');
+const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
@@ -382,20 +382,6 @@ function validateRequiredFields(shows) {
   let missingCount = 0;
 
   for (const show of shows) {
-    // BRO-3863: several scrapers read the title out of a heading the source
-    // renders in CSS uppercase, so the shouted form lands in shows.json and
-    // ships verbatim to the site and the newsletter. Owner caught it in the
-    // 2026-09-20 Broadway round-up ("AMERICA, WHO HURT YOU?" beside a
-    // correctly-cased "The Cherry Orchard (Park Avenue Armory)"); Theatre for
-    // a New Audience writes it "America, Who Hurt You?". Provenance is mixed
-    // (tfana press listing, Playbill production pages, Signature venue pages,
-    // Show-Score), so the gate lives here rather than in one scraper.
-    // Three-word minimum — genuine stylisations (SIX, POTUS, FELA!) are
-    // shorter; see scripts/lib/title-display-case.js.
-    if (isShoutedTitle(show.title) && !needsManualReview(show.id)) {
-      error(`Show "${show.title}" (${show.id}) has an ALL-CAPS title — almost certainly a scraped CSS-uppercase heading. Expected: "${toDisplayTitleCase(show.title)}". Fix the title in shows.json (node scripts/fix-shouted-titles.js --apply), or if the caps are the real stylisation add it to KEEP_UPPER/raise minWords in scripts/lib/title-display-case.js.`);
-    }
-
     const fields = show.status === 'open' ? THRESHOLDS.REQUIRED_FIELDS_OPEN : THRESHOLDS.REQUIRED_FIELDS;
 
     for (const field of fields) {
@@ -413,6 +399,50 @@ function validateRequiredFields(shows) {
   if (missingCount === 0) {
     ok('All shows have required fields');
   }
+}
+
+/**
+ * BRO-3863 — stored show titles must not carry scrape artifacts.
+ *
+ * Two classes, both produced by taking a source site's DISPLAY string as the
+ * title: a venue/producing company appended as a disambiguator ("The Cherry
+ * Orchard (Park Avenue Armory)"), and a heading captured from CSS
+ * `text-transform: uppercase` ("AMERICA, WHO HURT YOU?").
+ *
+ * The gate asks the SAME function the ingestion path and the sweep script
+ * ask — normalizeShowTitle() — so "what validate-data rejects" and "what the
+ * fixer produces" cannot drift apart.
+ *
+ * It errors only when normalisation would actually CHANGE the title, never
+ * merely because a title was detected as shouted. That distinction is the
+ * whole fix for the wedged-CI defect: `BBC & RSC` is all-caps and 3 tokens,
+ * but every token is a legitimate initialism, so it converts to itself. The
+ * first version of this gate errored on detection, which meant the build was
+ * red and `fix-show-titles.js` reported nothing to fix — no available action,
+ * forever. Titles needing a human casing call (MANUAL_REVIEW_IDS) warn, for
+ * the same reason: there is no automatic fix, so failing on them would be a
+ * build nobody can turn green.
+ */
+function validateShowTitles(shows) {
+  info('Checking show titles for scrape artifacts (venue suffix / ALL-CAPS)...');
+  const venueVocabulary = buildVenueVocabulary(shows);
+  let bad = 0;
+
+  for (const show of shows) {
+    const result = normalizeShowTitle(show, { venueVocabulary });
+
+    if (result.manualReview) {
+      warn(`Show "${show.title}" (${show.id}) is ALL-CAPS in a language whose house style this module does not encode — a human must supply the casing. Listed in MANUAL_REVIEW_IDS in scripts/lib/title-display-case.js.`);
+      continue;
+    }
+
+    if (!result.changed) continue;
+    bad++;
+    const how = result.steps.map(st => st.kind).join(' + ');
+    error(`Show "${show.title}" (${show.id}) has a scrape artifact in its title (${how}). Expected: "${result.title}". Fix with: node scripts/fix-show-titles.js --apply. If the current title is genuinely correct, add the show id to KEEP_SHOUTED_IDS (scripts/lib/title-display-case.js) for the caps case, or widen the exemptions in scripts/lib/title-venue-suffix.js for the parenthetical case.`);
+  }
+
+  if (bad === 0) ok('No scrape artifacts in show titles');
 }
 
 function validateStatus(shows) {
@@ -5113,6 +5143,7 @@ function runValidation() {
   validateNoDuplicates(shows);
   console.log('');
   validateRequiredFields(shows);
+  validateShowTitles(shows);
   console.log('');
   validateStatus(shows);
   validateShowTypes(shows);

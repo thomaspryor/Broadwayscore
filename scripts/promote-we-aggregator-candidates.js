@@ -51,6 +51,7 @@ const {
 } = require('./lib/we-listing-discover');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { normalizeShowTitle } = require('./lib/show-title-normalize');
 
 const USAGE = `promote-we-aggregator-candidates.js — West End aggregator-roundup auto-promotion backstop.
 
@@ -171,12 +172,20 @@ function buildWestEndAggregatorShowEntry(candidate) {
   // have round-tripped through another WE discovery path already carrying the
   // suffix); without this guard it doubles, producing IDs like
   // `beetlejuice-the-musical-west-end-west-end-2026` (BRO-3237).
-  const slugBase = (candidate.slug || foldDiacritics(candidate.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  // BRO-3863 — normalise BEFORE the slug/id are derived from the title.
+  // Aggregator listings disambiguate same-title productions by appending the
+  // venue ("The Cherry Orchard (Park Avenue Armory)"); taken verbatim, that
+  // suffix reaches the reader AND the row's slug and id. Same canonical
+  // normaliser the validate-data.js gate and fix-show-titles.js use, so a row
+  // written here can never fail the gate that guards it.
+  const normalizedTitle = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }).title;
+
+  const slugBase = (candidate.slug || foldDiacritics(normalizedTitle).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
   const slug = withMarketSuffix(slugBase, 'west-end');
   const id = `${slug}-${year}`;
   return {
     id,
-    title: candidate.title,
+    title: normalizedTitle,
     slug,
     // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
     // cousin of BRO-160's buildShowEntry fix (card #1921). Returns null on a

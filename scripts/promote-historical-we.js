@@ -28,6 +28,7 @@ const { foldDiacritics } = require('./lib/title-match');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { normalizeShowTitle } = require('./lib/show-title-normalize');
 
 const USAGE = `promote-historical-we.js — Promote corroborated WE historical candidates into shows.json.
 
@@ -67,14 +68,22 @@ function slugify(s) {
 }
 
 function buildShowEntry(candidate) {
-  const titleSlug = slugify(candidate.title);
+  // BRO-3863 — normalise BEFORE the slug/id are derived from the title.
+  // Aggregator listings disambiguate same-title productions by appending the
+  // venue ("The Cherry Orchard (Park Avenue Armory)"); taken verbatim, that
+  // suffix reaches the reader AND the row's slug and id. Same canonical
+  // normaliser the validate-data.js gate and fix-show-titles.js use, so a row
+  // written here can never fail the gate that guards it.
+  const normalizedTitle = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }).title;
+
+  const titleSlug = slugify(normalizedTitle);
   const [seasonStartYear] = candidate.season.split('-');
   // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
   // class as BRO-3237 if titleSlug already carries "-west-end".
   const id = `${withMarketSuffix(titleSlug, 'west-end')}-${seasonStartYear}`;
   return {
     id,
-    title: candidate.title,
+    title: normalizedTitle,
     slug: id,
     // sanitizeVenueForWrite (card #994) refuses a placeholder/neighbourhood-
     // blob venue string, returning null — main()'s promotion loop must skip

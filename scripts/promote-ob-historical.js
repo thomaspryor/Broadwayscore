@@ -52,6 +52,7 @@ const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { withMarketSuffix } = require('./lib/market-slug');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { normalizeShowTitle } = require('./lib/show-title-normalize');
 
 const USAGE = `promote-ob-historical.js — Promote Playbill-validated OB historical candidates into shows.json with.
 
@@ -76,7 +77,15 @@ function slugify(s) {
 }
 
 function buildShowEntry(r) {
-  const titleSlug = slugify(r.title);
+  // BRO-3863 — normalise BEFORE the slug/id are derived from the title.
+  // Aggregator listings disambiguate same-title productions by appending the
+  // venue ("The Cherry Orchard (Park Avenue Armory)"); taken verbatim, that
+  // suffix reaches the reader AND the row's slug and id. Same canonical
+  // normaliser the validate-data.js gate and fix-show-titles.js use, so a row
+  // written here can never fail the gate that guards it.
+  const normalizedTitle = normalizeShowTitle({ title: r.title, venue: r.venue }).title;
+  const titleSlug = slugify(normalizedTitle);
+
   const year = String((r.parsed?.titleParse?.year) || new Date().getFullYear());
   // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
   // class as BRO-3237 if titleSlug already carries "-off-broadway".
@@ -85,7 +94,7 @@ function buildShowEntry(r) {
   const closing = r.parsed?.dates?.closingDate || null;
   return {
     id,
-    title: r.title,
+    title: normalizedTitle,
     // validate-data.js requires OB slugs to contain "off-broadway". Use the
     // full id so the slug is unique even across cross-year revivals.
     slug: id,
