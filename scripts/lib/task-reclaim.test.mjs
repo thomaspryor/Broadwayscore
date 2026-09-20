@@ -26,6 +26,21 @@ test('reclaims an idle, unstarted, unduplicated trapped task', () => {
   assert.equal(actionOf(rows, 9), 'reclaim');
 });
 
+// ── #794: a trashed Notion page keeps its Status property frozen (task
+// #1811) — TERMINAL_CARD_STATUSES.has(card.status) alone can't see it, so
+// an archived-but-no-outcome card would otherwise sail past this guard and
+// get reclaimed as pending even though the page refuses every write and
+// can never be worked or closed normally.
+test('#794: never reclaims a card that is archived/trashed, even with a non-terminal frozen status and no outcome', () => {
+  const rows = classify([trapped(9)], { cardOf: () => ({ status: 'In progress', archived: true, lastEditedAt: hAgo(72) }) });
+  assert.equal(actionOf(rows, 9), 'park-outcome');
+});
+
+test('#794: still parks a literal terminal status (Archived/Cancelled/Done) with no card.archived flag set — pre-existing behavior preserved', () => {
+  const rows = classify([trapped(9)], { cardOf: () => ({ status: 'Archived', lastEditedAt: hAgo(72) }) });
+  assert.equal(actionOf(rows, 9), 'park-outcome');
+});
+
 // ── C1: the duplicate-live blocker ─────────────────────────────────────────
 test('C1: skips a trapped task whose Notion marker already has a LIVE twin', () => {
   const live = [{ id: '1164', subject: 'Totally different title', description: `[notion:${nid(9)}] P0 Now · Not started · Data` }];
