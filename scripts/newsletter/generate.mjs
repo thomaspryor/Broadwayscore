@@ -519,10 +519,33 @@ function loadOutletTierMap() {
 // count toward the score in the first place); everything else passes
 // untouched. See fresh-run-reviews.mjs for the incident and the owner
 // decision behind the T1/T2 rule.
+let _reviewsByShow = null;
+function reviewsForShow(showId) {
+  if (!_reviewsByShow) {
+    _reviewsByShow = new Map();
+    for (const r of reviews) {
+      if (!r || !r.showId) continue;
+      let bucket = _reviewsByShow.get(r.showId);
+      if (!bucket) { bucket = []; _reviewsByShow.set(r.showId, bucket); }
+      bucket.push(r);
+    }
+  }
+  return _reviewsByShow.get(showId) || [];
+}
+
 function hasFreshRunCoverage(show) {
+  if (!show || !show.id) return true;
   const tiers = loadOutletTierMap();
+  // An unreadable/empty outlet-registry.json makes loadOutletTierMap() return
+  // an empty Map (its parse is wrapped in a bare `catch {}`), which would make
+  // EVERY outlet resolve to DEFAULT_TIER=3 — no review could ever be T1/T2 and
+  // the gate would silently drop every returning production from the
+  // newsletter. Fail open on a missing registry: this gate is an editorial
+  // nicety, not a correctness guarantee, and must never be the reason a real
+  // opening disappears (adversarial review, 2026-09-20).
+  if (tiers.size === 0) return true;
   const tierOf = (outletId) => tiers.get(outletId) || DEFAULT_TIER;
-  return hasFreshRunReview(show, reviews.filter((r) => r.showId === show.id), tierOf);
+  return hasFreshRunReview(show, reviewsForShow(show.id), tierOf);
 }
 
 // Tier-weighted mean — matches src/lib/scoring.ts calculateCriticScore().
@@ -766,7 +789,12 @@ function broadwayOpenings() {
   // Only feature shows we actually have reviews for (never name a no-review show).
   const events = openingEventsForWeek('broadway')
     .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
-    .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
+    .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); })
+    // Same fresh-run gate as the three London/OB opening sections (BRO-3822).
+    // Missed on the first pass, which left the BROADWAY edition's own
+    // headline section — the one most readers see — announcing a returning
+    // production on prior-run reviews (adversarial review, 2026-09-20).
+    .filter(e => hasFreshRunCoverage(e.show));
   if (!events.length) return { html: null, list: [], reopeningIds: new Set() };
   events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
