@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-20T16:56:56.185Z",
+  "generatedAt": "2026-09-20T17:27:17.112Z",
   "summary": {
-    "total": 5,
-    "high": 0,
+    "total": 6,
+    "high": 1,
     "medium": 4,
     "low": 1
   },
@@ -141,6 +141,33 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
+    },
+    {
+      "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
+      "normalizedUrl": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting",
+      "candidates": [
+        {
+          "showId": "two-strangers-bway-2025",
+          "file": "nysr--frank-scheck.json",
+          "publishDate": "November 20, 2025",
+          "openingDate": "2025-11-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nysr"
+        },
+        {
+          "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+          "file": "nysr--unknown.json",
+          "publishDate": null,
+          "openingDate": "2025-06-02",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nysr"
+        }
+      ],
+      "suggestedWinner": "two-strangers-bway-2025",
+      "reason": "publishDate November 20, 2025 is 0 days from two-strangers-bway-2025 opening (2025-11-20)",
+      "confidence": "high"
     }
   ]
 }
