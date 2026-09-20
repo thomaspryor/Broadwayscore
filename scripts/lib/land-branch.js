@@ -88,6 +88,7 @@ function formatLandLine(branch, result) {
     const note = result.pushed ? '' : ' (already on origin/main, no push)';
     return `LANDED: ${branch} → ${result.sha} in ${secs}s (attempts ${result.attempts})${note}`;
   }
+  if (result.dryRun) return `DRY-RUN OK: ${branch} → ${result.sha} checks green in ${secs}s, push skipped`;
   const why = result.failedCheck ? `${result.failedCheck}: ${result.reason || ''}` : (result.reason || 'unknown');
   return `REFUSED: ${why} (attempts ${result.attempts}, ${secs}s)`;
 }
@@ -250,7 +251,7 @@ function landBranch(o) {
 
       if (dryRun) {
         log(`[land] dry-run: checks green at ${head.slice(0, 10)} — push skipped`);
-        return done({ landed: false, sha: head, attempts: attempt, pushed: false, reason: 'dry-run: checks green, push skipped', files });
+        return done({ landed: false, dryRun: true, sha: head, attempts: attempt, pushed: false, reason: 'dry-run: checks green, push skipped', files });
       }
 
       // Did origin/main move while the checks ran? Then this tree was verified

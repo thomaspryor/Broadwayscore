@@ -8,6 +8,7 @@
  * Prints exactly one verdict line and exits 0/1:
  *   LANDED: <branch> → <sha> in <s>s (attempts N)
  *   REFUSED: <reason>
+ *   DRY-RUN OK: <branch> → <sha> checks green …   (--dry-run only; exit 0)
  *
  * Safe to run from the shared main checkout: the lib does all of its work in
  * a throwaway detached worktree it creates and removes itself, so the
@@ -82,7 +83,9 @@ function main(argv = process.argv.slice(2), land = landBranch) {
     log: (m) => console.error(m),
   });
   console.log(formatLandLine(args.branch, result));
-  return result.landed ? 0 : 1;
+  // A dry-run whose checks are green is a success for the caller asking
+  // "would this land?" — only a real refusal (red check, conflict, lost race) is exit 1.
+  return result.landed || result.dryRun ? 0 : 1;
 }
 
 if (require.main === module) {

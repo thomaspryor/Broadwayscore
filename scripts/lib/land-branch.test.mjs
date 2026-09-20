@@ -310,10 +310,12 @@ test('dry-run: rebases and checks, never pushes, reports the would-be sha', () =
     let pushes = 0;
     const r = landBranch({ branch: 'feat-dry', repoDir: w.repoDir, dryRun: true, checks: greenChecks, pushMain: () => { pushes++; } });
     assert.equal(r.landed, false);
+    assert.equal(r.dryRun, true);
     assert.equal(r.sha, tip);
     assert.equal(pushes, 0);
     assert.match(r.reason, /dry-run/);
     assert.equal(w.isAncestorOfOrigin(tip), false);
+    assert.match(formatLandLine('feat-dry', r), /^DRY-RUN OK: feat-dry → [0-9a-f]{40} checks green/);
   } finally { w.cleanup(); }
 });
 
