@@ -26,6 +26,15 @@
 //   falls back to a `?::<name>` key. Two such failures sharing a title collapse
 //   into one key — surfaced via the returned `unlocated` count rather than
 //   hidden, so a caller doing before/after diffing can decide how to treat it.
+//
+// failureType
+//   Each failure value also carries the block's `failureType:` diagnostic when
+//   one follows the location line ('testCodeFailure', 'subtestsFailed',
+//   'cancelledByParent', …). The KEY is unchanged — every existing consumer
+//   diffs on `<file>::<name>` exactly as before — but a caller that needs to
+//   tell "this file's subtests failed" from "this file crashed at load" (both
+//   are `not ok N - <file>` with `location: <file>:1:1` in the nested shape;
+//   scripts/lib/land-gate-delta.js, BRO-3873) can read it off the value.
 
 const path = require('node:path');
 
@@ -33,12 +42,16 @@ const path = require('node:path');
  * @param {string} tapOutput - stdout of `node --test --test-reporter=tap ...`
  * @param {string} treeRoot - absolute path failures' `location:` should be made
  *   relative to (the checkout root the test files were run from)
- * @returns {{failures: Map<string,{file:string,name:string}>, totals:{tests:number|null,fail:number|null}, sawTap: boolean, unlocated: number}}
+ * @returns {{failures: Map<string,{file:string,name:string,failureType?:string}>, totals:{tests:number|null,fail:number|null}, sawTap: boolean, unlocated: number}}
  */
 function parseTapOutput(tapOutput, treeRoot) {
   const failures = new Map();
   const totals = { tests: null, fail: null };
   let pending = null;
+  // The most recently keyed failure, still inside its diagnostic block: the
+  // `failureType:` line comes AFTER `location:` in node's TAP output, so it
+  // is attached here once the entry already exists.
+  let last = null;
   let sawTap = false;
   let unlocated = 0;
 
@@ -47,6 +60,13 @@ function parseTapOutput(tapOutput, treeRoot) {
     if (notOk) {
       sawTap = true;
       pending = notOk[1];
+      last = null;
+      continue;
+    }
+    if (/^\s*ok \d+ /.test(line)) last = null;
+    const ft = /^\s*failureType:\s*'([^']+)'\s*$/.exec(line);
+    if (ft && last && !last.failureType) {
+      last.failureType = ft[1];
       continue;
     }
     if (pending) {
@@ -54,7 +74,8 @@ function parseTapOutput(tapOutput, treeRoot) {
       if (loc) {
         const abs = String(loc[1]).replace(/:\d+:\d+$/, '');
         const file = (treeRoot ? path.relative(treeRoot, abs) : abs) || abs;
-        failures.set(`${file}::${pending}`, { file, name: pending });
+        last = { file, name: pending };
+        failures.set(`${file}::${pending}`, last);
         pending = null;
         continue;
       }
