@@ -51,6 +51,7 @@ const {
 } = require('./lib/we-listing-discover');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 
 const USAGE = `promote-we-aggregator-candidates.js — West End aggregator-roundup auto-promotion backstop.
 
@@ -161,7 +162,7 @@ function decideWestEndAggregatorPromotion(candidate, options = {}) {
 // later regardless of how a show was added.
 const WE_AGGREGATOR_OPEN_MAX_AGE_DAYS = 120;
 
-function buildWestEndAggregatorShowEntry(candidate) {
+function buildWestEndAggregatorShowEntry(candidate, venueVocabulary) {
   const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
   const year = dm ? Number(dm[1]) : new Date().getFullYear();
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
@@ -171,12 +172,20 @@ function buildWestEndAggregatorShowEntry(candidate) {
   // have round-tripped through another WE discovery path already carrying the
   // suffix); without this guard it doubles, producing IDs like
   // `beetlejuice-the-musical-west-end-west-end-2026` (BRO-3237).
-  const slugBase = (candidate.slug || foldDiacritics(candidate.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  // BRO-3863 — normalise BEFORE the slug/id are derived from the title.
+  // Aggregator listings disambiguate same-title productions by appending the
+  // venue ("The Cherry Orchard (Park Avenue Armory)"); taken verbatim, that
+  // suffix reaches the reader AND the row's slug and id. Same canonical
+  // normaliser the validate-data.js gate and fix-show-titles.js use, so a row
+  // written here can never fail the gate that guards it.
+  const normalizedTitle = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary }).title;
+
+  const slugBase = (candidate.slug || foldDiacritics(normalizedTitle).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
   const slug = withMarketSuffix(slugBase, 'west-end');
   const id = `${slug}-${year}`;
   return {
     id,
-    title: candidate.title,
+    title: normalizedTitle,
     slug,
     // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
     // cousin of BRO-160's buildShowEntry fix (card #1921). Returns null on a
@@ -295,6 +304,13 @@ async function main() {
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
+
+  // BRO-3863 — the gate (validate-data.js) builds the corpus venue vocabulary
+  // and this writer must too, or the two disagree: a "(Bridge)" suffix would
+  // survive promotion here and then fail validation because some OTHER show's
+  // venue is "Bridge". Writer/gate equivalence is the point of routing both
+  // through normalizeShowTitle (adversarial review finding).
+  const venueVocabulary = buildVenueVocabulary(showsData.shows);
   const existingCandidates = showsData.shows
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
     .map(s => ({ id: s.id, title: s.title, venue: s.venue }));
@@ -341,7 +357,7 @@ async function main() {
       continue;
     }
 
-    const entry = buildWestEndAggregatorShowEntry(c);
+    const entry = buildWestEndAggregatorShowEntry(c, venueVocabulary);
     // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
     // placeholder/neighbourhood-blob venue — refuse to write a garbage venue
     // string rather than silently promoting it (card #1921, cousin of

@@ -81,6 +81,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
 const { classifyShow } = require('./lib/classify-show');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titleCaseFromAllCaps } = require('./lib/playbill-broadway-schedule');
+const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const {
   OB_VENUE_CONFIGS,
   scrapeVenueListing,
@@ -592,7 +593,11 @@ async function fetchShowsFromPlaybillBroadway() {
       return null;
     }
     return {
-      title: titleCaseFromAllCaps(e.title),
+      // Canonical normaliser, not the local titleCaseFromAllCaps(): that
+      // helper is Latin-1 only, has no venue-suffix handling, and would
+      // disagree with the validate-data.js gate. One definition of a correct
+      // title, shared by ingestion, the gate and the sweep.
+      title: normalizeShowTitle({ title: e.title, venue: e.venue }).title,
       venue,
       slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: e.opening || null,
@@ -2137,6 +2142,13 @@ async function discoverShows() {
   const existingSlugs = new Set(data.shows.map(s => s.slug));
   const existingIds = new Set(data.shows.map(s => s.id));
 
+  // BRO-3863 — oracle 2 of the venue-suffix detector (see
+  // scripts/lib/title-venue-suffix.js): the set of venue names the corpus
+  // already knows about, so a title ending in "(Soho Playhouse)" is
+  // recognised even when THIS row's own venue field says something else.
+  // Built once from the pre-existing corpus rather than per candidate.
+  const discoveryVenueVocabulary = buildVenueVocabulary(data.shows);
+
   // Build todaytixId index for fast dedup
   const existingTodaytixIds = new Map();
   for (const s of data.shows) {
@@ -2258,6 +2270,31 @@ async function discoverShows() {
       }
     }
     appendReconciliationAudit(auditEntries, { mode: { dryRun } });
+  }
+
+  // BRO-3863 — normalise every candidate title BEFORE anything reads it.
+  //
+  // Show-Score's listing pages disambiguate same-title productions in their
+  // own UI by appending the venue ("The Cherry Orchard (Park Avenue
+  // Armory)"), and the Show-Score branch above takes that display string as
+  // the title verbatim. Left in place it propagates into `slug` and `id`,
+  // which is why the corpus carries rows literally named
+  // the-cherry-orchard-park-avenue-armory-off-broadway-2026.
+  //
+  // This runs HERE, ahead of the dedup/twin loop below, not next to
+  // slugify() further down. deduplication.js's ordinary matcher already
+  // strips parentheticals, but its no-opening-date twin guard compares
+  // LITERAL titles — so a venue-qualified candidate slipped past that one
+  // specific protection and only acquired the existing show's title
+  // afterwards, minting a duplicate row. Normalising first means every
+  // downstream comparison sees the title the row will actually have
+  // (adversarial review finding).
+  for (const show of discoveredShows) {
+    const titleFix = normalizeShowTitle(show, { venueVocabulary: discoveryVenueVocabulary });
+    if (titleFix.changed) {
+      console.log(`  [TITLE] "${show.title}" -> "${titleFix.title}" (${titleFix.steps.map(st => st.kind).join(' + ')})`);
+      show.title = titleFix.title;
+    }
   }
 
   for (const show of discoveredShows) {
