@@ -29,9 +29,16 @@
 'use strict';
 
 // Linear's own terminal state types (state.type on the GraphQL Issue type).
-// A card reaching either of these means someone concluded it — not merely
+// A card reaching any of these means someone concluded it — not merely
 // moved it between working states (e.g. "In Progress" -> "In Review").
-const TERMINAL_STATE_TYPES = new Set(['completed', 'canceled']);
+// Includes 'duplicate': this team's "Duplicate" state carries that as its
+// OWN state.type (scripts/lib/linear-duplicate-gate.js's DUPLICATE_STATE_TYPE
+// constant), not folded into 'canceled' — omitting it here meant a Duplicate-
+// closed issue looked non-terminal to checkIssueStaleness, and moving IT
+// into "In Progress" (or Done/Canceled INTO Duplicate) wrongly warned or
+// failed to warn about reopening/concluding it (adversarial review finding,
+// linear-brain.js's update --state cousin fix, BRO-3869).
+const TERMINAL_STATE_TYPES = new Set(['completed', 'canceled', 'duplicate']);
 
 // issue: linear-client.getIssue()'s return shape.
 // sessionKnownAt: ISO 8601 string — when THIS session last knew the issue's
@@ -84,4 +91,27 @@ function checkIssueStaleness(issue, sessionKnownAt) {
   return { stale: signals.length > 0, signals };
 }
 
-module.exports = { checkIssueStaleness, TERMINAL_STATE_TYPES };
+// Sorted-ascending copy of a comments connection's nodes, truncated to the
+// newest `n`. Shared by every caller that wants "the last N comments" from a
+// Linear issue query — the comments(first: 50, orderBy: createdAt) connection
+// does NOT reliably return createdAt-ascending order (confirmed live against
+// BRO-3456: it comes back newest-first despite the query's orderBy), so a
+// bare `.slice(-n)` on the raw nodes silently shows the OLDEST n instead
+// (code-review finding, BRO-3869). Extracted here rather than duplicated in
+// every caller (linear-session.js's cmdClaim, linear-brain.js's update) —
+// same technique as linear-dispatch.js's sortedCommentBodies, but keeping
+// the full {id, createdAt, user, body} shape callers need to print an
+// attributed excerpt, not just the body string.
+function newestComments(issue, n) {
+  const nodes = (issue && issue.comments && issue.comments.nodes) || [];
+  return nodes
+    .slice()
+    .sort((a, b) => {
+      const ca = String((a && a.createdAt) || '');
+      const cb = String((b && b.createdAt) || '');
+      return ca < cb ? -1 : ca > cb ? 1 : 0;
+    })
+    .slice(-n);
+}
+
+module.exports = { checkIssueStaleness, TERMINAL_STATE_TYPES, newestComments };

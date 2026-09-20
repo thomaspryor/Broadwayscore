@@ -50,7 +50,7 @@ const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
-const { checkIssueStaleness } = require('./lib/linear-staleness-check');
+const { checkIssueStaleness, newestComments } = require('./lib/linear-staleness-check');
 
 const USAGE = `Usage:
   node scripts/linear-session.js claim --issue=BRO-123
@@ -196,24 +196,9 @@ async function cmdClaim(args) {
       // name + a pointer to the issue URL rather than silently saying nothing.
       console.error(`\n⚠️  ${issue.identifier} was "${plan.previousStateName}" (a concluded state) — you're reopening it.`);
       console.error('   Read why it was concluded before proceeding:');
-      // Sort ascending before taking the last 3 — the comments(first: 50,
-      // orderBy: createdAt) connection does NOT reliably return
-      // createdAt-ascending order (same reason sortedCommentBodies() exists
-      // in linear-dispatch.js, used elsewhere in THIS file's own done-gate
-      // check). Verified live against BRO-3456: its raw nodes come back
-      // NEWEST-first — an un-sorted .slice(-3) would have shown the 3
-      // OLDEST comments (early investigation), not the actual "shipped
-      // this, don't revert" conclusion — exactly defeating this warning's
-      // purpose (code-review finding, BRO-3869).
-      const comments = ((issue.comments && issue.comments.nodes) || [])
-        .slice()
-        .sort((a, b) => {
-          const ca = String((a && a.createdAt) || '');
-          const cb = String((b && b.createdAt) || '');
-          return ca < cb ? -1 : ca > cb ? 1 : 0;
-        });
+      const comments = newestComments(issue, 3);
       if (comments.length > 0) {
-        for (const c of comments.slice(-3)) {
+        for (const c of comments) {
           const author = (c.user && c.user.name) || 'unknown';
           const snippet = String(c.body || '').replace(/\s+/g, ' ').slice(0, 200);
           console.error(`   [${c.createdAt}] ${author}: ${snippet}${snippet.length === 200 ? '…' : ''}`);

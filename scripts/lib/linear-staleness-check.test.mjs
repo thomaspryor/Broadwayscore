@@ -93,6 +93,16 @@ test('checkIssueStaleness tolerates a missing comments connection', () => {
   assert.equal(result.stale, false);
 });
 
-test('TERMINAL_STATE_TYPES is exactly completed/canceled', () => {
-  assert.deepEqual([...TERMINAL_STATE_TYPES].sort(), ['canceled', 'completed']);
+test('TERMINAL_STATE_TYPES is exactly completed/canceled/duplicate', () => {
+  // 'duplicate' included per linear-duplicate-gate.js's DUPLICATE_STATE_TYPE
+  // constant — this team's "Duplicate" state carries that as its own
+  // state.type, not folded into 'canceled' (adversarial review finding).
+  assert.deepEqual([...TERMINAL_STATE_TYPES].sort(), ['canceled', 'completed', 'duplicate']);
+});
+
+test('checkIssueStaleness treats a Duplicate-closed issue as terminal too', () => {
+  const dup = { identifier: 'BRO-1', state: { name: 'Duplicate', type: 'duplicate' }, comments: { nodes: [] } };
+  const result = checkIssueStaleness(dup, '2026-09-16T12:00:00Z');
+  assert.equal(result.stale, true);
+  assert.equal(result.signals[0].type, 'terminal-state');
 });

@@ -28,6 +28,7 @@ const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
+const { TERMINAL_STATE_TYPES, newestComments } = require('./lib/linear-staleness-check');
 
 const USAGE = `linear-brain.js — file a Linear issue through the one creation chokepoint.
 
@@ -418,6 +419,31 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         } else {
           duplicateTwin = dupGate.existingTarget;
         }
+      }
+
+      // BRO-3869 cousin: `linear-session.js claim` warns automatically when
+      // reopening a Done/Canceled issue (the exact shape of the incident that
+      // filed BRO-3869 — a sibling session concluded+shipped a card while
+      // this session was still investigating it), but `update --state` is
+      // this repo's OTHER, more general path that can move an issue OUT of a
+      // terminal state, and had no equivalent warning. Fires whenever this
+      // call is a real transition (isRealTransition, computed above) FROM a
+      // terminal type TO a non-terminal one — never blocks, matches the
+      // done-gate's own "warn, then still allow the write" precedent above.
+      if (isRealTransition && TERMINAL_STATE_TYPES.has(issue.state && issue.state.type) && !TERMINAL_STATE_TYPES.has(target.type)) {
+        console.error(`\n⚠️  ${issue.identifier} was "${issue.state.name}" (a concluded state) — you're reopening it.`);
+        console.error('   Read why it was concluded before proceeding:');
+        const recent = newestComments(issue, 3);
+        if (recent.length > 0) {
+          for (const c of recent) {
+            const author = (c.user && c.user.name) || 'unknown';
+            const snippet = String(c.body || '').replace(/\s+/g, ' ').slice(0, 200);
+            console.error(`   [${c.createdAt}] ${author}: ${snippet}${snippet.length === 200 ? '…' : ''}`);
+          }
+        } else if (issue.url) {
+          console.error(`   (no comments fetched — read ${issue.url} directly)`);
+        }
+        console.error('');
       }
 
       // ORDER MATTERS, and the first version had it backwards. It moved the
