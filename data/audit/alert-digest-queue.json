@@ -1060,5 +1060,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-20T03:50:40.980Z"
+  },
+  {
+    "conditionKey": "watchdog-park:796",
+    "title": "Watchdog parked #796 — redispatch never produced a launch",
+    "description": "Watchdog: card \"BSC Daily: Data: undispatchable backlog cards\" was claimed for redispatch at 2026-09-20T03:48:27.051Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 796), then re-arm with node scripts/bsc-next.js --id 796 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T04:04:16.574Z"
+  },
+  {
+    "conditionKey": "watchdog-park:797",
+    "title": "Watchdog parked #797 — redispatch never produced a launch",
+    "description": "Watchdog: card \"BSC Daily: Data: T1/T2 silent review gaps\" was claimed for redispatch at 2026-09-20T03:48:28.877Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 797), then re-arm with node scripts/bsc-next.js --id 797 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T04:04:16.576Z"
   }
 ]
