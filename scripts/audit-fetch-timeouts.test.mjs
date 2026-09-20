@@ -407,6 +407,35 @@ test('scripts/discover-new-shows.js has zero unprotected call sites (BRO-108, PR
   assert.deepEqual(findings, [], `expected discover-new-shows.js to be clean, got: ${JSON.stringify(findings, null, 2)}`);
 });
 
+// --- end-to-end regression: the 7 https.request() sites fixed in BRO-3838 ---
+//
+// The scanner's own docstring/usage text advertises `--file=<path>` as a
+// CI-gating mechanism ("exit 1 if it has any findings ... for CI-gating
+// already-clean files against regression"), but that flag has never actually
+// been wired into any GitHub Actions workflow — not even for
+// discover-new-shows.js above, whose only real regression protection is the
+// checkFile() assertion in the test right above this comment. Without an
+// equivalent here, every https.request() call site fixed in this session
+// would have ZERO regression coverage: someone could reintroduce an
+// unprotected `{ timeout: N }`-without-destroy or drop the timeout option
+// entirely on any of these 7 files and nothing would catch it before merge
+// (found live via /what-else after landing BRO-3838 — the CI-gating usage
+// text was aspirational, not actually true anywhere in the repo).
+for (const relPath of [
+  'batch-commercial-research.js',
+  'analyze-rebuild-drops.js',
+  'classify-non-reviews.js',
+  'classify-wrong-production.js',
+  'extract-pull-quotes.js',
+  'generate-related-shows.js',
+  'audit-touring-contamination.js',
+]) {
+  test(`scripts/${relPath} has zero unprotected call sites (BRO-3838 https.request() fix)`, () => {
+    const findings = checkFile(path.join(REPO_ROOT, 'scripts', relPath));
+    assert.deepEqual(findings, [], `expected ${relPath} to be clean, got: ${JSON.stringify(findings, null, 2)}`);
+  });
+}
+
 // --- scanner plumbing ---
 
 test('listScannableFiles finds real scripts/ files and excludes itself + test files', () => {
