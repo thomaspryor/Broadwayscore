@@ -397,6 +397,26 @@ function shouldSuppressCandidate(show, proposedClosingDateISO, todayISO) {
 }
 
 /**
+ * Decides whether a suppressed (future-dated) review-text proposal is safe
+ * to auto-fill into shows.json's closingDate, with no human review.
+ *
+ * Same evidence bar as selectAutoApplyClosures' closure path, minus the
+ * TodayTix corroboration (moot — the show hasn't closed, there's nothing to
+ * corroborate) and the past-date requirement (inverted — this only exists
+ * for FUTURE_DATE_NOT_YET_CLOSED suppressions), plus the SAME extension
+ * guard: a candidate's proposedClosingDate is its most-cited date, not
+ * necessarily its latest-mentioned one, so a run announced through Oct 4 and
+ * later extended to Oct 18 (with only one review yet reflecting that) must
+ * NOT auto-fill the stale Oct 4 date. Ship-check adversarial finding, card #799.
+ */
+function isEligibleForFutureClosingDateFill(candidate) {
+  if (!candidate || candidate.reason !== FUTURE_DATE_NOT_YET_CLOSED) return false;
+  if (candidate.confidence !== 'high') return false;
+  if (candidate.latestMentionedDate && candidate.latestMentionedDate > candidate.proposedClosingDate) return false;
+  return true;
+}
+
+/**
  * Suppression guard for the TodayTix-staleness signal. Unlike the
  * review-text sweep (shouldSuppressCandidate, above), this signal was
  * missing an "already resolved" check entirely:
@@ -474,6 +494,14 @@ function selectAutoApplyClosures(candidates, showsById, todaytixMissingState, to
     const show = showsById[candidate.showId];
     if (!show || show.status !== 'open' || show.closingDate) continue;
 
+    // A show a human has confirmed still running despite TodayTix delisting
+    // (todaytixStalenessIgnore) must not let that same unreliable signal back
+    // in through this two-signal path — shouldSuppressTodayTixCandidate only
+    // filtered it out of the DISPLAYED todaytix candidates list, which this
+    // function never sees (it re-reads missingState directly). Ship-check
+    // adversarial finding, card #799.
+    if (shouldSuppressTodayTixCandidate(show)) continue;
+
     // Never close a show on a date that has not happened yet.
     if (!(candidate.proposedClosingDate < todayISO)) continue;
 
@@ -517,6 +545,7 @@ module.exports = {
   aggregateClosingDateCandidates,
   shouldSuppressCandidate,
   shouldSuppressTodayTixCandidate,
+  isEligibleForFutureClosingDateFill,
   FUTURE_DATE_NOT_YET_CLOSED,
   updateTodayTixMissingState,
   decideTodayTixCandidates,

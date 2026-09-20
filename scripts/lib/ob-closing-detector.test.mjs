@@ -13,6 +13,7 @@ const {
   decideTodayTixCandidates,
   shouldSuppressCandidate,
   shouldSuppressTodayTixCandidate,
+  isEligibleForFutureClosingDateFill,
   findTitleOffsets,
   selectAutoApplyClosures,
 } = require('./ob-closing-detector.js');
@@ -247,6 +248,38 @@ test('suppress-todaytix: missing show record is not suppressed (never throws)', 
   assert.equal(shouldSuppressTodayTixCandidate(undefined), false);
 });
 
+// --- isEligibleForFutureClosingDateFill (card #799 auto-fill gate) ---
+
+const FUTURE_HIGH = {
+  showId: 'america-who-hurt-you-off-broadway-2026',
+  proposedClosingDate: '2026-10-04',
+  latestMentionedDate: '2026-10-04',
+  confidence: 'high',
+  reason: 'future-date-not-yet-closed',
+  evidence: [],
+};
+
+test('future-fill: high confidence, no later mention, is eligible', () => {
+  assert.equal(isEligibleForFutureClosingDateFill(FUTURE_HIGH), true);
+});
+
+test('future-fill: medium confidence stays alert-only (weaker evidence bar)', () => {
+  assert.equal(isEligibleForFutureClosingDateFill({ ...FUTURE_HIGH, confidence: 'medium' }), false);
+});
+
+test('future-fill: refuses when a later date is mentioned (extension guard, ship-check finding)', () => {
+  const extended = { ...FUTURE_HIGH, proposedClosingDate: '2026-10-04', latestMentionedDate: '2026-10-18' };
+  assert.equal(isEligibleForFutureClosingDateFill(extended), false);
+});
+
+test('future-fill: wrong suppression reason is never eligible', () => {
+  assert.equal(isEligibleForFutureClosingDateFill({ ...FUTURE_HIGH, reason: 'already-has-closing-date' }), false);
+});
+
+test('future-fill: missing/undefined candidate is not eligible (never throws)', () => {
+  assert.equal(isEligibleForFutureClosingDateFill(undefined), false);
+});
+
 // --- title-proximity disambiguation (multi-show roundup columns) ---
 //
 // Regression for the 2026-09-08 Spellbound miss: the show's only text-bearing
@@ -325,6 +358,11 @@ test('auto-apply: review agreement alone is not enough (Little Shop class)', () 
 
 test('auto-apply: TodayTix absence alone is not enough (Drunk Shakespeare class)', () => {
   assert.deepEqual(selectAutoApplyClosures([], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: a todaytixStalenessIgnore show never auto-closes off the staleness signal (ship-check finding, card #799)', () => {
+  const ignored = { s1: { id: 's1', status: 'open', todaytixStalenessIgnore: true } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], ignored, MISSING_8, '2026-09-08'), []);
 });
 
 test('auto-apply: medium confidence stays alert-only', () => {

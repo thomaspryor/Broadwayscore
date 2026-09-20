@@ -45,7 +45,7 @@ const {
   decideTodayTixCandidates,
   selectAutoApplyClosures,
   shouldSuppressTodayTixCandidate,
-  FUTURE_DATE_NOT_YET_CLOSED,
+  isEligibleForFutureClosingDateFill,
 } = require('./lib/ob-closing-detector');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -135,7 +135,9 @@ function runReviewTextSweep(obShows) {
         suppressed.push({
           showId: show.id,
           proposedClosingDate: proposal.proposedClosingDate,
+          latestMentionedDate: proposal.latestMentionedDate,
           confidence: proposal.confidence,
+          evidence: proposal.evidence,
           reason: suppress,
         });
         continue;
@@ -218,11 +220,17 @@ function applyConfirmedClosures(showsData, candidates, dryRun, todaytixSkipped) 
  * needs no second signal: the show hasn't closed, so there's no risk of
  * closing it early, only of leaving a knowable date blank until the backlog
  * re-flags it every week for nothing to review (card #799).
+ *
+ * Still carries the SAME extension guard as selectAutoApplyClosures (ship-
+ * check adversarial finding, card #799): a future proposedClosingDate is the
+ * MOST-CITED bucket, not necessarily the latest one a review mentions — a
+ * run announced through Oct 4 that later got extended to Oct 18, with only
+ * one review yet reflecting the extension, would otherwise auto-fill the
+ * stale Oct 4 date. Anything the guard rejects is left in the backlog for
+ * human review instead of being silently written.
  */
 function applyFutureClosingDateFills(showsData, suppressed, dryRun) {
-  const candidates = (suppressed || []).filter(
-    (s) => s.reason === FUTURE_DATE_NOT_YET_CLOSED && s.confidence === 'high'
-  );
+  const candidates = (suppressed || []).filter(isEligibleForFutureClosingDateFill);
   if (candidates.length === 0 || dryRun) return candidates;
 
   const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
