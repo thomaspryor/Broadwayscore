@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { verifyForSignature, findStepRunCommandInWorkflow, JOB_PROXY_COMMANDS } = require('./red-signature-verify-cmd.js');
+const { verifyForSignature, findStepRunCommandInWorkflow, jobExistsInWorkflow, JOB_PROXY_COMMANDS } = require('./red-signature-verify-cmd.js');
 const { explainUnsafeCheckCommand } = require('./autonomous-triage-core.js');
 
 // Small, self-contained fixture with the same shape as .github/workflows/
@@ -136,6 +136,14 @@ test('empty/unreadable workflow text degrades to owner-judgment (never throws)',
 });
 
 // ── real file smoke test ────────────────────────────────────────────────────
+
+test('every JOB_PROXY_COMMANDS key is a real job name in the REAL test.yml (a rename must not silently orphan the proxy)', () => {
+  const dirname = path.dirname(new URL(import.meta.url).pathname);
+  const realYml = fs.readFileSync(path.join(dirname, '..', '..', '.github', 'workflows', 'test.yml'), 'utf8');
+  for (const job of Object.keys(JOB_PROXY_COMMANDS)) {
+    assert.ok(jobExistsInWorkflow(realYml, job), `JOB_PROXY_COMMANDS names job "${job}", which no longer exists in test.yml — every future red-signature card for it will silently degrade to owner-judgment`);
+  }
+});
 
 test('against the REAL test.yml: a known-stable step resolves to its own command', () => {
   const dirname = path.dirname(new URL(import.meta.url).pathname);

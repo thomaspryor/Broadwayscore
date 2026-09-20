@@ -22,9 +22,13 @@
  * a job/step pair parsed out of a workflow file).
  *
  * No external YAML dependency (js-yaml is not installed for lint-workflows'
- * job — see ci-cancellation-guard.js's header) — parsed with the same
- * indentation-aware line reader used there and in
- * scripts/audit-cron-health-coverage.js.
+ * job — see ci-cancellation-guard.js's header) — same indentation-aware
+ * line-reading approach as ci-cancellation-guard.js and
+ * audit-workflow-hygiene-rules.js's job/step walkers, not a shared module
+ * (each file's block-boundary needs differ enough — concurrency-group
+ * lookup vs job/step/run: extraction — that a premature shared abstraction
+ * seemed worse than three small, independently-readable copies; revisit if
+ * a fourth caller shows up).
  */
 'use strict';
 
@@ -147,6 +151,19 @@ function ownerJudgment(note) {
   return { line: 'VERIFY: owner-judgment', note };
 }
 
+// Safety-checks `cmd` once and returns either an armed `{line, note}` (`note`
+// is whatever the caller wants attached — null for a direct step-command hit,
+// an explanation for a job-proxy fallback) or an owner-judgment `{line, note}`
+// built from `unsafeNote(safe)`, where `safe` is explainUnsafeCheckCommand's
+// own `{kind, reason}` — the caller supplies that message since "the step's
+// own command was unsafe" and "the job's supposedly-safe proxy unexpectedly
+// failed" warrant different explanations even though the check is identical.
+function armOrOwnerJudgment(cmd, armedNote, unsafeNote) {
+  const safe = explainUnsafeCheckCommand(cmd);
+  if (safe.ok) return { line: `VERIFY: ${cmd}`, note: armedNote };
+  return ownerJudgment(unsafeNote(safe));
+}
+
 /**
  * @param {{job: string, step: string}} sig one entry from failingStepSignatures()
  * @param {string} rawYmlText contents of .github/workflows/test.yml
@@ -158,9 +175,7 @@ function ownerJudgment(note) {
 function verifyForSignature({ job, step }, rawYmlText) {
   const stepCmd = findStepRunCommandInWorkflow(rawYmlText, job, step);
   if (stepCmd) {
-    const safe = explainUnsafeCheckCommand(stepCmd);
-    if (safe.ok) return { line: `VERIFY: ${stepCmd}`, note: null };
-    return ownerJudgment(
+    return armOrOwnerJudgment(stepCmd, null, (safe) =>
       `The failing step's own command (\`${stepCmd}\`) is not on the safe-form allowlist ` +
       `(${safe.kind}: ${safe.reason}) — an unattended dispatch cannot arm it, so this needs a ` +
       `human to name a safe re-verification command.`
@@ -168,18 +183,14 @@ function verifyForSignature({ job, step }, rawYmlText) {
   }
   const proxy = JOB_PROXY_COMMANDS[job];
   if (proxy) {
-    const safe = explainUnsafeCheckCommand(proxy);
-    if (safe.ok) {
-      return {
-        line: `VERIFY: ${proxy}`,
-        note: `Job-level proxy — the failing step ("${step}") could not be resolved to a single ` +
-          `safe-form command in test.yml (unknown/renamed step, or a multi-line \`run:\` block), so ` +
-          `this re-runs the job's representative check instead of the exact failing one.`,
-      };
-    }
-    return ownerJudgment(
-      `Job-level proxy command for "${job}" unexpectedly failed safe-form validation ` +
-      `(${safe.kind}: ${safe.reason}) — needs a human to name a safe re-verification command.`
+    return armOrOwnerJudgment(
+      proxy,
+      `Job-level proxy — the failing step ("${step}") could not be resolved to a single safe-form ` +
+      `command in test.yml (unknown/renamed step, or a multi-line \`run:\` block), so this re-runs ` +
+      `the job's representative check instead of the exact failing one.`,
+      (safe) =>
+        `Job-level proxy command for "${job}" unexpectedly failed safe-form validation ` +
+        `(${safe.kind}: ${safe.reason}) — needs a human to name a safe re-verification command.`
     );
   }
   return ownerJudgment(
@@ -191,5 +202,10 @@ function verifyForSignature({ job, step }, rawYmlText) {
 module.exports = {
   verifyForSignature,
   findStepRunCommandInWorkflow,
+  // Exported so a test can assert every JOB_PROXY_COMMANDS key still
+  // resolves to a real job in the live workflow file — a job rename
+  // silently orphans its proxy entry otherwise (ship-check finding: the
+  // exact class of silent-drift bug this file exists to fix, one layer up).
+  jobExistsInWorkflow: (rawYmlText, jobDisplayName) => findJobHeaderIdx(String(rawYmlText || '').split('\n'), jobDisplayName) !== -1,
   JOB_PROXY_COMMANDS,
 };

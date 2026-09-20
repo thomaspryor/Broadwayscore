@@ -39,19 +39,20 @@ const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 // SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
 // than a second regex over the command string).
 const { isSafeCheckCommand, extractCheckPaths } = require('./autonomous-triage-core.js');
-const { checksEnv, cardCheckArgv, prepareCheckWorkdir, resolveInstallRoot, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
 // Per-git-call ceiling. Generous enough for a cold fetch on a large repo,
 // short enough that a synchronous caller can promise a bound.
 const GIT_TIMEOUT_MS = 120000;
 
-// resolveInstallRoot (node_modules/gitignored-core-data live at the MAIN
-// checkout, not a git WORKTREE — every code session in this repo runs from
-// one, CLAUDE.md makes it mandatory) now lives in autonomous-checks.js
-// (BRO-3907: promoted there so land-branch.js's callers, which hit the exact
-// same "worktree has no node_modules of its own" gap, get the fix too instead
-// of a second copy — CLAUDE.md §15).
+// node_modules/gitignored-core-data live at the MAIN checkout, not a git
+// WORKTREE (every code session in this repo runs from one, CLAUDE.md makes
+// it mandatory) — `repo` below may be either. prepareCheckWorkdir()
+// (autonomous-checks.js) resolves the real install root itself via
+// resolveInstallRoot(), originally written HERE and promoted there so
+// land-branch.js's callers hit the same fix instead of a second copy
+// (BRO-3907, CLAUDE.md §15).
 
 /**
  * ONE disposable worktree per run: every card verifies against the same
@@ -104,7 +105,10 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   const wt = path.join(dir, 'main');
   try {
     execFileSync('git', ['worktree', 'add', '--detach', wt, sha], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
-    prepareCheckWorkdir(wt, resolveInstallRoot(repo));
+    // prepareCheckWorkdir resolves the real install root itself now (BRO-3907)
+    // — `repo` may be a node_modules-less worktree, same gap this file's
+    // resolveInstallRoot() originally closed only for its own caller.
+    prepareCheckWorkdir(wt, repo);
   } catch (err) {
     // Clean up our OWN tempdir before rethrowing. The caller's `finally` can
     // only remove a checkout it was handed, and it was never handed this one —
