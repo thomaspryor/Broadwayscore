@@ -167,6 +167,40 @@ function maskEmail(value) {
   return `${maskedLocal}@${domain}`;
 }
 
+/**
+ * Replace every REAL (non-placeholder) email-shaped substring in `value` with
+ * a `redacted@<domain>` placeholder — an already-redacted placeholder
+ * (gho_REDACTED@github.com) is left alone, same judgment call as the scan
+ * side. Write-side counterpart to the scan functions below: a caller that
+ * persists free text into a data/audit/** file committed to the PUBLIC repo
+ * should redact BEFORE writing, not rely on this lint to catch it after the
+ * fact (BRO-3866 — enrich-card-acceptance.js's logEnrichmentWrite copied
+ * card.notes/newNotes into data/audit/card-enrichment-log.jsonl verbatim,
+ * and a forwarded-email escalation card's quoted "To: <owner@…>" header rode
+ * straight into the committed log).
+ *
+ * Deliberately NOT maskEmail (first+last local char kept, e.g.
+ * "t***********r@gmail.com") — that format survives a re-scan: EMAIL_RE's
+ * local-part class excludes '*', so the match collapses to the single real
+ * character still sitting next to '@' ("r@gmail.com"), which is itself a
+ * syntactically valid email and re-trips this exact lint (found live: the
+ * first version of this fix left card-enrichment-log.jsonl's redacted rows
+ * still failing lint-committed-pii.js). A bare "redacted" local part instead
+ * satisfies REDACTED_LOCAL_RE, so a re-scan recognizes it as the placeholder
+ * it is — the same mechanism gho_REDACTED@github.com already relies on.
+ *
+ * A fresh RegExp instance (not EMAIL_RE_G) — that module-level regex's
+ * lastIndex is mutated by judgeAt()/firstRealEmail() elsewhere, and sharing
+ * it here would make redaction result depend on unrelated prior scan calls.
+ */
+function redactEmails(value) {
+  const s = String(value || '');
+  return s.replace(new RegExp(EMAIL_RE.source, 'g'), (m) => {
+    const [local, domain] = m.split('@');
+    return REDACTED_LOCAL_RE.test(local) ? m : `redacted@${domain}`;
+  });
+}
+
 function formatPath(pathSegs) {
   return pathSegs.reduce(
     (acc, seg) => (typeof seg === 'number' ? `${acc}[${seg}]` : acc ? `${acc}.${seg}` : String(seg)),
@@ -247,4 +281,4 @@ function scanJsonlValue(text) {
   return findings;
 }
 
-module.exports = { EMAIL_RE, maskEmail, formatPath, scanJsonValue, scanJsonlValue, isRedactedPlaceholder, firstRealEmail };
+module.exports = { EMAIL_RE, maskEmail, redactEmails, formatPath, scanJsonValue, scanJsonlValue, isRedactedPlaceholder, firstRealEmail };

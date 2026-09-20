@@ -9,7 +9,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { scanJsonValue, scanJsonlValue, formatPath, maskEmail, EMAIL_RE } = require('../../scripts/lib/pii-scan.js');
+const { scanJsonValue, scanJsonlValue, formatPath, maskEmail, redactEmails, EMAIL_RE } = require('../../scripts/lib/pii-scan.js');
 const { scanFile, listTrackedAuditFiles, ALLOWLIST } = require('../../scripts/lint-committed-pii.js');
 
 describe('EMAIL_RE', () => {
@@ -29,6 +29,45 @@ describe('maskEmail', () => {
 
   test('leaves a non-email string untouched', () => {
     assert.strictEqual(maskEmail('no email here'), 'no email here');
+  });
+});
+
+// BRO-3866: write-side counterpart to the scan functions. A caller that
+// persists free text into a committed data/audit/** file should redact
+// BEFORE writing (enrich-card-acceptance.js's logEnrichmentWrite).
+describe('redactEmails', () => {
+  test('replaces a real email with a redacted@<domain> placeholder', () => {
+    assert.strictEqual(
+      redactEmails('Contact jane.doe@example.com for details'),
+      'Contact redacted@example.com for details'
+    );
+  });
+
+  test('the placeholder it produces does not re-trip EMAIL_RE-based detection', () => {
+    // Regression: an earlier version used maskEmail's first+last-char format
+    // (t***********r@gmail.com), which still leaves one real local-part
+    // character adjacent to '@' — EMAIL_RE's local-part class excludes '*',
+    // so a re-scan matches that lone character + domain as a fresh "email"
+    // and the file never actually clears the lint it was redacted for.
+    const redacted = redactEmails('To: <thomas.pryor@gmail.com>');
+    assert.strictEqual(scanJsonValue({ notes: redacted }).length, 0);
+  });
+
+  test('leaves an already-redacted placeholder alone (gho_REDACTED@github.com shape)', () => {
+    assert.strictEqual(
+      redactEmails('clone via gho_REDACTED@github.com'),
+      'clone via gho_REDACTED@github.com'
+    );
+  });
+
+  test('redacts every real address in a string, not just the first', () => {
+    const out = redactEmails('From: a@example.com To: b@example.org');
+    assert.strictEqual(out, 'From: redacted@example.com To: redacted@example.org');
+  });
+
+  test('a non-string/nullish value round-trips through String() without throwing', () => {
+    assert.strictEqual(redactEmails(null), '');
+    assert.strictEqual(redactEmails(undefined), '');
   });
 });
 

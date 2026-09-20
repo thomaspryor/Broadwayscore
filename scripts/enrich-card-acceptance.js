@@ -77,6 +77,7 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { redactEmails } = require('./lib/pii-scan.js');
 const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE, OWNER_JUDGMENT_RE } = (() => {
   const gate = require('./lib/verify-gate.js');
   const { SECTION_RE } = require('./lib/autonomous-verify-cmd.js');
@@ -658,7 +659,11 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
       // internal UUID, which makes a manual rollback lookup slower than it
       // needs to be).
       identifier: card.identifier || null, url: card.url || null,
-      previousNotes: card.notes || '', newNotes,
+      // Redacted before it ever reaches disk (BRO-3866, scripts/lib/pii-scan.js
+      // redactEmails) — this JSONL is committed to the PUBLIC repo, and card
+      // notes routinely quote forwarded emails whose headers carry the
+      // owner's/a submitter's real address verbatim.
+      previousNotes: redactEmails(card.notes || ''), newNotes: redactEmails(newNotes),
       // Guardrail-3 demotions, in full. The console line slices detail to 100
       // chars, so it truncates these to uselessness ("demoted 3 ... : pub");
       // this JSONL entry is the durable, greppable record of what the
