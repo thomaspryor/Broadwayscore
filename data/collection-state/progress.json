@@ -893,7 +893,8 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/hollywood-reporter--unknown.json",
       "the-book-of-mormon-west-end-2024/hollywood-reporter--unknown.json",
       "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
-      "darkling-off-west-end-2026/voice-magazine--unknown.json"
+      "darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "data/review-texts/spandex-off-broadway-2026/nytimes--unknown.json"
     ],
     "directCookies": [
       "aida-off-broadway-2027/times-uk--kevin-ng.json",
@@ -964,7 +965,7 @@
     ]
   },
   "startTime": "2026-09-19T12:35:18.916Z",
-  "lastProcessed": "night-city-off-west-end-2026/timeout-london--unknown.json",
+  "lastProcessed": "the-ford-hill-project-off-broadway-2026/abouttheartists--unknown.json",
   "log": [
     {
       "t": "2026-09-19T12:46:11.402Z",
@@ -1387,16 +1388,56 @@
       "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
     },
     {
-      "t": "2026-09-20T04:50:47.004Z",
+      "t": "2026-09-20T04:49:00.099Z",
       "event": "bb-session",
-      "session": "6db223dd",
-      "url": "https://www.ntlive.com/plays/golden-boy/"
+      "session": "5ae9cc63",
+      "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
     },
     {
-      "t": "2026-09-20T04:51:08.045Z",
+      "t": "2026-09-20T04:49:00.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-20T04:49:42.078Z",
       "event": "bb-session",
-      "session": "5a3fcee6",
-      "url": "https://www.ntlive.com/plays/golden-boy/"
+      "session": "0c87c8d3",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-20T04:49:42.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-20T04:51:06.628Z",
+      "event": "bb-session",
+      "session": "c0e420c3",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-20T04:51:22.641Z",
+      "event": "bb-session",
+      "session": "b3648777",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-20T04:51:52.530Z",
+      "event": "bb-session",
+      "session": "ecbc170d",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-20T04:57:53.635Z",
+      "event": "bb-session",
+      "session": "d9bccfc0",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-20T04:58:04.736Z",
+      "event": "bb-session",
+      "session": "67dcb170",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
     }
   ],
   "recoveredAfterFailure": [
