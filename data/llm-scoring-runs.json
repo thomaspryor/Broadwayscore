@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-09-18T16:42:21.505Z",
-    "completedAt": "2026-09-18T16:42:48.186Z",
-    "totalReviews": 44106,
-    "processed": 3,
-    "skipped": 44098,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 32728,
-      "output": 1543,
-      "total": 89185
-    },
-    "costUsd": 0.14788795,
-    "runId": "35367456234",
-    "errorDetails": [
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-18T16:42:50.174Z",
-    "completedAt": "2026-09-18T16:48:57.838Z",
-    "totalReviews": 172,
-    "processed": 172,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 449103,
-      "output": 39565,
-      "total": 488668
-    },
-    "costUsd": 1.2505858,
-    "runId": "35367456234",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-18T17:37:33.436Z",
     "completedAt": "2026-09-18T17:37:33.445Z",
     "totalReviews": 0,
@@ -326305,6 +326267,44 @@
     },
     "costUsd": 1.2606766999999999,
     "runId": "35492644917",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-20T06:47:02.542Z",
+    "completedAt": "2026-09-20T06:47:05.235Z",
+    "totalReviews": 44184,
+    "processed": 0,
+    "skipped": 44182,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 108,
+      "total": 10931
+    },
+    "costUsd": 0.02523965,
+    "runId": "35494076774",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-20T06:47:06.757Z",
+    "completedAt": "2026-09-20T06:53:10.757Z",
+    "totalReviews": 173,
+    "processed": 173,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 451494,
+      "output": 39801,
+      "total": 491295
+    },
+    "costUsd": 1.2615842,
+    "runId": "35494076774",
     "errorDetails": []
   }
 ]
