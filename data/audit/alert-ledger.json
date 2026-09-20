@@ -144,7 +144,7 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-20T20:17:39.256Z",
+      "lastSeen": "2026-09-20T20:21:24.564Z",
       "lastNotifiedAt": "2026-09-20T18:45:10.856Z",
       "lastSurfacedAt": "2026-09-20T18:45:10.856Z",
       "notifyCount": 88,
@@ -3704,62 +3704,54 @@
     "test-yml:red:Lint Workflows:4bdc1e4f": {
       "status": "open",
       "disposition": "auto",
-      "title": "main test.yml red: Lint Workflows / Audit — venue-write guard coverage (card",
-      "firstSeen": "2026-09-20T20:09:30.414Z",
-      "lastSeen": "2026-09-20T20:09:30.414Z",
-      "lastNotifiedAt": "2026-09-20T20:09:30.414Z",
+      "title": "main test.yml red: Data Validation / Run self-contradictory-clear drain acceptance test (needs review-texts) — \"no zero-score-impact self-contradictory-clear remains undrained (BRO-185)\"",
+      "firstSeen": "2026-09-20T20:06:04.701Z",
+      "lastSeen": "2026-09-20T20:21:24.555Z",
+      "lastNotifiedAt": "2026-09-20T20:06:04.701Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
-    },
-    "test-yml:red:Lint Workflows:4bdc1e4f": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Lint Workflows / Audit — venue-write guard coverage (card",
-      "firstSeen": "2026-09-20T20:17:36.480Z",
-      "lastSeen": "2026-09-20T20:17:36.480Z",
-      "lastNotifiedAt": "2026-09-20T20:17:36.480Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-3898"
-    },
-    "test-yml:red:Unit Tests:3dc02b6a": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
-      "firstSeen": "2026-09-20T20:17:38.698Z",
-      "lastSeen": "2026-09-20T20:17:38.698Z",
-      "lastNotifiedAt": "2026-09-20T20:17:38.698Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-3894"
+      "linearIdentifier": "BRO-3895",
+      "silentRefires": 1
     },
     "test-yml:red:E2E Tests:9455d1f4": {
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
-      "firstSeen": "2026-09-20T20:17:38.901Z",
-      "lastSeen": "2026-09-20T20:17:38.901Z",
-      "lastNotifiedAt": "2026-09-20T20:17:38.901Z",
+      "firstSeen": "2026-09-20T20:06:05.167Z",
+      "lastSeen": "2026-09-20T20:21:24.563Z",
+      "lastNotifiedAt": "2026-09-20T20:06:05.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3893"
+      "linearIdentifier": "BRO-3893",
+      "silentRefires": 1
     },
-    "test-yml:red:Data Validation:9b5157f4": {
+    "test-yml:red:Unit Tests:3dc02b6a": {
       "status": "open",
       "disposition": "auto",
-      "title": "main test.yml red: Data Validation / Run self-contradictory-clear drain acceptance test (needs review-texts) — \"no zero-score-impact self-contradictory-clear remains undrained (BRO-185)\"",
-      "firstSeen": "2026-09-20T20:17:39.131Z",
-      "lastSeen": "2026-09-20T20:17:39.131Z",
-      "lastNotifiedAt": "2026-09-20T20:17:39.131Z",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
+      "firstSeen": "2026-09-20T20:06:05.351Z",
+      "lastSeen": "2026-09-20T20:21:24.559Z",
+      "lastNotifiedAt": "2026-09-20T20:06:05.351Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3895"
+      "linearIdentifier": "BRO-3894",
+      "silentRefires": 1
+    },
+    "test-yml:red:Lint Workflows:4bdc1e4f": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Lint Workflows / Audit — venue-write guard coverage (card",
+      "firstSeen": "2026-09-20T20:06:05.566Z",
+      "lastSeen": "2026-09-20T20:21:24.561Z",
+      "lastNotifiedAt": "2026-09-20T20:06:05.566Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3898",
+      "silentRefires": 1
     }
   }
 }
