@@ -2631,6 +2631,14 @@ on:
       # glob; path-listed so a solo edit triggers CI.
       - 'scripts/autonomous-acceptance-recheck.js'
       - 'scripts/autonomous-acceptance-recheck.test.mjs'
+      # BRO-3551: the open-backlog acceptance sweep (report-only — never
+      # closes/comments/mutates a Linear issue). scripts/lib/autonomous-
+      # recheck-core.js's selectOpenBacklogSweepCandidates and scripts/lib/
+      # linear-open-backlog-source.js both ride the 'scripts/lib/**' glob
+      # above; this top-level orchestrator + its colocated test do not, so
+      # they're path-listed here so a solo edit triggers CI (task #1745 gap).
+      - 'scripts/sweep-open-backlog-acceptance.js'
+      - 'scripts/sweep-open-backlog-acceptance.test.mjs'
       # BRO-386: the recheck ledger's commit+push is a SEPARATE step from the
       # bulk health-check commit in data-health-check.yml (a lost bulk-commit
       # push race was silently discarding every RECHECK-AFTER verdict for the
