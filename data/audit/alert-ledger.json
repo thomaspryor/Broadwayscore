@@ -139,13 +139,12 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-20T01:55:19.712Z",
-      "lastNotifiedAt": "2026-09-20T00:19:26.262Z",
-      "lastSurfacedAt": "2026-09-20T00:19:26.262Z",
-      "notifyCount": 86,
+      "lastSeen": "2026-09-20T03:14:59.118Z",
+      "lastNotifiedAt": "2026-09-20T03:14:59.118Z",
+      "lastSurfacedAt": "2026-09-20T03:14:59.118Z",
+      "notifyCount": 87,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 3
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -788,13 +787,13 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-20T01:55:19.710Z",
+      "lastSeen": "2026-09-20T03:14:59.093Z",
       "lastNotifiedAt": "2026-09-20T00:19:24.003Z",
       "lastSurfacedAt": null,
       "notifyCount": 62,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -3085,26 +3084,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-20T00:14:17.732Z",
+      "lastSeen": "2026-09-20T02:37:13.860Z",
       "lastNotifiedAt": "2026-09-19T19:05:52.826Z",
       "lastSurfacedAt": "2026-09-19T19:05:52.826Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-20T00:14:17.736Z",
+      "lastSeen": "2026-09-20T02:37:13.865Z",
       "lastNotifiedAt": "2026-09-19T19:05:52.835Z",
       "lastSurfacedAt": "2026-09-19T19:05:52.835Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3480,13 +3479,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-20T00:14:17.739Z",
+      "lastSeen": "2026-09-20T02:37:13.868Z",
       "lastNotifiedAt": "2026-09-19T19:05:52.840Z",
       "lastSurfacedAt": "2026-09-19T19:05:52.840Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",

@@ -1,0 +1,124 @@
+name: Card Verifiability Audit
+
+# Card #796: "Data: undispatchable backlog cards" health-check row. Root
+# cause was that scripts/audit-card-verifiability.js (regenerates
+# data/audit/card-verifiability.json — read-only w.r.t. Notion/Linear) and
+# scripts/enrich-card-acceptance.js (LLM-drafts + writes acceptance-criteria
+# sections for refused cards) both existed and worked, but were never
+# scheduled anywhere — confirmed via grep across .github/workflows/*.yml and
+# ~/Library/LaunchAgents/*.plist, which found zero cron/launchd invocation
+# outside test.yml's unit-test path triggers. The report only ever got
+# regenerated as a side effect of ad-hoc fix sessions (task #646, BRO-2188,
+# task #1713 x2) — 18 days stale at last count, during which the refused
+# count silently grew from 52 to 62. This workflow is the fix: run the
+# audit -> enrich -> audit cycle daily so the backlog can never again drift
+# unnoticed between manual sessions.
+#
+# Modeled on .github/workflows/check-arm-yield.yml (same repo, same shape).
+#
+# Schedule: 05:30 UTC, ~75min before data-health-check.yml's 06:45 UTC read
+# of data/audit/card-verifiability.json — chosen so the health-check row
+# reflects a same-day-fresh report. check-health-row-absent.js's own 48h
+# staleness tolerance absorbs the occasional late-cron slip this repo's own
+# memory documents (feedback_github_cron_delays.md).
+#
+# Secrets: NOTION_API_KEY (not NOTION_TOKEN — notion-brain.js:45 hard-requires
+# that exact name; some sibling workflows set an env var literally named
+# NOTION_TOKEN that no script actually reads). ANTHROPIC_API_KEY /
+# OPENROUTER_API_KEY / GEMINI_API_KEY give enrich-card-acceptance.js its
+# built-in provider fallback — all four confirmed present via `gh secret
+# list`.
+#
+# Deliberately Notion-only (--from-report, no --source flag): matches this
+# script's own documented history (enrich-card-acceptance.js's main() picked
+# 'notion' as the unflagged default specifically because every prior
+# invocation — manual or otherwise — was Notion-only; defaulting to 'both'
+# would silently start writing to live Linear issues too). Revisit once the
+# Notion->Linear migration (Phase 1, CLAUDE.md rule 6) finishes and Notion
+# stops taking new cards entirely.
+
+on:
+  schedule:
+    - cron: '30 5 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: card-verifiability-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      # Required: notion-brain.js requires @notionhq/client, not in
+      # node_modules without this. Same exact class caught data-health-
+      # check.yml on 2026-07-23 — "every single auto-dispatch on this cron
+      # failed with 'Cannot find module '@notionhq/client'' until this step
+      # was added" (data-health-check.yml's own comment on its identical
+      # step). /ship-check's Codex review caught this workflow repeating that
+      # incident before it ever ran for real.
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # Three steps in one job, same checkout: audit writes
+      # data/audit/card-verifiability.json, enrich reads it back
+      # (--from-report) and drafts/writes acceptance criteria for every
+      # refused card, then audit runs again so the committed report reflects
+      # POST-enrichment state (the number health-check.js's warn row is
+      # keyed on) rather than the pre-enrichment count.
+      - name: Audit, enrich, re-audit
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Unused at --source notion (the default both scripts run at here) —
+          # linear-client.js's getApiKey() only throws inside an actual
+          # graphql() call, which the Notion-only leg never makes. Included
+          # anyway: its audit-secret-scan-always-trace marker (linear-client.js
+          # header) makes scripts/audit-workflow-secret-gaps.js flag its
+          # absence unconditionally (CI-enforced, test.yml:3244) precisely
+          # because a missing-but-only-sometimes-needed secret shipped silently
+          # broken once already (audit-imageless-scored-shows.yml, 2026-08-31).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          node scripts/audit-card-verifiability.js
+          node scripts/enrich-card-acceptance.js --from-report
+          node scripts/audit-card-verifiability.js
+
+      - name: Commit refreshed report
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/card-verifiability.json
+          if git diff --cached --quiet; then
+            echo "No state change to commit"
+            exit 0
+          fi
+          git commit -m "audit: refresh card-verifiability report [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Card Verifiability Audit Failed'
+          description: 'The audit/enrich/re-audit cycle for undispatchable backlog cards crashed — data/audit/card-verifiability.json may now be stale again, which is exactly the failure mode this workflow exists to prevent (card #796).'
+          severity: 'critical'
+          email: 'true'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
