@@ -30,11 +30,17 @@
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const { classifyVenueSuffix } = require('./lib/title-venue-suffix');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const APPLY = process.argv.includes('--apply');
 const AS_JSON = process.argv.includes('--json');
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage:\n  node scripts/fix-show-titles.js            # report (exit 1 if work remains)\n  node scripts/fix-show-titles.js --apply    # write shows.json\n  node scripts/fix-show-titles.js --json');
+    return;
+  }
+
   const doc = loadShows();
   const shows = doc.shows || doc;
 
