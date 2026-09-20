@@ -71,7 +71,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const { runSafeChecks, checksEnv, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { checkLanded } = require('./landing-verify.js');
 
 const MAX_ATTEMPTS = 3;
@@ -83,10 +83,25 @@ const MERGED_TREE_TIMEOUT_MS = 20 * 60 * 1000;
 
 // ── Pure decision helpers ───────────────────────────────────────────────────
 
-/** The first failing check, or null when every check passed (or none ran). */
+/**
+ * The first check that did not PASS, or null when every check passed (or
+ * none ran). Fails closed: a result without `pass: true` — `{name}` alone, a
+ * malformed entry — counts as a failure, never as green.
+ */
 function firstFailedCheck(results) {
-  for (const r of results || []) if (r && r.pass === false) return r;
+  for (const r of results || []) {
+    if (!r || r.pass !== true) return r ? { name: r.name || 'malformed-check', ...r, pass: false } : { name: 'malformed-check', pass: false, detail: 'check result was empty' };
+  }
   return null;
+}
+
+/**
+ * A push failure is only worth a retry when origin/main actually moved —
+ * anything else (a pre-push hook block, auth, a network error) would fail the
+ * same way three times and be misreported as a lost race.
+ */
+function classifyPushFailure({ baseSha, nowBase }) {
+  return nowBase && baseSha && nowBase !== baseSha ? 'race' : 'rejected';
 }
 
 /** Whether a failed attempt gets another go. Bounded, never unbounded. */
@@ -124,6 +139,12 @@ function formatLandLine(branch, result) {
 
 function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) {
   const files = (changedFiles || []).map(String);
+  // Fill the worktree's gitignored gaps (node_modules link, core-data copies)
+  // up front, unconditionally: runSafeChecks only prepares when its own plan
+  // is non-empty, but the merged-tree floor below and the repo's pre-push
+  // hook (which runs from this worktree on push) need them regardless.
+  const linked = prepareCheckWorkdir(cwd, repoDir);
+  if (linked.length) log(`[land] linked ${linked.length} gitignored path(s) into the worktree (node_modules/core data)`);
   const results = runSafeChecks({
     cwd,
     changedFiles: files,
@@ -149,8 +170,16 @@ function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) 
         });
         extra.push({ name, pass: true });
       } catch (err) {
-        extra.push({ name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
+        extra.push({ name, pass: false, detail: (opts.detail || defaultDetail)(err) });
       }
+    };
+    const defaultDetail = (err) => String(err.stderr || err.stdout || err.message).slice(0, 400);
+    // TAP output: the failing subtests are the signal, not the passing head.
+    const tapDetail = (err) => {
+      const out = String(err.stdout || '');
+      const failing = out.split('\n').filter(l => /^\s*not ok\b/.test(l)).map(l => l.trim());
+      const summary = String(err.stderr || '').split('\n').filter(l => /FAILED|floor/.test(l)).slice(-1)[0] || '';
+      return [summary, ...failing.slice(0, 8), failing.length > 8 ? `… ${failing.length - 8} more` : ''].filter(Boolean).join(' | ').slice(0, 600) || defaultDetail(err);
     };
     // Syntax floor for shell — tier 3's node --check has no shell counterpart.
     for (const f of files.filter(f => /\.sh$/.test(f)).sort()) {
@@ -170,6 +199,7 @@ function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) 
         input: `${files.join('\n')}\n`,
         timeoutMs: MERGED_TREE_TIMEOUT_MS,
         env: { ...env, MERGE_TEST_GATE_BASELINE_SHA: baseSha || '' },
+        detail: tapDetail,
       });
     }
 
@@ -355,7 +385,17 @@ function landBranch(o) {
       try {
         pushMain({ cwd: workdir, sha: head, log });
       } catch (err) {
-        lastReason = `push rejected: ${String(err.stderr || err.message).split('\n').filter(Boolean).slice(-1)[0] || ''}`.slice(0, 200);
+        const errText = String(err.stderr || err.message || '');
+        const errLine = errText.split('\n').map(l => l.trim()).filter(l => l && !/^remote:\s*$/.test(l)).slice(-1)[0] || 'push failed';
+        gitOrNull(['fetch', remote, target], workdir);
+        const kind = classifyPushFailure({ baseSha, nowBase: gitOrNull(['rev-parse', targetRef], workdir) });
+        if (kind !== 'race') {
+          // Not a race: origin/main is where we verified it. Retrying would
+          // hit the same wall (hook, auth, network) and misreport it.
+          const blocked = /PRE-PUSH BLOCKED/.test(errText) ? 'pre-push hook: ' : '';
+          return done({ attempts: attempt, baseSha, failedCheck: 'push', reason: `${blocked}${errText.match(/=== PRE-PUSH BLOCKED: ([^=]+) ===/)?.[1]?.trim() || errLine}`.slice(0, 500), files });
+        }
+        lastReason = `push rejected after ${targetRef} moved: ${errLine}`.slice(0, 200);
         log(`[land] attempt ${attempt}: ${lastReason}${shouldRetry(attempt, maxAttempts) ? ' — re-rebasing and re-checking' : ''}`);
         continue;
       }
@@ -378,7 +418,7 @@ function landBranch(o) {
       });
     }
     return done({
-      attempts: maxAttempts, failedCheck: 'push',
+      attempts: maxAttempts, failedCheck: 'race',
       reason: `${targetRef} kept moving — ${maxAttempts} rebase+check+push attempt(s) all lost the race (last: ${lastReason}); refusing rather than rewriting history`,
     });
   } finally {
@@ -392,6 +432,7 @@ module.exports = {
   defaultChecks,
   defaultPushMain,
   firstFailedCheck,
+  classifyPushFailure,
   shouldRetry,
   isPlausibleBranchName,
   formatLandLine,

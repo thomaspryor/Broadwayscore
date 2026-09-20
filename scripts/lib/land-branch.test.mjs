@@ -18,7 +18,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  landBranch, defaultPushMain, firstFailedCheck, shouldRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
+  landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
 } = require('./land-branch.js');
 
 // The lib's landing-verify call would try `git fetch --unshallow` only on a
@@ -96,11 +96,19 @@ const plainPush = ({ cwd }) => sh(cwd, ['push', '-q', 'origin', 'HEAD:main']);
 
 // ── pure helpers ────────────────────────────────────────────────────────────
 
-test('firstFailedCheck picks the first red result and ignores green/empty', () => {
+test('firstFailedCheck picks the first non-passing result and fails closed on a missing pass field', () => {
   assert.equal(firstFailedCheck([]), null);
   assert.equal(firstFailedCheck(null), null);
   assert.equal(firstFailedCheck([{ name: 'a', pass: true }]), null);
   assert.equal(firstFailedCheck([{ name: 'a', pass: true }, { name: 'b', pass: false }, { name: 'c', pass: false }]).name, 'b');
+  assert.equal(firstFailedCheck([{ name: 'a', pass: true }, { name: 'no-pass-field' }]).name, 'no-pass-field');
+  assert.equal(firstFailedCheck([{ name: 'a', pass: true }, null]).name, 'malformed-check');
+});
+
+test('classifyPushFailure: only a moved origin/main is a race', () => {
+  assert.equal(classifyPushFailure({ baseSha: 'a', nowBase: 'b' }), 'race');
+  assert.equal(classifyPushFailure({ baseSha: 'a', nowBase: 'a' }), 'rejected');
+  assert.equal(classifyPushFailure({ baseSha: 'a', nowBase: null }), 'rejected');
 });
 
 test('shouldRetry is bounded by maxAttempts', () => {
@@ -234,7 +242,7 @@ test('origin/main moves 4x (every attempt loses) → refused after MAX_ATTEMPTS,
       pushMain: (o) => { pushCalls++; w.moveOrigin(); plainPush(o); },
     });
     assert.equal(r.landed, false);
-    assert.equal(r.failedCheck, 'push');
+    assert.equal(r.failedCheck, 'race');
     assert.equal(r.attempts, MAX_ATTEMPTS);
     assert.equal(pushCalls, MAX_ATTEMPTS, 'bounded: exactly maxAttempts pushes, then stop');
     assert.match(r.reason, /kept moving/);
@@ -396,6 +404,27 @@ test('the default push seam is push-only: a rejection throws, nothing is rebased
     assert.equal(r.attempts, 2, 'the first (real) push was rejected non-ff and surfaced as a retry, not replayed');
     assert.equal(pushCalls, 2);
     assert.equal(w.originMain(), r.sha);
+  } finally { w.cleanup(); }
+});
+
+test('a push failure while origin/main did NOT move (hook block, auth) is refused at once, not retried as a race', () => {
+  const w = makeWorld();
+  try {
+    const tip = w.makeBranch('feat-hook');
+    let pushCalls = 0; let checkRuns = 0;
+    const r = landBranch({
+      branch: 'feat-hook', repoDir: w.repoDir,
+      checks: () => { checkRuns++; return greenChecks(); },
+      pushMain: () => { pushCalls++; const e = new Error('hook'); e.stderr = '\n=== PRE-PUSH BLOCKED: orphan-tests failed ===\nerror: failed to push some refs\n'; throw e; },
+    });
+    assert.equal(r.landed, false);
+    assert.equal(r.failedCheck, 'push');
+    assert.equal(r.attempts, 1);
+    assert.equal(pushCalls, 1, 'no retry when nothing moved');
+    assert.equal(checkRuns, 1);
+    assert.match(r.reason, /^pre-push hook: orphan-tests failed/);
+    assert.equal(w.branchSha('feat-hook'), tip);
+    assert.equal(w.isAncestorOfOrigin(tip), false);
   } finally { w.cleanup(); }
 });
 

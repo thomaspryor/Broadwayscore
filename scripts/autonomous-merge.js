@@ -587,9 +587,9 @@ async function approve(cardId, branch) {
   });
 
   if (!landed.landed) {
-    reverifyFail(landed.failedCheck === 'push'
+    reverifyFail(landed.failedCheck === 'race'
       ? 'main advanced repeatedly during the merge window and a clean fast-forward was not possible after retrying'
-      : String(landed.reason || landed.failedCheck || 'landing refused'));
+      : `${landed.failedCheck || 'landing refused'}: ${String(landed.reason || '')}`);
     return;
   }
   // landBranch's idempotent paths (tip already on main / rebased to empty)
