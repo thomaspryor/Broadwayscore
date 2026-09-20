@@ -90,8 +90,37 @@ jobs:
             ARGS="$ARGS --skip-sec"
           fi
 
+          # BRO-3832: this workflow was registered with zero lifetime runs.
+          # The first-ever dispatch (--shows=hamilton --dry-run, a SINGLE
+          # show) rode the job's own timeout-minutes: 60 to a `cancelled`
+          # conclusion — analyzeShowWithClaude() had no request timeout, so
+          # one stuck show hung forever with nothing to checkpoint between
+          # (--time-budget-min only checks BETWEEN shows in the loop). Fixed
+          # at the source in batch-commercial-research.js (explicit 45s
+          # timeout on that request). --time-budget-min=30 here is
+          # cooperative checkpointing for the multi-show auto-discover path;
+          # it does not by itself bound a single-show run, which is why the
+          # `timeout` wrap below is the real backstop.
+          ARGS="$ARGS --time-budget-min=30"
+
           echo "Running: node scripts/batch-commercial-research.js $ARGS"
-          node scripts/batch-commercial-research.js $ARGS
+          # Inline `timeout` + explicit exit, NOT step-level `timeout-minutes`
+          # — a step-level timeout (or riding this job's own timeout-minutes)
+          # reports conclusion `cancelled`, which the `if: failure()` "Notify
+          # on failure" step below silently skips (documented failure mode,
+          # see .github/workflows/CLAUDE.md's Actionlint section / card #90).
+          # 1800s leaves headroom under this job's 60min ceiling for
+          # checkout/setup (~2min) + the push/ledger steps after this one.
+          timeout 1800 node scripts/batch-commercial-research.js $ARGS
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::batch commercial research timed out after 30m (BRO-3832)"
+            else
+              echo "::error::batch commercial research failed (exit $status)"
+            fi
+            exit 1
+          fi
 
       - name: Commit pending results
         if: always() && github.event.inputs.dry_run != 'true'
