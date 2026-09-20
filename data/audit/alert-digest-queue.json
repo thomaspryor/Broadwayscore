@@ -13,26 +13,75 @@
   },
   {
     "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 46.4% of shows changed coverage state",
-    "description": "review-gap blast radius 46.4% (13/28 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: america-who-hurt-you-off-broadway-2026, conflicted-off-broadway-2026, darkling-off-west-end-2026, gimme-a-sign-off-broadway-2026, golden-boy-off-west-end-2026, in-honor-of-jean-michel-basquiat-off-broadway-2026, million-dollar-quartet-off-west-end-2026, my-sons-a-queer-but-what-can-you-do-west-end-2026, pre-existing-condition-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-cherry-orchard-park-avenue-armory-off-broadway-2026, the-hope-theory-off-broadway-2026, thelma-and-louise-a-new-musical-off-west-end-2026\n\nPARTIAL write: the other 15 show(s) audited this run were NOT risky and were persisted normally. Only the 13 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "title": "Review-gap audit refused to write — 24.1% of shows changed coverage state",
+    "description": "review-gap blast radius 24.1% (7/29 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, cats-the-jellicle-ball-2026, death-of-a-salesman-2026, jesus-christ-superstar-west-end-2026, schmigadoon-2026, the-pass-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 22 show(s) audited this run were NOT risky and were persisted normally. Only the 7 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-20T12:57:21.383Z"
+    "queuedAt": "2026-09-20T16:50:31.855Z"
   },
   {
     "conditionKey": "t1-coverage:scoreboard",
     "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.3% (380/498)\noff-broadway: 41.7% (130/312)\nwest-end: 76.6% (423/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (891h)\nA Midsummer Night's Dream — observer (891h)\nA Midsummer Night's Dream — standard (891h)\nABBA Voyage — independent (891h)\nAladdin — ew (891h)\n… 167 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (891h)\nBuena Vista Social Club — broadwaynews (891h)\nBuena Vista Social Club — nydailynews (891h)\nHadestown — nydailynews (891h)\nHeathers The Musical — dailybeast (891h)\n… 17 more circuit-open cell(s)",
+    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.6% (135/317)\nwest-end: 76.6% (423/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (895h)\nA Midsummer Night's Dream — observer (895h)\nA Midsummer Night's Dream — standard (895h)\nABBA Voyage — independent (895h)\nAladdin — ew (895h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (895h)\nBuena Vista Social Club — broadwaynews (895h)\nBuena Vista Social Club — nydailynews (895h)\nHadestown — nydailynews (895h)\nHeathers The Musical — dailybeast (895h)\n… 17 more circuit-open cell(s)",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-20T12:57:35.230Z"
+    "queuedAt": "2026-09-20T16:50:43.547Z"
+  },
+  {
+    "conditionKey": "slug-misroute:272ae7ed1a95",
+    "title": "9 new slug-misroute finding(s)",
+    "description": "9 review file(s) appear misrouted and are not yet dispositioned. Nothing was changed automatically. To triage LOCALLY:\n1) node scripts/audit-slug-match-routing.js\n2) node scripts/verify-misroute-content.js --include-flagged --include-oos\n3) gated apply per scripts/apply-slug-misroute-whitelist.js header (snapshot → ff-only → --apply → rebuild → spot-check)\nTo silence a finding you've decided to leave: node scripts/disposition-misroute.js add --from=ID --file=F --reason=\"...\"",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "garry-starr-classic-penguins-garrick-west-end-2026 → garry-starr-classic-penguins-off-west-end-2026",
+        "value": "new-york-sun--elysa-gardner.json (article 2026, no-date,from-also-full-match)"
+      },
+      {
+        "name": "garry-starr-classic-penguins-off-broadway-2026 → garry-starr-classic-penguins-off-west-end-2026",
+        "value": "nysr--roma-torre.json (article 2026, no-date,from-also-full-match)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "exeunt-magazine--lane-williamson.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "latimes--unknown.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "nyt-theater--jonathan-mandell.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "nytg--austin-fimmano.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "theatrely--juan-a-ramirez.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "vulture--sara-holdren.json (article 2026, class-A)"
+      },
+      {
+        "name": "the-ritz-2007 → break-a-new-play-off-broadway-2026",
+        "value": "nytimes--ben-brantley.json (article 2010, no-date)"
+      }
+    ],
+    "queuedAt": "2026-09-20T17:21:59.186Z"
   }
 ]

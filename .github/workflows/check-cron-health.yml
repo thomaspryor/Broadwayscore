@@ -170,9 +170,31 @@ jobs:
             # same-night retry never dispatches — the exact silent-miss this
             # card fixed — and the queue's own alerts can't fire either.
             "opening-night-express-retry-check.yml|3|Opening Night Express Retry Check"
-            # Hourly trade-press RSS recoupment poll; 3h = 2 missed runs = alert.
-            # Powers ≤1h detection latency for Variety/Deadline recoupment news.
-            "commercial-rss-poll.yml|3|Commercial RSS Poll"
+            # Hourly trade-press RSS recoupment poll. Powers ≤1h detection
+            # latency for Variety/Deadline recoupment news.
+            # BRO-3666 (2026-09-20): widened 3h -> 8h. The old band assumed the
+            # schedule ('0 * * * *') is what actually runs, and read "3h = 2
+            # missed runs = alert". It isn't: GitHub throttles this repo's
+            # hourly schedules hard, and over 2026-09-16 -> 2026-09-20 (30 runs)
+            # the real cadence was ~1.5-5.5h with a MAX gap of 5h31m
+            # (2026-09-20T07:08:39Z -> 12:39:26Z) and a cluster of 4h54m-5h31m
+            # gaps in the 01:00-12:00 UTC window. So 3h flagged a perfectly
+            # healthy workflow on any noon following a normal throttle gap —
+            # firing the self-heal redispatch and then paging on the second
+            # consecutive check. Same reasoning the process-feedback.yml entry
+            # below already applies to its */10 schedule ("12h tolerates
+            # GitHub's heavy throttling").
+            # 8h = observed max + ~2.5h headroom, NOT the generic
+            # worst-gap + 12h cushion (which would be 13h — 12h of cushion over
+            # an expression-derived 1h gap that never occurs). Registered in
+            # scripts/audit-cron-health-coverage.js TIGHT_BY_DESIGN so the
+            # cushion warning stays silenced and nobody "fixes" it to 13h; that
+            # map matches maxHours on STRICT EQUALITY, so changing the 8 here
+            # means changing it there in the same commit.
+            # Detection cost, quantified: the checker itself runs daily at
+            # 12:00 UTC, so only an outage whose last success falls in the
+            # 04:00-09:00 UTC window loses same-day detection (delayed to ≤30h).
+            "commercial-rss-poll.yml|8|Commercial RSS Poll"
             # Weekly Monday cron — Tony + Olivier cutoff freshness check. 200h = 1 missed week.
             # Advisory v1 (warnings only), but staleness still pages so we re-verify dates before
             # season cutoffs bias the show-page rank pool.

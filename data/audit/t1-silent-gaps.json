@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T12:57:23.527Z",
+  "generatedAt": "2026-09-20T16:50:34.107Z",
   "windowDays": 45,
   "showsScanned": 78,
   "gaps": [
@@ -17,9 +17,27 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-cherry-orchard-park-avenue-armory-off-broadway-2026",
       "firstSeen": "2026-09-19T14:08:25.392Z",
-      "fileAgeHours": 22.8157675,
+      "fileAgeHours": 26.702011111111112,
       "gapSeenAt": "2026-09-20T07:18:48.420Z",
-      "nonTerminalAgeHours": 5.643085277777778
+      "nonTerminalAgeHours": 9.529357222222222
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "title": "The Story",
+      "openingDate": "2026-09-03",
+      "file": "the-spectator-uk--unknown.json",
+      "outletId": "the-spectator-uk",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://www.spectator.co.uk/submit/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
+      "firstSeen": "2026-09-18T14:47:11.077Z",
+      "fileAgeHours": 50.0560625,
+      "gapSeenAt": "2026-09-20T16:50:34.106Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
@@ -35,9 +53,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
       "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 262.01391277777776,
+      "fileAgeHours": 265.90015944444445,
       "gapSeenAt": "2026-09-20T07:18:48.420Z",
-      "nonTerminalAgeHours": 5.643085277777778
+      "nonTerminalAgeHours": 9.529357222222222
     },
     {
       "showId": "alvin-ailey-american-dance-theater-new-works-west-end-2026",
@@ -52,9 +70,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --url=https://www.thestage.co.uk/reviews/alvin-ailey-american-dance-theater-new-works-review-sadlers-wells-london --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-17T15:01:25.973Z",
-      "fileAgeHours": 69.9324375,
+      "fileAgeHours": 73.81868416666667,
       "gapSeenAt": "2026-09-18T01:46:13.314Z",
-      "nonTerminalAgeHours": 59.18617027777778
+      "nonTerminalAgeHours": 63.07244222222222
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -69,9 +87,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 90.94223166666667,
+      "fileAgeHours": 94.82848027777777,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 90.86136583333334
+      "nonTerminalAgeHours": 94.74763777777778
     },
     {
       "showId": "the-hope-theory-off-broadway-2026",
@@ -87,27 +105,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-hope-theory-off-broadway-2026",
       "firstSeen": "2026-09-18T10:20:54.798Z",
-      "fileAgeHours": 50.60796027777778,
+      "fileAgeHours": 54.49423111111111,
       "gapSeenAt": "2026-09-19T01:54:16.553Z",
-      "nonTerminalAgeHours": 35.05193722222222
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "title": "Million Dollar Quartet",
-      "openingDate": "2026-09-14",
-      "file": "broadwayworld--michael-major.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
-      "firstSeen": "2026-09-17T08:13:24.884Z",
-      "fileAgeHours": 76.73295555555555,
-      "gapSeenAt": "2026-09-20T07:18:48.420Z",
-      "nonTerminalAgeHours": 5.643085277777778
+      "nonTerminalAgeHours": 38.93820916666667
     }
   ],
   "contradictions": []

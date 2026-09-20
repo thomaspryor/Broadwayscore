@@ -1133,13 +1133,13 @@
       "disposition": "digest",
       "title": "Krapps Last Tape @ royal court — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.856Z",
-      "lastSeen": "2026-09-19T17:27:38.946Z",
+      "lastSeen": "2026-09-20T17:40:14.037Z",
       "lastNotifiedAt": "2026-09-14T19:38:42.111Z",
       "lastSurfacedAt": "2026-09-14T19:38:42.111Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "we-aggregator-go-live:an-ideal-husband-hammersmith-west-end-2026": {
       "status": "open",
@@ -1159,26 +1159,26 @@
       "disposition": "digest",
       "title": "Dracula @ noel coward — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.857Z",
-      "lastSeen": "2026-09-19T17:27:38.948Z",
+      "lastSeen": "2026-09-20T17:40:14.039Z",
       "lastNotifiedAt": "2026-09-14T19:38:42.115Z",
       "lastSurfacedAt": "2026-09-14T19:38:42.115Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "we-aggregator-go-live:john-proctor-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "John Proctor @ royal court — West End show live and scoring",
       "firstSeen": "2026-08-16T14:51:04.858Z",
-      "lastSeen": "2026-09-19T17:27:38.950Z",
+      "lastSeen": "2026-09-20T17:40:14.041Z",
       "lastNotifiedAt": "2026-09-14T19:38:42.117Z",
       "lastSurfacedAt": "2026-09-14T19:38:42.117Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "we-aggregator-go-live:pride-the-musical-west-end-2026": {
       "status": "open",
@@ -1482,12 +1482,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-19T15:09:21.619Z",
+      "lastSeen": "2026-09-20T15:13:43.537Z",
       "lastNotifiedAt": "2026-09-13T15:26:03.760Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1604,13 +1604,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-19T15:09:21.617Z",
+      "lastSeen": "2026-09-20T15:13:43.532Z",
       "lastNotifiedAt": "2026-09-16T15:54:33.667Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-3656",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -2233,13 +2233,13 @@
       "disposition": "digest",
       "title": "To Maury With Love Concert @ theatre royal drury lane — West End show live and scoring",
       "firstSeen": "2026-09-04T17:47:23.385Z",
-      "lastSeen": "2026-09-19T17:27:38.951Z",
+      "lastSeen": "2026-09-20T17:40:14.043Z",
       "lastNotifiedAt": "2026-09-14T19:38:42.121Z",
       "lastSurfacedAt": "2026-09-14T19:38:42.121Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "imageless-scored-show:still-imageless:the-lonely-few-off-broadway-2024": {
       "status": "open",
@@ -2409,13 +2409,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Scrape WestEndTheatre",
       "firstSeen": "2026-09-07T17:00:27.922Z",
-      "lastSeen": "2026-09-19T15:09:21.621Z",
+      "lastSeen": "2026-09-20T15:13:43.539Z",
       "lastNotifiedAt": "2026-09-14T17:23:02.673Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2931",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026": {
       "status": "open",
@@ -2534,7 +2534,7 @@
       "linearIdentifier": "BRO-3104"
     },
     "cron-health:Check Opening Night Drift": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Check Opening Night Drift",
@@ -2544,7 +2544,8 @@
       "lastSurfacedAt": "2026-09-15T16:01:30.029Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-20T15:13:43.616Z"
     },
     "cron-health-chronic:Enrich Off-Broadway Dates": {
       "status": "resolved",
@@ -3092,26 +3093,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-20T11:36:26.072Z",
+      "lastSeen": "2026-09-20T15:37:01.450Z",
       "lastNotifiedAt": "2026-09-19T19:05:52.826Z",
       "lastSurfacedAt": "2026-09-19T19:05:52.826Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 7
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-20T11:36:26.077Z",
+      "lastSeen": "2026-09-20T15:37:01.455Z",
       "lastNotifiedAt": "2026-09-19T19:05:52.835Z",
       "lastSurfacedAt": "2026-09-19T19:05:52.835Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 7
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3165,7 +3166,7 @@
       "silentRefires": 2
     },
     "cron-health-chronic:Check Opening Night Drift": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Check Opening Night Drift",
       "firstSeen": "2026-09-16T15:54:29.513Z",
@@ -3175,7 +3176,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3655",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-09-20T15:13:43.619Z"
     },
     "opening-night-cv-wrongproduction-unhandled-my-sons-a-queer-but-what-can-you-do-west-end-2026": {
       "status": "open",
@@ -3514,78 +3516,78 @@
       "disposition": "digest",
       "title": "Jo the Little Women Musical @ theatre royal drury lane — West End show live and scoring",
       "firstSeen": "2026-09-18T17:54:34.878Z",
-      "lastSeen": "2026-09-19T17:27:38.953Z",
+      "lastSeen": "2026-09-20T17:40:14.044Z",
       "lastNotifiedAt": "2026-09-18T17:54:34.878Z",
       "lastSurfacedAt": "2026-09-18T17:54:34.878Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "we-aggregator-go-live:guess-how-much-i-love-you-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Guess How Much I Love You @ royal court — West End show live and scoring",
       "firstSeen": "2026-09-18T17:54:34.881Z",
-      "lastSeen": "2026-09-19T17:27:38.955Z",
+      "lastSeen": "2026-09-20T17:40:14.046Z",
       "lastNotifiedAt": "2026-09-18T17:54:34.881Z",
       "lastSurfacedAt": "2026-09-18T17:54:34.881Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "we-aggregator-go-live:giselle-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Giselle @ london coliseum — West End show live and scoring",
       "firstSeen": "2026-09-18T17:54:34.883Z",
-      "lastSeen": "2026-09-19T17:27:38.957Z",
+      "lastSeen": "2026-09-20T17:40:14.048Z",
       "lastNotifiedAt": "2026-09-18T17:54:34.883Z",
       "lastSurfacedAt": "2026-09-18T17:54:34.883Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "we-aggregator-go-live:christmas-carol-goes-wrong-west-end-2025": {
       "status": "open",
       "disposition": "digest",
       "title": "Christmas Carol Goes Wrong @ apollo — West End show live and scoring",
       "firstSeen": "2026-09-18T17:54:34.886Z",
-      "lastSeen": "2026-09-19T17:27:38.958Z",
+      "lastSeen": "2026-09-20T17:40:14.050Z",
       "lastNotifiedAt": "2026-09-18T17:54:34.886Z",
       "lastSurfacedAt": "2026-09-18T17:54:34.886Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "we-aggregator-go-live:hms-pinafore-west-end-2025": {
       "status": "open",
       "disposition": "digest",
       "title": "Hms Pinafore @ london coliseum — West End show live and scoring",
       "firstSeen": "2026-09-18T17:54:34.888Z",
-      "lastSeen": "2026-09-19T17:27:38.960Z",
+      "lastSeen": "2026-09-20T17:40:14.052Z",
       "lastNotifiedAt": "2026-09-18T17:54:34.888Z",
       "lastSurfacedAt": "2026-09-18T17:54:34.888Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-catarina-and-the-beauty-of-killing-fascists-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Placeholder synopsis on Catarina and the Beauty of Killing Fascists",
       "firstSeen": "2026-09-19T01:14:40.621Z",
-      "lastSeen": "2026-09-20T12:27:43.516Z",
+      "lastSeen": "2026-09-20T16:52:27.711Z",
       "lastNotifiedAt": "2026-09-19T01:14:40.621Z",
       "lastSurfacedAt": "2026-09-19T01:14:40.621Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "express-retry-still-thin:crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026": {
       "status": "open",
@@ -3617,13 +3619,13 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Macbeth",
       "firstSeen": "2026-09-20T01:14:52.855Z",
-      "lastSeen": "2026-09-20T12:27:44.551Z",
+      "lastSeen": "2026-09-20T16:52:27.714Z",
       "lastNotifiedAt": "2026-09-20T01:14:52.855Z",
       "lastSurfacedAt": "2026-09-20T01:14:52.855Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "backstop:the-hope-theory-off-broadway-2026/wsj--unknown.json": {
       "status": "open",
@@ -3645,6 +3647,18 @@
       "lastSeen": "2026-09-20T11:52:39.652Z",
       "lastNotifiedAt": "2026-09-20T11:52:39.652Z",
       "lastSurfacedAt": "2026-09-20T11:52:39.652Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "slug-misroute:272ae7ed1a95": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "9 new slug-misroute finding(s)",
+      "firstSeen": "2026-09-20T17:21:59.185Z",
+      "lastSeen": "2026-09-20T17:21:59.185Z",
+      "lastNotifiedAt": "2026-09-20T17:21:59.185Z",
+      "lastSurfacedAt": "2026-09-20T17:21:59.185Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

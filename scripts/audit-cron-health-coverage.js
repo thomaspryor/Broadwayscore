@@ -32,6 +32,20 @@ const TIGHT_BY_DESIGN = {
   // original pre-#409 geometry, hence the restored 26h band.
   // See Notion 381637c5-416f-81af and the comment on this entry in check-cron-health.yml.
   'data-health-check.yml': { maxHours: 26, why: 'digest-snapshot-carrier cancel detection (tight to 24h cadence)' },
+  // BRO-3666: this entry is tighter than worst-gap + CUSHION_HOURS for the
+  // OPPOSITE reason to the one above — not because we want faster detection,
+  // but because worstGapHours() is fiction for this workflow. It simulates the
+  // cron EXPRESSION ('0 * * * *' -> gap=1h), whereas GitHub throttles this
+  // repo's hourly schedules heavily and actually fires it every ~1.5-5.5h.
+  // Measured over 2026-09-16 -> 2026-09-20 (30 runs): MAX observed gap 5h31m
+  // (2026-09-20T07:08:39Z -> 12:39:26Z), with a cluster of 4h54m-5h31m gaps
+  // in the 01:00-12:00 UTC band. The generic rule would demand 1h + 12h = 13h,
+  // which is 12h of cushion over a 1h gap that never happens.
+  // 8h = observed max + ~2.5h headroom. Do NOT widen toward 13h and do NOT
+  // tighten back to the original 3h: 3h flagged a perfectly healthy workflow
+  // on any noon following a normal throttle gap, which fired the self-heal
+  // redispatch and then paged on the second consecutive check.
+  'commercial-rss-poll.yml': { maxHours: 8, why: 'GitHub throttles this hourly cron to ~1.5-5.5h real cadence (max observed 5h31m, 2026-09-16->20); expression-derived gap=1h is fiction' },
 };
 
 function parseField(field, min, max) {
