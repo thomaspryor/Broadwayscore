@@ -30,11 +30,21 @@
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const { classifyVenueSuffix } = require('./lib/title-venue-suffix');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const APPLY = process.argv.includes('--apply');
 const AS_JSON = process.argv.includes('--json');
 
+const USAGE = `Repair scrape-artifact show titles in shows.json (BRO-3863).
+
+Usage:
+  node scripts/fix-show-titles.js            # report (exit 1 if work remains)
+  node scripts/fix-show-titles.js --apply    # write shows.json
+  node scripts/fix-show-titles.js --json
+`;
+
 function main() {
+  if (hasHelpFlag(process.argv)) { console.log(USAGE); return; }
   const doc = loadShows();
   const shows = doc.shows || doc;
 
