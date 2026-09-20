@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { hasFreshRunReview, freshCutoffFor, FRESH_GRACE_DAYS } from './fresh-run-reviews.mjs';
+import { hasFreshRunReview, freshCutoffFor, FRESH_GRACE_DAYS, isIsoDate } from './fresh-run-reviews.mjs';
 
 // Tier resolver stand-in: outlet id encodes its tier so each case reads plainly.
 const tierOf = (id) => ({ t1: 1, t2: 2, t3: 3, t4: 4 }[id] ?? 3);
@@ -91,4 +91,34 @@ test('missing show / missing reviews are handled', () => {
   assert.equal(hasFreshRunReview(null, [], tierOf), false);
   assert.equal(hasFreshRunReview(MY_SONS, undefined, tierOf), false);
   assert.equal(hasFreshRunReview(MY_SONS, [null, {}], tierOf), false);
+});
+
+// --- adversarial-review hardening (2026-09-20) ---
+
+test('isIsoDate rejects the junk that lexical comparison would let through', () => {
+  assert.equal(isIsoDate('2026-09-18'), true);
+  assert.equal(isIsoDate('unknown'), false);   // "u" > "2": sorts ABOVE any cutoff
+  assert.equal(isIsoDate('n/a'), false);
+  assert.equal(isIsoDate('2026-13-01'), false);
+  assert.equal(isIsoDate('2026-02-30'), false);
+  assert.equal(isIsoDate('2026-9-1'), false);  // unpadded sorts wrong
+  assert.equal(isIsoDate(''), false);
+  assert.equal(isIsoDate(null), false);
+});
+
+test('a junk publishDate on a T1 does NOT certify the run as covered', () => {
+  const reviews = [...GARRICK_REVIEWS, { outletId: 't1', assignedScore: 88, publishDate: 'unknown' }];
+  assert.equal(hasFreshRunReview(MY_SONS, reviews, tierOf), false);
+});
+
+test('a malformed previewsStartDate falls through to a valid openingDate, not fail-open', () => {
+  const show = { ...MY_SONS, previewsStartDate: 'TBC' };
+  assert.equal(freshCutoffFor(show), '2026-09-10');
+  assert.equal(hasFreshRunReview(show, GARRICK_REVIEWS, tierOf), false);
+});
+
+test('both dates malformed still fails OPEN (cannot evaluate, must not drop)', () => {
+  const show = { priorRuns: [{ openingDate: '2022-10-21' }], previewsStartDate: 'TBC', openingDate: 'soon' };
+  assert.equal(freshCutoffFor(show), null);
+  assert.equal(hasFreshRunReview(show, GARRICK_REVIEWS, tierOf), true);
 });

@@ -41,9 +41,22 @@ export const FRESH_GRACE_DAYS = 7;
 // press actually turned up.
 const FRESH_TIERS = new Set([1, 2]);
 
+// Strict YYYY-MM-DD. Everything here compares dates LEXICALLY, which is only
+// valid for well-formed ISO dates: a junk publishDate like "unknown" sorts
+// ABOVE any real cutoff ("u" > "2") and would otherwise certify a prior-run
+// review as fresh — the precise failure this gate exists to prevent
+// (adversarial review, 2026-09-20).
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+function isIsoDate(v) {
+  if (typeof v !== 'string' || !ISO_DATE.test(v)) return false;
+  const d = new Date(`${v}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v;
+}
+
 function shiftDays(isoDate, days) {
+  if (!isIsoDate(isoDate)) return null;
   const d = new Date(`${isoDate}T00:00:00Z`);
-  if (Number.isNaN(d.getTime())) return null;
   d.setUTCDate(d.getUTCDate() + days);
   return d.toISOString().slice(0, 10);
 }
@@ -58,9 +71,14 @@ function shiftDays(isoDate, days) {
  */
 export function freshCutoffFor(show) {
   if (!show) return null;
-  const anchor = show.previewsStartDate || show.openingDate;
-  if (!anchor || typeof anchor !== 'string') return null;
-  return shiftDays(anchor.slice(0, 10), -FRESH_GRACE_DAYS);
+  // Prefer previews, but only if it's actually usable — a malformed
+  // previewsStartDate must not shadow a perfectly good openingDate and
+  // collapse the whole check into its fail-open branch.
+  const anchor = [show.previewsStartDate, show.openingDate]
+    .map((v) => (typeof v === 'string' ? v.slice(0, 10) : null))
+    .find((v) => isIsoDate(v));
+  if (!anchor) return null;
+  return shiftDays(anchor, -FRESH_GRACE_DAYS);
 }
 
 /**
@@ -89,7 +107,10 @@ export function hasFreshRunReview(show, showReviews, tierOf) {
   return (showReviews || []).some((r) => {
     if (!r || r.assignedScore == null) return false;
     const pub = typeof r.publishDate === 'string' ? r.publishDate.slice(0, 10) : '';
-    if (!pub || pub < cutoff) return false;
+    if (!isIsoDate(pub) || pub < cutoff) return false;
     return FRESH_TIERS.has(tierOf(r.outletId));
   });
 }
+
+// Exported for the test suite: the ISO-strictness is load-bearing, not cosmetic.
+export { isIsoDate };
