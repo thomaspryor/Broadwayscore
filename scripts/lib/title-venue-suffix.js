@@ -93,6 +93,41 @@ const VENUE_WORD_RE = new RegExp(`(^|[^\\p{L}])(${VENUE_WORDS.join('|')})([^\\p{
 // A trailing parenthetical, with nothing nested inside it.
 const TRAILING_PAREN_RE = /^(.*\S)\s*\(([^()]+)\)\s*$/;
 
+// A parenthetical that OPENS with a function word is a continuation of the
+// title, not a name: "(On Stage)", "(of God)", "(But What Can You Do?)",
+// "(With a Song)". Only the venue-WORD oracle needs this guard — it is the
+// weakest of the three, matching a bare vocabulary hit anywhere in the
+// parenthetical, so without it "A Life (On Stage)" loses "(On Stage)" to the
+// word "stage". The two venue-matching oracles are evidence-based (the string
+// really is a venue we know about) and are not gated by it.
+// Found by adversarial review, which produced exactly that example.
+// ARTICLES ARE DELIBERATELY ABSENT. Venue and company names routinely begin
+// with one — "The York Theatre Company", "The Old Vic", "A Contemporary
+// Theatre" — so listing 'the'/'a'/'an' here would re-break the very rows
+// this oracle exists to catch. Only prepositions and subordinating
+// conjunctions, which turn the parenthetical into a phrase, belong.
+const LEADING_FUNCTION_WORDS = new Set([
+  'on', 'in', 'at', 'of', 'for', 'from', 'with', 'by', 'to', 'into', 'onto',
+  'over', 'per', 'via', 'off', 'up', 'but', 'and', 'or', 'nor', 'as',
+  'while', 'when', 'where', 'why', 'how', 'if', 'so', 'that', 'what', 'who',
+  'plus', 'featuring', 'starring',
+]);
+
+// Shows whose trailing parenthetical is part of the real title and must
+// never be stripped, even though an oracle fires on it. The caps case has
+// the same escape hatch (KEEP_SHOUTED_IDS in title-display-case.js); without
+// one here, validate-data.js would reject a title a human had deliberately
+// restored and there would be no way to make the build green — the exact
+// wedged-CI shape this work already had to fix once.
+// Keyed by show id AND by title, because the ingestion paths normalise
+// BEFORE an id exists (the id is derived from the normalised title).
+const KEEP_PAREN_IDS = new Set([]);
+const KEEP_PAREN_TITLES = new Set([]);
+
+function titleKey(title) {
+  return String(title || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
 // Below this many characters a parenthetical is a disc/part number or a
 // stray marker, never a venue name — and short strings are exactly where
 // token matching produces coincidences.
@@ -113,6 +148,12 @@ function isTokenSubsequence(needle, haystack) {
     if (ok) return true;
   }
   return false;
+}
+
+// Does the parenthetical open with a function word? See LEADING_FUNCTION_WORDS.
+function startsWithFunctionWord(inner) {
+  const first = (tokens(inner)[0] || '');
+  return LEADING_FUNCTION_WORDS.has(first);
 }
 
 function venuesOverlap(a, b) {
@@ -148,6 +189,8 @@ function buildVenueVocabulary(shows) {
  */
 function classifyVenueSuffix(title, ctx = {}) {
   if (typeof title !== 'string') return { action: 'none', title };
+  if (ctx.id && KEEP_PAREN_IDS.has(ctx.id)) return { action: 'none', title };
+  if (KEEP_PAREN_TITLES.has(titleKey(title))) return { action: 'none', title };
   const m = title.match(TRAILING_PAREN_RE);
   if (!m) return { action: 'none', title };
 
@@ -162,7 +205,7 @@ function classifyVenueSuffix(title, ctx = {}) {
     oracle = 'own-venue';
   } else if ((ctx.venueVocabulary || []).some(v => venuesOverlap(inner, v))) {
     oracle = 'corpus-venue';
-  } else if (VENUE_WORD_RE.test(inner)) {
+  } else if (VENUE_WORD_RE.test(inner) && !startsWithFunctionWord(inner)) {
     oracle = 'venue-word';
   }
   if (!oracle) return { action: 'none', title };
@@ -193,4 +236,8 @@ module.exports = {
   isTokenSubsequence,
   VENUE_WORDS,
   MIN_INNER_LENGTH,
+  KEEP_PAREN_IDS,
+  KEEP_PAREN_TITLES,
+  LEADING_FUNCTION_WORDS,
+  startsWithFunctionWord,
 };

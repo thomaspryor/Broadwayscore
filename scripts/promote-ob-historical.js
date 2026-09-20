@@ -52,7 +52,7 @@ const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { withMarketSuffix } = require('./lib/market-slug');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { normalizeShowTitle } = require('./lib/show-title-normalize');
+const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 
 const USAGE = `promote-ob-historical.js — Promote Playbill-validated OB historical candidates into shows.json with.
 
@@ -76,14 +76,14 @@ function slugify(s) {
     .replace(/^-|-$/g, '');
 }
 
-function buildShowEntry(r) {
+function buildShowEntry(r, venueVocabulary) {
   // BRO-3863 — normalise BEFORE the slug/id are derived from the title.
   // Aggregator listings disambiguate same-title productions by appending the
   // venue ("The Cherry Orchard (Park Avenue Armory)"); taken verbatim, that
   // suffix reaches the reader AND the row's slug and id. Same canonical
   // normaliser the validate-data.js gate and fix-show-titles.js use, so a row
   // written here can never fail the gate that guards it.
-  const normalizedTitle = normalizeShowTitle({ title: r.title, venue: r.venue }).title;
+  const normalizedTitle = normalizeShowTitle({ title: r.title, venue: r.venue }, { venueVocabulary }).title;
   const titleSlug = slugify(normalizedTitle);
 
   const year = String((r.parsed?.titleParse?.year) || new Date().getFullYear());
@@ -149,11 +149,17 @@ function main() {
   // as shows.json and grows as candidates are promoted, so a second
   // candidate for the same show later in this run still gets caught.
   const knownShows = buildVenueTitlePool(showsData.shows);
+  // BRO-3863 — the gate (validate-data.js) builds the corpus venue vocabulary
+  // and this writer must too, or the two disagree: a "(Bridge)" suffix would
+  // survive promotion here and then fail validation because some OTHER show's
+  // venue is "Bridge". Writer/gate equivalence is the point of routing both
+  // through normalizeShowTitle (adversarial review finding).
+  const venueVocabulary = buildVenueVocabulary(showsData.shows);
 
   const toPromote = [];
   const skipped = [];
   for (const r of matches) {
-    const entry = buildShowEntry(r);
+    const entry = buildShowEntry(r, venueVocabulary);
     // sanitizeVenueForWrite (card #994) returns null for a placeholder/
     // neighbourhood-blob venue — refuse to write a garbage venue string
     // rather than silently promoting it (card #1922, cousin of BRO-160/#1921).

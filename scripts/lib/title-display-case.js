@@ -141,12 +141,31 @@ const MANUAL_REVIEW_IDS = new Set([
 // and is silent.
 const KEEP_SHOUTED_IDS = new Set([]);
 
-function needsManualReview(showId) {
-  return MANUAL_REVIEW_IDS.has(showId);
+// The ingestion paths normalise a title BEFORE the row has an id — the id is
+// DERIVED from the normalised title, so it cannot be an input to it. An
+// id-keyed exemption is therefore invisible at exactly the moment it matters
+// most: a brand-new Spanish ALL-CAPS title would be given guessed English
+// casing on the way in, and the mixed-case result then evades detection
+// forever. Both sets are mirrored by title so ingestion honours them too.
+// (Adversarial review finding; confirmed by running the composer with a
+// title and no id.)
+const MANUAL_REVIEW_TITLES = new Set([
+  'más sabe el saulo por viejo...',
+]);
+const KEEP_SHOUTED_TITLES = new Set([]);
+
+function titleKey(title) {
+  return String(title || '').trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
-function isExemptFromTitleCase(showId) {
-  return KEEP_SHOUTED_IDS.has(showId);
+function needsManualReview(showId, title) {
+  if (showId && MANUAL_REVIEW_IDS.has(showId)) return true;
+  return MANUAL_REVIEW_TITLES.has(titleKey(title));
+}
+
+function isExemptFromTitleCase(showId, title) {
+  if (showId && KEEP_SHOUTED_IDS.has(showId)) return true;
+  return KEEP_SHOUTED_TITLES.has(titleKey(title));
 }
 
 /**
@@ -275,8 +294,8 @@ function wouldChangeTitle(title, opts = {}) {
  */
 function classifyShowTitle(showId, title, opts = {}) {
   if (!isShoutedTitle(title, opts)) return { action: 'none', title };
-  if (isExemptFromTitleCase(showId)) return { action: 'none', title };
-  if (needsManualReview(showId)) return { action: 'manual-review', title };
+  if (isExemptFromTitleCase(showId, title)) return { action: 'none', title };
+  if (needsManualReview(showId, title)) return { action: 'manual-review', title };
   const next = toDisplayTitleCase(title, opts);
   if (next === title) return { action: 'none', title };
   return { action: 'convert', title: next, from: title };
@@ -290,6 +309,8 @@ module.exports = {
   classifyShowTitle,
   MANUAL_REVIEW_IDS,
   KEEP_SHOUTED_IDS,
+  MANUAL_REVIEW_TITLES,
+  KEEP_SHOUTED_TITLES,
   toDisplayTitleCase,
   MINOR_WORDS,
   KEEP_UPPER,

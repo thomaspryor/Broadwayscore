@@ -46,6 +46,22 @@ function main() {
   const changes = [];
   const deferred = [];
   const nearMisses = [];
+  const akaBackfills = [];
+
+  // Search matches on `title` and `akaTitles` only (scripts/lib/show-search-match.js).
+  // Stripping "(Park Avenue Armory)" therefore silently removes a string real
+  // users type — and the venue is exactly how someone distinguishes one of
+  // five Cherry Orchards. Keep the pre-normalisation title as an alias so
+  // search coverage does not regress (adversarial review finding).
+  // Self-healing and idempotent: it repairs rows an earlier run already
+  // rewrote, not just the ones this run touches.
+  function rememberOldTitle(show, oldTitle) {
+    if (!oldTitle || oldTitle === show.title) return false;
+    const aka = Array.isArray(show.akaTitles) ? show.akaTitles : [];
+    if (aka.some(t => String(t).trim().toLowerCase() === oldTitle.trim().toLowerCase())) return false;
+    if (APPLY) show.akaTitles = [...aka, oldTitle];
+    return true;
+  }
 
   for (const show of shows) {
     const result = normalizeShowTitle(show, { venueVocabulary });
@@ -62,6 +78,13 @@ function main() {
       }
     }
 
+    // Repair rows a previous run rewrote before aliasing existed.
+    if (!result.changed && show.titleNormalizedFrom) {
+      if (rememberOldTitle(show, show.titleNormalizedFrom)) {
+        akaBackfills.push({ id: show.id, aka: show.titleNormalizedFrom });
+      }
+    }
+
     if (!result.changed) continue;
     changes.push({
       id: show.id,
@@ -71,12 +94,14 @@ function main() {
       openingDate: show.openingDate || null,
     });
 
+    const oldTitle = show.title;
     if (APPLY) {
       // Breadcrumb so a later scrape of the same source can't silently shout
       // or re-venue it again without anyone noticing the flip-flop.
-      show.titleNormalizedFrom = show.title;
+      show.titleNormalizedFrom = oldTitle;
       show.titleNormalizedAt = new Date().toISOString();
       show.title = result.title;
+      rememberOldTitle(show, oldTitle);
     }
   }
 
@@ -93,21 +118,25 @@ function main() {
       console.log(`\n${deferred.length} title(s) DEFERRED for human casing (MANUAL_REVIEW_IDS in lib/title-display-case.js):`);
       for (const d of deferred) console.log(`  ${d.id}  "${d.title}"`);
     }
+    if (akaBackfills.length) {
+      console.log(`\n${akaBackfills.length} row(s) had their pre-normalisation title restored to akaTitles (search coverage):`);
+      for (const a of akaBackfills) console.log(`  ${a.id}  aka "${a.aka}"`);
+    }
     if (nearMisses.length) {
       console.log(`\n${nearMisses.length} trailing parenthetical(s) left alone — check if any is a venue we can't recognise:`);
       for (const n of nearMisses) console.log(`  ${n.id}  "${n.title}"   (${n.paren})`);
     }
   }
 
-  if (APPLY && changes.length) {
+  if (APPLY && (changes.length || akaBackfills.length)) {
     saveShows(doc);
-    console.log(`\nWrote ${changes.length} title(s) via shows-write-guard.`);
+    console.log(`\nWrote ${changes.length} title(s) + ${akaBackfills.length} alias backfill(s) via shows-write-guard.`);
   }
 
   // Non-zero when actionable offenders remain, so this can gate CI.
   // DEFERRED and NEAR-MISS rows are not failures: there is no automatic fix
   // for them, so failing on them would be a build nobody can turn green.
-  process.exit(!APPLY && changes.length ? 1 : 0);
+  process.exit(!APPLY && (changes.length || akaBackfills.length) ? 1 : 0);
 }
 
 main();

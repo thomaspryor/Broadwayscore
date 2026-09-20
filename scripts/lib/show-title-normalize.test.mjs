@@ -79,6 +79,22 @@ test('is idempotent — normalising twice equals normalising once', () => {
   assert.equal(twice, once);
 });
 
+test('strips MULTIPLE trailing parentheticals in one call', () => {
+  // A single pass left "A Play (Luna Stage)", so the sweep reported success
+  // while validate-data.js still failed the same row. Adversarial review
+  // finding, reproduced against the real helper.
+  const r = normalizeShowTitle({ id: 'x', title: 'A Play (Luna Stage) (Soho Playhouse)', venue: 'Elsewhere' });
+  assert.equal(r.title, 'A Play');
+  assert.equal(r.steps.filter(s => s.kind === 'venue-suffix').length, 2);
+});
+
+test('ingestion has no id yet, so exemptions must also key on the title', () => {
+  // The id is DERIVED from the normalised title, so it cannot be an input.
+  const r = normalizeShowTitle({ title: 'MÁS SABE EL SAULO POR VIEJO...' });
+  assert.equal(r.manualReview, true, 'must be caught with no id supplied');
+  assert.equal(r.changed, false, 'must not guess Spanish casing at ingestion');
+});
+
 test('missing or non-string titles are safe', () => {
   assert.equal(normalizeShowTitle({ id: 'x' }).changed, false);
   assert.equal(normalizeShowTitle({ id: 'x', title: null }).title, '');

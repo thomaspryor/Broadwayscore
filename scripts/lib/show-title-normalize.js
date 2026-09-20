@@ -28,6 +28,9 @@
 'use strict';
 
 const { classifyVenueSuffix, buildVenueVocabulary } = require('./title-venue-suffix');
+
+// A title with more trailing parentheticals than this is not a title.
+const MAX_VENUE_STRIP_PASSES = 4;
 const {
   classifyShowTitle,
   needsManualReview,
@@ -50,12 +53,18 @@ function normalizeShowTitle(show, ctx = {}) {
   const original = title;
   if (!title) return { title, changed: false, manualReview: false, steps };
 
-  // 1. venue / producing-company suffix
-  const venueResult = classifyVenueSuffix(title, {
-    venue: show.venue,
-    venueVocabulary: ctx.venueVocabulary,
-  });
-  if (venueResult.action === 'strip') {
+  // 1. venue / producing-company suffix — to a FIXED POINT, not once.
+  // "A Play (Luna Stage) (Soho Playhouse)" needs two passes, and a single
+  // pass left the sweep reporting success while validate-data.js still
+  // failed on the same row (adversarial review finding, reproduced). Bounded
+  // so a pathological title cannot spin.
+  for (let pass = 0; pass < MAX_VENUE_STRIP_PASSES; pass++) {
+    const venueResult = classifyVenueSuffix(title, {
+      id: show.id,
+      venue: show.venue,
+      venueVocabulary: ctx.venueVocabulary,
+    });
+    if (venueResult.action !== 'strip') break;
     steps.push({ kind: 'venue-suffix', from: title, to: venueResult.title, oracle: venueResult.oracle });
     title = venueResult.title;
   }
@@ -75,6 +84,7 @@ function normalizeShowTitle(show, ctx = {}) {
 
 module.exports = {
   normalizeShowTitle,
+  MAX_VENUE_STRIP_PASSES,
   buildVenueVocabulary,
   needsManualReview,
   isExemptFromTitleCase,

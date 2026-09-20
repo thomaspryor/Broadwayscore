@@ -2272,6 +2272,31 @@ async function discoverShows() {
     appendReconciliationAudit(auditEntries, { mode: { dryRun } });
   }
 
+  // BRO-3863 — normalise every candidate title BEFORE anything reads it.
+  //
+  // Show-Score's listing pages disambiguate same-title productions in their
+  // own UI by appending the venue ("The Cherry Orchard (Park Avenue
+  // Armory)"), and the Show-Score branch above takes that display string as
+  // the title verbatim. Left in place it propagates into `slug` and `id`,
+  // which is why the corpus carries rows literally named
+  // the-cherry-orchard-park-avenue-armory-off-broadway-2026.
+  //
+  // This runs HERE, ahead of the dedup/twin loop below, not next to
+  // slugify() further down. deduplication.js's ordinary matcher already
+  // strips parentheticals, but its no-opening-date twin guard compares
+  // LITERAL titles — so a venue-qualified candidate slipped past that one
+  // specific protection and only acquired the existing show's title
+  // afterwards, minting a duplicate row. Normalising first means every
+  // downstream comparison sees the title the row will actually have
+  // (adversarial review finding).
+  for (const show of discoveredShows) {
+    const titleFix = normalizeShowTitle(show, { venueVocabulary: discoveryVenueVocabulary });
+    if (titleFix.changed) {
+      console.log(`  [TITLE] "${show.title}" -> "${titleFix.title}" (${titleFix.steps.map(st => st.kind).join(' + ')})`);
+      show.title = titleFix.title;
+    }
+  }
+
   for (const show of discoveredShows) {
     // Step 0: TodayTix ID dedup — most reliable, catches name mismatches
     if (show.todaytixId && existingTodaytixIds.has(show.todaytixId)) {
@@ -2374,23 +2399,6 @@ async function discoverShows() {
     // to gate reviews on is still plenty good enough to name a row.
     const idYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate })
       || String(new Date().getFullYear());
-    // BRO-3863 — normalise the title BEFORE the slug and id are derived
-    // from it. This is the one place every discovery path converges, so it
-    // is the only place the fix has to live.
-    //
-    // Show-Score's listing pages disambiguate same-title productions in
-    // their own UI by appending the venue ("The Cherry Orchard (Park Avenue
-    // Armory)") and the Show-Score branch above took that display string as
-    // the title verbatim. Left here, the suffix propagates into `slug` and
-    // `id` too, which is why the corpus carries rows literally named
-    // the-cherry-orchard-park-avenue-armory-off-broadway-2026. Normalising
-    // before slugify() means new rows never acquire it in the first place.
-    const titleFix = normalizeShowTitle(show, { venueVocabulary: discoveryVenueVocabulary });
-    if (titleFix.changed) {
-      console.log(`  [TITLE] "${show.title}" -> "${titleFix.title}" (${titleFix.steps.map(st => st.kind).join(' + ')})`);
-      show.title = titleFix.title;
-    }
-
     const baseSlug = slugify(show.title);
 
     // Market-aware slug and ID generation. withMarketSuffix() strips any

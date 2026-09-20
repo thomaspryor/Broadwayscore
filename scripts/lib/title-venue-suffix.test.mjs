@@ -106,6 +106,42 @@ test('never strips down to an empty or letterless title', () => {
   assert.equal(strip('123 (Park Avenue Armory)', 'Park Avenue Armory'), '123 (Park Avenue Armory)');
 });
 
+// ── the weakest oracle must not eat a real title ───────────────────────────
+
+test('a parenthetical opening with a preposition is a phrase, not a venue', () => {
+  // "stage" is in VENUE_WORDS, so without the leading-function-word guard
+  // this loses its subtitle. Adversarial review produced this exact example.
+  assert.equal(strip('A Life (On Stage)', 'Some Theatre'), 'A Life (On Stage)');
+  assert.equal(strip('The Song (With a Band)', 'Some Theatre'), 'The Song (With a Band)');
+});
+
+test('but an article-led venue or company name IS still stripped', () => {
+  assert.equal(strip('Monte Cristo (The York Theatre Company)', "Theatre at St. Jean's"), 'Monte Cristo');
+  assert.equal(strip('A Play (A Contemporary Theatre)', 'Elsewhere'), 'A Play');
+});
+
+test('the evidence-based oracles are NOT gated by the leading-word guard', () => {
+  // If the parenthetical really is this show's venue, a leading preposition
+  // is irrelevant — we have proof, not a vocabulary guess.
+  assert.equal(strip('A Play (At The Armory)', 'At The Armory'), 'A Play');
+});
+
+test('per-show and per-title exemptions suppress a strip', () => {
+  const { KEEP_PAREN_IDS, KEEP_PAREN_TITLES } = require('./title-venue-suffix.js');
+  KEEP_PAREN_IDS.add('keep-me-1');
+  KEEP_PAREN_TITLES.add('keepsake (luna stage)');
+  try {
+    assert.equal(
+      classifyVenueSuffix('Anything (Luna Stage)', { id: 'keep-me-1', venue: 'X' }).action, 'none');
+    assert.equal(
+      classifyVenueSuffix('Keepsake (Luna Stage)', { venue: 'X' }).action, 'none',
+      'title-keyed exemption works with no id — the ingestion case');
+  } finally {
+    KEEP_PAREN_IDS.delete('keep-me-1');
+    KEEP_PAREN_TITLES.delete('keepsake (luna stage)');
+  }
+});
+
 // ── token matching, not substring matching ─────────────────────────────────
 
 test('token matching does not fire on a substring of a longer word', () => {
