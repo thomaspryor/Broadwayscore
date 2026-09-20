@@ -1015,7 +1015,22 @@ async function main() {
     // filtered OUT of that array so renderHealthDigestBlock's "Needs your
     // attention" card only ever shows genuine judgment calls.
     const queuedForAutofix = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m) });
+    // BRO-3438 (owner-approved 2026-09-15, "A then B"): how many auto-fix
+    // sessions this ONE dispatcher may have alive at once. It overrides
+    // backlog-drain.js's shared DEFAULT_CONCURRENCY_CAP (2) for the digest path
+    // only — raising that shared default would have moved every other drain's
+    // ceiling too. The digest's real daily throughput is
+    // min(DISPATCH_CAP, this - jobs still alive), so before this it was 2/day
+    // (logged as "2 being worked" every morning) and it is now 3/day.
+    //
+    // Why 3 and not the 8 the card's title proposed: disk is NOT the binding
+    // constraint (30 GiB free vs ~940 MB per job worktree), memory is. Measured
+    // 2026-09-20 on the Mac Studio: swap 12.6 GB used of 14.3 GB (1.7 GB free),
+    // load average 14. The other live dispatcher (linear-drain-parked, 2) shares
+    // that machine, so 3 here means at most 5 concurrent headless sessions.
+    // Raise it further only against a fresh `sysctl vm.swapusage` reading.
+    const DIGEST_CONCURRENCY_CAP = 3;
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely
