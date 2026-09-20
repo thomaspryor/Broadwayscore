@@ -862,6 +862,31 @@ function cmdPush(args) {
         try {
           entry.pushed = markCardDone(pageId);
         } catch (e) {
+          // Code-review finding: catching the throw alone just turns a
+          // crashed batch into a SILENT INFINITE RETRY of the same doomed
+          // write every future push run (mustNeverPushDone can't see this
+          // entry is hopeless — its syncedArchived/syncedStatus are stale
+          // from before the OTHER script archived the underlying page) —
+          // the exact "stuck pipeline, never surfaced" shape card #794
+          // exists to catch, just moved one layer down instead of
+          // eliminated. Self-heal right here: re-fetch the card fresh and,
+          // if it confirms archived, stamp syncedArchived so
+          // mustNeverPushDone (not this catch block) permanently protects
+          // it starting next run — the SAME signal every other path in this
+          // file already relies on, not a new one. A failed re-fetch or a
+          // non-archived card leaves the entry retryable exactly as before
+          // (a genuine transient failure must still get another attempt).
+          try {
+            const fresh = JSON.parse(notionBrain(['get', pageId]));
+            if (fresh && fresh.archived) {
+              const freshMap = readMap(dir);
+              if (freshMap[pageId]) {
+                freshMap[pageId].syncedArchived = true;
+                freshMap[pageId].syncedStatus = fresh.status;
+                writeMap(dir, freshMap);
+              }
+            }
+          } catch { /* self-heal is best-effort; the original failure below still reports */ }
           refused.push({ taskId: entry.taskId, name: entry.name, pageId, error: e.message });
           continue;
         }
