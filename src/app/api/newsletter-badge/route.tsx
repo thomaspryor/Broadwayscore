@@ -66,6 +66,66 @@ const AWARD_TEXT = '#ffffff';
 // width/height to the nominal CSS `size`, so this only affects pixel density.
 const RENDER_SCALE = 2;
 
+// The newsletter body is set in Inter (generate.mjs loads it from Google
+// Fonts; the site uses next/font Inter) and the pre-PNG badge <div>
+// inherited it. @vercel/og inherits nothing — with no `fonts` option it
+// silently falls back to its bundled Noto Sans, so the PNG switch
+// (BRO-1392) changed the score digits' typeface without anyone noticing.
+// Owner spotted it in the 2026-09-20 weekly round-up, the first newsletter
+// generated after that change. Load Inter so the badge matches the site's
+// canonical ScoreBadge and the surrounding email copy.
+//
+// WOFF, not WOFF2 — satori, which @vercel/og renders through, cannot parse
+// WOFF2. Pinned to an exact @fontsource version so a CDN "latest" republish
+// can never silently change the badge typeface again.
+const INTER_URLS: ReadonlyArray<{ weight: 700 | 800; url: string }> = [
+  { weight: 700, url: 'https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-700-normal.woff' },
+  { weight: 800, url: 'https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-800-normal.woff' },
+];
+
+// Module scope: an edge isolate reuses this across invocations, so a warm
+// instance pays the fetch once. Never rejects — a font-CDN blip must degrade
+// to the old default-font render, never 500 a badge that an already-sent
+// email is pointing at.
+type InterFont = { name: 'Inter'; data: ArrayBuffer; weight: 700 | 800; style: 'normal' };
+let interPromise: Promise<InterFont[]> | null = null;
+function loadInter(): Promise<InterFont[]> {
+  if (!interPromise) {
+    interPromise = Promise.all(
+      INTER_URLS.map(({ weight, url }) =>
+        fetch(url)
+          .then((r) => (r.ok ? r.arrayBuffer() : null))
+          .then((data): InterFont | null => (data ? { name: 'Inter', data, weight, style: 'normal' } : null))
+          .catch(() => null)
+      )
+    ).then((fonts) => {
+      const loaded = fonts.filter((f): f is InterFont => f !== null);
+      // Don't let a transient CDN blip stick for the isolate's whole life:
+      // clearing the cache on a total failure means the NEXT request retries,
+      // instead of every badge from this instance silently rendering in the
+      // fallback font until the isolate recycles. A partial load (one weight
+      // of two) is still cached — it renders correctly and a retry storm
+      // would cost more than the one synthesized weight.
+      if (loaded.length === 0) interPromise = null;
+      return loaded;
+    });
+  }
+  return interPromise;
+}
+
+// Spread into ImageResponse's options. Both weights ship because the three
+// badge shapes did NOT share one: the pre-PNG <div>s were font-weight:700 for
+// the score badge and the award ring, but 800 for the Social Buzz rank box.
+// Registering only one weight would make satori synthesize the other, which
+// is how the score badge ended up at 800 in the first place.
+async function interFontOption() {
+  const fonts = await loadInter();
+  if (fonts.length === 0) return {};
+  return { fonts };
+}
+
+const FONT_FAMILY = 'Inter, sans-serif';
+
 function clampInt(raw: string | null, fallback: number, min: number, max: number): number {
   const n = raw == null ? NaN : parseInt(raw, 10);
   if (!Number.isFinite(n)) return fallback;
@@ -105,13 +165,16 @@ export async function GET(request: NextRequest) {
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: fontSize * RENDER_SCALE,
+            // 800, not 700 — the rank box's pre-PNG <div> was the one badge
+            // shape that used 800 (generate.mjs, removed in 07677f3fbb3).
             fontWeight: 800,
+            fontFamily: FONT_FAMILY,
           }}
         >
           {label}
         </div>
       ),
-      { width: px, height: px }
+      { width: px, height: px, ...(await interFontOption()) }
     );
   }
 
@@ -143,13 +206,14 @@ export async function GET(request: NextRequest) {
             justifyContent: 'center',
             fontSize: fontSize * RENDER_SCALE,
             fontWeight: 700,
+            fontFamily: FONT_FAMILY,
             border: `${2 * RENDER_SCALE}px solid ${ring}`,
           }}
         >
           {label}
         </div>
       ),
-      { width: px, height: px }
+      { width: px, height: px, ...(await interFontOption()) }
     );
   }
 
@@ -188,7 +252,8 @@ export async function GET(request: NextRequest) {
           alignItems: 'center',
           justifyContent: 'center',
           fontSize: fontSize * RENDER_SCALE,
-          fontWeight: 800,
+          fontWeight: 700,
+            fontFamily: FONT_FAMILY,
           // satori calls .trim() on `border` unconditionally while resolving
           // styles, so an explicit `undefined` here (as opposed to omitting
           // the key) throws "Cannot read properties of undefined (reading
@@ -200,6 +265,6 @@ export async function GET(request: NextRequest) {
         {label}
       </div>
     ),
-    { width: px, height: px }
+    { width: px, height: px, ...(await interFontOption()) }
   );
 }
