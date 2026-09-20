@@ -2056,13 +2056,16 @@ on:
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
       # individually listed in the unit-test batch (scripts/ root-level tests
       # aren't globbed) — path-listed here so a solo edit triggers CI.
-      # Its colocated scripts/lib/backfill-judged-dispatch-ts.test.mjs runs in
-      # the scripts/lib/*.test.mjs glob step, but the top-level script it
-      # exercises is outside scripts/lib/** and so triggers no CI on its own.
       # audit-test-yml-lib-deps.js's regression floor fails without this entry
       # (it landed red on main 2026-09-14 — not this branch's change, but this
       # branch's merge is what carried it into a CI run, so fixing it here).
+      # scripts/backfill-judged-dispatch-ts.test.mjs (BRO-3868) sits at this
+      # same scripts/ root — neither glob reaches it either — so it is
+      # registered in tests/unit-test-manifest.txt AND path-listed here, same
+      # shape as scripts/backlog-drain.test.mjs and scripts/trace-connect-
+      # phase.test.mjs below.
       - 'scripts/backfill-judged-dispatch-ts.js'
+      - 'scripts/backfill-judged-dispatch-ts.test.mjs'
       - 'scripts/backlog-drain.js'
       - 'scripts/backlog-drain.test.mjs'
       # BRO-2839 push-stall connect-phase breakdown. The logic lives in
