@@ -33,34 +33,48 @@ const LIVE = titles([['workspace:1', '🤖⚡ Data·something'], ['workspace:99'
 
 test('ledger-confirmed dead launch with open task is retryable', () => {
   const entries = [
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-10', subject: 'Fix thing 10', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-10', workspaceRef: 'workspace:5' },
+  ];
+  const plan = core.planSweep(entries, new Map([lin('BRO-10', 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.retryable.length, 1);
+  assert.equal(plan.toDispatch[0].taskId, 'linear:BRO-10');
+});
+
+// BRO-3878: a Notion-mirror task with the SAME dead-launch shape must never
+// enter retryable — the retry path is a fresh-claim source too (Codex
+// ship-check catch: the p01Queue exclusion alone left this loop still
+// generating watchdog-redispatch claims against the frozen mirror).
+test('BRO-3878: a dead launch against a Notion-mirror task is never retried', () => {
+  const entries = [
     { ts: T(60), event: 'launch', taskId: '10', subject: 'Fix thing 10', workspaceRef: 'workspace:5' },
     { ts: T(30), event: 'dead', taskId: '10', workspaceRef: 'workspace:5' },
   ];
   const plan = core.planSweep(entries, new Map([task(10, 'in_progress')]), { now: NOW, liveTitles: LIVE });
-  assert.equal(plan.retryable.length, 1);
-  assert.equal(plan.toDispatch[0].taskId, '10');
+  assert.equal(plan.retryable.length, 0);
+  assert.equal(plan.toDispatch.length, 0);
 });
 
 test('#1154: an owner-judgment card that died is NEVER retried (retry bypasses actionable())', () => {
   // The Sarah check-in shape: launched once, session died, then re-dispatched
   // by dead-session recovery — which goes through `bsc-next --id` and so skips
   // the pick filter entirely. The P0/P1 backlog sweep alone does not cover it.
-  const marked = [String(12), {
-    id: '12',
+  const marked = ['linear:BRO-12', {
+    id: 'linear:BRO-12',
     subject: 'Sarah check-in: growth plan progress and metrics report',
     status: 'in_progress',
-    description: '[notion:abc-12] P2 Later · Not started · Admin\nDue 2026-05-23. Ask Sarah for status.\n\nVERIFY: owner-judgment (owner must read the report)',
+    description: '[linear:BRO-12] P2 Later · Not started · Admin\nDue 2026-05-23. Ask Sarah for status.\n\nVERIFY: owner-judgment (owner must read the report)',
   }];
   const entries = [
-    { ts: T(60), event: 'launch', taskId: '12', subject: 'Sarah check-in', workspaceRef: 'workspace:7' },
-    { ts: T(30), event: 'dead', taskId: '12', workspaceRef: 'workspace:7' },
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-12', subject: 'Sarah check-in', workspaceRef: 'workspace:7' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-12', workspaceRef: 'workspace:7' },
   ];
   const plan = core.planSweep(entries, new Map([marked]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.retryable.length, 0, 'owner-judgment card must not be retryable');
-  assert.equal(plan.toDispatch.filter(d => d.taskId === '12').length, 0, 'and must never be dispatched');
+  assert.equal(plan.toDispatch.filter(d => d.taskId === 'linear:BRO-12').length, 0, 'and must never be dispatched');
 
   // Control: identical ledger, identical Admin category, marker removed -> retried.
-  const control = [String(12), { ...marked[1], description: marked[1].description.replace(/VERIFY:\s*owner-judgment/i, 'VERIFY: nothing') }];
+  const control = ['linear:BRO-12', { ...marked[1], description: marked[1].description.replace(/VERIFY:\s*owner-judgment/i, 'VERIFY: nothing') }];
   const plan2 = core.planSweep(entries, new Map([control]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan2.retryable.length, 1, 'without the marker the same card IS retryable');
 });
@@ -113,16 +127,16 @@ test('2 infra-only deaths do not park; INFRA_DEAD_ATTEMPT_LIMIT infra deaths in 
   // passing test in this file already relies on launch-before-dead
   // ordering for exactly this reason).
   const infraPair = (ref, launchM, deadM) => ([
-    { ts: T(launchM), event: 'launch', taskId: '15', subject: 's', workspaceRef: ref, unverified: true },
-    { ts: T(deadM), event: 'dead', taskId: '15', workspaceRef: ref, failureReason: 'command injection never ran' },
+    { ts: T(launchM), event: 'launch', taskId: 'linear:BRO-15', subject: 's', workspaceRef: ref, unverified: true },
+    { ts: T(deadM), event: 'dead', taskId: 'linear:BRO-15', workspaceRef: ref, failureReason: 'command injection never ran' },
   ]);
   const twoInfra = [...infraPair('workspace:20', 90, 89.9999), ...infraPair('workspace:21', 80, 79.9999)];
-  const planTwo = core.planSweep(twoInfra, new Map([task(15, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const planTwo = core.planSweep(twoInfra, new Map([lin('BRO-15', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(planTwo.toPark.length, 0, '2 infra deaths must not park');
 
   const tenInfra = [];
   for (let i = 0; i < 10; i++) tenInfra.push(...infraPair(`workspace:${30 + i}`, 90 - i, 90 - i - 0.0001));
-  const planTen = core.planSweep(tenInfra, new Map([task(15, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const planTen = core.planSweep(tenInfra, new Map([lin('BRO-15', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(planTen.toPark.length, 1, '10 infra deaths in a row must still park (wedged-host ceiling)');
   assert.equal(planTen.toPark[0].reason, 'infra');
   assert.equal(planTen.toPark[0].deaths, 10, 'deaths must reflect the infra count, never 0, for the owner-facing message');
@@ -130,17 +144,17 @@ test('2 infra-only deaths do not park; INFRA_DEAD_ATTEMPT_LIMIT infra deaths in 
 
 test('DEAD_ATTEMPT_LIMIT deaths -> park once; parked card never re-parks or re-dispatches across 100 sweeps (pre-mortem P0)', () => {
   const entries = [
-    { ts: T(90), event: 'launch', taskId: '14', subject: 's', workspaceRef: 'workspace:8' },
-    { ts: T(80), event: 'dead', taskId: '14', workspaceRef: 'workspace:8' },
-    { ts: T(70), event: 'launch', taskId: '14', subject: 's', workspaceRef: 'workspace:9' },
-    { ts: T(60), event: 'dead', taskId: '14', workspaceRef: 'workspace:9' },
+    { ts: T(90), event: 'launch', taskId: 'linear:BRO-14', subject: 's', workspaceRef: 'workspace:8' },
+    { ts: T(80), event: 'dead', taskId: 'linear:BRO-14', workspaceRef: 'workspace:8' },
+    { ts: T(70), event: 'launch', taskId: 'linear:BRO-14', subject: 's', workspaceRef: 'workspace:9' },
+    { ts: T(60), event: 'dead', taskId: 'linear:BRO-14', workspaceRef: 'workspace:9' },
   ];
-  const tasks = new Map([task(14, 'in_progress')]);
+  const tasks = new Map([lin('BRO-14', 'in_progress')]);
   const first = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(first.toPark.length, 1, 'first sweep parks');
   assert.equal(first.toDispatch.length, 0);
   // CLI appends the park event; every later sweep must be silent about #14
-  entries.push({ ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: '14' });
+  entries.push({ ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-14' });
   for (let i = 0; i < 100; i++) {
     const p = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
     assert.equal(p.toPark.length, 0, `sweep ${i} re-parked`);
@@ -287,10 +301,10 @@ test('cmux unobservable (null or empty listing) = report-only, zero dispatches',
 
 test('dispatch kill-switch = visibility only', () => {
   const entries = [
-    { ts: T(60), event: 'launch', taskId: '10', subject: 's', workspaceRef: 'workspace:5' },
-    { ts: T(30), event: 'dead', taskId: '10', workspaceRef: 'workspace:5' },
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-10', subject: 's', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-10', workspaceRef: 'workspace:5' },
   ];
-  const plan = core.planSweep(entries, new Map([task(10, 'pending')]), { now: NOW, liveTitles: LIVE, dispatchEnabled: false });
+  const plan = core.planSweep(entries, new Map([lin('BRO-10', 'pending')]), { now: NOW, liveTitles: LIVE, dispatchEnabled: false });
   assert.equal(plan.toDispatch.length, 0);
   assert.equal(plan.retryable.length, 1, 'still classified — only the action is held');
 });
@@ -368,13 +382,13 @@ test('#1564: a claim that never launched is not re-claimed every sweep, and does
 
 test('#1564: a landed launch re-arms the task — a later dead launch is still retryable', () => {
   const entries = [
-    { ts: T(120), event: 'watchdog-redispatch', taskId: '22', kind: 'p01-backlog' },
-    { ts: T(118), event: 'launch', taskId: '22', subject: 'Fix thing 22', workspaceRef: 'workspace:8' },
-    { ts: T(30), event: 'dead', taskId: '22', workspaceRef: 'workspace:8' },
+    { ts: T(120), event: 'watchdog-redispatch', taskId: 'linear:BRO-22', kind: 'p01-backlog' },
+    { ts: T(118), event: 'launch', taskId: 'linear:BRO-22', subject: 'Fix thing 22', workspaceRef: 'workspace:8' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-22', workspaceRef: 'workspace:8' },
   ];
-  const plan = core.planSweep(entries, new Map([task(22, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const plan = core.planSweep(entries, new Map([lin('BRO-22', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.retryable.length, 1, 'the claim landed, so the dead session is retryable as before');
-  assert.equal(plan.toDispatch[0].taskId, '22');
+  assert.equal(plan.toDispatch[0].taskId, 'linear:BRO-22');
 });
 
 test('#1564: an unlanded claim re-arms by itself after REDISPATCH_REARM_MS', () => {
