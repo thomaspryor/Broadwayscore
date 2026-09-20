@@ -429,18 +429,16 @@ function sanitizeRowText(s) {
     .replace(/VERIFY\s*:/gi, 'VERIFY -');
 }
 
-// The b64url token must fit SAFE_CHECK_FORMS' 200-char cap AND decode back to
-// exactly what check-health-row-absent.js compares — so BOTH sides slice the
-// row name to the same bound (120 chars ≈ ≤160 b64 chars even for multi-byte).
-const ROW_NAME_MATCH_LIMIT = 120;
-
 // Encodes one row's raw name into the check-health-row-absent.js safe-form
 // token — shared by the single-row and folded-row buildCardNotes branches so
 // they can never diverge on the encoding (round-tripped by the existing
 // "acceptance command passes the REAL safe-form gate" test).
-function rowAbsentCheckCmd(name) {
-  return `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(String(name).trim().slice(0, ROW_NAME_MATCH_LIMIT), 'utf8').toString('base64url')}`;
-}
+//
+// BRO-3881 moved it to its own leaf so scripts/lib/owner-alert-router.js — the
+// OTHER auto-filer, whose cards the digest also dispatches — can emit the same
+// command instead of the prose that got every one of its cards refused at
+// dispatch. See that module's header for the incident.
+const { rowAbsentCheckCmd } = require('./health-row-check-cmd.js');
 
 // Card notes must pass notion-brain's card-quality gate for "Not started"
 // cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections

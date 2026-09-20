@@ -82,6 +82,7 @@
  */
 
 const fs = require('fs');
+const { rowAbsentCheckCmd, healthRowNameFromConditionKey } = require('./health-row-check-cmd.js');
 const os = require('os');
 const path = require('path');
 const { sendAlert } = require('./discord-notify');
@@ -324,7 +325,28 @@ function buildCardNotes({ description, hint, fields, conditionKey }) {
   ];
   if (fieldLines) parts.push(fieldLines);
   parts.push(`\n## Suggested approach\n${hint || 'Investigate the condition and fix the root cause.'}`);
-  parts.push(`\n## Acceptance criteria\nCondition "${conditionKey}" no longer fires on the next check. If it recurs, this card (or a fresh one) will re-open automatically — do not close this as "won't fix" without noting why.`);
+  // BRO-3881: prose alone here made EVERY card this router files
+  // undispatchable. linear-next.js gates each dispatch on
+  // evaluateVerifiability() (scripts/lib/verify-gate.js), which needs a
+  // backticked safe-form command (or an explicit owner-judgment line) — so a
+  // card whose only acceptance criteria was "condition X no longer fires" was
+  // refused inside the detached child, AFTER the morning digest had already
+  // spent one of its two daily dispatch slots on it. BRO-3349 was picked and
+  // refused four days running that way.
+  //
+  // A health-check-sourced condition has a machine-checkable answer already:
+  // the same check-health-row-absent.js command scripts/lib/digest-autofix.js
+  // puts on the cards IT files for the very same rows. Emit it here too,
+  // from the shared builder, so the two filers cannot drift again.
+  const healthRowName = healthRowNameFromConditionKey(conditionKey);
+  const acceptance = [
+    '\n## Acceptance criteria',
+    healthRowName
+      ? `\`${rowAbsentCheckCmd(healthRowName)}\` passes — i.e. the daily health check no longer lists "${healthRowName}" among errors or warnings.`
+      : null,
+    `Condition "${conditionKey}" no longer fires on the next check. If it recurs, this card (or a fresh one) will re-open automatically — do not close this as "won't fix" without noting why.`,
+  ].filter(Boolean).join('\n');
+  parts.push(acceptance);
   // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12): an unambiguous,
   // greppable anchor for the cross-system dedupe (findLinearDuplicate below)
   // — the prose "Condition "<key>"..." line above already contains the raw
@@ -928,6 +950,11 @@ function readDispatchAttempts({ days = 7 } = {}) {
 
 module.exports = {
   routeAlert,
+  // BRO-3881: exported so the test asserts the REAL card body every filed
+  // issue gets, rather than a copy of the template (CLAUDE.md rule 15). The
+  // bug it guards — prose-only acceptance criteria that no dispatch will
+  // accept — is invisible from routeAlert's return value.
+  buildCardNotes,
   findLinearDuplicate,
   isPageWorthy, // re-exported for callers/tests that want to check gating without calling routeAlert
   resolveCondition,

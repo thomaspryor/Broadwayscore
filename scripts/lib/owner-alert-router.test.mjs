@@ -1711,3 +1711,69 @@ test('BRO-3030 P2: the never-quiet callers keep a cooldown short enough for the 
     );
   }
 });
+
+// ── BRO-3881: every card this router files must be DISPATCHABLE ─────────────
+// linear-next.js refuses to dispatch any issue whose acceptance criteria names
+// no runnable command — and it does so inside the DETACHED child, after the
+// morning digest has already spent one of its daily dispatch slots. So a
+// prose-only "## Acceptance criteria" section here is not a documentation nit:
+// it is a slot burned every single day, forever. BRO-3349 was picked and
+// refused on four consecutive days (2026-09-17 .. 2026-09-20) for exactly this.
+//
+// These tests call the REAL buildCardNotes and the REAL gate (CLAUDE.md rule
+// 15) — a copy of either would let them drift apart again, which is the whole
+// defect.
+
+test('BRO-3881: a health-check-sourced card carries a command the real dispatch gate arms', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const rowName = 'Data quality: provider spend ledger';
+  const notes = buildCardNotes({
+    description: 'Provider spend ledger newest entry (day=2026-09-04) is 11d old (>48h)',
+    hint: 'Check the commit step in data-health-check.yml',
+    fields: [{ name: 'Check', value: rowName }],
+    conditionKey: `health-check:${rowName}`,
+  });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.cmd, `router-filed card is undispatchable — linear-next.js refuses it and the digest slot is wasted: ${gate.reason}`);
+  assert.match(gate.cmd, /check-health-row-absent\.js --row-b64 /);
+  // The token must decode back to the row name check-health-row-absent.js
+  // compares against — a truncated or prose-sanitized name silently never matches.
+  const token = gate.cmd.split(' ').pop();
+  assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowName);
+});
+
+test('BRO-3881: the row name survives colons in the conditionKey', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  // Health-check row names contain colons of their own ("Data quality: X"), so
+  // splitting the conditionKey on every colon would truncate the name to
+  // "Data quality" and the generated command would never match anything.
+  const rowName = 'Dispatch: board targeting: stale';
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: `health-check:${rowName}` });
+  const token = evaluateVerifiability(notes, []).cmd.split(' ').pop();
+  assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowName);
+});
+
+test('BRO-3881: a non-health-check condition keeps the prose criteria and is not given a bogus command', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: 'gap:some-show-2026/thestage--unknown.json' });
+  assert.ok(!notes.includes('check-health-row-absent.js'),
+    'only health-check rows have a check-health-row-absent.js answer — inventing one for other conditions would arm a command that can never pass');
+  assert.match(notes, /no longer fires on the next check/);
+});
+
+test('BRO-3881: both auto-filers build the command from the SAME encoder', () => {
+  // digest-autofix.js and owner-alert-router.js file cards for the same
+  // health-check rows by two different routes. They drifted once already —
+  // one emitted a runnable command, the other prose — so pin that they now
+  // share one builder rather than two copies of the encoding contract.
+  const shared = require('./health-row-check-cmd.js');
+  const digestSrc = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), 'digest-autofix.js'), 'utf8');
+  const routerSrc = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), 'owner-alert-router.js'), 'utf8');
+  for (const [name, src] of [['digest-autofix.js', digestSrc], ['owner-alert-router.js', routerSrc]]) {
+    assert.match(src, /require\('\.\/health-row-check-cmd\.js'\)/, `${name} must require the shared builder, not re-declare the encoding`);
+    assert.doesNotMatch(src, /Buffer\.from\([^)]*\)\.toString\('base64url'\)/, `${name} still hand-rolls the b64url token — that is the drift this card fixed`);
+  }
+  assert.equal(shared.rowAbsentCheckCmd('A: b'), `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from('A: b', 'utf8').toString('base64url')}`);
+});
