@@ -1,28 +1,20 @@
 {
-  "generatedAt": "2026-09-20T05:17:47.125Z",
-  "subject": "BSC URGENT (day 30): 8 unresolved errors",
-  "bannerText": "8 errors, 32 warnings",
-  "consecutiveErrorDays": 30,
+  "generatedAt": "2026-09-20T11:52:59.212Z",
+  "subject": "BSC URGENT (day 31): 6 unresolved errors",
+  "bannerText": "6 errors, 34 warnings",
+  "consecutiveErrorDays": 31,
   "errors": [
     {
-      "name": "Sync: baseline drift",
-      "message": "Open shows dropped by 11: 133 vs baseline 144"
-    },
-    {
-      "name": "Data quality: provider spend ledger",
-      "message": "Provider spend ledger's newest entry (day=2026-09-18) is 2d old (>48h) — the daily reconciliation itself has stopped landing"
-    },
-    {
       "name": "Main: red streak",
-      "message": "main's Test Suite has had no confirmed-green run in 16.7h (14 failing runs) — first red commit 7ea5a09a6, job \"Data Validation, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "message": "main's Test Suite has had no confirmed-green run in 23.2h (19 failing runs) — first red commit 7ea5a09a6, job \"Data Validation, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
     },
     {
       "name": "Alert Router: dispatch deadman",
-      "message": "Most recent auto-dispatch attempt failed (12/69 succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: LINEAR_API_KEY not set in .env or environment"
+      "message": "Most recent auto-dispatch attempt failed (12/71 succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: LINEAR_API_KEY not set in .env or environment"
     },
     {
       "name": "Push-retry deadman",
-      "message": "255 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-2323-mu3r7v68 [Rebuild Reviews Data x38, Rebuild Reviews (Fast) x37, unknown x29, Test Suite x19, Process Feedback Submissions x10, Fetch Guardian Reviews via API x10, Gather Review Data x9, Commercial RSS Poll x9, Audit Aggregator Review Gap x8, Fetch Show Images x8, Opening Night Completeness Check x7, Scrape New Aggregators x7, Daily Data Health Check x6, Backfill Cast Data (Web Search) x5, Audit Imageless Scored Shows x5, Enrich Reviews x5, Update Lottery/Rush Data x5, Reverse Discovery Audit x4, Update Show Score Data x4, Check Corpus Drift x2, Refresh Show Score (opening-night window) x2, Check Review-Count Drift x2, Reddit Engagement Digest x2, Auto-Maintain Show Data x2, Newsletter Draft Refresh (Sunday) x2, Audit Census Recall x2, Opening Night Broadcast x2, Weekly Data Integrity Check x1, Audit Provisional Show Venues x1, Outlet Registry Baseline Maintenance x1, Refresh Review Data x1, Scrape BWW Reviews x1, Audit Cross-Production (Weekly) x1, Promote West End Aggregator Candidates x1, Scrape WestEndTheatre Roundups x1, Opening Night Checklist x1, LLM Ensemble Score Reviews x1, Generate Guide Editorials x1, Weekly Video Reviews x1, Audit Aggregator Coverage x1, Batch Commercial Research x1]. Most recent reason: shallow-ancestry-unrecoverable."
+      "message": "222 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-2323-mu3r7v68 [Rebuild Reviews (Fast) x35, Rebuild Reviews Data x29, unknown x29, Test Suite x19, Fetch Guardian Reviews via API x9, Commercial RSS Poll x8, Process Feedback Submissions x8, Fetch Show Images x7, Scrape New Aggregators x7, Opening Night Completeness Check x6, Gather Review Data x6, Daily Data Health Check x6, Audit Aggregator Review Gap x6, Update Lottery/Rush Data x5, Enrich Reviews x4, Audit Imageless Scored Shows x4, Update Show Score Data x4, Backfill Cast Data (Web Search) x3, Reverse Discovery Audit x3, Newsletter Draft Refresh (Sunday) x2, Audit Census Recall x2, Opening Night Broadcast x2, Batch Commercial Research x2, Outlet Registry Baseline Maintenance x1, Refresh Review Data x1, Scrape BWW Reviews x1, Audit Cross-Production (Weekly) x1, Promote West End Aggregator Candidates x1, Scrape WestEndTheatre Roundups x1, Opening Night Checklist x1, LLM Ensemble Score Reviews x1, Generate Guide Editorials x1, Refresh Show Score (opening-night window) x1, Check Corpus Drift x1, Weekly Video Reviews x1, Check Review-Count Drift x1, Audit Aggregator Coverage x1, Reddit Engagement Digest x1, Auto-Maintain Show Data x1]. Most recent reason: shallow-ancestry-unrecoverable."
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
@@ -30,7 +22,7 @@
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 9 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 6 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
@@ -43,8 +35,12 @@
       "message": "2 open show(s) have audience data on a source that didn't link — Mezzanine: My Son’s A Queer (But What Can You Do?) (151 ratings ↔ My Son's a Queer (But What Can You Do?)); Mezzanine: Thelma & Louise: A New Musical (57 ratings ↔ Thelma & Louise)"
     },
     {
+      "name": "Sync: baseline drift",
+      "message": "Open shows dropped by 11: 133 vs baseline 144; Reviews dropped: 20840 vs baseline 20901"
+    },
+    {
       "name": "Quality: corpus drift",
-      "message": "15 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), public/data/shows/{id}.json existing for an id no longer in shows.json"
+      "message": "14 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -56,23 +52,31 @@
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (18h ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (1d ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "message": "4 NEW unhandled CV.wrongProduction review(s) since last run (940 total across 427 show(s), 18h ago)"
+      "message": "5 NEW unhandled CV.wrongProduction review(s) since last run (939 total across 427 show(s), 7h ago)"
+    },
+    {
+      "name": "Data quality: fulltext-mentions-show lifetime sweep",
+      "message": "2 NEW unmatched review(s) since last run (642 total across 329 show(s), 7h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "5 NEW cross-show URL mismatch(es) since last run (1630 total across 729 show(s), 18h ago)"
+      "message": "1 NEW cross-show URL mismatch(es) since last run (1631 total across 729 show(s), 7h ago)"
+    },
+    {
+      "name": "Data quality: revival-unverified lifetime sweep",
+      "message": "1 NEW unverified revival flag(s) since last run (41 total across 41 show(s), 7h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
-      "message": "6 show(s) opened and qualified but never emailed subscribers (0 still alertable, 6 aged out past the paging window, 6h ago)"
+      "message": "4 show(s) opened and qualified but never emailed subscribers (0 still alertable, 4 aged out past the paging window, 7h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
-      "message": "1 show(s) still 'announced' after apparently opening (22 silenced by contamination, 5h ago)"
+      "message": "1 show(s) still 'announced' after apparently opening (22 silenced by contamination, 7h ago)"
     },
     {
       "name": "Coverage: adversarial probe",
@@ -89,6 +93,10 @@
     {
       "name": "Cron failed: Test Suite",
       "message": "Last run inconclusive: failure (1h ago), no success in 48h"
+    },
+    {
+      "name": "Cron failed: Reverse Discovery",
+      "message": "Last run inconclusive: failure (3h ago), no success in 24h"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
@@ -131,20 +139,20 @@
       "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
     },
     {
-      "name": "Workflow repeat-failure: Test UGC Features",
-      "message": "Test UGC Features failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "5 discovered review(s) not reaching the composite score (2 T1). First: the-story-west-end-2026 — the-spectator-uk (unscored)"
+      "message": "6 discovered review(s) not reaching the composite score (3 T1). First: the-cherry-orchard-park-avenue-armory-off-broadway-2026 — wsj (unscored)"
     },
     {
       "name": "Data: uncollected live review strands",
       "message": "23 discovered review URL(s) across 18 live show(s) were never fetched. First: the-lost-boys-2026 (2 stranded)"
     },
     {
+      "name": "Infra: worktree GC log stale",
+      "message": "worktree-gc.log has no line in the last 7.4h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
+    },
+    {
       "name": "Infra: notion-schedule-coupling audit",
-      "message": "3 live schedule(s) still reference the frozen Notion mirror (18h ago)"
+      "message": "5 live schedule(s) still reference the frozen Notion mirror (7h ago)"
     }
   ],
   "queued": [
@@ -762,21 +770,35 @@
       "fields": []
     },
     {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.3% (421/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (880h)\nA Midsummer Night's Dream — observer (880h)\nA Midsummer Night's Dream — standard (880h)\nABBA Voyage — independent (880h)\nAladdin — ew (880h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (880h)\nBuena Vista Social Club — broadwaynews (880h)\nBuena Vista Social Club — nydailynews (880h)\nHadestown — nydailynews (880h)\nHeathers The Musical — dailybeast (880h)\n… 17 more circuit-open cell(s)",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
       "title": "cmux launch refused — spawn resource starvation, not a revoked credential",
       "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env This is an OS/jetsam-level spawn failure (timeout, out-of-memory, or a signal kill), not a credential rejection — do NOT re-run `claude auth login`. Check for the BRO-2789 OOM plateau or prune cmux sessions (near its ~33-runtime ceiling).",
       "severity": "error",
       "url": null,
       "fields": []
+    },
+    {
+      "title": "Watchdog parked #796 — redispatch never produced a launch",
+      "description": "Watchdog: card \"BSC Daily: Data: undispatchable backlog cards\" was claimed for redispatch at 2026-09-20T03:48:27.051Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 796), then re-arm with node scripts/bsc-next.js --id 796 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Watchdog parked #797 — redispatch never produced a launch",
+      "description": "Watchdog: card \"BSC Daily: Data: T1/T2 silent review gaps\" was claimed for redispatch at 2026-09-20T03:48:28.877Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 797), then re-arm with node scripts/bsc-next.js --id 797 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "T1 Coverage Scoreboard",
+      "description": "broadway: 76.5% (381/498)\noff-broadway: 42% (131/312)\nwest-end: 76.3% (421/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (885h)\nA Midsummer Night's Dream — observer (885h)\nA Midsummer Night's Dream — standard (885h)\nABBA Voyage — independent (885h)\nAladdin — ew (885h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (885h)\nBuena Vista Social Club — broadwaynews (885h)\nBuena Vista Social Club — nydailynews (885h)\nHadestown — nydailynews (885h)\nHeathers The Musical — dailybeast (885h)\n… 17 more circuit-open cell(s)",
+      "severity": "warning",
+      "url": null,
+      "fields": []
     }
   ],
-  "autoFixedCount": 2,
-  "passedCount": 59,
-  "totalCount": 103
+  "autoFixedCount": 1,
+  "passedCount": 58,
+  "totalCount": 102
 }
