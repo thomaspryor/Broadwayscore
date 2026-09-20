@@ -33,7 +33,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 process.env.LINEAR_API_KEY = 'test-key';
-const { cmdReport } = require('../../scripts/linear-session.js');
+const { cmdReport, cmdClaim } = require('../../scripts/linear-session.js');
 
 // Mirrors this team's real states (queried live: In Review, Canceled, Todo,
 // Backlog, Duplicate, Done, In Progress) closely enough to exercise
@@ -46,7 +46,7 @@ const TEAM_STATES = [
   { id: 'state-done', name: 'Done', type: 'completed' },
 ];
 
-function makeIssueResponse({ description, commentBodies = [] }) {
+function makeIssueResponse({ description, commentBodies = [], state, comments }) {
   return {
     data: {
       issue: {
@@ -56,9 +56,11 @@ function makeIssueResponse({ description, commentBodies = [] }) {
         description,
         priority: 2,
         url: 'https://linear.app/broadway-scorecard/issue/BRO-9458/fixture',
-        state: { id: 'state-progress', name: 'In Progress', type: 'started' },
+        state: state || { id: 'state-progress', name: 'In Progress', type: 'started' },
         labels: { nodes: [] },
-        comments: { nodes: commentBodies.map((body, i) => ({ id: `c${i}`, body, createdAt: null, user: null })) },
+        comments: {
+          nodes: comments || commentBodies.map((body, i) => ({ id: `c${i}`, body, createdAt: null, user: null })),
+        },
       },
     },
   };
@@ -206,5 +208,67 @@ test('LINEAR_DONE_GATE_DISABLED=1 bypasses the gate for automation', async () =>
     } finally {
       delete process.env.LINEAR_DONE_GATE_DISABLED;
     }
+  });
+});
+
+// ── report --since= staleness check (BRO-3869) ─────────────────────────────
+
+test('report --since=: warns and sets staleness.stale when a comment postdates --since — never blocks the report itself', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Fixed the thing, looks good.',
+        comments: [{ id: 'c1', body: 'concluded already', createdAt: '2026-09-16T16:57:00.000Z', user: { name: 'Bob' } }],
+      },
+      updateShouldBeCalled: true,
+    });
+    await cmdReport({ issue: 'BRO-9458', status: 'in-review', summary: 'did the work', since: '2026-09-16T12:00:00.000Z' });
+    assert.match(h.getErrors(), /changed since 2026-09-16T12:00:00\.000Z/);
+    assert.match(h.getErrors(), /Bob/);
+    assert.match(h.getLogs(), /"stale":true/);
+  });
+});
+
+test('report without --since: no staleness check runs at all (staleness is null, no warning)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Fixed the thing, looks good.',
+        comments: [{ id: 'c1', body: 'irrelevant', createdAt: '2026-09-16T16:57:00.000Z', user: { name: 'Bob' } }],
+      },
+      updateShouldBeCalled: true,
+    });
+    await cmdReport({ issue: 'BRO-9458', status: 'in-review', summary: 'did the work' });
+    assert.doesNotMatch(h.getErrors(), /changed since/);
+    assert.match(h.getLogs(), /"staleness":null/);
+  });
+});
+
+// ── claim reopening a terminal issue (BRO-3869) ────────────────────────────
+
+test('claim: reopening a Done issue warns with its concluding comments BEFORE the state-move mutation', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Concluded — shipped single button.',
+        state: { id: 'state-done', name: 'Done', type: 'completed' },
+        comments: [{ id: 'c1', body: 'No real difference, shipping single-button on UX grounds.', createdAt: '2026-09-16T16:57:00.000Z', user: { name: 'Bob' } }],
+      },
+      updateShouldBeCalled: true,
+    });
+    await cmdClaim({ issue: 'BRO-9458' });
+    assert.match(h.getErrors(), /was "Done" \(a concluded state\) — you're reopening it/);
+    assert.match(h.getErrors(), /shipping single-button on UX grounds/);
+  });
+});
+
+test('claim: reopening a routine Todo issue does NOT print the concluded-state warning', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: { description: 'Just a todo.', state: { id: 'state-todo', name: 'Todo', type: 'unstarted' } },
+      updateShouldBeCalled: true,
+    });
+    await cmdClaim({ issue: 'BRO-9458' });
+    assert.doesNotMatch(h.getErrors(), /a concluded state/);
   });
 });
