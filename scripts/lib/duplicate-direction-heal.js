@@ -132,6 +132,16 @@ function isFlaggedRecord(data) {
 // this short holds nothing unique, so it can never justify becoming canonical.
 const MIN_LOSER_BODY_CHARS = 500;
 
+// Ceiling on how much longer `winner` may be than `loser` while still reading
+// as "boilerplate on the winner" rather than "loser is a truncated excerpt".
+// The real BRO-3821 corpus tops out at 1.74x (the-children-off-west-end-2026,
+// 2456 vs 4276 chars); this leaves generous headroom above that while still
+// refusing a pathological case a length-only check can't otherwise tell apart
+// from real contamination — e.g. a bare-minimum 500-char loser "beating" a
+// genuinely complete 6000-char anchored winner just because it has a byline
+// (ship-check adversarial review, BRO-3821).
+const MAX_WINNER_TO_LOSER_RATIO = 3;
+
 function shouldFlipDuplicateDirection(loser, winner) {
   if (!loser || !winner) return false;
   if (isFlaggedRecord(loser)) return false;
@@ -148,6 +158,7 @@ function shouldFlipDuplicateDirection(loser, winner) {
     if (!loserNamed) return false;
     const winnerLen = String(winner.fullText || '').trim().length;
     if (winnerLen < loserLen) return false;
+    if (winnerLen > loserLen * MAX_WINNER_TO_LOSER_RATIO) return false;
   }
   return true;
 }

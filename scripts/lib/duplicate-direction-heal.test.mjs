@@ -75,6 +75,20 @@ test('shouldFlipDuplicateDirection: winner anchored but its body is LONGER than 
   ), true);
 });
 
+test('shouldFlipDuplicateDirection: winner anchored and disproportionately longer than loser — does not flip (ship-check adversarial finding: a bare-minimum-length loser must not beat a genuinely complete, much longer anchored winner just because it has a byline)', () => {
+  assert.equal(shouldFlipDuplicateDirection(
+    loser({ fullText: 'x'.repeat(500) }),
+    winner({ llmScore: ANCHORED, fullText: 'x'.repeat(6000) }),
+  ), false);
+});
+
+test('shouldFlipDuplicateDirection: winner anchored, within the real corpus ratio (1.8x) — still flips', () => {
+  assert.equal(shouldFlipDuplicateDirection(
+    loser({ fullText: 'x'.repeat(3000) }),
+    winner({ llmScore: ANCHORED, fullText: 'x'.repeat(5400) }),
+  ), true);
+});
+
 test('shouldFlipDuplicateDirection: winner anchored, bodies tied in length — flips (attribution breaks the tie)', () => {
   assert.equal(shouldFlipDuplicateDirection(
     loser({ fullText: 'x'.repeat(3000) }),
