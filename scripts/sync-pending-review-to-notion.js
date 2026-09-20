@@ -299,10 +299,23 @@ function findExistingCard() {
   if (matches.length > 1) {
     console.error(
       `[sync-pending-review-to-notion] WARNING: found ${matches.length} matching cards ` +
-      `(expected 1) — using the most recently edited. Consider manually merging: ` +
+      `(expected 1) — using the most recently edited ACTIVE one. Consider manually merging: ` +
       matches.map((c) => c.id).join(', ')
     );
-    matches.sort((a, b) => new Date(b.lastEditedAt) - new Date(a.lastEditedAt));
+    // /ship-check Codex review (card #796): a stale, long-Done digest card
+    // (same tag+title-prefix, e.g. a pre-2026-07-13 orphan) can outrank the
+    // real active one on pure recency if IT was edited more recently for some
+    // unrelated reason (a Notion UI touch, a bulk relabel). Active status
+    // (not Done/Canceled) wins first; recency only breaks a tie within the
+    // same active/terminal bucket — this is what the dropped --status filter
+    // was actually protecting against, without reintroducing its blind spot
+    // (excluding the single real card whenever ITS OWN status drifts).
+    const isTerminal = (c) => c.status === 'Done' || c.status === 'Canceled';
+    matches.sort((a, b) => {
+      const terminalDiff = Number(isTerminal(a)) - Number(isTerminal(b));
+      if (terminalDiff !== 0) return terminalDiff;
+      return new Date(b.lastEditedAt) - new Date(a.lastEditedAt);
+    });
   }
   return matches[0];
 }
