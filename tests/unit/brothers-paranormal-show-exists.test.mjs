@@ -21,6 +21,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { isExemptFromPlaybillCheck, isProvisional } = require('../../scripts/validate-show-venue.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -64,6 +68,12 @@ test('The Brothers Paranormal is flagged provisional with its manual-verificatio
   assert.equal(show.provisional, true);
   assert.equal(show.noPlaybillProductionPage, true,
     'no playbill.com/production/ page exists for this show — validate-show-venue.js cannot resolve it, so this field records that the venue/date match was confirmed by hand instead');
-  assert.ok(show.statusBackfillSource && show.statusBackfillSource.length > 0,
-    'manual entries without a Playbill production page must record how they were cross-verified');
+});
+
+test('The Brothers Paranormal passes the canonical exemption predicate (survives --all-provisional sweeps)', () => {
+  const show = loadShow();
+  assert.equal(isExemptFromPlaybillCheck(show), true,
+    'a noPlaybillProductionPage entry needs a statusBackfillSource of >50 chars (isExemptFromPlaybillCheck in scripts/validate-show-venue.js) or validate-show-venue.js --all-provisional will re-flag it as unresolved-provisional');
+  assert.equal(isProvisional(show), false,
+    'isExemptFromPlaybillCheck must short-circuit isProvisional — this is the actual behavior the data change depends on, not just the raw field values');
 });
