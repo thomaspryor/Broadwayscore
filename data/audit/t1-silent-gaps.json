@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T07:18:48.421Z",
+  "generatedAt": "2026-09-20T12:57:23.527Z",
   "windowDays": 45,
   "showsScanned": 78,
   "gaps": [
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-cherry-orchard-park-avenue-armory-off-broadway-2026",
       "firstSeen": "2026-09-19T14:08:25.392Z",
-      "fileAgeHours": 17.172744166666668,
+      "fileAgeHours": 22.8157675,
       "gapSeenAt": "2026-09-20T07:18:48.420Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 5.643085277777778
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
@@ -35,9 +35,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
       "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 256.37085472222225,
+      "fileAgeHours": 262.01391277777776,
       "gapSeenAt": "2026-09-20T07:18:48.420Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 5.643085277777778
     },
     {
       "showId": "alvin-ailey-american-dance-theater-new-works-west-end-2026",
@@ -52,9 +52,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --url=https://www.thestage.co.uk/reviews/alvin-ailey-american-dance-theater-new-works-review-sadlers-wells-london --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-17T15:01:25.973Z",
-      "fileAgeHours": 64.28937916666666,
+      "fileAgeHours": 69.9324375,
       "gapSeenAt": "2026-09-18T01:46:13.314Z",
-      "nonTerminalAgeHours": 53.543085
+      "nonTerminalAgeHours": 59.18617027777778
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -69,9 +69,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 85.29917472222222,
+      "fileAgeHours": 90.94223166666667,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 85.21828055555555
+      "nonTerminalAgeHours": 90.86136583333334
     },
     {
       "showId": "the-hope-theory-off-broadway-2026",
@@ -87,9 +87,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-hope-theory-off-broadway-2026",
       "firstSeen": "2026-09-18T10:20:54.798Z",
-      "fileAgeHours": 44.96487805555556,
+      "fileAgeHours": 50.60796027777778,
       "gapSeenAt": "2026-09-19T01:54:16.553Z",
-      "nonTerminalAgeHours": 29.408851944444443
+      "nonTerminalAgeHours": 35.05193722222222
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
@@ -105,9 +105,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
       "firstSeen": "2026-09-17T08:13:24.884Z",
-      "fileAgeHours": 71.08987055555555,
+      "fileAgeHours": 76.73295555555555,
       "gapSeenAt": "2026-09-20T07:18:48.420Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 5.643085277777778
     }
   ],
   "contradictions": []

@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-20T07:18:46.455Z",
+  "generatedAt": "2026-09-20T12:57:21.255Z",
   "windowDays": 1095,
-  "targets": 291,
-  "auditedThisRun": 13,
-  "carriedForward": 536,
+  "targets": 292,
+  "auditedThisRun": 15,
+  "carriedForward": 534,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 338,
-    "totalMissing": 1751,
+    "totalMissing": 1749,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1860,
-    "totalRecoverable": 27,
-    "totalRecovered": 7
+    "totalFlaggedMisses": 1866,
+    "totalRecoverable": 28,
+    "totalRecovered": 8
   },
   "results": [
     {
@@ -6167,11 +6167,14 @@
         "https://www.nytimes.com/2026/05/31/theater/and-then-the-rodeo-burned-down-review.html",
         "https://newyorktheater.me/2026/05/31/and-then-the-rodeo-burned-down-off-broadway-review-xhloe-and-natasha-on-fire/",
         "https://1minutecritic.com/and-then-the-rodeo-burned-down-review-ars-nova/",
-        "https://www.newyorktheatreguide.com/reviews/and-then-the-rodeo-burned-down-off-broadway-review"
+        "https://www.newyorktheatreguide.com/reviews/and-then-the-rodeo-burned-down-off-broadway-review",
+        "https://www.talkinbroadway.com/page/ob/05_31_26.html",
+        "https://www.theaterscene.net/plays/offbway-plays/and-then-the-rodeo-burnt-down/tony-marinelli/",
+        "https://www.offoffonline.com/offoffonline/2026/5/27/and-then-the-rodeo-burned-down"
       ],
-      "dirFiles": 15,
-      "dirClean": 11,
-      "inReviewsJson": 11,
+      "dirFiles": 14,
+      "dirClean": 13,
+      "inReviewsJson": 12,
       "missing": [
         {
           "url": "https://arsnovanyc.com/events/and-then-the-rodeo-burned-down/",
@@ -6193,15 +6196,7 @@
           "count": 1
         },
         {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
           "host": "therecs.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
           "count": 1
         },
         {
@@ -6217,13 +6212,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 295,
+        "count": 291,
         "byReason": {
+          "aggregator-internal-nav": 204,
           "non-review-host": 15,
-          "roundup-page": 2,
-          "not-http-url": 61,
-          "aggregator-internal-nav": 214,
-          "non-review-path": 3
+          "not-http-url": 64,
+          "aggregator-section-root": 6,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -6234,11 +6229,11 @@
           "outletId": "arsnovanyc",
           "provisional": true,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "reason": "⚠️  provisional outlet \"arsnovanyc\" (not in registry) — onboard to outlet-registry.json after review"
         }
       ],
       "ingestSkippedByCap": [],
@@ -6280,6 +6275,24 @@
             "firstSeenAt": "2026-08-08T10:21:02.207Z"
           },
           {
+            "url": "https://www.talkinbroadway.com/page/ob/05_31_26.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/and-then-the-rodeo-burnt-down/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/5/27/and-then-the-rodeo-burned-down",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
+          },
+          {
             "url": "https://arsnovanyc.com/events/and-then-the-rodeo-burned-down/",
             "outletId": "arsnovanyc.com",
             "state": "GAP",
@@ -6287,10 +6300,10 @@
             "firstSeenAt": "2026-08-08T10:21:02.207Z"
           }
         ],
-        "liveCount": 4,
-        "candidateCount": 5
+        "liveCount": 7,
+        "candidateCount": 8
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "animal-wisdom-off-broadway-2022",
@@ -20524,12 +20537,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 290,
+        "count": 291,
         "byReason": {
+          "aggregator-internal-nav": 224,
           "non-review-host": 15,
           "not-http-url": 48,
-          "aggregator-internal-nav": 224,
-          "non-review-path": 3
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -20613,7 +20626,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-08-23T16:14:59.695Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "burlesque-west-end-2026",
@@ -23087,7 +23100,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-20T01:54:21.561Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "catch-of-the-day-off-broadway-2026",
@@ -28217,9 +28230,9 @@
         "https://www.theatermania.com/news/review-celebrity-autobiography-on-broadway_1837709/",
         "https://therecs.co.uk/celebrity-autobiography/"
       ],
-      "dirFiles": 23,
-      "dirClean": 16,
-      "inReviewsJson": 14,
+      "dirFiles": 22,
+      "dirClean": 14,
+      "inReviewsJson": 13,
       "missing": [
         {
           "url": "https://open.substack.com/pub/newyorknotebook/p/celebrity-autobiography",
@@ -28241,10 +28254,6 @@
           "count": 2
         },
         {
-          "host": "interestedbystander.com",
-          "count": 1
-        },
-        {
           "host": "theatrely.com",
           "count": 1
         }
@@ -28257,11 +28266,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 87,
+        "count": 92,
         "byReason": {
+          "aggregator-internal-nav": 47,
           "non-review-host": 20,
           "not-http-url": 20,
-          "aggregator-internal-nav": 47
+          "aggregator-section-root": 5
         }
       },
       "dedupedVariants": [],
@@ -28358,7 +28368,7 @@
         "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -36641,7 +36651,7 @@
         "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal",
         "https://thecontending.com/dog-day-afternoon-not-your-fathers-take-but-thats-not-a-bad-thing/"
       ],
-      "dirFiles": 48,
+      "dirFiles": 46,
       "dirClean": 34,
       "inReviewsJson": 35,
       "missing": [],
@@ -36760,29 +36770,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 303,
+        "count": 297,
         "byReason": {
-          "non-review-host": 18,
-          "not-http-url": 65,
-          "aggregator-internal-nav": 217,
-          "non-review-path": 3
+          "aggregator-internal-nav": 206,
+          "non-review-host": 15,
+          "not-http-url": 70,
+          "aggregator-section-root": 6
         }
       },
       "dedupedVariants": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.independent.co.uk/bulletin/culture/dog-day-afternoon-broadway-guirgis-bernthal-reviews-b2949783.html",
-          "host": "independent.co.uk",
-          "file": "independent--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 100 chars — pattern may be missing for this outlet. Add an entry to scri",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -36967,7 +36963,7 @@
         "liveCount": 21,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "dog-man-the-musical-west-end-2026",
@@ -37714,12 +37710,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1178,
+        "count": 1199,
         "byReason": {
-          "non-review-host": 105,
-          "not-http-url": 172,
-          "aggregator-internal-nav": 892,
-          "non-review-path": 9
+          "aggregator-internal-nav": 884,
+          "non-review-host": 107,
+          "not-http-url": 181,
+          "aggregator-section-root": 27
         }
       },
       "dedupedVariants": [
@@ -38075,7 +38071,7 @@
         "liveCount": 12,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "driftwood-west-end-2026",
@@ -48500,8 +48496,8 @@
         "https://www.theatrereviews.com/off-broadway-review-girl-interrupted-at-the-publics-martinson-hall-through-sunday-july-12-2026/"
       ],
       "dirFiles": 34,
-      "dirClean": 24,
-      "inReviewsJson": 24,
+      "dirClean": 25,
+      "inReviewsJson": 25,
       "missing": [],
       "dirOnly": [
         {
@@ -48538,23 +48534,6 @@
               "urlInDir": "https://pagesonstages.com/2026/06/04/girl-interrupted/"
             }
           ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/06_04_26b.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2648432"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -48564,13 +48543,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 389,
+        "count": 409,
         "byReason": {
+          "aggregator-internal-nav": 255,
           "non-review-host": 35,
-          "roundup-page": 2,
-          "not-http-url": 104,
-          "aggregator-internal-nav": 245,
-          "non-review-path": 3
+          "not-http-url": 106,
+          "aggregator-section-root": 11,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -48583,13 +48562,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://pagesonstages.com/2026/06/04/girl-interrupted/"
-          },
-          {
-            "outletId": "talkinbroadway",
-            "outlet": "talkinbroadway",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.talkinbroadway.com/page/ob/06_04_26b.html"
           }
         ],
         "suppressedMissing": [],
@@ -48703,6 +48675,12 @@
             "firstSeenAt": "2026-08-08T17:17:26.499Z"
           },
           {
+            "url": "https://www.talkinbroadway.com/page/ob/06_04_26b.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T17:17:26.499Z"
+          },
+          {
             "url": "https://www.theaterscene.net/musicals/offbway/girl-interrupted/joseph-pisano/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -48720,19 +48698,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T17:17:26.499Z"
-          },
-          {
-            "url": "https://www.talkinbroadway.com/page/ob/06_04_26b.html",
-            "outletId": "talkinbroadway",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T17:17:26.499Z"
           }
         ],
-        "liveCount": 20,
+        "liveCount": 21,
         "candidateCount": 22
       },
-      "computedAt": "2026-08-23T03:53:38.032Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -52586,14 +52557,14 @@
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/grace-pervades-review-ralph-fiennes-b2968757.html",
         "https://www.timeout.com/london/theatre/grace-pervades-review"
       ],
-      "dirFiles": 33,
+      "dirFiles": 32,
       "dirClean": 14,
-      "inReviewsJson": 16,
+      "inReviewsJson": 18,
       "missing": [],
       "dirOnly": [
         {
           "host": "theartsdesk.com",
-          "count": 2
+          "count": 1
         },
         {
           "host": "britishtheatre.com",
@@ -52617,10 +52588,14 @@
         },
         {
           "host": "thestage.co.uk",
-          "count": 2
+          "count": 1
         },
         {
           "host": "theupcoming.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
           "count": 1
         }
       ],
@@ -52658,28 +52633,6 @@
               "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/grace-pervades-ralph-fiennes-miranda-raison/"
             }
           ]
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--kris-hallett.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/"
-            },
-            {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -52711,13 +52664,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/grace-pervades-ralph-fiennes-miranda-raison/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/"
           }
         ],
         "suppressedMissing": [],
@@ -52725,6 +52671,12 @@
           {
             "url": "https://www.londontheatre.co.uk/reviews/grace-pervades-review-theatre-royal-haymarket",
             "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
@@ -52753,19 +52705,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
           }
         ],
-        "liveCount": 3,
+        "liveCount": 4,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "graham100-the-centennial-celebration-off-broadway-2026",
@@ -62200,12 +62145,12 @@
       "showId": "heathers-the-musical-off-west-end-2026",
       "title": "Heathers the Musical",
       "openingDate": "2026-07-14",
-      "status": "open",
+      "status": "closed",
       "category": "off-west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
-        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
-        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710"
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710",
+        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331"
       ],
       "aggregatorListedUrls": [
         "https://cititour.com/NYC_Broadway/Heathers/1313",
@@ -62225,6 +62170,12 @@
         "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
         "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
         "https://www.vulture.com/article/heathers-musical-nyc-revival-new-world-stages.html",
+        "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+        "https://pagesonstages.com/2025/07/10/heathers/",
+        "https://mashable.com/article/heathers-off-broadway-2025-review",
+        "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
+        "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+        "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
         "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
         "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
         "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
@@ -62234,15 +62185,9 @@
         "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
         "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
         "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
-        "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
-        "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
-        "https://pagesonstages.com/2025/07/10/heathers/",
-        "https://mashable.com/article/heathers-off-broadway-2025-review",
-        "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
-        "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
-        "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/"
+        "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html"
       ],
-      "dirFiles": 42,
+      "dirFiles": 41,
       "dirClean": 13,
       "inReviewsJson": 13,
       "missing": [
@@ -62359,34 +62304,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
           "host": "frontmezzjunkies.com",
           "knownOutletId": "frontmezzjunkies",
@@ -62425,6 +62342,34 @@
           "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
           "host": "stageandcinema.com",
           "knownOutletId": "stageandcinema",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -62625,12 +62570,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 670,
+        "count": 679,
         "byReason": {
-          "non-review-host": 54,
-          "not-http-url": 84,
           "aggregator-internal-nav": 526,
-          "non-review-path": 6
+          "non-review-host": 55,
+          "not-http-url": 86,
+          "aggregator-section-root": 12
         }
       },
       "dedupedVariants": [],
@@ -62640,12 +62585,12 @@
           "publishDate": "2025-07-10"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
-          "publishDate": "2014-03-31"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710",
           "publishDate": "2025-07-10"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
+          "publishDate": "2014-03-31"
         }
       ],
       "weIngestBlocked": [
@@ -62746,30 +62691,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
-          "host": "usatoday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
           "host": "frontmezzjunkies.com",
           "priorRun": true,
@@ -62802,6 +62723,30 @@
         {
           "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
           "host": "stageandcinema.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+          "host": "nydailynews.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -62924,34 +62869,6 @@
             "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway"
           },
           {
-            "outletId": "usatoday",
-            "outlet": "usatoday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.timeout.com/newyork/theater/heathers-the-musical"
-          },
-          {
-            "outletId": "amny",
-            "outlet": "amny",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094"
-          },
-          {
-            "outletId": "nydailynews",
-            "outlet": "nydailynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672"
-          },
-          {
             "outletId": "frontmezzjunkies",
             "outlet": "frontmezzjunkies",
             "critic": "Unknown",
@@ -62992,6 +62909,34 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/heathers-the-musical"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672"
           },
           {
             "outletId": "vulture",
@@ -63158,34 +63103,6 @@
             "firstSeenAt": "2026-08-14T04:10:20.287Z"
           },
           {
-            "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
-            "outletId": "usatoday",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T04:10:20.287Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T04:10:20.287Z"
-          },
-          {
-            "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
-            "outletId": "amny",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T04:10:20.287Z"
-          },
-          {
-            "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
-            "outletId": "nydailynews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-14T04:10:20.287Z"
-          },
-          {
             "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
             "outletId": "frontmezzjunkies",
             "state": "GAP",
@@ -63223,6 +63140,34 @@
           {
             "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
             "outletId": "stageandcinema",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-14T04:10:20.287Z"
+          },
+          {
+            "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
+            "outletId": "usatoday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-14T04:10:20.287Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/heathers-the-musical",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-14T04:10:20.287Z"
+          },
+          {
+            "url": "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
+            "outletId": "amny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-14T04:10:20.287Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
+            "outletId": "nydailynews",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-14T04:10:20.287Z"
@@ -63280,7 +63225,7 @@
         "liveCount": 0,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-23T03:53:38.032Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
@@ -80587,7 +80532,8 @@
         "http://timeoutchicago.com/arts-culture/theater/15794896/kinky-boots-at-bank-of-america-theatre-theater-review",
         "http://showbizchicago.com/billy-porter-is-the-soul-of-kinky-boots/",
         "http://www.aroundthetownchicago.com/theatre-reviews/kinky-boots-the-musical/",
-        "http://www.examiner.com/review/kinky-boots-musical-on-sure-path-to-tony-awards"
+        "http://www.examiner.com/review/kinky-boots-musical-on-sure-path-to-tony-awards",
+        "https://www.allthatdazzles.co.uk/post/review-kinky-boots-queen-s-theatre-hornchurch"
       ],
       "dirFiles": 37,
       "dirClean": 5,
@@ -80610,14 +80556,14 @@
         {
           "url": "http://showbizchicago.com/billy-porter-is-the-soul-of-kinky-boots/",
           "host": "showbizchicago.com",
-          "knownOutletId": null,
+          "knownOutletId": "showbiz-chicago",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "http://www.aroundthetownchicago.com/theatre-reviews/kinky-boots-the-musical/",
           "host": "aroundthetownchicago.com",
-          "knownOutletId": null,
+          "knownOutletId": "around-the-town-chicago",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -80655,7 +80601,7 @@
         {
           "url": "http://www.suntimes.com/entertainment/15794191-421/feel-good-kinky-boots-is-a-step-in-the-billy-elliot-direction.html",
           "host": "suntimes.com",
-          "knownOutletId": "suntimes",
+          "knownOutletId": "chicago-sun-times",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -80670,6 +80616,23 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-kinky-boots-queen-s-theatre-hornchurch",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--daz-gale.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-kinky-boots-queen-s-theatre-hornchurch"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -80679,12 +80642,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 282,
+        "count": 283,
         "byReason": {
+          "aggregator-internal-nav": 225,
           "non-review-host": 15,
           "not-http-url": 39,
-          "aggregator-internal-nav": 225,
-          "non-review-path": 3
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -80746,15 +80709,15 @@
             "url": "http://timeoutchicago.com/arts-culture/theater/15794896/kinky-boots-at-bank-of-america-theatre-theater-review"
           },
           {
-            "outletId": "showbizchicago.com",
-            "outlet": "showbizchicago.com",
+            "outletId": "showbiz-chicago",
+            "outlet": "showbiz-chicago",
             "critic": "Unknown",
             "stars": null,
             "url": "http://showbizchicago.com/billy-porter-is-the-soul-of-kinky-boots/"
           },
           {
-            "outletId": "aroundthetownchicago.com",
-            "outlet": "aroundthetownchicago.com",
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.aroundthetownchicago.com/theatre-reviews/kinky-boots-the-musical/"
@@ -80767,11 +80730,18 @@
             "url": "http://www.examiner.com/review/kinky-boots-musical-on-sure-path-to-tony-awards"
           },
           {
-            "outletId": "suntimes",
-            "outlet": "suntimes",
+            "outletId": "chicago-sun-times",
+            "outlet": "chicago-sun-times",
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.suntimes.com/entertainment/15794191-421/feel-good-kinky-boots-is-a-step-in-the-billy-elliot-direction.html"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-kinky-boots-queen-s-theatre-hornchurch"
           }
         ],
         "suppressedMissing": [],
@@ -80792,14 +80762,14 @@
           },
           {
             "url": "http://showbizchicago.com/billy-porter-is-the-soul-of-kinky-boots/",
-            "outletId": "showbizchicago.com",
+            "outletId": "showbiz-chicago",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T10:21:02.207Z"
           },
           {
             "url": "http://www.aroundthetownchicago.com/theatre-reviews/kinky-boots-the-musical/",
-            "outletId": "aroundthetownchicago.com",
+            "outletId": "around-the-town-chicago",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T10:21:02.207Z"
@@ -80813,16 +80783,23 @@
           },
           {
             "url": "http://www.suntimes.com/entertainment/15794191-421/feel-good-kinky-boots-is-a-step-in-the-billy-elliot-direction.html",
-            "outletId": "suntimes",
+            "outletId": "chicago-sun-times",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T10:21:02.207Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-kinky-boots-queen-s-theatre-hornchurch",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 6
+        "candidateCount": 7
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -82208,9 +82185,11 @@
         "http://variety.com/2016/legit/reviews/les-liaisons-dangereuses-review-liev-schreiber-1201904602/",
         "http://www.vulture.com/2016/10/reviews-les-liaisons-dangereuses-the-harvest.html",
         "http://www.amny.com/entertainment/les-liaisons-dangereuses-review-broadway-revival-dangerously-disjointed-1.12530333",
-        "https://www.theguardian.com/stage/2016/oct/30/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer"
+        "https://www.theguardian.com/stage/2016/oct/30/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer",
+        "http://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-1478208524",
+        "http://www.nydailynews.com/entertainment/theater-arts/liev-schreiber-janet-mcteer-limp-les-liaisons-dangereuses-article-1.2849501"
       ],
-      "dirFiles": 97,
+      "dirFiles": 95,
       "dirClean": 26,
       "inReviewsJson": 27,
       "missing": [
@@ -82578,6 +82557,40 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-1478208524",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--terry-teachout.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-1478208524"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/liev-schreiber-janet-mcteer-limp-les-liaisons-dangereuses-article-1.2849501",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/liev-schreiber-janet-mcteer-limp-les-liaisons-dangereuses-article-1.2849501"
+            }
+          ]
         }
       ],
       "citedNoUrl": [],
@@ -82587,12 +82600,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 345,
+        "count": 346,
         "byReason": {
+          "aggregator-internal-nav": 226,
           "non-review-host": 15,
           "not-http-url": 100,
-          "aggregator-internal-nav": 226,
-          "non-review-path": 3,
+          "aggregator-section-root": 4,
           "roundup-page": 1
         }
       },
@@ -82720,9 +82733,24 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/stage/2016/oct/30/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/liev-schreiber-janet-mcteer-limp-les-liaisons-dangereuses-article-1.2849501"
           }
         ],
-        "suppressedMissing": [],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-1478208524"
+          }
+        ],
         "candidates": [
           {
             "url": "http://www.newstimes.com/entertainment/article/Review-NYC-revival-of-Les-Liaisons-Dangereuses-10423873.php",
@@ -82828,12 +82856,26 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T21:40:26.604Z"
+          },
+          {
+            "url": "http://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-1478208524",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/liev-schreiber-janet-mcteer-limp-les-liaisons-dangereuses-article-1.2849501",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 15
+        "candidateCount": 17
       },
-      "computedAt": "2026-08-21T22:16:46.049Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
@@ -131380,12 +131422,17 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Robert-Montanos-SMALL-Off-Broadway-20260601"
+        "https://www.broadwayworld.com/article/Review-Roundup-Robert-Montanos-SMALL-Off-Broadway-20260601",
+        "https://www.broadwayworld.com/article/Review-Roundup-SMALL-MOUTH-SOUNDS-Opens-Off-Broadway-20150323"
       ],
       "aggregatorListedUrls": [
         "https://culturesauce.com/robert-montano-small-off-broadway-review/",
         "https://www.newyorktheatreguide.com/reviews/small-off-broadway-review-robert-montano",
         "https://therecs.co.uk/small/",
+        "http://www.nytimes.com/2015/03/24/theater/review-small-mouth-sounds-silence-at-a-spiritual-spa.html",
+        "http://www.nydailynews.com/entertainment/theater-arts/small-mouth-sounds-review-dialogue-big-insights-article-1.2159592",
+        "http://nypost.com/2015/03/23/silence-speaks-louder-than-words-in-evocative-small-mouth-sounds/",
+        "http://www.timeout.com/newyork/theater/small-mouth-sounds",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TGDTOQ",
         "https://www.theaterscene.net/plays/solo-plays/small/victor-gluck/",
         "https://theaterlife.com/small/",
@@ -131394,10 +131441,18 @@
         "https://www.wsj.com/articles/pay-the-writer-and-small-reviews-dramas-of-discontent-56f1154d",
         "https://www.broadwayworld.com/off-off-broadway/article/Review-SMALL-at-59E59-Theaters--Robert-Montanos-Excellent-One-Man-Show-20230817"
       ],
-      "dirFiles": 32,
+      "dirFiles": 31,
       "dirClean": 9,
       "inReviewsJson": 9,
-      "missing": [],
+      "missing": [
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/small-mouth-sounds-review-dialogue-big-insights-article-1.2159592",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
         {
           "host": "thefrontrowcenter.com",
@@ -131413,6 +131468,63 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "http://www.nytimes.com/2015/03/24/theater/review-small-mouth-sounds-silence-at-a-spiritual-spa.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nytimes.com/2015/03/24/theater/review-small-mouth-sounds-silence-at-a-spiritual-spa.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nypost.com/2015/03/23/silence-speaks-louder-than-words-in-evocative-small-mouth-sounds/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://nypost.com/2015/03/23/silence-speaks-louder-than-words-in-evocative-small-mouth-sounds/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/small-mouth-sounds",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.timeout.com/newyork/theater/small-mouth-sounds"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.interestedbystander.com/2026/05/theater-reviews-girls-chance-music-is.html",
           "host": "interestedbystander.com",
@@ -131489,19 +131601,63 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 304,
+        "count": 582,
         "byReason": {
-          "non-review-host": 15,
-          "roundup-page": 2,
-          "not-http-url": 66,
-          "aggregator-internal-nav": 218,
-          "non-review-path": 3
+          "aggregator-internal-nav": 425,
+          "non-review-host": 30,
+          "not-http-url": 115,
+          "aggregator-section-root": 10,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-SMALL-MOUTH-SOUNDS-Opens-Off-Broadway-20150323",
+          "publishDate": "2015-03-23"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/small-mouth-sounds-review-dialogue-big-insights-article-1.2159592",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/small-mouth-sounds-review-dialogue-big-insights-article-1.2159592"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2015/03/24/theater/review-small-mouth-sounds-silence-at-a-spiritual-spa.html"
+          },
+          {
+            "outletId": "nypost",
+            "outlet": "nypost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nypost.com/2015/03/23/silence-speaks-louder-than-words-in-evocative-small-mouth-sounds/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/small-mouth-sounds"
+          },
           {
             "outletId": "the-interested-bystander",
             "outlet": "the-interested-bystander",
@@ -131571,6 +131727,34 @@
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/small-mouth-sounds-review-dialogue-big-insights-article-1.2159592",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2015/03/24/theater/review-small-mouth-sounds-silence-at-a-spiritual-spa.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
+          },
+          {
+            "url": "http://nypost.com/2015/03/23/silence-speaks-louder-than-words-in-evocative-small-mouth-sounds/",
+            "outletId": "nypost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/small-mouth-sounds",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
+          },
+          {
             "url": "https://www.interestedbystander.com/2026/05/theater-reviews-girls-chance-music-is.html",
             "outletId": "the-interested-bystander",
             "state": "GAP",
@@ -131600,9 +131784,9 @@
           }
         ],
         "liveCount": 6,
-        "candidateCount": 10
+        "candidateCount": 14
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "smash-2025",
@@ -133027,33 +133211,74 @@
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
         "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
-        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
+        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749"
       ],
-      "dirFiles": 0,
+      "dirFiles": 4,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
         {
           "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--unknown.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--darryn-king.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
+            },
+            {
+              "file": "nytimes--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
+            }
+          ],
           "serpCensus": true
         },
         {
           "url": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
           "host": "picturethispost.com",
           "knownOutletId": "picture-this-post",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "picture-this-post--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/"
+            }
+          ],
           "serpCensus": true
         },
         {
-          "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747",
+          "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749",
           "host": "tixr.com",
           "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "tixr--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
+            }
+          ],
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -133121,49 +133346,24 @@
         "count": 31,
         "byReason": {
           "aggregator-internal-nav": 4,
-          "non-review-host": 27
+          "non-review-host": 26,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
+      "recoveryResults": [
         {
           "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
           "host": "nytimes.com",
-          "outletId": "nytimes",
+          "file": "nytimes--unknown.json",
+          "recovered": true,
+          "skipped": false,
           "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
-          "host": "picturethispost.com",
-          "outletId": "picture-this-post",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747",
-          "host": "tixr.com",
-          "outletId": "tixr",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -133186,7 +133386,7 @@
             "outlet": "tixr.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
+            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749"
           }
         ],
         "suppressedMissing": [],
@@ -133206,17 +133406,17 @@
             "firstSeenAt": "2026-09-20T01:54:21.561Z"
           },
           {
-            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747",
+            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749",
             "outletId": "tixr.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T01:54:21.561Z"
+            "firstSeenAt": "2026-09-20T12:57:21.255Z"
           }
         ],
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-20T01:54:21.561Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "spare-parts-off-broadway-2026",
@@ -144584,9 +144784,9 @@
         "https://variety.com/2026/legit/reviews/balusters-broadway-review-anika-noni-rose-richard-thomas-brilliant-comedy-1236726809/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TDWFDP"
       ],
-      "dirFiles": 44,
+      "dirFiles": 41,
       "dirClean": 35,
-      "inReviewsJson": 35,
+      "inReviewsJson": 36,
       "missing": [],
       "dirOnly": [
         {
@@ -144619,7 +144819,7 @@
         },
         {
           "host": "theaterlife.com",
-          "count": 2
+          "count": 1
         },
         {
           "host": "theaterscene.net",
@@ -144676,28 +144876,6 @@
               "urlInDir": "https://theaterpizzazz.com/the-balusters-a-comedy-of-manners-that-matters/"
             }
           ]
-        },
-        {
-          "url": "https://www.theatrely.com/post/david-lindsay-abaire-is-back-on-broadway-with-the-balusters-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatrely--andrew-martini.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrely.com/post/david-lindsay-abaire-is-back-on-broadway-with-the-balusters-review"
-            },
-            {
-              "file": "theatrely--joey-sims.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.theatrely.com/post/david-lindsay-abaire-is-back-on-broadway-with-the-balusters-review"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -144707,12 +144885,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 401,
+        "count": 404,
         "byReason": {
+          "aggregator-internal-nav": 257,
           "non-review-host": 37,
-          "not-http-url": 94,
-          "aggregator-internal-nav": 267,
-          "non-review-path": 3
+          "not-http-url": 99,
+          "aggregator-section-root": 11
         }
       },
       "dedupedVariants": [],
@@ -144732,13 +144910,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theaterpizzazz.com/the-balusters-a-comedy-of-manners-that-matters/"
-          },
-          {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/david-lindsay-abaire-is-back-on-broadway-with-the-balusters-review"
           }
         ],
         "suppressedMissing": [],
@@ -144834,6 +145005,12 @@
             "firstSeenAt": "2026-08-08T10:21:02.207Z"
           },
           {
+            "url": "https://www.theatrely.com/post/david-lindsay-abaire-is-back-on-broadway-with-the-balusters-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T10:21:02.207Z"
+          },
+          {
             "url": "https://t2conline.com/the-balusters-polite-society-brutal-truths/",
             "outletId": "t2conline.com",
             "state": "live",
@@ -144888,19 +145065,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T10:21:02.207Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/david-lindsay-abaire-is-back-on-broadway-with-the-balusters-review",
-            "outletId": "theatrely",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T10:21:02.207Z"
           }
         ],
-        "liveCount": 20,
+        "liveCount": 21,
         "candidateCount": 23
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -148185,9 +148355,9 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=KKEMOF",
         "https://www.talkinbroadway.com/page/world/TheFearof13.html"
       ],
-      "dirFiles": 51,
-      "dirClean": 31,
-      "inReviewsJson": 29,
+      "dirFiles": 49,
+      "dirClean": 32,
+      "inReviewsJson": 30,
       "missing": [
         {
           "url": "https://www.digitaljournal.com/entertainment/review-adrien-brody-pleads-his-case-in-the-broadway-play-the-fear-of-13/article",
@@ -148221,6 +148391,10 @@
           "count": 1
         },
         {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
           "host": "washingtonpost.com",
           "count": 1
         }
@@ -148233,12 +148407,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 390,
+        "count": 393,
         "byReason": {
+          "aggregator-internal-nav": 257,
           "non-review-host": 34,
-          "not-http-url": 86,
-          "aggregator-internal-nav": 267,
-          "non-review-path": 3
+          "not-http-url": 91,
+          "aggregator-section-root": 11
         }
       },
       "dedupedVariants": [],
@@ -148253,7 +148427,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Fetch failed: All scraping methods failed"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=digitaljournal.com): Scrapingdog HTTP 400: Oops! Somet"
         }
       ],
       "ingestSkippedByCap": [],
@@ -148413,7 +148587,7 @@
         "liveCount": 21,
         "candidateCount": 22
       },
-      "computedAt": "2026-08-22T12:13:43.001Z"
+      "computedAt": "2026-09-20T12:57:21.255Z"
     },
     {
       "showId": "the-ford-hill-project-off-broadway-2026",
