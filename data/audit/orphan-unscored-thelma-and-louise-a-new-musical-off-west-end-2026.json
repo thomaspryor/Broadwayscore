@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
   "openingDate": "2026-09-16",
-  "detectedAt": "2026-09-20T15:06:07.971Z",
+  "detectedAt": "2026-09-20T15:43:51.943Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "south-london--unknown.json",
+      "outletId": "south-london",
+      "criticName": "Unknown",
+      "url": "https://southlondon.co.uk/area/southwark/review-thelma-louise-the-young-vic/",
+      "fullTextLen": 2560,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "thestage--unknown.json",
       "outletId": "thestage",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-20T15:43:51.943Z"
 }
