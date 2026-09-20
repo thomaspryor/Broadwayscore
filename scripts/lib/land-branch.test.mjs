@@ -18,7 +18,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  landBranch, firstFailedCheck, shouldRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
+  landBranch, defaultPushMain, firstFailedCheck, shouldRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
 } = require('./land-branch.js');
 
 // The lib's landing-verify call would try `git fetch --unshallow` only on a
@@ -334,6 +334,68 @@ test('beforePush may amend HEAD (trailer stamping) and the amended sha is what l
     assert.notEqual(r.sha, tip);
     assert.equal(w.originMain(), r.sha);
     assert.match(sh(w.repoDir, ['log', '-1', '--pretty=%B', r.sha]), /Land-base: [0-9a-f]{40}/);
+  } finally { w.cleanup(); }
+});
+
+test('already-ancestor whose files were later reverted on main → landed, but with a content note (never silent)', () => {
+  const w = makeWorld();
+  try {
+    const tip = w.makeBranch('feat-reverted');
+    sh(w.repoDir, ['push', '-q', 'origin', 'feat-reverted:main']);
+    // Someone reverts it on main.
+    sh(w.other, ['fetch', '-q', 'origin', 'main']);
+    sh(w.other, ['reset', '-q', '--hard', 'origin/main']);
+    sh(w.other, ['revert', '--no-edit', 'HEAD']);
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+    const r = landBranch({ branch: 'feat-reverted', repoDir: w.repoDir, checks: greenChecks, pushMain: () => { throw new Error('no push expected'); } });
+    assert.equal(r.landed, true);
+    assert.equal(r.pushed, false);
+    assert.equal(r.sha, tip);
+    assert.match(r.contentNote, /1 of the tip commit's 1 file\(s\) have since changed on origin\/main: feature\.txt/);
+    assert.match(formatLandLine('feat-reverted', r), /already on origin\/main, no push; 1 of the tip commit's/);
+    // Control: the plain already-landed case carries no note.
+    const tip2 = w.makeBranch('feat-plain');
+    sh(w.repoDir, ['push', '-q', 'origin', 'feat-plain:main']);
+    const r2 = landBranch({ branch: 'feat-plain', repoDir: w.repoDir, checks: greenChecks, pushMain: () => { throw new Error('no push expected'); } });
+    assert.equal(r2.sha, tip2);
+    assert.equal(r2.contentNote, null);
+  } finally { w.cleanup(); }
+});
+
+test('a push seam that replays HEAD (push-with-retry-style rebase) violates the contract → refused as push-contract', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-replay');
+    const r = landBranch({
+      branch: 'feat-replay', repoDir: w.repoDir, checks: greenChecks,
+      pushMain: ({ cwd }) => {
+        // What push-with-retry.sh does on a rejection: fetch, rebase onto the
+        // newer tip, push again — behind the checks' back.
+        w.moveOrigin();
+        sh(cwd, ['fetch', '-q', 'origin', 'main']);
+        sh(cwd, ['rebase', '-q', 'origin/main']);
+        sh(cwd, ['push', '-q', 'origin', 'HEAD:main']);
+      },
+    });
+    assert.equal(r.landed, false);
+    assert.equal(r.failedCheck, 'push-contract');
+    assert.match(r.reason, /moved HEAD/);
+  } finally { w.cleanup(); }
+});
+
+test('the default push seam is push-only: a rejection throws, nothing is rebased or merged behind the checks', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-default-push');
+    let pushCalls = 0;
+    const r = landBranch({
+      branch: 'feat-default-push', repoDir: w.repoDir, checks: greenChecks,
+      pushMain: (o) => { pushCalls++; if (pushCalls === 1) w.moveOrigin(); defaultPushMain(o); },
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 2, 'the first (real) push was rejected non-ff and surfaced as a retry, not replayed');
+    assert.equal(pushCalls, 2);
+    assert.equal(w.originMain(), r.sha);
   } finally { w.cleanup(); }
 });
 

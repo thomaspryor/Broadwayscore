@@ -78,7 +78,7 @@ const { countPriorMergesInHistory } = require('./lib/check-merge-history.js');
 // hand-landing CLI (scripts/land.js). This file keeps only what is card-
 // specific around it: evidence, oscillation, staleness, trailer stamping,
 // card transitions.
-const { landBranch } = require('./lib/land-branch.js');
+const { landBranch, defaultPushMain: pushOnce } = require('./lib/land-branch.js');
 
 const REPO = path.join(__dirname, '..');
 // Tier-2's deterministic verifiers reuse the shared per-check wall clock —
@@ -403,10 +403,15 @@ function runChecks(files, checkableDone, tier = 1, buildCheck = true, cwd = REPO
   });
 }
 
-// `cwd` defaults to this checkout (revert() pushes from there); approve()
-// passes landBranch's worktree, whose HEAD is the rebased, verified tree.
-function pushMain(cwd = REPO) {
-  execFileSync('bash', [path.join(__dirname, 'lib', 'push-with-retry.sh'), '7', 'main'], { cwd, stdio: 'inherit' });
+// revert()'s push, from this checkout. approve() does NOT use this: its push
+// is landBranch's push-only seam, because push-with-retry.sh answers a
+// rejection by rebasing/merging and pushing again on its own — a replay the
+// re-verify never saw, and one that leaves the Auto-merge-base trailer
+// pointing at a base the pushed commit no longer sits on (so revert() would
+// undo another session's commit too). Retries for approve live in
+// landBranch, where each retry re-rebases AND re-verifies (BRO-3873).
+function pushMain() {
+  execFileSync('bash', [path.join(__dirname, 'lib', 'push-with-retry.sh'), '7', 'main'], { cwd: REPO, stdio: 'inherit' });
 }
 
 function countPriorMerges(cardId, cwd = REPO) {
@@ -578,7 +583,7 @@ async function approve(cardId, branch) {
       const priorMsg = stripTrailers(g(['log', '-1', '--pretty=%B']), trailer);
       g(['commit', '--amend', '-m', `${priorMsg}\n\n${trailer}\n${BASE_TRAILER_PREFIX}${baseSha}`]);
     },
-    pushMain: ({ cwd }) => pushMain(cwd),
+    pushMain: pushOnce,
   });
 
   if (!landed.landed) {
@@ -587,6 +592,15 @@ async function approve(cardId, branch) {
       : String(landed.reason || landed.failedCheck || 'landing refused'));
     return;
   }
+  // landBranch's idempotent paths (tip already on main / rebased to empty)
+  // never ran the gate, never stamped the trailers, and pushed nothing — so
+  // there is no card-attributable merge commit for revert() to find. Same
+  // refusal the old loop gave an empty rebased diff: not a merge, not Done.
+  if (!landed.pushed) {
+    reverifyFail(`rebased diff is empty — nothing to merge (${landed.reason || 'branch already on main'}${landed.contentNote ? `; ${landed.contentNote}` : ''})`);
+    return;
+  }
+  if (landed.verified === 'UNKNOWN') console.error(`[merge] WARN ${landed.reason}`);
   transition('approved', 'merge.success');
   notionUpdateAfterMerge(cardId, ['--auto', 'merged', '--status', 'Done', '--outcome', buildMergeOutcomeNote({ sha: landed.sha, branch, files: landed.files })]);
   console.log(`[merge] MERGED card ${cardId} (${landed.sha}) from ${branch} in ${Math.round(landed.wallMs / 1000)}s (attempts ${landed.attempts})`);
