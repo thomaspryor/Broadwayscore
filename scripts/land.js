@@ -19,6 +19,7 @@
 'use strict';
 
 const path = require('path');
+const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { landBranch, formatLandLine, MAX_ATTEMPTS } = require('./lib/land-branch.js');
 
@@ -29,7 +30,8 @@ Usage:
 
   --branch <name>     local branch (or origin/<name>) to land
   --dry-run           rebase + run the checks in an isolated worktree, never push
-  --repo <dir>        checkout whose object store/remote to use (default: this repo)
+  --repo <dir>        checkout whose object store/remote to use (default: the
+                      checkout you run this from; falls back to this script's repo)
   --max-attempts N    rebase+check+push rounds before refusing (default ${MAX_ATTEMPTS})
   --help, -h          print this and exit — no git calls
 
@@ -49,6 +51,17 @@ function parseArgs(argv) {
   return a;
 }
 
+// The checkout the CLI was invoked FROM, not the one this file lives in: a
+// worktree session's copy of land.js is expected to land branches through the
+// shared main checkout's object store/remote when run from there.
+function cwdRepo() {
+  try {
+    return execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 function main(argv = process.argv.slice(2), land = landBranch) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const args = parseArgs(argv);
@@ -63,7 +76,7 @@ function main(argv = process.argv.slice(2), land = landBranch) {
   }
   const result = land({
     branch: args.branch,
-    repoDir: args.repo ? path.resolve(String(args.repo)) : undefined,
+    repoDir: args.repo ? path.resolve(String(args.repo)) : cwdRepo(),
     dryRun: args['dry-run'] === true,
     maxAttempts,
     log: (m) => console.error(m),
