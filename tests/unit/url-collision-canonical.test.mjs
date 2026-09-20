@@ -71,9 +71,19 @@ test('named+anchored new write beats an Unknown+unanchored collider, both substa
   ), false);
 });
 
+// llmScore: { score: 74 } (not undefined, and not UNANCHORED's score of 91):
+// this test is about the new write lacking an anchored BAND, not about it
+// lacking a score entirely. shouldFlipDuplicateDirection (BRO-3821 follow-up,
+// commit 0ce2aae154e) added a "never trade a scored record for an unscored
+// one" guard — an unscored newData now always defers regardless of byline,
+// so the original `{ criticName: 'Alun Hood' }` fixture (no llmScore at all)
+// started asserting the exact regression that guard exists to stop. Giving
+// newData a score with no band keeps this test on the band branch it names,
+// matching the same fix already made to duplicate-direction-heal.test.mjs's
+// sibling "named-only loser (no band) still flips" case.
 test('named-only new write (no band) still beats an Unknown+unanchored collider', () => {
   assert.equal(shouldMarkUrlCollisionDuplicate(
-    { fullText: body(3000), criticName: 'Alun Hood' },
+    { fullText: body(3000), criticName: 'Alun Hood', llmScore: { score: 74 } },
     { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
   ), false);
 });

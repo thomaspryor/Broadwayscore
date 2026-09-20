@@ -20,25 +20,18 @@
 'use strict';
 
 const { classifyCorpusRecord } = require('./linear-import-rules');
-// Reused, not reimplemented (CLAUDE.md rule 15) — same email pattern
-// scripts/lint-committed-pii.js already enforces against data/audit/*.json[l].
-const { EMAIL_RE } = require('./pii-scan');
-
-const EMAIL_RE_GLOBAL = new RegExp(EMAIL_RE.source, 'g');
-
-/**
- * Outcome text is two years of session prose written for internal debugging,
- * not for public consumption — a real contest entrant's personal email
- * address (a genuine third-party PII leak, adversarial review, BRO-376) was
- * found sitting in one card's incident-response notes. Every email-shaped
- * string is stripped before this ever reaches a committed, PUBLIC-repo file,
- * including the owner's own — a blanket rule needs no per-address judgment
- * call, and the archive's value is the qualitative "what/why/gotchas", not
- * literal contact addresses.
- */
-function redactEmails(text) {
-  return String(text || '').replace(EMAIL_RE_GLOBAL, '[email-redacted]');
-}
+// Reused, not reimplemented (CLAUDE.md rule 15) — same email pattern (and,
+// as of BRO-3866, the same bounded-window redaction) scripts/lint-committed-pii.js
+// already enforces against data/audit/*.json[l]. This file used to carry its
+// OWN `.replace(EMAIL_RE_GLOBAL, ...)` redactEmails — a second, independently
+// vulnerable copy of the exact catastrophic-backtracking bug found live in
+// BRO-3866's version of this helper (a global-regex .replace() forces EMAIL_RE
+// to scan all the way to the end of the string, walking straight into its
+// documented pathological case on a long punctuation run). Outcome text is
+// two years of session prose written for internal debugging, not screened
+// for adversarial input, so this file needs the safe version at least as much
+// as the caller that exposed the bug.
+const { redactEmails } = require('./pii-scan');
 
 /**
  * One row for a card that is being archived (not going live in Linear) and

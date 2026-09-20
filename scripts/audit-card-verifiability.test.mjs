@@ -60,6 +60,17 @@ test('buildReport: counts armed vs refused and lists only refused cards', () => 
   assert.equal(report.generatedAt, now.toISOString());
 });
 
+// BRO-3866 ship-check (Codex adversarial finding): this report is
+// data/audit/card-verifiability.json, committed to the PUBLIC repo, and a
+// card title can be pasted straight from an email subject line.
+test('buildReport: redacts an email-shaped card name before it lands in the committed report', () => {
+  const evaluated = [
+    { id: 'a', name: 'Re: bug report from jane@example.com', priority: 'P1 Next', url: 'u-a', armed: false, reason: 'prose only' },
+  ];
+  const report = buildReport(evaluated);
+  assert.equal(report.refused[0].name.includes('jane@example.com'), false);
+});
+
 test('buildReport: zero cards produces a zeroed report, not a crash', () => {
   const report = buildReport([]);
   assert.equal(report.total, 0);

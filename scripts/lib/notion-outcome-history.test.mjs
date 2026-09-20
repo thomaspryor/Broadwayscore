@@ -122,7 +122,13 @@ test('redactEmails strips every email-shaped string, third-party PII included', 
   // Blanket rule — the OWNER's own email is redacted too, no per-address
   // judgment call at export time.
   assert.ok(!redacted.includes('thomas.pryor@gmail.com'));
-  assert.ok(redacted.includes('[email-redacted]'));
+  // BRO-3866: redactEmails now lives in pii-scan.js and produces
+  // "redacted@<domain>" (not the literal "[email-redacted]" this file used to
+  // emit) — a placeholder REDACTED_LOCAL_RE itself recognizes on a re-scan,
+  // which the old fixed string never needed to (this module never re-scanned
+  // its own output).
+  assert.ok(redacted.includes('redacted@ekohealth.com'));
+  assert.ok(redacted.includes('redacted@gmail.com'));
   assert.ok(redacted.includes("Olivia's first attempt"), 'surrounding prose survives — only the address is stripped');
 });
 

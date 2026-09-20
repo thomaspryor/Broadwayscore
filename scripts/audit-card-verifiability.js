@@ -41,6 +41,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
+const { redactEmails } = require('./lib/pii-scan.js');
 // findCardsWithMissingCheckPaths is deliberately NOT imported: findCardCheckPathDefects
 // supersedes it here (both buckets, one fetch). The wrapper stays exported from the lib
 // for any other caller.
@@ -151,8 +152,13 @@ function buildReport(evaluated, now = new Date()) {
     armedCount: evaluated.length - refused.length,
     refusedCount: refused.length,
     byKind: tallyByKind(refused),
+    // name: redacted (BRO-3866 ship-check, Codex adversarial finding) — this
+    // report is data/audit/card-verifiability.json, committed to the PUBLIC
+    // repo, and a card title can be pasted straight from an email subject
+    // line (the same escalation-card shape that leaked into
+    // card-enrichment-log.jsonl).
     refused: refused.map(c => ({
-      id: c.id, name: c.name, priority: c.priority, url: c.url, reason: c.reason, kind: c.kind || 'unknown',
+      id: c.id, name: redactEmails(c.name || ''), priority: c.priority, url: c.url, reason: c.reason, kind: c.kind || 'unknown',
     })),
   };
 }

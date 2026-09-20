@@ -77,6 +77,7 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { redactEmails } = require('./lib/pii-scan.js');
 const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE, OWNER_JUDGMENT_RE } = (() => {
   const gate = require('./lib/verify-gate.js');
   const { SECTION_RE } = require('./lib/autonomous-verify-cmd.js');
@@ -651,14 +652,26 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
   try {
     fs.mkdirSync(path.dirname(logPath), { recursive: true });
     const entry = {
-      ts: new Date().toISOString(), id: card.id, name: card.name, action,
+      ts: new Date().toISOString(), id: card.id,
+      // Redacted (BRO-3866 ship-check, Codex adversarial finding): the FIRST
+      // version of this fix only redacted previousNotes/newNotes and left
+      // name + demotedSpans writing free text verbatim. A card title can be
+      // pasted straight from an email subject line, and demotedSpans are
+      // arbitrary backtick-quoted spans lifted out of newNotes itself
+      // (demoteUnsafeSpans() above) — both are exactly as public-repo-committed
+      // as the two fields already covered, so both need the same guard.
+      name: redactEmails(card.name || ''), action,
       // identifier/url: null for a Notion card (no such fields), populated
       // for a Linear issue (task #1830, ship-check/Codex finding — the
       // pre-existing log had no human-readable Linear reference, only the
       // internal UUID, which makes a manual rollback lookup slower than it
       // needs to be).
       identifier: card.identifier || null, url: card.url || null,
-      previousNotes: card.notes || '', newNotes,
+      // Redacted before it ever reaches disk (BRO-3866, scripts/lib/pii-scan.js
+      // redactEmails) — this JSONL is committed to the PUBLIC repo, and card
+      // notes routinely quote forwarded emails whose headers carry the
+      // owner's/a submitter's real address verbatim.
+      previousNotes: redactEmails(card.notes || ''), newNotes: redactEmails(newNotes),
       // Guardrail-3 demotions, in full. The console line slices detail to 100
       // chars, so it truncates these to uselessness ("demoted 3 ... : pub");
       // this JSONL entry is the durable, greppable record of what the
@@ -666,7 +679,7 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
       // healthy sweep from a prompt regression spraying script names into
       // every draft — which is exactly the blind spot that made the
       // guardrail's real false-positive rate unmeasurable before now.
-      demotedSpans: extra.demotedSpans || [],
+      demotedSpans: (extra.demotedSpans || []).map((s) => redactEmails(s)),
     };
     fs.appendFileSync(logPath, JSON.stringify(entry) + '\n');
   } catch (e) {

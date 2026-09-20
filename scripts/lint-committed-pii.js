@@ -52,8 +52,16 @@ const ALLOWLIST = new Map([
       reason:
         'line293 previousNotes/newNotes carry the site\'s own hi@broadwayscorecard.com ' +
         'address, discussed inside a DMARC-configuration card (BRO-2593) about that ' +
-        'address\'s own DNS policy — the org\'s operational address, not submitter PII',
-      maxFindings: 2,
+        'address\'s own DNS policy — the org\'s operational address, not submitter PII. ' +
+        'line542 previousNotes/newNotes carry a git-clone command template ' +
+        '"https://x-access-token:$REVIEW_TEXTS_TOKEN@github.com/..." — EMAIL_RE\'s local-part ' +
+        'class excludes "$", so the match starts at the env-var NAME, not a real address; ' +
+        'no credential value is present, only a shell variable reference (BRO-3866). ' +
+        'Genuine PII (owner\'s personal email, forwarded-email headers) found in ' +
+        'lines562/563/564 during the BRO-3866 sweep was redacted at the data level, not ' +
+        'allowlisted — see scripts/lib/pii-scan.js redactEmails(), now also wired into ' +
+        'logEnrichmentWrite() so new entries can\'t reintroduce it.',
+      maxFindings: 4,
     },
   ],
 ]);
