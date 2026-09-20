@@ -86,6 +86,11 @@ test('parseArgs accepts --active=true and --dry-run', () => {
   assert.equal(dryRun, true);
 });
 
+test('parseArgs defaults force to false, accepts --force (BRO-3869)', () => {
+  assert.equal(parseArgs(['gate-cold-start']).force, false);
+  assert.equal(parseArgs(['gate-cold-start', '--force']).force, true);
+});
+
 test('parseArgs rejects zero or multiple positional identifiers', () => {
   assert.throws(() => parseArgs([]), /Usage:/);
   assert.throws(() => parseArgs(['a', 'b']), /Usage:/);
@@ -98,6 +103,7 @@ test('parseArgs rejects a malformed --active value instead of silently archiving
 
 test('parseArgs rejects an unrecognized flag instead of silently ignoring it', () => {
   assert.throws(() => parseArgs(['gate-cold-start', '--dryrun']), /Unrecognized flag/);
+  assert.throws(() => parseArgs(['gate-cold-start', '--forceit']), /Unrecognized flag/);
 });
 
 test('parseArgs rejects --active passed more than once', () => {
@@ -129,3 +135,12 @@ test('checkRegistryConflict returns null (not a nonsensical warning) on a malfor
   assert.doesNotThrow(() => checkRegistryConflict('ticket-single-button', false, registry));
   assert.equal(checkRegistryConflict('ticket-single-button', false, registry), null);
 });
+
+// Note: the CALLER (scripts/posthog-flag-admin.js), not checkRegistryConflict
+// itself, is what turns a non-null warning into a hard --force requirement —
+// and only when it's about to actually PATCH, not for an already-satisfied
+// no-op or a --dry-run inspection (adversarial review, BRO-3869: an earlier
+// version gated those too, wrongly blocking read-only/no-op calls). That
+// caller-level behavior needs a live flag/registry combination to exercise
+// end-to-end and isn't re-tested here — this file only owns the pure
+// checkRegistryConflict/parseArgs functions above.

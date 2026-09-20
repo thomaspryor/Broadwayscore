@@ -133,7 +133,19 @@ function checkCommitsOnMain(card, opts) {
   if (ownCmd) {
     if (typeof opts.runAcceptanceCmd !== 'function') return null;
     const ownResult = opts.runAcceptanceCmd(ownCmd);
-    if (ownResult && ownResult.status === 'fail') return null;
+    // BRO-3446: acceptance-check-core.js's runVerify now detects a missing
+    // acceptance path itself and reports it as 'unverifiable' + `missingPath:
+    // true` rather than letting the command actually fail — so this veto,
+    // which used to fire via `status === 'fail'` for exactly this shape (the
+    // task #1724 catch this test pins: a Paused card whose own command
+    // couldn't even find its file), needs `missingPath` checked too. This
+    // module has no git-history adjudication of its own (unlike
+    // done-evidence-audit.js's adjudicateMisArmed), so it cannot distinguish
+    // a phantom dispatch guess from a genuinely deleted/reverted test —
+    // failing closed on missingPath here matches this function's own stated
+    // philosophy: "a cited commit must never override an unconfirmable bar
+    // the card itself set".
+    if (ownResult && (ownResult.status === 'fail' || ownResult.missingPath === true)) return null;
   }
 
   if (typeof opts.getCommitTouchedFiles !== 'function') return null;

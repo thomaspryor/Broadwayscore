@@ -172,6 +172,49 @@ test('evaluateVerifyRun: no command at all is UNKNOWN, not a pass', () => {
   assert.equal(evaluateVerifyRun(PASS, null).state, EVIDENCE.UNKNOWN);
 });
 
+// BRO-3446 adversarial-review finding (Codex, pre-ship): acceptance-check-
+// core.js's runVerify now detects a missing acceptance path itself and
+// reports it as `{status:'unverifiable', missingPath:true}` instead of
+// letting the command actually fail. A naive fold of every 'unverifiable'
+// cause into UNKNOWN (the pre-existing branch just above this) would make
+// adjudicateMisArmed's git-history adjudication permanently unreachable for
+// this class of card — silently absolving a fix that was reverted AND had
+// its test deleted, which is a real regression, not a phantom dispatch
+// guess. `missingPath` must fall through to the ordinary BROKEN branch so
+// classifyCard's `misArmed` gate (which only engages on BROKEN) still runs.
+test('evaluateVerifyRun: a missingPath unverifiable result is BROKEN, not UNKNOWN — so misArmed adjudication still runs', () => {
+  const MISSING_PATH = { status: 'unverifiable', missingPath: true, detail: 'acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/x.test.mjs' };
+  const r = evaluateVerifyRun(MISSING_PATH, 'node --test tests/unit/x.test.mjs');
+  assert.equal(r.state, EVIDENCE.BROKEN);
+
+  // Ordinary unverifiable causes (exit 3, no node_modules, timeout, spawn
+  // failure) are unaffected — they still fold into UNKNOWN exactly as before.
+  assert.equal(evaluateVerifyRun(CANNOT, 'node --test tests/unit/x.test.mjs').state, EVIDENCE.UNKNOWN);
+});
+
+test('BRO-3446: history says the path never existed -> misArmed absolves (phantom dispatch guess, not a regression)', () => {
+  const MISSING_PATH = { status: 'unverifiable', missingPath: true, detail: "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/feedback-formspree-status-check.test.mjs" };
+  const r = classifyCard({
+    card: doneCard(),
+    cmd: 'node --test tests/unit/feedback-formspree-status-check.test.mjs',
+    runResult: MISSING_PATH,
+    misArmed: { path: 'tests/unit/feedback-formspree-status-check.test.mjs', kind: MIS_ARMED.NEVER_EXISTED, paths: ['tests/unit/feedback-formspree-status-check.test.mjs'] },
+  });
+  assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
+  assert.equal(r.misArmed, true);
+});
+
+test('BRO-3446: history says the path DID exist -> real regression stays FAILED, protection against reverted fixes holds', () => {
+  const MISSING_PATH = { status: 'unverifiable', missingPath: true, detail: 'acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/x.test.mjs' };
+  const r = classifyCard({
+    card: doneCard(),
+    cmd: 'node --test tests/unit/x.test.mjs',
+    runResult: MISSING_PATH,
+    misArmed: null,
+  });
+  assert.equal(r.verdict, VERDICTS.FAILED);
+});
+
 // ── the two defects the first live sweep exposed (2026-09-15, 371 cards) ──
 
 test('a repo-wide tsc/lint check is never proof: it is green on main for every card at once', () => {

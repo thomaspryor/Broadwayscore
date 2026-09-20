@@ -391,6 +391,9 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
   md += `## What changed\n\n`;
   const allSpikes = [...sections.ph, ...sections.ga].flatMap((s) => s.spikes)
     .filter((s) => !/raw sessions/.test(s.dimension))
+    // GA4's "(referral)" / "(direct)" / "(organic)" pseudo-campaigns duplicate the
+    // channel rows and read as unfinished in the headline list (reader review).
+    .filter((s) => !(s.dimension === 'Campaign' && /^\(/.test(s.key)))
     .sort((a, b) => (b.value - b.priorMedian) - (a.value - a.priorMedian));
   // One line per source per tool: its biggest jump above baseline (allSpikes is
   // sorted by excess). Repeat weeks show in the section tables.
