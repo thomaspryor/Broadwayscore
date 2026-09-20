@@ -231,6 +231,12 @@ const SAFE_CHECK_FORMS = [
   // silently admit any FUTURE script sharing the naming convention without
   // the same review.
   { re: /^node scripts\/validate-data\.js( --strict)?$/ },
+  // BRO-3907: run-unit-tests.js is the local equivalent of CI's "Unit Tests"
+  // job (spawns `node --test`/`npx tsx --test` over the same two committed
+  // manifests CI reads) — no fs writes of its own, only spawnSync calls (see
+  // its own header). Bare only: it takes no flags at all, so there is nothing
+  // to widen.
+  { re: /^node scripts\/run-unit-tests\.js$/ },
   // Bare only — no --base= capture. scoring-delta.js interpolates --base
   // straight into `execSync(`git show ${BASE_REF}:...`)` (shell string
   // concatenation, not execFile array-args), so accepting an LLM- or

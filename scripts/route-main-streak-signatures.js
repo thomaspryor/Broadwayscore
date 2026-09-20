@@ -49,12 +49,22 @@
  */
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   failingStepSignatures, firstFailingTestNameInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
 } = require('./lib/main-red-streak.js');
 const { routeAlert, loadLedger, resolveCondition } = require('./lib/owner-alert-router.js');
+// BRO-3907: every card this script files used to carry prose-only acceptance
+// criteria ("Condition X no longer fires") — linear-next.js's dispatch gate
+// refuses that outright, so every one of these cards sat undispatchable. This
+// resolves the failing step's own `run:` command out of test.yml (or a
+// job-level proxy) into a `VERIFY:` line dispatch can actually arm.
+const { verifyForSignature } = require('./lib/red-signature-verify-cmd.js');
+
+const TEST_YML_PATH = path.join(__dirname, '..', '.github', 'workflows', 'test.yml');
 
 const USAGE = `route-main-streak-signatures.js — BRO-3865 per-breakage alert routing for main's test.yml
   node scripts/route-main-streak-signatures.js --run-id=<id> [--dispatch] [--escalate] [--prev-url=<url>] [--streak=<n>] [--exclude-job=<name>]
@@ -198,9 +208,21 @@ async function main() {
 
   if (!opts.dispatch) return;
 
+  // Best-effort: a missing/unreadable test.yml (should be impossible in a
+  // checkout that just ran it) must not block dispatch — every signature
+  // just falls to verifyForSignature's "no known run: command" branch, which
+  // arms VERIFY: owner-judgment rather than throwing.
+  let testYmlText = '';
+  try {
+    testYmlText = fs.readFileSync(TEST_YML_PATH, 'utf8');
+  } catch (err) {
+    console.error(`[route-main-streak-signatures] could not read ${TEST_YML_PATH} (${err.message}); every signature this run falls back to VERIFY: owner-judgment.`);
+  }
+
   const runUrl = runUrlFor(opts.runId);
   for (const sig of currentSignatures) {
     const label = sig.testName ? `${sig.job} / ${sig.step} — "${sig.testName}"` : `${sig.job} / ${sig.step}`;
+    const verify = verifyForSignature({ job: sig.job, step: sig.step }, testYmlText);
     await routeAlert({
       conditionKey: sig.conditionKey,
       title: `main test.yml red: ${label}`,
@@ -215,6 +237,7 @@ async function main() {
         { name: 'This failed run', value: runUrl ? `[View logs](${runUrl})` : 'n/a' },
       ],
       url: runUrl || undefined,
+      verify,
     }).catch((e) => console.error(`[route-main-streak-signatures] dispatch failed for ${sig.conditionKey}: ${e.message}`));
   }
 

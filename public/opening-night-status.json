@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T22:34:01.175Z",
+  "generatedAt": "2026-09-20T23:09:32.397Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -396,24 +396,24 @@
       "status": "open",
       "slug": "the-cherry-orchard-park-avenue-armory-off-broadway",
       "thumbnail": "/images/shows/the-cherry-orchard-park-avenue-armory-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 68.61,
+      "siteScore": 68.98,
       "liveScore": 69,
-      "scoreDrift": 0.39000000000000057,
+      "scoreDrift": 0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
-      "t1": 1,
+      "total": 8,
+      "t1": 2,
       "t2": 4,
-      "t3": 1,
+      "t3": 2,
       "positive": 4,
-      "mixed": 2,
+      "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/12 total",
-          "T1:1/3",
+          "8/12 total",
+          "T1:2/3",
           "hi-conf:1/8"
         ],
         "highConfidence": 1,
@@ -814,6 +814,18 @@
           "t3": 1,
           "p": 4,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-20T23:09:32.397Z",
+          "rc": 8,
+          "s": 68.98,
+          "t1": 2,
+          "t2": 4,
+          "t3": 2,
+          "p": 4,
+          "m": 4,
           "n": 0,
           "bc": "waiting"
         }

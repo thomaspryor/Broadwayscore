@@ -1837,3 +1837,77 @@ test('BRO-3881: a backtick or VERIFY: in a row name cannot displace the real acc
   const spans = prose.match(/\`[^\`]+\`/g) || [];
   assert.equal(spans.length, 1, `acceptance section must contain exactly one backticked span, found ${spans.length}: ${JSON.stringify(spans)}`);
 });
+
+// ── BRO-3907: test-yml:red:<job>:<sig> cards must be DISPATCHABLE too ───────
+// The RED_SIGNATURE_PREFIX family has no health-check row to key off, so
+// BRO-3881's fix didn't cover it — route-main-streak-signatures.js kept
+// filing prose-only acceptance criteria and linear-next.js kept refusing
+// every one of these cards ("no runnable verify command (acceptance criteria
+// names no runnable command (prose only))"), same failure mode, different
+// caller. The `verify` param (scripts/lib/red-signature-verify-cmd.js) fixes
+// this the same way the health-row builder did: real command in, real gate
+// verdict out — no copy of either side.
+
+test('BRO-3907: a red-signature card with a resolvable safe-form step command is dispatchable', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const notes = buildCardNotes({
+    description: "main's Test Suite is failing on Data Validation / Run data validation",
+    hint: 'Investigate the failing validation.',
+    fields: [{ name: 'Job', value: 'Data Validation' }, { name: 'Step', value: 'Run data validation' }],
+    conditionKey: 'test-yml:red:Data Validation:abcd1234',
+    verify: { line: 'VERIFY: node scripts/validate-data.js', note: null },
+  });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.cmd, `red-signature card is undispatchable: ${gate.reason}`);
+  assert.equal(gate.cmd, 'node scripts/validate-data.js');
+});
+
+test('BRO-3907: a red-signature card that falls back to owner-judgment is still dispatchable (armed via the marker, not a command)', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const notes = buildCardNotes({
+    description: "main's Test Suite is failing on Lint Workflows / Audit cast-changes.json",
+    hint: 'Investigate the failing audit.',
+    fields: [{ name: 'Job', value: 'Lint Workflows' }, { name: 'Step', value: 'Audit cast-changes.json' }],
+    conditionKey: 'test-yml:red:Lint Workflows:deadbeef',
+    verify: {
+      line: 'VERIFY: owner-judgment',
+      note: 'The failing step\'s own command (`node scripts/audit-cast-changes.js --gate`) is not on the safe-form allowlist — needs a human to name a safe re-verification command.',
+    },
+  });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.armed, `owner-judgment marker did not arm the card: ${gate.reason}`);
+  assert.ok(gate.ownerJudgment);
+  assert.match(notes, /VERIFY: owner-judgment/);
+  // The note explaining WHY must survive into the card body (own-judgment
+  // alone tells a human nothing about what was actually tried).
+  assert.match(notes, /audit-cast-changes\.js --gate/);
+});
+
+test('BRO-3907: verify.line is never sanitized — sanitizeRowText would silently disarm it', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  // sanitizeRowText rewrites "VERIFY:" -> "VERIFY -" — if it were ever applied
+  // to verify.line itself (rather than just verify.note), this would silently
+  // reproduce the exact bug BRO-3907 fixes.
+  const notes = buildCardNotes({
+    description: 'd', hint: 'h', fields: [],
+    conditionKey: 'test-yml:red:Unit Tests:cafebabe',
+    verify: { line: 'VERIFY: node scripts/run-unit-tests.js', note: null },
+  });
+  assert.match(notes, /^VERIFY: node scripts\/run-unit-tests\.js$/m);
+  assert.equal(evaluateVerifiability(notes, []).cmd, 'node scripts/run-unit-tests.js');
+});
+
+test('BRO-3907: a health-check row still wins over a verify param if both were somehow passed (health-row is the more specific answer)', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const rowName = 'Data quality: something';
+  const notes = buildCardNotes({
+    description: 'd', hint: 'h', fields: [],
+    conditionKey: `health-check:${rowName}`,
+    verify: { line: 'VERIFY: node scripts/validate-data.js', note: null },
+  });
+  assert.match(notes, /check-health-row-absent\.js/);
+  assert.doesNotMatch(notes, /VERIFY: node scripts\/validate-data\.js/);
+});

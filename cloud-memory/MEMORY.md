@@ -8,7 +8,7 @@
 - [Google Search Console API](feedback_gsc_api_auth.md) — ADC + webmasters scope + X-Goog-User-Project
 
 ## 👤 User profile & session discipline
-- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — unmarked never close; tab close kills claude+nohup children, only detached:true survives ([[feedback_cmux_tab_close_kills_children.md]])
+- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — unmarked never close; close kills claude+nohup ([[feedback_cmux_tab_close_kills_children.md]])
 - [Terse output default](feedback_terse_output_default.md) — no recap, keep proof ([[feedback_no_human_day_estimates.md]])
 - [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff" ([[feedback_user_device_context.md]])
@@ -28,18 +28,19 @@
 - [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; read FULL create output, avoid "rejected" ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
 
 ## 🌳 Worktrees & git
+- [Landing on main](CLAUDE-reference.md) — merge-worktree-to-main.sh → land/** + land.yml; direct push to main refused (BRO-3425)
 - [Headless resume is cwd-scoped](feedback_headless_resume_cwd_scoped.md) — claude -p --resume fails outside original cwd; deterministic paths fix it
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; launch bg watchers from MAIN repo cwd ([[feedback_background_watchers_worktree_cwd.md]])
 - [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ before writing; same-name worktree may be another LIVE session, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
 - [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts NOT a symlink ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
-- [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — pull --rebase clobbers uncommitted; never reset-hard+rsync ([[feedback_reset_rsync_wipes_ci_fields.md]]); gh api PUT /contents/ when local git broken ([[feedback_gh_api_emergency_commit.md]])
+- [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — rebase clobbers uncommitted; no reset-hard+rsync ([[feedback_reset_rsync_wipes_ci_fields.md]]); gh api PUT /contents/ if git broken ([[feedback_gh_api_emergency_commit.md]])
 
 ## ⚙️ CI / GitHub Actions / workflows
 - [Workflow cascade prevention](feedback_workflow_cascade_prevention.md) — trace dispatch graph; circular chains → 1000+ runs/day
-- [Cron timeout = script budget](feedback_cron_timeout_needs_script_budget.md) — cancelled-at-timeout crons need --time-budget-min + rotation; check skip-cache checkout wiring
-- [test.yml gotchas](feedback_test_yml_push_path_allowlist.md) — push path allow-list (non-listed scripts/ = ZERO CI); data gates flap, first failure masks rest; two disjoint unit batches; verify new test RAN ([[feedback_ci_step_short_circuits_colocated_tests.md]])
+- [Cron timeout = script budget](feedback_cron_timeout_needs_script_budget.md) — cancelled-at-timeout crons need --time-budget-min + rotation; check skip-cache checkout
+- [test.yml gotchas](feedback_test_yml_push_path_allowlist.md) — push allow-list (unlisted scripts/ = ZERO CI); data gates flap; verify new test RAN ([[feedback_ci_step_short_circuits_colocated_tests.md]])
 - [push-review-texts reverts intentional clears](feedback_push_review_texts_reverts_intentional_clears.md) — duplicateOf in PROTECTED_FIELDS; needs duplicateClearReason exception
 - [Vercel build config](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* go in build step env: block; no dynamic paths in server code, grep src/ before outputFileTracingExcludes ([[feedback_vercel_nft_dynamic_paths.md]])
 - [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — "unknown → assume X" breaks when unknown IS common
@@ -87,7 +88,7 @@
 ## 📊 Data pipeline & scraping
 - [NEVER ask user to create a Reddit app](feedback_reddit_app_creation_broken.md) — prefs/apps broken for months; Reddit via SB post-reset + null-counter degradation
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
-- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — logs nothing; 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]], [[feedback_sb_quota_ride_out.md]] ride out, never re-ask billing)
+- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — logs nothing; 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]], [[feedback_sb_quota_ride_out.md]] never re-ask billing)
 - [Guard throws need a caller check](feedback_guard_throw_needs_caller_check.md) — caller catches ⇒ throw = silent reroute, validate at startup; no per-call attribution from shared counters
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
 - [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor's reviews attach via venue corroboration; check rv URL slugs; needs wrongShowReason + delete WET cache
@@ -127,7 +128,7 @@
 - [Design system reference](design-system.md) — surfaces, score tiers, shared components, banned patterns
 - [Local preview before push](feedback_local_preview_before_push.md) — /visual-qa local, APPROVED:<hash> required; worktree gotchas ([[feedback_visual_qa_dev_server_in_worktree.md]]); preserve parallel colors ([[feedback_preserve_parallel_session_colors.md]])
 - [Mobile link min-height](feedback_mobile_link_min_height.md) — a{min-height:44px}; .performer-row/.craft-row opt out; e2e-guarded
-- [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold renders in page.tsx BEFORE HomePageClient; demo flags client-only ([[feedback_demo_flags_client_only.md]])
+- [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold renders in page.tsx BEFORE HomePageClient ([[feedback_demo_flags_client_only.md]])
 - [A/B tests](feedback_ab_test_guardrails.md) — PostHog filters/exclusions/stat-sig thresholds
 - [Modal + Next-chunk singletons](feedback_css_contain_traps_fixed_modals.md) — Modal portals to body; module singletons split across chunks → coordinate via DOM
 - [UGC Supabase auth](feedback_supabase_freetier_pause.md) — free-tier pauses 7d idle → NXDOMAIN; Restore workflow + keep-alive. Tests [[feedback_ugc_test_patterns.md]] [[feedback_playwright_evaluate_click_hydration.md]]
@@ -138,5 +139,5 @@
 - [Recoupment RSS poller](feedback_recoupment_rss_poller_architecture.md) — hourly Variety+Deadline; shared classify lib; trackRecoupment flag
 
 ## 📚 Reference & repo layout
-- [Paywall subs status](reference_paywall_subscriptions_status.md) — cancelled subs Jul 2026; check before cookie/Browserbase advice; TR = paid UK archive ([[reference_theatre_record.md]])
+- [Paywall subs status](reference_paywall_subscriptions_status.md) — cancelled Jul 2026; check before cookie/Browserbase advice; TR = paid UK archive ([[reference_theatre_record.md]])
 - [Repo layout](repo_layout.md) — three repos (web, iOS, data) w/ GitHub names + paths; ~/.claude is private repo via claude-sync ([[reference_claude_config_sync.md]])
