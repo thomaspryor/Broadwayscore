@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-09-20T21:25:11.155Z",
-  "processed": 49,
-  "failed": 168,
-  "successRate": "22.6%",
+  "updatedAt": "2026-09-20T21:38:54.510Z",
+  "processed": 56,
+  "failed": 30,
+  "successRate": "65.1%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 36,
     "amp": 0,
-    "browserbase": 3,
-    "directCookies": 1,
+    "browserbase": 0,
+    "directCookies": 0,
     "scrapingbee": 12,
-    "brightdata": 4,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 3
   },
@@ -36,6 +36,18 @@
       "t": "2026-09-20T21:03:15.275Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-20T21:35:43.753Z",
+      "event": "bb-session",
+      "session": "4ac3ce89",
+      "url": "https://www.ntlive.com/plays/golden-boy/"
+    },
+    {
+      "t": "2026-09-20T21:36:03.847Z",
+      "event": "bb-session",
+      "session": "d799ec07",
+      "url": "https://www.ntlive.com/plays/golden-boy/"
     }
   ]
 }
