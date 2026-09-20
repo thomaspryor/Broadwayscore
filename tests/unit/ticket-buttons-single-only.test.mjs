@@ -38,3 +38,19 @@ test('abVariantStr always reports buttons:single — the permanent single-CTA co
   assert.match(src, /buttons:single/, 'the tracking string must keep stamping buttons:single unconditionally');
   assert.doesNotMatch(src, /buttons:\$\{buttonsPart\}/, 'must not reintroduce a variant-dependent buttons segment');
 });
+
+// Task #1936 (/show/oh-mary rage clicks): TicketButtonsAB used to
+// `return null` until the ticket-primary-platform PostHog flag resolved
+// (up to 5s poll + timeout), leaving the primary "Get Tickets" CTA
+// completely absent on every load — a silent-gap rage-click trap on
+// high-intent pages (same class as the closed-show gap, CLAUDE.md card
+// #228 / task #90 / getTicketCtaNote above), just time-based instead of
+// permanent. Fix: render immediately with the default (unresolved-flag)
+// ordering, which is already control-equivalent since the flag is locked
+// 100% todaytix; the override only applies on top once/if the flag
+// resolves to the 0%-rollout stubhub variant.
+test('TicketButtonsAB does not gate its render on the PostHog flag resolving (no rage-click silent gap)', () => {
+  const src = source();
+  assert.doesNotMatch(src, /flagsLoaded/, 'must not reintroduce a flagsLoaded state that blocks the initial render');
+  assert.doesNotMatch(src, /if \(!flagsLoaded\) return null/, 'must not reintroduce the render-blocking gate that hid the CTA for up to 5s');
+});

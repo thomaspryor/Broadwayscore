@@ -250,7 +250,17 @@ async function main() {
   const subIdField = (a) => a.SubId2 || a.subId2 || '';
   const subId1Field = (a) => a.SubId1 || a.subId1 || '';
   const num = (v) => { const n = parseFloat(v); return Number.isFinite(n) ? n : 0; };
-  const attributedConversions = impactConversions.filter(a => VARIANT_RE.test(subIdField(a)));
+  // `platform:fallback` (ad blockers / opt-outs / PostHog not yet loaded at
+  // click time — see TicketButtonsAB.tsx and TicketLink.tsx) matches
+  // VARIANT_RE just like a real variant, but has no meaningful cohort to
+  // join to. The click-side filter above already excludes it from
+  // `filtered`/`byVariant`; mirror that here so a fallback-tagged conversion
+  // isn't silently counted into postbackCoverage as "attributed" while never
+  // appearing in any variant's row (task #1936 ship-check finding — this
+  // conversion never landed in a variant bucket, so `directByVariant`
+  // simply dropped it; it just also shouldn't count as attributed).
+  const isFallback = (a) => subIdField(a).includes('fallback');
+  const attributedConversions = impactConversions.filter(a => VARIANT_RE.test(subIdField(a)) && !isFallback(a));
   const unattributedConversions = impactConversions.filter(a => !VARIANT_RE.test(subIdField(a)));
   const unattributedCommission = unattributedConversions.reduce((s, c) => s + num(c.Payout), 0);
   const totalConversions = impactConversions.length;

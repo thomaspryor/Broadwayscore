@@ -89,11 +89,13 @@ export default function AnalyticsWrapper() {
       });
     };
 
-    // Timeout capped lower than Sentry's (below) — TicketButtonsAB blocks
-    // rendering ticket buttons on window.posthog.getFeatureFlag() and gives
-    // up after 5s total. A longer cap here eats directly into that budget
-    // on busy pages and delays a revenue-critical CTA, not just an analytics
-    // nice-to-have (ship-check finding, card #311).
+    // Timeout capped lower than Sentry's (below) — a longer cap here delays
+    // window.posthog becoming available, which TicketLink polls for (up to
+    // 2s, see its own comment) to stamp the Impact subId1 on ticket-CTA
+    // hrefs. TicketButtonsAB itself no longer withholds rendering on this
+    // (task #1936 — that used to hide the primary CTA for up to 5s, which
+    // is what drove rage clicks), so this timeout is now purely an
+    // analytics/attribution budget, not a revenue-CTA-visibility one.
     if (typeof window.requestIdleCallback === 'function') {
       const idleId = window.requestIdleCallback(loadPostHog, { timeout: 1500 });
       return () => window.cancelIdleCallback?.(idleId);

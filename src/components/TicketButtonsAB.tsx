@@ -83,26 +83,27 @@ export default function TicketButtonsAB({
   primaryButtonClassName = "w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg bg-gradient-brand text-white font-bold text-sm hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap",
   secondaryAfter,
 }: TicketButtonsABProps) {
+  // null until the PostHog flag resolves to a string value. Rendering never
+  // blocks on this resolving — sortTicketLinks() with no override already
+  // produces the locked-100% `todaytix` ordering,
+  // so the first paint is control-equivalent in the overwhelming majority
+  // of loads; abPlatformVariant only matters for the currently-0%-rollout
+  // `stubhub` override, applied via a cheap re-render once/if it resolves.
   const [abPlatformVariant, setAbPlatformVariant] = useState<string | null>(null);
-  const [flagsLoaded, setFlagsLoaded] = useState(false);
 
   useEffect(() => {
     let attempts = 0;
     const maxAttempts = 20; // 20 × 250ms = 5 seconds total
     let intervalId: ReturnType<typeof setInterval> | null = null;
-    let fallbackTimer: ReturnType<typeof setTimeout> | null = null;
 
     const checkFlags = () => {
       const ph = window.posthog;
       if (ph?.getFeatureFlag) {
         const platformFlag = ph.getFeatureFlag('ticket-primary-platform');
 
-        // Only mark loaded once we get a string value.
         if (typeof platformFlag === 'string') {
           setAbPlatformVariant(platformFlag);
-          setFlagsLoaded(true);
           if (intervalId) clearInterval(intervalId);
-          if (fallbackTimer) clearTimeout(fallbackTimer);
           return;
         }
       }
@@ -112,22 +113,15 @@ export default function TicketButtonsAB({
       }
     };
 
-    // Try immediately, then poll every 250ms
+    // Try immediately, then poll every 250ms for up to 5s. No fallback timer
+    // needed anymore: the button already rendered with the default ordering
+    // on first paint (see above), so giving up here just means we never
+    // apply the stubhub override — not a rendering gap.
     checkFlags();
     intervalId = setInterval(checkFlags, 250);
 
-    // Fallback: after 5 seconds, give up and render with defaults (control = todaytix).
-    // This handles ad blockers / opted-out users — they get the control variant
-    // and the click WILL still fire with ab_variant="platform:fallback,buttons:single"
-    // so we can identify and exclude these in analysis.
-    fallbackTimer = setTimeout(() => {
-      if (intervalId) clearInterval(intervalId);
-      setFlagsLoaded(true);
-    }, 5000);
-
     return () => {
       if (intervalId) clearInterval(intervalId);
-      if (fallbackTimer) clearTimeout(fallbackTimer);
     };
   }, []);
 
@@ -161,9 +155,15 @@ export default function TicketButtonsAB({
   const platformPart = abPlatformVariant ?? 'fallback';
   const abVariantStr = `flag:ticket-single-button,platform:${platformPart},buttons:single`;
 
-  // Don't render anything until flags load (or fallback fires after 5s)
-  // This eliminates the multi-default flicker that biased early clicks to control.
-  if (!flagsLoaded) return null;
+  // Render immediately with the default (flag-unresolved) ordering instead of
+  // returning null while the PostHog flag loads. The old render-blocking
+  // gate could leave the primary "Get Tickets" CTA missing for up to 5s on
+  // every load — the same silent-gap rage-click pattern as the closed-show
+  // bug (CLAUDE.md card #228 / task #90), just time-based instead of
+  // permanent, and worst on high-intent pages where visitors tap for the
+  // button before it exists (task #1936, /show/oh-mary). abVariantStr
+  // already labels these early clicks "platform:fallback", which
+  // scripts/analyze-ab-test.js excludes from the A/B analysis.
   // No affiliate-able ticketLinks at all — an unmonetized officialUrl link
   // (a show's own site, not a "buy now" promise) is exempt from the
   // not-yet-on-sale suppression below (BRO-166).
