@@ -189,3 +189,80 @@ test('park branch: stays idempotent across two runs even when the outcome contai
   assert.equal(h2.cardCorrections.length, 0, 'the hoisted RECHECK-AFTER stamp must not mask our own note and trigger a re-park');
   assert.ok(second.skipped.some(s => s.id === '9' && s.why === 'already-parked-this-outcome'));
 });
+
+// Card #794: real task #914 sat re-parked every ~2 days for a month because
+// hoistRecheckAfterStamp re-copies its stamp on EVERY write without removing
+// the original occurrence deeper in the text — each round stacks ONE MORE
+// "RECHECK-AFTER...\n\nAuto-parked...\n\n---\n\n" segment than the last, and
+// the true tail content ITSELF genuinely starts with its own leading
+// RECHECK-AFTER stamp (not mid-sentence, unlike the fixture above). A
+// single-pass strip fails as early as round 2 in this exact shape.
+test('stripOwnParkNote: strips an arbitrary number of stacked auto-park rounds, converging to a tail that itself starts with a genuine leading stamp', () => {
+  const trueTailCore = 'Task #802 triage: blocker cleared, resume the remaining outlet sweeps.';
+  const trueTail = `RECHECK-AFTER: 2026-08-08\n\n${trueTailCore}`;
+  const noteFor = (date) => `Auto-parked ${date} by bsc-reconcile zombie sweep: card sat In progress 2d with no live session, but already has a completed Outcome — needs a human yes/no, not an automatic reopen (task #1272).`;
+  const dates = ['2026-08-23', '2026-08-25', '2026-08-27', '2026-08-29', '2026-09-19'];
+  // Each round's write prepends `RECHECK-AFTER: 2026-08-08\n\n${note}\n\n---\n\n` in front of whatever came before — reproducing hoistRecheckAfterStamp re-copying the same stamp every round instead of moving it once.
+  let stacked = trueTail;
+  for (const date of dates) {
+    stacked = `RECHECK-AFTER: 2026-08-08\n\n${noteFor(date)}\n\n---\n\n${stacked}`;
+  }
+  // Matches the pre-existing single-pass behavior (still exercised by the
+  // very first stripOwnParkNote test above): a genuine leading stamp on the
+  // true tail is ALWAYS stripped too, whether or not an auto-park note
+  // follows it — this loop's final iteration reduces to that same rule.
+  assert.equal(stripOwnParkNote(stacked), trueTailCore, 'must converge to the true tail regardless of how many rounds are stacked');
+});
+
+test('park branch: stays idempotent across FIVE stacked real-shape rounds, not just two', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const trueTail = 'RECHECK-AFTER: 2026-08-08\n\nTask #802 triage: blocker cleared, resume the remaining outlet sweeps.';
+  const h = zombieHarness({
+    tasks: [zTask(9)],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: trueTail } },
+  });
+  let last = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(h.cardCorrections.length, 1, 'first park proceeds');
+  let task = h.readTask(9);
+  let cardOutcome = trueTail;
+
+  const dates = ['2026-09-14', '2026-09-16', '2026-09-17', '2026-09-18', '2026-09-19'];
+  for (const date of dates) {
+    // Simulate notion-brain.js's real write: prepend a fresh stamp+note in front of whatever the card already carries.
+    const note = `Auto-parked ${date} by bsc-reconcile zombie sweep: card sat In progress 2d with no live session, but already has a completed Outcome — needs a human yes/no, not an automatic reopen (task #1272).`;
+    cardOutcome = `RECHECK-AFTER: 2026-08-08\n\n${note}\n\n---\n\n${cardOutcome}`;
+    const round = zombieHarness({
+      tasks: [task],
+      cards: { [nid]: { status: 'Paused', lastEditedAt: tsAgo(96), outcome: cardOutcome } },
+    });
+    last = sweepUntrackedInProgress({ deps: round.deps });
+    assert.equal(round.cardCorrections.length, 0, `round ${date} must be a true no-op, not a re-park`);
+    assert.ok(last.skipped.some(s => s.id === '9' && s.why === 'already-parked-this-outcome'), `round ${date} must skip as already-parked`);
+    task = round.readTask(9);
+  }
+});
+
+// Reviewer follow-up (second-opinion, card #794): a genuinely NEW human
+// dispute layered on top of an already-stacked pile of our own notes must
+// still be detected as new content, not swallowed by the loop.
+test('park branch: a genuinely NEW human dispute on top of an already-stacked pile still re-parks', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const trueTail = 'RECHECK-AFTER: 2026-08-08\n\nTask #802 triage: blocker cleared, resume the remaining outlet sweeps.';
+  const h = zombieHarness({
+    tasks: [zTask(9)],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: trueTail } },
+  });
+  sweepUntrackedInProgress({ deps: h.deps });
+  const afterFirst = h.readTask(9);
+
+  const ourNote = 'Auto-parked 2026-09-16 by bsc-reconcile zombie sweep: card sat In progress 2d with no live session, but already has a completed Outcome — needs a human yes/no, not an automatic reopen (task #1272).';
+  const stackedOutcome = `RECHECK-AFTER: 2026-08-08\n\n${ourNote}\n\n---\n\n${trueTail}`;
+  // A human resumes the card and adds genuinely new prose in front of the whole stack (not via our own note format).
+  const newDispute = `Resumed 2026-09-19: found a real bug in the recovery script, fixing now.\n\n---\n\n${stackedOutcome}`;
+  const h2 = zombieHarness({
+    tasks: [afterFirst],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: newDispute } },
+  });
+  const second = sweepUntrackedInProgress({ deps: h2.deps });
+  assert.equal(h2.cardCorrections.length, 1, 'a genuinely new human dispute on top of an old stack must still trigger a fresh park, not a permanent no-op');
+});
