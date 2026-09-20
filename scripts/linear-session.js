@@ -195,7 +195,22 @@ async function cmdClaim(args) {
       // name + a pointer to the issue URL rather than silently saying nothing.
       console.error(`\n⚠️  ${issue.identifier} was "${plan.previousStateName}" (a concluded state) — you're reopening it.`);
       console.error('   Read why it was concluded before proceeding:');
-      const comments = (issue.comments && issue.comments.nodes) || [];
+      // Sort ascending before taking the last 3 — the comments(first: 50,
+      // orderBy: createdAt) connection does NOT reliably return
+      // createdAt-ascending order (same reason sortedCommentBodies() exists
+      // in linear-dispatch.js, used elsewhere in THIS file's own done-gate
+      // check). Verified live against BRO-3456: its raw nodes come back
+      // NEWEST-first — an un-sorted .slice(-3) would have shown the 3
+      // OLDEST comments (early investigation), not the actual "shipped
+      // this, don't revert" conclusion — exactly defeating this warning's
+      // purpose (code-review finding, BRO-3869).
+      const comments = ((issue.comments && issue.comments.nodes) || [])
+        .slice()
+        .sort((a, b) => {
+          const ca = String((a && a.createdAt) || '');
+          const cb = String((b && b.createdAt) || '');
+          return ca < cb ? -1 : ca > cb ? 1 : 0;
+        });
       if (comments.length > 0) {
         for (const c of comments.slice(-3)) {
           const author = (c.user && c.user.name) || 'unknown';
@@ -255,11 +270,22 @@ async function cmdReport(args, deps = {}) {
   // against yet. Never blocks — see linear-staleness-check.js's header.
   let staleness = null;
   if (args.since) {
-    staleness = checkIssueStaleness(issue, args.since);
-    if (staleness.stale) {
-      console.error(`\n⚠️  ${issue.identifier} changed since ${args.since} — re-read before proceeding:`);
-      for (const s of staleness.signals) console.error(`   - ${s.detail}`);
-      console.error('');
+    // checkIssueStaleness throws on a malformed/future --since (fail-closed
+    // by design, so a typo doesn't silently report "clean") — but this
+    // check is an optional, informational hint, not the point of this call.
+    // Letting that throw propagate would abort the WHOLE report before the
+    // outcome comment posts, taking down the mandatory Stop-hook-required
+    // report over a bad flag on an optional add-on (code-review finding,
+    // BRO-3869). Degrade to a warning instead; the report still goes out.
+    try {
+      staleness = checkIssueStaleness(issue, args.since);
+      if (staleness.stale) {
+        console.error(`\n⚠️  ${issue.identifier} changed since ${args.since} — re-read before proceeding:`);
+        for (const s of staleness.signals) console.error(`   - ${s.detail}`);
+        console.error('');
+      }
+    } catch (err) {
+      console.error(`⚠️  --since=${args.since} could not be checked (${err.message}) — proceeding without the staleness check.`);
     }
   }
 
