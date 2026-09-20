@@ -1,15 +1,12 @@
 {
-  "updatedAt": "2026-09-20T05:19:02.938Z",
+  "updatedAt": "2026-09-20T12:01:03.961Z",
   "scanned": 2096,
-  "showsWithViolations": 427,
-  "totalViolations": 939,
-  "newSinceLastRun": 5,
+  "showsWithViolations": 428,
+  "totalViolations": 938,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "man-to-man-west-end-2026::the-jewish-chronicle--john-nathan.json",
-    "abigails-party-west-end-2026::london-box-office--shehrazade-zafar-arif.json",
-    "darkling-off-west-end-2026::voice-magazine--unknown.json",
-    "pre-existing-condition-off-broadway-2026::times-square-chronicles--suzanna-bowling.json",
-    "golden-boy-off-west-end-2026::viewfromthegods--simon-jenner.json"
+    "sweat-2017::nytimes--charles-isherwood.json",
+    "witness-for-the-prosecution-west-end-2022::london-theatre--will-longman.json"
   ],
   "violationKeys": [
     "the-lost-boys-2026::latimes--charles-mcnulty.json",
@@ -229,6 +226,7 @@
     "war-paint-2017::timeout--kris-vire.json",
     "present-laughter-2017::theatermania--jesse-green.json",
     "sweat-2017::nytimes--ben-brantley.json",
+    "sweat-2017::nytimes--charles-isherwood.json",
     "sweat-2017::showbiz411--regina-weinreich.json",
     "sweat-2017::theatermania--zachary-stewart.json",
     "sweat-2017::timeout--david-cote.json",
@@ -258,7 +256,6 @@
     "she-loves-me-2016::huffpost--steven-suskin.json",
     "she-loves-me-2016::nypost--elisabeth-vincentelli.json",
     "she-loves-me-2016::the-clyde-fitch-report--david-finkle.json",
-    "she-loves-me-2016::theater-life--eric-march.json",
     "she-loves-me-2016::theatre-is-easy--dan-dinero.json",
     "she-loves-me-2016::timeout--adam-feldman.json",
     "noises-off-2016::huffpost--fern-siegel.json",
@@ -584,6 +581,7 @@
     "into-the-woods-west-end-2025::plays-international--jeremy-malies.json",
     "into-the-woods-west-end-2025::thestage--unknown.json",
     "into-the-woods-west-end-2025::west-end-wilma--west-end-wilma.json",
+    "witness-for-the-prosecution-west-end-2022::london-theatre--will-longman.json",
     "manic-street-creature-west-end-2026::london-theatre--anya-ryan.json",
     "manic-street-creature-west-end-2026::standard--nick-curtis.json",
     "manic-street-creature-west-end-2026::thereviewshub--scott-matthewman.json",
@@ -850,7 +848,6 @@
     "much-ado-about-nothing-globe-off-west-end-2026::whatsonstage--mickey-jo-boucher.json",
     "paranormal-activity-2026::new-york-sun--elysa-gardner.json",
     "paranormal-activity-2026::theater-life--david-sheward.json",
-    "paranormal-activity-2026::theatermania--unknown.json",
     "paranormal-activity-2026::times-square-chronicles--suzanna-bowling.json",
     "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026::stageandcinema--rob-lester.json",
     "are-you-now-or-have-you-ever-been-off-broadway-2026::nysr--frank-scheck.json",
@@ -939,7 +936,6 @@
     "jane-eyre-off-west-end-2026::emmatheatrics--emma-theatrics.json",
     "jane-eyre-off-west-end-2026::guardian--holly-omahony.json",
     "jane-eyre-off-west-end-2026::guardian--unknown.json",
-    "jane-eyre-off-west-end-2026::london-box-office--stacey-tyler.json",
     "jane-eyre-off-west-end-2026::shinylife--unknown.json",
     "jane-eyre-off-west-end-2026::theatreboard--unknown.json",
     "golden-boy-off-west-end-2026::financialtimes--unknown.json",
@@ -4623,19 +4619,32 @@
       "showId": "sweat-2017",
       "title": "Sweat",
       "openingDate": "2017-03-26",
-      "message": "nytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped review is a legitimate theater review of  — https://www.nytimes.com/2017/03/26/theater/sweat-review-broadway.html\nshowbiz411/Regina Weinreich (showbiz411--regina-weinreich.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a valid Broadway review by Regina Weinreich p — https://www.showbiz411.com/2017/03/27/broadway-lynn-nottages-high-wattage-sweat-provides-a-backstory-for-our-current-trump-troubles\ntheatermania/Zachary Stewart (theatermania--zachary-stewart.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped content is a legitimate review of Sweat p — https://www.theatermania.com/broadway/reviews/sweat_80501.html\ntimeout/David Cote (timeout--david-cote.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] While this is a legitimate review by David Cote in Ti — https://www.timeout.com/newyork/theater/sweat-1\ntimeout/David Rooney (timeout--david-rooney.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] This is a legitimate Broadway review of 'Sweat' publi — https://www.timeout.com/newyork/theater/sweat-1",
+      "message": "nytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped review is a legitimate theater review of  — https://www.nytimes.com/2017/03/26/theater/sweat-review-broadway.html\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a genuine review of Sweat by Charles Isherwoo — https://www.nytimes.com/2017/03/26/theater/sweat-review-broadway.html\nshowbiz411/Regina Weinreich (showbiz411--regina-weinreich.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a valid Broadway review by Regina Weinreich p — https://www.showbiz411.com/2017/03/27/broadway-lynn-nottages-high-wattage-sweat-provides-a-backstory-for-our-current-trump-troubles\ntheatermania/Zachary Stewart (theatermania--zachary-stewart.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped content is a legitimate review of Sweat p — https://www.theatermania.com/broadway/reviews/sweat_80501.html\ntimeout/David Cote (timeout--david-cote.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] While this is a legitimate review by David Cote in Ti — https://www.timeout.com/newyork/theater/sweat-1\ntimeout/David Rooney (timeout--david-rooney.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] This is a legitimate Broadway review of 'Sweat' publi — https://www.timeout.com/newyork/theater/sweat-1",
       "violations": [
         {
           "filename": "nytimes--ben-brantley.json",
           "url": "https://www.nytimes.com/2017/03/26/theater/sweat-review-broadway.html",
           "outletId": "nytimes",
           "criticName": "Ben Brantley",
-          "matchedBy": "outlet+critic",
+          "matchedBy": "url",
           "cvConfidence": "low",
           "cvReasoning": "[OVERRIDE: review within 0d of opening, likely correct production] The scraped review is a legitimate theater review of ",
           "cvIssues": [
             "Review states show opened at Studio 54, not Harold and Miriam Steinberg Center for Theatre",
             "Text is truncated mid-sentence at character 6522"
+          ]
+        },
+        {
+          "filename": "nytimes--charles-isherwood.json",
+          "url": "https://www.nytimes.com/2017/03/26/theater/sweat-review-broadway.html",
+          "outletId": "nytimes",
+          "criticName": "Charles Isherwood",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 0d of opening, likely correct production] This is a genuine review of Sweat by Charles Isherwoo",
+          "cvIssues": [
+            "Review states opening was at Studio 54, but expected Broadway venue is Harold and Miriam Steinberg Center for Theatre",
+            "Studio 54 is a Broadway theater, but the venue mismatch is a critical discrepancy"
           ]
         },
         {
@@ -5080,7 +5089,7 @@
       "showId": "she-loves-me-2016",
       "title": "She Loves Me",
       "openingDate": "2016-03-17",
-      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review of the Broadway 'She Loves Me' revival, but the scraped content is truncated mid-sentence and the — https://www.washingtontimes.com/news/2016/mar/17/review-revival-of-she-loves-me-worth-skipping-work/\nhuffpost/Steven Suskin (huffpost--steven-suskin.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review explicitly states 'head to Studio 54,' which is a different Broadway venue than the expected Harold a — https://www.huffpost.com/steven-suskin/aisle-view-musical-candy_b_9492440.html\nnypost/Elisabeth Vincentelli (nypost--elisabeth-vincentelli.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with critical assessment, but it reviews the Off-Broadway production of 'She Loves M — http://nypost.com/2016/03/17/she-loves-me-and-the-robber-bridegroom-prove-old-shows-rock/\nthe-clyde-fitch-report/David Finkle (the-clyde-fitch-report--david-finkle.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review by David Finkle of She Loves Me published March 19, 2016, with the correct opening date and  — http://www.clydefitchreport.com/2016/03/she-loves-me-broadway/\ntheater-life/Eric March (theater-life--eric-march.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 17d of opening, likely correct production] This is a competent review, but it evaluates the 199 — https://theaterlife.com/she-loves-me/\ntheatre-is-easy/Dan Dinero (theatre-is-easy--dan-dinero.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The content is a valid review of She Loves Me with matching known excerpt and plot details, but it describes the Studio  — https://www.theasy.com/Reviews/2016/S/shelovesme.php\ntimeout/David Cote (timeout--adam-feldman.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate review of the Broadway 'She Love — http://www.timeout.com/newyork/theater/she-loves-me",
+      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review of the Broadway 'She Loves Me' revival, but the scraped content is truncated mid-sentence and the — https://www.washingtontimes.com/news/2016/mar/17/review-revival-of-she-loves-me-worth-skipping-work/\nhuffpost/Steven Suskin (huffpost--steven-suskin.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review explicitly states 'head to Studio 54,' which is a different Broadway venue than the expected Harold a — https://www.huffpost.com/steven-suskin/aisle-view-musical-candy_b_9492440.html\nnypost/Elisabeth Vincentelli (nypost--elisabeth-vincentelli.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with critical assessment, but it reviews the Off-Broadway production of 'She Loves M — http://nypost.com/2016/03/17/she-loves-me-and-the-robber-bridegroom-prove-old-shows-rock/\nthe-clyde-fitch-report/David Finkle (the-clyde-fitch-report--david-finkle.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review by David Finkle of She Loves Me published March 19, 2016, with the correct opening date and  — http://www.clydefitchreport.com/2016/03/she-loves-me-broadway/\ntheatre-is-easy/Dan Dinero (theatre-is-easy--dan-dinero.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The content is a valid review of She Loves Me with matching known excerpt and plot details, but it describes the Studio  — https://www.theasy.com/Reviews/2016/S/shelovesme.php\ntimeout/David Cote (timeout--adam-feldman.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate review of the Broadway 'She Love — http://www.timeout.com/newyork/theater/she-loves-me",
       "violations": [
         {
           "filename": "ap--mark-kennedy.json",
@@ -5132,19 +5141,6 @@
           "cvIssues": [
             "Wrong venue: Review describes Studio 54, not Harold and Miriam Steinberg Center for Theatre. Studio 54 is the home of Roundabout Theatre Company productions but is NOT the Broadway venue listed in expected metadata.",
             "Truncated: Text ends mid-sentence at 'A good e' with 5618 characters scraped but incomplete final paragraph."
-          ]
-        },
-        {
-          "filename": "theater-life--eric-march.json",
-          "url": "https://theaterlife.com/she-loves-me/",
-          "outletId": "theater-life",
-          "criticName": "Eric March",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 17d of opening, likely correct production] This is a competent review, but it evaluates the 199",
-          "cvIssues": [
-            "Review evaluates the 1993 Roundabout revival, not the 2016 Broadway production",
-            "Opening paragraph explicitly states 'which premiered on Broadway in 1963' and discusses historical context"
           ]
         },
         {
@@ -10756,6 +10752,27 @@
       ]
     },
     {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "title": "Witness for the Prosecution",
+      "openingDate": "2017-10-23",
+      "message": "london-theatre/Will Longman (london-theatre--will-longman.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content appears to be a review of 'Witness for the Prosecution' at London County Hall, matching the venue an — https://www.londontheatre.co.uk/reviews/review-agatha-christies-witness-for-the-prosecution-at-london-county-hall",
+      "violations": [
+        {
+          "filename": "london-theatre--will-longman.json",
+          "url": "https://www.londontheatre.co.uk/reviews/review-agatha-christies-witness-for-the-prosecution-at-london-county-hall",
+          "outletId": "london-theatre",
+          "criticName": "Will Longman",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "The scraped content appears to be a review of 'Witness for the Prosecution' at London County Hall, matching the venue an",
+          "cvIssues": [
+            "Critic name mismatch: scraped content shows no byline attribution to 'Will Longman' in the first 2500 characters",
+            "Text is truncated mid-sentence ('At times it's hard t') before reaching natural conclusion"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "manic-street-creature-west-end-2026",
       "title": "Manic Street Creature",
       "openingDate": "2026-03-10",
@@ -14782,7 +14799,7 @@
       "showId": "paranormal-activity-2026",
       "title": "Paranormal Activity",
       "openingDate": "2026-08-25",
-      "message": "new-york-sun/Elysa Gardner (new-york-sun--elysa-gardner.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 5d of opening, likely correct production] This is a legitimate theater review with critical ass — https://www.nysun.com/article/paranormal-activity-is-a-killer-theatrical-experience\ntheater-life/David Sheward (theater-life--david-sheward.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] While the review mentions the August Wilson Theater a — https://theaterlife.com/paranormal-activity/\ntheatermania/Editorial Staff (theatermania--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] This is a well-written theater review with critical  — https://www.theatermania.com/news/review-paranormal-activity-is-the-scariest-show-on-broadway_1851235/\ntimes-square-chronicles/Suzanna Bowling (times-square-chronicles--suzanna-bowling.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] While this is a legitimate theater review with strong — https://t2conline.com/paranormal-activity-plenty-of-things-go-bump-in-the-night-including-the-plot/",
+      "message": "new-york-sun/Elysa Gardner (new-york-sun--elysa-gardner.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 5d of opening, likely correct production] This is a legitimate theater review with critical ass — https://www.nysun.com/article/paranormal-activity-is-a-killer-theatrical-experience\ntheater-life/David Sheward (theater-life--david-sheward.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] While the review mentions the August Wilson Theater a — https://theaterlife.com/paranormal-activity/\ntimes-square-chronicles/Suzanna Bowling (times-square-chronicles--suzanna-bowling.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] While this is a legitimate theater review with strong — https://t2conline.com/paranormal-activity-plenty-of-things-go-bump-in-the-night-including-the-plot/",
       "violations": [
         {
           "filename": "new-york-sun--elysa-gardner.json",
@@ -14808,19 +14825,6 @@
           "cvIssues": [
             "Review evaluates the West End/London production, not the Broadway production",
             "Text explicitly states 'now at the August Wilson Theater after a London run' — the critic is reviewing the show that came FROM London, but the opinion-bearing content and cast descriptions appear to reference the London staging"
-          ]
-        },
-        {
-          "filename": "theatermania--unknown.json",
-          "url": "https://www.theatermania.com/news/review-paranormal-activity-is-the-scariest-show-on-broadway_1851235/",
-          "outletId": "theatermania",
-          "criticName": "Editorial Staff",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 20d of opening, likely correct production] This is a well-written theater review with critical ",
-          "cvIssues": [
-            "Review evaluates a West End (London) production, not the Broadway production. The opinion-bearing content describes 'a London home,' characters 'relocated to London from Chicago,' and the West End run is described as 'ongoing.' The Broadway opening is listed as 2026-08-25, but the review discusses the London staging.",
-            "Text is truncated mid-sentence at the end ('But it's sound designer Gareth Fry who wi')."
           ]
         },
         {
@@ -16155,7 +16159,7 @@
       "showId": "jane-eyre-off-west-end-2026",
       "title": "Jane Eyre",
       "openingDate": "2026-09-08",
-      "message": "emmatheatrics/Emma Theatrics (emmatheatrics--emma-theatrics.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This review describes the critic attending a Jane Eyr — https://emmatheatrics.wixsite.com/emma-theatrics/post/jane-eyre-southwark-playhouse-elephant\nguardian/Holly O Mahony (guardian--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review appears to evaluate a different production — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\nguardian/Holly O'Mahony (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical adaptation of 'Jane Ey — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\nlondon-box-office/Stuart King (london-box-office--stacey-tyler.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical version of 'Jane Eyre' — https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review\nshinylife/Unknown (shinylife--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] While this is a valid review of Jane Eyre at Southwar — https://www.shinylife.co.uk/2026/09/09/jane-eyre/\ntheatreboard/Unknown (theatreboard--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate review of Jane Eyre at Southwark — https://theatreboard.com/thread/14928/jane-eyre-musical-southwark-playhouse?page=3",
+      "message": "emmatheatrics/Emma Theatrics (emmatheatrics--emma-theatrics.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This review describes the critic attending a Jane Eyr — https://emmatheatrics.wixsite.com/emma-theatrics/post/jane-eyre-southwark-playhouse-elephant\nguardian/Holly O Mahony (guardian--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review appears to evaluate a different production — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\nguardian/Holly O'Mahony (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical adaptation of 'Jane Ey — https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte\nshinylife/Unknown (shinylife--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] While this is a valid review of Jane Eyre at Southwar — https://www.shinylife.co.uk/2026/09/09/jane-eyre/\ntheatreboard/Unknown (theatreboard--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate review of Jane Eyre at Southwark — https://theatreboard.com/thread/14928/jane-eyre-musical-southwark-playhouse?page=3",
       "violations": [
         {
           "filename": "emmatheatrics--emma-theatrics.json",
@@ -16194,18 +16198,6 @@
           "cvIssues": [
             "Review is of a musical adaptation of 'Jane Eyre' but does not confirm it is the Off-West End production opening in 2026; it may refer to a different production or adaptation.",
             "The review mentions a 'long-awaited London premiere' which suggests it may not be the current Off-West End production."
-          ]
-        },
-        {
-          "filename": "london-box-office--stacey-tyler.json",
-          "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 1d of opening, likely correct production] The review discusses a musical version of 'Jane Eyre'",
-          "cvIssues": [
-            "Review describes a different production of 'Jane Eyre' that is a musical version which ran on Broadway in 2000, indicating it is not the Off-West End production being reviewed."
           ]
         },
         {

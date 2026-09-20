@@ -1,15 +1,15 @@
 {
   "system": "autofix",
   "status": "error",
-  "lastChecked": "2026-09-15T12:12:12.034Z",
+  "lastChecked": "2026-09-20T11:52:53.614Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Autofix: jobs actually succeeding",
-      "status": "error",
-      "message": "Auto-fix loop is DEAD: 0 of 3 job(s) succeeded in the last 7d. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN."
+      "status": "pass",
+      "message": "3/6 auto-fix job(s) succeeded (50%) in the last 7d"
     },
     {
       "name": "Autofix: daily canary (dispatch pipeline proof)",
@@ -19,7 +19,7 @@
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
       "status": "error",
-      "message": "Autofix throughput DEAD: 0 passes on each of the last 6 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — dispatches are launching but nothing is landing."
+      "message": "Autofix throughput DEAD: 0 passes on each of the last 5 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — dispatches are launching but nothing is landing."
     }
   ]
 }
