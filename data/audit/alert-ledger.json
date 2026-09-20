@@ -3094,26 +3094,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-20T20:34:06.016Z",
+      "lastSeen": "2026-09-20T21:49:42.158Z",
       "lastNotifiedAt": "2026-09-20T20:01:29.571Z",
       "lastSurfacedAt": "2026-09-20T20:01:29.571Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-20T20:34:06.020Z",
+      "lastSeen": "2026-09-20T21:49:42.162Z",
       "lastNotifiedAt": "2026-09-20T20:01:29.575Z",
       "lastSurfacedAt": "2026-09-20T20:01:29.575Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3754,6 +3754,18 @@
       "cardId": null,
       "linearIdentifier": "BRO-3895",
       "silentRefires": 2
+    },
+    "corpus-drift:aggregator-archive-integrity": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
+      "firstSeen": "2026-09-20T21:49:42.154Z",
+      "lastSeen": "2026-09-20T21:49:42.154Z",
+      "lastNotifiedAt": "2026-09-20T21:49:42.154Z",
+      "lastSurfacedAt": "2026-09-20T21:49:42.154Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
