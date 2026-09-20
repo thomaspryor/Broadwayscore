@@ -41,8 +41,10 @@ const path = require('path');
 const REPO = path.join(__dirname, '..');
 const AUDIT_DIR = path.join(REPO, 'data', 'audit');
 
-// Each ledger with its dispatch-event name. These are per-machine and
-// gitignored, so this runs where they actually live, not in CI.
+// Each ledger with its dispatch-event name. All three are per-machine — this
+// runs where they actually live, not in CI. digest-autofix-ledger.jsonl and
+// linear-drain-parked-ledger.jsonl are also tracked + merge=union;
+// backlog-drain-ledger.jsonl is gitignored.
 const LEDGERS = [
   { file: 'digest-autofix-ledger.jsonl', dispatchEvent: 'auto-dispatch' },
   { file: 'backlog-drain-ledger.jsonl', dispatchEvent: 'drain-dispatch' },
@@ -59,28 +61,46 @@ function keyOf(row) {
 }
 
 function backfillRows(rows, dispatchEvent) {
-  // Dispatches seen so far, newest-last per key, so "latest at or before" is
-  // just the last one recorded when we reach the outcome. Ledgers are
-  // append-only and chronological by construction.
+  // BRO-3868: digest-autofix-ledger.jsonl (one of this script's three
+  // targets) is now tracked + merge=union — a sync's union recovery can
+  // scramble file order (locally-saved rows re-appended after origin's,
+  // regardless of real timestamps), so "append-only and chronological by
+  // construction" no longer holds for array position. Walk rows sorted by
+  // their own `ts` instead of by array index; a row with no parseable `ts`
+  // sorts last so it can never wrongly stand in as "latest at or before" an
+  // earlier real outcome. Output preserves the ORIGINAL row order — only the
+  // pass used to determine each match is order-independent.
+  const indexed = rows.map((row, i) => ({
+    row, i,
+    t: row && typeof row === 'object' ? Date.parse(row.ts || '') : NaN,
+  }));
+  const sorted = [...indexed].sort((a, b) => {
+    const at = Number.isFinite(a.t) ? a.t : Infinity;
+    const bt = Number.isFinite(b.t) ? b.t : Infinity;
+    return at - bt;
+  });
+
   const latestDispatchTs = new Map();
+  const judgedTsByIndex = new Map();
   let stamped = 0;
   let alreadyStamped = 0;
   let unmatched = 0;
 
-  const out = rows.map((row) => {
-    if (!row || typeof row !== 'object') return row;
+  for (const { row, i } of sorted) {
+    if (!row || typeof row !== 'object') continue;
     if (row.event === dispatchEvent) {
       if (row.contentHash != null && row.ts) latestDispatchTs.set(keyOf(row), row.ts);
-      return row;
+      continue;
     }
-    if (!OUTCOME_EVENTS.has(row.event)) return row;
-    if (row.judgedDispatchTs) { alreadyStamped++; return row; }
+    if (!OUTCOME_EVENTS.has(row.event)) continue;
+    if (row.judgedDispatchTs) { alreadyStamped++; continue; }
     const ts = latestDispatchTs.get(keyOf(row));
-    if (!ts) { unmatched++; return row; }
+    if (!ts) { unmatched++; continue; }
     stamped++;
-    return { ...row, judgedDispatchTs: ts };
-  });
+    judgedTsByIndex.set(i, ts);
+  }
 
+  const out = rows.map((row, i) => (judgedTsByIndex.has(i) ? { ...row, judgedDispatchTs: judgedTsByIndex.get(i) } : row));
   return { out, stamped, alreadyStamped, unmatched };
 }
 
