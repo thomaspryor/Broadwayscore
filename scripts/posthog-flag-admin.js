@@ -99,6 +99,13 @@ async function main() {
   console.log(`Found flag: key='${flag.key}' id=${flag.id} active=${flag.active}`);
 
   const registryWarning = checkRegistryConflict(flag.key, desiredActive, REGISTERED_FLAGS);
+  // Printed unconditionally, whatever branch runs below — the pre-BRO-3869
+  // version always printed this immediately, and a fix version briefly
+  // regressed that by only printing it inside the dry-run/mutating branches,
+  // silently swallowing real registry drift on the no-op path (an operator
+  // running --active=false on a flag ALREADY false, but whose registry entry
+  // still expects true, got no warning at all — code-review finding, BRO-3869).
+  if (registryWarning) console.warn(`WARNING: ${registryWarning}`);
 
   if (flag.active === desiredActive) {
     // Already the desired state — no PATCH would fire even without this
@@ -111,7 +118,6 @@ async function main() {
   }
 
   if (dryRun) {
-    if (registryWarning) console.warn(`WARNING: ${registryWarning}`);
     console.log(`DRY RUN: would set active=${desiredActive} (no PATCH sent).`);
     return;
   }
@@ -128,7 +134,7 @@ async function main() {
       console.error('Re-run with --force to proceed anyway.');
       process.exit(3);
     }
-    console.warn(`WARNING (--force): ${registryWarning}`);
+    console.warn(`WARNING (--force): proceeding despite the conflict above.`);
   }
 
   const updated = await patchFlagActive(apiKey, flag.id, desiredActive);

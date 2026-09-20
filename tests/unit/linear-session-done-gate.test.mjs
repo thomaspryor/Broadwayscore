@@ -244,6 +244,18 @@ test('report without --since: no staleness check runs at all (staleness is null,
   });
 });
 
+test('report --since=<malformed>: degrades to a warning instead of aborting the mandatory outcome report (code-review finding, BRO-3869)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
+    // Must NOT throw/reject — a bad --since must never take down the report.
+    await cmdReport({ issue: 'BRO-9458', status: 'in-review', summary: 'did the work', since: 'not-a-real-date' });
+    assert.match(h.getErrors(), /--since=not-a-real-date could not be checked/);
+    // The outcome comment still posted and the marker still printed.
+    assert.match(h.getLogs(), /__LINEAR_ISSUE_ID__=issue-uuid-457b/);
+    assert.match(h.getLogs(), /"stateName":"In Review"/);
+  });
+});
+
 // ── claim reopening a terminal issue (BRO-3869) ────────────────────────────
 
 test('claim: reopening a Done issue warns with its concluding comments BEFORE the state-move mutation', async () => {
@@ -259,6 +271,32 @@ test('claim: reopening a Done issue warns with its concluding comments BEFORE th
     await cmdClaim({ issue: 'BRO-9458' });
     assert.match(h.getErrors(), /was "Done" \(a concluded state\) — you're reopening it/);
     assert.match(h.getErrors(), /shipping single-button on UX grounds/);
+  });
+});
+
+test('claim: reopening a Done issue shows the NEWEST comments even when the API returns them newest-first (BRO-3456 order, code-review finding)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Concluded — shipped single button.',
+        state: { id: 'state-done', name: 'Done', type: 'completed' },
+        // Deliberately NEWEST-first with 4 comments, matching what
+        // linear-client.getIssue() actually returns live for BRO-3456
+        // despite the query's `orderBy: createdAt`. A naive .slice(-3) on
+        // this raw order drops the NEWEST comment (the actual conclusion)
+        // and shows the 3 oldest instead.
+        comments: [
+          { id: 'c4', body: 'SHIPPED conclusion — do not revert this.', createdAt: '2026-09-16T16:57:00.000Z', user: { name: 'Bob' } },
+          { id: 'c3', body: 'later investigation note', createdAt: '2026-09-16T15:00:00.000Z', user: { name: 'Bob' } },
+          { id: 'c2', body: 'middle investigation note', createdAt: '2026-09-16T10:00:00.000Z', user: { name: 'Bob' } },
+          { id: 'c1', body: 'earliest, stale investigation note', createdAt: '2026-09-15T21:24:00.000Z', user: { name: 'Bob' } },
+        ],
+      },
+      updateShouldBeCalled: true,
+    });
+    await cmdClaim({ issue: 'BRO-9458' });
+    assert.match(h.getErrors(), /SHIPPED conclusion — do not revert this/);
+    assert.doesNotMatch(h.getErrors(), /earliest, stale investigation note/);
   });
 });
 
