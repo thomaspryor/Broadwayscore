@@ -144,13 +144,13 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-20T19:38:05.164Z",
+      "lastSeen": "2026-09-20T19:56:53.727Z",
       "lastNotifiedAt": "2026-09-20T18:45:10.856Z",
       "lastSurfacedAt": "2026-09-20T18:45:10.856Z",
       "notifyCount": 88,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3667,15 +3667,15 @@
     "test-yml:red:Lint Workflows:1ff49e04": {
       "status": "open",
       "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency)",
-      "firstSeen": "2026-09-20T19:22:48.919Z",
-      "lastSeen": "2026-09-20T19:38:05.153Z",
-      "lastNotifiedAt": "2026-09-20T19:22:48.919Z",
+      "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
+      "firstSeen": "2026-09-20T19:22:49.867Z",
+      "lastSeen": "2026-09-20T19:56:50.768Z",
+      "lastNotifiedAt": "2026-09-20T19:22:49.867Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3882",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-3879",
+      "silentRefires": 2
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "open",
@@ -3703,18 +3703,41 @@
       "linearIdentifier": "BRO-3883",
       "silentRefires": 1
     },
-    "test-yml:red:Lint Workflows:1ff49e04": {
+    "test-yml:red:E2E Tests:9455d1f4": {
       "status": "open",
       "disposition": "auto",
-      "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
-      "firstSeen": "2026-09-20T19:22:49.867Z",
-      "lastSeen": "2026-09-20T19:38:05.160Z",
-      "lastNotifiedAt": "2026-09-20T19:22:49.867Z",
+      "title": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
+      "firstSeen": "2026-09-20T19:56:44.546Z",
+      "lastSeen": "2026-09-20T19:56:44.546Z",
+      "lastNotifiedAt": "2026-09-20T19:56:44.546Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3879",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-3893"
+    },
+    "test-yml:red:Unit Tests:3dc02b6a": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
+      "firstSeen": "2026-09-20T19:56:47.606Z",
+      "lastSeen": "2026-09-20T19:56:47.606Z",
+      "lastNotifiedAt": "2026-09-20T19:56:47.606Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3894"
+    },
+    "test-yml:red:Data Validation:9b5157f4": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Data Validation / Run self-contradictory-clear drain acceptance test (needs review-texts) — \"no zero-score-impact self-contradictory-clear remains undrained (BRO-185)\"",
+      "firstSeen": "2026-09-20T19:56:50.770Z",
+      "lastSeen": "2026-09-20T19:56:50.770Z",
+      "lastNotifiedAt": "2026-09-20T19:56:50.770Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3895"
     }
   }
 }
