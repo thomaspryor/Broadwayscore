@@ -35,7 +35,7 @@ const {
 } = require('./review-normalization');
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { validateUrlDomain } = require('./url-discovery');
-const { safeWriteReview } = require('./review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
@@ -1157,6 +1157,26 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // Default field merge: set scraper-specific fields if existing value is falsy.
   // Exception: skip isRoundupArticle if it was manually cleared — !false would otherwise
   // re-flag the file even though a human explicitly cleared it.
+  //
+  // BRO-3895: this loop is the ONLY place fields.wrongProduction (stamped by
+  // classifyMarketRouting's accept-with-flag branch, Guard J, and Guard K
+  // above — none of which call invalidateWrongProductionAutoClear themselves,
+  // unlike every other wrongProduction writer per that function's docstring)
+  // actually lands on `existing`. Without an invalidate call, a re-flag onto a
+  // file still carrying a stale wrongProductionAutoCleared breadcrumb from an
+  // earlier clear produces wrongProduction:true sitting beside its own
+  // retraction breadcrumb — the exact self-contradictory-clear shape
+  // audit-self-contradictory-clear-drained.test.mjs gates on (caught live on
+  // much-ado-about-nothing-globe-off-west-end-2026/broadwayworld--aliya-al-
+  // hassan.json). Tracked via a flag and invalidated ONCE after the loop,
+  // not inline: `fields` is `input.fields` (a caller-owned object, mutated
+  // in place by the guards above) — inline invalidation deletes
+  // existing.wrongProductionAutoCleared mid-loop, and a LATER key in that
+  // same object (e.g. a replay/import payload that also echoes back
+  // wrongProductionAutoCleared) would immediately re-add it via this same
+  // `!existing[key]` branch before the loop finishes (ship-check/Codex
+  // adversarial finding).
+  let wrongProductionNewlyFlagged = false;
   for (const [key, val] of Object.entries(fields)) {
     if (key === 'isRoundupArticle' && shouldSkipRoundupAudit(existing)) continue;
     if (HUMAN_PROTECTED.has(key)) {
@@ -1172,7 +1192,11 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     if (val != null && !existing[key]) {
       existing[key] = val;
       changed = true;
+      if (key === 'wrongProduction' && val === true) wrongProductionNewlyFlagged = true;
     }
+  }
+  if (wrongProductionNewlyFlagged) {
+    invalidateWrongProductionAutoClear(existing);
   }
 
   // wrongShow-unknown URL lock (task #1150, 2026-08-09; DoaS Apr 9-10 #13). When
