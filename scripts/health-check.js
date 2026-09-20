@@ -3705,6 +3705,24 @@ function obClosingBacklogResults(report, now = new Date()) {
   }];
 }
 
+// Reads data/audit/ob-closing-candidates.json off disk and surfaces it via
+// obClosingBacklogResults. Pure local-file read — unlike feedbackBacklogResults
+// (needs a live GitHub API call via getOpenFeedbackReviewIssues), this has no
+// CI-only dependency, so it belongs in computeCoreHealthResults rather than
+// gated behind `if (isCI)` in main(): that gate meant a card targeting this
+// row could never confirm its own fix same-day, because
+// scripts/lib/health-row-probe.js's live re-check only re-runs
+// computeCoreHealthResults (task #799 — moved here so the live probe can see
+// it, same file main() and the probe already share for exactly this reason).
+function checkObClosingBacklog() {
+  try {
+    const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
+    return obClosingBacklogResults(obReport);
+  } catch {
+    return []; // report absent (detector not yet run) — nothing to surface
+  }
+}
+
 // Daily-digest surfacing for reverse-discovery missing-show candidates
 // (data/audit/reverse-discovery-candidates.json, written daily by
 // audit-reverse-discovery.yml). This is the detector's ONLY human-facing
@@ -4867,6 +4885,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkPipelines(),
     ...checkBatchState(),
     ...checkQuality(),
+    ...checkObClosingBacklog(),
     ...checkOutletHealth(),
     ...checkCommercialModelDrift(),
     ...checkCookieExpiration(),
@@ -4926,11 +4945,6 @@ async function main() {
       console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
     }
     allResults.push(...feedbackBacklogResults(feedbackSummary));
-
-    try {
-      const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
-      allResults.push(...obClosingBacklogResults(obReport));
-    } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     // Never-run workflow coverage (task #737): computed HERE, not read from a
     // file lint-workflows wrote — that CI job checks out code but has no

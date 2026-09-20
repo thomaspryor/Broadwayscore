@@ -7,7 +7,7 @@
 // Per CLAUDE.md §15 these import the real functions; no logic is copied here.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildBadgeUrl, badgeImg, buildRankBadgeUrl, rankBadgeImg, buildAwardBadgeUrl, awardBadgeImg } from './badge-render.mjs';
+import { buildBadgeUrl, badgeImg, buildRankBadgeUrl, rankBadgeImg, buildAwardBadgeUrl, awardBadgeImg, BADGE_VERSION } from './badge-render.mjs';
 
 const goldTier = { id: 'gold', label: 'Critical Gold', bg: 'linear-gradient(...)', text: '#1a1a1a', border: '#C8960E', glow: '0 0 24px rgba(218,165,32,0.55)' };
 const recTier = { id: 'rec', label: 'Recommended', bg: '#22c55e', text: '#fff', glow: '0 2px 8px rgba(34,197,94,0.3)' };
@@ -104,4 +104,22 @@ test('awardBadgeImg renders a circular <img> and falls back to an em dash for a 
   assert.match(html, /<img /);
   assert.match(html, /border-radius:50%/);
   assert.match(html, /alt="Award score —"/);
+});
+
+// The route serves `cache-control: public, immutable, max-age=31536000` and
+// the same parameter combos recur every week, so without a version param a
+// render change (font, weight, colour) is invisible to the CDN and to Gmail's
+// image proxy for up to a year. The Inter typeface fix shipped behind exactly
+// this and would have reached no reader (QA review, 2026-09-20).
+test('every badge URL carries the cache-busting version param', () => {
+  const urls = [
+    buildBadgeUrl({ tier: recTier, score: 84, size: 64, fontSize: 30, radius: 12 }),
+    buildBadgeUrl({ tier: null, score: null, size: 64, fontSize: 14, radius: 12 }),
+    buildRankBadgeUrl({ tierId: 'top10', position: 3, size: 36, fontSize: 14, radius: 8 }),
+    buildAwardBadgeUrl({ tierId: 'sweeper', score: 88, size: 40, fontSize: 14 }),
+  ];
+  for (const u of urls) {
+    assert.equal(new URL(u).searchParams.get('v'), BADGE_VERSION, `missing v= in ${u}`);
+  }
+  assert.match(BADGE_VERSION, /^\d+$/);
 });
