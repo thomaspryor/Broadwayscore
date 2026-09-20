@@ -1,47 +1,41 @@
 {
-  "updatedAt": "2026-09-20T19:34:10.830Z",
-  "processed": 45,
-  "failed": 168,
-  "successRate": "21.1%",
+  "updatedAt": "2026-09-20T21:08:15.660Z",
+  "processed": 7,
+  "failed": 23,
+  "successRate": "23.3%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 3,
-    "directCookies": 1,
-    "scrapingbee": 11,
-    "brightdata": 4,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 4,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-09-20T15:37:42.347Z",
+      "t": "2026-09-20T21:01:43.542Z",
       "event": "bb-session",
-      "session": "68a6ba7d",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+      "session": "734c1dc3",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
     },
     {
-      "t": "2026-09-20T15:58:23.011Z",
-      "event": "bb-session",
-      "session": "e4aef051",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-20T15:58:23.459Z",
+      "t": "2026-09-20T21:01:44.088Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-09-20T16:02:39.374Z",
+      "t": "2026-09-20T21:03:14.767Z",
       "event": "bb-session",
-      "session": "61c74e7e",
-      "url": "https://www.thetimes.com/culture/books/article/beatrix-potter-author-archives-ta"
+      "session": "cbf53a72",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
     },
     {
-      "t": "2026-09-20T16:02:39.834Z",
+      "t": "2026-09-20T21:03:15.275Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "wsj.com"
     }
   ]
 }
