@@ -268,6 +268,10 @@ jobs:
           git add data/audit/health-check-history.json 2>/dev/null || true
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
           git add data/audit/affiliate-health.json 2>/dev/null || true
+          # Nightly CI green-rate reading (scripts/ci-green-rate.js --record,
+          # appended by health-check.js's "Main: green rate" row) — the
+          # trend/"day D of 14" line in the digest reads this history back.
+          git add data/audit/ci-green-rate.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No digest/coverage snapshot changes"
           else
