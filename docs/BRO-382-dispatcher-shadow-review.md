@@ -106,3 +106,4 @@ Review. It is called out here so the number is not discovered by surprise.
 
     node -e "…dispatch-guard-queue-audit-snapshot.json…"   # the tally above
     launchctl list | grep -cE 'action-dispatcher|backlog-drain'   # → 0
+// land.yml live case (iii-a), 2026-09-20: pushed under the new-failures-vs-base gate (BRO-3873).
