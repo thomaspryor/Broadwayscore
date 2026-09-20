@@ -37,6 +37,10 @@ const ALLOWLIST = new Set([
   'scripts/generate-remediation-plan.js',
   'scripts/lib/brand-mention-email.js',
   'scripts/autonomous-email.js',
+  // Weekly traffic-source report to the owner (BRO-3419). Owner sign-off
+  // 2026-09-20 on being handed the GitHub run URL: "Why would it be useful to
+  // be at a GitHub URL? I never go there." Transactional to OWNER_EMAIL only.
+  'scripts/lib/traffic-report-email.js',
   // Grandfathered — not yet migrated (Sprint 2/3 targets). Remove each line as
   // it's migrated onto owner-alert-router.js.
   'scripts/sync-followers.js',
