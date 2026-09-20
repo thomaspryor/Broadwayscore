@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
   "openingDate": "2026-09-16",
-  "detectedAt": "2026-09-19T22:34:26.927Z",
+  "detectedAt": "2026-09-20T00:07:05.362Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "stub",
       "eligibilityReason": null
+    },
+    {
+      "file": "wave--mickeyjotheatre.json",
+      "outletId": "wave",
+      "criticName": "MickeyJoTheatre",
+      "url": "https://pod.wave.co/podcast/mickeyjotheatre/thelma-louise-young-vic-theatre-london-review",
+      "fullTextLen": 9219,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

@@ -1,18 +1,17 @@
 {
-  "generatedAt": "2026-09-19T09:56:18.185Z",
+  "generatedAt": "2026-09-19T23:35:28.181Z",
   "filter": {
-    "allProvisional": true,
-    "limit": null
+    "show": "spandex-off-broadway-2026"
   },
-  "timeBudgetMin": 25,
+  "timeBudgetMin": null,
   "counts": {
-    "total": 68,
-    "match": 32,
-    "mismatch": 1,
-    "unresolved": 35,
+    "total": 1,
+    "match": 0,
+    "mismatch": 0,
+    "unresolved": 1,
     "infraUnavailable": 0,
     "deferred": 0,
-    "carriedForward": 0
+    "carriedForward": 67
   },
   "results": [
     {
@@ -25,7 +24,46 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "garrick|2026-06-22||false|Why I Stuck a Flare Up My Arse for England||west-end|play",
-      "checkedAt": "2026-09-19T09:56:18.184Z",
+      "checkedAt": "2026-09-19T23:34:58.013Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "venue": "SoHo Playhouse",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "SoHo Playhouse|2026-09-17|2026-09-20|false|Gimme a Sign!||off-broadway|play",
+      "checkedAt": "2026-09-19T23:34:10.047Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "conflicted-off-broadway-2026",
+      "title": "Conflicted",
+      "venue": "SoHo Playhouse",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "SoHo Playhouse|2026-09-17|2026-10-18|false|Conflicted||off-broadway|play",
+      "checkedAt": "2026-09-19T23:34:03.102Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "marilyn-exposed-off-broadway-2026",
+      "title": "Marilyn Exposed",
+      "venue": "Actors Temple Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Actors Temple Theatre|2026-06-08||false|Marilyn Exposed||off-broadway|musical",
+      "checkedAt": "2026-09-19T23:33:53.810Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1486,19 +1524,6 @@
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
-      "id": "marilyn-exposed-off-broadway-2026",
-      "title": "Marilyn Exposed",
-      "venue": "Actors Temple Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Actors Temple Theatre|2026-06-08||false|Marilyn Exposed||off-broadway|musical",
-      "checkedAt": "2026-09-19T09:56:18.184Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
       "id": "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
       "title": "Elf Lyons: The Woman on the Edge",
       "venue": "SoHo Playhouse",
@@ -1508,19 +1533,6 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "SoHo Playhouse|2026-09-24|2026-10-18|false|Elf Lyons: The Woman on the Edge||off-broadway|play",
-      "checkedAt": "2026-09-19T09:56:18.184Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "conflicted-off-broadway-2026",
-      "title": "Conflicted",
-      "venue": "SoHo Playhouse",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "SoHo Playhouse|2026-09-17|2026-10-18|false|Conflicted||off-broadway|play",
       "checkedAt": "2026-09-19T09:56:18.184Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
@@ -1586,19 +1598,6 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "SoHo Playhouse|2026-12-19|2027-01-02|false|Fly, You Fools!||off-broadway|play",
-      "checkedAt": "2026-09-19T09:56:18.184Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "gimme-a-sign-off-broadway-2026",
-      "title": "Gimme a Sign!",
-      "venue": "SoHo Playhouse",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "SoHo Playhouse|2026-09-17|2026-09-20|false|Gimme a Sign!||off-broadway|play",
       "checkedAt": "2026-09-19T09:56:18.184Z",
       "lastDefinitiveResult": "no-playbill-url"
     },

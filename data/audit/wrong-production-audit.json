@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-19T21:27:30.056Z",
+  "timestamp": "2026-09-20T00:07:15.935Z",
   "stats": {
     "totalReviews": 43768,
-    "alreadyFlagged": 18071,
-    "dateGuardCatches": 246,
+    "alreadyFlagged": 18068,
+    "dateGuardCatches": 245,
     "directorMismatch": 1048,
-    "tvFilmSignals": 1291,
-    "londonSignals": 1117,
+    "tvFilmSignals": 1294,
+    "londonSignals": 1122,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3836
+    "noPublishDate": 3834
   },
   "findings": [
     {
@@ -1083,7 +1083,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -6497,7 +6497,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -8556,8 +8556,22 @@
     },
     {
       "showId": "equus-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2026-05-21",
+      "url": "https://www.britishtheatreguide.info/reviews/equus-menier-chocolat-25607",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -8565,6 +8579,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john dexter\" from equus-1974"
+        }
+      ]
+    },
+    {
+      "showId": "equus-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "score": null,
+      "publishDate": "2026-05-10",
+      "url": "https://monstagigz.com/2026/05/10/theatre-review-equus-starring-toby-stephens-amanda-abbington-noah-valentine-at-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -16104,7 +16132,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -16530,7 +16558,7 @@
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 89,
+      "score": 88,
       "publishDate": "2026-09-10",
       "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
       "findings": [
@@ -19627,7 +19655,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -20193,17 +20221,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
-        }
-      ]
-    },
-    {
-      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
-      "file": "nytg--unknown.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 512d before show (2025-04-22 vs 2026-09-16)"
         }
       ]
     },
@@ -35156,7 +35173,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -36556,7 +36573,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -36654,7 +36671,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -37936,7 +37953,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -37950,7 +37967,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-05-20",
       "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
       "findings": [
@@ -39253,7 +39270,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -41187,6 +41204,20 @@
       ]
     },
     {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "viewfromthegods--simon-jenner.json",
+      "score": 91,
+      "publishDate": "2026-09-12",
+      "url": "https://viewfromthegods.co.uk/2026/09/16/golden-boy-almeida-islington/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "good-people-2011",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 81,
@@ -41585,7 +41616,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -42037,6 +42068,33 @@
       "score": 71,
       "publishDate": "April 30, 2018",
       "url": "https://slleiter.blogspot.com/2018/04/215-2017-2018-review-harry-potter-and.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 90,
+      "publishDate": "2022-01-25",
+      "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "london-theatre--theo-bosanquet.json",
+      "publishDate": "2022-01-25",
+      "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -45201,7 +45259,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2026-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/man-to-man-royal-court-theatre-review",
       "findings": [
@@ -45256,7 +45314,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 64,
+      "score": 63,
       "publishDate": "2026-09-15",
       "url": "https://playsinternational.org.uk/man-to-man-royal-court-theatre-downstairs/",
       "findings": [
@@ -45491,7 +45549,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 82,
+      "score": 78,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -45505,7 +45563,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -45519,7 +45577,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -45966,7 +46024,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 73,
+      "score": 74,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
@@ -46909,7 +46967,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
-      "score": 95,
+      "score": 96,
       "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
@@ -46922,8 +46980,22 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "telegraph--unknown.json",
+      "score": 91,
+      "publishDate": "January 14th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--unknown.json",
-      "score": 98,
+      "score": 97,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
       "findings": [
@@ -49839,6 +49911,19 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "variety--ellise-shafer.json",
+      "publishDate": "2023-12-15",
+      "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "variety--frank-rizzo.json",
       "publishDate": "2023-12-15",
       "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
       "findings": [
@@ -54730,6 +54815,19 @@
       "score": 79,
       "publishDate": "2026-09-04",
       "url": "https://theatreboard.com/thread/15206/thelma-louise-young-vic?page=6",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "wave--mickeyjotheatre.json",
+      "publishDate": "2026-09-18",
+      "url": "https://pod.wave.co/podcast/mickeyjotheatre/thelma-louise-young-vic-theatre-london-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
