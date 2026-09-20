@@ -41,6 +41,9 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   failingStepSignatures, firstFailingTestNameInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
@@ -97,11 +100,37 @@ function fetchCurrentRunJobs(runId) {
 function fetchJobLogText(jobId) {
   const { GITHUB_REPOSITORY } = process.env;
   if (!GITHUB_REPOSITORY || !jobId) return '';
+  // Redirect gh's stdout to a REAL FILE, not a captured pipe: raw job logs
+  // routinely carry ANSI color codes (this repo's own ::group:: output does),
+  // and `gh api` refuses to print them to a pipe with "the response contains
+  // terminal escape sequences" — live-verified 2026-09-20 on the first real
+  // production run of this script (run 35530971994): every signature
+  // silently fell back to job+step-only because of exactly this. `gh api`
+  // (unlike `gh run view --log-failed`) has no `--allow-escape-sequences`
+  // flag to opt back in (confirmed against `gh api --help`, v2.88.1) — the
+  // guard is keyed on the underlying file descriptor TYPE, not just
+  // isatty(): writing to a real file (this function's approach, and how an
+  // earlier interactive manual test with `> file.txt` happened to work by
+  // accident) passes; execFileSync's default 'pipe' stdio does not. Caught
+  // only by testing the ACTUAL merged code in CI, not by that earlier manual
+  // test — see main-red-streak.test.mjs's own note on this if it's ever
+  // "fixed" back to a pipe capture.
+  const tmpFile = path.join(os.tmpdir(), `gh-job-log-${jobId}-${process.pid}.txt`);
+  let fd;
   try {
-    return gh(['api', `repos/${GITHUB_REPOSITORY}/actions/jobs/${jobId}/logs`]);
+    fd = fs.openSync(tmpFile, 'w');
+    execFileSync('gh', ['api', `repos/${GITHUB_REPOSITORY}/actions/jobs/${jobId}/logs`], {
+      stdio: ['ignore', fd, 'pipe'],
+      maxBuffer: 32 * 1024 * 1024,
+      timeout: 120000,
+    });
+    return fs.readFileSync(tmpFile, 'utf8');
   } catch (err) {
     console.error(`[route-main-streak-signatures] job log fetch failed for job ${jobId} (${err.message}); this signature falls back to job+step only.`);
     return '';
+  } finally {
+    if (fd !== undefined) { try { fs.closeSync(fd); } catch { /* already closed */ } }
+    try { fs.unlinkSync(tmpFile); } catch { /* never created, or already gone */ }
   }
 }
 
