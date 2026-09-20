@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-20T21:41:20.561Z",
+  "timestamp": "2026-09-20T22:00:10.251Z",
   "stats": {
     "totalReviews": 43810,
     "alreadyFlagged": 18097,
     "dateGuardCatches": 246,
     "directorMismatch": 1048,
     "tvFilmSignals": 1296,
-    "londonSignals": 1133,
+    "londonSignals": 1134,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3830
+    "noPublishDate": 3829
   },
   "findings": [
     {
@@ -55014,6 +55014,19 @@
       "score": 78,
       "publishDate": "2026-09-18",
       "url": "https://pod.wave.co/podcast/mickeyjotheatre/thelma-louise-young-vic-theatre-london-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "west-end-best-friend--cara-brazier.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.westendbestfriend.co.uk/news/review-thelma-and-louise-young-vic-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
