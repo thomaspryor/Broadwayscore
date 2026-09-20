@@ -69,3 +69,4 @@ function resolveLandAlert(branch, { resolve = null } = {}) {
 
 module.exports = { CONDITION_PREFIX, DEFAULT_COOLDOWN_HOURS, conditionKeyFor, buildLandAlert, sendLandAlert, resolveLandAlert };
 // land.yml live case (i): docs-only line, landed through land.yml itself.
+// land.yml live case (i), 2026-09-20: pushed under the new-failures-vs-base gate (BRO-3873).
