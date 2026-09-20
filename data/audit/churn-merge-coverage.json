@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-20T20:00:14.216Z",
+    "generatedAt": "2026-09-20T20:32:49.433Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -45,16 +45,16 @@
       "churn": 145
     },
     {
+      "path": "data/audit/alert-ledger.json",
+      "churn": 116
+    },
+    {
       "path": "public/data/stats-reviews.json",
       "churn": 114
     },
     {
       "path": "public/data/shows/man-to-man-west-end-2026.json",
       "churn": 111
-    },
-    {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 105
     },
     {
       "path": "public/data/shows/bloodsport-after-helen-of-troy-off-west-end-2026.json",
@@ -129,11 +129,11 @@
       "churn": 80
     },
     {
-      "path": "public/data/shows/romeo-and-juliet-west-end-2026.json",
-      "churn": 77
+      "path": "public/data/shows/all-my-sons-west-end-2025.json",
+      "churn": 76
     },
     {
-      "path": "public/data/shows/all-my-sons-west-end-2025.json",
+      "path": "public/data/shows/romeo-and-juliet-west-end-2026.json",
       "churn": 76
     },
     {
@@ -142,15 +142,15 @@
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 72
+      "churn": 71
     },
     {
       "path": "public/data/shows/oliver-west-end-2024.json",
-      "churn": 65
+      "churn": 64
     },
     {
       "path": "public/data/shows/thelma-and-louise-a-new-musical-off-west-end-2026.json",
-      "churn": 56
+      "churn": 57
     },
     {
       "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
@@ -158,11 +158,11 @@
     },
     {
       "path": "public/data/shows/million-dollar-quartet-off-west-end-2026.json",
-      "churn": 48
+      "churn": 47
     },
     {
       "path": "public/data/shows/operation-mincemeat-west-end-2024.json",
-      "churn": 47
+      "churn": 46
     },
     {
       "path": "public/data/shows/pre-existing-condition-off-broadway-2026.json",
@@ -170,15 +170,15 @@
     },
     {
       "path": "public/data/shows/hit-machine-off-west-end-2026.json",
-      "churn": 41
+      "churn": 40
+    },
+    {
+      "path": "data/audit/alert-digest-queue.json",
+      "churn": 39
     },
     {
       "path": "public/data/shows/golden-boy-off-west-end-2026.json",
       "churn": 39
-    },
-    {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 38
     },
     {
       "path": "public/data/shows/six-the-musical-west-end-2021.json",
@@ -187,14 +187,14 @@
   ],
   "covered": [
     {
-      "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 284,
-      "mergeAttr": "union"
-    },
-    {
       "path": "data/audit/deploy-watermark.json",
       "churn": 282,
       "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 281,
+      "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
@@ -203,17 +203,17 @@
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 263,
+      "churn": 262,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 263,
+      "churn": 262,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 263,
+      "churn": 262,
       "mergeAttr": "ours"
     },
     {
@@ -253,12 +253,12 @@
     },
     {
       "path": "data/audit/orphan-unscored-thelma-and-louise-a-new-musical-off-west-end-2026.json",
-      "churn": 140,
+      "churn": 141,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-hope-theory-off-broadway-2026.json",
-      "churn": 120,
+      "churn": 121,
       "mergeAttr": "ours"
     },
     {
@@ -298,7 +298,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-the-cherry-orchard-park-avenue-armory-off-broadway-2026.json",
-      "churn": 53,
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
