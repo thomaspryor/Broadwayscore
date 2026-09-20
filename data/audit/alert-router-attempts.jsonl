@@ -118,3 +118,7 @@
 {"ts":"2026-09-20T19:17:45.979Z","conditionKey":"test-yml:red:Data Validation:9e7c89b2","title":"main test.yml red: Data Validation / Run self-contradictory-clear drain acceptance test (needs review-texts)","ok":true,"error":null}
 {"ts":"2026-09-20T19:17:51.037Z","conditionKey":"test-yml:red:Unit Tests:64c11b72","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency)","ok":true,"error":null}
 {"ts":"2026-09-20T19:17:54.978Z","conditionKey":"test-yml:red:E2E Tests:c2df710e","title":"main test.yml red: E2E Tests / Run unit tests","ok":true,"error":null}
+{"ts":"2026-09-20T19:22:00.470Z","conditionKey":"review-gap:blast-radius-refused","title":"Review-gap audit refused to write — 72.7% of shows changed coverage state","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
+{"ts":"2026-09-20T19:22:09.984Z","conditionKey":"t1-coverage:scoreboard","title":"T1 Coverage Scoreboard","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
+{"ts":"2026-09-20T19:22:12.227Z","conditionKey":"deployed-coverage:stale","title":"Deployed coverage — the site is serving stale coverage","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
+{"ts":"2026-09-20T19:22:12.422Z","conditionKey":"t1-coverage:scoreboard","title":"T1 Coverage Scoreboard","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
