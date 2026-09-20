@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { badgeImg, rankBadgeImg, awardBadgeImg } from './badge-render.mjs';
+import { hasFreshRunReview } from './fresh-run-reviews.mjs';
 
 // Path setup: `repo` resolves to the repo root via __dirname so the generator
 // runs identically on macOS local dev, Linux CI, and from a git worktree.
@@ -512,6 +513,18 @@ function loadOutletTierMap() {
   return m;
 }
 
+// BRO-3822 — a show whose ONLY major-outlet coverage predates the run being
+// announced must not be presented as newly opened. Only bites on shows that
+// declare `priorRuns` (which is what lets a previous engagement's reviews
+// count toward the score in the first place); everything else passes
+// untouched. See fresh-run-reviews.mjs for the incident and the owner
+// decision behind the T1/T2 rule.
+function hasFreshRunCoverage(show) {
+  const tiers = loadOutletTierMap();
+  const tierOf = (outletId) => tiers.get(outletId) || DEFAULT_TIER;
+  return hasFreshRunReview(show, reviews.filter((r) => r.showId === show.id), tierOf);
+}
+
 // Tier-weighted mean — matches src/lib/scoring.ts calculateCriticScore().
 // CLAUDE.md rule: never use arithmetic means for score aggregation. Every
 // call site that compares review subsets (biggest mover before/after,
@@ -796,7 +809,7 @@ function offBroadwayOpenings() {
       && notFeatured(s.id) && (inWeek(s.openingDate) || !lastFeaturedIds.has(s.id))
       && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
-    .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
+    .filter(x => x.agg && x.agg.count >= minReviews('off-broadway') && hasFreshRunCoverage(x.s))
     .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   // Editorial lead override: NEWSLETTER_OB_LEAD=<showId> floats one opening to
   // the top of this section regardless of score (e.g. a marquee revival the
@@ -2257,7 +2270,7 @@ function weOpeningStories() {
   const ranked = shows
     .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
-    .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || quietBroadwayWeek || x.agg.avg >= 75))
+    .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && hasFreshRunCoverage(x.s) && (IS_WE || quietBroadwayWeek || x.agg.avg >= 75))
     // Genuine in-week openings always outrank a grace-window catch-up show
     // (openingDate outside this week — see inLondonOpeningWindow()), however
     // many reviews the catch-up show has: a catch-up show is there to be
@@ -2276,7 +2289,7 @@ function weOpeningStories() {
 function londonSection() {
   const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
-  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
+  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && hasFreshRunCoverage(x.s));
   if (!withScore.length) return null;
   // Sort: genuine in-week openings before grace-window catch-up shows (see
   // weOpeningStories()), then West End before Off West End (see weTierRank),
@@ -2373,7 +2386,7 @@ function weBroadwaySection() {
   if (!list.length) return { html: null, list: [] };
   const withScore = list
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
-    .filter(x => x.agg && x.agg.count >= minReviews('broadway'));
+    .filter(x => x.agg && x.agg.count >= minReviews('broadway') && hasFreshRunCoverage(x.s));
   if (!withScore.length) return { html: null, list: [] };
   // Sort: genuine in-week openings before grace-window catch-up shows, then
   // Gold first, then by score desc, ties broken by review count — same
