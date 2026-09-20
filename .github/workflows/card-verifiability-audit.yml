@@ -62,6 +62,16 @@ jobs:
         with:
           node-version: 20
 
+      # Required: notion-brain.js requires @notionhq/client, not in
+      # node_modules without this. Same exact class caught data-health-
+      # check.yml on 2026-07-23 — "every single auto-dispatch on this cron
+      # failed with 'Cannot find module '@notionhq/client'' until this step
+      # was added" (data-health-check.yml's own comment on its identical
+      # step). /ship-check's Codex review caught this workflow repeating that
+      # incident before it ever ran for real.
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
       # Three steps in one job, same checkout: audit writes
       # data/audit/card-verifiability.json, enrich reads it back
       # (--from-report) and drafts/writes acceptance criteria for every
