@@ -50,6 +50,7 @@ const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
 const { checkDatePlausibility } = require('./lib/browser-recovery-helpers');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const CONFIG = {
   reviewTextsDir: path.join(__dirname, '..', 'data', 'review-texts'),
@@ -87,14 +88,11 @@ async function extractArticle(page, url) {
 }
 
 function loadCandidates() {
-  const dirs = fs.readdirSync(CONFIG.reviewTextsDir);
+  const dirs = listShowDirs(CONFIG.reviewTextsDir);
   const candidates = [];
   for (const dir of dirs) {
     if (showsAllowlist && !showsAllowlist.has(dir)) continue;
     const showPath = path.join(CONFIG.reviewTextsDir, dir);
-    let stat;
-    try { stat = fs.statSync(showPath); } catch { continue; }
-    if (!stat.isDirectory()) continue;
 
     let files;
     try { files = fs.readdirSync(showPath); } catch { continue; }

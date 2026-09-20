@@ -388,7 +388,7 @@ test('parse: a merge that ALSO pushes is still gated (the deferral hole)', () =>
 
 test('ACCEPTANCE 1: merging >30 unreviewed gated lines into main is BLOCKED', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-big', 60);
   const r = queryMergeGate({ repoRoot: repo, ledgerRoot: repo, command: 'git merge worktree-big', currentBranch: 'main' });
   assert.equal(r.allowed, false);
@@ -399,7 +399,7 @@ test('ACCEPTANCE 1: merging >30 unreviewed gated lines into main is BLOCKED', (t
 
 test('ACCEPTANCE 2: the same merge with a fresh pass verdict is ALLOWED', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-big', 60);
   // A verdict recorded on the BRANCH (what /ship-check does before merging).
   const rec = recordVerdict({ repoRoot: repo, ledgerRoot: repo, reviewer: 'ship-check', result: 'pass', ref: 'worktree-big' });
@@ -410,7 +410,7 @@ test('ACCEPTANCE 2: the same merge with a fresh pass verdict is ALLOWED', (t) =>
 
 test('a FAIL verdict does not unlock the merge', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-big', 60);
   recordVerdict({ repoRoot: repo, ledgerRoot: repo, reviewer: 'ship-check', result: 'fail', ref: 'worktree-big' });
   const r = queryMergeGate({ repoRoot: repo, ledgerRoot: repo, command: 'git merge worktree-big', currentBranch: 'main' });
@@ -419,7 +419,7 @@ test('a FAIL verdict does not unlock the merge', (t) => {
 
 test('an under-budget merge needs no verdict', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-small', GATE_LINE_BUDGET - 5);
   const r = queryMergeGate({ repoRoot: repo, ledgerRoot: repo, command: 'git merge worktree-small', currentBranch: 'main' });
   assert.equal(r.allowed, true);
@@ -427,7 +427,7 @@ test('an under-budget merge needs no verdict', (t) => {
 
 test('ACCEPTANCE 5: an unreviewed merge into a NON-main branch is untouched', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-big', 60);
   const r = queryMergeGate({ repoRoot: repo, ledgerRoot: repo, command: 'git merge worktree-big', currentBranch: 'staging' });
   assert.equal(r.allowed, true);
@@ -436,7 +436,7 @@ test('ACCEPTANCE 5: an unreviewed merge into a NON-main branch is untouched', (t
 
 test('the wrapper ingress reaches the same block as a bare git merge', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-big', 60);
   const r = queryMergeGate({
     repoRoot: repo, ledgerRoot: repo,
@@ -449,7 +449,7 @@ test('the wrapper ingress reaches the same block as a bare git merge', (t) => {
 
 test('the strictest source wins on an octopus merge', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-small', GATE_LINE_BUDGET - 5, 'scripts/small.js');
   makeBranch(repo, 'worktree-big', 60, 'scripts/big.js');
   const r = queryMergeGate({
@@ -464,7 +464,7 @@ test('the strictest source wins on an octopus merge', (t) => {
 
 test('ACCEPTANCE 4: an unresolvable merge source FAILS OPEN', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const r = queryMergeAllowed({ repoRoot: repo, ledgerRoot: repo, sources: ['no-such-branch'] });
   assert.equal(r.allowed, true);
   assert.match(r.evaluated[0].reason, /does not resolve/);
@@ -472,7 +472,7 @@ test('ACCEPTANCE 4: an unresolvable merge source FAILS OPEN', (t) => {
 
 test('ACCEPTANCE 4: an UNREADABLE ledger FAILS OPEN (never wedges the merge)', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-big', 60);
   // Write a ledger, then make it unreadable. readLedger's readFileSync throws;
   // queryMergeAllowed's per-source try/catch must turn that into allowed:true,
@@ -521,7 +521,7 @@ test('a ledger head whose object no longer exists is a non-match, not a crash', 
   // minute scan. Replacing it with one `git rev-list` set must keep the answer
   // identical: a head that isn't a real object is simply not an ancestor.
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-big', 60);
   mkdirSync(join(repo, '.claude'), { recursive: true });
   writeFileSync(join(repo, LEDGER_REL_PATH), JSON.stringify({
@@ -538,7 +538,7 @@ test('a ledger head whose object no longer exists is a non-match, not a crash', 
 test('a real ancestor head still matches through the rev-list set', (t) => {
   // The other half of the equivalence: the fast path must still FIND verdicts.
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   makeBranch(repo, 'worktree-big', 60);
   const rec = recordVerdict({ repoRoot: repo, ledgerRoot: repo, reviewer: 'ship-check', result: 'pass', ref: 'worktree-big' });
   // Add a few more gated lines so the exact-hash arm can't be what saves it —

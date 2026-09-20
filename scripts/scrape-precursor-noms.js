@@ -65,7 +65,7 @@ const TARGET_CATEGORIES = {
 function fetchWikitext(title) {
   return new Promise((resolve, reject) => {
     const url = `https://en.wikipedia.org/w/api.php?action=parse&page=${encodeURIComponent(title)}&format=json&prop=wikitext`;
-    https.get(url, { headers: { 'User-Agent': 'broadway-scorecard/1.0 (research)' } }, (res) => {
+    const req = https.get(url, { headers: { 'User-Agent': 'broadway-scorecard/1.0 (research)' }, timeout: 15000 }, (res) => {
       let body = '';
       res.on('data', (chunk) => body += chunk);
       res.on('end', () => {
@@ -78,7 +78,9 @@ function fetchWikitext(title) {
           reject(new Error(`Parse error for ${title}: ${e.message}`));
         }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

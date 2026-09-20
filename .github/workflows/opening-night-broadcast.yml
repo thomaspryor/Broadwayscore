@@ -682,7 +682,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
           if git diff --cached --quiet; then
             echo "No alert-ledger.json changes to commit"
           else
@@ -1288,6 +1292,13 @@ jobs:
           if [ -f data/audit/alert-ledger.json ]; then
             git add data/audit/alert-ledger.json
             echo "Staged alert-ledger.json"
+          fi
+          # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on every
+          # dispatch attempt; left unstaged it makes every later rebase refuse
+          # pre-flight and forces the clobber-prone merge path.
+          if [ -f data/audit/alert-router-attempts.jsonl ]; then
+            git add data/audit/alert-router-attempts.jsonl
+            echo "Staged alert-router-attempts.jsonl"
           fi
           # A 'human' disposition not on the page-worthy allowlist (or any
           # conditionKey routeAlert downgrades) falls through to

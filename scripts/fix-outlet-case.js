@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, getOutletDisplayName, mergeReviews, slugify } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -105,8 +106,7 @@ function main() {
   console.log('=== Fix Outlet ID Case Sensitivity ===\n');
 
   // Get all show directories
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory());
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   console.log(`Processing ${showDirs.length} show directories...\n`);
 

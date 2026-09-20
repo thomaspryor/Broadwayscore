@@ -1,11 +1,20 @@
 #!/usr/bin/env node
 /**
- * posthog-friction-analyzer.js — PostHog → Claude → Notion friction pipeline.
+ * posthog-friction-analyzer.js — PostHog → Claude → Linear friction pipeline.
  *
- * Reads last-7-day PostHog friction signals, sends to Claude, creates Notion cards
- * for novel issues. Deduplicates by content hash stored as card tag (fhash:XXXXXXXX).
+ * Reads last-7-day PostHog friction signals, sends to Claude, files Linear
+ * issues for novel issues. Deduplicates by content hash embedded in the issue
+ * body as `fhash:XXXXXXXX` (Linear has no card-tag equivalent of the retired
+ * Notion board's multi_select Tags property, so the hash lives in the body
+ * text and dedup matches on that substring instead).
  *
- * Env: POSTHOG_PERSONAL_API_KEY, ANTHROPIC_API_KEY, NOTION_API_KEY
+ * Filing goes through scripts/lib/linear-issue-create.js's createLinearIssue()
+ * — the one Linear creation chokepoint (CLAUDE.md §6, task #1310) — not a
+ * direct @notionhq/client or hand-rolled Linear API call. See BRO-3430: this
+ * script used to bypass notion-brain.js's create guard entirely and file
+ * straight onto the retired Notion board every Monday.
+ *
+ * Env: POSTHOG_PERSONAL_API_KEY, ANTHROPIC_API_KEY, LINEAR_API_KEY
  * Usage:
  *   node scripts/posthog-friction-analyzer.js            # live run
  *   node scripts/posthog-friction-analyzer.js --dry-run  # print proposed cards, no writes
@@ -18,7 +27,8 @@ const fs = require('fs');
 require('./lib/load-env').loadEnv();
 
 const Anthropic = require('@anthropic-ai/sdk');
-const { Client: NotionClient } = require('@notionhq/client');
+const linearClient = require('./lib/linear-client');
+const { createLinearIssue } = require('./lib/linear-issue-create');
 const { CLAUDE_SONNET } = require('./lib/models');
 const {
   authCheck, tracked,
@@ -29,50 +39,30 @@ const {
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const CARDS_PER_RUN_CAP = 5;
-const { BRAIN_DATABASE_ID: NOTION_DATABASE_ID } = require('./lib/notion-constants');
 const TOKEN_BUDGET_CHARS = 4500;
+const FHASH_RE = /fhash:([0-9a-f]{8})/;
 
-// ── Notion helpers ───────────────────────────────────────────────────────
+// ── Linear helpers ───────────────────────────────────────────────────────
 
-async function getExistingFrictionCards(notion) {
-  const cards = [];
-  let cursor;
-  do {
-    const res = await notion.dataSources.query({
-      data_source_id: NOTION_DATABASE_ID,
-      start_cursor: cursor,
-      page_size: 50,
-      filter: {
-        and: [
-          { property: 'Tags', multi_select: { contains: 'friction' } },
-          { property: 'Status', status: { does_not_equal: 'Done' } },
-        ],
-      },
-    });
-    cards.push(...res.results);
-    cursor = res.has_more ? res.next_cursor : null;
-  } while (cursor);
-  return cards;
+async function getExistingFrictionIssues() {
+  return linearClient.listOpenIssuesWithDescriptions();
 }
 
-function extractHashes(cards) {
+function extractHashes(issues) {
   const hashes = new Set();
-  for (const card of cards) {
-    const tags = card.properties?.Tags?.multi_select || [];
-    for (const tag of tags) {
-      if (tag.name.startsWith('fhash:')) hashes.add(tag.name.slice(6));
-    }
+  for (const issue of issues) {
+    for (const m of (issue.description || '').matchAll(new RegExp(FHASH_RE, 'g'))) hashes.add(m[1]);
   }
   return hashes;
 }
 
-function extractTitles(cards) {
-  // Only include analyzer-generated cards (identified by fhash: tag).
-  // Manually created cards (session tracking, project work) also get the 'friction'
-  // tag and would confuse Claude into thinking product friction is already covered.
-  return cards
-    .filter(c => (c.properties?.Tags?.multi_select || []).some(t => t.name.startsWith('fhash:')))
-    .map(c => c.properties?.Name?.title?.[0]?.plain_text)
+function extractTitles(issues) {
+  // Only include analyzer-generated issues (identified by the fhash: marker).
+  // Manually filed issues would confuse Claude into thinking product friction
+  // that isn't actually tracked yet is already covered.
+  return issues
+    .filter(i => FHASH_RE.test(i.description || ''))
+    .map(i => i.title)
     .filter(Boolean);
 }
 
@@ -80,11 +70,16 @@ function computeHash(evidenceKey) {
   return crypto.createHash('sha256').update(evidenceKey).digest('hex').slice(0, 8);
 }
 
-async function createNotionCard(notion, issue, hash) {
+// Linear's raw priority ints: 0 = No priority, 1 = Urgent, 2 = High, 3 = Medium, 4 = Low.
+const PRIORITY_MAP = { 'P0 Now': 1, 'P1 Next': 2, 'P2 Later': 3, 'P3 Backlog': 4 };
+
+async function createFrictionIssue(issue, hash) {
   const tags = ['friction', `fhash:${hash}`];
   if (issue.type) tags.push(issue.type.replace(/_/g, '-'));
 
   const notes = [
+    `Tags: ${tags.join(', ')}`,
+    ``,
     `## Problem`,
     issue.problem,
     ``,
@@ -98,36 +93,26 @@ async function createNotionCard(notion, issue, hash) {
     issue.evidence || '(see PostHog data)',
   ].join('\n');
 
-  // Priority mapping to Notion select values
-  const priorityMap = {
-    'P0 Now': 'P0 Now',
-    'P1 Next': 'P1 Next',
-    'P2 Later': 'P2 Later',
-    'P3 Backlog': 'P3 Backlog',
-  };
-  const priority = priorityMap[issue.priority] || 'P2 Later';
+  const priority = PRIORITY_MAP[issue.priority] ?? PRIORITY_MAP['P2 Later'];
 
-  const page = await notion.pages.create({
-    parent: { type: 'data_source_id', data_source_id: NOTION_DATABASE_ID },
-    properties: {
-      Name: { title: [{ text: { content: issue.title } }] },
-      Status: { status: { name: 'Not started' } },
-      Priority: { select: { name: priority } },
-      Category: { select: { name: 'Product' } },
-      Tags: { multi_select: tags.map(t => ({ name: t })) },
-      Notes: { rich_text: [{ text: { content: notes.slice(0, 2000) } }] },
-    },
+  const result = await createLinearIssue({
+    title: issue.title,
+    description: notes.slice(0, 2000),
+    priority,
+    park: 'Weekly PostHog friction scan finding — needs human triage before work starts',
   });
-  return page.url;
+  return result.issue.url;
 }
 
-// Missing-show card: a real production users searched for but the site doesn't
-// cover. P1 Next, NOT auto-committed — CLAUDE.md Rule 3 requires
-// validate-show-venue.js to confirm venue/date before any shows.json entry.
-async function createMissingShowCard(notion, show, hash) {
+// Missing-show issue: a real production users searched for but the site doesn't
+// cover. NOT auto-committed — CLAUDE.md Rule 3 requires validate-show-venue.js
+// to confirm venue/date before any shows.json entry.
+async function createMissingShowIssue(show, hash) {
   const tags = ['friction', 'missing-show', `fhash:${hash}`];
 
   const notes = [
+    `Tags: ${tags.join(', ')}`,
+    ``,
     `## Missing production (from zero-results search)`,
     `Users searched for **"${show.search_term}"** ${show.search_count}x in the last 7 days and got zero results.`,
     `Likely production: **${show.canonical_title}** (${show.market}).`,
@@ -144,19 +129,13 @@ async function createMissingShowCard(notion, show, hash) {
     `PostHog search_performed, has_results=false, query="${show.search_term}", ${show.search_count} searches (7d).`,
   ].join('\n');
 
-  const page = await notion.pages.create({
-    parent: { type: 'data_source_id', data_source_id: NOTION_DATABASE_ID },
-    properties: {
-      Name: { title: [{ text: { content: `Missing show: ${show.canonical_title}`.slice(0, 100) } }] },
-      Status: { status: { name: 'Not started' } },
-      Priority: { select: { name: 'P1 Next' } },
-      Category: { select: { name: 'Product' } },
-      Type: { select: { name: 'Data Quality' } },
-      Tags: { multi_select: tags.map(t => ({ name: t })) },
-      Notes: { rich_text: [{ text: { content: notes.slice(0, 2000) } }] },
-    },
+  const result = await createLinearIssue({
+    title: `Missing show: ${show.canonical_title}`.slice(0, 100),
+    description: notes.slice(0, 2000),
+    priority: PRIORITY_MAP['P1 Next'],
+    park: 'Candidate missing production from zero-results search — needs manual venue/date validation before any shows.json entry (CLAUDE.md Rule 3)',
   });
-  return page.url;
+  return result.issue.url;
 }
 
 // ── Data compilation ─────────────────────────────────────────────────────
@@ -363,14 +342,14 @@ ${context}`;
 // ── Main ─────────────────────────────────────────────────────────────────
 
 async function main() {
-  const missing = ['POSTHOG_PERSONAL_API_KEY', 'ANTHROPIC_API_KEY', 'NOTION_API_KEY']
+  const missing = ['POSTHOG_PERSONAL_API_KEY', 'ANTHROPIC_API_KEY', 'LINEAR_API_KEY']
     .filter(k => !process.env[k]);
   if (missing.length) {
     console.error(`Missing env vars: ${missing.join(', ')}`);
     process.exit(1);
   }
 
-  if (DRY_RUN) console.log('[dry-run] No Notion cards will be created.\n');
+  if (DRY_RUN) console.log('[dry-run] No Linear issues will be created.\n');
 
   await authCheck();
   console.log('PostHog auth OK');
@@ -395,13 +374,22 @@ async function main() {
   console.log(context);
   console.log('--------------------------------------\n');
 
-  // Fetch existing open friction cards for context + dedup
-  const notion = new NotionClient({ auth: process.env.NOTION_API_KEY });
-  console.log('Fetching existing friction cards from Notion...');
-  const existingCards = await getExistingFrictionCards(notion);
-  const existingHashes = extractHashes(existingCards);
-  const existingTitles = extractTitles(existingCards);
-  console.log(`Found ${existingCards.length} existing open friction cards`);
+  // Fetch existing open friction issues for context + dedup
+  console.log('Fetching existing friction issues from Linear...');
+  const existingIssues = await getExistingFrictionIssues();
+  // listOpenIssuesWithDescriptions() turns a malformed GraphQL response into
+  // an empty list by design (linear-client.js), so "board has zero open
+  // issues" and "the read failed" are the same value. The BRO board carries
+  // 1,000+ open issues and has never legitimately been empty (same guard
+  // scripts/ux-walkthrough.mjs applies to its own dedup read) — treat a zero
+  // read as a failed read and refuse to file rather than dedup against a
+  // false-empty set and spam duplicate issues every week.
+  if (existingIssues.length === 0) {
+    throw new Error('getExistingFrictionIssues: Linear returned ZERO open issues — treating as a failed read, not an empty board. Refusing to file without real dedup coverage.');
+  }
+  const existingHashes = extractHashes(existingIssues);
+  const existingTitles = extractTitles(existingIssues);
+  console.log(`Found ${existingIssues.length} existing open friction issues`);
 
   console.log('Calling Claude for friction analysis...');
   const { issues, missingShows } = await analyzeWithClaude(context, existingTitles);
@@ -429,7 +417,7 @@ async function main() {
     console.log(`  Problem: ${issue.problem.slice(0, 100)}...`);
 
     if (!DRY_RUN) {
-      const url = await createNotionCard(notion, issue, hash);
+      const url = await createFrictionIssue(issue, hash);
       created.push({ title: issue.title, url, hash });
       console.log(`  Created: ${url}`);
     } else {
@@ -462,7 +450,7 @@ async function main() {
     console.log(`\n${DRY_RUN ? '[dry-run] Would create' : 'Creating'} missing-show card: ${show.canonical_title} (${show.market}, "${show.search_term}" ×${show.search_count})`);
     console.log(`  Hash: ${hash}`);
     if (!DRY_RUN) {
-      const url = await createMissingShowCard(notion, show, hash);
+      const url = await createMissingShowIssue(show, hash);
       created.push({ title: `Missing show: ${show.canonical_title}`, url, hash });
       console.log(`  Created: ${url}`);
     } else {
@@ -484,7 +472,7 @@ async function main() {
   if (process.env.GITHUB_STEP_SUMMARY) {
     const lines = ['## PostHog Friction Analyzer', ''];
     if (created.length > 0) {
-      lines.push(`### Created ${created.length} Notion card(s)`);
+      lines.push(`### Created ${created.length} Linear issue(s)`);
       for (const { title, url } of created) lines.push(`- [${title}](${url})`);
       lines.push('');
     }
@@ -496,7 +484,7 @@ async function main() {
   }
 
   if (created.length === 0 && !DRY_RUN) {
-    console.log('No new issues to create — Notion is up to date.');
+    console.log('No new issues to create — Linear is up to date.');
   }
 }
 

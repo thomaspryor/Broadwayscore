@@ -21,11 +21,24 @@ const {
   extractPhaseTimeline,
   parseTraceRecords,
   parseTraceClock,
+  redactTrace2,
+  parseTrace2Records,
+  summarizeTrace2Children,
+  extractTrace2Timeline,
+  formatTrace2Timeline,
 } = require('./push-diagnostics.js');
 
 // A trace line as GIT_TRACE_CURL really writes it (verified against live
 // captures): "HH:MM:SS.micros <file>:<line><padding><message>".
 const line = (stamp, msg) => `${stamp} http.c:889              ${msg}\n`;
+
+// A trace2 line as GIT_TRACE2_PERF really writes it (verified against a live
+// local capture, BRO-3358: `GIT_TRACE2_PERF=1 git ls-remote https://...`):
+// "HH:MM:SS.ffffff file:line | dN | thread | event | repo | t_abs | t_rel |
+// category | data".
+const t2 = (stamp, depth, event, data, { tAbs = '', tRel = '', category = '' } = {}) =>
+  `${stamp} run-command.c:740            | d${depth} | main                     | ` +
+  `${event}  |     |  ${tAbs} |  ${tRel} |  ${category} | ${data}\n`;
 
 // ---------------------------------------------------------------------------
 // classifyStallPhase — pre-existing behavior, must not drift.
@@ -87,6 +100,24 @@ test('redactCurlTrace: strips compound token query params', () => {
   assert.ok(!out.includes('SECRET1'));
   assert.ok(!out.includes('SECRET2'));
   assert.ok(out.includes('ok=1'), 'non-credential params must survive');
+});
+
+test('redactCurlTrace: strips CLI-flag-shaped credentials in child argv (BRO-3358)', () => {
+  // Adversarial review (Codex, BRO-3358 ship-check) caught that the pre-3358
+  // denylist covers URLs/headers/query-params but not a credential passed as
+  // a bare argv to some OTHER child tool — the shape a trace2 child_start's
+  // argv column can carry.
+  // Real trace2 argv is one single space-separated string per child (verified
+  // against a live capture: argv:['/opt/homebrew/bin/gh auth git-credential
+  // store']), not a comma-separated array of quoted tokens.
+  const out = redactCurlTrace("argv:['some-tool --password SECRET123']");
+  assert.ok(!out.includes('SECRET123'));
+  const outEq = redactCurlTrace("argv:['some-tool --api-token=SECRET456']");
+  assert.ok(!outEq.includes('SECRET456'));
+  // A bare short flag like -p is too ambiguous with non-credential options
+  // (port, path, ...) to redact on sight — must survive untouched.
+  const outShort = redactCurlTrace('some-tool -p 5432 --host db.internal');
+  assert.ok(outShort.includes('-p 5432'), 'a bare short flag must not be treated as a credential marker');
 });
 
 // ---------------------------------------------------------------------------
@@ -357,4 +388,104 @@ test('formatTimeline: a fully measurable timeline carries NO such caveat', () =>
   const timeline = extractPhaseTimeline({ traceText: t, killedAt: '10:00:32.000000' });
   assert.equal(timeline.dominantGap.terminal, true);
   assert.doesNotMatch(formatTimeline(timeline), /could not be measured/);
+});
+
+// ---------------------------------------------------------------------------
+// BRO-3358: GIT_TRACE2_PERF diagnostics
+// ---------------------------------------------------------------------------
+
+test('redactTrace2 is the same denylist as redactCurlTrace (defense-in-depth reuse, not a fork)', () => {
+  const withSecret = 'argv:[git-remote-https https://x-access-token:SECRETVAL@github.com/o/r.git]';
+  assert.equal(redactTrace2(withSecret), redactCurlTrace(withSecret));
+  assert.ok(!redactTrace2(withSecret).includes('SECRETVAL'));
+});
+
+test('parseTrace2Records: parses depth, event, and data fields, trimmed', () => {
+  const t = t2('17:02:06.395019', 1, 'child_start', "[ch0] class:dashed argv:['git-remote-https']");
+  const records = parseTrace2Records(t);
+  assert.equal(records.length, 1);
+  assert.equal(records[0].depth, 1);
+  assert.equal(records[0].event, 'child_start');
+  assert.match(records[0].data, /^\[ch0\] class:dashed/);
+  assert.equal(records[0].stamp, '17:02:06.395019');
+});
+
+test('parseTrace2Records: non-trace2 lines (no pipes, e.g. a headless truncated tail) are skipped', () => {
+  const t = 'not a trace2 line\n' + t2('10:00:00.000000', 0, 'version', '2.50.1');
+  assert.equal(parseTrace2Records(t).length, 1);
+});
+
+test('summarizeTrace2Children: a child_start with a matching child_exit is NOT flagged in-flight', () => {
+  const t =
+    t2('10:00:00.000000', 2, 'child_start', "[ch0] class:? argv:['gh auth git-credential store']") +
+    t2('10:00:00.180000', 2, 'child_exit', '[ch0] pid:1234 code:0', { tRel: '0.180000' });
+  const children = summarizeTrace2Children(t);
+  assert.equal(children.length, 1);
+  assert.equal(children[0].inFlightAtEnd, false);
+  assert.equal(children[0].durationMs, 180);
+  assert.match(children[0].argv, /gh auth git-credential store/);
+});
+
+test('summarizeTrace2Children: a child_start with NO matching child_exit IS flagged in-flight — the credential-helper-hypothesis signal', () => {
+  // This is the whole point of the card: a child still running when the
+  // trace2 capture stops (because the process was SIGKILLed) has no
+  // child_exit line at all.
+  const t = t2('10:00:00.000000', 2, 'child_start', "[ch0] class:? argv:['gh auth git-credential store']");
+  const children = summarizeTrace2Children(t);
+  assert.equal(children.length, 1);
+  assert.equal(children[0].inFlightAtEnd, true);
+  assert.equal(children[0].durationMs, null);
+});
+
+test('summarizeTrace2Children: [chN] ids are scoped by DEPTH — an unrelated child at another depth reusing ch0 is tracked separately', () => {
+  const t =
+    t2('10:00:00.000000', 1, 'child_start', '[ch0] class:dashed argv:[git-remote-https]') +
+    t2('10:00:00.010000', 2, 'child_start', "[ch0] class:? argv:['gh auth git-credential store']") +
+    t2('10:00:00.190000', 2, 'child_exit', '[ch0] pid:1234 code:0', { tRel: '0.180000' });
+  const children = summarizeTrace2Children(t);
+  assert.equal(children.length, 2);
+  const d1 = children.find((c) => c.depth === 1);
+  const d2 = children.find((c) => c.depth === 2);
+  assert.equal(d1.inFlightAtEnd, true, 'the depth-1 child (no exit) is still in flight');
+  assert.equal(d2.inFlightAtEnd, false, 'the depth-2 child (has an exit) is not');
+});
+
+test('extractTrace2Timeline: the terminal silence wins, same model as extractPhaseTimeline', () => {
+  const t =
+    t2('10:00:00.000000', 0, 'version', '2.50.1') +
+    t2('10:00:00.010000', 2, 'child_start', "[ch0] argv:['gh auth git-credential store']");
+  const timeline = extractTrace2Timeline({ traceText: t, killedAt: '10:01:00.010000' });
+  assert.equal(timeline.dominantGap.terminal, true);
+  assert.equal(timeline.dominantGap.ms, 60000);
+  assert.equal(timeline.dominantGap.event, 'child_start');
+});
+
+test('extractTrace2Timeline: an empty trace reports no-trace rather than throwing', () => {
+  const timeline = extractTrace2Timeline({ traceText: '' });
+  assert.equal(timeline.reason, 'no-trace');
+  assert.equal(timeline.dominantGap, null);
+});
+
+test('extractTrace2Timeline: a kill time across midnight is a forward wrap, never negative (shares forwardDelta with extractPhaseTimeline)', () => {
+  const t = t2('23:59:59.000000', 0, 'version', '2.50.1');
+  const timeline = extractTrace2Timeline({ traceText: t, killedAt: '00:00:29.000000' });
+  assert.equal(timeline.dominantGap.ms, 30000);
+});
+
+test('formatTrace2Timeline: names the in-flight child in the CI-log line', () => {
+  const t = t2('10:00:00.000000', 2, 'child_start', "[ch0] class:? argv:['gh auth git-credential store']");
+  const timeline = extractTrace2Timeline({ traceText: t, killedAt: '10:00:28.000000' });
+  const children = summarizeTrace2Children(t);
+  const out = formatTrace2Timeline(timeline, children);
+  assert.match(out, /NO child_exit OBSERVED FOR/);
+  assert.match(out, /gh auth git-credential store/);
+});
+
+test('formatTrace2Timeline: a clean trace with no children carries no in-flight note', () => {
+  const t =
+    t2('10:00:00.000000', 0, 'version', '2.50.1') +
+    t2('10:00:00.010000', 0, 'exit', 'code:0', { tRel: '0.010000' });
+  const timeline = extractTrace2Timeline({ traceText: t, killedAt: '10:00:00.011000' });
+  const out = formatTrace2Timeline(timeline, summarizeTrace2Children(t));
+  assert.doesNotMatch(out, /IN-FLIGHT/);
 });

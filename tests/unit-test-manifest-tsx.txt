@@ -2,6 +2,7 @@ scripts/tests/fix-platform-ticket-links.test.mjs
 scripts/tests/tm-gap-links.test.mjs
 src/app/api/__tests__/notion-write-is-non-fatal.test.mjs
 tests/unit/anchored-markets-consistency.test.ts
+tests/unit/api-feedback.test.mjs
 tests/unit/approaching-recoupment-gate.test.ts
 tests/unit/biz-format.test.ts
 tests/unit/browse-slugs.test.mjs
@@ -25,6 +26,7 @@ tests/unit/llm-cost-cache.test.ts
 tests/unit/llm-scoring-stale-roundup-flag.test.mjs
 tests/unit/london-hub-routing.test.ts
 tests/unit/multi-show-detector-punct-boundary.test.mjs
+tests/unit/off-broadway-all-filter.test.mjs
 tests/unit/opera-ensemble-scoreability.test.ts
 tests/unit/parse-runtime-parity.test.ts
 tests/unit/prior-runs-scoreability.test.ts
@@ -51,6 +53,7 @@ tests/unit/stats-season-windows.test.mjs
 tests/unit/stats-theater-completion.test.mjs
 tests/unit/stats-venue-match.test.mjs
 tests/unit/strip-inline-markdown.test.ts
+tests/unit/ticket-click-tracking.test.ts
 tests/unit/ticket-links-hidden-fallback.test.ts
 tests/unit/tier-config-consistency.test.ts
 tests/unit/tony-season-groups.test.ts

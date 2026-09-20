@@ -125,23 +125,13 @@ jobs:
           set -e
 
           cat /tmp/drift-stderr.txt >&2 || true
-          cat /tmp/drift-results.json
+          cat /tmp/drift-results.json || true
 
           echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
 
-          if [ "$EXIT_CODE" -eq 1 ]; then
-            # Extract alerting shows for Discord message
-            ALERT_SHOWS=$(node -e "
-              const r = JSON.parse(require('fs').readFileSync('/tmp/drift-results.json','utf8'));
-              const alerts = r.filter(x => x.alert);
-              console.log(alerts.map(x =>
-                \`**\${x.title}** (\${x.showId}): local=\${x.local}, agg=\${x.aggregate}, live=\${x.liveRcMissing ? 'RC-MISSING (live page lost its review count)' : x.live ?? 'n/a'}, drift=\${x.effectiveDrift ?? x.drift}\`
-              ).join('\n'));
-            " 2>/dev/null || echo "(parse error)")
-            echo "alert_shows<<EOF" >> "$GITHUB_OUTPUT"
-            echo "$ALERT_SHOWS" >> "$GITHUB_OUTPUT"
-            echo "EOF" >> "$GITHUB_OUTPUT"
-          fi
+          # No rolled-up alert_shows output any more: the routing step below reads
+          # /tmp/drift-results.json directly, because it needs one conditionKey
+          # per show and the non-alerting rows too (to re-arm cleared shows).
 
           echo "Drift check complete."
 
@@ -152,34 +142,162 @@ jobs:
       # swallowed (same outputs-before-tracking-commit pattern as the
       # process-feedback 2026-07-07 incident). Worst case this way is a
       # duplicate Discord ping if the job dies between alert and push.
-      - name: Send drift alert
-        if: steps.drift.outputs.exit_code == '1'
+      - name: Route drift alerts per show (and re-arm cleared shows)
+        # Runs whenever the drift check ran, not only on exit_code 1: the
+        # non-alerting rows are what resolveCondition() needs to re-arm a show
+        # that drifted, got fixed, and could drift again inside the cooldown.
+        if: always() && steps.drift.outputs.exit_code != ''
         env:
-          ALERT_SHOWS: ${{ steps.drift.outputs.alert_shows }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Required: disposition 'auto' reaches findLinearDuplicate()/dispatchCard(),
+          # and without this both fail with "LINEAR_API_KEY not set" *silently* —
+          # the tracker this step exists to file never gets created (bug #1786,
+          # same omission as check-cron-health.yml:659-669).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         uses: actions/github-script@v7
         with:
           script: |
-            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const fs = require('fs');
+            const { routeAlert, resolveCondition } = require('./scripts/lib/owner-alert-router.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const alertShows = (process.env.ALERT_SHOWS || '').trim();
-            await sendAlert({
-              title: 'Opening Night Drift Detected',
-              description: 'Review count mismatch between local review-texts, reviews.json aggregate, and live production data. Grace window passed — investigate now.',
-              severity: 'warning',
-              fields: [
-                { name: 'Shows with Drift', value: alertShows.slice(0, 1024) || '(none)', inline: false },
-                { name: 'Fix', value: 'Run `node scripts/verify-review-recovery.js --show=SHOW_ID --production`', inline: false },
-                { name: 'Run', value: `[View logs](${runUrl})`, inline: false },
-              ],
-              url: runUrl,
-            }).catch(e => console.error('Alert failed:', e.message));
+
+            let rows;
+            try {
+              rows = JSON.parse(fs.readFileSync('/tmp/drift-results.json', 'utf8'));
+            } catch (e) {
+              core.warning(`drift results unreadable (${e.message}) — nothing to route`);
+              return;
+            }
+            if (!Array.isArray(rows)) {
+              core.warning('drift results were not an array — nothing to route');
+              return;
+            }
+
+            for (const r of rows) {
+              if (!r || !r.showId) continue;
+              // Per-SHOW conditionKey, no fingerprint and no date suffix. The
+              // fingerprint moves every time a count moves, so keying on it would
+              // mint a fresh conditionKey on nearly every run and defeat dedup
+              // entirely; a date suffix would double-file a drift spanning
+              // midnight UTC. "this show's counts don't reconcile" is one
+              // incident until it clears.
+              const conditionKey = `opening-night-drift:${r.showId}`;
+              const live = r.liveRcMissing
+                ? 'RC-MISSING (live page lost its review count)'
+                : (r.live ?? 'n/a');
+              const drift = r.effectiveDrift ?? r.drift;
+
+              // Per-row isolation: routeAlert() throws on a malformed conditionKey,
+              // title or disposition, and a ledger write can fail. Without this, one
+              // bad row would abandon every show after it in the array — on an
+              // opening night that is the failure this whole workflow exists to catch.
+              try {
+                // `alert: false` does NOT mean "recovered". check-opening-night-drift.js
+                // also forces it false while a show is allowlist-suppressed, inside the
+                // grace window, or inside its own 6h same-fingerprint cooldown — all of
+                // which mean "still drifting, just don't say so again yet". Re-arming on
+                // those would mark a live incident resolved and let the next run notify
+                // immediately, defeating the dedup this step exists for. Only counts that
+                // actually reconcile clear the incident.
+                const reconciled = Number.isFinite(drift)
+                  && Number.isFinite(r.threshold)
+                  && drift <= r.threshold;
+
+                if (!r.alert) {
+                  if (reconciled) {
+                    if (resolveCondition(conditionKey)) {
+                      console.log(`[drift] ${conditionKey} reconciled — re-armed`);
+                    }
+                  } else {
+                    console.log(`[drift] ${conditionKey} still drifting (drift=${drift}) — not alerting (grace/allowlist/cooldown), incident left open`);
+                  }
+                  continue;
+                }
+
+                const result = await routeAlert({
+                  conditionKey,
+                  title: `Opening night drift: ${r.title} (${r.showId})`,
+                  description:
+                    `Review counts do not reconcile for ${r.title} (${r.showId}): `
+                    + `local review-texts=${r.local}, reviews.json aggregate=${r.aggregate}, `
+                    + `live production=${live}, drift=${drift} (threshold ${r.threshold}). `
+                    + `The grace window has passed, so this is not deploy lag or a rebuild in flight.`,
+                  // Real show id substituted — the old email text hardcoded the
+                  // literal placeholder SHOW_ID, which is fine for a human reading
+                  // an email and useless to anything that has to act on it.
+                  hint:
+                    `node scripts/verify-review-recovery.js --show=${r.showId} --production`
+                    + ` — the five pipeline steps behind this fail silently and independently;`
+                    + ` it checks all five and prints the fix command for each.`,
+                  severity: 'error',
+                  // 'human', not 'auto'. c82cc427bdd is live on main, so this alert DOES
+                  // email the owner today (severity 'error' + email:true clears
+                  // shouldEmailAlert). 'auto' only files a PARKED Linear issue — no email,
+                  // no digest line — so it would have silently deleted the one delivered
+                  // signal an opening-night drift has. Routing through the sanctioned
+                  // sender is the lint fix; changing who hears about it is a separate
+                  // decision, and is deliberately not being made here.
+                  disposition: 'human',
+                  // Explicit, never the 7-day default: the workflow already runs its
+                  // own 6h same-fingerprint cooldown in drift-state.json, and a
+                  // 168h router cooldown would silently win over it, leaving the two
+                  // dedup layers disagreeing about whether this show is being watched.
+                  cooldownHours: 6,
+                  fields: [
+                    { name: 'Show', value: `${r.title} (${r.showId})`, inline: false },
+                    { name: 'Counts', value: `local=${r.local}, aggregate=${r.aggregate}, live=${live}, drift=${drift}`, inline: false },
+                    { name: 'Opening', value: String(r.openingDate || 'unknown'), inline: false },
+                    { name: 'Run', value: `[View logs](${runUrl})`, inline: false },
+                  ],
+                  url: runUrl,
+                });
+
+                console.log(`[drift] ${conditionKey} -> ${result.action}`);
+                // routeAlert downgrades 'human' to 'digest' for any conditionKey not on
+                // the page-worthy allowlist, so a silent demotion shows up here rather
+                // than being discovered the next time a drift goes unnoticed. It also
+                // returns dispatchOk:false when a tracker could not be filed, which
+                // otherwise prints an encouraging action with nothing actually sent.
+                if (result.action === 'digest') {
+                  core.warning(`${conditionKey} was downgraded to the digest — add 'opening-night-drift:' to scripts/lib/page-worthy-alerts.js if it should page.`);
+                }
+                if (result.dispatchOk === false) {
+                  core.warning(`${conditionKey} did not file a tracker: ${result.dispatchError || 'unknown error'}`);
+                }
+              } catch (err) {
+                // Never rethrow: the remaining shows still need routing, and the commit
+                // step below still needs to persist whatever ledger state was written.
+                core.warning(`${conditionKey} could not be routed (${err && err.message}) — continuing with the remaining shows`);
+              }
+            }
 
       - name: Commit updated drift state
-        if: steps.rebuild_check.outputs.skip != 'true' && steps.window_check.outputs.skip != 'true'
+        # always(): routeAlert() has already written alert-ledger.json in-process
+        # by this point. Without always() a failure in the routing step marks the
+        # job failing, this step is skipped by the implicit success(), and the 6h
+        # cooldown is silently lost — so the next cron re-files every incident.
+        if: always() && steps.rebuild_check.outputs.skip != 'true' && steps.window_check.outputs.skip != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/drift-state.json
+          # alert-ledger.json: routeAlert()/resolveCondition()'s cooldown ledger.
+          # Must be staged in THIS job or the 6h cooldown never persists across
+          # the 30-minute cron and every run re-files — and scripts/lib/
+          # alert-ledger-commit-check.js fails the Lint Workflows job outright
+          # for any job that mentions routeAlert()/resolveCondition() without it.
+          # alert-router-attempts.jsonl: every 'auto' dispatch attempt, which
+          # health-check.js's 7-day deadman check reads to tell "attempting and
+          # failing" apart from "idle". Not covered by the lint; staged anyway.
+          # git-add-existing.sh, not a hand-rolled `[ -e ] && git add || echo skip`:
+          # that form prints "skip (absent)" when git add itself FAILS, which is the
+          # exact misdiagnosis memory/feedback_silent_git_add_failures.md exists to
+          # prevent (2026-06-06).
+          # One line, deliberately: scripts/lib/api-fallback-writer-drift.js:94
+          # matches the staging command and the path on the SAME line
+          # ([^\n]*), so a backslash continuation makes drift-state.json look
+          # like it has no writer at all and fails that guard.
+          bash scripts/lib/git-add-existing.sh data/audit/drift-state.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
           if git diff --cached --quiet; then
             echo "No state changes to commit."
           else

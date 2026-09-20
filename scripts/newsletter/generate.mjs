@@ -6,6 +6,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { badgeImg, rankBadgeImg, awardBadgeImg } from './badge-render.mjs';
+import { hasFreshRunReview } from './fresh-run-reviews.mjs';
 
 // Path setup: `repo` resolves to the repo root via __dirname so the generator
 // runs identically on macOS local dev, Linux CI, and from a git worktree.
@@ -154,6 +156,13 @@ const recentAnnouncedIds = new Set(_priorIssues.filter(i => i.weekStart >= _anno
 // though subscribers already saw them. featuredShowIds was always saved; this
 // wires it back up on the read side, windowed so multiple prior rows all count.
 const lastFeaturedIds = new Set(_priorIssues.filter(i => i.weekStart >= _featuredCutoff).flatMap(i => i.featuredShowIds || []));
+// Award Score Movers dedup: _priorIssues is sorted most-recent-first, so [0] is
+// last issue's own row. If the snapshot cron misses a Saturday, the "two most
+// recent snapshots" latestMovers() picks are UNCHANGED from last issue — same
+// dates, same deltas — and without this check the section would silently
+// re-headline last week's movers as if they were new (Codex adversarial review,
+// BRO-3531).
+const lastAwardMoverSnapshotDate = (_priorIssues[0] && _priorIssues[0].awardMoverSnapshotDate) || null;
 
 // --- Within-issue cross-section de-dup -----------------------------------------
 // A show featured in a higher section is suppressed from every lower one, so a
@@ -163,6 +172,10 @@ const lastFeaturedIds = new Set(_priorIssues.filter(i => i.weekStart >= _feature
 const featuredShowIds = new Set();
 const _moverShowIds = [];
 const _announcedShowIds = [];
+// Carries forward by default (not null) so a week where the section renders
+// nothing (stale/deduped/no significant movers) doesn't erase the memory of
+// the last snapshot date actually processed — see the write-state block.
+let _awardMoverSnapshotDate = lastAwardMoverSnapshotDate;
 
 // NEWSLETTER_EXCLUDE_SHOWS=id1,id2 (Coverage Verdict S3, task #905): drops
 // specific shows from every section entirely — used by pre-send-check.mjs's
@@ -314,21 +327,17 @@ function scoreTier(score, category) {
 }
 function isGoldTier(score, category) { return scoreTier(score, category)?.id === 'gold'; }
 
-// `box-sizing:border-box` is the fix — Critical Gold has a 2px border which would
-// otherwise expand the box past nominal `size`; with border-box the border lives
-// inside the declared width/height so all tiers render at the same visual size.
-// line-height === size keeps the number vertically centered for every tier.
+// Badges render as server-generated PNGs (BRO-1392), not styled <div>s —
+// Gmail iOS dark mode inverts CSS text color against a bg it can't invert,
+// breaking contrast on every score badge. A flat image is immune since Gmail
+// can't recolor baked-in pixels. See badge-render.mjs for the rendering path.
+// Rendering the image at its own exact `size` sidesteps the old box-sizing
+// workarounds entirely — those existed only to compensate for browser box
+// model quirks that don't apply to a raster image.
 function badgeHtml(score, size = 64, category) {
   const t = scoreTier(score, category);
-  if (!t) return `<div style="display:inline-block;width:${size}px;height:${size}px;border-radius:12px;background:#2a2a38;color:#9ca3af;border:1px solid rgba(255,255,255,0.1);font-size:${Math.round(size*0.22)}px;font-weight:700;line-height:${size}px;text-align:center;">TBD</div>`;
-  const isGold = t.id === 'gold';
-  const fontSize = Math.round(size * 0.47);
-  // Default to content-box (no box-sizing) and shrink inner gold size by 4px
-  // so border doesn't push total visual size past peers in Gmail iOS/Android.
-  const innerSize = isGold ? size - 4 : size;
-  const lineHeight = innerSize;
-  const extra = isGold ? `border:2px solid ${t.border};` : '';
-  return `<div style="display:inline-block;width:${innerSize}px;height:${innerSize}px;border-radius:12px;background:${t.bg};color:${t.text};font-size:${fontSize}px;font-weight:700;line-height:${lineHeight}px;text-align:center;${extra}box-shadow:${t.glow};">${score}</div>`;
+  const fontSize = Math.round(size * (t ? 0.47 : 0.22));
+  return badgeImg({ tier: t, score, size, fontSize, radius: 12, shadow: t ? t.glow : null });
 }
 
 function smallBadge(score, size = 36, category) {
@@ -336,19 +345,11 @@ function smallBadge(score, size = 36, category) {
   // Number font must scale with the box (design-system ScoreBadge ratio ~0.42,
   // e.g. text-lg/18px in a 44px badge). Was hardcoded 15px, so enlarging the box
   // left the numbers looking tiny (user, 2026-07-11). TBD is 3 chars → smaller ratio.
-  if (!t) return `<div style="display:inline-block;width:${size}px;height:${size}px;border-radius:8px;background:#2a2a38;color:#9ca3af;border:1px solid rgba(255,255,255,0.1);font-size:${Math.round(size * 0.30)}px;font-weight:700;line-height:${size}px;text-align:center;">TBD</div>`;
-  const isGold = t.id === 'gold';
-  const fontSize = Math.round(size * 0.42);
-  // Some email clients (notably Gmail Android) don't respect box-sizing:border-box,
-  // which makes the 2px gold border push total dimensions to 44px while peers stay
-  // at 40px. Compensate by shrinking the inner width/height so total visual = size.
-  const innerSize = isGold ? size - 4 : size;
-  const lineHeight = innerSize;
-  const extra = isGold ? `border:2px solid ${t.border};` : '';
-  const smallShadow = isGold
-    ? '0 0 8px rgba(218,165,32,0.4),0 2px 6px rgba(0,0,0,0.3)'
-    : `0 2px 6px ${t.solid}40`;
-  return `<div style="display:inline-block;width:${innerSize}px;height:${innerSize}px;border-radius:8px;background:${t.bg};color:${t.text};font-size:${fontSize}px;font-weight:700;line-height:${lineHeight}px;text-align:center;${extra}box-shadow:${smallShadow};">${score}</div>`;
+  const fontSize = Math.round(size * (t ? 0.42 : 0.30));
+  const shadow = t
+    ? (t.id === 'gold' ? '0 0 8px rgba(218,165,32,0.4),0 2px 6px rgba(0,0,0,0.3)' : `0 2px 6px ${t.solid}40`)
+    : null;
+  return badgeImg({ tier: t, score, size, fontSize, radius: 8, shadow });
 }
 
 function tierLabel(score, category) {
@@ -510,6 +511,41 @@ function loadOutletTierMap() {
   } catch {}
   _outletTierMap = m;
   return m;
+}
+
+// BRO-3822 — a show whose ONLY major-outlet coverage predates the run being
+// announced must not be presented as newly opened. Only bites on shows that
+// declare `priorRuns` (which is what lets a previous engagement's reviews
+// count toward the score in the first place); everything else passes
+// untouched. See fresh-run-reviews.mjs for the incident and the owner
+// decision behind the T1/T2 rule.
+let _reviewsByShow = null;
+function reviewsForShow(showId) {
+  if (!_reviewsByShow) {
+    _reviewsByShow = new Map();
+    for (const r of reviews) {
+      if (!r || !r.showId) continue;
+      let bucket = _reviewsByShow.get(r.showId);
+      if (!bucket) { bucket = []; _reviewsByShow.set(r.showId, bucket); }
+      bucket.push(r);
+    }
+  }
+  return _reviewsByShow.get(showId) || [];
+}
+
+function hasFreshRunCoverage(show) {
+  if (!show || !show.id) return true;
+  const tiers = loadOutletTierMap();
+  // An unreadable/empty outlet-registry.json makes loadOutletTierMap() return
+  // an empty Map (its parse is wrapped in a bare `catch {}`), which would make
+  // EVERY outlet resolve to DEFAULT_TIER=3 — no review could ever be T1/T2 and
+  // the gate would silently drop every returning production from the
+  // newsletter. Fail open on a missing registry: this gate is an editorial
+  // nicety, not a correctness guarantee, and must never be the reason a real
+  // opening disappears (adversarial review, 2026-09-20).
+  if (tiers.size === 0) return true;
+  const tierOf = (outletId) => tiers.get(outletId) || DEFAULT_TIER;
+  return hasFreshRunReview(show, reviewsForShow(show.id), tierOf);
 }
 
 // Tier-weighted mean — matches src/lib/scoring.ts calculateCriticScore().
@@ -753,7 +789,12 @@ function broadwayOpenings() {
   // Only feature shows we actually have reviews for (never name a no-review show).
   const events = openingEventsForWeek('broadway')
     .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
-    .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
+    .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); })
+    // Same fresh-run gate as the three London/OB opening sections (BRO-3822).
+    // Missed on the first pass, which left the BROADWAY edition's own
+    // headline section — the one most readers see — announcing a returning
+    // production on prior-run reviews (adversarial review, 2026-09-20).
+    .filter(e => hasFreshRunCoverage(e.show));
   if (!events.length) return { html: null, list: [], reopeningIds: new Set() };
   events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
@@ -796,7 +837,7 @@ function offBroadwayOpenings() {
       && notFeatured(s.id) && (inWeek(s.openingDate) || !lastFeaturedIds.has(s.id))
       && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
-    .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
+    .filter(x => x.agg && x.agg.count >= minReviews('off-broadway') && hasFreshRunCoverage(x.s))
     .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   // Editorial lead override: NEWSLETTER_OB_LEAD=<showId> floats one opening to
   // the top of this section regardless of score (e.g. a marquee revival the
@@ -838,7 +879,7 @@ function outOfTownOpenings() {
       const earliest = scored.reduce((min, r) => (min == null || r.publishDate < min ? r.publishDate : min), null);
       return { s, earliest, agg: aggregateScore(s.id) };
     })
-    .filter(({ earliest, agg }) => earliest && inWeek(earliest) && agg && agg.count >= minReviews('off-broadway'))
+    .filter(({ earliest, agg, s }) => earliest && inWeek(earliest) && agg && agg.count >= minReviews('off-broadway') && hasFreshRunCoverage(s))
     .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   if (!withScore.length) return { html: null, list: [] };
   const list = withScore.slice(0, 6).map(x => x.s);
@@ -1178,6 +1219,112 @@ function biggestMoverSection() {
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${allRows}</table>`;
   const title = totalRows > 1 ? 'Biggest Movers' : 'Biggest Mover';
   return sectionWrap(sectionHeading(title), body);
+}
+
+// SECTION: Award Score Movers — composite Site Award Score week-over-week
+// deltas, sourced from data/award-score-history/ snapshots (Saturday cron,
+// scripts/snapshot-award-scores.js; diff logic in scripts/lib/award-score-
+// movers.js, shared with the award-score-movers.js CLI). Broadway/Tony only
+// — no West End snapshots exist yet (BRO-3531).
+//
+// Round "medal" circle mirrors AwardScoreBadge.tsx's tier treatment (flat
+// colors, not the site's gradient/shimmer — email clients don't render
+// those reliably) so a subscriber who's seen the /award-score leaderboard
+// recognizes the same gold/silver/bronze language here.
+// BRO-3555 — award ring now renders as a flat PNG (badgeImg pattern from
+// BRO-1392), not a styled <div>: Gmail iOS dark mode flips the div's `color`
+// against a `background` it can't invert, breaking the same contrast bug as
+// the score badges. `awardTierId` maps to a fixed color row on the route
+// (AWARD_RING_COLORS in src/app/api/newsletter-badge/route.tsx) — kept in
+// sync by id, same contract as scoreTier()/TIER_COLORS.
+function awardTierId(badge) {
+  if (badge === 'sweeper') return 'sweeper';
+  if (badge === 'decorated') return 'decorated';
+  if (badge === 'honored') return 'honored';
+  if (badge === 'in-the-hunt') return 'in-the-hunt';
+  if (badge === 'nominated') return 'nominated';
+  return 'eligible'; // eligible / unknown
+}
+function awardBadgeBox(score, badge, size = 40) {
+  const fontSize = Math.round(size * 0.36);
+  return awardBadgeImg({ tierId: awardTierId(badge), score, size, fontSize });
+}
+function awardScoreMoversSection() {
+  const { latestMovers } = cjsRequire(path.join(repo, 'scripts/lib/award-score-movers.js'));
+  // top:Infinity — closures/new-entrants dominate the raw ranking (a show
+  // leaving the pool reads as a full drop to 0, see diffSnapshots), and the
+  // presentBefore/presentAfter filter below drops those. Cap AFTER filtering,
+  // not before — market size (~40-100 shows) makes the full diff cheap, and a
+  // fixed pre-filter cap can starve every real mover in a heavy-turnover week
+  // (Codex adversarial review, BRO-3531).
+  const result = latestMovers({ historyDir: path.join(repo, 'data/award-score-history'), market: 'broadway', top: Infinity });
+  if (!result || !result.movers.length) return null;
+  // Cron gone quiet (feedback_github_cron_delays.md: crons silently disable
+  // after ~60d inactivity) — stop resurfacing an increasingly stale
+  // comparison rather than showing the same "movers" issue after issue.
+  if (result.weekEnd < _daysBefore(14)) return null;
+  // Same snapshot pair as last issue (cron missed a Saturday) — nothing NEW
+  // to report; re-showing it would look like fresh movement to a subscriber
+  // who already saw this exact comparison (Codex adversarial review).
+  if (result.weekEnd === lastAwardMoverSnapshotDate) return null;
+  // Record the snapshot date as "processed" as soon as we know it's genuinely
+  // new — even if it ends up rendering zero movers below, we've still seen
+  // it, and must not treat this same date as fresh again next issue.
+  _awardMoverSnapshotDate = result.weekEnd;
+  // A show leaving the snapshot pool (closed, or dropped out of Tony
+  // eligibility) isn't a score MOVE — it's a status change already covered
+  // by Closing This Week. Filtering to shows present in both snapshots keeps
+  // this section to genuine score shifts.
+  const candidates = result.movers
+    .filter((m) => m.presentBefore && m.presentAfter)
+    // Newsworthiness gate mirrors biggestMoverSection's critic-score bar
+    // (≥3 pts, full stop) — a 1-pt award-score wobble shouldn't be able to
+    // claim a show via markFeatured() and bump it out of Closing This Week.
+    .filter((m) => Math.abs(m.delta) >= 3)
+    .map((m) => ({ ...m, show: shows.find((s) => s.id === m.showId) }))
+    .filter((m) => m.show && isPrimaryMarket(m.show) && notFeatured(m.show.id))
+    // A show closing THIS issue's week is a more actionable "last chance to
+    // see it" notice than an award-score badge move — never let this section
+    // claim it via markFeatured() and bump it out of Closing This Week
+    // (same window closingSection() itself gates on). Independent Claude
+    // review, BRO-3531.
+    .filter((m) => !(m.show.closingDate && m.show.closingDate > weekEndStr && m.show.closingDate <= horizon7Str));
+  const top = candidates.slice(0, 3);
+  if (!top.length) return null;
+  top.forEach((m) => markFeatured(m.show.id));
+  const rows = top.map((m, i, arr) => {
+    const isLast = i === arr.length - 1;
+    const border = !isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
+    const dirColor = m.delta > 0 ? '#22c55e' : '#ef4444';
+    const dirArrow = m.delta > 0 ? '▲' : '▼';
+    const dirWord = m.delta > 0 ? 'up' : 'down';
+    const pts = Math.abs(m.delta);
+    return `<tr>
+      <td valign="middle" width="68" style="padding:10px 10px 10px 0;${border}">${thumb(m.show, 56)}</td>
+      <td valign="middle" style="padding:10px 0;${border}">
+        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)}</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:2px;">Award Score</div>
+      </td>
+      <td valign="middle" width="120" align="center" style="padding:10px 16px 10px 4px;${border}">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;"><tr>
+          <td align="center" valign="middle">${awardBadgeBox(m.before, m.beforeBadge)}</td>
+          <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
+          <td align="center" valign="middle">${awardBadgeBox(m.after, m.afterBadge)}</td>
+        </tr></table>
+        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${dirWord} ${pluralize(pts, 'pt')}</div>
+      </td>
+    </tr>`;
+  }).join('');
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
+    <tr><td style="padding:4px 16px;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
+    </td></tr>
+  </table>`;
+  // "since <date>" rather than a hardcoded "last 7 days" — the snapshot cron
+  // only just started running weekly (BRO-1226); the first live comparison
+  // spans months, not a week, and a fixed "7 days" label would misrepresent
+  // that to subscribers (Codex adversarial review, BRO-3531).
+  return sectionWrap(sectionHeading('Award Score Movers', `Tony race · since ${fmt(result.weekStart)}`), body);
 }
 
 // SECTION: Awards Race Movers — Tony odds shifts week-over-week
@@ -1592,7 +1739,7 @@ function catchupOpeningsSection() {
     if (s.status !== 'open') return false;
     if (!s.openingDate || s.openingDate < start || s.openingDate >= weekStartStr) return false; // before this week's window
     if (!notFeatured(s.id) || excludedShowIds.has(s.id)) return false; // not already a hero card or a closing-this-week row
-    return a && a.count >= minReviews(s.category);
+    return a && a.count >= minReviews(s.category) && hasFreshRunCoverage(s);
   }).sort((a, b) => b.a.avg - a.a.avg)
     .slice(0, 6);
   if (!list.length) return null;
@@ -1872,14 +2019,20 @@ function buzziestSection() {
     BuildingBaseline: { label: 'STEADY', emoji: '⚪', color: '#3b82f6', sub: 'Consistent buzz' },
     Troubled:{ label: 'TROUBLED', emoji: '💔', color: '#ef4444', sub: 'Negative chatter outweighs positive' },
   };
+  // BRO-3555 — Social Buzz rank box renders as a flat PNG (badgeImg pattern
+  // from BRO-1392), not a styled <div>: same Gmail-iOS-dark-mode text/bg
+  // inversion mismatch as the score badges. `id` maps to a fixed color row
+  // on the route (RANK_COLORS in src/app/api/newsletter-badge/route.tsx);
+  // `shadow` is a local-only decorative box-shadow color (never crosses the
+  // wire) kept in sync with the same buckets for the drop-shadow tint.
   function rankBadgeColor(pos, total) {
-    if (!total) return { bg: '#374151', text: '#9ca3af' };
+    if (!total) return { id: 'none', shadow: '#374151' };
     const pct = pos / total;
-    if (pct <= 0.1) return { bg: '#f59e0b', text: '#1f2937' };
-    if (pct <= 0.2) return { bg: '#f97316', text: '#fff' };
-    if (pct <= 0.4) return { bg: '#10b981', text: '#fff' };
-    if (pct <= 0.6) return { bg: '#3b82f6', text: '#fff' };
-    return { bg: '#475569', text: '#cbd5e1' };
+    if (pct <= 0.1) return { id: 'top10', shadow: '#f59e0b' };
+    if (pct <= 0.2) return { id: 'top20', shadow: '#f97316' };
+    if (pct <= 0.4) return { id: 'top40', shadow: '#10b981' };
+    if (pct <= 0.6) return { id: 'top60', shadow: '#3b82f6' };
+    return { id: 'rest', shadow: '#475569' };
   }
   function parseRank(r) {
     if (!r) return null;
@@ -1990,7 +2143,7 @@ function buzziestSection() {
       </td>
       ${rc && c.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         <div style="font-size:9px;font-weight:700;color:${d.color};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:3px;">${d.label}</div>
-        <div style="display:inline-block;width:36px;height:36px;border-radius:8px;background:${rc.bg};color:${rc.text};font-size:14px;font-weight:800;line-height:36px;text-align:center;box-shadow:0 2px 6px ${rc.bg}55;">#${i + 2}</div>
+        ${rankBadgeImg({ tierId: rc.id, position: i + 2, size: 36, fontSize: 14, radius: 8, shadow: `0 2px 6px ${rc.shadow}55` })}
       </td>` : '<td></td>'}
     </tr>`;
   }).join('');
@@ -2005,7 +2158,7 @@ function buzziestSection() {
       </td>
       ${rankColors && top.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;">
         <div style="font-size:9px;font-weight:700;color:${display.color};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px;">${display.label}</div>
-        <div style="display:inline-block;width:40px;height:40px;border-radius:8px;background:${rankColors.bg};color:${rankColors.text};font-size:15px;font-weight:800;line-height:40px;text-align:center;box-shadow:0 2px 6px ${rankColors.bg}55;">#${top.rank.position}</div>
+        ${rankBadgeImg({ tierId: rankColors.id, position: top.rank.position, size: 40, fontSize: 15, radius: 8, shadow: `0 2px 6px ${rankColors.shadow}55` })}
         <div style="font-size:9px;color:#9ca3af;margin-top:2px;font-weight:500;">of ${top.rank.total}</div>
       </td>` : `<td valign="middle" width="60" align="center" style="padding:6px 0;">
         <div style="width:40px;height:40px;border-radius:8px;background:${display.color}22;text-align:center;line-height:40px;font-size:20px;">${display.emoji}</div>
@@ -2074,7 +2227,16 @@ function seasonStandingFor(openedShow, isReopening) {
       </td>
       <td valign="middle" style="padding:10px 0;${!isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}${rowBg}">
         <div style="font-size:14px;font-weight:${isHighlight ? '700' : '600'};color:${isHighlight ? '#fff' : '#f3f4f6'};line-height:1.3;">${showLink(x.s, x.s.title)}</div>
-        ${isHighlight ? '<div style="display:inline-block;margin-top:4px;padding:2px 7px;border-radius:999px;background:#d4a574;color:#0f0f14;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">Just opened</div>' : ''}
+        ${/* BRO-3560 — outline chip, not a filled bg+text pair: same Gmail-iOS
+           dark-mode bug class as BRO-1392/BRO-3555 (a colored background with
+           separately-styled text can flip independently and lose contrast),
+           but this chip is variable-width text so it doesn't fit the fixed-
+           size PNG badge pattern those used. Dropping the background instead
+           of baking a raster removes the vulnerable pair entirely — a single
+           color used for both border and text is the same safe category as
+           the plain colored prose text already used elsewhere in this email
+           (e.g. the tier labels above), which has never needed the PNG fix. */
+        isHighlight ? '<div style="display:inline-block;margin-top:4px;padding:1px 6px;border:1px solid #d4a574;border-radius:999px;color:#d4a574;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">Just opened</div>' : ''}
         <div style="font-size:11px;color:#9ca3af;margin-top:${isHighlight ? '4' : '2'}px;">Opened ${fmt(x.s.openingDate)} · ${x.agg.count} reviews</div>
       </td>
       <td valign="middle" width="48" align="right" style="padding:10px 12px 10px 0;${!isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}${rowBg}">
@@ -2136,7 +2298,7 @@ function weOpeningStories() {
   const ranked = shows
     .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
-    .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || quietBroadwayWeek || x.agg.avg >= 75))
+    .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && hasFreshRunCoverage(x.s) && (IS_WE || quietBroadwayWeek || x.agg.avg >= 75))
     // Genuine in-week openings always outrank a grace-window catch-up show
     // (openingDate outside this week — see inLondonOpeningWindow()), however
     // many reviews the catch-up show has: a catch-up show is there to be
@@ -2155,7 +2317,7 @@ function weOpeningStories() {
 function londonSection() {
   const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
-  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
+  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && hasFreshRunCoverage(x.s));
   if (!withScore.length) return null;
   // Sort: genuine in-week openings before grace-window catch-up shows (see
   // weOpeningStories()), then West End before Off West End (see weTierRank),
@@ -2252,7 +2414,7 @@ function weBroadwaySection() {
   if (!list.length) return { html: null, list: [] };
   const withScore = list
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
-    .filter(x => x.agg && x.agg.count >= minReviews('broadway'));
+    .filter(x => x.agg && x.agg.count >= minReviews('broadway') && hasFreshRunCoverage(x.s));
   if (!withScore.length) return { html: null, list: [] };
   // Sort: genuine in-week openings before grace-window catch-up shows, then
   // Gold first, then by score desc, ties broken by review count — same
@@ -2285,7 +2447,11 @@ function weBroadwaySection() {
 function operaOpeningsSection() {
   const list = shows.filter(s => isOperaShow(s) && inWeek(s.openingDate) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
-  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
+  // Opera carries the most priorRuns in the corpus (Met revivals:
+  // carmen-off-broadway-2025 and don-giovanni-off-broadway-2025 both mix
+  // 2023/2024 reviews into a later run), so this section needs the
+  // fresh-run gate at least as much as the others (QA review, 2026-09-20).
+  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3 && hasFreshRunCoverage(x.s));
   if (!withScore.length) return null;
   const marketColor = '#a78bfa'; // indigo/violet — opera's accent
   markOpening('opera-openings', withScore.map(x => x.s));
@@ -2343,7 +2509,7 @@ function mostReadSection(climberList) {
       </a>
     </td>
     <td valign="middle" width="56" align="right" style="padding:7px 8px 7px 4px;${border}">
-      ${it.score != null ? smallBadge(it.score, 48, it.category) : `<div style="box-sizing:border-box;display:inline-block;width:48px;height:48px;border-radius:8px;background:#2a2a38;color:#6b7280;font-size:14px;font-weight:700;line-height:48px;text-align:center;border:1px solid rgba(255,255,255,0.1);">—</div>`}
+      ${smallBadge(it.score, 48, it.category)}
     </td>
   </tr>`;
   }).join('');
@@ -2416,6 +2582,7 @@ const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection
 // side-effect — which wrongly suppressed a WE show (Cyrano, a mover) from the
 // catch-up section that IS rendered (2026-07-12). Don't run what won't render.
 const mover = IS_WE ? null : sections.run('biggest-movers', () => biggestMoverSection());
+const awardMover = IS_WE ? null : sections.run('award-score-movers', () => awardScoreMoversSection());
 const clo   = sections.run('closing-this-week', () => closingSection());
 const announced = IS_WE ? null : sections.run('announced-closings', () => announcedClosingsSection());
 const box      = IS_WE ? null : sections.run('box-office', () => boxOfficeSection());
@@ -2468,6 +2635,7 @@ try {
     moverShowIds: _moverShowIds,
     announcedClosingShowIds: _announcedShowIds,
     featuredShowIds: Array.from(featuredShowIds),
+    awardMoverSnapshotDate: _awardMoverSnapshotDate,
   });
   _issues.sort((a, b) => a.weekStart.localeCompare(b.weekStart));
   fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-24) }, null, 2) + '\n');
@@ -2553,6 +2721,7 @@ const sectionOrder = IS_WE ? [
   _slot('out-of-town-openings', otO.html),
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
+  _slot('award-score-movers', awardMover),
   _slot('closing-this-week', clo),
   _slot('announced-closings', announced),
   // London (+ Opera) openings sit right after the closings block — user

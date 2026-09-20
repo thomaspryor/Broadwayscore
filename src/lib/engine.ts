@@ -56,6 +56,15 @@ export interface CreativeMember {
   role: string;         // Director, Book, Music, Lyrics, Choreographer, etc.
 }
 
+// Earlier run of the same artistic production (returning transfer, revival
+// of a limited run, etc). Re-includes that run's reviews on the current
+// show page — see scripts/lib/wrong-production-autoclear.js findMatchingPriorRun.
+export interface PriorRun {
+  openingDate: string;
+  closingDate?: string;
+  venue?: string;
+}
+
 export interface RawShow {
   id: string;
   title: string;
@@ -97,6 +106,7 @@ export interface RawShow {
   // See src/lib/homepage-notability.ts. Editorial escape hatches over the auto rule.
   homepageInclude?: boolean;           // force onto homepage grid (e.g. star-driven previews)
   homepageExclude?: boolean;           // veto from homepage grid
+  priorRuns?: PriorRun[];
 }
 
 export interface RawReview {
@@ -265,6 +275,7 @@ export interface ComputedShow {
   cov?: { state: string; liveCount: number; candidateCount: number; computedAt: string | null };
   scorePublicSince?: string | null;
   coverageAcked?: boolean;
+  priorRuns?: PriorRun[];
 }
 
 /**
@@ -800,6 +811,7 @@ export function computeShowData(
     tourParent: show.tourParent,
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
+    priorRuns: show.priorRuns,
     // Scores
     criticScore,
     audienceScore: null,

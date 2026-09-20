@@ -92,8 +92,8 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
   assert.match(note, /^didn't update overnight:/);
 });
 
-test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; backlogDrain REMOVED BRO-3390 when its producer was retired)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'health', 'p1RelevanceAudit', 'predispatchQueue', 'providerSpend', 'redditDigest', 'trunk']);
+test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; doneEvidence added BRO-3426; backlogDrain REMOVED BRO-3390 when its producer was retired)', () => {
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'doneEvidence', 'health', 'p1RelevanceAudit', 'predispatchQueue', 'providerSpend', 'redditDigest', 'trunk']);
   assert.ok(!SNAPSHOTS.some((s) => s.key === 'backlogDrain'),
     'backlog-drain-metric.json froze on 2026-08-31 when scripts/backlog-drain.js was decommissioned; re-registering it would resume a permanent daily "stale" warning in the owner digest');
 });
@@ -187,6 +187,45 @@ test('buildSubject: autofixRows omitted or empty — behavior is byte-identical 
   const health = { subject: 'x', errors: ['a'], warns: [] };
   assert.match(buildSubject({ health, now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
   assert.match(buildSubject({ health, autofixRows: [], now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
+});
+
+// BRO-2425 (BRO-420 follow-up): a 48h+ stale "waiting on your approval" item
+// must escalate the subject line too, not just the body block — otherwise it
+// is invisible unless the owner opens the email and scrolls to that section.
+test('buildSubject: stale awaiting-owner item escalates the subject line', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const staleAwaitingOwner = {
+    items: [
+      { title: 'BRO-1: fresh', stale: false },
+      { title: 'BRO-2: stale', stale: true },
+    ],
+  };
+  const s = buildSubject({ health: null, awaitingOwner: staleAwaitingOwner, now });
+  assert.match(s, /⚠️ 1 approval waiting 48h\+/);
+  assert.equal(classifySubject(s)?.key, 'morning-digest');
+});
+
+test('buildSubject: fresh-only or empty awaiting-owner items do not escalate the subject', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const freshOnly = buildSubject({
+    health: null, awaitingOwner: { items: [{ title: 'BRO-1: fresh', stale: false }] }, now,
+  });
+  assert.doesNotMatch(freshOnly, /approval waiting/);
+  const none = buildSubject({ health: null, awaitingOwner: null, now });
+  assert.doesNotMatch(none, /approval waiting/);
+  const emptyItems = buildSubject({ health: null, awaitingOwner: { items: [] }, now });
+  assert.doesNotMatch(emptyItems, /approval waiting/);
+});
+
+test('buildSubject: stale awaiting-owner suffix is additive to the health suffix, not a replacement', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const s = buildSubject({
+    health: { subject: 'BSC URGENT (day 3): 2 unresolved errors', errors: ['a', 'b'], warns: ['c'] },
+    awaitingOwner: { items: [{ title: 'BRO-2: stale', stale: true }, { title: 'BRO-3: stale', stale: true }] },
+    now,
+  });
+  assert.match(s, /⛔ site health: 2 errors, 1 warning/);
+  assert.match(s, /⚠️ 2 approvals waiting 48h\+/);
 });
 
 test('buildHtml never renders loop language; empty day reads calm, not broken', () => {

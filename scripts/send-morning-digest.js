@@ -388,7 +388,7 @@ function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGE
 // classifies by this prefix, and the parity test in digest-snapshots.test.mjs
 // enforces it. Never a count ("0 items" reads as broken, owner feedback
 // 2026-07-27); the site-health escalation suffix is the only variable part.
-function buildSubject({ health = null, autofixRows = null, now = new Date() } = {}) {
+function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
   }).format(now);
@@ -421,6 +421,20 @@ function buildSubject({ health = null, autofixRows = null, now = new Date() } = 
     if (errs || warns) {
       suffix = ` · ${urgent ? '⛔' : '⚠️'} site health: ${errs} error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'}`;
     }
+  }
+  // BRO-2425 (BRO-420 follow-up): a 48h+ stale awaiting-owner item is
+  // otherwise invisible unless the owner opens the email and scrolls to that
+  // block — the same "trains the eye to skip it" failure mode BRO-282/BRO-420
+  // fix at the body level, one level up at the subject line. Additive to the
+  // health suffix above (both can be true in the same digest) but PREPENDED,
+  // not appended: mobile/notification previews truncate long subjects, and
+  // this is the owner-actionable one — it must not be the part that gets cut
+  // off behind a routine site-health count (ship-check review).
+  const staleApprovals = Array.isArray(awaitingOwner?.items)
+    ? awaitingOwner.items.filter((i) => i && i.stale).length
+    : 0;
+  if (staleApprovals) {
+    suffix = ` · ⚠️ ${staleApprovals} approval${staleApprovals === 1 ? '' : 's'} waiting 48h+` + suffix;
   }
   return `Morning digest — ${dateLabel}${suffix}`;
 }
@@ -593,6 +607,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // new render code. Same producer/plist as predispatchQueue, so it also
   // appears every morning.
   if (sections.dispatchGuardQueue) blocks.push(renderNamedDigestBlock('Dispatch guard queue backlog', sections.dispatchGuardQueue));
+  // Done-evidence audit (BRO-3426) — scripts/audit-done-evidence.js re-proves
+  // every Done(14d)/In Review/In Progress card's OWN claimed evidence against
+  // a fresh origin/main and names what no longer holds. Same {generatedAt,
+  // bannerText, items, moreCount} shape, no new render code. Placed after the
+  // dispatch/queue blocks because it is about the board's own honesty rather
+  // than about work waiting to start. SHADOW MODE: the producer never changes
+  // a Linear state, so every row here is a report, not an action already taken.
+  if (sections.doneEvidence) blocks.push(renderNamedDigestBlock('Done-evidence audit', sections.doneEvidence));
   // launchd blocked git syncs (task #1563) — same {generatedAt, bannerText,
   // items, moreCount} shape, no new render code. Only appears when a job's
   // sync actually got blocked (see readSyncRefused's header — not every
@@ -653,7 +675,7 @@ function composeDigestEmail({
     }
   }
 
-  const subject = buildSubject({ health: sections.health, autofixRows, now });
+  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, now });
   const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
   return { subject, html };
 }

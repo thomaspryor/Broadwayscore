@@ -167,8 +167,8 @@ jobs:
           # Same inline-timeout + explicit-exit fix, not step-level
           # timeout-minutes (reports conclusion=cancelled, which any future
           # if:failure() step here would silently skip).
-          timeout 900 npx vercel build --token=$VERCEL_TOKEN
-          status=$?
+          status=0
+          timeout 900 npx vercel build --token=$VERCEL_TOKEN || status=$?
           if [ "$status" -ne 0 ]; then
             if [ "$status" -eq 124 ]; then
               echo "::error::vercel build timed out after 15m (possible Vercel-side cancellation hang, see card #90)"

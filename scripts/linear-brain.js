@@ -322,6 +322,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             existingComments,
             verifyEvidence,
           });
+          if (gate.warning) console.error(`⚠️  ${gate.warning}`);
           if (gate.gated && !gate.allowed) {
             console.error(`\n❌ REFUSED (${gate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
             console.error(gate.reason);

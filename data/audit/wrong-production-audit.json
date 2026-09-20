@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-15T19:11:08.078Z",
+  "timestamp": "2026-09-20T18:03:15.215Z",
   "stats": {
-    "totalReviews": 43460,
-    "alreadyFlagged": 17986,
-    "dateGuardCatches": 237,
-    "directorMismatch": 1044,
-    "tvFilmSignals": 1273,
-    "londonSignals": 1065,
-    "offBroadwaySignals": 504,
+    "totalReviews": 43806,
+    "alreadyFlagged": 18093,
+    "dateGuardCatches": 245,
+    "directorMismatch": 1048,
+    "tvFilmSignals": 1295,
+    "londonSignals": 1132,
+    "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3826
+    "noPublishDate": 3834
   },
   "findings": [
     {
@@ -728,7 +728,32 @@
       "file": "everything-theatre--simone-green.json",
       "score": 92,
       "publishDate": "2024-09-14",
-      "url": null,
+      "url": "https://everything-theatre.co.uk/2024/09/review-abigails-party-stratford-east/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 697d before show (2024-09-14 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 697d before show (2024-09-14 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "abigails-party-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 87,
+      "publishDate": "2024-09-14",
+      "url": "https://www.londonboxoffice.co.uk/news/post/abigails-party-review",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -796,7 +821,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2024-09-13",
       "url": "https://www.whatsonstage.com/news/abigails-party-at-stratford-east-review_1630651/",
       "findings": [
@@ -1922,6 +1947,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/arcadia-review-duke-of-yorks-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david leveaux\" from arcadia-2011"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -5440,6 +5483,24 @@
     },
     {
       "showId": "cats-west-end-2026",
+      "file": "standard--west-end-theatre.json",
+      "publishDate": "2026-08-11",
+      "url": "https://www.standard.co.uk/culture/theatre/cats-at-regent-s-park-open-air-theatre-review-b1292992.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 61,
       "publishDate": "2026-08-07T07:46:52-04:00",
@@ -6408,7 +6469,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6422,7 +6483,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 81,
+      "score": 78,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6612,6 +6673,121 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "bestoftheatre--arthur-fisher.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-darkling-bush-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "fringereview--simon-jenner.json",
+      "score": null,
+      "publishDate": "2026-09-17",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "guardian--ammar-kalia.json",
+      "score": 49,
+      "publishDate": "2026-09-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 56,
+      "publishDate": "2026-09-17",
+      "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "lbhf--unknown.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.lbhf.gov.uk/news/2026/09/first-look-darkling-bush-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 63,
+      "publishDate": "2026-09-16",
+      "url": "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "the-morning-star--unknown.json",
+      "score": 77,
+      "publishDate": "2026-09-18",
+      "url": "https://morningstaronline.co.uk/article/theatre-review-darkling-bush-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "file": "viewfromthegods--simon-jenner.json",
+      "score": 81,
+      "publishDate": "2026-09-17",
+      "url": "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -8037,6 +8213,20 @@
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
+      "file": "financialtimes--clemency-burton-hill.json",
+      "score": 80,
+      "publishDate": "2023-05-08",
+      "url": "https://www.ft.com/content/a9257154-cd50-405e-a4ff-41b6d4298f49",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 870d before show (2023-05-08 vs 2025-09-24)"
+        }
+      ]
+    },
+    {
+      "showId": "don-giovanni-off-broadway-2025",
       "file": "nytimes--zachary-woolfe.json",
       "score": 81,
       "publishDate": "May 8th, 2023",
@@ -8366,6 +8556,20 @@
     },
     {
       "showId": "equus-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "score": 62,
+      "publishDate": "2026-05-21",
+      "url": "https://www.britishtheatreguide.info/reviews/equus-menier-chocolat-25607",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
       "score": 83,
       "publishDate": "2026-05-19",
@@ -8375,6 +8579,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john dexter\" from equus-1974"
+        }
+      ]
+    },
+    {
+      "showId": "equus-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "score": 90,
+      "publishDate": "2026-05-10",
+      "url": "https://monstagigz.com/2026/05/10/theatre-review-equus-starring-toby-stephens-amanda-abbington-noah-valentine-at-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -11049,6 +11267,44 @@
       ]
     },
     {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 86,
+      "publishDate": "2026-09-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 85,
+      "publishDate": "2026-09-16",
+      "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "good-night-and-good-luck-2025",
       "file": "thewrap--robert-hofler.json",
       "score": 78,
@@ -12774,6 +13030,20 @@
       ]
     },
     {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "vulture--jesse-green.json",
+      "score": 44,
+      "publishDate": "2025-07-10",
+      "url": "https://www.vulture.com/article/heathers-musical-nyc-revival-new-world-stages.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "hedda-gabler-2009",
       "file": "variety--david-rooney.json",
       "score": 39,
@@ -13563,6 +13833,30 @@
     },
     {
       "showId": "illinoise-2024",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 76,
+      "publishDate": "March 21st, 2024",
+      "url": "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 34d before show (March 21st, 2024 vs 2024-04-24)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-2024",
       "file": "variety--charles-isherwood.json",
       "score": 88,
       "publishDate": "April 25, 2024",
@@ -13745,6 +14039,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "file": "timeout--tim-teeman.json",
+      "score": 88,
+      "publishDate": "2026-09-14",
+      "url": "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -14624,7 +14932,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 82,
+      "score": 81,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -14750,7 +15058,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -14900,7 +15208,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -15693,7 +16001,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -15824,7 +16132,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -16250,7 +16558,7 @@
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 88,
+      "score": 89,
       "publishDate": "2026-09-10",
       "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
       "findings": [
@@ -17623,19 +17931,6 @@
     },
     {
       "showId": "little-bear-ridge-road-regional-2024",
-      "file": "hollywood-reporter--unknown.json",
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
-        }
-      ]
-    },
-    {
-      "showId": "little-bear-ridge-road-regional-2024",
       "file": "third-coast-review--adam-kaz.json",
       "score": 79,
       "publishDate": "2024-06-26",
@@ -18057,24 +18352,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "man-to-man-west-end-2026",
-      "file": "airmail--air-mail.json",
-      "publishDate": null,
-      "url": "https://airmail.news/arts-intel/events/man-to-man",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -18649,6 +18926,52 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "score": 67,
+      "publishDate": "2026-09-17",
+      "url": "https://ayoungishperspective.co.uk/2026/09/17/review-million-dollar-quartet/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "south-london--unknown.json",
+      "score": 77,
+      "publishDate": "2026-09-17",
+      "url": "https://southlondon.co.uk/lifestyle/review-million-dollar-quartet-the-arts-at-marble-arch/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "theatregold--unknown.json",
+      "publishDate": "2026-08-10",
+      "url": "https://theatregold.com/million-dollar-quartet-west-end-2026/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"eric schaeffer\" from million-dollar-quartet-2010"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -19295,7 +19618,7 @@
     {
       "showId": "much-ado-about-nothing-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 71,
+      "score": 81,
       "publishDate": "2025-02-23",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-tom-hiddleston-3mfwhtv89",
       "findings": [
@@ -19337,7 +19660,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 79,
+      "score": 76,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -19383,7 +19706,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2026-06-23",
       "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "findings": [
@@ -19430,7 +19753,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 66,
+      "score": 67,
       "publishDate": "2026-06-23",
       "url": "https://www.timeout.com/london/theatre/much-ado-about-nothing-500-review",
       "findings": [
@@ -19839,7 +20162,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "October 19th, 2022",
       "url": "https://www.thetimes.co.uk/article/my-neighbour-totoro-review-animated-whimsy-takes-to-the-stage-with-aplomb-b28sv8dnl",
       "findings": [
@@ -19867,7 +20190,9 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "gay-times--chris-selman.json",
-      "score": 91,
+      "score": 97,
+      "publishDate": "2022-10-24",
+      "url": "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -19879,7 +20204,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 76,
+      "score": 74,
       "publishDate": "2022-10-24",
       "url": "https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre",
       "findings": [
@@ -19908,6 +20233,8 @@
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 82,
+      "publishDate": "2022-10-24",
+      "url": "https://www.standard.co.uk/culture/theatre/my-sons-a-queer-but-what-can-you-do-garrick-theatre-review-west-end-b1034714.html",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -19919,7 +20246,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "telegraph--marianka-swain.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2022-10-24",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/sons-queer-what-can-do-garrick-theatre-review-rob-madges-bittersweet/",
       "findings": [
@@ -21318,6 +21645,19 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://standard.co.uk/culture/theatre/paranormal-activity-ambassadors-theatre-review-b1262616.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
       "file": "thestage--tom-wicker.json",
       "score": 87,
       "publishDate": "December 16th, 2025",
@@ -22116,6 +22456,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
+      "showId": "pre-existing-condition-off-broadway-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 68,
+      "publishDate": "2026-09-15",
+      "url": "https://t2conline.com/pre-existing-condition-lupita-nyongo-gives-voice-to-what-the-play-leaves-unsaid/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -23358,7 +23717,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 63,
       "publishDate": "2026-04-03",
-      "url": null,
+      "url": "https://www.dailymail.com/tv/article-15701933/sadie-sink-noah-jupe-romeo-juliet-review.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -23372,7 +23731,7 @@
       "file": "daily-mail--robert-gore-langton.json",
       "score": 40,
       "publishDate": "2026-04-05",
-      "url": null,
+      "url": "https://www.dailymail.com/tv/article-15701933/sadie-sink-noah-jupe-romeo-juliet-review.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -23478,7 +23837,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "guardian--adrian-horton.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "October 24, 2024",
       "url": "https://www.theguardian.com/stage/2024/oct/24/romeo-juliet-broadway-review",
       "findings": [
@@ -23553,7 +23912,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2024-10-24T22:57:29",
       "url": "https://nystagereview.com/2024/10/24/romeo-juliet-shakespeare-for-the-tiktok-generation/",
       "findings": [
@@ -23637,7 +23996,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "timeout--adam-feldman.json",
-      "score": 59,
+      "score": 62,
       "publishDate": "October 24, 2024",
       "url": "https://www.timeout.com/newyork/theater/romeo-juliet-broadway-review-kit-connor-rachel-zegler",
       "findings": [
@@ -27606,7 +27965,7 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2026 (2x) more than 2016 (0x). 2026 matches production: the-cherry-orchard-west-end-2026"
+          "detail": "Mentions year 2026 (2x) more than 2016 (0x). 2026 matches production: the-cherry-orchard-park-avenue-armory-off-broadway-2026"
         }
       ]
     },
@@ -27635,6 +27994,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 5\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": 78,
+      "publishDate": "2026-09-18",
+      "url": "https://nystagereview.com/2026/09/18/cherry-orchard-not-your-fathers/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+      "file": "theater-pizzazz--unknown.json",
+      "score": 89,
+      "publishDate": "2026-09-19",
+      "url": "https://theaterpizzazz.com/a-korean-cast-blossoms-in-a-new-cherry-orchard/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -28072,7 +28459,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "broadwayworld--unknown.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2025-05-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre",
       "findings": [
@@ -28952,7 +29339,6 @@
     {
       "showId": "the-ferryman-2018",
       "file": "wsj--terry-teachout.json",
-      "score": 78,
       "publishDate": "October 25th, 2018",
       "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470",
       "findings": [
@@ -30824,7 +31210,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 89,
+      "score": 97,
       "publishDate": "2025-09-16",
       "url": "https://www.standard.co.uk/culture/theatre/the-producers-garrick-theatre-review-mel-brooks-b1247818.html",
       "findings": [
@@ -31347,6 +31733,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "publishDate": "2026-09-18",
+      "url": "https://www.britishtheatreguide.info/reviews/letter-to-brezh-royal-court-the-26023",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -32012,7 +32416,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 79,
+      "score": 66,
       "publishDate": "2022-04-01",
       "url": "https://www.ft.com/content/1a41fbbe-b98c-4a36-87b8-4dc38636d640",
       "findings": [
@@ -33901,6 +34305,20 @@
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
+      "file": "guardian--david-jays.json",
+      "score": 62,
+      "publishDate": "October 6th, 2024",
+      "url": "https://www.theguardian.com/tv-and-radio/2026/jul/18/buried-dead-rabbit-podcast-review-hampshire-school",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 610d before show (October 6th, 2024 vs 2026-06-08)"
+        }
+      ]
+    },
+    {
+      "showId": "white-rabbit-red-rabbit-west-end-2026",
       "file": "thestage--dave-fargnoli.json",
       "score": 76,
       "publishDate": "October 3rd, 2024",
@@ -34774,7 +35192,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -34829,7 +35247,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -34846,6 +35264,20 @@
       "score": 86,
       "publishDate": "2026-09-07",
       "url": "https://playsinternational.org.uk/a-month-in-the-country-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "file": "theartsdispatch--the-arts-dispatch.json",
+      "score": 85,
+      "publishDate": "2026-09-13",
+      "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -35144,7 +35576,7 @@
     {
       "showId": "abigails-party-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2026-08-21",
       "url": "https://playsinternational.org.uk/abigails-party-harold-pinter-theatre/",
       "findings": [
@@ -36076,7 +36508,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "2026-06-27",
       "url": "https://www.allthatdazzles.co.uk/post/review-archduke-royal-court",
       "findings": [
@@ -36174,7 +36606,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -36188,7 +36620,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 57,
+      "score": 61,
       "publishDate": "2026-07-03",
       "url": "https://www.standard.co.uk/culture/theatre/archduke-royal-court-review-b1288614.html",
       "findings": [
@@ -36244,7 +36676,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 64,
+      "score": 62,
       "publishDate": "2026-06-29",
       "url": "https://www.whatsonstage.com/news/archduke-at-the-royal-court-review_1726342/",
       "findings": [
@@ -36331,6 +36763,19 @@
       "score": 78,
       "publishDate": "2026-04-18",
       "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "fairypoweredproductions--unknown.json",
+      "publishDate": "2026-05-27",
+      "url": "https://fairypoweredproductions.com/avenue-q-review-12/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -36847,7 +37292,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 49,
       "publishDate": "2026-09-11",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -37541,7 +37986,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -37555,7 +38000,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-05-20",
       "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
       "findings": [
@@ -38607,6 +39052,20 @@
       ]
     },
     {
+      "showId": "darkling-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 87,
+      "publishDate": "2026-09-17",
+      "url": "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "days-of-wine-and-roses-2024",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 59,
@@ -38830,7 +39289,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -38844,7 +39303,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -40474,6 +40933,20 @@
       ]
     },
     {
+      "showId": "garry-starr-classic-penguins-off-broadway-2026",
+      "file": "one-minute-critic--unknown.json",
+      "score": 71,
+      "publishDate": "2026-09-09",
+      "url": "https://1minutecritic.com/garry-starr-classic-penguins-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
       "file": "theater-scene--victor-gluck.json",
       "score": 79,
@@ -40559,9 +41032,231 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 98,
+      "publishDate": "2026-09-15",
+      "url": "https://www.allthatdazzles.co.uk/post/review-golden-boy-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
       "file": "anothermag--another.json",
       "publishDate": "2026-09-08",
       "url": "https://www.anothermag.com/design-living/17447/josh-oconnor-golden-boy-sam-yates-interview-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "bestoftheatre--arthur-fisher.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-golden-boy-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "score": 91,
+      "publishDate": "2026-09-18",
+      "url": "https://www.britishtheatreguide.info/reviews/golden-boy-almeida-theatre-26021",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "british-theatre--vera-liber.json",
+      "score": 91,
+      "publishDate": "2026-09-18",
+      "url": "https://www.britishtheatreguide.info/reviews/golden-boy-almeida-theatre-26021",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "fringereview--unknown.json",
+      "score": 90,
+      "publishDate": "2026-09-16",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 60,
+      "publishDate": "2026-09-16",
+      "url": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 82,
+      "publishDate": "2026-09-16",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 76,
+      "publishDate": "2026-09-16",
+      "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "londonlivinglarge--london-living-large.json",
+      "score": 75,
+      "publishDate": "2026-09-18",
+      "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "nationaltheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "score": 87,
+      "publishDate": "2026-09-18",
+      "url": "https://playsinternational.org.uk/golden-boy-almeida-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "standard--unknown.json",
+      "score": 88,
+      "publishDate": "2026-09-16",
+      "url": "https://www.standard.co.uk/culture/theatre/golden-boy-almeida-theatre-review-b1297258.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "theatreandtonic--eleanor-bywater.json",
+      "score": 89,
+      "publishDate": "2026-09-17",
+      "url": "https://theatreandtonic.co.uk/blog/golden-boy-at-almeida-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "thenerve--dorian-lynskey.json",
+      "score": 79,
+      "publishDate": "2026-09-18",
+      "url": "https://www.thenerve.news/p/review-theatre-golden-boy-josh-oconnor-almeida-sam-yates-boxing-dorian-lynskey",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 58,
+      "publishDate": "2026-09-15",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/golden-boy-review-boxing-tale-packs-some-punch-but-its-no-knockout-76ts9drmv",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "viewfromthegods--simon-jenner.json",
+      "score": 91,
+      "publishDate": "2026-09-12",
+      "url": "https://viewfromthegods.co.uk/2026/09/16/golden-boy-almeida-islington/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -40969,7 +41664,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -41421,6 +42116,33 @@
       "score": 71,
       "publishDate": "April 30, 2018",
       "url": "https://slleiter.blogspot.com/2018/04/215-2017-2018-review-harry-potter-and.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 90,
+      "publishDate": "2022-01-25",
+      "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "london-theatre--theo-bosanquet.json",
+      "publishDate": "2022-01-25",
+      "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -42327,6 +43049,20 @@
     },
     {
       "showId": "illinoise-2024",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 85,
+      "publishDate": "March 7th, 2024",
+      "url": "https://newyorktheater.me/2024/03/07/illinoise-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 48d before show (March 7th, 2024 vs 2024-04-24)"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-2024",
       "file": "nytg--amelia-merrill.json",
       "score": 78,
       "publishDate": "March 7, 2024",
@@ -42365,6 +43101,25 @@
       "publishDate": "April 25, 2024",
       "url": "https://pagesonstages.wordpress.com/2024/04/25/illinoise/",
       "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "slantmagazine--dan-rubins.json",
+      "score": 80,
+      "publishDate": "2024-03-08",
+      "url": "https://www.slantmagazine.com/theater/illinoise-review-sufjan-stevens-justin-peck/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 47d before show (2024-03-08 vs 2024-04-24)"
+        },
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
@@ -43414,6 +44169,19 @@
       ]
     },
     {
+      "showId": "kimberly-akimbo-off-west-end-2026",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://standard.co.uk/culture/theatre/kimberly-akimbo-at-hampstead-theatre-b1296444.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "king-charles-iii-2015",
       "file": "bobs-theater-blog--robert-sholiton.json",
       "score": 75,
@@ -44289,7 +45057,7 @@
     {
       "showId": "mamma-mia-west-end-2021",
       "file": "west-end-wilma--west-end-wilma.json",
-      "score": 100,
+      "score": 90,
       "publishDate": "2019-06-19",
       "url": "https://www.westendwilma.com/review-mamma-mia-novello-theatre/",
       "findings": [
@@ -44455,8 +45223,22 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "british-theatre--keith-mckenna.json",
+      "score": 75,
+      "publishDate": "2026-09-15",
+      "url": "https://www.britishtheatreguide.info/reviews/man-to-man-royal-court-the-26014",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -44496,10 +45278,52 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "score": 49,
+      "publishDate": "2026-09-16",
+      "url": "https://firstnightmagazine.com/2026/09/16/review-of-man-to-man-royal-court-2026-tilda-swinton-is-still-the-man-of-the-hour-despite-urwins-lack-of-action/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "guardian--mark-lawson.json",
       "score": 82,
       "publishDate": "2026-09-11",
       "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 87,
+      "publishDate": "2026-09-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 55,
+      "publishDate": "2026-09-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/man-to-man-royal-court-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -44551,6 +45375,20 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "score": 64,
+      "publishDate": "2026-09-15",
+      "url": "https://playsinternational.org.uk/man-to-man-royal-court-theatre-downstairs/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "qxmagazine--qx.json",
       "publishDate": "2026-09-09",
       "url": "https://www.qxmagazine.com/2026/09/tilda-swinton-in-man-to-man-at-royal-court-theatre-9-september-24-october-2026/",
@@ -44591,10 +45429,38 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "south-london--michael-holland.json",
+      "score": 90,
+      "publishDate": "2026-09-19",
+      "url": "https://southlondon.co.uk/lifestyle/review-man-to-man-at-royal-court/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "telegraph--kirsten-grant.json",
       "score": 82,
       "publishDate": "2026-09-12",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/man-to-man-review-tilda-swinton-triumphant-stage-return/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "the-recs--unknown.json",
+      "score": 78,
+      "publishDate": "2026-09-13",
+      "url": "https://therecs.co.uk/man-to-man/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -44632,10 +45498,38 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "thereviewshub--unknown.json",
+      "score": 89,
+      "publishDate": "2026-09-20",
+      "url": "https://www.thereviewshub.com/man-to-man-royal-court-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 82,
       "publishDate": "2026-09-12",
       "url": "https://www.timeout.com/london/news/review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre-091226",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "west-end-best-friend--jeff-mostyn.json",
+      "score": 85,
+      "publishDate": "2026-09-19",
+      "url": "https://www.westendbestfriend.co.uk/news/review-man-to-man-royal-court-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -44759,7 +45653,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 82,
+      "score": 81,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -44773,7 +45667,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -44787,7 +45681,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -44885,7 +45779,7 @@
     {
       "showId": "matilda-the-musical-west-end-2021",
       "file": "london-theatre--peter-brown.json",
-      "score": 93,
+      "score": 92,
       "publishDate": "November 24th, 2011",
       "url": "https://www.londontheatre.co.uk/reviews/matilda-the-musical-review",
       "findings": [
@@ -45050,6 +45944,62 @@
       ]
     },
     {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "broadwayworld--michael-major.json",
+      "score": null,
+      "publishDate": "2026-09-09",
+      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 87,
+      "publishDate": "2026-09-14",
+      "url": "https://www.londontheatre.co.uk/reviews/million-dollar-quartet-review-the-arts-at-marble-arch",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/million-dollar-quartet-the-arts-at-marble-arch/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 79,
+      "publishDate": "2026-09-15",
+      "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "misery-2015",
       "file": "huffpost--michael-giltz.json",
       "score": 39,
@@ -45178,7 +46128,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 73,
+      "score": 74,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
@@ -45335,6 +46285,32 @@
       "score": null,
       "publishDate": "2025-03-21",
       "url": "https://www.whatsonstage.com/news/my-neighbour-totoro-celebrates-its-official-west-end-opening-night_1670554/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "londontheatredirect--london-theatre-direct-limited.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "thegoldenticketclub--unknown.json",
+      "publishDate": null,
+      "url": "https://thegoldenticketclub.co.uk/events/my-sons-a-queer-but-what-can-you-do/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -45564,6 +46540,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "night-city-off-west-end-2026",
+      "file": "bestoftheatre--arthur-fisher.json",
+      "publishDate": "2026-09-15",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-night-city-southwark-playhouse-borough",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "night-city-off-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "publishDate": "2026-09-15",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-night-city-southwark-playhouse-borough",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -46014,7 +47016,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "daily-mail--georgina-brown.json",
-      "score": 94,
+      "score": 95,
       "publishDate": "2024-07-26",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
       "findings": [
@@ -46041,7 +47043,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
-      "score": 99,
+      "score": 100,
       "publishDate": "2025-01-13",
       "url": "https://www.londontheatre.co.uk/reviews/oliver-review-gielgud-theatre",
       "findings": [
@@ -46069,7 +47071,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
-      "score": 95,
+      "score": 96,
       "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
@@ -46077,6 +47079,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "telegraph--unknown.json",
+      "score": 91,
+      "publishDate": "January 14th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -46531,7 +47547,7 @@
     {
       "showId": "paranormal-activity-west-end-2025",
       "file": "times-uk--unknown.json",
-      "score": 73,
+      "score": 82,
       "publishDate": "2025-12-16",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz",
       "findings": [
@@ -48956,6 +49972,20 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 63,
+      "publishDate": "2023-12-14",
+      "url": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-london.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "nytimes--houman-barekat.json",
       "score": 63,
       "publishDate": "December 14, 2023",
@@ -48972,6 +50002,32 @@
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "variety--david-benedict.json",
       "score": 87,
+      "publishDate": "2023-12-15",
+      "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "variety--ellise-shafer.json",
+      "publishDate": "2023-12-15",
+      "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "variety--frank-rizzo.json",
       "publishDate": "2023-12-15",
       "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
       "findings": [
@@ -49418,7 +50474,7 @@
     {
       "showId": "tartuffe-remixed-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 59,
+      "score": 62,
       "publishDate": "2026-09-14",
       "url": "https://www.standard.co.uk/culture/theatre/tartuffe-remixed-at-marylebone-theatre-review-b1296887.html",
       "findings": [
@@ -50399,6 +51455,20 @@
       ]
     },
     {
+      "showId": "the-children-off-west-end-2026",
+      "file": "theatreboard--unknown.json",
+      "score": 81,
+      "publishDate": "2026-09-16",
+      "url": "https://theatreboard.com/thread/15320/children-meera-syal-lyric-hammersmith",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-collaboration-2022",
       "file": "cititour--brian-scott-lipton.json",
       "score": 36,
@@ -50604,6 +51674,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/the-comedy-about-spies-review-mischiefs-cold-war-caper-has-japes-aplenty_1677753/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -52541,7 +53625,7 @@
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 75,
+      "score": 56,
       "publishDate": "2025-12-12",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-playboy-of-the-western-world-nicola-coughlan-b2883264.html",
       "findings": [
@@ -52955,6 +54039,19 @@
       ]
     },
     {
+      "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
+      "file": "bestoftheatre--alan-ingram.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-seven-deadly-sins-the-human-voice-charing-cross-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-shark-is-broken-2023",
       "file": "nyt-theater--david-nounou.json",
       "score": 60,
@@ -53125,6 +54222,7 @@
     {
       "showId": "the-story-west-end-2026",
       "file": "british-theatre--anna-ambelez.json",
+      "score": 42,
       "publishDate": "2026-09-04",
       "url": "https://www.britishtheatreguide.info/reviews/the-story-olivier-theatre-25983",
       "findings": [
@@ -53155,6 +54253,20 @@
       "score": 54,
       "publishDate": "2026-09-03",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "file": "fringereview--unknown.json",
+      "score": 77,
+      "publishDate": "2026-09-11",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-story/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -53290,10 +54402,37 @@
     },
     {
       "showId": "the-story-west-end-2026",
+      "file": "muddystilettos--unknown.json",
+      "publishDate": null,
+      "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/the-story-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
       "score": 59,
       "publishDate": "2026-09-06",
       "url": "https://revstanstheatreblog.co.uk/2026/09/06/review-the-story-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "file": "rolandcat--roviews.json",
+      "score": 92,
+      "publishDate": "2026-09-12",
+      "url": "https://rolandcat.substack.com/p/review-the-story-national-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -53650,6 +54789,201 @@
       ]
     },
     {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "score": 42,
+      "publishDate": "2026-09-18",
+      "url": "https://ayoungishperspective.co.uk/2026/09/18/review-thelma-louise/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "broadwayworld--louise-penn.json",
+      "score": 79,
+      "publishDate": "2026-09-18",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THELMA-LOUISE-Young-Vic-20260918",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 44,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/sep/17/thelma-and-louise-review-young-vic-london-musical",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 75,
+      "publishDate": "2026-09-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/thelma-louise-young-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "london-theatre--julia-rank.json",
+      "score": 67,
+      "publishDate": "2026-09-17",
+      "url": "https://www.londontheatre.co.uk/reviews/thelma-and-louise-a-new-musical-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.londontheatre.co.uk/reviews/thelma-and-louise-a-new-musical-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 87,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "musicalmanda--unknown.json",
+      "score": 92,
+      "publishDate": "2026-09-16",
+      "url": "https://musicalmanda.site/2026/09/16/thelma-louise-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "stagedtheatre--unknown.json",
+      "score": 79,
+      "publishDate": "2026-09-17",
+      "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/thelma-and-louise-the-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "standard--unknown.json",
+      "score": 62,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/thelma-and-louise-at-the-young-vic-review-b1297374.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 64,
+      "publishDate": "2026-09-16",
+      "url": "https://theatreweekly.com/review-thelma-louise-at-young-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "score": 85,
+      "publishDate": "2026-09-17",
+      "url": "https://theatreandtonic.co.uk/blog/thelma-and-louise-at-the-young-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "theatreboard--unknown.json",
+      "score": 79,
+      "publishDate": "2026-09-04",
+      "url": "https://theatreboard.com/thread/15206/thelma-louise-young-vic?page=6",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "wave--mickeyjotheatre.json",
+      "score": 78,
+      "publishDate": "2026-09-18",
+      "url": "https://pod.wave.co/podcast/mickeyjotheatre/thelma-louise-young-vic-theatre-london-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "british-theatre--graeme-strachan.json",
       "score": 90,
@@ -53665,10 +54999,24 @@
     },
     {
       "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "everything-theatre--harry-conway.json",
+      "score": 84,
+      "publishDate": "2025-08-29",
+      "url": "https://everything-theatre.co.uk/2025/08/review-this-is-not-about-me-edfringe/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 208d before show (2025-08-29 vs 2026-03-25)"
+        }
+      ]
+    },
+    {
+      "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "thereviewshub--tom-ralphs.json",
       "score": 73,
       "publishDate": "2025-08-26",
-      "url": null,
+      "url": "https://www.thereviewshub.com/edinburgh-fringe-2025-this-is-not-about-me-summerhall-edinburgh/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -54144,6 +55492,20 @@
       "score": 67,
       "publishDate": null,
       "url": "https://www.hollywoodreporter.com/review/true-west-review-1177735",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "theverdictnyc--the-verdict.json",
+      "score": 91,
+      "publishDate": "2025-12-21",
+      "url": "https://theverdictnyc.wixsite.com/theverdict/post/review-two-strangers-carry-a-cake-across-new-york",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

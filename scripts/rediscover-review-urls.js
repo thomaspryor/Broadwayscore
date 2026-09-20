@@ -26,6 +26,7 @@ const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { isCrossOutletUrl } = require('./lib/review-normalization');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // ---------------------------------------------------------------------------
 // CONFIG
@@ -85,9 +86,7 @@ function sleep(ms) {
  */
 function loadCandidates() {
   const candidates = [];
-  const dirs = fs.readdirSync(CONFIG.reviewTextsDir).filter(d => {
-    try { return fs.statSync(path.join(CONFIG.reviewTextsDir, d)).isDirectory(); } catch (e) { return false; }
-  });
+  const dirs = listShowDirs(CONFIG.reviewTextsDir);
 
   for (const dir of dirs) {
     if (CONFIG.showFilter && dir !== CONFIG.showFilter) continue;

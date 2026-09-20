@@ -95,7 +95,19 @@ function checkLinearDoneTransition({ targetStateType, description = '', commentT
       // otherwise the refusal below would tell the operator to add a VERIFY:
       // line that this same branch would then never look at.
       const viaCmd = evaluateDoneTransition({ prRef: null, notes: description, comments });
-      if (viaCmd.allowed) return { gated: true, ...viaCmd, verification };
+      if (viaCmd.allowed) {
+        // Allowed on the command's strength — but a PROVEN-false PR claim
+        // sitting next to it is worth saying out loud, not swallowing.
+        // Warn on ANY ref proven not-on-main, not only when the overall verdict
+        // is false — one unresolvable sibling token would otherwise turn a
+        // proven-false claim into a silent unknown.
+        const provenFalse = verification && (verification.verified === false
+          || (Array.isArray(verification.checked) && verification.checked.some(c => c && c.onMain === false)));
+        const warning = provenFalse
+          ? `PR-EVIDENCE on this issue cites a commit/PR that is NOT on origin/main (${verification.reason}); Done is allowed only because a VERIFY: command is recorded (${viaCmd.cmd}).`
+          : null;
+        return { gated: true, ...viaCmd, verification, ...(warning ? { warning } : {}) };
+      }
       const definite = verification && verification.verified === false;
       return {
         gated: true,
@@ -106,7 +118,7 @@ function checkLinearDoneTransition({ targetStateType, description = '', commentT
           `PR-EVIDENCE was not confirmed on origin/main: ${verification ? verification.reason : 'verifier returned nothing'}. ` +
           'Post a new comment citing the commit that is actually on origin/main, exactly like this: ' +
           'PR-EVIDENCE: merged deployed checked (https://github.com/<owner>/<repo>/commit/<sha>) ' +
-          '— a bare SHA or a merged PR URL also works. ' +
+          '— a bare SHA of at least 11 hex characters (`git log --abbrev=11`) or a merged PR URL also works; 7-char SHAs are not accepted bare. ' +
           'Or add a line `VERIFY: node --test <the test file this work added>`. ' +
           'Or, as the owner, --force "<reason>".',
         verification,

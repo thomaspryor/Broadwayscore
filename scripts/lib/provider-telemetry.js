@@ -255,6 +255,24 @@ function sbBilledCredits(status, credits) {
 }
 
 /**
+ * Scrapingdog bills only successful requests: the A0 billing probe (#213)
+ * confirmed SD failures are free, and both SD call sites (scraper.js
+ * fetchWithScrapingdog, url-discovery.js _serpViaScrapingdog) already rely on
+ * that for their retry policy — yet until BRO-3325's what-else pass
+ * (2026-09-15) they still BOOKED failures at full tier cost in the spend
+ * ledger: ~9,900 phantom credits in 7 days (4,334 of them SD's own "Oops!
+ * Something went wrong. You won't be charged for this request" 400/500s),
+ * skewing the weekly cost-watch attribution. Same shape and home as
+ * sbBilledCredits so the two providers' failure rows stay comparable and a
+ * third SD caller cannot omit the rule. Per-run SD_CREDIT_BUDGET accounting in
+ * scraper.js deliberately still counts attempts (conservative) — this rule is
+ * for the ledger only.
+ */
+function sdBilledCredits(success, credits) {
+  return success ? credits : 0;
+}
+
+/**
  * The billing-count field to compare ledger counts against, per provider, as
  * produced by provider-spend-core.js's computeDayRecord().
  */
@@ -315,6 +333,7 @@ module.exports = {
   HOST_DIMENSION_PROVIDERS,
   BILLING_COUNT_FIELD,
   sbBilledCredits,
+  sdBilledCredits,
   LEDGER_PATH,
   MAX_LEDGER_LINES,
 };

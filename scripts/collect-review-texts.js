@@ -57,6 +57,7 @@ const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions } = require('./lib/review-write-guard.js');
+const { shouldPushReviewTextsCheckpoint } = require('./lib/review-texts-checkpoint-gate.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
 
@@ -99,6 +100,9 @@ process.on('unhandledRejection', (reason, promise) => {
 const { extractScore, extractDesignation, extractNYTCriticsPick, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 const { findBoldHeaderAnchors, loadShows: loadSplitterShows } = require('./lib/multi-show-splitter');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
+// BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
+// to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
+const { extractArticleText: extractArticleTextFromHtml } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
@@ -148,10 +152,11 @@ const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { parseDate } = require('./lib/date-utils');
+const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -186,6 +191,43 @@ function renameReviewFileForCriticOverride(review, data, extractedAuthor) {
 
   if (newFilename === currentFile) {
     return { action: 'noop' };
+  }
+
+  // Same URL already promoted under a DIFFERENT critic name/file — rotating-byline
+  // outlets (Times UK, WhatsOnStage: a "more from our critics" recirc widget) return
+  // a different extracted byline on the SAME url across fetches, so the exact-filename
+  // check below only catches a collision with the freshly-computed newFilename; it
+  // misses a sibling already promoted under some OTHER name for this url. That gap is
+  // the byline-explosion root cause (BRO-1391), fixed for the _pending drain in
+  // replay-pending-bylines.js and shared here (BRO-3550) so this 3x-daily primary
+  // collection pipeline gets the same protection instead of minting a second primary.
+  //
+  // The decision on whether to actually mark duplicate is delegated to
+  // shouldMarkUrlCollisionDuplicate — the SAME check safeWriteReview's own URL-collision
+  // path uses — rather than marking unconditionally: an empty/near-empty sibling found
+  // first must never bury a substantive recovered review, and a prior deliberate
+  // _duplicateOfCleared must never be silently re-flagged (ship-check, Codex review).
+  const showId = data.showId || review.showId;
+  if (data.url && showId) {
+    const existingSameUrl = findExistingFileForUrl(CONFIG.reviewTextsDir, showId, outletId, data.url, currentFile);
+    let colliderData = null;
+    if (existingSameUrl && existingSameUrl !== currentFile && existingSameUrl !== newFilename) {
+      try {
+        colliderData = JSON.parse(fs.readFileSync(path.join(showDir, existingSameUrl), 'utf8'));
+      } catch { /* unreadable collider — shouldMarkUrlCollisionDuplicate treats null as "mark" (historical behavior) */ }
+    }
+    const guardResult = decideSameUrlDifferentFileGuard({
+      currentFile, newFilename, existingSameUrl, newData: data, colliderData,
+      shouldMarkDuplicate: shouldMarkUrlCollisionDuplicate,
+    });
+    if (guardResult) {
+      data.duplicateOf = guardResult.duplicateOf;
+      data.duplicateTextOf = guardResult.duplicateOf;
+      data.duplicateReason = guardResult.duplicateReason;
+      delete data.duplicateClearReason;
+      console.warn(`    ⚠ Same URL already promoted as ${guardResult.duplicateOf} — marking ${currentFile} duplicateOf instead of renaming to ${newFilename}`);
+      return { action: 'conflict', newFile: guardResult.duplicateOf };
+    }
   }
 
   const newPath = path.join(showDir, newFilename);
@@ -499,6 +541,7 @@ const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
+const { neutralizeStaleFlagsOnBodyReplacement } = require('./lib/stale-flag-neutralization');
 const { emitStage } = require('./lib/stage-latency');
 
 // Outlet-specific Playwright wait configurations
@@ -3731,9 +3774,14 @@ const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor'
 
 async function extractArticleText(page) {
   // Serialize the lib function and run it in the browser. Wrapping in
-  // `(${fn.toString()})(document)` evaluates the IIFE with the browser's
-  // own document. Function must be self-contained — no closures.
-  return await page.evaluate(`(${extractArticleTextFromDocument.toString()})(document)`);
+  // `(${fn.toString()})(document, url)` evaluates the IIFE with the browser's
+  // own document. Function must be self-contained — no closures. The current
+  // page URL is passed through so BRO-912's talkinbroadway.com bail-out
+  // (dom-article-extractor.js) can domain-scope itself.
+  const currentUrl = page.url();
+  return await page.evaluate(
+    `(${extractArticleTextFromDocument.toString()})(document, ${JSON.stringify(currentUrl)})`
+  );
 }
 
 /**
@@ -3783,6 +3831,24 @@ function extractFromJsonLd(html) {
 function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
 
+  // Talkin' Broadway (BRO-912): checked FIRST (ahead of JSON-LD/generic
+  // parsing) and authoritative — a "known outlet, don't let a bad fallback
+  // masquerade as a real extraction" host, same as WSJ/Stage/Times in
+  // scripts/lib/article-extractor.js's DEDICATED_EXTRACTOR_HOSTS. The naive
+  // "grab every <p> inside <section class='page'>" scrape this used to fall
+  // through to has no byline anchor, so on a "Past Reviews" page (multiple
+  // runs stacked on one URL) it blends every stacked run into one fullText,
+  // and it doesn't structurally exclude the newsletter-signup sidebar either
+  // — the exact garbage/bleed failure modes BRO-912 reports. Delegate to the
+  // shared, unit-tested byline-anchored extractor (task #1887) instead, which
+  // anchors on the page's "Theatre Review by {Critic} - {Date}" marker. If it
+  // returns null (no byline marker — not a real review page), return ''
+  // rather than resurrecting the naive scrape: a null here means "this TB
+  // page isn't a review", not "the good extractor merely failed".
+  if (url && url.includes('talkinbroadway.com')) {
+    return extractArticleTextFromHtml(html, url) || '';
+  }
+
   // New Yorker-specific extraction: isolate article body before generic parsing
   if (url && url.includes('newyorker.com')) {
     const nyText = extractNewYorkerFromHtml(html);
@@ -3809,16 +3875,6 @@ function extractTextFromHtml(html, url) {
     .replace(/<div[^>]*class="[^"]*(?:sharedaddy|jp-relatedposts|sd-sharing|sd-like|wpcnt|related-posts|widget|sidebar|comment|author-bio|author-info|post-tags|post-meta|social-share|share-buttons)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
     .replace(/<section[^>]*class="[^"]*(?:related|comments|author)[^"]*"[^>]*>[\s\S]*?<\/section>/gi, '')
     .replace(/<ul[^>]*class="[^"]*(?:social|share|tag)[^"]*"[^>]*>[\s\S]*?<\/ul>/gi, '');
-
-  // Talkin' Broadway: content lives in <section class="page">, not a <div>.
-  // Check this BEFORE the generic div-class container loop.
-  const sectionPageMatch = text.match(/<section\s+class="page">([\s\S]*?)<\/section>/i);
-  if (sectionPageMatch && sectionPageMatch[1]) {
-    const sectionPs = Array.from(sectionPageMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi));
-    if (sectionPs.length >= 3) {
-      text = sectionPageMatch[1];
-    }
-  }
 
   // Try to isolate article body container using broad class matches.
   // Use greedy [\s\S]* bounded by a known end-marker to capture all nested divs.
@@ -4324,6 +4380,11 @@ function mapSourceMethod(method) {
 
 async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null) {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+  // BRO-1431: snapshot the body BEFORE any mutation below, so the stale-flag
+  // neutralization call (after contentTier reclassification) can tell "this
+  // fetch just filled/replaced the body" apart from an unrelated metadata-only
+  // update. See scripts/lib/stale-flag-neutralization.js.
+  const fullTextBeforeUpdate = data.fullText || '';
 
   // EMPTY-WRITE GUARD (Joe Turner postmortem A #1, A #16) — never overwrite
   // an existing non-empty fullText with empty/whitespace, and never modify a
@@ -5212,6 +5273,26 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
+  // BRO-1431: neutralize stale exclusion state BEFORE reclassifying content
+  // tier below — classifyContentTier()'s T5/invalid check
+  // (isEffectivelyWrongProductionOrShow) reads wrongProduction/
+  // wrongProductionAutoCleared directly, so clearing the flag AFTER
+  // classification would classify against the stale flag and stay 'invalid'
+  // for one extra run. A stub ingested via ingest-urls.js/gather-reviews.js
+  // that this fetch fills in for the first time is the common trigger — see
+  // stale-flag-neutralization.js for the full reasoning and guardrails.
+  //
+  // Only when NO fresh LLM verification ran this pass (Codex adversarial
+  // review, BRO-1431 ship-check): the `if (contentVerification) {...}` block
+  // above (~line 5063) already wrote data.contentVerification and any
+  // wrongProduction stamp from a FRESH read of THIS body — that block IS the
+  // "re-evaluate against the new text" step this module exists to unblock for
+  // callers with no LLM verification of their own (e.g. ingest-urls.js).
+  // Running this too would strip the fresh verdict it just computed.
+  if (!contentVerification) {
+    neutralizeStaleFlagsOnBodyReplacement(data, fullTextBeforeUpdate);
+  }
+
   // Reclassify contentTier using canonical 5-tier system
   // This ensures contentTier stays in sync whenever fullText changes
   // Also runs when fullText is missing — catches stale contentTier=complete on empty files
@@ -5580,7 +5661,16 @@ function commitChanges(processed, forcePush = false) {
  * Runs at every checkpoint so data is saved incrementally, not just at the end.
  */
 function pushReviewTextsCheckpoint(processed) {
-  if (!process.env.REVIEW_TEXTS_TOKEN || !process.env.GITHUB_ACTIONS) return;
+  const gate = shouldPushReviewTextsCheckpoint(process.env);
+  if (!gate.ok) {
+    // BRO-2381: this used to be a bare `return` — several workflow steps
+    // invoke this script without REVIEW_TEXTS_TOKEN in their env, so the
+    // mid-run checkpoint silently no-op'd for the whole run with nothing in
+    // the job log to show it. Logging makes that visible without changing
+    // behavior for the correctly-configured case.
+    console.log(`  (Skipping review-texts checkpoint push — ${gate.reason})`);
+    return;
+  }
 
   const rtDir = path.join(process.cwd(), 'data', 'review-texts');
   if (!fs.existsSync(path.join(rtDir, '.git'))) {
@@ -5601,6 +5691,21 @@ function pushReviewTextsCheckpoint(processed) {
       execSync(`git remote set-url origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
     } catch (e) {
       execSync(`git remote add origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
+    }
+
+    // ROOT-CAUSE GUARD (2026-05-27, mirrors .github/actions/push-review-texts):
+    // the review-texts data repo contains ONLY JSON review files — never
+    // symlinks. A stray symlink committed via `git add -A` from a local
+    // session once dangled in CI and crashed the collection pipeline for
+    // ~8h. This checkpoint previously never reached here in practice (the
+    // REVIEW_TEXTS_TOKEN gate above silently no-op'd on every workflow this
+    // script runs in until BRO-2381), so it never carried this guard — now
+    // that the gate is fixed and this path actually runs mid-collection,
+    // it needs the same protection the final push action has.
+    const strayLinks = execSync("find . -type l -not -path './.git/*'", { cwd: rtDir, stdio: 'pipe' }).toString().trim();
+    if (strayLinks) {
+      console.log(`  ⚠ Removing stray symlink(s) before checkpoint commit: ${strayLinks.split('\n').join(', ')}`);
+      execSync("find . -type l -not -path './.git/*' -delete", { cwd: rtDir, stdio: 'pipe' });
     }
 
     // Stage all changes
@@ -7276,8 +7381,14 @@ async function main() {
   generateReport();
 }
 
-// Run
-main().catch(error => {
-  console.error('Fatal error:', error);
-  closeBrowser().finally(() => process.exit(1));
-});
+module.exports = { pushReviewTextsCheckpoint };
+
+// Run (guarded so scripts/collect-review-texts.test.mjs can require() this
+// file for pushReviewTextsCheckpoint() without kicking off a real collection
+// run — see CLAUDE.md rule 15, test extraction pattern).
+if (require.main === module) {
+  main().catch(error => {
+    console.error('Fatal error:', error);
+    closeBrowser().finally(() => process.exit(1));
+  });
+}

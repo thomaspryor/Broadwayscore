@@ -11,8 +11,8 @@ When analyzing site traffic, **GA4 over-counts badly and PostHog is the truth so
 
 **The "Real Users" lens** (added commit 507985b130, "tag-don't-block"):
 - Exclude owner: `properties.is_owner != 'true'` (set via `?bwsc-owner=1` → localStorage → posthog super-property; GA4 `traffic_type=internal`).
-- Exclude bot geos: `properties.$geoip_country_name NOT IN ('Singapore','China','Vietnam')`.
+- Exclude bot geos: `properties.$geoip_country_code NOT IN ('SG','CN','VN','HK')`. **Hong Kong added 2026-09-15 (BRO-3419):** 100-741 sessions/week from Jun 29 with sessions == users every week (one page per visitor) while GA4 saw ~5/week — PostHog-only bots that GA4 filters. The one definition is `REAL_USERS_WHERE` in `scripts/lib/posthog-query.js`; the saved PostHog insights below still carry the old 3-geo filter.
 - Saved PostHog insights: `Real Users — Pageviews` (id 7864729), `Top Pages` (7864730), `Geo Sanity Check` (7864731). Project ID 332742.
 - Applying the lens barely moves PostHog totals (it already filters bots) — the bot problem is a GA4-only artifact. Don't expect the lens to "fix" GA; just use PostHog.
 
-**How to apply:** Query PostHog HogQL directly (`POSTHOG_PERSONAL_API_KEY`, project 332742) with the two RU clauses for any traffic trend. Treat GA4 only for channel/source shape, not absolute counts. Vercel Web Analytics has **no usable query API** (`/api/web-analytics/*` and `/api/web/insights/*` return 404) — skip it; read it in the dashboard only. See [[feedback_newsletter_no_utm]].
+**How to apply:** Query PostHog HogQL directly (`POSTHOG_PERSONAL_API_KEY`, project 332742) with `REAL_USERS_WHERE` from `scripts/lib/posthog-query.js` for any traffic trend. The key exists ONLY as a GitHub secret — for a source/channel breakdown dispatch `analyze-traffic-sources.yml` (report on the run Summary page) instead of querying locally. Treat GA4 only for channel/source shape, not absolute counts. Vercel Web Analytics has **no usable query API** (`/api/web-analytics/*` and `/api/web/insights/*` return 404) — skip it; read it in the dashboard only. See [[feedback_newsletter_no_utm]].

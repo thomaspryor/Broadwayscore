@@ -62,7 +62,7 @@ async function fetchWithScrapingBee(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
 
-    https.get(apiUrl, (res) => {
+    const req = https.get(apiUrl, { timeout: 30000 }, (res) => {
       let data = '';
 
       res.on('data', (chunk) => {
@@ -76,8 +76,13 @@ async function fetchWithScrapingBee(url: string): Promise<string> {
           reject(new Error(`ScrapingBee returned status ${res.statusCode}`));
         }
       });
-    }).on('error', (err) => {
+    });
+    req.on('error', (err) => {
       reject(err);
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Request timeout'));
     });
   });
 }

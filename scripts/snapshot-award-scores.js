@@ -23,7 +23,10 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const AWARDS_PATH = path.join(ROOT, 'data', 'awards.json');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
-const OUT_DIR = path.join(ROOT, 'data', 'award-score-history');
+// Override for tests: an isolated temp directory keeps fixture writes out of
+// the real data/award-score-history/ (BRO-1226 ship-check finding — a fixed
+// filename in the real dir risks colliding with a future real snapshot).
+const OUT_DIR = process.env.AWARD_SCORE_HISTORY_DIR || path.join(ROOT, 'data', 'award-score-history');
 
 // ----- Port of awards-scoring.ts constants -----
 

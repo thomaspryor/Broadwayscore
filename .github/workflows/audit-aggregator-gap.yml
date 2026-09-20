@@ -393,6 +393,10 @@ jobs:
           # backstop alerts AND this job's T1 Coverage "new gaps" alert (card #608,
           # 2026-07-28) both call routeAlert(), which is a no-op cooldown without this
           # file surviving across hourly runs (same persistence-gap class as #394).
+          # alert-router-attempts.jsonl (BRO-3671): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes a
+          # rebase refuse pre-flight and forces the clobber-prone merge path in
+          # push-with-retry.sh (BRO-3662).
           # t1-coverage-stats.json: B3 scoreboard's per-market coverage % snapshot,
           # written by --write-ledger above. t1-coverage-ack.json: B3's ack file
           # (owner-maintained, see --ack CLI flag).
@@ -418,7 +422,7 @@ jobs:
           # those rows never reach the public repo and are lost every run,
           # which is why attributedPct read near-zero for BD's SERP zone
           # (Sprint 3, card 3b1637c5).
-          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

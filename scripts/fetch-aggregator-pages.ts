@@ -216,9 +216,27 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
         `${showScoreBase}/${baseSlug}-the-musical-broadway`,
       ];
   const storedUrl = urlMappings[showId];
+  // Drop any GUESSED pattern another show already owns in the curated map
+  // (BRO-3471, mirrors the guard in scripts/lib/show-score-discover.js:62 and
+  // scripts/gather-reviews.js). Without this, a same-title sibling with no
+  // stored URL of its own (she-loves-me-1994, after its stale curated entry
+  // was removed for pointing at the 2016 revival's page) falls through to
+  // `${showScoreBase}/${baseSlug}` — exactly the URL the OTHER production
+  // owns — lands on a valid page (category path + aggregateRating both
+  // check out), saves it, and silently re-recreates the same wrong-production
+  // mapping this fix just removed. Only a GUESSED pattern is filtered; an
+  // explicit storedUrl for THIS show is untouched.
+  const ownedByOtherShow = new Set(
+    Object.entries(urlMappings)
+      .filter(([id, u]) => id !== showId && typeof u === 'string' && u)
+      .map(([, u]) => u.toLowerCase().replace(/\/+$/, ''))
+  );
+  const guessedPatterns = generatedPatterns.filter(
+    u => !ownedByOtherShow.has(u.toLowerCase().replace(/\/+$/, ''))
+  );
   const urlPatterns = storedUrl
-    ? [storedUrl, ...generatedPatterns.filter(u => u !== storedUrl)]
-    : generatedPatterns;
+    ? [storedUrl, ...guessedPatterns.filter(u => u !== storedUrl)]
+    : guessedPatterns;
 
   try {
     for (const tryUrl of urlPatterns) {

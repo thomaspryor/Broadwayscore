@@ -64,6 +64,17 @@ else
   PATHS=("$@")
 fi
 
-# Stage with exclusions. || true because git add exits non-zero if
-# a path doesn't exist or matches nothing (common in CI).
-git add "${PATHS[@]}" "${EXCLUDE_PATHS[@]}" 2>/dev/null || true
+# Stage with exclusions. Exclude pathspecs MUST come before the include
+# paths: `git add data/award-score-history/ ':!data/other/'` (trailing slash
+# on a literal directory pathspec, positive path listed BEFORE a `:!` magic
+# exclude pathspec) silently matches and stages NOTHING — no error, no
+# warning, exit 0 — while `git add ':!data/other/' data/award-score-history/`
+# (or dropping the trailing slash) stages correctly. Reproduced on git
+# 2.50.1. This bit snapshot-award-scores.js for 10+ weekly cron runs
+# (2026-07-11 through 2026-09-12): every run logged "wrote N shows" then
+# "No new snapshot to commit" — the file existed on disk, `git status` saw it
+# as untracked, but this exact call staged zero files, so only the very first
+# hand-committed snapshot ever reached git history (BRO-1226).
+# || true because git add exits non-zero if a path doesn't exist or matches
+# nothing (common in CI).
+git add "${EXCLUDE_PATHS[@]}" "${PATHS[@]}" 2>/dev/null || true

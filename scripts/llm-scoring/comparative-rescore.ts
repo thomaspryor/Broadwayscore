@@ -45,11 +45,14 @@ import {
   clampScoreToBucket,
   ScoreBand,
 } from './config';
+import { PipelineRunSummary } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { detectBandFromReviewFile } = require('../lib/star-reliability');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { getBestTextForScoring } = require('../lib/text-quality');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR =
   process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '../../data/review-texts');
@@ -133,6 +136,17 @@ function loadGroups(showDir: string): Map<string, ReviewEntry[]> {
 
 // ---- Model callers (comparative array output) -------------------------------
 
+// BRO-3392 — cumulative token usage across this process's model calls, so a
+// run-end costUsd can be computed via cost.ts's costBreakdown() the same way
+// index.ts's ensemble path does (BRO-3381). Mutated directly inside
+// callOpenAI/callGemini/callClaude, mirroring their existing module-level
+// client-caching pattern below.
+const usageTotals = {
+  claude: { input: 0, output: 0 },
+  openai: { input: 0, output: 0 },
+  gemini: { input: 0, output: 0 },
+};
+
 async function callOpenAI(prompt: string): Promise<string | null> {
   const key = process.env.OPENAI_API_KEY;
   if (!key) return null;
@@ -153,6 +167,10 @@ async function callOpenAI(prompt: string): Promise<string | null> {
     });
     if (!res.ok) return null;
     const j: any = await res.json();
+    if (j.usage) {
+      usageTotals.openai.input += j.usage.prompt_tokens || 0;
+      usageTotals.openai.output += j.usage.completion_tokens || 0;
+    }
     return j.choices?.[0]?.message?.content ?? null;
   } catch {
     return null;
@@ -174,6 +192,11 @@ async function callGemini(prompt: string): Promise<string | null> {
       } as any,
     });
     const result = await model.generateContent(prompt);
+    const usage = result.response.usageMetadata;
+    if (usage) {
+      usageTotals.gemini.input += usage.promptTokenCount || 0;
+      usageTotals.gemini.output += usage.candidatesTokenCount || 0;
+    }
     return result.response.text() || null;
   } catch {
     return null;
@@ -192,6 +215,10 @@ async function callClaude(prompt: string): Promise<string | null> {
       temperature: 0.3,
       messages: [{ role: 'user', content: prompt }],
     });
+    if (res.usage) {
+      usageTotals.claude.input += res.usage.input_tokens || 0;
+      usageTotals.claude.output += res.usage.output_tokens || 0;
+    }
     const block = res.content.find((c) => c.type === 'text');
     return block && block.type === 'text' ? block.text : null;
   } catch {
@@ -284,6 +311,7 @@ function writeBack(entry: ReviewEntry, comparative: number, modelScores: Record<
 }
 
 async function main() {
+  const startedAt = new Date().toISOString();
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const allWE = args.includes('--all-we');
@@ -304,15 +332,8 @@ async function main() {
   if (showArg) shows = [showArg];
   else if (showsArg) shows = showsArg.split(',').map((s) => s.trim()).filter(Boolean);
   else if (allWE) {
-    shows = fs
-      .readdirSync(REVIEW_TEXTS_DIR)
-      .filter((s) => {
-        try {
-          return fs.statSync(path.join(REVIEW_TEXTS_DIR, s)).isDirectory() && /west-end|off-west-end/.test(s);
-        } catch {
-          return false;
-        }
-      });
+    shows = listShowDirs(REVIEW_TEXTS_DIR)
+      .filter((s) => /west-end|off-west-end/.test(s));
     if (limit > 0) shows = shows.slice(0, limit);
   } else {
     console.error('Pass --show=ID or --all-we');
@@ -372,6 +393,102 @@ async function main() {
   console.log(`Mean drift: ${totalReviews ? (sumDelta / totalReviews).toFixed(2) : '0'} pts  [GATE: <5pts]`);
   console.log(`Mean |drift|: ${totalReviews ? (sumAbsDelta / totalReviews).toFixed(2) : '0'} pts`);
   if (!dryRun) console.log(`\n✓ Wrote ${changed} updated review files.`);
+
+  // BRO-3392 — same costUsd/runId recording BRO-3381 added to index.ts, so
+  // this script's spend (previously untracked — see the ticket's grep for
+  // maxCost/estimateCost/costUsd in this file, zero matches) sums into the
+  // SAME per-run total the cost-breach alarm reads from data/llm-scoring-runs.json.
+  //
+  // Cost is computed and printed regardless of --dry-run (matches index.ts's
+  // own ordering, ~L2328-2379: cost is logged unconditionally, only the
+  // persistence + breach-check below is gated) — a paid --dry-run A/B check
+  // (this file's own primary documented use, see header) still calls every
+  // model and should show its cost on the console even though nothing is
+  // persisted for it.
+  const completedAt = new Date().toISOString();
+  const { costBreakdown: __costBreakdown } = require('./cost');
+  const breakdown = __costBreakdown({
+    claude: usageTotals.claude,
+    openai: usageTotals.openai,
+    gemini: usageTotals.gemini,
+  }, { claudeModelName: 'claude-sonnet-4-6', openaiModelName: 'gpt-4o' });
+  const costUsd = breakdown.total;
+  console.log(
+    `Estimated cost: $${costUsd.toFixed(4)} (Claude: $${breakdown.claude.toFixed(4)}, OpenAI: $${breakdown.openai.toFixed(4)}, Gemini: $${breakdown.gemini.toFixed(4)})`
+  );
+
+  if (!dryRun) {
+    const summary: PipelineRunSummary = {
+      startedAt,
+      completedAt,
+      totalReviews,
+      // totalReviews only counts entries in groups this invocation actually
+      // rescored (loop above increments it inside the post-idempotency-skip,
+      // post-maxRescores-cutoff branch) — it IS the reviews-processed count,
+      // not a total-considered count, so processed:totalReviews / skipped:0
+      // matches PipelineRunSummary's "processed = reviews scored" contract
+      // (types.ts) instead of reporting group counts under a reviews field.
+      processed: totalReviews,
+      skipped: 0,
+      errors: 0,
+      tokensUsed: {
+        input: usageTotals.claude.input + usageTotals.openai.input + usageTotals.gemini.input,
+        output: usageTotals.claude.output + usageTotals.openai.output + usageTotals.gemini.output,
+        total:
+          usageTotals.claude.input + usageTotals.claude.output +
+          usageTotals.openai.input + usageTotals.openai.output +
+          usageTotals.gemini.input + usageTotals.gemini.output,
+      },
+      costUsd,
+      runId: process.env.GITHUB_RUN_ID || null,
+      errorDetails: [],
+    };
+
+    const { appendRunSummary, loadCostThresholdUsd, checkCostBreach } = require('../lib/llm-scoring-cost-recording');
+    const runsAfterSave = appendRunSummary(summary);
+    console.log(`Run summary saved to data/llm-scoring-runs.json`);
+
+    // Re-check the SAME runId's cumulative spend here too, not just after
+    // index.ts: llm-ensemble-score.yml runs this script AFTER index.ts's own
+    // main-pass and drain steps in the same job, so index.ts's own breach
+    // check already ran before this script's cost existed. checkCostBreach()
+    // sums strictly by exact runId match (llm-scoring-cost-recording.js), and
+    // tomorrow's scheduled run gets a DIFFERENT GITHUB_RUN_ID — so without
+    // this recheck, a breach driven solely by today's comparative-rescore.ts
+    // spend would never be caught by ANY run, not just delayed to the next one.
+    if (summary.runId) {
+      try {
+        const thresholdUsd = loadCostThresholdUsd();
+        if (typeof thresholdUsd !== 'number' || !Number.isFinite(thresholdUsd)) {
+          console.warn(
+            `[comparative-rescore] cost-breach threshold unavailable (scripts/config/provider-spend-thresholds.json missing or missing llmScoringRunUsd) — cost alarm is a no-op this run`
+          );
+        }
+        const breach = checkCostBreach(runsAfterSave, { runId: summary.runId, thresholdUsd });
+        if (breach?.breached) {
+          const { routeAlert } = require('../lib/owner-alert-router');
+          await routeAlert({
+            conditionKey: breach.conditionKey,
+            title: 'LLM scoring spend over budget',
+            description: `GitHub run ${summary.runId}: cumulative LLM scoring cost $${breach.totalUsd.toFixed(2)} exceeds the $${breach.thresholdUsd.toFixed(2)} alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations. This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.`,
+            hint: 'Check data/llm-scoring-runs.json entries for this runId to see which invocation (main pass, drain, or comparative-rescore) drove the spend.',
+            severity: 'warning',
+            disposition: 'digest',
+            cooldownHours: 20,
+            fields: [
+              { name: 'GitHub run', value: String(summary.runId) },
+              { name: 'Cost', value: `$${breach.totalUsd.toFixed(2)}` },
+              { name: 'Threshold', value: `$${breach.thresholdUsd.toFixed(2)}` },
+            ],
+          });
+          console.log(`\n⚠️  LLM scoring cost breach: $${breach.totalUsd.toFixed(2)} > $${breach.thresholdUsd.toFixed(2)} (routed via ${breach.conditionKey})`);
+        }
+      } catch (err: any) {
+        // Alarm plumbing must never abort a scoring run.
+        console.error(`[comparative-rescore] cost-breach check failed (non-fatal): ${err.message}`);
+      }
+    }
+  }
 }
 
 main().catch((e) => {

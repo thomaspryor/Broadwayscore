@@ -137,12 +137,6 @@ const EXEMPT_KNOWN_BROKEN = {
   // given a 30s per-test budget; the original "TIMEOUT" report was from a 30s
   // wall-clock kill across 3 sequential tests. Now registered in test.yml's main
   // runner. Decayed-exemption gate caught this.)
-  //
-  // 1 assertion failure at line 120: "long-biographical + 550 words (bughouse-class)
-  // + opinion → defer (true)" expects true, gets false. Added by another session
-  // while the orphan audit P1 was in flight. Needs investigation: either the heuristic
-  // changed and the test is stale, or there's a real regression in the defer logic.
-  'should-defer-cv-wrong-show.test.mjs': '363637c5-416f-814f',
 };
 
 // .mjs is the canonical extension but .test.ts and .test.js exist too — must

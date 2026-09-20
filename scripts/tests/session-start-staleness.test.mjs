@@ -95,7 +95,7 @@ test('runCodeCheckoutStalenessCheck: reports a non-zero behind count when HEAD i
     assert.equal(behind, 2, 'clone HEAD is exactly 2 commits behind the pushed origin/main');
     assert.match(message, /STALE CODE CHECKOUT/);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -116,7 +116,7 @@ test('runCodeCheckoutStalenessCheck: goes to zero-behind once HEAD is brought cu
     assert.equal(ahead, 0);
     assert.equal(message, null);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -133,7 +133,7 @@ test('runCodeCheckoutStalenessCheck: diverged when the clone has local commits A
     assert.equal(ahead, 1);
     assert.match(message, /DIVERGED/);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 

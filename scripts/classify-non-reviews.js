@@ -152,7 +152,8 @@ function callClaude(systemPrompt, userPrompt) {
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
         'anthropic-beta': 'advisor-tool-2026-03-01'
-      }
+      },
+      timeout: 60000,
     }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -170,6 +171,7 @@ function callClaude(systemPrompt, userPrompt) {
       });
     });
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('Claude API request timed out after 60s')); }); // BRO-3838
     req.write(body);
     req.end();
   });
@@ -186,7 +188,8 @@ function callGemini(systemPrompt, userPrompt) {
   return new Promise((resolve, reject) => {
     const req = https.request(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 60000,
     }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -204,6 +207,7 @@ function callGemini(systemPrompt, userPrompt) {
       });
     });
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('Gemini API request timed out after 60s')); }); // BRO-3838
     req.write(body);
     req.end();
   });
@@ -227,7 +231,8 @@ function callOpenAI(systemPrompt, userPrompt) {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`
-      }
+      },
+      timeout: 60000,
     }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -245,6 +250,7 @@ function callOpenAI(systemPrompt, userPrompt) {
       });
     });
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('OpenAI API request timed out after 60s')); }); // BRO-3838
     req.write(body);
     req.end();
   });

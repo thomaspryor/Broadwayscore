@@ -120,6 +120,18 @@ const AGGREGATOR_DOMAINS = new Set([
   // lists what is on; it does not review it, so it belongs here rather than
   // in TICKET_DOMAINS.
   'culturecity.london',
+  // BRO-3794 (main-red incident): southasianheritage.org.uk/events/... is a
+  // South Asian Heritage Month campaign site's events calendar, aggregating
+  // OTHER venues' listings ("Organiser Actors Touring Company ... Location
+  // Bush Theatre ... Next Event ... Date Sep 18 2026"), not a critic outlet.
+  // Ingested via /submit-review for darkling-off-west-end-2026 with 0 show
+  // mentions in the text (content-quality already flagged it
+  // incompleteReason=url_content_mismatch) and reddened
+  // audit-outlet-registry.js --strict as a new unregistered outlet. Its host
+  // slipped past NON_REVIEW_HOST_PATTERNS' `/\.org$/` rule because .org.uk is
+  // a UK second-level domain, not a bare .org TLD — that regex only ever
+  // matched exact .org hosts.
+  'southasianheritage.org.uk',
 ]);
 
 // Reference sites — not reviews
@@ -127,6 +139,14 @@ const REFERENCE_DOMAINS = new Set([
   'wikipedia.org', 'wikidata.org', 'imdb.com',
   'yelp.com', 'tripadvisor.com', 'google.com', 'amazon.com',
   'iloveny.com',
+  // BRO-3515: rexfeatures.com is a UK stock-photo/wire agency. Its
+  // in-honor-of-jean-michel-basquiat-off-broadway-2026 "livefeed" URL was a
+  // Shutterstock Editorial photo caption (323 chars, no critic, no
+  // assessment), not a review — ingested as outletId `rexfeatures` and
+  // reddened audit-outlet-registry.js --strict as a new unregistered
+  // outlet. Domain-blocked rather than registered so the same photo-agency
+  // livefeed can't be re-ingested for a future opening night.
+  'rexfeatures.com',
 ]);
 
 // Venue/producer own-site listing pages — box-office "what's on" copy, never

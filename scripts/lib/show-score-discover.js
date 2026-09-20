@@ -41,7 +41,32 @@ function showScoreUrlForShow(show, urlMap) {
   if (!slug) return null;
   const cat = String(show.category || '').toLowerCase();
   const section = cat === 'off-broadway' ? 'off-broadway-shows' : 'broadway-shows';
-  return `https://www.show-score.com/${section}/${slug}`;
+  const constructed = `https://www.show-score.com/${section}/${slug}`;
+
+  // Never hand back a CONSTRUCTED url that another show already owns in the
+  // curated map (BRO-3416). Show Score keeps one page per title — the current
+  // or most recent production — so two same-title shows slugging to the same
+  // URL means at most one of them is the page's actual subject, and the other
+  // would ingest the wrong production's reviews. Deleting the wrong show's
+  // curated entry is the established remedy (scrape-show-score-audience.js:802
+  // deletes a duplicate outright), but on its own it does NOT stick here:
+  // deletion drops through to this slug construction, which rebuilds the exact
+  // same URL, so the mapping would effectively resurrect itself on the very
+  // next gap-audit pass. That is how she-loves-me-1994 accumulated the 2016
+  // Roundabout revival's notices — 21 of that directory's 22 files.
+  //
+  // Only CONSTRUCTED urls are gated. An explicit curated entry is returned
+  // above, untouched: if an operator deliberately points two shows at one page,
+  // that stays their call. This is the same "already cached for another show"
+  // test scrape-show-score-audience.js:550 applies during its own discovery.
+  if (urlMap) {
+    const want = constructed.toLowerCase();
+    for (const [id, u] of Object.entries(urlMap)) {
+      if (id === show.id || typeof u !== 'string') continue;
+      if (u.toLowerCase().replace(/\/+$/, '') === want) return null;
+    }
+  }
+  return constructed;
 }
 
 /** Pull the "Read more" outlet review links from Show Score tile HTML. These are

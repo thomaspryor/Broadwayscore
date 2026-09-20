@@ -5,24 +5,28 @@
  *  LIVE A/B TEST — READ memory/feedback_ab_test_guardrails.md FIRST
  * ═══════════════════════════════════════════════════════════════════════
  *
- *  This component renders two live PostHog experiments. DO NOT:
+ *  This component renders one live PostHog experiment. DO NOT:
  *    - Change PostHog flag rollouts without explicit user approval
  *    - Remove variant branches because they're "currently at 0%"
  *    - Declare a winner based on small samples or contaminated data
  *    - Flip ensure_experience_continuity without understanding the trade-off
  *
- *  Before any change to this file, the PostHog flag, or analyze-ab-test.js,
- *  run `node scripts/validate-ab-test.js` and confirm all 4 checks pass.
+ *  Active experiment:
+ *    ticket-primary-platform — 100% todaytix, 0% stubhub. Winner locked
+ *    months ago. The stubhub branch below is intentionally kept even
+ *    though HIDDEN_PLATFORMS strips StubHub from sortTicketLinks() — do
+ *    not remove.
  *
- *  Active experiments (as of 2026-04-11):
- *    1. ticket-single-button — 50/50 multi/single, sticky bucketing on,
- *       restarted 2026-04-11 ~19:00 UTC after first run was invalidated.
- *       At current traffic (~4 A/B clicks/day), 100-click-per-variant
- *       threshold is ~50 days out. Do not declare early.
- *    2. ticket-primary-platform — 100% todaytix, 0% stubhub. Winner
- *       locked months ago. The stubhub branch below is intentionally
- *       kept even though HIDDEN_PLATFORMS strips StubHub from
- *       sortTicketLinks() — do not remove.
+ *  ticket-single-button (single CTA vs. multi-platform button row) ran
+ *  2026-04-11 through 2026-09-16 and was CONCLUDED, not just paused: 5
+ *  months and ~$51k in tracked Impact revenue found no user-level
+ *  difference in conversion rate, converting-user count, or commission
+ *  (see docs/experiments/ticket-single-button.md "Conclusion" for the
+ *  full numbers). The owner picked the single-button design on UX/
+ *  maintenance grounds — the multi-button code path, the flag read, and
+ *  the `buttons:` A/B branching were removed here as a result, they are
+ *  not "temporarily at 0%." Re-introducing a button-count A/B needs a
+ *  fresh flag and a fresh doc, not reviving this one.
  *
  *  Full rules + history: memory/feedback_ab_test_guardrails.md
  * ═══════════════════════════════════════════════════════════════════════
@@ -44,53 +48,42 @@ interface TicketButtonsABProps {
   ticketLinks: TicketLinkData[];
   officialUrl?: string;
   pageType: 'show' | 'guide' | 'browse' | 'comparison' | 'showtimes';
-  maxButtons?: number;
   /** Class applied to each button pill */
   buttonClassName?: string;
   /**
-   * When true, renders the first ticket link as a full-width primary CTA on its
-   * own row, followed by the remaining links + Official Site as inline secondary
-   * pills in a horizontal-scroll row. Used by the show-page redesign hero block.
-   * Tracking events stay identical to the inline-row default — same abVariantStr,
-   * same `linkPosition` ordering — so analyze-ab-test.js handles split traffic
-   * the same as inline traffic. Single-button A/B variant collapses to just the
-   * primary CTA in both modes.
+   * When true, renders the primary CTA as a full-width row on its own,
+   * followed by an optional secondaryAfter row below. Used by the show-page
+   * redesign hero block. Tracking events stay identical to the inline-row
+   * default — same abVariantStr, same `linkPosition` ordering.
    */
   splitVariant?: boolean;
   /** Class applied to the first/primary CTA when splitVariant=true. */
   primaryButtonClassName?: string;
   /**
-   * Optional content appended INSIDE the secondary scroll row (after Telecharge,
-   * Official, etc.). Used by the show-page redesign hero to inline a $X Lottery
-   * pill alongside the ticket platform pills so they stay on a single row.
-   * Only renders when splitVariant=true and the secondary row is shown.
+   * Optional content rendered in its own scroll row below the primary CTA.
+   * Used by the show-page redesign hero to show a $X Lottery pill alongside
+   * the primary ticket CTA. Only renders when splitVariant=true.
    */
   secondaryAfter?: React.ReactNode;
 }
 
 /**
- * A/B test wrapper for ticket buttons on show pages.
- *
- *   1. ticket-primary-platform — locked 100% `todaytix`. The `stubhub`
- *      variant exists at 0% and its override branch is kept intentionally;
- *      do not remove (see header comment).
- *   2. ticket-single-button — 50/50 `multi` / `single`, sticky bucketing on.
- *      Restarted fresh 2026-04-11 after the first run (Mar 28 – Apr 11) was
- *      invalidated by the StubHub hide mid-flight. FLAG_RESTART_DATES in
- *      scripts/analyze-ab-test.js excludes pre-restart events from analysis.
- *      Never declare a winner from this file — run analyze-ab-test.js and
- *      wait for the stat-sig verdict.
+ * Ticket buttons on show pages. Renders a single primary CTA (the
+ * concluded ticket-single-button experiment's winner-by-UX-decision — see
+ * header comment) plus the ticket-primary-platform A/B, which is still
+ * live and locked 100% `todaytix`. The `stubhub` variant exists at 0% and
+ * its override branch is kept intentionally; do not remove (see header
+ * comment).
  */
 export default function TicketButtonsAB({
   showName, showId, showSlug, showStatus, showCategory, showVenue, showScore,
-  ticketLinks, officialUrl, pageType, maxButtons = 4,
+  ticketLinks, officialUrl, pageType,
   buttonClassName = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0",
   splitVariant = false,
   primaryButtonClassName = "w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg bg-gradient-brand text-white font-bold text-sm hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap",
   secondaryAfter,
 }: TicketButtonsABProps) {
   const [abPlatformVariant, setAbPlatformVariant] = useState<string | null>(null);
-  const [abButtonVariant, setAbButtonVariant] = useState<string | null>(null);
   const [flagsLoaded, setFlagsLoaded] = useState(false);
 
   useEffect(() => {
@@ -103,12 +96,10 @@ export default function TicketButtonsAB({
       const ph = window.posthog;
       if (ph?.getFeatureFlag) {
         const platformFlag = ph.getFeatureFlag('ticket-primary-platform');
-        const buttonFlag = ph.getFeatureFlag('ticket-single-button');
 
-        // Only mark loaded once we get string values for both
-        if (typeof platformFlag === 'string' && typeof buttonFlag === 'string') {
+        // Only mark loaded once we get a string value.
+        if (typeof platformFlag === 'string') {
           setAbPlatformVariant(platformFlag);
-          setAbButtonVariant(buttonFlag);
           setFlagsLoaded(true);
           if (intervalId) clearInterval(intervalId);
           if (fallbackTimer) clearTimeout(fallbackTimer);
@@ -125,9 +116,9 @@ export default function TicketButtonsAB({
     checkFlags();
     intervalId = setInterval(checkFlags, 250);
 
-    // Fallback: after 5 seconds, give up and render with defaults (control = multi)
+    // Fallback: after 5 seconds, give up and render with defaults (control = todaytix).
     // This handles ad blockers / opted-out users — they get the control variant
-    // and the click WILL still fire with ab_variant="platform:default,buttons:multi-fallback"
+    // and the click WILL still fire with ab_variant="platform:fallback,buttons:single"
     // so we can identify and exclude these in analysis.
     fallbackTimer = setTimeout(() => {
       if (intervalId) clearInterval(intervalId);
@@ -155,34 +146,40 @@ export default function TicketButtonsAB({
   }
 
   const sorted = sortTicketLinks(ticketLinks, overridePlatform);
-  const isSingleButton = abButtonVariant === 'single';
 
-  // Single-button variant: just show the primary CTA, nothing else
-  const visibleLinks = isSingleButton
-    ? sorted.slice(0, 1)
-    : sorted.slice(0, officialUrl ? maxButtons - 1 : maxButtons);
+  // Only the primary CTA renders — the multi-button row was the losing (by
+  // owner UX decision, not by data — see header comment) side of the
+  // concluded ticket-single-button A/B.
+  const visibleLinks = sorted.slice(0, 1);
 
-  // Combine variants into a tracking string. Use explicit "fallback" marker
-  // when flags didn't load (ad blocker / opt-out) so we can exclude these from analysis.
-  // The leading `flag:` cohort segment namespaces this string against future
-  // experiments that might reuse `buttons:` or `platform:` keys — without it,
-  // a later test sending `buttons:single|multi` would silently merge into this
-  // test's Impact history with no way to demix. analyze-ab-test.js requires
-  // the matching `flag:${FLAG}` prefix when bucketing direct conversions.
+  // Tracking string kept in the same `flag:...,platform:...,buttons:...`
+  // shape historical Impact conversions used, so `scripts/analyze-ab-test.js`
+  // (still live for ticket-primary-platform) keeps parsing it — `buttons` is
+  // now a constant, not a variant. `platform` still reflects the live
+  // ticket-primary-platform flag, with the same "fallback" marker as before
+  // when it hasn't loaded.
   const platformPart = abPlatformVariant ?? 'fallback';
-  const buttonsPart = abButtonVariant ?? 'fallback';
-  const abVariantStr = `flag:ticket-single-button,platform:${platformPart},buttons:${buttonsPart}`;
+  const abVariantStr = `flag:ticket-single-button,platform:${platformPart},buttons:single`;
 
   // Don't render anything until flags load (or fallback fires after 5s)
   // This eliminates the multi-default flicker that biased early clicks to control.
   if (!flagsLoaded) return null;
+  // No affiliate-able ticketLinks at all — an unmonetized officialUrl link
+  // (a show's own site, not a "buy now" promise) is exempt from the
+  // not-yet-on-sale suppression below (BRO-166).
+  const noTicketLinks = visibleLinks.length === 0;
   // `announced` shows with no priceFrom on any link haven't gone on sale yet — the
   // ticket record exists (we found the future TodayTix listing) but there's nothing
   // bookable behind it. Rendering the same bold "Get Tickets" primary CTA used for
   // live shows overpromises and dead-ends; suppress until a price appears (rage-click
-  // root cause on the-visitors-off-broadway-2026, CLAUDE.md card #228).
-  const notYetOnSale = showStatus === 'announced' && !sorted.some(l => l.priceFrom != null);
-  if (showStatus === 'closed' || notYetOnSale || visibleLinks.length === 0) return null;
+  // root cause on the-visitors-off-broadway-2026, CLAUDE.md card #228). Doesn't
+  // apply to the officialUrl-only case: "Visit Official Site" never promised
+  // a purchase, so there's nothing to overpromise.
+  const notYetOnSale = showStatus === 'announced' && !noTicketLinks && !sorted.some(l => l.priceFrom != null);
+  // A show with no affiliate-able ticketLinks but a populated officialUrl must
+  // still render a buy button (BRO-166) — officialUrl alone used to fall
+  // through this guard and dead-end with no CTA at all.
+  if (showStatus === 'closed' || notYetOnSale || (noTicketLinks && !officialUrl)) return null;
 
   // Helpers — same TicketLink shape used by both modes; only the wrapper layout differs.
   // `withArrow` adds a trailing `→` (split-variant primary CTA emphasis only).
@@ -208,39 +205,11 @@ export default function TicketButtonsAB({
     </TicketLink>
   );
 
-  // splitVariant secondary pills are sized to match the primary CTA's height (py-2.5 / text-sm).
-  // Inline mode keeps the smaller default class so existing call sites (where ticket pills are
-  // a tight scrolling row) don't change visually.
-  const splitSecondaryClass =
-    'inline-flex items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0';
-  const secondaryClass = splitVariant ? splitSecondaryClass : buttonClassName;
-  const secondaryIconSize = splitVariant ? 'w-4 h-4' : 'w-3.5 h-3.5';
-
-  const renderSecondary = (link: TicketLinkData, i: number, totalLinks: number) => (
-    <TicketLink
-      key={link.platform}
-      showName={showName}
-      showId={showId}
-      showSlug={showSlug}
-      showStatus={showStatus}
-      showCategory={showCategory}
-      showScore={showScore}
-      platform={link.platform}
-      url={link.url}
-      pageType={pageType}
-      linkPosition={i}
-      totalLinks={totalLinks}
-      abVariant={abVariantStr}
-      className={secondaryClass}
-    >
-      <svg className={secondaryIconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-      </svg>
-      {link.platform}
-    </TicketLink>
-  );
-
-  const renderOfficial = (linkPosition: number, totalLinks: number) => officialUrl ? (
+  // noTicketLinks (declared above, before the early-return guard) — officialUrl
+  // is the ONLY buy button available, so it takes over the primary-CTA slot
+  // instead of the small secondary pill used when it's riding alongside a
+  // real ticket link (BRO-166: never dead-end).
+  const renderOfficialPrimary = (totalLinks: number, className: string, withArrow = false) => officialUrl ? (
     <TicketLink
       showName={showName}
       showId={showId}
@@ -251,39 +220,30 @@ export default function TicketButtonsAB({
       platform="Official Site"
       url={officialUrl}
       pageType={pageType}
-      linkPosition={linkPosition}
+      linkPosition={0}
       totalLinks={totalLinks}
-      className={secondaryClass}
+      className={className}
     >
-      <svg className={secondaryIconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-      </svg>
-      {/* Shortened from "Official Site" so secondary row fits on one line at 390px alongside Telecharge + $X Lottery. */}
-      Official
+      Visit Official Site
+      {withArrow && <span aria-hidden="true">→</span>}
     </TicketLink>
   ) : null;
 
-  // splitVariant: primary CTA on its own row + secondary pills wrapped below.
-  // Single-button A/B variant collapses to just the primary in either mode.
+  // splitVariant: primary CTA on its own row + an optional secondary row
+  // below for secondaryAfter (Lottery/Rush) only — there is no longer a
+  // multi-button secondary row to render (see header comment).
   if (splitVariant) {
-    const totalLinksInRow = visibleLinks.length + (!isSingleButton && officialUrl ? 1 : 0);
     const primaryLink = visibleLinks[0];
-    const secondaryLinks = visibleLinks.slice(1);
-    const hasSecondary = !isSingleButton && (secondaryLinks.length > 0 || Boolean(officialUrl));
-    // secondaryAfter (Lottery/Rush) ignores the single-button A/B — matches legacy
-    // page.tsx behavior where the discount-tickets pill always rendered alongside
-    // the primary CTA regardless of the multi/single bucket.
-    const showSecondaryRow = hasSecondary || secondaryAfter != null;
+    const totalLinksInRow = 1;
     return (
       // Mobile (< lg): primary CTA full-width on its own row, secondary scrolls below.
       // Desktop (lg+): primary CTA + secondary pills share one flex row, all inline.
       <div className="space-y-2 lg:space-y-0 lg:flex lg:flex-wrap lg:items-center lg:gap-2">
-        {primaryLink && renderPrimary(primaryLink, 0, totalLinksInRow, primaryButtonClassName, /* withArrow */ true)}
-        {showSecondaryRow && (
+        {primaryLink
+          ? renderPrimary(primaryLink, 0, totalLinksInRow, primaryButtonClassName, /* withArrow */ true)
+          : renderOfficialPrimary(1, primaryButtonClassName, /* withArrow */ true)}
+        {secondaryAfter != null && (
           <div className="flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1 lg:mx-0 lg:px-0 lg:pb-0 lg:overflow-visible">
-            {!isSingleButton && secondaryLinks.map((link, idx) => renderSecondary(link, idx + 1, totalLinksInRow))}
-            {!isSingleButton && renderOfficial(visibleLinks.length, totalLinksInRow)}
-            {/* Lottery/Rush always renders, regardless of single-button A/B variant */}
             {secondaryAfter}
           </div>
         )}
@@ -293,15 +253,8 @@ export default function TicketButtonsAB({
 
   // Default inline mode (existing behavior — all callers other than ShowHeroRedesign).
   // Primary uses buttonClassName (same as secondary), no arrow — matches pre-split rendering.
-  const inlineTotalLinks = visibleLinks.length + (!isSingleButton && officialUrl ? 1 : 0);
-  return (
-    <>
-      {visibleLinks.map((link, i) => (
-        i === 0
-          ? renderPrimary(link, i, inlineTotalLinks, buttonClassName)
-          : renderSecondary(link, i, inlineTotalLinks)
-      ))}
-      {!isSingleButton && renderOfficial(visibleLinks.length, inlineTotalLinks)}
-    </>
-  );
+  if (noTicketLinks) {
+    return renderOfficialPrimary(1, buttonClassName);
+  }
+  return renderPrimary(visibleLinks[0], 0, 1, buttonClassName);
 }

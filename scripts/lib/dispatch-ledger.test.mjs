@@ -398,6 +398,16 @@ test('vanishedBreadcrumbs: absent workspace after the epoch parks its task', () 
   assert.equal(out[0].notionId, 'abc');
 });
 
+test('vanishedBreadcrumbs: BRO-3431 — carries linearId through for a Linear-dispatched launch', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:2']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, notionId: null, linearId: 'BRO-123' })],
+    { epochTs: EPOCH, now: NOW });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].notionId, null);
+  assert.equal(out[0].linearId, 'BRO-123');
+});
+
 test('vanishedBreadcrumbs: a workspace still listed never parks', () => {
   assert.deepEqual(vanishedBreadcrumbs(
     new Set(['workspace:1']),

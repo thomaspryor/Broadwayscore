@@ -68,6 +68,13 @@ const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 // exclusively CI-owned and un-gitignored for exactly that reason.
 const RECHECK_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
 const MAX_CARDS = 10; // bounded work: this runs every night, not a backfill
+// Below this much budget left, starting another check is worse than deferring
+// it: the check would be SIGTERMed mid-flight and reported 'unverifiable',
+// which the morning digest renders as "no way to check this automatically" —
+// a false statement about the CARD rather than an honest "ran out of time".
+// Matches the MIN_REMAINING_MS_TO_START shape used by the other time-budgeted
+// scripts here (reconcile-recoupment-claims.js, deep-research-commercial.js).
+const MIN_REMAINING_MS_TO_START = 60 * 1000;
 // The recheck now runs BEFORE the executor and therefore before the morning
 // email. 10 cards x 2 attempts x the 5-minute per-check cap is ~100 minutes of
 // worst case sitting in front of the only thing the loop actually delivers, so
@@ -433,6 +440,14 @@ async function main(argv = process.argv.slice(2)) {
     return;
   }
 
+  // The deadline starts BEFORE the checkout, not after it (BRO-3434
+  // ship-check finding). makeFreshCheckout allows up to 120s per git call, and
+  // starting the clock afterwards spent all of that outside the budget the
+  // step timeout is sized against. It also used to fire only on nights that
+  // already had an armed card; now that the verifyCmd fallback arms more of
+  // them, it fires on nights that previously did no work at all.
+  const deadline = Date.now() + timeBudgetMs;
+
   const needsCheckout = targets.some(t => !t.skip && t.verifyCmd);
   let checkout = null;
   if (needsCheckout) {
@@ -445,11 +460,27 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   const results = [];
-  const deadline = Date.now() + timeBudgetMs;
   try {
     for (const t of targets) {
       let r;
-      if (Date.now() > deadline && !t.skip) {
+      // Stop when there is not enough budget LEFT TO FINISH a check, not once
+      // the budget is already blown (BRO-3434 ship-check finding). The old
+      // `Date.now() > deadline` test let a card start with one second left and
+      // then run for up to 2 x CHECK_TIMEOUT_MS = 10 minutes, inside a job
+      // whose step timeout is 8 (data-health-check.yml). Overrunning is worse
+      // than deferring: that step's own comment records that a hard kill drops
+      // mid-run with NO ledger write at all, losing every result already
+      // computed, whereas a deferred card is simply re-checked tomorrow. This
+      // was survivable while nearly every target was 'unverifiable' and cost
+      // zero runtime; the verifyCmd fallback above arms real commands, so the
+      // unbounded case stopped being hypothetical.
+      // Folded into THIS branch, deliberately, rather than added as a second
+      // per-card skip: the existing branch is what emits the single
+      // 'recheck-deferred' row, and a separate path that dropped a card
+      // without one would recreate exactly the silent drop this file's big
+      // comment says was already fixed once.
+      const remainingMs = deadline - Date.now();
+      if (!t.skip && remainingMs < MIN_REMAINING_MS_TO_START) {
         const deferred = targets.slice(targets.indexOf(t)).length;
         console.error(`[recheck] ${timeBudgetMinLabel}min budget spent — deferring ${deferred} card(s) to tomorrow so the morning email is not held up`);
         ledger.appendEntry({ event: 'recheck-deferred', runId, note: `${deferred} card(s) not re-checked: the run hit its ${timeBudgetMinLabel}min budget` }, RECHECK_LEDGER_PATH);
@@ -457,7 +488,14 @@ async function main(argv = process.argv.slice(2)) {
       }
       if (t.skip) r = { ...t, status: null };
       else if (!t.verifyCmd) r = { ...t, status: 'unverifiable', detail: t.reason };
-      else r = { ...t, ...runVerify(checkout.wt, t.verifyCmd) };
+      // Halve the remaining budget so BOTH attempts fit inside it. The retry
+      // is kept rather than dropped to attempts:1 (ship-check finding): a
+      // spurious fail is not merely reported — dispatch-watchdog raises it in
+      // the owner's NEEDS-YOU banner, and each one the owner judges wrong is
+      // logged as a recheck-false-positive, which permanently blocks shadow
+      // exit (maxFalsePositives: 0). Absorbing a flake is worth more than the
+      // extra wall-clock.
+      else r = { ...t, ...runVerify(checkout.wt, t.verifyCmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)) }) };
       results.push(r);
       ledger.appendEntry({
         event: 'recheck', runId, cardId: t.cardId, name: t.name,

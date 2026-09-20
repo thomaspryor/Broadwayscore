@@ -19,11 +19,12 @@
  * parse.
  *
  * Reused, not reinvented:
- *   - landing-verify.js checkLanded(): tri-state, shallow-aware ancestry. A raw
+ *   - landing-verify.js isAncestor() (tri-state) + isShallowRepo(): a raw
  *     `merge-base --is-ancestor` silently answers "not an ancestor" on a
- *     truncated graph — its header records the incident.
- *   - card-premises-auditor.js fetchOriginMain(): depth-bounded fetch, so the
- *     gate never runs an unbounded `git fetch` inside a synchronous CLI.
+ *     truncated graph (its header records the incident), so a shallow clone
+ *     short-circuits to unknown instead of attempting a multi-GB unshallow.
+ *   - card-premises-auditor.js fetchOriginMain(): ONE depth-bounded fetch per
+ *     factory, before any ancestry check; never an unbounded `git fetch`.
  *
  * Rebase-aware: autonomous-merge.js rebases a branch onto origin/main before
  * fast-forwarding, and merge-worktree-to-main.sh is the documented human flow
@@ -45,12 +46,14 @@ const { execFileSync } = require('node:child_process');
 
 const COMMIT_URL_RE = /https?:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/commit\/([0-9a-f]{7,40})\b/gi;
 const PR_URL_RE = /https?:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/pull\/(\d+)\b/gi;
-// A bare SHA is 7-40 hex containing BOTH a letter and a digit. Pure-digit runs
+// A bare SHA is 11-40 hex containing BOTH a letter and a digit. Pure-digit runs
 // are dates, run ids and issue numbers; pure-letter runs are English words
-// ("defaced", "deadbeef") — either would otherwise become a definitive "NOT on
-// origin/main" verdict against an honest closer. Abbreviated SHAs that happen
-// to be all-digit are the accepted cost (cite the URL or a longer SHA).
-const BARE_SHA_RE = /\b(?=[0-9a-f]*[a-f])(?=[0-9a-f]*[0-9])[0-9a-f]{7,40}\b/gi;
+// ("defaced", "deadbeef"); 7-10 hex mixes are UUID/deploy-id fragments far
+// more often than commits. 11 is this repo's own `git log --abbrev` width
+// (226k+ commits — 7-char prefixes already collide ~100 times), so a copied
+// short SHA always qualifies while noise tokens do not. Cite a URL for
+// anything shorter.
+const BARE_SHA_RE = /\b(?=[0-9a-f]*[a-f])(?=[0-9a-f]*[0-9])[0-9a-f]{11,40}\b/gi;
 
 function normalizeRepo(s) {
   return String(s || '').replace(/\.git$/, '').toLowerCase();
@@ -83,9 +86,13 @@ function extractEvidenceRefs(body, { originRepo = null } = {}) {
     if (want && normalizeRepo(m[1]) === want) push(prs, Number(m[2]));
     else push(foreign, m[0]);
   }
-  // Strip every URL before scanning for bare SHAs so a Linear/Vercel/GitHub
-  // path segment can never read as a commit.
-  const stripped = s.replace(/https?:\/\/\S+/g, ' ');
+  // Strip every URL, then every UUID, before scanning for bare SHAs: a
+  // Linear/Vercel/GitHub path segment must never read as a commit, and a
+  // UUID's 12-hex tail (hyphen is a \b boundary) would otherwise pass the
+  // 11-char floor as a phantom ref.
+  const stripped = s
+    .replace(/https?:\/\/\S+/g, ' ')
+    .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, ' ');
   for (const m of stripped.matchAll(BARE_SHA_RE)) push(commits, m[0].toLowerCase());
 
   return { commits, prs, foreign };
@@ -141,7 +148,9 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssu
     }
     if (r !== true) checked.push({ kind: 'pr', ref: n, mergeCommit: pr.sha, onMain: r });
   }
-  for (const url of foreign) checked.push({ kind: 'foreign', ref: url, onMain: null });
+  // Foreign URLs are deliberately NOT in `checked`: they are neither confirmed
+  // nor denied, and must not turn a definitive "not on main" for a local
+  // commit on the same line into a vague "could not confirm <other repo>".
 
   if (!commits.length && !prs.length) {
     return {
@@ -179,12 +188,23 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssu
  * null when the text cannot be read — the gate then refuses as unverified.
  */
 function makeMentionsIssue({ cwd = process.cwd(), originRepo = null, timeoutMs = 15000, log = () => {} } = {}) {
-  const idRe = (id) => new RegExp(`(^|[^A-Za-z0-9-])${String(id).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i');
+  // `[^A-Za-z0-9]` (a '-' IS allowed before the id): this repo's merge
+  // subjects read "Merge branch 'job/linear-BRO-3431-mu34ri7q'" and
+  // "worktree-bro-3429-watchdog-park" — the id follows a hyphen.
+  const idRe = (id) => new RegExp(`(^|[^A-Za-z0-9])${String(id).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i');
+  const git = (args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout: timeoutMs });
   return function mentionsIssue({ sha, prNumber, issueIdentifier }) {
     const re = idRe(issueIdentifier);
     try {
-      const msg = execFileSync('git', ['log', '-1', '--format=%B', sha], { cwd, encoding: 'utf8', stdio: 'pipe', timeout: timeoutMs });
-      if (re.test(msg)) return true;
+      // The cited commit's OWN message only. A merge commit's parent range is
+      // deliberately NOT scanned: for a sync merge ("Merge remote-tracking
+      // branch 'origin/main'") that range is main's own history and would
+      // attribute to every issue mentioned in it — the exact "cite main's
+      // HEAD" hole this check exists to close (verified live: one such SHA
+      // attributed to 35 issues). A merge whose subject names the branch
+      // ("Merge branch 'job/linear-BRO-N-x'") still attributes; otherwise cite
+      // the fix commit itself, which the refusal text says.
+      if (re.test(git(['log', '-1', '--format=%B', sha]))) return true;
     } catch (err) {
       log(`[done-evidence-verify] could not read commit ${sha}: ${String(err.message).slice(0, 120)}`);
       return null;
@@ -217,49 +237,52 @@ function detectOriginRepo(cwd = process.cwd()) {
 }
 
 /**
- * Real isCommitOnMain: one depth-bounded fetch per factory, then
- * checkLanded() (LANDED -> true, UNKNOWN -> null), with a patch-equivalence
- * fallback for NOT_LANDED so a rebase-rewritten SHA still counts, and a
- * definitive false for a SHA this clone has never seen.
+ * Real isCommitOnMain: one depth-bounded fetch per factory (a failed fetch
+ * makes every answer unknown), then tri-state ancestry against origin/main;
+ * a SHA git cannot resolve (never fetched, ambiguous prefix) is unknown, never
+ * false; an existing non-ancestor gets a patch-equivalence check so a
+ * rebase-rewritten SHA still counts; a merge commit gets no such shortcut.
  */
 function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
-  const { checkLanded } = require('./landing-verify.js');
+  const { isAncestor, isShallowRepo } = require('./landing-verify.js');
   const { fetchOriginMain } = require('./card-premises-auditor.js');
-  let fetchState = null; // null = not yet tried, true = refreshed, false = refresh failed
   const git = (args, timeout = 15000) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout }).trim();
+  // Decided ONCE per factory: a shallow clone can neither confirm nor deny
+  // ancestry (merge-base is fooled by the graft — landing-verify.js header),
+  // and unshallowing is a multi-GB fetch that has no place inside a CLI gate.
+  // isShallowRepo never throws (it answers false on any git failure).
+  const shallow = isShallowRepo(cwd);
+  let fetchState = null; // null = not tried, true = refreshed, false = refresh failed
+  const refresh = () => { if (fetchState === null) fetchState = fetchOriginMain({ repo: cwd, log }) === true; return fetchState; };
 
   return function isCommitOnMain(sha) {
-    if (fetchState === null) fetchState = fetchOriginMain({ repo: cwd, log }) === true;
-    // A refresh that failed leaves origin/main wherever it was — possibly
-    // behind (would wrongly refuse) or, after a history rewrite, ahead of the
-    // truth (would wrongly approve). Neither direction is a verdict.
-    if (!fetchState) {
+    if (shallow) {
+      log(`[done-evidence-verify] shallow clone — ${sha} cannot be verified from here`);
+      return null;
+    }
+    // Refresh FIRST, once per factory. main is not force-push-proof here:
+    // enforce_admins is off and purge-archives-history.yml rewrites it by
+    // design, so a stale local origin/main can contain a commit the remote no
+    // longer has. Ancestry against an un-refreshed ref is not a verdict in
+    // either direction — a failed refresh yields unknown, never true or false.
+    if (!refresh()) {
       log(`[done-evidence-verify] origin/main could not be refreshed — ${sha} cannot be verified this run`);
       return null;
     }
-    let landed;
-    try {
-      landed = checkLanded({ sha, cwd, log });
-    } catch (err) {
-      log(`[done-evidence-verify] ancestry check errored for ${sha}: ${String(err.message).slice(0, 120)}`);
-      return null;
-    }
-    if (landed.landed === true) return true;
-    if (landed.verdict === 'UNKNOWN') {
-      // A shallow clone may simply not HAVE the object yet — that stays
-      // unknown. In a full clone, a SHA git has never seen is not "unknown",
-      // it is not evidence.
-      if (landed.shallow) return null;
-      try { git(['cat-file', '-e', `${sha}^{commit}`]); } catch { return false; }
-      return null;
-    }
-    // NOT_LANDED — the commit exists but is not an ancestor. Rebased? For a
+    const landed = isAncestor(sha, 'origin/main', cwd);
+    if (landed === true) return true;
+    // A SHA git cannot resolve (never fetched, or an AMBIGUOUS short prefix)
+    // is unknown, never an accusation — the object may simply live in a
+    // branch this clone never fetched.
+    try { git(['cat-file', '-e', `${sha}^{commit}`]); } catch { return null; }
+    if (landed === null) return null;
+    // The commit exists and is definitively not an ancestor. Rebased? For a
     // NON-merge commit, ask git cherry whether that one patch is already
     // upstream ("- <sha>"). A merge commit has no single patch to compare, so
-    // it stays NOT_LANDED — cite the merge commit that is on main instead.
+    // it stays not-on-main — cite the merge commit that is on main instead.
     try {
       git(['rev-parse', '--verify', '--quiet', `${sha}^2`]);
-      return false; // merge commit: no patch-equivalence shortcut
+      return false;
     } catch { /* not a merge — fall through */ }
     try {
       const lines = git(['cherry', 'origin/main', sha, `${sha}^`]).split('\n').filter(Boolean);

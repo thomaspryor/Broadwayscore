@@ -113,6 +113,19 @@ const SNAPSHOTS = [
   // two snapshot files. optionalIfMissing until the plist's first run after
   // this change lands the file.
   { key: 'dispatchGuardQueue', label: 'dispatch guard queue backlog', file: 'dispatch-guard-queue-audit-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/audit-done-evidence.js (BRO-3426) — the daily evidence
+  // re-verification sweep: every Done(14d)/In Review/In Progress card's own
+  // claimed evidence (a PR-EVIDENCE commit/PR, or its acceptance command)
+  // re-proved against a fresh origin/main. Exists because completion on this
+  // board is self-certified and nothing re-checked it: over 2026-09-13/15 the
+  // owner closed 26+ cards BY HAND whose state was wrong. A STANDING line,
+  // green or not, for the same reason as trunk above — a block that only
+  // appears when it is angry teaches the reader that silence means "fine",
+  // which is indistinguishable from a dead producer, and a dead producer is
+  // the exact failure this sweep exists to catch in other people's work.
+  // CI-produced in data-health-check.yml and committed, like health.
+  // optionalIfMissing until the first daily run lands the file on main.
+  { key: 'doneEvidence', label: 'done-evidence audit', file: 'done-evidence-digest-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**

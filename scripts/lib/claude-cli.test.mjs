@@ -497,6 +497,104 @@ test('runClaudeCli: a SIGKILLed child reports exitSignal and says so in errorDet
   assert.match(readFileSync(logFile, 'utf8'), /signal=SIGKILL/, 'the run log must record it too');
 });
 
+// ── BRO-2971: spawn-level resource starvation must not read as auth revoked ──
+//
+// authPing()'s consumer (claude-auth-health.js) used to page the owner with
+// "OAuth token revoked — run `claude auth login`" for a spawnSync that never
+// even reached the auth handshake: ETIMEDOUT, ENOMEM, or an OS/jetsam signal
+// kill (exit 143=SIGTERM, 137=SIGKILL). classifyAuthPingFailure is the pure
+// decision that keeps those two shapes apart; these tests never spawn a real
+// process, they build the spawnSync-result shape directly.
+import { classifyAuthPingFailure, AUTH_PING_REASONS, worseAuthPingReason } from './claude-cli.js';
+
+test('classifyAuthPingFailure: ETIMEDOUT and ENOMEM spawn errors classify as spawn-starved', () => {
+  assert.equal(
+    classifyAuthPingFailure({ error: Object.assign(new Error('spawnSync claude ETIMEDOUT'), { code: 'ETIMEDOUT' }) }),
+    AUTH_PING_REASONS.SPAWN_STARVED
+  );
+  assert.equal(
+    classifyAuthPingFailure({ error: Object.assign(new Error('spawnSync claude ENOMEM'), { code: 'ENOMEM' }) }),
+    AUTH_PING_REASONS.SPAWN_STARVED
+  );
+});
+
+test('classifyAuthPingFailure: a signal-based exit (143=SIGTERM, 137=SIGKILL) classifies as spawn-starved', () => {
+  assert.equal(classifyAuthPingFailure({ status: 143, signal: null }), AUTH_PING_REASONS.SPAWN_STARVED);
+  assert.equal(classifyAuthPingFailure({ status: 137, signal: null }), AUTH_PING_REASONS.SPAWN_STARVED);
+  // spawnSync's own `signal` field set directly (no shell exit-code proxy needed).
+  assert.equal(classifyAuthPingFailure({ status: null, signal: 'SIGTERM' }), AUTH_PING_REASONS.SPAWN_STARVED);
+});
+
+test('classifyAuthPingFailure: a clean non-zero exit (e.g. "Not logged in") classifies as auth-rejected, NOT spawn-starved', () => {
+  assert.equal(classifyAuthPingFailure({ status: 1, signal: null }), AUTH_PING_REASONS.AUTH_REJECTED);
+});
+
+test('classifyAuthPingFailure: a spawn error whose code is not a starvation code (e.g. ENOENT) is spawn-error, distinct from BOTH other reasons', () => {
+  const reason = classifyAuthPingFailure({ error: Object.assign(new Error('spawnSync claude ENOENT'), { code: 'ENOENT' }) });
+  assert.equal(reason, AUTH_PING_REASONS.SPAWN_ERROR);
+  assert.notEqual(reason, AUTH_PING_REASONS.SPAWN_STARVED);
+  assert.notEqual(reason, AUTH_PING_REASONS.AUTH_REJECTED);
+});
+
+// Adversarial-review finding (BRO-2971): the original version treated ANY
+// signal as spawn-starved, so a binary CRASH (SIGSEGV/SIGABRT) would have
+// told on-call to free memory for what's actually a defect in the binary.
+// Only SIGTERM/SIGKILL — the two an OS/jetsam resource kill or a wall-clock
+// timeout kill actually sends — count as starvation; other signals are
+// spawn-error, still distinct from an actual auth rejection.
+test('classifyAuthPingFailure: a crash signal (SIGSEGV) is spawn-error, NOT spawn-starved', () => {
+  assert.equal(classifyAuthPingFailure({ status: null, signal: 'SIGSEGV' }), AUTH_PING_REASONS.SPAWN_ERROR);
+  assert.equal(classifyAuthPingFailure({ status: null, signal: 'SIGABRT' }), AUTH_PING_REASONS.SPAWN_ERROR);
+});
+
+// Adversarial-review finding (BRO-2971): preflightAuth's original merge of
+// the two authPing() probe reasons collapsed 'spawn-error' straight into
+// 'auth-rejected', so a missing/broken `claude` binary (ENOENT on BOTH
+// probes) still produced the "re-run claude auth login" framing. Priority
+// order matters: spawn-starved > spawn-error > auth-rejected.
+test('worseAuthPingReason: spawn-starved outranks everything, spawn-error outranks auth-rejected, order-independent', () => {
+  const { SPAWN_STARVED, SPAWN_ERROR, AUTH_REJECTED } = AUTH_PING_REASONS;
+  assert.equal(worseAuthPingReason(SPAWN_STARVED, AUTH_REJECTED), SPAWN_STARVED);
+  assert.equal(worseAuthPingReason(AUTH_REJECTED, SPAWN_STARVED), SPAWN_STARVED, 'must not depend on argument order');
+  assert.equal(worseAuthPingReason(SPAWN_ERROR, AUTH_REJECTED), SPAWN_ERROR, 'spawn-error must NOT collapse into auth-rejected');
+  assert.equal(worseAuthPingReason(AUTH_REJECTED, SPAWN_ERROR), SPAWN_ERROR);
+  assert.equal(worseAuthPingReason(SPAWN_STARVED, SPAWN_ERROR), SPAWN_STARVED, 'spawn-starved outranks spawn-error too');
+  assert.equal(worseAuthPingReason(AUTH_REJECTED, AUTH_REJECTED), AUTH_REJECTED, 'only wins when BOTH probes actually ran and said no');
+});
+
+test('authPing: maps a real spawnSync-shaped ETIMEDOUT failure and a clean "Not logged in" failure to DIFFERENT reasons', async () => {
+  // Exercise the actual authPing() code path (not just the extracted
+  // classifier) against two fake `claude` binaries, so the assertion holds
+  // even if authPing's own wiring of classifyAuthPingFailure ever drifts.
+  const { mkdtempSync, writeFileSync, chmodSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const { tmpdir } = await import('node:os');
+  const { authPing } = await import('./claude-cli.js');
+
+  // A clean run that exits 0 but never produced a pong (the "Not logged in"
+  // shape): valid JSON envelope, is_error:false, unrelated result text.
+  const dir = mkdtempSync(join(tmpdir(), 'claude-cli-authping-'));
+  const notLoggedIn = join(dir, 'claude');
+  writeFileSync(notLoggedIn, `#!/bin/sh\necho '{"is_error":false,"result":"Not logged in - Please run /login"}'\n`);
+  chmodSync(notLoggedIn, 0o755);
+
+  const rejected = authPing({ CLAUDE_BIN: notLoggedIn });
+  assert.equal(rejected.ok, false);
+  assert.equal(rejected.reason, AUTH_PING_REASONS.AUTH_REJECTED);
+
+  // A signal-killed run (the OS/jetsam resource-starvation shape): takes a
+  // real SIGTERM before it can produce any output at all.
+  const starved = join(dir, 'claude-starved');
+  writeFileSync(starved, '#!/bin/sh\nkill -TERM $$\nsleep 5\n');
+  chmodSync(starved, 0o755);
+
+  const starvedResult = authPing({ CLAUDE_BIN: starved });
+  assert.equal(starvedResult.ok, false);
+  assert.equal(starvedResult.reason, AUTH_PING_REASONS.SPAWN_STARVED);
+
+  assert.notEqual(rejected.reason, starvedResult.reason, 'spawn-level starvation must map to a DIFFERENT reason than a clean auth rejection');
+});
+
 test('runClaudeCli: every result carries exitSignal, present-and-null on ordinary exits (BRO-3053)', async () => {
   const { mkdtempSync, writeFileSync, chmodSync } = await import('node:fs');
   const { join } = await import('node:path');

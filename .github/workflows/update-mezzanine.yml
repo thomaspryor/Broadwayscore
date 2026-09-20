@@ -186,7 +186,11 @@ jobs:
           # runner every time, even though the ledger correctly marks the
           # condition notified so it never re-queues (card #618 what-else
           # finding).
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
@@ -327,7 +331,13 @@ jobs:
           # routeAlert with a human disposition (mezzanine:session-token-expired)
           # so alert-digest-queue.json isn't needed here — that file is only
           # written by scrape-mezzanine's digest-disposition condition.
+          # alert-router-attempts.jsonl IS needed even here (BRO-3662): a 'human'
+          # disposition can be promoted to 'auto' at RUNTIME by
+          # decideDigestEscalation(), and logDispatchAttempt() then rewrites this
+          # TRACKED file. Left unstaged it makes every later rebase refuse
+          # pre-flight and forces the clobber-prone merge path.
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
@@ -466,7 +476,13 @@ jobs:
           # routeAlert with a human disposition (mezzanine:session-token-expired)
           # so alert-digest-queue.json isn't needed here — that file is only
           # written by scrape-mezzanine's digest-disposition condition.
+          # alert-router-attempts.jsonl IS needed even here (BRO-3662): a 'human'
+          # disposition can be promoted to 'auto' at RUNTIME by
+          # decideDigestEscalation(), and logDispatchAttempt() then rewrites this
+          # TRACKED file. Left unstaged it makes every later rebase refuse
+          # pre-flight and forces the clobber-prone merge path.
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else

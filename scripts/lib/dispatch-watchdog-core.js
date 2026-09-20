@@ -21,7 +21,15 @@
  * ledger, one guard — same doctrine as JOB_EVENTS there) as:
  *   'watchdog-redispatch' {taskId}  claimed BEFORE the child bsc-next spawn,
  *                                   so budgets survive a crash mid-dispatch
- *   'watchdog-park'       {taskId}  retries exhausted; needs the owner
+ *   'watchdog-park'       {taskId}  retries exhausted; needs the owner. Also
+ *                                   written on the FIRST attempt when the
+ *                                   child's own dispatch guard refuses in a
+ *                                   way structuralGuardRefusal recognizes as
+ *                                   permanent (BRO-3481) — retrying a guard
+ *                                   that will refuse identically every time
+ *                                   only burns day-budget claims, so this
+ *                                   case skips straight to parked rather than
+ *                                   waiting for retries to exhaust.
  *   'watchdog-resurrect'  {taskId:'watchdog', workspaceRef, gapMs}  the
  *                                   crowned tab was recreated after a gap
  * All are excluded from bsc-prune/bsc-next semantics (unknown events are
@@ -30,7 +38,7 @@
 'use strict';
 
 const {
-  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs,
+  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs, JOB_EVENTS,
   openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage, detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS,
 } = require('./dispatch-ledger.js');
@@ -40,6 +48,56 @@ const WATCHDOG_EVENTS = Object.freeze({
   REDISPATCH: 'watchdog-redispatch',
   PARK: 'watchdog-park',
 });
+
+// BRO-3481: a curated allow-list, NOT a general parser of dispatcher stderr.
+// A first draft of this scanned any "REFUSING ...:" line — second-opinion
+// review caught that this matches 25+ call sites across linear-next.js and
+// bsc-next.js, several of which are transient/self-resolving (a succession
+// lock held but not stale, a dispatch-claim race, "a claude process is
+// STILL ALIVE" — all of which should keep retrying, not park forever on
+// their first occurrence). These two phrases are the only ones this ticket
+// is actually about: a genuinely PERMANENT refusal that will read the same
+// way on every future retry until either the underlying state changes or
+// someone passes --force. Both are literal substrings of messages a test
+// already pins byte-for-byte (linear-next.js's idempotency guard message at
+// ~849, checkTerminalStateGuard's own return string in linear-dispatch.js) —
+// a wording change to either breaks its own test before it can silently
+// break this.
+const STRUCTURAL_REFUSAL_PHRASES = [
+  'it already looks dispatched',
+  'is already in a terminal state',
+];
+
+// Codex adversarial review (BRO-3481): "it already looks dispatched" is
+// printed by the SAME line (linear-next.js:849) whether the refusal came
+// from a stale historical comment (the permanent case this ticket is about)
+// OR from hasLiveLedgerEntry finding a genuinely LIVE concurrent dispatch
+// (linear-next.js:842-858's own two-branch detail print) — which is NOT
+// permanent, it resolves on its own once that live dispatch finishes.
+// Parking the live-dispatch case would be actively harmful: nothing but a
+// NEW launch clears a watchdog-park row (watchdogParkedIds below), so
+// legitimate future work on that task would stay suppressed even after the
+// concurrent dispatch completes. Only the ledger detail line below is
+// printed on the live-ledger branch — its absence is how this tells the two
+// apart, failing toward "not structural" (keep retrying) when ambiguous.
+const LIVE_LEDGER_DETAIL_MARKER = 'Local dispatch ledger has a live';
+
+// Extracts the guard's own refusal LINE (not the whole multi-line stderr
+// blob some of these guards print extra detail under) from a dispatch
+// child's captured output, or null if nothing in the curated list matched.
+function structuralGuardRefusal(output) {
+  const text = String(output || '');
+  for (const phrase of STRUCTURAL_REFUSAL_PHRASES) {
+    const idx = text.indexOf(phrase);
+    if (idx === -1) continue;
+    if (phrase === 'it already looks dispatched' && text.slice(idx, idx + 500).includes(LIVE_LEDGER_DETAIL_MARKER)) continue;
+    const lineStart = text.lastIndexOf('\n', idx) + 1;
+    const lineEnd = text.indexOf('\n', idx);
+    const line = text.slice(lineStart, lineEnd === -1 ? text.length : lineEnd).trim();
+    return (line || phrase).slice(0, 300);
+  }
+  return null;
+}
 
 // BRO-2318: the fixed lead-in of the failureRate hold string below, exported
 // so send-morning-digest.js's localDispatchWatchdogLeakMessage() can match
@@ -96,6 +154,24 @@ function killSwitchStaleness(offFileMtimeMs, now) {
 //   asked for. Derived from perDay rather than set independently so the
 //   owner keeps ONE money dial: raising perDay widens the hourly allowance
 //   proportionally, and the two can never contradict each other.
+// 24 -> 400 on the owner's explicit instruction, 2026-09-15 ("Get all the P1s
+// and P0s dispatched now"), with 135 eligible P0/P1 cards in the queue.
+//
+// 400 is deliberately ABOVE anything the drain can physically reach, which
+// makes watchdogConcurrent (6) the real governor instead of an artificial day
+// cap: at a median job of 22 minutes, six slots produce roughly 16/hour, so
+// the day budget stops binding and the queue drains continuously until it is
+// empty. That is what "dispatch them all now" means on a machine that cannot
+// run 135 sessions at once (measured at the time: swap 94.5%, 681MB physical
+// free, 44 live claude processes at 7.9GB — 135 concurrent would OOM the box,
+// not drain the backlog).
+//
+// perDay is STILL the money dial and still bounds a runaway: a crash loop
+// cannot exceed 400 claims/day. Lower it back to ~24 once the backlog is
+// drained; the drain self-tapers anyway, because an empty queue dispatches
+// nothing (toDispatch slices an empty p01Queue).
+//
+// Previous note, kept because the arithmetic still applies:
 // 12 -> 24 on the owner's explicit approval, 2026-09-15 ("24/day sounds good"),
 // after being shown the arithmetic: mean $7.47/job (median $6.16, p90 $16.92)
 // across 382 completed jobs since 2026-08-16, so ~$180/day against ~$90/day.
@@ -104,7 +180,7 @@ function killSwitchStaleness(offFileMtimeMs, now) {
 // day and perDay — not concurrency — was the thing actually throttling the
 // drain. THIS IS THE MONEY DIAL: it bounds claims per local day and nothing
 // else does. Lower it first if spend needs to come down.
-const PER_DAY_DEFAULT = 24;
+const PER_DAY_DEFAULT = 400;
 const PACING_HOURS = 8;              // spread the day budget over a working day, not 24h of dribble
 const CAPS = Object.freeze({
   perSweep: 2,
@@ -160,7 +236,28 @@ function taskSortKey(taskId) {
   return { n: m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER, s };
 }
 
+// Source rank: Linear before Notion, ALWAYS (BRO-3390 follow-up).
+//
+// Found by watching production, not by reading: after the first three Linear
+// cards drained (BRO-219/931/995, all low-numbered), the next four claims went
+// straight back to the Notion mirror (1849, 1904, 1932, 1962). Sorting on the
+// trailing integer alone silently ranks Notion's 1800s-1900s ids AHEAD of
+// Linear's BRO-2000+, so the drain works the RETIRED board until it exhausts
+// four weeks of stale cards. The pre-implementation review flagged this class
+// and my own measurement appeared to falsify it — it didn't, it was just
+// masked by a handful of low-numbered Linear ids at the head of the queue.
+//
+// Linear is the live board (CLAUDE.md section 6: "Linear is the source of
+// truth — do NOT create Notion cards"). A frozen mirror must never outrank it.
+// Within a source the trailing-integer FIFO still applies.
+function taskSourceRank(taskId) {
+  return /^linear:/.test(String(taskId == null ? '' : taskId)) ? 0 : 1;
+}
+
 function compareTaskIds(a, b) {
+  const ra = taskSourceRank(a);
+  const rb = taskSourceRank(b);
+  if (ra !== rb) return ra - rb;
   const ka = taskSortKey(a);
   const kb = taskSortKey(b);
   if (ka.n !== kb.n) return ka.n - kb.n;
@@ -466,6 +563,40 @@ function planSweep(entries, tasks, opts) {
   // window's newest event is a success). This is a separate signal that
   // does not require the newest event to be a failure to alarm.
   const failureRate = detectLauncherFailureRate(entries, { now });
+
+  // ── headless jobs that ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: (BRO-3442) ──
+  // Computed HERE (before retryable/p01Queue below) so both can exclude a
+  // task this sweep is about to park — without that, the SAME sweep both
+  // parks a task (with "not retried automatically" in the reason/comment)
+  // and dispatches it via the P0/P1 backlog queue, since planSweep computes
+  // toDispatch independently of jobBlocked (adversarial review catch).
+  //
+  // Grouped by LATEST job per task (by ts), not "any folded job with a
+  // BLOCKED event": foldJobs() is keyed by jobId, and a task can accumulate
+  // several jobIds over time (retries/resumes). Filtering on "any job ever
+  // BLOCKED" would re-park a task whose blocker was already resolved and
+  // superseded by a later, successful jobId (adversarial review catch) —
+  // only the task's most recent job's own verdict is the current one.
+  const latestJobByTask = new Map();
+  for (const job of foldJobs(entries).values()) {
+    if (!job || job.taskId == null) continue;
+    const id = String(job.taskId);
+    const ts = Date.parse(job.ts || '') || 0;
+    const cur = latestJobByTask.get(id);
+    if (!cur || ts >= cur.ts) latestJobByTask.set(id, { ...job, ts });
+  }
+  const jobBlocked = [];
+  for (const [id, job] of latestJobByTask) {
+    if (job.event !== JOB_EVENTS.BLOCKED) continue;
+    const task = tasks.get(id);
+    if (!isTaskOpen(task)) continue;          // card already closed
+    if (open.has(id)) continue;               // a newer launch superseded this
+    if (ownerParked.has(id) || wdParked.has(id)) continue;
+    jobBlocked.push({ taskId: id, subject: task.subject, jobId: job.jobId, reason: job.reason || null });
+  }
+  jobBlocked.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
+  const blockedTaskIds = new Set(jobBlocked.map((j) => j.taskId));
+
   const retryable = [];
   const toPark = [];
   const seen = new Set();
@@ -476,8 +607,16 @@ function planSweep(entries, tasks, opts) {
     seen.add(id);
     const task = tasks.get(id);
     if (!isTaskOpen(task)) continue;
+    // BRO-3633: same policy as the p01Queue guard below — a task that has
+    // since aged into archive/ was deliberately taken out of active
+    // circulation, so a dead dispatch against it should not be auto-retried
+    // either. (The measured 89% board-targeting failure was the p01Queue
+    // path specifically; this is the same policy applied consistently to
+    // dead-retry, not itself separately measured.)
+    if (task && task.fromArchive) continue;
     if (open.has(id)) continue;                    // a newer launch is running
     if (ownerParked.has(id) || wdParked.has(id)) continue;
+    if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: claimed, never landed — don't re-claim every sweep
     // Human-territory cards are excluded here too, not just in the P0/P1
     // backlog sweep below (ship-check catch on task #1154). Retry only needs a
@@ -535,11 +674,23 @@ function planSweep(entries, tasks, opts) {
   const p01Queue = [];
   for (const task of tasks.values()) {
     if (!task || task.status !== 'pending') continue;
+    // BRO-3633: an archived task was deliberately taken out of active
+    // circulation (task-store-archive.js's pending-task archival — status
+    // stays 'pending' in the archive copy by design, see that file's
+    // docstring; it is a noise-reduction move, not a completion signal).
+    // loadTasksUnioned() surfaces it anyway because ITS job is
+    // outcome-auditing, not eligibility, so without this guard p01Queue
+    // resurrected shelved work every sweep — measured 89% of retired-board
+    // watchdog-redispatch rows in the 7d window were exactly this (kind:
+    // p01-backlog against cards untouched for 2+ months), which is what
+    // trips board-targeting-audit.js's "Dispatch: board targeting" check.
+    if (task.fromArchive) continue;
     const pri = taskPriority(task);
     if (pri !== 'P0' && pri !== 'P1') continue;
     if (isExcludedCategory(task)) continue;        // human-territory cards
     const id = String(task.id);
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
+    if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: same suppression as the retry path above
     if (dispatchCapDecision(id, entries).blocked) continue;
     p01Queue.push({ taskId: id, subject: task.subject, priority: pri });
@@ -554,6 +705,16 @@ function planSweep(entries, tasks, opts) {
   for (const [id, claimMs] of claimPending) {
     const task = tasks.get(id);
     if (!isTaskOpen(task) || open.has(id)) continue;
+    // BRO-3633 (ship-check/Codex catch): a claim can already exist in the
+    // ledger for an archived task at the moment this guard lands (claimed
+    // just before the fix deployed, or mid-flight in another process's
+    // in-memory plan). Without this, noLaunchPark below would still park it
+    // with a retired-board id — the exact symptom this card exists to stop —
+    // even though p01Queue no longer creates NEW claims like it. Silently
+    // dropping it here is correct: watchdogClaimPending already self-clears
+    // after REDISPATCH_REARM_MS regardless, so this is a bounded no-op, not
+    // a lost claim.
+    if (task.fromArchive) continue;
     // BRO-3429 ship-check: once noLaunchPark (below) has actually parked this
     // id, it belongs to the "Needs you: parked" section, not this one — an id
     // in both would double-count in needsYou and print two contradictory
@@ -611,18 +772,38 @@ function planSweep(entries, tasks, opts) {
   const liveNow = watchdogLiveCount(entries);
   const autoTabs = cmuxObserved
     ? [...liveTitles.values()].filter(t => AUTO_TAB_RE.test(String(t))).length : null;
-  const holds = [];
-  if (!dispatchEnabled) holds.push('dispatch kill-switch set');
-  if (!cmuxObserved) holds.push('cmux unobservable — report-only');
-  if (outage.outage) holds.push(`launcher outage detected (${outage.count} injection deaths, tasks ${outage.taskIds.join('/')})`);
-  if (failureRate.leaking) holds.push(`${LAUNCHER_LEAK_HOLD_PREFIX} (${failureRate.failureCount}/${failureRate.totalLaunches} = ${Math.round(failureRate.rate * 100)}% injection deaths in the last ${Math.round(FAILURE_RATE_LOOKBACK_MS / 3600000)}h, even though the launcher looks "recovered")`);
-  if (claimOutage) holds.push(`${awaitingClaim.length} dispatch claims produced no launch and NOTHING has launched fleet-wide in ${Math.round(CLAIM_OUTAGE_WINDOW_MS / 3600000)}h — the launcher itself looks wedged, not the cards`);
-  if (usedToday >= CAPS.perDay) holds.push(`day budget spent (${usedToday}/${CAPS.perDay})`);
+  // Lane-aware holds (BRO-3404, forced live 2026-09-15).
+  //
+  // Every hold used to be global: budget was computed only when holds was
+  // EMPTY, so a cmux problem stopped the headless lane too. That went from
+  // theoretical to blocking within an hour of lifting the day budget — the
+  // drain halted on `global auto-tab ceiling (15/12)`, a count of cmux TABS,
+  // while the work it could not dispatch was headless and creates no tab at
+  // all. A ceiling on a resource the lane does not consume must not gate it.
+  //
+  // cmuxHolds suppress only cmux-lane candidates. globalHolds (kill switch,
+  // day budget, hourly pacing, concurrency, and the fleet-wide claim outage,
+  // which is a genuine "nothing launches anywhere" wedge) still stop
+  // everything. holds stays the union so the narrative and every existing
+  // consumer read exactly as before.
+  const globalHolds = [];
+  const cmuxHolds = [];
+  if (!dispatchEnabled) globalHolds.push('dispatch kill-switch set');
+  if (!cmuxObserved) cmuxHolds.push('cmux unobservable — report-only (cmux lane only; headless still dispatches)');
+  if (outage.outage) cmuxHolds.push(`launcher outage detected (${outage.count} injection deaths, tasks ${outage.taskIds.join('/')})`);
+  if (failureRate.leaking) cmuxHolds.push(`${LAUNCHER_LEAK_HOLD_PREFIX} (${failureRate.failureCount}/${failureRate.totalLaunches} = ${Math.round(failureRate.rate * 100)}% injection deaths in the last ${Math.round(FAILURE_RATE_LOOKBACK_MS / 3600000)}h, even though the launcher looks "recovered")`);
+  if (claimOutage) globalHolds.push(`${awaitingClaim.length} dispatch claims produced no launch and NOTHING has launched fleet-wide in ${Math.round(CLAIM_OUTAGE_WINDOW_MS / 3600000)}h — the launcher itself looks wedged, not the cards`);
+  if (usedToday >= CAPS.perDay) globalHolds.push(`day budget spent (${usedToday}/${CAPS.perDay})`);
   // Pacing, not a failure: say so, so the dashboard narrative doesn't read
   // like an outage when the drain is simply spreading its budget out.
-  if (usedThisHour >= CAPS.perHour) holds.push(`hourly pacing (${usedThisHour}/${CAPS.perHour} in the last 60m — spreading ${CAPS.perDay}/day instead of bursting)`);
-  if (liveNow >= CAPS.watchdogConcurrent) holds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
-  if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) holds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs})`);
+  if (usedThisHour >= CAPS.perHour) globalHolds.push(`hourly pacing (${usedThisHour}/${CAPS.perHour} in the last 60m — spreading ${CAPS.perDay}/day instead of bursting)`);
+  if (liveNow >= CAPS.watchdogConcurrent) globalHolds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
+  if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) cmuxHolds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs}) — cmux lane only; headless still dispatches`);
+  // Union — a NEW array, never an alias of globalHolds (an alias made every
+  // cmux hold a global one again, which is the exact bug this split removes).
+  // The narrative and every existing reader see the same list they always did;
+  // only the BUDGET GATE below distinguishes the two.
+  const holds = [...globalHolds, ...cmuxHolds];
 
   // BRO-2462: `holds` mixes deliberate/mundane pauses (kill-switch, budget,
   // concurrency, tab ceiling) with failure-DETECTION signals (outage,
@@ -641,7 +822,7 @@ function planSweep(entries, tasks, opts) {
     (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs);
 
   let budget = 0;
-  if (!holds.length) {
+  if (!globalHolds.length) {
     budget = Math.min(
       CAPS.perSweep,
       CAPS.perDay - usedToday,
@@ -650,7 +831,12 @@ function planSweep(entries, tasks, opts) {
     );
   }
   // Retries of already-attempted work outrank fresh P0/P1 dispatches.
-  const toDispatch = [...retryable, ...p01Queue].slice(0, Math.max(0, budget));
+  // When only cmux-lane holds are active, headless-capable work still flows —
+  // that is the whole point of the split above.
+  const eligibleForLane = cmuxHolds.length
+    ? [...retryable, ...p01Queue].filter(item => taskSourceRank(item.taskId) === 0)
+    : [...retryable, ...p01Queue];
+  const toDispatch = eligibleForLane.slice(0, Math.max(0, budget));
 
   // ── needs-you ──
   const deadCrownTabs = [];
@@ -667,19 +853,19 @@ function planSweep(entries, tasks, opts) {
   // number — the backlog looked drained (ship-check P1).
   const needsYou = toPark.length + wdParked.size + recheckFailures.length +
     (outage.outage ? 1 : 0) + (failureRate.leaking ? 1 : 0) + awaitingClaim.length +
-    unlandedDone.length;
+    unlandedDone.length + jobBlocked.length;
 
   return {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim, noLaunchPark,
-    unlandedDone,
-    budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, pausedByPolicy, caps: CAPS },
+    unlandedDone, jobBlocked,
+    budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, globalHolds, cmuxHolds, pausedByPolicy, caps: CAPS },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
     recheckFailures,
     needsYou,
-    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length,
+    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length + jobBlocked.length,
   };
 }
 
@@ -757,11 +943,11 @@ function renderNarrative(plan) {
 }
 
 module.exports = {
-  WATCHDOG_EVENTS, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER, LAUNCHER_LEAK_HOLD_PREFIX,
+  WATCHDOG_EVENTS, structuralGuardRefusal, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER, LAUNCHER_LEAK_HOLD_PREFIX,
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,
   watchdogClaimPending, lastLaunchAnywhereMs,
-  taskPriority, notionIdOf, taskSortKey, compareTaskIds,
+  taskPriority, notionIdOf, taskSortKey, compareTaskIds, taskSourceRank,
   openHeadlessJobTasks, openTasksAnyLane,
   PACING_WINDOW_MS, PACING_HOURS, watchdogClaimsInWindow,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,

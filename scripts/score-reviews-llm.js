@@ -24,6 +24,7 @@ const { isAlreadyLlmScored } = require('./lib/review-guards');
 const { CLAUDE_SONNET } = require('./lib/models');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `score-reviews-llm.js — Score reviews using Claude LLM.
 
@@ -110,9 +111,7 @@ async function main() {
   const client = new Anthropic({ apiKey });
 
   // Get all review files
-  const shows = fs.readdirSync(reviewsDir).filter(f =>
-    fs.statSync(path.join(reviewsDir, f)).isDirectory()
-  );
+  const shows = listShowDirs(reviewsDir);
 
   const targetShows = showFilter ? shows.filter(s => s === showFilter) : shows;
 

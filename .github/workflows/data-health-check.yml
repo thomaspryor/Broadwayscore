@@ -215,6 +215,66 @@ jobs:
       # in the email digest sent by health-check.js. Discord alerts are reserved
       # for critical real-time workflow failures via notify-failure action.
 
+      # BRO-2529: isolated commit for the 4 files "Affiliate health monitor"
+      # and "Run health check" already wrote to disk above, positioned
+      # immediately after the write with NO other push-with-retry.sh call in
+      # between — same fix shape as BRO-386/BRO-471 (acceptance recheck
+      # ledger), BRO-472 (lifetime sweep snapshots), and BRO-3317 (provider
+      # spend ledger). Root cause confirmed live on run 35093780383
+      # (2026-09-16, job reported overall SUCCESS): "Run health check" wrote a
+      # fresh health-digest-snapshot.json at 12:07:35 ("[Health Digest]
+      # Snapshot written..."), but it sat uncommitted through FOUR intervening
+      # push-with-retry.sh callers ("Commit provider spend ledger", "Commit
+      # acceptance recheck ledger", "Commit done-evidence audit", "Commit
+      # lifetime sweep snapshots") before reaching the old late commit step.
+      # At 12:17:59 the "Commit done-evidence audit" step's push hit 3 failed
+      # local attempts and fired the Git Data API fallback, whose `git reset
+      # --hard $RESTORE_BASE_HEAD` wiped the still-uncommitted digest write —
+      # when the late step finally ran at 12:19:05, `git diff --staged --quiet`
+      # found nothing to commit for these 4 files. Confirmed on origin/main:
+      # health-digest-snapshot.json's last real commit stayed frozen at
+      # 2026-09-15 for a full day+ despite the cron reporting green daily —
+      # this is scripts/autonomous-email.js's ONE source file for the owner's
+      # daily digest, so a stuck snapshot is silent and page-worthy, which is
+      # why (like its 4 siblings) this step has no continue-on-error.
+      #
+      # BRO-352 (2026-09-14) merged the OLD standalone "Commit digest
+      # snapshot" step (health-digest-snapshot.json alone) into the late
+      # "Commit health check audit snapshots" step to stop two LATE steps
+      # wiping each other, but never moved the merged step earlier next to
+      # the write — so it stayed exposed to the 4 commit steps in between.
+      # This step is NOT a revival of that old "Commit digest snapshot" name
+      # (deliberately renamed — see core-data-merge-registry.js:236's
+      # verifiedBy comment, now stale, for the old step this used to mean).
+      #
+      # All 4 files are independently registered `apiFallbackSafe: true`,
+      # concurrencyGroup 'data-health-check', in
+      # scripts/lib/core-data-merge-registry.js — same registry entries the
+      # late step already relied on, just committed sooner. No
+      # timeout-minutes override (inherits the 180min job ceiling), matching
+      # "Commit provider spend ledger" and "Commit lifetime sweep snapshots"
+      # above/below.
+      - name: Commit digest + coverage snapshots (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/health-digest-snapshot.json 2>/dev/null || true
+          git add data/audit/health-check-history.json 2>/dev/null || true
+          git add data/audit/workflow-run-coverage.json 2>/dev/null || true
+          git add data/audit/affiliate-health.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No digest/coverage snapshot changes"
+          else
+            git commit -m "data: Update digest and coverage snapshots [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
       # E2E canary for the alert→card→dispatch chain (Notion card #374,
       # 2026-07-24 postmortem). Runs in the SAME job/env as the health check
       # above (same checkout, same `npm ci`) so a future regression to this
@@ -340,7 +400,19 @@ jobs:
           # ACCEPTANCE_RECHECK_KILL_SWITCH --body true` disables this step's
           # work without a code change, same pattern as BROWSERBASE_KILL_SWITCH.
           ACCEPTANCE_RECHECK_KILL_SWITCH: ${{ vars.ACCEPTANCE_RECHECK_KILL_SWITCH }}
-        run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 3
+        # 3 -> 5 (BRO-3434). Two changes made 3 too tight. The script now
+        # starts its deadline BEFORE makeFreshCheckout instead of after, so
+        # the checkout's git calls are charged to this budget rather than
+        # running outside it; and the verifyCmd fallback arms cards that used
+        # to cost zero runtime, so the budget is actually spent now. At 3 a
+        # slow-checkout night could defer EVERY card after paying the full
+        # checkout cost — zero coverage where it previously managed one card.
+        # Still inside the 8min step ceiling above: the ~260-300s worst case
+        # measured for this step already contained the old 3min verify budget,
+        # so the non-verify overhead is ~2min, and 2 + 5 = 7 < 8. The script's
+        # own deadline is the soft bound that keeps it there; the step timeout
+        # stays the hard backstop it was.
+        run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 5
 
       # Ledger artifact backup (BRO-386): uploaded BEFORE the isolated commit
       # below, so this run's recheck verdicts are recoverable from the Actions
@@ -457,6 +529,101 @@ jobs:
             echo "No recheck ledger changes"
           else
             git commit -m "data: Update acceptance recheck ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # ── Done-evidence audit (BRO-3426) ───────────────────────────────────
+      # Re-proves every Done(14d) / In Review / In Progress card's OWN claimed
+      # evidence — a PR-EVIDENCE commit/PR, or its acceptance command — against
+      # a fresh origin/main, and reports what no longer holds.
+      #
+      # WHY IT IS A SEPARATE STEP from the acceptance recheck above, which also
+      # re-runs card commands against fresh main: that one answers "did the ~10
+      # cards that PROMISED a recheck (a RECHECK-AFTER stamp, or a Done inside
+      # 24h) still hold", and is deliberately budget-capped to protect the
+      # morning email behind it. This one sweeps the WHOLE board every night to
+      # answer a different question — "is the board's own record of what is
+      # finished true at all" — after a hand sweep on 2026-09-13/15 found 26+
+      # cards whose state was simply wrong. They share every primitive that
+      # matters (acceptance-check-core.js's sandboxed runner, verify-gate.js,
+      # card-premises-auditor.js) and differ only in selection.
+      #
+      # SHADOW MODE: it writes two files under data/audit and nothing else. It
+      # never calls a Linear mutation, so no issue's state can move because of
+      # it. Auto-flipping STUCK -> Done is explicitly a LATER card, once this
+      # report has been right for a week.
+      #
+      # 10min soft budget inside a 14min step timeout. Measured live on
+      # 2026-09-15: 374 cards in ~9min wall, dominated not by the 251 fast
+      # `node --test` checks (~0.3s each) but by ~30 corpus-scanning
+      # `node scripts/validate-data.js`-class commands. The script's own
+      # deadline is a soft check between cards, so it cannot stop a single hung
+      # command — the step timeout is the hard backstop, set above the budget
+      # for the same reason the recheck step's 8min sits above its 3min budget.
+      # A run that hits the budget records the remaining cards as not-re-run
+      # rather than dropping them, and the report names its own slowest checks
+      # so the next budget change is made from data.
+      #
+      # GH_TOKEN is REQUIRED, not optional: PR-EVIDENCE ancestry is resolved
+      # through the GitHub compare API rather than `git merge-base
+      # --is-ancestor`, because this job checks out at depth 1 and
+      # scripts/lib/landing-verify.js hard-SKIPS its unshallow under
+      # GITHUB_ACTIONS (BRO-3320 — an unshallow must move ~1.8 GB here and
+      # cannot finish). Without the token every ancestry probe answers UNKNOWN,
+      # which never accuses anyone — so the step would stay green forever while
+      # silently checking nothing, the same invisible-failure shape BRO-3373
+      # had to fix for a different reason.
+      # continue-on-error: a crash here must never block the commit steps that
+      # follow, exactly like the recheck step above.
+      - name: Done-evidence audit (shadow mode)
+        if: always()
+        # lint-allow-swallow: shadow-mode telemetry whose failure is NOT signal-less.
+        # The guard's concern (a swallowed data/audit/ writer discarding its
+        # writes with nothing to notice) is answered by the digest itself: the
+        # doneEvidence row in scripts/lib/digest-snapshots.js carries
+        # maxAgeH: 36, so a crashed or wedged run shows up as an explicit
+        # "didn't update overnight: done-evidence audit" line in the owner's
+        # morning email within 36h. continue-on-error is load-bearing here for
+        # the same reason it is on the acceptance-recheck step above: this step
+        # sits BEFORE several commit+push steps in a 180-minute job, and a crash
+        # in shadow-mode reporting must never block the health snapshot commit
+        # that follows it.
+        continue-on-error: true
+        timeout-minutes: 14
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Emergency kill switch, same pattern as
+          # ACCEPTANCE_RECHECK_KILL_SWITCH: `gh variable set
+          # DONE_EVIDENCE_AUDIT_KILL_SWITCH --body true` stops this instantly
+          # without a code change or a revert.
+          DONE_EVIDENCE_AUDIT_KILL_SWITCH: ${{ vars.DONE_EVIDENCE_AUDIT_KILL_SWITCH }}
+        run: node scripts/audit-done-evidence.js --time-budget-min 10
+
+      # Committed in its OWN small commit+push, immediately after the step that
+      # writes it — the BRO-386/BRO-471 pattern the recheck ledger above uses,
+      # and for the same measured reason: bundling a file with 15 other
+      # data/audit/* files into one commit means one lost push-with-retry race
+      # discards ALL of them, and the runner filesystem is ephemeral, so there
+      # is no second chance. The digest snapshot is the half that matters —
+      # send-morning-digest.js reads it off main, so a snapshot that never
+      # lands is a digest line that never appears.
+      - name: Commit done-evidence audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/done-evidence-audit.json data/audit/done-evidence-digest-snapshot.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No done-evidence audit changes"
+          else
+            git commit -m "data: Update done-evidence audit [skip ci]"
             bash scripts/lib/push-with-retry.sh 25 main
           fi
 
@@ -664,6 +831,22 @@ jobs:
         timeout-minutes: 3
         run: node scripts/audit-stale-announced-shows.js
 
+      # Notion-schedule-coupling audit (BRO-3431 reopen). The four schedules
+      # named in BRO-3431 all shared one shape: a LIVE schedule (a loaded
+      # launchd plist, or a schedule:-cron'd workflow) running a script that
+      # read the frozen Notion task mirror as if it were a current work
+      # source. The owner's real question was "are there other gaps like
+      # this?" — this sweeps every cron'd workflow in this repo (the launchd
+      # half is Mac-only and self-reports skipped here, same restriction as
+      # check-hook-liveness.js) so the answer is a command, not a four-hour
+      # manual audit. SHADOW MODE like every sweep above: report-only, never
+      # fails the step on a finding.
+      - name: Notion-schedule-coupling audit (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-notion-schedule-coupling.js
+
       # Trunk status snapshot (task #1003) — is test.yml green on main, for
       # how long has it been red, and which files are named in the failures.
       # Feeds the morning digest's standing trunk line AND the close-time
@@ -794,6 +977,18 @@ jobs:
       # Both fixes are complementary, not overlapping: those 5 files are
       # deliberately NOT in this step's git-add list below.
       #
+      # BRO-2529 follow-up (2026-09-16): this step itself had gone on to
+      # violate its own rule below for health-digest-snapshot.json,
+      # health-check-history.json, workflow-run-coverage.json, and
+      # affiliate-health.json — all 4 are written far ABOVE this point in the
+      # job ("Affiliate health monitor" / "Run health check"), with FOUR other
+      # push-with-retry.sh callers in between that could (and, confirmed live
+      # on run 35093780383, did) fire the Git Data API fallback and wipe the
+      # uncommitted write before it reached here. Moved to their own earlier
+      # "Commit digest + coverage snapshots (apiFallbackSafe)" step, right
+      # after the steps that write them — see that step's own comment for the
+      # incident. This step now owns 9 files, not 13.
+      #
       # IF YOU ADD A NEW SHADOW-MODE STEP that writes a data/audit/*.json
       # snapshot for the daily digest to read: (1) make sure it runs BEFORE
       # this step (i.e. above this point in the job), (2) add its `git add`
@@ -802,8 +997,8 @@ jobs:
       # the new file.
       #
       # No continue-on-error: unlike the shadow-mode steps above, a failure
-      # to persist these snapshots (especially health-digest-snapshot.json)
-      # is exactly the page-worthy failure this workflow exists to catch.
+      # to persist these snapshots is exactly the page-worthy failure this
+      # workflow exists to catch.
       #
       # No explicit timeout-minutes (BRO-2370, removed the prior 17min caps
       # from both original steps — live incidents 2026-09-01→09-04 showed
@@ -827,7 +1022,7 @@ jobs:
       # at 25 — that value stays as-is because aa51b22c558 (task #1842) chose
       # it specifically to give this step many cheap retries under the
       # common low-contention case, which lowering MAX_RETRIES would regress.
-      # All 13 files here are single-writer + apiFallbackSafe, so the
+      # All 9 files here are single-writer + apiFallbackSafe, so the
       # fallback is actually usable — unlike "Commit health check + triage
       # data" below, which deliberately does not get this override (see its
       # own comment).
@@ -865,21 +1060,25 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/health-digest-snapshot.json 2>/dev/null || true
-          git add data/audit/health-check-history.json 2>/dev/null || true
           git add data/audit/time-to-publish-sla.json 2>/dev/null || true
-          git add data/audit/workflow-run-coverage.json 2>/dev/null || true
           # provider-spend-daily.jsonl, provider-spend-snapshot.json, and
           # scraper-spend-daily-agg.jsonl moved to their own earlier
           # "Commit provider spend ledger (apiFallbackSafe)" step (BRO-3317)
           # — committing them here was too late: intervening commit steps'
           # push-with-retry.sh hard-reset fallback could wipe the uncommitted
           # write before it ever reached this step.
+          # health-digest-snapshot.json, health-check-history.json,
+          # workflow-run-coverage.json, and affiliate-health.json moved to
+          # their own earlier "Commit digest + coverage snapshots
+          # (apiFallbackSafe)" step, right after "Run health check" /
+          # "Affiliate health monitor" write them (BRO-2529) — same reason as
+          # the provider-spend move above: this step runs too late, after 4
+          # OTHER push-with-retry.sh callers that could wipe the uncommitted
+          # write before it ever reached here.
           # digest-history.json intentionally NOT added here — ship-check
           # review (2026-08-23) found it has zero writers anywhere in the
           # codebase (orphaned since card #364); see core-data-merge-
           # registry.js's comment at this file's old registry slot.
-          git add data/audit/affiliate-health.json 2>/dev/null || true
           git add data/audit/linear-archive-done.jsonl 2>/dev/null || true
           git add data/audit/trunk-status-snapshot.json 2>/dev/null || true
           git add data/audit/cross-outlet-attribution-drift.json 2>/dev/null || true
@@ -889,6 +1088,7 @@ jobs:
           # "Commit lifetime sweep snapshots (apiFallbackSafe)" step (BRO-472)
           # — no longer added here.
           git add data/audit/stale-announced-shows.json 2>/dev/null || true
+          git add data/audit/notion-schedule-coupling.json 2>/dev/null || true
           git add data/audit/missed-broadcasts.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check audit snapshot changes"

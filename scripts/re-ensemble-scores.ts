@@ -16,6 +16,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ensembleScoreFromArray, scoreToBucket } from './llm-scoring/ensemble';
 import type { ModelScore, Bucket } from './llm-scoring/types';
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // ========================================
 // CONFIG
@@ -105,9 +106,7 @@ async function main() {
   }
 
   // Walk show directories
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-    const full = path.join(REVIEW_TEXTS_DIR, d);
-    if (!fs.statSync(full).isDirectory()) return false;
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter((d: string) => {
     if (showFilter && d !== showFilter) return false;
     return true;
   });

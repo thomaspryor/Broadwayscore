@@ -33,7 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
-const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -407,10 +407,14 @@ async function collectShowComments(show) {
 
   console.log(`  Collected ${comments.length} comments`);
 
-  // Filter comments (remove deleted, short, and bot messages)
+  // Filter comments (remove deleted, short, bot messages, and the Scorecard's
+  // own comments — its replies inside organic threads are the site's own
+  // coverage, not audience reaction, and must never be scored as sentiment
+  // about the show, BRO-985)
   const filtered = comments.filter(c => {
     if (!c.body || c.body.length < 15) return false;
     if (c.body === '[deleted]' || c.body === '[removed]') return false;
+    if (isOwnerComment(c)) return false;
     for (const pattern of BOT_PATTERNS) {
       if (pattern.test(c.body)) return false;
     }

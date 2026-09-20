@@ -238,7 +238,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
-    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml (its "Commit digest snapshot" step) writes it; that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
+    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml writes it (as of BRO-2529, 2026-09-16: its "Commit digest + coverage snapshots (apiFallbackSafe)" step); that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
     note: 'the file scripts/autonomous-email.js:HEALTH_DIGEST_PATH reads to build the owner\'s daily digest email — the file whose lost push caused this task\'s originating incident (run 32559247279)',
   },
   {
@@ -317,6 +317,22 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-09-08 (BRO-3008 S0-T6): same writer/workflow/concurrency-group as its two siblings above (check-provider-spend.js, data-health-check.yml git-add block) — never rotated, appended once/day with idempotent day-replace.',
+  },
+  {
+    file: 'audit/notion-schedule-coupling.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    // BRO-3431 reopen: without this entry, staging this file alongside its
+    // siblings in "Commit health check audit snapshots (apiFallbackSafe)"
+    // would leave it unregistered — push-with-retry.sh's disqualifier check
+    // refuses the Git Data API fallback for the WHOLE outgoing diff when any
+    // staged data/audit/ path lacks apiFallbackSafe/apiFallbackMerge
+    // registration, so an unregistered new file degrades the fallback
+    // protection for every OTHER file in that same commit step, not just its
+    // own (adversarial Codex review caught this before it shipped).
+    verifiedBy: '2026-09-15: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
   // NOT registered: audit/digest-history.json. findWritingWorkflows()'s regex
   // match on data-health-check.yml's `git add data/audit/digest-history.json`
@@ -434,6 +450,35 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-31 (BRO-2588): grepped every .github/workflows/*.yml AND all of scripts/ for the literal filename. Sole WRITER: scripts/autonomous-acceptance-recheck.js (appends through scripts/lib/autonomous-ledger.js:48 fs.appendFileSync), invoked only by data-health-check.yml\'s "Acceptance recheck (shadow mode)" step; data-health-check.yml is also the only workflow that git-adds the path. Every other reference is a READER or a non-writing mention: scripts/autonomous-email.js:435 (ledger.readEntries) and scripts/dispatch-watchdog.js:195 (fs.readFileSync) read it; scripts/freeze-ledgers.js:86 only names it inside a freeze record; scripts/lib/audit-ledger-merge-attrs.js:150 does not write it either, but it is NOT a throwaway mention: it deliberately EXCLUDES this file from the union-merge .gitattributes because autonomous-acceptance-recheck.js:199 enforcementState() reads rechecks[0].ts as the OLDEST recheck (trusting file order as chronological) and counts rechecks.length with no dedup key, and both feed shouldExitShadow() (scripts/lib/autonomous-recheck-core.js:294), which arms automatic card reopening. That workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs of it queue rather than race. RESIDUAL RISK, accepted knowingly and NOT eliminated by this entry: apiFallbackSafe routes this path through scripts/lib/push-via-git-api.sh, whose semantics are ours-wins-outright (see its header, line ~41 \u2014 our version replaces whatever the current remote tip has for that path). The concurrency group serializes CI against CI, but NOT CI against a local run: if the owner runs `node scripts/autonomous-acceptance-recheck.js` on their own machine and pushes appended rows, the next CI run\'s Git Data API fallback can overwrite that path with its checkout-time copy plus its own rows, silently dropping the locally-appended ones and shifting both rechecks[0] and rechecks.length \u2014 the exact two inputs the merge-attrs exclusion above protects. This is the same order/count hazard, reached by a different route, so registering the file apiFallbackSafe trades a push-reliability win for a narrow CI-vs-local clobber window; it is safe only for the CI-only write pattern that is in place today.',
     note: 'shadow-mode RECHECK-AFTER verdict ledger written by scripts/autonomous-acceptance-recheck.js — append-only JSONL, one line per recheck run',
+  },
+  // BRO-3426 (2026-09-15): registering these two is NOT merely about making
+  // their own push fast — it is about not BREAKING the steps after them.
+  // push-with-retry.sh:2312 disqualifies the Git Data API fallback when the
+  // outgoing diff contains ANY data/audit/ path that is not registered here,
+  // and a continue-on-error commit step that fails to push leaves its commit
+  // on local HEAD, where every LATER step's SCRIPT_ENTRY_HEAD diff picks it
+  // up. That is exactly the poisoning BRO-2588 documents for
+  // audit/autonomous-recheck-ledger.jsonl above — so shipping these two
+  // unregistered would have silently forced every subsequent commit+push step
+  // in data-health-check.yml onto the slow local rebase path. Caught by a
+  // Codex adversarial review before it shipped, not after.
+  {
+    file: 'audit/done-evidence-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-15 (BRO-3426): grepped every .github/workflows/*.yml, all of scripts/ and all of tests/ for the literal filename. Sole WRITER: scripts/audit-done-evidence.js:68 (writeJson, tmp-file + rename), invoked only by data-health-check.yml\'s "Done-evidence audit (shadow mode)" step; that same workflow is also the only one that git-adds the path (its "Commit done-evidence audit" step). There are NO readers of this file anywhere — the digest reads the SEPARATE snapshot file below, not this one; the only other references are the script\'s own USAGE text and a comment in scripts/lib/done-evidence-audit.js explaining why sandbox paths are scrubbed (precisely so this nightly-committed file does not diff on a random temp dir). data-health-check.yml declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race. Full-overwrite snapshot, never append-only: each run rewrites the whole document, so the ours-wins-outright semantics of push-via-git-api.sh cannot drop accumulated history the way it could for an append-only ledger. RESIDUAL RISK, same class knowingly accepted for audit/stale-announced-shows.json and audit/autonomous-recheck-ledger.jsonl above: the CLI writer can also be run locally by a human, and the concurrency group serializes CI against CI but not CI against a local run. Accepted on the same grounds — this is disposable telemetry regenerated in full by the next nightly run, not state that can lose history.',
+    note: 'full shadow-mode verdict report written by scripts/audit-done-evidence.js — one entry per Done(14d)/In Review/In Progress card, rewritten whole each run',
+  },
+  {
+    file: 'audit/done-evidence-digest-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-15 (BRO-3426): same writer (scripts/audit-done-evidence.js:69), same invoking step and same `git add` line as audit/done-evidence-audit.json above — both files are written by the same run and staged together. One READER: scripts/lib/digest-snapshots.js:128 registers it as the `doneEvidence` SNAPSHOTS row, which scripts/send-morning-digest.js renders; reading never conflicts with the API fallback\'s ours-wins semantics. Same full-overwrite (not append-only) shape and the same residual local-vs-CI clobber risk accepted for the same reason.',
+    note: 'the {generatedAt, bannerText, items, moreCount} view model send-morning-digest.js renders as the "Done-evidence audit" block',
   },
   // BRO-2699 (2026-09-07): outlet-registry-baseline-maintenance.yml's daily
   // cron exists specifically to keep these two baseline files current so
@@ -1331,17 +1376,29 @@ const CORE_DATA_MERGE_REGISTRY = [
     file: 'audit/gate-cold-start-monitor-state.json',
     surface: 'public-repo',
     status: 'single-writer',
-    apiFallbackSafe: true,
+    // false, not true: the writer-drift guard (scripts/lib/api-fallback-writer-drift.test.mjs)
+    // re-verifies every apiFallbackSafe:true entry against the live workflows and
+    // rightly found no writer once BRO-3422 (6817ae16c07) removed it — main went red
+    // on 2026-09-15. A frozen file has no writer to be safe for.
+    apiFallbackSafe: false,
     concurrencyGroup: 'monitor-gate-ab',
-    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false).',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false). SUPERSEDED 2026-09-15: writer removed, see note.',
+    note: 'FROZEN as of 2026-09-15: the gate-cold-start A/B concluded and monitor-gate-ab.yml no longer writes this file (its write step was removed) — kept in the repo as the historical readout, not actively single-written anymore despite the status above.',
   },
   {
     file: 'audit/ticket-ab-monitor-state.json',
     surface: 'public-repo',
     status: 'single-writer',
-    apiFallbackSafe: true,
+    // false, not true: same pattern as the gate-cold-start-monitor-state.json
+    // entry above — the writer-drift guard re-verifies every apiFallbackSafe:
+    // true entry against the live workflows and rightly found no writer once
+    // BRO-3456 (912f84e7d43) concluded the ticket-single-button A/B and
+    // removed its monitor-gate-ab.yml write step. main went red on
+    // 2026-09-16. A frozen file has no writer to be safe for.
+    apiFallbackSafe: false,
     concurrencyGroup: 'monitor-gate-ab',
-    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false).',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false). SUPERSEDED 2026-09-16: writer removed, see note.',
+    note: 'FROZEN as of 2026-09-16: the ticket-single-button A/B concluded (BRO-3456, card #392) and monitor-gate-ab.yml no longer writes this file (its write step was removed) — kept in the repo as the historical readout, not actively single-written anymore despite the status above.',
   },
   {
     file: 'audit/follow-send-checkpoint.json',
@@ -1547,7 +1604,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     newline: true,
     apiFallbackMerge: true,
     optInReconcile: false, // see audit/alert-ledger.json's comment above
-    verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js.',
+    verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js. UPDATE 2026-09-16 (BRO-2423): 3 more independent writers, same one-key-per-guard shape, no registry change needed (the merge fn is generic over top-level keys) — check-scoring-queue-guard.js: scoring-queue-scan-failed, run-ensemble-scoring-guard.js: ensemble-scoring-pipeline-crashed (both llm-ensemble-score.yml, concurrency group scoring-reviews[-reason]), check-review-count-drift-guard.js: review-count-drift-strict-breach (check-review-count-drift.yml, concurrency group check-review-count-drift) — now 6 total.',
   },
   {
     file: 'audit/breaker-transitions.jsonl',
@@ -1642,6 +1699,12 @@ const CORE_DATA_MERGE_REGISTRY = [
     // overlapping hunk can rebase clean while still discarding one side's
     // edit.
   },
+  {
+    file: 'outlet-registry.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    note: 'BRO-1084: moved from private-core-data to public-repo — the private copy was routinely stale because the only real writer is a human running scripts/audit-outlet-registry.js --update/--auto locally (CI only ever runs --json/--update-baseline/--strict, never the write branch), and every new outlet addition depended on a manual gh api PUT to the private repo before the next checkout-core-data run silently overwrote it. No CI workflow writes this file, so there is no concurrency group to declare.',
+  },
 
   // ── private-core-data surface (push-core-data/action.yml, CORE_FILES) ────
   {
@@ -1701,7 +1764,6 @@ const CORE_DATA_MERGE_REGISTRY = [
   },
   { file: 'grosses.json', surface: 'private-core-data', status: 'single-writer', note: 'both writers (scrape-alltime-grosses, weekly-grosses) share concurrency group data-grosses-writers — mutually exclusive, no real race' },
   { file: 'critic-consensus.json', surface: 'private-core-data', status: 'single-writer', note: 'only update-critic-consensus.yml writes it' },
-  { file: 'outlet-registry.json', surface: 'private-core-data', status: 'single-writer', note: 'CI never actually reaches the write branch of audit-outlet-registry.js (needs --auto/interactive confirm; CI only runs --json/--update-baseline/--strict)' },
   { file: 'audience-reviews-lbo.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, update-lbo.yml' },
   { file: 'followers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },

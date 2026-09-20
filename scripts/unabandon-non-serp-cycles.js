@@ -26,6 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { SERP_DISCOVERY_METHODS } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -38,11 +39,8 @@ let remediated = 0;
 let errors = 0;
 const methodBreakdown = {};
 
-for (const showId of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+for (const showId of listShowDirs(REVIEW_TEXTS_DIR)) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  let stat;
-  try { stat = fs.statSync(showDir); } catch { continue; }
-  if (!stat.isDirectory()) continue;
 
   for (const f of fs.readdirSync(showDir)) {
     if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;

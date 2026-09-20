@@ -584,26 +584,15 @@ function urlYearFromPath(url) {
   return Number.isFinite(year) ? year : null;
 }
 
-function getWrongProductionReasonFromUrl(url, show) {
-  if (!url || typeof url !== 'string') return null;
-  if (!show) return null;
-  const earliest = show.previewsStartDate || show.openingDate;
-  if (!earliest) return null;
-
-  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
-  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
-  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
-  if (!m) return null;
-
-  const year = m[1];
-  const rawMonth = m[2].toLowerCase();
-  const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
-  if (!month) return null;
-
-  const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
-  const urlDate = new Date(`${year}-${month}-${dayPart}`);
-  if (isNaN(urlDate.getTime())) return null;
-
+/**
+ * Shared window decision, given an already-parsed review date (from wherever
+ * the caller extracted it). Split out of getWrongProductionReasonFromUrl so
+ * getWrongProductionReasonForBww's BWW-trailing-date fallback (below)
+ * can reuse the exact same priorRuns/tourLegs exemption + post-close +
+ * lead-window logic instead of re-deriving it — a second copy of this window
+ * math would be the same drift risk flagged in urlYearFromPath's own comment.
+ */
+function reasonFromParsedUrlDate(urlDate, urlDateStr, show) {
   // Prior-run exemption (ALL markets): a review dated within a declared prior
   // run is legitimate coverage of an earlier staging, not a wrong-production
   // cross-attribution. Off-broadway shows in particular carry same-season
@@ -618,11 +607,11 @@ function getWrongProductionReasonFromUrl(url, show) {
   // production, not a different one.
   if (isWithinTourLeg(urlDate, show.tourLegs)) return null;
 
+  const earliest = show.previewsStartDate || show.openingDate;
   const earliestDate = new Date(earliest);
   if (isNaN(earliestDate.getTime())) return null;
 
   const daysBefore = Math.round((earliestDate - urlDate) / 86400000);
-  const urlDateStr = urlDate.toISOString().slice(0, 10);
 
   // Post-closing check first: an article dated after close is a later production/tour,
   // independent of whether it's also before the previews of this production's ID.
@@ -652,6 +641,54 @@ function getWrongProductionReasonFromUrl(url, show) {
   return null;
 }
 
+function getWrongProductionReasonFromUrl(url, show) {
+  if (!url || typeof url !== 'string') return null;
+  if (!show) return null;
+  const earliest = show.previewsStartDate || show.openingDate;
+  if (!earliest) return null;
+
+  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
+  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
+  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
+  if (!m) return null;
+
+  const year = m[1];
+  const rawMonth = m[2].toLowerCase();
+  const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
+  if (!month) return null;
+
+  const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
+  const urlDate = new Date(`${year}-${month}-${dayPart}`);
+  if (isNaN(urlDate.getTime())) return null;
+
+  return reasonFromParsedUrlDate(urlDate, urlDate.toISOString().slice(0, 10), show);
+}
+
+/**
+ * BroadwayWorld's own article URLs encode the publish date as a trailing
+ * `-YYYYMMDD` slug suffix with no path-segment slashes around the date, e.g.
+ * `.../article/BWW-Review-Some-Show-20190915` — a shape
+ * getWrongProductionReasonFromUrl's slash-delimited regex never matches.
+ * Reuses the same YYYYMMDD pattern already proven against real BWW URLs by
+ * scripts/lib/page-validator.js's extractYearFromUrl. Deliberately NOT folded
+ * into getWrongProductionReasonFromUrl itself (used by many other unrelated
+ * callers, e.g. getWrongProductionReasonForUnknownCritic on arbitrary SERP
+ * URLs) — a bare trailing 8-digit number is common on non-BWW URLs for
+ * reasons that aren't a date (WordPress post IDs, etc.), so this fallback
+ * only fires for getWrongProductionReasonForBww, scoped to
+ * broadwayworld.com URLs specifically.
+ */
+function bwwTrailingDateFromUrl(url) {
+  const m = url.match(/-(\d{4})(\d{2})(\d{2})\d{0,2}(?:[/?#]|$)/);
+  if (!m) return null;
+  const year = parseInt(m[1], 10);
+  const month = parseInt(m[2], 10);
+  const day = parseInt(m[3], 10);
+  if (year < 1990 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const d = new Date(`${m[1]}-${m[2]}-${m[3]}`);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 /**
  * Wrapper around getWrongProductionReasonFromUrl that only fires when the review
  * has NO named critic (Unknown / Staff / empty). Used at ingest time in
@@ -671,12 +708,76 @@ function getWrongProductionReasonFromUrl(url, show) {
  * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string }} show
  * @returns {string|null}
  */
+/**
+ * True when a critic name is empty/Unknown/Staff — the "no benefit of the
+ * doubt" bucket getWrongProductionReasonForUnknownCritic below gates on.
+ * Extracted so a post-hoc audit calling the raw getWrongProductionReasonFromUrl
+ * directly (no critic-name gating applied) can flag which of its own results
+ * carry a NAMED critic — the higher false-positive-risk class this same
+ * criticIsUnknown check exists to protect against here.
+ *
+ * @param {string|null|undefined} criticName
+ * @returns {boolean}
+ */
+function isCriticUnknown(criticName) {
+  const norm = String(criticName || '').trim().toLowerCase();
+  return !norm || norm === 'unknown' || norm === 'staff';
+}
+
 function getWrongProductionReasonForUnknownCritic(review, show) {
   if (!review) return null;
-  const norm = String(review.criticName || '').trim().toLowerCase();
-  const criticIsUnknown = !norm || norm === 'unknown' || norm === 'staff';
-  if (!criticIsUnknown) return null;
+  if (!isCriticUnknown(review.criticName)) return null;
   return getWrongProductionReasonFromUrl(review.url, show);
+}
+
+/**
+ * Wrapper around getWrongProductionReasonFromUrl that fires for BWW-sourced
+ * entries regardless of critic name (BRO-916, extended to a second source by
+ * BRO-3502).
+ *
+ * getWrongProductionReasonForUnknownCritic above deliberately only fires on
+ * Unknown/Staff bylines because its false-positive risk is organic pre-transfer
+ * journalism by a named critic (benefit of the doubt applies). BWW-sourced
+ * ingestion is a different risk shape: both extractBWWRoundupReviews
+ * (gather-reviews.js, source 'bww-roundup') and scrape-bww-reviews.js's own
+ * roundup + dedicated /reviews/ page extraction (also 'bww-roundup', and
+ * 'bww-reviews' respectively) pull reviews from a BWW-assembled PAGE by
+ * anchor position/JSON-LD/DOM block, so contamination happens in how BWW
+ * assembled the page, not in how the critic bylined their own writing — a
+ * real, named critic's real West End review can still land on the wrong
+ * show's Broadway page. Incident: Alexander Cohen's London "The Fear of 13"
+ * review (byline "BroadwayWorld", i.e. BWW's own UK edition — not a distinct
+ * outlet the geography filter in validateBWWRoundupGeography would catch)
+ * was pulled into the Broadway show's roundup page and shipped with no
+ * wrongProduction flag until manual cleanup. BRO-3502: scripts/scrape-bww-
+ * reviews.js's dedicated /reviews/{slug} page extraction (source
+ * 'bww-reviews') has the identical page-assembly risk shape and reaches the
+ * same write chokepoint (review-file-writer.js's createOrMergeReviewFile)
+ * that never got the BRO-916 fix — see the corpus-scan note at that call
+ * site.
+ *
+ * Tries the general slash-dated URL check first (external outlet URLs, e.g.
+ * a linked NYT/Guardian/Variety article), then falls back to BWW's own
+ * trailing-YYYYMMDD URL convention (bwwTrailingDateFromUrl) when the review's
+ * URL is itself a broadwayworld.com link — the exact shape of a BWW-own-byline
+ * entry like the Alexander Cohen incident.
+ *
+ * @param {{ url?: string|null, source?: string|null }} review
+ * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string, priorRuns?: any, tourLegs?: any }} show
+ * @returns {string|null}
+ */
+function getWrongProductionReasonForBww(review, show) {
+  if (!review || !show) return null;
+  if (review.source !== 'bww-roundup' && review.source !== 'bww-reviews') return null;
+  const url = review.url;
+  const primary = getWrongProductionReasonFromUrl(url, show);
+  if (primary) return primary;
+  if (!url || !/broadwayworld\.com/i.test(url)) return null;
+  const earliest = show.previewsStartDate || show.openingDate;
+  if (!earliest) return null;
+  const urlDate = bwwTrailingDateFromUrl(url);
+  if (!urlDate) return null;
+  return reasonFromParsedUrlDate(urlDate, urlDate.toISOString().slice(0, 10), show);
 }
 
 /**
@@ -733,9 +834,16 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
     return matchCountTB >= minMatchTB;
   }
 
+  // Boundary chars: whitespace/slug punctuation plus prose punctuation
+  // (comma/colon/etc.) — this function doubles as a prose title matcher
+  // (see the block comment above), and a headline like "'Dad, Don't Read
+  // This' Review:" puts a comma directly after "Dad" with no space before
+  // the quote. Without comma/colon in the boundary set, that word-boundary
+  // regex never matches "dad" and a correct SERP candidate gets silently
+  // dropped. [BRO-1351]
   const wordMatch = (haystack, word) => {
     const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
-    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_\\d])', 'i').test(haystack);
+    return new RegExp('(?:^|[\\s\\-/.,:;!?\'"_])' + escaped + '(?:$|[\\s\\-/.,:;!?\'"_\\d])', 'i').test(haystack);
   };
   const matchCount = titleWords.filter(w => wordMatch(lowerUrl, w)).length;
   const minMatch = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
@@ -3173,6 +3281,35 @@ function buildMultiProdYearGuard(shows) {
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
 
+  // BRO-931 #3 — preview-period scraping poisons opening night dedup.
+  // isPreviewPlaceholder is stamped by gather-reviews.js (while show.status is
+  // 'previews' or openingDate is future) and by opening-night-poller.js's
+  // pre-wipe pass, but until this check existed nothing in the rebuild
+  // INCLUSION gate ever read it — mergeReviews()/the URL-rediscovery bypass
+  // consumed it, but a placeholder that happens to carry an aggregator signal
+  // (ShowScore/DTLI/BWW rating picked up during previews) passed the generic
+  // hasText/hasAggregatorSignal check below and could ship into reviews.json
+  // permanently unless a post-opening write happened to land on the exact
+  // same outlet+critic dedupKey. As of this fix, is-scoreable.ts (which
+  // delegates to isIncludableForRebuild) also stops scoring these files going
+  // forward — a deliberate, desirable side effect, not an accident.
+  // Escape hatch mirrors the wpCleared pattern used by every other
+  // categorical "content is wrong" check in this function (see wrongProduction
+  // below) rather than inventing a new field: a human who has verified a
+  // preview-period file is genuinely correct content, or an ensemble score
+  // that already landed on it (legacy files scored before this fix shipped —
+  // see clear-failure-flags.js's isPreviewPlaceholder rule for the auto-clear
+  // going forward), both override the placeholder flag.
+  if (data.isPreviewPlaceholder === true) {
+    const placeholderCleared =
+      data.wrongProductionManualClear === true ||
+      data.wrongProductionOverride === true ||
+      data.humanReviewedWrongProduction === false ||
+      data.humanReviewScore != null ||
+      !!(data.llmScore && data.llmScore.score != null);
+    if (!placeholderCleared) return 'previewPlaceholder';
+  }
+
   // Freshness-bounded auto-clear check, shared by the 3 wpCleared sites below.
   // review-write-guard.js's own use of this stamp (isFreshWrongProductionAutoClear)
   // is deliberately freshness-gated: a years-old stamp on a file that was
@@ -3495,7 +3632,10 @@ function explainExclusion(data, show, filePath) {
     // Wayback snapshot of a Times subscription-lapsed page (correctly not_a_review), but
     // bwwExcerpt held a real review quote and aggregatorStars held Show-Score's 4/5.
     // Scoped to 'not_a_review' only — 'garbage_text' is a stronger, collector-time signal.
-    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return 'rejectionReason';
+    // hasStructuralStarScore (below) is the one exception that DOES cover 'garbage_text' —
+    // it isn't reading the rejected prose, it's reading page markup, so the reason the
+    // prose was rejected doesn't matter.
+    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data)) return 'rejectionReason';
   }
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return 'rejectedByMultipleModels';
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
@@ -3530,7 +3670,9 @@ function explainExclusion(data, show, filePath) {
     // Exception 4: matches the rejectionReason exception above (line ~2650) — an
     // independent aggregator excerpt + star rating clears the rejectedAt gate too, for
     // the same reason: the rejection was about the fullText fetch, not this content.
-    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return 'rejectedAt';
+    // Exception 5: matches hasStructuralStarScore above — a markup-based star score
+    // never read the rejected prose, so it clears the rejectedAt gate too.
+    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data)) return 'rejectedAt';
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
@@ -4036,10 +4178,20 @@ function isRejectedNonReview(data) {
     (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
     require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
   if (isJsonLdStarNotAReview) return false;
-  // Same exception as isIncludableForRebuild's not_a_review carve-out — keeps this
-  // predicate in lock-step with the rebuild gate (see hasIndependentExcerptScore).
-  if (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data)) return false;
-  if (NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
+  // Same exceptions as isIncludableForRebuild's not_a_review/structural-star-score
+  // carve-outs (BRO-2282, BRO-2495) — an independent excerpt+thumb/star score or a
+  // markup-based star score never read the rejected prose, so rejectionReason alone
+  // doesn't make this a non-review. Deliberately scoped to JUST the rejectionReason
+  // check below, not an early return for the whole function: neither exception
+  // overrides explainExclusion's separate cvWrongArticleHighConfidence gate — a
+  // file can carry BOTH a garbage_text/not_a_review rejectionReason AND a
+  // high-confidence contentVerification.wrongArticle verdict from a different
+  // pipeline stage, and the latter must still mark it non-retrieved (ship-check
+  // finding, ties isRejectedNonReview back to explainExclusion's real scope
+  // instead of over-widening this predicate).
+  const rejectionReasonCleared = hasStructuralStarScore(data) ||
+    (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data));
+  if (!rejectionReasonCleared && NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
   const cv = data.contentVerification;
   // wrongArticle gated on high confidence to match isIncludableForRebuild's
   // exact exclusion (line ~2588): a medium/low-confidence CV false-positive on a
@@ -4090,6 +4242,70 @@ const JUNK_EXCERPT_PATTERNS = [
   /not every review published by/i,
 ];
 
+// Score sources read directly from page markup (image filenames, CSS/SVG
+// classes, widget JSON) rather than scanned from the article prose — see
+// extractUKStarRating and friends in score-extractors.js. A false
+// not_a_review/garbage_text verdict on the PROSE (e.g. cookie-consent
+// boilerplate prepended to a real review — BRO-2282, John Proctor Is the
+// Villain WE, whatsonstage--sarah-crompton.json: the LLM ensemble saw the
+// consent banner and called it garbage_text, but wos-star-images had
+// already read 5/5 stars off the page's star-rating <img> tags, untouched
+// by that banner) does not taint these — the extractor never looked at the
+// rejected prose at all.
+// Deliberately narrower than OUTLET_VERIFIED_SOURCES in score-extractors.js:
+// excludes prose-scanned extractors (unicode-stars, text-pattern, css-stars,
+// word-stars, star-class, numeric-stars, omc-alt-text — which falls back to
+// matching against the plain-text body, not just markup) whose input IS the
+// same text the ensemble judged not-a-review/garbage, so a false rejection
+// could plausibly taint them too. Also excludes json-ld — that already has
+// its own, outlet-gated exception (isJsonLdStarNotAReview below); duplicating
+// it here without the KNOWN_STAR_OUTLETS check would weaken it.
+const STRUCTURAL_STAR_SOURCES = new Set([
+  'wos-star-images', 'stage-star-svg', 'telegraph-svg-stars',
+  'dailymail-rating-img', 'guardian-star-svg', 'bww-star-image',
+  'theatre-weekly-star-image', 'radiotimes-svg-stars', 'radiotimes-page-json',
+  'afridiziak-star-image', 'timeout-svg-stars',
+]);
+
+/**
+ * True when a review-text file's score came from page markup independent of
+ * the article prose the ensemble rejected — used by the not_a_review /
+ * garbage_text rejectionReason exception below. See STRUCTURAL_STAR_SOURCES
+ * for why this is narrower than "any outlet-verified source." Scoped to
+ * these two reasons only (not e.g. wrong_show / wrong_production, which are
+ * content-correctness verdicts a markup-based star score can't vouch for).
+ */
+function hasStructuralStarScore(data) {
+  if (!data) return false;
+  if (data.rejectionReason !== 'not_a_review' && data.rejectionReason !== 'garbage_text') return false;
+  if (data.wrongProduction === true || data.wrongShow === true) return false;
+  // A later pipeline pass (fix-p0-score-corruption.js) can determine the
+  // extracted score was wrong (extraction-no-evidence, aggregator-score-in-
+  // p0-slot, ...) and stamp originalScoreCleared=true without touching
+  // rejectionReason/scoreSource — same check hasValidScore's hasOrig makes
+  // (line ~4330). Without this, a since-invalidated extraction would still
+  // pass here.
+  if (data.originalScoreCleared === true) return false;
+  const source = data.scoreSource || data.originalScoreSource;
+  if (!STRUCTURAL_STAR_SOURCES.has(source)) return false;
+  return typeof data.originalScoreNormalized === 'number'
+    && data.originalScoreNormalized >= 1 && data.originalScoreNormalized <= 100;
+}
+
+/**
+ * True when a thumb verdict field (dtliThumb / bwwThumb) is a definite
+ * up-or-down call. Excludes 'Meh'/'Flat' (neutral — not independent evidence
+ * of a specific score direction) and normalizes the case each source writes:
+ * llm-extractor.js's DTLI branch stamps dtliThumb upper-case
+ * ('UP'/'DOWN'/'MEH'), its BWW branch stamps bwwThumb title-case
+ * ('Up'/'Down'/'Meh').
+ */
+function isDefiniteThumb(thumb) {
+  if (typeof thumb !== 'string') return false;
+  const upper = thumb.toUpperCase();
+  return upper === 'UP' || upper === 'DOWN';
+}
+
 /**
  * True when a review-text file has an aggregator excerpt substantial and
  * clean enough to stand on its own as the scoring source, independent of a
@@ -4102,11 +4318,26 @@ const JUNK_EXCERPT_PATTERNS = [
  *   - an aggregator excerpt field with 150+ chars of non-junk text (excludes
  *     photo captions, aggregator disclaimer boilerplate — see
  *     JUNK_EXCERPT_PATTERNS)
- *   - aggregatorStars that actually parses to a rating (excludes "N/A" and
- *     other unparseable strings masquerading as a score)
+ *   - EITHER aggregatorStars that actually parses to a rating (excludes "N/A"
+ *     and other unparseable strings masquerading as a score) OR a definite
+ *     dtliThumb/bwwThumb verdict (Up/Down — see isDefiniteThumb). Added
+ *     2026-09 (BRO-2495): a THUMB-only score (dtliThumb=Up, scoreSource=thumb)
+ *     is exactly as independent of the article body as aggregatorStars is —
+ *     the verdict is read off the aggregator's own page, not the paywalled
+ *     fullText the ensemble rejected. Before this, every THUMB-scored review
+ *     of a paywalled T1 outlet (NYT, WSJ, New Yorker, The Times) was one
+ *     ensemble re-run away from silently losing its score: the NYT review of
+ *     Paranormal Activity (opening night 2026-08-26) was stamped
+ *     not_a_review purely because its stored body was a bot-detection
+ *     paywall stub, even though it was correctly THUMB-scored from DTLI.
  *   - no wrongProduction / wrongShow flag, unconditionally (this narrow path
  *     does not defer to the manual-clear machinery the other gates use — if
  *     either flag is set, the file stays excluded here regardless)
+ *
+ * Still scoped to rejectionReason === 'not_a_review' only (unchanged) —
+ * 'garbage_text' is a stronger, collector-time signal per the caller's own
+ * scoping comment (see isIncludableForRebuild above); a THUMB verdict + clean
+ * excerpt doesn't override that.
  *
  * Corpus parity check (all 41,455 review-text files, task #734 ship-check
  * 2026-08-01): the earlier version of this exception (excerpt presence +
@@ -4121,6 +4352,7 @@ function hasIndependentExcerptScore(data) {
   const excerpt = bestAggregatorExcerptText(data);
   if (!excerpt || excerpt.trim().length < 150) return false;
   if (JUNK_EXCERPT_PATTERNS.some(p => p.test(excerpt))) return false;
+  if (isDefiniteThumb(data.dtliThumb) || isDefiniteThumb(data.bwwThumb)) return true;
   if (data.aggregatorStars == null) return false;
   const { parseOriginalScore } = require('./score-parsers');
   return parseOriginalScore(String(data.aggregatorStars)) != null;
@@ -4246,6 +4478,8 @@ module.exports = {
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
+  isCriticUnknown,
+  getWrongProductionReasonForBww,
   urlYearFromPath,
   urlLooksLikeReview,
   isSluglessReviewUrl,
@@ -4291,6 +4525,10 @@ module.exports = {
   isIncludableForRebuild,
   explainExclusion,
   duplicateOfInheritedFlag,
+  hasStructuralStarScore,
+  hasIndependentExcerptScore,
+  isDefiniteThumb,
+  STRUCTURAL_STAR_SOURCES,
   isRejectedNonReview,
   isRetrieved,
   blocksRediscovery,

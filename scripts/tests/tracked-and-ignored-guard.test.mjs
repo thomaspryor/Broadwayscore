@@ -30,7 +30,7 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 test('getShippedCoreFiles: parses CORE_FILES out of the real push-core-data/action.yml', () => {
   const files = getShippedCoreFiles();
   assert.ok(files.includes('opening-night-sent.json'), 'opening-night-sent.json must still be a shipped core file');
-  assert.ok(files.includes('outlet-registry.json'), 'outlet-registry.json must still be a shipped core file');
+  assert.ok(!files.includes('outlet-registry.json'), 'outlet-registry.json is public-repo-tracked as of BRO-1084 — it must NOT be a shipped core file');
   assert.ok(files.includes('shows.json'), 'sanity check — shows.json is always shipped');
 });
 
@@ -64,7 +64,7 @@ test('findTrackedAndShipped: empty when nothing tracked-and-ignored overlaps the
   try {
     assert.deepEqual(findTrackedAndShipped({ cwd: dir, actionPath }), []);
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -76,7 +76,7 @@ test('findTrackedAndShipped: flags a file that is both tracked+ignored and shipp
   try {
     assert.deepEqual(findTrackedAndShipped({ cwd: dir, actionPath }), ['data/outlet-registry.json']);
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -88,7 +88,7 @@ test('findTrackedAndShipped: a tracked file NOT in the shipped set is not flagge
   try {
     assert.deepEqual(findTrackedAndShipped({ cwd: dir, actionPath }), []);
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -97,7 +97,7 @@ test('getTrackedAndIgnored: only reports paths that are both tracked and gitigno
   try {
     assert.deepEqual(getTrackedAndIgnored({ cwd: dir }), ['data/outlet-registry.json']);
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 

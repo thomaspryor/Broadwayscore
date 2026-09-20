@@ -103,13 +103,18 @@ test('the workflow parses and actually contains audit steps (guard against a vac
   const steps = auditSteps(workflow);
   // If this ever drops to 0 the assertions below would pass while checking
   // nothing — the exact silence-reads-as-safety shape this file is about.
-  // Raised from 20 to 50 when lint-workflows joined SCOPED_JOBS (BRO-2906).
-  // data-validation alone contributes 24, so a floor of 20 would still pass
-  // even if every lint-workflows step silently vanished — the guard against a
-  // vacuous pass would itself have become vacuous.
+  // Lowered from 50 to 40 (BRO-3535, 2026-09-16): 14 audit-*.js steps moved
+  // out of data-validation into check-corpus-drift.js's non-blocking AUDITS
+  // table (they scanned the live corpus fresh on every push with no heal
+  // path, reddening main for non-code reasons — see that ticket). Measured
+  // post-move: data-validation 11 + lint-workflows 35 = 46. The floor stays
+  // ABOVE lint-workflows' own count (35) alone, so it still catches every
+  // lint-workflows step silently vanishing, which is the property this guard
+  // exists for — it is not meant to pin the exact count, that's what the
+  // "found ${steps.length}" message is for.
   assert.ok(
-    steps.length >= 50,
-    `expected at least 50 audit-*.js steps across ${[...SCOPED_JOBS].join(' + ')}, found ${steps.length} — the matcher or the workflow shape changed`
+    steps.length >= 40,
+    `expected at least 40 audit-*.js steps across ${[...SCOPED_JOBS].join(' + ')}, found ${steps.length} — the matcher or the workflow shape changed`
   );
 });
 
@@ -305,9 +310,17 @@ test('the two steps fixed on 2026-09-06 specifically carry if: always()', () => 
   // Keyed on `${jobId} / ${name}`: with two jobs in SCOPED_JOBS a bare step
   // name collides silently and the last one parsed wins.
   const byName = new Map(auditSteps(workflow).map((s) => [`${s.jobId} / ${s.name}`, s]));
+  // "Audit critic-outlet affinities" and "Audit Broadway-category predicate
+  // re-derivations" moved out of data-validation entirely (BRO-3535,
+  // 2026-09-16) into check-corpus-drift.js's AUDITS table. The 2026-09-06 bug
+  // class this test guards (an earlier YAML step's implicit `if: success()`
+  // silently skipping a later one) cannot recur there: check-corpus-drift.js's
+  // main() runs every AUDITS entry via `AUDITS.map(runAudit)`, an unconditional
+  // JS loop with no per-entry skip-on-earlier-failure semantics at all — so
+  // only "Audit outlet-registry gaps" (kept on push; it also enforces
+  // registry config validity, not just corpus-drift membership) still needs
+  // this specific regression check.
   for (const name of [
-    'data-validation / Audit critic-outlet affinities',
-    'data-validation / Audit Broadway-category predicate re-derivations',
     'data-validation / Audit outlet-registry gaps',
   ]) {
     const step = byName.get(name);

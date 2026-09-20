@@ -42,6 +42,7 @@ const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
 
@@ -630,9 +631,7 @@ function checkSync() {
     const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
     let fileCount = 0;
     if (fs.existsSync(reviewTextsDir)) {
-      const showDirs = fs.readdirSync(reviewTextsDir).filter(d =>
-        fs.statSync(path.join(reviewTextsDir, d)).isDirectory()
-      );
+      const showDirs = listShowDirs(reviewTextsDir);
       for (const dir of showDirs) {
         const files = fs.readdirSync(path.join(reviewTextsDir, dir))
           .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
@@ -2607,6 +2606,66 @@ function checkDigestInvariantFail() {
   return [assessDigestInvariantFailRow(entries)];
 }
 
+// --- Stuck pipeline items (card #794) ---
+//
+// scripts/send-morning-digest.js has computed this exact signal for months
+// (overnight-digest.js's gatherDigest()/stuckSignals()) and auto-files a
+// "Stuck pipeline items" card whenever it's non-empty — but the row only
+// ever existed inside the digest's own extraIssues list, never in
+// computeCoreHealthResults()/HEALTH_DIGEST_SNAPSHOT_FILE. That meant every
+// auto-filed card's safe-form verify command
+// (check-health-row-absent.js, reading this function's output) could never
+// find the row present in the first place, so it reported the row "absent"
+// (fixed) unconditionally — a permanent false pass regardless of whether
+// anything was actually stuck. This makes the same signal a first-class row
+// here so the row can genuinely go from warn to pass and back.
+//
+// Fidelity note: gatherDigest()'s worktree/cmux/reconcile-report sources
+// only exist on the owner's Mac (reconcile-report.jsonl is gitignored,
+// .claude/worktrees/ and the cmux binary aren't present in CI's ephemeral
+// checkout) — those sections fail soft to "nothing found" there by design.
+// A CI run of this check can therefore only ever see the git-history and
+// tracked-file signals (review-count drop, rebuild-regression.json); the
+// worktree/cmux/headless-job signals are only visible when this runs
+// locally, same as the digest itself.
+function checkStuckPipelineItems() {
+  const { gatherDigest, stuckSignals } = require('./lib/overnight-digest.js');
+  const repo = path.join(__dirname, '..');
+  let digest;
+  try {
+    // skipFetch: this runs inside health-row-probe.js's supposed-to-be
+    // side-effect-free --live probe (rerun on EVERY card's acceptance check,
+    // not just this row's) — a real `git fetch` there would mutate
+    // FETCH_HEAD/remote-tracking refs on disk, which the probe's fs-write
+    // monkey-patch can't catch since it's a child process, not a Node fs
+    // call (adversarial ship-check finding). send-morning-digest.js's real
+    // run is unaffected — it doesn't pass this option.
+    digest = gatherDigest({ repo, skipFetch: true });
+  } catch (err) {
+    return [{ name: 'Stuck pipeline items', status: 'warn', message: `Could not gather the overnight digest to check for stuck signals (${String(err.message).slice(0, 120)})` }];
+  }
+  const signals = stuckSignals(digest);
+  if (signals.length) {
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. ${signals.join(' | ')}`.slice(0, 500),
+    }];
+  }
+  if (digest.errors.length) {
+    // "No signals found" and "collection itself partially failed" are NOT
+    // the same claim — collapsing them the way this row never existing at
+    // all collapsed every state to "fixed" is the exact false-pass class
+    // this row exists to end (adversarial ship-check finding).
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `Overnight digest gathered partially (${digest.errors.length} source(s) failed) — cannot confirm clean: ${digest.errors.join('; ')}`.slice(0, 500),
+    }];
+  }
+  return [{ name: 'Stuck pipeline items', status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' }];
+}
+
 // --- Push-retry deadman (task #394) ---
 //
 // Full explanation (including the BRO-231/#1221 absent-vs-empty contract)
@@ -3646,6 +3705,24 @@ function obClosingBacklogResults(report, now = new Date()) {
   }];
 }
 
+// Reads data/audit/ob-closing-candidates.json off disk and surfaces it via
+// obClosingBacklogResults. Pure local-file read — unlike feedbackBacklogResults
+// (needs a live GitHub API call via getOpenFeedbackReviewIssues), this has no
+// CI-only dependency, so it belongs in computeCoreHealthResults rather than
+// gated behind `if (isCI)` in main(): that gate meant a card targeting this
+// row could never confirm its own fix same-day, because
+// scripts/lib/health-row-probe.js's live re-check only re-runs
+// computeCoreHealthResults (task #799 — moved here so the live probe can see
+// it, same file main() and the probe already share for exactly this reason).
+function checkObClosingBacklog() {
+  try {
+    const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
+    return obClosingBacklogResults(obReport);
+  } catch {
+    return []; // report absent (detector not yet run) — nothing to surface
+  }
+}
+
 // Daily-digest surfacing for reverse-discovery missing-show candidates
 // (data/audit/reverse-discovery-candidates.json, written daily by
 // audit-reverse-discovery.yml). This is the detector's ONLY human-facing
@@ -3739,6 +3816,34 @@ function worktreeGcFreshnessResults(lastLineTimestamp, nowMs) {
     message: `worktree-gc.log has no line in the last ${stale.hoursStale.toFixed(1)}h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing.`,
     hint: 'launchctl print gui/501/com.broadwayscore.worktree-gc — check "last exit code" and whether runs have advanced; run scripts/gc-merged-worktrees.sh manually if stuck. BRO-2608.',
   }];
+}
+
+// Digest surfacing for data/audit/notion-schedule-coupling.json (BRO-3431
+// reopen prevention requirement) — written by data-health-check.yml's
+// "Notion-schedule-coupling audit (shadow mode)" step. Report-only, same
+// non-blocking contract as every sibling shadow-mode sweep this function's
+// neighbors surface: a finding here is a candidate for a human to look at
+// (see the script's own NOTION_COUPLING_ALLOWLIST), not an accusation, and
+// this check is what makes "is the Linear migration actually done" a
+// digest line instead of a raw JSON file nobody reads.
+function notionScheduleCouplingResults(snap) {
+  const name = 'Infra: notion-schedule-coupling audit';
+  if (!snap) {
+    return [{ name, status: 'warn', message: 'No notion-schedule-coupling snapshot yet (cron not yet run)', hint: 'node scripts/audit-notion-schedule-coupling.js' }];
+  }
+  const age = snap.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
+  if (age > 48) {
+    return [{ name, status: 'error', message: `notion-schedule-coupling snapshot is ${formatAge(age)} old (>48h) — the daily sweep itself has stopped running`, hint: 'Check the "Notion-schedule-coupling audit (shadow mode)" step in data-health-check.yml' }];
+  }
+  const workflowFailed = snap.workflowHalf && snap.workflowHalf.ok === false;
+  if (workflowFailed) {
+    return [{ name, status: 'error', message: `Workflow-schedule scan itself failed: ${snap.workflowHalf.reason}`, hint: 'node scripts/audit-notion-schedule-coupling.js — investigate the scan failure, not just the finding count' }];
+  }
+  const total = snap.totalFindings || 0;
+  if (total > 0) {
+    return [{ name, status: 'warn', message: `${total} live schedule(s) still reference the frozen Notion mirror (${formatAge(age)} ago)`, hint: 'node scripts/audit-notion-schedule-coupling.js --dry-run to see which; port to Linear or add to NOTION_COUPLING_ALLOWLIST if intentional' }];
+  }
+  return [{ name, status: 'pass', message: `No live schedules coupled to the frozen Notion mirror (${formatAge(age)} ago)` }];
 }
 
 // Daily-digest surfacing for uncollected-live-review strands (data/audit/
@@ -4780,6 +4885,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkPipelines(),
     ...checkBatchState(),
     ...checkQuality(),
+    ...checkObClosingBacklog(),
     ...checkOutletHealth(),
     ...checkCommercialModelDrift(),
     ...checkCookieExpiration(),
@@ -4801,6 +4907,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixCanary(),
     ...checkAutofixThroughput(),
     ...checkDigestInvariantFail(),
+    ...checkStuckPipelineItems(),
   ];
 }
 
@@ -4838,11 +4945,6 @@ async function main() {
       console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
     }
     allResults.push(...feedbackBacklogResults(feedbackSummary));
-
-    try {
-      const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
-      allResults.push(...obClosingBacklogResults(obReport));
-    } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     // Never-run workflow coverage (task #737): computed HERE, not read from a
     // file lint-workflows wrote — that CI job checks out code but has no
@@ -4905,6 +5007,13 @@ async function main() {
       const logText = fs.readFileSync(path.join(__dirname, '../data/audit/worktree-gc.log'), 'utf8');
       allResults.push(...worktreeGcFreshnessResults(lastTimestampFromLog(logText), Date.now()));
     } catch { /* log absent — nothing to surface */ }
+
+    try {
+      const couplingSnap = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/notion-schedule-coupling.json'), 'utf8'));
+      allResults.push(...notionScheduleCouplingResults(couplingSnap));
+    } catch {
+      allResults.push(...notionScheduleCouplingResults(null));
+    }
 
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
@@ -5047,4 +5156,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
+module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };

@@ -39,6 +39,28 @@ source "$SCRIPT_DIR/disk-floor-check.sh"
 ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
 MAX_RETRIES=${1:-7}
+# BRO-2554: validate BEFORE any arithmetic touches it (the fallback-after
+# calculation a few lines below is a `$(( ))` arithmetic context, where an
+# unvalidated non-numeric value is treated as a VARIABLE NAME — e.g. a caller
+# passing "origin" as $1, an easy mistake since this script's usage is
+# `[max_retries] [branch]`, not `[remote] [branch]`. That name is unset, so
+# `set -u` (line 32) throws a confusing "unbound variable" deep in the script
+# instead of a clear usage error at the top. Checked here, right after the
+# assignment and before push_mutex_acquire/detect-stale-merge-head run further
+# down — a malformed invocation never takes the cross-session push mutex.
+# Rejects leading zeros ("08", "010"), not just non-digits: bash arithmetic
+# treats a leading-0 numeral as OCTAL, which either throws its own confusing
+# "value too great for base" error (08, 09 — not valid octal digits) or
+# silently computes the WRONG decimal value (010 -> 8) instead of crashing —
+# both are exactly the class of confusing failure this check exists to
+# prevent, not just the plain-non-numeric case (adversarial review finding,
+# confirmed live: `bash -c 'echo $(( 08 ))'` errors, `$(( 010 ))` silently
+# yields 8).
+if ! [[ "$MAX_RETRIES" =~ ^(0|[1-9][0-9]*)$ ]]; then
+  echo "usage: $0 [max_retries] [branch]" >&2
+  echo "  max_retries must be a non-negative integer with no leading zeros (got: '$MAX_RETRIES')" >&2
+  exit 1
+fi
 # BRANCH: a plain name (e.g. "main") means "push the LOCAL branch literally
 # named that" — NOT current HEAD. In a worktree checked out on a feature
 # branch, local `main` is a separate ref pinned at worktree-creation time
@@ -200,6 +222,29 @@ git_push() {
 # a revert+redeploy (adversarial review finding: the ledger-only
 # PUSH_SKIP_FAILURE_LEDGER switch doesn't touch trace collection itself).
 #
+# BRO-3358: GIT_TRACE_CURL above answers "how far did the CONNECT phase get"
+# but is a WIRE trace — it has nothing to say about what git itself is doing
+# BETWEEN wire events, e.g. a blocking credential-helper child process
+# spawned mid-transport (measured locally: `gh auth git-credential store`
+# costing 0.18-0.35s). CI resolves credentials through a DIFFERENT path
+# (http.extraheader from actions/checkout) than a local credential helper, so
+# whether something analogous blocks there is unknown until a real failure is
+# captured. GIT_TRACE2_PERF is the right instrument for that (see
+# push-diagnostics.js's header comment for why GIT_TRACE_PERFORMANCE, the
+# more obvious-looking option, cannot work here: it only logs a region on
+# LEAVE, so the phase that's still running at kill time never prints).
+#
+# PUSH_TRACE2_DIAGNOSTICS=1 (DEFAULT OFF, unlike the always-on curl trace
+# above) additionally captures a GIT_TRACE2_PERF trace for this call and, on
+# a timeout failure, prints which child process (if any) was still running
+# when the kill hit. Default off because this is diagnostic instrumentation
+# for one unsolved incident, not a permanent feature — enabled per-workflow
+# via that workflow's own env: block (currently: process-feedback.yml only,
+# BRO-3358's highest-frequency/fastest-signal call site) rather than
+# repo-wide, so a bug in this NEW path can only ever affect the one enabled
+# workflow while a real CI failure is captured and the credential-helper
+# hypothesis is confirmed or ruled out.
+#
 # Sets $_LAST_STALL_PHASE as a side effect (bare assignment — this runs at
 # the same non-function retry-loop scope as pre_push_rc/post_push_rc, see
 # BRO-2732's identical note above), RESET at the top of every call so a
@@ -219,7 +264,14 @@ _LAST_STALL_PHASE="unknown"
 # must not inherit an earlier attempt's classification into the ledger row).
 _LAST_STALL_SERVICE="unknown"
 git_push_traced() {
-  local trace_file rc kill_ts
+  # trace2_file is declared (and left "") even when PUSH_TRACE2_DIAGNOSTICS is
+  # unset, NOT left to spring into existence only inside the `if` below: this
+  # file runs under `set -euo pipefail`, and the RETURN trap below
+  # unconditionally expands "$trace2_file" on EVERY call — an undeclared local
+  # would be an unbound-variable error under `set -u` on every push in all
+  # ~157 call sites, not just the ones that opt in (caught in review before
+  # this ever ran for real).
+  local trace_file rc kill_ts trace2_file=""
   _LAST_STALL_PHASE="unknown"
   _LAST_STALL_SERVICE="unknown"
   if [ "${PUSH_SKIP_STALL_DIAGNOSTICS:-}" = "1" ]; then
@@ -235,6 +287,15 @@ git_push_traced() {
   # not running at all.
   trace_file=$(mktemp 2>/dev/null) || { git_push "$@"; return $?; }
   chmod 600 "$trace_file" 2>/dev/null || true
+  # BRO-3358: a second, independent temp file for the GIT_TRACE2_PERF capture
+  # — never shared with trace_file above, so a future format change to either
+  # trace can't corrupt the other. Same fail-open rule: if mktemp fails here,
+  # trace2_file simply stays "" and the push runs with curl-trace diagnostics
+  # only, never blocked on the second capture.
+  if [ "${PUSH_TRACE2_DIAGNOSTICS:-}" = "1" ]; then
+    trace2_file=$(mktemp 2>/dev/null) || true
+    [ -n "$trace2_file" ] && chmod 600 "$trace2_file" 2>/dev/null || true
+  fi
   # RETURN trap (not a manual `rm -f` at the bottom): covers every exit from
   # this function, including one this file's own future edits might add
   # (adversarial review finding — cleanup must not depend on control flow
@@ -252,8 +313,17 @@ git_push_traced() {
   # dependence on that non-obvious, easy-to-get-wrong behavior and guarantees
   # this function never silently clobbers a RETURN trap some future caller or
   # sourced file relies on.
-  trap 'rm -f "$trace_file" 2>/dev/null || true; trap - RETURN' RETURN
-  GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" git_push "$@"
+  #
+  # `rm -f "$trace_file" "$trace2_file"` is always safe here even when
+  # trace2_file="" — `rm -f` on an empty-string argument is a silent no-op,
+  # not an error, and the variable is always DECLARED (see the `local` line
+  # above) so this never hits the unbound-variable case under `set -u`.
+  trap 'rm -f "$trace_file" "$trace2_file" 2>/dev/null || true; trap - RETURN' RETURN
+  if [ -n "$trace2_file" ]; then
+    GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" GIT_TRACE2_PERF="$trace2_file" git_push "$@"
+  else
+    GIT_TRACE_CURL_NO_DATA=1 GIT_TRACE_CURL="$trace_file" git_push "$@"
+  fi
   rc=$?
   # BRO-2839: kill wall-clock, captured on the SAME clock the trace's own lines
   # use, immediately after the timeout wrapper returns. The stall this card is
@@ -295,6 +365,16 @@ git_push_traced() {
         # enough to contain one request line on the runs that prompted this card.
         node "$SCRIPT_DIR/../push-diagnostics-cli.js" redact-tail "$trace_file" 8000 2>/dev/null \
           | sed 's/^/    curl-trace: /' || true
+        # BRO-3358: same kill_ts as above (one `date` call per attempt,
+        # shared by both diagnostics — two separate kill timestamps could
+        # disagree by the gap between the two `date` forks and make the two
+        # traces describe slightly different "now"s).
+        if [ -n "$trace2_file" ]; then
+          node "$SCRIPT_DIR/../push-diagnostics-cli.js" trace2-summary "$trace2_file" "$kill_ts" 2>/dev/null \
+            | sed 's/^/    trace2: /' || true
+          node "$SCRIPT_DIR/../push-diagnostics-cli.js" redact-tail "$trace2_file" 8000 2>/dev/null \
+            | sed 's/^/    trace2-raw: /' || true
+        fi
         ;;
     esac
   fi
@@ -367,6 +447,67 @@ _fetch_with_captured_stderr() {
   local rc=$?
   if [ "$rc" -ne 0 ] && [ -s "$errfile" ]; then
     echo "  fetch stderr: $(tail -c 800 "$errfile" | _redact_creds | tr '\n' ' ')"
+  fi
+  rm -f "$errfile" 2>/dev/null || true
+  return $rc
+}
+
+# BRO-3662: `git rebase` can fail BEFORE it starts — a pre-flight refusal
+# ("cannot rebase: You have unstaged changes" / "your index contains
+# uncommitted changes") when the worktree or index is dirty. The old call site
+# discarded stderr with 2>/dev/null, so that refusal was reported as "Rebase had
+# conflicts", ran the 4-round resolve loop against ZERO conflicted files, and
+# fell through to `git merge -X ours` — the path that resolves conflicting hunks
+# in OUR favour and can silently discard a concurrent writer's changes.
+# process-feedback.yml run 34852355418 did exactly this on all 10 retry attempts.
+#
+# Mirrors _fetch_with_captured_stderr above (mktemp fallback, chmod 600, rc
+# immediately after the git call, _redact_creds, always cleans up). Sets
+# _REBASE_REFUSAL_REASON to the real git error when — and only when — the rebase
+# provably never started; empty means "a genuine conflict, handle as before".
+# Diagnostics only: the caller's control flow is unchanged either way.
+_REBASE_REFUSAL_REASON=""
+# Resolve a rebase state dir. Prefers _marker_git_path (detect-stale-merge-head
+# .sh, which uses --path-format=absolute) but that source is deliberately
+# fail-OPEN above, so it may be undefined — fall back to the plain --git-path
+# idiom already used at sync-audit-checkout.sh:229-232.
+_rebase_state_dir() {
+  if command -v _marker_git_path >/dev/null 2>&1; then
+    _marker_git_path "$(pwd)" "$1"
+  else
+    git rev-parse --git-path "$1" 2>/dev/null
+  fi
+}
+_rebase_with_captured_stderr() {
+  local errfile
+  errfile=$(mktemp 2>/dev/null || echo "/tmp/push-retry-rebase-err.$$.$RANDOM")
+  chmod 600 "$errfile" 2>/dev/null || true
+  git rebase -X theirs "origin/$PULL_BRANCH" 2>"$errfile"
+  local rc=$?
+  _REBASE_REFUSAL_REASON=""
+  if [ "$rc" -ne 0 ]; then
+    # Declared before assignment on purpose: `local x=$(...)` returns the exit
+    # status of `local`, NOT of the substitution, so the rc capture below would
+    # silently always read 0.
+    local rm_dir ra_dir conflicted conflicted_rc
+    rm_dir=$(_rebase_state_dir rebase-merge)
+    ra_dir=$(_rebase_state_dir rebase-apply)
+    conflicted=$(git diff --name-only --diff-filter=U 2>/dev/null)
+    conflicted_rc=$?
+    # "Never started" requires POSITIVE evidence on all three counts, not merely
+    # the absence of a signal (ship-check/Codex finding): both state-dir lookups
+    # must actually have RESOLVED (non-empty path) and show no directory, and
+    # the conflict query must have SUCCEEDED and come back empty. A failed
+    # lookup returns "" and a failed query returns "" too — treating either as
+    # "no state exists" would let this branch claim a rebase never started
+    # without ever establishing it, and then skip the --abort that a genuinely
+    # half-started rebase needs.
+    if [ -n "$rm_dir" ] && [ -n "$ra_dir" ] \
+         && [ ! -d "$rm_dir" ] && [ ! -d "$ra_dir" ] \
+         && [ "$conflicted_rc" -eq 0 ] && [ -z "$conflicted" ]; then
+      _REBASE_REFUSAL_REASON=$(tail -c 800 "$errfile" 2>/dev/null | _redact_creds | tr '\n' ' ')
+      [ -n "$_REBASE_REFUSAL_REASON" ] || _REBASE_REFUSAL_REASON="git printed no error"
+    fi
   fi
   rm -f "$errfile" 2>/dev/null || true
   return $rc
@@ -754,6 +895,36 @@ if [ "${PUSH_API_FALLBACK_DISABLE:-}" != "1" ] && [ "$_PUSH_API_REPO_EXCLUDED" !
      && [ -n "$SCRIPT_ENTRY_BASE" ] && [ -f "$SCRIPT_DIR/push-via-git-api.sh" ]; then
   _PUSH_API_FALLBACK_ELIGIBLE=true
 fi
+
+# Does the outgoing diff touch a path the Git Data API fallback must not
+# overlay? ONE definition, shared by the early-break gate inside the retry loop
+# and the authoritative check in the fallback block below — see
+# scripts/lib/api-fallback-disqualifier.js for the rules themselves.
+#
+# Returns 0 = no disqualifying path. NON-ZERO = disqualified, and the rc is the
+# node exit code so the caller can print it. Callers MUST invoke this as
+# `api_fallback_paths_ok ... || rc=$?` and never as `if ! api_fallback_paths_ok`
+# — `$?` read inside an `if !` is always 0 (see the BRO-2413 note at the
+# fallback block's own rc handling), which would silently turn every
+# disqualification into "rc=0", i.e. fail OPEN.
+# The offending path is captured into $_API_DISQUALIFY_DETAIL rather than
+# discarded: before BRO-3663 this check's stderr went to /dev/null and BOTH
+# warnings said only "touches a MANAGED/shows.json/reviews.json/unaudited path"
+# without ever naming WHICH — so an operator had to reconstruct the diff by hand
+# to act on it. The module prints exactly one line naming the path.
+_API_DISQUALIFY_DETAIL=""
+api_fallback_paths_ok() {
+  _API_DISQUALIFY_DETAIL="$(node "$SCRIPT_DIR/api-fallback-disqualifier.js" "$1" "$2" 2>&1 >/dev/null)"
+  return $?
+}
+
+# BRO-3663: memo for the early-break gate only. Empty = not yet evaluated.
+# Deliberately NOT folded into $_PUSH_API_FALLBACK_ELIGIBLE: that variable also
+# gates the whole post-loop fallback block, so a disqualifying verdict there
+# would skip the authoritative re-check, the pre-fallback HEAD reset, and the
+# operator-facing "skipping Git Data API fallback" warning. This verdict may
+# only ever SUPPRESS the early break, never cancel the fallback attempt itself.
+_PUSH_API_EARLY_BREAK_OK=""
 
 # Shared ancestor predicate (BRO-259) — used by both sync_restore_base_head()
 # below and restore_head_if_moved() so the two "is it safe to treat this HEAD
@@ -1864,11 +2035,30 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # survival-check failure log pinpoints the exact path that dropped a file
   # (rebase-clean vs rebase-resolved vs merge vs cherry-pick). Diagnostics only.
   RESOLUTION_PATH=none
-  if git rebase -X theirs "origin/$PULL_BRANCH" 2>/dev/null; then
+  if _rebase_with_captured_stderr; then
     rebase_ok=true
     RESOLUTION_PATH="rebase-clean(-X theirs)"
     restore_protected_fields
     reconcile_merged_json
+  elif [ -n "$_REBASE_REFUSAL_REASON" ]; then
+    # BRO-3662: the rebase never started, so there is nothing to auto-resolve
+    # and nothing to --abort. Say so LOUDLY with the real git error and the
+    # dirty paths — the caller left a tracked file modified and unstaged, and
+    # that is a bug in the CALLER's staging, not a conflict here. Falls through
+    # to the same merge fallback as before: behaviour is unchanged, only the
+    # diagnosis and the skipped no-op loop differ.
+    # Deliberately does NOT set RESOLUTION_PATH: that variable means "the
+    # strategy that produced the new HEAD", and this path produced none. The
+    # merge fallback below sets it if it succeeds.
+    echo "::warning::push-with-retry: rebase REFUSED before it started (NOT a conflict): $_REBASE_REFUSAL_REASON"
+    echo "  dirty tracked paths: $(git status --porcelain --untracked-files=no 2>/dev/null | head -20 | tr '\n' ' ')"
+    echo "  Skipping conflict auto-resolution (zero conflicted files) and going straight to the merge fallback."
+    # Belt-and-braces (ship-check finding): the classifier above only reaches
+    # here once both state-dir lookups RESOLVED and showed no directory, so
+    # there is provably no rebase to abort and this is a no-op today. Kept so
+    # that a future edit which loosens the classifier cannot silently
+    # reintroduce "skipped the abort a half-started rebase needed".
+    git rebase --abort 2>/dev/null || true
   else
     echo "  Rebase had conflicts, attempting auto-resolution..."
     # Try up to 4 rounds of conflict resolution (one per conflicting commit)
@@ -2100,7 +2290,51 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # through to the SAME fallback block below as ordinary exhaustion — this is
   # strictly an earlier entry point into existing logic, not new fallback
   # behavior.
-  if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ]; then
+  # BRO-3663: the trade above is only sound if the fallback can ACTUALLY run.
+  # $_PUSH_API_FALLBACK_ELIGIBLE is repo/config-level (PUSH_API_FALLBACK_DISABLE,
+  # repo identity, a resolvable SCRIPT_ENTRY_BASE, script present) — it says
+  # nothing about which PATHS the outgoing diff touches, and the path
+  # disqualifier only runs later, inside the fallback block. So a caller whose
+  # diff touches an unregistered data/audit/ path broke out of this loop at
+  # attempt $PUSH_API_FALLBACK_AFTER_ATTEMPTS, discovered the fallback was
+  # disqualified, and hard-failed with its remaining local attempts unspent —
+  # "Audit Aggregator Review Gap" run 34855239166 lost attempts 4 and 5 that way
+  # while the underlying failures were transport HANGS, exactly what retries
+  # exist to ride out. BRO-3071 registered 86 data/audit/ files as
+  # apiFallbackSafe, but 360 remain unregistered, so the cliff is still live for
+  # any caller staging one.
+  #
+  # Evaluated lazily and memoised: a push that succeeds on attempt 1 (the
+  # overwhelming majority across ~130 call sites, several pushes per job) pays
+  # nothing. Fails CLOSED — a node crash means "don't break early", which costs
+  # only some extra local attempts that today are burned for nothing anyway.
+  #
+  # NOT identical to the fallback block's own check: this diffs our commits as
+  # of loop entry, while that one diffs from RESTORE_BASE_HEAD, which
+  # sync_restore_base_head() may have advanced to adopt a concurrent writer's
+  # commit (deliberately — it rides along in the pushed diff). The two ranges are
+  # therefore INDEPENDENT, not nested: an adopted commit can add paths this gate
+  # never saw, and a later commit can revert one it did. So this gate NARROWS the
+  # budget-loss hole rather than closing it — a run whose disqualifying path
+  # arrives only via an adopted commit still breaks early and still forfeits its
+  # remaining attempts. That residual case is acceptable because the direction of
+  # error is safe: this verdict may only ever SUPPRESS a break. It can cost some
+  # extra local attempts; it can never authorise a fallback, because the
+  # authoritative check below still runs on the real pushed range and is the only
+  # thing that can permit one.
+  if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ] \
+       && [ -z "$_PUSH_API_EARLY_BREAK_OK" ]; then
+    _early_break_rc=0
+    api_fallback_paths_ok "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" || _early_break_rc=$?
+    if [ "$_early_break_rc" = "0" ]; then
+      _PUSH_API_EARLY_BREAK_OK=true
+    else
+      _PUSH_API_EARLY_BREAK_OK=false
+      echo "::warning::push-with-retry: NOT breaking out early for the Git Data API fallback — our outgoing diff touches a path the fallback's own disqualifier rejects (rc=$_early_break_rc${_API_DISQUALIFY_DETAIL:+; $_API_DISQUALIFY_DETAIL}). Spending the remaining local attempts instead — breaking early would forfeit them for a fallback that cannot run (BRO-3663). Register the path in scripts/lib/core-data-merge-registry.js to make the fallback available here."
+    fi
+  fi
+  if [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ] && [ "$_PUSH_API_EARLY_BREAK_OK" = "true" ] \
+       && [ "$i" -ge "$PUSH_API_FALLBACK_AFTER_ATTEMPTS" ]; then
     echo "::warning::push-with-retry: $i failed local attempt(s) reached (PUSH_API_FALLBACK_AFTER_ATTEMPTS=$PUSH_API_FALLBACK_AFTER_ATTEMPTS) — breaking out of the local fetch+rebase+push loop early to try the Git Data API fallback instead of waiting for full exhaustion"
     # Unlike the deadline break above, THIS iteration's attempt ran and failed,
     # so the real completed count is i, not i-1. This is the more common of the
@@ -2298,27 +2532,20 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
     # a plain whole-file overlay for that path (see its own "apiFallbackMerge
     # paths" section). isManaged(f) && !isApiFallbackMergeable(f) is the
     # actual disqualifying condition now, not isManaged(f) alone.
+    # BRO-3663: the rules themselves now live in
+    # scripts/lib/api-fallback-disqualifier.js so this authoritative check and
+    # the early-break gate inside the retry loop share ONE definition. The
+    # range is unchanged — SCRIPT_ENTRY_BASE..HEAD, where HEAD is current and
+    # post-reset, which is exactly what push-via-git-api.sh replays.
     _managed_check_rc=0
-    node -e '
-        const { MANAGED, API_FALLBACK_SAFE, API_FALLBACK_MERGE } = require(process.argv[1]);
-        const NEVER_FALLBACK = ["data/shows.json", "data/reviews.json"];
-        const changed = require("child_process")
-          .execFileSync("git", ["diff", "--name-only", process.argv[2], process.argv[3]], { encoding: "utf8" })
-          .split("\n").filter(Boolean);
-        const isManaged = (f) => MANAGED.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
-        const isApiFallbackSafe = (f) => API_FALLBACK_SAFE.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
-        const isApiFallbackMergeable = (f) => API_FALLBACK_MERGE.some((m) => f.endsWith(m.file.replace(/^data\//, "")));
-        const isNeverFallback = (f) => NEVER_FALLBACK.some((p) => f === p || f.endsWith("/" + p));
-        const hit = changed.find((f) => (isManaged(f) && !isApiFallbackMergeable(f)) || isNeverFallback(f) || (f.startsWith("data/audit/") && !isManaged(f) && !isApiFallbackSafe(f) && !isApiFallbackMergeable(f)));
-        process.exit(hit ? 1 : 0);
-      ' "$SCRIPT_DIR/reconcile-merged-json.js" "$SCRIPT_ENTRY_BASE" "HEAD" 2>/dev/null || _managed_check_rc=$?
+    api_fallback_paths_ok "$SCRIPT_ENTRY_BASE" "HEAD" || _managed_check_rc=$?
     # Fail CLOSED on any non-zero exit, not just exactly "1" (Codex adversarial
     # finding, BRO-2413): a syntax error, thrown exception, or missing-node
     # edge case exits with a DIFFERENT non-zero code, and the old `= "1"`
     # check let those cases silently proceed as if the diff were clean —
     # exactly backwards for a guard whose whole job is to fail closed.
     if [ "$_managed_check_rc" != "0" ]; then
-      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file (without apiFallbackMerge coverage), shows.json/reviews.json, an unaudited data/audit/ path (not in API_FALLBACK_SAFE either), or the disqualifier check itself failed unexpectedly (rc=$_managed_check_rc, failing closed). See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries for a hand-verified single-writer path, or its apiFallbackMerge entries for a genuinely multi-writer path with real reconciliation."
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file (without apiFallbackMerge coverage), shows.json/reviews.json, an unaudited data/audit/ path (not in API_FALLBACK_SAFE either), or the disqualifier check itself failed unexpectedly (rc=$_managed_check_rc, failing closed).${_API_DISQUALIFY_DETAIL:+ Offending path — $_API_DISQUALIFY_DETAIL.} See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries for a hand-verified single-writer path, or its apiFallbackMerge entries for a genuinely multi-writer path with real reconciliation."
       _api_fallback_ok=false
     fi
   fi

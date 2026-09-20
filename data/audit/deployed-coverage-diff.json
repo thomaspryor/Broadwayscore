@@ -1,31 +1,11 @@
 {
-  "generatedAt": "2026-09-15T18:50:21.378Z",
+  "generatedAt": "2026-09-20T16:50:43.355Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 129,
-  "clean": 128,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "pre-existing-condition-off-broadway-2026",
-      "title": "Pre-Existing Condition",
-      "openingDate": "2026-09-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: this-week-in-new-york"
-        }
-      ],
-      "missingFromProd": [
-        "this-week-in-new-york"
-      ],
-      "localCount": 11,
-      "deployedCount": 10
-    }
-  ]
+  "checked": 138,
+  "clean": 138,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }

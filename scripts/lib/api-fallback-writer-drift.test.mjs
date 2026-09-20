@@ -21,6 +21,15 @@ test('findWritingWorkflows matches the git-add-existing.sh helper shape', () => 
   assert.deepEqual(findWritingWorkflows('data/audit/b.json', workflows), ['foo.yml']);
 });
 
+test('findWritingWorkflows matches the git-add-existing.sh helper shape with backslash line continuations (BRO-3455 drift workflow)', () => {
+  const text = 'run: |\n  bash scripts/lib/git-add-existing.sh \\\n    data/audit/drift-state.json \\\n    data/audit/alert-ledger.json\n';
+  assert.deepEqual(findWritingWorkflows('data/audit/drift-state.json', { 'drift.yml': text }), ['drift.yml']);
+  assert.deepEqual(findWritingWorkflows('data/audit/alert-ledger.json', { 'drift.yml': text }), ['drift.yml']);
+  // A path on a later line that is NOT joined by a continuation is a different command — still no match.
+  const broken = 'run: |\n  bash scripts/lib/git-add-existing.sh data/audit/x.json\n  echo data/audit/drift-state.json\n';
+  assert.deepEqual(findWritingWorkflows('data/audit/drift-state.json', { 'drift.yml': broken }), []);
+});
+
 test('findWritingWorkflows finds every distinct writer, order-independent of glob order', () => {
   const workflows = {
     'a.yml': 'git add data/audit/shared.json',
@@ -128,10 +137,10 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (124 as of BRO-3071 2026-09-14 what-else sweep -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (125 as of BRO-3670 2026-09-16: the BRO-3431 126, MINUS the ticket-ab-monitor-state entry this fix froze (BRO-3456, 912f84e7d43, removed monitor-gate-ab.yml\'s write step); 126 as of BRO-3431 2026-09-15: the BRO-3426 125 PLUS notion-schedule-coupling.json (data-health-check.yml\'s new BRO-3431-reopen shadow audit); 125 as of BRO-3426 2026-09-15: the BRO-3071 124, MINUS the gate-cold-start-monitor-state entry BRO-3422 froze, PLUS the two done-evidence audit files data-health-check.yml writes; 124 as of BRO-3071 2026-09-14 what-else sweep -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 124);
+  assert.equal(publicSafe.length, 125); // 126 (BRO-3431) - ticket-ab-monitor-state.json (BRO-3670 froze)
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
     'audit/affiliate-link-probe.json',
@@ -174,6 +183,8 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/discovery-source-coverage.json',
     'audit/dmarc-report-ledger.jsonl',
     'audit/dmarc-summary.json',
+    'audit/done-evidence-audit.json',
+    'audit/done-evidence-digest-snapshot.json',
     'audit/drift-state.json',
     'audit/email-gate-funnel-monitor-state.json',
     'audit/enrich-off-broadway-dates-aborted.json',
@@ -181,7 +192,6 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/follow-send-checkpoint.json',
     'audit/fulltext-mentions-show-lifetime.json',
     'audit/gap-audit-checkpoint.json',
-    'audit/gate-cold-start-monitor-state.json',
     'audit/health-check-history.json',
     'audit/health-digest-snapshot.json',
     'audit/imageless-scored-shows.json',
@@ -189,6 +199,7 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/missed-broadcasts.json',
     'audit/needs-human-review.json',
     'audit/non-review-audit.json',
+    'audit/notion-schedule-coupling.json',
     'audit/ob-closing-candidates.json',
     'audit/ob-todaytix-missing-state.json',
     'audit/ob-venue-counts.json',
@@ -245,7 +256,6 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/t1-silent-gap-alerts.json',
     'audit/t1-silent-gaps.json',
     'audit/theatr-coverage.json',
-    'audit/ticket-ab-monitor-state.json',
     'audit/time-to-publish-sla.json',
     'audit/trunk-status-snapshot.json',
     'audit/uncollected-live-reviews.json',

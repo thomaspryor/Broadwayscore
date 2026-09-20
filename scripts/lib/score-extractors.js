@@ -21,7 +21,7 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
-const EXTRACTOR_VERSION = 6;  // v6: Guardian class-attribute anchoring (UUID/URL false positives), Radio Times <use>-anchored SVG matching
+const EXTRACTOR_VERSION = 7;  // v7 (BRO-922): NY Post css-stars re-scoped to rating__stars DOM boundary (was v6: Guardian class-attribute anchoring, Radio Times <use>-anchored SVG matching)
 
 /**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
@@ -479,19 +479,67 @@ function extractNYSRScore(html, text) {
 
 /**
  * Extract score from Guardian review
- * Format: Star ratings — BUT ONLY AVAILABLE VIA CONTENT API, NOT HTML.
+ * Format: Star ratings, rendered client-side-hydrated SSR as a row of 5 SVG
+ * icon <div>s in the headline block — NOT as text, unicode stars, or JSON-LD.
  *
- * Guardian star ratings are NOT present in the HTML pages returned by their website.
- * Stars are only available via the Guardian Content API (guardianApi.starRating field).
- * To recover Guardian star ratings, run:
- *   node scripts/recover-explicit-ratings.js --outlet=guardian
- * This requires GUARDIAN_API_KEY set as a CI secret (currently not configured).
- * Until the API key is added, use humanReviewScore for manual per-file corrections.
+ * BRO-919: the star widget uses Emotion (CSS-in-JS) generated class names
+ * (e.g. "dcr-1we7dfv") that rotate on every Guardian frontend deploy, so a
+ * hardcoded class selector breaks the next time Guardian ships. Instead,
+ * resolve which class is "filled" vs "empty" at read time via the CSS custom
+ * property each one is bound to (--star-rating-background /
+ * --star-rating-empty-background) — that binding is stable even though the
+ * hash isn't. Verified live 2026-09-15 against both a 2026 and a 2024
+ * Guardian review URL: same resolution logic, different (but internally
+ * consistent) hashes, correct star count both times. A genuine non-review
+ * Guardian article carries neither CSS rule at all, so this cannot false-
+ * positive on regular news pages.
  *
- * The HTML patterns below (JSON-LD ratingValue, class="rating-N") do not appear
- * in Guardian HTML and will never match. They are retained as safety nets only.
+ * Guardian star ratings are also available via the Content API
+ * (guardianApi.starRating field): node scripts/recover-explicit-ratings.js
+ * --outlet=guardian (requires GUARDIAN_API_KEY). Use humanReviewScore for
+ * manual per-file corrections when both paths come up empty.
+ *
+ * Two guards added after adversarial review (Codex, 2026-09-15):
+ *  - The class-hash-to-filled/empty resolution below reads the CSS rule,
+ *    which lives in the page's bundled <head> stylesheet — far earlier in
+ *    the document than the widget itself (measured ~148KB earlier on a real
+ *    fetch) — so that lookup stays unscoped. But COUNTING how many elements
+ *    use each class is scoped to a window starting at
+ *    data-gu-name="headline" (measured: the widget's divs sit 700-2200
+ *    chars after that marker), so an unrelated "related reviews" teaser
+ *    card elsewhere on the same article page — which would reuse the SAME
+ *    Emotion class hashes, since Guardian's CSS-in-JS hashes by style
+ *    content, not by instance — can't be counted into this review's total.
+ *    Falls back to the full document when the marker is absent rather than
+ *    refusing outright, since fixture/API HTML may not include it.
+ *  - total MUST equal exactly 5 (not merely <=5), matching the convention
+ *    already used by the WhatsOnStage/Stage extractors below. Guardian's
+ *    widget is always a fixed 5-icon row; requiring the exact count instead
+ *    of an upper bound prevents a short count (e.g. one icon failing to
+ *    match either class) from silently inflating the denominator.
  */
 function extractGuardianScore(html, text) {
+  if (html) {
+    const cssPropPattern = (varName) =>
+      new RegExp(`\\.(dcr-[a-z0-9]+)\\{[^}]*background-color\\s*:\\s*var\\(--${varName}\\b[^)]*\\)[^}]*\\}`);
+    const filledClassMatch = html.match(cssPropPattern('star-rating-background'));
+    const emptyClassMatch = html.match(cssPropPattern('star-rating-empty-background'));
+    if (filledClassMatch && emptyClassMatch && filledClassMatch[1] !== emptyClassMatch[1]) {
+      const headlineIdx = html.indexOf('data-gu-name="headline"');
+      const scoped = headlineIdx > -1 ? html.slice(headlineIdx, headlineIdx + 6000) : html;
+      const filledCount = (scoped.match(new RegExp(`class="${filledClassMatch[1]}"`, 'g')) || []).length;
+      const emptyCount = (scoped.match(new RegExp(`class="${emptyClassMatch[1]}"`, 'g')) || []).length;
+      const total = filledCount + emptyCount;
+      if (filledCount >= 1 && total === 5) {
+        return {
+          originalScore: `${filledCount}/${total} stars`,
+          normalizedScore: starsToNumeric(filledCount, total),
+          source: 'guardian-star-svg'
+        };
+      }
+    }
+  }
+
   // Try JSON-LD (not present in Guardian HTML — retained as safety net)
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+)"?/);
   if (jsonLdMatch) {
@@ -534,21 +582,44 @@ function extractGuardianScore(html, text) {
 function extractNYPostScore(html, text) {
   // NY Post uses CSS star widgets on newer articles (2019+).
   // rating__star--filled = full star, rating__star--half = half star, on a 4-star scale.
-  // IMPORTANT: Count actual DOM elements, not CSS class definitions.
-  // NY Post HTML contains CSS rules like `.rating__star--filled svg{fill:...}` — these are NOT stars.
-  // Strip <style> blocks first, then match only actual elements with star classes.
+  // IMPORTANT (BRO-922 / Dog Day Afternoon postmortem): NY Post pages carry recirc/
+  // "related stories" modules that reuse the exact same rating__stars markup with their
+  // OWN star ratings for a different show. Scope strictly to the FIRST rating__stars
+  // widget's own DOM boundary so a sidebar widget can never contribute stars to this
+  // extraction — a global page-wide count previously double-counted them and inflated
+  // scores (33% error rate). A prior fix (3ea7e7d5d32) added scoping via a nearby
+  // </section> tag with a fixed-size fallback, but a same-day follow-up (fc2d78f12ab)
+  // accidentally dropped it while fixing an unrelated bug. Re-added here anchored on
+  // rating__stars (the star row itself, not the wider review-card wrapper) with the
+  // actual structural close (`</div></div>` — closes rating__stars then rating) as the
+  // boundary, verified against all 40 archived NY Post reviews in the corpus, rather
+  // than a fixed character window that could truncate a widget mid-star or run long
+  // enough to swallow a nearby recirc widget.
+  // Also strip <style> blocks first: each star SVG embeds its own <style> block, and the
+  // page stylesheet separately repeats `.rating__star--filled svg{fill:...}` as CSS
+  // selector text, not markup — count only actual DOM elements with star classes.
   const htmlNoStyles = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
-  {
-    const filled = (htmlNoStyles.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--filled\b[^"]*"/gi) || []).length;
-    const half = (htmlNoStyles.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--half\b[^"]*"/gi) || []).length;
-    if (filled > 0) {
-      const rating = filled + (half * 0.5);
-      if (rating >= 0.5 && rating <= 4) {
-        return {
-          originalScore: `${rating}/4 stars`,
-          normalizedScore: starsToNumeric(rating, 4),
-          source: 'css-stars'
-        };
+  const starsIdx = htmlNoStyles.indexOf('rating__stars');
+  if (starsIdx > -1) {
+    // Cap the search for the closing boundary — a widget with no close within a
+    // generous 8000 chars is not the markup we expect; abstain rather than guess.
+    const searchWindow = htmlNoStyles.substring(starsIdx, starsIdx + 8000);
+    const closeMatch = searchWindow.match(/<\/div>\s*<\/div>/i);
+    const widgetHtml = closeMatch
+      ? searchWindow.substring(0, closeMatch.index)
+      : null;
+    if (widgetHtml !== null) {
+      const filled = (widgetHtml.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--filled\b[^"]*"/gi) || []).length;
+      const half = (widgetHtml.match(/<[a-z][^>]*\bclass="[^"]*\brating__star--half\b[^"]*"/gi) || []).length;
+      if (filled > 0) {
+        const rating = filled + (half * 0.5);
+        if (rating >= 0.5 && rating <= 4) {
+          return {
+            originalScore: `${rating}/4 stars`,
+            normalizedScore: starsToNumeric(rating, 4),
+            source: 'css-stars'
+          };
+        }
       }
     }
   }
@@ -1114,6 +1185,31 @@ function extractOneMinuteCriticScore(html, text) {
       return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-alt-text' };
     }
   }
+  // 1b. BRO-919: OMC's rating-image alt text dropped the "1 minute critic"
+  // prefix at some point in 2026 — the current template is just
+  // alt="N star review" (verified live against a 2026-04 review; the older
+  // "1 minute critic N-star rating" template above still matches older
+  // archived reviews). Scoped to the alt="" attribute so ordinary prose
+  // mentioning "a 3 star review" elsewhere on the page can't match. Checks
+  // both html and text for the same reason as pattern 1 above.
+  //
+  // Adversarial review (Codex, 2026-09-15) flagged a filename-based fallback
+  // ("N-stars.png" under the outlet's uploads path) that was here originally
+  // — removed: matching a rating out of an image URL is exactly the
+  // "extract metadata from URLs" anti-pattern this project's data rules
+  // forbid (URLs are inconsistent), and it could also match an unrelated
+  // <link rel=preload>/related-post reference that happens to share the
+  // filename shape. The alt-text patterns above are attribute content, not
+  // URL structure, and are sufficient — OMC pairs its uploaded rating image
+  // with descriptive alt text on every review checked live.
+  const altReviewPattern = /alt="(\d(?:\.\d)?)\s*-?\s*star\s+review"/i;
+  const altReviewMatch = html.match(altReviewPattern) || text.match(altReviewPattern);
+  if (altReviewMatch) {
+    const rating = parseFloat(altReviewMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return { originalScore: `${rating}/5`, normalizedScore: starsToNumeric(rating, 5), source: 'omc-alt-text' };
+    }
+  }
   // 2. Text pattern: "N out of 5 stars" (appears at end of review)
   const textMatch = text.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i)
                  || html.match(/(\d(?:\.\d)?)\s*out\s*of\s*5\s*stars?/i);
@@ -1487,7 +1583,7 @@ function scoreToThumb(score) {
 // 'guardian-svg-stars', 'telegraph-svg', 'timeout-star-widget'. Never emitted
 // by any extractor; safe to remove.
 const OUTLET_VERIFIED_SOURCES = new Set([
-  'json-ld', 'guardian-api',
+  'json-ld', 'guardian-api', 'guardian-star-svg',
   'wos-star-images', 'stage-star-svg',
   'telegraph-svg-stars', 'dailymail-rating-img', 'dailymail-css-stars', 'fivestar-widget',
   'star-class', 'unicode-stars', 'numeric-stars', 'original-star-rating',

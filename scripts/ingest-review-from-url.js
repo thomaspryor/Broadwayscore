@@ -32,8 +32,10 @@
  *     [--dry-run]
  *
  * Exit codes: 0 on success or skip (review already exists, no-op merge),
- * 1 on hard failure (fetch error, extraction empty, collision-blocked, or
- * the write-guard silently refusing/redirecting an update — BRO-3182).
+ * 1 on hard failure (fetch error, extraction empty, collision-blocked, the
+ * write-guard silently refusing/redirecting an update — BRO-3182 — or a
+ * merge-into-existing that reported "Updated" without actually landing the
+ * intended url/fullText/criticName — BRO-3790).
  */
 
 'use strict';
@@ -44,12 +46,15 @@ const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
+const { stripTrailingJunk } = require('./lib/text-cleaning');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
-const { getOutletDisplayName, findExistingReviewFile } = require('./lib/review-normalization');
+const { getOutletDisplayName, findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
 const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
+const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
+const { extractByline } = require('./lib/byline-extraction');
 
 const args = process.argv.slice(2);
 function getArg(name) {
@@ -96,51 +101,6 @@ const show = showsData.shows.find((s) => s.id === showId);
 if (!show) {
   console.error(`Show not found: ${showId}`);
   process.exit(1);
-}
-
-function decodeEntities(s) {
-  return (s || '')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;|&ldquo;|&rdquo;/g, '"')
-    .replace(/&apos;|&lsquo;|&rsquo;/g, "'")
-    .replace(/&nbsp;/g, ' ');
-}
-
-function extractByline(html) {
-  if (!html) return null;
-  const candidates = [
-    // OpenGraph / standard meta tags — most authoritative when present.
-    /<meta[^>]+property=["']article:author["'][^>]+content=["']([^"']+)["']/i,
-    /<meta[^>]+name=["']author["'][^>]+content=["']([^"']+)["']/i,
-    // class="author-name" / "author" / "byline" — common WordPress / blog patterns.
-    // Run BEFORE rel="author" because Jetpack's "View all posts by X" link in the
-    // footer also has rel="author" and pollutes the value.
-    /<[a-z]+[^>]+class=["'][^"']*author-name[^"']*["'][^>]*>([^<]+)</i,
-    /<span[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+)<\/span>/i,
-    /<p[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+)<\/p>/i,
-    // Inline "By Name" prose near top of article — FMJ-style "By Ross" right
-    // after the headline. Capture follows the literal "By " token.
-    />By\s+([A-Z][A-Za-z][A-Za-z .'-]{1,38})(?=\s+(?:[A-Z]|<|—))/,
-    // <a rel="author"> — last because of the Jetpack footer issue above.
-    /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
-  ];
-  for (const re of candidates) {
-    const m = html.match(re);
-    if (m && m[1]) {
-      let name = decodeEntities(m[1]).trim();
-      // Strip Jetpack-style "View all posts by X" prefix that leaks through
-      // some <a rel=author> matches.
-      name = name.replace(/^view\s+all\s+posts\s+by\s+/i, '');
-      if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
-      // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
-      if (/^[a-z][a-z\s.'-]*$/.test(name)) {
-        name = name.split(/\s+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      }
-      return name;
-    }
-  }
-  return null;
 }
 
 (async () => {
@@ -260,7 +220,15 @@ function extractByline(html) {
     }
   }
 
-  const text = extractArticleTextFromUrl(html, url, criticArg);
+  // stripTrailingJunk (newsletter promos, login prompts, site footers) runs
+  // in every other collection/recovery path (collect-review-texts.js,
+  // recover-serp-text.js, recover-wayback-reviews.js, recover-wsj-*.js) but
+  // was missing here — this is the one entry point the public /submit-review
+  // form and the >24h stuck-review backstop (audit-t1-silent-gaps.js
+  // recoverFromOwnUrl) both drive, so site chrome landed unstripped in
+  // fullText and fed straight into the LLM scoring prompt (BRO-2605 ship-check
+  // finding).
+  const text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
   // Star-rating fallback: UK star outlets (The Stage, Telegraph, Times, …)
   // serve recent articles as a registration wall with the review body absent
   // from server HTML — but the page's own StarRating block is still present.
@@ -364,26 +332,28 @@ function extractByline(html) {
   //     successful re-scrape could never actually fix this on its own.
   //   - no fresh date was recovered: clear the stale value rather than leave
   //     a provably-wrong date in place for a human to rediscover the gap.
-  {
-    const existing = findExistingReviewFile(showDir, outletId, critic, url);
-    if (
-      existing &&
-      existing.data.publishDate &&
-      !existing.data.allowEarlyDate &&
-      isStalePublishDate({ existingPublishDate: existing.data.publishDate, show })
-    ) {
-      const correctedValue = publishDate || null;
-      console.warn(`  ⚠️  Existing publishDate "${existing.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
-      if (!dryRun) {
-        const updated = {
-          ...existing.data,
-          publishDate: correctedValue,
-          previousPublishDate: existing.data.publishDate,
-          stalePublishDateClearedAt: new Date().toISOString(),
-          stalePublishDateClearedBy: 'ingest-review-from-url.js',
-        };
-        safeWriteReview(existing.path, updated, { force: true });
-      }
+  // Shared with the post-write stale-merge verification below (BRO-3790) —
+  // one lookup, same identity, same file: this is the pre-write snapshot of
+  // whatever createOrMergeReviewFile is about to merge into (or null, if
+  // this ingest will create a new file).
+  const preExisting = findExistingReviewFile(showDir, outletId, critic, url);
+  if (
+    preExisting &&
+    preExisting.data.publishDate &&
+    !preExisting.data.allowEarlyDate &&
+    isStalePublishDate({ existingPublishDate: preExisting.data.publishDate, show })
+  ) {
+    const correctedValue = publishDate || null;
+    console.warn(`  ⚠️  Existing publishDate "${preExisting.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
+    if (!dryRun) {
+      const updated = {
+        ...preExisting.data,
+        publishDate: correctedValue,
+        previousPublishDate: preExisting.data.publishDate,
+        stalePublishDateClearedAt: new Date().toISOString(),
+        stalePublishDateClearedBy: 'ingest-review-from-url.js',
+      };
+      safeWriteReview(preExisting.path, updated, { force: true });
     }
   }
 
@@ -427,6 +397,60 @@ function extractByline(html) {
     source: 'submit-review-form',
     fields,
   }, { dryRun, reviewTextsDir });
+
+  // BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills
+  // BLANK fields (review-file-writer.js _mergeIntoExisting) — a merge onto a
+  // file whose url/criticName/fullText is already non-blank silently keeps
+  // the old value, whether the writer reports 'updated' (something else
+  // changed, e.g. sources[]) or 'skipped: no-changes' (nothing did) — both
+  // exit 0 today with no signal that the intended correction never landed.
+  // Verify it, whenever a file was touched/matched and the write wasn't
+  // already refused by a guard (that already exits 1 below on its own, more
+  // specific, terms).
+  //
+  //   - url: always checked. It's an exact-identity field with no extraction
+  //     non-determinism risk, and the writer's own maybeUpgradeUrl already
+  //     refuses to swap it onto a file with good content BY DESIGN — the
+  //     same "needs a human" situation audit-show-review-gap.js's
+  //     STALE-SLUG comment documents — so flagging that refusal here is
+  //     correct, not a false positive.
+  //   - fullText: only checked when the file actually needed fixing BEFORE
+  //     this write (preBadContent, mirroring maybeUpgradeUrl's own
+  //     badContent gate exactly). A fresh re-extraction of an
+  //     ALREADY-complete file can differ in incidental ways (site chrome,
+  //     rotating ad copy) without the stored body being wrong — that's a
+  //     legitimate preserved value, not staleness, and flagging it would be
+  //     a false positive with nothing to correct.
+  //   - criticName: only checked when the caller passed --critic explicitly
+  //     (an auto-extracted byline is best-effort, not an assertion the
+  //     caller is making), compared via normalizeCritic so a case/whitespace
+  //     difference on the SAME critic never false-flags. criticName is
+  //     never merged by the writer at all — it's an identity key, not a
+  //     mergeable field (review-file-writer.js never assigns
+  //     existing.criticName on merge) — so this explicit-ask path is the
+  //     only way a stale byline can ever be caught.
+  if (result.action !== 'new' && result.filepath && !dryRun
+      && !(result.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(result.reason))) {
+    const preBadContent = isPreExistingContentBad(preExisting);
+    const intended = { url };
+    if (hasBody && preBadContent) intended.fullText = text;
+    let landed;
+    try {
+      landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+    } catch (e) {
+      console.error(`\n❌ Could not re-read ${result.filepath} to verify the write landed: ${e.message}`);
+      process.exit(1);
+    }
+    if (criticArg) {
+      intended.criticName = normalizeCritic(criticArg);
+      landed = { ...landed, criticName: normalizeCritic(landed.criticName) };
+    }
+    const staleFields = findStaleMergeFields(intended, landed);
+    if (staleFields.length > 0) {
+      console.error(`\n❌ Stale merge: ${staleFields.join(', ')} still hold a pre-existing value at ${result.filepath} that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.`);
+      process.exit(1);
+    }
+  }
 
   if (result.action === 'new') {
     console.log(`✅ Created: ${result.filepath}`);

@@ -34,8 +34,13 @@ const { syncDecision } = require('./core-data-sync-decision');
 // data/opening-night-sent.json is deliberately NOT here — it's force-added
 // (git add --force) as an INTENTIONAL public-repo dedup tracker across cron
 // runs (see opening-night-broadcast.yml), not a stray leftover.
+//
+// outlet-registry.json is deliberately NOT here as of BRO-1084 — it's no
+// longer dual-tracked. It's now a deliberately public-repo-tracked file
+// (removed from .gitignore and from CORE_FILES), and checkout-core-data
+// explicitly skips copying it from the private clone, so it can never again
+// be "stray" private content masquerading as a public change.
 const DUAL_TRACKED_FILES = [
-  'outlet-registry.json',
   'audience-reviews-lbo.json',
   'awards.json',
 ];

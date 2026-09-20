@@ -1,11 +1,14 @@
 name: Analyze Traffic Sources
 
-# Manual-only: weekly traffic-source comparison across GA4 and PostHog with
-# spike detection (BRO-3419). PostHog/GA4 credentials exist only as repo
-# secrets, so the owner's local sessions dispatch this instead of querying
-# directly. The markdown report renders on the run's Summary page; the raw
-# JSON is an artifact. No commits, no pushes.
+# Weekly traffic-source comparison across GA4 and PostHog with spike detection
+# (BRO-3419). PostHog/GA4 credentials exist only as repo secrets, so this runs
+# in CI (weekly, or dispatched on demand) rather than from a local shell. The
+# markdown report renders on the run's Summary page; the raw JSON is an
+# artifact. No commits, no pushes. Scheduled after posthog-monday.yml (08:00)
+# so the two Monday analytics runs don't contend for PostHog query capacity.
 on:
+  schedule:
+    - cron: '30 9 * * 1'  # Monday 09:30 UTC
   workflow_dispatch:
     inputs:
       days:

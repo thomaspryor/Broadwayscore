@@ -35,6 +35,16 @@
 
 'use strict';
 
+// Specificity of a runnable command, lowest wins. A card that lists both
+// `node --test tests/unit/thing.test.mjs` and `npx tsc --noEmit` was having
+// the tsc line captured purely because it appeared first — and "tsc still
+// passes" says nothing about whether THAT card's work survived (ship-check
+// finding). Module-level (not local to extractVerifyCmd) and exported so
+// autonomous-recheck-core.js can rank a comment-posted correction against a
+// dispatch-ledger snapshot the same way (BRO-3446) — CLAUDE.md §15: this is
+// the one copy, never re-implement the ranking elsewhere.
+const rank = c => (/^node --test/.test(c) || /^npx tsx --test/.test(c) ? 0 : /^test -f/.test(c) ? 1 : 2);
+
 // Where a runnable command legitimately lives on a card. Both are conventions
 // this repo's cards already follow (see the plan-tasks skill output format).
 const SECTION_RE = /##\s*Acceptance criteria\s*\n([\s\S]*?)(?=\n##|$)/i;
@@ -47,6 +57,45 @@ function candidatesFrom(text) {
   const s = String(text || '');
   for (const m of s.matchAll(/`([^`\n]+)`/g)) out.push(m[1]);
   return out;
+}
+
+/**
+ * Every runnable-command candidate in `text`, in the order it appears —
+ * backticked spans inside an `## Acceptance criteria` section, plus each
+ * `VERIFY: <cmd>` line's own remainder (BRO-2585) — UNFILTERED by
+ * isSafeCheckCommand and UNSORTED by rank(). Exported so a caller that needs
+ * a DIFFERENT selection policy over the same candidates can reuse the
+ * extraction instead of re-implementing SECTION_RE/VERIFY_LINE_RE a second
+ * time (CLAUDE.md §15).
+ *
+ * BRO-3446: findCommentCorrection (autonomous-recheck-core.js) is exactly
+ * this case. Tested against the real BRO-3382 correction comment — "The
+ * acceptance comment says: VERIFY: <phantom path> ... So the correct command
+ * for this card is: VERIFY: <real path>" — extractVerifyCmd's own
+ * first-at-best-rank policy below picks the QUOTED PHANTOM, because both
+ * candidates tie at rank 0 and it appears first. A correction comment
+ * routinely restates the wrong path for context before the right one, so
+ * findCommentCorrection needs the LAST safe candidate at the best rank, not
+ * the first — a real false-negative this ticket's own motivating card
+ * surfaced, not a hypothetical.
+ * @param {string} text
+ * @returns {string[]}
+ */
+function rawCandidates(text) {
+  const s = String(text || '');
+  const scoped = [];
+  const verifyLineRaw = [];
+  const section = SECTION_RE.exec(s);
+  if (section) scoped.push(section[1]);
+  for (const m of s.matchAll(VERIFY_LINE_RE)) {
+    scoped.push(m[1]);
+    verifyLineRaw.push(m[1]);
+  }
+  if (!scoped.length) return [];
+  return [...scoped.flatMap(candidatesFrom), ...verifyLineRaw]
+    // `$ node --test x` and `> npx tsc` are shell-prompt decoration.
+    .map(c => c.trim().replace(/^[$>]\s*/, ''))
+    .filter(Boolean);
 }
 
 /**
@@ -66,34 +115,24 @@ function candidatesFrom(text) {
  */
 function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) {
   const text = String(notes || '');
-  const scoped = [];
-  const verifyLineRaw = [];
-  const section = SECTION_RE.exec(text);
-  if (section) scoped.push(section[1]);
-  for (const m of text.matchAll(VERIFY_LINE_RE)) {
-    scoped.push(m[1]);
-    // Cards are routinely written as `VERIFY: node --test x.test.mjs` — no
-    // backticks — despite candidatesFrom() being backtick-only (BRO-2585).
-    // The line's own remainder is a candidate in its own right here, not just
-    // whatever backticked span it happens to contain; still run through the
-    // same isSafeCheckCommand gate below, so a raw VERIFY line can never arm
-    // anything a backticked one couldn't.
-    verifyLineRaw.push(m[1]);
-  }
-  if (!scoped.length) return { cmd: null, reason: 'card has no acceptance-criteria section or VERIFY line', kind: 'no-section' };
+  // Cards are routinely written as `VERIFY: node --test x.test.mjs` — no
+  // backticks — despite candidatesFrom() being backtick-only (BRO-2585). A
+  // raw VERIFY line still goes through the identical isSafeCheckCommand gate
+  // below via rawCandidates(), so it can never arm anything a backticked
+  // span couldn't.
+  //
+  // VERIFY_LINE_RE carries the `g` flag, so `.test()` on it directly would
+  // mutate its shared lastIndex and corrupt every later call in this
+  // process — text.matchAll() is the non-mutating way to ask "any match at
+  // all" (it operates on an internal clone, per spec).
+  const hasScope = Boolean(SECTION_RE.exec(text)) || !text.matchAll(VERIFY_LINE_RE).next().done;
+  if (!hasScope) return { cmd: null, reason: 'card has no acceptance-criteria section or VERIFY line', kind: 'no-section' };
 
-  const candidates = [...scoped.flatMap(candidatesFrom), ...verifyLineRaw]
-    // `$ node --test x` and `> npx tsc` are shell-prompt decoration.
-    .map(c => c.trim().replace(/^[$>]\s*/, ''))
-    .filter(Boolean);
+  const candidates = rawCandidates(text);
   if (!candidates.length) return { cmd: null, reason: 'acceptance criteria names no runnable command (prose only)', kind: 'no-command' };
 
-  // Prefer the SPECIFIC command over the generic one. A card that lists both
-  // `node --test tests/unit/thing.test.mjs` and `npx tsc --noEmit` was having
-  // the tsc line captured purely because it appeared first — and "tsc still
-  // passes" says nothing about whether THAT card's work survived (ship-check
-  // finding). Ranked, not reordered: order within a rank is still card order.
-  const rank = c => (/^node --test/.test(c) || /^npx tsx --test/.test(c) ? 0 : /^test -f/.test(c) ? 1 : 2);
+  // Prefer the SPECIFIC command over the generic one, via the module-level
+  // rank() above. Ranked, not reordered: order within a rank is still card order.
   const safe = candidates.filter(c => isSafeCheckCommand(c));
   if (safe.length) {
     const best = safe.slice().sort((a, b) => rank(a) - rank(b))[0];
@@ -109,4 +148,4 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
   };
 }
 
-module.exports = { extractVerifyCmd, candidatesFrom, SECTION_RE };
+module.exports = { extractVerifyCmd, candidatesFrom, SECTION_RE, rank, rawCandidates };

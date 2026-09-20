@@ -240,7 +240,14 @@ jobs:
           # --min-scanned + --require-shows make a half-checked-out corpus FAIL
           # rather than report a drained queue (which would silently stop the
           # scorer forever on a green run).
-          node scripts/count-scoring-queue.js --github-output --require-shows --min-scanned=10000 \
+          # BRO-2423 (port of BRO-545's guard-escalation auto-recovery): a scan
+          # that keeps failing run after run (a checkout that stays broken)
+          # used to hard-block this step forever with no real-time escalation
+          # — see scripts/check-scoring-queue-guard.js header. Fails loud on
+          # the first occurrence exactly like a bare count-scoring-queue.js
+          # call would; only auto-recovers (reporting a safe zero-count no-op)
+          # after 2+ consecutive failures past a 24h floor.
+          node scripts/check-scoring-queue-guard.js --github-output --require-shows --min-scanned=10000 \
             > /tmp/scoring-queue-counts.txt
           # Match the WHOLE line, not a prefix: `grep '^unscored=' | cut -f2` would
           # accept `unscored=1=bad` as the number 1 and then append that raw line
@@ -453,10 +460,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      # BRO-2423 (port of BRO-545's guard-escalation auto-recovery): a
+      # scoring-pipeline crash that keeps recurring run after run used to
+      # hard-block this step forever with no real-time escalation (its own
+      # "Notify on failure" call below carries no severity override, defaults
+      # to 'low' — a no-op for anything but 'critical') — see
+      # scripts/run-ensemble-scoring-guard.js header. Fails loud on the first
+      # occurrence exactly like a bare npx ts-node call would; only
+      # auto-recovers after 2+ consecutive crashes past a 24h floor.
       - name: Run ensemble scoring pipeline
         if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
         run: |
-          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts ${{ steps.build-args.outputs.args }}
+          node scripts/run-ensemble-scoring-guard.js ${{ steps.build-args.outputs.args }}
 
       # Anti-starvation drain (2026-07-11). check-needed is a strict priority
       # cascade: the needsRescore branch only fires when UNSCORED==0 corpus-wide.

@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 const { KNOWN_STAR_OUTLETS, OUTLET_EXTRACTORS, publishesNoCriticRating } = require('./lib/score-extractors');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const WEST_END_ONLY = !process.argv.includes('--all-markets');
@@ -63,11 +64,8 @@ function textContainsStarRating(text, claimedScore) {
   return patterns.some(p => p.test(text));
 }
 
-const shows = fs.readdirSync(baseDir).filter(d => {
-  try {
-    if (!fs.statSync(path.join(baseDir, d)).isDirectory()) return false;
-    return WEST_END_ONLY ? d.includes('west-end') : true;
-  } catch { return false; }
+const shows = listShowDirs(baseDir).filter(d => {
+  return WEST_END_ONLY ? d.includes('west-end') : true;
 });
 
 const stats = {

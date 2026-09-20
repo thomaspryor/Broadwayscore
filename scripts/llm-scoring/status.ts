@@ -16,6 +16,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ScoredReviewFile, ReviewEntry } from './types';
 import { scoreToBucket } from './config';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../../data/review-texts');
 const REVIEWS_JSON_PATH = path.join(__dirname, '../../data/reviews.json');
@@ -54,13 +56,7 @@ function main(): void {
     return;
   }
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
-    try {
-      return fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory();
-    } catch {
-      return false;
-    }
-  });
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   // Collect all data
   let totalReviews = 0;

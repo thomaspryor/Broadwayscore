@@ -272,7 +272,7 @@ before(() => {
   git(CANONICAL_ROOT, ['branch', '-D', PROBE_BRANCH]);
   gitOk(CANONICAL_ROOT, ['branch', PROBE_BRANCH, BASE_REF]);
   probeWorktree = makeTmpDir('probe-wt');
-  fs.rmSync(probeWorktree, { recursive: true, force: true });
+  fs.rmSync(probeWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '--detach', probeWorktree, PROBE_BRANCH])) {
     probeWorktree = null;
     return;
@@ -312,19 +312,19 @@ before(() => {
   // the "current branch isn't main, so this doesn't target main" cases.
   git(CANONICAL_ROOT, ['branch', '-D', NONMAIN_BRANCH]);
   nonmainWorktree = makeTmpDir('nonmain-wt');
-  fs.rmSync(nonmainWorktree, { recursive: true, force: true });
+  fs.rmSync(nonmainWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '-b', NONMAIN_BRANCH, nonmainWorktree, BASE_REF])) {
     nonmainWorktree = null;
   }
 });
 
 after(() => {
-  if (probeWorktree) { git(CANONICAL_ROOT, ['worktree', 'remove', '--force', probeWorktree]); fs.rmSync(probeWorktree, { recursive: true, force: true }); }
-  if (nonmainWorktree) { git(CANONICAL_ROOT, ['worktree', 'remove', '--force', nonmainWorktree]); fs.rmSync(nonmainWorktree, { recursive: true, force: true }); }
-  if (unrelatedRepo) fs.rmSync(unrelatedRepo, { recursive: true, force: true });
+  if (probeWorktree) { git(CANONICAL_ROOT, ['worktree', 'remove', '--force', probeWorktree]); fs.rmSync(probeWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  if (nonmainWorktree) { git(CANONICAL_ROOT, ['worktree', 'remove', '--force', nonmainWorktree]); fs.rmSync(nonmainWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  if (unrelatedRepo) fs.rmSync(unrelatedRepo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   git(CANONICAL_ROOT, ['branch', '-D', PROBE_BRANCH]);
   git(CANONICAL_ROOT, ['branch', '-D', NONMAIN_BRANCH]);
-  if (TRANSCRIPT_PATH) fs.rmSync(path.dirname(TRANSCRIPT_PATH), { recursive: true, force: true });
+  if (TRANSCRIPT_PATH) fs.rmSync(path.dirname(TRANSCRIPT_PATH), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 const skipNoGates = { get skip() { return !hasGates && 'neither ~/.claude/hooks nor the repo .claude/hooks copy of the merge/push gates is present on this machine' } };
@@ -478,7 +478,7 @@ test('regression pin: reverting the jq `.allowed | tostring` fix to `.allowed //
     });
     assert.equal(r.status, 0, 'the broken hook should fail OPEN on a command the real hook blocks — proving this suite has teeth');
   } finally {
-    fs.rmSync(tdir, { recursive: true, force: true });
+    fs.rmSync(tdir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -502,7 +502,7 @@ test('regression pin sanity: the fakeHome plumbing alone does not change the ver
     });
     assertBlocked(r, 'unpatched copy under fakeHome');
   } finally {
-    fs.rmSync(tdir, { recursive: true, force: true });
+    fs.rmSync(tdir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 

@@ -32,6 +32,7 @@ const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { extractPublishDate } = require('./lib/article-extractor');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { findExistingFileForUrl: findExistingFileForUrlShared } = require('./lib/review-url-clusters');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -152,6 +153,25 @@ function loadShow(showId) {
 
 const NON_MET_OPERA_URL_MARKERS = require('./lib/content-filters').NON_MET_OPERA_URL_MARKERS;
 
+// The byline extractor is non-deterministic on outlets whose article pages carry
+// a rotating "more from our critics" recirc widget (Times UK, WhatsOnStage) —
+// the same URL can extract a DIFFERENT critic name on each fetch. Multiple
+// _pending stub files for the SAME url (one per discovery event: RSS, SERP,
+// aggregator crosslink) then each promote under a distinct {outlet}--{critic}.json
+// filename, since the pre-existing check below only guarded against re-promoting
+// the exact same filename — never against a second PRIMARY for a URL already
+// promoted under a different name. That was the byline-explosion root cause
+// (BRO-1391): 5-29 files per URL, all invalid/circular-duplicateOf, real review
+// never scores. Guard by URL, not filename, so a second promotion attempt files
+// itself as a duplicate of the first instead of a sibling primary.
+//
+// findExistingFileForUrl + its terminal-canonical resolution live in
+// scripts/lib/review-url-clusters.js so collect-review-texts.js's write path
+// (BRO-3550) shares the exact same logic instead of a second, divergent copy.
+function findExistingFileForUrl(showId, outletId, url) {
+  return findExistingFileForUrlShared(REVIEW_TEXTS_ROOT, showId, outletId, url);
+}
+
 async function processShow(showId) {
   const pendingDir = path.join(PENDING_ROOT, showId);
   if (!fs.existsSync(pendingDir)) {
@@ -271,6 +291,31 @@ async function processShow(showId) {
       continue;
     }
 
+    // Same URL already promoted under a DIFFERENT critic name (rotating-byline
+    // outlets like Times UK / WhatsOnStage) — file this as a duplicate instead
+    // of a second primary. Prevents byline-explosion clusters at the source.
+    const existingSameUrl = findExistingFileForUrl(showId, data.outletId, url);
+    if (existingSameUrl && existingSameUrl !== newFilename) {
+      data.criticName = byline;
+      data.bylineSource = 'replay-pending-bylines';
+      data.bylineExtractedAt = new Date().toISOString();
+      data.duplicateOf = existingSameUrl;
+      data.duplicateTextOf = existingSameUrl;
+      data.duplicateReason = 'same-url-different-byline-extraction';
+      if (publishDate && !data.publishDate) data.publishDate = publishDate;
+      if (dryRun) {
+        console.log(`  [${file}] DRY → would file as duplicateOf ${existingSameUrl} (byline: ${byline}, same URL already promoted)`);
+        promoted++;
+        continue;
+      }
+      if (!fs.existsSync(path.dirname(newPath))) fs.mkdirSync(path.dirname(newPath), { recursive: true });
+      fs.writeFileSync(newPath, JSON.stringify(data, null, 2));
+      fs.unlinkSync(filepath);
+      console.log(`  [${file}] PROMOTED as duplicateOf ${existingSameUrl} → ${newFilename} (byline: ${byline}, same URL already promoted)`);
+      promoted++;
+      continue;
+    }
+
     data.criticName = byline;
     data.bylineSource = 'replay-pending-bylines';
     data.bylineExtractedAt = new Date().toISOString();
@@ -296,7 +341,7 @@ async function processShow(showId) {
   return { promoted, kept, rejected };
 }
 
-module.exports = { pendingPromoteRejectReason, NON_THEATRE_SECTIONS };
+module.exports = { pendingPromoteRejectReason, NON_THEATRE_SECTIONS, findExistingFileForUrl };
 
 if (require.main === module) {
   (async () => {

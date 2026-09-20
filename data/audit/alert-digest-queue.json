@@ -1,316 +1,87 @@
 [
   {
-    "conditionKey": "time-to-publish-sla:unmeasurable",
-    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
-    "description": "Scope: 2 opening window(s): in-honor-of-jean-michel-basquiat-off-broadway-2026 (2026-09-15), golden-boy-off-west-end-2026 (2026-09-15)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-08T07:07:43.000Z.\nThis is NOT a pass — the SLA had too little to judge.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T12:14:18.297Z"
-  },
-  {
-    "conditionKey": "opening-night-remediation-exhausted-empty-cast:my-sons-a-queer-but-what-can-you-do-west-end-2026",
-    "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
-    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T13:38:36.374Z"
-  },
-  {
-    "conditionKey": "opening-night-remediation-exhausted-empty-cast:pre-existing-condition-off-broadway-2026",
-    "title": "Auto-remediation gave up on pre-existing-condition-off-broadway-2026",
-    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"pre-existing-condition-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T13:38:36.376Z"
-  },
-  {
-    "conditionKey": "opening-night-publish-date-pre-opening:missing:pre-existing-condition-off-broadway-2026",
-    "title": "Shipped review missing publishDate on Pre-Existing Condition",
-    "description": "pages-on-stages/Mason Pilevsky SHIPPED with no publishDate — cannot confirm post-opening: https://pagesonstages.com/2026/09/14/pre-existing-condition/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T13:38:36.378Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "3 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget",
+    "description": "Day 2026-09-19. Over budget: scrapingbee 44050 credits > 35000. 2026-09-19 · Browserbase: $0.7 (82 sessions, 15.49min) · 2026-09-19 · Bright Data: $1.99 (272 serp / 1056 unlocker) · ScrapingBee: 44050 credits (406619 this cycle) · ScrapingDog: 38666 credits (957261 this cycle) · Browserbase attribution: 6% attributed — top callers (covers 6% of billed calls): collect-review-texts.js 5 · ⚠️ Browserbase top-caller coverage low: 6% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · Bright Data attribution: 78% attributed — top callers (covers 75% of billed calls): opening-night-poller.js 561, gather-reviews.js 266, audit-show-review-gap.js 98, collect-outlet-reviews.js 55, backfill-unknown-critics.js 12 · ⚠️ Bright Data top-caller coverage low: 75% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingBee attribution: 15% attributed — top callers (covers 14% of billed credits): gather-reviews.js 3168cr, opening-night-poller.js 1976cr, collect-outlet-reviews.js 550cr, fetch-show-images-auto.js 301cr, scrape-nyc-theatre-roundups.js 225cr · ⚠️ ScrapingBee top-caller coverage low: 14% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 44% attributed — top callers (covers 36% of billed credits): gather-reviews.js 8261cr, collect-outlet-reviews.js 1845cr, audit-show-review-gap.js 1637cr, scrape-nyc-theatre-roundups.js 1210cr, opening-night-poller.js 1055cr · ⚠️ ScrapingDog top-caller coverage low: 36% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Witness for the Prosecution — standard (772h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Witness for the Prosecution — thestage (772h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
-      },
-      {
-        "name": "Witness for the Prosecution — timeout (772h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"witness-for-the-prosecution-west-end-2022\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-15T14:11:40.405Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-3030",
-    "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34991983192",
     "decision": true,
-    "decisionPrompt": null,
+    "decisionPrompt": "Scraping spend over budget: scrapingbee 44050 credits > 35000. Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
     "model": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34991983192)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/34884167966)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      }
-    ],
-    "queuedAt": "2026-09-15T16:10:22.386Z"
+    "fields": [],
+    "queuedAt": "2026-09-20T11:53:21.830Z"
   },
   {
-    "conditionKey": "opening-night-cv-wrongproduction-unhandled-pre-existing-condition-off-broadway-2026",
-    "title": "Unhandled CV.wrongProduction on Pre-Existing Condition",
-    "description": "nysr/Michael Sommers (nysr--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This review evaluates the 2024 Connelly Theater produ — https://nystagereview.com/2026/09/14/pre-existing-condition-cold-comfort/\nnytg/Kyle Turner (nytg--kyle-turner.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate theater review with substantive  — https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-lupita-nyongo",
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 24.1% of shows changed coverage state",
+    "description": "review-gap blast radius 24.1% (7/29 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, cats-the-jellicle-ball-2026, death-of-a-salesman-2026, jesus-christ-superstar-west-end-2026, schmigadoon-2026, the-pass-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 22 show(s) audited this run were NOT risky and were persisted normally. Only the 7 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-15T18:16:29.863Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-in-honor-of-jean-michel-basquiat-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on IN HONOR OF JEAN-MICHEL BASQUIAT",
-    "description": "in-honor-of-jean-michel-basquiat-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T18:16:32.582Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-golden-boy-off-west-end-2026",
-    "title": "Stale 'upcoming' tag on Golden Boy",
-    "description": "golden-boy-off-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=golden-boy-off-west-end-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T18:16:32.586Z"
-  },
-  {
-    "conditionKey": "opening-night-stale-upcoming-tag-the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
-    "title": "Stale 'upcoming' tag on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
-    "description": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --apply",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T18:16:32.588Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/129 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nPre-Existing Condition: missing-from-prod",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T18:50:21.394Z"
+    "queuedAt": "2026-09-20T16:50:31.855Z"
   },
   {
     "conditionKey": "t1-coverage:scoreboard",
     "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (378/497)\noff-broadway: 43.5% (136/313)\nwest-end: 76.9% (432/562)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (777h)\nA Midsummer Night's Dream — observer (777h)\nA Midsummer Night's Dream — standard (777h)\nABBA Voyage — independent (777h)\nAladdin — ew (777h)\n… 163 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (777h)\nThe Book of Mormon — usatoday (777h)\nBuena Vista Social Club — broadwaynews (777h)\nBuena Vista Social Club — nydailynews (777h)\nHadestown — nydailynews (777h)\n… 20 more circuit-open cell(s)",
+    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.6% (135/317)\nwest-end: 76.6% (423/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (895h)\nA Midsummer Night's Dream — observer (895h)\nA Midsummer Night's Dream — standard (895h)\nABBA Voyage — independent (895h)\nAladdin — ew (895h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (895h)\nBuena Vista Social Club — broadwaynews (895h)\nBuena Vista Social Club — nydailynews (895h)\nHadestown — nydailynews (895h)\nHeathers The Musical — dailybeast (895h)\n… 17 more circuit-open cell(s)",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-15T18:50:21.575Z"
+    "queuedAt": "2026-09-20T16:50:43.547Z"
   },
   {
-    "conditionKey": "watchdog-park:586",
-    "title": "Watchdog parked #586 — redispatch never produced a launch",
-    "description": "Watchdog: card \"Email gate 0.6% conversion — 68% dismiss rate signals friction\" was claimed for redispatch at 2026-09-15T04:18:04.302Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 586), then re-arm with node scripts/bsc-next.js --id 586 --force once fixed.",
-    "severity": "error",
+    "conditionKey": "slug-misroute:272ae7ed1a95",
+    "title": "9 new slug-misroute finding(s)",
+    "description": "9 review file(s) appear misrouted and are not yet dispositioned. Nothing was changed automatically. To triage LOCALLY:\n1) node scripts/audit-slug-match-routing.js\n2) node scripts/verify-misroute-content.js --include-flagged --include-oos\n3) gated apply per scripts/apply-slug-misroute-whitelist.js header (snapshot → ff-only → --apply → rebuild → spot-check)\nTo silence a finding you've decided to leave: node scripts/disposition-misroute.js add --from=ID --file=F --reason=\"...\"",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.813Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1226",
-    "title": "Watchdog parked #1226 — redispatch never produced a launch",
-    "description": "Watchdog: card \"P0 #1199: dispatch dead-launch rate is now measured (20.5% over 7d)\" was claimed for redispatch at 2026-09-15T04:18:04.378Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1226), then re-arm with node scripts/bsc-next.js --id 1226 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.815Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1279",
-    "title": "Watchdog parked #1279 — redispatch never produced a launch",
-    "description": "Watchdog: card \"P0: merge-worktree-to-main.sh printed \"→ pushed\" but nothing reached origin, and left another session's stash conflicted in the shared checkout\" was claimed for redispatch at 2026-09-15T04:19:36.252Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1279), then re-arm with node scripts/bsc-next.js --id 1279 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.816Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1415",
-    "title": "Watchdog parked #1415 — redispatch never produced a launch",
-    "description": "Watchdog: card \"P0: main red — drain→rebuild→re-flag loop between date guard and #483 gate\" was claimed for redispatch at 2026-09-15T04:19:36.325Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1415), then re-arm with node scripts/bsc-next.js --id 1415 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.817Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1730",
-    "title": "Watchdog parked #1730 — redispatch never produced a launch",
-    "description": "Watchdog: card \"Main red 2026-08-17: cats-west-end-2026 london-box-office--phil-willmott.json is a mis-attributed roundup, not a review\" was claimed for redispatch at 2026-09-15T04:21:14.011Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1730), then re-arm with node scripts/bsc-next.js --id 1730 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.818Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1759",
-    "title": "Watchdog parked #1759 — redispatch never produced a launch",
-    "description": "Watchdog: card \"P1: data/opening-night-sent.json is tracked AND gitignored — same CI hazard that broke the only merge path\" was claimed for redispatch at 2026-09-15T04:14:59.456Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1759), then re-arm with node scripts/bsc-next.js --id 1759 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.820Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1812",
-    "title": "Watchdog parked #1812 — redispatch never produced a launch",
-    "description": "Watchdog: card \"P0: the cmux WORKSPACE lane is the only lane that dies — 115/368 dispatches (31%) never run, while headless is 0/40 and other is 0/31 over the same window\" was claimed for redispatch at 2026-09-15T04:21:16.427Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1812), then re-arm with node scripts/bsc-next.js --id 1812 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.821Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1814",
-    "title": "Watchdog parked #1814 — redispatch never produced a launch",
-    "description": "Watchdog: card \"P1: update-show-status.yml runs keep ending CANCELLED — 3 of the last 4, cause unidentified, and two obvious hypotheses are already ruled out\" was claimed for redispatch at 2026-09-15T04:22:48.286Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1814), then re-arm with node scripts/bsc-next.js --id 1814 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.822Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1842",
-    "title": "Watchdog parked #1842 — redispatch never produced a launch",
-    "description": "Watchdog: card \"P0: data-health-check.yml push-with-retry deadline exhaustion — same class as task #1791, never applied here\" was claimed for redispatch at 2026-09-15T04:22:49.622Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1842), then re-arm with node scripts/bsc-next.js --id 1842 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.823Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1864",
-    "title": "Watchdog parked #1864 — redispatch never produced a launch",
-    "description": "Watchdog: card \"Investigate: Notion card reverted Done→Not started after Auto-closed, resurfaced as duplicate Linear card BRO-111\" was claimed for redispatch at 2026-09-15T04:15:01.510Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1864), then re-arm with node scripts/bsc-next.js --id 1864 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.825Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1889",
-    "title": "Watchdog parked #1889 — redispatch never produced a launch",
-    "description": "Watchdog: card \"Opening Night Express fires too early for evening openings, never retries when it finds 0 real reviews\" was claimed for redispatch at 2026-09-15T04:16:32.398Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1889), then re-arm with node scripts/bsc-next.js --id 1889 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.826Z"
-  },
-  {
-    "conditionKey": "watchdog-park:1896",
-    "title": "Watchdog parked #1896 — redispatch never produced a launch",
-    "description": "Watchdog: card \"P1: exact-title duplicate-dispatch guard still let card #1893 dispatch to 3 sessions tonight — mirror-staleness race\" was claimed for redispatch at 2026-09-15T04:16:32.473Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id 1896), then re-arm with node scripts/bsc-next.js --id 1896 --force once fixed.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-15T20:47:19.827Z"
+    "fields": [
+      {
+        "name": "garry-starr-classic-penguins-garrick-west-end-2026 → garry-starr-classic-penguins-off-west-end-2026",
+        "value": "new-york-sun--elysa-gardner.json (article 2026, no-date,from-also-full-match)"
+      },
+      {
+        "name": "garry-starr-classic-penguins-off-broadway-2026 → garry-starr-classic-penguins-off-west-end-2026",
+        "value": "nysr--roma-torre.json (article 2026, no-date,from-also-full-match)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "exeunt-magazine--lane-williamson.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "latimes--unknown.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "nyt-theater--jonathan-mandell.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "nytg--austin-fimmano.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "theatrely--juan-a-ramirez.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "vulture--sara-holdren.json (article 2026, class-A)"
+      },
+      {
+        "name": "the-ritz-2007 → break-a-new-play-off-broadway-2026",
+        "value": "nytimes--ben-brantley.json (article 2010, no-date)"
+      }
+    ],
+    "queuedAt": "2026-09-20T17:21:59.186Z"
   }
 ]

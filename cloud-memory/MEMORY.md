@@ -13,8 +13,8 @@
 - [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff" ([[feedback_user_device_context.md]])
 - [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — confirm venue first; 2 rejections = stop & ask
-- [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/approvals myself, report outcomes not process; bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
-- [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs; flag-gated features verify on demo URL
+- [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/approvals myself, report outcomes; bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
+- [Dispatching session owns landing](feedback_dispatching_session_owns_landing.md) — CLOSE ME needs LANDED: per DISPATCHED: ref or OWNED BY: live tab; heartbeat ≠ ownership
 - [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — 5-20 file probe first ([[feedback_save_research_findings.md]])
 - [/ship-check catches real P1s](feedback_ship_check_finds_real_bugs.md) — never skip; gate is per-edit ([[feedback_shipcheck_gate_per_last_edit.md]])
 - [Systematic fix: threat model first](feedback_systematic_fix_threat_model_first.md) — check trigger frequency; parity-test bad URLs

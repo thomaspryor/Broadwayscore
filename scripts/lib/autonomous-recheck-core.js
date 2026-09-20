@@ -23,7 +23,13 @@
 
 'use strict';
 
-const { evaluateVerifiability } = require('./verify-gate.js');
+const { evaluateVerifiability, isSafeCheckCommand } = require('./verify-gate.js');
+// The single specificity ranking (node --test/npx tsx --test = 0, test -f =
+// 1, everything else = 2) and the single candidate-extraction regex glue —
+// exported from autonomous-verify-cmd.js so they're used here identically to
+// how extractVerifyCmd ranks a card's own candidates against each other
+// (BRO-3446; CLAUDE.md §15, never a second copy of either).
+const { rank, rawCandidates } = require('./autonomous-verify-cmd.js');
 // Stamp parsing lives in a zero-dependency leaf so stuck-work.js (daily
 // health digest) can share the exact predicate without dragging in this
 // module's verify-gate dependency chain. Re-exported below unchanged.
@@ -32,6 +38,50 @@ const { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard } = requi
 // are a TRUNCATED PREVIEW" instead of silently judging a card on 1800 chars
 // of it — see needsOverflowHydration below.
 const { cardHasOverflow } = require('./overflow-marker.js');
+
+/**
+ * The best correction for `snapshotCmd` found in `comments` — used to fix a
+ * dispatch-ledger snapshot after the fact (BRO-3446).
+ *
+ * Two things evaluateVerifiability(notes, comments)'s own newest-wins rule
+ * gets wrong for THIS use case, both found by testing against the real
+ * BRO-3382 comment thread this ticket exists for, not fixtures:
+ *
+ * 1. That rule stops at the first document (scanning newest-first) that
+ *    arms AT ALL. An unrelated LATER comment that happens to also arm (a
+ *    wrap-up note with its own `VERIFY: npx next lint` boilerplate, say)
+ *    would shadow an earlier, genuinely specific correction, and the
+ *    phantom-path snapshot would never get corrected (ship-check finding,
+ *    Codex). Fixed by scanning comments newest-first and skipping any that
+ *    arm but don't meet the specificity bar, rather than stopping at the
+ *    first one that arms at all.
+ * 2. Within ONE comment, extractVerifyCmd's own first-at-best-rank tie-break
+ *    picks the WRONG candidate for a correction comment specifically: the
+ *    real BRO-3382 correction reads "The acceptance comment says: VERIFY:
+ *    <phantom> ... So the correct command is: VERIFY: <real>" — both rank 0,
+ *    phantom first. A correction restates the wrong path for context before
+ *    the right one, so this needs the LAST safe candidate at the best rank
+ *    within a comment, not the first — hence rawCandidates() + its own
+ *    scan here instead of delegating to extractVerifyCmd's policy.
+ * @param {string[]|undefined} comments - oldest-first, same contract as evaluateVerifiability
+ * @param {string} snapshotCmd
+ * @returns {string|null}
+ */
+function findCommentCorrection(comments, snapshotCmd) {
+  const list = Array.isArray(comments) ? comments : [];
+  const snapshotRank = rank(snapshotCmd);
+  for (let i = list.length - 1; i >= 0; i--) {
+    let best = null;
+    for (const c of rawCandidates(String(list[i] || ''))) {
+      if (!isSafeCheckCommand(c)) continue;
+      const r = rank(c);
+      if (r > snapshotRank) continue;
+      if (!best || r <= rank(best)) best = c; // <=: among ties, the LAST one in the comment wins
+    }
+    if (best) return best;
+  }
+  return null;
+}
 
 // A card only recently marked Done is worth re-checking; anything older was
 // either already re-checked or has been true for long enough that a nightly
@@ -246,13 +296,76 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
       out.push({ cardId: card.id, name: card.name || launch.subject || '(untitled)', verifyCmd: null, reason: null, skip: 'someone is working this card right now' });
       continue;
     }
+    // A dispatch-ledger verifyCmd is a SNAPSHOT taken when the card was
+    // dispatched, and this branch used to treat it as the final word: a null
+    // snapshot became `reason: launch.verifyReason` and the card's own
+    // criteria were never consulted again. That makes every post-dispatch
+    // correction inert here — the exact defect verify-gate.js:30-42 already
+    // records and fixed for the DISPATCH gate under BRO-2796 ("a Linear
+    // card's description cannot be edited by linear-brain.js's update
+    // command, so the ONLY way to correct a broken or wrong VERIFY command
+    // after dispatch is a comment"). The dispatch gate learned to read
+    // comments; this path stayed pinned to the snapshot, so a session that
+    // discovers its real acceptance command mid-flight and posts it — which
+    // is what /wrap-up tells sessions to do — could never arm the nightly
+    // recheck. Measured on the live board 2026-09-15 for the 2026-09-16
+    // 06:45Z run: 3 of the 31 due cards (BRO-3030, BRO-2983, BRO-2795) were
+    // armed on the card and dead here.
+    //
+    // Null-snapshot fallback: consulted whenever the snapshot is empty, so a
+    // card that is unverifiable both ways reports exactly as it did before
+    // and no working card can be downgraded.
+    //
+    // Non-null snapshot: BRO-3446. `--allow-phantom-path` lets a snapshot
+    // freeze a path the dispatching session only guessed (BRO-3382: the
+    // ledger named a test file its session never wrote; the real test landed
+    // elsewhere and the real fix is correct and live on main), so the
+    // nightly run would execute the phantom and report `fail` for working
+    // code. Notes can't be edited after dispatch on a Linear card (BRO-2796
+    // again), so a same-or-BETTER-specificity command posted in a COMMENT is
+    // the one signal worth trusting over the snapshot — ranked via rank()
+    // above (findCommentCorrection), not raw precedence, so a comment naming
+    // a GENERIC command (`npx next lint`, rank 2) can never displace a
+    // SPECIFIC snapshot (`node --test ...`, rank 0). That is exactly the
+    // degradation "a dispatch-ledger launch entry still takes priority over
+    // the notes fallback" pins by name below, and why plain notes (not a
+    // comment) are deliberately NOT compared this way here — see "the
+    // fallback is additive only" below, still pinned.
+    //
+    // KNOWN RESIDUAL (not fixed here, tracked in BRO-3461): rank() only
+    // measures command SHAPE, not what a specific command actually re-verifies
+    // — a single-file `node --test a.test.mjs` correction ties in rank with
+    // and can therefore displace a multi-file snapshot covering `a.test.mjs
+    // b.test.mjs`, and a bespoke `node scripts/audit-*.js` snapshot (rank 2,
+    // same bucket as everything not node --test/test -f) can be displaced by
+    // a bare `test -f` comment even though the audit script is the stronger
+    // check. Also no timestamp guard against a stale pre-redispatch comment
+    // tying with a freshly-corrected snapshot. Fixing either needs either a
+    // richer rank() (repo-wide, CLAUDE.md §15 — one canonical copy, so that
+    // change is not local to this file) or comment createdAt threaded through
+    // linear-recheck-source.js's card.comments (currently plain strings) —
+    // both bigger than this ticket's stated fix.
+    let verifyCmd = launch.verifyCmd || null;
+    if (verifyCmd) {
+      const correction = findCommentCorrection(card.comments, verifyCmd);
+      if (correction) verifyCmd = correction;
+    }
+    const fallback = verifyCmd ? null : verifiabilityForCard(card);
+    verifyCmd = verifyCmd || (fallback && fallback.cmd) || null;
     out.push({
       cardId: card.id,
       name: card.name || launch.subject || '(untitled)',
-      verifyCmd: launch.verifyCmd || null,
+      verifyCmd,
       // "not machine-verifiable" is an honest, reportable outcome — the recheck
       // never invents a command for a card whose criteria was prose.
-      reason: launch.verifyCmd ? null : (launch.verifyReason || 'no verify command was captured at dispatch'),
+      // Reason precedence is unchanged from before this fix: the
+      // dispatch-captured verifyReason still wins whenever nothing new armed,
+      // so a card that was unverifiable before and is unverifiable now reports
+      // the identical string it always did. The gate's own reason is only a
+      // backstop for a launch row that recorded neither a command nor a reason.
+      reason: verifyCmd
+        ? null
+        : (launch.verifyReason || (fallback && fallback.reason) || 'no verify command was captured at dispatch'),
       skip: null,
     });
   }

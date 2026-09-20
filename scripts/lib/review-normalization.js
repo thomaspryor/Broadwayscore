@@ -1673,19 +1673,27 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     }
   }
 
-  // Pass 2: match by outletId stored inside the JSON file.
-  // Catches files where the filename prefix doesn't match the stored outletId —
-  // e.g. a file named "nytimes--adam-feldman.json" that has outletId: "timeout" inside,
-  // caused by bulk fix scripts that update outletId without renaming files.
-  // Without this pass, the next write creates a correctly-named duplicate.
+  // Pass 2: match by outletId + criticName stored inside the JSON file,
+  // ignoring the filename entirely. Catches two distinct cases:
+  //   (a) a file whose filename-outlet prefix doesn't match its stored
+  //       outletId — e.g. "nytimes--adam-feldman.json" with outletId:
+  //       "timeout" inside, caused by bulk fix scripts that updated outletId
+  //       without renaming the file.
+  //   (b) BRO-1031: a file whose filename DOES match on outlet, but whose
+  //       filename critic slug has drifted from the stored criticName — e.g.
+  //       a year-suffix-disambiguated filename like
+  //       amny--matt-windman-2026.json with internal criticName "Matt
+  //       Windman". Pass 1 skips it because criticIsCompatibleMergeTarget
+  //       rejects the filename slug "matt-windman-2026" against "Matt
+  //       Windman". A prior version of this pass ALSO skipped case (b) via
+  //       an "already checked above" guard that wrongly assumed Pass 1 fully
+  //       evaluated any file whose filename-outlet matched — but Pass 1 only
+  //       reads a file once its filename-critic passes that same check, so a
+  //       critic-drifted filename slipped through both untouched, and the
+  //       next write for that outlet+critic silently created a duplicate
+  //       file. Scanning every file (not just filename-outlet-mismatched
+  //       ones) fixes both without a second full-directory scan.
   for (const file of files) {
-    const parts = file.replace('.json', '').split('--');
-    if (parts.length !== 2) continue;
-
-    // Skip files already matched by filename in pass 1 (their outlet normalized to same value)
-    const fileOutletNormalized = normalizeOutlet(parts[0]);
-    if (fileOutletNormalized === normalizedOutlet) continue; // already checked above
-
     const filePath = path.join(showDir, file);
     let data;
     try {
@@ -1693,25 +1701,29 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     } catch {
       continue;
     }
-    if (!data) continue;
-    if (!data.outletId) continue;
-
+    if (!data || !data.outletId) continue;
     if (normalizeOutlet(data.outletId) !== normalizedOutlet) continue;
 
-    // Outlet matches by internal field — check critic. BRO-3182: same
-    // asymmetric-unknown check as pass 1 — an unresolved incoming critic
-    // must not claim a file that already names someone. Deliberately NOT
-    // gated on `data.criticName` being truthy (Codex ship-check finding):
-    // a falsy criticName is exactly the "file names someone" question this
-    // check must still answer — criticIsCompatibleMergeTarget already
-    // treats a missing/empty value as unknown.
-    if (!criticIsCompatibleMergeTarget(criticName, data.criticName)) {
+    // Prefer the stored criticName; only fall back to the filename's critic
+    // slug when the file has none recorded internally. A file whose
+    // filename already names a specific critic (e.g.
+    // "amny--jane-critic.json") must not be treated as an anonymous
+    // byline-fill-in target just because its internal field happens to be
+    // blank — criticIsCompatibleMergeTarget would otherwise let an
+    // unrelated named incoming critic silently claim it.
+    const parts = file.replace('.json', '').split('--');
+    const filenameCritic = parts.length === 2 ? parts[1] : null;
+    const fileCriticForMatch = data.criticName || filenameCritic;
+
+    // BRO-3182: same asymmetric-unknown check as pass 1 — an unresolved
+    // incoming critic must not claim a file that already names someone.
+    if (!criticIsCompatibleMergeTarget(criticName, fileCriticForMatch)) {
       continue; // Different/unconfirmed critic at same outlet — not a duplicate
     }
 
     // Skip flagged/rejected files unless the critic match above was a
     // CONFIRMED same named critic (see pass 1's comment).
-    if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, data.criticName)) continue;
+    if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, fileCriticForMatch)) continue;
 
     return { path: filePath, filename: file, data };
   }
@@ -1731,7 +1743,12 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
       if (parts.length !== 2) continue;
 
       const fileOutletNormalized = normalizeOutlet(parts[0]);
-      if (fileOutletNormalized === normalizedOutlet) continue; // already checked in pass 1
+      // Safe to skip: any file whose filename-outlet already equals the
+      // target outlet is fully covered by Pass 1 (filename match) and Pass 2
+      // (internal outletId/criticName match, BRO-1031) above — this pass
+      // exists only to resolve a DIFFERENT filename-outlet alias that shares
+      // the same registered domain, which by definition doesn't apply here.
+      if (fileOutletNormalized === normalizedOutlet) continue;
 
       // Check if this file's outlet shares the same domain as the incoming outlet
       const fileDomain = outletDefs[fileOutletNormalized] ? outletDefs[fileOutletNormalized].domain : null;
@@ -1779,6 +1796,9 @@ const JUNK_OUTLETS = new Set([
   'garth-drabinsky', 'paradise-square',
   'buy-tickets', 'click-here',
   'lets-note', 'lets-go-to-the-theater',
+  // BRO-3515: Rex Features photo-agency livefeed caption, not a critic
+  // outlet — see domain-filters.js REFERENCE_DOMAINS for the write-time block.
+  'rexfeatures',
 ]);
 
 // Exact reserved-word match only — no structural fuzz (length/hyphen-count/
@@ -1886,9 +1906,27 @@ function normalizeUrl(url) {
     // article, so review-write-guard.js's stale-duplicateOf self-heal saw a
     // URL "mismatch" and wrongly un-collapsed an already-resolved
     // byline-explosion cluster (mother-play-2024, king-kong-2018).
-    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=[^&]*/g, '')
-      .replace(/\?$/, '')
-      .replace(/\?&/, '?');
+    // Query-aware split/filter/rejoin (BRO-2409, replacing a blind regex
+    // strip): a regex removing `[?&]param=value` pieces in place leaves a
+    // dangling separator behind whenever the removed param was FIRST (the
+    // `?` goes with it, stranding the next param's `&` with no `?` left in
+    // the string at all — `?_r=1&taid=X` -> `&taid=X`, never `?taid=X`) or
+    // LAST (a literal trailing `?_r=1&` baked into the source page, the
+    // the-winslow-boy-2013 live-corpus shape, leaves a bare trailing `&`).
+    // Both produced a false "URL changed" against the SAME article with its
+    // tracked param in a different position or its query reduced to nothing
+    // — exactly the comparator disagreement BRO-2409 is about. Splitting the
+    // query into params, filtering, and rejoining is order-independent and
+    // can never leave an artifact regardless of which param was tracked.
+    const qIdx = u.indexOf('?');
+    if (qIdx !== -1) {
+      const base = u.slice(0, qIdx);
+      const kept = u.slice(qIdx + 1).split('&').filter((pair) => {
+        if (!pair) return false; // drop empty segments from a stray &/&& in the source
+        return !/^(utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=/.test(pair);
+      });
+      u = kept.length ? `${base}?${kept.join('&')}` : base;
+    }
     // Re-strip trailing slashes: the first strip (above) runs before the
     // query string is removed, so `/review/?utm_source=x` still ends in a
     // slash here and would compare unequal to `/review` — a false "URL
@@ -1909,6 +1947,49 @@ function normalizeUrl(url) {
   } catch (e) {
     return url.toLowerCase().trim();
   }
+}
+
+/**
+ * Drop the ENTIRE query string (not just the enumerated tracking params
+ * normalizeUrl() strips), then trim trailing encoded-spaces/whitespace/slash.
+ * Two URLs differing only by query string are the same article far more
+ * often than not, and normalizeUrl's tracking-param allowlist is chronic
+ * whack-a-mole — every outlet mints its own share/recirculation params (BWO's
+ * `mod=`, Guardian's `CMP=`, EW's `taid=`, NYT's `smtyp=`/`_r=1&`, Variety's
+ * `categoryid=`/`cs=`/`cmpid=`, AP's `page=`), and each un-enumerated one
+ * previously made review-write-guard.js's stale-duplicateOf self-heal see a
+ * false "URL mismatch" and wrongly clear a correct duplicateOf pointer
+ * (BRO-2409 — confirmed live on 9 of 22 real same-URL clusters left with
+ * ZERO duplicate pointer on either side after this exact false self-heal:
+ * a-life-in-the-theatre-2010, here-lies-love-2023, king-kong-2018,
+ * patriots-2024, the-waverly-gallery-2018, the-winslow-boy-2013, …).
+ *
+ * A genuinely different article still differs by PATH, which this never
+ * touches — only trivially-dirty query-string variants of the SAME URL
+ * collapse to equal. Originally lived only in
+ * audit-duplicate-of-url-mismatch.js (as its own `stripTrivial`, used for the
+ * identical purpose: deciding whether a duplicateOf pointer's URL mismatch is
+ * real or trivial); moved here so review-write-guard.js's write-time
+ * self-heal can use the SAME comparator instead of the narrower
+ * `normalizeUrl` alone — the two disagreeing on what counts as "the same
+ * URL" was BRO-2409's actual mechanism: the write-time self-heal would clear
+ * a pointer the audit itself would never have flagged as stale.
+ *
+ * Splits on the FIRST `?` OR `&`, not just `?`: when this runs after
+ * normalizeUrl() (the standard composition), a query string whose FIRST
+ * param already got stripped by normalizeUrl's tracking-param allowlist
+ * leaves the remainder starting with a bare `&` (e.g. `smid=..&smtyp=cur`
+ * with `smid` stripped leaves `&smtyp=cur`) — no `?` survives for a
+ * `.split('?')` to find, so the leftover param would silently defeat this
+ * function's entire purpose. A literal unencoded `&` occurring inside a URL
+ * PATH (as opposed to its query) is not a real-world shape in this corpus.
+ *
+ * @param {string} u  already lowercased/normalized (pass through normalizeUrl() first)
+ * @returns {string}
+ */
+function stripTrivial(u) {
+  if (!u) return u;
+  return u.split(/[?&]/)[0].replace(/(?:%20|\s|\/)+$/gi, '');
 }
 
 /**
@@ -2146,6 +2227,7 @@ module.exports = {
   normalizeCritic,
   normalizePublishDate,
   normalizeUrl,
+  stripTrivial,
   generateReviewFilename,
   generateReviewKey,
   slugify,

@@ -2006,7 +2006,14 @@ function validateReviewsJson() {
       const unknownOutlets = {};
       for (const r of reviews) {
         if (!r.outletId) continue;
-        if (!outlets[r.outletId]) {
+        // Resolve through normalizeOutlet() first (BRO-1343) — an outletId that's
+        // been folded into another outlet's `aliases` array (registry merge, not
+        // deletion) has no literal top-level key anymore but still resolves to a
+        // real, domained entry via the same alias map rebuild-all-reviews.js uses
+        // before every registry lookup. A raw `outlets[r.outletId]` check would
+        // otherwise mislabel every merged-away id as "unknown" forever.
+        const canonical = normalizeOutlet ? normalizeOutlet(r.outletId) : r.outletId;
+        if (!outlets[r.outletId] && !outlets[canonical]) {
           if (!unknownOutlets[r.outletId]) unknownOutlets[r.outletId] = 0;
           unknownOutlets[r.outletId]++;
         }
@@ -2839,10 +2846,7 @@ function validateTourReviewContamination() {
     return;
   }
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return fs.statSync(path.join(reviewTextsDir, d)).isDirectory() && !d.startsWith('.'); }
-    catch { return false; }
-  });
+  const showDirs = listShowDirs(reviewTextsDir);
 
   let totalUnflagged = 0;
   const contaminated = [];
@@ -2896,10 +2900,7 @@ function validateAggregatorScoreContamination() {
 
   const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return fs.statSync(path.join(reviewTextsDir, d)).isDirectory() && !d.startsWith('.') && d !== 'aggregator-archive'; }
-    catch { return false; }
-  });
+  const showDirs = listShowDirs(reviewTextsDir).filter(d => d !== 'aggregator-archive');
 
   let contaminated = 0;
   const examples = [];
@@ -2939,10 +2940,7 @@ function validateCrossMarketSourceFiles() {
   // Use shared patterns from venue-classification.js (single source of truth)
   const { isBroadwayUrl } = require('./lib/venue-classification');
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return d.includes('west-end') && fs.statSync(path.join(reviewTextsDir, d)).isDirectory(); }
-    catch { return false; }
-  });
+  const showDirs = listShowDirs(reviewTextsDir).filter(d => d.includes('west-end'));
 
   const problems = [];
 
@@ -4675,9 +4673,7 @@ function validateAggregatorArchives(shows) {
     return;
   }
 
-  const dirs = fs.readdirSync(archiveDir).filter(d =>
-    fs.statSync(path.join(archiveDir, d)).isDirectory()
-  );
+  const dirs = listShowDirs(archiveDir);
 
   if (dirs.length === 0) {
     error('data/aggregator-archive/ has zero subdirectories');

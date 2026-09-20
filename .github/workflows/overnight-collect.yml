@@ -106,6 +106,12 @@ jobs:
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # BRO-2381: without this, pushReviewTextsCheckpoint()'s mid-run
+          # checkpoint to the private review-texts repo silently no-ops for
+          # every show in the loop — the final "Push review-texts to private
+          # repo" step still catches a normal completion, but a timeout/
+          # cancellation mid-loop loses everything since the last checkpoint.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

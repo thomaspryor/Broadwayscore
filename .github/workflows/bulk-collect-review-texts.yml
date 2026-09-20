@@ -299,6 +299,12 @@ jobs:
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
           CLOSED_SHOW_MODE: 'true'
           COMMIT_EVERY: '25'
+          # BRO-2381: without this, pushReviewTextsCheckpoint()'s mid-run
+          # checkpoint to the private review-texts repo silently no-ops for
+          # the whole run — the final "Push review-texts to private repo"
+          # step below still catches a normal completion, but a timeout/
+          # cancellation mid-run loses everything since the last checkpoint.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then

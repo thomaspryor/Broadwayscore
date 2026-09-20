@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
 const require = createRequire(import.meta.url);
 const core = require('../lib/dispatch-watchdog-core.js');
 const { ensureAutoTitle } = require('../lib/workspace-naming.js');
@@ -153,6 +156,96 @@ test('undispatched P0/P1 pending cards queue, P0 first; marketing/human cards ex
   const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
   assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['19', '20']);
   assert.deepEqual(plan.toDispatch.map(q => q.taskId), ['19', '20']);
+});
+
+// BRO-3633: loadTasksUnioned() (audit-dispatch-outcomes.js) unions live/ +
+// archive/ and tags each task fromArchive so planSweep can tell "still live"
+// apart from "deliberately shelved". task-store-archive.js's pending-task
+// archival moves a stale-but-still-'pending' card to archive/ byte-for-byte
+// after 30+ days untouched — not a completion signal — and without this
+// guard p01Queue treated the resurrected card as fresh P0/P1 backlog,
+// claimed it, it never produced a launch, and got parked with a
+// retired-board (bare-numeric) id, which is exactly what tripped
+// board-targeting-audit.js's "Dispatch: board targeting" health-check row.
+test('BRO-3633: an archived-but-pending P0/P1 card is excluded from p01Queue', () => {
+  const [liveId, liveTask] = task(19, 'pending', 'P0 Now');
+  const [archivedId, archivedTask] = task(23, 'pending', 'P0 Now');
+  const tasks = new Map([
+    [liveId, liveTask],
+    [archivedId, { ...archivedTask, fromArchive: true }],
+  ]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['19'],
+    'the archived card must never re-enter the fresh-backlog queue');
+});
+
+test('BRO-3633: a dead dispatch against an archived task is not auto-retried', () => {
+  const entries = [
+    { ts: T(60), event: 'launch', taskId: '24', subject: 's', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'dead', taskId: '24', workspaceRef: 'workspace:5' },
+  ];
+  const [id, archivedTask] = task(24, 'in_progress');
+  const tasks = new Map([[id, { ...archivedTask, fromArchive: true }]]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.retryable.length, 0, 'an archived task must not be auto-retried');
+  assert.equal(plan.toPark.length, 0, 'nor auto-parked — it was never queued for retry in the first place');
+});
+
+// ship-check/Codex catch: p01Queue no longer CREATES new claims for archived
+// tasks, but a claim can already sit in the ledger from just before this
+// fix landed. Without the same guard on awaitingClaim, that pre-existing
+// claim would still age past CLAIM_LABEL_GRACE_MS and get promoted to
+// noLaunchPark — reproducing the exact retired-board park this card exists
+// to stop, just via a different entry point.
+test('BRO-3633: a pre-existing claim on an archived task is not promoted to awaitingClaim/noLaunchPark', () => {
+  const entries = [{ ts: new Date(NOW - core.CLAIM_LABEL_GRACE_MS - 60000).toISOString(), event: 'watchdog-redispatch', taskId: '27', kind: 'p01-backlog' }];
+  const [id, liveTask] = task(27, 'pending', 'P1 Now');
+  const tasks = new Map([[id, { ...liveTask, fromArchive: true }]]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.awaitingClaim.length, 0, 'the stale claim must not surface as a labelled failure');
+  assert.equal(plan.noLaunchPark.length, 0, 'and must never be promoted to an actual park');
+});
+
+// ship-check/Codex catch: the two tests above manufacture `fromArchive: true`
+// by hand — they'd pass even if loadTasksUnioned() stopped setting the tag
+// entirely. This one exercises the real loader (audit-dispatch-outcomes.js)
+// against real files, in an isolated $HOME so it never touches this
+// machine's actual ~/.claude/tasks/.
+test('BRO-3633: loadTasksUnioned() actually tags fromArchive from real files, live wins except completed', () => {
+  const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3633-home-'));
+  const listId = 'test-list';
+  const liveDir = path.join(tmpHome, '.claude', 'tasks', listId);
+  const archiveDir = path.join(liveDir, 'archive');
+  fs.mkdirSync(archiveDir, { recursive: true });
+  const write = (dir, id, status) => fs.writeFileSync(
+    path.join(dir, `${id}.json`),
+    JSON.stringify({ id: String(id), subject: `task ${id}`, status }),
+  );
+  write(liveDir, 1, 'pending');                 // live only
+  write(archiveDir, 2, 'pending');               // archive only — the resurrection case
+  write(liveDir, 3, 'in_progress');              // present in both — live must win
+  write(archiveDir, 3, 'completed');
+  const prevHome = process.env.HOME;
+  const prevListId = process.env.CLAUDE_CODE_TASK_LIST_ID;
+  process.env.HOME = tmpHome;
+  process.env.CLAUDE_CODE_TASK_LIST_ID = listId;
+  try {
+    delete require.cache[require.resolve('../audit-dispatch-outcomes.js')];
+    const { loadTasksUnioned } = require('../audit-dispatch-outcomes.js');
+    const tasks = loadTasksUnioned();
+    assert.equal(tasks.get('1').fromArchive, false, 'a live-only task is not archived');
+    assert.equal(tasks.get('2').fromArchive, true, 'an archive-only task IS archived — the exact tag planSweep now guards on');
+    assert.deepEqual(
+      { status: tasks.get('3').status, fromArchive: tasks.get('3').fromArchive },
+      { status: 'completed', fromArchive: true },
+      'archive wins on completed (pre-existing behavior) and carries the correct tag for the record that actually won',
+    );
+  } finally {
+    if (prevHome === undefined) delete process.env.HOME; else process.env.HOME = prevHome;
+    if (prevListId === undefined) delete process.env.CLAUDE_CODE_TASK_LIST_ID; else process.env.CLAUDE_CODE_TASK_LIST_ID = prevListId;
+    delete require.cache[require.resolve('../audit-dispatch-outcomes.js')];
+    fs.rmSync(tmpHome, { recursive: true, force: true });
+  }
 });
 
 test('caps: day budget and concurrency hold dispatches and are reported', () => {
@@ -521,8 +614,12 @@ test('a Linear-sourced task is queued, ordered and dispatched like any other', (
   const plan = core.planSweep([], new Map([linearTask, task(9, 'pending', 'P1 Now')]), { now: NOW, liveTitles: LIVE });
   const ids = plan.p01Queue.map(q => q.taskId);
   assert.ok(ids.includes('linear:BRO-77'), `Linear task missing from p01Queue: ${JSON.stringify(ids)}`);
-  // Same priority => FIFO on the trailing number, so task 9 precedes BRO-77.
-  assert.deepEqual(ids, ['9', 'linear:BRO-77']);
+  // Same priority => Linear outranks the retired Notion mirror, THEN FIFO
+  // within each source. This expectation was ['9', 'linear:BRO-77'] until the
+  // production regression documented on taskSourceRank: trailing-integer
+  // ordering alone sent the drain straight back to the frozen board once the
+  // low-numbered Linear ids were consumed.
+  assert.deepEqual(ids, ['linear:BRO-77', '9']);
 });
 
 test('ship-check P0: a HEADLESS job counts as open (concurrency + no re-dispatch)', () => {
@@ -630,4 +727,174 @@ test('BRO-3424: an unlanded job-done is suppressed once a NEWER launch for the s
 test('BRO-3424: omitting unlandedJobDone entirely is backward compatible (defaults to none)', () => {
   const plan = core.planSweep([], new Map([task(83, 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.deepEqual(plan.unlandedDone, []);
+});
+
+// BRO-3442: a headless job that ended THIS SESSION: CLOSE ME — BLOCKED: is a
+// PARK-with-reason signal, surfaced in a new `jobBlocked` plan field.
+test('BRO-3442: a job-blocked task surfaces in jobBlocked and needsYou', () => {
+  const entries = [{ ts: T(10), event: 'job-blocked', taskId: '90', jobId: '90-abc', reason: 'needs owner decision: rotate the key' }];
+  const plan = core.planSweep(entries, new Map([task(90, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 1);
+  assert.equal(plan.jobBlocked[0].taskId, '90');
+  assert.equal(plan.jobBlocked[0].reason, 'needs owner decision: rotate the key');
+  assert.ok(plan.needsYou >= 1);
+  assert.ok(plan.parkedTotal >= 1);
+});
+
+test('BRO-3442 (adversarial review): a blocked P0/P1 task is NOT ALSO queued for dispatch in the same sweep', () => {
+  const entries = [{ ts: T(10), event: 'job-blocked', taskId: '91', jobId: '91-abc', reason: 'missing credential' }];
+  const plan = core.planSweep(entries, new Map([task(91, 'pending', 'P0 Now')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 1);
+  assert.ok(!plan.p01Queue.some((d) => d.taskId === '91'), 'a task about to be parked must never also be queued this sweep');
+  assert.ok(!plan.toDispatch.some((d) => d.taskId === '91'), 'a task about to be parked must never also be dispatched this sweep');
+});
+
+test('BRO-3442 (adversarial review): a stale job-blocked superseded by a LATER successful job is not re-parked', () => {
+  const entries = [
+    { ts: T(30), event: 'job-blocked', taskId: '92', jobId: '92-old', reason: 'stale blocker, already resolved' },
+    { ts: T(10), event: 'job-spawned', taskId: '92', jobId: '92-new' },
+    { ts: T(5), event: 'job-done', taskId: '92', jobId: '92-new', sessionId: 'sess-92' },
+  ];
+  const plan = core.planSweep(entries, new Map([task(92, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 0, 'the LATEST job for the task (job-done) must win over an older job-blocked jobId');
+});
+
+test('BRO-3442: a job-blocked task already watchdog-parked is not surfaced again', () => {
+  const entries = [
+    { ts: T(30), event: 'job-blocked', taskId: '93', jobId: '93-abc', reason: 'missing credential' },
+    { ts: T(20), event: core.WATCHDOG_EVENTS.PARK, taskId: '93', subject: 'x' },
+  ];
+  const plan = core.planSweep(entries, new Map([task(93, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 0);
+});
+
+// ── BRO-3404: cmux-lane holds must not gate the headless lane ─────────────
+
+function p01(id, pri = 'P1 Now') {
+  const isLinear = String(id).startsWith('linear:');
+  const tag = isLinear ? `[linear:${String(id).slice(7)}]` : `[notion:abc-${id}]`;
+  return [String(id), {
+    id: String(id), subject: `Fix thing ${id}`, status: 'pending',
+    description: `${tag} ${pri} · Not started · no-category\nbody`,
+  }];
+}
+
+test('BRO-3404: the auto-tab ceiling stops cmux work but NOT headless work', () => {
+  // 15 auto-dispatched cmux tabs against a ceiling of 12 — the exact state
+  // that halted the drain live on 2026-09-15, while every card it could not
+  // dispatch was headless and creates no tab at all.
+  const liveTitles = new Map();
+  for (let i = 0; i < 15; i++) liveTitles.set(`workspace:${100 + i}`, `🤖 auto ${i}`);
+
+  const tasks = new Map([p01('linear:BRO-500'), p01('1849')]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles });
+
+  assert.ok(plan.budgets.holds.some((h) => /auto-tab ceiling/.test(h)),
+    'the ceiling must still be REPORTED so the narrative is honest');
+  assert.ok(plan.budgets.cmuxHolds.some((h) => /auto-tab ceiling/.test(h)),
+    'and classified as a cmux-lane hold');
+  assert.equal(plan.budgets.globalHolds.length, 0, 'it must not be a global hold');
+
+  const ids = plan.toDispatch.map((t) => t.taskId);
+  assert.ok(ids.includes('linear:BRO-500'), `headless work must still dispatch, got ${JSON.stringify(ids)}`);
+  assert.ok(!ids.includes('1849'), 'cmux-lane work must be suppressed while the ceiling is hit');
+});
+
+test('BRO-3404: cmux being unobservable does not stop headless dispatch', () => {
+  // liveTitles empty => cmuxObserved false. Headless needs no cmux at all.
+  const tasks = new Map([p01('linear:BRO-501'), p01('1850')]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles: new Map() });
+  assert.ok(plan.budgets.cmuxHolds.some((h) => /cmux unobservable/.test(h)));
+  assert.equal(plan.budgets.globalHolds.length, 0);
+  const ids = plan.toDispatch.map((t) => t.taskId);
+  assert.ok(ids.includes('linear:BRO-501'));
+  assert.ok(!ids.includes('1850'));
+});
+
+test('BRO-3404: a GLOBAL hold still stops both lanes', () => {
+  // Day budget exhausted is a real money bound — it must gate everything.
+  const entries = [];
+  for (let i = 0; i < core.CAPS.perDay; i++) {
+    entries.push({ ts: new Date(NOW - i * 1000).toISOString(), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: String(900 + i) });
+  }
+  const tasks = new Map([p01('linear:BRO-502'), p01('1851')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.ok(plan.budgets.globalHolds.some((h) => /day budget/.test(h)));
+  assert.equal(plan.toDispatch.length, 0, 'a global hold must stop the headless lane too');
+});
+
+test('BRO-3404: with no holds at all, both lanes dispatch', () => {
+  const tasks = new Map([p01('linear:BRO-503'), p01('1852')]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.cmuxHolds.length, 0);
+  assert.equal(plan.budgets.globalHolds.length, 0);
+  const ids = plan.toDispatch.map((t) => t.taskId);
+  assert.ok(ids.includes('linear:BRO-503'));
+  // perSweep is 2, and Linear sorts first, so the Notion card rides along.
+  assert.ok(ids.includes('1852'));
+});
+
+// ── structuralGuardRefusal (BRO-3481) ───────────────────────────────────────
+//
+// A reopened Linear issue carrying an old "Dispatched ..." comment could
+// never be re-dispatched by the watchdog's own argv (no --force): the
+// idempotency guard refused it every retry, burning a REDISPATCH claim each
+// time before eventually parking with a generic "produced no launch" message
+// that named no reason. structuralGuardRefusal is the curated (not blanket)
+// detector that lets dispatch-watchdog.js park immediately, naming the
+// guard's own reason, for the refusal shapes that are genuinely permanent.
+
+test('structuralGuardRefusal: recognizes the exact BRO-3431 idempotency refusal, extracting just its own line', () => {
+  const out = [
+    '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.',
+    '  Linear comment: "Dispatched 2f595adb to linear:BRO-3431-mu34ri7q at 2026-09-15T21:07:44.458Z (headless)" (1.9h ago)',
+    '  Re-run with --force if you know this is stale.',
+  ].join('\n');
+  const reason = core.structuralGuardRefusal(out);
+  assert.equal(reason, '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.');
+});
+
+test('structuralGuardRefusal: recognizes the terminal-state guard refusal', () => {
+  const out = '[linear-next] BRO-99 is already in a terminal state ("Done") — refusing to re-dispatch. Re-run with --force if this is a deliberate re-open.';
+  assert.equal(core.structuralGuardRefusal(out), out);
+});
+
+test('structuralGuardRefusal: null for a transient lock/claim-race refusal (must keep retrying, not park forever)', () => {
+  const out = '[bsc-next] REFUSING succession dispatch: another succession dispatch for task #12 is already in flight (lock held, not stale). Wait for it to finish or fail before retrying — dispatching concurrently would let two successors both pass the depth cap.';
+  assert.equal(core.structuralGuardRefusal(out), null);
+});
+
+test('structuralGuardRefusal: null for a self-resolving "process is STILL ALIVE" refusal', () => {
+  const out = "[linear-next] REFUSING to dispatch BRO-5: its ledger record was closed by a 'prune-closed' breadcrumb at 2026-09-15T10:00:00Z, but a claude process is STILL ALIVE in workspace:9.";
+  assert.equal(core.structuralGuardRefusal(out), null);
+});
+
+test('structuralGuardRefusal: null for ordinary crash output, and tolerates empty/missing input', () => {
+  assert.equal(core.structuralGuardRefusal('TypeError: cannot read property foo of undefined\n  at bar (/x.js:1:1)'), null);
+  assert.equal(core.structuralGuardRefusal(''), null);
+  assert.equal(core.structuralGuardRefusal(undefined), null);
+});
+
+// Codex adversarial review (BRO-3481): "it already looks dispatched" is
+// printed for TWO different reasons (linear-next.js:842-858) — a stale
+// historical comment (permanent) or hasLiveLedgerEntry finding a genuinely
+// LIVE concurrent dispatch (NOT permanent — it resolves once that dispatch
+// finishes). Parking the live case would suppress legitimate future work,
+// since nothing but a new launch clears a watchdog-park row.
+test('structuralGuardRefusal: null when "it already looks dispatched" came from a LIVE ledger entry, not a stale comment', () => {
+  const out = [
+    '[linear-next] REFUSING to dispatch BRO-42: it already looks dispatched.',
+    "  Local dispatch ledger has a live (non-dead, non-finished) entry for linear:BRO-42 — latest attempt 'job-spawned' at 2026-09-15T20:00:00.000Z (5m ago).",
+    '  Re-run with --force if you know this is stale.',
+  ].join('\n');
+  assert.equal(core.structuralGuardRefusal(out), null);
+});
+
+test('structuralGuardRefusal: still recognizes "it already looks dispatched" when it is the stale-comment case (no live-ledger detail line)', () => {
+  const out = [
+    '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.',
+    '  Linear comment: "Dispatched 2f595adb to linear:BRO-3431-mu34ri7q at 2026-09-15T21:07:44.458Z (headless)" (1.9h ago)',
+    '  Re-run with --force if you know this is stale.',
+  ].join('\n');
+  assert.equal(core.structuralGuardRefusal(out), '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.');
 });

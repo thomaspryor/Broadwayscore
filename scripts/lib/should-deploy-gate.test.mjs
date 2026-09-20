@@ -68,8 +68,10 @@ test('workflow_dispatch: proceeds unless SHA already live', () => {
     decide({ ...base, eventName: 'workflow_dispatch', diffResult: null }),
     { proceed: true, reason: 'explicit-ship' }
   );
+  // 'already-live' dedup requires a POSITIVELY clean data signal — see the
+  // BRO-3149 code-review fix test below for the unknown-signal case.
   assert.deepEqual(
-    decide({ ...base, eventName: 'workflow_dispatch', headSha: A }),
+    decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean' }),
     { proceed: false, reason: 'already-live' }
   );
 });
@@ -81,7 +83,86 @@ test('workflow_dispatch: Vercel API down still ships (no dedup possible)', () =>
 
 test('workflow_run: same semantics as dispatch', () => {
   assert.equal(decide({ ...base, eventName: 'workflow_run' }).proceed, true);
-  assert.equal(decide({ ...base, eventName: 'workflow_run', headSha: A }).proceed, false);
+  assert.equal(decide({ ...base, eventName: 'workflow_run', headSha: A, dataDiffResult: 'clean' }).proceed, false);
+});
+
+// Codex adversarial /code-review (BRO-3149, post-merge): the non-schedule
+// dedup branch used to treat an UNKNOWN dataDiffResult exactly like a
+// positively-clean one and skip — reproducing the original bug via the
+// workflow_run/workflow_dispatch lane instead of the schedule lane (this is
+// the trigger rebuild-fast.yml's direct post-push dispatch uses, arguably
+// the highest-value path for this fix). Unknown status must fail OPEN here,
+// unlike the schedule branch (which has an age-gated backstop to lean on
+// instead of a blanket fail-open).
+test('workflow_dispatch: HEAD already live, data status UNKNOWN — fails open (does not silently dedup)', () => {
+  for (const dataDiffResult of ['error', null, undefined]) {
+    const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult });
+    assert.deepEqual(r, { proceed: true, reason: 'data-unknown-fail-open' });
+  }
+});
+
+test('workflow_run: HEAD already live, data status UNKNOWN — fails open (same lane rebuild-fast.yml dispatches through)', () => {
+  const r = decide({ ...base, eventName: 'workflow_run', headSha: A, dataDiffResult: 'error' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-unknown-fail-open' });
+});
+
+// BRO-3149: reviews.json/shows.json live in the private core-data repo and
+// never touch this repo's git tree, so the site-path diff alone is blind to
+// a core-data-only change. dataDiffResult carries that signal in separately —
+// see should-deploy-gate.js header comment for the full incident writeup.
+test('schedule: core data advanced but web HEAD did not — still proceeds (data-changed)', () => {
+  const r = decide({ ...base, diffResult: 'clean', dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
+test('schedule: baseline == HEAD but core data advanced — still proceeds (data-changed)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
+test('schedule: neither site nor core data changed — skips (content-gate)', () => {
+  const r = decide({ ...base, diffResult: 'clean', dataDiffResult: 'clean' });
+  assert.deepEqual(r, { proceed: false, reason: 'content-gate' });
+});
+
+test('schedule: data diff lookup unavailable falls through to site-diff signal unchanged', () => {
+  for (const dataDiffResult of ['error', null, undefined]) {
+    const clean = decide({ ...base, diffResult: 'clean', dataDiffResult });
+    assert.deepEqual(clean, { proceed: false, reason: 'content-gate' });
+    const dirty = decide({ ...base, diffResult: 'dirty', dataDiffResult });
+    assert.deepEqual(dirty, { proceed: true, reason: 'content-changed' });
+  }
+});
+
+test('workflow_dispatch: already-live dedup still fires when core data has NOT advanced', () => {
+  const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean' });
+  assert.deepEqual(r, { proceed: false, reason: 'already-live' });
+});
+
+test('workflow_dispatch: HEAD already live but core data advanced — proceeds (data-changed)', () => {
+  const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
+// Codex adversarial review (BRO-3149): the `baselineSha === headSha` branch
+// used to return before the staleness-backstop age check ever ran. A
+// persistently-broken data lookup (missing token, API outage) combined with
+// a genuinely idle public repo could therefore strand core-data staleness
+// indefinitely — the ONE case in this file where an unknown signal used to
+// bypass the 6h backstop entirely rather than falling back to it.
+test('schedule: baseline == HEAD, data status unknown, deploy is stale — backstop still fires', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
+  assert.deepEqual(r, { proceed: true, reason: 'staleness-backstop' });
+});
+
+test('schedule: baseline == HEAD, data status unknown, deploy is fresh — still skips (no false proceed)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: 600 });
+  assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
+});
+
+test('schedule: baseline == HEAD, data positively clean, deploy is stale — skips WITHOUT checking age (genuine no-op)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
+  assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
 });
 
 test('kill switch forces proceed on every event, even baseline==HEAD', () => {

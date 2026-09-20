@@ -362,7 +362,16 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 //     spent the increase on launches that never run.
 // The Notion lane keeps its existing cmux behaviour untouched — this change
 // adds a lane, it does not re-point the old one.
-const LINEAR_TASK_ID_RE = /^linear:([A-Z][A-Z0-9]*-\d+)$/;
+// BRO-3423 (/what-else cousin sweep): this was a FOURTH private copy of the
+// live-board id shape, in the very file whose mis-targeting the card was filed
+// over. It happened to be byte-identical to the shared one, so there was no
+// live bug — but two of the other three copies HAD already drifted apart
+// (digest-autofix.js rejected team keys containing a digit while
+// linear-watchdog-source.js accepted them), which is how a fleet ends up with
+// two different answers to "is this the live board?". Declared once, in
+// scripts/lib/task-id-namespace.js, alongside which board is live and which is
+// retired.
+const { LINEAR_TASK_ID_RE } = require('./lib/task-id-namespace.js');
 
 function dispatchArgvFor(taskId) {
   const m = LINEAR_TASK_ID_RE.exec(String(taskId));
@@ -375,7 +384,14 @@ function dispatchArgvFor(taskId) {
   // have FED the very write-back leak this change surfaces. With --detach,
   // linear-next re-execs in its own session and returns immediately, which is
   // exactly what digest-autofix.js's own spawn site does.
-  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless', '--detach'];
+  // BRO-3652: detach is now linear-next's DEFAULT on the headless lane, and
+  // `--headless` is a no-op alias for that default. `--detach` is deliberately
+  // NOT passed any more: an EXPLICIT --detach on a card that routes to a tab
+  // ('mac-only' label) is refused loudly by decideDetach, whereas the default
+  // simply takes the tab path in-process — this lane has no mac-only filter
+  // upstream, so the explicit flag would have parked every such card as
+  // "redispatch never produced a launch" (ship-check finding).
+  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless'];
   return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
 }
 
@@ -445,6 +461,41 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     results.parked.push(item.taskId);
   }
 
+  // BRO-3442: a headless job that ended `THIS SESSION: CLOSE ME|IDLE —
+  // BLOCKED: <reason>` did its job correctly — it hit something only the
+  // owner can resolve and said so, instead of silently stopping short
+  // (BRO-3424) or reading as job-done (BRO-3388). Park it (never
+  // auto-retried — see JOB_EVENTS.BLOCKED's own comment for why this must
+  // not burn a dead-attempt strike) and, for a Linear-backed task, post the
+  // reason as a comment on the card itself — a safety net for when the
+  // job's own self-report (the same `linear-session.js report --status=
+  // blocked` call its prompt already tells it to make before ending on
+  // BLOCKED:) didn't happen, e.g. it crashed or the call itself failed.
+  // In-process require (not a spawned child) — linear-session.js's cmdReport
+  // is a plain async function with no CLI-only side effect for
+  // --status=blocked (process.exit(5) only fires on the done-gate refusal
+  // path, gated on status==='done').
+  for (const item of plan.jobBlocked) {
+    const linearMatch = /^linear:(.+)$/.exec(item.taskId);
+    if (linearMatch) {
+      try {
+        const { cmdReport } = require('./linear-session.js');
+        await cmdReport({
+          issue: linearMatch[1],
+          status: 'blocked',
+          summary: `Watchdog safety net: headless job ${item.jobId} ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: ${item.reason || 'no reason given'}. Not retried automatically — resolve the blocker, then re-dispatch (node scripts/linear-next.js --id ${linearMatch[1]} --force once fixed).`,
+        }, {});
+      } catch (e) {
+        console.error(`[watchdog] failed to post BLOCKED reason to Linear ${item.taskId}: ${e.message}`);
+      }
+    }
+    dispatchLedger.appendEntry({
+      event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject,
+      reason: `headless job ${item.jobId} blocked: ${item.reason || 'no reason given'}`,
+    });
+    results.parked.push(item.taskId);
+  }
+
   // BRO-3429: a claim that never produced a launch was previously invisible —
   // it just sat in the dashboard's "awaiting claim" label and quietly
   // re-armed itself after 24h, forever, with no ledger park and no page. Live
@@ -474,8 +525,28 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     const r = await runBscNext(item.taskId, { onTick: () => hb({ busy: `dispatching #${item.taskId}` }) });
     if (r.code === 0) results.dispatched.push(item.taskId);
     else {
-      results.failed.push(item.taskId);
       console.error(`[watchdog] bsc-next --id ${item.taskId} exited ${r.code}: ${r.out.split('\n').slice(-3).join(' / ')}`);
+      const structuralReason = core.structuralGuardRefusal(r.out);
+      if (structuralReason) {
+        // BRO-3481: this class of refusal is deterministic — the child's own
+        // dispatch guard will refuse identically on every retry, so letting
+        // the normal retry loop rediscover it burns a REDISPATCH claim each
+        // time before noLaunchPark's generic "produced no launch" message
+        // eventually fires several sweeps later. Park now, naming the
+        // guard's own reason, instead of waiting for retries to exhaust.
+        dispatchLedger.appendEntry({
+          event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject,
+          reason: `dispatch guard refuses structurally: ${structuralReason}`,
+        });
+        pageOwner({
+          conditionKey: `watchdog-park:${item.taskId}`,
+          title: `Watchdog parked #${item.taskId} — dispatch guard refuses by construction`,
+          description: `Watchdog: card "${item.subject}" cannot be redispatched by the watchdog's own argv — its dispatcher refuses: "${structuralReason}". This will NOT clear on retry. Re-arm with ${reArmHintFor(item.taskId)} once you've confirmed it's safe (or fix the underlying cause).`,
+        });
+        results.parked.push(item.taskId);
+      } else {
+        results.failed.push(item.taskId);
+      }
     }
     hb({});
   }

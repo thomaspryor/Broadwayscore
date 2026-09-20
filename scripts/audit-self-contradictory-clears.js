@@ -172,14 +172,32 @@ function readBaseline(baselinePath) {
   return { count: parsed.count, tolerance };
 }
 
-function listShowDirs(showFilter) {
+// Returns { dirs, rootMissing }. rootMissing means REVIEW_TEXTS_DIR itself
+// couldn't be read, OR is readable but has literally zero entries — both mean
+// the private repo checkout isn't there, as opposed to `--show=ID` matching
+// no directory in an otherwise-populated corpus (a show with no reviews yet
+// is a normal, legitimate state). Collapsing all of these into a bare `[]` is
+// what let a missing/half-set-up checkout print "0 scanned, 0 contradictions"
+// and read as a clean sweep (BRO-2283) instead of the corpus-not-checked-out
+// error it actually was. The zero-entries case matters on its own:
+// setup-local-data.sh's --all path does `mkdir -p data/review-texts` BEFORE
+// cloning (scripts/setup-local-data.sh:216) — a clone failure after that point
+// leaves an empty-but-present directory, which `readdirSync` succeeds on
+// (`entries.length === 0`, not a throw), so it must be checked before any
+// --show filtering: a real corpus always has thousands of show directories,
+// so zero raw entries has no legitimate reading either way.
+// `dir` is a parameter (not the module-level REVIEW_TEXTS_DIR) so the unit
+// test can require() this exact function against a disposable fixture
+// directory instead of restating its rules against a copy (CLAUDE.md §15).
+function listShowDirs(dir, showFilter) {
   let entries;
   try {
-    entries = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true });
+    entries = fs.readdirSync(dir, { withFileTypes: true });
   } catch {
-    return [];
+    return { dirs: [], rootMissing: true };
   }
-  return entries
+  if (entries.length === 0) return { dirs: [], rootMissing: true };
+  const dirs = entries
     // isDirectory() is false for symlinked show dirs — accept those too, but
     // never plain files (the stray-symlink class, memory/feedback_stray_symlink).
     .filter((e) => e.isDirectory() || e.isSymbolicLink())
@@ -187,9 +205,10 @@ function listShowDirs(showFilter) {
     .filter((name) => !SKIP_DIRS.has(name))
     .filter((name) => !showFilter || name === showFilter)
     .filter((name) => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, name)).isDirectory(); }
+      try { return fs.statSync(path.join(dir, name)).isDirectory(); }
       catch { return false; }
     });
+  return { dirs, rootMissing: false };
 }
 
 function main() {
@@ -202,7 +221,23 @@ function main() {
   let scanned = 0;
   const showsById = args.fixSafe ? loadShowsById() : new Map();
 
-  for (const showId of listShowDirs(args.show)) {
+  const { dirs: showDirs, rootMissing } = listShowDirs(REVIEW_TEXTS_DIR, args.show);
+  // Checked BEFORE the scan loop and BEFORE any report output — rootMissing
+  // has no legitimate reading (see listShowDirs' docstring), so there is
+  // nothing to gain by running the (guaranteed-empty) loop below and printing
+  // "0 review file(s) scanned, 0 contradiction(s)" first. A reader piping only
+  // the summary line, or a log scraper matching on it, would otherwise see a
+  // clean-looking result ahead of the FAIL that follows it (code review,
+  // BRO-2283) — checking here means the corpus-not-checked-out error is the
+  // ONLY thing printed.
+  try {
+    assertCorpusScanned(0, { corpusRootMissing: rootMissing });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`FAIL: ${e.message}`);
+    process.exit(1);
+  }
+  for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); }
@@ -293,6 +328,10 @@ function main() {
   // running the gate with the corpus symlink removed (2026-08-05). Shared
   // across all corpus audits — see scripts/lib/corpus-scan-guard.js (#1063).
   try {
+    // corpusRootMissing was already checked (and would have exited) before the
+    // scan loop above — by construction rootMissing is false here, so this
+    // call only ever covers the `scanned === 0 && gate` case (an empty
+    // --show=ID match under --gate).
     assertCorpusScanned(scanned, { gate: args.gate });
   } catch (e) {
     if (!(e instanceof CorpusNotScannedError)) throw e;
@@ -355,4 +394,6 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { listShowDirs };

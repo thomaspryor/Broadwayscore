@@ -5,7 +5,27 @@
  * but the URL contains an obviously-out-of-window date (e.g. /2023/02/28/).
  *
  * Complements flag-wrong-production-by-date.js which uses publishDate.
- * Only flags if URL date is >30 days outside the [previewStart-21d, close+30d] window.
+ *
+ * The window/exemption decision itself is NOT reimplemented here — it calls
+ * getWrongProductionReasonFromUrl (scripts/lib/review-guards.js), the same
+ * canonical URL-date guard getWrongProductionReasonForUnknownCritic and
+ * getWrongProductionReasonForBww wrap for their own ingest-time callers.
+ * BRO-3509: this script used to hand-roll its own copy of that window math
+ * (a 30d-before/30d-after tolerance layered on top of an already-shifted
+ * [previewStart-21d, close+30d] window — effectively ~51d lead / ~60d trail,
+ * with no off-broadway widening) and wrote a reason string that didn't start
+ * with "Auto-flagged:", so wrong-production-autoclear.js's DATE_GUARD_PREFIXES
+ * match never recognized flags this script wrote as auto-clear-eligible.
+ * Delegating here fixes both: single source of truth for the window (30d/180d
+ * lead, 30d trail, priorRuns/tourLegs-aware), and the reason text now always
+ * carries the "Auto-flagged:" prefix the autoclear guard checks for.
+ *
+ * This script calls the RAW helper with no critic-name gating (unlike
+ * getWrongProductionReasonForUnknownCritic's ingest-time callers, which only
+ * fire for Unknown/Staff bylines). Dry-run output annotates named-critic
+ * candidates with "[NAMED CRITIC]" so a human reviews those before --apply —
+ * see the illinoise-2024 false positive this refactor found and fixed
+ * (undeclared priorRuns for a real named critic's pre-transfer review).
  *
  * Usage:
  *   node scripts/flag-wrong-production-by-url-date.js              # dry run
@@ -14,8 +34,8 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
-const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
+const { shouldSkipWrongProductionAudit, getWrongProductionReasonFromUrl, isCriticUnknown } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -27,14 +47,7 @@ const shows = Array.isArray(SHOWS.shows) ? SHOWS.shows : Object.values(SHOWS.sho
 const showMap = {};
 for (const s of shows) showMap[s.id] = s;
 
-// Word-month map so Guardian-style /YYYY/monthname/DD/ URLs are matched.
-// Mirrors URL_MONTH_NAMES in scripts/lib/review-guards.js.
-const URL_MONTH_NAMES = {
-  jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
-  jul: '07', aug: '08', sep: '09', sept: '09', oct: '10', nov: '11', dec: '12',
-};
-
-const dirs = fs.readdirSync(REVIEW_DIR).filter(d => fs.statSync(path.join(REVIEW_DIR, d)).isDirectory());
+const dirs = listShowDirs(REVIEW_DIR);
 
 let flagged = 0;
 const flaggedDetails = [];
@@ -43,13 +56,6 @@ for (const showId of dirs) {
   if (ONLY_SHOW && showId !== ONLY_SHOW) continue;
   const show = showMap[showId];
   if (!show) continue;
-  const earliestStr = show.previewDate || show.previewsStartDate || show.openingDate;
-  if (!earliestStr) continue;
-
-  const windowStart = new Date(earliestStr);
-  windowStart.setDate(windowStart.getDate() - 21);
-  const closing = show.closingDate ? new Date(show.closingDate) : new Date('2099-01-01');
-  closing.setDate(closing.getDate() + 30);
 
   const files = fs.readdirSync(path.join(REVIEW_DIR, showId)).filter(f => f.endsWith('.json'));
   for (const f of files) {
@@ -60,29 +66,21 @@ for (const showId of dirs) {
     if (shouldSkipWrongProductionAudit(d)) continue;
     if (!d.assignedScore && !d.llmScore?.score) continue;
 
-    const url = d.url || '';
-    // Match numeric months /YYYY/MM/ and Guardian word months /YYYY/monthname/
-    const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
-    if (!m) continue;
-    const rawMonth = m[2].toLowerCase();
-    const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
-    if (!month) continue;
-    const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
-    const urlDate = new Date(`${m[1]}-${month}-${dayPart}`);
-    if (isNaN(urlDate.getTime())) continue;
-    const daysBefore = Math.round((windowStart - urlDate) / 86400000);
-    const daysAfter = Math.round((urlDate - closing) / 86400000);
-    if (daysBefore <= 30 && daysAfter <= 30) continue;
+    const reason = getWrongProductionReasonFromUrl(d.url, show);
+    if (!reason) continue;
 
-    // Production-continuity exemption: URL date falls inside a declared priorRuns
-    // window — legitimate coverage of an earlier run of THIS production.
-    if (isWithinPriorRun(urlDate, show.priorRuns) || isWithinTourLeg(urlDate, show.tourLegs)) continue;
-
-    const reason = daysBefore > 30
-      ? `URL date ${urlDate.toISOString().slice(0,10)} is ${daysBefore} days before show window starts (${windowStart.toISOString().slice(0,10)}). Likely review of an earlier production.`
-      : `URL date ${urlDate.toISOString().slice(0,10)} is ${daysAfter} days after show closed. Likely review of a later production/revival/tour.`;
-
-    flaggedDetails.push({ showId, file: f, urlDate: urlDate.toISOString().slice(0,10), score: d.assignedScore });
+    const urlDateMatch = reason.match(/\b(\d{4}-\d{2}-\d{2})\b/);
+    // This script calls the raw getWrongProductionReasonFromUrl with no
+    // critic-name gating (unlike getWrongProductionReasonForUnknownCritic's
+    // ingest-time callers, which only fire for Unknown/Staff bylines because
+    // named critics get the benefit of the doubt on organic pre-transfer
+    // coverage). Flagging which candidates carry a named critic here doesn't
+    // change what gets flagged — it tells the human reviewing dry-run output
+    // before --apply which candidates carry the higher false-positive prior
+    // (illinoise-2024 was exactly this shape: a real Jesse Green NYT review of
+    // an undeclared pre-Broadway run, BRO-3509).
+    const namedCritic = !isCriticUnknown(d.criticName);
+    flaggedDetails.push({ showId, file: f, urlDate: urlDateMatch ? urlDateMatch[1] : null, score: d.assignedScore, namedCritic });
     if (APPLY) {
       d.wrongProduction = true;
       d.wrongProductionReason = reason;
@@ -96,4 +94,4 @@ for (const showId of dirs) {
 
 console.log(APPLY ? 'APPLIED' : 'DRY RUN');
 console.log('Flagged:', flagged);
-flaggedDetails.forEach(x => console.log(' ', x.showId, '|', x.file, '|', x.urlDate, '| score:', x.score));
+flaggedDetails.forEach(x => console.log(' ', x.showId, '|', x.file, '|', x.urlDate, '| score:', x.score, x.namedCritic ? '| [NAMED CRITIC — verify priorRuns before --apply]' : ''));

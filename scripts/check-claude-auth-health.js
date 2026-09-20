@@ -83,7 +83,11 @@ async function main(argv = process.argv.slice(2)) {
   // mirrors check-secrets-health.js's recovery path so a later recurrence
   // inside the same cooldown window re-notifies instead of being swallowed.
   // resolveCondition() is already a safe no-op on a missing/non-open key.
+  // All three keys resolved unconditionally (BRO-2971): a healthy run proves
+  // NONE of the failure modes is currently active, whichever one paged last.
   resolveCondition('claude-auth:revoked');
+  resolveCondition('claude-spawn-starved');
+  resolveCondition('claude-spawn-error');
 
   if (health.mode === 'api-key') {
     // Not a launch-blocking failure (preflightAuth's fallback still lets

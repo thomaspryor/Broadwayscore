@@ -21,6 +21,7 @@
  *      passes --allow-unverifiable).
  *   3. Dispatches each via digest-autofix.js's dispatchDetached() — the
  *      SAME detached `node scripts/linear-next.js --id X --headless` spawn
+ *      (`--headless` is linear-next's default since BRO-3652; still a valid alias)
  *      the digest's own autofix rows use for their `linear:BRO-N` taskId
  *      form, so this drain gets linear-next's full guard stack (kill
  *      switch, idempotency, terminal-state, dead-dispatch, verify gate) for
@@ -75,9 +76,18 @@
  * and can drift from the one in this repo.
  * BRO-3060: .github/workflows/check-linear-drain-health.yml runs this file's
  * own --dry-run daily as a READ-ONLY CI monitor (Linear API read only, no
- * spawn) — it goes red if eligible candidates pile up past one dispatch cap,
- * catching a dead Mac-side drain in days instead of the weeks it took for
- * 126 issues to accumulate before anyone noticed the drain never ran.
+ * spawn), and hands the resulting candidate count to
+ * scripts/check-linear-drain-health.js. That script — NOT this one, and no
+ * longer a threshold hardcoded in the YAML — decides health, by asking
+ * whether this drain has written a `drain-parked-dispatch` row recently
+ * enough while work was queued.
+ *
+ * The gate it replaced ("go red if eligible candidates pile up past one
+ * dispatch cap") was dead on arrival: the workflow ran --dry-run with no
+ * --cap, :445 below passes `limit: cap` with cap = DISPATCH_CAP = 3, and
+ * lib/linear-drain-parked.js:85 slices to that limit — so the count it
+ * compared against 3 could never exceed 3. The workflow now passes
+ * `--cap 1000` so the printed count is the real backlog depth.
  */
 'use strict';
 
@@ -88,6 +98,18 @@ const { selectDrainCandidates, isAutoFiledParked, hasSafeVerifyCommand } = requi
 const { checkPark, computeContentHash } = require('./lib/attempt-memory.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const dispatchReconcile = require('./lib/dispatch-reconcile.js');
+// BRO-3454: this drain had neither of the two guards its sibling
+// scripts/lib/digest-autofix.js just got in BRO-3412 (spend circuit breaker,
+// concurrency ceiling) — same missing-guard gap, third instance of it found
+// in the auto-fix dispatch family after scripts/backlog-drain.js (which has
+// both natively). Imported, not re-derived (CLAUDE.md rule 15) — same
+// functions/thresholds BRO-3412 wired into digest-autofix.js. Independently
+// scoped to the taskIds THIS drain dispatched (see the guard block in main()
+// below) — not a shared cross-drain budget.
+const {
+  computeSpendCircuitBreaker, computeConcurrency,
+  DEFAULT_CONCURRENCY_CAP, DEFAULT_SPEND_THRESHOLD_USD,
+} = require('./lib/backlog-drain.js');
 
 require('./lib/load-env').loadEnv();
 
@@ -174,6 +196,56 @@ function appendLedger(entry, p = LEDGER_PATH) {
   fs.appendFileSync(p, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n');
 }
 
+// Strict variant (BRO-3454, same pattern as digest-autofix.js's
+// readJsonlLedgerStrict from BRO-3412) — used ONLY by the spend/concurrency
+// guard in main(). readLedger() above swallows every filesystem error into
+// [], indistinguishable from "nothing here yet" — the common, healthy first-
+// run state. Reusing that fail-soft read for a money guard means the ONE
+// failure mode most likely to happen (a corrupt/inaccessible ledger) reads
+// as "$0 spent, 0 alive" and lets dispatch through with ZERO protection —
+// backwards for a guard whose job is to fail closed. ENOENT is NOT a
+// failure — no ledger file yet must not halt dispatch — but any OTHER read
+// error propagates so the guard's own try/catch can act on it.
+//
+// UNLIKE digest-autofix's strict reader: this ledger (not digest-autofix's)
+// carries `merge=union` in .gitattributes and can genuinely contain
+// duplicate lines from concurrent-append merges (see the exact-line dedup
+// comment above readLedger()) — dropping that dedup here would double-count
+// real spend and inflate the failure streak the breaker/park logic reads.
+function readLedgerStrict(p = LEDGER_PATH) {
+  let raw;
+  try { raw = fs.readFileSync(p, 'utf8'); }
+  catch (err) { if (err && err.code === 'ENOENT') return []; throw err; }
+  const out = [];
+  const seen = new Set();
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
+    try { out.push(JSON.parse(t)); } catch { /* skip corrupt line — matches readLedger */ }
+  }
+  return out;
+}
+
+// Same strict/ENOENT-tolerant contract, for the SHARED dispatch-ledger.jsonl
+// (dispatchLedger.readEntries() also swallows every fs error into [], with
+// no way to tell "empty" from "unreadable"). Reads dispatchLedger.LEDGER_PATH
+// directly rather than calling readEntries() — this module doesn't own that
+// ledger's format, but readEntries() offers no strict variant.
+function readSharedDispatchLedgerStrict() {
+  let raw;
+  try { raw = fs.readFileSync(dispatchLedger.LEDGER_PATH, 'utf8'); }
+  catch (err) { if (err && err.code === 'ENOENT') return []; throw err; }
+  const out = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
+  }
+  return out;
+}
+
 // Which identifiers were dispatched within the cooldown window, regardless
 // of outcome — a refused/failed attempt is retried once the cooldown clears
 // (past-cooldown entries are simply ignored, not cleaned up: the ledger is
@@ -253,7 +325,9 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
   for (const { dispatch: d, cardId, job, kind } of decisions) {
     if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
-        event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts,
+        // usd: 0 (BRO-3454) — no job ever spawned, so no cost was incurred.
+        // Mirrors digest-autofix.js's reconcileDigestOutcomes ORPHAN branch.
+        event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: 0,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: kill switch, verify gate, terminal-state guard, or lease already held)`,
       });
       continue;
@@ -262,7 +336,9 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
-        event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts,
+        // usd (BRO-3454): the timed-out attempt's own cost, same field
+        // digest-autofix.js's RETRY_TIMEOUT branch records.
+        event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: Number(job.costUSD) || 0,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
       continue;
@@ -272,9 +348,21 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
     // shared lib must stop the pass rather than be silently treated as
     // terminal and dereference a job that may be null.
     if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) throw new Error(`reconcileOutcomes: unhandled dispatch kind '${kind}'`);
+    // KNOWN LIMITATION (BRO-3445, filed for digest-autofix.js's identical
+    // shape and now also true here): job-done only proves the headless
+    // session EXITED cleanly, not that the issue actually closed — the board
+    // Done-audit verifies that separately, out-of-band. A session that exits
+    // clean without resolving anything still counts as a `card-pass`
+    // completion for computeSpendCircuitBreaker below, which can mask
+    // ongoing spend and keep the breaker from tripping. Same tradeoff
+    // BRO-3412/BRO-3445 accepted for digest-autofix.js — out of scope for
+    // this wiring-only card.
     const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
     newEntries.push({
-      event: outcome, cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts,
+      // usd (BRO-3454): what this dispatch actually cost, so
+      // computeSpendCircuitBreaker (called from main() below) has something
+      // to sum — this ledger never recorded cost before.
+      event: outcome, cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: Number(job.costUSD) || 0,
       note: outcome === 'card-pass'
         ? 'session finished (job-done)'
         : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`,
@@ -309,6 +397,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const appendLedgerFn = deps.appendLedger || appendLedger;
   const dispatchLedgerEntriesFn = deps.dispatchLedgerEntries || (() => dispatchLedger.readEntries());
   const now = deps.now || new Date();
+  // BRO-3454: single injection point for this drain's own ledger path, so
+  // tests can point both the existing fail-soft reads/writes AND the new
+  // strict guard reads at a temp file without a second dep shape.
+  const ledgerPath = deps.ledgerPath || LEDGER_PATH;
 
   if (process.env.LINEAR_NEXT_DISABLED === '1') {
     log('[linear-drain-parked] LINEAR_NEXT_DISABLED=1 — dispatcher is switched off; nothing dispatched this run.');
@@ -324,7 +416,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     return { dispatched: [] };
   }
 
-  const ledgerEntries = readLedgerFn();
+  const ledgerEntries = readLedgerFn(ledgerPath);
 
   // Attempt-memory reconciliation: resolve prior dispatches into
   // card-pass/card-fail before computing park state. Fail-soft — a broken
@@ -335,7 +427,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     const dispatchLedgerEntries = dispatchLedgerEntriesFn();
     const newOutcomes = reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now);
     for (const o of newOutcomes) {
-      appendLedgerFn(o);
+      // `if (!dryRun)` — byte-for-byte the shape the sibling drain already
+      // ships at scripts/backlog-drain.js:461. Without it --dry-run WROTE:
+      // USAGE and the "no dispatch/ledger writes" line at the bottom of this
+      // function both promised otherwise, but this append ran unconditionally,
+      // above the first `if (!dryRun)` guard. That made the scheduled CI
+      // health check a writer, and dirtied the tracked ledger on any local
+      // preview. The log line stays unconditional (also as in backlog-drain)
+      // so a dry run still SHOWS what it would have reconciled.
+      if (!dryRun) appendLedgerFn(o, ledgerPath);
       log(`[linear-drain-parked] attempt-memory: ${o.cardId} ${o.event} (${o.note})`);
     }
     if (newOutcomes.length) effectiveLedgerEntries = ledgerEntries.concat(newOutcomes);
@@ -367,10 +467,80 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     return { dispatched: [] };
   }
 
+  // Spend circuit breaker + concurrency ceiling (BRO-3454, mirrors BRO-3412's
+  // fix to scripts/lib/digest-autofix.js's runAutofix()). Deliberately fails
+  // CLOSED (zero budget) if this computation itself throws — unlike the
+  // attempt-memory reconcile above (fail-soft), a broken money/fleet-storm
+  // guard failing OPEN would silently remove the protection this card exists
+  // to add. Scoped to taskIds THIS drain dispatched (identifiers from its own
+  // 'drain-parked-dispatch' rows, namespaced `linear:<identifier>` — the same
+  // form reconcileOutcomes' taskIdOf and dispatchFn's call site below both
+  // already use), never a shared cross-drain budget.
+  //
+  // Skipped entirely on --dry-run (BRO-3454, same choice BRO-3412 made for
+  // digest-autofix.js, whose own dry-run branch returns before any of this
+  // runs): dry-run was already an approximation, so it previews every
+  // candidate rather than modeling a budget a live run might cap lower.
+  //
+  // Overridable via deps (concurrencyCap/spendThresholdUSD), same as
+  // digest-autofix.js's runAutofix() params — not new numbers, just an
+  // injection point so a test can hold the ceiling constant while it
+  // exercises something else (e.g. --cap parsing).
+  //
+  // Reads via `deps.readLedger`/`deps.dispatchLedgerEntries` RAW (checked
+  // directly, never the `readLedgerFn`/`dispatchLedgerEntriesFn` locals
+  // above, which already have a fail-soft default baked in) — falling back
+  // to the strict real-file readers ONLY when no dep is injected at all.
+  // This is deliberately NOT the same shape as digest-autofix.js's own
+  // strict-reader wiring: that file's tests always write real temp ledger
+  // files, so its guard can unconditionally call the strict reader. THIS
+  // file's existing test convention (tests/unit/linear-drain-parked.test.mjs)
+  // is in-memory mock functions with no real file at all — reusing the raw
+  // dep here means those existing mocks drive the guard too, instead of the
+  // guard silently reading the REAL data/audit/linear-drain-parked-ledger.jsonl
+  // out from under every test that never asked for real fs I/O. A real run
+  // (no deps injected) still gets the strict, fail-closed-on-corruption
+  // reader `readLedgerStrict`/`readSharedDispatchLedgerStrict` provide —
+  // same protection BRO-3412 added, just reached via the raw dep check
+  // instead of an unconditional call.
+  let budget = candidates.length;
+  if (!dryRun) {
+    const concurrencyCap = Number.isFinite(deps.concurrencyCap) ? deps.concurrencyCap : DEFAULT_CONCURRENCY_CAP;
+    const spendThresholdUSD = Number.isFinite(deps.spendThresholdUSD) ? deps.spendThresholdUSD : DEFAULT_SPEND_THRESHOLD_USD;
+    let concurrency = { atCap: true, alive: null, cap: concurrencyCap, aliveTaskIds: [] };
+    let breaker = { halt: true, reason: 'guard computation failed — failing closed, no dispatch this run', spentUSD: null, completions: null, thresholdUSD: spendThresholdUSD };
+    try {
+      const freshOwnLedgerEntries = (deps.readLedger || readLedgerStrict)(ledgerPath);
+      const freshDispatchLedgerEntries = (deps.dispatchLedgerEntries || readSharedDispatchLedgerStrict)();
+      const dispatchedTaskIds = new Set(
+        freshOwnLedgerEntries.filter(e => e && e.event === 'drain-parked-dispatch' && e.identifier)
+          .map(e => `linear:${e.identifier}`));
+      concurrency = computeConcurrency(dispatchedTaskIds, freshDispatchLedgerEntries, concurrencyCap);
+      breaker = computeSpendCircuitBreaker(freshOwnLedgerEntries, { thresholdUSD: spendThresholdUSD });
+    } catch (e) {
+      log(`[linear-drain-parked] WARN spend/concurrency guard computation failed (failing CLOSED — no dispatch this run): ${e.message}`);
+    }
+    if (concurrency.atCap) {
+      log(`[linear-drain-parked] concurrency cap reached (${concurrency.alive}/${concurrencyCap} drain jobs alive: ${(concurrency.aliveTaskIds || []).join(', ')}) — dispatch budget reduced this run`);
+    }
+    if (breaker.halt) {
+      log(`[linear-drain-parked] ${breaker.reason}`);
+    }
+    // NOTE: DEFAULT_CONCURRENCY_CAP (2) < DISPATCH_CAP (3) — even with zero
+    // concurrent jobs, budget maxes at 2, not 3 at the defaults. DISPATCH_CAP
+    // is not dead: it still bounds a run once concurrencyCap is raised (an
+    // owner call, not this card's — neither default is touched here).
+    budget = breaker.halt ? 0 : Math.min(candidates.length, Math.max(0, concurrencyCap - concurrency.alive));
+  }
+
   const dispatched = [];
   for (const issue of candidates) {
     if (dryRun) {
       log(`[linear-drain-parked] DRY RUN would dispatch ${issue.identifier}: ${issue.title}`);
+      continue;
+    }
+    if (budget <= 0) {
+      log(`[linear-drain-parked] dispatch budget exhausted this run — ${issue.identifier} stays queued for a future run`);
       continue;
     }
     try {
@@ -397,10 +567,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // detached child (discovered live, 2026-09-08: all 3 of this run's
       // candidates were refused before this fix).
       dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true, allowAutomationParked: true });
+      budget--;
       appendLedgerFn({
         event: 'drain-parked-dispatch', identifier: issue.identifier, title: issue.title,
         contentHash: computeIssueContentHash(issue),
-      });
+      }, ledgerPath);
       dispatched.push(issue.identifier);
     } catch (e) {
       log(`[linear-drain-parked] WARN dispatch failed for ${issue.identifier}: ${e.message}`);

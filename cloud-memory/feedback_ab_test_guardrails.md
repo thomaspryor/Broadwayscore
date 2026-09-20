@@ -3,7 +3,7 @@ name: A/B test guardrails — never kill, never unilaterally change rollout
 description: "Never kill running tests or PATCH rollouts without approval."
 type: feedback
 originSessionId: ba2676a0-1232-4de7-b090-d7af31195aa2
-modified: 2026-07-24T04:15:53.019Z
+modified: 2026-09-16T01:12:44.758Z
 ---
 **Hard rules for A/B tests. Violate these and you're wasting real traffic and invalidating weeks of data.**
 
@@ -21,7 +21,7 @@ Only the user decides when a test is "done." Do not PATCH PostHog flags to chang
 
 Allowed without asking:
 - Reading flag state via GET (diagnostics)
-- Running `scripts/validate-ab-test.js` or `scripts/analyze-ab-test.js`
+- Running `scripts/analyze-ab-test.js` (`scripts/validate-ab-test.js` was DELETED 2026-09-16 when `ticket-single-button` retired — see rule 6 below)
 - Adding `FLAG_RESTART_DATES` entries in `scripts/analyze-ab-test.js` *after* the user confirms a restart
 
 Not allowed without explicit user approval:
@@ -50,13 +50,20 @@ Keep test infrastructure in place even when variants are at 0% rollout. Re-enabl
 
 ## 6. Run `scripts/validate-ab-test.js` before and after any A/B change
 
-The validator runs 4 checks on the live flag:
+**DELETED 2026-09-16** when `ticket-single-button` retired (BRO-3456) — it
+was the only live consumer. If a NEW A/B test is started on any flag, this
+class of end-to-end validator (distribution, sticky-bucketing consistency,
+DOM render per variant, click-tracking property) needs to be rebuilt or
+generalized, not assumed to still exist. For a flag being CONCLUDED (not
+started), a source-level regression test like
+`tests/unit/ticket-buttons-single-only.test.mjs` is sufficient — there's
+only one arm left to validate.
+
+Original 4 checks the deleted validator ran, for reference when rebuilding:
 - ~50/50 distribution over 30 random distinct_ids
 - Sticky bucketing consistency (same id → same variant 5x)
 - Each variant renders the expected DOM on a real show page
 - Click tracking fires with the correct `ab_variant` property
-
-If any check fails, stop and investigate before shipping further changes.
 
 ## 7. Sample-size reality for this test
 
@@ -80,9 +87,15 @@ Before citing "live A/B test, needs user approval" as a reason to defer a fix, c
 - `src/components/TicketButtonsAB.tsx` — reads the flag, renders variants
 - `src/lib/ticket-utils.ts` — `HIDDEN_PLATFORMS` set (separate concern — StubHub lives here)
 - `scripts/analyze-ab-test.js` — pulls PostHog events, computes per-variant metrics, applies `FLAG_RESTART_DATES` clamp
-- `scripts/validate-ab-test.js` — end-to-end validator (distribution + sticky + DOM + click tracking)
-- PostHog flag key: `ticket-single-button` (project 332742, flag id 637535)
+- `scripts/validate-ab-test.js` — DELETED 2026-09-16 (see rule 6)
+- PostHog flag key: `ticket-single-button` (project 332742, flag id 637535) — **retired 2026-09-16, archived (`active: false`), no live split; `TicketButtonsAB.tsx` renders single-button unconditionally**
 - PostHog flag key: `ticket-primary-platform` (project 332742, flag id 631794) — locked 100% todaytix, don't touch
+
+## 9. Power-calculation must use the PRE-REGISTERED primary metric's exact denominator — not a plausible-looking substitute
+
+While concluding `gate-cold-start` (BRO-3422, 2026-09-15), a power calculation was first run on captures/SHOWN (the modal-impression rate) to justify "waiting longer won't resolve this," then had to be corrected mid-session to captures/EXPOSED (the actual pre-registered ITT primary in `docs/experiments/gate-cold-start.md`). The two denominators gave very different required-wait numbers (~241 days vs ~666 days) — both supported the same final decision here, but they didn't have to, and the first number was wrong. **Before running any two-proportion power calc, find the experiment's own stated primary metric definition and use that exact numerator/denominator — never substitute "the rate I have numbers for."**
+
+**Correction (BRO-3456, same day):** the `2026-08-31` date in `ticket-ab-monitor-state.json` flagged above was NOT a second restart — it's the rolling 14-day analysis window's start boundary. The true (only) restart is still `2026-04-11` (`FLAG_RESTART_DATES`), confirmed by BRO-3456's audit. **Lesson generalized:** a monitor state file's `startDate`/window fields can look like a restart marker without being one — check what the field actually means in the analyzer's source before citing it as history, the same discipline as guardrail #9 above (verify a metric's real definition before reasoning from its name). BRO-3456 also found the one 2026-07-27 significant read (p=0.0158) was a first-data-point artifact of the brand-new monitor pipeline, never reproduced in 7 later weekly windows — same reachability-trap shape as gate-cold-start, no restart mystery involved. See `docs/experiments/ticket-single-button.md` (written by BRO-3456 — this flag's first-ever pre-registration doc) for the full picture and the 3 owner options laid out.
 
 ## What happened 2026-04-11 (why this file exists)
 

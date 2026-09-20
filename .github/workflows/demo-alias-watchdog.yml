@@ -121,10 +121,10 @@ jobs:
           # partially bounded by this job's cancel-in-progress cron (~5min),
           # but a hang would still burn that whole window silently otherwise.
           echo "::warning::Demo alias drifted ($CURRENT_URL → expected $LATEST_DEMO). Re-aliasing now."
+          status=0
           timeout 120 npx vercel alias set "$LATEST_DEMO" "$DEMO_DOMAIN" \
             --token=$VERCEL_TOKEN \
-            --scope=thomaspryors-projects
-          status=$?
+            --scope=thomaspryors-projects || status=$?
           if [ "$status" -ne 0 ]; then
             if [ "$status" -eq 124 ]; then
               echo "::error::vercel alias set timed out after 2m (possible Vercel-side cancellation hang, see card #90)"

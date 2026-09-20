@@ -31,10 +31,10 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
+const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { readCachedArchiveIfValid, checkArchiveCategory } = require('./lib/bww-archive-category-guard');
+const { readCachedArchiveIfValid, checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { classifyContentTier } = require('./lib/content-quality');
@@ -63,11 +63,7 @@ const showsPath = path.join(__dirname, '../data/shows.json');
 let _siblingCategoriesCache = null;
 function siblingCategoriesByShowId() {
   if (_siblingCategoriesCache) return _siblingCategoriesCache;
-  const showById = {};
-  for (const s of loadShows()) {
-    if (s && s.id) showById[s.id] = s;
-  }
-  _siblingCategoriesCache = buildSiblingCategoriesByTitle(showById);
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
   return _siblingCategoriesCache;
 }
 

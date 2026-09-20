@@ -205,7 +205,6 @@ data/commercial.json
 data/audience-buzz.json
 data/critic-consensus.json
 data/critic-registry.json
-data/outlet-registry.json
 
 # Theatr rotated refresh token (written by scrape-theatr-audience.js) — a live
 # credential that must never be committed. The BroadwayScorecard/ line below
@@ -309,6 +308,23 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # criteria is literally `test -f docs/GA4_Engaged_Sessions_Report.md`, so it
 # has to be committed rather than scratch/local like the rest of /docs/.
 !/docs/GA4_Engaged_Sessions_Report.md
+# BRO-837: Will & Rach (The Theater Lovers) partnership tracking — contact
+# info, audience size, and meetup status. Acceptance criteria is literally
+# `test -f docs/partnerships.md`, so it has to be committed rather than
+# scratch/local like the rest of /docs/.
+!/docs/partnerships.md
+# BRO-864: Titanique opening-night post-mortem — acceptance criteria is
+# literally `test -f docs/titanique-opening-night-postmortem.md`, so it has
+# to be committed rather than scratch/local like the rest of /docs/.
+!/docs/titanique-opening-night-postmortem.md
+# BRO-860: Opening Night Express manual-workarounds playbook. Acceptance
+# criteria is literally `test -f docs/opening-night-express.md`, so it has to
+# be committed rather than scratch/local like the rest of /docs/.
+!/docs/opening-night-express.md
+# BRO-917: cross-repo workflow dependency graph. Acceptance criteria is
+# literally `test -f docs/workflow-dependency-graph.md`, so it has to be
+# committed rather than scratch/local like the rest of /docs/.
+!/docs/workflow-dependency-graph.md
 /memory/
 /data/deep-research/
 /data/theater-research/
@@ -345,9 +361,15 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # Structural #1 — daily exclusion logs (may contain URLs, not committed)
 /data/audit/exclusions-*.jsonl
 /data/audit/exclusion-summary-yesterday.json
+# BRO-925: per-show grouping of the same exclusion events above (may contain
+# URLs, not committed — same reasoning as exclusions-*.jsonl)
+/data/audit/rebuild-exclusions-*.json
 # BRO-75: cross-day seen-files ledger for wrong-production-exclusion-analysis.js
 # — local-only ad-hoc investigation state, same reasoning as exclusions-*.jsonl
 /data/audit/wrongproduction-seen-files.json
+# BRO-2379: generalized cross-day ledger (all exclusion reasons, not just
+# skippedWrongProduction) for scripts/lib/exclusion-trend.js.
+/data/audit/exclusion-seen-files.json
 # BRO-176: exclusion-rule-census.js snapshot — regenerated every run from the
 # review-texts corpus, same reasoning as the ledger above.
 /data/audit/exclusion-rule-census.json

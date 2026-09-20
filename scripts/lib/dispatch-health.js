@@ -275,6 +275,17 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
       // this number too pessimistic. Checked BEFORE the general
       // TERMINAL_JOB_EVENTS branch below so it never falls into 'failed'.
       else if (last.event === JOB_EVENTS.ORPHANED) outcome = 'orphaned';
+      // BRO-3442: BLOCKED is a legitimate "only the owner can unblock this"
+      // stop, not evidence the dispatch mechanism itself failed — same
+      // "not evidence either way" treatment as ORPHANED just above, so it is
+      // excluded from `resolved` too (see below). STOPPED_SHORT/STRANDED ARE
+      // real dispatch defects (a silently abandoned turn, or real commits
+      // that never landed) and join `failed`-shaped accounting, but are
+      // still broken out by name so a fix can be judged against the right
+      // bucket instead of a generic "failed" blob.
+      else if (last.event === JOB_EVENTS.BLOCKED) outcome = 'blocked';
+      else if (last.event === JOB_EVENTS.STOPPED_SHORT) outcome = 'stoppedShort';
+      else if (last.event === JOB_EVENTS.STRANDED) outcome = 'stranded';
       else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/ABANDONED/RETRIED-with-no-successor-spawn-yet
       else outcome = 'inFlight'; // SPAWNED — chain still open
 
@@ -285,17 +296,28 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
   const done = results.filter((r) => r.outcome === 'done').length;
   const failed = results.filter((r) => r.outcome === 'failed').length;
   const orphaned = results.filter((r) => r.outcome === 'orphaned').length;
+  // BRO-3442: broken out by name (not folded into `failed`) so a fix can be
+  // judged against the right bucket — see the outcome-classification comment
+  // above for why `blocked` gets ORPHANED's "not evidence either way"
+  // treatment while `stoppedShort`/`stranded` are real failures.
+  const blocked = results.filter((r) => r.outcome === 'blocked').length;
+  const stoppedShort = results.filter((r) => r.outcome === 'stoppedShort').length;
+  const stranded = results.filter((r) => r.outcome === 'stranded').length;
   const inFlight = results.filter((r) => r.outcome === 'inFlight').length;
   const none = results.filter((r) => r.outcome === 'none').length;
   const launchesCount = results.length;
   // Resolved = the denominator a RATE can honestly be computed over.
-  // 'orphaned' is deliberately EXCLUDED, same "don't call an unknown outcome
-  // healthy [or unhealthy]" treatment this function already gives
-  // inFlight/none: the supervisor losing track of a process is not evidence
-  // the task succeeded OR failed (BRO-3052) — the actual answer (did the work
-  // land?) is what landed-but-open-reconciler.js's merge-commit + acceptance
-  // recheck exists to determine, not a raw ledger tally.
-  const resolved = done + failed;
+  // 'orphaned' and 'blocked' are deliberately EXCLUDED, same "don't call an
+  // unknown/non-defect outcome healthy [or unhealthy]" treatment this
+  // function already gives inFlight/none: the supervisor losing track of a
+  // process (ORPHANED, BRO-3052) or the job correctly recognizing an
+  // owner-only stop condition (BLOCKED, BRO-3442) is not evidence the task
+  // succeeded OR failed — the actual answer (did the work land?) is what
+  // landed-but-open-reconciler.js's merge-commit + acceptance recheck exists
+  // to determine, not a raw ledger tally. `stoppedShort`/`stranded` ARE real
+  // dispatch defects, so they join `failed` in the denominator/failure rate.
+  const resolved = done + failed + stoppedShort + stranded;
+  const totalFailed = failed + stoppedShort + stranded;
 
   return {
     lane,
@@ -305,13 +327,19 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
     done,
     failed,
     orphaned,
+    blocked,
+    stoppedShort,
+    stranded,
     inFlight,
     none,
     resolved,
     successRate: resolved === 0 ? null : done / resolved,
-    failureRate: resolved === 0 ? null : failed / resolved,
+    failureRate: resolved === 0 ? null : totalFailed / resolved,
     failedTaskIds: [...new Set(results.filter((r) => r.outcome === 'failed').map((r) => r.taskId))],
     orphanedTaskIds: [...new Set(results.filter((r) => r.outcome === 'orphaned').map((r) => r.taskId))],
+    blockedTaskIds: [...new Set(results.filter((r) => r.outcome === 'blocked').map((r) => r.taskId))],
+    stoppedShortTaskIds: [...new Set(results.filter((r) => r.outcome === 'stoppedShort').map((r) => r.taskId))],
+    strandedTaskIds: [...new Set(results.filter((r) => r.outcome === 'stranded').map((r) => r.taskId))],
   };
 }
 
@@ -356,7 +384,7 @@ function computeHeadlessDispatchDigest({
   // so it must still be visible here — otherwise a supervisor that only ever
   // orphans jobs (never actually failing or succeeding them) would silently
   // sit outside minResolved forever with no sign anything is wrong.
-  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.orphaned} orphaned (supervisor lost track, not counted as failure), ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
+  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.orphaned} orphaned (supervisor lost track, not counted as failure), ${stats.blocked} blocked (owner decision needed, not counted as failure), ${stats.stoppedShort} stopped short, ${stats.stranded} stranded (unlanded work), ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
 
   // Orphan-rate gate FIRST, before the vacuous-gate (resolved===0) check
   // (Codex adversarial ship-check catch, 2nd pass): the vacuous-gate branch

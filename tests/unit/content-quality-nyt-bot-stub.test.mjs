@@ -12,7 +12,7 @@
  *
  * Per CLAUDE.md §15: require() the real function; never duplicate logic.
  */
-import test from 'node:test';
+import test, { describe } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -124,6 +124,50 @@ test('detectPaywall() on NYT stub text is guarded by trailing-junk exception (no
   const matchPos = NYT_STUB_TEXT.indexOf(result.match || 'trouble retrieving');
   const pct = matchPos / NYT_STUB_TEXT.length;
   assert.ok(pct > 0.7, `match at ${Math.round(pct*100)}% — expected >70% for trailing-junk guard to fire`);
+});
+
+describe('hasBotStubTruncationSignal (BRO-2495)', () => {
+  // Ensemble scoreability check must not classify a bot-stub/paywall-truncated
+  // body as not_a_review/garbage_text — the Paranormal Activity NYT review
+  // incident (2026-08-26): the stored fullText was this exact stub, and the
+  // ensemble rejected the file even though its own contentTierReason already
+  // said 'Truncation detected: nyt_bot_stub'.
+  const { hasBotStubTruncationSignal } =
+    require(path.join(__dirname, '..', '..', 'scripts', 'lib', 'content-quality.js'));
+
+  test('stored truncationSignals includes nyt_bot_stub → true', () => {
+    assert.strictEqual(hasBotStubTruncationSignal({ truncationSignals: ['nyt_bot_stub'] }), true);
+  });
+
+  test('stored truncationSignals includes wsj_paywall_cta → true', () => {
+    assert.strictEqual(hasBotStubTruncationSignal({ truncationSignals: ['wsj_paywall_cta'] }), true);
+  });
+
+  test('stored truncationSignals includes only the weaker moderate signal → false', () => {
+    assert.strictEqual(hasBotStubTruncationSignal({ truncationSignals: ['ends_with_ellipsis'] }), false);
+  });
+
+  test('contentTierReason string names the signal (classifyContentTier format) → true', () => {
+    assert.strictEqual(
+      hasBotStubTruncationSignal({ contentTierReason: 'Truncation detected: nyt_bot_stub' }),
+      true
+    );
+  });
+
+  test('live fullText re-scan catches the stub when stored fields are empty (rebuild-lag fallback)', () => {
+    const data = { truncationSignals: [], fullText: NYT_STUB_TEXT };
+    assert.strictEqual(hasBotStubTruncationSignal(data), true);
+  });
+
+  test('clean review text, no stub → false', () => {
+    const data = { truncationSignals: [], fullText: REVIEW_PROSE + ' It ends properly.' };
+    assert.strictEqual(hasBotStubTruncationSignal(data), false);
+  });
+
+  test('null/empty data → false', () => {
+    assert.strictEqual(hasBotStubTruncationSignal(null), false);
+    assert.strictEqual(hasBotStubTruncationSignal({}), false);
+  });
 });
 
 test('incomplete-reason classifies bot_blocked via fullText fallback when truncationSignals absent', () => {

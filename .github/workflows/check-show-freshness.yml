@@ -21,6 +21,15 @@ permissions:
   contents: write
   issues: write
 
+# Share the `shows-json-writer` concurrency group with update-show-status.yml
+# et al. (BRO-2072, follow-up to #1446): this workflow's check-show-freshness.js
+# + auto-fix-show-data.js write shows.json via the same read-mutate-write
+# pattern those writers do. Without a shared group, an overlapping run is
+# last-writer-wins per scripts/lib/shows-write-guard.js.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
 jobs:
   auto-maintain:
     runs-on: ubuntu-latest

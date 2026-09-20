@@ -40,3 +40,23 @@ preserve-orphan stashes inconsistently.
 
 Specific to this project: the `data/review-texts` repo has `.git` separate from the public repo's
 worktree. Every edit there must commit-push; do NOT rely on the worktree pattern.
+
+## Corollary: an uncommitted data fix makes a LOCAL gate pass while CI stays red
+
+A local gate run reads your WORKING TREE (uncommitted edits included); CI clones the
+data repo at committed HEAD. So a repair script's output that was never committed makes
+the two disagree in the most confusing direction: the gate passes locally and the same
+gate fails in CI, which reads as "flaky CI" or "someone else's bad push".
+
+BRO-2409, 2026-09-16: a session ran `fix-unflagged-same-url-clusters.js --fix`, saw
+"22 fixed, re-scan 0", and closed the card Done. It never committed the 22 files to
+`data/review-texts`. CI's new `--gate` step kept reporting 22 clusters vs floor 10 and
+main stayed red across three Test Suite runs; the handoff guessed the failure was
+"transient / an unrelated session". It was neither.
+
+FUTURE ACTION — before trusting a local corpus-gate PASS, or diagnosing a corpus-gate
+failure as flaky:
+  git -C data/review-texts status --porcelain | head
+Non-empty output that overlaps the gate's subject means the gate is passing on work CI
+cannot see. Commit and push it, THEN re-read CI. Applies to every `--fix`/`--heal`
+repair script whose gate twin runs in `test.yml`.

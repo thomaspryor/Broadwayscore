@@ -27,12 +27,17 @@
 
 /**
  * @param {object} args
- * @param {{ok: boolean, mode: 'oauth'|'api-key'|'fail', detail?: string, storedDetail?: string}} args.preflight
- *   Return value of preflightAuth() from scripts/lib/claude-cli.js.
+ * @param {{ok: boolean, mode: 'oauth'|'api-key'|'fail', detail?: string, storedDetail?: string, reason?: string}} args.preflight
+ *   Return value of preflightAuth() from scripts/lib/claude-cli.js. `reason`
+ *   (BRO-2971) is 'spawn-starved' when the probe never reached the auth
+ *   handshake (OS/jetsam kill, ETIMEDOUT, ENOMEM) vs 'auth-rejected' when the
+ *   CLI actually ran and said no — only present when ok is false.
  * @param {{loggedIn?: boolean, authMethod?: string}|null} [args.authStatus]
  *   Best-effort `claude auth status` result, carried through for reporting
  *   only — NEVER consulted for the ok/fail verdict (see file header).
  * @returns {{ok: boolean, mode: string, reason: string, authStatusLoggedIn: boolean|null}}
+ *   `mode` is 'spawn-starved' on a starved failure — buildAlertPayload's ONLY
+ *   input for which alert to build (never re-derived from `reason` text).
  */
 function evaluateAuthHealth({ preflight, authStatus = null }) {
   if (!preflight || typeof preflight.ok !== 'boolean') {
@@ -43,27 +48,71 @@ function evaluateAuthHealth({ preflight, authStatus = null }) {
     : null;
 
   if (preflight.ok) {
+    // BRO-2971 (adversarial-review finding): preflight.storedReason carries
+    // the STORED-LOGIN probe's own classification through even on a
+    // successful api-key fallback. Without it, a transient spawn-starved
+    // blip on that one probe read identically to an actually-revoked stored
+    // login, and buildBillingFallbackAlertPayload told on-call to re-login
+    // for a hiccup that needed no action.
+    const storedWasStarved = preflight.storedReason === 'spawn-starved' || preflight.storedReason === 'spawn-error';
     const reason = preflight.mode === 'api-key'
-      ? `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — stored OAuth login failed: ${preflight.storedDetail || 'unknown'}`
+      ? (storedWasStarved
+        ? `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — the stored-login probe itself failed to run (${preflight.storedReason}: ${preflight.storedDetail || 'unknown'}), NOT a confirmed revoked credential`
+        : `real call succeeded via ANTHROPIC_API_KEY fallback (pay-per-token) — stored OAuth login failed: ${preflight.storedDetail || 'unknown'}`)
       : 'real call succeeded via stored OAuth login';
-    return { ok: true, mode: preflight.mode, reason, authStatusLoggedIn };
+    return { ok: true, mode: preflight.mode, reason, storedReason: preflight.storedReason || null, authStatusLoggedIn };
   }
 
+  // BRO-2971: preflight.reason ('spawn-starved'|'spawn-error'|'auth-rejected')
+  // rides through untouched — this is the ONLY signal buildAlertPayload uses
+  // to pick which alert to build. Do not re-derive it from `preflight.detail`
+  // text (a reworded error message would silently misroute the page).
+  const mode = preflight.reason === 'spawn-starved' || preflight.reason === 'spawn-error' ? preflight.reason : 'fail';
   return {
     ok: false,
-    mode: 'fail',
+    mode,
     reason: `real call failed — ${preflight.detail || 'no working credential'}`,
     authStatusLoggedIn,
   };
 }
 
 const REPAIR_STEPS = 'claude auth logout && claude auth login && claude -p "say ok"';
+const SPAWN_STARVATION_REPAIR_STEPS = 'free memory (check for the BRO-2789 OOM plateau) or prune cmux sessions (cmux is at/near its ~33-runtime ceiling) — then re-run scripts/check-claude-auth-health.js';
+const SPAWN_ERROR_REPAIR_STEPS = 'check that the `claude` binary is installed and executable at the resolved path (CLAUDE_BIN / candidate list in scripts/lib/claude-cli.js) — this is a missing/broken binary, not a credential problem — then re-run scripts/check-claude-auth-health.js';
 
 /**
  * Builds the routeAlert() payload for a failed (or degraded) health result.
  * Pure — never calls routeAlert itself, so it's testable without a network.
+ *
+ * BRO-2971: a spawn that never reached the auth handshake (ETIMEDOUT/ENOMEM,
+ * an OS/jetsam signal kill — exit 143/137, or a missing/broken binary) used to
+ * page with THIS function's auth-revocation framing, telling on-call to
+ * re-run `claude auth login` for a problem that fix cannot touch.
+ * `health.mode` ('spawn-starved'|'spawn-error', set by evaluateAuthHealth from
+ * preflight.reason) routes those shapes to their own conditionKey/remediation
+ * instead of the credential one.
  */
 function buildAlertPayload(health) {
+  if (health.mode === 'spawn-starved') {
+    return {
+      conditionKey: 'claude-spawn-starved',
+      title: "Claude spawn failing from resource starvation, not a revoked token",
+      description: `check-claude-auth-health.js's real API call never reached the auth handshake: ${health.reason}. This is an OS/jetsam-level spawn failure (timeout, out-of-memory, or a signal kill), not a credential rejection — do NOT re-run \`claude auth login\`. Repair: ${SPAWN_STARVATION_REPAIR_STEPS}`,
+      severity: 'error',
+      disposition: 'human',
+      hint: SPAWN_STARVATION_REPAIR_STEPS,
+    };
+  }
+  if (health.mode === 'spawn-error') {
+    return {
+      conditionKey: 'claude-spawn-error',
+      title: 'Claude spawn failing — binary missing or broken, not a revoked token',
+      description: `check-claude-auth-health.js's real API call never reached the auth handshake: ${health.reason}. This looks like a missing or unexecutable \`claude\` binary, not a credential rejection — do NOT re-run \`claude auth login\`. Repair: ${SPAWN_ERROR_REPAIR_STEPS}`,
+      severity: 'error',
+      disposition: 'human',
+      hint: SPAWN_ERROR_REPAIR_STEPS,
+    };
+  }
   const statusNote = health.authStatusLoggedIn === true
     ? " `claude auth status` still reports loggedIn:true — that command only checks the on-disk token's presence, not its server-side validity. Do not trust it."
     : '';
@@ -97,4 +146,4 @@ function buildBillingFallbackAlertPayload(health) {
   };
 }
 
-module.exports = { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload, REPAIR_STEPS };
+module.exports = { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload, REPAIR_STEPS, SPAWN_STARVATION_REPAIR_STEPS, SPAWN_ERROR_REPAIR_STEPS };

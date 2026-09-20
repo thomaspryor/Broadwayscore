@@ -115,6 +115,26 @@ test('checkCostBreach: a run at or under the threshold does not breach', () => {
   assert.equal(breach.breached, false);
 });
 
+test('checkCostBreach: sums across THREE invocations under one runId (BRO-3392 — main pass + drain + comparative-rescore.ts)', () => {
+  const runsLogPath = tmpRunsLogPath();
+  const runId = 'gh-run-3392';
+  // Simulates llm-ensemble-score.yml's job: index.ts main pass, index.ts
+  // drain, then comparative-rescore.ts — three separate process invocations,
+  // same GITHUB_RUN_ID, each calling appendRunSummary() independently the
+  // way BRO-3381 wired index.ts and this ticket wires comparative-rescore.ts.
+  let runs;
+  runs = appendRunSummary({ startedAt: 'x', completedAt: 'x', totalReviews: 5, processed: 5, skipped: 0, errors: 0, tokensUsed: { input: 0, output: 0, total: 0 }, costUsd: 2.5, runId, errorDetails: [] }, { runsLogPath });
+  runs = appendRunSummary({ startedAt: 'x', completedAt: 'x', totalReviews: 1, processed: 1, skipped: 0, errors: 0, tokensUsed: { input: 0, output: 0, total: 0 }, costUsd: 1.0, runId, errorDetails: [] }, { runsLogPath });
+  runs = appendRunSummary({ startedAt: 'x', completedAt: 'x', totalReviews: 3, processed: 2, skipped: 1, errors: 0, tokensUsed: { input: 0, output: 0, total: 0 }, costUsd: 3.0, runId, errorDetails: [] }, { runsLogPath });
+
+  assert.equal(sumCostUsdForRun(runs, runId), 6.5);
+  const breach = checkCostBreach(runs, { runId, thresholdUsd: 5 });
+  assert.ok(breach);
+  assert.equal(breach.totalUsd, 6.5);
+  assert.equal(breach.breached, true);
+  assert.equal(breach.conditionKey, COST_BREACH_CONDITION_KEY);
+});
+
 test('checkCostBreach: no runId (local/manual run) skips alarming outright', () => {
   const runs = [{ runId: null, costUsd: 1000 }];
   assert.equal(checkCostBreach(runs, { runId: null, thresholdUsd: 6 }), null);

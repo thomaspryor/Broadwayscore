@@ -1,10 +1,23 @@
 {
-  "generatedAt": "2026-09-15T20:59:52.365Z",
+  "generatedAt": "2026-09-20T12:01:18.860Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 0,
-  "flagged": [],
-  "silencedByContaminationCount": 23,
+  "flaggedCount": 1,
+  "flagged": [
+    {
+      "id": "gentlemen-prefer-blondes-west-end-2027",
+      "title": "Gentlemen Prefer Blondes",
+      "venue": "London Palladium",
+      "category": "west-end",
+      "previewsStartDate": null,
+      "openingDate": null,
+      "todaytixId": 48062,
+      "reasons": [
+        "data/review-texts/ has collected review file(s)"
+      ]
+    }
+  ],
+  "silencedByContaminationCount": 22,
   "silencedByContamination": [
     {
       "id": "midnight-in-the-garden-of-good-and-evil-2024",
@@ -101,12 +114,6 @@
       "title": "Giant The Play",
       "reviewFiles": 1,
       "excludedFiles": 1
-    },
-    {
-      "id": "the-seagull-globe-off-west-end-2026",
-      "title": "The Seagull",
-      "reviewFiles": 13,
-      "excludedFiles": 13
     },
     {
       "id": "la-distance-off-west-end-2026",

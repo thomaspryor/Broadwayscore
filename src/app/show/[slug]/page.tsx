@@ -10,6 +10,8 @@ import { getShowAwards } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
+import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
+import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowSchedule, getScheduleCurrentMonday, getShowShowtimeIds } from '@/lib/data-showtimes';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
@@ -41,6 +43,7 @@ import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as forma
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
+import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import { getComparisonsForShow } from '@/config/comparisons';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
@@ -797,16 +800,32 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           {/* Critics' Take — inline below the score row, no border/card chrome.
               Matches the redesign hero treatment so the consensus reads as a
               continuous block with whatever sits above it. */}
-          {consensus && show.criticScore ? (
-            <div className="mt-3">
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
-              <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
-            </div>
-          ) : show.synopsis ? (
-            <p className="text-gray-400 text-sm leading-relaxed mt-3">
-              {show.synopsis}
-            </p>
-          ) : null}
+          {(() => {
+            const mode = getCriticsTakeDisplayMode(!!consensus, !!show.criticScore, reviewCount, !!show.synopsis);
+            if (mode === 'consensus') {
+              return (
+                <div className="mt-3">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
+                  <p className="text-gray-300 text-sm leading-relaxed">{consensus!.text}</p>
+                </div>
+              );
+            }
+            if (mode === 'coming-soon') {
+              return (
+                <p className="text-gray-500 text-sm leading-relaxed mt-3 italic">
+                  Critics&apos; Take coming soon.
+                </p>
+              );
+            }
+            if (mode === 'synopsis') {
+              return (
+                <p className="text-gray-400 text-sm leading-relaxed mt-3">
+                  {show.synopsis}
+                </p>
+              );
+            }
+            return null;
+          })()}
 
           {/* Links row: Tickets, Official Site, Trailer, Lottery/Rush + Watchlist */}
           <div className="flex items-center gap-2 mt-4 flex-nowrap">
@@ -829,14 +848,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an
                   explicit note instead of leaving a silent gap where the ticket
                   button used to be — users hunting for a "Get Tickets" button
-                  rage-clicked the empty space (CLAUDE.md card #228). Checks raw
-                  show.ticketLinks, not the platform-filtered sortedTicketLinks,
-                  so a show whose only link is a HIDDEN_PLATFORMS entry (e.g.
-                  Telecharge) still gets the closed note. */}
-              {show.status === 'closed' && (show.ticketLinks?.length ?? 0) > 0 && (
+                  rage-clicked the empty space (CLAUDE.md card #228, task #90).
+                  See getTicketCtaNote for why 'closed' checks status alone. */}
+              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
                 <p className="w-full text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
               )}
-              {show.status === 'announced' && !sortedTicketLinks.some(l => l.priceFrom != null) && (show.ticketLinks?.length ?? 0) > 0 && (
+              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
                 <p className="w-full text-xs text-gray-500">Tickets not yet on sale — check back closer to opening.</p>
               )}
 
@@ -950,6 +967,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               ...r,
               outletSlug: getOutletSlugById(r.outletId) || undefined,
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
+              priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
             }))} initialCount={5} category={show.category} />
 
             {/* Subtle in-card methodology link — explains how CriticScore is

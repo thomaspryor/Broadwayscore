@@ -21,6 +21,8 @@
  * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing]
  */
 
+require('./lib/load-env').loadEnv();
+
 const https = require('https');
 const fs = require('fs');
 const { serpQuery, serpImagesQuery } = require('./lib/url-discovery');
@@ -35,6 +37,7 @@ const { resolveMarketSlug } = require('./lib/verify-image');
 const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
+const { buildRetryCandidateImages } = require('./lib/google-image-retry-candidate.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
 
@@ -907,7 +910,7 @@ function fetchTodayTixApiPage(offset = 0, limit = 100, location = 1) {
   return new Promise((resolve, reject) => {
     const url = `https://api.todaytix.com/api/v2/shows?location=${location}&limit=${limit}&offset=${offset}`;
 
-    https.get(url, (response) => {
+    const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
         return;
@@ -923,7 +926,9 @@ function fetchTodayTixApiPage(offset = 0, limit = 100, location = 1) {
         }
       });
       response.on('error', reject);
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
@@ -1828,7 +1833,15 @@ async function fetchFromGoogleImages(show) {
 // Try next Google Images candidate after rejection
 // Re-uses the remaining candidates from the initial search
 // Handles both ScrapingBee (base64) and Bright Data (direct URL) results
-async function tryNextGoogleCandidate(show, remainingCandidates) {
+//
+// previousPoster: the poster path (if any) fetchFromGoogleImages already wrote
+// to disk before its thumbnail candidate got rejected. The poster search is
+// independent of which square/thumbnail candidate wins verification, so a
+// retry here must NOT null it out — that orphaned a real poster.jpg on disk
+// while shows.json kept images.poster: null forever (card #795: gimme-a-sign,
+// el-quijote both stuck "missing_poster" with a valid poster file already
+// sitting unreferenced in public/images/shows/).
+async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster = null) {
   for (const result of remainingCandidates) {
     try {
       const buffer = await extractImageBuffer(result);
@@ -1845,9 +1858,7 @@ async function tryNextGoogleCandidate(show, remainingCandidates) {
 
       const nextRemaining = remainingCandidates.slice(remainingCandidates.indexOf(result) + 1);
       return {
-        thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
-        poster: null,
-        hero: null,
+        ...buildRetryCandidateImages({ showId: show.id, previousPoster }),
         _verifyBuffer: buffer,
         _remainingCandidates: nextRemaining,
       };
@@ -2195,8 +2206,12 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // Loops through multiple candidates if verification rejects the first one
   let googleImages = await fetchFromGoogleImages(show);
   while (googleImages && googleImages.thumbnail) {
-    // Save remaining candidates before verifyAndCollect deletes them
+    // Save remaining candidates, and any already-saved poster, before
+    // verifyAndCollect/the rejection path below can lose them. The poster
+    // search is independent of the thumbnail candidate being verified here,
+    // so a rejected thumbnail must not cost us a poster already on disk.
     const remaining = googleImages._remainingCandidates || [];
+    const previousPoster = googleImages.poster || null;
     const candidate = await verifyAndCollect(googleImages, show, 'Google Images', verifyCtx);
     if (candidate) {
       candidates.push(candidate);
@@ -2210,7 +2225,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     }
     // Rejected — try next candidate from the same search results
     if (remaining.length === 0) break;
-    googleImages = await tryNextGoogleCandidate(show, remaining);
+    googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster);
   }
 
   // Step 5 (was Step 4): Playbill fallback (landscape OG image only)

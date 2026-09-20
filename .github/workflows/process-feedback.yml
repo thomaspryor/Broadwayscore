@@ -519,8 +519,12 @@ jobs:
       # digest queue they write only exist on THIS job's runner disk. Staging
       # them here is what keeps the cooldown/dedup state — without it every run
       # looks like a brand-new incident. Enforced by
-      # scripts/lib/alert-ledger-commit-check.js, which only sees this job
-      # because of the routeAlert() mention in this comment; do not remove it.
+      # scripts/lib/alert-ledger-commit-check.js — which, since BRO-3051 taught
+      # it to skip COMMENT lines during call detection, can no longer see this
+      # job from a mention in a comment. The claim that it could was stale and
+      # this job had silently dropped out of coverage; the echoed breadcrumb in
+      # the step below is a real (non-comment, non-`name:`) line, which is what
+      # the checker actually matches on. Don't replace it with a comment.
       # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
       # was on the bare shared default (7 retries/240s, backoffSum 77s) —
       # this job runs every 10 minutes and hard-fails on push (if: always(),
@@ -538,12 +542,29 @@ jobs:
           # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
           # inside the 600s deadline above. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
+          # BRO-3358: this step is this workflow's own push-retry hot spot
+          # (600s deadline, lowered 30s per-attempt cap — the two symptoms of
+          # a chronically-hard-killed push) and this workflow's 10-minute
+          # cadence gives the fastest possible shot at capturing a REAL CI
+          # trace2 failure to test the credential-helper hypothesis against.
+          # Default-off elsewhere (see push-with-retry.sh's PUSH_TRACE2_
+          # DIAGNOSTICS comment) — enabled here ONLY, not repo-wide, so a bug
+          # in this new diagnostic path can only ever affect this one step
+          # while a real failure is captured. Remove once BRO-3358 either
+          # confirms or rules out the credential-helper hypothesis.
+          PUSH_TRACE2_DIAGNOSTICS: '1'
         run: |
+          echo "Staging state written by routeAlert() (notify-feedback-outcomes.js, verify-feedback-requests-live.js)"
           git add data/audit/processed-feedback.json
           git add data/audit/pending-bug-diagnoses.json 2>/dev/null || true
           git add data/audit/feedback-request-ledger.json 2>/dev/null || true
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on every
+          # dispatch attempt. Left unstaged it survives the commit as a dirty
+          # tracked modification, which makes every rebase in push-with-retry.sh
+          # refuse pre-flight and silently forces the clobber-prone merge path.
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No tracking changes"
           else

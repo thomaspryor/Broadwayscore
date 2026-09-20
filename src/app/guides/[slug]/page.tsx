@@ -7,6 +7,7 @@ import {
   getGuideEditorial,
   getCriticConsensus,
 } from '@/lib/data-guides';
+import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 import {
   getAllGuideSlugs,
   getGuideConfig,
@@ -304,7 +305,15 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
               const consensus = getCriticConsensus(show.id);
               const ticketLinks = sortTicketLinks(show.ticketLinks?.filter(Boolean) || []);
               const lotteryRush = getLotteryRush(show.id);
-              const displayText = consensus || show.synopsis;
+              // BRO-927: same synopsis-mislabeled-as-verdict bug as the show
+              // page and compare page — `consensus || show.synopsis` put the
+              // plot synopsis where a critics' verdict is expected for any
+              // ranked show with reviews but no generated take.
+              const criticsTakeMode = getCriticsTakeDisplayMode(!!consensus, !!show.criticScore, show.criticScore?.reviewCount || 0, !!show.synopsis);
+              const displayText = criticsTakeMode === 'consensus' ? consensus
+                : criticsTakeMode === 'coming-soon' ? "Critics' Take coming soon."
+                : criticsTakeMode === 'synopsis' ? show.synopsis
+                : null;
               const buzz = getAudienceBuzz(show.id);
               const audienceGrade = buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null;
 
@@ -384,35 +393,65 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                   {/* Critic Consensus or Synopsis fallback — clamped so long
                       press copy doesn't balloon one card vs its neighbors */}
                   {displayText && (
-                    <p className="text-gray-400 text-sm leading-relaxed mt-3 line-clamp-3">
+                    <p className={`text-sm leading-relaxed mt-3 line-clamp-3 ${criticsTakeMode === 'coming-soon' ? 'text-gray-500 italic' : 'text-gray-400'}`}>
                       {displayText}
                     </p>
                   )}
 
                   {/* Ticket links — single row at bottom. "Get Tickets" first, others visible on desktop only.
-                      Previews/upcoming shows sell tickets too — the upcoming guide's whole pitch is "book early". */}
-                  {(show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && ticketLinks.length > 0 && (
+                      Previews/upcoming shows sell tickets too — the upcoming guide's whole pitch is "book early".
+                      Announced shows appear in this guide too (guide-pages.ts/browse-pages.ts admit them) but
+                      may not be on sale yet — only let the officialUrl fallback through for them, never a bare
+                      "Get Tickets" off a priceless ticketLinks entry (BRO-166 follow-up, same overpromise this
+                      page's sibling in TicketButtonsAB already guards against for card #228). */}
+                  {(show.status === 'open' || show.status === 'previews' || show.status === 'upcoming' ||
+                    (show.status === 'announced' && ticketLinks.length === 0)) &&
+                    (ticketLinks.length > 0 || Boolean(show.officialUrl)) && (
                     <div className="mt-3 flex flex-wrap gap-2">
-                      {/* Primary CTA — always visible */}
-                      <TicketLink
-                        showName={show.title}
-                        showId={show.id}
-                        showSlug={show.slug}
-                        showStatus={show.status}
-                        showCategory={show.category}
-                        showScore={show.criticScore?.score ?? null}
-                        platform={ticketLinks[0].platform}
-                        url={ticketLinks[0].url}
-                        pageType="guide"
-                        linkPosition={0}
-                        totalLinks={ticketLinks.length}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                        </svg>
-                        Get Tickets{ticketLinks[0].priceFrom ? ` from ${isLondonMarket(show.category) ? '£' : '$'}${ticketLinks[0].priceFrom}` : ''}
-                      </TicketLink>
+                      {/* Primary CTA — always visible. Falls back to Official Site
+                          when there's no affiliate-able ticketLinks entry at all
+                          (BRO-166) instead of rendering nothing. */}
+                      {ticketLinks.length > 0 ? (
+                        <TicketLink
+                          showName={show.title}
+                          showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
+                          platform={ticketLinks[0].platform}
+                          url={ticketLinks[0].url}
+                          pageType="guide"
+                          linkPosition={0}
+                          totalLinks={ticketLinks.length}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                          </svg>
+                          Get Tickets{ticketLinks[0].priceFrom ? ` from ${isLondonMarket(show.category) ? '£' : '$'}${ticketLinks[0].priceFrom}` : ''}
+                        </TicketLink>
+                      ) : show.officialUrl ? (
+                        <TicketLink
+                          showName={show.title}
+                          showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
+                          platform="Official Site"
+                          url={show.officialUrl}
+                          pageType="guide"
+                          linkPosition={0}
+                          totalLinks={1}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                          Visit Official Site
+                        </TicketLink>
+                      ) : null}
                       {/* Other platforms — desktop only */}
                       {ticketLinks.slice(1, 4).map((link, i) => (
                         <TicketLink
@@ -436,7 +475,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           {link.platform}
                         </TicketLink>
                       ))}
-                      {show.officialUrl && (
+                      {ticketLinks.length > 0 && show.officialUrl && (
                         <TicketLink
                           showName={show.title}
                           showId={show.id}

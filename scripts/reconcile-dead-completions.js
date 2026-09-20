@@ -204,7 +204,31 @@ function pageNotionCorrectionFailure(taskId, notionId, err) {
   } catch { /* alerting must never mask the reopen that already succeeded */ }
 }
 
-function main(argv = process.argv.slice(2)) {
+// BRO-3431: correctLinearIssue's counterpart to correctNotionCard(). Never
+// throws its own read-then-check decision — that lives in
+// shouldReopenLinearIssue (read-then-check, same discipline as
+// shouldCorrectNotionStatus: an issue the owner has since re-triaged by hand
+// is left alone). Non-fatal on any failure, same contract as
+// correctNotionCard's caller — the local reopen (not applicable here, since
+// there IS no local mirror file for a linear:-only task) already happened by
+// the time this runs; nothing to un-reopen.
+async function correctLinearIssue(identifier) {
+  const linearClient = require('./lib/linear-client.js');
+  const { shouldReopenLinearIssue } = require('./lib/linear-dead-completion-source.js');
+  const issue = await linearClient.getIssue(identifier);
+  if (!shouldReopenLinearIssue(issue)) return false;
+  const today = new Date().toISOString().slice(0, 10);
+  const res = spawnSync('node', [path.join(__dirname, 'linear-brain.js'), 'update', identifier,
+    '--state', 'Todo',
+    '--comment', `Auto-corrected ${today} by reconcile-dead-completions: this issue's most recent dispatch attempt was journaled dead in dispatch-ledger.jsonl (card #1144/#1157's Linear counterpart, BRO-3431) — it had been incorrectly left/moved to a completed state.`,
+  ], { encoding: 'utf8', timeout: 60_000 });
+  if (res.status !== 0) {
+    throw new Error(`linear-brain update failed: ${(res.stderr || res.stdout || '').trim().split('\n').slice(-1)[0]}`);
+  }
+  return true;
+}
+
+async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const fix = argv.includes('--fix');
 
@@ -215,30 +239,59 @@ function main(argv = process.argv.slice(2)) {
 
   const flagged = reconcileDeadCompletions(tasks, entries);
   if (!flagged.length) {
-    console.log('[reconcile-dead-completions] no false completions found.');
-    return;
-  }
-
-  console.log(`${fix ? 'Reopening' : '[dry-run] would reopen'} ${flagged.length} task(s) completed while their dispatch was dead:`);
-  for (const t of flagged) {
-    console.log(`  #${t.id}  ${t.subject || '(no subject)'}${t.notionId ? `  [notion:${t.notionId}]` : ''}`);
-    if (fix) {
-      try { reopenTask(t.id, TASKS_DIR, t.deadAttemptTs); }
-      catch (e) { console.error(`    WARN reopen failed for #${t.id}: ${e.message}`); }
-      if (t.notionId) {
-        try {
-          const corrected = correctNotionCard(t.notionId, t.id);
-          if (corrected) console.log(`    corrected Notion card ${t.notionId} status Done -> Not started`);
-        } catch (e) {
-          console.error(`    WARN Notion correction failed for #${t.id} (card ${t.notionId}): ${e.message}`);
-          pageNotionCorrectionFailure(t.id, t.notionId, e);
+    console.log('[reconcile-dead-completions] no false completions found (Notion mirror).');
+  } else {
+    console.log(`${fix ? 'Reopening' : '[dry-run] would reopen'} ${flagged.length} task(s) completed while their dispatch was dead:`);
+    for (const t of flagged) {
+      console.log(`  #${t.id}  ${t.subject || '(no subject)'}${t.notionId ? `  [notion:${t.notionId}]` : ''}`);
+      if (fix) {
+        try { reopenTask(t.id, TASKS_DIR, t.deadAttemptTs); }
+        catch (e) { console.error(`    WARN reopen failed for #${t.id}: ${e.message}`); }
+        if (t.notionId) {
+          try {
+            const corrected = correctNotionCard(t.notionId, t.id);
+            if (corrected) console.log(`    corrected Notion card ${t.notionId} status Done -> Not started`);
+          } catch (e) {
+            console.error(`    WARN Notion correction failed for #${t.id} (card ${t.notionId}): ${e.message}`);
+            pageNotionCorrectionFailure(t.id, t.notionId, e);
+          }
         }
       }
     }
+    if (!fix) console.log('\nRe-run with --fix to reopen these.');
   }
-  if (!fix) console.log('\nRe-run with --fix to reopen these.');
+
+  // BRO-3431: a linear:-only dispatch has no local mirror file at all — the
+  // Notion-scoped pass above can never see it. Candidates are derived from
+  // the SAME ledger entries already read above (bounded by ledger activity,
+  // never a query of the whole board — see linear-dead-completion-source.js
+  // header for why that matters).
+  const { findLinearDeadLaunchCandidates } = require('./lib/linear-dead-completion-source.js');
+  const linearCandidates = findLinearDeadLaunchCandidates(entries);
+  if (!linearCandidates.length) {
+    console.log('[reconcile-dead-completions] no dead-launch candidates found (Linear).');
+    return;
+  }
+  console.log(`\nChecking ${linearCandidates.length} Linear dead-launch candidate(s) live:`);
+  for (const c of linearCandidates) {
+    try {
+      const corrected = fix ? await correctLinearIssue(c.identifier) : false;
+      if (fix && corrected) {
+        console.log(`  ${c.identifier}  reopened Todo -> was Done while its dispatch was journaled dead`);
+      } else if (!fix) {
+        console.log(`  ${c.identifier}  dead-launch candidate — re-run with --fix to check live and reopen if still Done`);
+      }
+    } catch (e) {
+      console.error(`  WARN Linear correction failed for ${c.identifier}: ${e.message}`);
+    }
+  }
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(`[reconcile-dead-completions] FATAL: ${err && err.stack ? err.stack : err}`);
+    process.exit(1);
+  });
+}
 
-module.exports = { main, USAGE, reopenTask, correctNotionCard, resetPushedFlag };
+module.exports = { main, USAGE, reopenTask, correctNotionCard, correctLinearIssue, resetPushedFlag };

@@ -1,38 +1,42 @@
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">
-<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · Saturday, August 15</p>
-<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">6 site errors: Credits: ScrapingDog; Autofix: jobs actually succeeding; Autofix: throughput (dispatched/passed, daily) (+3 more)</p>
-<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ 41 issues detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. Auto-fix loop is DEAD: 3 job(s) launched in the last 7d, 0 reported back, 0 succeeded. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.</p>
-<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ didn't update overnight: Reddit engagement (no data)</p>
+<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · Tuesday, September 15</p>
+<p style="font-size:14px;font-weight:700;color:#b91c1c;margin:0 0 10px;">trunk: RED (44 consecutive failures, red for 38h, top failing job: Data Validation)</p>
+<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">9 site errors: Data quality: provider spend ledger; Main: red streak; Push-retry deadman (+6 more)</p>
+<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ 88 issues detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. Auto-fix loop is DEAD: 0 of 3 job(s) succeeded in the last 7d. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.</p>
+<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ PR supervisor: 12 need a decision nobody can make automatically (#821, #815, #732, #653, #621, #618 and 6 more); 1 should be closed rather than merged and is still open (#820); 5 are waiting on checks or a review (#825, #706, #434, #397, #376).</p>
 <div style="border:1px solid #fca5a5;background:#fef2f2;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:15px;font-weight:700;color:#dc2626;">6 errors, 27 warnings <span style="color:#999;font-weight:400;font-size:12px;">(day 19 of consecutive errors)</span></div>
-    <div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-08-15 01:34 UTC</div>
+    <div style="font-size:15px;font-weight:700;color:#dc2626;">9 errors, 25 warnings <span style="color:#999;font-weight:400;font-size:12px;">(day 26 of consecutive errors)</span></div>
+    <div style="font-size:12px;color:#16a34a;margin-top:8px;">1 auto-fixed overnight</div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-09-15 12:12 UTC</div>
   </div><div style="border:1px solid #e5e5e5;border-radius:10px;overflow:hidden;margin:0 0 14px;">
     <table style="border-collapse:collapse;width:100%;">
       <tr><td style="padding:6px 10px;font-size:11px;color:#999;text-transform:uppercase;">Category</td><td style="padding:6px 10px;font-size:11px;color:#999;text-transform:uppercase;text-align:right;">Status</td></tr>
       <tr>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">❌ Credits</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">❌ Data quality</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#dc2626;font-weight:700;">6 issues</td>
+  </tr><tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">❌ Main</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#dc2626;font-weight:700;">1 issue</td>
+  </tr><tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">❌ Push-retry deadman</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#dc2626;font-weight:700;">1 issue</td>
   </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">❌ Autofix</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#dc2626;font-weight:700;">3 issues</td>
   </tr><tr>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">❌ Workflow repeat-failure</td>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#dc2626;font-weight:700;">6 issues</td>
-  </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">❌ Data</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#dc2626;font-weight:700;">5 issues</td>
+  </tr><tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">❌ Dispatch</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#dc2626;font-weight:700;">1 issue</td>
   </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Sync</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
   </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Quality</td>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">5 issues</td>
-  </tr><tr>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Data quality</td>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">2 issues</td>
   </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Coverage</td>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">2 issues</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
   </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ SEO</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
@@ -43,190 +47,381 @@
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Stuck work</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">3 issues</td>
   </tr><tr>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Push-retry deadman</td>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
-  </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Infra-review</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
   </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Dispatch outcomes</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
   </tr><tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Dispatch health</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
+  </tr><tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Headless dispatch</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
+  </tr><tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ cmux socket</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
+  </tr><tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Digest</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
+  </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Workflow coverage</td>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
   </tr><tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">⚠️ Infra</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#b45309;font-weight:700;">1 issue</td>
+  </tr><tr>
     <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">✅ Everything else</td>
-    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#16a34a;font-weight:700;">53 checks passed</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:#16a34a;font-weight:700;">59 checks passed</td>
   </tr>
     </table>
   </div><div style="border:1px solid #fca5a5;background:#fef2f2;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#b91c1c;">⚠️ Automation queue — the auto-fix loop looks DEAD, so these are FILED but likely NOT running: Auto-fix loop is DEAD: 3 job(s) launched in the last 7d, 0 reported back, 0 succeeded. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#b91c1c;">⚠️ Automation queue — the auto-fix loop looks DEAD, so these are FILED but likely NOT running: Auto-fix loop is DEAD: 0 of 3 job(s) succeeded in the last 7d. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.</div>
     <div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">🔧 ScrapingDog scraping credits are running low <span style="color:#bbb;">(#1386)</span></div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">fix session launched — tomorrow’s digest verifies it actually ran</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">🔧 Autofix: jobs actually succeeding <span style="color:#bbb;">(#1369)</span></div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">fix session launched — tomorrow’s digest verifies it actually ran</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">🔧 Autofix: throughput (dispatched/passed, daily) <span style="color:#bbb;">(#1367)</span></div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">fix session launched — tomorrow’s digest verifies it actually ran</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ The automated &quot;Rebuild Reviews (Fast)&quot; job keeps failing</div>
+      <div style="font-size:13px;color:#333;">⏳ Data quality: provider spend ledger</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ The automated &quot;Commercial RSS Poll&quot; job keeps failing</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Data: live show with zero critic reviews on site</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ The site is showing fewer shows/reviews than yesterday</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ A few review scores contradict the critic’s own star rating</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Some data-quality checks are drifting from their baselines</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Quality: outlet domain moves</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Quality: outlet invalid-content rate <span style="color:#bbb;">(#1371)</span></div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Data quality: cross-outlet attribution drift</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Coverage: SERP census recall</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Coverage: adversarial probe</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Quality: coverageExpectation drift</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Google page-speed/search health degraded <span style="color:#bbb;">(#1374)</span></div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ The automated &quot;Update Show Status&quot; job keeps failing</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Some high-priority fix cards have sat paused too long (×3) <span style="color:#bbb;">(#1379)</span></div>
+      <div style="font-size:13px;color:#333;">⏳ Main: red streak</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
       <div style="font-size:13px;color:#333;">⏳ Push-retry deadman</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Infra-review: gate telemetry <span style="color:#bbb;">(#1393)</span></div>
+      <div style="font-size:13px;color:#333;">⏳ Autofix: jobs actually succeeding</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Dispatch outcomes: abandoned <span style="color:#bbb;">(#1392)</span></div>
+      <div style="font-size:13px;color:#333;">⏳ Autofix: throughput (dispatched/passed, daily)</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Autofix: daily canary (dispatch pipeline proof) <span style="color:#bbb;">(#1368)</span></div>
+      <div style="font-size:13px;color:#333;">⏳ Data: OB closing candidates awaiting review</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ The automated &quot;Test Suite&quot; job keeps failing <span style="color:#bbb;">(#1166)</span></div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ The automated &quot;Audit Aggregator Review Gap&quot; job keeps failing</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ The automated &quot;Process Feedback Submissions&quot; job keeps failing</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ The automated &quot;Fetch Guardian Reviews via API&quot; job keeps failing</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Data: OB closing candidates awaiting review <span style="color:#bbb;">(#1365)</span></div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Workflow coverage: never-run <span style="color:#bbb;">(#1364)</span></div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
-    </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Data: T1/T2 silent review gaps <span style="color:#bbb;">(#1363)</span></div>
+      <div style="font-size:13px;color:#333;">⏳ Data: live show with zero critic reviews on site</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
       <div style="font-size:13px;color:#333;">⏳ Data: reviewed shows missing from shows.json</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Data: undispatchable backlog cards <span style="color:#bbb;">(#1362)</span></div>
+      <div style="font-size:13px;color:#333;">⏳ Dispatch: board targeting</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Some open shows are missing a poster, synopsis, or ticket link <span style="color:#bbb;">(#1361)</span></div>
+      <div style="font-size:13px;color:#333;">⏳ The site is showing fewer shows/reviews than yesterday</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Scraping spend over budget: brightdata $7.24 &gt; $2.5 (2301 serp + 2524 unlocker reqs); scrapingbee 39663 credits &gt; 35000; scrapingdog 70495 credits &gt; 45000</div>
+      <div style="font-size:13px;color:#333;">⏳ Some data-quality checks are drifting from their baselines</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Scrapingdog daily breaker TRIPPED: 32922/30000 credits</div>
+      <div style="font-size:13px;color:#333;">⏳ Quality: DMARC deliverability</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Bright Data daily breaker TRIPPED: serp_api1 (2426/2250 reqs)</div>
+      <div style="font-size:13px;color:#333;">⏳ Data quality: cross-outlet attribution drift</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Feedback: 1 submission(s), all handled automatically (×2) <span style="color:#bbb;">(#1376)</span></div>
+      <div style="font-size:13px;color:#333;">⏳ Data quality: cv-wrongproduction lifetime sweep</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
-      <div style="font-size:13px;color:#333;">⏳ Bright Data daily breaker TRIPPED: web_unlocker2 (2672/2250 reqs)</div>
+      <div style="font-size:13px;color:#333;">⏳ Data quality: fulltext-mentions-show lifetime sweep</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Data quality: slug-mismatch lifetime sweep</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Data quality: missed opening-night broadcasts</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Coverage: adversarial probe</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Google page-speed/search health degraded</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ The automated &quot;Test Suite&quot; job keeps failing</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Some high-priority fix cards have sat paused too long (×3)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Infra-review: gate telemetry</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Dispatch outcomes: abandoned</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Dispatch health: dead-launch rate (unmeasurable here)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Headless dispatch: success rate (unmeasurable here)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ cmux socket: reachability (unmeasurable here)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Autofix: daily canary (dispatch pipeline proof)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Digest: content-invariant check</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Workflow coverage: never-run</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Data: T1/T2 silent review gaps</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Infra: worktree GC log stale</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Data: undispatchable backlog cards</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Some open shows are missing a poster, synopsis, or ticket link</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ A data pipeline looks stalled</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Scraping spend over budget</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Time-to-publish SLA missed — 0% within 15 min (target 90%)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Opening-night monitor pass complete: holy-fool-off-west-end-2026</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Review URL cross-show mismatch on The Story</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Auto-remediation gave up on the-story-west-end-2026</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Shipped review too short to verify on Holy Fool</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Shipped review missing publishDate on Holy Fool</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Holy Fool</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ cmux launch refused — claude auth preflight failed</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Scrapingdog daily breaker TRIPPED: 35560/21000 credits</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Dispatch watchdog is DOWN — nobody owns in-flight dispatches</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Placeholder synopsis on Kimberly Akimbo</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Pre-opening publishDate on Kimberly Akimbo</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Zombie-tab sweep closed workspace:87</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Feedback: 1 submission(s), all handled automatically</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Auto-remediation gave up on kimberly-akimbo-off-west-end-2026</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Kimberly Akimbo</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Auto-remediation gave up on jane-eyre-off-west-end-2026</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Jane Eyre</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Review-gap audit refused to write — 40.9% of shows changed coverage state</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Placeholder synopsis on AMERICA, WHO HURT YOU?</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Unhandled CV.wrongProduction on Jane Eyre</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Shipped review too short to verify on Jane Eyre</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Shipped review missing publishDate on Jane Eyre</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Opening-night monitor pass complete: day-of-the-hog-off-broadway-2026, lean-to-off-broadway-2026</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Shipped review missing publishDate on Man to Man</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Unverified revival on Man to Man</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Man to Man</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Lean-To</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Day of the Hog</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Placeholder synopsis on The Human Voice / The Seven Deadly Sins</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Shipped review missing publishDate on Mrs. Stern Wanders the Prussian State Library (Luna Stage)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on The Children</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on AMERICA, WHO HURT YOU?</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Becoming Hamlet</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Bright Data daily breaker TRIPPED: web_unlocker2 (1048/250 reqs)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Bright Data daily breaker TRIPPED: serp_api1 (252/250 reqs)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on The Human Voice / The Seven Deadly Sins</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Mrs. Stern Wanders the Prussian State Library (Luna Stage)</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Placeholder synopsis on Golden Boy</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Placeholder synopsis on Night City</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Night City</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Placeholder synopsis on THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div><div style="margin:0 0 6px;">
       <div style="font-size:13px;color:#333;">⏳ main test.yml STILL red — auto-dispatch did not resolve it</div>
       <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ UX walkthrough: high-priority finding(s) filed</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Unhandled CV.wrongProduction on BLOODSPORT: After Helen of Troy</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Placeholder synopsis on BLOODSPORT: After Helen of Troy</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Pre-opening publishDate on BLOODSPORT: After Helen of Troy</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on BLOODSPORT: After Helen of Troy</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Stale 'upcoming' tag on Pre-Existing Condition</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
+    </div><div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">⏳ Auto-remediation gave up on golden-boy-off-west-end-2026</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">tracker filed — dispatches on the next automated pass</div>
     </div>
   </div>
-<p style="font-size:12px;color:#15803d;margin:0 0 12px;">trunk: GREEN — test.yml is passing on main</p>
 <div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Needs your decision: 2 tabs waiting on your decision</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Trunk (main CI): trunk: RED (44 consecutive failures, red for 38h, top failing job: Data Validation)</div>
+    <div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-09-15 12:14 UTC</div>
+  </div>
+<p style="font-size:12px;color:#b45309;margin:0 0 12px;">⚠️ Backlog inflow: 1243 open. 319 filed / 179 closed in the last 7 days (7 more canceled) — 1.8 filed per 1 closed. Drifting — the backlog grows about 140 issues a week at this rate.</p>
+<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Needs your decision: 1 tab waiting on your decision</div>
     <div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">❓ 👑 OWNER — P1 backlog TRIAGE then dispatch (retire dead cards, keep pipeline fed)</span>
-      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">Start executing the revised cutover plan, and if so, do you want  first?</div>
-    </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">❓ 👑 OWNER — Drive main to GREEN (stale-flag: 6 producers, 121 files)</span>
-      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">Restart cmux to restore terminal-session creation?</div>
-    </div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-08-15 13:00 UTC</div>
+      <span style="font-size:13px;color:#333;">❓ 👑 OWNER — In Review backlog: 120→62, 55 closed w/ evidence, digest channel shipped</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">You said restart the P1 triage robot, but the robot named on BRO-343 () feeds off a frozen Notion task mirror (123 tasks, zero Linear ids), so restarting it literally would dispatch stale work against a retired board — which path do you want instead?</div>
+    </div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-09-15 21:02 UTC</div>
   </div>
 <div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Scraping spend: OVER BUDGET: brightdata $8.34 &gt; $2.5 (2524 serp + 3039 unlocker reqs); scrapingbee 46191 credits &gt; 35000</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Review queue: 58 finished items waiting for your review · oldest 29d · 49 idle 14d+</div>
     <div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">2026-08-14 · Browserbase: $2.7 (27 sessions)</span>
+      <span style="font-size:13px;color:#333;"><a href="https://linear.app/broadway-scorecard/issue/BRO-221/diary-sharing-phase-0-showtime-add-to-calendar" style="color:#333;text-decoration:none;">BRO-221: Diary sharing Phase 0: showtime + Add to Calendar</a></span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">finished; idle in review 29d</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;"><a href="https://linear.app/broadway-scorecard/issue/BRO-386/recheck-after-verdicts-are-silently-discarded-when-data-health-checks" style="color:#333;text-decoration:none;">BRO-386: RECHECK-AFTER verdicts are silently discarded when data-health-check's commit step loses a push race</a></span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">finished; idle in review 29d</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;"><a href="https://linear.app/broadway-scorecard/issue/BRO-142/stale-merge-head-on-shared-main-worktree-blocks-all-pushes-no" style="color:#333;text-decoration:none;">BRO-142: Stale MERGE_HEAD on shared main worktree blocks all pushes — no detection/recovery</a></span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">finished; idle in review 27d</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;"><a href="https://linear.app/broadway-scorecard/issue/BRO-121/url-ping-pong-wipes-scored-reviews-add-loginsuccessful-to-normalizeurl" style="color:#333;text-decoration:none;">BRO-121: URL ping-pong wipes scored reviews: add loginSuccessful to normalizeUrl strip list + flip-flop breaker</a></span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">finished; idle in review 26d</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;"><a href="https://linear.app/broadway-scorecard/issue/BRO-133/gather-reviews-auto-registered-outlets-get-no-region-next-we-blog" style="color:#333;text-decoration:none;">BRO-133: gather-reviews auto-registered outlets get no region — next WE blog repeats the cross-market exclusion</a></span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">finished; idle in review 26d</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;"><a href="https://linear.app/broadway-scorecard/issue/BRO-143/pre-push-review-gate-branch-scoped-verdicts-dont-survive-a-merge-into" style="color:#333;text-decoration:none;">BRO-143: Pre-push review gate: branch-scoped verdicts don't survive a merge into main (residual #828 gap)</a></span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">finished; idle in review 26d</div>
+    </div><div style="font-size:11px;color:#999;margin-top:4px;">+52 more</div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-09-15 21:02 UTC</div>
+  </div>
+<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Scraping spend: Within budget · streak 1 of 7 verified day</div>
+    <div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">2026-09-14 · Browserbase: $0.69 (58 sessions, 12.08min)</span>
       
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">2026-08-14 · Bright Data: $8.34 (2524 serp / 3039 unlocker)</span>
+      <span style="font-size:13px;color:#333;">2026-09-14 · Bright Data: $2.27 (139 serp / 1373 unlocker)</span>
       
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">ScrapingBee: 46191 credits (285733 this cycle)</span>
+      <span style="font-size:13px;color:#333;">ScrapingBee: 22010 credits (231830 this cycle)</span>
       
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">ScrapingDog: 37915 credits (1521740 this cycle)</span>
+      <span style="font-size:13px;color:#333;">ScrapingDog: 92561 credits (730576 this cycle)</span>
       
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">Browserbase attribution: 67% attributed — top: test-caller 16, collect-review-texts.js 2</span>
+      <span style="font-size:13px;color:#333;">Browserbase attribution: 0% attributed</span>
       
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">Bright Data attribution: 36% attributed — top: opening-night-poller.js 1048, audit-show-review-gap.js 732, ingest-review-from-url.js 106, recover-explicit-ratings.js 70, extract-theatre-record.js 14</span>
+      <span style="font-size:13px;color:#333;">⚠️ Browserbase top-caller coverage low: 0% of billed calls &lt; 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight</span>
       
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">ScrapingBee attribution: 2% attributed — top: audit-show-review-gap.js 569, opening-night-poller.js 144, scrape-recoupment-announcements.js 62, collect-review-texts.js 41, recover-explicit-ratings.js 40</span>
+      <span style="font-size:13px;color:#333;">Bright Data attribution: 60% attributed — top callers (covers 57% of billed calls): opening-night-poller.js 584, gather-reviews.js 145, collect-outlet-reviews.js 52, audit-show-review-gap.js 44, backfill-unknown-critics.js 38</span>
       
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">ScrapingDog attribution: 7% attributed — top: opening-night-poller.js 1805, audit-show-review-gap.js 401, collect-review-texts.js 283, ingest-review-from-url.js 137, auto-fix-show-data.js 87</span>
+      <span style="font-size:13px;color:#333;">⚠️ Bright Data top-caller coverage low: 57% of billed calls &lt; 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight</span>
       
-    </div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-08-15 01:34 UTC</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">ScrapingBee attribution: 35% attributed — top callers (covers 35% of billed credits): opening-night-poller.js 4660cr, gather-reviews.js 2125cr, collect-outlet-reviews.js 850cr, fetch-show-images-auto.js 100cr, backfill-unknown-critics.js 20cr</span>
+      
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">⚠️ ScrapingBee top-caller coverage low: 35% of billed credits &lt; 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight</span>
+      
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">ScrapingDog attribution: 24% attributed — top callers (covers 22% of billed credits): gather-reviews.js 12559cr, opening-night-poller.js 3654cr, collect-outlet-reviews.js 2705cr, audit-show-review-gap.js 1227cr, recover-explicit-ratings.js 387cr</span>
+      
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">⚠️ ScrapingDog top-caller coverage low: 22% of billed credits &lt; 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight</span>
+      
+    </div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-09-15 20:58 UTC</div>
   </div>
 <div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
     <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Coverage verdict: 10 show(s) with known reviews live but incomplete</div>
     <div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">73 seconds</span>
-      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 2 known reviews live — 2 being fetched</div>
+      <span style="font-size:13px;color:#333;">AFTER ALL THESE YEARS</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 1 known reviews live — 1 being fetched</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Anonymous</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 1 known reviews live — 1 being fetched</div>
     </div><div style="margin:0 0 6px;">
       <span style="font-size:13px;color:#333;">Archduke</span>
       <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 9 known reviews live — 8 being fetched, 1 excluded (older production)</div>
-    </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">As You Like It - Globe</span>
-      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 12 known reviews live — 9 being fetched, 3 excluded (older production)</div>
     </div><div style="margin:0 0 6px;">
       <span style="font-size:13px;color:#333;">Austentatious: An Improvised Jane Austen Novel</span>
       <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 1 known reviews live — 1 being fetched</div>
@@ -234,21 +429,71 @@
       <span style="font-size:13px;color:#333;">Bone Wars a New Musical</span>
       <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 4 known reviews live — 4 being fetched</div>
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">Bone Wars</span>
-      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 5 known reviews live — 5 being fetched</div>
-    </div><div style="margin:0 0 6px;">
       <span style="font-size:13px;color:#333;">Building The Wall</span>
       <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 9 known reviews live — 9 being fetched</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Bull Durham: A New Musical</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 3 known reviews live — 3 excluded (older production)</div>
     </div><div style="margin:0 0 6px;">
       <span style="font-size:13px;color:#333;">Catch of the Day</span>
       <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 5 known reviews live — 5 being fetched</div>
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">Dear England (New Wimbledon Theatre)</span>
-      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 6 known reviews live — 6 being fetched</div>
+      <span style="font-size:13px;color:#333;">Cowbois</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 8 known reviews live — 8 being fetched</div>
     </div><div style="margin:0 0 6px;">
-      <span style="font-size:13px;color:#333;">End of the Rainbow</span>
-      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 7 known reviews live — 7 being fetched</div>
-    </div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-08-15 12:12 UTC</div>
+      <span style="font-size:13px;color:#333;">Dear England (New Wimbledon Theatre)</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">0 of 9 known reviews live — 9 being fetched</div>
+    </div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-09-15 18:50 UTC</div>
+  </div>
+<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Predispatch queue backlog: 67 of 135 queued cards blocked from auto-dispatch (28 reopen-suspect, 39 do-not-dispatch) · 47 ok-to-dispatch, 21 check-first</div>
+    <div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">P1: main red — 2 routeAlert(disposition:'human') callers not in digest baseline (alert-sender gate)</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">#1112 — REOPEN-SUSPECT</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">P1: main red — CLAUDE.md over byte cap fails Lint Workflows (test.yml)</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">#1113 — REOPEN-SUSPECT</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">VERIFY: owner-judgment cards are dispatch-eligible — no dispatch-time exclusion exists</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">#1154 — REOPEN-SUSPECT</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">P1: TR extraction false-rejects real T1/T2 reviews — title-mention wrong-show guard fails on common-word titles (Barcelona: 6/20 lost)</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">#1227 — REOPEN-SUSPECT</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">[em-20260810-230914] Manual Fix Needed: 3 Summers of Lincoln (Regional) (#559)</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">#1239 — REOPEN-SUSPECT</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">[em-20260811-124048] Quiet week · Aug 11</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">#1245 — REOPEN-SUSPECT</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">P1: slugCollidesWith blind spot — 3 more sites can silently drop a real new show's discovery signal</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">#1246 — REOPEN-SUSPECT</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Audit gate: catch workflows that write a CORE_FILES path but never call push-core-data</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">#1442 — REOPEN-SUSPECT</div>
+    </div><div style="font-size:11px;color:#999;margin-top:4px;">+59 more</div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-09-14 10:50 UTC</div>
+  </div>
+<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Dispatch guard queue backlog: 73 of 135 queued cards blocked by at least one dispatch guard</div>
+    <div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Linear Mirror</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">58 refused</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Dead Dispatch</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">9 refused</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Stale Outcome</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">9 refused</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Parked</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">7 refused</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Closed Card</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">4 refused</div>
+    </div><div style="margin:0 0 6px;">
+      <span style="font-size:13px;color:#333;">Work Branch Collision</span>
+      <div style="font-size:11px;color:#999;margin:2px 0 0 2px;">2 refused</div>
+    </div><div style="font-size:11px;color:#999;margin-top:6px;">as of 2026-09-14 10:50 UTC</div>
   </div>
 <p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>
 </div>

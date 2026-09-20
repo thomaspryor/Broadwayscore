@@ -121,7 +121,13 @@ function successionDepthForTask(taskId, entries) {
 // finished loading (same lazy-reference shape the original inline Set here
 // already relied on).
 function isDeadlikeEvent(event) {
-  return event === 'dead' || event === JOB_EVENTS.FAILED || event === JOB_EVENTS.ORPHANED;
+  // BRO-3442: STOPPED_SHORT/STRANDED join FAILED/ORPHANED — both are real
+  // dispatch defects (a silently abandoned turn, or real commits that never
+  // landed). BLOCKED deliberately does NOT join (see its own JOB_EVENTS
+  // comment) — it is the job correctly recognizing an owner-only stop
+  // condition, not a defect this counter should punish.
+  return event === 'dead' || event === JOB_EVENTS.FAILED || event === JOB_EVENTS.ORPHANED
+    || event === JOB_EVENTS.STOPPED_SHORT || event === JOB_EVENTS.STRANDED;
 }
 
 function deadAttemptsForTask(taskId, entries) {
@@ -587,6 +593,66 @@ function terminalForLaunch(launch, entries) {
   return found;
 }
 
+// BRO-3481: terminalForLaunch above only recognizes the cmux-tab vocabulary
+// (dead/vanished/prune-closed/remapped), which a --headless dispatch never
+// writes at all — it finishes through JOB_EVENTS (job-done/job-failed/...)
+// instead, keyed by taskId, not workspaceRef (job events carry no ref). A
+// headless launch's own terminal signal therefore needs a separate lookup,
+// not a workspaceRef match against the wrong vocabulary. Without this,
+// dispatchCommentIsOurFinishedLaunch (linear-dispatch.js) could never
+// recognize a successfully-finished headless dispatch as "ours, already
+// done" — reproduced live on BRO-3431: a Linear issue reopened after its
+// headless job reached job-done still refused re-dispatch with "it already
+// looks dispatched", because the only finished-check available asked the
+// wrong vocabulary and always came back empty.
+//
+// Deliberately a NARROWER set than TERMINAL_JOB_EVENTS (second-opinion
+// review caught this): JOB_EVENTS.RETRIED means this jobId was SUPERSEDED by
+// a brand-new job (see TERMINAL_JOB_EVENTS's own header above), not that the
+// dispatch is over — a live successor could still be running. JOB_EVENTS.
+// ABANDONED means this specific attempt never ran because something else
+// held the lease, which says nothing about whether that something else is
+// still live. Trusting either here would let this function call a launch
+// "finished" while real work might still be in flight. This function only
+// answers "is THIS SPECIFIC launch resolved" — hasLiveLedgerEntry (which
+// reads the task's true LATEST attempt, not this one launch) is what
+// actually decides current liveness, so this must fail toward "not
+// resolved" for anything short of an unambiguous stop.
+//
+// Declared as `let`, assigned lower down (near TERMINAL_JOB_EVENTS) rather
+// than here: it needs JOB_EVENTS, which isn't defined until later in this
+// file, and this function isn't called until module load has finished.
+let LAUNCH_FINISHED_JOB_EVENTS;
+
+function terminalJobEventForLaunch(launch, entries) {
+  if (!launch) return null;
+  // Codex adversarial review (BRO-3481): JOB_EVENTS are only ever written by
+  // bsc-runner.js's headless runner — a live CMUX launch shares the same
+  // taskId namespace but is invisible to that runner's lease. Without this
+  // guard, a later UNRELATED headless attempt on the same task (forced
+  // manually, or the duplicate-tab hole this codebase's own "guard parity"
+  // test exists to narrow) that fails at provisioning writes job-failed,
+  // which would then wrongly read as proof the still-running cmux launch is
+  // "over" — dismissing a genuinely live cross-machine warning. Headless
+  // launches always carry this exact prefix (linear-next.js/bsc-next.js's
+  // own `workspaceRef: \`headless:${taskId}\`` convention); a cmux launch's
+  // workspaceRef never does.
+  if (!launch.workspaceRef || !String(launch.workspaceRef).startsWith('headless:')) return null;
+  const launchTs = Date.parse(launch.ts || '');
+  if (!Number.isFinite(launchTs)) return null; // unorderable launch — never claim it is over
+  let found = null;
+  for (const e of entries || []) {
+    if (!e || typeof e !== 'object') continue;
+    if (!LAUNCH_FINISHED_JOB_EVENTS.has(e.event)) continue;
+    if (String(e.taskId) !== String(launch.taskId)) continue;
+    const ts = Date.parse(e.ts || '');
+    if (!Number.isFinite(ts)) continue; // unorderable terminal — proves nothing
+    if (ts <= launchTs) continue; // strictly after, same ambiguity rule as terminalForLaunch
+    found = e; // last-wins
+  }
+  return found;
+}
+
 function deadBreadcrumbs(idleWorkspaces, entries, opts = {}) {
   const isWrapperAlive = typeof opts.isWrapperAlive === 'function' ? opts.isWrapperAlive : null;
   const onSuppressed = typeof opts.onSuppressed === 'function' ? opts.onSuppressed : null;
@@ -811,6 +877,11 @@ function vanishedBreadcrumbs(liveRefs, entries, opts = {}) {
       subject: launch.subject,
       workspaceRef: ref,
       notionId: launch.notionId || null,
+      // BRO-3431: linear-next.js's own 'launch' entries already carry this
+      // (issue.identifier) — copied through so a vanished Linear-dispatched
+      // tab can be parked on its real board, not silently dropped the way it
+      // was before (bsc-prune.js's park loop only ever checked notionId).
+      linearId: launch.linearId || null,
     });
   }
   return out;
@@ -1261,6 +1332,51 @@ const JOB_EVENTS = Object.freeze({
   // can tell "unbroken silence since the suspicion" from "confirmed dead,
   // then alive, then dead again" (see lastOrphanEvidence).
   ORPHAN_CLEARED: 'job-orphan-cleared',
+  // BRO-3442 (BRO-3424 follow-up): bsc-runner.js used to journal DONE for
+  // ANY exit-0 job regardless of what the session's own final text said.
+  // These three split that open using headless-result-classifier.js's
+  // classification of the job's final result text (BLOCKED/STOPPED_SHORT)
+  // plus headless-unlanded-detection.js's detectJobLanding() ancestry check
+  // (STRANDED) — see bsc-runner.js's runJob() for where each is decided.
+  //
+  // BLOCKED: the session ended `THIS SESSION: CLOSE ME|IDLE — BLOCKED:
+  // <reason>` (+ `reason`) — it hit something only the owner can resolve and
+  // said so honestly (exit-status-gate.sh's Gate H, 2026-09-15). Deliberately
+  // NOT in isDeadlikeEvent below, same carve-out as ABANDONED: this is not a
+  // dispatch/task defect, it is the job correctly recognizing a stop
+  // condition only the owner can clear — burning a DEAD_ATTEMPT_LIMIT strike
+  // for it would eventually hard-park a fine task for legitimately needing an
+  // owner decision more than twice.
+  BLOCKED: 'job-blocked',
+  // STOPPED_SHORT (+ `reason`): the session ended with no `THIS SESSION:`
+  // verdict at all, or `THIS SESSION: KEEP OPEN` (legacy `NOT SAFE TO EXIT`)
+  // — a `claude -p` session is NEVER resumed by a background notification,
+  // so ending a turn this way silently abandons the work (BRO-3388: 2
+  // commits stranded, counted as job-done). A real dispatch defect — IS in
+  // isDeadlikeEvent, same class as FAILED/ORPHANED.
+  STOPPED_SHORT: 'job-stopped-short',
+  // STRANDED (+ `sha`): the session ended cleanly (`THIS SESSION: CLOSE
+  // ME|IDLE`, no BLOCKED) but its job worktree's HEAD never reached
+  // origin/main. Distinct from backlog-drain.js's unrelated `card-stranded`
+  // (branch-name `rev-list` against the shared REPO checkout, a different
+  // mechanism, computed for a different consumer) — this one is the
+  // SHA-ancestry check bsc-runner.js runs itself, in-process, right after
+  // the job exits. A real dispatch defect — IS in isDeadlikeEvent.
+  STRANDED: 'job-stranded',
+  // LANDED_ACKED (+ `sha`, `verifyCmd`, `reason`, `ackedBy`, `jobId`): the
+  // OWNING session's explicit, auditable "I verified this by hand" row for a
+  // job bsc-runner classified STOPPED_SHORT/STRANDED (or otherwise terminal)
+  // but whose commits genuinely reached origin/main. Written ONLY by
+  // scripts/ack-landed.js after it re-checks the sha's ancestry on a fresh
+  // origin/main, ties the sha to the job (post-launch commit that names the
+  // ref, or descends from a stranded row's sha) and re-runs a safe-form
+  // acceptance command to exit 0. exit-status-gate.sh's Gate O v2 accepts it
+  // as terminal-and-landed when it is NEWER than the last bad row. NOT a
+  // `job-` event on purpose: foldJobs()/openJobs() skip it, so no job-state
+  // consumer changes; deliberately NOT in isDeadlikeEvent (it is the opposite
+  // of a defect) and NOT in TERMINAL_JOB_EVENTS (it does not close a jobId —
+  // the STOPPED_SHORT/STRANDED row already did).
+  LANDED_ACKED: 'landed-acked',
 });
 
 // RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new
@@ -1270,10 +1386,25 @@ const JOB_EVENTS = Object.freeze({
 // lease-held/pre-spawn-abandoned "job" reads as perpetually open to every
 // TERMINAL_JOB_EVENTS consumer (bsc-status.js, backlog-drain.js,
 // dispatch-card-drift.js, digest-autofix.js, autofix-canary.js).
+// BLOCKED/STOPPED_SHORT/STRANDED join for the same reason (BRO-3442): each is
+// a definitive, no-further-progress verdict on its jobId.
 // ORPHAN_SUSPECT and ORPHAN_CLEARED are deliberately EXCLUDED — both must
 // keep reading as open (same bucket as SPAWNED) until a later tick writes the
 // real terminal ORPHANED row (see orphanConfirmed/orphanSuspectIsStale).
-const TERMINAL_JOB_EVENTS = new Set([JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED, JOB_EVENTS.ABANDONED]);
+const TERMINAL_JOB_EVENTS = new Set([
+  JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED, JOB_EVENTS.RETRIED, JOB_EVENTS.ABANDONED,
+  JOB_EVENTS.BLOCKED, JOB_EVENTS.STOPPED_SHORT, JOB_EVENTS.STRANDED,
+]);
+
+// BRO-3481: the subset of TERMINAL_JOB_EVENTS that terminalJobEventForLaunch
+// (above, near terminalForLaunch) trusts as proof a specific LAUNCH is over —
+// see that function's own header for why RETRIED and ABANDONED are excluded.
+// Assigned here (declared as `let` earlier) because it needs JOB_EVENTS,
+// which isn't defined until this point in the file.
+LAUNCH_FINISHED_JOB_EVENTS = new Set([
+  JOB_EVENTS.DONE, JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED,
+  JOB_EVENTS.BLOCKED, JOB_EVENTS.STOPPED_SHORT, JOB_EVENTS.STRANDED,
+]);
 
 // ── Orphan-detection debounce (BRO-3052) ────────────────────────────────────
 // bsc-reconcile.js's orphan sweep used to treat a SINGLE liveness glance
@@ -1451,7 +1582,7 @@ module.exports = {
   // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
-  terminalForLaunch,
+  terminalForLaunch, terminalJobEventForLaunch,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount, countRecentLaunches,

@@ -535,8 +535,21 @@ const EXCERPT_SOURCE_RANK = {
   nycTheatreExcerpt: 5,
   stagedoorExcerpt: 6,
   dtliExcerpt: 7,
-  fullText: 8,
-  'fullText-chrome-skip': 9,
+  // BRO-767: theatreReviewsExcerpt (761 files) and westEndTheatreExcerpt
+  // (1,832 files) are curated evaluative quotes scraped from theatre.reviews
+  // and West End Theatre, same shape as the aggregator excerpts above, but
+  // were never wired into selectBestExcerpt — every review whose only
+  // content was one of these fields shipped with pullQuote:null. lboRoundupExcerpt
+  // (760 files) is lower quality (often a linked article's lead paragraph
+  // rather than a hand-picked quote) but already treated as equivalent to
+  // bwwExcerpt/dtliExcerpt everywhere else in the pipeline (contentTier
+  // classification, hasExcerpt checks) — added here for consistency and
+  // because the same validateExcerpt() guard chain screens it.
+  theatreReviewsExcerpt: 8,
+  westEndTheatreExcerpt: 9,
+  lboRoundupExcerpt: 10,
+  fullText: 11,
+  'fullText-chrome-skip': 12,
 };
 
 // The first rank that is a raw scrape of the article body rather than a curated

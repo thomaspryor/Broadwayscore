@@ -86,7 +86,14 @@ function buildShowEntry(candidate) {
     status: 'closed',
     category: 'west-end',
     market: 'west-end',
-    type: null,
+    // 'play' (not null) when the title doesn't say "musical" — west-end is
+    // gated by validate-market-expansion.js's required-fields check, which
+    // only exempts type when status==='announced'; 'closed' is not exempt.
+    // Same fix, same reasoning, as the aggregator-roundup builders in
+    // promote-we-aggregator-candidates.js / promote-ob-venue-candidates.js
+    // (BRO-3716 — a null type here would reproduce that exact CI-red
+    // incident the next time this script runs).
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
     tags: ['historical'],
     season: candidate.season,
     discoverySource: 'historical-backfill',

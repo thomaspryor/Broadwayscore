@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-07T18:42:55.372Z",
+  "updatedAt": "2026-09-16T02:55:18.866Z",
   "dispositions": [
     {
       "from": "a-midsummer-nights-dream-globe-west-end-2026",
@@ -257,6 +257,13 @@
     {
       "from": "cabaret-at-the-kit-kat-club-west-end-2021",
       "to": "cabaret-2014",
+      "file": "telegraph--dominic-cavendish.json",
+      "reason": "to-year-far: matcher target is a closed 2014 production 7yr away; file's own review is genuinely about the 2021 WE run (correct as filed)",
+      "addedAt": "2026-09-16T02:51:56.585Z"
+    },
+    {
+      "from": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "to": "cabaret-2014",
       "file": "times-uk--clive-davis.json",
       "reason": "reject: review belongs in its current show (matcher TO wrong) — 2026-06 verify",
       "addedAt": "2026-06-06T19:33:37.709Z"
@@ -297,6 +304,55 @@
       "addedAt": "2026-06-06T19:33:37.709Z"
     },
     {
+      "from": "cinderella-buttons-undone-off-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "ew--emlyn-travis.json",
+      "reason": "deleted 2026-09-16: empty-stub duplicate, own url confirmed genuinely about Bad Cinderella, real content already at bad-cinderella-2023",
+      "addedAt": "2026-09-16T02:55:18.673Z"
+    },
+    {
+      "from": "cinderella-buttons-undone-off-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "observer--david-cote.json",
+      "reason": "deleted 2026-09-16: empty-stub duplicate, own url confirmed genuinely about Bad Cinderella, real content already at bad-cinderella-2023",
+      "addedAt": "2026-09-16T02:55:18.730Z"
+    },
+    {
+      "from": "cinderella-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "bloomberg--chris-rovzar.json",
+      "reason": "from-also-full-match: ambiguous same-title token overlap, not a clear misroute; all tier=invalid (not scored) so harmless either way",
+      "addedAt": "2026-09-16T02:51:57.154Z"
+    },
+    {
+      "from": "cinderella-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "broadwaynews--brittani-samuel.json",
+      "reason": "from-also-full-match: ambiguous same-title token overlap, not a clear misroute; all tier=invalid (not scored) so harmless either way",
+      "addedAt": "2026-09-16T02:51:57.215Z"
+    },
+    {
+      "from": "cinderella-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "ew--emlyn-travis.json",
+      "reason": "from-also-full-match: ambiguous same-title token overlap, not a clear misroute; all tier=invalid (not scored) so harmless either way",
+      "addedAt": "2026-09-16T02:51:57.273Z"
+    },
+    {
+      "from": "cinderella-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "new-york-sun--elysa-gardner.json",
+      "reason": "from-also-full-match: ambiguous same-title token overlap, not a clear misroute; all tier=invalid (not scored) so harmless either way",
+      "addedAt": "2026-09-16T02:51:57.327Z"
+    },
+    {
+      "from": "cinderella-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "observer--david-cote.json",
+      "reason": "from-also-full-match: ambiguous same-title token overlap, not a clear misroute; all tier=invalid (not scored) so harmless either way",
+      "addedAt": "2026-09-16T02:51:57.389Z"
+    },
+    {
       "from": "cyrano-de-bergerac-2007",
       "to": "cyrano-the-musical-1993",
       "file": "nydailynews--chris-jones.json",
@@ -323,6 +379,41 @@
       "file": "variety--frank-rizzo.json",
       "reason": "no-tracked-production: 2019 Dinklage off-Bway — not tracked; matcher TO is wrong year; already excluded from wrong show (harmless)",
       "addedAt": "2026-06-06T19:33:37.709Z"
+    },
+    {
+      "from": "encores-la-cage-aux-folles-off-broadway-2026",
+      "to": "la-cage-aux-folles-2010",
+      "file": "artsdesk--gary-naylor.json",
+      "reason": "to-year-far: matcher target is a closed 2010 production; no evidence these WE reviews are about that run, correct production for the 2010 target text is untracked",
+      "addedAt": "2026-09-16T02:51:56.652Z"
+    },
+    {
+      "from": "encores-la-cage-aux-folles-off-broadway-2026",
+      "to": "la-cage-aux-folles-2010",
+      "file": "city-am--adam-bloodworth.json",
+      "reason": "to-year-far: matcher target is a closed 2010 production; no evidence these WE reviews are about that run, correct production for the 2010 target text is untracked",
+      "addedAt": "2026-09-16T02:51:56.718Z"
+    },
+    {
+      "from": "encores-la-cage-aux-folles-off-broadway-2026",
+      "to": "la-cage-aux-folles-2010",
+      "file": "guardian--miriam-gillinson.json",
+      "reason": "to-year-far: matcher target is a closed 2010 production; no evidence these WE reviews are about that run, correct production for the 2010 target text is untracked",
+      "addedAt": "2026-09-16T02:51:56.778Z"
+    },
+    {
+      "from": "encores-la-cage-aux-folles-off-broadway-2026",
+      "to": "la-cage-aux-folles-2010",
+      "file": "standard--nick-curtis.json",
+      "reason": "to-year-far: matcher target is a closed 2010 production; no evidence these WE reviews are about that run, correct production for the 2010 target text is untracked",
+      "addedAt": "2026-09-16T02:51:56.846Z"
+    },
+    {
+      "from": "encores-la-cage-aux-folles-off-broadway-2026",
+      "to": "la-cage-aux-folles-2010",
+      "file": "timeout-london--tom-wicker.json",
+      "reason": "to-year-far: matcher target is a closed 2010 production; no evidence these WE reviews are about that run, correct production for the 2010 target text is untracked",
+      "addedAt": "2026-09-16T02:51:56.906Z"
     },
     {
       "from": "encores-the-wild-party-off-broadway-2026",
@@ -414,6 +505,20 @@
       "file": "variety--ayanna-prescod.json",
       "reason": "reject: review belongs in its current show (matcher TO wrong) — 2026-06 verify",
       "addedAt": "2026-06-06T19:33:37.709Z"
+    },
+    {
+      "from": "garry-starr-classic-penguins-garrick-west-end-2026",
+      "to": "garry-starr-classic-penguins-off-west-end-2026",
+      "file": "nysr--roma-torre.json",
+      "reason": "deleted 2026-09-16: empty-stub, exact-url duplicate of real content at garry-starr-classic-penguins-off-broadway-2026",
+      "addedAt": "2026-09-16T02:55:18.787Z"
+    },
+    {
+      "from": "garry-starr-classic-penguins-garrick-west-end-2026",
+      "to": "garry-starr-classic-penguins-off-west-end-2026",
+      "file": "theater-scene--deb-miller.json",
+      "reason": "deleted 2026-09-16: empty-stub, exact-url duplicate (both copies were empty; kept the off-west-end-2026 copy as canonical)",
+      "addedAt": "2026-09-16T02:55:18.865Z"
     },
     {
       "from": "giant-2026",
@@ -577,6 +682,34 @@
       "addedAt": "2026-06-06T19:33:37.709Z"
     },
     {
+      "from": "just-for-us-2023",
+      "to": "one-day-the-musical-west-end-2026",
+      "file": "toronto-star--joshua-chong.json",
+      "reason": "no-date + from-also-full-match: unrelated titles matched via generic tokens, tier=invalid, not scored",
+      "addedAt": "2026-09-16T02:51:57.646Z"
+    },
+    {
+      "from": "labelless-off-broadway-2026",
+      "to": "42nd-street-2001",
+      "file": "culturesauce--thom-geier.json",
+      "reason": "to-year-far: matcher target (42nd Street 2001) is unrelated/nonsensical; files are correctly filed at Labelless (tier=complete, currently live-scored)",
+      "addedAt": "2026-09-16T02:51:56.970Z"
+    },
+    {
+      "from": "labelless-off-broadway-2026",
+      "to": "42nd-street-2001",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "reason": "to-year-far: matcher target (42nd Street 2001) is unrelated/nonsensical; files are correctly filed at Labelless (tier=complete, currently live-scored)",
+      "addedAt": "2026-09-16T02:51:57.032Z"
+    },
+    {
+      "from": "labelless-off-broadway-2026",
+      "to": "42nd-street-2001",
+      "file": "theatermania--zachary-stewart.json",
+      "reason": "to-year-far: matcher target (42nd Street 2001) is unrelated/nonsensical; files are correctly filed at Labelless (tier=complete, currently live-scored)",
+      "addedAt": "2026-09-16T02:51:57.092Z"
+    },
+    {
       "from": "les-liaisons-dangereuses-2016",
       "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
       "file": "amny--matt-windman.json",
@@ -696,11 +829,116 @@
       "addedAt": "2026-06-06T19:33:37.709Z"
     },
     {
+      "from": "magic-mike-live-new-york-off-broadway-2026",
+      "to": "new-york-new-york-2023",
+      "file": "exeunt-magazine--lorin-wertheimer.json",
+      "reason": "reviews are for 'We Live in Cairo' (NYTW, 2024) which is not in shows.json; matcher's 'to' guess (New York New York) is also wrong; 0 reviews live/scored for this show either way; established leave pattern (2026-06-06 triage)",
+      "addedAt": "2026-09-16T02:51:57.815Z"
+    },
+    {
+      "from": "magic-mike-live-new-york-off-broadway-2026",
+      "to": "new-york-new-york-2023",
+      "file": "nysr--david-finkle.json",
+      "reason": "reviews are for 'We Live in Cairo' (NYTW, 2024) which is not in shows.json; matcher's 'to' guess (New York New York) is also wrong; 0 reviews live/scored for this show either way; established leave pattern (2026-06-06 triage)",
+      "addedAt": "2026-09-16T02:51:57.872Z"
+    },
+    {
+      "from": "magic-mike-live-new-york-off-broadway-2026",
+      "to": "new-york-new-york-2023",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "reason": "reviews are for 'We Live in Cairo' (NYTW, 2024) which is not in shows.json; matcher's 'to' guess (New York New York) is also wrong; 0 reviews live/scored for this show either way; established leave pattern (2026-06-06 triage)",
+      "addedAt": "2026-09-16T02:51:57.929Z"
+    },
+    {
+      "from": "magic-mike-live-new-york-off-broadway-2026",
+      "to": "new-york-new-york-2023",
+      "file": "nytg--austin-fimmano.json",
+      "reason": "reviews are for 'We Live in Cairo' (NYTW, 2024) which is not in shows.json; matcher's 'to' guess (New York New York) is also wrong; 0 reviews live/scored for this show either way; established leave pattern (2026-06-06 triage)",
+      "addedAt": "2026-09-16T02:51:57.984Z"
+    },
+    {
+      "from": "magic-mike-live-new-york-off-broadway-2026",
+      "to": "new-york-new-york-2023",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "reason": "reviews are for 'We Live in Cairo' (NYTW, 2024) which is not in shows.json; matcher's 'to' guess (New York New York) is also wrong; 0 reviews live/scored for this show either way; established leave pattern (2026-06-06 triage)",
+      "addedAt": "2026-09-16T02:51:58.040Z"
+    },
+    {
+      "from": "magic-mike-live-new-york-off-broadway-2026",
+      "to": "new-york-new-york-2023",
+      "file": "vulture--unknown.json",
+      "reason": "reviews are for 'We Live in Cairo' (NYTW, 2024) which is not in shows.json; matcher's 'to' guess (New York New York) is also wrong; 0 reviews live/scored for this show either way; established leave pattern (2026-06-06 triage)",
+      "addedAt": "2026-09-16T02:51:58.096Z"
+    },
+    {
       "from": "mj-the-musical-west-end-2024",
       "to": "heart-of-rock-and-roll-2024",
       "file": "new-york-sun--elysa-gardner.json",
       "reason": "reject: review belongs in its current show (matcher TO wrong) — 2026-06 verify",
       "addedAt": "2026-06-06T19:33:37.709Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.087Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "express-uk--stefan-kyriazis.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.145Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "guardian--arifa-akbar.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.204Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.261Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "standard--nick-curtis.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.322Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.380Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.435Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "times-uk--clive-davis.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.491Z"
+    },
+    {
+      "from": "much-ado-about-nothing-globe-off-west-end-2026",
+      "to": "much-ado-about-nothing-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "reason": "stale bwwRoundupUrl metadata (shared Drury-Lane roundup slug) does not match file's own url field, which is genuinely about the Globe production; verified per-file, correctly filed already. NOTE: independent--alice-saville.json in this same show is the OPPOSITE case (genuinely misrouted, real Drury Lane content) — deliberately left un-dispositioned, see claude-outputs handoff",
+      "addedAt": "2026-09-16T02:52:10.548Z"
     },
     {
       "from": "oh-hello-on-broadway-2016",
@@ -960,6 +1198,41 @@
       "file": "wsj--charles-isherwood.json",
       "reason": "reject: review belongs in its current show (matcher TO wrong) — 2026-06 verify",
       "addedAt": "2026-06-06T19:33:37.709Z"
+    },
+    {
+      "from": "sting-west-end-2026",
+      "to": "the-last-ship-2014",
+      "file": "newsday--linda-winer.json",
+      "reason": "from-also-full-match: ambiguous same-title/same-critic overlap; all tier=invalid (not scored), harmless either way",
+      "addedAt": "2026-09-16T02:51:57.453Z"
+    },
+    {
+      "from": "sting-west-end-2026",
+      "to": "the-last-ship-2014",
+      "file": "newsday--unknown.json",
+      "reason": "from-also-full-match: ambiguous same-title/same-critic overlap; all tier=invalid (not scored), harmless either way",
+      "addedAt": "2026-09-16T02:51:57.519Z"
+    },
+    {
+      "from": "sting-west-end-2026",
+      "to": "the-last-ship-2014",
+      "file": "newsday--updated-december.json",
+      "reason": "from-also-full-match: ambiguous same-title/same-critic overlap; all tier=invalid (not scored), harmless either way",
+      "addedAt": "2026-09-16T02:51:57.580Z"
+    },
+    {
+      "from": "the-lion-king-west-end-2021",
+      "to": "the-bridge-off-west-end-2026",
+      "file": "londonist--hari-mountford.json",
+      "reason": "no-date: matcher target is a stub show; both tier=invalid, not scored",
+      "addedAt": "2026-09-16T02:51:57.701Z"
+    },
+    {
+      "from": "the-lion-king-west-end-2021",
+      "to": "the-bridge-off-west-end-2026",
+      "file": "thestage--unknown.json",
+      "reason": "no-date: matcher target is a stub show; both tier=invalid, not scored",
+      "addedAt": "2026-09-16T02:51:57.757Z"
     },
     {
       "from": "the-wild-party-2000",

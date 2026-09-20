@@ -16,6 +16,7 @@ import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_WITH_PREVIEWS, PANEL_PARAM
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
+import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 
 // Serialized show data passed from server component
 export interface OffBroadwayShow {
@@ -451,6 +452,12 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
     onSetSingleValueOverride: setPanelSingleValue,
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const showListEmptyState = getShowListEmptyState({
+    filteredCount: panel.filteredShows.length,
+    archiveLoaded: archiveShows !== null,
+    statusFilter,
+    hasSearchQuery: !!searchQuery,
+  });
 
   // Single-writer clearAll (avoids URL race between window.history.replaceState
   // in startTransition + router.replace). See HomePageClient note.
@@ -636,7 +643,15 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
       <h2 className="sr-only">Off-Broadway Shows</h2>
       <ShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
-      {panel.filteredShows.length === 0 && (
+      {showListEmptyState === 'loading' && (
+        <div className="space-y-3" role="status" aria-label="Loading shows">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="animate-pulse h-24 bg-surface-overlay rounded-xl" />
+          ))}
+        </div>
+      )}
+
+      {showListEmptyState === 'empty' && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

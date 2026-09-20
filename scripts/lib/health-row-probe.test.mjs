@@ -193,7 +193,44 @@ test('a probe run performs zero real fs writes (spy on the REAL, unpatched fs)',
   assert.equal(realWriteCalls, 0, `probeHealthRowLive performed ${realWriteCalls} real fs write(s)`);
 });
 
-test('a probe run never touches the dispatch-outcome-digest-state.json trend cache (regression pin on the one known writer among the 22 checks)', async () => {
+// Card #794 adversarial ship-check finding: checkStuckPipelineItems() calls
+// overnight-digest.js's gatherDigest(), which by default runs a real
+// `git fetch` — a subprocess write to FETCH_HEAD/remote-tracking refs the
+// fs-write monkey-patch above cannot see or block, since it's a child
+// process, not a Node fs call. checkStuckPipelineItems() passes
+// `skipFetch: true` specifically to avoid adding this to the probe's side
+// effects. NOTE: this only pins checkStuckPipelineItems()'s OWN
+// contribution — scripts/lib/autofix-canary.js's checkAutofixCanary()/
+// checkAutofixThroughput() (pre-existing, unrelated to this fix) already run
+// their own unconditional `git fetch` on every core-results computation, so
+// a whole-probe "FETCH_HEAD never changes" assertion would fail for a
+// reason this diff didn't cause and can't fix.
+test('checkStuckPipelineItems calls gatherDigest with skipFetch (no added git-fetch side effect)', () => {
+  const overnightDigestPath = require.resolve('./overnight-digest.js');
+  const original = require.cache[overnightDigestPath];
+  let capturedOpts = null;
+  require.cache[overnightDigestPath] = {
+    id: overnightDigestPath,
+    filename: overnightDigestPath,
+    loaded: true,
+    exports: {
+      gatherDigest: (opts) => { capturedOpts = opts; return { stuck: {}, errors: [] }; },
+      stuckSignals: () => [],
+    },
+  };
+  try {
+    delete require.cache[HEALTH_CHECK_PATH];
+    const { checkStuckPipelineItems } = require('../health-check.js');
+    checkStuckPipelineItems();
+  } finally {
+    if (original) require.cache[overnightDigestPath] = original;
+    else delete require.cache[overnightDigestPath];
+    delete require.cache[HEALTH_CHECK_PATH];
+  }
+  assert.equal(capturedOpts?.skipFetch, true, 'checkStuckPipelineItems() must call gatherDigest with skipFetch: true');
+});
+
+test('a probe run never touches the dispatch-outcome-digest-state.json trend cache (regression pin on the one known writer among the core checks)', async () => {
   const before = fs.existsSync(DISPATCH_STATE_PATH) ? fs.statSync(DISPATCH_STATE_PATH).mtimeMs : null;
   await probeHealthRowLive('__health-row-probe-test-no-state-write__');
   const after = fs.existsSync(DISPATCH_STATE_PATH) ? fs.statSync(DISPATCH_STATE_PATH).mtimeMs : null;

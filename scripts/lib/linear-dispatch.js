@@ -201,9 +201,113 @@ function decideRouting(issue, { headless = false } = {}) {
   if (hasMacOnlyLabel(issue)) {
     return { mode: 'tab', reason: `label '${MAC_ONLY_LABEL}' forces a local cmux tab` };
   }
+  // BRO-3652: linear-next.js now passes headless: !args.tab, so the reasons
+  // name the CLI's actual default rather than the pre-3652 "--headless flag".
   return headless
-    ? { mode: 'headless', reason: '--headless flag' }
-    : { mode: 'tab', reason: 'default (no --headless)' };
+    ? { mode: 'headless', reason: 'supervised headless (default; --tab opts out)' }
+    : { mode: 'tab', reason: '--tab flag' };
+}
+
+/**
+ * BRO-3652: whether linear-next.js should re-exec itself detached (its own
+ * session, survives the caller's shell) for this dispatch. Pure, so
+ * tests/unit/linear-next.test.mjs can pin the whole truth table without
+ * spawning anything. The caller resolves decideRouting() FIRST and passes
+ * its mode — that ordering is what keeps a tab-routed (mac-only) card out of
+ * the detached settle window (the "settle-window inversion" review blocker).
+ *
+ * @param {object} o
+ * @param {'tab'|'headless'} o.routingMode   decideRouting().mode
+ * @param {string} [o.routingReason]         decideRouting().reason, for the refusal text
+ * @param {boolean|undefined} o.detachFlag   args.detach: true = explicit --detach,
+ *                                            false = --no-detach / --detach=false,
+ *                                            undefined = not given (→ the default)
+ * @param {boolean} o.tab                    --tab was passed
+ * @param {boolean} [o.preview]              --dry-run / --print-prompt: launches nothing, so never detach
+ * @param {boolean} [o.depsInjected]         main() was called with injected seams (tests) — those
+ *                                            cannot cross a process boundary, so stay attached
+ * @param {boolean} [o.refusesFast]          a cheap, read-only guard the parent can already see will
+ *                                            refuse (kill switch, terminal state): stay attached so the
+ *                                            refusal is instant and in THIS process, not a 30s settle
+ *                                            wait for a child log tail (ship-check finding)
+ * @returns {{detach: boolean, refusal: string|null}}
+ */
+function decideDetach({ routingMode, routingReason = '', detachFlag, tab = false, preview = false, depsInjected = false, refusesFast = false }) {
+  // parseArgs' coerceFlagValue already maps ''/'0'/'false' to false, so any
+  // remaining string form (`--detach=1`, `--detach yes`) is an explicit ask,
+  // same as the bare flag (ship-check finding: `--detach=1` is a documented
+  // form in dispatch-timeout-match.js and was reading as "not explicit").
+  const explicit = detachFlag === true || (typeof detachFlag === 'string' && detachFlag !== '');
+  if (routingMode !== 'headless') {
+    // A cmux-tab launch already returns promptly and has no long-lived
+    // supervisor to protect, so detaching one would just hide its output.
+    // The DEFAULT simply takes the tab path; an EXPLICIT --detach on a
+    // tab-routed card is refused loudly rather than silently doing something
+    // different from what was asked.
+    if (explicit) {
+      const why = tab ? '--tab was passed' : (routingReason || 'this issue routes to a cmux tab');
+      return { detach: false, refusal: `--detach applies only to the headless path, but ${why} (a cmux-tab launch already returns immediately and has no supervisor to protect). Drop --detach.` };
+    }
+    return { detach: false, refusal: null };
+  }
+  if (detachFlag === false) return { detach: false, refusal: null };
+  if (preview) return { detach: false, refusal: null };
+  if (refusesFast) return { detach: false, refusal: null };
+  if (depsInjected && !explicit) return { detach: false, refusal: null };
+  return { detach: true, refusal: null };
+}
+
+/**
+ * BRO-3652 detached-parent launch acknowledgement: the most recent `launch`
+ * ledger row for this Linear issue written at/after `sinceMs`. linear-next.js
+ * writes that row BEFORE spawning on either lane (headless: workspaceRef
+ * `headless:linear:BRO-N`; tab: `workspace:N`), so its presence is the proof
+ * the child got past every guard — liveness alone is not (see the caller).
+ * Pure over the rows the caller read.
+ *
+ * @param {Array<object>} rows   dispatch-ledger entries (any order)
+ * @param {{linearId: string, sinceMs: number}} o
+ * @returns {object|null}
+ */
+function findChildLaunchRow(rows, { linearId, sinceMs }) {
+  let best = null;
+  for (const r of rows || []) {
+    if (!r || r.event !== 'launch' || r.linearId !== linearId) continue;
+    const t = Date.parse(r.ts || '');
+    if (!Number.isFinite(t) || t < sinceMs) continue;
+    if (!best || t > Date.parse(best.ts)) best = r;
+  }
+  return best;
+}
+
+// bsc-runner.js's runJob() classifies how a session ENDED into
+// res.headlessOutcome (see its job-* ledger rows); linear-next.js turns that
+// into the one line an operator reads. Only 'done' is success.
+const HEADLESS_OUTCOME_LABELS = Object.freeze({
+  'done': { label: 'DONE', success: true, detail: 'job-done ledger row written' },
+  'stranded': { label: 'STRANDED', success: false, detail: 'the session declared itself finished but its work never landed on origin/main (job-stranded ledger row) — inspect the log, then land it or re-dispatch with --force' },
+  'blocked': { label: 'BLOCKED', success: false, detail: 'the session reported a blocker it could not clear (job-blocked ledger row) — resolve it, then re-dispatch with --force' },
+  'stopped-short': { label: 'STOPPED SHORT', success: false, detail: 'the session ended without a THIS SESSION verdict (job-stopped-short ledger row) — inspect the log, then re-dispatch with --force (the issue is now In Progress, so a bare re-dispatch trips startedStateGuard)' },
+});
+
+/**
+ * BRO-3652 (review blocker): `res.ok` from runJob() only says the claude
+ * process exited cleanly; the outcome lives in `res.headlessOutcome`.
+ * Printing DONE for every ok result and exiting 0 was the fire-and-forget
+ * this card ends. Pure; unit-tested in tests/unit/linear-next.test.mjs.
+ *
+ * @param {{ok: boolean, stage?: string, headlessOutcome?: string}} res
+ * @returns {{label: string, success: boolean, detail: string}}
+ */
+function describeHeadlessOutcome(res) {
+  if (!res || !res.ok) return { label: `FAILED (${(res && res.stage) || 'unknown'})`, success: false, detail: '' };
+  const known = HEADLESS_OUTCOME_LABELS[res.headlessOutcome];
+  if (known) return { ...known };
+  return {
+    label: `UNKNOWN OUTCOME (${res.headlessOutcome == null ? 'runner returned no headlessOutcome' : String(res.headlessOutcome)})`,
+    success: false,
+    detail: 'not treating this as done — check the ledger for the job-* row',
+  };
 }
 
 // ── seed prompt ─────────────────────────────────────────────────────────
@@ -420,7 +524,15 @@ function dispatchCommentIsOurFinishedLaunch(comment, taskId, entries) {
     launch = e;
   }
   if (!launch) return false; // not a dispatch this host recorded — cross-machine, stay live
-  return Boolean(dispatchLedger.terminalForLaunch(launch, list));
+  // BRO-3481: terminalForLaunch alone only recognizes the cmux-tab
+  // vocabulary (workspaceRef-keyed dead/vanished/prune-closed/remapped) — a
+  // --headless dispatch (every Linear-lane dispatch; see dispatch-watchdog.js's
+  // dispatchArgvFor) finishes through JOB_EVENTS instead, which
+  // terminalJobEventForLaunch checks. Either vocabulary proving this launch
+  // over is enough; which one applies depends on how THIS launch actually
+  // ran, not on the caller.
+  return Boolean(dispatchLedger.terminalForLaunch(launch, list))
+    || Boolean(dispatchLedger.terminalJobEventForLaunch(launch, list));
 }
 
 // Terminal-state guard (task #1517, BRO-247 incident root cause): a
@@ -955,6 +1067,10 @@ module.exports = {
   issueLabelNames,
   hasMacOnlyLabel,
   decideRouting,
+  decideDetach,
+  describeHeadlessOutcome,
+  findChildLaunchRow,
+  HEADLESS_OUTCOME_LABELS,
   checkTerminalStateGuard,
   marketingProjectGuard,
   autofixFiledIssueGuard,

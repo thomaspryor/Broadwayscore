@@ -28,6 +28,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { parseDate } = require('./lib/date-utils');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `strip-stale-single-model-scores.js — Strip stale scores from review files.
 
@@ -64,10 +65,7 @@ function hasQualityExclusion(data) {
 }
 
 function runQualityFlaggedMode() {
-  const dirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); }
-    catch { return false; }
-  });
+  const dirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   let stripped = 0;
   let skipped = 0;

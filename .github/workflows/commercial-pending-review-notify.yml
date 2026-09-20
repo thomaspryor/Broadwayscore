@@ -1,15 +1,19 @@
 name: Commercial Pending Review Notify
 
 # Surfaces data/commercial-pending-review.json to the owner as a single,
-# always-current Notion card. The commercial-data pipeline (batch/deep
+# always-current Linear issue. The commercial-data pipeline (batch/deep
 # research) writes low-confidence findings to this file instead of applying
 # them, but until this workflow existed, nothing ever notified the owner —
-# holds sat invisible forever. See scripts/sync-pending-review-to-notion.js
-# for the sync logic (create/update/mark-done, idempotent).
+# holds sat invisible forever. See scripts/sync-pending-review-to-linear.js
+# for the sync logic (create/comment/mark-done, idempotent).
+#
+# BRO-3431: was filing onto the retired Notion board (scripts/sync-pending-
+# review-to-notion.js) with zero Linear awareness — moved to Linear per
+# CLAUDE.md §6 ("Linear is the source of truth — do NOT create Notion cards").
 #
 # Not the same mechanism as scripts/notify-pending-commercial-notion.js
 # (invoked from commercial-weekly.yml), which creates one card PER
-# recouped-claim entry from a sweep report. This workflow is a single-card
+# recouped-claim entry from a sweep report. This workflow is a single-issue
 # digest of the whole pending-review file, run independently on its own
 # daily cadence.
 
@@ -46,14 +50,14 @@ jobs:
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
 
-      - name: Sync pending review to Notion
+      - name: Sync pending review to Linear
         env:
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            node scripts/sync-pending-review-to-notion.js --dry-run
+            node scripts/sync-pending-review-to-linear.js --dry-run
           else
-            node scripts/sync-pending-review-to-notion.js
+            node scripts/sync-pending-review-to-linear.js
           fi
 
       - name: Notify on failure

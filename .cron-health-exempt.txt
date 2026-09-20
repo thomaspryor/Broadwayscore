@@ -67,7 +67,6 @@ enrich-ibdb-dates.yml
 enrich-reviews.yml
 enrich-runtimes.yml
 fantasy-weekly.yml
-fetch-all-image-formats.yml
 fetch-guardian-reviews.yml
 finance-ingest.yml
 fix-circular-duplicate-pairs.yml
@@ -119,6 +118,11 @@ scrape-waltz-costs.yml
 scrape-wp-blogs.yml
 send-follow-notifications.yml
 sentry-triage.yml
+# Self-heal for orphan slim show files (BRO-3507), same low-stakes shape as
+# fix-circular-duplicate-pairs.yml/dedupe-same-url-bylines.yml above: a stale
+# run means the "Audit orphan slim show files" gate in test.yml sits red
+# longer, not user-facing staleness worth paging on.
+self-heal-orphan-show-files.yml
 snapshot-audience-grades.yml
 snapshot-audience-history.yml
 snapshot-award-scores.yml
@@ -213,6 +217,7 @@ clear-stale-suspected-misattribution-flags.yml
 clear-wrong-show-blockers.yml
 clear-stale-wrong-production-flags.yml
 clear-stale-wrong-show-flags.yml
+clear-stale-roundup-flags.yml
 
 # BRO-54: daily safety-net rotation for data/audit/stage-latency.jsonl.
 # emitStage() already self-rotates the log inline on every pipeline write;
@@ -240,3 +245,8 @@ check-linear-drain-health.yml
 # failures surface via notify-failure (warning severity) and the daily
 # digest. Digest-only, not real-time-paging material.
 drain-self-contradictory-clears.yml
+
+# analyze-traffic-sources.yml (BRO-3419): weekly Monday traffic-source report,
+# owner-facing on the run Summary page only. A missed week costs a report, not
+# a user-facing page; failures surface via notify-failure + the daily digest.
+analyze-traffic-sources.yml

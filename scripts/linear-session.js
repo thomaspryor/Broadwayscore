@@ -208,6 +208,13 @@ async function cmdReport(args, deps = {}) {
     status: args.status,
   });
   await linear.createComment(issue.id, body);
+  // Marker IMMEDIATELY after the comment lands — before getTeam()'s network
+  // round-trip and before the (now git/gh-heavy) Done gate. The Stop-hook
+  // sentinel keys on this marker to know the comment was posted; anything
+  // that dies between the post and the marker forces a retry that would
+  // double-post it. A later gate refusal or state-move failure is reported by
+  // the JSON line / exit code, as before.
+  console.log(lsr.buildIssueIdMarker(issue.id));
 
   const team = await linear.getTeam();
   const completion = lsr.planCompletion({ status: args.status, states: team.states });
@@ -247,6 +254,7 @@ async function cmdReport(args, deps = {}) {
           existingComments,
           verifyEvidence,
         });
+        if (gate.warning) console.error(`⚠️  ${gate.warning}`);
         if (gate.gated && !gate.allowed) refusal = gate;
       }
     }
@@ -256,11 +264,9 @@ async function cmdReport(args, deps = {}) {
     }
   }
 
-  // Marker printed regardless of refusal — the outcome comment above IS the
-  // report the Stop-hook "reported" sentinel tracks (see file header); a
-  // refused Done still means this session communicated status honestly, it
-  // just didn't get to change the issue's state.
-  console.log(lsr.buildIssueIdMarker(issue.id));
+  // (Marker was printed before the gate — see above.) A refused Done still
+  // means this session communicated status honestly; it just didn't get to
+  // change the issue's state.
   console.log(
     JSON.stringify({
       id: issue.id,

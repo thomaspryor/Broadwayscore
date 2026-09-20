@@ -48,6 +48,13 @@ const PAGE_WORTHY_PREFIXES = [
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
   'on-monitor-attempts-exhausted-', // opening-night-monitor-launch.js: 3 launch attempts died tonight, falling back to the standing pipeline
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
+  // BRO-886: the draft itself was created and tracked fine — only the
+  // "hey, go review this in Resend" notification email failed. Without an
+  // immediate page here, the owner has no other heads-up that a time-
+  // sensitive opening-night draft is sitting unsent, and would only find out
+  // via the next morning's digest — same urgency class as
+  // 'broadcast:draft-creation-failed:' above, just a different failure point.
+  'broadcast:owner-notification-failed:',
   'broadcast:overdue:', // opening-night-broadcast.yml: broadcast hasn't sent 6+h after a show's opening — the pipeline (gather/rebuild/score) may be stuck
   // check-missed-broadcasts.js: a show opened, qualified on scored reviews, and
   // then left the 2-day broadcast window without an email ever going out. This
@@ -58,6 +65,14 @@ const PAGE_WORTHY_PREFIXES = [
   // owner noticed one show's email arriving and another's never had). Nothing
   // retries these automatically, so the page IS the recovery mechanism.
   'broadcast:never-sent:',
+  // check-opening-night-drift.yml: local review-texts, the reviews.json
+  // aggregate and live production disagree on a show's review count, past the
+  // grace window, during its opening-night window. This is NOT a new paging
+  // decision — c82cc427bdd's sendAlert(severity:'error', email:true) already
+  // emailed the owner on every occurrence, with no dedup at all. Listing it
+  // here preserves exactly that delivery while the router adds the per-show
+  // cooldown it never had. Suffix is the show id.
+  'opening-night-drift:',
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([
@@ -96,6 +111,15 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // check-claude-auth-health.js (launchd, runs on the Mac — the token never
   // reaches CI).
   'claude-auth:revoked',
+  // BRO-2971: same launch-gate-dead severity as the entry above, but for the
+  // OS/jetsam resource-starvation shape (spawn ETIMEDOUT/ENOMEM/signal kill)
+  // that check-claude-auth-health.js used to misreport as 'claude-auth:revoked'
+  // — kept as its own key so the alert body's remediation (free memory / prune
+  // cmux sessions) never gets overwritten by the auth-revocation one's.
+  'claude-spawn-starved',
+  // BRO-2971: same rationale as the entry above, for the missing/unexecutable
+  // `claude` binary shape (spawn-error) — also NOT a credential problem.
+  'claude-spawn-error',
 
   // Not one of the 3 owner-approved categories above, but a deliberate
   // carve-out (BRO-1699 ship-check finding): this was a direct sendAlert()
@@ -116,6 +140,36 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // entries yet; scripts/check-rebuild-staleness.js (via
   // scripts/lib/guard-escalation.js's shouldEscalate) is the first sender.
   'guard-escalation:stale-checkout-staleness',
+
+  // Category 3 (BRO-2423, port of BRO-545's guard-escalation auto-recovery
+  // to llm-ensemble-score.yml + check-review-count-drift.yml, found during
+  // BRO-545's own /what-else pass): each of these three means the daily
+  // LLM-scoring pipeline — reviews never getting a score is the same
+  // "site's single source of truth has stopped advancing" class BRO-545
+  // covers for rebuild-reviews.yml — or the review-count-drift safety net
+  // that catches silently-suppressed opening-night reviews, has stopped
+  // working for 2+ consecutive daily runs.
+  'guard-escalation:scoring-queue-scan-failed', // scripts/check-scoring-queue-guard.js: count-scoring-queue.js can't trust the corpus scan (broken checkout) — the scoring cascade can't see its own queue depth
+  'guard-escalation:ensemble-scoring-pipeline-crashed', // scripts/run-ensemble-scoring-guard.js: scripts/llm-scoring/index.ts itself is crashing — new reviews stop getting scored
+  'guard-escalation:review-count-drift-strict-breach', // scripts/check-review-count-drift-guard.js: check-review-count-drift.yml's daily --strict run keeps blocking (stale reviews.json or opening-window reviews silently missing)
+
+  // Category 3 carve-out (BRO-1333): main's Test Suite went undetected-red for
+  // ~2 days (2026-06-13 → 06-15) because the only signal was a daily digest
+  // line nobody read in time — direct pushes to main are not gated by
+  // required checks (memory/feedback_branch_protection_direct_push.md), so
+  // broken code keeps landing the whole time it stays red. This is the
+  // "escalation" tier of that same detector (test.yml's own "Route alert —
+  // main test.yml red on consecutive pushes" step, disposition:'human' at 4+
+  // consecutive failures) — the 2-failure 'auto' tier still just files a
+  // Linear card. Verified still live and needed on 2026-09-16: with this key
+  // NOT yet on the allowlist, the 4+ tier had silently fired 73 times over
+  // three weeks with zero real pages, its ledger entry pointing at BRO-3030
+  // (an unrelated noise-audit issue matched by Linear's own substring search
+  // finding the conditionKey quoted in that issue's body, not a dedicated
+  // fix-main tracker) — i.e. the exact "digest line nobody reads" failure
+  // mode this card exists to close. 24h cooldown (routeAlert call site) caps
+  // this to at most one email per day while main stays red.
+  'test-yml:main-streak-escalation',
 ]);
 
 function isPageWorthy(conditionKey) {

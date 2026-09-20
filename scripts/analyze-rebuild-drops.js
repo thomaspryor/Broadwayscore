@@ -304,6 +304,7 @@ async function callClaude(userPrompt) {
         'anthropic-version': '2023-06-01',
         'Content-Length': Buffer.byteLength(body),
       },
+      timeout: 60000,
     }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -315,6 +316,7 @@ async function callClaude(userPrompt) {
       });
     });
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('Claude API request timed out after 60s')); }); // BRO-3838
     req.end(body);
   });
 }

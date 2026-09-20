@@ -26,6 +26,8 @@ const { execFileSync } = require('child_process');
 const { runClaudeCli } = require('./claude-cli.js');
 const ledger = require('./dispatch-ledger.js');
 const { shouldRefuseDispatch, isLeaseLive } = require('./worktree-gc-reclaim.js');
+const { classifyHeadlessResult } = require('./headless-result-classifier.js');
+const { detectJobLanding } = require('./headless-unlanded-detection.js');
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
 // from inside worktrees, and leases/logs must be one canonical set.
@@ -387,6 +389,14 @@ async function runJob(opts) {
       // has a fresh clock and needs the same commit-early contract.
       prompt: buildBudgetPreamble(timeoutMs) + prompt,
       cwd, model, resumeSessionId, timeoutMs, graceMs, logFile,
+      // BRO-3442: every bsc-runner spawn IS a headless `claude -p` job, resume
+      // included — this is the fix for Gate H's cwd-sniffing heuristic
+      // (exit-status-gate.sh: cwd under .claude/worktrees/job-*) missing the
+      // resume path and any isolate:false caller, both of which run from
+      // opts.cwd/REPO rather than a fresh job-* worktree. Passing it directly
+      // makes Gate H's detection independent of cwd entirely for every job
+      // this module spawns.
+      env: { ESG_HEADLESS: '1' },
       onSpawn: (pid) => updateLease(taskId, { pid, cwd }),
       // Persisted the moment the stream's first event lands (~1s in), so a
       // later kill — timeout, crash, power loss — leaves a resumable session
@@ -395,8 +405,42 @@ async function runJob(opts) {
     });
 
     if (res.sessionId) updateLease(taskId, { sessionId: res.sessionId });
+    // Ledger truth and the runner's own return value must agree (ship-check
+    // catch): a caller reading `out.ok`/`out.stage` alone used to see a
+    // plain success even when the ledger recorded BLOCKED/STOPPED_SHORT/
+    // STRANDED — this rides the classified outcome on `out` too (see below).
+    let headlessOutcome = null;
     if (res.ok) {
-      ledger.appendEntry({ event: ledger.JOB_EVENTS.DONE, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD });
+      // BRO-3442: an exit-0 job is not automatically job-done — classify what
+      // the session's own final text actually said before trusting it.
+      const classified = classifyHeadlessResult(res.resultText);
+      if (classified.outcome === 'blocked') {
+        headlessOutcome = 'blocked';
+        ledger.appendEntry({ event: ledger.JOB_EVENTS.BLOCKED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason });
+      } else if (classified.outcome === 'stopped-short') {
+        headlessOutcome = 'stopped-short';
+        ledger.appendEntry({ event: ledger.JOB_EVENTS.STOPPED_SHORT, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason });
+      } else {
+        // 'clean' — a THIS SESSION: CLOSE ME|IDLE with no BLOCKED reason.
+        // Still not automatically DONE: reuse the same SHA-ancestry check
+        // BRO-3424's report-only watchdog sweep already trusts
+        // (headless-unlanded-detection.js's detectJobLanding) to catch a
+        // session that declared itself finished but left real, uncommitted-
+        // or unmerged work sitting in its own worktree. NEVER run this
+        // against the shared REPO checkout itself (headless-unlanded-
+        // detection.js's own header: "must never turn into live git ancestry
+        // checks against the machine's shared checkout") — only isolate:true
+        // fresh worktrees and isolate:false callers that pass their OWN
+        // per-job cwd reach this branch with a real, job-specific `cwd`.
+        const landing = (cwd && cwd !== REPO) ? detectJobLanding({ cwd }) : { status: 'unknown' };
+        if (landing.status === 'unlanded') {
+          headlessOutcome = 'stranded';
+          ledger.appendEntry({ event: ledger.JOB_EVENTS.STRANDED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, sha: landing.sha });
+        } else {
+          headlessOutcome = 'done';
+          ledger.appendEntry({ event: ledger.JOB_EVENTS.DONE, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD });
+        }
+      }
     } else {
       // sessionId + cwd + cost ride the FAILED entry (task #1184 S1): the
       // resume path keys off exactly these fields, and the spend breaker
@@ -418,7 +462,7 @@ async function runJob(opts) {
         detail: (res.errorDetail || '').slice(0, 300),
       });
     }
-    out = { ok: res.ok, jobId, stage: res.stage, exitSignal: res.exitSignal || null, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
+    out = { ok: res.ok, jobId, stage: res.stage, headlessOutcome, exitSignal: res.exitSignal || null, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
     return out;
   } finally {
     // finally runs after the return expression is evaluated but before the

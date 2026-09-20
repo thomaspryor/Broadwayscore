@@ -15,6 +15,7 @@ const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION } = require('./scrapingbee-ack.js');
 const { computeContentHash } = require('./attempt-memory.js');
 const dispatchLedger = require('./dispatch-ledger.js');
+const { DEFAULT_CONCURRENCY_CAP, DEFAULT_SPEND_THRESHOLD_USD } = require('./backlog-drain.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -868,7 +869,7 @@ test('dispatchDetached: --allow-autofix-filed is appended only for linear ids, o
   const fakeChild = { unref: () => {} };
   withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
     mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutofixFiled: true });
-    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --allow-autofix-filed/);
+    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --no-detach --allow-autofix-filed/);
 
     // Default (no opts) must NOT carry the bypass — linear-drain-parked.js and
     // any future caller share this helper and never asked for it.
@@ -891,10 +892,10 @@ test('dispatchDetached: --allow-automation-parked is appended only for linear id
   const fakeChild = { unref: () => {} };
   withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
     mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutomationParked: true });
-    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --allow-automation-parked/);
+    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --no-detach --allow-automation-parked/);
 
     mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutofixFiled: true, allowAutomationParked: true });
-    assert.match(calls.spawn[1][1][1], /--id BRO-9 --headless --allow-autofix-filed --allow-automation-parked/);
+    assert.match(calls.spawn[1][1][1], /--id BRO-9 --headless --no-detach --allow-autofix-filed --allow-automation-parked/);
 
     mod.dispatchDetached('linear:BRO-9', () => {}, 0, null);
     assert.doesNotMatch(calls.spawn[2][1][1], /--allow-automation-parked/);
@@ -1012,4 +1013,133 @@ test('runAutofix: passes allowAutofixFiled to the dispatcher for its own filed r
   assert.equal(dispatchCalls.length, 1);
   assert.deepEqual(dispatchCalls[0][4], { allowAutofixFiled: true, allowAutomationParked: true },
     'runAutofix must waive both autofixFiledIssueGuard AND PARKED_SENTINEL for the issues it just filed (BRO-2499, BRO-3060)');
+});
+
+// ── BRO-3412: spend circuit breaker + concurrency ceiling ───────────────────
+// digest-autofix.js had neither guard its sibling scripts/backlog-drain.js
+// has — see that file's computeSpendCircuitBreaker/computeConcurrency. Wired
+// at the SAME shared default thresholds (DEFAULT_SPEND_THRESHOLD_USD=$12,
+// DEFAULT_CONCURRENCY_CAP=2), never new numbers, and DISPATCH_CAP is untouched.
+
+test('runAutofix: spend circuit breaker tripped — dispatches ZERO rows even with dispatch-count budget and concurrency headroom available', () => {
+  const ledgerPath = tmpLedgerPath();
+  // $12+ spent with zero completions (card-pass) tips computeSpendCircuitBreaker
+  // into halt — same shape scripts/backlog-drain.js's own breaker trips on.
+  appendRaw(ledgerPath, { event: 'card-fail', cardId: '900', usd: DEFAULT_SPEND_THRESHOLD_USD + 1 });
+
+  const dispatchCalls = [];
+  const plan = [{ name: 'Foo failing', message: 'bar', title: 'BSC Daily: Foo failing', state: 'queued', taskId: 900, conditionKey: 'k:foo' }];
+  const out = runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [{ id: 900, status: 'pending', subject: 'BSC Daily: Foo failing' }],
+    ledgerPath, dispatchLedgerEntriesFn: () => [], // no alive jobs — concurrency is NOT the limiter here
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(dispatchCalls.length, 0, 'spend breaker must block every dispatch, not just reduce budget');
+  assert.equal(out[0].state, 'queued', 'row falls through to queued, same as a normal budget exhaustion');
+});
+
+test('runAutofix: concurrency at cap — stops dispatching regardless of remaining dispatch-count budget', () => {
+  const ledgerPath = tmpLedgerPath();
+  // This module's own ledger recorded a prior dispatch onto taskId 910 —
+  // the population computeConcurrency scopes its ceiling to.
+  appendRaw(ledgerPath, { event: 'auto-dispatch', taskId: '910', contentHash: 'h1' });
+  // That dispatch's job is still alive (spawned, no terminal event) in the
+  // SHARED dispatch-ledger — at concurrencyCap=1 this alone saturates the ceiling.
+  const sharedEntries = [
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '910', jobId: 'job-alive', ts: new Date().toISOString() },
+  ];
+
+  const dispatchCalls = [];
+  // Row for a DIFFERENT, otherwise fully-eligible task — cap (dispatch-count
+  // budget) is 3, plenty of room; only the concurrency ceiling should stop it.
+  const plan = [{ name: 'Bar failing', message: 'm', title: 'BSC Daily: Bar failing', state: 'queued', taskId: 911, conditionKey: 'k:bar' }];
+  const out = runAutofix({
+    plan, cap: 3, concurrencyCap: 1, dryRun: false,
+    loadTasksFn: () => [{ id: 911, status: 'pending', subject: 'BSC Daily: Bar failing' }],
+    ledgerPath, dispatchLedgerEntriesFn: () => sharedEntries,
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(dispatchCalls.length, 0, 'at concurrency cap, no dispatch budget is available however high `cap` is');
+  assert.equal(out[0].state, 'queued');
+});
+
+test('runAutofix: guard computation failure fails CLOSED — zero dispatches, never silently open', () => {
+  const ledgerPath = tmpLedgerPath();
+  const dispatchCalls = [];
+  const plan = [{ name: 'Foo failing', message: 'bar', title: 'BSC Daily: Foo failing', state: 'queued', taskId: 920, conditionKey: 'k:foo' }];
+  const out = runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [{ id: 920, status: 'pending', subject: 'BSC Daily: Foo failing' }],
+    ledgerPath,
+    // A truthy, non-iterable value (not an array, not throwing). This is
+    // called TWICE — once inside step 4's reconcile (where it also throws,
+    // inside dispatchReconcile.classifyDispatches, and is swallowed by step
+    // 4's own fail-soft catch — verified directly: classifyDispatches throws
+    // a TypeError on a non-array dispatchLedgerEntries before touching
+    // anything else) and again, independently, by the 4.5 guard block's own
+    // reads (readSharedDispatchLedgerStrict is bypassed in favor of this
+    // injected fn — see runAutofix's dispatchLedgerEntriesFn param), where
+    // computeConcurrency's foldJobs does `for (const e of entries)` over it
+    // and throws "not iterable". Both catches fire (a double-fault); what
+    // this test isolates is that the GUARD's own catch — not step 4's,
+    // which is fail-soft and would let dispatch proceed on its own — is what
+    // actually stops the dispatch below.
+    dispatchLedgerEntriesFn: () => ({ notAnArray: true }),
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(dispatchCalls.length, 0, 'a broken guard computation must never fail open into unlimited dispatch');
+  assert.equal(out[0].state, 'queued');
+});
+
+// BRO-3412 (Codex adversarial-review finding, fixed): reconcileDigestOutcomes'
+// newOutcomes carry no `ts` of their own — appendJsonlLedger only stamps `ts`
+// on the copy it serializes to disk. The FIRST version of this guard reused
+// step 4's in-memory `digestLedgerEntries.concat(newOutcomes)`, so a dispatch
+// reconciled to a costly failure THIS SAME RUN was invisible to
+// computeSpendCircuitBreaker's 24h `e.ts`-filtered window until the NEXT run.
+// The fix re-reads the ledger from disk after step 4's writes. This test has
+// NO pre-seeded spend entry on disk — the spend only exists as a reconcile
+// outcome computed during THIS call — so it only passes with the read-after-
+// write fix in place.
+test('runAutofix: a dispatch reconciled to a costly failure THIS SAME RUN still trips the spend breaker THIS SAME RUN (no stale-ts blind spot)', () => {
+  const ledgerPath = tmpLedgerPath();
+  const title = 'BSC Daily: Expensive failure';
+  const contentHash = computeContentHash({ name: title });
+  const dispatchTs = new Date(Date.now() - 60_000).toISOString();
+  // Prior dispatch attempt on an UNRELATED task — its outcome is what gets
+  // reconciled (and costed) during this very call.
+  appendRaw(ledgerPath, { event: 'auto-dispatch', taskId: '950', contentHash, ts: dispatchTs });
+  const sharedEntries = [
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '950', jobId: 'job-costly', ts: dispatchTs },
+    { event: dispatchLedger.JOB_EVENTS.DONE, taskId: '950', jobId: 'job-costly', ts: new Date().toISOString(), costUSD: DEFAULT_SPEND_THRESHOLD_USD + 1 },
+  ];
+
+  const dispatchCalls = [];
+  // A DIFFERENT, otherwise fully-eligible row — nothing pre-seeds spend
+  // against IT specifically; the freshly-reconciled cost from task 950 must
+  // still halt the whole run's dispatch budget.
+  const plan = [{ name: 'Bar failing', message: 'm', title: 'BSC Daily: Bar failing', state: 'queued', taskId: 951, conditionKey: 'k:bar' }];
+  const out = runAutofix({
+    plan, dryRun: false,
+    loadTasksFn: () => [
+      { id: 950, status: 'pending', subject: title }, // not completed -> reconciles to card-fail
+      { id: 951, status: 'pending', subject: 'BSC Daily: Bar failing' },
+    ],
+    ledgerPath, dispatchLedgerEntriesFn: () => sharedEntries,
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(dispatchCalls.length, 0, 'spend reconciled during THIS run must be visible to the breaker in the SAME run, not just the next one');
+  assert.equal(out[0].state, 'queued');
+});
+
+test('runAutofix: neither guard tripped — dispatches normally up to min(cap, concurrencyCap)', () => {
+  const ledgerPath = tmpLedgerPath();
+  const dispatchCalls = [];
+  const plan = [{ name: 'Foo failing', message: 'bar', title: 'BSC Daily: Foo failing', state: 'queued', taskId: 930, conditionKey: 'k:foo' }];
+  const out = runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [{ id: 930, status: 'pending', subject: 'BSC Daily: Foo failing' }],
+    ledgerPath, dispatchLedgerEntriesFn: () => [],
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(dispatchCalls.length, 1, 'healthy state (no spend, no alive jobs) must still dispatch');
+  assert.equal(out[0].state, 'dispatched');
 });
