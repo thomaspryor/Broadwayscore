@@ -1,10 +1,66 @@
 {
-  "generatedAt": "2026-09-20T12:57:23.653Z",
+  "generatedAt": "2026-09-20T15:36:29.540Z",
   "maxAgeHours": 12,
-  "showsAffected": 18,
-  "strandedFiles": 23,
+  "showsAffected": 25,
+  "strandedFiles": 35,
   "blackoutShows": [],
   "findings": [
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "artsdesk--unknown.json",
+          "url": "https://theartsdesk.com/theatre/stranger-things-first-shadow-phoenix-theatre-review-formidable-stagecraft-unlocks-new-depths",
+          "outlet": "The Arts Desk",
+          "ageHours": null
+        },
+        {
+          "file": "independent--unknown.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
+          "outlet": "The Independent",
+          "ageHours": null
+        },
+        {
+          "file": "thestage--unknown.json",
+          "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+          "outlet": "The Stage",
+          "ageHours": null
+        }
+      ],
+      "usable": 50,
+      "discovered": 71,
+      "totalBlackout": false
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "title": "Operation Mincemeat",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "artsdesk--unknown.json",
+          "url": "https://theartsdesk.com/theatre/operation-mincemeat-fortune-theatre-review-high-octane-musical-comedy-hits-big-time",
+          "outlet": "The Arts Desk",
+          "ageHours": null
+        },
+        {
+          "file": "everything-theatre--unknown.json",
+          "url": "https://everything-theatre.co.uk/2023/05/review-operation-mincemeat-fortune-theatre/",
+          "outlet": "Everything Theatre",
+          "ageHours": null
+        },
+        {
+          "file": "theatre-weekly--unknown.json",
+          "url": "https://theatreweekly.com/review-operation-mincemeat-at-the-fortune-theatre/",
+          "outlet": "Theatre Weekly",
+          "ageHours": null
+        }
+      ],
+      "usable": 38,
+      "discovered": 59,
+      "totalBlackout": false
+    },
     {
       "showId": "the-lost-boys-2026",
       "title": "The Lost Boys",
@@ -14,7 +70,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 1149.8567205555555
+          "ageHours": 1152.5083558333333
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -50,6 +106,28 @@
       "totalBlackout": false
     },
     {
+      "showId": "matilda-the-musical-west-end-2021",
+      "title": "Matilda The Musical",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "express-uk--unknown.json",
+          "url": "https://www.express.co.uk/entertainment/theatre/285905/Theatre-review-Matilda-The-Musical-Cambridge-Theatre-London",
+          "outlet": "Daily Express",
+          "ageHours": null
+        },
+        {
+          "file": "whatsonstage--meriel-patrick.json",
+          "url": "https://www.whatsonstage.com/news/matilda-the-musical_6129/",
+          "outlet": "WhatsOnStage",
+          "ageHours": null
+        }
+      ],
+      "usable": 42,
+      "discovered": 53,
+      "totalBlackout": false
+    },
+    {
       "showId": "the-mousetrap-west-end-2021",
       "title": "The Mousetrap",
       "status": "open",
@@ -58,13 +136,13 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/the-mousetrap-the-alexandra-birmingham-3/",
           "outlet": "The Reviews Hub",
-          "ageHours": 238.22235305555554
+          "ageHours": 240.87398833333333
         },
         {
           "file": "west-end-best-friend--unknown.json",
           "url": "https://www.westendbestfriend.co.uk/news/review-the-mousetrap-the-alexandra-tour",
           "outlet": "West End Best Friend",
-          "ageHours": 117.58527277777777
+          "ageHours": 120.23690805555556
         }
       ],
       "usable": 27,
@@ -72,25 +150,25 @@
       "totalBlackout": false
     },
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
+      "showId": "paranormal-activity-west-end-2025",
+      "title": "Paranormal Activity",
       "status": "open",
       "stranded": [
         {
-          "file": "independent--unknown.json",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
-          "outlet": "The Independent",
+          "file": "guardian--unknown.json",
+          "url": "https://www.theguardian.com/stage/2025/dec/16/paranormal-activity-review-ambassadors-theatre-london",
+          "outlet": "The Guardian",
           "ageHours": null
         },
         {
-          "file": "thestage--unknown.json",
-          "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
-          "outlet": "The Stage",
+          "file": "whatsonstage--unknown.json",
+          "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
+          "outlet": "WhatsOnStage",
           "ageHours": null
         }
       ],
-      "usable": 50,
-      "discovered": 69,
+      "usable": 26,
+      "discovered": 41,
       "totalBlackout": false
     },
     {
@@ -102,17 +180,33 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/burlesque-the-musical-regent-theatre/",
           "outlet": "North West End",
-          "ageHours": 430.1110027777778
+          "ageHours": 432.76263805555556
         },
         {
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/burlesque-the-musical-kings-theatre-glasgow/",
           "outlet": "The Reviews Hub",
-          "ageHours": 117.59237416666667
+          "ageHours": 120.24400944444444
         }
       ],
       "usable": 22,
       "discovered": 32,
+      "totalBlackout": false
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "theatrely--unknown.json",
+          "url": "https://www.theatrely.com/post/on-the-scene-simard-shines-in-schmigadoon",
+          "outlet": "Theatrely",
+          "ageHours": 22.458495555555555
+        }
+      ],
+      "usable": 68,
+      "discovered": 75,
       "totalBlackout": false
     },
     {
@@ -124,7 +218,7 @@
           "file": "theatermania--unknown.json",
           "url": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/",
           "outlet": "TheaterMania",
-          "ageHours": 162.913325
+          "ageHours": 165.56496027777777
         }
       ],
       "usable": 46,
@@ -140,7 +234,7 @@
           "file": "londontheatredirect--unknown.json",
           "url": "https://www.londontheatredirect.com/musical/operation-mincemeat-tickets?srsltid=AfmBOopqWn5X2urH_T_Hz9GwTJM8i1dpD9JO1oThOWl6728AThvffVun",
           "outlet": "Londontheatredirect",
-          "ageHours": 191.05330138888888
+          "ageHours": 193.70493666666667
         }
       ],
       "usable": 35,
@@ -156,7 +250,7 @@
           "file": "radio-times--unknown.json",
           "url": "https://www.radiotimes.com/going-out/oh-mary-hbo-streaming-newsupdate/",
           "outlet": "Radio Times",
-          "ageHours": 140.1763738888889
+          "ageHours": 142.82800916666667
         }
       ],
       "usable": 70,
@@ -172,7 +266,7 @@
           "file": "all-that-dazzles-uk--unknown.json",
           "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
           "outlet": "All That Dazzles  (UK)",
-          "ageHours": 568.0761036111111
+          "ageHours": 570.7277388888889
         }
       ],
       "usable": 45,
@@ -188,11 +282,27 @@
           "file": "musical-theatre-review--unknown.json",
           "url": "https://musicaltheatrereview.com/hadestown-new-cast-announced/",
           "outlet": "Musical Theatre Review",
-          "ageHours": 22.84367
+          "ageHours": 25.495305277777778
         }
       ],
       "usable": 74,
       "discovered": 73,
+      "totalBlackout": false
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "everything-theatre--unknown.json",
+          "url": "https://everything-theatre.co.uk/2024/02/review-hadestown-lyric-theatre/",
+          "outlet": "Everything Theatre",
+          "ageHours": null
+        }
+      ],
+      "usable": 50,
+      "discovered": 111,
       "totalBlackout": false
     },
     {
@@ -220,11 +330,43 @@
           "file": "variety--unknown.json",
           "url": "https://variety.com/2024/music/global/elton-john-not-able-to-see-devil-wears-prada-infection-1236232089/",
           "outlet": "Variety",
-          "ageHours": 23.967278611111112
+          "ageHours": 26.61891388888889
         }
       ],
       "usable": 45,
       "discovered": 53,
+      "totalBlackout": false
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "title": "My Neighbour Totoro",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "thestage--unknown.json",
+          "url": "https://www.thestage.co.uk/reviews/my-neighbour-totoro-barbican-theatre-studio-ghibli-hayao-miyazaki-review",
+          "outlet": "The Stage (Barbican)",
+          "ageHours": null
+        }
+      ],
+      "usable": 34,
+      "discovered": 43,
+      "totalBlackout": false
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "title": "Paddington The Musical",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "standard--unknown.json",
+          "url": "https://www.standard.co.uk/culture/theatre/paddington-the-musical-savoy-theatre-review-b1260368.html",
+          "outlet": "Evening Standard",
+          "ageHours": null
+        }
+      ],
+      "usable": 38,
+      "discovered": 43,
       "totalBlackout": false
     },
     {
@@ -252,7 +394,7 @@
           "file": "nytimes--unknown.json",
           "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
           "outlet": "The New York Times",
-          "ageHours": 501.79602944444446
+          "ageHours": 504.4476647222222
         }
       ],
       "usable": 29,
@@ -260,35 +402,35 @@
       "totalBlackout": false
     },
     {
-      "showId": "matilda-the-musical-west-end-2021",
-      "title": "Matilda The Musical",
+      "showId": "six-the-musical-west-end-2021",
+      "title": "SIX the Musical",
       "status": "open",
       "stranded": [
         {
-          "file": "whatsonstage--meriel-patrick.json",
-          "url": "https://www.whatsonstage.com/news/matilda-the-musical_6129/",
-          "outlet": "WhatsOnStage",
+          "file": "standard--unknown.json",
+          "url": "https://www.standard.co.uk/culture/theatre/six-the-musical-review-kick-ass-musical-about-henry-viiis-wives-channels-its-inner-beyonce-a3927931.html",
+          "outlet": "Evening Standard",
           "ageHours": null
         }
       ],
-      "usable": 42,
-      "discovered": 52,
+      "usable": 23,
+      "discovered": 35,
       "totalBlackout": false
     },
     {
-      "showId": "paranormal-activity-west-end-2025",
-      "title": "Paranormal Activity",
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
       "status": "open",
       "stranded": [
         {
-          "file": "whatsonstage--unknown.json",
-          "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
-          "outlet": "WhatsOnStage",
+          "file": "theatre-weekly--unknown.json",
+          "url": "https://theatreweekly.com/review-cabaret-at-the-kitkat-club-playhouse-theatre-london/",
+          "outlet": "Theatre Weekly",
           "ageHours": null
         }
       ],
-      "usable": 26,
-      "discovered": 40,
+      "usable": 40,
+      "discovered": 52,
       "totalBlackout": false
     },
     {
@@ -316,7 +458,7 @@
           "file": "londonlivinglarge--unknown.json",
           "url": "https://www.londonlivinglarge.com/2026/09/kimberly-akimbo-hampstead-theatre-aug.html",
           "outlet": "Londonlivinglarge",
-          "ageHours": 22.786929444444443
+          "ageHours": 25.43856472222222
         }
       ],
       "usable": 42,
