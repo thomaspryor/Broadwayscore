@@ -16,7 +16,16 @@
  *      for closing-date boilerplate, corroborated across reviews.
  *   2. TodayTix staleness diff — an open OB show with a todaytixId that has
  *      dropped out of data/todaytix-showtimes.json for 2+ consecutive
- *      weekly checks is a candidate-closed signal.
+ *      weekly checks is a candidate-closed signal. A show confirmed still
+ *      running through some other channel despite the delisting (e.g. an
+ *      open-ended immersive attraction not sold via TodayTix) can be marked
+ *      `todaytixStalenessIgnore: true` in shows.json to stop it re-flagging
+ *      every run — see shouldSuppressTodayTixCandidate in ob-closing-detector.js.
+ *
+ * A review-text proposal whose date is still in the future needs no review at
+ * all — the show hasn't closed, reviews are just quoting its announced end
+ * date — so those are auto-filled into shows.json's closingDate (status
+ * untouched) instead of sitting in the backlog; see applyFutureClosingDateFills.
  *
  * Usage:
  *   node scripts/detect-ob-closings.js [--dry-run]
@@ -35,6 +44,8 @@ const {
   updateTodayTixMissingState,
   decideTodayTixCandidates,
   selectAutoApplyClosures,
+  shouldSuppressTodayTixCandidate,
+  isEligibleForFutureClosingDateFill,
 } = require('./lib/ob-closing-detector');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -121,7 +132,14 @@ function runReviewTextSweep(obShows) {
     if (proposal) {
       const suppress = shouldSuppressCandidate(show, proposal.proposedClosingDate, new Date().toISOString().slice(0, 10));
       if (suppress) {
-        suppressed.push({ showId: show.id, proposedClosingDate: proposal.proposedClosingDate, reason: suppress });
+        suppressed.push({
+          showId: show.id,
+          proposedClosingDate: proposal.proposedClosingDate,
+          latestMentionedDate: proposal.latestMentionedDate,
+          confidence: proposal.confidence,
+          evidence: proposal.evidence,
+          reason: suppress,
+        });
         continue;
       }
     }
@@ -152,7 +170,9 @@ function runTodayTixStalenessDiff(obShows) {
   fs.mkdirSync(path.dirname(STATE_PATH), { recursive: true });
   fs.writeFileSync(STATE_PATH, JSON.stringify(nextState, null, 2));
 
-  const candidates = decideTodayTixCandidates(nextState, TODAYTIX_MISSING_THRESHOLD_CHECKS);
+  const showsById = Object.fromEntries(candidateShows.map((s) => [s.id, s]));
+  const candidates = decideTodayTixCandidates(nextState, TODAYTIX_MISSING_THRESHOLD_CHECKS)
+    .filter((c) => !shouldSuppressTodayTixCandidate(showsById[c.showId]));
   return { checked: candidateShowIds.length, candidates, skipped: false };
 }
 
@@ -190,6 +210,42 @@ function applyConfirmedClosures(showsData, candidates, dryRun, todaytixSkipped) 
   if (written.length > 0) saveShows(snapshot);
   // Report only what actually landed: a report claiming a closure the write
   // lock rejected would read as fixed while the site still says open.
+  return written;
+}
+
+/**
+ * Fills in closingDate (never status) for high-confidence review-text
+ * proposals whose date is still in the future — shows.json just doesn't
+ * know its own announced end date yet. Unlike applyConfirmedClosures, this
+ * needs no second signal: the show hasn't closed, so there's no risk of
+ * closing it early, only of leaving a knowable date blank until the backlog
+ * re-flags it every week for nothing to review (card #799).
+ *
+ * Still carries the SAME extension guard as selectAutoApplyClosures (ship-
+ * check adversarial finding, card #799): a future proposedClosingDate is the
+ * MOST-CITED bucket, not necessarily the latest one a review mentions — a
+ * run announced through Oct 4 that later got extended to Oct 18, with only
+ * one review yet reflecting the extension, would otherwise auto-fill the
+ * stale Oct 4 date. Anything the guard rejects is left in the backlog for
+ * human review instead of being silently written.
+ */
+function applyFutureClosingDateFills(showsData, suppressed, dryRun) {
+  const candidates = (suppressed || []).filter(isEligibleForFutureClosingDateFill);
+  if (candidates.length === 0 || dryRun) return candidates;
+
+  const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
+  const snapshot = loadShows();
+  const byId = Object.fromEntries(snapshot.shows.map((s) => [s.id, s]));
+  const written = [];
+  for (const c of candidates) {
+    const show = byId[c.showId];
+    // Re-check under the write lock: a concurrent writer, or this show
+    // actually closing between our read and this save, may have set a date.
+    if (!show || show.closingDate) continue;
+    if (!writeClosingDate(show, c.proposedClosingDate, 'ob-closing-detector (future date, review agreement)', { todayStr: todayISO() })) continue;
+    written.push(c);
+  }
+  if (written.length > 0) saveShows(snapshot);
   return written;
 }
 
@@ -231,11 +287,17 @@ function main() {
     dryRun,
     todaytixStaleness.skipped
   );
+  const autoFilledFutureDates = applyFutureClosingDateFills(
+    showsData,
+    reviewTextSweep.suppressed,
+    dryRun
+  );
 
   const report = {
     generatedAt: new Date().toISOString(),
     mode: dryRun ? 'dry-run' : 'apply',
     autoApplied,
+    autoFilledFutureDates,
     reviewTextSweep: {
       scanned: reviewTextSweep.scanned,
       showsWithNoTexts: reviewTextSweep.showsWithNoTexts,
@@ -262,6 +324,14 @@ function main() {
     for (const e of c.evidence) {
       console.log(`      ${e.reviewId}: "${e.quote}"`);
     }
+  }
+
+  console.log('\n=== Future closing dates auto-filled (no review needed) ===');
+  if (autoFilledFutureDates.length === 0) {
+    console.log('  (none)');
+  }
+  for (const c of autoFilledFutureDates) {
+    console.log(`  ${c.showId} → ${c.proposedClosingDate} [${c.confidence}]`);
   }
 
   console.log('\n=== TodayTix staleness candidates ===');
