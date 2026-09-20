@@ -36,16 +36,31 @@ name: Land
 # test.yml has no workflow_dispatch trigger, so there is no fallback: the PAT
 # push is the only way the landed sha gets its own Test Suite run.
 #
-# What runs in `checks` (parity with test.yml's blocking gates on main):
+# What runs in `checks` (parity with test.yml's blocking gates on main), via
+# scripts/lib/land-gauntlet.sh, run TWICE — on origin/main @ base and on the
+# rebased branch — and judged by scripts/lib/land-gate-delta.js:
 #   - TypeScript Check: tsc root + tsc scripts/llm-scoring + next lint
 #   - Unit Tests: the no-data-dependency batch and the scripts/lib batch,
-#     the EXACT run bodies from test.yml (kept in sync by hand; the bash
-#     integration tests and the slow network batch are not repeated here)
-#   - Lint Workflows: actionlint + the same audit scripts, in one step
+#     the same manifests/timeouts as test.yml (the bash integration tests and
+#     the slow network batch are not repeated here)
+#   - Lint Workflows: actionlint + the same audit scripts, in one gate
 #   NOT here, on purpose: test.yml's data-validation job (validate-data.js
 #   and the corpus gates against the private core data — that is what makes
 #   a run slow, and it stays on main's own push run for the landed sha),
 #   E2E, visual regression. Those still run on main after the landing.
+#
+# VERDICT = NEW FAILURES VS BASE, not strict parity (BRO-3873 step 3
+# follow-up). Strict parity meant that while main itself was red nothing
+# could land — including the fix. Per gate: a failure present on the rebased
+# branch and ABSENT on origin/main @ base refuses the landing; a failure red
+# on both is reported (pre-existing, not blocking); a base failure gone on
+# the branch is reported as fixed. tsc and lint-workflows are strict while
+# green on base (against an empty base set every failure is new — the same
+# rule). Same judgement as land-branch.js's merged-tree gate and
+# merge-post-merge-test-gate.js, whose diffFailingSets() this reuses. The
+# base result is cached per verification-relevant tree hash (actions/cache
+# for this branch, an artifact for every other land/** branch) so a second
+# landing against the same base code does not pay for the base twice.
 
 on:
   push:
@@ -59,6 +74,9 @@ on:
 
 permissions:
   contents: write
+  # actions: read — the checks job looks up a base-gauntlet artifact by name
+  # across runs (gh api …/actions/artifacts) before re-running the base.
+  actions: read
 
 env:
   BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
@@ -77,14 +95,18 @@ jobs:
       # latest-wins by design, not a lost validation. Read by
       # scripts/audit-workflow-concurrency.js.
       cancel-in-progress: true
-    # Starting budget (BRO-3873 step 3): checkout ~1-2 min, npm ci ~30s, core
-    # data ~30s, tsc x2 + lint ~3 min, unit batches ~5 min, lint audits ~1
-    # min. Re-measure from the live runs before changing.
-    timeout-minutes: 30
+    # Budget (measured, run 35536264524): checkout ~30s, npm ci ~25s, core
+    # data ~10s, one gauntlet ~6.5 min (tsc x2 + lint ~35s, unit batches ~4.3
+    # min, scripts/lib ~40s, lint audits ~40s). The base gauntlet is a second
+    # ~6.5 min ONLY when neither the cache nor an artifact has it for this
+    # base tree. Re-measure from the live runs before changing.
+    timeout-minutes: 40
     outputs:
       tip: ${{ steps.rebase.outputs.tip }}
       base: ${{ steps.rebase.outputs.base }}
       gate: ${{ steps.verdict.outputs.gate }}
+      new_failures: ${{ steps.delta.outputs.new_failures }}
+      pre_existing: ${{ steps.delta.outputs.pre_existing }}
     steps:
       - name: Checkout the land branch
         uses: actions/checkout@v5
@@ -121,6 +143,7 @@ jobs:
             echo "::error::$BRANCH does not rebase cleanly onto origin/main @ ${BASE:0:10} — resolve the conflict on the branch and push again"
             exit 1
           fi
+          echo "rebased=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
           git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
 
@@ -147,322 +170,155 @@ jobs:
           node scripts/build-actor-slugs-manifest.js
           node scripts/build-cast-manifest.js
 
-      # ── Gate: TypeScript Check (test.yml typescript-check) ─────────────────
-      - name: tsc — root (src/, app/, tests/)
-        id: tsc
-        run: npx tsc --noEmit
-
-      - name: tsc — scripts/llm-scoring/
-        id: tsc_llm
-        if: always() && steps.deps.outcome == 'success'
-        run: npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
-
-      - name: next lint
-        id: lint
-        if: always() && steps.deps.outcome == 'success'
-        run: npx next lint
-
-      # ── Gate: Unit Tests (test.yml unit-tests, the two in-repo batches) ─────
-      - name: Refresh gold lists from current reviews
-        if: always() && steps.deps.outcome == 'success'
-        run: node scripts/compute-gold-lists.js
-
-      - name: Run unit tests (no-data-dependency)
-        id: unit
-        if: always() && steps.deps.outcome == 'success'
-        # EXACT body of test.yml's step of the same name (BRO-3873 step 3).
-        env:
-          BSC_STAGE_LATENCY_MUTE: '1'
-        run: |
-          # node --test with zero file args does NOT fail - it silently falls back
-          # to its own default discovery glob (can exit 0 having run almost nothing,
-          # or hang scanning the whole tree). A `test -s` size check alone would
-          # pass on a whitespace-only manifest that then word-splits to zero
-          # `node --test` args - the exact silent-discovery failure this guards
-          # against. Read into an array and check its length instead (same
-          # pattern already used below for scripts/lib/*.test.mjs), which also
-          # avoids $(cat ...)'s unquoted word-splitting/glob-expansion on the
-          # manifest entries themselves (task #763 ship-check finding).
-          # --test-timeout: see the note on the scripts/lib step below. Without a
-          # per-test ceiling one wedged file consumes the whole job budget and
-          # the run concludes `cancelled`, which reports as a red X with no
-          # failing test named — the failure is invisible.
-          #
-          # BOTH BATCHES ALWAYS RUN (2026-08-14 correctness fix). GitHub's
-          # default shell for `run:` on Linux is `bash -e {0}`, so the first
-          # non-zero command ABORTS the step. Run 31832656296 is the worked
-          # example: the node batch exited 1 (one wedged file) and the entire
-          # 539-test tsx batch below never executed — not failed, not reported,
-          # just gone. The run looked "a bit red" while a whole batch had never
-          # been run at all, which is strictly worse than a red batch because
-          # nothing names the gap. So: capture each batch's exit code instead of
-          # letting -e abort, print both pass/fail counts, and fail the step if
-          # EITHER batch failed. A batch that did not run shows up as a missing
-          # count, not as silence.
-          set +e
-
-          run_batch() {  # $1=label $2=logfile; remaining args = the command
-            local label="$1" log="$2"; shift 2
-            echo "::group::$label batch"
-            "$@" 2>&1 | tee "$log"
-            local rc=${PIPESTATUS[0]}
-            echo "::endgroup::"
-            # Reporter-agnostic on purpose: node --test's default reporter is
-            # TAP on Node 20 (what CI pins, `# pass N`) but spec on Node 22+
-            # (`ℹ pass N`), and a count line that silently reads UNKNOWN after
-            # a Node bump would defeat the whole point of printing counts.
-            # Match both, take $NF so the column shift doesn't matter, and
-            # tail -n1 so it is the top-level summary and never a nested
-            # subtest diagnostic.
-            BATCH_PASS=$(grep -E '^(# pass |ℹ pass )' "$log" | tail -n1 | awk '{print $NF}')
-            BATCH_FAIL=$(grep -E '^(# fail |ℹ fail )' "$log" | tail -n1 | awk '{print $NF}')
-            : "${BATCH_PASS:=UNKNOWN}" "${BATCH_FAIL:=UNKNOWN}"
-            if [ "$rc" -ne 0 ]; then
-              # BRO-2238: a 1-of-N batch failure previously printed nothing
-              # but "exit=1" — Node's TAP output already has the answer
-              # (`not ok N - <name>` plus a `location: 'file:line'`
-              # diagnostic a few lines below it) but it was buried unlabeled
-              # inside the raw tee'd log under a collapsed group. Pull those
-              # pairs into the step summary, and annotate each failing test
-              # name as its own ::error:: so it shows up in the PR checks UI
-              # without anyone needing to expand a log group.
-              local failures
-              failures=$(awk '
-                /^not ok / { print; show=1; next }
-                show && /^  location:/ { print; show=0; next }
-                show && /^  \.\.\.$/ { show=0; next }
-              ' "$log")
-              if [ -n "$failures" ]; then
-                echo "::group::$label batch — failing tests"
-                echo "$failures"
-                echo "::endgroup::"
-                {
-                  echo "### $label batch — failing tests"
-                  echo '```'
-                  echo "$failures"
-                  echo '```'
-                } >> "$GITHUB_STEP_SUMMARY"
-                while IFS= read -r name; do
-                  echo "::error::$label batch failing test: $name"
-                done < <(grep '^not ok ' "$log" | sed -E 's/^not ok [0-9]+ - //')
-              else
-                echo "::warning::$label batch exited $rc but no 'not ok' TAP line was found in the log — likely a crash or timeout above, not a named test failure."
-              fi
-            fi
-            return "$rc"
-          }
-
-          mapfile -t node_tests < tests/unit-test-manifest.txt
-          [ ${#node_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest.txt is empty or missing"; exit 1; }
-          run_batch node /tmp/unit-node-batch.log \
-            node --test --test-timeout 300000 "${node_tests[@]}"
-          node_rc=$?; node_pass=$BATCH_PASS; node_fail=$BATCH_FAIL
-
-          mapfile -t tsx_tests < tests/unit-test-manifest-tsx.txt
-          [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; exit 1; }
-          run_batch tsx /tmp/unit-tsx-batch.log \
-            npx tsx --test --test-timeout 300000 "${tsx_tests[@]}"
-          tsx_rc=$?; tsx_pass=$BATCH_PASS; tsx_fail=$BATCH_FAIL
-
-          echo "── unit test batches ──────────────────────────────"
-          echo "node batch: ${#node_tests[@]} files, pass=$node_pass fail=$node_fail exit=$node_rc"
-          echo "tsx  batch: ${#tsx_tests[@]} files, pass=$tsx_pass fail=$tsx_fail exit=$tsx_rc"
-          if [ "$node_rc" -ne 0 ] || [ "$tsx_rc" -ne 0 ]; then
-            echo "::error::unit tests failed (node exit=$node_rc, tsx exit=$tsx_rc) — see the per-batch groups above"
-            exit 1
-          fi
-
-      - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
-        id: libtests
-        if: always() && steps.deps.outcome == 'success'
-        # EXACT body of test.yml's step of the same name.
-        run: |
-          shopt -s nullglob
-          tests=(scripts/lib/*.test.mjs)
-          [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
-          node --test --test-timeout 300000 "${tests[@]}"
-
-      # ── Gate: Lint Workflows (test.yml lint-workflows) ──────────────────────
       - name: Install actionlint
-        if: always() && steps.deps.outcome == 'success'
         run: |
           ACTIONLINT_VERSION=1.7.7
           curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
           sudo mv actionlint /usr/local/bin/
 
-      - name: Lint workflows (actionlint + the test.yml lint-workflows audits)
-        id: lintwf
-        if: always() && steps.deps.outcome == 'success'
+      # ── Base gauntlet: origin/main @ base, reused when already measured ─────
+      # Key = sha256 over the base tree's VERIFICATION-RELEVANT paths
+      # (scripts/lib/land-gate-delta.js --code-hash: INERT_FOR_VERIFICATION_RE
+      # from land-branch.js excluded), not the raw base sha — main moves every
+      # minute or two on bot data churn, and a raw-sha key would never hit.
+      - name: Base cache key
+        id: basekey
+        env:
+          BASE: ${{ steps.rebase.outputs.base }}
+        run: |
+          HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$BASE") || { echo "::error::could not hash the base tree"; exit 1; }
+          echo "code_hash=$HASH" >> "$GITHUB_OUTPUT"
+          echo "base ${BASE:0:10} → code tree hash ${HASH:0:16}"
+
+      - name: Restore the base gauntlet result (actions/cache)
+        id: base_cache
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ runner.temp }}/land-gauntlet/base
+          key: land-base-gauntlet-v1-${{ steps.basekey.outputs.code_hash }}
+
+      - name: Restore the base gauntlet result (artifact saved by another land/** run)
+        id: base_artifact
+        if: steps.base_cache.outputs.cache-hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # The same script set test.yml's lint-workflows job runs, one per
-        # line, ALL of them run (a failure does not short-circuit the rest)
-        # and every failing one is named at the end. Keep this list in step
-        # with that job. The commit-message escape hatches test.yml honours
-        # ([skip-actionlint], [skip-orphan-audit], [skip-cron-audit]) apply
-        # here too so an opening-night hotfix lands the same way.
+          NAME: land-base-gauntlet-v1-${{ steps.basekey.outputs.code_hash }}
+        # actions/cache is scoped to the branch that saved it (plus main), so a
+        # base result saved from land/a is invisible to land/b. Artifacts are
+        # not scoped: look one up by name across runs before paying to re-run.
         run: |
-          set +e
-          MSG=$(git log -1 --format=%B)
-          FAILED=""
-          gate() {  # $1=label; rest = command
-            local label="$1"; shift
-            echo "::group::$label"
-            "$@"
-            local rc=$?
-            echo "::endgroup::"
-            if [ "$rc" -ne 0 ]; then
-              echo "::error::lint-workflows gate failed: $label (exit $rc)"
-              FAILED="$FAILED\n  - $label"
-            fi
-          }
-          if echo "$MSG" | grep -Fq "[skip-actionlint]"; then
-            echo "::warning::actionlint check skipped via [skip-actionlint] commit-message tag"
+          ID=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=$NAME&per_page=10" \
+            --jq '[.artifacts[] | select(.expired | not)] | sort_by(.created_at) | reverse | .[0].id // empty') || ID=""
+          if [ -z "$ID" ]; then
+            echo "hit=false" >> "$GITHUB_OUTPUT"
+            echo "no artifact named $NAME — the base gauntlet runs now"
+            exit 0
+          fi
+          mkdir -p "$RUNNER_TEMP/land-gauntlet/base"
+          if gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ID/zip" > "$RUNNER_TEMP/base-artifact.zip" \
+             && unzip -oq "$RUNNER_TEMP/base-artifact.zip" -d "$RUNNER_TEMP/land-gauntlet/base" \
+             && [ -f "$RUNNER_TEMP/land-gauntlet/base/meta.json" ]; then
+            echo "hit=true" >> "$GITHUB_OUTPUT"
+            echo "restored artifact $NAME (id $ID): $(node -p 'const m=require(process.argv[1]); `base ${m.sha.slice(0,10)}, measured ${(m.wallMs/1000).toFixed(0)}s`' "$RUNNER_TEMP/land-gauntlet/base/meta.json")"
           else
-            gate actionlint actionlint -color -shellcheck="" -ignore 'maximum number of inputs' .github/workflows/*.yml
+            rm -rf "$RUNNER_TEMP/land-gauntlet/base"
+            echo "hit=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::artifact $NAME (id $ID) could not be restored — running the base gauntlet"
           fi
-          if echo "$MSG" | grep -Fq "[skip-orphan-audit]"; then
-            echo "::warning::orphan-test audit + decayed-exemption check skipped via [skip-orphan-audit] commit-message tag"
-          else
-            gate audit-orphan-tests node scripts/audit-orphan-tests.js
-            decayed() {
-              local STALE="" f
-              while IFS= read -r f; do
-                [ -z "$f" ] && continue
-                if node --test --test-timeout 30000 "$f" > /dev/null 2>&1; then STALE="$STALE $f"; fi
-              done < <(node scripts/audit-orphan-tests.js --list-exempt)
-              if [ -n "$STALE" ]; then
-                echo "::error::Decayed exemption(s) — these tests now pass and must be removed from EXEMPT_KNOWN_BROKEN in scripts/audit-orphan-tests.js:$STALE"
-                return 1
-              fi
-              echo "All exemptions still failing — no decay."
-            }
-            gate decayed-exemptions decayed
-          fi
-          for s in \
-            audit-workflow-concurrency \
-            audit-data-gate-heal-paths \
-            audit-workflow-hygiene \
-            assert-broadcast-step-order \
-            audit-test-yml-lib-deps \
-            audit-test-yml-manifest-paths \
-            audit-workflow-secret-gaps \
-            audit-review-texts-test-yml-coverage \
-            audit-toplevel-script-test-yml-coverage \
-            audit-run-budget-coverage \
-            audit-alert-reachability \
-            audit-push-core-data-audit-gap \
-            audit-errexit-unguarded-substitution \
-            audit-same-job-breadcrumb-coverage \
-            audit-delete-without-breadcrumb \
-            audit-push-retry-budgets \
-            audit-linear-issuecreate-chokepoint \
-            audit-launchd-stale-sync-guard \
-            audit-gate-corpus-guard-coverage \
-            audit-invisible-verification \
-            audit-fetchpage-cleanup \
-            audit-help-flag-safety \
-            audit-duplicate-of-floor \
-            audit-unbounded-fetch \
-            audit-cmux-spawn-credential \
-            audit-reconcile-coverage \
-            lint-resend-calls \
-            lint-wrongproduction-provenance \
-            audit-digest-clip-safety \
-            lint-committed-pii \
-            audit-tests-vs-derived-data \
-            audit-playwright-evaluate-click \
-            test-data-write-guard; do
-            gate "$s" node "scripts/$s.js"
-          done
-          gate audit-direct-provider-calls node scripts/audit-direct-provider-calls.js --strict
-          gate audit-venue-write-guard node scripts/audit-venue-write-guard.js --strict
-          gate audit-alert-senders node scripts/audit-alert-senders.js --check
-          claude_md() {
-            node -e '
-              const fs = require("fs");
-              const cfg = JSON.parse(fs.readFileSync("scripts/lib/claude-md-anchors.json", "utf8"));
-              const md = fs.readFileSync("CLAUDE.md", "utf8");
-              const missing = (cfg.anchors || []).filter(p => !md.includes(p));
-              if (missing.length) { console.error("::error::CLAUDE.md missing required anchor phrase(s): " + missing.join(" | ")); process.exit(1); }
-              const bytes = Buffer.byteLength(md, "utf8");
-              if (cfg.byteLimit && bytes > cfg.byteLimit) { console.error(`::error::CLAUDE.md is ${bytes}B, over the ${cfg.byteLimit}B cap.`); process.exit(1); }
-              console.log(`CLAUDE.md OK: ${cfg.anchors.length} anchors present, ${bytes}B <= ${cfg.byteLimit}B`);
-            '
-          }
-          gate claude-md-integrity claude_md
-          if echo "$MSG" | grep -Fq "[skip-cron-audit]"; then
-            echo "::warning::cron-health coverage audit skipped via [skip-cron-audit] commit-message tag"
-          else
-            gate audit-cron-health-coverage node scripts/audit-cron-health-coverage.js
-          fi
-          OUT=$(node scripts/audit-playwright-count-assertions.js || true)
-          echo "$OUT"
-          if echo "$OUT" | grep -q "unguarded count() assignment"; then
-            echo "::warning::Playwright count()-without-assertion pattern found — a selector drift here would silently pass having checked nothing."
-          fi
-          tony_loso() {
-            # Against the whole rebased branch (BASE...HEAD), not HEAD~1: a
-            # multi-commit branch must not dodge the gate by splitting commits.
-            local BASE="${{ steps.rebase.outputs.base }}"
-            if ! git diff "$BASE" --name-only -- src/lib/data-tony-predictions.ts | grep -q .; then
-              echo "data-tony-predictions.ts unchanged — skipping LOSO snapshot gate"; return 0
-            fi
-            if ! git diff "$BASE" -- src/lib/data-tony-predictions.ts | grep -E '^[+-][^+-]' | grep -vE '^[+-][[:space:]]*(//|\*)' | grep -qE 'TONY_RECIPES|categoryAwardsScore'; then
-              echo "Only comments / unrelated lines changed — skipping LOSO snapshot gate"; return 0
-            fi
-            if git diff "$BASE" --name-only -- data/tony-loso-stats.json | grep -q .; then
-              echo "Recipe changed AND snapshot updated — OK"; return 0
-            fi
-            echo "::error::TONY_RECIPES / categoryAwardsScore changed in src/lib/data-tony-predictions.ts but data/tony-loso-stats.json was not updated. Run: npx tsx scripts/audit-tony-loso.ts && git add data/tony-loso-stats.json"
-            return 1
-          }
-          gate tony-loso-snapshot tony_loso
-          symlinks() {
-            local BAD
-            BAD=$(git ls-files --stage | grep -E "^(120000|160000)" || true)
-            if [ -n "$BAD" ]; then echo "::error::Tracked symlinks or gitlinks found:"; echo "$BAD"; return 1; fi
-            echo "No tracked symlinks or gitlinks"
-          }
-          gate tracked-symlinks symlinks
-          for g in prebuild core-data-pairing private-git-add merge-drivers scraping-fallback scrapingdog-pairing theatr-token demo-flags alert-ledger-commit ledger-coverage ledger-step-guard reset-soft-partial-commit; do
-            gate "lint-workflow-guards:$g" bash scripts/lint-workflow-guards.sh "$g"
-          done
-          for w in review-texts reviews-json shows-json commercial-json audience-buzz-json; do
-            gate "lint-write-routing:$w" bash scripts/lint-write-routing.sh "$w"
-          done
-          if [ -n "$FAILED" ]; then
-            printf "::error::lint-workflows failures:%b\n" "$FAILED"
+
+      - name: Run the base gauntlet (origin/main @ base) — nothing cached
+        id: base_run
+        if: steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          LAND_BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+        # Same checkout, base sha: node_modules, the core data and the
+        # manifests are gitignored and survive the checkout; tracked check
+        # residue (gold lists, audit json) is discarded by -f — nothing in this
+        # tree is anyone's work. The gauntlet script never fails; its per-gate
+        # exit codes are the verdict's input.
+        run: |
+          rm -rf "$RUNNER_TEMP/land-gauntlet/base"
+          git checkout -q -f --detach "$BASE"
+          bash scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet/base"
+          git checkout -q -f --detach "$REBASED"
+          echo "back on the rebased tip $(git rev-parse --short HEAD)"
+
+      - name: Save the base gauntlet result (actions/cache)
+        if: steps.base_run.outcome == 'success'
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ runner.temp }}/land-gauntlet/base
+          key: land-base-gauntlet-v1-${{ steps.basekey.outputs.code_hash }}
+
+      - name: Save the base gauntlet result (artifact, visible to every land/** run)
+        if: steps.base_run.outcome == 'success'
+        uses: actions/upload-artifact@v5
+        with:
+          name: land-base-gauntlet-v1-${{ steps.basekey.outputs.code_hash }}
+          path: ${{ runner.temp }}/land-gauntlet/base
+          retention-days: 7
+          if-no-files-found: error
+
+      # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
+      - name: Run the gauntlet on the rebased branch
+        id: branch_run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LAND_BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+        run: |
+          if [ "$(git rev-parse HEAD)" != "$REBASED" ]; then
+            echo "::error::HEAD $(git rev-parse --short HEAD) is not the rebased tip ${REBASED:0:10} — refusing to judge the wrong tree"
             exit 1
           fi
-          echo "lint-workflows: all gates green"
+          bash scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet/branch"
+
+      - name: Gate verdict — new failures vs base
+        id: delta
+        # scripts/lib/land-gate-delta.js: per gate, PASS unless a failure is
+        # present on the branch and absent on the base; both sets (new,
+        # pre-existing) and the fixed set go to the step summary. Exit 1 names
+        # the first failing gate in `gate` for the digest line.
+        run: |
+          SRC="ran now (nothing cached)"
+          [ "${{ steps.base_cache.outputs.cache-hit }}" = "true" ] && SRC="actions/cache hit"
+          [ "${{ steps.base_artifact.outputs.hit }}" = "true" ] && SRC="artifact hit (saved by another land/** run)"
+          node scripts/lib/land-gate-delta.js \
+            --base-dir "$RUNNER_TEMP/land-gauntlet/base" \
+            --branch-dir "$RUNNER_TEMP/land-gauntlet/branch" \
+            --summary-file "$GITHUB_STEP_SUMMARY" \
+            --github-output "$GITHUB_OUTPUT" \
+            --base-source "$SRC"
 
       - name: Gate verdict
         id: verdict
         if: always()
         # Names the FIRST red gate for the land job's digest line and the step
-        # summary. A job that reaches here green hands tip+base to `land`.
+        # summary: an infrastructure step that failed outright, else the first
+        # gate the delta rule refused. A job that reaches here green hands
+        # tip+base to `land`.
         run: |
           GATE=""
           for pair in \
             "rebase:${{ steps.rebase.outcome }}" \
             "npm-ci:${{ steps.deps.outcome }}" \
-            "tsc:${{ steps.tsc.outcome }}" \
-            "tsc-llm-scoring:${{ steps.tsc_llm.outcome }}" \
-            "next-lint:${{ steps.lint.outcome }}" \
-            "unit-tests:${{ steps.unit.outcome }}" \
-            "scripts-lib-tests:${{ steps.libtests.outcome }}" \
-            "lint-workflows:${{ steps.lintwf.outcome }}"; do
+            "base-gauntlet:${{ steps.base_run.outcome }}" \
+            "branch-gauntlet:${{ steps.branch_run.outcome }}" \
+            "delta:${{ steps.delta.outcome }}"; do
             name="${pair%%:*}"; outcome="${pair#*:}"
             [ -z "$GATE" ] && [ "$outcome" = "failure" ] && GATE="$name"
             echo "  $name: $outcome"
           done
+          if [ "$GATE" = "delta" ]; then GATE="${{ steps.delta.outputs.gate }}"; GATE="${GATE:-delta}"; fi
           echo "gate=$GATE" >> "$GITHUB_OUTPUT"
           {
             echo "### land.yml checks — \`$BRANCH\`"
             echo ""
             echo "- tip: \`${{ steps.rebase.outputs.tip }}\`"
-            echo "- rebased onto origin/main: \`${{ steps.rebase.outputs.base }}\`"
+            echo "- rebased onto origin/main: \`${{ steps.rebase.outputs.base }}\` (rebased tip \`${{ steps.rebase.outputs.rebased }}\`)"
             echo "- verdict: ${GATE:+RED (first failing gate: $GATE)}${GATE:-GREEN}"
           } >> "$GITHUB_STEP_SUMMARY"
 
