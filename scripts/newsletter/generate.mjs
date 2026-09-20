@@ -879,7 +879,7 @@ function outOfTownOpenings() {
       const earliest = scored.reduce((min, r) => (min == null || r.publishDate < min ? r.publishDate : min), null);
       return { s, earliest, agg: aggregateScore(s.id) };
     })
-    .filter(({ earliest, agg }) => earliest && inWeek(earliest) && agg && agg.count >= minReviews('off-broadway'))
+    .filter(({ earliest, agg, s }) => earliest && inWeek(earliest) && agg && agg.count >= minReviews('off-broadway') && hasFreshRunCoverage(s))
     .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   if (!withScore.length) return { html: null, list: [] };
   const list = withScore.slice(0, 6).map(x => x.s);
@@ -1739,7 +1739,7 @@ function catchupOpeningsSection() {
     if (s.status !== 'open') return false;
     if (!s.openingDate || s.openingDate < start || s.openingDate >= weekStartStr) return false; // before this week's window
     if (!notFeatured(s.id) || excludedShowIds.has(s.id)) return false; // not already a hero card or a closing-this-week row
-    return a && a.count >= minReviews(s.category);
+    return a && a.count >= minReviews(s.category) && hasFreshRunCoverage(s);
   }).sort((a, b) => b.a.avg - a.a.avg)
     .slice(0, 6);
   if (!list.length) return null;
@@ -2447,7 +2447,11 @@ function weBroadwaySection() {
 function operaOpeningsSection() {
   const list = shows.filter(s => isOperaShow(s) && inWeek(s.openingDate) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
-  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
+  // Opera carries the most priorRuns in the corpus (Met revivals:
+  // carmen-off-broadway-2025 and don-giovanni-off-broadway-2025 both mix
+  // 2023/2024 reviews into a later run), so this section needs the
+  // fresh-run gate at least as much as the others (QA review, 2026-09-20).
+  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3 && hasFreshRunCoverage(x.s));
   if (!withScore.length) return null;
   const marketColor = '#a78bfa'; // indigo/violet — opera's accent
   markOpening('opera-openings', withScore.map(x => x.s));

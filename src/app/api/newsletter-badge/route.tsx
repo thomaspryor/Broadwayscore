@@ -87,26 +87,33 @@ const INTER_URLS: ReadonlyArray<{ weight: 700 | 800; url: string }> = [
 // instance pays the fetch once. Never rejects — a font-CDN blip must degrade
 // to the old default-font render, never 500 a badge that an already-sent
 // email is pointing at.
+// Hard ceiling on the CDN fetch. Without it a HANGING (as opposed to
+// failing) jsdelivr blocks the badge until the platform's own limit, and
+// because the pending promise is module-cached every concurrent request in
+// that isolate hangs with it — a failure mode the pre-PNG <div> could not
+// have (QA review, 2026-09-20).
+const FONT_FETCH_TIMEOUT_MS = 1500;
+
 type InterFont = { name: 'Inter'; data: ArrayBuffer; weight: 700 | 800; style: 'normal' };
 let interPromise: Promise<InterFont[]> | null = null;
 function loadInter(): Promise<InterFont[]> {
   if (!interPromise) {
     interPromise = Promise.all(
       INTER_URLS.map(({ weight, url }) =>
-        fetch(url)
+        fetch(url, { signal: AbortSignal.timeout(FONT_FETCH_TIMEOUT_MS) })
           .then((r) => (r.ok ? r.arrayBuffer() : null))
           .then((data): InterFont | null => (data ? { name: 'Inter', data, weight, style: 'normal' } : null))
           .catch(() => null)
       )
     ).then((fonts) => {
       const loaded = fonts.filter((f): f is InterFont => f !== null);
-      // Don't let a transient CDN blip stick for the isolate's whole life:
-      // clearing the cache on a total failure means the NEXT request retries,
-      // instead of every badge from this instance silently rendering in the
-      // fallback font until the isolate recycles. A partial load (one weight
-      // of two) is still cached — it renders correctly and a retry storm
-      // would cost more than the one synthesized weight.
-      if (loaded.length === 0) interPromise = null;
+      // Cache only a COMPLETE load. Clearing on anything less means the next
+      // request retries, instead of this isolate serving the wrong thing
+      // until it recycles. Caching a partial load was the original form and
+      // it was wrong: with only the 800 file the score badge silently
+      // re-renders at ~800 — precisely the weight drift this change exists
+      // to fix — with no retry and no signal (QA review, 2026-09-20).
+      if (loaded.length !== INTER_URLS.length) interPromise = null;
       return loaded;
     });
   }
