@@ -43,8 +43,8 @@ test('splitReport keeps everything before the first tool section as the summary'
 });
 
 test('buildSubject carries the title, the spike count and the incomplete flag', () => {
-  assert.equal(buildSubject(SAMPLE), 'Traffic sources — Jun 15 to Sep 15 (incomplete) — 2 spikes');
-  assert.equal(buildSubject(SAMPLE.replace(/> ⚠️ \*\*Incomplete report\*\*\n> - GA4 skipped: no creds\n/, '')), 'Traffic sources — Jun 15 to Sep 15 — 2 spikes');
+  assert.equal(buildSubject(SAMPLE), 'Weekly traffic report (incomplete): 2 spikes, Jun 15 to Sep 15');
+  assert.equal(buildSubject(SAMPLE.replace(/> ⚠️ \*\*Incomplete report\*\*\n> - GA4 skipped: no creds\n/, '')), 'Weekly traffic report: 2 spikes, Jun 15 to Sep 15');
 });
 
 test('markdownToHtml renders headings, bold, bullets, tables, blockquotes and escaped pipes', () => {

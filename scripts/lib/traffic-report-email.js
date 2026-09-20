@@ -92,7 +92,8 @@ function buildSubject(md) {
   // Count only the headline list under "What changed" (the "How to read" bullets are bold too).
   const changed = (md.split(/^## What changed/m)[1] || '').split(/^## /m)[0];
   const spikes = (changed.match(/^- \*\*/gm) || []).length;
-  return `${title}${incomplete} — ${spikes} spike${spikes === 1 ? '' : 's'}`;
+  const range = title.replace(/^Traffic sources — /, '');
+  return `Weekly traffic report${incomplete}: ${spikes} spike${spikes === 1 ? '' : 's'}, ${range}`;
 }
 
 function buildHtml(md, { runUrl } = {}) {
