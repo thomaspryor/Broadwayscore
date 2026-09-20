@@ -18,6 +18,11 @@
 
 'use strict';
 
+// Pure constant, zero I/O (same file linear-staleness-check.js's own
+// checkIssueStaleness reads) — reused here rather than a second hardcoded
+// Set so "what counts as terminal" can't drift between the two checks.
+const { TERMINAL_STATE_TYPES } = require('./linear-staleness-check');
+
 // Team BRO currently has TWO states of type "started" (In Progress, In
 // Review) — see linear-issue-create.js:58's byType() helper, which is
 // correct for park/dispatch (those only ever need "unstarted"/"backlog")
@@ -120,7 +125,24 @@ function planClaim({ issue, states, requestedTitle, requestedDescription }) {
   if (!state) {
     throw new Error(`planClaim: no "${CLAIM_STATE_NAME}" (or any started-type) state found on this team`);
   }
-  return { action: 'activate', issueId: issue.id, stateId: state.id, stateName: state.name };
+  // BRO-3869: reopening a Todo/Backlog issue is routine, but reopening one
+  // that reached a TERMINAL state (Done/Canceled) means someone already
+  // concluded it — exactly the shape of the BRO-3456 incident, where a
+  // session re-entered a card a sibling session had already shipped and
+  // closed. This is the automatic half of the fix: it fires on every claim
+  // of a previously-terminal issue, unlike `report --since=`, which only
+  // helps if the session remembers to pass it. cmdClaim uses this flag to
+  // print the issue's existing comments before proceeding — so the session
+  // sees why it was concluded before doing anything else, not after.
+  const reopenedFromTerminal = TERMINAL_STATE_TYPES.has(currentType);
+  return {
+    action: 'activate',
+    issueId: issue.id,
+    stateId: state.id,
+    stateName: state.name,
+    reopenedFromTerminal,
+    previousStateName: reopenedFromTerminal ? issue.state.name : null,
+  };
 }
 
 // Ad-hoc `claim --title=...` dedup: find an OPEN issue with this exact title

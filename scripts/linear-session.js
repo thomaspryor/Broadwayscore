@@ -14,7 +14,8 @@
  *   node scripts/linear-session.js claim --issue=BRO-123
  *   node scripts/linear-session.js claim --title="Ad hoc fix" --description="..." [--priority=2] [--project="Data"]
  *   node scripts/linear-session.js report --issue=<id-or-identifier> --status=<done|in-review|paused|blocked> \
- *     --summary="what changed" [--key-files="a.js,b.js"] [--verification="node --test ..."]
+ *     --summary="what changed" [--key-files="a.js,b.js"] [--verification="node --test ..."] \
+ *     [--since=<ISO8601>]
  *   node scripts/linear-session.js ping
  *
  * `claim` prints a __LINEAR_ISSUE_ID__=<id> tagged marker (parsed by
@@ -23,6 +24,19 @@
  * sentinel — ~/.claude/hooks/linear-issue-required-stop.sh's refusal path
  * (evaluateSessionClose) gates on the REPORTED sentinel, not claimed, so a
  * session that claims and never reports still gets blocked at Stop.
+ *
+ * `report --since=<ISO8601 timestamp this session last knew the issue's
+ * state>` runs scripts/lib/linear-staleness-check.js against the issue this
+ * call already fetches (no extra round trip) and prints a loud stderr
+ * warning — never blocks — when the card moved without this session seeing
+ * it: reached a terminal state, or picked up comments after --since (BRO-3869,
+ * filed after a sibling session concluded+shipped BRO-3456 while this session
+ * was independently still investigating it and, on re-entry, proposed
+ * reverting the already-shipped decision). Pass --since whenever this report
+ * proposes or follows a production-impacting action (a flag change, a deploy,
+ * an incident card) on a card you didn't just create — the warning is your
+ * cue to re-read the issue's comments and surface any divergence to the
+ * owner BEFORE that action lands, not after.
  *
  * Env: LINEAR_API_KEY in .env or environment (read lazily by linear-client.js).
  */
@@ -35,11 +49,12 @@ const lsr = require('./lib/linear-session-reporting');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
+const { checkIssueStaleness } = require('./lib/linear-staleness-check');
 
 const USAGE = `Usage:
   node scripts/linear-session.js claim --issue=BRO-123
   node scripts/linear-session.js claim --title="..." --description="..." [--priority=2] [--project="Name"]
-  node scripts/linear-session.js report --issue=<id-or-identifier> --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."] [--force="<reason ≥10 chars>"]
+  node scripts/linear-session.js report --issue=<id-or-identifier> --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."] [--force="<reason ≥10 chars>"] [--since=<ISO8601>]
   node scripts/linear-session.js ping
 
   report --status=done is REFUSED (exit 5) unless the issue carries
@@ -48,7 +63,14 @@ const USAGE = `Usage:
   "VERIFY: <cmd>" line — read from the issue description, its existing
   comments, and this call's own outcome comment. Bypass with
   --force="<reason ≥10 chars>", or LINEAR_DONE_GATE_DISABLED=1 for automation
-  that must not block (BRO-457).`;
+  that must not block (BRO-457).
+
+  --since=<ISO8601>: when THIS session last knew the issue's state (its own
+  claim time or last read/comment) — re-checked, never blocking, against the
+  issue this call fetches. Warns on stderr and sets "staleness" in the
+  printed JSON if the card reached a terminal state or picked up comments
+  after that timestamp (BRO-3869) — pass it before a report that proposes a
+  production-impacting action.`;
 
 function parseArgs(argv) {
   const args = { _: [] };
@@ -163,6 +185,28 @@ async function cmdClaim(args) {
       result = { id: created.id, identifier: created.identifier, url: null };
     }
   } else if (plan.action === 'activate') {
+    if (plan.reopenedFromTerminal) {
+      // BRO-3869: fires unconditionally on every claim of a previously-Done/
+      // Canceled issue — no flag to remember, unlike report --since=. Print
+      // BEFORE the mutation so the session reads why it was concluded
+      // before doing anything else. issue.comments is only populated on the
+      // --issue path (getIssue's query fetches it); the --title path's
+      // listIssues() doesn't carry comments, so this degrades to the state
+      // name + a pointer to the issue URL rather than silently saying nothing.
+      console.error(`\n⚠️  ${issue.identifier} was "${plan.previousStateName}" (a concluded state) — you're reopening it.`);
+      console.error('   Read why it was concluded before proceeding:');
+      const comments = (issue.comments && issue.comments.nodes) || [];
+      if (comments.length > 0) {
+        for (const c of comments.slice(-3)) {
+          const author = (c.user && c.user.name) || 'unknown';
+          const snippet = String(c.body || '').replace(/\s+/g, ' ').slice(0, 200);
+          console.error(`   [${c.createdAt}] ${author}: ${snippet}${snippet.length === 200 ? '…' : ''}`);
+        }
+      } else if (issue.url) {
+        console.error(`   (no comment history fetched on this path — read ${issue.url} directly)`);
+      }
+      console.error('');
+    }
     await linear.updateIssue(plan.issueId, { stateId: plan.stateId });
     result = issue;
   } else {
@@ -200,6 +244,24 @@ async function cmdReport(args, deps = {}) {
 
   const issue = await linear.getIssue(args.issue);
   if (!issue) throw new Error(`No Linear issue found for "${args.issue}"`);
+
+  // BRO-3869: re-check the issue this call JUST fetched (no extra round
+  // trip) against when this session last knew its state, BEFORE the outcome
+  // comment posts — so a session about to report a conclusion or a proposed
+  // action sees the warning while it can still change what it's about to
+  // post, not after. Opt-in (--since) rather than always-on: this needs the
+  // session's own last-known timestamp, which report has no way to infer on
+  // its own, and a session filing a brand-new card has nothing to compare
+  // against yet. Never blocks — see linear-staleness-check.js's header.
+  let staleness = null;
+  if (args.since) {
+    staleness = checkIssueStaleness(issue, args.since);
+    if (staleness.stale) {
+      console.error(`\n⚠️  ${issue.identifier} changed since ${args.since} — re-read before proceeding:`);
+      for (const s of staleness.signals) console.error(`   - ${s.detail}`);
+      console.error('');
+    }
+  }
 
   const body = lsr.buildOutcomeCommentBody({
     summary: args.summary,
@@ -274,6 +336,7 @@ async function cmdReport(args, deps = {}) {
       status: args.status,
       stateName: stateMoved ? completion.stateName : (issue.state && issue.state.name) || null,
       doneGateRefused: !!refusal,
+      staleness,
     })
   );
 
