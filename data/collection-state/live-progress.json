@@ -1,132 +1,133 @@
 {
-  "updatedAt": "2026-09-20T10:42:56.984Z",
-  "processed": 155,
-  "failed": 1027,
-  "successRate": "13.1%",
+  "updatedAt": "2026-09-20T11:10:01.172Z",
+  "processed": 159,
+  "failed": 1105,
+  "successRate": "12.6%",
   "tierBreakdown": {
-    "playwright": 87,
-    "amp": 0,
-    "browserbase": 28,
+    "playwright": 90,
+    "amp": 3,
+    "browserbase": 31,
     "directCookies": 4,
-    "scrapingbee": 30,
+    "scrapingbee": 31,
     "brightdata": 20,
     "archiveToday": 0,
     "archive": 17
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 18,
   "recentActivity": [
     {
-      "t": "2026-09-20T06:48:22.534Z",
+      "t": "2026-09-20T10:59:04.699Z",
       "event": "bb-session",
-      "session": "be3e20b3",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+      "session": "e609692c",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/collected-stories-theater-revi"
     },
     {
-      "t": "2026-09-20T06:48:27.276Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-20T06:48:45.991Z",
+      "t": "2026-09-20T10:59:13.609Z",
       "event": "bb-session",
-      "session": "30a82cfd",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+      "session": "7e1750b1",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/collected-stories-theater-revi"
     },
     {
-      "t": "2026-09-20T06:48:50.712Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-20T06:58:44.708Z",
+      "t": "2026-09-20T11:00:48.138Z",
       "event": "bb-session",
-      "session": "1664b1de",
-      "url": "https://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+      "session": "d6108927",
+      "url": "https://www.variety.com/review/VE1117942647.html?categoryId=33&amp;cs=1"
     },
     {
-      "t": "2026-09-20T06:58:45.655Z",
+      "t": "2026-09-20T11:00:48.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-20T11:01:11.200Z",
+      "event": "bb-session",
+      "session": "bcb7e494",
+      "url": "https://www.variety.com/review/VE1117942647.html?categoryId=33&amp;cs=1"
+    },
+    {
+      "t": "2026-09-20T11:01:11.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-20T11:01:30.549Z",
+      "event": "bb-session",
+      "session": "478cadd0",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/enron-film-review-1004086708.s"
+    },
+    {
+      "t": "2026-09-20T11:01:38.296Z",
+      "event": "bb-session",
+      "session": "8c568095",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/enron-film-review-1004086708.s"
+    },
+    {
+      "t": "2026-09-20T11:02:36.623Z",
+      "event": "bb-session",
+      "session": "28bcc806",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-10040864"
+    },
+    {
+      "t": "2026-09-20T11:02:44.380Z",
+      "event": "bb-session",
+      "session": "372e09cb",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-10040864"
+    },
+    {
+      "t": "2026-09-20T11:03:35.624Z",
+      "event": "bb-session",
+      "session": "217ea609",
+      "url": "https://www.nytimes.com/aponline/2010/04/25/arts/AP-US-Theater-Review-Promises-P"
+    },
+    {
+      "t": "2026-09-20T11:03:36.064Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-09-20T07:00:55.079Z",
+      "t": "2026-09-20T11:03:54.359Z",
       "event": "bb-session",
-      "session": "1ab271d1",
-      "url": "https://www.thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rache"
+      "session": "88e0ff95",
+      "url": "https://www.nytimes.com/aponline/2010/04/25/arts/AP-US-Theater-Review-Promises-P"
     },
     {
-      "t": "2026-09-20T07:00:55.970Z",
+      "t": "2026-09-20T11:03:54.785Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-09-20T07:09:08.275Z",
+      "t": "2026-09-20T11:05:00.589Z",
       "event": "bb-session",
-      "session": "969bbf32",
-      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-londo"
+      "session": "16278373",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/looped-theater-review-10040750"
     },
     {
-      "t": "2026-09-20T07:09:09.221Z",
+      "t": "2026-09-20T11:05:12.499Z",
+      "event": "bb-session",
+      "session": "ed261bb5",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/looped-theater-review-10040750"
+    },
+    {
+      "t": "2026-09-20T11:06:37.297Z",
+      "event": "bb-session",
+      "session": "98801816",
+      "url": "https://www.variety.com/review/VE1117941667.html?categoryid=33&amp;cs=1&amp;ref="
+    },
+    {
+      "t": "2026-09-20T11:06:37.661Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "variety.com"
     },
     {
-      "t": "2026-09-20T07:22:47.741Z",
+      "t": "2026-09-20T11:06:54.675Z",
       "event": "bb-session",
-      "session": "f9d253bf",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+      "session": "e0a3e23d",
+      "url": "https://www.variety.com/review/VE1117941667.html?categoryid=33&amp;cs=1&amp;ref="
     },
     {
-      "t": "2026-09-20T07:22:48.761Z",
+      "t": "2026-09-20T11:06:55.036Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-20T07:29:35.374Z",
-      "event": "bb-session",
-      "session": "7a39215f",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-09-20T07:29:57.003Z",
-      "event": "bb-session",
-      "session": "f592693d",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-09-20T10:33:55.087Z",
-      "event": "bb-session",
-      "session": "418cb5f5",
-      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
-    },
-    {
-      "t": "2026-09-20T10:33:55.646Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-20T10:35:36.039Z",
-      "event": "bb-session",
-      "session": "d218e22b",
-      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
-    },
-    {
-      "t": "2026-09-20T10:40:49.363Z",
-      "event": "bb-session",
-      "session": "926c14c6",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
-    },
-    {
-      "t": "2026-09-20T10:41:01.159Z",
-      "event": "bb-session",
-      "session": "c8b60255",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
-    },
-    {
-      "t": "2026-09-20T10:42:12.897Z",
-      "event": "bb-session",
-      "session": "f43d032a",
-      "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
+      "domain": "variety.com"
     }
   ]
 }
