@@ -35,6 +35,39 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// `kind` values scripts/bsc-reconcile.js writes to reconcile-report.jsonl
+// that represent a problem an automated pass could NOT resolve on its own —
+// i.e. worth a human glance. Deliberately an allowlist, not a blocklist: a
+// blocklist silently admits every future kind bsc-reconcile.js adds, which
+// is exactly how the routine card-drift-pass/summary heartbeats ended up
+// here in the first place (card #794). Grepped from bsc-reconcile.js's
+// reportFn call sites — keep in sync when that file adds a new kind.
+const ACTIONABLE_RECONCILE_KINDS = new Set([
+  'task-sweep-error', 'wrapper-probe-error', 'untracked-sweep-error', 'flagless-sweep-error',
+  'task-session-dead', 'task-stalled', 'task-stall-exhausted',
+  'task-redispatch-blocked', 'task-redispatch-refused', 'task-stall-blocked', 'task-stall-refused',
+  'zombie-flip', 'zombie-flip-failed', 'zombie-outcome-needs-review',
+  'zombie-outcome-park-failed', 'zombie-outcome-park-marker-failed',
+  'flagless-session', 'flagless-revive-failed',
+  'card-drift-suspected', 'card-drift-delivery-failed',
+  'orphan', 'orphan-suspect', 'retry-cap',
+]);
+
+// Subset of ACTIONABLE_RECONCILE_KINDS whose taskId (+jobId for orphan) is a
+// real per-instance key a later success can be correlated against. See the
+// correlation comment at the reconcile-report reader below for why
+// flagless-session/zombie-flip are deliberately excluded from this set even
+// though they're both actionable.
+const CORRELATABLE_RECONCILE_KINDS = new Set([
+  'task-session-dead', 'task-stalled', 'orphan', 'orphan-suspect',
+]);
+
+// kind values meaning a CORRELATABLE_RECONCILE_KINDS problem for the same
+// taskId (+jobId) was handled automatically within the window.
+const RESOLVING_RECONCILE_KINDS = new Set([
+  'task-redispatched', 'task-stall-redispatched', 'orphan-resolved',
+]);
+
 // ── Pure: commit-log → plain-English lines ──────────────────────────────────
 
 // Input: array of "author\tsubject" lines from origin/main, newest first.
@@ -127,7 +160,7 @@ function summarizeWorktrees(entries) {
 
 // ── Impure gatherer — every source fails soft ───────────────────────────────
 
-function gatherDigest({ repo, hours = 24 } = {}) {
+function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
   const digest = { generatedAt: new Date().toISOString(), hours, commits: null, stuck: {}, errors: [] };
   // timeoutMs param: worktree-scan git calls run up to ~3× per worktree ×
   // ~20 worktrees — cap them at 5s each so a wedged repo can't stall the
@@ -157,16 +190,28 @@ function gatherDigest({ repo, hours = 24 } = {}) {
     // so the transfer covers exactly what the log below needs. A complete
     // clone (the owner's Mac, where this also runs) gets NO extra flags: a
     // --shallow-since there would truncate a full clone into a shallow one.
-    try {
-      let isShallow = false;
-      try { isShallow = run('git', ['rev-parse', '--is-shallow-repository'], null, 5000).trim() === 'true'; } catch { /* fail open */ }
-      const windowStartEpoch = Math.floor(Date.now() / 1000) - Math.ceil(hours) * 3600;
-      const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch: windowStartEpoch });
-      // unbounded-fetch-ok: depthArgs IS the bound (--shallow-since anchored at
-      // windowStartEpoch when shallow, empty on a complete clone by design).
-      // The lint can't evaluate a spread, so the waiver is explicit.
-      run('git', ['fetch', ...depthArgs, 'origin', 'main', '--quiet']);
-    } catch { digest.errors.push('git fetch failed — commit summary may be stale'); }
+    // skipFetch (card #794 follow-up, adversarial ship-check finding): a
+    // real `git fetch` writes FETCH_HEAD/remote-tracking refs to disk — a
+    // side effect scripts/lib/health-row-probe.js's "side-effect-free,
+    // read-only" contract cannot catch (it only patches Node's own fs.*
+    // calls, not a child git process). health-check.js's checkStuckPipelineItems()
+    // — which this same function backs, and which health-row-probe.js reruns
+    // on EVERY --live card verification, not just this row's — passes
+    // skipFetch so a live acceptance recheck never mutates the checkout.
+    // send-morning-digest.js's real run keeps fetching so the owner's actual
+    // email reflects CI's latest commits, not a possibly-stale local main.
+    if (!skipFetch) {
+      try {
+        let isShallow = false;
+        try { isShallow = run('git', ['rev-parse', '--is-shallow-repository'], null, 5000).trim() === 'true'; } catch { /* fail open */ }
+        const windowStartEpoch = Math.floor(Date.now() / 1000) - Math.ceil(hours) * 3600;
+        const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch: windowStartEpoch });
+        // unbounded-fetch-ok: depthArgs IS the bound (--shallow-since anchored at
+        // windowStartEpoch when shallow, empty on a complete clone by design).
+        // The lint can't evaluate a spread, so the waiver is explicit.
+        run('git', ['fetch', ...depthArgs, 'origin', 'main', '--quiet']);
+      } catch { digest.errors.push('git fetch failed — commit summary may be stale'); }
+    }
     const log = run('git', ['log', 'origin/main', `--since=${hours} hours ago`, '--pretty=%an\t%s']);
     digest.commits = summarizeCommits(log.split('\n').filter(Boolean));
   } catch (err) {
@@ -209,20 +254,58 @@ function gatherDigest({ repo, hours = 24 } = {}) {
   //     retries the 5-min bsc-reconcile tick recorded in the window. This is
   //     the ONLY surface for that file — without it, orphaned jobs are
   //     detected but never shown to the owner (Opus ship-check P1).
+  //
+  //     Card #794 (recurring false "Stuck pipeline items" alarm): the reader
+  //     used to take EVERY line in the window, including the routine
+  //     heartbeat/success kinds bsc-reconcile.js emits every tick regardless
+  //     of health (card-drift-pass/summary fire on every drift sweep,
+  //     task-redispatched/flagless-revived/orphan-resolved/retry/timeout-
+  //     resume report a SUCCESSFUL automatic fix, and the *-throttled kinds
+  //     are routine per-tick budget deferrals). With those included, this
+  //     bucket was non-empty essentially every day regardless of whether
+  //     anything was actually stuck, which is what made the digest-autofix
+  //     card recur daily. Only kinds that mean "an automated system hit a
+  //     problem it could not resolve on its own" belong here.
   try {
     const recPath = path.join(repo, 'data', 'audit', 'reconcile-report.jsonl');
     if (fs.existsSync(recPath) && fs.statSync(recPath).size < 5 * 1024 * 1024) { // never slurp a runaway file into the email path
       const cutoff = Date.now() - hours * 3600 * 1000;
       const notFuture = Date.now() + 3600 * 1000; // clock-skew guard: a future-dated entry must not recur forever
       const lines = fs.readFileSync(recPath, 'utf8').split('\n').filter(Boolean);
-      const recent = [];
+      const windowed = [];
       for (const l of lines) {
         try {
           const e = JSON.parse(l);
           const t = Date.parse(e.ts);
-          if (t > cutoff && t < notFuture) recent.push(e);
+          if (t > cutoff && t < notFuture) windowed.push(e);
         } catch { /* skip corrupt line */ }
       }
+      // Adversarial ship-check finding (card #794 follow-up): task-session-dead
+      // fires, then bsc-reconcile.js attempts redispatch in the SAME tick and
+      // (on success) logs task-redispatched right after — both land in the
+      // window, so keeping the former without checking for the latter would
+      // recreate the exact "counts a self-healed event as still stuck"
+      // version of this bug for its whole 24h lifetime. Same shape for
+      // task-stalled → task-stall-redispatched and orphan/orphan-suspect →
+      // orphan-resolved. Matched by taskId (+jobId for orphan, since a task
+      // can have multiple jobs) — NOT applied to flagless-session (its
+      // reportFn calls all share the literal taskId 'sweep', not a
+      // per-workspace key, so correlating on taskId there would suppress
+      // unrelated flagless workspaces) or zombie-flip (the flip itself IS the
+      // automatic remediation for a card that already sat broken 24-31 days;
+      // that a month passed before anything noticed is the point of surfacing it).
+      const resolvedKeys = new Set();
+      for (const e of windowed) {
+        if (!RESOLVING_RECONCILE_KINDS.has(e.kind)) continue;
+        resolvedKeys.add(String(e.taskId ?? ''));
+        if (e.jobId != null) resolvedKeys.add(`${e.taskId ?? ''}:${e.jobId}`);
+      }
+      const recent = windowed.filter((e) => {
+        if (!ACTIONABLE_RECONCILE_KINDS.has(e.kind)) return false;
+        if (!CORRELATABLE_RECONCILE_KINDS.has(e.kind)) return true;
+        const key = e.jobId != null ? `${e.taskId ?? ''}:${e.jobId}` : String(e.taskId ?? '');
+        return !resolvedKeys.has(key);
+      });
       if (recent.length) {
         digest.stuck.headlessJobs = recent.map(e => `[${e.kind}] ${e.detail}`.slice(0, 200));
       }
@@ -318,4 +401,4 @@ function renderDigestBlock(digest) {
   return parts.join('\n');
 }
 
-module.exports = { summarizeCommits, parseWorkspaces, summarizeWorktrees, gatherDigest, renderDigestBlock, stuckSignals, countStuckSignals };
+module.exports = { summarizeCommits, parseWorkspaces, summarizeWorktrees, gatherDigest, renderDigestBlock, stuckSignals, countStuckSignals, ACTIONABLE_RECONCILE_KINDS, CORRELATABLE_RECONCILE_KINDS, RESOLVING_RECONCILE_KINDS };
