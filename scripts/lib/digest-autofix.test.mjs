@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey, reconcileDigestOutcomes, isDispatchResolved, splitOnShowSuffix, MAX_FOLD_PER_CONDITION } = require('./digest-autofix.js');
+const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey, reconcileDigestOutcomes, isDispatchResolved, readJsonlLedger, splitOnShowSuffix, MAX_FOLD_PER_CONDITION } = require('./digest-autofix.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
@@ -1142,4 +1142,28 @@ test('runAutofix: neither guard tripped — dispatches normally up to min(cap, c
   });
   assert.equal(dispatchCalls.length, 1, 'healthy state (no spend, no alive jobs) must still dispatch');
   assert.equal(out[0].state, 'dispatched');
+});
+
+// ── BRO-3868: exact-line dedupe (union-merge duplicate-row safety) ─────────
+// The ledger is now merge=union — a sync's union recovery can leave the SAME
+// row twice (locally-saved rows re-appended over origin's committed ones
+// verbatim). readJsonlLedger must collapse an exact duplicate line to one
+// row, since checkPark/priorAttempts count every row with no dedupe of
+// their own.
+test('readJsonlLedger collapses byte-identical duplicate lines to one row', () => {
+  const ledgerPath = tmpLedgerPath();
+  const line = JSON.stringify({ ts: '2026-09-16T11:37:07.007Z', event: 'auto-dispatch', taskId: '1', contentHash: 'abc' });
+  fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
+  fs.writeFileSync(ledgerPath, `${line}\n${line}\n`);
+  const rows = readJsonlLedger(ledgerPath);
+  assert.equal(rows.length, 1, 'a union-resurrected exact duplicate must count once, not twice');
+});
+
+test('readJsonlLedger keeps two distinct rows for the same card (real repeat failures, not a duplicate)', () => {
+  const ledgerPath = tmpLedgerPath();
+  const contentHash = computeContentHash({ name: 'x', notes: 'y' });
+  appendRaw(ledgerPath, { event: 'card-fail', cardId: '1', contentHash, note: 'fail 1' });
+  appendRaw(ledgerPath, { event: 'card-fail', cardId: '1', contentHash, note: 'fail 2' });
+  const rows = readJsonlLedger(ledgerPath);
+  assert.equal(rows.length, 2, 'distinct real events (different ts, appendJsonlLedger stamps each) must never be deduped away');
 });

@@ -741,7 +741,9 @@ async function runReclassifyFlagged() {
     // URL is a Wicked 2003-10-31 review, but cached fullText is Brantley
     // on Omnium Gatherum (Variety Arts Theater, East Village). Clearing
     // isNonReview would re-add an Omnium score (79) to wicked-2003.
-    // Needs wrongShow=true via cross-attribution audit instead.
+    // wrongShow=true now set by audit-review-type-wrong-show.js (BRO-3862,
+    // 2026-09-20) — kept in this exclude set as defense-in-depth so a future
+    // --force reclassify-flagged run can't clear isNonReview here either.
     'wicked-2003/nytimes--ben-brantley.json',
   ]);
 

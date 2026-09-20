@@ -696,13 +696,27 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
 
 // ── attempt-memory plumbing (own ledger, shared dispatch-ledger for job outcomes) ──
 
+// Exact-line dedupe (BRO-3868, same pattern as linear-drain-parked.js's
+// readLedger — this file's own merge=union .gitattributes comment names it
+// as a separate condition from ordering-safety): a union merge can leave the
+// SAME row twice (sync-audit-checkout.sh's recovery re-appends locally-saved
+// rows over origin's committed ones verbatim), and checkPark/priorAttempts
+// below count every matching row with no dedupe of their own — one
+// duplicated row would turn a single failure into a park, or a first
+// dispatch into a false opus-escalating "second attempt". Safe against true
+// collisions: appendJsonlLedger stamps every row with a fresh
+// `new Date().toISOString()` at write time, so two genuinely distinct
+// attempts never serialize identically.
 function readJsonlLedger(p) {
   let raw;
   try { raw = fs.readFileSync(p, 'utf8'); } catch { return []; }
   const out = [];
+  const seen = new Set();
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
     try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
   }
   return out;
@@ -725,9 +739,12 @@ function readJsonlLedgerStrict(p) {
   try { raw = fs.readFileSync(p, 'utf8'); }
   catch (err) { if (err && err.code === 'ENOENT') return []; throw err; }
   const out = [];
+  const seen = new Set(); // dedupe rationale: see readJsonlLedger above
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
     try { out.push(JSON.parse(t)); } catch { /* skip corrupt line — matches readJsonlLedger */ }
   }
   return out;

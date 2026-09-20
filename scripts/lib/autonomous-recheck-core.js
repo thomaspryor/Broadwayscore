@@ -24,6 +24,12 @@
 'use strict';
 
 const { evaluateVerifiability, isSafeCheckCommand } = require('./verify-gate.js');
+// BRO-3551: the OPEN-backlog sweep (selectOpenBacklogSweepCandidates, near
+// the bottom of this file) reuses the exact same dispatch-time gates
+// bsc-next.js/linear-next.js already enforce, rather than inventing a
+// second "is this card real work" predicate — CLAUDE.md §15.
+const { autofixFiledIssueGuard } = require('./linear-dispatch.js');
+const { classifyHeadlessDispatchability } = require('./headless-dispatchability.js');
 // The single specificity ranking (node --test/npx tsx --test = 0, test -f =
 // 1, everything else = 2) and the single candidate-extraction regex glue —
 // exported from autonomous-verify-cmd.js so they're used here identically to
@@ -426,6 +432,83 @@ function describeResult(r) {
   return `${r.name}: no way to check this automatically`;
 }
 
+// ── Open-backlog acceptance sweep (BRO-3551) ────────────────────────────────
+//
+// selectRecheckTargets above answers "did a CLAIMED fix hold" — Done/Paused
+// cards a session already closed. This answers a cheaper, upstream question:
+// among cards NEVER dispatched at all, which ones are already fixed on main,
+// by other work, and just never got closed? BRO-2511 is the motivating
+// case — hand-dispatched, closed in 1m53s having written zero code, because
+// both cited failures were already fixed. Its own acceptance command would
+// have answered that in 0.5s.
+//
+// The funnel is deliberately the SAME gate bsc-next.js/linear-next.js apply
+// before spending a session on a card (autofixFiledIssueGuard, then
+// classifyHeadlessDispatchability's five blockers) — not a new, looser
+// "looks abandoned" heuristic. A card this predicate selects is one a human
+// or headless dispatch would otherwise have paid a full session to discover
+// was already done.
+//
+// Priority numbers per linear-import-rules.js's TIER_TO_LINEAR (P0:1, P1:2,
+// P2:3, P3:4) — one mapping, not re-guessed here (CLAUDE.md §15).
+const OPEN_BACKLOG_SWEEP_PRIORITIES = Object.freeze([2, 3]); // P1, P2
+// Linear's non-started workflow-state types — "Backlog" and "Todo" in this
+// team's UI. Deliberately excludes 'started' (In Progress/In Review): a card
+// someone already has hands on is not this sweep's population.
+const OPEN_BACKLOG_SWEEP_STATE_TYPES = Object.freeze(['backlog', 'unstarted']);
+
+/**
+ * Which OPEN P1/P2 Backlog/Todo issues are candidates for "run its own
+ * acceptance command — it may already pass".
+ *
+ * SHADOW/report-only by construction: this never mutates a card, it only
+ * decides who is a candidate FOR the runner (scripts/sweep-open-backlog-
+ * acceptance.js) to execute a command for and report on.
+ *
+ * @param {object} o
+ * @param {{id:string,name:string,priority:number,stateType:string,notes?:string,comments?:string[]}[]} o.issues
+ *   - shape produced by linear-open-backlog-source.js's mapIssueToCandidate
+ * @param {(issueId:string)=>boolean} [o.isClaimed] - a card someone is
+ *   actively working right now is excluded — reporting "already done" on a
+ *   card mid-fix is confusing, and this sweep never dispatches anyway, so
+ *   there is no cost to leaving it out.
+ * @param {number[]} [o.priorities]
+ * @param {string[]} [o.stateTypes]
+ * @returns {{cardId:string,name:string,verifyCmd:string}[]}
+ */
+function selectOpenBacklogSweepCandidates({
+  issues,
+  isClaimed = () => false,
+  priorities = OPEN_BACKLOG_SWEEP_PRIORITIES,
+  stateTypes = OPEN_BACKLOG_SWEEP_STATE_TYPES,
+} = {}) {
+  const out = [];
+  for (const issue of issues || []) {
+    if (!issue || !issue.id) continue;
+    if (!priorities.includes(Number(issue.priority))) continue;
+    if (!stateTypes.includes(issue.stateType)) continue;
+    if (isClaimed(issue.id)) continue;
+    // autofixFiledIssueGuard: the pipeline that filed this issue already
+    // owns dispatching it — a sweep reporting on it either duplicates a live
+    // dispatch's own verdict or describes a rolling health snapshot as "a
+    // backlog card", neither of which this sweep exists to do.
+    if (autofixFiledIssueGuard({ identifier: issue.id, title: issue.name, description: issue.notes }, {})) continue;
+
+    const comments = Array.isArray(issue.comments) ? issue.comments : [];
+    const gate = evaluateVerifiability(issue.notes || '', comments);
+    if (!gate.cmd) continue; // no safe-form acceptance command — nothing to run
+
+    const headless = classifyHeadlessDispatchability(
+      { subject: issue.name, notes: issue.notes },
+      { verifyCmd: gate.cmd }
+    );
+    if (!headless.dispatchable) continue;
+
+    out.push({ cardId: issue.id, name: issue.name || '(untitled)', verifyCmd: gate.cmd });
+  }
+  return out;
+}
+
 module.exports = {
   DEFAULT_WINDOW_HOURS,
   RECHECK_AFTER_RE,
@@ -439,4 +522,7 @@ module.exports = {
   summarize,
   shouldExitShadow,
   describeResult,
+  OPEN_BACKLOG_SWEEP_PRIORITIES,
+  OPEN_BACKLOG_SWEEP_STATE_TYPES,
+  selectOpenBacklogSweepCandidates,
 };
