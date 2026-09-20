@@ -157,6 +157,7 @@
  *   # hygiene-push-timeout-ok: <reason>    — skip short-push-timeout check for this workflow
  *   # hygiene-quote-apostrophe-ok: <reason> — skip single-quote-apostrophe check for this workflow
  *   # paid-provider-ok: <reason>          — skip paid-provider-on-push check for this workflow
+ *   # hygiene-cache-runid-ok: <reason>    — skip run-id-keyed actions/cache check for this file
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -179,6 +180,113 @@ const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-sc
 const { execFileSync } = require('child_process');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
+// Rule (m) also audits composite actions. The bug that motivated it
+// (BRO-3887) lived in .github/actions/checkout-core-data/action.yml, which a
+// workflows-only scan would never have seen.
+const ACTIONS_DIR = path.join(__dirname, '..', '.github', 'actions');
+
+/**
+ * Rule (m): an actions/cache key containing `github.run_id` (BRO-3887).
+ *
+ * A run-id-keyed cache never dedupes — every job of every run mints a new
+ * entry. .github/actions/checkout-core-data did exactly this across 284
+ * invocations in 191 workflow files, saving a 3.4 GiB clone each time. The repo
+ * hit 28.06 GiB against GitHub's 10 GiB per-repo limit, so LRU eviction cleared
+ * the whole namespace roughly hourly. The visible damage was scraper spend, not
+ * build time: the 22 KB SERP cache (scripts/lib/serp-cache.js) never survived
+ * between runs, so gather-reviews.js re-paid for the same SERP queries 8x a day
+ * and went from 360 to 9,178 credits/day on flat dispatch volume.
+ *
+ * Pure and exported so tests/unit can assert against the real matcher.
+ * Returns [{ line, key, message }]. Deliberately narrow: only `key:` lines
+ * (never `restore-keys:`, where a run-id prefix is meaningless) belonging to an
+ * actions/cache step. A deliberate per-run cache (vercel-deploy.yml keys one
+ * per deploy on purpose) exempts itself with `# hygiene-cache-runid-ok:`.
+ */
+function findRunIdKeyedCaches(raw) {
+  const lines = raw.split('\n');
+  const hits = [];
+
+  // Exemption is SCOPED to a step, not the whole file (ship-check finding): a
+  // single file-level comment used to exempt every cache in the file, so a
+  // future 3.4 GiB cache added to gather-reviews.yml — which legitimately has
+  // two tiny run-id caches — would have shipped silently. The marker must sit
+  // inside the step, or in the comment block immediately above it.
+  const EXEMPT = 'hygiene-cache-runid-ok:';
+
+  const indentOf = (l) => (l.match(/^(\s*)/) || ['', ''])[1].length;
+  const isComment = (l) => /^\s*#/.test(l);
+  const isBlank = (l) => /^\s*$/.test(l);
+
+  // Does a `- ` step starting at `i` carry the exemption, either in its own body
+  // or in the contiguous comment block directly above it?
+  function stepIsExempt(i, stepIndent, bodyEnd) {
+    for (let j = i; j < bodyEnd; j++) if (lines[j].includes(EXEMPT)) return true;
+    for (let j = i - 1; j >= 0; j--) {
+      if (isBlank(lines[j])) continue;
+      if (!isComment(lines[j])) break;
+      if (lines[j].includes(EXEMPT)) return true;
+    }
+    return false;
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (isComment(line)) continue;
+    const item = line.match(/^(\s*)-\s/);
+    if (!item) continue;
+    const stepIndent = item[1].length;
+
+    // Find where this step's body ends: the next `- ` at the same-or-lower
+    // indent, or the next non-comment line at a strictly lower indent (a
+    // dedented map key ends the list). This also fixes the false positive where
+    // a later bare `key:` outside the step was still attributed to it.
+    let bodyEnd = lines.length;
+    for (let j = i + 1; j < lines.length; j++) {
+      if (isBlank(lines[j]) || isComment(lines[j])) continue;
+      const ind = indentOf(lines[j]);
+      const isItem = /^\s*-\s/.test(lines[j]);
+      if ((isItem && ind <= stepIndent) || ind < stepIndent) { bodyEnd = j; break; }
+    }
+
+    const body = lines.slice(i, bodyEnd);
+    // Quotes are optional around `uses:` (ship-check finding).
+    const usesCache = body.some((l) =>
+      /^\s*-?\s*uses:\s*['"]?actions\/cache(\/(restore|save))?@/.test(l),
+    );
+    if (!usesCache) continue;
+    if (stepIsExempt(i, stepIndent, bodyEnd)) continue;
+
+    for (let k = 0; k < body.length; k++) {
+      const m = body[k].match(/^(\s*)key:\s*(.*)$/);
+      if (!m) continue;
+      let value = m[2].trim();
+      // Block scalars (`key: >-`, `|`, `>`, `|-`) put the value on the FOLLOWING
+      // more-indented lines. Matching only the `key:` line captured the literal
+      // ">-" and returned zero hits — a one-line bypass of this entire guard
+      // (ship-check finding, confirmed by mutation).
+      if (/^[|>][-+]?\d*$/.test(value)) {
+        const keyIndent = m[1].length;
+        const parts = [];
+        for (let n = k + 1; n < body.length; n++) {
+          if (isBlank(body[n])) { parts.push(''); continue; }
+          if (indentOf(body[n]) <= keyIndent) break;
+          parts.push(body[n].trim());
+        }
+        value = parts.join(' ').trim();
+      }
+      if (/github\.run_id/.test(value)) {
+        const lineNo = i + k + 1;
+        hits.push({
+          line: lineNo,
+          key: value,
+          message: `line ${lineNo}: actions/cache key is run-id-scoped (${value}) — a new entry every job of every run`,
+        });
+      }
+    }
+  }
+  return hits;
+}
 const REPO = 'thomaspryor/Broadwayscore';
 const NEVER_RUN_MIN_AGE_DAYS = 30;
 const NEVER_RUN_SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'audit', 'workflow-run-coverage.json');
@@ -553,7 +661,26 @@ async function main() {
     shortBatchPollTimeout: [],
     quoteApostrophe: [],
     paidProviderOnPush: [],
+    runIdKeyedCache: [],
   };
+
+  // ── Rule (m): run-id-keyed actions/cache, across workflows AND composite
+  // actions (BRO-3887 lived in an action, which a workflows-only scan misses).
+  {
+    const targets = files.map((f) => ({ label: f, full: path.join(WORKFLOW_DIR, f) }));
+    if (fs.existsSync(ACTIONS_DIR)) {
+      for (const dir of fs.readdirSync(ACTIONS_DIR)) {
+        for (const base of ['action.yml', 'action.yaml']) {
+          const full = path.join(ACTIONS_DIR, dir, base);
+          if (fs.existsSync(full)) targets.push({ label: `actions/${dir}/${base}`, full });
+        }
+      }
+    }
+    for (const { label, full } of targets) {
+      const hits = findRunIdKeyedCaches(fs.readFileSync(full, 'utf8'));
+      if (hits.length) violations.runIdKeyedCache.push({ file: label, hits });
+    }
+  }
 
   // Degrade rule (g) alone on a format change in push-core-data/action.yml
   // (e.g. CORE_FILES switched to single quotes or split across lines) —
@@ -698,7 +825,13 @@ async function main() {
     violations.shortPushTimeout.length +
     violations.shortBatchPollTimeout.length +
     violations.quoteApostrophe.length +
-    violations.paidProviderOnPush.length;
+    violations.paidProviderOnPush.length +
+    // Rule (m) MUST be summed here or the whole guard is decorative: the report
+    // block below would print and then `total === 0` would still return 0.
+    // Caught by ship-check — the rule shipped unwired and passed its own tests,
+    // because the tests called findRunIdKeyedCaches directly and never asserted
+    // the CLI's exit code.
+    violations.runIdKeyedCache.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
@@ -897,6 +1030,23 @@ async function main() {
     console.error('Exempt (legitimate): add  # paid-provider-ok: <reason>  anywhere in the file.\n');
   }
 
+  if (violations.runIdKeyedCache.length) {
+    console.error('── (m) actions/cache key scoped to github.run_id ───');
+    console.error('A run-id-keyed cache never dedupes: every job of every run mints a new entry.');
+    console.error('BRO-3887: .github/actions/checkout-core-data saved a 3.4 GiB clone this way on');
+    console.error('284 invocations across 191 workflows. The repo reached 28.06 GiB against');
+    console.error("GitHub's 10 GiB limit, so LRU eviction wiped the whole cache namespace hourly —");
+    console.error('including the 22 KB SERP cache, which took gather-reviews.js from 360 to 9,178');
+    console.error('scraper credits/day on flat dispatch volume.\n');
+    for (const { file, hits } of violations.runIdKeyedCache) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      ${h.message}`);
+    }
+    console.error('\nFix: key on content (hashFiles) or drop the cache if it does not pay for itself');
+    console.error('— measure the restore+save step durations against a cold build before keeping it.');
+    console.error('Exempt (legitimate): add  # hygiene-cache-runid-ok: <reason>  anywhere in the file.\n');
+  }
+
   process.exit(1);
 }
 
@@ -915,6 +1065,7 @@ module.exports = {
   BATCH_MODE_POLL_MINUTES,
   INLINE_POLL_MINUTES,
   findUnescapedApostrophesInSingleQuotedEval,
+  findRunIdKeyedCaches,
 };
 
 if (require.main === module) {

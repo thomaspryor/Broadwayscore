@@ -9,6 +9,18 @@ inputs:
 runs:
   using: composite
   steps:
+    # hygiene-cache-runid-ok: same SHAPE as the BRO-3887 core-data bug, but ~28x
+    # smaller per entry (~100x in live total) and deliberately NOT changed on a
+    # guess. Measured 2026-09-20 in run 35525599209: 132 MB per entry, 2 live
+    # entries = 0.26 GiB, ~3s restore + ~3s save against "Aggregator archive
+    # updated from cache in 2s" — versus core-data's 3,634 MB per entry, 8 live
+    # entries = 27 GiB, and 57s of overhead. The cold sparse-clone time was NOT
+    # measured (no cache miss in the sample), so this is left alone rather than
+    # changed blind.
+    # NOTE (ship-check correction): rule (m) matches run-id KEYS only — it does
+    # NOT measure entry size or total occupancy, so nothing here will page you if
+    # this grows. Re-measure by hand (`gh cache list --json key,sizeInBytes`) if
+    # SERP cache misses climb again.
     - name: Restore aggregator-archive cache
       uses: actions/cache/restore@v5
       with:
@@ -77,6 +89,8 @@ runs:
           cp -r data/aggregator-archive/. /tmp/aggregator-archive-snapshot/ 2>/dev/null || true
         fi
 
+    # hygiene-cache-runid-ok: see the restore step above — 132 MB per entry,
+    # measured, deliberately unchanged. Step-scoped marker (BRO-3887 ship-check).
     - name: Save aggregator-archive cache
       uses: actions/cache/save@v5
       if: always()

@@ -241,6 +241,15 @@ jobs:
           # data/cache/: prebuild hash gates (e.g. mobile-show-details/last-hash.json)
           # that skip regen when inputs unchanged.
           #
+          # hygiene-cache-runid-ok: deliberate, and small enough not to matter.
+          # NOTE (ship-check correction): restore-keys do NOT collapse entries —
+          # the primary key below still carries github.run_id, so this DOES mint a
+          # new entry per deploy, exactly like the pattern BRO-3887 removed. It is
+          # exempt on SIZE, not on shape: .next/cache + data/cache is tens of MB
+          # against checkout-core-data's 3.4 GiB, so it cannot exhaust the 10 GiB
+          # repo budget on its own. The run_id is required here for the reason the
+          # original comment below gives. If this ever grows past ~1 GiB, it needs
+          # the same treatment core-data got.
           # Key includes github.run_id so every deploy gets a UNIQUE primary key.
           # Without this, actions/cache@v5 sees a primary-key hit on restore and
           # SKIPS the save step at job end — meaning per-deploy cache updates
