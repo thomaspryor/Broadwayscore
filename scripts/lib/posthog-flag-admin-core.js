@@ -41,8 +41,8 @@ function buildPatchRequest(projectId, id, active) {
   };
 }
 
-const USAGE = 'Usage: node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run]';
-const KNOWN_FLAGS = /^(--active=|--dry-run$)/;
+const USAGE = 'Usage: node scripts/posthog-flag-admin.js <flag-key-or-numeric-id> [--active=true|false] [--dry-run] [--force]';
+const KNOWN_FLAGS = /^(--active=|--dry-run$|--force$)/;
 
 // Strict CLI arg parsing — a typo'd or malformed value must throw, not
 // silently fall through to the archive default. A silent fallthrough here
@@ -68,16 +68,32 @@ function parseArgs(argv) {
   }
 
   const dryRun = argv.includes('--dry-run');
-  return { identifier: positional[0], desiredActive, dryRun };
+  const force = argv.includes('--force');
+  return { identifier: positional[0], desiredActive, dryRun, force };
 }
 
-// Warns (never blocks) when archiving/restoring a key that's still a
-// scripts/lib/flag-registry.js REGISTERED_FLAGS entry expecting a DIFFERENT
-// active state — otherwise monitor-flag-parity.js's next weekly run reports
-// it as unhealthy drift with no obvious cause (BRO-3459 what-else finding).
-// Only flags exists:true entries (per flag-registry.js's own convention, an
+// Flags (never blocks on its own — see BRO-3869 below) when
+// archiving/restoring a key that's still a scripts/lib/flag-registry.js
+// REGISTERED_FLAGS entry expecting a DIFFERENT active state — otherwise
+// monitor-flag-parity.js's next weekly run reports it as unhealthy drift
+// with no obvious cause (BRO-3459 what-else finding). Only flags
+// exists:true entries (per flag-registry.js's own convention, an
 // exists:false entry means "deliberately not live" and isn't a real flag to
 // warn about here).
+//
+// The CALLER (posthog-flag-admin.js) is what turns this into a hard
+// REQUIRE-`--force`-to-proceed gate as of BRO-3869 — this function itself
+// stays warn-only/pure so a caller that genuinely wants advisory-only output
+// (e.g. a future dry-run audit script) isn't forced into the same gate.
+//
+// Known limitation (adversarial review, BRO-3869): this only protects flags
+// that are STILL a REGISTERED_FLAGS entry. flag-registry.js's own history
+// shows entries get DELETED outright once a flag is fully concluded/retired
+// (e.g. gate-cold-start, ticket-single-button — see that file's comments),
+// not demoted to exists:false. Restoring one of those retired flags later
+// hits no conflict and needs no --force. This gate protects "still-tracked,
+// currently-conflicting" flags, not "any flag anyone ever concluded" — a
+// fuller fix would need a persistent retirement log, out of scope here.
 function checkRegistryConflict(key, desiredActive, registeredFlags) {
   const entry = (registeredFlags || []).find((f) => f.key === key);
   // Every current REGISTERED_FLAGS entry has `expected`, but this is a
