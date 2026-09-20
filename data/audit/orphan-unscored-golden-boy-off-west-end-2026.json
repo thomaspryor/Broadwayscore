@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "golden-boy-off-west-end-2026",
   "openingDate": "2026-09-15",
-  "detectedAt": "2026-09-20T00:07:05.362Z",
+  "detectedAt": "2026-09-20T02:02:38.014Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -13,23 +13,6 @@
       "fullTextLen": 4136,
       "dispatchActionable": false,
       "skipReason": "no_scorable_text",
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
-      "file": "standard--nick-curtis.json",
-      "outletId": "standard",
-      "criticName": "Nick Curtis",
-      "url": "https://www.standard.co.uk/culture/theatre/golden-boy-almeida-theatre-review-b1297258.html",
-      "fullTextLen": 3996,
-      "dispatchActionable": true,
-      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -57,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
