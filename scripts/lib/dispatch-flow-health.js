@@ -47,6 +47,14 @@ const FLOW_WINDOW_MS = 45 * 60 * 1000;
 // BRO-409: an eligible P0/P1 queue deeper than this, combined with zero
 // launches in the window, cannot be explained by "the backlog is drained" —
 // it trips the alarm independent of live-tab count.
+//
+// BRO-3878: eligibleQueueDepth is plan.p01Queue.length, which used to include
+// the frozen Notion mirror's ghost cards (measured ~61 pre-fix vs ~16 true
+// Linear backlog) and no longer does. A genuinely-dead launcher with a
+// smaller live backlog now needs the true count to exceed 20 to trip this
+// path at all — worth re-measuring if this path stops firing in practice,
+// but not changed here since the right bar for "true, tooling-corrected
+// backlog is deep enough to prove dead" needs its own measurement.
 const STALL_QUEUE_DEPTH_THRESHOLD = 20;
 
 // launchesLast45m === -1 means the ledger was unreadable — "cannot prove

@@ -43,6 +43,7 @@ const {
   detectLauncherOutage, detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS,
 } = require('./dispatch-ledger.js');
 const { isExcludedCategory } = require('./autonomous-eligibility.js');
+const { isLiveBoardTaskId } = require('./task-id-namespace.js');
 
 const WATCHDOG_EVENTS = Object.freeze({
   REDISPATCH: 'watchdog-redispatch',
@@ -614,6 +615,17 @@ function planSweep(entries, tasks, opts) {
     // path specifically; this is the same policy applied consistently to
     // dead-retry, not itself separately measured.)
     if (task && task.fromArchive) continue;
+    // BRO-3878 (Codex ship-check catch): the p01Queue exclusion above only
+    // stops FRESH claims against the frozen Notion mirror — a mirror task
+    // that already died once still reached this retry loop and generated a
+    // NEW watchdog-redispatch claim every time it re-died, which is exactly
+    // the claim traffic the ticket's acceptance criterion rules out ("no
+    // claims against ~/.claude/tasks/broadwayscore ids"). Retryable and
+    // toPark are the same candidate pool split only by dispatchCapDecision
+    // below, so excluding here closes both at once — a dead mirror card now
+    // neither auto-retries nor generates a fresh park; it was already frozen
+    // board work the owner was told to migrate, not track here.
+    if (!isLiveBoardTaskId(id)) continue;
     if (open.has(id)) continue;                    // a newer launch is running
     if (ownerParked.has(id) || wdParked.has(id)) continue;
     if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
@@ -684,11 +696,24 @@ function planSweep(entries, tasks, opts) {
     // watchdog-redispatch rows in the 7d window were exactly this (kind:
     // p01-backlog against cards untouched for 2+ months), which is what
     // trips board-targeting-audit.js's "Dispatch: board targeting" check.
+    // (BRO-3878: fromArchive is only ever set on Notion-mirror tasks today,
+    // so this guard is redundant with the isLiveBoardTaskId() exclusion
+    // below for that source — left in as cheap insurance in case a future
+    // board's loader ever sets fromArchive too.)
     if (task.fromArchive) continue;
     const pri = taskPriority(task);
     if (pri !== 'P0' && pri !== 'P1') continue;
     if (isExcludedCategory(task)) continue;        // human-territory cards
     const id = String(task.id);
+    // BRO-3878: the Notion mirror froze 2026-08-20 (CLAUDE.md §6 — Linear is
+    // the only board that gets created on) but its pending P0/P1 "ghost"
+    // cards never resolve, so without this they re-entered this queue every
+    // sweep — measured 26/30 watchdog-redispatch claims in a 24h sample
+    // targeted the frozen mirror, inflating the owner-facing "N P0/P1 queued"
+    // count ~3x over the genuinely dispatchable Linear backlog. The live
+    // board is the only source fresh backlog may be drawn from now; a mirror
+    // card that still matters gets migrated to Linear, not drained in place.
+    if (!isLiveBoardTaskId(id)) continue;
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
     if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: same suppression as the retry path above
@@ -833,6 +858,16 @@ function planSweep(entries, tasks, opts) {
   // Retries of already-attempted work outrank fresh P0/P1 dispatches.
   // When only cmux-lane holds are active, headless-capable work still flows —
   // that is the whole point of the split above.
+  //
+  // BRO-3878: retryable and p01Queue now both require isLiveBoardTaskId(id)
+  // before an item reaches here, so this filter — which happens to use the
+  // same "is it Linear" test for a different reason (linear: ids dispatch
+  // headless, bare-Notion ids dispatched through a cmux tab) — is currently a
+  // no-op: every candidate that reaches this point already passes it. Left in
+  // place rather than simplified away, because the two filters test the same
+  // shape for different reasons (board-liveness vs. dispatch-lane), and a
+  // future non-Linear live board or a headless Notion path would each need
+  // this filter to keep working without anyone having to remember to re-add it.
   const eligibleForLane = cmuxHolds.length
     ? [...retryable, ...p01Queue].filter(item => taskSourceRank(item.taskId) === 0)
     : [...retryable, ...p01Queue];
