@@ -503,3 +503,5 @@ gh: Server Error: Sorry, this diff is temporarily unavailable due to heavy serve
 verify-merge-landed: check skipped at +120s (Command failed: gh api repos/thomaspryor/Broadwayscore/compare/f5040ad7542a78f7a477c735654ec1d3ca273b12...main --jq .status
 gh: Server Error: Sorry, this diff is temporarily unavailable due to heavy server load. (HTTP 500)
 ) — will retry at next delay
+verify-merge-landed: job/linear-BRO-3891-mua8aaov -> main still reachable from origin/main (compare status: ahead) at +120s
+verify-merge-landed: worktree-brothers-paranormal-1937-fix -> main still reachable from origin/main (compare status: ahead) at +120s
