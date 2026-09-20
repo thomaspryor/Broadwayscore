@@ -1600,6 +1600,7 @@ function validateCreativeTeamCompleteness(shows) {
     'everyday-rapture-2010',
     'buena-vista-social-club-2025',  // Cuban catalog music, no single songwriter
     'titanique-2026',                // Céline Dion catalog parody
+    'mystic-pizza-regional-2025',    // '80s/'90s pop catalog jukebox score, no single lyricist
     // Instrumental / dance shows (no singing = no lyrics)
     'swan-lake-1998',
     'oba-oba-1988', 'oba-oba-93-1992',
