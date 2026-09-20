@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-20T13:42:54.567Z",
-  "processed": 31,
-  "failed": 59,
-  "successRate": "34.4%",
+  "updatedAt": "2026-09-20T13:51:02.339Z",
+  "processed": 35,
+  "failed": 115,
+  "successRate": "23.3%",
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 25,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 1,
     "scrapingbee": 7,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-09-20T13:16:10.106Z",
@@ -63,6 +63,17 @@
     },
     {
       "t": "2026-09-20T13:42:41.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-20T13:46:57.226Z",
+      "event": "bb-session",
+      "session": "61adee97",
+      "url": "https://www.thetimes.com/culture/books/article/beatrix-potter-author-archives-ta"
+    },
+    {
+      "t": "2026-09-20T13:46:57.631Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
