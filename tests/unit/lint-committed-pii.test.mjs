@@ -9,7 +9,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { scanJsonValue, scanJsonlValue, formatPath, maskEmail, EMAIL_RE } = require('../../scripts/lib/pii-scan.js');
+const { scanJsonValue, scanJsonlValue, formatPath, maskEmail, redactEmails, EMAIL_RE } = require('../../scripts/lib/pii-scan.js');
 const { scanFile, listTrackedAuditFiles, ALLOWLIST } = require('../../scripts/lint-committed-pii.js');
 
 describe('EMAIL_RE', () => {
@@ -29,6 +29,76 @@ describe('maskEmail', () => {
 
   test('leaves a non-email string untouched', () => {
     assert.strictEqual(maskEmail('no email here'), 'no email here');
+  });
+});
+
+// BRO-3866: write-side counterpart to the scan functions. A caller that
+// persists free text into a committed data/audit/** file should redact
+// BEFORE writing (enrich-card-acceptance.js's logEnrichmentWrite).
+describe('redactEmails', () => {
+  test('replaces a real email with a redacted@<domain> placeholder', () => {
+    assert.strictEqual(
+      redactEmails('Contact jane.doe@example.com for details'),
+      'Contact redacted@example.com for details'
+    );
+  });
+
+  test('the placeholder it produces does not re-trip EMAIL_RE-based detection', () => {
+    // Regression: an earlier version used maskEmail's first+last-char format
+    // (t***********r@gmail.com), which still leaves one real local-part
+    // character adjacent to '@' — EMAIL_RE's local-part class excludes '*',
+    // so a re-scan matches that lone character + domain as a fresh "email"
+    // and the file never actually clears the lint it was redacted for.
+    const redacted = redactEmails('To: <thomas.pryor@gmail.com>');
+    assert.strictEqual(scanJsonValue({ notes: redacted }).length, 0);
+  });
+
+  test('leaves an already-redacted placeholder alone (gho_REDACTED@github.com shape)', () => {
+    assert.strictEqual(
+      redactEmails('clone via gho_REDACTED@github.com'),
+      'clone via gho_REDACTED@github.com'
+    );
+  });
+
+  test('redacts every real address in a string, not just the first', () => {
+    const out = redactEmails('From: a@example.com To: b@example.org');
+    assert.strictEqual(out, 'From: redacted@example.com To: redacted@example.org');
+  });
+
+  test('a non-string/nullish value round-trips through String() without throwing', () => {
+    assert.strictEqual(redactEmails(null), '');
+    assert.strictEqual(redactEmails(undefined), '');
+  });
+
+  // BRO-3866 ship-check (adversarial review + empirical repro): the first
+  // version of this function used `s.replace(new RegExp(EMAIL_RE.source, 'g'), ...)`
+  // over the whole string. A single .exec() that returns on an EARLY match
+  // never pays EMAIL_RE's documented catastrophic-backtracking cost (see
+  // judgeAt's own comment above), but `.replace(..., 'g')` must keep
+  // searching for every subsequent match all the way to the end of the
+  // string — walking the regex engine straight into that cost regardless of
+  // whether anything matched early. Measured on the exact BRO-2353 fixture
+  // string before this fix: 17.4s. A 100k-char string with NO '@' at all
+  // (so no placeholder-scan is even in play) measured 217.7s. Both must
+  // complete near-instantly now that redaction reuses the bounded per-'@'
+  // judgeAt() window instead of scanning to the string's end.
+  test('does not reintroduce EMAIL_RE catastrophic backtracking on a long non-matching tail', () => {
+    const t0 = Date.now();
+    redactEmails('redacted@ex.com' + 'a.-%+_'.repeat(30000));
+    assert.ok(Date.now() - t0 < 2000, 'redaction after an early match must not scan the junk tail with the unbounded regex');
+  });
+
+  test('does not hang on a long punctuation run with no "@" at all', () => {
+    const t0 = Date.now();
+    redactEmails('a.-%+_'.repeat(100000));
+    assert.ok(Date.now() - t0 < 2000, 'indexOf-driven scan must skip straight past a string with zero "@" characters');
+  });
+
+  test('finds and redacts a real address sitting directly behind a placeholder (no leak survives a re-scan)', () => {
+    const redacted = redactEmails('gho_REDACTED@github.com and contact entrant@gmail.com');
+    assert.strictEqual(redacted.includes('gho_REDACTED@github.com'), true, 'the placeholder itself is untouched');
+    assert.strictEqual(redacted.includes('entrant@gmail.com'), false);
+    assert.strictEqual(scanJsonValue({ notes: redacted }).length, 0);
   });
 });
 

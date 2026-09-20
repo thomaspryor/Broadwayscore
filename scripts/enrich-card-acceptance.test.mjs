@@ -388,6 +388,36 @@ test('guardrail 3: demotions are recorded in the enrichment audit log, not just 
   fs.unlinkSync(logPath);
 });
 
+// BRO-3866: data/audit/card-enrichment-log.jsonl is committed to the PUBLIC
+// repo. A card whose notes quote a forwarded email (a common escalation-card
+// shape — see scripts/newsletter-adjacent triage cards) carries a real
+// address in its header; logEnrichmentWrite must never persist it verbatim.
+test('logEnrichmentWrite redacts real emails out of previousNotes/newNotes before they hit the committed log (BRO-3866)', async () => {
+  const fs = require('node:fs');
+  const { scanJsonValue } = require('./lib/pii-scan.js');
+  const logPath = path.join(os.tmpdir(), `enrich-pii-log-${process.pid}.jsonl`);
+  try { fs.unlinkSync(logPath); } catch { /* first run */ }
+  const calls = [];
+  const card = {
+    id: 'pii1', name: 'Escalated from email', category: 'Product', tags: [],
+    notes: '## Problem\nForwarded from owner.\n\nOn Tue, 11 Aug 2026, <thomas.pryor@gmail.com> wrote:\n> fix it',
+  };
+  await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit`',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath,
+  });
+  const entry = JSON.parse(fs.readFileSync(logPath, 'utf8').trim().split('\n').pop());
+  assert.doesNotMatch(entry.previousNotes, /thomas\.pryor@gmail\.com/);
+  assert.equal(scanJsonValue(entry).length, 0, 'logged entry must carry no scannable PII');
+  // The redaction is log-only — the real card write (writeBack/notionBrain)
+  // still carries the full notes, since that call never touches the public repo.
+  fs.unlinkSync(logPath);
+});
+
 // BRO-2546 narrowed this deliberately. The original decision — "an ADDITIONAL
 // safe command keeps its backticks, no gratuitous behavior change" — was made
 // without knowing that such a span can STEAL the arming slot: extractVerifyCmd
