@@ -71,3 +71,5 @@ Reversing is a deliberate act, not a drift. Do all three:
 3. Update this file and `tests/unit/codex-delegation.test.mjs`, which asserts this
    decision is recorded and that no repo code routes a Linear delegation to codex.
    That test fails on purpose if the lane is re-added without revisiting this page.
+// land.yml live case (iii-b), 2026-09-20: pushed under the new-failures-vs-base gate (BRO-3873).
+// land.yml live case (iii-b, take 2), 2026-09-20: pushed under the new-failures-vs-base gate (BRO-3873).
