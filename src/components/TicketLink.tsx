@@ -45,13 +45,20 @@ export default function TicketLink({
   abVariant,
   className, children,
 }: TicketLinkProps) {
-  // Read PostHog distinct_id at mount so the rendered href carries it
-  // (Impact subId1). We need it on the href, not just the click handler,
-  // because users middle-click / right-click → copy URL too. PostHog SDK
-  // is loaded before TicketButtonsAB renders (flagsLoaded gate), but other
-  // TicketLink call sites (compare/guides/showtimes) may render before the
-  // SDK is ready — first paint without subId1 is acceptable; useEffect
-  // populates it before the user can realistically click.
+  // Read PostHog distinct_id so the rendered href carries it (Impact
+  // subId1). We need it on the href, not just the click handler, because
+  // users middle-click / right-click → copy URL too. TicketButtonsAB no
+  // longer withholds render until the PostHog SDK loads (task #1936 —
+  // that gate caused the primary CTA to be invisible for up to 5s, which
+  // is what drove the rage clicks), so TicketLink can now mount before
+  // `window.posthog` exists on ANY call site, not just the ones the old
+  // comment already accepted this for (compare/guides/showtimes). A
+  // one-shot read at mount would then permanently miss the id — nothing
+  // re-ran it once PostHog finished loading a moment later. Poll instead
+  // (same 250ms/~2s budget as AnalyticsWrapper's own load window) so a
+  // click that happens shortly after mount still gets a populated href;
+  // first paint before that resolves is still acceptable — the id
+  // reaches the href well before a human can realistically click.
   //
   // ⚠ If anyone ever calls `posthog.identify()` (e.g. on login), this state
   // snapshot goes stale: the rendered href keeps the old anonymous UUID
@@ -61,8 +68,22 @@ export default function TicketLink({
   // call sites before adding one. There are no identify() calls today.
   const [distinctId, setDistinctId] = useState<string | undefined>(undefined);
   useEffect(() => {
-    const id = window.posthog?.get_distinct_id?.();
-    if (typeof id === 'string' && id.length > 0) setDistinctId(id);
+    let attempts = 0;
+    const maxAttempts = 8; // 8 × 250ms = 2s — covers AnalyticsWrapper's ≤1.5s load budget
+    const tryRead = () => {
+      const id = window.posthog?.get_distinct_id?.();
+      if (typeof id === 'string' && id.length > 0) {
+        setDistinctId(id);
+        return true;
+      }
+      return false;
+    };
+    if (tryRead()) return;
+    const intervalId = setInterval(() => {
+      attempts++;
+      if (tryRead() || attempts >= maxAttempts) clearInterval(intervalId);
+    }, 250);
+    return () => clearInterval(intervalId);
   }, []);
 
   const { url: affiliateUrl, isAffiliate } = useMemo(
