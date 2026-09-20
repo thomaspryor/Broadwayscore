@@ -36,6 +36,18 @@ test('mapStatus maps Notion → native task status', () => {
   assert.equal(mapStatus(undefined), 'pending');
 });
 
+test('#794: mapCardToTask maps an archived/trashed card to pending, not its frozen raw status', () => {
+  const card = { id: 'abc123', url: 'https://n/x', name: 'Trashed card', status: 'In progress', archived: true, notes: '' };
+  const t = mapCardToTask(card, 8);
+  assert.equal(t.status, 'pending');
+});
+
+test('#794: mapCardToTask does NOT let archived override a literal Done status', () => {
+  const card = { id: 'abc123', url: 'https://n/x', name: 'Done and trashed', status: 'Done', archived: true, notes: '' };
+  const t = mapCardToTask(card, 9);
+  assert.equal(t.status, 'completed');
+});
+
 test('mapCardToTask embeds notion page id and traces back', () => {
   const card = { id: 'abc123', url: 'https://n/x', name: 'Fix scoring', status: 'In progress', priority: 'P0 Now', notes: 'a\n\n  b   c' };
   const t = mapCardToTask(card, 7);
@@ -255,6 +267,27 @@ test('#1691: planStatusDrift degrades to no-op on a failed fetch (null card), ne
   assert.equal(planStatusDrift({ id: '42', status: 'in_progress' }, null), null);
 });
 
+// ── #794 (recurring "Stuck pipeline items"): a page moved to Notion's trash
+// keeps its Status property frozen (task #1811) — tasks #1857/#1859 kept
+// zombie-flipping in_progress->pending every ~6-8h for days because
+// planStatusDrift's mapStatus(card.status) alone couldn't see a trashed
+// card's stale "In progress" and kept re-promoting the reclaimed 'pending'
+// mirror straight back to 'in_progress' on every pull/sync-drift cycle.
+test('#794: planStatusDrift does NOT re-promote a reclaimed pending mirror when Notion is archived/trashed but its frozen Status still says "In progress"', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '1859', status: 'pending' };
+  const card = { status: 'In progress', archived: true, name: 'x', notes: '' };
+  assert.equal(planStatusDrift(task, card), null);
+});
+
+test('#794: planStatusDrift still closes a Done card even when also archived — Done keeps its precedence', () => {
+  const { planStatusDrift } = require('./notion-tasks-sync.js');
+  const task = { id: '42', status: 'in_progress' };
+  const card = { status: 'Done', archived: true, name: 'x', notes: '' };
+  const drift = planStatusDrift(task, card);
+  assert.deepEqual(drift, { newStatus: 'completed', cardStatus: 'Done' });
+});
+
 // ── #1697: planLivenessDowngrade — the liveness check planStatusDrift's own
 // comment says belongs elsewhere, applied to the residual Paused/Not
 // started/Archived/Cancelled population left stuck by the #1691 fix above.
@@ -328,6 +361,17 @@ test('#1697: Archived/Cancelled never become re-dispatchable — close to comple
     assert.equal(result.newStatus, 'completed', `${status} must close, not reopen`);
     assert.match(result.reason, /closing \(terminal status/);
   }
+});
+
+test('#794: planLivenessDowngrade closes an archived/trashed card to completed even though its frozen Status still says "In progress"', () => {
+  const { planLivenessDowngrade } = require('./notion-tasks-sync.js');
+  const task = { id: '1859', status: 'in_progress' };
+  const now = Date.parse('2026-08-16T12:00:00.000Z');
+  const stale = new Date(now - 72 * 3600e3).toISOString();
+  const card = { status: 'In progress', archived: true, lastEditedAt: stale };
+  const result = planLivenessDowngrade(task, card, { now });
+  assert.equal(result.newStatus, 'completed');
+  assert.match(result.reason, /closing \(terminal status/);
 });
 
 // ── BRO-2998: resolveLiveWorkspace — reconcileStaleMirrors's cmux-outage
@@ -475,6 +519,13 @@ test('#1778: planPendingClosure only ever applies to a pending mirror, never in_
 test('#1778: planPendingClosure degrades to no-op on a failed fetch (null card) — same fail-open convention as planStatusDrift, never infers closure from absence', () => {
   const { planPendingClosure } = require('./notion-tasks-sync.js');
   assert.equal(planPendingClosure({ id: '1', status: 'pending' }, null), null);
+});
+
+test('#794: planPendingClosure closes a pending mirror for an archived/trashed card even when its frozen Status never literally says Paused', () => {
+  const { planPendingClosure } = require('./notion-tasks-sync.js');
+  const task = { id: '1859', status: 'pending' };
+  const card = { status: 'In progress', archived: true, name: 'x', notes: '' };
+  assert.deepEqual(planPendingClosure(task, card), { newStatus: 'completed', cardStatus: 'In progress' });
 });
 
 test('#1697: an unusable lastEditedAt skips rather than guessing', () => {

@@ -56,6 +56,22 @@ const BSC_DAILY_RE = /^(?:\[fix\]\s*)?BSC Daily:/;
 // already had to fix once for the live sweep).
 const TERMINAL_CARD_STATUSES = new Set(['Done', 'Archived', 'Cancelled']);
 
+// A page moved to Notion's trash (task #1811) keeps its Status property
+// frozen at whatever it last read — it can still say "In progress" or even
+// "Done" forever. Checked as an independent boolean here, never merged into
+// TERMINAL_CARD_STATUSES itself, so a trashed-but-Done card can't collide
+// with a trashed-but-still-"In progress" one — same reasoning
+// dispatch-guards.js:530-533's closedCardGuard and predispatch-guard.js's
+// classifyCandidate already used to justify checking card.archived
+// independently rather than folding it into a status Set. Card #794 follow-
+// up: notion-tasks-sync.js's pull/sync-drift path was the one caller that
+// didn't check it, letting an archived card's frozen "In progress" status
+// keep re-promoting a reclaimed pending mirror straight back to in_progress
+// forever (tasks #1857/#1859 oscillated every ~6-8h for days).
+function isCardArchivedOrTerminal(card) {
+  return !!(card && (TERMINAL_CARD_STATUSES.has(card.status) || card.archived));
+}
+
 const DEFAULT_IDLE_MS = 48 * 60 * 60 * 1000; // same bar as sweepUntrackedInProgress
 
 function notionMarkerOf(task) {
@@ -350,5 +366,6 @@ module.exports = {
   NOTION_MARKER_RE,
   BSC_DAILY_RE,
   TERMINAL_CARD_STATUSES,
+  isCardArchivedOrTerminal,
   DEFAULT_IDLE_MS,
 };
