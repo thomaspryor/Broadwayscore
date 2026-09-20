@@ -798,7 +798,8 @@
     "million-dollar-quartet-off-west-end-2026/theupcoming--unknown.json",
     "bloodsport-after-helen-of-troy-off-west-end-2026/buy-tickets-direct-from-the-theatre--unknown.json",
     "night-city-off-west-end-2026/reviewsgate--william-russell.json",
-    "night-city-off-west-end-2026/timeout-london--unknown.json"
+    "night-city-off-west-end-2026/timeout-london--unknown.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/deadline--joe-utichi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -897,7 +898,8 @@
       "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
       "darkling-off-west-end-2026/voice-magazine--unknown.json",
       "data/review-texts/spandex-off-broadway-2026/nytimes--unknown.json",
-      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json"
+      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--ben-brantley.json"
     ],
     "directCookies": [
       "aida-off-broadway-2027/times-uk--kevin-ng.json",
@@ -968,7 +970,7 @@
     ]
   },
   "startTime": "2026-09-19T12:35:18.916Z",
-  "lastProcessed": "titanique-2026/playbill--unknown.json",
+  "lastProcessed": "hamilton-2015/newyorker--hilton-als.json",
   "log": [
     {
       "t": "2026-09-19T12:46:11.402Z",
@@ -1504,6 +1506,41 @@
       "t": "2026-09-20T06:14:38.725Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-20T06:19:39.467Z",
+      "event": "bb-session",
+      "session": "3588523f",
+      "url": "https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/"
+    },
+    {
+      "t": "2026-09-20T06:19:59.995Z",
+      "event": "bb-session",
+      "session": "579d943f",
+      "url": "https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/"
+    },
+    {
+      "t": "2026-09-20T06:30:52.990Z",
+      "event": "bb-session",
+      "session": "c4205a5c",
+      "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-09-20T06:31:06.467Z",
+      "event": "bb-session",
+      "session": "62cf416c",
+      "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-09-20T06:45:35.447Z",
+      "event": "bb-session",
+      "session": "d81372df",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-09-20T06:45:36.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
