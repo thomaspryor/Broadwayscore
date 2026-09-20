@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 /**
  * Repo-wide lint guard for the "indefinite network hang" class (#1862, BRO-108
- * follow-up): fetch()/https.get()/http.get() call sites with no timeout
- * protection can hang a script forever on a dead socket, eating a whole cron
- * run (or its 45-min job timeout) for one stuck request. BRO-108 fixed this
- * one file at a time in scripts/discover-new-shows.js (PR 629); this is the
- * generalization of that fix's regression test into a scanner over the rest
- * of scripts/.
+ * follow-up): fetch()/https.get()/http.get()/https.request()/http.request()
+ * call sites with no timeout protection can hang a script forever on a dead
+ * socket, eating a whole cron run (or its 45-min job timeout) for one stuck
+ * request. BRO-108 fixed this one file at a time in
+ * scripts/discover-new-shows.js (PR 629); this is the generalization of that
+ * fix's regression test into a scanner over the rest of scripts/.
+ * https.request()/http.request() coverage was added later (BRO-3838): the
+ * original scope missed it entirely, and an unprotected https.request() POST
+ * to api.anthropic.com in scripts/batch-commercial-research.js hung a 60min
+ * job for the full timeout (BRO-3832) without this scanner ever flagging it.
  *
  * Detection is heuristic (regex + acorn tokenizing, same class of tradeoff as
  * audit-help-flag-safety.js) — false positives/negatives expected, same as
@@ -31,6 +35,14 @@
  *   const req = https.get(url, (res) => { ... });
  *   req.setTimeout(N, () => { req.destroy(); ... })
  *
+ * https.request()/http.request() are checked with the exact same two shapes
+ * (they're the same underlying http.ClientRequest as https.get(), just used
+ * for non-GET methods — POST bodies especially, which https.get() can't
+ * send at all), just with the options object conventionally passed as the
+ * call's only/first argument rather than a second positional arg after a URL
+ * string. The options/destroy-handler checks below don't care about argument
+ * position, so no separate detection logic was needed for that shape.
+ *
  * The `{ timeout: N }` option alone does NOT protect a request — Node just
  * emits a 'timeout' event and does nothing further, so the socket hangs
  * forever unless something calls .destroy() on it (BRO-108, second commit:
@@ -52,7 +64,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = `audit-fetch-timeouts.js — lint guard for fetch()/https.get()/http.get() call sites missing timeout protection.
+const USAGE = `audit-fetch-timeouts.js — lint guard for fetch()/https.get()/http.get()/https.request()/http.request() call sites missing timeout protection.
 
 Usage:
   node scripts/audit-fetch-timeouts.js                scan scripts/, report all findings (exit 0)
@@ -94,6 +106,22 @@ function listScannableFiles(dir) {
 // RISKY_CALL_RE in audit-help-flag-safety.js).
 const FETCH_RE = /(?<![.\w])fetch\(/g;
 const HTTP_GET_RE = /\bhttps?\.get\(/g;
+// https.request()/http.request() — same underlying http.ClientRequest as
+// https.get(), just used for non-GET methods (POST bodies especially, which
+// https.get() can't send at all): options-object shape, destroy-handler
+// shape, and the "timeout option alone doesn't protect anything without a
+// destroy() call" gap are all identical, so this reuses checkGetOrRequestCall
+// wholesale rather than a parallel implementation (BRO-3838 — this call was
+// entirely outside the scanner's scope, which is how BRO-3832's unprotected
+// https.request() POST to api.anthropic.com in
+// scripts/batch-commercial-research.js hung a 60min job and was never
+// caught). One difference from https.get(): the options object is
+// conventionally the CALL's first (often only) argument rather than a second
+// positional arg after a URL string — but every check below (inline
+// `timeout:` text anywhere in the call's own args, identifier-based options
+// lookup, destroy-handler search) is already position-agnostic, so no
+// separate logic is needed for that shape difference.
+const HTTP_REQUEST_RE = /\bhttps?\.request\(/g;
 
 /** Index of the char matching src[openIdx] (openChar), by simple depth counting. Callers pass a blanked view (strings/comments space-filled) so stray brackets inside string content can't desync it. */
 function findMatchingBracket(src, openIdx, openChar, closeChar) {
@@ -342,8 +370,9 @@ function blankStringsAndComments(src) {
 }
 
 /**
- * Scans one file's source for unprotected fetch()/https.get()/http.get()
- * call sites. Returns an array of findings (empty if none / file exempted).
+ * Scans one file's source for unprotected fetch()/https.get()/http.get()/
+ * https.request()/http.request() call sites. Returns an array of findings
+ * (empty if none / file exempted).
  */
 // True when the file declares its own `function fetch(...)`, shadowing the
 // global. 6 files do this (fetch-bww-roundups.js, fetch-from-wayback.js,
@@ -511,70 +540,88 @@ function checkSource(file, source) {
   }
 
   for (const match of scanSrc.matchAll(HTTP_GET_RE)) {
-    if (isCommentLine(scanSrc, match.index)) continue;
-    const openParenIdx = match.index + match[0].length - 1;
-    const ownArgs = callArgSpan(scanSrc, openParenIdx);
-    const ownArgsText = scopeSrc.slice(ownArgs.start, ownArgs.end);
+    checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, 'https.get()/http.get()', findings);
+  }
 
-    // { timeout: N } is usually part of THIS call's own options object —
-    // tying it to the call's own arguments (not the whole enclosing
-    // function) costs nothing and closes off any chance of a sibling call's
-    // option satisfying this one. When the options are passed as a bare
-    // identifier instead (`const options = {...}; https.get(url, options, cb)`),
-    // fall back to resolving that specific identifier's own declaration.
-    let hasTimeoutOption = /timeout\s*:\s*[\w.]+/.test(ownArgsText);
-    if (!hasTimeoutOption) {
-      const scope = enclosingFunctionScope(scopeSrc, extents, match.index);
-      // Only a top-level argument whose ENTIRE span is a bare identifier
-      // counts — never an identifier merely mentioned inside a callback body
-      // (see splitTopLevelArgs doc comment for the false positive this fixes).
-      const argSpans = splitTopLevelArgs(scanSrc, openParenIdx, ownArgs.end - 1);
-      hasTimeoutOption = argSpans.some((span) => {
-        const identMatch = /^([A-Za-z_$][\w$]*)$/.exec(scanSrc.slice(span.start, span.end).trim());
-        return identMatch && identifierOptionsHasTimeout(scope, identMatch[1]);
-      });
-    }
-
-    // Destroy-handler search is tied to the SPECIFIC request object: if the
-    // call is assigned to a variable (`const req = https.get(...)`), the
-    // handler must reference that same variable name, searched across the
-    // whole enclosing function (a real handler can legitimately sit many
-    // lines after the call — discover-new-shows.js's searchTodayTixByTitle
-    // has one 53 lines down). If NOT assigned (chained directly onto the
-    // call, e.g. `https.get(url, cb).on('error', x).on('timeout', y)`), the
-    // handler is always part of the SAME statement in every real instance
-    // here, so the search narrows to just that chained expression — either
-    // way, a DIFFERENT call's handler can no longer satisfy this one.
-    const varName = assignedVarName(scanSrc, match.index);
-    let destroySearchText;
-    let destroyRe, setTimeoutRe;
-    if (varName) {
-      destroySearchText = enclosingFunctionScope(scopeSrc, extents, match.index);
-      const identRe = varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      destroyRe = new RegExp(`\\b${identRe}\\b\\.on\\(\\s*['"]timeout['"]\\s*,[\\s\\S]*?\\.destroy\\(`);
-      setTimeoutRe = new RegExp(`\\b${identRe}\\b\\.setTimeout\\(\\s*[\\w.]+[\\s\\S]*?\\.destroy\\(`);
-    } else {
-      const chainEnd = chainedCallSpanEnd(scanSrc, openParenIdx);
-      destroySearchText = scopeSrc.slice(match.index, chainEnd);
-      destroyRe = /\.on\(\s*['"]timeout['"]\s*,[\s\S]*?\.destroy\(/;
-      setTimeoutRe = /\.setTimeout\(\s*[\w.]+[\s\S]*?\.destroy\(/;
-    }
-    const hasOnTimeoutDestroy = destroyRe.test(destroySearchText);
-    const hasSetTimeoutDestroy = setTimeoutRe.test(destroySearchText);
-
-    const protectedCall = hasSetTimeoutDestroy || (hasTimeoutOption && hasOnTimeoutDestroy);
-    if (protectedCall) continue;
-
-    let detail;
-    if (!hasTimeoutOption && !hasSetTimeoutDestroy) {
-      detail = 'no { timeout: N } option or req.setTimeout(N, ...) found for this call';
-    } else {
-      detail = 'timeout option set but no .on(\'timeout\', ...) handler calling .destroy() found for this specific request — the socket will hang forever on fire';
-    }
-    findings.push({ file, line: lineOf(scanSrc, match.index), call: 'https.get()/http.get()', detail });
+  for (const match of scanSrc.matchAll(HTTP_REQUEST_RE)) {
+    checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, 'https.request()/http.request()', findings);
   }
 
   return findings;
+}
+
+// Shared by the HTTP_GET_RE and HTTP_REQUEST_RE scans below (BRO-3838) — both
+// are the same underlying http.ClientRequest shape (options object + a
+// `{ timeout: N }` that does nothing without a paired destroy handler), so
+// the options-lookup and destroy-handler-search logic is identical; only the
+// finding's `call` label differs. Mutates `findings` in place, matching the
+// call-site loop style above.
+function checkGetOrRequestCall(file, scanSrc, scopeSrc, extents, match, callLabel, findings) {
+  if (isCommentLine(scanSrc, match.index)) return;
+  const openParenIdx = match.index + match[0].length - 1;
+  const ownArgs = callArgSpan(scanSrc, openParenIdx);
+  const ownArgsText = scopeSrc.slice(ownArgs.start, ownArgs.end);
+
+  // { timeout: N } is usually part of THIS call's own options object —
+  // tying it to the call's own arguments (not the whole enclosing
+  // function) costs nothing and closes off any chance of a sibling call's
+  // option satisfying this one. When the options are passed as a bare
+  // identifier instead (`const options = {...}; https.get(url, options, cb)`,
+  // or, for https.request(), `const options = {...}; https.request(options, cb)`),
+  // fall back to resolving that specific identifier's own declaration. This
+  // check is already position-agnostic (it doesn't care whether the options
+  // object is the 1st or 2nd argument), so https.request()'s conventional
+  // "options is the only/first argument" shape needs no separate handling.
+  let hasTimeoutOption = /timeout\s*:\s*[\w.]+/.test(ownArgsText);
+  if (!hasTimeoutOption) {
+    const scope = enclosingFunctionScope(scopeSrc, extents, match.index);
+    // Only a top-level argument whose ENTIRE span is a bare identifier
+    // counts — never an identifier merely mentioned inside a callback body
+    // (see splitTopLevelArgs doc comment for the false positive this fixes).
+    const argSpans = splitTopLevelArgs(scanSrc, openParenIdx, ownArgs.end - 1);
+    hasTimeoutOption = argSpans.some((span) => {
+      const identMatch = /^([A-Za-z_$][\w$]*)$/.exec(scanSrc.slice(span.start, span.end).trim());
+      return identMatch && identifierOptionsHasTimeout(scope, identMatch[1]);
+    });
+  }
+
+  // Destroy-handler search is tied to the SPECIFIC request object: if the
+  // call is assigned to a variable (`const req = https.get(...)`), the
+  // handler must reference that same variable name, searched across the
+  // whole enclosing function (a real handler can legitimately sit many
+  // lines after the call — discover-new-shows.js's searchTodayTixByTitle
+  // has one 53 lines down). If NOT assigned (chained directly onto the
+  // call, e.g. `https.get(url, cb).on('error', x).on('timeout', y)`), the
+  // handler is always part of the SAME statement in every real instance
+  // here, so the search narrows to just that chained expression — either
+  // way, a DIFFERENT call's handler can no longer satisfy this one.
+  const varName = assignedVarName(scanSrc, match.index);
+  let destroySearchText;
+  let destroyRe, setTimeoutRe;
+  if (varName) {
+    destroySearchText = enclosingFunctionScope(scopeSrc, extents, match.index);
+    const identRe = varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    destroyRe = new RegExp(`\\b${identRe}\\b\\.on\\(\\s*['"]timeout['"]\\s*,[\\s\\S]*?\\.destroy\\(`);
+    setTimeoutRe = new RegExp(`\\b${identRe}\\b\\.setTimeout\\(\\s*[\\w.]+[\\s\\S]*?\\.destroy\\(`);
+  } else {
+    const chainEnd = chainedCallSpanEnd(scanSrc, openParenIdx);
+    destroySearchText = scopeSrc.slice(match.index, chainEnd);
+    destroyRe = /\.on\(\s*['"]timeout['"]\s*,[\s\S]*?\.destroy\(/;
+    setTimeoutRe = /\.setTimeout\(\s*[\w.]+[\s\S]*?\.destroy\(/;
+  }
+  const hasOnTimeoutDestroy = destroyRe.test(destroySearchText);
+  const hasSetTimeoutDestroy = setTimeoutRe.test(destroySearchText);
+
+  const protectedCall = hasSetTimeoutDestroy || (hasTimeoutOption && hasOnTimeoutDestroy);
+  if (protectedCall) return;
+
+  let detail;
+  if (!hasTimeoutOption && !hasSetTimeoutDestroy) {
+    detail = 'no { timeout: N } option or req.setTimeout(N, ...) found for this call';
+  } else {
+    detail = 'timeout option set but no .on(\'timeout\', ...) handler calling .destroy() found for this specific request — the socket will hang forever on fire';
+  }
+  findings.push({ file, line: lineOf(scanSrc, match.index), call: callLabel, detail });
 }
 
 function checkFile(absPath) {
@@ -600,7 +647,7 @@ function main() {
     if (jsonOut) {
       console.log(JSON.stringify(findings, null, 2));
     } else if (findings.length === 0) {
-      console.log(`✅ ${target}: no unprotected fetch()/https.get()/http.get() call sites.`);
+      console.log(`✅ ${target}: no unprotected fetch()/https.get()/http.get()/https.request()/http.request() call sites.`);
     } else {
       console.log(`🚨 ${target}: ${findings.length} unprotected call site(s):\n`);
       for (const f of findings) console.log(`  ${f.file}:${f.line} [${f.call}] ${f.detail}`);
@@ -634,7 +681,7 @@ function main() {
     for (const f of fFindings) console.log(`  ${file}:${f.line} [${f.call}] ${f.detail}`);
   }
   console.log(`\nFix: add AbortSignal.timeout(N) to fetch() calls, or { timeout: N } + a .on('timeout', ...) handler`);
-  console.log(`that calls .destroy() (or req.setTimeout(N, cb) with cb calling .destroy()) to https.get()/http.get() calls.`);
+  console.log(`that calls .destroy() (or req.setTimeout(N, cb) with cb calling .destroy()) to https.get()/http.get()/https.request()/http.request() calls.`);
   console.log(`See scripts/discover-new-shows.js for the established pattern (BRO-108, PR 629).`);
   console.log(`False positive? Add  // ${EXEMPTION}: <reason>  anywhere in the file.`);
   // Non-blocking by design (suggested approach step 2 of #1862): 100+ files
@@ -652,4 +699,5 @@ module.exports = {
   listScannableFiles,
   FETCH_RE,
   HTTP_GET_RE,
+  HTTP_REQUEST_RE,
 };

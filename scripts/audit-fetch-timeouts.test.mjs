@@ -296,6 +296,73 @@ test('an identifier options-lookalike with no matching { timeout } declaration d
   assert.equal(findings.length, 1);
 });
 
+// --- https.request()/http.request() detection (BRO-3838) ---
+
+test('unprotected https.request() is flagged', () => {
+  // The exact shape BRO-3832 hit live: scripts/batch-commercial-research.js's
+  // analyzeShowWithClaude() POSTs to api.anthropic.com via https.request()
+  // with zero timeout protection — outside the scanner's scope before this
+  // fix, so it hung a 60min job without ever being flagged.
+  const src = `
+    function go(body) {
+      const req = https.request({
+        hostname: 'api.anthropic.com',
+        path: '/v1/messages',
+        method: 'POST',
+      }, (res) => {});
+      req.on('error', () => {});
+      req.write(body);
+      req.end();
+    }`;
+  const findings = checkSource('fixture.js', src);
+  assert.equal(findings.length, 1, `expected the unprotected https.request() to be flagged, got: ${JSON.stringify(findings)}`);
+  assert.equal(findings[0].call, 'https.request()/http.request()');
+  assert.match(findings[0].detail, /no \{ timeout: N \} option/);
+});
+
+test('https.request() with { timeout: N } option but no destroy handler is flagged', () => {
+  const src = `
+    function go(body) {
+      const req = https.request({ hostname: 'api.anthropic.com', method: 'POST', timeout: 30000 }, (res) => {});
+      req.on('error', () => {});
+      req.write(body);
+      req.end();
+    }`;
+  const findings = checkSource('fixture.js', src);
+  assert.equal(findings.length, 1);
+  assert.match(findings[0].detail, /no \.on\('timeout', \.\.\.\) handler/);
+});
+
+test('https.request() with { timeout: N } + .on(\'timeout\', ...) destroy handler is not flagged', () => {
+  const src = `
+    function go(body) {
+      const req = https.request({ hostname: 'api.anthropic.com', method: 'POST', timeout: 30000 }, (res) => {});
+      req.on('error', () => {});
+      req.on('timeout', () => { req.destroy(); });
+      req.write(body);
+      req.end();
+    }`;
+  assert.deepEqual(checkSource('fixture.js', src), []);
+});
+
+test('https.request() protected via req.setTimeout(N, ...destroy()) is not flagged', () => {
+  const src = `
+    function go(body) {
+      const req = https.request({ hostname: 'api.anthropic.com', method: 'POST' }, (res) => {});
+      req.setTimeout(30000, () => { req.destroy(); });
+      req.write(body);
+      req.end();
+    }`;
+  assert.deepEqual(checkSource('fixture.js', src), []);
+});
+
+test('http.request() (non-TLS) is covered by the same scan', () => {
+  const src = `function go() {\n  const req = http.request({ host: 'example.com' }, (res) => {});\n  req.on('error', () => {});\n}`;
+  const findings = checkSource('fixture.js', src);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].call, 'https.request()/http.request()');
+});
+
 // --- string/comment false-positive guards ---
 
 test('the literal text "fetch(" inside a string/template is never a call site', () => {
