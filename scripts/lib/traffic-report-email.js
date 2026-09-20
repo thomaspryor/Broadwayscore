@@ -97,7 +97,8 @@ function buildSubject(md) {
 
 function buildHtml(md, { runUrl } = {}) {
   const { summary } = splitReport(md);
-  const link = runUrl ? `<p style="margin:16px 0;color:#6b7280;font-size:12px;">Full tables are attached as markdown. Run log: <a href="${escapeHtml(runUrl)}">${escapeHtml(runUrl)}</a></p>` : '';
+  const safeUrl = runUrl ? escapeHtml(runUrl).replace(/"/g, '&quot;') : ''; // escapeHtml skips quotes
+  const link = runUrl ? `<p style="margin:16px 0;color:#6b7280;font-size:12px;">Full tables are attached as markdown. Run log: <a href="${safeUrl}">${safeUrl}</a></p>` : '';
   return `<div style="font-family:${FONT};font-size:14px;line-height:1.5;color:#111827;max-width:720px;">${markdownToHtml(summary)}${link}</div>`;
 }
 

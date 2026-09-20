@@ -63,4 +63,5 @@ test('buildHtml only includes the summary and links the run when given', () => {
   const html = buildHtml(SAMPLE, { runUrl: 'https://github.com/x/y/actions/runs/1' });
   assert.ok(!/Channel type — sessions per week/.test(html));
   assert.match(html, /actions\/runs\/1/);
+  assert.ok(!/href="x"/.test(buildHtml(SAMPLE, { runUrl: 'x" onmouseover="alert(1)' }))); // quotes cannot break the attribute
 });
