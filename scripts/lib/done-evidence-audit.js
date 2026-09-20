@@ -363,7 +363,23 @@ function evaluateVerifyRun(runResult, cmd) {
   // spawn/timeout errors. Honouring that verbatim is what keeps a missing
   // private-repo dependency or a cold checkout from being reported as broken
   // work.
-  if (runResult.status === 'unverifiable') return { state: EVIDENCE.UNKNOWN, detail: runResult.detail || null };
+  //
+  // EXCEPT `missingPath` (BRO-3446 adversarial-review finding, Codex): that
+  // one 'unverifiable' cause is not an environment problem, it is "the
+  // command names a path absent from this checkout" — exactly the question
+  // adjudicateMisArmed() below already answers with git HISTORY (never
+  // existed / gitignored / deleted-after-existing), which is strictly more
+  // precise than this module blindly trusting the guard's filesystem check.
+  // adjudicateMisArmed only ever engages when evidence.state is BROKEN
+  // (classifyCard: `if (misArmed && evidence.state === EVIDENCE.BROKEN)`), so
+  // folding missingPath into UNKNOWN here — same as every other unverifiable
+  // cause — would make that gate permanently unreachable for this class of
+  // card and silently absolve a genuine regression (a fix reverted AND its
+  // test deleted, `everExisted: true`, is a real BROKEN, not a phantom
+  // dispatch guess). Falling through to the ordinary BROKEN branch below
+  // restores the exact behaviour this module had before the guard existed,
+  // and lets its own history-aware adjudication decide.
+  if (runResult.status === 'unverifiable' && !runResult.missingPath) return { state: EVIDENCE.UNKNOWN, detail: runResult.detail || null };
   if (runResult.status === 'pass') return { state: EVIDENCE.HOLDS, detail: null };
   // The residual environment failure acceptance-check-core.js cannot classify
   // for itself — a prepared checkout still missing the private review corpus.

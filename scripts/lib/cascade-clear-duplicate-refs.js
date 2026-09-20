@@ -100,13 +100,26 @@ function cascadeClearDuplicateRefs(dirPath, deletedFilename, opts = {}) {
       path.basename(data.crossOutletPrimaryFile) === deletedFilename;
     if (!dupOfDangling && !dupTextOfDangling && !crossOutletDangling) continue;
 
-    data.duplicateClearReason = `cascade-cleared: sibling ${deletedFilename} was deleted`;
+    // duplicateClearReason is a shared breadcrumb read elsewhere (review-write-
+    // guard.js's CLEAR_BREADCRUMBS.duplicateOf/duplicateTextOf/duplicateReason)
+    // as proof that THIS file's duplicateOf/duplicateTextOf clearing was
+    // intentional, so a rebase-time restore doesn't resurrect a stale pointer.
+    // Stamping it for a crossOutletDuplicate-only clear (no dup/dupText
+    // involved) would plant that same proof on a file whose duplicateOf may
+    // still be a real, untouched value — a later, unrelated event that empties
+    // it would then be wrongly treated as an intentional clear. So this only
+    // fires when a duplicateOf/duplicateTextOf pointer is actually dangling
+    // here; crossOutletDuplicate gets its own dedicated breadcrumb below.
+    if (dupOfDangling || dupTextOfDangling) {
+      data.duplicateClearReason = `cascade-cleared: sibling ${deletedFilename} was deleted`;
+    }
     if (dupOfDangling) {
       data.duplicateOf = null;
       data.duplicateReason = null;
     }
     if (dupTextOfDangling) delete data.duplicateTextOf;
     if (crossOutletDangling) {
+      data.crossOutletClearReason = `cascade-cleared: sibling ${deletedFilename} was deleted`;
       data.crossOutletDuplicate = false;
       delete data.crossOutletPrimaryFile;
       delete data.crossOutletSimilarity;

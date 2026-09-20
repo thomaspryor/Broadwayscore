@@ -2943,6 +2943,13 @@ on:
       # a solo edit to either the lib or the CLI needs explicit listing here
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/linear-session.js'
+      # scripts/check-linear-staleness.js (BRO-3869) is the thin I/O wrapper
+      # around scripts/lib/linear-staleness-check.js's pure decision function
+      # (colocated-tested in scripts/lib/linear-staleness-check.test.mjs,
+      # which runs in the scripts/lib/*.test.mjs glob) — no independent test
+      # of its own, but a solo edit here would otherwise trigger ZERO CI, the
+      # same gap task #1745 documents.
+      - 'scripts/check-linear-staleness.js'
       # Linear issue-cap monitor + Done auto-archive (BRO-285): free-tier hard-
       # caps a workspace at 250 unarchived issues, hit once already 2026-08-12.
       # linear-cap-policy.js's pure isOverCapThreshold/isArchivableIssue are
