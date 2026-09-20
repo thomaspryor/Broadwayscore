@@ -1,3 +1,8 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural only — data/shows.json is touched
+// solely by fs.existsSync() as a skip-guard (a bare worktree has no core data),
+// and no assertion reads or pins any show/review fact. The behavioural test
+// drives the CLI with deliberately non-existent show ids (zzz-fake-*), so no
+// derived-data value can rot it.
 // BRO-3887: collect-outlet-reviews.js honours --time-budget-min so the
 // outlet-serp job in gather-reviews.yml stops cleanly inside its timeout-minutes
 // cap instead of being cancelled at it (20m20s in 3/3 runs sampled 2026-09-19..20,
