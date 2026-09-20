@@ -31,7 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = require('./lib/owner-alert-router.js');
@@ -2492,6 +2492,53 @@ async function checkMainRedStreak(isCI) {
   }
 }
 
+// --- Main: green rate (2026-09-20) ---
+//
+// Companion to checkMainRedStreak above. That row asks "how long has main
+// been red RIGHT NOW" and alarms; this one asks "over the last 7 days, what
+// fraction of completed push runs on main were green" — the measurement that
+// ends the "main is fixed now" claims (~45 sessions have made one after a
+// handful of green runs; the owner trusts none of them). The number, not a
+// session, is the only thing allowed to say it.
+//
+// It shells out to scripts/ci-green-rate.js — the same CLI cards use as a
+// safe-form acceptance command — so there is exactly ONE fetch, ONE set of
+// guards (sample floor, cancel storm, truncated window, rerun collapse) and
+// ONE verdict string, here and everywhere else. In CI it passes --record so
+// the nightly reading lands in data/audit/ci-green-rate.jsonl (committed by
+// data-health-check.yml's snapshot step) and the row can show "7d trend
+// from Y%, day D of 14 at ≥80%". Exit 1 from the CLI is a legitimate FAIL
+// reading, not an error; exit 2 (gh failure / no repo) is a warn row that
+// says so. Never a second alert: the actionable alarm is the red-streak row.
+function checkCiGreenRate(isCI, deps = {}) {
+  const NAME = 'Main: green rate';
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
+  }
+  if (hasLowHeadroom()) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (up to 4 GETs for a 7d window)' }];
+  }
+  const exec = deps.exec || execFileSync;
+  const { healthRow } = require('./lib/ci-green-rate.js');
+  const args = [path.join(__dirname, 'ci-green-rate.js'), '--days', '7', '--json', ...(isCI ? ['--record'] : [])];
+  let stdout = '';
+  try {
+    stdout = exec('node', args, { encoding: 'utf8', timeout: 120000, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    if (err && err.status === 1 && err.stdout) {
+      stdout = String(err.stdout); // FAIL verdict — still a reading
+    } else {
+      const detail = String((err && (err.stderr || err.message)) || '').trim().split('\n')[0].slice(0, 120);
+      return [{ name: NAME, status: 'warn', message: `ci-green-rate.js failed (exit ${err && err.status != null ? err.status : '?'}) — no reading: ${detail}` }];
+    }
+  }
+  let result;
+  try { result = JSON.parse(stdout); } catch {
+    return [{ name: NAME, status: 'warn', message: `ci-green-rate.js printed unparseable output — no reading: ${stdout.trim().slice(0, 120)}` }];
+  }
+  return [healthRow(result, NAME)];
+}
+
 // --- Auto-fix effectiveness (2026-08-10 incident) ---
 //
 // The owner received a near-identical morning digest 13 days running. Cause: the
@@ -4916,6 +4963,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkSEO(),
     ...checkCronHealth(),
     ...(await checkMainRedStreak(isCI)),
+    ...checkCiGreenRate(isCI),
     ...checkSecretsHealth(),
     ...checkAPICredits(),
     ...checkDeployFreshness(),
@@ -5179,4 +5227,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };
+module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };
