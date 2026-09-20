@@ -34,5 +34,54 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-20T16:50:43.547Z"
+  },
+  {
+    "conditionKey": "slug-misroute:272ae7ed1a95",
+    "title": "9 new slug-misroute finding(s)",
+    "description": "9 review file(s) appear misrouted and are not yet dispositioned. Nothing was changed automatically. To triage LOCALLY:\n1) node scripts/audit-slug-match-routing.js\n2) node scripts/verify-misroute-content.js --include-flagged --include-oos\n3) gated apply per scripts/apply-slug-misroute-whitelist.js header (snapshot → ff-only → --apply → rebuild → spot-check)\nTo silence a finding you've decided to leave: node scripts/disposition-misroute.js add --from=ID --file=F --reason=\"...\"",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "garry-starr-classic-penguins-garrick-west-end-2026 → garry-starr-classic-penguins-off-west-end-2026",
+        "value": "new-york-sun--elysa-gardner.json (article 2026, no-date,from-also-full-match)"
+      },
+      {
+        "name": "garry-starr-classic-penguins-off-broadway-2026 → garry-starr-classic-penguins-off-west-end-2026",
+        "value": "nysr--roma-torre.json (article 2026, no-date,from-also-full-match)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "exeunt-magazine--lane-williamson.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "latimes--unknown.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "nyt-theater--jonathan-mandell.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "nytg--austin-fimmano.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "theatrely--juan-a-ramirez.json (article 2026, class-A)"
+      },
+      {
+        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
+        "value": "vulture--sara-holdren.json (article 2026, class-A)"
+      },
+      {
+        "name": "the-ritz-2007 → break-a-new-play-off-broadway-2026",
+        "value": "nytimes--ben-brantley.json (article 2010, no-date)"
+      }
+    ],
+    "queuedAt": "2026-09-20T17:21:59.186Z"
   }
 ]

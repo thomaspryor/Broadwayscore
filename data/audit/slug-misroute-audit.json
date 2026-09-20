@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-16T03:02:35.766Z",
-  "totalScanned": 43830,
+  "generatedAt": "2026-09-20T17:21:59.076Z",
+  "totalScanned": 44168,
   "findings": [
     {
       "from": "an-ark-off-broadway-2026",
@@ -888,6 +888,72 @@
       "class": "A",
       "outOfScope": false,
       "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "cinderella-buttons-undone-off-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "ew--emlyn-travis.json",
+      "slug": "Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323",
+      "fromTokens": "cinderella",
+      "toTokens": "bad|cinderella",
+      "articleYear": 2023,
+      "toYearGap": 0,
+      "fromYearGap": 3,
+      "fromShow": {
+        "title": "Cinderella: Buttons Undone!",
+        "venue": "Charing Cross Theatre",
+        "openingDate": "2026-12-02",
+        "status": "upcoming",
+        "category": "off-west-end"
+      },
+      "toShow": {
+        "title": "Bad Cinderella",
+        "venue": "Imperial Theatre",
+        "openingDate": "2023-03-23",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "cinderella-buttons-undone-off-west-end-2026",
+      "to": "bad-cinderella-2023",
+      "file": "observer--david-cote.json",
+      "slug": "Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323",
+      "fromTokens": "cinderella",
+      "toTokens": "bad|cinderella",
+      "articleYear": 2023,
+      "toYearGap": 0,
+      "fromYearGap": 3,
+      "fromShow": {
+        "title": "Cinderella: Buttons Undone!",
+        "venue": "Charing Cross Theatre",
+        "openingDate": "2026-12-02",
+        "status": "upcoming",
+        "category": "off-west-end"
+      },
+      "toShow": {
+        "title": "Bad Cinderella",
+        "venue": "Imperial Theatre",
+        "openingDate": "2023-03-23",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
       "confirm": false
     },
     {
@@ -5060,7 +5126,7 @@
         "title": "Break: A New Play",
         "venue": "The Atelier at Theaterlab",
         "openingDate": null,
-        "status": "previews",
+        "status": "closed",
         "category": "off-broadway"
       },
       "class": "A",
