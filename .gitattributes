@@ -220,9 +220,19 @@ data/audit/dmarc-report-ledger.jsonl merge=union
 # were gone by 2026-09-20, despite the digest dispatching every day between).
 # Re-checked against the code as it actually stands, not the 2026-08-26
 # belief about it:
-#   (a) not load-bearing on deletion: every writer (digest-autofix.js's
-#       appendJsonlLedger) is appendFileSync-only, nothing prunes or rewrites
-#       the file;
+#   (a) not load-bearing on deletion: the live writer (digest-autofix.js's
+#       appendJsonlLedger) is appendFileSync-only, nothing prunes rows. There
+#       IS a second, manually-invoked writer — scripts/backfill-judged-
+#       dispatch-ts.js's --apply mode rewrites the whole file to add
+#       `judgedDispatchTs` to old rows — but it never deletes/prunes either,
+#       and it shares this exact rewrite-then-possibly-union-conflict
+#       exposure with linear-drain-parked-ledger.jsonl below (also one of
+#       its 3 targets, already merge=union since BRO-3060) — an accepted,
+#       pre-existing risk profile, not one newly introduced here. Its own
+#       reader was ALSO trusting array-position-as-chronology (backfillRows'
+#       "latest per key" walk) — fixed alongside this card, with the
+#       equivalent shuffled-order regression test in
+#       backfill-judged-dispatch-ts.test.mjs;
 #   (b) no reader depends on raw file order: checkPark() reaches this ledger
 #       through attemptOutcomesForCard(), which already sorts by `ts`
 #       (scripts/lib/attempt-memory.js:70) BEFORE walking the failure streak
