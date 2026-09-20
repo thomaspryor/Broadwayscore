@@ -80,6 +80,7 @@ const GIT_NET_TIMEOUT_MS = Number(process.env.GIT_NET_TIMEOUT_SEC || 90) * 1000;
 // The merged-tree suite is minutes, not seconds (~4min for scripts/lib, per
 // merge-post-merge-test-gate.js) — it gets the build's budget, not a check's.
 const MERGED_TREE_TIMEOUT_MS = 20 * 60 * 1000;
+const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 
 // ── Pure decision helpers ───────────────────────────────────────────────────
 
@@ -167,9 +168,15 @@ function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) 
         execFileSync(argv[0], argv.slice(1), {
           cwd, stdio: ['pipe', 'pipe', 'pipe'], encoding: 'utf8',
           timeout: opts.timeoutMs || CHECK_TIMEOUT_MS, env: opts.env || env, input: opts.input,
+          // The merged-tree floor emits ~50k TAP lines (>1MB). Node's default
+          // 1MB maxBuffer kills the child with ENOBUFS mid-stream, which then
+          // reads as a failed check — exactly what refused the first real
+          // dry-run of this lib (BRO-3873).
+          maxBuffer: CHECK_OUTPUT_MAX_BYTES,
         });
         extra.push({ name, pass: true });
       } catch (err) {
+        if (err && err.code === 'ENOBUFS') err.stderr = `${err.stderr || ''}\ncheck output exceeded CHECK_OUTPUT_MAX_BYTES (${CHECK_OUTPUT_MAX_BYTES}) — the check was killed, this is NOT a verdict on the code`;
         // Keep the full output: the detail string is a summary, and a merged-
         // tree run is ~50k TAP lines that a 600-char detail cannot explain.
         let logPath = null;
@@ -185,7 +192,7 @@ function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) 
     const tapDetail = (err) => {
       const out = String(err.stdout || '');
       const failing = out.split('\n').filter(l => /^\s*not ok\b/.test(l)).map(l => l.trim());
-      const summary = String(err.stderr || '').split('\n').filter(l => /FAILED|floor/.test(l)).slice(-1)[0] || '';
+      const summary = `${err.stderr || ''}\n${out.split('\n').slice(-40).join('\n')}`.split('\n').filter(l => /FAILED|test floor|ENOBUFS|exceeded/.test(l)).slice(-1)[0] || '';
       return [summary, ...failing.slice(0, 8), failing.length > 8 ? `… ${failing.length - 8} more` : ''].filter(Boolean).join(' | ').slice(0, 600) || defaultDetail(err);
     };
     // Syntax floor for shell — tier 3's node --check has no shell counterpart.
