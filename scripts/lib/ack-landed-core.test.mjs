@@ -128,6 +128,74 @@ test('stranded row: --sha must be the stranded sha (or an ancestor of it); a lat
   assert.equal(lateButTied.ok, true);
 });
 
+// linear:BRO-3866 (2026-09-20): stopped-short → watchdog-redispatch → the
+// redispatch never produced a launch → watchdog-park. The job process is dead
+// until an owner relaunches, so the park row is the terminal event an ack
+// answers. The sha is checked against its AUTHOR date: the owner landed the
+// dead job's branch via scripts/land.js (rebase → push), which re-stamps only
+// the committer date at landing time.
+const PARK_TS = '2026-09-16T04:30:00.000Z';
+const rowsParked = [
+  ...rowsStoppedShort,
+  { ts: '2026-09-16T04:11:40.000Z', event: 'watchdog-redispatch', taskId: TASK, kind: 'p01-backlog' },
+  { ts: PARK_TS, event: 'watchdog-park', taskId: TASK, reason: 'claimed at 2026-09-16T04:11:40.000Z but produced no launch — retries exhausted' },
+];
+
+test('watchdog-park newest → eligible (terminal for the dead job); row records priorEvent watchdog-park', () => {
+  const d = core.decideAck(happy({ rows: rowsParked }));
+  assert.deepEqual(d.refusals, []);
+  assert.equal(d.ok, true);
+  assert.equal(d.row.priorEvent, 'watchdog-park');
+  assert.equal(d.row.taskId, TASK);
+  // jobId comes from the spawn row (the park row carries none).
+  assert.equal(d.row.jobId, `${TASK}-fixture`);
+  assert.equal(core.ACKABLE_TERMINAL_EVENTS.has('watchdog-park'), true);
+});
+
+test('watchdog-park then a later launch → refuse (a relaunch superseded the job you verified)', () => {
+  const rows = [...rowsParked, { ts: '2026-09-16T05:00:00.000Z', event: 'launch', taskId: TASK }];
+  const d = core.decideAck(happy({ rows }));
+  assert.equal(d.ok, false);
+  assert.equal(d.row, null);
+  assert.match(d.refusals.join('\n'), /newest ledger row is launch .* not a terminal event/);
+  // A pending watchdog-redispatch after the park is likewise not terminal.
+  const redispatched = core.decideAck(happy({ rows: [...rowsParked, { ts: '2026-09-16T05:00:00.000Z', event: 'watchdog-redispatch', taskId: TASK }] }));
+  assert.equal(redispatched.ok, false);
+  assert.match(redispatched.refusals.join('\n'), /newest ledger row is watchdog-redispatch .* not a terminal event/);
+});
+
+test('watchdog-park: same sha window as the other terminal events — authored after launch, no later than park + skew', () => {
+  // Authored after the park row (+5 min) — a post-mortem commit, refused.
+  const late = core.decideAck(happy({ rows: rowsParked, landing: { ...happy().landing, commitTs: '2026-09-16T04:40:00.000Z', message: `${REF} ack` } }));
+  assert.equal(late.ok, false);
+  assert.match(late.refusals.join('\n'), /AFTER the job's terminal watchdog-park row/);
+  // Authored before the launch — not this job's work.
+  const early = core.decideAck(happy({ rows: rowsParked, landing: { ...happy().landing, commitTs: '2026-09-16T01:00:00.000Z' } }));
+  assert.equal(early.ok, false);
+  assert.match(early.refusals.join('\n'), /BEFORE this dispatch launched/);
+});
+
+test('author date is the window timestamp: a land.js rebase (late committer date, in-window author date) ties; an empty post-mortem commit does not', () => {
+  const rebased = core.decideAck(happy({ rows: rowsParked, landing: { ...happy().landing, authorTs: '2026-09-16T03:52:15.000Z', commitTs: '2026-09-16T06:00:00.000Z' } }));
+  assert.equal(rebased.ok, true, rebased.refusals.join('\n'));
+  const postMortem = core.decideAck(happy({ rows: rowsParked, landing: { ...happy().landing, authorTs: '2026-09-16T06:00:00.000Z', commitTs: '2026-09-16T06:00:00.000Z', message: `${REF} ack` } }));
+  assert.equal(postMortem.ok, false);
+  assert.match(postMortem.refusals.join('\n'), /authored at 2026-09-16T06:00:00.000Z, AFTER the job's terminal watchdog-park row/);
+  // Same rule for the original stopped-short shape (no authorTs → commitTs fallback still works).
+  const fallback = core.decideAck(happy({ landing: { ...happy().landing, authorTs: undefined } }));
+  assert.equal(fallback.ok, true, fallback.refusals.join('\n'));
+});
+
+test('ledger contract: job-abandoned is NOT dead-like, so it is deliberately not ackable', () => {
+  assert.equal(JOB_EVENTS.ABANDONED, 'job-abandoned');
+  assert.equal(isDeadlikeEvent('job-abandoned'), false);
+  assert.equal(core.ACKABLE_TERMINAL_EVENTS.has('job-abandoned'), false);
+  const rows = [...rowsStoppedShort.slice(0, 2), { ts: '2026-09-16T03:15:30.000Z', event: 'job-abandoned', taskId: TASK, jobId: `${TASK}-fixture` }];
+  const d = core.decideAck(happy({ rows }));
+  assert.equal(d.ok, false);
+  assert.match(d.refusals.join('\n'), /newest ledger row is job-abandoned .* not a terminal event/);
+});
+
 test('refuse: verify command exits 1, is unsafe, or is missing', () => {
   const red = core.decideAck(happy({ verify: { ...happy().verify, exitCode: 1 } }));
   assert.equal(red.ok, false);
