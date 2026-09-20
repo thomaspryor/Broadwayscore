@@ -39,9 +39,9 @@ function markdownToHtml(md) {
   while (i < lines.length) {
     const line = lines[i];
     if (!line.trim()) { i++; continue; }
-    const h = line.match(/^(#{1,3})\s+(.*)$/);
+    const h = line.match(/^(#{1,6})\s+(.*)$/);
     if (h) {
-      const lvl = h[1].length + 1; // report's h1 → h2 (email already has a title)
+      const lvl = Math.min(h[1].length + 1, 6); // report's h1 → h2 (email already has a title)
       const size = lvl === 2 ? 20 : lvl === 3 ? 16 : 14;
       out.push(`<h${lvl} style="font-size:${size}px;margin:20px 0 8px;">${inline(h[2])}</h${lvl}>`);
       i++; continue;
@@ -72,6 +72,9 @@ function markdownToHtml(md) {
     }
     const para = [];
     while (i < lines.length && lines[i].trim() && !/^(#|\||>|\s*[-*]\s)/.test(lines[i])) { para.push(lines[i]); i++; }
+    // Every iteration MUST consume at least one line — a line no branch claims
+    // (e.g. "#", "|" alone) would otherwise loop forever (Codex review).
+    if (!para.length) { para.push(lines[i]); i++; }
     out.push(`<p style="margin:8px 0;">${inline(para.join(' '))}</p>`);
   }
   return out.join('\n');
@@ -93,7 +96,9 @@ function buildSubject(md) {
   const changed = (md.split(/^## What changed/m)[1] || '').split(/^## /m)[0];
   const spikes = (changed.match(/^- \*\*/gm) || []).length;
   const range = title.replace(/^Traffic sources — /, '');
-  return `Weekly traffic report${incomplete}: ${spikes} spike${spikes === 1 ? '' : 's'}, ${range}`;
+  // "biggest changes", not "spikes": the headline list is capped and deduped,
+  // so it is a highlight count, not the number of spikes detected.
+  return `Weekly traffic report${incomplete}: ${spikes} biggest change${spikes === 1 ? '' : 's'}, ${range}`;
 }
 
 function buildHtml(md, { runUrl } = {}) {
@@ -110,6 +115,10 @@ async function sendTrafficReportEmail({ reportPath, runUrl, dryRun = false, to }
   if (!fs.existsSync(reportPath)) return { sent: false, reason: `report not found: ${reportPath}` };
 
   const md = fs.readFileSync(reportPath, 'utf8');
+  // An empty or truncated file must not go out looking like a clean report.
+  if (!/^# /m.test(md) || !/^## What changed/m.test(md)) {
+    return { sent: false, reason: `report at ${reportPath} is missing its title or "What changed" section (${md.length} bytes)` };
+  }
   const subject = buildSubject(md);
   const html = buildHtml(md, { runUrl });
   if (dryRun) {

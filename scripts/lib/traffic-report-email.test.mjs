@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { markdownToHtml, splitReport, buildSubject, buildHtml } = require('./traffic-report-email.js');
+const { markdownToHtml, splitReport, buildSubject, buildHtml, sendTrafficReportEmail } = require('./traffic-report-email.js');
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const SAMPLE = `# Traffic sources — Jun 15 to Sep 15
 
@@ -43,8 +46,8 @@ test('splitReport keeps everything before the first tool section as the summary'
 });
 
 test('buildSubject carries the title, the spike count and the incomplete flag', () => {
-  assert.equal(buildSubject(SAMPLE), 'Weekly traffic report (incomplete): 2 spikes, Jun 15 to Sep 15');
-  assert.equal(buildSubject(SAMPLE.replace(/> ⚠️ \*\*Incomplete report\*\*\n> - GA4 skipped: no creds\n/, '')), 'Weekly traffic report: 2 spikes, Jun 15 to Sep 15');
+  assert.equal(buildSubject(SAMPLE), 'Weekly traffic report (incomplete): 2 biggest changes, Jun 15 to Sep 15');
+  assert.equal(buildSubject(SAMPLE.replace(/> ⚠️ \*\*Incomplete report\*\*\n> - GA4 skipped: no creds\n/, '')), 'Weekly traffic report: 2 biggest changes, Jun 15 to Sep 15');
 });
 
 test('markdownToHtml renders headings, bold, bullets, tables, blockquotes and escaped pipes', () => {
@@ -64,4 +67,23 @@ test('buildHtml only includes the summary and links the run when given', () => {
   assert.ok(!/Channel type — sessions per week/.test(html));
   assert.match(html, /actions\/runs\/1/);
   assert.ok(!/href="x"/.test(buildHtml(SAMPLE, { runUrl: 'x" onmouseover="alert(1)' }))); // quotes cannot break the attribute
+});
+
+test('markdownToHtml always makes progress: deep headings and orphan markers cannot hang it', () => {
+  const html = markdownToHtml('#### Details\n#\n|\n>\n- \nplain');
+  assert.match(html, /<h5[^>]*>Details<\/h5>/);
+  assert.match(html, /plain/);
+});
+
+test('sendTrafficReportEmail refuses an empty or truncated report instead of mailing a clean-looking blank', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tre-'));
+  const empty = path.join(dir, 'empty.md');
+  fs.writeFileSync(empty, '');
+  process.env.RESEND_API_KEY = process.env.RESEND_API_KEY || 'test';
+  process.env.OWNER_EMAIL = process.env.OWNER_EMAIL || 'owner@example.com';
+  const res = await sendTrafficReportEmail({ reportPath: empty, dryRun: true });
+  assert.equal(res.sent, false);
+  assert.match(res.reason, /missing its title/);
+  const missing = await sendTrafficReportEmail({ reportPath: path.join(dir, 'nope.md'), dryRun: true });
+  assert.match(missing.reason, /report not found/);
 });
