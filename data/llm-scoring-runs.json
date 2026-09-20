@@ -1,48 +1,5 @@
 [
   {
-    "startedAt": "2026-09-19T01:46:09.905Z",
-    "completedAt": "2026-09-19T01:46:20.759Z",
-    "totalReviews": 44135,
-    "processed": 0,
-    "skipped": 44129,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 16029,
-      "output": 522,
-      "total": 46436
-    },
-    "costUsd": 0.08223855,
-    "runId": "35412288239",
-    "errorDetails": [
-      {
-        "showId": "the-story-west-end-2026",
-        "outletId": "the-spectator-uk",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-19T01:46:22.714Z",
-    "completedAt": "2026-09-19T01:52:30.025Z",
-    "totalReviews": 173,
-    "processed": 173,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 451140,
-      "output": 40356,
-      "total": 491496
-    },
-    "costUsd": 1.2598021000000001,
-    "runId": "35412288239",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-19T02:19:47.539Z",
     "completedAt": "2026-09-19T02:20:06.869Z",
     "totalReviews": 44136,
@@ -326300,6 +326257,44 @@
     },
     "costUsd": 1.274565,
     "runId": "35515266293",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-20T14:44:37.583Z",
+    "completedAt": "2026-09-20T14:44:53.741Z",
+    "totalReviews": 44199,
+    "processed": 0,
+    "skipped": 44192,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 26460,
+      "output": 775,
+      "total": 73101
+    },
+    "costUsd": 0.11791484999999999,
+    "runId": "35516487544",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-20T14:44:54.861Z",
+    "completedAt": "2026-09-20T14:51:05.768Z",
+    "totalReviews": 175,
+    "processed": 175,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 457295,
+      "output": 40295,
+      "total": 497590
+    },
+    "costUsd": 1.2748950000000001,
+    "runId": "35516487544",
     "errorDetails": []
   }
 ]
