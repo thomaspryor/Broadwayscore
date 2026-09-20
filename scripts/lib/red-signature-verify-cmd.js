@@ -124,8 +124,20 @@ function findStepRunCommand(lines, stepHeaderIdx) {
     if (indentOf(lines[i]) !== fieldIndent) continue;
     const m = /^\s*run\s*:\s*(.*)$/.exec(lines[i]);
     if (!m) continue;
-    const rest = m[1].trim();
+    let rest = m[1].trim();
     if (!rest || /^[|>][+-]?\d*$/.test(rest)) return null; // empty or block-scalar indicator
+    // A YAML flow scalar (`run: "cmd"` / `run: 'cmd'`) is valid and, unlike
+    // every OTHER form this repo's `run:` lines use, would otherwise reach
+    // explainUnsafeCheckCommand with its quote characters still attached —
+    // failing every SAFE_CHECK_FORMS regex (none anchor on a leading quote)
+    // and silently degrading a perfectly safe command to owner-judgment. No
+    // real step in test.yml quotes its `run:` today (bare/`|` only), but
+    // nothing stops a future one from starting to. Single-quoted YAML escapes
+    // `''` as a literal `'` — unescaped here since a shell command containing
+    // one is rare enough that falling through to the unquoted (and then
+    // safe-form-rejected) string is an acceptable degrade, not a crash.
+    const quoted = /^"([^"]*)"$|^'([^']*)'$/.exec(rest);
+    if (quoted) rest = quoted[1] !== undefined ? quoted[1] : quoted[2];
     return rest;
   }
   return null;

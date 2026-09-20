@@ -30,6 +30,10 @@ jobs:
         run: node scripts/audit-workflow-concurrency.js
       - name: Audit cast-changes.json
         run: node scripts/audit-cast-changes.js --gate
+      - name: Audit — quoted run value (double)
+        run: "node scripts/audit-workflow-concurrency.js"
+      - name: Audit — quoted run value (single)
+        run: 'node scripts/audit-workflow-concurrency.js'
       - name: Lint workflow files
         run: |
           echo "::group::actionlint"
@@ -86,6 +90,18 @@ test('resolves a Unit Tests signature to its own safe-form step command', () => 
 test('resolves a Data Validation signature to its own safe-form step command', () => {
   const v = verifyForSignature({ job: 'Data Validation', step: 'Run data validation' }, FIXTURE_YML);
   assert.equal(v.line, 'VERIFY: node scripts/validate-data.js');
+  assert.equal(v.note, null);
+});
+
+test('a double-quoted run: value strips the quotes before safe-form validation', () => {
+  const v = verifyForSignature({ job: 'Lint Workflows', step: 'Audit — quoted run value (double)' }, FIXTURE_YML);
+  assert.equal(v.line, 'VERIFY: node scripts/audit-workflow-concurrency.js');
+  assert.equal(v.note, null);
+});
+
+test('a single-quoted run: value strips the quotes before safe-form validation', () => {
+  const v = verifyForSignature({ job: 'Lint Workflows', step: 'Audit — quoted run value (single)' }, FIXTURE_YML);
+  assert.equal(v.line, 'VERIFY: node scripts/audit-workflow-concurrency.js');
   assert.equal(v.note, null);
 });
 
