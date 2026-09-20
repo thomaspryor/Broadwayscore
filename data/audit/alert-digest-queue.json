@@ -1048,5 +1048,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-20T01:54:38.340Z"
+  },
+  {
+    "conditionKey": "cmux-launch:spawn-starved",
+    "title": "cmux launch refused — spawn resource starvation, not a revoked credential",
+    "description": "claude auth preflight failed — stored-login: spawnSync /Users/tompryor/.local/bin/claude ETIMEDOUT | api-key: no ANTHROPIC_API_KEY in env This is an OS/jetsam-level spawn failure (timeout, out-of-memory, or a signal kill), not a credential rejection — do NOT re-run `claude auth login`. Check for the BRO-2789 OOM plateau or prune cmux sessions (near its ~33-runtime ceiling).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T03:50:40.980Z"
   }
 ]
