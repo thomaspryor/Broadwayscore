@@ -218,6 +218,19 @@ function buildNotes(entries) {
   lines.push('2. Confirm demote — mark as unconfirmed, clears the pending hold');
   lines.push('3. Leave held — no action; stays pending and resurfaces on the next sync');
   lines.push('');
+  // Card #796: this function REPLACES the card's notes wholesale on every
+  // sync (the `update` call below passes no --tags), so a stale
+  // 'auto-enriched' tag from an earlier enrich-card-acceptance.js run
+  // survives while the acceptance-criteria section it once wrote gets wiped
+  // underneath it — the card then sits permanently unarmed (bsc-next refuses
+  // it) with nothing to re-arm it, since enrich-card-acceptance.js trusts the
+  // tag and skips re-enrichment. Writing the marker here, in the source of
+  // truth for these notes, makes every sync self-arming. This genuinely IS
+  // owner-judgment: only a human can pick citation/demote/hold per entry.
+  lines.push('## Acceptance criteria');
+  lines.push('');
+  lines.push('VERIFY: owner-judgment — each entry needs a human to supply a citation, confirm demote, or leave it held; no command can decide that.');
+  lines.push('');
 
   for (const e of entries) {
     lines.push('---');
@@ -254,7 +267,20 @@ function runNotionBrain(subargs) {
 }
 
 function findExistingCard() {
-  const res = runNotionBrain(['search', '--status', 'In progress', '--text', TITLE_PREFIX]);
+  // Card #796: used to filter --status 'In progress', an exact-match server
+  // filter (notion-brain.js's searchCards does `status: {equals: ...}`, no
+  // OR-across-statuses support). This is a SINGLETON digest card whose status
+  // can legitimately drift — a zombie-sweep auto-reset back to 'Not started'
+  // (bsc-reconcile) is exactly what happened to this card on 2026-09-17 — and
+  // once it did, this search stopped finding it, so every later sync tried to
+  // CREATE a second card instead of updating the existing one (refused outright
+  // by the Notion-read-only guard, BRO-377, but silently left the real card's
+  // notes stale forever either way). The client-side tag+title-prefix filter
+  // below already disambiguates precisely enough; no server-side status filter
+  // is needed, and dropping it is also correct per this function's own
+  // docstring — a 'Done' card should be found and revived by `update`, not
+  // shadowed by a duplicate.
+  const res = runNotionBrain(['search', '--text', TITLE_PREFIX]);
   if (res.status !== 0) {
     throw new Error(`notion-brain search failed (exit ${res.status}): ${res.stderr.slice(0, 500)}`);
   }
