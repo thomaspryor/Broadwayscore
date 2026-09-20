@@ -17,10 +17,24 @@
  * the matching flag (it already gated should_dispatch/should_escalate on the
  * consecutive-failure streak before invoking this script).
  *
- * gh CLI, not the REST API via fetch: same choice as produce-trunk-
- * snapshot.js — `gh run view --json jobs` / `--log-failed` are the cheap way
- * to get job/step + TAP failure text for the run this script executes in,
- * and gh already carries the runner's GITHUB_TOKEN auth.
+ * gh CLI, not the REST API via `fetch`: same choice as produce-trunk-
+ * snapshot.js — `gh` already carries the runner's GITHUB_TOKEN auth. But
+ * `gh run view --log-failed` / `--json jobs --log` refuse to return ANYTHING
+ * while the overall RUN is still in progress ("run <id> is still in
+ * progress; logs will be available when it is complete", live-verified
+ * 2026-09-20 against run 35530177910) — and this script's own run is BY
+ * CONSTRUCTION always still in progress when it executes (test-summary is
+ * one of the last jobs via `needs:`, but the run only concludes once
+ * test-summary itself finishes). So this uses `gh api
+ * repos/{owner}/{repo}/actions/jobs/{jobId}/logs` per job instead — that
+ * endpoint only requires the INDIVIDUAL job to be done, which `needs:`
+ * already guarantees for every sibling by the time this runs.
+ *
+ * Never lets a `gh` hiccup flip an otherwise-green run red (adversarial
+ * review, BRO-3865): every `gh` call is try/caught and degrades to "skip
+ * this run's dispatch/resolution, try again next push" rather than throwing
+ * — the whole point of this script is to make main-red visibility MORE
+ * reliable, not to become a new way for main to go red on its own.
  *
  *   node scripts/route-main-streak-signatures.js --run-id=$GITHUB_RUN_ID --dispatch --streak=2
  */
@@ -29,19 +43,21 @@
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
-  failingStepSignatures, firstFailingTestNamesByScope, signaturesToResolve, RED_SIGNATURE_PREFIX,
+  failingStepSignatures, firstFailingTestNameInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
 } = require('./lib/main-red-streak.js');
 const { routeAlert, loadLedger, resolveCondition } = require('./lib/owner-alert-router.js');
 
 const USAGE = `route-main-streak-signatures.js — BRO-3865 per-breakage alert routing for main's test.yml
-  node scripts/route-main-streak-signatures.js --run-id=<id> [--dispatch] [--escalate] [--prev-url=<url>] [--streak=<n>]
-    --run-id     required — the workflow run to inspect (gh run view --json jobs / --log-failed)
-    --dispatch   file an 'auto' card for each currently-failing signature (caller gates this on streak>=2)
-    --escalate   also send/resurface the 'test-yml:main-streak-escalation' human page (caller gates this on streak>=4)
-    --prev-url   previous failed run's URL, folded into the escalation email's fields
-    --streak     consecutive-failure count, folded into alert fields/description
-  Resolution (closing signatures whose step went green on THIS run) always runs, independent of the flags above.
-  --help, -h   print this usage and exit — no reads/writes
+  node scripts/route-main-streak-signatures.js --run-id=<id> [--dispatch] [--escalate] [--prev-url=<url>] [--streak=<n>] [--exclude-job=<name>]
+    --run-id       required — the workflow run to inspect (gh run view --json jobs; gh api .../jobs/{id}/logs)
+    --exclude-job  a job NAME to drop before computing signatures (test.yml passes its own "Test Summary")
+    --dispatch     file an 'auto' card for each currently-failing signature (caller gates this on streak>=2)
+    --escalate     also send/resurface the 'test-yml:main-streak-escalation' human page (caller gates this on streak>=4)
+    --prev-url     previous failed run's URL, folded into the escalation email's fields
+    --streak       consecutive-failure count, folded into alert fields/description
+  Resolution (closing signatures whose job went green on THIS run) always runs, independent of the flags above.
+  Any gh/API failure degrades to "do nothing this run" rather than throwing — never fails the calling job.
+  --help, -h     print this usage and exit — no reads/writes
 `;
 
 function gh(args, { maxBuffer = 32 * 1024 * 1024, timeout = 120000 } = {}) {
@@ -61,19 +77,30 @@ function parseArgs(argv) {
   return out;
 }
 
+// Never throws: a transient `gh` failure (rate-limit, network blip, auth
+// hiccup) here must degrade to "no job data this run", not crash the
+// calling step and flip an otherwise-green push to red (adversarial review
+// finding — the ORIGINAL version of this function had no try/catch, unlike
+// every other gh() call in this file).
 function fetchCurrentRunJobs(runId) {
-  const jobsJson = JSON.parse(gh(['run', 'view', String(runId), '--json', 'jobs']));
-  return jobsJson.jobs || [];
+  try {
+    const jobsJson = JSON.parse(gh(['run', 'view', String(runId), '--json', 'jobs']));
+    return jobsJson.jobs || [];
+  } catch (err) {
+    console.error(`::warning::[route-main-streak-signatures] gh run view --json jobs failed (${err.message}); skipping this run's dispatch/resolution — the next push will retry.`);
+    return null;
+  }
 }
 
-// Best-effort: `--log-failed` can be slow on a huge log, and a run with no
-// failing steps has nothing to fetch. Never let this block resolution —
-// callers fall back to job+step-only signatures (no test name) on failure.
-function fetchFailedLogText(runId) {
+// Best-effort per job: a huge log or a transient API error must not block
+// dispatch for the OTHER signatures, and must not throw up to main().
+function fetchJobLogText(jobId) {
+  const { GITHUB_REPOSITORY } = process.env;
+  if (!GITHUB_REPOSITORY || !jobId) return '';
   try {
-    return gh(['run', 'view', String(runId), '--log-failed']);
+    return gh(['api', `repos/${GITHUB_REPOSITORY}/actions/jobs/${jobId}/logs`]);
   } catch (err) {
-    console.error(`[route-main-streak-signatures] --log-failed fetch failed (${err.message}); signatures fall back to job+step only.`);
+    console.error(`[route-main-streak-signatures] job log fetch failed for job ${jobId} (${err.message}); this signature falls back to job+step only.`);
     return '';
   }
 }
@@ -102,29 +129,42 @@ async function main() {
   // silently broke the exclusion and every push would start filing a
   // spurious "Test Summary" card — fail loudly instead of guessing.
   const allJobsFetched = fetchCurrentRunJobs(opts.runId);
+  if (allJobsFetched === null) return; // gh failure already logged; do nothing this run
   if (opts.excludeJob && !allJobsFetched.some((j) => j?.name === opts.excludeJob)) {
     console.error(`::warning::[route-main-streak-signatures] --exclude-job="${opts.excludeJob}" matched no job on this run (jobs seen: ${allJobsFetched.map((j) => j?.name).join(', ')}) — the aggregator job may have been renamed; update the --exclude-job value in test.yml or every red push will file a spurious signature for it.`);
   }
   const jobs = allJobsFetched.filter((j) => j?.name !== opts.excludeJob);
-  const anyJobFailed = jobs.some((j) => j?.conclusion && !['success', 'skipped'].includes(j.conclusion));
-  const testNames = anyJobFailed
-    ? firstFailingTestNamesByScope(fetchFailedLogText(opts.runId))
-    : { byScope: new Map(), byJob: new Map() };
-  const currentSignatures = failingStepSignatures({ jobs }, testNames);
+  const run = { jobs };
 
-  // Resolve first, independent of --dispatch: a signature that went green
-  // must close even on a run where the streak dropped below the dispatch
-  // threshold and --dispatch was never passed — the ledger must not hold a
-  // stale open condition just because nothing new was filed this run.
+  // Test names only matter for --dispatch (sharpening which card gets
+  // filed/titled) — resolution only needs job.conclusion, so skip the extra
+  // per-job `gh api .../logs` calls entirely on a run that won't dispatch
+  // (a green run, or a red run still under the streak-2 dispatch gate).
+  let testNameByJob = new Map();
+  if (opts.dispatch) {
+    for (const job of jobs) {
+      if (!job?.conclusion || ['success', 'skipped'].includes(job.conclusion)) continue;
+      if (!job.databaseId) continue;
+      const testName = firstFailingTestNameInJobLog(fetchJobLogText(job.databaseId));
+      if (testName) testNameByJob.set(job.name || '', testName);
+    }
+  }
+  const currentSignatures = failingStepSignatures(run, testNameByJob);
+
+  // Resolve first, independent of --dispatch: a signature whose job is
+  // CONFIRMED green must close even on a run where the streak dropped below
+  // the dispatch threshold and --dispatch was never passed — the ledger
+  // must not hold a stale open condition just because nothing new was filed
+  // this run.
   const ledger = loadLedger();
   const openRedKeys = Object.entries(ledger.conditions || {})
     .filter(([, c]) => c && c.status === 'open')
     .map(([key]) => key)
     .filter((key) => key.startsWith(RED_SIGNATURE_PREFIX));
-  const toResolve = signaturesToResolve(openRedKeys, currentSignatures);
+  const toResolve = signaturesToResolve(openRedKeys, run, currentSignatures);
   for (const key of toResolve) {
     resolveCondition(key);
-    console.log(`[route-main-streak-signatures] resolved ${key} — its step is green on this run`);
+    console.log(`[route-main-streak-signatures] resolved ${key} — its job is confirmed green on this run`);
   }
 
   if (!opts.dispatch) return;
@@ -173,6 +213,8 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error(`[route-main-streak-signatures] fatal: ${err.message}`);
-  process.exitCode = 1;
+  // Last-resort net: should be unreachable now that fetchCurrentRunJobs
+  // never throws, but a bug here must still degrade rather than propagate a
+  // non-zero exit that would fail the calling GitHub Actions step/job.
+  console.error(`::warning::[route-main-streak-signatures] unexpected error: ${err.message} — this run's dispatch/resolution was skipped, next push will retry.`);
 });
