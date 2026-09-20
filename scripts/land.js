@@ -4,6 +4,8 @@
  * (scripts/lib/land-branch.js; BRO-3873 step 2).
  *
  *   node scripts/land.js --branch <name> [--dry-run] [--repo <dir>] [--max-attempts N]
+ *                        [--source auto|local|origin] [--expect-tip <sha>]
+ *                        [--verified-base <sha>] [--result-file <path>]
  *
  * Prints exactly one verdict line and exits 0/1:
  *   LANDED: <branch> → <sha> in <s>s (attempts N)
@@ -22,7 +24,8 @@
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { landBranch, formatLandLine, MAX_ATTEMPTS } = require('./lib/land-branch.js');
+const fs = require('fs');
+const { landBranch, formatLandLine, makeVerifiedBaseChecks, MAX_ATTEMPTS } = require('./lib/land-branch.js');
 
 const USAGE = `land.js — land a branch on origin/main: rebase → checks → fast-forward push.
 
@@ -34,6 +37,14 @@ Usage:
   --repo <dir>        checkout whose object store/remote to use (default: the
                       checkout you run this from; falls back to this script's repo)
   --max-attempts N    rebase+check+push rounds before refusing (default ${MAX_ATTEMPTS})
+  --source S          auto (local ref, else origin) | local | origin (default auto)
+  --expect-tip SHA    refuse unless the branch tip resolves to exactly this sha
+                      (land.yml: the tip its checks job verified)
+  --verified-base SHA the origin/main sha an upstream gauntlet already verified
+                      this branch against (land.yml's checks job); the gauntlet
+                      is skipped only while main is that sha or has moved past
+                      it across inert paths, otherwise it runs in full
+  --result-file PATH  also write the full result object as JSON to PATH
   --help, -h          print this and exit — no git calls
 
 Output: one line, "LANDED: …" (exit 0) or "REFUSED: …" (exit 1).`;
@@ -75,13 +86,31 @@ function main(argv = process.argv.slice(2), land = landBranch) {
     console.error(`--max-attempts must be a positive integer (got ${args['max-attempts']})`);
     return 2;
   }
+  const isSha = (v) => /^[0-9a-f]{40}$/.test(String(v || ''));
+  for (const flag of ['expect-tip', 'verified-base']) {
+    if (args[flag] !== undefined && !isSha(args[flag])) {
+      console.error(`--${flag} must be a full 40-hex sha (got ${JSON.stringify(args[flag])})`);
+      return 2;
+    }
+  }
+  const source = args.source === undefined ? 'auto' : String(args.source);
+  if (!['auto', 'local', 'origin'].includes(source)) {
+    console.error(`--source must be auto|local|origin (got ${JSON.stringify(args.source)})`);
+    return 2;
+  }
   const result = land({
     branch: args.branch,
     repoDir: args.repo ? path.resolve(String(args.repo)) : cwdRepo(),
     dryRun: args['dry-run'] === true,
     maxAttempts,
+    source,
+    expectSha: args['expect-tip'] || null,
+    ...(args['verified-base'] ? { checks: makeVerifiedBaseChecks({ verifiedBase: args['verified-base'] }) } : {}),
     log: (m) => console.error(m),
   });
+  if (args['result-file'] && args['result-file'] !== true) {
+    fs.writeFileSync(String(args['result-file']), `${JSON.stringify({ branch: args.branch, ...result }, null, 2)}\n`);
+  }
   console.log(formatLandLine(args.branch, result));
   // A dry-run whose checks are green is a success for the caller asking
   // "would this land?" — only a real refusal (red check, conflict, lost race) is exit 1.

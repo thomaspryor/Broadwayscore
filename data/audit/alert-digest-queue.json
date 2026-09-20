@@ -131,5 +131,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-20T20:34:06.012Z"
+  },
+  {
+    "conditionKey": "land:land/test-docs",
+    "title": "Landing blocked: unit-tests red on land/test-docs",
+    "description": "land.yml did not land land/test-docs: the unit-tests gate went red at 8e93b8a2cc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35536264524",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/test-docs"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests"
+      },
+      {
+        "name": "tip",
+        "value": "8e93b8a2cc037f005d6120f5867f718a12b4c55a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35536264524"
+      }
+    ],
+    "queuedAt": "2026-09-20T20:48:18.068Z"
   }
 ]
