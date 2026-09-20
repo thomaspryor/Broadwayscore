@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-20T18:28:41.896Z",
+  "runDate": "2026-09-20T19:01:27.204Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 44,
-    "failed": 169,
+    "processed": 45,
+    "failed": 168,
     "skipped": 0,
-    "successRate": "20.7%"
+    "successRate": "21.1%"
   },
   "tierBreakdown": {
     "playwright": 30,
@@ -22,7 +22,7 @@
     "browserbase": 3,
     "directCookies": 1,
     "scrapingbee": 11,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 2
   },
@@ -41,13 +41,13 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 60,
+    "totalFailed": 59,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 60,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -94,7 +94,8 @@
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/broadwayworld--louise-penn.json",
     "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nysr--unknown.json",
-    "catch-me-if-you-can-2011/hollywood-reporter--unknown.json"
+    "catch-me-if-you-can-2011/hollywood-reporter--unknown.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
@@ -249,7 +250,6 @@
     "clybourne-park-2012/usatoday--elysa-gardner.json",
     "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
     "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
-    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
     "red-2010/chicagotribune--chris-jones.json",
     "ragtime-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
@@ -325,7 +325,8 @@
     "brightdata": [
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
       "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/talkinbroadway--unknown.json",
-      "catch-me-if-you-can-2011/hollywood-reporter--unknown.json"
+      "catch-me-if-you-can-2011/hollywood-reporter--unknown.json",
+      "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -334,5 +335,11 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2010/10/theater_bloody_bloody_andrew_j.html",
+      "newUrl": "https://www.vulture.com/2010/10/theater_review_andrew_jackson.html"
+    }
+  ]
 }
