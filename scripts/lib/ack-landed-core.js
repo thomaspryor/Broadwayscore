@@ -34,9 +34,17 @@ const COMMIT_AFTER_TERMINAL_GRACE_MS = 5 * 60 * 1000;
 // Terminal rows an ack may follow. job-done and landed-acked are terminal
 // too, but there is nothing left to ack after them (Gate O already accepts
 // job-done with a LANDED: line; a second ack would only be noise).
+// watchdog-park (scripts/lib/dispatch-watchdog-core.js WATCHDOG_EVENTS.PARK)
+// is terminal for the job too: the watchdog writes it only after its
+// redispatch retries are exhausted (or a permanent guard refusal), with the
+// job process already dead, and nothing but a NEW launch clears it — exactly
+// the "owner lands the dead job's branch by hand" case this ack exists for
+// (linear:BRO-3866, 2026-09-20). job-abandoned is deliberately NOT here: the
+// ledger defines it as not dead-like (a lease-held abandon means a DIFFERENT
+// job for the task is healthy), so there is no dead job to ack.
 const ACKABLE_TERMINAL_EVENTS = new Set([
   'job-stopped-short', 'job-stranded', 'job-blocked', 'job-failed',
-  'job-orphaned', 'prune-closed', 'dead', 'vanished',
+  'job-orphaned', 'prune-closed', 'dead', 'vanished', 'watchdog-park',
 ]);
 const NOTHING_TO_ACK_EVENTS = new Set(['job-done', 'landed-acked']);
 const LAUNCH_EVENTS = new Set(['launch', 'job-spawned']);
@@ -92,7 +100,11 @@ function ledgerPrecondition(rows) {
  * @param {object} input
  * @param {string} input.ref            e.g. 'BRO-3535'
  * @param {object[]} input.rows         ledger rows for the ref, file order
- * @param {object} input.landing        {verdict:'LANDED'|'NOT_LANDED'|'UNKNOWN', sha, commitTs, message, tiedToStranded}
+ * @param {object} input.landing        {verdict:'LANDED'|'NOT_LANDED'|'UNKNOWN', sha, commitTs, authorTs, message, tiedToStranded}
+ *   commitTs: committer date (%cI); authorTs: author date (%aI), optional —
+ *   when present it is the timestamp the job window is checked against,
+ *   because scripts/land.js REBASES before pushing, which re-stamps the
+ *   committer date at landing time while the author date stays the job's.
  *   tiedToStranded: sha === the job-stranded row's sha, or sha is an ancestor of it
  * @param {object} input.checkout       {containsSha:boolean, dirtyCodePaths:string[]}
  * @param {object} input.verify         {cmd, safe:boolean, unsafeReason, exitCode:number|null}
@@ -110,24 +122,30 @@ function decideAck(input) {
   }
   // Tie the sha to THIS job, both ways (ship-check blocker 2026-09-16: with
   // only a lower bound, `git commit --allow-empty -m "BRO-N ack" && git push`
-  // after the job died satisfied every check). The commit must postdate the
-  // launch AND predate the terminal row — the job had already exited when
-  // bsc-runner wrote that row, so anything committed later is not its work.
+  // after the job died satisfied every check). The commit must be AUTHORED
+  // after the launch AND before the terminal row (+skew) — the job had
+  // already exited when that row was written, so anything authored later is
+  // not its work. The author date is the one that survives scripts/land.js
+  // (rebase → push re-stamps only the committer date), so a dead job's branch
+  // landed by the owner an hour later still ties; an empty post-mortem
+  // commit does not (authored now, after the terminal row). Fixtures/callers
+  // without authorTs fall back to commitTs.
   // job-stranded is the one legitimate later-push case (the owner lands the
   // job's own stranded sha afterwards), so there the tie is the stranded sha
   // itself: --sha must BE it, or be a commit it descends from.
   const isStranded = Boolean(newest && String(newest.event) === 'job-stranded' && stranded);
-  const commitTs = Date.parse(landing.commitTs || '');
-  if (!Number.isFinite(commitTs)) {
+  const workTsRaw = landing.authorTs || landing.commitTs || '';
+  const workTs = Date.parse(workTsRaw);
+  if (!Number.isFinite(workTs)) {
     refusals.push('could not read the commit timestamp for the sha');
   } else if (launch) {
     const launchTs = Date.parse(launch.ts || '');
-    if (Number.isFinite(launchTs) && commitTs <= launchTs) {
-      refusals.push(`the sha was committed at ${landing.commitTs}, BEFORE this dispatch launched (${launch.ts}) — it cannot be this job's work`);
+    if (Number.isFinite(launchTs) && workTs <= launchTs) {
+      refusals.push(`the sha was authored at ${workTsRaw}, BEFORE this dispatch launched (${launch.ts}) — it cannot be this job's work`);
     }
     const endTs = Date.parse((newest && newest.ts) || '');
-    if (!isStranded && Number.isFinite(endTs) && commitTs > endTs + COMMIT_AFTER_TERMINAL_GRACE_MS) {
-      refusals.push(`the sha was committed at ${landing.commitTs}, AFTER the job's terminal ${newest.event} row (${newest.ts}) — the job had already exited, so this is not its work (only job-stranded may be acked with a later landing, via the stranded sha)`);
+    if (!isStranded && Number.isFinite(endTs) && workTs > endTs + COMMIT_AFTER_TERMINAL_GRACE_MS) {
+      refusals.push(`the sha was authored at ${workTsRaw}, AFTER the job's terminal ${newest.event} row (${newest.ts}) — the job had already exited, so this is not its work (only job-stranded may be acked with a later landing, via the stranded sha)`);
     }
   }
   const refRe = new RegExp(`(?<![\\w-])${String(ref || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w-])`, 'i');

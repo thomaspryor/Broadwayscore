@@ -13,13 +13,17 @@
  * itself (decision logic: scripts/lib/ack-landed-core.js, pure + tested):
  *
  *   1. the ref's newest ledger row is terminal (stopped-short, stranded,
- *      blocked, failed, orphaned, prune-closed, dead, vanished) — never a
- *      live launch/job-spawned, never job-done (nothing to ack), never an
- *      earlier landed-acked (no double-acks);
+ *      blocked, failed, orphaned, prune-closed, dead, vanished, or
+ *      watchdog-park — the watchdog's retries are exhausted and the job is
+ *      dead until an owner relaunches it) — never a live launch/job-spawned,
+ *      never job-done (nothing to ack), never an earlier landed-acked (no
+ *      double-acks);
  *   2. `git fetch origin main`, then --sha is an ancestor of origin/main
  *      (scripts/lib/landing-verify.js checkLanded — shallow-safe);
- *   3. the sha is THIS job's work: committed after the launch row and before
- *      the terminal row (+5 min skew) and naming the ref in its message; for
+ *   3. the sha is THIS job's work: AUTHORED after the launch row and before
+ *      the terminal row (+5 min skew) — author date, because scripts/land.js
+ *      rebases before pushing and only the committer date moves — and naming
+ *      the ref in its message; for
  *      a job-stranded row it must be the stranded sha itself (or an ancestor
  *      of it) — the one case where the landing legitimately happens later;
  *   4. --verify is a safe-form command (the same allowlist linear-next.js
@@ -137,6 +141,7 @@ function main() {
   landing.sha = sha;
   try {
     landing.commitTs = git(['show', '-s', '--format=%cI', sha]);
+    landing.authorTs = git(['show', '-s', '--format=%aI', sha]);
     landing.message = git(['show', '-s', '--format=%B', sha]);
   } catch (e) {
     refuse(ref, [`could not read commit ${sha}: ${String(e.stderr || e.message).trim()}`]);
@@ -147,7 +152,7 @@ function main() {
       && (String(pre.stranded.sha).startsWith(sha) || sha.startsWith(String(pre.stranded.sha))
         || gitOk(['merge-base', '--is-ancestor', sha, String(pre.stranded.sha)]))
   );
-  console.error(`→ git: ${sha.slice(0, 11)} ${landing.verdict} on origin/main; committed ${landing.commitTs}`);
+  console.error(`→ git: ${sha.slice(0, 11)} ${landing.verdict} on origin/main; authored ${landing.authorTs}, committed ${landing.commitTs}`);
   if (pre.launchVerifyCmd && pre.launchVerifyCmd !== args.verify.trim()) {
     console.error(`⚠️  --verify differs from the command recorded at dispatch (${pre.launchVerifyCmd}); both are kept on the ledger row`);
   }
