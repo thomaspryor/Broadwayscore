@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-20T16:52:28.245Z",
+  "generatedAt": "2026-09-20T19:31:23.482Z",
   "date": "2026-09-20",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 202221,
+  "entryCount": 204726,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -615,7 +615,7 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
-      "reviewCount": 29,
+      "reviewCount": 28,
       "median_e2e_ms": 1537461225,
       "p90_e2e_ms": 1537461241,
       "per_stage_median_ms": {
@@ -656,7 +656,7 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "reviewCount": 20,
+      "reviewCount": 19,
       "median_e2e_ms": 1537461100,
       "p90_e2e_ms": 1537461113,
       "per_stage_median_ms": {
@@ -1980,13 +1980,13 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 13728442,
+        "scored-to-rebuilt": 7426435,
         "rebuilt-to-deployed": 2048645434
       },
       "reviews_over_15min": 0,
@@ -5720,13 +5720,13 @@
     },
     {
       "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 12521172,
+        "scored-to-rebuilt": 8436121,
         "rebuilt-to-deployed": 708592510
       },
       "reviews_over_15min": 0,
@@ -6251,7 +6251,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3850945,
+        "scored-to-rebuilt": 2485589,
         "rebuilt-to-deployed": 578732347
       },
       "reviews_over_15min": 0,
@@ -7743,7 +7743,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 333692,
+        "scored-to-rebuilt": 336543,
         "rebuilt-to-deployed": 235653618
       },
       "reviews_over_15min": 8,
@@ -7898,13 +7898,13 @@
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 821133,
+        "scored-to-rebuilt": 822506,
         "rebuilt-to-deployed": 81856908
       },
       "reviews_over_15min": 0,

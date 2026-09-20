@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
   "openingDate": "2026-09-16",
-  "detectedAt": "2026-09-20T19:08:56.387Z",
+  "detectedAt": "2026-09-20T19:29:27.052Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "jonathan-baz--unknown.json",
+      "outletId": "jonathan-baz",
+      "criticName": "Unknown",
+      "url": "https://www.jonathanbaz.com/2026/09/thelma-louise-review.html",
+      "fullTextLen": 2188,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "thestage--unknown.json",
       "outletId": "thestage",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
