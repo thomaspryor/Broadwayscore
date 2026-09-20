@@ -20,6 +20,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { isProvisional } = require('../../scripts/validate-show-venue.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -60,4 +64,10 @@ test("Everybody's Talking About Jamie is flagged with its manual-verification so
   const show = loadShow();
   assert.equal(show.discoverySource, 'manual-user-request');
   assert.equal(show.provisional, true);
+});
+
+test("Everybody's Talking About Jamie is correctly classified provisional by the canonical predicate (isProvisional)", () => {
+  const show = loadShow();
+  assert.equal(isProvisional(show), true,
+    'isProvisional() in scripts/validate-show-venue.js drives --all-provisional sweeps — the raw provisional:true field alone does not prove this entry is actually picked up by that check');
 });
