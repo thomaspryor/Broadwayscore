@@ -829,18 +829,6 @@
     "queuedAt": "2026-09-17T21:33:05.743Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 32.0% of shows changed coverage state",
-    "description": "review-gap blast radius 32.0% (8/25 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: bloodsport-after-helen-of-troy-off-west-end-2026, golden-boy-off-west-end-2026, pre-existing-condition-off-broadway-2026, sunset-baby-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-human-voice-the-seven-deadly-sins-west-end-2026, the-seven-deadly-sins-the-human-voice-off-west-end-2026, three-houses-off-broadway-2026\n\nPARTIAL write: the other 18 show(s) audited this run were NOT risky and were persisted normally. Only the 8 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-18T01:46:03.597Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:my-sons-a-queer-but-what-can-you-do-west-end-2026",
     "title": "Auto-remediation gave up on my-sons-a-queer-but-what-can-you-do-west-end-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"my-sons-a-queer-but-what-can-you-do-west-end-2026\"}",
@@ -1026,18 +1014,6 @@
     "queuedAt": "2026-09-19T23:50:32.948Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.2% (429/563)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (878h)\nA Midsummer Night's Dream — observer (878h)\nA Midsummer Night's Dream — standard (878h)\nABBA Voyage — independent (878h)\nAladdin — ew (878h)\n… 171 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (878h)\nBuena Vista Social Club — broadwaynews (878h)\nBuena Vista Social Club — nydailynews (878h)\nHadestown — nydailynews (878h)\nHeathers The Musical — dailybeast (878h)\n… 17 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-19T23:50:33.149Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-macbeth-off-broadway-2026",
     "title": "Placeholder synopsis on Macbeth",
     "description": "synopsis for macbeth-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -1048,5 +1024,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-20T01:14:52.856Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 28.0% of shows changed coverage state",
+    "description": "review-gap blast radius 28.0% (7/25 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: america-who-hurt-you-off-broadway-2026, conflicted-off-broadway-2026, dracula-west-end-2025, gimme-a-sign-off-broadway-2026, in-honor-of-jean-michel-basquiat-off-broadway-2026, les-liaisons-dangereuses-west-end-2026, my-sons-a-queer-but-what-can-you-do-west-end-2026\n\nPARTIAL write: the other 21 show(s) audited this run were NOT risky and were persisted normally. Only the 7 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T01:54:21.686Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.5% (381/498)\noff-broadway: 42.9% (136/317)\nwest-end: 76.3% (421/552)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (880h)\nA Midsummer Night's Dream — observer (880h)\nA Midsummer Night's Dream — standard (880h)\nABBA Voyage — independent (880h)\nAladdin — ew (880h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (880h)\nBuena Vista Social Club — broadwaynews (880h)\nBuena Vista Social Club — nydailynews (880h)\nHadestown — nydailynews (880h)\nHeathers The Musical — dailybeast (880h)\n… 17 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-20T01:54:38.340Z"
   }
 ]
