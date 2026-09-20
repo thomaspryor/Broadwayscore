@@ -1,3 +1,7 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: this regional entry was added by hand and
+// verified directly against Playbill (CLAUDE.md's manual-stub rule), not
+// produced by an enricher — there is no data/precursors/ source file for it
+// to derive expectations from.
 /**
  * Regression coverage for card #1933 (missing-show, zero-results search):
  * users searching "mystic pizza" got zero results because no production existed
