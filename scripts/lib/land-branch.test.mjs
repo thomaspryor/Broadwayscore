@@ -253,12 +253,21 @@ test('origin/main moves across INERT paths only during the checks → rebased ov
     let checkRuns = 0; let pushCalls = 0; const logs = [];
     const r = landBranch({
       branch: 'feat-churn', repoDir: w.repoDir, log: (m) => logs.push(m),
-      checks: () => { checkRuns++; w.moveOrigin('data/audit/telemetry.json'); w.moveOrigin('memory/note.md'); return greenChecks(); },
+      checks: ({ cwd }) => {
+        checkRuns++;
+        // Real checks leave residue behind (tests write data/audit/*.json);
+        // the churn re-rebase must survive it exactly as the retry path does.
+        fs.writeFileSync(path.join(cwd, 'a.txt'), 'residue\n');
+        w.moveOrigin('data/audit/telemetry.json'); w.moveOrigin('memory/note.md');
+        return greenChecks();
+      },
       pushMain: (o) => { pushCalls++; plainPush(o); },
     });
     assert.equal(r.landed, true, JSON.stringify(r));
     assert.equal(r.attempts, 1);
     assert.equal(checkRuns, 1, 'inert churn never re-runs the checks');
+    assert.ok(logs.some(l => /churn re-rebase\): discarding 1 check-residue/.test(l)), logs.join('\n'));
+    assert.equal(sh(w.repoDir, ['show', `${r.sha}:a.txt`]), 'a', 'residue never lands');
     assert.equal(pushCalls, 1);
     assert.equal(r.churnSkips, 1, 'both churn commits were on origin by the time of one fetch');
     assert.notEqual(r.baseSha, r.verifiedBase, 'the landed base is past the verified base');
