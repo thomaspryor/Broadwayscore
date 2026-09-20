@@ -2443,23 +2443,31 @@ async function checkMainRedStreak(isCI) {
     // Actionable, not just "main is red" — the alarm string already names
     // the failing job and the FIRST red commit (CLAUDE.md: alerts must be
     // ACTION-only). File through the alert router rather than a new email
-    // path (task #1748's suggested approach) — 'auto' because diagnosing a
-    // failing test is machine-investigable, same tier as Cron failed:/etc.
+    // path (task #1748's suggested approach).
     //
     // conditionKey is deliberately the SAME 'test-yml:main-streak' key
-    // test.yml's own "Detect consecutive main test failures" step uses
-    // (.github/workflows/test.yml) — not a new one keyed on firstRedSha.
-    // Sharing it means both detectors track ONE incident: routeAlert's
-    // findLinearDuplicate + ledger cooldown (scripts/lib/owner-alert-
-    // router.js) refuse to double-file a tracked issue that's already open,
-    // whichever mechanism opened it. This check exists specifically as a
-    // BACKSTOP for that push-triggered mechanism (it depends on a push
-    // landing on main and on its `needs:` list covering every job that can
-    // fail — task #1690 was exactly that gap) — reusing its key means this
-    // check still closes the loop even when the other one is the one that
-    // missed. A shorter cooldownHours here (vs its 7-day default) makes this
-    // the higher-cadence "is this still open" nag between health-check.js
-    // runs, which happen far more often than pushes to main.
+    // test.yml's own "Detect consecutive main test failures" step has always
+    // used (.github/workflows/test.yml) — not a new one keyed on
+    // firstRedSha — so test.yml's "Resolve alert — main test.yml green
+    // again" step (which resolves this key on every green run) keeps
+    // closing this one too. disposition:'human' (BRO-3865, changed from
+    // 'auto'): test.yml's push-triggered dispatch now files a PER-SIGNATURE
+    // 'auto' card per distinct failing job/step/test
+    // (scripts/route-main-streak-signatures.js, conditionKey
+    // 'test-yml:red:<job>:<hash>') instead of one shared 'auto' card under
+    // THIS key — so this aggregate condition is no longer "diagnose one
+    // failing test", it's "nobody's per-signature card is stemming a
+    // long-running red trunk", the same severity class as the
+    // 'test-yml:main-streak-escalation' human page below. 'test-yml:main-
+    // streak' is on scripts/lib/page-worthy-alerts.js's allowlist so
+    // 'human' actually pages rather than being silently downgraded to
+    // digest. cooldownHours matches the escalation tier's 24h (NOT the old
+    // 6h — under 'auto' this key only ever paged once, since
+    // findLinearDuplicate's tracker dedupe made every later hit
+    // action:'silent' with no email at all; under 'human' there is no such
+    // tracker dedupe, only this cooldown, so 6h here would have turned a
+    // condition that can stay open for weeks into an email every 6h —
+    // caught in second-opinion review before this shipped).
     if (isCI) {
       try {
         await routeAlert({
@@ -2468,10 +2476,10 @@ async function checkMainRedStreak(isCI) {
           description: assessment.alarm,
           hint: `git log ${assessment.firstRedSha} — start from the first red commit, not the latest push.`,
           severity: 'error',
-          disposition: 'auto',
+          disposition: 'human',
           cardAction: 'Fix',
           fields: [{ name: 'First red commit', value: assessment.firstRedSha || 'unknown' }],
-          cooldownHours: 6,
+          cooldownHours: 24,
         });
       } catch (err) {
         console.error(`[Main red streak] routeAlert failed: ${err.message}`);

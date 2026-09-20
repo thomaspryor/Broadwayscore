@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { assessMainRedStreak, failingJobsFromNeeds } = require('./main-red-streak.js');
+const {
+  assessMainRedStreak, failingJobsFromNeeds,
+  stepFailureSignature, firstFailingTestNamesByScope, failingStepSignatures, signaturesToResolve,
+} = require('./main-red-streak.js');
 
 const NOW = Date.parse('2026-08-17T15:40:00.000Z');
 const ago = (min) => new Date(NOW - min * 60000).toISOString();
@@ -254,6 +257,101 @@ test('failingJobsFromNeeds treats cancelled jobs as failing too (not success/ski
 test('failingJobsFromNeeds handles an empty/missing needs object without crashing', () => {
   assert.equal(failingJobsFromNeeds({}), '');
   assert.equal(failingJobsFromNeeds(undefined), '');
+});
+
+// ── per-breakage signature (BRO-3865) ───────────────────────────────────────
+
+test('failingStepSignatures: two different failing steps produce two distinct conditions', () => {
+  const run = {
+    jobs: [
+      testJob('unit-tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'failure', [okStep('Set up job'), failedStep('Lint workflow files')]),
+    ],
+  };
+  const sigs = failingStepSignatures(run);
+  assert.equal(sigs.length, 2);
+  assert.notEqual(sigs[0].conditionKey, sigs[1].conditionKey);
+  assert.ok(sigs.every((s) => s.conditionKey.startsWith('test-yml:red:')));
+});
+
+test('failingStepSignatures: the same failing step recurring on a later push produces the SAME conditionKey (stays dedupe-friendly)', () => {
+  const makeRun = () => ({
+    jobs: [testJob('unit-tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')])],
+  });
+  const sigsA = failingStepSignatures(makeRun());
+  const sigsB = failingStepSignatures(makeRun());
+  assert.equal(sigsA.length, 1);
+  assert.equal(sigsB.length, 1);
+  assert.equal(sigsA[0].conditionKey, sigsB[0].conditionKey);
+});
+
+test('signaturesToResolve: a step that goes green resolves while a still-failing sibling stays open', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', null);
+  const keyB = stepFailureSignature('lint-workflows', 'Lint workflow files', null);
+  const openKeys = [keyA, keyB, 'test-yml:main-streak-escalation']; // non-red key must be ignored, not resolved
+  // unit-tests recovered; lint-workflows is still red on this later run.
+  const laterRun = {
+    jobs: [
+      testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'failure', [okStep('Set up job'), failedStep('Lint workflow files')]),
+    ],
+  };
+  const currentSignatures = failingStepSignatures(laterRun);
+  const toResolve = signaturesToResolve(openKeys, currentSignatures);
+  assert.deepEqual(toResolve, [keyA]);
+});
+
+test('signaturesToResolve: a fully-green run resolves every open red-signature key', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', null);
+  const keyB = stepFailureSignature('lint-workflows', 'Lint workflow files', null);
+  const toResolve = signaturesToResolve([keyA, keyB], []);
+  assert.deepEqual(new Set(toResolve), new Set([keyA, keyB]));
+});
+
+test('firstFailingTestNamesByScope extracts the first TAP failing test name per job/step scope', () => {
+  const log = [
+    'unit-tests\tRun unit tests (no-data-dependency)\t2026-09-20T10:00:00.0000000Z not ok 42 - url collision canonical dedupe removes exact duplicate',
+    "unit-tests\tRun unit tests (no-data-dependency)\t2026-09-20T10:00:00.0000000Z   location: '/repo/tests/unit/url-collision-canonical.test.mjs:10:1'",
+    'unit-tests\tRun unit tests (no-data-dependency)\t2026-09-20T10:00:01.0000000Z not ok 88 - lastFeaturedInWeek marks the most recent issue',
+  ].join('\n');
+  const { byScope } = firstFailingTestNamesByScope(log);
+  // Only the FIRST failing test in the scope is kept — later ones in the same
+  // batched step don't overwrite it.
+  assert.equal(byScope.get('unit-tests\0Run unit tests (no-data-dependency)'), 'url collision canonical dedupe removes exact duplicate');
+});
+
+test('firstFailingTestNamesByScope also indexes by job alone, as a fallback for when gh --log-failed cannot attribute a step', () => {
+  // Live-verified quirk (BRO-3865): `gh run view --log-failed` reported every
+  // line's step as the literal string "UNKNOWN STEP" for this repo's nested
+  // ::group:: shell functions, even though `--json jobs` names steps fine.
+  const log = [
+    'Unit Tests\tUNKNOWN STEP\t2026-09-20T10:53:23.0000000Z not ok 2223 - broadway edition renders an in-week off-Broadway opening',
+    'Unit Tests\tUNKNOWN STEP\t2026-09-20T10:55:17.0000000Z not ok 7980 - named-only new write (no band) still beats an Unknown+unanchored collider',
+  ].join('\n');
+  const { byJob } = firstFailingTestNamesByScope(log);
+  assert.equal(byJob.get('Unit Tests'), 'broadway edition renders an in-week off-Broadway opening');
+});
+
+test('failingStepSignatures falls back to the job-only test name when the exact job+step scope has none', () => {
+  const run = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')])] };
+  const testNames = {
+    byScope: new Map(), // exact "Unit Tests\0Run unit tests (no-data-dependency)" scope missing (gh couldn't attribute it)
+    byJob: new Map([['Unit Tests', 'named-only new write (no band) still beats an Unknown+unanchored collider']]),
+  };
+  const sigs = failingStepSignatures(run, testNames);
+  assert.equal(sigs.length, 1);
+  assert.equal(sigs[0].testName, 'named-only new write (no band) still beats an Unknown+unanchored collider');
+});
+
+test('stepFailureSignature: same job+step, different first-failing-test names produce different conditionKeys', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', 'url collision canonical dedupe removes exact duplicate');
+  const keyB = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', 'lastFeaturedInWeek marks the most recent issue');
+  assert.notEqual(keyA, keyB);
+});
+
+test('failingStepSignatures skips setup-job-only infra failures (no signature manufactured from zero test evidence)', () => {
+  const run = { jobs: [testJob('unit-tests', 'failure', [failedStep('Set up job')])] };
+  assert.deepEqual(failingStepSignatures(run), []);
 });
 
 test('an unparseable createdAt on the anchor run reports null duration, not a silent pass (code-review finding)', () => {

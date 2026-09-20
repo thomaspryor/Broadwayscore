@@ -6268,75 +6268,41 @@ jobs:
         if: failure() && steps.stepset.outputs.changed == 'true'
         run: node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak-escalation')"
 
-      - name: Route alert — main test.yml red on consecutive pushes
-        if: failure() && steps.streak.outputs.should_dispatch == 'true'
-        uses: actions/github-script@v7
+      # BRO-3865: replaces a single 'test-yml:main-streak' conditionKey that
+      # collapsed EVERY currently-failing job/step into one ledger condition
+      # — main was red 2026-08-12 through 2026-09-20 (63 notifications, one
+      # card) while at least four independent, unrelated failures came and
+      # went under it, none getting its own card. scripts/route-main-streak-
+      # signatures.js (backed by the pure functions in scripts/lib/main-red-
+      # streak.js) computes a conditionKey per distinct job/step/test-name
+      # signature via `gh run view --json jobs` + `--log-failed`, so a NEW
+      # breakage that shows up while main is ALREADY red gets its own card
+      # instead of silently deduping into the old one. Runs on every push
+      # (success or failure, never cancelled) because resolution — closing a
+      # signature's condition the moment ITS step goes green, independent of
+      # whether OTHER signatures or the overall run are still red — must not
+      # wait for should_dispatch/should_escalate, which only gate the NEW
+      # dispatch on the streak's own 2+/4+ thresholds (unchanged from
+      # before). The aggregate 'test-yml:main-streak'/'-escalation' keys
+      # (health-check.js backstop + "Resolve alert" step below) are
+      # untouched by this — they stay the human-paged "main has been down a
+      # long time, nobody's per-signature card is stemming it" signal, not a
+      # per-breakage one.
+      - name: Route + resolve main-streak signature alerts
+        if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
-          SHOULD_ESCALATE: ${{ steps.streak.outputs.should_escalate }}
           STREAK: ${{ steps.streak.outputs.streak }}
-          FAILING_JOBS: ${{ steps.stepset.outputs.current_failing_jobs }}
-        with:
-          script: |
-            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const prevUrl = process.env.PREV_FAILED_URL || '';
-            const streak = process.env.STREAK || '?';
-            const failingJobs = process.env.FAILING_JOBS || 'unknown (job-set lookup unavailable)';
-            const fields = [
-              { name: 'This failed run', value: `[View logs](${runUrl})` },
-              { name: 'Previous failed run', value: prevUrl ? `[View logs](${prevUrl})` : 'n/a' },
-              { name: 'Consecutive failures', value: streak },
-              { name: 'Currently failing job(s)', value: failingJobs },
-            ];
-
-            // Independent conditionKey/disposition per severity tier — each gets
-            // its own ledger entry, so the router's normal cooldown/dedup does
-            // the "notify once per open incident" work with no special-casing
-            // here. No cooldownHours override: a real Notion/Resend outage
-            // retries next run instead of a failed send silently marking the
-            // incident "notified" (see routeAlert's notifyOk gate).
-            await routeAlert({
-              conditionKey: 'test-yml:main-streak',
-              title: 'main test.yml red on 2+ consecutive pushes',
-              description: `The Test Suite has failed on at least two consecutive pushes to main. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. A fix-main card has been filed to the Action Queue.`,
-              severity: 'error',
-              disposition: 'auto',
-              cardAction: 'Fix',
-              fields,
-              url: runUrl,
-            }).catch(e => console.error('Consecutive-failure card dispatch failed:', e.message));
-
-            if (process.env.SHOULD_ESCALATE === 'true') {
-              // Separate conditionKey, 24h cooldown: re-pages once a day while
-              // main stays red 4+ in a row, instead of firing every push (spam)
-              // or firing exactly once ever (the old cooldownHours:0 hack, which
-              // also fully bypassed the ledger's own dedup). disposition:'human'
-              // IS on the page-worthy allowlist (scripts/lib/page-worthy-alerts.js,
-              // BRO-1333) — it sends a real email, not just a digest line — after
-              // that same key was found to have silently downgraded to digest for
-              // 3+ weeks with zero real notifications. task #843: model:'opus'
-              // makes digest-autofix.js dispatch THIS row (a technical
-              // investigation, not a decision) straight to opus on its first
-              // attempt, since it's already the SECOND machine attempt at the
-              // underlying failure (the 2nd-failure 'auto' card above already
-              // tried once and didn't resolve it).
-              await routeAlert({
-                conditionKey: 'test-yml:main-streak-escalation',
-                title: 'main test.yml STILL red — auto-dispatch did not resolve it',
-                description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Currently failing: ${failingJobs}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
-                severity: 'error',
-                disposition: 'human',
-                model: 'opus',
-                fields,
-                url: runUrl,
-                cooldownHours: 24,
-              }).catch(e => console.error('Consecutive-failure escalation email failed:', e.message));
-            }
+        run: |
+          ARGS=(--run-id="$GITHUB_RUN_ID" --exclude-job="Test Summary" --streak="${STREAK:-?}" --prev-url="$PREV_FAILED_URL")
+          if [ "${{ steps.streak.outputs.should_dispatch }}" == "true" ]; then ARGS+=(--dispatch); fi
+          if [ "${{ steps.streak.outputs.should_escalate }}" == "true" ]; then ARGS+=(--escalate); fi
+          node scripts/route-main-streak-signatures.js "${ARGS[@]}"
 
       # Close both incidents the moment main goes green again — lets a FUTURE
       # streak notify immediately instead of waiting out the cooldown.
