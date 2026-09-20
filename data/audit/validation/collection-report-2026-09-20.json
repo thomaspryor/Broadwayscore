@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-20T16:54:55.187Z",
+  "runDate": "2026-09-20T17:24:55.773Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 41,
-    "failed": 168,
+    "processed": 43,
+    "failed": 169,
     "skipped": 0,
-    "successRate": "19.6%"
+    "successRate": "20.3%"
   },
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 30,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 1,
-    "scrapingbee": 10,
+    "scrapingbee": 11,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 60,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 61,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -91,7 +91,9 @@
     "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
     "avenue-q-west-end-2026/reviewsgate--william-russell.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/broadwayworld--louise-penn.json",
+    "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nysr--unknown.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
@@ -261,7 +263,8 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "inter-alia-west-end-2026/thestage--holly-omahony.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -293,7 +296,8 @@
       "the-comedy-about-spies-west-end-2026/liamodell--liam-odell.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
-      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nysr--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -314,7 +318,8 @@
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-      "schmigadoon-2026/theatrely--unknown.json"
+      "schmigadoon-2026/theatrely--unknown.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/broadwayworld--louise-penn.json"
     ],
     "brightdata": [
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
