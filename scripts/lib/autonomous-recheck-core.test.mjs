@@ -639,3 +639,87 @@ test('BRO-3434: an unsafe command on the card cannot arm the recheck through the
   assert.equal(out[0].verifyCmd, null, 'safe-form validation must still gate the fallback path');
   assert.equal(out[0].reason, 'captured refusal');
 });
+
+// ── BRO-3551: selectOpenBacklogSweepCandidates ──────────────────────────────
+
+const { selectOpenBacklogSweepCandidates } = require('./autonomous-recheck-core.js');
+
+const openIssue = (over = {}) => ({
+  id: 'BRO-1', name: 'Fix the thing', priority: 2, stateType: 'backlog',
+  notes: '## Acceptance criteria\n`node --test scripts/lib/some.test.mjs`',
+  comments: [],
+  ...over,
+});
+
+test('BRO-3551: an open P1 Backlog card with a safe, dispatchable verify command is a candidate', () => {
+  const out = selectOpenBacklogSweepCandidates({ issues: [openIssue()] });
+  assert.deepEqual(out, [{ cardId: 'BRO-1', name: 'Fix the thing', verifyCmd: 'node --test scripts/lib/some.test.mjs' }]);
+});
+
+test('BRO-3551: P3/P0 (priority 4 or 1) is out of scope — only P1/P2 (priority 2/3)', () => {
+  assert.deepEqual(selectOpenBacklogSweepCandidates({ issues: [openIssue({ priority: 4 })] }), []);
+  assert.deepEqual(selectOpenBacklogSweepCandidates({ issues: [openIssue({ priority: 1 })] }), []);
+  assert.equal(selectOpenBacklogSweepCandidates({ issues: [openIssue({ priority: 3 })] }).length, 1);
+});
+
+test('BRO-3551: a started-type issue (In Progress/In Review) is excluded — someone already has hands on it', () => {
+  assert.deepEqual(selectOpenBacklogSweepCandidates({ issues: [openIssue({ stateType: 'started' })] }), []);
+  assert.equal(selectOpenBacklogSweepCandidates({ issues: [openIssue({ stateType: 'unstarted' })] }).length, 1);
+});
+
+test('BRO-3551: an issue someone is actively working right now is excluded', () => {
+  const out = selectOpenBacklogSweepCandidates({ issues: [openIssue()], isClaimed: id => id === 'BRO-1' });
+  assert.deepEqual(out, []);
+});
+
+test('BRO-3551: a card with no runnable acceptance command is never invented work', () => {
+  const out = selectOpenBacklogSweepCandidates({ issues: [openIssue({ notes: 'just prose, no command anywhere' })] });
+  assert.deepEqual(out, []);
+});
+
+test('BRO-3551: an autofix-filed card (digest-autofix/canary provenance) is excluded — that pipeline owns dispatching it', () => {
+  const out = selectOpenBacklogSweepCandidates({
+    issues: [openIssue({
+      notes: 'PARKED: Auto-filed by digest-autofix; some health row\n\n## Acceptance criteria\n`node --test scripts/lib/some.test.mjs`',
+    })],
+  });
+  assert.deepEqual(out, []);
+});
+
+test('BRO-3551: an autofix-filed card is excluded by TITLE convention alone, even without the marker', () => {
+  const out = selectOpenBacklogSweepCandidates({
+    issues: [openIssue({ name: 'BSC Daily: some health row', notes: '## Acceptance criteria\n`node --test scripts/lib/some.test.mjs`' })],
+  });
+  assert.deepEqual(out, []);
+});
+
+test('BRO-3551: a card touching a UI path is excluded — the visual-qa gate needs an owner an unattended sweep does not have', () => {
+  const out = selectOpenBacklogSweepCandidates({
+    issues: [openIssue({ notes: '## Acceptance criteria\nFix `src/components/Foo.tsx`\n`node --test scripts/lib/some.test.mjs`' })],
+  });
+  assert.deepEqual(out, []);
+});
+
+test('BRO-3551: a card carrying an async-wait deferral (RECHECK-AFTER) is excluded — nothing resumes it headlessly', () => {
+  const out = selectOpenBacklogSweepCandidates({
+    issues: [openIssue({ notes: 'RECHECK-AFTER: 2026-12-01\n\n## Acceptance criteria\n`node --test scripts/lib/some.test.mjs`' })],
+  });
+  assert.deepEqual(out, []);
+});
+
+test('BRO-3551: a card that defers to an owner decision is excluded', () => {
+  const out = selectOpenBacklogSweepCandidates({
+    issues: [openIssue({ notes: 'DECISION NEEDED: pick an approach\n\n## Acceptance criteria\n`node --test scripts/lib/some.test.mjs`' })],
+  });
+  assert.deepEqual(out, []);
+});
+
+test('BRO-3551: a comment-posted correction still arms the command via evaluateVerifiability', () => {
+  const out = selectOpenBacklogSweepCandidates({
+    issues: [openIssue({
+      notes: 'this description names no command',
+      comments: ['VERIFY: node --test scripts/lib/some.test.mjs'],
+    })],
+  });
+  assert.equal(out[0].verifyCmd, 'node --test scripts/lib/some.test.mjs');
+});
