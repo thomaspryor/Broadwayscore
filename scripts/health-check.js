@@ -2606,6 +2606,66 @@ function checkDigestInvariantFail() {
   return [assessDigestInvariantFailRow(entries)];
 }
 
+// --- Stuck pipeline items (card #794) ---
+//
+// scripts/send-morning-digest.js has computed this exact signal for months
+// (overnight-digest.js's gatherDigest()/stuckSignals()) and auto-files a
+// "Stuck pipeline items" card whenever it's non-empty — but the row only
+// ever existed inside the digest's own extraIssues list, never in
+// computeCoreHealthResults()/HEALTH_DIGEST_SNAPSHOT_FILE. That meant every
+// auto-filed card's safe-form verify command
+// (check-health-row-absent.js, reading this function's output) could never
+// find the row present in the first place, so it reported the row "absent"
+// (fixed) unconditionally — a permanent false pass regardless of whether
+// anything was actually stuck. This makes the same signal a first-class row
+// here so the row can genuinely go from warn to pass and back.
+//
+// Fidelity note: gatherDigest()'s worktree/cmux/reconcile-report sources
+// only exist on the owner's Mac (reconcile-report.jsonl is gitignored,
+// .claude/worktrees/ and the cmux binary aren't present in CI's ephemeral
+// checkout) — those sections fail soft to "nothing found" there by design.
+// A CI run of this check can therefore only ever see the git-history and
+// tracked-file signals (review-count drop, rebuild-regression.json); the
+// worktree/cmux/headless-job signals are only visible when this runs
+// locally, same as the digest itself.
+function checkStuckPipelineItems() {
+  const { gatherDigest, stuckSignals } = require('./lib/overnight-digest.js');
+  const repo = path.join(__dirname, '..');
+  let digest;
+  try {
+    // skipFetch: this runs inside health-row-probe.js's supposed-to-be
+    // side-effect-free --live probe (rerun on EVERY card's acceptance check,
+    // not just this row's) — a real `git fetch` there would mutate
+    // FETCH_HEAD/remote-tracking refs on disk, which the probe's fs-write
+    // monkey-patch can't catch since it's a child process, not a Node fs
+    // call (adversarial ship-check finding). send-morning-digest.js's real
+    // run is unaffected — it doesn't pass this option.
+    digest = gatherDigest({ repo, skipFetch: true });
+  } catch (err) {
+    return [{ name: 'Stuck pipeline items', status: 'warn', message: `Could not gather the overnight digest to check for stuck signals (${String(err.message).slice(0, 120)})` }];
+  }
+  const signals = stuckSignals(digest);
+  if (signals.length) {
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. ${signals.join(' | ')}`.slice(0, 500),
+    }];
+  }
+  if (digest.errors.length) {
+    // "No signals found" and "collection itself partially failed" are NOT
+    // the same claim — collapsing them the way this row never existing at
+    // all collapsed every state to "fixed" is the exact false-pass class
+    // this row exists to end (adversarial ship-check finding).
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `Overnight digest gathered partially (${digest.errors.length} source(s) failed) — cannot confirm clean: ${digest.errors.join('; ')}`.slice(0, 500),
+    }];
+  }
+  return [{ name: 'Stuck pipeline items', status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' }];
+}
+
 // --- Push-retry deadman (task #394) ---
 //
 // Full explanation (including the BRO-231/#1221 absent-vs-empty contract)
@@ -4828,6 +4888,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixCanary(),
     ...checkAutofixThroughput(),
     ...checkDigestInvariantFail(),
+    ...checkStuckPipelineItems(),
   ];
 }
 
@@ -5081,4 +5142,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
+module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };
