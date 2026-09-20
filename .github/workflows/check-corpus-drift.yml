@@ -156,6 +156,42 @@ jobs:
             echo "::warning::review-url-cluster audit found $N byline-explosion cluster(s) — reviews likely buried/unscored. Run: node scripts/audit-review-url-clusters.js"
           fi
 
+      - name: Audit isNonReview content-type/wrongShow + slug coverage (BRO-3862)
+        if: always()
+        run: |
+          # Two independent, non-blocking measurements landed together for the
+          # same investigation (BRO-3862): classify-non-reviews.js's LLM
+          # classifier is documented as unreliable (memory:
+          # feedback_llm_verifier_hallucinates.md), and neither existing
+          # isNonReview false-positive audit (audit-exclusion-flags.js's
+          # essay-intro sweep, audit-cross-show-url.js's URL-slug detector)
+          # covers the content-based cross-show-misattribution class this adds.
+          # Soaking non-blocking here first rather than a hard --gate in
+          # test.yml's data-validation job — this is a brand-new predicate on
+          # a corpus that drifts every ~30min, and every sibling gate in that
+          # job that reached --strict/--gate hardness did so only after
+          # observing real trip frequency first.
+          set +e
+          OUT1=$(node scripts/audit-review-type-wrong-show.js 2>&1)
+          RC1=$?
+          echo "$OUT1"
+          OUT2=$(node scripts/audit-nonreview-slug-coverage.js 2>&1)
+          RC2=$?
+          echo "$OUT2"
+          set -e
+          if [ "$RC1" -ne 0 ]; then
+            echo "::warning::audit-review-type-wrong-show.js could not run (exit=$RC1) — no wrongShow-gap signal this run."
+          fi
+          N1=$(echo "$OUT1" | grep -oE '[0-9]+ match' | grep -oE '^[0-9]+' | head -1)
+          if [ "${N1:-0}" -gt 0 ]; then
+            echo "::warning::audit-review-type-wrong-show.js found $N1 isNonReview file(s) whose classifier contentType is 'review' (genuine review content) with no wrongShow promotion — likely misattributed to the wrong show. Run: node scripts/audit-review-type-wrong-show.js --apply (after manually verifying each hit is real cross-show content, not an extraction failure the classifier mislabeled — see that script's excluded rejectionReason/wrongProduction cases)."
+          fi
+          if [ "$RC2" -ne 0 ]; then
+            echo "::warning::audit-nonreview-slug-coverage.js could not run (exit=$RC2) — no slug-coverage signal this run."
+          fi
+          N2=$(echo "$OUT2" | grep -oE 'unaudited: *[0-9]+' | grep -oE '[0-9]+' | head -1)
+          echo "::notice::nonreview-slug-coverage: ${N2:-0} isNonReview file(s) with 400+ words and a review URL slug remain unaudited (no existing predicate covers them — no validated auto-clear rule exists yet, BRO-3862)."
+
       - name: Audit star-rating accuracy (HARD blocking-signal, SUSPECT warning)
         if: always()
         run: |
