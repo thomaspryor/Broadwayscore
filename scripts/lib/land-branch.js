@@ -19,9 +19,13 @@
  *   - rebase the branch tip onto a PINNED origin/main sha → run the check
  *     gauntlet → ONE fast-forward push of HEAD:main. NEVER rewrites history
  *     and never lets a push layer replay HEAD onto a newer base behind the
- *     checks' back: if origin/main moved during the checks, or the push is
- *     rejected non-fast-forward, THIS loop re-fetches, re-rebases and
- *     RE-CHECKS, bounded by maxAttempts (default 3), then refuses.
+ *     checks' back: if origin/main moved during the checks across anything
+ *     that could change a verdict, or the push is rejected non-fast-forward,
+ *     THIS loop re-fetches, re-rebases and RE-CHECKS, bounded by maxAttempts
+ *     (default 3), then refuses. A move across INERT paths only (bot data
+ *     churn — see INERT_FOR_VERIFICATION_RE) is rebased over cleanly with
+ *     the verdict kept, because on this repo main moves faster than the
+ *     gauntlet runs and a strict re-check never converges (measured).
  *   - red check → returns { landed: false, failedCheck } WITHOUT pushing; the
  *     branch ref is never modified on any path (the worktree is detached).
  *   - idempotent: a branch tip that is already an ancestor of origin/main
@@ -75,6 +79,8 @@ const { runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = requ
 const { checkLanded } = require('./landing-verify.js');
 
 const MAX_ATTEMPTS = 3;
+// Inert-churn re-rebases allowed per attempt before a full re-check is forced.
+const MAX_CHURN_SKIPS = 10;
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const GIT_NET_TIMEOUT_MS = Number(process.env.GIT_NET_TIMEOUT_SEC || 90) * 1000;
 // The merged-tree suite is minutes, not seconds (~4min for scripts/lib, per
@@ -94,6 +100,28 @@ function firstFailedCheck(results) {
     if (!r || r.pass !== true) return r ? { name: r.name || 'malformed-check', ...r, pass: false } : { name: 'malformed-check', pass: false, detail: 'check result was empty' };
   }
   return null;
+}
+
+/**
+ * Paths whose content cannot change a check verdict: bot-written data and
+ * telemetry, generated public data, memory, prose. This repo pushes such
+ * commits to main every minute or two (~200 workflows), while the gauntlet
+ * takes ~2 minutes — a policy of "re-check on EVERY move" measured 3 moves
+ * in 355s and never converged (BRO-3873 landing 1). A clean rebase across
+ * commits that touch ONLY these paths keeps the verdict; anything else
+ * re-runs the checks. Same judgement scripts/merge-worktree-to-main.sh and
+ * memory/feedback_parallel_worktree_race.md already record.
+ */
+const INERT_FOR_VERIFICATION_RE = /^(data\/|public\/data\/|cloud-memory\/|memory\/|docs\/)|\.(md|jsonl|log|txt)$/;
+
+function isInertForVerification(file) {
+  return INERT_FOR_VERIFICATION_RE.test(String(file));
+}
+
+/** 'inert' when every intervening file is inert (and there is at least one), else 'substantive'. */
+function classifyIntervening(files) {
+  const list = (files || []).map(String);
+  return list.length && list.every(isInertForVerification) ? 'inert' : 'substantive';
 }
 
 /**
@@ -272,13 +300,14 @@ function defaultPushMain({ cwd, log = () => {} }) {
 function landBranch(o) {
   const {
     branch, repoDir = REPO_ROOT, checks = defaultChecks, pushMain = defaultPushMain,
-    beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS,
+    beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS, maxChurnSkips = MAX_CHURN_SKIPS,
     remote = 'origin', target = 'main', source = 'auto', dryRun = false,
   } = o || {};
   const t0 = Date.now();
   const done = (patch) => ({
     landed: false, sha: null, attempts: 0, wallMs: Date.now() - t0,
-    failedCheck: null, reason: null, pushed: false, files: [], verified: null, contentNote: null, baseSha: null, ...patch,
+    failedCheck: null, reason: null, pushed: false, files: [], verified: null, contentNote: null,
+    baseSha: null, verifiedBase: null, churnSkips: 0, ...patch,
   });
 
   if (!isPlausibleBranchName(branch)) return done({ failedCheck: 'args', reason: `not a usable branch name: ${JSON.stringify(branch)}` });
@@ -394,23 +423,49 @@ function landBranch(o) {
         return done({ attempts: attempt, baseSha, failedCheck: failed.name, reason: String(failed.detail || 'check failed').slice(0, 500), files });
       }
 
-      if (beforePush) beforePush({ cwd: workdir, baseSha, git: (args) => git(args, workdir) });
-      head = git(['rev-parse', 'HEAD'], workdir);
-
       if (dryRun) {
+        head = git(['rev-parse', 'HEAD'], workdir);
         log(`[land] dry-run: checks green at ${head.slice(0, 10)} — push skipped`);
-        return done({ landed: false, dryRun: true, sha: head, attempts: attempt, baseSha, pushed: false, reason: 'dry-run: checks green, push skipped', files });
+        return done({ landed: false, dryRun: true, sha: head, attempts: attempt, baseSha, verifiedBase: baseSha, pushed: false, reason: 'dry-run: checks green, push skipped', files });
       }
 
-      // Did origin/main move while the checks ran? Then this tree was verified
-      // against a stale base — re-rebase and re-check rather than push.
-      git(['fetch', remote, target], workdir);
-      const nowBase = git(['rev-parse', targetRef], workdir);
-      if (nowBase !== baseSha) {
-        lastReason = `${targetRef} moved during checks (${baseSha.slice(0, 10)} → ${nowBase.slice(0, 10)})`;
-        log(`[land] attempt ${attempt}: ${lastReason}${shouldRetry(attempt, maxAttempts) ? ' — re-rebasing and re-checking' : ''}`);
-        continue;
+      // Did origin/main move while the checks ran? A move across INERT
+      // paths only (bot data churn) keeps the verdict: re-rebase cleanly and
+      // carry on. A substantive move means this tree was verified against a
+      // stale base — re-rebase and re-check. Bounded so a firehose of churn
+      // cannot spin here forever.
+      let landBase = baseSha;
+      let churnSkips = 0;
+      let restart = false;
+      for (;;) {
+        git(['fetch', remote, target], workdir);
+        const nowBase = git(['rev-parse', targetRef], workdir);
+        if (nowBase === landBase) break;
+        const intervening = git(['diff', '--name-only', `${landBase}..${nowBase}`], workdir).split('\n').filter(Boolean);
+        const kind = classifyIntervening(intervening);
+        if (kind !== 'inert' || churnSkips >= maxChurnSkips) {
+          lastReason = `${targetRef} moved during checks (${landBase.slice(0, 10)} → ${nowBase.slice(0, 10)}, ${intervening.length} file(s), ${kind}${churnSkips >= maxChurnSkips ? `, churn budget ${maxChurnSkips} spent` : ''})`;
+          log(`[land] attempt ${attempt}: ${lastReason}${shouldRetry(attempt, maxAttempts) ? ' — re-rebasing and re-checking' : ''}`);
+          restart = true;
+          break;
+        }
+        try {
+          git(['rebase', nowBase], workdir);
+        } catch (err) {
+          gitOrNull(['rebase', '--abort'], workdir);
+          return done({ attempts: attempt, baseSha: nowBase, verifiedBase: baseSha, failedCheck: 'rebase', reason: `branch would not rebase cleanly onto ${targetRef} @ ${nowBase.slice(0, 10)} (inert churn since ${landBase.slice(0, 10)}): ${String(err.stderr || err.message).slice(0, 300)}`, files });
+        }
+        churnSkips++;
+        log(`[land] attempt ${attempt}: ${targetRef} moved across ${intervening.length} inert path(s) only (${landBase.slice(0, 10)} → ${nowBase.slice(0, 10)}: ${intervening.slice(0, 3).join(', ')}${intervening.length > 3 ? ', …' : ''}) — verdict kept, rebased without re-checking (${churnSkips}/${maxChurnSkips})`);
+        landBase = nowBase;
       }
+      if (restart) continue;
+
+      // Trailers/amends go on the commit that will actually be pushed, with
+      // the base it actually sits on (autonomous-merge's Auto-merge-base
+      // must be the pushed commit's real parent for revert() to be exact).
+      if (beforePush) beforePush({ cwd: workdir, baseSha: landBase, verifiedBase: baseSha, git: (args) => git(args, workdir) });
+      head = git(['rev-parse', 'HEAD'], workdir);
 
       try {
         pushMain({ cwd: workdir, sha: head, log });
@@ -418,12 +473,12 @@ function landBranch(o) {
         const errText = String(err.stderr || err.message || '');
         const errLine = errText.split('\n').map(l => l.trim()).filter(l => l && !/^remote:\s*$/.test(l)).slice(-1)[0] || 'push failed';
         gitOrNull(['fetch', remote, target], workdir);
-        const kind = classifyPushFailure({ baseSha, nowBase: gitOrNull(['rev-parse', targetRef], workdir) });
+        const kind = classifyPushFailure({ baseSha: landBase, nowBase: gitOrNull(['rev-parse', targetRef], workdir) });
         if (kind !== 'race') {
           // Not a race: origin/main is where we verified it. Retrying would
           // hit the same wall (hook, auth, network) and misreport it.
           const blocked = /PRE-PUSH BLOCKED/.test(errText) ? 'pre-push hook: ' : '';
-          return done({ attempts: attempt, baseSha, failedCheck: 'push', reason: `${blocked}${errText.match(/=== PRE-PUSH BLOCKED: ([^=]+) ===/)?.[1]?.trim() || errLine}`.slice(0, 500), files });
+          return done({ attempts: attempt, baseSha: landBase, verifiedBase: baseSha, failedCheck: 'push', reason: `${blocked}${errText.match(/=== PRE-PUSH BLOCKED: ([^=]+) ===/)?.[1]?.trim() || errLine}`.slice(0, 500), files });
         }
         lastReason = `push rejected after ${targetRef} moved: ${errLine}`.slice(0, 200);
         log(`[land] attempt ${attempt}: ${lastReason}${shouldRetry(attempt, maxAttempts) ? ' — re-rebasing and re-checking' : ''}`);
@@ -434,16 +489,16 @@ function landBranch(o) {
       // still the verified commit; anything else is a contract violation.
       const headAfter = git(['rev-parse', 'HEAD'], workdir);
       if (headAfter !== head) {
-        return done({ attempts: attempt, baseSha, failedCheck: 'push-contract', reason: `the push step moved HEAD (${head.slice(0, 10)} → ${headAfter.slice(0, 10)}) — a push seam must be push-only; whatever is on ${targetRef} was not what the checks verified`, files });
+        return done({ attempts: attempt, baseSha: landBase, verifiedBase: baseSha, failedCheck: 'push-contract', reason: `the push step moved HEAD (${head.slice(0, 10)} → ${headAfter.slice(0, 10)}) — a push seam must be push-only; whatever is on ${targetRef} was not what the checks verified`, files });
       }
       git(['fetch', remote, target], workdir);
       const verdict = checkLanded({ sha: head, branch: target, remote, cwd: workdir, log });
       if (verdict.verdict === 'NOT_LANDED') {
-        return done({ attempts: attempt, baseSha, failedCheck: 'landing-verify', reason: `push reported success but ${head.slice(0, 10)} is not an ancestor of ${targetRef}`, files });
+        return done({ attempts: attempt, baseSha: landBase, verifiedBase: baseSha, failedCheck: 'landing-verify', reason: `push reported success but ${head.slice(0, 10)} is not an ancestor of ${targetRef}`, files });
       }
-      log(`[land] LANDED ${head.slice(0, 10)} on ${targetRef} (attempt ${attempt}, verify=${verdict.verdict}${verdict.reason ? `: ${verdict.reason}` : ''})`);
+      log(`[land] LANDED ${head.slice(0, 10)} on ${targetRef} (attempt ${attempt}, verified at ${baseSha.slice(0, 10)}${landBase !== baseSha ? `, fast-forwarded across inert churn to ${landBase.slice(0, 10)}` : ''}, verify=${verdict.verdict}${verdict.reason ? `: ${verdict.reason}` : ''})`);
       return done({
-        landed: true, sha: head, attempts: attempt, baseSha, pushed: true, files, verified: verdict.verdict,
+        landed: true, sha: head, attempts: attempt, baseSha: landBase, verifiedBase: baseSha, churnSkips, pushed: true, files, verified: verdict.verdict,
         reason: verdict.verdict === 'UNKNOWN' ? `push succeeded; local ancestry check UNKNOWN (${verdict.reason}) — confirm via git ls-remote / the GitHub compare API` : null,
       });
     }
@@ -458,6 +513,10 @@ function landBranch(o) {
 
 module.exports = {
   MAX_ATTEMPTS,
+  MAX_CHURN_SKIPS,
+  INERT_FOR_VERIFICATION_RE,
+  isInertForVerification,
+  classifyIntervening,
   landBranch,
   defaultChecks,
   defaultPushMain,

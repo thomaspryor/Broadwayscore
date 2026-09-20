@@ -19,6 +19,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
+  isInertForVerification, classifyIntervening,
 } = require('./land-branch.js');
 
 // The lib's landing-verify call would try `git fetch --unshallow` only on a
@@ -59,12 +60,14 @@ function makeWorld() {
     sh(dir, ['commit', '-qm', msg]);
     return sh(dir, ['rev-parse', 'HEAD']);
   };
-  // "Another session" lands something on origin/main.
+  // "Another session" lands something on origin/main. Default: a substantive
+  // (root-level .js) change; pass a path to simulate bot data churn.
   let n = 0;
-  const moveOrigin = () => {
+  const moveOrigin = (file = null) => {
     sh(other, ['fetch', '-q', 'origin', 'main']);
     sh(other, ['reset', '-q', '--hard', 'origin/main']);
-    commitOn(other, `other-${++n}.txt`, `${n}\n`, `other session ${n}`);
+    n++;
+    commitOn(other, file || `other-${n}.js`, `// ${n}\n`, `other session ${n}`);
     sh(other, ['push', '-q', 'origin', 'HEAD:main']);
     return sh(other, ['rev-parse', 'HEAD']);
   };
@@ -228,6 +231,93 @@ test('origin/main moves during the checks (before any push) → detected, re-reb
     assert.equal(checkRuns, 2);
     assert.equal(pushCalls, 1, 'a tree verified against a stale base is never pushed');
     assert.equal(w.originMain(), r.sha);
+  } finally { w.cleanup(); }
+});
+
+test('isInertForVerification / classifyIntervening: bot data churn is inert, code is substantive', () => {
+  for (const f of ['data/audit/stage-latency.jsonl', 'data/audit/x.json', 'public/data/shows/a.json', 'memory/foo.md', 'README.md', 'cloud-memory/MEMORY.md']) {
+    assert.equal(isInertForVerification(f), true, f);
+  }
+  for (const f of ['scripts/lib/x.js', 'src/app/page.tsx', '.github/workflows/test.yml', 'package.json', 'scripts/x.sh', 'tests/unit/a.test.mjs']) {
+    assert.equal(isInertForVerification(f), false, f);
+  }
+  assert.equal(classifyIntervening(['data/audit/a.json', 'memory/b.md']), 'inert');
+  assert.equal(classifyIntervening(['data/audit/a.json', 'scripts/lib/x.js']), 'substantive');
+  assert.equal(classifyIntervening([]), 'substantive', 'an empty intervening set is never "inert" — nothing to fast-forward across');
+});
+
+test('origin/main moves across INERT paths only during the checks → rebased over, verdict kept, no re-check, lands in one attempt', () => {
+  const w = makeWorld();
+  try {
+    const tip = w.makeBranch('feat-churn');
+    let checkRuns = 0; let pushCalls = 0; const logs = [];
+    const r = landBranch({
+      branch: 'feat-churn', repoDir: w.repoDir, log: (m) => logs.push(m),
+      checks: () => { checkRuns++; w.moveOrigin('data/audit/telemetry.json'); w.moveOrigin('memory/note.md'); return greenChecks(); },
+      pushMain: (o) => { pushCalls++; plainPush(o); },
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 1);
+    assert.equal(checkRuns, 1, 'inert churn never re-runs the checks');
+    assert.equal(pushCalls, 1);
+    assert.equal(r.churnSkips, 1, 'both churn commits were on origin by the time of one fetch');
+    assert.notEqual(r.baseSha, r.verifiedBase, 'the landed base is past the verified base');
+    assert.equal(sh(w.repoDir, ['rev-parse', `${r.sha}^`]), r.baseSha, 'the pushed commit sits directly on the churned tip');
+    assert.equal(w.originMain(), r.sha);
+    assert.ok(logs.some(l => /inert path\(s\) only/.test(l)));
+    assert.equal(w.branchSha('feat-churn'), tip);
+  } finally { w.cleanup(); }
+});
+
+test('origin/main moves across a SUBSTANTIVE path during the checks → full re-check (existing behavior kept)', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-subst');
+    let checkRuns = 0;
+    const r = landBranch({
+      branch: 'feat-subst', repoDir: w.repoDir,
+      checks: () => { checkRuns++; if (checkRuns === 1) { w.moveOrigin('data/audit/a.json'); w.moveOrigin('scripts/lib/other.js'); } return greenChecks(); },
+      pushMain: plainPush,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 2);
+    assert.equal(checkRuns, 2, 'one inert + one substantive intervening file → substantive → re-check');
+  } finally { w.cleanup(); }
+});
+
+test('beforePush receives the base the commit will actually sit on, after the churn re-rebase', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-base');
+    const seen = [];
+    const r = landBranch({
+      branch: 'feat-base', repoDir: w.repoDir,
+      checks: () => { w.moveOrigin('data/audit/z.json'); return greenChecks(); },
+      beforePush: ({ baseSha, verifiedBase }) => seen.push({ baseSha, verifiedBase }),
+      pushMain: plainPush,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(seen.length, 1);
+    assert.equal(seen[0].baseSha, sh(w.repoDir, ['rev-parse', `${r.sha}^`]));
+    assert.equal(seen[0].verifiedBase, r.verifiedBase);
+    assert.notEqual(seen[0].baseSha, seen[0].verifiedBase);
+  } finally { w.cleanup(); }
+});
+
+test('the churn budget is bounded: past maxChurnSkips a further inert move forces a re-check', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-budget');
+    let checkRuns = 0; let pushes = 0;
+    const r = landBranch({
+      branch: 'feat-budget', repoDir: w.repoDir, maxChurnSkips: 1,
+      checks: () => { checkRuns++; if (checkRuns === 1) w.moveOrigin('data/a.json'); return greenChecks(); },
+      // First push attempt: churn arrives again right before the push (the skip budget is already spent) → rejected → race → attempt 2.
+      pushMain: (o) => { pushes++; if (pushes === 1) w.moveOrigin('data/b.json'); plainPush(o); },
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 2);
+    assert.equal(checkRuns, 2);
   } finally { w.cleanup(); }
 });
 
