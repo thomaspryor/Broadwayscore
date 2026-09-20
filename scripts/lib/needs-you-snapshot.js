@@ -75,6 +75,23 @@ function isEmptyDecisionContent(question) {
   return BARE_EMPTY_RE.test(q) || PHRASE_EMPTY_RE.test(q);
 }
 
+// Oldest pending decision first, undated (title-only) items LAST.
+//
+// Extracted and exported 2026-09-20 so the test can call the REAL comparator.
+// It was previously inlined in buildNeedsYouSnapshot, and the regression test
+// re-implemented it locally — a mutation test proved that test passed even with
+// the sentinel reverted, i.e. it was only testing its own copy (CLAUDE.md
+// rule 15: never copy logic into a test, require the real function).
+//
+// Plain relational compare, NOT localeCompare: localeCompare is locale-
+// sensitive and does not follow code-point order in general, so the '\uffff'
+// sentinel is only guaranteed to sort last under a deterministic comparator.
+function byPendingAge(a, b) {
+  const ka = String((a && (a.pendingSinceTs || a.ts)) || '\uffff');
+  const kb = String((b && (b.pendingSinceTs || b.ts)) || '\uffff');
+  return ka < kb ? -1 : ka > kb ? 1 : 0;
+}
+
 // Pure: cross-reference persisted questions against live workspace titles,
 // dropping any whose extracted content is empty/none regardless of glyph.
 //
@@ -199,15 +216,7 @@ function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
     // bare '' sorts BEFORE every real ISO date — which put hollow "open the
     // tab" placeholders above genuinely long-pending decisions. Undated items
     // sort last instead, via a sentinel that is greater than any ISO string.
-    .sort((a, b) => {
-      const ka = String(a.pendingSinceTs || a.ts || '\uffff');
-      const kb = String(b.pendingSinceTs || b.ts || '\uffff');
-      // Plain string comparison, not localeCompare: ISO-8601 timestamps
-      // compare correctly byte-by-byte, and localeCompare's ordering is
-      // ICU-collation-dependent, which is not worth the risk here
-      // (second-opinion review, 2026-09-16).
-      return ka < kb ? -1 : ka > kb ? 1 : 0;
-    });
+    .sort(byPendingAge);
   // Glyph/content mismatch count (card #940): ❓-titled tabs whose extracted
   // question was empty/none, so they were excluded above. Logged, not
   // thrown — this must never block the digest, only make the mismatch
@@ -233,5 +242,5 @@ function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
 
 module.exports = {
   NEEDS_YOU_DIR, readNeedsYouState, isNeedsYouTitle, isEmptyDecisionContent, pendingDecisions,
-  collapseCrownLineages, formatDetail, buildNeedsYouSnapshot,
+  collapseCrownLineages, formatDetail, buildNeedsYouSnapshot, byPendingAge,
 };

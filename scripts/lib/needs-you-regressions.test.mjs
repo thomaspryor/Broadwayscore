@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  pendingDecisions, collapseCrownLineages, formatDetail, buildNeedsYouSnapshot,
+  pendingDecisions, collapseCrownLineages, formatDetail, buildNeedsYouSnapshot, byPendingAge,
 } = require('./needs-you-snapshot.js');
 
 // ── 1. crown borrow ─────────────────────────────────────────────────────
@@ -88,13 +88,25 @@ test('ordering: undated title-only items sort AFTER dated decisions', () => {
     { ref: 'workspace:2', title: '❓ newer real decision tab' },
     { ref: 'workspace:1', title: '❓ oldest real decision tab' },
   ];
-  const sorted = collapseCrownLineages(pendingDecisions(states, workspaces))
-    .sort((a, b) => {
-      const ka = String(a.pendingSinceTs || a.ts || '￿');
-      const kb = String(b.pendingSinceTs || b.ts || '￿');
-      return ka < kb ? -1 : ka > kb ? 1 : 0;
-    });
+  // Calls the REAL exported comparator. An earlier version of this test
+  // inlined its own copy, and a mutation test proved it still passed with the
+  // module's sentinel reverted - it was only testing its own pasted code.
+  const sorted = collapseCrownLineages(pendingDecisions(states, workspaces)).sort(byPendingAge);
   assert.deepEqual(sorted.map(x => x.ref), ['workspace:1', 'workspace:2', 'workspace:3']);
+});
+
+test('ordering: byPendingAge places an undated item after a dated one, both directions', () => {
+  const dated = { ref: 'd', ts: '2026-01-01T00:00:00Z' };
+  const undated = { ref: 'u', ts: null };
+  assert.ok(byPendingAge(dated, undated) < 0, 'dated must sort before undated');
+  assert.ok(byPendingAge(undated, dated) > 0, 'undated must sort after dated');
+  assert.equal(byPendingAge(dated, dated), 0);
+});
+
+test('ordering: byPendingAge prefers pendingSinceTs over ts (crown age wins)', () => {
+  const a = { pendingSinceTs: '2026-01-01T00:00:00Z', ts: '2026-12-01T00:00:00Z' };
+  const b = { ts: '2026-06-01T00:00:00Z' };
+  assert.ok(byPendingAge(a, b) < 0, 'a is older by pendingSinceTs and must sort first');
 });
 
 test('ordering: the \\uffff sentinel beats every ISO timestamp under a deterministic compare', () => {
