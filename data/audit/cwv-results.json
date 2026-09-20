@@ -1,24 +1,6 @@
 {
   "runs": [
     {
-      "timestamp": "2026-03-22T09:32:35.129Z",
-      "url": "https://broadwayscorecard.com",
-      "mobile": {
-        "lcp": 2425.25,
-        "cls": 0,
-        "tbt": 342.5,
-        "fcp": 1075.25,
-        "speedIndex": 1984.3666048053851
-      },
-      "desktop": {
-        "lcp": 544.549,
-        "cls": 0,
-        "tbt": 2.5,
-        "fcp": 306.096,
-        "speedIndex": 564.97679234186
-      }
-    },
-    {
       "timestamp": "2026-03-29T09:37:07.855Z",
       "url": "https://broadwayscorecard.com",
       "mobile": {
@@ -467,24 +449,42 @@
         "fcp": 372.829,
         "speedIndex": 729.7899849354707
       }
+    },
+    {
+      "timestamp": "2026-09-20T13:28:31.256Z",
+      "url": "https://broadwayscorecard.com",
+      "mobile": {
+        "lcp": 3628.3574999999987,
+        "cls": 0,
+        "tbt": 164.5,
+        "fcp": 1651.2884999999999,
+        "speedIndex": 3761.3412583664485
+      },
+      "desktop": {
+        "lcp": 749.342,
+        "cls": 0,
+        "tbt": 0,
+        "fcp": 390.397,
+        "speedIndex": 795.7461603860984
+      }
     }
   ],
   "latest": {
-    "timestamp": "2026-09-13T13:41:14.829Z",
+    "timestamp": "2026-09-20T13:28:31.256Z",
     "url": "https://broadwayscorecard.com",
     "mobile": {
-      "lcp": 3807.6770000000006,
+      "lcp": 3628.3574999999987,
       "cls": 0,
-      "tbt": 181,
-      "fcp": 1652.953,
-      "speedIndex": 2748.3817564726965
+      "tbt": 164.5,
+      "fcp": 1651.2884999999999,
+      "speedIndex": 3761.3412583664485
     },
     "desktop": {
-      "lcp": 749.829,
+      "lcp": 749.342,
       "cls": 0,
       "tbt": 0,
-      "fcp": 372.829,
-      "speedIndex": 729.7899849354707
+      "fcp": 390.397,
+      "speedIndex": 795.7461603860984
     }
   }
 }
