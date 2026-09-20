@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-09-18T16:08:40.366Z",
-    "completedAt": "2026-09-18T16:08:40.580Z",
-    "totalReviews": 4,
-    "processed": 0,
-    "skipped": 3,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "35363725266",
-    "errorDetails": [
-      {
-        "showId": "gimme-a-sign-off-broadway-2026",
-        "outletId": "donyc",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-18T16:08:42.517Z",
-    "completedAt": "2026-09-18T16:08:42.519Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "35363725266",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-18T16:09:17.981Z",
     "completedAt": "2026-09-18T16:09:39.239Z",
     "totalReviews": 44105,
@@ -326305,6 +326267,44 @@
     },
     "costUsd": 1.2567617,
     "runId": "35489574418",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-20T05:42:45.221Z",
+    "completedAt": "2026-09-20T05:42:55.623Z",
+    "totalReviews": 44184,
+    "processed": 0,
+    "skipped": 44179,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 16029,
+      "output": 517,
+      "total": 46459
+    },
+    "costUsd": 0.08229855,
+    "runId": "35491244858",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-20T05:42:57.601Z",
+    "completedAt": "2026-09-20T05:48:54.750Z",
+    "totalReviews": 173,
+    "processed": 173,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 451494,
+      "output": 39694,
+      "total": 491188
+    },
+    "costUsd": 1.2581442,
+    "runId": "35491244858",
     "errorDetails": []
   }
 ]
