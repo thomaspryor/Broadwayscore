@@ -714,6 +714,15 @@ test('BRO-3551: a card that defers to an owner decision is excluded', () => {
   assert.deepEqual(out, []);
 });
 
+test('BRO-3551: malformed entries in the issues array (null, missing id) are skipped, not thrown on', () => {
+  const out = selectOpenBacklogSweepCandidates({ issues: [null, undefined, { name: 'no id here' }, openIssue()] });
+  assert.deepEqual(out, [{ cardId: 'BRO-1', name: 'Fix the thing', verifyCmd: 'node --test scripts/lib/some.test.mjs' }]);
+});
+
+test('BRO-3551: priority 0 (None/untriaged) is excluded end-to-end', () => {
+  assert.deepEqual(selectOpenBacklogSweepCandidates({ issues: [openIssue({ priority: 0 })] }), []);
+});
+
 test('BRO-3551: a comment-posted correction still arms the command via evaluateVerifiability', () => {
   const out = selectOpenBacklogSweepCandidates({
     issues: [openIssue({

@@ -108,21 +108,43 @@ function writeReport(report) {
   fs.renameSync(`${REPORT_PATH}.tmp`, REPORT_PATH);
 }
 
-function buildReport({ generatedAt, totalCandidates, results, truncated, fetchError }) {
+// `truncated` covers TWO independent ways this report can be partial (Codex
+// ship-check finding): the Linear FETCH hit its page/deadline cap
+// (fetchTruncated), or more eligible candidates existed than the run's
+// --limit/time budget let it check (selectionTruncated — eligibleCandidates
+// > checked). Collapsing both into one boolean would let a selection-capped
+// run claim `truncated: false` and read as a complete sweep when most of the
+// backlog was never even attempted. `checkoutSha` pins exactly which commit
+// each verdict was measured against — without it a passing verdict has no
+// way to be re-verified or trusted after main moves on (rollback/provenance
+// gap, Codex finding). `shadow: true` matches the sibling nightly recheck
+// ledger's own convention (autonomous-acceptance-recheck.js) marking every
+// row as report-only, never a state mutation.
+function buildReport({ generatedAt, totalCandidates, eligibleCandidates, results, fetchTruncated, fetchError, checkoutSha = null }) {
   const passed = results.filter(r => r.status === 'pass');
   const failed = results.filter(r => r.status === 'fail');
   const unverifiable = results.filter(r => r.status === 'unverifiable');
+  const selectionTruncated = Number.isFinite(eligibleCandidates) && eligibleCandidates > results.length;
   return {
     generatedAt,
+    shadow: true,
+    checkoutSha,
     totalCandidates,
+    eligibleCandidates: Number.isFinite(eligibleCandidates) ? eligibleCandidates : results.length,
     checked: results.length,
-    truncated: !!truncated,
+    truncated: !!fetchTruncated || selectionTruncated,
     fetchError: fetchError || null,
     counts: { pass: passed.length, fail: failed.length, unverifiable: unverifiable.length },
     // The whole point: cards a human can close today because their own bar
-    // is already cleared on main. Never auto-closed — see file header.
-    alreadyDone: passed.map(r => ({ id: r.cardId, name: r.name, verifyCmd: r.verifyCmd })),
+    // is already cleared on main. Never auto-closed — see file header. Detail
+    // ("passed on retry (first run flaked)") is kept, not just on failures —
+    // a card that only passed after a retry is worth a human's extra glance.
+    alreadyDone: passed.map(r => ({ id: r.cardId, name: r.name, verifyCmd: r.verifyCmd, detail: r.detail || null })),
     failing: failed.map(r => ({ id: r.cardId, name: r.name, verifyCmd: r.verifyCmd, detail: r.detail })),
+    // Per-card detail (ship-check finding) — previously only pass/fail cards
+    // got a reason; a human couldn't tell WHY a card was unverifiable without
+    // re-running it themselves.
+    unverifiable: unverifiable.map(r => ({ id: r.cardId, name: r.name, verifyCmd: r.verifyCmd, detail: r.detail })),
   };
 }
 
@@ -144,7 +166,12 @@ async function main(argv = process.argv.slice(2)) {
   const fetchResult = await fetchOpenBacklogSweepCandidates();
   if (fetchResult.error) {
     console.error(`[open-backlog-sweep] Linear fetch failed: ${fetchResult.error}`);
-    if (!dryRun) writeReport(buildReport({ generatedAt: new Date().toISOString(), totalCandidates: 0, results: [], truncated: true, fetchError: fetchResult.error }));
+    if (!dryRun) writeReport(buildReport({ generatedAt: new Date().toISOString(), totalCandidates: 0, eligibleCandidates: 0, results: [], fetchTruncated: true, fetchError: fetchResult.error }));
+    // Non-zero exit (ship-check finding): unlike the nightly recheck, this
+    // sweep has only ONE candidate source. A dead LINEAR_API_KEY or GraphQL
+    // outage must not look identical to "nothing to sweep tonight" to a
+    // future cron/alerting wrapper.
+    process.exitCode = 1;
     return;
   }
   if (fetchResult.truncated) {
@@ -153,19 +180,23 @@ async function main(argv = process.argv.slice(2)) {
   console.error(`[open-backlog-sweep] ${fetchResult.candidates.length} open (non-terminal) issue(s) fetched from Linear`);
 
   const taskState = loadSharedTaskState();
-  const targets = selectOpenBacklogSweepCandidates({
+  const eligible = selectOpenBacklogSweepCandidates({
     issues: fetchResult.candidates,
     isClaimed: cardId => !!findClaimedTask(cardId, taskState),
-  }).slice(0, limit);
+  });
+  const targets = eligible.slice(0, limit);
+  if (eligible.length > targets.length) {
+    console.error(`[open-backlog-sweep] WARN ${eligible.length} candidate(s) are eligible but --limit ${limit} caps this run to ${targets.length} — the rest are not yet checked (no rotation across runs; re-run with a higher --limit or narrow the backlog first)`);
+  }
 
-  console.error(`[open-backlog-sweep] ${targets.length} candidate(s) clear the headless-dispatch gate (autofixFiledIssueGuard + classifyHeadlessDispatchability) and carry a safe-form acceptance command`);
+  console.error(`[open-backlog-sweep] ${eligible.length} candidate(s) clear the headless-dispatch gate (autofixFiledIssueGuard + classifyHeadlessDispatchability) and carry a safe-form acceptance command; checking ${targets.length} this run`);
 
   if (dryRun) {
     for (const t of targets) console.log(`  ${t.cardId} ${t.name} → ${t.verifyCmd}`);
     return;
   }
   if (!targets.length) {
-    writeReport(buildReport({ generatedAt: new Date().toISOString(), totalCandidates: fetchResult.candidates.length, results: [], truncated: fetchResult.truncated }));
+    writeReport(buildReport({ generatedAt: new Date().toISOString(), totalCandidates: fetchResult.candidates.length, eligibleCandidates: eligible.length, results: [], fetchTruncated: fetchResult.truncated }));
     return;
   }
 
@@ -174,7 +205,7 @@ async function main(argv = process.argv.slice(2)) {
   try { checkout = makeFreshCheckout(); }
   catch (err) {
     console.error(`[open-backlog-sweep] could not build a fresh main checkout: ${String(err.message).slice(0, 200)}`);
-    writeReport(buildReport({ generatedAt: new Date().toISOString(), totalCandidates: fetchResult.candidates.length, results: [], truncated: true, fetchError: `checkout failed: ${String(err.message).slice(0, 200)}` }));
+    writeReport(buildReport({ generatedAt: new Date().toISOString(), totalCandidates: fetchResult.candidates.length, eligibleCandidates: eligible.length, results: [], fetchTruncated: true, fetchError: `checkout failed: ${String(err.message).slice(0, 200)}` }));
     return;
   }
 
@@ -186,7 +217,14 @@ async function main(argv = process.argv.slice(2)) {
         console.error(`[open-backlog-sweep] time budget spent — deferring ${targets.length - results.length} candidate(s) to the next run`);
         break;
       }
-      const r = { ...t, ...runVerify(checkout.wt, t.verifyCmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)) }) };
+      // prepared: checkout.prepared (ship-check finding) — without it, a
+      // checkout whose node_modules link failed still executes every command
+      // and scores it pass/fail instead of the correct 'unverifiable',
+      // silently corrupting the one claim this feature exists to make
+      // trustworthy. scripts/reconcile-landed-but-open.js and scripts/audit-
+      // card-relevance.js both pass this; the sibling autonomous-acceptance-
+      // recheck.js does not (its own pre-existing gap, not fixed here).
+      const r = { ...t, ...runVerify(checkout.wt, t.verifyCmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)), prepared: checkout.prepared }) };
       results.push(r);
       console.error(`[open-backlog-sweep] ${r.cardId} ${r.name}: ${r.status}${r.detail ? ` (${String(r.detail).slice(0, 160)})` : ''}`);
     }
@@ -194,7 +232,14 @@ async function main(argv = process.argv.slice(2)) {
     removeCheckout(checkout);
   }
 
-  const report = buildReport({ generatedAt: new Date().toISOString(), totalCandidates: fetchResult.candidates.length, results, truncated: fetchResult.truncated });
+  const report = buildReport({
+    generatedAt: new Date().toISOString(),
+    totalCandidates: fetchResult.candidates.length,
+    eligibleCandidates: eligible.length,
+    results,
+    fetchTruncated: fetchResult.truncated,
+    checkoutSha: checkout.sha,
+  });
   writeReport(report);
   console.log(`[open-backlog-sweep] ${report.counts.pass} already done, ${report.counts.fail} still fail, ${report.counts.unverifiable} unverifiable (of ${report.checked} checked, ${report.totalCandidates} candidates fetched)`);
   console.log(`Report written: ${path.relative(REPO, REPORT_PATH)}`);
