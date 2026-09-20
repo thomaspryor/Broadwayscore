@@ -231,6 +231,34 @@ test('origin/main moves during the checks (before any push) → detected, re-reb
   } finally { w.cleanup(); }
 });
 
+test('checks that dirty the throwaway tree (tracked edit + untracked file) do not break the retry rebase', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-dirty');
+    let checkRuns = 0;
+    const discards = [];
+    const r = landBranch({
+      branch: 'feat-dirty', repoDir: w.repoDir,
+      log: (m) => { if (/discarding/.test(m)) discards.push(m); },
+      checks: ({ cwd }) => {
+        checkRuns++;
+        fs.writeFileSync(path.join(cwd, 'a.txt'), 'dirtied by a test\n');       // tracked file modified
+        fs.writeFileSync(path.join(cwd, 'residue.json'), '{}\n');               // untracked residue
+        if (checkRuns === 1) w.moveOrigin();                                    // force attempt 2
+        return greenChecks();
+      },
+      pushMain: plainPush,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 2);
+    assert.equal(discards.length, 1, 'the residue is discarded exactly once, before the retry, and logged');
+    assert.match(discards[0], /a\.txt/);
+    // What landed is the branch's own content, never the residue.
+    assert.equal(sh(w.repoDir, ['show', `${r.sha}:a.txt`]), 'a');
+    assert.throws(() => sh(w.repoDir, ['cat-file', '-e', `${r.sha}:residue.json`]));
+  } finally { w.cleanup(); }
+});
+
 test('origin/main moves 4x (every attempt loses) → refused after MAX_ATTEMPTS, nothing landed, no history rewrite', () => {
   const w = makeWorld();
   try {

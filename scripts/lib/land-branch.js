@@ -350,6 +350,22 @@ function landBranch(o) {
   try {
     let lastReason = null;
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      // Checks are allowed to dirty the throwaway tree (a prebuild regenerates
+      // tracked files, tests write data/audit/*.json) and a dirty tree makes
+      // the next rebase refuse ("You have unstaged changes") — which is how
+      // the first real landing through this lib lost attempt 2 (BRO-3873).
+      // Nothing in this worktree is anyone's work: HEAD is the verified
+      // commit, everything else is check residue. Discard it, loudly.
+      // Ignored files (node_modules link, core-data copies) are kept.
+      // The git helper trims, so the first line loses its leading status
+      // column — strip the XY code by pattern, not by position.
+      const dirty = (gitOrNull(['status', '--porcelain'], workdir) || '').split('\n').filter(Boolean)
+        .map(l => l.replace(/^[ MADRCUT?!]{1,2}\s+/, ''));
+      if (dirty.length) {
+        log(`[land] attempt ${attempt}: discarding ${dirty.length} check-residue path(s) in the throwaway worktree: ${dirty.slice(0, 5).join(', ')}${dirty.length > 5 ? ', …' : ''}`);
+        git(['reset', '-q', '--hard', 'HEAD'], workdir);
+        git(['clean', '-fdq'], workdir);
+      }
       git(['fetch', remote, target], workdir);
       // Pin the base: every later step (rebase, diff, moved-check, trailer)
       // uses THIS sha, never the tracking ref another session's fetch may
