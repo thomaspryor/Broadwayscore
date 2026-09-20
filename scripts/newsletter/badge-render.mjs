@@ -17,6 +17,19 @@
 
 const BADGE_ENDPOINT = 'https://broadwayscorecard.com/api/newsletter-badge';
 
+// Cache-buster. The route responds `cache-control: public, immutable,
+// max-age=31536000`, so Vercel's CDN and Gmail's image proxy keep serving the
+// PNG they already have for a given parameter combination — and the same
+// combos recur every week (?tier=rec&score=84&size=64&...). Without this,
+// changing how a badge RENDERS has no visible effect for up to a year:
+// the Inter typeface fix shipped and readers would still have received
+// Noto Sans badges (QA review, 2026-09-20).
+//
+// Bump this on ANY change to src/app/api/newsletter-badge/route.tsx that
+// alters pixels — font, weight, color, radius, padding, scale.
+//   v2 — 2026-09-20: render in Inter, score badge weight 800 -> 700.
+export const BADGE_VERSION = '2';
+
 // The route is a public, unauthenticated endpoint, so it takes a `tier` ID
 // (gold/rec/worth/skip/miss) rather than raw color strings — colors live in
 // a fixed table on the route itself (mirrors src/app/api/og/route.tsx's
@@ -32,6 +45,7 @@ export function buildBadgeUrl({ tier, score, size, fontSize, radius }) {
   params.set('size', String(size));
   params.set('fontSize', String(fontSize));
   params.set('radius', String(radius));
+  params.set('v', BADGE_VERSION);
   return `${BADGE_ENDPOINT}?${params.toString()}`;
 }
 
@@ -65,6 +79,7 @@ export function buildRankBadgeUrl({ tierId, position, size, fontSize, radius }) 
   params.set('size', String(size));
   params.set('fontSize', String(fontSize));
   params.set('radius', String(radius));
+  params.set('v', BADGE_VERSION);
   return `${BADGE_ENDPOINT}?${params.toString()}`;
 }
 
@@ -86,6 +101,7 @@ export function buildAwardBadgeUrl({ tierId, score, size, fontSize }) {
   params.set('score', String(score));
   params.set('size', String(size));
   params.set('fontSize', String(fontSize));
+  params.set('v', BADGE_VERSION);
   return `${BADGE_ENDPOINT}?${params.toString()}`;
 }
 
