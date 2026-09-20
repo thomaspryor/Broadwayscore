@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-09-20T07:32:04.973Z",
+  "runDate": "2026-09-20T11:10:19.006Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,44 +11,44 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 155,
-    "failed": 1027,
+    "processed": 159,
+    "failed": 1105,
     "skipped": 0,
-    "successRate": "13.1%"
+    "successRate": "12.6%"
   },
   "tierBreakdown": {
-    "playwright": 87,
-    "amp": 0,
-    "browserbase": 28,
+    "playwright": 90,
+    "amp": 3,
+    "browserbase": 31,
     "directCookies": 4,
-    "scrapingbee": 30,
+    "scrapingbee": 31,
     "brightdata": 20,
     "archiveToday": 0,
     "archive": 17
   },
   "statistics": {
-    "tier1Attempts": 64,
-    "tier1Success": 32,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 21,
-    "tier1_5Success": 6,
-    "tier2Attempts": 36,
-    "tier2Success": 13,
-    "tier3Attempts": 23,
-    "tier3Success": 10,
-    "tier3_6Attempts": 17,
+    "tier1Attempts": 12,
+    "tier1Success": 5,
+    "ampAttempts": 7,
+    "ampSuccess": 3,
+    "tier1_5Attempts": 18,
+    "tier1_5Success": 2,
+    "tier2Attempts": 9,
+    "tier2Success": 3,
+    "tier3Attempts": 11,
+    "tier3Success": 1,
+    "tier3_6Attempts": 5,
     "tier3_6Success": 0,
-    "tier4Attempts": 57,
-    "tier4Success": 12,
-    "totalFailed": 964,
-    "scrapingBeePageCredits": 144,
+    "tier4Attempts": 9,
+    "tier4Success": 3,
+    "totalFailed": 77,
+    "scrapingBeePageCredits": 13,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 21,
-    "browserbaseMinutesUsed": 9,
-    "urlDiscoveryAttempts": 300,
+    "browserbaseSessionsUsed": 18,
+    "browserbaseMinutesUsed": 7.4,
+    "urlDiscoveryAttempts": 62,
     "urlDiscoverySuccess": 0,
-    "urlDiscoveryCapped": 616
+    "urlDiscoveryCapped": 0
   },
   "processed": [
     "gimme-a-sign-off-broadway-2026/donyc--unknown.json",
@@ -205,7 +205,11 @@
     "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
     "now-you-see-me-live-west-end-2026/londontheatredirect--marco-da-silva.json",
     "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
-    "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json"
+    "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
+    "high-society-west-end-2026/london-theatre--unknown.json",
+    "primary-trust-off-broadway-2023/culturesauce--thom-geier.json",
+    "ann-2013/abscbnnewscom--mark-kennedy.json",
+    "catch-me-if-you-can-2011/hollywood-reporter--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -1234,7 +1238,85 @@
     "twelfth-night-off-west-end-2026/telegraph--claire-allfree.json",
     "twelfth-night-off-west-end-2026/theatrecat--unknown.json",
     "twelfth-night-off-west-end-2026/times-uk--rachel-halliburton.json",
-    "twelfth-night-off-west-end-2026/toronto-star--joshua-chong.json"
+    "twelfth-night-off-west-end-2026/toronto-star--joshua-chong.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "well-ill-let-you-go-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "public-charge-off-broadway-2026/culturesauce--thom-geier.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "mj-the-musical-west-end-2024/nytg--unknown.json",
+    "mj-the-musical-west-end-2024/daily-mail--unknown.json",
+    "mj-the-musical-west-end-2024/express-uk--unknown.json",
+    "mj-the-musical-west-end-2024/thestage--unknown.json",
+    "appropriate-2023/timeout--adam-feldman.json",
+    "harmony-2023/usatoday--david-rooney.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "waitress-2021/vulture--helen-shaw.json",
+    "the-inheritance-2019/usatoday--charles-isherwood.json",
+    "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "kiss-me-kate-2019/usatoday--david-rooney.json",
+    "kiss-me-kate-2019/usatoday--elysa-gardner.json",
+    "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
+    "the-nap-2018/nypost--johnny-oleksinski.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/observer--rex-reed.json",
+    "indecent-2017/usatoday--elysa-gardner.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+    "tuck-everlasting-2016/usatoday--elysa-gardner.json",
+    "eclipsed-2016/observer--rex-reed.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
+    "motown-the-musical-2013/observer--rex-reed.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
+    "picnic-2013/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "high-2011/abscbnnewscom--mark-kennedy.json",
+    "bloody-bloody-andrew-jackson-2010/variety--unknown.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "collected-stories-2010/hollywood-reporter--unknown.json",
+    "collected-stories-2010/variety--unknown.json",
+    "enron-2010/hollywood-reporter--unknown.json",
+    "fences-2010/hollywood-reporter--unknown.json",
+    "promises-promises-2010/nytimes--unknown.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "looped-2010/hollywood-reporter--unknown.json",
+    "fela-2009/variety--unknown.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/usatoday--elysa-gardner.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "rock-of-ages-2009/nytimes--unknown.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "high-society-1998/whatsonstage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1324,9 +1406,16 @@
       "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json",
       "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
       "now-you-see-me-live-west-end-2026/londontheatredirect--marco-da-silva.json",
-      "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json"
+      "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
+      "high-society-west-end-2026/london-theatre--unknown.json",
+      "primary-trust-off-broadway-2023/culturesauce--thom-geier.json",
+      "ann-2013/abscbnnewscom--mark-kennedy.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/variety--unknown.json",
+      "data/review-texts/collected-stories-2010/variety--unknown.json",
+      "data/review-texts/fela-2009/variety--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
@@ -1355,7 +1444,10 @@
       "darkling-off-west-end-2026/voice-magazine--unknown.json",
       "data/review-texts/spandex-off-broadway-2026/nytimes--unknown.json",
       "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
-      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--ben-brantley.json"
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--ben-brantley.json",
+      "data/review-texts/mj-the-musical-west-end-2024/express-uk--unknown.json",
+      "data/review-texts/catch-me-if-you-can-2011/hollywood-reporter--unknown.json",
+      "catch-me-if-you-can-2011/hollywood-reporter--unknown.json"
     ],
     "directCookies": [
       "aida-off-broadway-2027/times-uk--kevin-ng.json",
@@ -1393,7 +1485,8 @@
       "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
-      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "public-charge-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "brightdata": [
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json",
@@ -1439,79 +1532,30 @@
     ]
   },
   "failuresByOutlet": {
-    "The Stage": {
-      "count": 9,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
+    "Abscbnnews.com": {
       "count": 1,
-      "domain": "theguardian.com",
+      "domain": "news.yahoo.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Reviews Hub": {
-      "count": 1,
-      "domain": "thereviewshub.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Londontheatredirect": {
-      "count": 1,
-      "domain": "londontheatredirect.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "BroadwayWorld": {
+    "The Hollywood Reporter": {
       "count": 2,
-      "domain": "unknown",
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
+    },
+    "The New York Times": {
+      "count": 1,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     },
     "WhatsOnStage": {
       "count": 1,
       "domain": "whatsonstage.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Times": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Broadway News": {
-      "count": 1,
-      "domain": "broadway.news",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NorthJersey.com": {
-      "count": 1,
-      "domain": "northjersey.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "The Stage (UK)": {
-      "count": 1,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Woman Around Town": {
-      "count": 1,
-      "domain": "womanaroundtown.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
