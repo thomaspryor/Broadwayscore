@@ -357,6 +357,11 @@ function decideTodayTixCandidates(state, thresholdChecks = 2) {
     }));
 }
 
+// Reason code for shouldSuppressCandidate's future-dated branch — exported so
+// detect-ob-closings.js can pick these back out of the suppressed list to
+// auto-fill closingDate (see FUTURE_DATE_NOT_YET_CLOSED usage there).
+const FUTURE_DATE_NOT_YET_CLOSED = 'future-date-not-yet-closed';
+
 /**
  * Suppression guard for proposals the weekly alert should NOT surface.
  * Returns a reason string, or null when the candidate is actionable.
@@ -365,6 +370,15 @@ function decideTodayTixCandidates(state, thresholdChecks = 2) {
  *    review-era dates are frequently superseded by extensions (Heathers was
  *    extended Jan→Nov 2026; Dad Don't Read This Jul 11→18), so an existing
  *    date always outranks review boilerplate. Never propose overwrites.
+ *  - 'future-date-not-yet-closed': the proposed date is still ahead of today.
+ *    The show hasn't closed — reviews are just quoting its announced end
+ *    date — so there is nothing to REVIEW here, only a closingDate to fill
+ *    in early. Card #799: america-who-hurt-you-off-broadway-2026 and
+ *    the-body-of-mary-... surfaced in the "awaiting review" backlog purely
+ *    because their announced (future) closing date wasn't in shows.json yet
+ *    — no human judgment was actually needed. See applyFutureClosingDateFills
+ *    in detect-ob-closings.js, which writes the date for exactly this reason
+ *    without touching status.
  *  - 'stale-evidence': the proposed date is more than a year in the past for
  *    a show still marked open. A truly stale-open show gets caught within
  *    weeks; a year-old "runs through" quote on an open show means the run
@@ -374,11 +388,45 @@ function decideTodayTixCandidates(state, thresholdChecks = 2) {
 function shouldSuppressCandidate(show, proposedClosingDateISO, todayISO) {
   if (show && show.closingDate) return 'already-has-closing-date';
   if (proposedClosingDateISO && todayISO) {
+    if (proposedClosingDateISO > todayISO) return FUTURE_DATE_NOT_YET_CLOSED;
     const proposed = new Date(`${proposedClosingDateISO}T00:00:00Z`);
     const today = new Date(`${todayISO}T00:00:00Z`);
     if ((today - proposed) / 86400000 > 365) return 'stale-evidence';
   }
   return null;
+}
+
+/**
+ * Suppression guard for the TodayTix-staleness signal. Unlike the
+ * review-text sweep (shouldSuppressCandidate, above), this signal was
+ * missing an "already resolved" check entirely:
+ *
+ *  - A show that already carries a `closingDate` (set by this detector's
+ *    review-text sweep, by update-show-status.js, or by a human) has
+ *    nothing left to review — the run's end is known. Card #799: Shifters
+ *    (closingDate 2026-09-20, closing that same day) still surfaced as an
+ *    "awaiting review" candidate purely because status hadn't flipped to
+ *    'closed' yet — the same shape of false alarm as
+ *    shouldSuppressCandidate's 'already-has-closing-date' branch, just
+ *    never applied to this signal.
+ *  - An OB show confirmed STILL OPEN despite being delisted from TodayTix
+ *    has no field to record that resolution, so it re-flags every run
+ *    forever. Drunk Shakespeare is the documented case (see
+ *    selectAutoApplyClosures above): an open-ended immersive attraction
+ *    absent from TodayTix for 9+ checks while genuinely still running. A
+ *    session confirming that via web search had no way to make the finding
+ *    stick, so the same show re-litigated itself weekly.
+ *
+ * `todaytixStalenessIgnore: true` on the show record is that missing
+ * resolution — set once, by a human/session that has verified the show is
+ * still running through some other channel (official site, on-sale page,
+ * a review). `todaytixStalenessIgnoreReason` carries the audit trail.
+ */
+function shouldSuppressTodayTixCandidate(show) {
+  if (!show) return false;
+  if (show.todaytixStalenessIgnore === true) return true;
+  if (show.closingDate) return true;
+  return false;
 }
 
 /**
@@ -468,6 +516,8 @@ module.exports = {
   runLengthWeeks,
   aggregateClosingDateCandidates,
   shouldSuppressCandidate,
+  shouldSuppressTodayTixCandidate,
+  FUTURE_DATE_NOT_YET_CLOSED,
   updateTodayTixMissingState,
   decideTodayTixCandidates,
 };
