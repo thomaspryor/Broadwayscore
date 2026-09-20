@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-20T03:51:31.668Z",
+  "runDate": "2026-09-20T05:16:30.297Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,18 +11,18 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 122,
-    "failed": 669,
+    "processed": 124,
+    "failed": 668,
     "skipped": 0,
-    "successRate": "15.4%"
+    "successRate": "15.7%"
   },
   "tierBreakdown": {
-    "playwright": 64,
+    "playwright": 65,
     "amp": 0,
     "browserbase": 25,
     "directCookies": 3,
     "scrapingbee": 25,
-    "brightdata": 16,
+    "brightdata": 17,
     "archiveToday": 0,
     "archive": 13
   },
@@ -31,23 +31,23 @@
     "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 4,
-    "tier2Attempts": 16,
-    "tier2Success": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 15,
+    "tier2Success": 4,
     "tier3Attempts": 11,
-    "tier3Success": 3,
-    "tier3_6Attempts": 8,
+    "tier3Success": 4,
+    "tier3_6Attempts": 9,
     "tier3_6Success": 0,
     "tier4Attempts": 17,
-    "tier4Success": 2,
+    "tier4Success": 3,
     "totalFailed": 297,
-    "scrapingBeePageCredits": 54,
+    "scrapingBeePageCredits": 74,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 3.9,
-    "urlDiscoveryAttempts": 272,
-    "urlDiscoverySuccess": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 275,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -171,8 +171,10 @@
     "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
     "darkling-off-west-end-2026/guardian--unknown.json",
     "darkling-off-west-end-2026/voice-magazine--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
     "the-story-west-end-2026/the-spectator-uk--unknown.json",
-    "electra-persona-west-end-2026/vocaleyes--unknown.json"
+    "electra-persona-west-end-2026/vocaleyes--unknown.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -556,7 +558,6 @@
     "titanique-west-end-2024/nypost--johnny-oleksinski.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/theater-pizzazz--alix-cohen.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatreandtonic--unknown.json",
-    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
     "the-story-west-end-2026/readaboutstuff--unknown.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/timeout--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/playbill--unknown.json",
@@ -910,7 +911,8 @@
       "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--anya-ryan.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--theo-bosanquet.json",
-      "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json"
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -988,6 +990,7 @@
       "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
       "darkling-off-west-end-2026/guardian--unknown.json",
       "darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
       "electra-persona-west-end-2026/vocaleyes--unknown.json"
     ],
     "archiveToday": [],
@@ -1009,15 +1012,15 @@
   },
   "failuresByOutlet": {
     "The Stage": {
-      "count": 4,
+      "count": 2,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "readaboutstuff": {
-      "count": 1,
-      "domain": "readaboutstuff.com",
+    "WhatsOnStage": {
+      "count": 2,
+      "domain": "whatsonstage.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1050,13 +1053,6 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "WhatsOnStage": {
-      "count": 1,
-      "domain": "whatsonstage.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "Times": {
       "count": 1,
       "domain": "unknown",
@@ -1065,11 +1061,5 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/white-rabbit-red-rabbit-review-soho-place-london-cgpsngzzt",
-      "newUrl": "https://www.thetimes.com/culture/books/article/beatrix-potter-author-archives-tales-from-world-peter-rabbit-zjkfhk0wn"
-    }
-  ]
+  "urlDiscoveries": []
 }
