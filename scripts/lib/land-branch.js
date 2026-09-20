@@ -170,7 +170,14 @@ function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) 
         });
         extra.push({ name, pass: true });
       } catch (err) {
-        extra.push({ name, pass: false, detail: (opts.detail || defaultDetail)(err) });
+        // Keep the full output: the detail string is a summary, and a merged-
+        // tree run is ~50k TAP lines that a 600-char detail cannot explain.
+        let logPath = null;
+        try {
+          logPath = path.join(os.tmpdir(), `land-branch-${name.replace(/[^\w.-]+/g, '_')}-${Date.now()}.log`);
+          fs.writeFileSync(logPath, `# ${argv.join(' ')}\n# exit ${err.status}${err.signal ? ` signal ${err.signal}` : ''}\n\n${err.stdout || ''}\n--- stderr ---\n${err.stderr || ''}\n`);
+        } catch { logPath = null; }
+        extra.push({ name, pass: false, detail: `${(opts.detail || defaultDetail)(err)}${logPath ? ` [full output: ${logPath}]` : ''}` });
       }
     };
     const defaultDetail = (err) => String(err.stderr || err.stdout || err.message).slice(0, 400);
