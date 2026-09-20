@@ -1,13 +1,10 @@
 {
-  "updatedAt": "2026-09-20T05:19:06.547Z",
+  "updatedAt": "2026-09-20T12:01:07.638Z",
   "scanned": 2096,
   "showsWithViolations": 329,
-  "totalViolations": 642,
-  "newSinceLastRun": 2,
-  "newViolationKeys": [
-    "equus-west-end-2026::jonathan-baz--unknown.json",
-    "golden-boy-off-west-end-2026::plays-to-see--unknown.json"
-  ],
+  "totalViolations": 641,
+  "newSinceLastRun": 0,
+  "newViolationKeys": [],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -434,7 +431,6 @@
     "high-2011::scheckontheater--frank-scheck.json",
     "wonderland-2011::wsj--terry-teachout.json",
     "war-horse-2011::scheckontheater--frank-scheck.json",
-    "catch-me-if-you-can-2011::ap--mark-kennedy.json",
     "catch-me-if-you-can-2011::backstage--erik-haagensen.json",
     "catch-me-if-you-can-2011::wsj--terry-teachout.json",
     "anything-goes-2011::scheckontheater--frank-scheck.json",
@@ -5649,16 +5645,8 @@
       "showId": "catch-me-if-you-can-2011",
       "title": "Catch Me If You Can",
       "openingDate": "2011-04-10",
-      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED but fullText never mentions 'Catch Me If You Can' (679 chars, textIssues flag set): http://abcnews.go.com/Entertainment/wireStory?id=13344305&amp;page=1\nbackstage/Erik Haagensen (backstage--erik-haagensen.json) SHIPPED but fullText never mentions 'Catch Me If You Can' (469 chars, textIssues flag set): https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i957b94cbebb211d46ce9476bfadf3d1c\nwsj/Terry Teachout (wsj--terry-teachout.json) SHIPPED but fullText never mentions 'Catch Me If You Can' (807 chars): https://www.wsj.com/articles/SB10001424052748704013604576248663826782792",
+      "message": "backstage/Erik Haagensen (backstage--erik-haagensen.json) SHIPPED but fullText never mentions 'Catch Me If You Can' (469 chars, textIssues flag set): https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i957b94cbebb211d46ce9476bfadf3d1c\nwsj/Terry Teachout (wsj--terry-teachout.json) SHIPPED but fullText never mentions 'Catch Me If You Can' (807 chars): https://www.wsj.com/articles/SB10001424052748704013604576248663826782792",
       "violations": [
-        {
-          "filename": "ap--mark-kennedy.json",
-          "url": "http://abcnews.go.com/Entertainment/wireStory?id=13344305&amp;page=1",
-          "outletId": "ap",
-          "criticName": "Mark Kennedy",
-          "haystackLength": 679,
-          "textIssuesFlag": true
-        },
         {
           "filename": "backstage--erik-haagensen.json",
           "url": "https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i957b94cbebb211d46ce9476bfadf3d1c",
@@ -8409,7 +8397,7 @@
       "showId": "high-society-west-end-2026",
       "title": "High Society",
       "openingDate": "2026-06-03",
-      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'High Society' (3119 chars): https://www.theguardian.com/stage/2026/jun/04/high-society-review-barbican-theatre-london\n⚠️  daily-mail/Unknown (daily-mail--unknown.json) also too short to assess (0 chars): https://www.dailymail.com/tvshowbiz/article-15872199/PATRICK-MARMION-reviews-High-Society-Barbican.html\n⚠️  london-theatre/Unknown (london-theatre--unknown.json) also too short to assess (0 chars): https://www.londontheatre.co.uk/reviews/high-society-review-barbican\n⚠️  standard/Unknown (standard--unknown.json) also too short to assess (0 chars): https://www.standard.co.uk/culture/theatre/high-society-barbican-review-b1284772.html\n⚠️  telegraph/Unknown (telegraph--unknown.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/high-society-review-felicity-kendal-steals-the-show/\n⚠️  thestage/Neil Norman (thestage--neil-norman.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/high-society-review-barbican-theatre-london\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/high-society-review-barbican-theatre-london",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'High Society' (3119 chars): https://www.theguardian.com/stage/2026/jun/04/high-society-review-barbican-theatre-london\n⚠️  daily-mail/Unknown (daily-mail--unknown.json) also too short to assess (0 chars): https://www.dailymail.com/tvshowbiz/article-15872199/PATRICK-MARMION-reviews-High-Society-Barbican.html\n⚠️  standard/Unknown (standard--unknown.json) also too short to assess (0 chars): https://www.standard.co.uk/culture/theatre/high-society-barbican-review-b1284772.html\n⚠️  telegraph/Unknown (telegraph--unknown.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/high-society-review-felicity-kendal-steals-the-show/\n⚠️  thestage/Neil Norman (thestage--neil-norman.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/high-society-review-barbican-theatre-london\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/high-society-review-barbican-theatre-london",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
