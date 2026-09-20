@@ -91,6 +91,13 @@ function makeIssue(description, commentBodies) {
   };
 }
 
+// BRO-3885: checkLinearDoneTransition now actually RUNS a recorded VERIFY
+// command (via an injected verifyCmdEvidence) before treating it as
+// done-evidence — see linear-done-gate.test.mjs for that behaviour itself.
+// These tests are about comment PRECEDENCE (which command wins), an
+// orthogonal concern, so they stub the executor to always report a pass.
+const ALWAYS_PASSES_CMD_EVIDENCE = () => ({ allowed: true, verdict: 'own-verify-passed', reason: 'stubbed pass' });
+
 describe('checkLinearDoneTransition (linear-done-gate.js) — same precedence as dispatch, BRO-3155', () => {
   test('a comment-corrected acceptance command that would dispatch now also closes', () => {
     const issue = makeIssue(MALFORMED_DESCRIPTION, ['VERIFY: node --test tests/unit/some-fixture.test.mjs']);
@@ -99,6 +106,7 @@ describe('checkLinearDoneTransition (linear-done-gate.js) — same precedence as
       targetStateType: 'completed',
       description: issue.description,
       existingComments,
+      verifyCmdEvidence: ALWAYS_PASSES_CMD_EVIDENCE,
     });
     assert.equal(gate.gated, true);
     assert.equal(gate.allowed, true, gate.reason);
@@ -124,6 +132,7 @@ describe('checkLinearDoneTransition (linear-done-gate.js) — same precedence as
         'VERIFY: node --test tests/unit/some-fixture.test.mjs',
         'VERIFY: node --test tests/unit/another-fixture.test.mjs',
       ],
+      verifyCmdEvidence: ALWAYS_PASSES_CMD_EVIDENCE,
     });
     assert.equal(gate.allowed, true, gate.reason);
     assert.equal(gate.cmd, 'node --test tests/unit/another-fixture.test.mjs');

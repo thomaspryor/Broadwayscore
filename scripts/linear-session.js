@@ -48,6 +48,7 @@ const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
+const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { checkIssueStaleness } = require('./lib/linear-staleness-check');
 
@@ -240,8 +241,10 @@ async function cmdClaim(args) {
   );
 }
 
-// deps.verifyEvidence: tests inject a stub; the CLI gets the real git/gh-backed
-// verifier from done-evidence-verify.js (see the gate call below).
+// deps.verifyEvidence / deps.verifyCmdEvidence: tests inject stubs; the CLI
+// gets the real git/gh-backed verifier from done-evidence-verify.js and the
+// real command executor from linear-cmd-execution.js (see the gate call
+// below).
 async function cmdReport(args, deps = {}) {
   if (!args.issue) throw new Error(`report requires --issue=<id-or-identifier>\n\n${USAGE}`);
   if (!args.status) throw new Error(`report requires --status=<done|in-review|paused|blocked>\n\n${USAGE}`);
@@ -335,12 +338,16 @@ async function cmdReport(args, deps = {}) {
         const existingComments = sortedCommentBodies(issue);
         const verifyEvidence = deps.verifyEvidence
           || makeVerifyEvidence({ cwd: process.cwd(), issueIdentifier: issue.identifier, log: (m) => console.error(m) });
+        // BRO-3885: actually RUNS a recorded VERIFY command against a fresh
+        // origin/main checkout — see linear-cmd-execution.js's header.
+        const verifyCmdEvidence = deps.verifyCmdEvidence || makeVerifyCmdEvidence({ log: (m) => console.error(m) });
         const gate = checkLinearDoneTransition({
           targetStateType: 'completed',
           description: issue.description || '',
           commentText: body,
           existingComments,
           verifyEvidence,
+          verifyCmdEvidence,
         });
         if (gate.warning) console.error(`⚠️  ${gate.warning}`);
         if (gate.gated && !gate.allowed) refusal = gate;
