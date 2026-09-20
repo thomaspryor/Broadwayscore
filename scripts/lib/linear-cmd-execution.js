@@ -76,10 +76,25 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
         entry: { source: 'linear-done-gate' },
       };
       const decision = decideClose({ dispatch, verifyResult });
+      const allowed = decision.verdict === VERDICTS.PASS;
+      // decideClose's own message is written for ITS fail-open policy — e.g.
+      // "`cmd` could not be verified (...) — closing without a verdict" when
+      // decision.allowed is true. This caller is stricter (BRO-3885: only a
+      // confirmed PASS is done-evidence), so whenever that policy diverges
+      // from ours (decision.allowed true but ours is false), decideClose's
+      // own wording — the literal word "closing" — would tell the operator
+      // the opposite of what just happened, a refusal captioned "closing"
+      // (ship-check finding). Built from verifyResult.detail directly rather
+      // than decision.message, so that word never leaks through. Every
+      // verdict where decideClose ALSO refuses (FAIL, including the
+      // missingPath case) already reads correctly as a refusal either way.
+      const reason = (!allowed && decision.allowed === true)
+        ? `recorded command \`${cmd}\` was not confirmed to pass (${decision.verdict}): ${(verifyResult && verifyResult.detail) || 'no further detail'}`
+        : decision.message;
       return {
-        allowed: decision.verdict === VERDICTS.PASS,
+        allowed,
         verdict: decision.verdict,
-        reason: decision.message,
+        reason,
         notOnMain: decision.notOnMain === true,
         sha: checkout.sha || null,
       };

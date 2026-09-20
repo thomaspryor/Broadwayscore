@@ -130,12 +130,18 @@ test('gate: with no verifier wired, PR-EVIDENCE alone no longer closes anything 
   assert.match(r.reason, /no evidence verifier/);
 });
 
+// BRO-3885: checkLinearDoneTransition now actually RUNS a recorded VERIFY
+// command before it counts as evidence — orthogonal to what these PR-EVIDENCE
+// tests exercise, so they stub the executor to always report a pass.
+const ALWAYS_PASSES_CMD_EVIDENCE = () => ({ allowed: true, verdict: 'own-verify-passed', reason: 'stubbed pass' });
+
 test('gate: when the PR claim fails, a runnable VERIFY: command on the issue is still evaluated (the refusal\'s own advice must work)', () => {
   const r = checkLinearDoneTransition({
     targetStateType: 'completed',
     description: EVIDENCE,
     existingComments: ['VERIFY: node --test tests/unit/some-fixture.test.mjs'],
     verifyEvidence: () => ({ verified: false, reason: 'commit aaaaaaa is NOT on origin/main' }),
+    verifyCmdEvidence: ALWAYS_PASSES_CMD_EVIDENCE,
   });
   assert.equal(r.allowed, true, r.reason);
   assert.equal(r.verdict, 'verify-cmd-recorded');
@@ -284,6 +290,7 @@ test('gate: a proven-not-on-main ref beside an unresolvable sibling still trigge
     description: EVIDENCE,
     existingComments: ['VERIFY: node --test tests/unit/some-fixture.test.mjs'],
     verifyEvidence: () => ({ verified: null, reason: 'could not confirm commit deadbeefcafe14', checked: [{ kind: 'commit', ref: 'aaaaaaaaaaaa', onMain: false }, { kind: 'commit', ref: 'deadbeefcafe14', onMain: null }] }),
+    verifyCmdEvidence: ALWAYS_PASSES_CMD_EVIDENCE,
   });
   assert.equal(r.allowed, true);
   assert.match(r.warning, /NOT on origin\/main/);
@@ -295,6 +302,7 @@ test('gate: a PROVEN-false PR claim next to a valid VERIFY: command is allowed b
     description: EVIDENCE,
     existingComments: ['VERIFY: node --test tests/unit/some-fixture.test.mjs'],
     verifyEvidence: () => ({ verified: false, reason: 'commit aaaaaaa is NOT on origin/main' }),
+    verifyCmdEvidence: ALWAYS_PASSES_CMD_EVIDENCE,
   });
   assert.equal(r.allowed, true);
   assert.match(r.warning, /NOT on origin\/main/);
@@ -303,6 +311,7 @@ test('gate: a PROVEN-false PR claim next to a valid VERIFY: command is allowed b
     description: EVIDENCE,
     existingComments: ['VERIFY: node --test tests/unit/some-fixture.test.mjs'],
     verifyEvidence: () => ({ verified: null, reason: 'shallow' }),
+    verifyCmdEvidence: ALWAYS_PASSES_CMD_EVIDENCE,
   });
   assert.equal(unknown.allowed, true);
   assert.equal(unknown.warning, undefined, 'unknown is not an accusation — no warning');
