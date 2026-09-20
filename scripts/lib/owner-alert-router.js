@@ -317,7 +317,7 @@ function decideDigestEscalation({ conditionKey, existing, notifyCount, now, thre
 // land right on the edge — pad explicitly rather than relying on margin.
 const MIN_NOTES_LENGTH = 320;
 
-function buildCardNotes({ description, hint, fields, conditionKey }) {
+function buildCardNotes({ description, hint, fields, conditionKey, verify }) {
   const fieldLines = (fields || []).map(f => `- **${f.name}:** ${f.value}`).join('\n');
   const parts = [
     '## Problem',
@@ -339,6 +339,17 @@ function buildCardNotes({ description, hint, fields, conditionKey }) {
   // puts on the cards IT files for the very same rows. Emit it here too,
   // from the shared builder, so the two filers cannot drift again.
   const healthRowName = healthRowNameFromConditionKey(conditionKey);
+  // BRO-3907: the OTHER family that hit the exact same bug —
+  // `test-yml:red:<job>:<sig>` cards (route-main-streak-signatures.js) — has
+  // no health-check row to key off, but DOES have a job+step the caller can
+  // resolve to a real `run:` command (scripts/lib/red-signature-verify-cmd.js).
+  // The caller passes the resolved `{ line, note }` through as `verify`; a
+  // `verify.line` is either `VERIFY: <safe-form command>` or the literal
+  // `VERIFY: owner-judgment` (both arm evaluateVerifiability() — see
+  // OWNER_JUDGMENT_RE) — NEVER run through sanitizeRowText, which rewrites
+  // "VERIFY:" to "VERIFY -" and would silently disarm the very line this
+  // exists to add. `verify.note` (prose explaining a fallback/refusal) IS
+  // sanitized, same as every other free-text field in this body.
   const acceptance = [
     '\n## Acceptance criteria',
     healthRowName
@@ -346,7 +357,8 @@ function buildCardNotes({ description, hint, fields, conditionKey }) {
       // snapshot names); only the surrounding prose is sanitized — the same
       // split digest-autofix.js makes, for the same reason.
       ? `\`${rowAbsentCheckCmd(healthRowName)}\` passes — i.e. the daily health check no longer lists "${sanitizeRowText(healthRowName)}" among errors or warnings.`
-      : null,
+      : (verify && verify.line ? verify.line : null),
+    verify && verify.line && verify.note ? sanitizeRowText(verify.note) : null,
     // Sanitized in the PROSE copy only. The machine-readable
     // `[conditionKey:...]` anchor below stays raw — that is what
     // findLinearDuplicate and any future exact-match consumer read, and
@@ -455,8 +467,8 @@ async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient
 // when it matters (a real 429 burst). If this ever needs bounding, pass
 // timeoutMs/maxAttempts through to linear-client.js's graphql() rather than
 // wrapping the whole call in a race — see linear-client.js's graphql() opts.
-async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey }) {
-  const notes = buildCardNotes({ description, hint, fields, conditionKey });
+async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify }) {
+  const notes = buildCardNotes({ description, hint, fields, conditionKey, verify });
   // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
   // map error-class severities to High, everything else Medium — Urgent is
   // reserved for humans. (`priority`, when a caller passes one, is the OLD
@@ -685,7 +697,10 @@ function drainDigestQueue() {
  *           marks the row a genuine judgment call so digest-autofix.js
  *           never auto-dispatches it, see queueDigestLine's header note),
  *           model (forces the model on the row's first digest-autofix
- *           dispatch attempt).
+ *           dispatch attempt), verify ({ line, note } — a pre-built
+ *           `VERIFY: <cmd>`/`VERIFY: owner-judgment` acceptance line for
+ *           disposition='auto' cards that have no health-check row to key
+ *           off; see scripts/lib/red-signature-verify-cmd.js).
  *
  * Returns { action: 'silent'|'auto'|'digest'|'human', conditionKey, cardId? }.
  */
@@ -707,6 +722,7 @@ async function routeAlert(opts) {
     decision,
     decisionPrompt,
     model,
+    verify,
   } = opts || {};
 
   if (!conditionKey) throw new Error('routeAlert requires a stable conditionKey');
@@ -812,7 +828,7 @@ async function routeAlert(opts) {
   if (pageGated) result.requestedDisposition = disposition;
   let notifyOk = true;
   if (effectiveDisposition === 'auto') {
-    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey });
+    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify });
     result.cardId = dispatch.cardId || null;
     // BRO-286: the filed tracker is a Linear issue — surface WHERE it lives
     // so consumers (health-check's digest line) tell the truth.
