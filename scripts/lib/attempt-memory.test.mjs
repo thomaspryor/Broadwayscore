@@ -197,3 +197,51 @@ test('an override for a different card does not affect this one', () => {
   const r = checkPark(entries, 'c1', hash, { overrides });
   assert.equal(r.parked, true);
 });
+
+// ── BRO-3868: file order must never matter ──────────────────────────────────
+// digest-autofix-ledger.jsonl has no merge=union driver specifically because
+// this walk was believed to trust ledger/file order as chronological order —
+// but attemptOutcomesForCard already sorts by `ts` before checkPark walks
+// newest-to-oldest, so a union-recovery that appends locally-saved rows after
+// origin's rows (scrambling file order, never real timestamps) must produce
+// an identical verdict either way. These tests are the proof the acceptance
+// criteria asks for, so the exemption can be lifted with evidence instead of
+// re-reasoning about it from scratch.
+
+test('checkPark is invariant to ledger row order — a shuffled/union-scrambled file order parks exactly like the true chronological one', () => {
+  const hash = computeContentHash(CARD_A);
+  const chronological = [
+    failEntry('c1', '2026-07-27T02:00:00Z', hash, 'a'),
+    passEntry('c1', '2026-07-28T02:00:00Z', hash),
+    failEntry('c1', '2026-07-29T02:00:00Z', hash, 'b'),
+    failEntry('c1', '2026-07-30T02:00:00Z', hash, 'c'),
+  ];
+  const expected = checkPark(chronological, 'c1', hash);
+  assert.equal(expected.parked, true); // sanity: the fixture actually exercises a park
+
+  // Every permutation a union merge could plausibly produce (it appends
+  // locally-saved rows after origin's, in whatever order each side had them)
+  // — not just one hand-picked shuffle.
+  const permutations = [
+    [chronological[3], chronological[0], chronological[2], chronological[1]],
+    [chronological[1], chronological[3], chronological[0], chronological[2]],
+    [...chronological].reverse(),
+  ];
+  for (const perm of permutations) {
+    assert.deepEqual(checkPark(perm, 'c1', hash), expected);
+  }
+});
+
+test('checkPark ignores an entry with an unparseable ts instead of letting it corrupt sort order', () => {
+  const hash = computeContentHash(CARD_A);
+  const entries = [
+    failEntry('c1', '2026-07-28T02:00:00Z', hash, 'a'),
+    failEntry('c1', 'not-a-real-timestamp', hash, 'garbage-ts'),
+    failEntry('c1', '2026-07-29T02:00:00Z', hash, 'b'),
+  ];
+  assert.doesNotThrow(() => checkPark(entries, 'c1', hash));
+  const r = checkPark(entries, 'c1', hash);
+  // Only the two well-formed rows count toward the streak.
+  assert.equal(r.parked, true);
+  assert.equal(r.failureStreak, 2);
+});

@@ -2524,9 +2524,16 @@ function checkAutofixEffectiveness() {
   }
 
   const rows = [];
+  // Exact-line dedupe (BRO-3868): this ledger is tracked and merge=union, so
+  // a sync's union recovery can leave the SAME row twice — same rationale as
+  // autofix-effectiveness.js's readLedgerRows dedupe.
+  const seen = new Set();
   for (const line of raw.split('\n')) {
-    if (!line.trim()) continue;
-    try { rows.push(JSON.parse(line)); } catch { /* skip unparseable line */ }
+    const t = line.trim();
+    if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
+    try { rows.push(JSON.parse(t)); } catch { /* skip unparseable line */ }
   }
 
   // No dispatchCount option: launches now come from this ledger's own
@@ -2567,9 +2574,17 @@ function readJsonlLedgerOrNull(absPath) {
   let raw;
   try { raw = fs.readFileSync(absPath, 'utf8'); } catch { return null; }
   const out = [];
+  // Exact-line dedupe (BRO-3868): digest-autofix-ledger.jsonl is tracked and
+  // merge=union, so a sync's union recovery can leave the SAME row twice,
+  // and this function's callers (assessThroughputRow) have no dedupe of
+  // their own. A no-op for this function's other callers, whose ledgers are
+  // gitignored/untracked and never git-merged.
+  const seen = new Set();
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
     try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
   }
   return out;

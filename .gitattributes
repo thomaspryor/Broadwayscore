@@ -211,6 +211,47 @@ data/audit/card-enrichment-log.jsonl merge=union
 # failing on main, since a concurrent CI append to an unmerged JSONL
 # conflicts instead of unioning.
 data/audit/dmarc-report-ledger.jsonl merge=union
+
+# digest-autofix-ledger.jsonl (BRO-3868): was EXEMPT_LEDGERS-listed on
+# 2026-08-26 (BRO-2493) on the belief that attempt-memory.js's checkPark()
+# trusted file order as chronological order for its newest-to-oldest
+# consecutive-failure walk — that exemption bought ordering-safety at the
+# cost of TOTAL ROW LOSS on every sync (measured: rows written 2026-09-16
+# were gone by 2026-09-20, despite the digest dispatching every day between).
+# Re-checked against the code as it actually stands, not the 2026-08-26
+# belief about it:
+#   (a) not load-bearing on deletion: every writer (digest-autofix.js's
+#       appendJsonlLedger) is appendFileSync-only, nothing prunes or rewrites
+#       the file;
+#   (b) no reader depends on raw file order: checkPark() reaches this ledger
+#       through attemptOutcomesForCard(), which already sorts by `ts`
+#       (scripts/lib/attempt-memory.js:70) BEFORE walking the failure streak
+#       newest-to-oldest — that sort predates the 2026-08-26 exemption
+#       (shipped 2026-07-30) and makes post-recovery append order harmless.
+#       Proven, not asserted: attempt-memory.test.mjs shuffles the same rows
+#       into 3 different orders and asserts checkPark returns an identical
+#       verdict for all of them. A malformed-`ts` row is now explicitly
+#       skipped before the sort (same guard shape as dispatch-reconcile.js's
+#       outcomeWindowTs callers) instead of landing at an arbitrary position.
+#       The other two readers of this ledger — the "jobs actually
+#       succeeding" and "throughput" zero-dispatch alarms
+#       (autofix-effectiveness.js, autofix-canary.js) — bucket every row by
+#       its own parsed timestamp, never by array position, so they were
+#       never exposed to this disqualifier in the first place;
+#   (c) DUPLICATE IDENTITY (the condition linear-drain-parked-ledger.jsonl's
+#       entry below flags as separate from ordering-safety): union can leave
+#       the SAME row twice, and neither checkPark's streak count nor the
+#       opus-escalation priorAttempts count nor the two zero-dispatch alarms'
+#       daily counts had any dedupe of their own — a resurrected duplicate
+#       would misfire all four. Closed by adding the identical exact-line
+#       `seen`-Set dedupe linear-drain-parked.js's readLedger() already uses
+#       to every reader of this file (digest-autofix.js's readJsonlLedger/
+#       readJsonlLedgerStrict, autofix-effectiveness.js's readLedgerRows,
+#       health-check.js's readJsonlLedgerOrNull and its own inline
+#       checkAutofixEffectiveness read). Safe against true collisions:
+#       appendJsonlLedger stamps a fresh `new Date().toISOString()` on every
+#       row, so two genuinely distinct attempts never serialize identically.
+data/audit/digest-autofix-ledger.jsonl merge=union
 # remediation-log.jsonl (scripts/lib/opening-night-remediation.js):
 # readAttempts() and readGiveUps() both explicitly re-sort/re-derive by the
 # entry's own `at` timestamp instead of trusting array position — their doc
