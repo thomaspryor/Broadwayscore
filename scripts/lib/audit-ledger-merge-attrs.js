@@ -89,20 +89,26 @@ const EXEMPT_LEDGERS = [
   {
     file: 'data/audit/scraper-spend-daily-agg.jsonl',
     reason:
-      '2026-09-13 (BRO-3202): identical writer and identical semantics to ' +
-      'provider-spend-daily.jsonl directly above — the same script, ' +
-      'check-provider-spend.js, removes every existing row for today before ' +
-      'writing the fresh ones (`existingAgg.filter((r) => r.day !== DAY)` at ' +
-      'check-provider-spend.js:175, the exact shape of the `ledger.filter((r) => ' +
-      'r.day !== DAY)` at :161 that earned its sibling this exemption) and then ' +
-      'fs.writeFileSync()s the whole file at :189. That is a same-day REPLACE, ' +
-      'not an append, so a union merge could leave a superseded day\'s rows ' +
-      'beside the fresh ones with no dedupe rule to resolve them — and these ' +
-      'rows are SUMMED into a 7-day attribution window, so resurrected rows ' +
-      'would inflate spend attribution rather than just duplicate a line. ' +
-      'core-data-merge-registry.js:288 independently records it as ' +
-      'single-writer in the data-health-check concurrency group, so there is no ' +
-      'concurrent-append race for a driver to protect against in the first place.',
+      '2026-09-13 (BRO-3202, consolidated with a since-removed duplicate ' +
+      'BRO-3092 entry — BRO-3868 what-else sweep found the same file listed ' +
+      'twice, added independently by two same-day sessions): identical writer ' +
+      'and identical semantics to provider-spend-daily.jsonl directly above — ' +
+      'the same script, check-provider-spend.js, removes every existing row ' +
+      'for today before writing the fresh ones (`existingAgg.filter((r) => ' +
+      'r.day !== DAY)` at check-provider-spend.js:175, the exact shape of the ' +
+      '`ledger.filter((r) => r.day !== DAY)` at :161 that earned its sibling ' +
+      'this exemption) and then fs.writeFileSync()s the whole file at :189. ' +
+      'That is a same-day REPLACE, not an append, so a union merge could leave ' +
+      'a superseded day\'s rows beside the fresh ones with no dedupe rule to ' +
+      'resolve them — and these rows are SUMMED into a 7-day attribution ' +
+      'window, so resurrected rows would inflate spend attribution rather than ' +
+      'just duplicate a line. core-data-merge-registry.js:288 independently ' +
+      'records it as single-writer in the data-health-check concurrency group ' +
+      '(written only by CI under one concurrency group, so it is never dirty ' +
+      'locally), so there is no concurrent-append race for a driver to protect ' +
+      'against in the first place. Verified no other reader sums it: grep for ' +
+      'the path across scripts/, src/, .github/ finds only its own writer, ' +
+      'this exemption, core-data-merge-registry.js:288, and a test-name string.',
   },
   {
     file: 'data/audit/recent-pushes.jsonl',
@@ -176,30 +182,6 @@ const EXEMPT_LEDGERS = [
       'a bare rechecks.length count with no dedup key, feeds shouldExitShadow() ' +
       '(scripts/lib/autonomous-recheck-core.js), which arms automatic card-' +
       'reopening — too consequential a gate to risk on merge-disturbed order.',
-  },
-  {
-    file: 'data/audit/scraper-spend-daily-agg.jsonl',
-    reason:
-      '2026-09-13 (BRO-3092): became tracked and reddened this gate on main. Its ' +
-      'writer, check-provider-spend.js, is not an appender at all — it does a ' +
-      'KEYED day-replace (`[...existingAgg.filter((r) => r.day !== DAY), ' +
-      '...todaysAggRows]` at :175, then a whole-file writeFileSync at :189), so ' +
-      'superseded rows for a re-recorded day are a REAL intentional deletion, ' +
-      'not the chronological ring-buffer trim this file says is non-' +
-      'disqualifying. That is the same shape as arm-yield-ledger.jsonl above. A ' +
-      'union recovery resurrects the superseded rows, leaving two different ' +
-      'credits figures under one (day, provider, workflow, script, fn) key, and ' +
-      'the writer only ever targets YESTERDAY — so nothing re-touches an older ' +
-      'day and the duplicate persists indefinitely rather than self-healing. ' +
-      'Verified there is no reader that would silently sum it today: grep for ' +
-      'the path across scripts/, src/, .github/ finds only its own writer, this ' +
-      'exemption, core-data-merge-registry.js:288 and a test-name string. But ' +
-      'summing per-day credits is the obvious future read of a SPEND series, ' +
-      'and union buys nothing here to trade against that: the launchd `git ' +
-      'merge --ff-only` outage this gate exists to prevent needs a locally-' +
-      'dirty copy, and this file is registered single-writer, written only by ' +
-      "CI's data-health-check.yml under one concurrency group " +
-      '(core-data-merge-registry.js:287-293), so it is never dirty locally.',
   },
 ];
 
