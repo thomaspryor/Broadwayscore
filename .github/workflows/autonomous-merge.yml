@@ -41,8 +41,11 @@ on:
 # doesn't safely cover for code changes (ship-check finding, 2026-07-14).
 # Serializing means the second dispatch just queues briefly — the loop caps
 # at 3 items/night, so throughput is a non-issue.
+# Group renamed autonomous-merge → landing (BRO-3873 step 3): land.yml's
+# `land` job shares it, so a hand/CI landing and an autonomous merge never
+# race the same fast-forward either.
 concurrency:
-  group: autonomous-merge
+  group: landing
   cancel-in-progress: false
 
 permissions:

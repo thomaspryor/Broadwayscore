@@ -19,7 +19,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
-  isInertForVerification, classifyIntervening,
+  isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks,
 } = require('./land-branch.js');
 
 // The lib's landing-verify call would try `git fetch --unshallow` only on a
@@ -582,5 +582,98 @@ test('source: "origin" lands the remote copy of the branch even when no local re
     assert.equal(r.landed, true, JSON.stringify(r));
     assert.equal(r.sha, tip);
     assert.equal(w.originMain(), tip);
+  } finally { w.cleanup(); }
+});
+
+// ── verified-base seam + expectSha (land.yml, BRO-3873 step 3) ──────────────
+
+test('decideVerifiedBaseSkip: skip only on the verified base or an inert-only move past it; fails closed otherwise', () => {
+  const v = 'a'.repeat(40);
+  const b = 'b'.repeat(40);
+  assert.equal(decideVerifiedBaseSkip({ verifiedBase: v, baseSha: v, ancestor: true, intervening: [] }).skip, true);
+  assert.equal(decideVerifiedBaseSkip({ verifiedBase: v, baseSha: b, ancestor: true, intervening: ['data/audit/x.json', 'memory/y.md'] }).skip, true);
+  assert.equal(decideVerifiedBaseSkip({ verifiedBase: v, baseSha: b, ancestor: true, intervening: ['scripts/lib/z.js'] }).skip, false);
+  assert.equal(decideVerifiedBaseSkip({ verifiedBase: v, baseSha: b, ancestor: true, intervening: [] }).skip, false, 'a move with no diff is not proven inert');
+  assert.equal(decideVerifiedBaseSkip({ verifiedBase: v, baseSha: b, ancestor: false, intervening: ['memory/y.md'] }).skip, false, 'non-ancestor never skips');
+  assert.equal(decideVerifiedBaseSkip({ verifiedBase: v, baseSha: b, ancestor: null, intervening: ['memory/y.md'] }).skip, false, 'unknown ancestry never skips');
+  assert.equal(decideVerifiedBaseSkip({ verifiedBase: null, baseSha: b, ancestor: true, intervening: [] }).skip, false);
+});
+
+test('makeVerifiedBaseChecks: reuses the verdict (and still prepares the worktree) on the skip path, runs the real checks otherwise', () => {
+  const v = 'a'.repeat(40);
+  const b = 'b'.repeat(40);
+  assert.throws(() => makeVerifiedBaseChecks({ verifiedBase: 'short' }), /40-hex/);
+  const calls = [];
+  const fakeGit = (moved, files) => (args) => {
+    calls.push(args.join(' '));
+    if (args[0] === 'merge-base') return moved === 'not-ancestor' ? null : '';
+    if (args[0] === 'diff') return files.join('\n');
+    return '';
+  };
+  const prepared = [];
+  const inner = (o) => [{ name: 'inner-ran', pass: true, detail: o.baseSha }];
+
+  // Same base → skip, prepare called, inner never runs.
+  let checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: inner, git: fakeGit('same', []), prepare: (cwd, repo) => { prepared.push([cwd, repo]); return ['node_modules']; } });
+  let out = checks({ cwd: '/wt', baseSha: v, repoDir: '/repo', changedFiles: ['x.js'] });
+  assert.deepEqual(out.map(r => r.name), ['verified-upstream']);
+  assert.equal(out[0].pass, true);
+  assert.deepEqual(prepared, [['/wt', '/repo']]);
+
+  // Inert move → skip.
+  checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: inner, git: fakeGit('inert', ['data/audit/ledger.jsonl', 'public/data/x.json']), prepare: () => [] });
+  out = checks({ cwd: '/wt', baseSha: b, repoDir: '/repo' });
+  assert.deepEqual(out.map(r => r.name), ['verified-upstream']);
+
+  // Substantive move → the real checks run against the new base.
+  checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: inner, git: fakeGit('subst', ['scripts/lib/land-branch.js']), prepare: () => [] });
+  out = checks({ cwd: '/wt', baseSha: b, repoDir: '/repo' });
+  assert.deepEqual(out, [{ name: 'inner-ran', pass: true, detail: b }]);
+
+  // Not an ancestor (force-moved main, wrong sha) → real checks, never a skip.
+  checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: inner, git: fakeGit('not-ancestor', ['memory/x.md']), prepare: () => [] });
+  out = checks({ cwd: '/wt', baseSha: b, repoDir: '/repo' });
+  assert.deepEqual(out.map(r => r.name), ['inner-ran']);
+});
+
+test('expectSha: a branch whose tip moved since verification is refused before any worktree or push', () => {
+  const w = makeWorld();
+  try {
+    const verifiedTip = w.makeBranch('feat-moved');
+    // The branch moves on after "verification".
+    const wt = path.join(w.root, 'wt-moved');
+    sh(w.repoDir, ['worktree', 'add', '-q', wt, 'feat-moved']);
+    const newTip = w.commitOn(wt, 'later.txt', 'later\n', 'a later push');
+    sh(w.repoDir, ['worktree', 'remove', '--force', wt]);
+    assert.notEqual(newTip, verifiedTip);
+    const r = landBranch({ branch: 'feat-moved', repoDir: w.repoDir, expectSha: verifiedTip, checks: greenChecks, pushMain: plainPush });
+    assert.equal(r.landed, false);
+    assert.equal(r.failedCheck, 'resolve');
+    assert.match(r.reason, /not the verified tip/);
+    assert.equal(w.isAncestorOfOrigin(newTip), false, 'nothing may be pushed');
+    assert.equal(w.worktreeCount(), 1, 'no throwaway worktree left behind');
+    // Same call with the CURRENT tip lands normally.
+    const ok = landBranch({ branch: 'feat-moved', repoDir: w.repoDir, expectSha: newTip, checks: greenChecks, pushMain: plainPush });
+    assert.equal(ok.landed, true, JSON.stringify(ok));
+  } finally { w.cleanup(); }
+});
+
+test('verified-base seam end-to-end: gauntlet skipped on the verified base, run again after a substantive move', () => {
+  const w = makeWorld();
+  try {
+    const tip = w.makeBranch('feat-vb');
+    const verifiedBase = w.originMain();
+    let innerRuns = 0;
+    const inner = () => { innerRuns++; return [{ name: 'inner', pass: true }]; };
+    const r1 = landBranch({ branch: 'feat-vb', repoDir: w.repoDir, dryRun: true, checks: makeVerifiedBaseChecks({ verifiedBase, checks: inner, prepare: () => [] }), pushMain: plainPush });
+    assert.equal(r1.dryRun, true, JSON.stringify(r1));
+    assert.equal(innerRuns, 0, 'gauntlet must be skipped on the verified base');
+    // Substantive move on main since verification → the gauntlet runs.
+    w.moveOrigin('scripts/other.js');
+    const r2 = landBranch({ branch: 'feat-vb', repoDir: w.repoDir, checks: makeVerifiedBaseChecks({ verifiedBase, checks: inner, prepare: () => [] }), pushMain: plainPush });
+    assert.equal(r2.landed, true, JSON.stringify(r2));
+    assert.equal(innerRuns, 1, 'gauntlet must run after a substantive move');
+    assert.ok(w.isAncestorOfOrigin(r2.sha));
+    void tip;
   } finally { w.cleanup(); }
 });
