@@ -1,0 +1,164 @@
+name: Check Direct Push To Main
+
+# BRO-3873 step 5 / BRO-3425 — the detection backstop for "sessions land via
+# land/**, never by pushing main". The local guards (scripts/hooks/pre-push,
+# the ~/.claude PreToolUse gate) can be bypassed (--no-verify, LAND_ENFORCE_OFF=1,
+# a checkout without the hook), so this runs on EVERY push to main and asks:
+# did this sha arrive through land.yml?
+#
+#   - A bot's own push (workflow commit, a landing rebased by land.yml so the
+#     committer is github-actions[bot], a GitHub web merge) → skip, instantly.
+#   - Otherwise the sha must have a row in data/audit/landings.jsonl, which
+#     land.yml appends AFTER its landing push (so the row can trail this
+#     event by a minute or two — the detector re-reads origin/main's ledger
+#     every 30s for up to 6 min before deciding).
+#   - No row → routeAlert(conditionKey `direct-push:<sha>`, disposition
+#     digest): one line in the owner's morning digest, never a page, never a
+#     red main. Missing ledger / missing sha → fail open.
+#
+# Decision: scripts/lib/landings-ledger.js classifyDirectPush() (colocated
+# test). Runner: scripts/check-direct-push-to-main.js.
+#
+# KILL SWITCH: repo variable DIRECT_PUSH_DETECT_OFF=1 skips the job. The
+# other two rollback flags (LAND_LEGACY_DIRECT / LAND_ENFORCE_OFF) are local
+# and documented in scripts/merge-worktree-to-main.sh's header.
+#
+# Cheap by design: shallow checkout, no npm ci unless a direct push is found
+# (routeAlert needs the router's deps); bot pushes finish in ~15s.
+#
+# KNOWN GAP: a push whose head commit message carries `[skip ci]` never
+# triggers push workflows at all (GitHub-side), so it is not evaluated here
+# — same blind spot test.yml has for that sha. The local guards still apply.
+#
+# LINT NOTE: the `routeAlert(` echo in the alert step is load-bearing for
+# scripts/lib/alert-ledger-commit-check.js — its call detection cannot see
+# through the CLI's lazy `require('./lib/owner-alert-router.js').routeAlert`;
+# the echo is the non-comment breadcrumb that keeps this job in coverage.
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: check-direct-push-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  detect:
+    name: Detect
+    if: vars.DIRECT_PUSH_DETECT_OFF != '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout (shallow)
+        uses: actions/checkout@v5
+        with:
+          # main, not the pushed sha: the ledger commit below goes on main and
+          # the detector fetches origin/main's ledger itself.
+          ref: main
+          fetch-depth: 1
+
+      - name: Classify the pushed head
+        id: classify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+          BEFORE: ${{ github.event.before }}
+          ACTOR: ${{ github.actor }}
+          COMMITTER_NAME: ${{ github.event.head_commit.committer.name }}
+          COMMITTER_EMAIL: ${{ github.event.head_commit.committer.email }}
+          HEAD_MESSAGE: ${{ github.event.head_commit.message }}
+          KILL: ${{ vars.DIRECT_PUSH_DETECT_OFF }}
+          REPO: ${{ github.repository }}
+        # --no-alert: this step only decides (no deps installed yet). The
+        # alert step below re-runs with the alert enabled ONLY on 'direct',
+        # after npm ci — bot pushes never pay for an install.
+        # The changed paths come from the compare API (same call
+        # guard-no-orphan-commit.yml makes) so a data/memory-only push is
+        # skipped without any history fetch; an unreadable range leaves the
+        # list empty, which the CLI treats as "unknown → judged as code".
+        run: |
+          printf '%s' "$HEAD_MESSAGE" > /tmp/head-message.txt
+          : > /tmp/changed-files.txt
+          if ! printf '%s' "$BEFORE" | grep -Eq '^0+$'; then
+            gh api "repos/${REPO}/compare/${BEFORE}...${SHA}" --paginate --jq '.files[].filename' > /tmp/changed-files.txt 2>/dev/null \
+              || { echo "::warning::compare API failed — change set unknown, judged as code"; : > /tmp/changed-files.txt; }
+          fi
+          node scripts/check-direct-push-to-main.js --sha "$SHA" --actor "$ACTOR" \
+            --committer-name "$COMMITTER_NAME" --committer-email "$COMMITTER_EMAIL" \
+            --message-file /tmp/head-message.txt --changed-files-file /tmp/changed-files.txt \
+            --repo-dir "$PWD" --wait-sec 360 \
+            --kill-switch "${KILL:-0}" --no-alert --json | tee /tmp/verdict.json
+          VERDICT=$(node -e 'const r=JSON.parse(require("fs").readFileSync("/tmp/verdict.json","utf8").trim().split("\n").pop()); console.log(r.verdict)')
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
+          echo "- direct-push detector: **$VERDICT** for \`${SHA:0:10}\` (actor ${ACTOR}, $(wc -l < /tmp/changed-files.txt | tr -d ' ') changed path(s))" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Re-checkout main with history (the ledger commit below rebases)
+        if: steps.classify.outputs.verdict == 'direct'
+        # push-with-retry.sh's rebase/merge fallback on a depth-1 root would
+        # replay the whole tree (its own header warns it reverts whatever
+        # else landed on main); land.yml uses the same shape for its ledger
+        # step. Only paid on a 'direct' verdict.
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Setup Node.js
+        if: steps.classify.outputs.verdict == 'direct'
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.classify.outputs.verdict == 'direct'
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Alert — direct push to main (digest)
+        if: steps.classify.outputs.verdict == 'direct'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          COMMITTER_NAME: ${{ github.event.head_commit.committer.name }}
+          COMMITTER_EMAIL: ${{ github.event.head_commit.committer.email }}
+          BEFORE: ${{ github.event.before }}
+        # scripts/check-direct-push-to-main.js calls routeAlert() — the ledger
+        # + digest queue it writes are committed by the step below.
+        run: |
+          node scripts/check-direct-push-to-main.js --sha "$SHA" --actor "$ACTOR" \
+            --committer-name "$COMMITTER_NAME" --committer-email "$COMMITTER_EMAIL" \
+            --message-file /tmp/head-message.txt --changed-files-file /tmp/changed-files.txt \
+            --repo-dir "$PWD" --wait-sec 0 \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --compare-url "${{ github.server_url }}/${{ github.repository }}/compare/${BEFORE}...${SHA}"
+          echo "- routed: routeAlert(direct-push:${SHA:0:10}) → owner digest" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit alert-router ledger changes
+        if: steps.classify.outputs.verdict == 'direct'
+        # routeAlert()'s ledger, digest queue and attempts log only exist on
+        # this runner until committed. Non-blocking by rule (ledger-step-guard).
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: alert-router ledger update (check-direct-push-to-main.yml) [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert-router ledger push failed — next run will recompute state"
+          else
+            echo "No ledger changes to commit."
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Direct-push detector failed'
+          description: 'check-direct-push-to-main.yml itself broke (not a verdict) — the direct-push digest for this sha was not evaluated; see the run'
+          severity: 'low'

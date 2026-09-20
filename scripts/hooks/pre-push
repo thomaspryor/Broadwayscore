@@ -67,6 +67,72 @@ for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
   # what server-side branch protection allows. See card #208.
   case "$remote_ref" in
   refs/heads/main | refs/heads/master)
+    # BRO-3425 / BRO-3873 step 5: sessions do not push to main. They land
+    # via scripts/merge-worktree-to-main.sh → land/<branch> → land.yml
+    # (delta-vs-base gates, serialized fast-forward). Bots keep their direct
+    # push: CI ($GITHUB_ACTIONS/$CI) and scripts/lib/push-with-retry.sh
+    # (exports PUSH_WITH_RETRY_CALLER=bot). Rollback: LAND_ENFORCE_OFF=1
+    # (this hook) / LAND_LEGACY_DIRECT=1 (the merge script's legacy mode);
+    # both are allowed AND logged. Decision + ledger row live in
+    # scripts/lib/direct-push-guard.sh (colocated .test.mjs runs the real
+    # hook). Guarded on the lib existing so an older checkout behaves as
+    # before rather than refusing everything.
+    # The lib ships NEXT TO THIS HOOK (scripts/hooks/../lib) — resolved from
+    # the hook's own location first, so whichever checkout core.hooksPath
+    # names supplies both. Then the canonical checkout (git-common-dir's
+    # parent), then the pushing worktree. A worktree branched before this
+    # lib existed has no copy of its own — precisely the population the rule
+    # is for (live 2026-09-21: a probe from such a worktree, pushing through
+    # this hook, reached the remote because the lookup fell back to that
+    # worktree's lib-less scripts/lib and the guard silently skipped).
+    _dpg_root=""
+    _dpg_self=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)
+    _dpg_common=$(git rev-parse --git-common-dir 2>/dev/null || true)
+    case "$_dpg_common" in
+      "") _dpg_canon="" ;;
+      /*) _dpg_canon=$(dirname "$_dpg_common") ;;
+      *)  _dpg_canon=$(cd "$REPO_ROOT/$_dpg_common/.." 2>/dev/null && pwd) ;;
+    esac
+    for _dpg_cand in "$_dpg_self" "$_dpg_canon" "$REPO_ROOT"; do
+      if [ -n "$_dpg_cand" ] && [ -f "$_dpg_cand/scripts/lib/direct-push-guard.sh" ]; then _dpg_root="$_dpg_cand"; break; fi
+    done
+    if [ -n "$_dpg_root" ]; then
+      # shellcheck source=scripts/lib/direct-push-guard.sh
+      source "$_dpg_root/scripts/lib/direct-push-guard.sh"
+      # The paths this push changes (remote tip..local tip): a push that
+      # touches no code path is data/memory automation and is allowed
+      # (allow:data-only). Unknown range (no remote tip) → judged as code.
+      _dpg_changed="/tmp/pre-push-direct-changed.$$.$RANDOM"
+      if [ "$remote_oid" != "0000000000000000000000000000000000000000" ]; then
+        git diff --name-only "$remote_oid..$local_oid" >"$_dpg_changed" 2>/dev/null || : >"$_dpg_changed"
+      else
+        : >"$_dpg_changed"
+      fi
+      dp_decision=$(direct_push_guard_decision "$remote_ref" "$_dpg_changed")
+      rm -f "$_dpg_changed"
+      direct_push_guard_log "$dp_decision" "$remote_ref" "$local_oid" "$REPO_ROOT"
+      if [ "$dp_decision" = "refuse" ]; then
+        echo ""
+        echo "=== PRE-PUSH BLOCKED: direct push to ${remote_ref#refs/heads/} ==="
+        echo ""
+        echo "  $DIRECT_PUSH_REFUSAL_MESSAGE"
+        echo "  (this push changes code paths — src/, scripts/, .github/workflows/, config;"
+        echo "   data/memory-only pushes are allowed and never reach this message)"
+        echo ""
+        echo "  From your worktree:  bash scripts/merge-worktree-to-main.sh"
+        echo "  It pushes land/<branch>, land.yml runs the gates against the rebased"
+        echo "  tree and fast-forwards main; the script prints LANDED with the sha."
+        echo ""
+        echo "  If this push came from an OLD copy of the merge script that already"
+        echo "  merged into the shared main checkout: nothing is lost — your branch"
+        echo "  still has the commits. Run origin/main's copy instead:"
+        echo "    git fetch origin main && git show origin/main:scripts/merge-worktree-to-main.sh > \"\${TMPDIR:-/tmp}/land-main.sh\" && bash \"\${TMPDIR:-/tmp}/land-main.sh\" <branch>"
+        echo ""
+        echo "  Rollback only (logged): LAND_ENFORCE_OFF=1 git push … / LAND_LEGACY_DIRECT=1 bash scripts/merge-worktree-to-main.sh"
+        echo ""
+        exit 1
+      fi
+    fi
     # Shallow- and error-aware (task #1497, same false-negative class as
     # #1489): a raw `merge-base --is-ancestor` on a shallow-truncated shared
     # checkout can answer "not an ancestor" for a remote_oid that genuinely

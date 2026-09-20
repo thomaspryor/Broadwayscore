@@ -161,7 +161,9 @@ function runMergeScript(cwd, args, envOverrides = {}) {
   return spawnSync('bash', [MERGE_SCRIPT, ...args], {
     cwd,
     encoding: 'utf8',
-    env: { ...GIT_ENV, ...envOverrides },
+    // BRO-3873 step 4: these fixtures exercise the LEGACY direct merge+push
+    // path (stash / retry loop / verify); the default now lands via land/**.
+    env: { ...GIT_ENV, LAND_LEGACY_DIRECT: '1', ...envOverrides },
     timeout: 60_000,
   });
 }
