@@ -144,7 +144,7 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-20T19:22:50.059Z",
+      "lastSeen": "2026-09-20T19:24:06.240Z",
       "lastNotifiedAt": "2026-09-20T18:45:10.856Z",
       "lastSurfacedAt": "2026-09-20T18:45:10.856Z",
       "notifyCount": 88,
@@ -3664,53 +3664,53 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "test-yml:red:Unit Tests:64c11b72": {
+    "test-yml:red:Lint Workflows:1ff49e04": {
       "status": "open",
       "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency)",
-      "firstSeen": "2026-09-20T19:22:48.919Z",
-      "lastSeen": "2026-09-20T19:22:48.919Z",
-      "lastNotifiedAt": "2026-09-20T19:22:48.919Z",
+      "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
+      "firstSeen": "2026-09-20T19:24:05.305Z",
+      "lastSeen": "2026-09-20T19:24:05.305Z",
+      "lastNotifiedAt": "2026-09-20T19:24:05.305Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3882"
-    },
-    "test-yml:red:Data Validation:9e7c89b2": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Data Validation / Run self-contradictory-clear drain acceptance test (needs review-texts)",
-      "firstSeen": "2026-09-20T19:22:49.517Z",
-      "lastSeen": "2026-09-20T19:22:49.517Z",
-      "lastNotifiedAt": "2026-09-20T19:22:49.517Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-3880"
+      "linearIdentifier": "BRO-3879"
     },
     "test-yml:red:E2E Tests:c2df710e": {
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests",
-      "firstSeen": "2026-09-20T19:22:49.712Z",
-      "lastSeen": "2026-09-20T19:22:49.712Z",
-      "lastNotifiedAt": "2026-09-20T19:22:49.712Z",
+      "firstSeen": "2026-09-20T19:24:05.731Z",
+      "lastSeen": "2026-09-20T19:24:05.731Z",
+      "lastNotifiedAt": "2026-09-20T19:24:05.731Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3883"
     },
-    "test-yml:red:Lint Workflows:1ff49e04": {
+    "test-yml:red:Data Validation:9e7c89b2": {
       "status": "open",
       "disposition": "auto",
-      "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
-      "firstSeen": "2026-09-20T19:22:49.867Z",
-      "lastSeen": "2026-09-20T19:22:49.867Z",
-      "lastNotifiedAt": "2026-09-20T19:22:49.867Z",
+      "title": "main test.yml red: Data Validation / Run self-contradictory-clear drain acceptance test (needs review-texts)",
+      "firstSeen": "2026-09-20T19:24:05.908Z",
+      "lastSeen": "2026-09-20T19:24:05.908Z",
+      "lastNotifiedAt": "2026-09-20T19:24:05.908Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3879"
+      "linearIdentifier": "BRO-3880"
+    },
+    "test-yml:red:Unit Tests:64c11b72": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency)",
+      "firstSeen": "2026-09-20T19:24:06.090Z",
+      "lastSeen": "2026-09-20T19:24:06.090Z",
+      "lastNotifiedAt": "2026-09-20T19:24:06.090Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3882"
     }
   }
 }
