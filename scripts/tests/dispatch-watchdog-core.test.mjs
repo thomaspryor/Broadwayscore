@@ -17,39 +17,64 @@ function task(id, status, priLine) {
     description: priLine ? `[notion:abc-${id}] ${priLine} · Not started · no-category\nbody` : 'native task',
   }];
 }
+// BRO-3878: the Linear-board counterpart of task() — the retired Notion
+// mirror is no longer a p01Queue source, so any test exercising FRESH
+// backlog admission (priority ordering, category exclusion, archive
+// exclusion, claim-suppression budgets) must fixture a live-board id.
+function lin(identifier, status, priLine) {
+  const id = `linear:${identifier}`;
+  return [id, {
+    id, subject: `Fix thing ${id}`, status,
+    description: priLine ? `[linear:${identifier}] ${priLine} · Backlog · no-category\nbody` : 'native task',
+  }];
+}
 const titles = pairs => new Map(pairs);
 const LIVE = titles([['workspace:1', '🤖⚡ Data·something'], ['workspace:99', '🤖 Site·other']]);
 
 test('ledger-confirmed dead launch with open task is retryable', () => {
   const entries = [
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-10', subject: 'Fix thing 10', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-10', workspaceRef: 'workspace:5' },
+  ];
+  const plan = core.planSweep(entries, new Map([lin('BRO-10', 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.retryable.length, 1);
+  assert.equal(plan.toDispatch[0].taskId, 'linear:BRO-10');
+});
+
+// BRO-3878: a Notion-mirror task with the SAME dead-launch shape must never
+// enter retryable — the retry path is a fresh-claim source too (Codex
+// ship-check catch: the p01Queue exclusion alone left this loop still
+// generating watchdog-redispatch claims against the frozen mirror).
+test('BRO-3878: a dead launch against a Notion-mirror task is never retried', () => {
+  const entries = [
     { ts: T(60), event: 'launch', taskId: '10', subject: 'Fix thing 10', workspaceRef: 'workspace:5' },
     { ts: T(30), event: 'dead', taskId: '10', workspaceRef: 'workspace:5' },
   ];
   const plan = core.planSweep(entries, new Map([task(10, 'in_progress')]), { now: NOW, liveTitles: LIVE });
-  assert.equal(plan.retryable.length, 1);
-  assert.equal(plan.toDispatch[0].taskId, '10');
+  assert.equal(plan.retryable.length, 0);
+  assert.equal(plan.toDispatch.length, 0);
 });
 
 test('#1154: an owner-judgment card that died is NEVER retried (retry bypasses actionable())', () => {
   // The Sarah check-in shape: launched once, session died, then re-dispatched
   // by dead-session recovery — which goes through `bsc-next --id` and so skips
   // the pick filter entirely. The P0/P1 backlog sweep alone does not cover it.
-  const marked = [String(12), {
-    id: '12',
+  const marked = ['linear:BRO-12', {
+    id: 'linear:BRO-12',
     subject: 'Sarah check-in: growth plan progress and metrics report',
     status: 'in_progress',
-    description: '[notion:abc-12] P2 Later · Not started · Admin\nDue 2026-05-23. Ask Sarah for status.\n\nVERIFY: owner-judgment (owner must read the report)',
+    description: '[linear:BRO-12] P2 Later · Not started · Admin\nDue 2026-05-23. Ask Sarah for status.\n\nVERIFY: owner-judgment (owner must read the report)',
   }];
   const entries = [
-    { ts: T(60), event: 'launch', taskId: '12', subject: 'Sarah check-in', workspaceRef: 'workspace:7' },
-    { ts: T(30), event: 'dead', taskId: '12', workspaceRef: 'workspace:7' },
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-12', subject: 'Sarah check-in', workspaceRef: 'workspace:7' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-12', workspaceRef: 'workspace:7' },
   ];
   const plan = core.planSweep(entries, new Map([marked]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.retryable.length, 0, 'owner-judgment card must not be retryable');
-  assert.equal(plan.toDispatch.filter(d => d.taskId === '12').length, 0, 'and must never be dispatched');
+  assert.equal(plan.toDispatch.filter(d => d.taskId === 'linear:BRO-12').length, 0, 'and must never be dispatched');
 
   // Control: identical ledger, identical Admin category, marker removed -> retried.
-  const control = [String(12), { ...marked[1], description: marked[1].description.replace(/VERIFY:\s*owner-judgment/i, 'VERIFY: nothing') }];
+  const control = ['linear:BRO-12', { ...marked[1], description: marked[1].description.replace(/VERIFY:\s*owner-judgment/i, 'VERIFY: nothing') }];
   const plan2 = core.planSweep(entries, new Map([control]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan2.retryable.length, 1, 'without the marker the same card IS retryable');
 });
@@ -102,16 +127,16 @@ test('2 infra-only deaths do not park; INFRA_DEAD_ATTEMPT_LIMIT infra deaths in 
   // passing test in this file already relies on launch-before-dead
   // ordering for exactly this reason).
   const infraPair = (ref, launchM, deadM) => ([
-    { ts: T(launchM), event: 'launch', taskId: '15', subject: 's', workspaceRef: ref, unverified: true },
-    { ts: T(deadM), event: 'dead', taskId: '15', workspaceRef: ref, failureReason: 'command injection never ran' },
+    { ts: T(launchM), event: 'launch', taskId: 'linear:BRO-15', subject: 's', workspaceRef: ref, unverified: true },
+    { ts: T(deadM), event: 'dead', taskId: 'linear:BRO-15', workspaceRef: ref, failureReason: 'command injection never ran' },
   ]);
   const twoInfra = [...infraPair('workspace:20', 90, 89.9999), ...infraPair('workspace:21', 80, 79.9999)];
-  const planTwo = core.planSweep(twoInfra, new Map([task(15, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const planTwo = core.planSweep(twoInfra, new Map([lin('BRO-15', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(planTwo.toPark.length, 0, '2 infra deaths must not park');
 
   const tenInfra = [];
   for (let i = 0; i < 10; i++) tenInfra.push(...infraPair(`workspace:${30 + i}`, 90 - i, 90 - i - 0.0001));
-  const planTen = core.planSweep(tenInfra, new Map([task(15, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const planTen = core.planSweep(tenInfra, new Map([lin('BRO-15', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(planTen.toPark.length, 1, '10 infra deaths in a row must still park (wedged-host ceiling)');
   assert.equal(planTen.toPark[0].reason, 'infra');
   assert.equal(planTen.toPark[0].deaths, 10, 'deaths must reflect the infra count, never 0, for the owner-facing message');
@@ -119,17 +144,17 @@ test('2 infra-only deaths do not park; INFRA_DEAD_ATTEMPT_LIMIT infra deaths in 
 
 test('DEAD_ATTEMPT_LIMIT deaths -> park once; parked card never re-parks or re-dispatches across 100 sweeps (pre-mortem P0)', () => {
   const entries = [
-    { ts: T(90), event: 'launch', taskId: '14', subject: 's', workspaceRef: 'workspace:8' },
-    { ts: T(80), event: 'dead', taskId: '14', workspaceRef: 'workspace:8' },
-    { ts: T(70), event: 'launch', taskId: '14', subject: 's', workspaceRef: 'workspace:9' },
-    { ts: T(60), event: 'dead', taskId: '14', workspaceRef: 'workspace:9' },
+    { ts: T(90), event: 'launch', taskId: 'linear:BRO-14', subject: 's', workspaceRef: 'workspace:8' },
+    { ts: T(80), event: 'dead', taskId: 'linear:BRO-14', workspaceRef: 'workspace:8' },
+    { ts: T(70), event: 'launch', taskId: 'linear:BRO-14', subject: 's', workspaceRef: 'workspace:9' },
+    { ts: T(60), event: 'dead', taskId: 'linear:BRO-14', workspaceRef: 'workspace:9' },
   ];
-  const tasks = new Map([task(14, 'in_progress')]);
+  const tasks = new Map([lin('BRO-14', 'in_progress')]);
   const first = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(first.toPark.length, 1, 'first sweep parks');
   assert.equal(first.toDispatch.length, 0);
   // CLI appends the park event; every later sweep must be silent about #14
-  entries.push({ ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: '14' });
+  entries.push({ ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-14' });
   for (let i = 0; i < 100; i++) {
     const p = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
     assert.equal(p.toPark.length, 0, `sweep ${i} re-parked`);
@@ -148,14 +173,17 @@ test('a fresh launch clears a watchdog park (self-healing, same rule as vanished
 
 test('undispatched P0/P1 pending cards queue, P0 first; marketing/human cards excluded', () => {
   const tasks = new Map([
-    task(20, 'pending', 'P1 Now'),
-    task(19, 'pending', 'P0 Now'),
-    ['21', { id: '21', subject: 'Email volunteers', status: 'pending', description: '[notion:x] P1 Now · Not started · Marketing\n' }],
-    task(22, 'pending', 'P2 Later'),
+    lin('BRO-20', 'pending', 'P1 Now'),
+    lin('BRO-19', 'pending', 'P0 Now'),
+    ['linear:BRO-21', { id: 'linear:BRO-21', subject: 'Email volunteers', status: 'pending', description: '[linear:BRO-21] P1 Now · Not started · Marketing\n' }],
+    lin('BRO-22', 'pending', 'P2 Later'),
+    // BRO-3878: a Notion-mirror P0 that would otherwise sort FIRST (the
+    // mirror froze 2026-08-20) must never enter the fresh backlog queue.
+    task(1, 'pending', 'P0 Now'),
   ]);
   const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
-  assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['19', '20']);
-  assert.deepEqual(plan.toDispatch.map(q => q.taskId), ['19', '20']);
+  assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['linear:BRO-19', 'linear:BRO-20']);
+  assert.deepEqual(plan.toDispatch.map(q => q.taskId), ['linear:BRO-19', 'linear:BRO-20']);
 });
 
 // BRO-3633: loadTasksUnioned() (audit-dispatch-outcomes.js) unions live/ +
@@ -168,14 +196,14 @@ test('undispatched P0/P1 pending cards queue, P0 first; marketing/human cards ex
 // retired-board (bare-numeric) id, which is exactly what tripped
 // board-targeting-audit.js's "Dispatch: board targeting" health-check row.
 test('BRO-3633: an archived-but-pending P0/P1 card is excluded from p01Queue', () => {
-  const [liveId, liveTask] = task(19, 'pending', 'P0 Now');
-  const [archivedId, archivedTask] = task(23, 'pending', 'P0 Now');
+  const [liveId, liveTask] = lin('BRO-19', 'pending', 'P0 Now');
+  const [archivedId, archivedTask] = lin('BRO-23', 'pending', 'P0 Now');
   const tasks = new Map([
     [liveId, liveTask],
     [archivedId, { ...archivedTask, fromArchive: true }],
   ]);
   const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
-  assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['19'],
+  assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['linear:BRO-19'],
     'the archived card must never re-enter the fresh-backlog queue');
 });
 
@@ -273,10 +301,10 @@ test('cmux unobservable (null or empty listing) = report-only, zero dispatches',
 
 test('dispatch kill-switch = visibility only', () => {
   const entries = [
-    { ts: T(60), event: 'launch', taskId: '10', subject: 's', workspaceRef: 'workspace:5' },
-    { ts: T(30), event: 'dead', taskId: '10', workspaceRef: 'workspace:5' },
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-10', subject: 's', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-10', workspaceRef: 'workspace:5' },
   ];
-  const plan = core.planSweep(entries, new Map([task(10, 'pending')]), { now: NOW, liveTitles: LIVE, dispatchEnabled: false });
+  const plan = core.planSweep(entries, new Map([lin('BRO-10', 'pending')]), { now: NOW, liveTitles: LIVE, dispatchEnabled: false });
   assert.equal(plan.toDispatch.length, 0);
   assert.equal(plan.retryable.length, 1, 'still classified — only the action is held');
 });
@@ -334,8 +362,8 @@ test('taskPriority parses bridge line and subject fallback', () => {
 test('#1564: a claim that never launched is not re-claimed every sweep, and does not starve the budget', () => {
   const entries = [];
   const tasks = new Map([
-    task(20, 'pending', 'P1 Now'),   // the card whose child will always refuse
-    task(21, 'pending', 'P1 Now'),   // a healthy card queued behind it
+    lin('BRO-20', 'pending', 'P1 Now'),   // the card whose child will always refuse
+    lin('BRO-21', 'pending', 'P1 Now'),   // a healthy card queued behind it
   ]);
   let now = NOW;
   const claims = {};
@@ -348,28 +376,28 @@ test('#1564: a claim that never launched is not re-claimed every sweep, and does
     }
     now += 92 * 1000;               // the real sweep period
   }
-  assert.equal(claims['20'], 1, 'the refused card must be claimed exactly once, not once per sweep');
-  assert.equal(claims['21'], 1, 'and the healthy card behind it must still get its dispatch');
+  assert.equal(claims['linear:BRO-20'], 1, 'the refused card must be claimed exactly once, not once per sweep');
+  assert.equal(claims['linear:BRO-21'], 1, 'and the healthy card behind it must still get its dispatch');
 });
 
 test('#1564: a landed launch re-arms the task — a later dead launch is still retryable', () => {
   const entries = [
-    { ts: T(120), event: 'watchdog-redispatch', taskId: '22', kind: 'p01-backlog' },
-    { ts: T(118), event: 'launch', taskId: '22', subject: 'Fix thing 22', workspaceRef: 'workspace:8' },
-    { ts: T(30), event: 'dead', taskId: '22', workspaceRef: 'workspace:8' },
+    { ts: T(120), event: 'watchdog-redispatch', taskId: 'linear:BRO-22', kind: 'p01-backlog' },
+    { ts: T(118), event: 'launch', taskId: 'linear:BRO-22', subject: 'Fix thing 22', workspaceRef: 'workspace:8' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-22', workspaceRef: 'workspace:8' },
   ];
-  const plan = core.planSweep(entries, new Map([task(22, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const plan = core.planSweep(entries, new Map([lin('BRO-22', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.retryable.length, 1, 'the claim landed, so the dead session is retryable as before');
-  assert.equal(plan.toDispatch[0].taskId, '22');
+  assert.equal(plan.toDispatch[0].taskId, 'linear:BRO-22');
 });
 
 test('#1564: an unlanded claim re-arms by itself after REDISPATCH_REARM_MS', () => {
-  const tasks = new Map([task(23, 'pending', 'P1 Now')]);
-  const stale = [{ ts: new Date(NOW - core.REDISPATCH_REARM_MS - 60000).toISOString(), event: 'watchdog-redispatch', taskId: '23', kind: 'p01-backlog' }];
+  const tasks = new Map([lin('BRO-23', 'pending', 'P1 Now')]);
+  const stale = [{ ts: new Date(NOW - core.REDISPATCH_REARM_MS - 60000).toISOString(), event: 'watchdog-redispatch', taskId: 'linear:BRO-23', kind: 'p01-backlog' }];
   assert.equal(core.planSweep(stale, tasks, { now: NOW, liveTitles: LIVE }).toDispatch.length, 1,
     'a day-old unlanded claim must not suppress forever — a transient failure has to retry');
 
-  const fresh = [{ ts: T(60), event: 'watchdog-redispatch', taskId: '23', kind: 'p01-backlog' }];
+  const fresh = [{ ts: T(60), event: 'watchdog-redispatch', taskId: 'linear:BRO-23', kind: 'p01-backlog' }];
   assert.equal(core.planSweep(fresh, tasks, { now: NOW, liveTitles: LIVE }).toDispatch.length, 0,
     'but an hour-old one still suppresses');
 });
@@ -614,12 +642,22 @@ test('a Linear-sourced task is queued, ordered and dispatched like any other', (
   const plan = core.planSweep([], new Map([linearTask, task(9, 'pending', 'P1 Now')]), { now: NOW, liveTitles: LIVE });
   const ids = plan.p01Queue.map(q => q.taskId);
   assert.ok(ids.includes('linear:BRO-77'), `Linear task missing from p01Queue: ${JSON.stringify(ids)}`);
-  // Same priority => Linear outranks the retired Notion mirror, THEN FIFO
-  // within each source. This expectation was ['9', 'linear:BRO-77'] until the
-  // production regression documented on taskSourceRank: trailing-integer
-  // ordering alone sent the drain straight back to the frozen board once the
-  // low-numbered Linear ids were consumed.
-  assert.deepEqual(ids, ['linear:BRO-77', '9']);
+  // BRO-3878: the retired Notion mirror (bare id '9') is no longer a P0/P1
+  // backlog source at all — it must never enter p01Queue, full stop, not
+  // even ranked behind Linear.
+  assert.deepEqual(ids, ['linear:BRO-77']);
+});
+
+test('BRO-3878: compareTaskIds still ranks Linear ahead of the retired Notion mirror, then FIFO within each source', () => {
+  // The p01Queue-level exclusion added by this ticket makes this ordering
+  // moot for FRESH backlog (Notion never reaches p01Queue at all now), but
+  // retryable/awaitingClaim/jobBlocked can still legitimately mix both id
+  // namespaces for pre-existing ledger history, and toDispatch's own sort
+  // still runs compareTaskIds over that mix — this is the one place left
+  // that proves Linear-first ordering, now that the p01Queue test above no
+  // longer exercises it.
+  const ids = ['50', 'linear:BRO-30', '10', 'linear:BRO-5'];
+  assert.deepEqual([...ids].sort(core.compareTaskIds), ['linear:BRO-5', 'linear:BRO-30', '10', '50']);
 });
 
 test('ship-check P0: a HEADLESS job counts as open (concurrency + no re-dispatch)', () => {
@@ -742,11 +780,14 @@ test('BRO-3442: a job-blocked task surfaces in jobBlocked and needsYou', () => {
 });
 
 test('BRO-3442 (adversarial review): a blocked P0/P1 task is NOT ALSO queued for dispatch in the same sweep', () => {
-  const entries = [{ ts: T(10), event: 'job-blocked', taskId: '91', jobId: '91-abc', reason: 'missing credential' }];
-  const plan = core.planSweep(entries, new Map([task(91, 'pending', 'P0 Now')]), { now: NOW, liveTitles: LIVE });
+  // BRO-3878: fixtured on Linear, not Notion — the guard under test here is
+  // blockedTaskIds, not the (now unconditional) Notion exclusion; a Notion
+  // fixture would pass this assertion for the wrong reason.
+  const entries = [{ ts: T(10), event: 'job-blocked', taskId: 'linear:BRO-91', jobId: '91-abc', reason: 'missing credential' }];
+  const plan = core.planSweep(entries, new Map([lin('BRO-91', 'pending', 'P0 Now')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.jobBlocked.length, 1);
-  assert.ok(!plan.p01Queue.some((d) => d.taskId === '91'), 'a task about to be parked must never also be queued this sweep');
-  assert.ok(!plan.toDispatch.some((d) => d.taskId === '91'), 'a task about to be parked must never also be dispatched this sweep');
+  assert.ok(!plan.p01Queue.some((d) => d.taskId === 'linear:BRO-91'), 'a task about to be parked must never also be queued this sweep');
+  assert.ok(!plan.toDispatch.some((d) => d.taskId === 'linear:BRO-91'), 'a task about to be parked must never also be dispatched this sweep');
 });
 
 test('BRO-3442 (adversarial review): a stale job-blocked superseded by a LATER successful job is not re-parked', () => {
@@ -797,6 +838,9 @@ test('BRO-3404: the auto-tab ceiling stops cmux work but NOT headless work', () 
 
   const ids = plan.toDispatch.map((t) => t.taskId);
   assert.ok(ids.includes('linear:BRO-500'), `headless work must still dispatch, got ${JSON.stringify(ids)}`);
+  // BRO-3878: '1849' (bare Notion id) is excluded unconditionally now — this
+  // no longer proves the cmux-lane split specifically, since it would be
+  // absent from p01Queue with or without the ceiling hold.
   assert.ok(!ids.includes('1849'), 'cmux-lane work must be suppressed while the ceiling is hit');
 });
 
@@ -808,6 +852,8 @@ test('BRO-3404: cmux being unobservable does not stop headless dispatch', () => 
   assert.equal(plan.budgets.globalHolds.length, 0);
   const ids = plan.toDispatch.map((t) => t.taskId);
   assert.ok(ids.includes('linear:BRO-501'));
+  // BRO-3878: '1850' is excluded unconditionally now regardless of cmux
+  // observability — see the note on the ceiling test above.
   assert.ok(!ids.includes('1850'));
 });
 
@@ -823,15 +869,17 @@ test('BRO-3404: a GLOBAL hold still stops both lanes', () => {
   assert.equal(plan.toDispatch.length, 0, 'a global hold must stop the headless lane too');
 });
 
-test('BRO-3404: with no holds at all, both lanes dispatch', () => {
+test('BRO-3404: with no holds at all, the Linear lane dispatches and the retired Notion mirror never rides along', () => {
   const tasks = new Map([p01('linear:BRO-503'), p01('1852')]);
   const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(plan.budgets.cmuxHolds.length, 0);
   assert.equal(plan.budgets.globalHolds.length, 0);
   const ids = plan.toDispatch.map((t) => t.taskId);
   assert.ok(ids.includes('linear:BRO-503'));
-  // perSweep is 2, and Linear sorts first, so the Notion card rides along.
-  assert.ok(ids.includes('1852'));
+  // BRO-3878: '1852' is a bare Notion-mirror id — with budget/holds no
+  // longer a factor, it used to "ride along" behind Linear; now it must
+  // never enter p01Queue at all, holds or no holds.
+  assert.ok(!ids.includes('1852'), 'the frozen Notion mirror must never ride along in the backlog queue');
 });
 
 // ── structuralGuardRefusal (BRO-3481) ───────────────────────────────────────
