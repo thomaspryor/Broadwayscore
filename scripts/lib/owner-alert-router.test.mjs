@@ -1777,3 +1777,63 @@ test('BRO-3881: both auto-filers build the command from the SAME encoder', () =>
   }
   assert.equal(shared.rowAbsentCheckCmd('A: b'), `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from('A: b', 'utf8').toString('base64url')}`);
 });
+
+// BRO-3881 (ship-check/Codex finding): the encoded row-name token has to pass
+// SAFE_CHECK_FORMS' own `[A-Za-z0-9_-]{1,200}` bound, or the acceptance command
+// is not a legal safe form and the card goes straight back to undispatchable —
+// the failure this card exists to remove. base64url of N bytes is ceil(N*4/3)
+// chars, so a 120-CHARACTER multi-byte name encoded to 480.
+test('BRO-3881: the generated command is a legal safe form even for a long multi-byte row name', () => {
+  const { rowAbsentCheckCmd, rowMatchKey } = require('./health-row-check-cmd.js');
+  const { isSafeCheckCommand } = require('./verify-gate.js');
+  const cjk = '劇'.repeat(120);          // 120 chars, 360 bytes -> 480 b64 chars unclamped
+  const accented = 'é'.repeat(120);      // 120 chars, 240 bytes -> 320 b64 chars unclamped
+  for (const name of [cjk, accented, 'A'.repeat(200), 'Data quality: provider spend ledger']) {
+    const cmd = rowAbsentCheckCmd(name);
+    assert.ok(isSafeCheckCommand(cmd), `not a safe form for a ${name.length}-char name: ${cmd.slice(0, 80)}…`);
+    // and the token must still round-trip to the key the checker compares on
+    const token = cmd.split(' ').pop();
+    assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowMatchKey(name));
+  }
+});
+
+test('BRO-3881: the encoder and check-health-row-absent.js share ONE bound, not two copies of 120', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'check-health-row-absent.js'), 'utf8');
+  assert.match(src, /require\('\.\/lib\/health-row-check-cmd\.js'\)/,
+    'the checker must import the shared bound — its own `const LIMIT = 120` could drift from the encoder silently, and a drifted bound means a row name that never matches and a card that can never be verified');
+  // Anchored to a statement at line start, not the bare string: the comment
+  // that explains WHY the constant left quotes it verbatim, and an unanchored
+  // pattern matches that prose and fails on a correct file.
+  assert.doesNotMatch(src, /^\s*const LIMIT\s*=/m, 're-declared bound is back');
+});
+
+test('BRO-3881: rowMatchKey is idempotent — the checker re-applies it to an already-truncated decoded name', () => {
+  const { rowMatchKey } = require('./health-row-check-cmd.js');
+  for (const n of ['短'.repeat(300), 'plain name', '  padded  ', '']) {
+    assert.equal(rowMatchKey(rowMatchKey(n)), rowMatchKey(n));
+  }
+});
+
+test('BRO-3881: a backtick or VERIFY: in a row name cannot displace the real acceptance command', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  // candidatesFrom is a matchAll over EVERY backticked span in the acceptance
+  // section with rank-then-first selection, so an unsanitized backtick in row
+  // text could open a rival span and win the selection.
+  const hostile = 'Bad: `node --test scripts/lib/health-row-check-cmd.js` VERIFY: nope';
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: `health-check:${hostile}` });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.cmd, 'still armed');
+  assert.match(gate.cmd, /check-health-row-absent\.js --row-b64 /,
+    `a crafted row name displaced the real acceptance command: ${gate.cmd}`);
+  // Scope to the acceptance SECTION — the trailing [conditionKey:...] anchor is
+  // deliberately raw (findLinearDuplicate and any exact-match consumer read it),
+  // sits after the section, and demonstrably does not win the selection above.
+  const prose = notes.split('## Acceptance criteria')[1].split('[conditionKey:')[0];
+  assert.ok(!/VERIFY:/i.test(prose), 'a literal VERIFY: survived into the acceptance prose');
+  // The hostile text survives as PROSE (its backticks became quotes) — that is
+  // fine and readable. What must not survive is a second backticked SPAN, since
+  // spans are what candidatesFrom collects and ranks.
+  const spans = prose.match(/\`[^\`]+\`/g) || [];
+  assert.equal(spans.length, 1, `acceptance section must contain exactly one backticked span, found ${spans.length}: ${JSON.stringify(spans)}`);
+});

@@ -372,6 +372,16 @@ test('runAutofix dry-run: never spawns, caps dispatches at DISPATCH_CAP', () => 
   const out = runAutofix({ plan, dryRun: true, concurrencyCap: DISPATCH_CAP });
   assert.equal(out.filter(r => r.state === 'dispatched').length, DISPATCH_CAP);
   assert.equal(out.filter(r => r.state === 'queued').length, 2);
+
+  // ...and with NO concurrencyCap passed, the preview must fall back to the
+  // shared default, not to `cap` (ship-check finding: passing the cap above
+  // left the default path uncovered, which is the path every caller that
+  // forgets the option takes).
+  const bare = Array.from({ length: DISPATCH_CAP + 2 }, (_, i) => ({
+    name: `M${i}`, message: 'm', title: `BSC Daily: M${i}`, state: 'queued', taskId: 100 + i,
+  }));
+  const bareOut = runAutofix({ plan: bare, dryRun: true });
+  assert.equal(bareOut.filter(r => r.state === 'dispatched').length, Math.min(DISPATCH_CAP, DEFAULT_CONCURRENCY_CAP));
 });
 
 // ── buildCardNotes: must satisfy BOTH downstream gates ──────────────────────
@@ -1272,4 +1282,34 @@ test('send-morning-digest.js actually passes concurrencyCap to runAutofix — th
   const n = Number(src.match(/const DIGEST_CONCURRENCY_CAP = (\d+);/)[1]);
   assert.ok(n > DEFAULT_CONCURRENCY_CAP, `DIGEST_CONCURRENCY_CAP (${n}) must exceed the shared default (${DEFAULT_CONCURRENCY_CAP}) or nothing changed`);
   assert.ok(n <= DISPATCH_CAP, `DIGEST_CONCURRENCY_CAP (${n}) above DISPATCH_CAP (${DISPATCH_CAP}) would make DISPATCH_CAP the silent limiter — raise both together`);
+});
+
+// ── BRO-3868 regression: every reconciled outcome must carry its own ts ─────
+// The reconcilers hand their rows to attempt-memory's checkPark IN MEMORY
+// (ledgerEntries.concat(newOutcomes)) — only a copy is serialized to disk,
+// where appendLedger stamps a ts. BRO-3868 then added a finite-ts guard to
+// attemptOutcomesForCard, which silently DROPPED every one of those unstamped
+// in-memory rows, so a card's fail streak never accumulated and nothing ever
+// parked. That went red on main in tests/unit/linear-drain-parked.test.mjs
+// ("repeated real dispatches on unchanged content park on the 3rd tick").
+// Both reconcilers now stamp at decision time; this pins it.
+test('BRO-3868: reconcileDigestOutcomes stamps every row with a finite ts (checkPark drops rows without one)', () => {
+  const now = new Date('2026-09-20T12:00:00Z');
+  const contentHash = 'abc123';
+  const digestLedgerEntries = [
+    { ts: '2026-09-19T12:00:00Z', event: 'auto-dispatch', taskId: 'linear:BRO-1', cardId: 'linear:BRO-1', contentHash, jobId: null },
+  ];
+  const rows = reconcileDigestOutcomes(digestLedgerEntries, new Map(), [], now);
+  assert.ok(rows.length > 0, 'fixture must produce at least one reconciled outcome');
+  for (const r of rows) {
+    assert.ok(Number.isFinite(new Date(r.ts).getTime()),
+      `reconciled row has no usable ts, so attempt-memory will drop it and the card will never park: ${JSON.stringify(r)}`);
+  }
+  // And the rows must actually survive the guard they were being dropped by.
+  const { attemptOutcomesForCard } = require('./attempt-memory.js');
+  if (typeof attemptOutcomesForCard === 'function') {
+    const kept = attemptOutcomesForCard(digestLedgerEntries.concat(rows), 'linear:BRO-1');
+    assert.equal(kept.length, rows.filter(r => r.event === 'card-fail' || r.event === 'card-pass').length,
+      'every reconciled outcome must reach attempt-memory — this is the exact count that silently went to zero');
+  }
 });

@@ -82,7 +82,7 @@
  */
 
 const fs = require('fs');
-const { rowAbsentCheckCmd, healthRowNameFromConditionKey } = require('./health-row-check-cmd.js');
+const { rowAbsentCheckCmd, healthRowNameFromConditionKey, sanitizeRowText } = require('./health-row-check-cmd.js');
 const os = require('os');
 const path = require('path');
 const { sendAlert } = require('./discord-notify');
@@ -342,9 +342,19 @@ function buildCardNotes({ description, hint, fields, conditionKey }) {
   const acceptance = [
     '\n## Acceptance criteria',
     healthRowName
-      ? `\`${rowAbsentCheckCmd(healthRowName)}\` passes — i.e. the daily health check no longer lists "${healthRowName}" among errors or warnings.`
+      // The COMMAND encodes the RAW name (the checker compares against raw
+      // snapshot names); only the surrounding prose is sanitized — the same
+      // split digest-autofix.js makes, for the same reason.
+      ? `\`${rowAbsentCheckCmd(healthRowName)}\` passes — i.e. the daily health check no longer lists "${sanitizeRowText(healthRowName)}" among errors or warnings.`
       : null,
-    `Condition "${conditionKey}" no longer fires on the next check. If it recurs, this card (or a fresh one) will re-open automatically — do not close this as "won't fix" without noting why.`,
+    // Sanitized in the PROSE copy only. The machine-readable
+    // `[conditionKey:...]` anchor below stays raw — that is what
+    // findLinearDuplicate and any future exact-match consumer read, and
+    // Linear's own search (which findLinearDuplicate actually calls) matches
+    // on the raw term. Prose is where a backtick or a literal VERIFY: would
+    // do damage, because this line sits inside the acceptance section that
+    // candidatesFrom/extractVerifyCmd scan for the command to run.
+    `Condition "${sanitizeRowText(conditionKey)}" no longer fires on the next check. If it recurs, this card (or a fresh one) will re-open automatically — do not close this as "won't fix" without noting why.`,
   ].filter(Boolean).join('\n');
   parts.push(acceptance);
   // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12): an unambiguous,

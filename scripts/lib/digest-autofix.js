@@ -422,12 +422,8 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
 // the notes as the card's executable proof, so hostile row text could inject
 // its own safe-but-unrelated command (Codex finding, 2026-08-02). Neutralize
 // the three carriers before interpolating.
-function sanitizeRowText(s) {
-  return String(s || '')
-    .replace(/`/g, "'")
-    .replace(/^#+\s/gm, '')
-    .replace(/VERIFY\s*:/gi, 'VERIFY -');
-}
+// sanitizeRowText now lives in ./health-row-check-cmd.js — owner-alert-router.js
+// needs the identical treatment for the identical reason (BRO-3881).
 
 // Encodes one row's raw name into the check-health-row-absent.js safe-form
 // token — shared by the single-row and folded-row buildCardNotes branches so
@@ -438,7 +434,7 @@ function sanitizeRowText(s) {
 // OTHER auto-filer, whose cards the digest also dispatches — can emit the same
 // command instead of the prose that got every one of its cards refused at
 // dispatch. See that module's header for the incident.
-const { rowAbsentCheckCmd } = require('./health-row-check-cmd.js');
+const { rowAbsentCheckCmd, sanitizeRowText } = require('./health-row-check-cmd.js');
 
 // Card notes must pass notion-brain's card-quality gate for "Not started"
 // cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections
@@ -829,6 +825,17 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
   for (const { dispatch: d, cardId, job, kind } of decisions) {
     if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
         // usd: 0 (BRO-3412) — no job ever spawned, so no cost was incurred.
         // Mirrors scripts/backlog-drain.js's reconcileOutcomes ORPHAN branch.
         event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: 0,
@@ -845,6 +852,17 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
         // usd (BRO-3412): the timed-out attempt's own cost, same field
         // backlog-drain.js's RETRY_TIMEOUT branch records.
         event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: Number(job.costUSD) || 0,
@@ -881,6 +899,17 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
     // depends on — out of scope for BRO-3412's "wiring, not new thresholds"
     // mandate. Tracked as a follow-up: BRO-3445.
     newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
       event: outcome,
       cardId,
       // usd (BRO-3412): what this dispatch actually cost, so
