@@ -198,6 +198,13 @@ jobs:
             # it RAN, dead arms included, so a real dead arm can never make this
             # entry look stale and trigger a redispatch loop.
             "check-arm-yield.yml|36|Check Arm Yield (dead-arm detector)"
+            # Daily 05:30 UTC. Card #796: audit-card-verifiability.js /
+            # enrich-card-acceptance.js existed and worked but were never
+            # scheduled anywhere for 18+ days, letting the undispatchable-
+            # backlog count silently grow unnoticed — the exact class of
+            # invisibility this list exists to catch. 36h = daily cadence +
+            # 12h cron-lag cushion, matching check-arm-yield.yml above.
+            "card-verifiability-audit.yml|36|Card Verifiability Audit (undispatchable-backlog drain)"
           )
 
           FAILURES=""
